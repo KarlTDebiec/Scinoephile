@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import logging
-from pathlib import Path
 from typing import cast
 
 import pytest
@@ -34,29 +33,22 @@ def test_validate_eng_ocr_mlamd(
 def test_validate_eng_ocr_configures_validation_manager(
     monkeypatch: pytest.MonkeyPatch,
     tiny_image_series: ImageSeries,
-    tmp_path: Path,
 ):
     """Test English OCR validation configures its validation manager.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
         tiny_image_series: small image subtitle series
-        tmp_path: pytest temporary path fixture
     """
-    init_calls: list[tuple[Path | str | None, bool]] = []
+    init_calls: list[bool] = []
     validate_calls: list[ImageSeries] = []
 
     class FakeValidationManager:
         """Fake validation manager."""
 
-        def __init__(
-            self,
-            *,
-            cache_dir_path: Path | str | None = None,
-            dev: bool = False,
-        ):
+        def __init__(self):
             """Initialize."""
-            init_calls.append((cache_dir_path, dev))
+            init_calls.append(True)
 
         def validate(self, series: ImageSeries) -> ImageSeries:
             """Validate an image series."""
@@ -67,16 +59,10 @@ def test_validate_eng_ocr_configures_validation_manager(
         "scinoephile.lang.eng.ocr_validation.ValidationManager",
         FakeValidationManager,
     )
-    cache_dir_path = tmp_path / "cache"
-
-    output = validate_eng_ocr(
-        tiny_image_series,
-        cache_dir_path=cache_dir_path,
-        dev=True,
-    )
+    output = validate_eng_ocr(tiny_image_series)
 
     assert output is tiny_image_series
-    assert init_calls == [(cache_dir_path, True)]
+    assert init_calls == [True]
     assert validate_calls == [tiny_image_series]
 
 

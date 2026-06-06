@@ -293,11 +293,23 @@ def test_process_eng_ocr_validates_fuse_clean_output(
     source_path = tmp_path / "source.sup"
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
-    validate_calls: list[tuple[list[str], bool]] = []
+    manager_instances: list[object] = []
+    manager_calls: list[bool] = []
+    validate_calls: list[tuple[list[str], object]] = []
 
-    def fake_validate(series: ImageSeries, dev: bool = False) -> Series:
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def __init__(self, *, dev: bool = False):
+            """Initialize."""
+            manager_instances.append(self)
+            manager_calls.append(dev)
+
+    def fake_validate(series: ImageSeries, validation_manager: object) -> Series:
         """Fake English OCR validation."""
-        validate_calls.append(([subtitle.text for subtitle in series], dev))
+        validate_calls.append(
+            ([subtitle.text for subtitle in series], validation_manager)
+        )
         return _series_with_texts(["validated 1", "validated 2"])
 
     monkeypatch.setattr(
@@ -328,6 +340,10 @@ def test_process_eng_ocr_validates_fuse_clean_output(
         "scinoephile.workflows.ocr_processing.validate_eng_ocr",
         fake_validate,
     )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ValidationManager",
+        FakeValidationManager,
+    )
 
     result = process_eng_ocr(
         infile_path=source_path,
@@ -339,7 +355,8 @@ def test_process_eng_ocr_validates_fuse_clean_output(
     assert result.output_paths["fuse_clean_validate"] == (
         output_dir_path / "fuse_clean_validate.srt"
     )
-    assert validate_calls == [(["fused 1…", "fused 2…"], True)]
+    assert manager_calls == [True]
+    assert validate_calls == [(["fused 1…", "fused 2…"], manager_instances[0])]
     assert [
         subtitle.text
         for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
@@ -402,7 +419,7 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.validate_eng_ocr",
-        lambda series, dev=False: pytest.fail(
+        lambda *args, **kwargs: pytest.fail(
             "Non-interactive validation should not run"
         ),
     )
@@ -459,9 +476,11 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
     existing_image_series.save(image_dir_path)
     original_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
     validate_texts: list[list[str]] = []
+    validate_managers: list[object] = []
 
-    def fake_validate(series: ImageSeries, dev: bool = False) -> Series:
+    def fake_validate(series: ImageSeries, validation_manager: object) -> Series:
         """Fake English OCR validation."""
+        validate_managers.append(validation_manager)
         validate_texts.append([subtitle.text for subtitle in series])
         return _series_with_texts(["validated 1", "validated 2"])
 
@@ -500,6 +519,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
     )
 
     assert validate_texts == [["fused 1…", "fused 2…"]]
+    assert len(validate_managers) == 1
     current_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
     assert current_index == original_index
 

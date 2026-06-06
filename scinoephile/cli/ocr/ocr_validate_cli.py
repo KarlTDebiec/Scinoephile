@@ -23,6 +23,7 @@ from scinoephile.common.exceptions import NotAFileError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, write_series
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
@@ -223,10 +224,13 @@ class OcrValidateCli(ScinoephileCliBase):
             parser.error(str(exc))
 
         if language == "eng":
-            validated = validate_eng_ocr(
-                series,
+            validation_manager = ValidationManager(
                 cache_dir_path=cache_dir_path,
                 dev=dev,
+            )
+            validated = validate_eng_ocr(
+                series,
+                validation_manager=validation_manager,
             )
         else:
             validated = validate_zho_ocr(
