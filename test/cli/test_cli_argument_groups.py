@@ -79,15 +79,16 @@ def test_add_web_server_arguments_bundles_standard_host_and_port():
     add_web_server_arguments(web_arg_group)
 
     namespace = parser.parse_args(["--host", "0.0.0.0", "--port", "5050"])
-    assert namespace.web == WebServerArguments(host="0.0.0.0", port=5050)
+    assert namespace.web_args == WebServerArguments(host="0.0.0.0", port=5050)
+    assert not hasattr(namespace, "web")
     assert not hasattr(namespace, "host")
     assert not hasattr(namespace, "port")
 
     port_namespace = parser.parse_args(["--port", "5051"])
-    assert port_namespace.web == WebServerArguments(host="127.0.0.1", port=5051)
+    assert port_namespace.web_args == WebServerArguments(host="127.0.0.1", port=5051)
 
     default_namespace = parser.parse_args([])
-    assert default_namespace.web == WebServerArguments()
+    assert default_namespace.web_args == WebServerArguments()
 
 
 def test_add_llm_provider_arguments_bundles_standard_llm_options(tmp_path):
@@ -114,20 +115,21 @@ def test_add_llm_provider_arguments_bundles_standard_llm_options(tmp_path):
             str(context_file_path),
         ]
     )
-    assert namespace.llm == LlmArguments(
+    assert namespace.llm_args == LlmArguments(
         provider_name="openai",
         model_name="gpt-test",
         additional_context_file_path=context_file_path,
     )
+    assert not hasattr(namespace, "llm")
     assert not hasattr(namespace, "llm_provider_name")
     assert not hasattr(namespace, "llm_model_name")
     assert not hasattr(namespace, "llm_additional_context_file_path")
 
     model_namespace = parser.parse_args(["--llm-model", "gpt-test"])
-    assert model_namespace.llm == LlmArguments(model_name="gpt-test")
+    assert model_namespace.llm_args == LlmArguments(model_name="gpt-test")
 
     default_namespace = parser.parse_args([])
-    assert default_namespace.llm == LlmArguments()
+    assert default_namespace.llm_args == LlmArguments()
 
 
 def _get_action(parser: ArgumentParser, option: str) -> Action:

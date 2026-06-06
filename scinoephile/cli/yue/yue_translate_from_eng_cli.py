@@ -262,7 +262,7 @@ class YueTranslateFromEngCli(ScinoephileCliBase):
         yue_gapped_infile_path: Path | str | None,
         yue_guide_infile_path: Path | str | None,
         script: str,
-        llm: LlmArguments,
+        llm_args: LlmArguments,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -281,9 +281,9 @@ class YueTranslateFromEngCli(ScinoephileCliBase):
         # Read inputs
         eng = read_series(parser, eng_infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
-            parser, llm.additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
-        provider = get_provider(llm.provider_name, model=llm.model_name)
+        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
 
         # Perform operations
         if yue_gapped_infile_path is not None:

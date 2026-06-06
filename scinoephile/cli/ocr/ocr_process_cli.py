@@ -225,10 +225,10 @@ class OcrProcessCli(ScinoephileCliBase):
         script: ChineseScript | None,
         clean: bool,
         interactive: bool,
-        web: WebServerArguments,
+        web_args: WebServerArguments,
         dev: bool,
         cache_dir_path: Path,
-        llm: LlmArguments,
+        llm_args: LlmArguments,
         output_dir_path: Path,
         overwrite: bool,
     ):
@@ -238,9 +238,9 @@ class OcrProcessCli(ScinoephileCliBase):
         if language == "eng" and script is not None:
             parser.error("--script may only be used when --language is zho")
         additional_context = read_llm_additional_context(
-            parser, llm.additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
-        provider = get_provider(llm.provider_name, model=llm.model_name)
+        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
 
         # Perform operations
         try:
@@ -252,8 +252,8 @@ class OcrProcessCli(ScinoephileCliBase):
                     cache_dir_path=cache_dir_path,
                     clean=clean,
                     interactive=interactive,
-                    host=web.host,
-                    port=web.port,
+                    host=web_args.host,
+                    port=web_args.port,
                     dev=dev,
                     overwrite=overwrite,
                     provider=provider,
@@ -268,8 +268,8 @@ class OcrProcessCli(ScinoephileCliBase):
                     script=script or "simplified",
                     clean=clean,
                     interactive=interactive,
-                    host=web.host,
-                    port=web.port,
+                    host=web_args.host,
+                    port=web_args.port,
                     dev=dev,
                     overwrite=overwrite,
                     provider=provider,

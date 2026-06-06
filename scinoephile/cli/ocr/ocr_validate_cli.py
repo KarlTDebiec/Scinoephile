@@ -167,7 +167,7 @@ class OcrValidateCli(ScinoephileCliBase):
         language: str,
         interactive: bool,
         dev: bool,
-        web: WebServerArguments,
+        web_args: WebServerArguments,
         outfile_path: Path,
         overwrite: bool,
     ):
@@ -190,7 +190,7 @@ class OcrValidateCli(ScinoephileCliBase):
                 outfile_path=outfile_path,
                 dev=dev,
             )
-            create_app(session).run(host=web.host, port=web.port)
+            create_app(session).run(host=web_args.host, port=web_args.port)
             return
 
         try:

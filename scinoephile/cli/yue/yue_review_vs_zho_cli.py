@@ -221,7 +221,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         zho_infile_path: Path | str,
         mode: str,
         script: str,
-        llm: LlmArguments,
+        llm_args: LlmArguments,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -237,9 +237,9 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         yuewen = read_series(parser, yue_infile_path, allow_stdin=True)
         zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
-            parser, llm.additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
-        provider = get_provider(llm.provider_name, model=llm.model_name)
+        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
 
         # Perform operations
         if mode == "line":

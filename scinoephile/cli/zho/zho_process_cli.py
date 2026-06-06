@@ -215,7 +215,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         flatten: bool,
         convert: OpenCCConfig | None,
         review_script: str | None,
-        llm: LlmArguments,
+        llm_args: LlmArguments,
         romanize: bool,
         offset: int,
         overwrite: bool,
@@ -236,7 +236,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
-            parser, llm.additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
 
         # Perform operations
@@ -248,7 +248,7 @@ class ZhoProcessCli(ScinoephileCliBase):
             series = get_zho_flattened(series)
         if review_script is not None:
             prompt_cls = cls._get_review_prompt_cls(review_script)
-            provider = get_provider(llm.provider_name, model=llm.model_name)
+            provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
             reviewer = get_zho_reviewer(
                 prompt_cls=prompt_cls,
                 provider=provider,

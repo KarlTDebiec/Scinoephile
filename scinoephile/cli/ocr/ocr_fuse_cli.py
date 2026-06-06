@@ -204,7 +204,7 @@ class OcrFuseCli(ScinoephileCliBase):
         paddle_infile_path: Path | str | None,
         clean: bool,
         convert: OpenCCConfig | None,
-        llm: LlmArguments,
+        llm_args: LlmArguments,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -214,9 +214,9 @@ class OcrFuseCli(ScinoephileCliBase):
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
         additional_context = read_llm_additional_context(
-            parser, llm.additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
-        provider = get_provider(llm.provider_name, model=llm.model_name)
+        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
 
         # Dispatch to language-specific implementation
         if language == "eng":

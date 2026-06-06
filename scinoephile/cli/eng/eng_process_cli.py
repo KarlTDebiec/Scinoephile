@@ -168,7 +168,7 @@ class EngProcessCli(ScinoephileCliBase):
         clean: bool,
         flatten: bool,
         proofread: bool,
-        llm: LlmArguments,
+        llm_args: LlmArguments,
         offset: int,
         overwrite: bool,
     ):
@@ -184,7 +184,7 @@ class EngProcessCli(ScinoephileCliBase):
         # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
-            parser, llm.additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
 
         # Perform operations
@@ -193,7 +193,7 @@ class EngProcessCli(ScinoephileCliBase):
         if flatten:
             series = get_eng_flattened(series)
         if proofread:
-            provider = get_provider(llm.provider_name, model=llm.model_name)
+            provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
             reviewer = get_eng_block_reviewer(
                 provider=provider,
                 additional_context=additional_context,
