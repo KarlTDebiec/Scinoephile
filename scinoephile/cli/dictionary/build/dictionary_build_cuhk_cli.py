@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
@@ -92,7 +92,7 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         )
 
         # Input arguments
-        add_cache_dir_argument(
+        add_cache_dir_arg(
             arg_groups["input arguments"],
             "dictionaries",
             "cuhk",

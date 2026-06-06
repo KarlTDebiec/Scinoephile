@@ -14,7 +14,7 @@ from .argument_bundle_field_action import ArgumentBundleFieldAction
 __all__ = [
     "WEB_LOCALIZATIONS",
     "WebServerArguments",
-    "add_web_server_arguments",
+    "add_web_server_args",
 ]
 
 WEB_LOCALIZATIONS: dict[str, dict[str, str]] = {
@@ -42,7 +42,7 @@ class WebServerArguments:
     """Port for the local web server."""
 
 
-def add_web_server_arguments(web_arg_group: _ArgumentGroup):
+def add_web_server_args(web_arg_group: _ArgumentGroup):
     """Add standard local web server arguments to an argument group.
 
     Arguments:

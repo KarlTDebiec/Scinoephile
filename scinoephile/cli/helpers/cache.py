@@ -12,7 +12,7 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 __all__ = [
     "CACHE_DIR_HELP",
     "CACHE_LOCALIZATIONS",
-    "add_cache_dir_argument",
+    "add_cache_dir_arg",
 ]
 
 CACHE_DIR_HELP = "cache directory path (default: %(default)s)"
@@ -31,7 +31,7 @@ CACHE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized text shared by CLIs that expose cache directory arguments."""
 
 
-def add_cache_dir_argument(
+def add_cache_dir_arg(
     cache_arg_group: _ArgumentGroup,
     *default_parts: str | None,
     help_text: str = CACHE_DIR_HELP,

@@ -14,7 +14,7 @@ from pathlib import Path
 from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
-    add_llm_provider_arguments,
+    add_llm_provider_args,
     read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
@@ -155,7 +155,7 @@ class EngTranslateFromZhoCli(ScinoephileCliBase):
         )
 
         # Operation arguments
-        add_llm_provider_arguments(
+        add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
 

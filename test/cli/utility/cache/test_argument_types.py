@@ -8,10 +8,10 @@ from argparse import ArgumentParser
 from pathlib import Path
 from unittest.mock import patch
 
-from scinoephile.cli.helpers.cache import add_cache_dir_argument
+from scinoephile.cli.helpers.cache import add_cache_dir_arg
 
 
-def test_add_cache_dir_argument_resolves_runtime_cache_subpath():
+def test_add_cache_dir_arg_resolves_runtime_cache_subpath():
     """Test cache directory defaults may include runtime cache subpath parts."""
     parser = ArgumentParser()
     cache_arg_group = parser.add_argument_group("operation arguments")
@@ -20,7 +20,7 @@ def test_add_cache_dir_argument_resolves_runtime_cache_subpath():
         "scinoephile.cli.helpers.cache.get_runtime_cache_dir_path",
         return_value=Path("/cache/media/subtitles"),
     ) as get_runtime_cache_dir_path:
-        add_cache_dir_argument(cache_arg_group, "media", "subtitles")
+        add_cache_dir_arg(cache_arg_group, "media", "subtitles")
 
     namespace = parser.parse_args([])
 
@@ -32,7 +32,7 @@ def test_add_cache_dir_argument_resolves_runtime_cache_subpath():
     )
 
 
-def test_add_cache_dir_argument_resolves_user_path_without_creating(tmp_path: Path):
+def test_add_cache_dir_arg_resolves_user_path_without_creating(tmp_path: Path):
     """Test cache directory CLI paths are resolved without parser-time creation.
 
     Arguments:
@@ -42,7 +42,7 @@ def test_add_cache_dir_argument_resolves_user_path_without_creating(tmp_path: Pa
     cache_arg_group = parser.add_argument_group("operation arguments")
     cache_dir_path = tmp_path / "cache"
 
-    add_cache_dir_argument(cache_arg_group)
+    add_cache_dir_arg(cache_arg_group)
     namespace = parser.parse_args(["--cache-dir", str(cache_dir_path)])
 
     assert namespace.cache_dir_path == cache_dir_path.resolve()
