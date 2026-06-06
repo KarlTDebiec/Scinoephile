@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,

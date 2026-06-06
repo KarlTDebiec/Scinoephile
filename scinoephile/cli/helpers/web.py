@@ -7,8 +7,9 @@ from __future__ import annotations
 from argparse import _ArgumentGroup  # noqa: PLC2701
 from dataclasses import dataclass
 
-from scinoephile.cli.argument_bundle_field_action import ArgumentBundleFieldAction
 from scinoephile.common.argument_parsing import int_arg
+
+from .argument_bundle_field_action import ArgumentBundleFieldAction
 
 __all__ = [
     "WEB_LOCALIZATIONS",

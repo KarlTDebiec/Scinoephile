@@ -7,14 +7,14 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
-from scinoephile.cli.llms import (
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
+from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
     add_llm_provider_arguments,
     read_llm_additional_context,
 )
-from scinoephile.cli.web import (
+from scinoephile.cli.helpers.web import (
     WEB_LOCALIZATIONS,
     WebServerArguments,
     add_web_server_arguments,

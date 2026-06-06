@@ -9,15 +9,15 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.cache import add_cache_dir_argument
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
 from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
-from scinoephile.cli.llms import LlmArguments, add_llm_provider_arguments
+from scinoephile.cli.helpers.cache import add_cache_dir_argument
+from scinoephile.cli.helpers.llms import LlmArguments, add_llm_provider_arguments
+from scinoephile.cli.helpers.web import WebServerArguments, add_web_server_arguments
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
-from scinoephile.cli.web import WebServerArguments, add_web_server_arguments
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli

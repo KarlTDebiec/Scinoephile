@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentTypeError
 from datetime import timedelta
 
-from scinoephile.cli.cache import cache_dir_path_arg
+from scinoephile.cli.helpers.cache import cache_dir_path_arg
 from scinoephile.core.cache.duration import parse_duration
 
 __all__ = [

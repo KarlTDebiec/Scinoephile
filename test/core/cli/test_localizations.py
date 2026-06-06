@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.cli.cache import CACHE_DIR_HELP, CACHE_LOCALIZATIONS
+from scinoephile.cli.helpers.cache import CACHE_DIR_HELP, CACHE_LOCALIZATIONS
 from scinoephile.core.cli.localization import merge_localizations
 
 
