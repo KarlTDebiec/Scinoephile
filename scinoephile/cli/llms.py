@@ -13,9 +13,11 @@ from argparse import (  # noqa: PLC2701
     Namespace,
     _ArgumentGroup,
 )
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from scinoephile.cli.argument_bundle_field_action import ArgumentBundleFieldAction
 from scinoephile.common.argument_parsing import input_file_arg
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
@@ -28,6 +30,7 @@ from scinoephile.llms.providers.registry import (
 
 __all__ = [
     "LLM_LOCALIZATIONS",
+    "LlmArguments",
     "add_llm_provider_arguments",
     "llm_provider_name_arg",
     "read_llm_additional_context",
@@ -42,9 +45,10 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "llm arguments": "LLM 参数",
         "LLM model identifier override": "LLM 模型标识符覆盖值",
-        "LLM provider to use (default: %(default)s). Use --list-llm-providers "
-        "to show providers, default models, and API-key environment variables.": (
-            "要使用的 LLM 提供商（默认：%(default)s）。使用 "
+        f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
+        "--list-llm-providers to show providers, default models, and API-key "
+        "environment variables.": (
+            f"要使用的 LLM 提供商（默认：{DEFAULT_PROVIDER_NAME}）。使用 "
             "--list-llm-providers 查看提供商、默认模型和 API 密钥环境变量。"
         ),
         "list available LLM providers and exit": "列出可用 LLM 提供商并退出",
@@ -57,15 +61,28 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "llm arguments": "LLM 參數",
         "LLM model identifier override": "LLM 模型識別碼覆寫值",
-        "LLM provider to use (default: %(default)s). Use --list-llm-providers "
-        "to show providers, default models, and API-key environment variables.": (
-            "要使用的 LLM 提供商（預設：%(default)s）。使用 "
+        f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
+        "--list-llm-providers to show providers, default models, and API-key "
+        "environment variables.": (
+            f"要使用的 LLM 提供商（預設：{DEFAULT_PROVIDER_NAME}）。使用 "
             "--list-llm-providers 查看提供商、預設模型和 API 金鑰環境變數。"
         ),
         "list available LLM providers and exit": "列出可用 LLM 提供商並結束",
     },
 }
 """Localized text shared by CLIs that expose LLM provider arguments."""
+
+
+@dataclass(frozen=True)
+class LlmArguments:
+    """Parsed LLM provider CLI arguments."""
+
+    provider_name: str = DEFAULT_PROVIDER_NAME
+    """LLM provider name."""
+    model_name: str | None = None
+    """Optional LLM model name override."""
+    additional_context_file_path: Path | None = None
+    """Optional path to additional LLM prompt context."""
 
 
 def add_llm_provider_arguments(
@@ -80,24 +97,32 @@ def add_llm_provider_arguments(
     """
     llm_arg_group.add_argument(
         "--llm-provider",
-        default=DEFAULT_PROVIDER_NAME,
-        dest="llm_provider_name",
+        action=ArgumentBundleFieldAction,
+        bundle_type=LlmArguments,
+        dest="llm_args",
+        field_name="provider_name",
+        metavar="LLM_PROVIDER",
         type=llm_provider_name_arg,
-        help=(
-            "LLM provider to use (default: %(default)s). Use --list-llm-providers "
-            "to show providers, default models, and API-key environment variables."
-        ),
+        help=f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
+        "--list-llm-providers to show providers, default models, and API-key "
+        "environment variables.",
     )
     llm_arg_group.add_argument(
         "--llm-model",
-        default=None,
-        dest="llm_model_name",
+        action=ArgumentBundleFieldAction,
+        bundle_type=LlmArguments,
+        dest="llm_args",
+        field_name="model_name",
+        metavar="LLM_MODEL",
         help="LLM model identifier override",
     )
     llm_arg_group.add_argument(
         "--llm-additional-content-file",
-        default=None,
-        dest="llm_additional_context_file_path",
+        action=ArgumentBundleFieldAction,
+        bundle_type=LlmArguments,
+        dest="llm_args",
+        field_name="additional_context_file_path",
+        metavar="FILE",
         type=input_file_arg(),
         help="file from which to read additional context for LLM prompts",
     )

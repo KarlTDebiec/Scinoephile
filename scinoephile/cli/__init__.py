@@ -3,8 +3,9 @@
 """Command-line interfaces for Scinoephile.
 
 Package hierarchy (modules may import from any above):
-* conversion / dictionary / llms / multi / utility
-* eng / media / ocr / yue / zho
+* argument_bundle_field_action / conversion / dictionary / multi / utility
+* llms / media
+* eng / ocr / yue / zho
 * scinoephile_cli
 """
 

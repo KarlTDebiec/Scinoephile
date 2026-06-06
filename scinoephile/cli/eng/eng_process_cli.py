@@ -9,6 +9,7 @@ from pathlib import Path
 
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
+    LlmArguments,
     add_llm_provider_arguments,
     read_llm_additional_context,
 )
@@ -167,9 +168,7 @@ class EngProcessCli(ScinoephileCliBase):
         clean: bool,
         flatten: bool,
         proofread: bool,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        llm_args: LlmArguments,
         offset: int,
         overwrite: bool,
     ):
@@ -185,7 +184,7 @@ class EngProcessCli(ScinoephileCliBase):
         # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
 
         # Perform operations
@@ -194,7 +193,7 @@ class EngProcessCli(ScinoephileCliBase):
         if flatten:
             series = get_eng_flattened(series)
         if proofread:
-            provider = get_provider(llm_provider_name, model=llm_model_name)
+            provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
             reviewer = get_eng_block_reviewer(
                 provider=provider,
                 additional_context=additional_context,

@@ -9,6 +9,7 @@ from pathlib import Path
 
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
+    LlmArguments,
     add_llm_provider_arguments,
     read_llm_additional_context,
 )
@@ -208,9 +209,7 @@ class OcrProcessCli(ScinoephileCliBase):
         clean: bool,
         dev: bool,
         cache_dir_path: Path,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        llm_args: LlmArguments,
         output_dir_path: Path,
         overwrite: bool,
     ):
@@ -220,9 +219,9 @@ class OcrProcessCli(ScinoephileCliBase):
         if language == "eng" and script is not None:
             parser.error("--script may only be used when --language is zho")
         additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
-        provider = get_provider(llm_provider_name, model=llm_model_name)
+        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
 
         # Perform operations
         try:

@@ -9,6 +9,7 @@ from pathlib import Path
 
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
+    LlmArguments,
     add_llm_provider_arguments,
     read_llm_additional_context,
 )
@@ -220,9 +221,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         zho_infile_path: Path | str,
         mode: str,
         script: str,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        llm_args: LlmArguments,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -238,9 +237,9 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         yuewen = read_series(parser, yue_infile_path, allow_stdin=True)
         zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
-        provider = get_provider(llm_provider_name, model=llm_model_name)
+        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
 
         # Perform operations
         if mode == "line":
