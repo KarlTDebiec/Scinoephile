@@ -468,7 +468,7 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
         writer_calls.append((parser, series, Path(outfile), overwrite))
 
     monkeypatch.setattr(ocr_target, fake_ocr_image_series)
-    monkeypatch.setattr(writer_target, fake_write_series, raising=False)
+    monkeypatch.setattr(writer_target, fake_write_series)
 
     output_path = tmp_path / "ocr.srt"
     run_cli_with_args(
