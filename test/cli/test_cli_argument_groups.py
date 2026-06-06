@@ -5,9 +5,11 @@
 from __future__ import annotations
 
 from argparse import Action, ArgumentParser
+from pathlib import Path
 
 import pytest
 
+from scinoephile.cli.cache import add_cache_dir_argument
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
 from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
@@ -130,6 +132,37 @@ def test_add_llm_provider_arguments_bundles_standard_llm_options(tmp_path):
 
     default_namespace = parser.parse_args([])
     assert default_namespace.llm_args == LlmArguments()
+
+
+def test_add_cache_dir_argument_adds_standard_cache_option(tmp_path: Path):
+    """Test the shared cache helper adds a standard cache directory option.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    """
+    parser = ArgumentParser()
+    cache_arg_group = parser.add_argument_group("operation arguments")
+
+    add_cache_dir_argument(cache_arg_group, "media", "subtitles")
+
+    cache_dir_path = tmp_path / "cache"
+    namespace = parser.parse_args(["--cache-dir", str(cache_dir_path)])
+    assert namespace.cache_dir_path == cache_dir_path.resolve()
+
+
+def test_add_cache_dir_argument_accepts_custom_help_text():
+    """Test CLI-specific cache help text can override generic helper text."""
+    parser = ArgumentParser()
+    cache_arg_group = parser.add_argument_group("operation arguments")
+
+    add_cache_dir_argument(
+        cache_arg_group,
+        "ocr_validation",
+        help_text="custom cache directory help (default: %(default)s)",
+    )
+
+    action = _get_action(parser, "--cache-dir")
+    assert action.help == "custom cache directory help (default: %(default)s)"
 
 
 def _get_action(parser: ArgumentParser, option: str) -> Action:

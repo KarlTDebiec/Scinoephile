@@ -7,9 +7,12 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
+from typing import cast
 
 import pytest
 
+from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from test.helpers import assert_expected_warnings, get_warning_messages
@@ -45,3 +48,78 @@ def test_validate_zho_ocr_mlamd_hant(
     warnings = get_warning_messages(caplog.records)
     expected: list[str] = []
     assert_expected_warnings(warnings, expected, "Traditional Chinese")
+
+
+def test_validate_zho_ocr_configures_validation_manager(
+    monkeypatch: pytest.MonkeyPatch,
+    tiny_image_series: ImageSeries,
+    tmp_path: Path,
+):
+    """Test Chinese OCR validation configures its validation manager.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tiny_image_series: small image subtitle series
+        tmp_path: pytest temporary path fixture
+    """
+    init_calls: list[tuple[Path | str | None, bool]] = []
+    validate_calls: list[ImageSeries] = []
+
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def __init__(
+            self,
+            *,
+            cache_dir_path: Path | str | None = None,
+            dev: bool = False,
+        ):
+            """Initialize."""
+            init_calls.append((cache_dir_path, dev))
+
+        def validate(self, series: ImageSeries) -> ImageSeries:
+            """Validate an image series."""
+            validate_calls.append(series)
+            return series
+
+    monkeypatch.setattr(
+        "scinoephile.lang.zho.ocr_validation.ValidationManager",
+        FakeValidationManager,
+    )
+    cache_dir_path = tmp_path / "cache"
+
+    output = validate_zho_ocr(
+        tiny_image_series,
+        cache_dir_path=cache_dir_path,
+        dev=True,
+    )
+
+    assert output is tiny_image_series
+    assert init_calls == [(cache_dir_path, True)]
+    assert validate_calls == [tiny_image_series]
+
+
+def test_validate_zho_ocr_uses_supplied_validation_manager(
+    tiny_image_series: ImageSeries,
+):
+    """Test Chinese OCR validation can use a supplied validation manager.
+
+    Arguments:
+        tiny_image_series: small image subtitle series
+    """
+    validate_calls: list[ImageSeries] = []
+
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def validate(self, series: ImageSeries) -> ImageSeries:
+            """Validate an image series."""
+            validate_calls.append(series)
+            return series
+
+    manager = cast(ValidationManager, FakeValidationManager())
+
+    output = validate_zho_ocr(tiny_image_series, validation_manager=manager)
+
+    assert output is tiny_image_series
+    assert validate_calls == [tiny_image_series]

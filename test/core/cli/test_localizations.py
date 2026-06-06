@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from scinoephile.cli.cache import CACHE_DIR_HELP, CACHE_LOCALIZATIONS
 from scinoephile.core.cli.localization import merge_localizations
 
 
@@ -53,3 +54,18 @@ def test_merge_localizations_does_not_mutate_inputs():
 
     assert shared == {"zh-hans": {"shared": "共享"}}
     assert cli_specific == {"zh-hans": {"specific": "本地"}}
+
+
+def test_merge_localizations_allows_cli_to_override_shared_cache_help():
+    """Test CLI-specific localizations can override shared cache helper text."""
+    cli_specific = {
+        "zh-hans": {
+            CACHE_DIR_HELP: "CLI 特定缓存目录（默认：%(default)s）",
+        }
+    }
+
+    merged = merge_localizations(CACHE_LOCALIZATIONS, cli_specific)
+
+    assert merged["zh-hans"][CACHE_DIR_HELP] == (
+        "CLI 特定缓存目录（默认：%(default)s）"
+    )

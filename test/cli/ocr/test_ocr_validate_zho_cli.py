@@ -42,7 +42,7 @@ def test_ocr_validate_zho_cli(
         infile_path.mkdir()
 
     load_paths: list[Path] = []
-    validate_calls: list[tuple[ImageSeries, bool]] = []
+    validate_calls: list[tuple[ImageSeries, Path, bool]] = []
 
     def fake_load(path: Path) -> ImageSeries:
         """Fake image subtitle loading.
@@ -57,17 +57,20 @@ def test_ocr_validate_zho_cli(
 
     def fake_validate_zho_ocr(
         series: ImageSeries,
+        *,
+        cache_dir_path: Path,
         dev: bool = False,
     ) -> ImageSeries:
         """Fake standard Chinese OCR validation.
 
         Arguments:
             series: ImageSeries to validate
+            cache_dir_path: cache directory path
             dev: whether to write validation data updates to the repo
         Returns:
             configured validated image series
         """
-        validate_calls.append((series, dev))
+        validate_calls.append((series, cache_dir_path, dev))
         return tiny_image_series
 
     monkeypatch.setattr(
@@ -80,13 +83,15 @@ def test_ocr_validate_zho_cli(
     )
 
     outfile_path = tmp_path / "validated.srt"
+    cache_dir_path = tmp_path / "cache"
     run_cli_with_args(
         OcrValidateCli,
-        f"--language zho --infile {infile_path} --outfile {outfile_path}",
+        f"--language zho --infile {infile_path} --outfile {outfile_path} "
+        f"--cache-dir {cache_dir_path}",
     )
 
     assert load_paths == [infile_path]
-    assert validate_calls == [(tiny_image_series, False)]
+    assert validate_calls == [(tiny_image_series, cache_dir_path.resolve(), False)]
     output = outfile_path.read_text(encoding="utf-8")
     assert "recognized" in output
     assert "validated" in output
@@ -112,10 +117,11 @@ def test_ocr_validate_zho_cli_web(
         dir_path: Path,
         *,
         outfile_path: Path | None = None,
+        cache_dir_path: Path | None = None,
         dev: bool = False,
     ) -> object:
         """Capture web session construction arguments."""
-        run_calls.append(("from_dir_path", dir_path, outfile_path, dev))
+        run_calls.append(("from_dir_path", dir_path, outfile_path, cache_dir_path, dev))
         return session
 
     class FakeFlaskApp:
@@ -145,14 +151,16 @@ def test_ocr_validate_zho_cli_web(
     )
 
     outfile_path = tmp_path / "validated.srt"
+    cache_dir_path = tmp_path / "cache"
     run_cli_with_args(
         OcrValidateCli,
         f"--language zho --infile {infile_path} --dev "
-        f"--interactive --host 0.0.0.0 --port 5050 --outfile {outfile_path}",
+        f"--interactive --host 0.0.0.0 --port 5050 "
+        f"--cache-dir {cache_dir_path} --outfile {outfile_path}",
     )
 
     assert run_calls == [
-        ("from_dir_path", infile_path, outfile_path, True),
+        ("from_dir_path", infile_path, outfile_path, cache_dir_path.resolve(), True),
         ("create_app", session),
         ("run", "0.0.0.0", 5050),
     ]

@@ -7,6 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
 from scinoephile.cli.web import (
     WEB_LOCALIZATIONS,
     WebServerArguments,
@@ -31,6 +32,9 @@ __all__ = ["OcrValidateCli"]
 
 OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
+        "cache directory for local OCR validation data (default: %(default)s)": (
+            "本地 OCR 校验数据的缓存目录（默认：%(default)s）"
+        ),
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕校验命令行界面"
         ),
@@ -50,6 +54,9 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
+        "cache directory for local OCR validation data (default: %(default)s)": (
+            "本機 OCR 驗證資料的快取目錄（預設：%(default)s）"
+        ),
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕驗證命令列介面"
         ),
@@ -76,6 +83,7 @@ class OcrValidateCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
 
     localizations = merge_localizations(
+        CACHE_LOCALIZATIONS,
         WEB_LOCALIZATIONS,
         OCR_VALIDATE_LOCALIZATIONS,
     )
@@ -124,6 +132,13 @@ class OcrValidateCli(ScinoephileCliBase):
             action="store_true",
             help="maintainer option: write validation data updates to repo data",
         )
+        add_cache_dir_argument(
+            arg_groups["operation arguments"],
+            "ocr_validation",
+            help_text=(
+                "cache directory for local OCR validation data (default: %(default)s)"
+            ),
+        )
 
         # Web arguments
         arg_groups["web arguments"].add_argument(
@@ -167,6 +182,7 @@ class OcrValidateCli(ScinoephileCliBase):
         language: str,
         interactive: bool,
         dev: bool,
+        cache_dir_path: Path,
         web_args: WebServerArguments,
         outfile_path: Path,
         overwrite: bool,
@@ -188,6 +204,7 @@ class OcrValidateCli(ScinoephileCliBase):
             session = OcrValidationSession.from_dir_path(
                 infile_path,
                 outfile_path=outfile_path,
+                cache_dir_path=cache_dir_path,
                 dev=dev,
             )
             create_app(session).run(host=web_args.host, port=web_args.port)
@@ -206,9 +223,17 @@ class OcrValidateCli(ScinoephileCliBase):
             parser.error(str(exc))
 
         if language == "eng":
-            validated = validate_eng_ocr(series, dev=dev)
+            validated = validate_eng_ocr(
+                series,
+                cache_dir_path=cache_dir_path,
+                dev=dev,
+            )
         else:
-            validated = validate_zho_ocr(series, dev=dev)
+            validated = validate_zho_ocr(
+                series,
+                cache_dir_path=cache_dir_path,
+                dev=dev,
+            )
 
         write_series(parser, validated, outfile_path, overwrite)
 

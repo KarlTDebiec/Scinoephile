@@ -7,12 +7,13 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import clear_cache, get_cache_entries
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 
-from .argument_types import cache_dir_path_arg
 from .output import print_entries
 
 __all__ = ["CacheClearCli"]
@@ -55,7 +56,7 @@ CACHE_CLEAR_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class CacheClearCli(ScinoephileCliBase):
     """Clear cache entries."""
 
-    localizations = CACHE_CLEAR_LOCALIZATIONS
+    localizations = merge_localizations(CACHE_LOCALIZATIONS, CACHE_CLEAR_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -74,12 +75,10 @@ class CacheClearCli(ScinoephileCliBase):
         )
 
         # Input arguments
-        arg_groups["input arguments"].add_argument(
-            "--cache-dir",
-            default=cache_dir_path_arg(None),
-            dest="cache_dir_path",
-            type=cache_dir_path_arg,
-            help="cache root directory to inspect (default: %(default)s)",
+        add_cache_dir_argument(
+            arg_groups["input arguments"],
+            None,
+            help_text="cache root directory to inspect (default: %(default)s)",
         )
 
         # Operation arguments
