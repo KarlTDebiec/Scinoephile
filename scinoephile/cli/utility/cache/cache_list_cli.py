@@ -70,7 +70,6 @@ class CacheListCli(ScinoephileCliBase):
         # Input arguments
         add_cache_dir_arg(
             arg_groups["input arguments"],
-            None,
             help_text="cache root directory to inspect (default: %(default)s)",
         )
 
