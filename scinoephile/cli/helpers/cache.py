@@ -7,6 +7,7 @@ from __future__ import annotations
 from argparse import _ArgumentGroup  # noqa: PLC2701
 from pathlib import Path
 
+from scinoephile.common.argument_parsing import output_dir_arg
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 __all__ = [
@@ -45,27 +46,24 @@ def add_cache_dir_arg(
     """
     cache_arg_group.add_argument(
         "--cache-dir",
-        default=_cache_dir_path_arg(*default_parts),
+        default=_cache_dir_default_path(*default_parts),
         dest="cache_dir_path",
-        type=_cache_dir_path_arg,
+        type=output_dir_arg(create=False),
         help=help_text,
     )
 
 
-def _cache_dir_path_arg(*values: str | None) -> Path:
-    """Resolve a cache directory CLI argument.
+def _cache_dir_default_path(*default_parts: str | None) -> Path:
+    """Resolve a default cache directory path.
 
     Arguments:
-        *values: path value or runtime cache subpath parts
+        *default_parts: runtime cache subpath parts
     Returns:
-        resolved cache directory path
+        resolved default cache directory path
     """
-    if len(values) == 0 or values == (None,):
+    if len(default_parts) == 0 or default_parts == (None,):
         return get_runtime_cache_dir_path(create=False)
-    if len(values) > 1:
-        parts = [value for value in values if value is not None]
-        return get_runtime_cache_dir_path(*parts, create=False)
-    value = values[0]
-    if value is None:
+    parts = [default_part for default_part in default_parts if default_part is not None]
+    if not parts:
         return get_runtime_cache_dir_path(create=False)
-    return Path(value).expanduser().resolve()
+    return get_runtime_cache_dir_path(*parts, create=False)

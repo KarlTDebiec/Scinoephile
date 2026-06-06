@@ -8,6 +8,8 @@ from argparse import ArgumentParser
 from pathlib import Path
 from unittest.mock import patch
 
+import pytest
+
 from scinoephile.cli.helpers.cache import add_cache_dir_arg
 
 
@@ -47,3 +49,21 @@ def test_add_cache_dir_arg_resolves_user_path_without_creating(tmp_path: Path):
 
     assert namespace.cache_dir_path == cache_dir_path.resolve()
     assert not cache_dir_path.exists()
+
+
+def test_add_cache_dir_arg_rejects_existing_file(tmp_path: Path):
+    """Test cache directory CLI paths reject existing files.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    """
+    parser = ArgumentParser()
+    cache_arg_group = parser.add_argument_group("operation arguments")
+    cache_file_path = tmp_path / "cache"
+    cache_file_path.write_text("cache", encoding="utf-8")
+
+    add_cache_dir_arg(cache_arg_group)
+    with pytest.raises(SystemExit) as excinfo:
+        parser.parse_args(["--cache-dir", str(cache_file_path)])
+
+    assert excinfo.value.code == 2
