@@ -7,10 +7,10 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import (
+from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
-    add_llm_provider_arguments,
+    add_llm_provider_args,
     read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
@@ -123,7 +123,7 @@ class EngProcessCli(ScinoephileCliBase):
             action="store_true",
             help="proofread subtitles using LLM",
         )
-        add_llm_provider_arguments(
+        add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
         arg_groups["operation arguments"].add_argument(

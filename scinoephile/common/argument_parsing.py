@@ -10,10 +10,12 @@ from argparse import (
     _ArgumentGroup,  # noqa pylint
 )
 from collections.abc import Callable, Collection
+from datetime import timedelta
 from enum import Enum
 from pathlib import Path
 from typing import Any, TypedDict, Unpack
 
+from .duration import parse_duration
 from .exceptions import NotAFileError
 from .validation import (
     val_float,
@@ -32,6 +34,7 @@ __all__ = [
     "OutputDirValidatorKwargs",
     "OutputPathValidatorKwargs",
     "StrValidatorKwargs",
+    "duration_arg",
     "enum_arg",
     "float_arg",
     "get_arg_groups_by_name",
@@ -238,6 +241,22 @@ def float_arg(
         value validator function
     """
     return get_validator(val_float, **kwargs)
+
+
+def duration_arg(value: str) -> timedelta:
+    """Parse a duration CLI argument.
+
+    Arguments:
+        value: duration string
+    Returns:
+        parsed duration
+    Raises:
+        ArgumentTypeError: if duration parsing fails
+    """
+    try:
+        return parse_duration(value)
+    except ValueError as exc:
+        raise ArgumentTypeError(str(exc)) from exc
 
 
 def enum_arg[T: Enum](enum_type: type[T]) -> Callable[[Any], T]:

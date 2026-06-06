@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of cache duration parsing."""
+"""Tests of common duration parsing."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from datetime import timedelta
 
 import pytest
 
-from scinoephile.core.cache.duration import parse_duration
+from scinoephile.common.duration import parse_duration
 
 
 @pytest.mark.parametrize(
