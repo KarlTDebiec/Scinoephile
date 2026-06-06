@@ -109,11 +109,7 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
         fake_fuse,
     )
 
-    result = process_eng_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
-        validate=False,
-    )
+    result = process_eng_ocr(source_path, output_dir_path, validate=False)
 
     assert loaded_paths == [source_path]
     assert result.output_dir_path == output_dir_path
@@ -183,12 +179,7 @@ def test_process_eng_ocr_can_clean_provider_outputs_before_fusion(
         fake_fuse,
     )
 
-    result = process_eng_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
-        clean=True,
-        validate=False,
-    )
+    result = process_eng_ocr(source_path, output_dir_path, clean=True, validate=False)
 
     assert result.output_paths == {
         "image": output_dir_path / "image",
@@ -264,8 +255,8 @@ def test_process_eng_ocr_can_reuse_source_ocr_outputs(
     )
 
     process_eng_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
+        source_path,
+        output_dir_path,
         source_dir_path=source_dir_path,
         validate=False,
     )
@@ -345,11 +336,7 @@ def test_process_eng_ocr_validates_fuse_clean_output(
         FakeValidationManager,
     )
 
-    result = process_eng_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
-        dev=True,
-    )
+    result = process_eng_ocr(source_path, output_dir_path, dev=True)
 
     assert result.output_paths["image"] == output_dir_path / "image"
     assert result.output_paths["fuse_clean_validate"] == (
@@ -429,8 +416,8 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
     )
 
     result = process_eng_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
+        source_path,
+        output_dir_path,
         interactive=True,
         dev=True,
         host="0.0.0.0",
@@ -513,10 +500,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
         fake_validate,
     )
 
-    process_eng_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
-    )
+    process_eng_ocr(source_path, output_dir_path)
 
     assert validate_texts == [["fused 1…", "fused 2…"]]
     assert len(validate_managers) == 1
@@ -588,11 +572,7 @@ def test_process_zho_ocr_runs_lens_paddle_and_fusion(
         fake_fuse,
     )
 
-    result = process_zho_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
-        validate=False,
-    )
+    result = process_zho_ocr(source_path, output_dir_path, validate=False)
 
     assert result.output_paths == {
         "image": output_dir_path / "image",
@@ -667,12 +647,7 @@ def test_process_zho_ocr_can_clean_provider_outputs_before_fusion(
         fake_fuse,
     )
 
-    result = process_zho_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
-        clean=True,
-        validate=False,
-    )
+    result = process_zho_ocr(source_path, output_dir_path, clean=True, validate=False)
 
     assert result.output_paths == {
         "image": output_dir_path / "image",
@@ -759,12 +734,7 @@ def test_process_zho_ocr_passes_traditional_languages_to_ocr_engines(
         fake_fuse,
     )
 
-    process_zho_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
-        script="traditional",
-        validate=False,
-    )
+    process_zho_ocr(source_path, output_dir_path, script="traditional", validate=False)
     assert fuser_kwargs == [
         {
             "provider": None,
@@ -772,6 +742,83 @@ def test_process_zho_ocr_passes_traditional_languages_to_ocr_engines(
             "prompt_cls": OcrFusionPromptZhoHant,
         }
     ]
+
+
+def test_process_zho_ocr_validates_fuse_clean_output(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test Chinese OCR processing validates cleaned fused output by default.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+    """
+    source_path = tmp_path / "source.sup"
+    source_path.write_bytes(b"unused")
+    output_dir_path = tmp_path / "output"
+    manager_instances: list[object] = []
+    manager_calls: list[bool] = []
+    validate_calls: list[tuple[list[str], object]] = []
+
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def __init__(self, *, dev: bool = False):
+            """Initialize."""
+            manager_instances.append(self)
+            manager_calls.append(dev)
+
+    def fake_validate(series: ImageSeries, validation_manager: object) -> Series:
+        """Fake Chinese OCR validation."""
+        validate_calls.append(
+            ([subtitle.text for subtitle in series], validation_manager)
+        )
+        return _series_with_texts(["validated 1", "validated 2"])
+
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ImageSeries.load",
+        lambda path: tiny_image_series,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
+        lambda image_series, *, language: _series_with_texts(["lens 1", "lens 2"]),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_paddle",
+        lambda image_series, *, language: _series_with_texts(["paddle 1", "paddle 2"]),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_zho_ocr_fuser",
+        lambda **kwargs: object(),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
+        lambda lens, paddle, **kwargs: _series_with_texts(["fused 1...", "fused 2..."]),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.validate_zho_ocr",
+        fake_validate,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ValidationManager",
+        FakeValidationManager,
+    )
+
+    result = process_zho_ocr(source_path, output_dir_path, dev=True)
+
+    assert result.output_paths["image"] == output_dir_path / "image"
+    assert result.output_paths["fuse_clean_validate"] == (
+        output_dir_path / "fuse_clean_validate.srt"
+    )
+    assert manager_calls == [True]
+    assert validate_calls == [(["fused 1⋯", "fused 2⋯"], manager_instances[0])]
+    assert [
+        subtitle.text
+        for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
+    ] == ["validated 1", "validated 2"]
 
 
 def test_process_eng_ocr_can_export_source_image_series(
@@ -817,11 +864,7 @@ def test_process_eng_ocr_can_export_source_image_series(
         ),
     )
 
-    result = process_eng_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
-        validate=False,
-    )
+    result = process_eng_ocr(source_path, output_dir_path, validate=False)
 
     assert result.output_paths["image"] == output_dir_path / "image"
     assert "recognized" in (output_dir_path / "image/index.html").read_text(
@@ -896,12 +939,7 @@ def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
         lambda lens, tesseract, **kwargs: _series("fused"),
     )
 
-    process_eng_ocr(
-        infile_path=source_path,
-        output_dir_path=output_dir_path,
-        stream_index=5,
-        validate=False,
-    )
+    process_eng_ocr(source_path, output_dir_path, stream_index=5, validate=False)
 
     assert cache_calls == [(source_path, [stream], None)]
     assert loaded_paths == [cached_sup_path]
@@ -926,8 +964,8 @@ def test_process_eng_ocr_media_input_requires_matching_stream_index(
 
     with pytest.raises(ScinoephileError, match="No subtitle stream 7"):
         process_eng_ocr(
-            infile_path=source_path,
-            output_dir_path=tmp_path / "output",
+            source_path,
+            tmp_path / "output",
             stream_index=7,
             validate=False,
         )

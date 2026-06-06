@@ -152,12 +152,7 @@ class ValidationManager:
             sub_messages = self._validate_sub(sub, sub_idx)
             messages.extend(sub_messages)
             events.append(
-                ImageSubtitle(
-                    img=sub.img,
-                    start=sub.start,
-                    end=sub.end,
-                    text=sub.text,
-                )
+                ImageSubtitle(img=sub.img, start=sub.start, end=sub.end, text=sub.text)
             )
         output_series = ImageSeries(events=events)
         for message in messages:

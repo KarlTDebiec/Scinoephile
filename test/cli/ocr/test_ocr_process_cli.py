@@ -54,8 +54,8 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
 
     get_provider.assert_called_once_with("openai", model=None)
     process.assert_called_once_with(
-        infile_path=infile_path.resolve(),
-        output_dir_path=output_dir_path.resolve(),
+        infile_path.resolve(),
+        output_dir_path.resolve(),
         stream_index=3,
         cache_dir_path=cache_dir_path.resolve(),
         clean=True,
@@ -102,8 +102,8 @@ def test_ocr_process_cli_passes_zho_arguments_to_workflow(tmp_path: Path):
         )
 
     process.assert_called_once_with(
-        infile_path=infile_path.resolve(),
-        output_dir_path=output_dir_path.resolve(),
+        infile_path.resolve(),
+        output_dir_path.resolve(),
         stream_index=3,
         cache_dir_path=get_runtime_cache_dir_path("media", "subtitles", create=False),
         script="simplified",
@@ -151,8 +151,8 @@ def test_ocr_process_cli_passes_traditional_script_to_zho_workflow(tmp_path: Pat
         )
 
     process.assert_called_once_with(
-        infile_path=infile_path.resolve(),
-        output_dir_path=output_dir_path.resolve(),
+        infile_path.resolve(),
+        output_dir_path.resolve(),
         stream_index=3,
         cache_dir_path=get_runtime_cache_dir_path("media", "subtitles", create=False),
         script="traditional",

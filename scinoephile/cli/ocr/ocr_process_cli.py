@@ -246,8 +246,8 @@ class OcrProcessCli(ScinoephileCliBase):
         try:
             if language == "eng":
                 result = process_eng_ocr(
-                    infile_path=infile_path,
-                    output_dir_path=output_dir_path,
+                    infile_path,
+                    output_dir_path,
                     stream_index=stream_index,
                     cache_dir_path=cache_dir_path,
                     clean=clean,
@@ -261,8 +261,8 @@ class OcrProcessCli(ScinoephileCliBase):
                 )
             else:
                 result = process_zho_ocr(
-                    infile_path=infile_path,
-                    output_dir_path=output_dir_path,
+                    infile_path,
+                    output_dir_path,
                     stream_index=stream_index,
                     cache_dir_path=cache_dir_path,
                     script=script or "simplified",

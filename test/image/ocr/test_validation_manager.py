@@ -38,9 +38,7 @@ def test_validation_manager_layers_cache_data_over_repo_data(tmp_path, monkeypat
         "A,B,9,10,11,12\n", encoding="utf-8"
     )
 
-    manager = ValidationManager(
-        cache_dir_path=cache_dir_path,
-    )
+    manager = ValidationManager(cache_dir_path=cache_dir_path)
 
     assert manager.char_dims_by_n[1] == {
         "A": {(10, 20), (11, 21)},
@@ -82,10 +80,7 @@ def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path, monkeypatc
         "A,B,9,10,11,12\n", encoding="utf-8"
     )
 
-    manager = ValidationManager(
-        cache_dir_path=cache_dir_path,
-        dev=True,
-    )
+    manager = ValidationManager(cache_dir_path=cache_dir_path, dev=True)
 
     assert manager.char_dims_by_n[1] == {
         "A": {(10, 20)},
@@ -111,9 +106,7 @@ def test_validation_manager_writes_updates_to_cache_by_default(tmp_path, monkeyp
     cache_dir_path = tmp_path / "cache" / "ocr_validation"
     cache_dir_path.mkdir(parents=True)
 
-    manager = ValidationManager(
-        cache_dir_path=cache_dir_path,
-    )
+    manager = ValidationManager(cache_dir_path=cache_dir_path)
 
     manager._update_char_dims("A", (10, 20))
 
@@ -139,9 +132,7 @@ def test_validation_manager_writes_only_cache_updates_to_cache(tmp_path, monkeyp
         "A,B,1,2,3,4\n", encoding="utf-8"
     )
 
-    manager = ValidationManager(
-        cache_dir_path=cache_dir_path,
-    )
+    manager = ValidationManager(cache_dir_path=cache_dir_path)
 
     manager._update_char_dims("B", (30, 40))
     manager._update_char_grp_dims("CD", (60, 20))
@@ -166,9 +157,7 @@ def test_validation_manager_allows_new_custom_cache_dir(tmp_path, monkeypatch):
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     cache_dir_path = tmp_path / "cache" / "ocr_validation"
 
-    manager = ValidationManager(
-        cache_dir_path=cache_dir_path,
-    )
+    manager = ValidationManager(cache_dir_path=cache_dir_path)
 
     manager._update_char_dims("A", (10, 20))
 
@@ -185,10 +174,7 @@ def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeyp
     monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     cache_dir_path = tmp_path / "cache" / "ocr_validation"
 
-    manager = ValidationManager(
-        cache_dir_path=cache_dir_path,
-        dev=True,
-    )
+    manager = ValidationManager(cache_dir_path=cache_dir_path, dev=True)
 
     manager._update_char_dims("A", (10, 20))
 

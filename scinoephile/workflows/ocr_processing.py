@@ -481,10 +481,7 @@ def _load_or_create_eng_fuse_output(
         lambda: get_eng_ocr_fused(
             lens,
             tesseract,
-            processor=get_eng_ocr_fuser(
-                provider=provider,
-                **kwargs,
-            ),
+            processor=get_eng_ocr_fuser(provider=provider, **kwargs),
         ),
     )
 
@@ -689,10 +686,7 @@ def _load_or_create_zho_fuse_output(
         lambda: get_zho_ocr_fused(
             lens,
             paddle,
-            processor=get_zho_ocr_fuser(
-                provider=provider,
-                **kwargs,
-            ),
+            processor=get_zho_ocr_fuser(provider=provider, **kwargs),
         ),
     )
 
@@ -853,9 +847,7 @@ def _validate_ocr(image_series: ImageSeries, language: str, dev: bool) -> Series
     Returns:
         validated text subtitle series
     """
+    validation_manager = ValidationManager(dev=dev)
     if language == "eng":
-        return validate_eng_ocr(
-            image_series,
-            validation_manager=ValidationManager(dev=dev),
-        )
-    return validate_zho_ocr(image_series, dev=dev)
+        return validate_eng_ocr(image_series, validation_manager)
+    return validate_zho_ocr(image_series, validation_manager)

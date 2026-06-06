@@ -286,11 +286,7 @@ class OcrValidationSession:
         cursor = self._gap_cursor(state)
         cutoffs = self._gap_cutoffs(cursor)
         if state.concern.kind == ConcernKind.SPACE_GAP:
-            expected_gap_chars = self._resolve_space_gap_action(
-                cursor,
-                cutoffs,
-                action,
-            )
+            expected_gap_chars = self._resolve_space_gap_action(cursor, cutoffs, action)
         else:
             expected_gap_chars = self._resolve_tab_gap_action(cursor, cutoffs, action)
 
@@ -515,9 +511,7 @@ class OcrValidationSession:
                 continue
 
             if cursor.bbox_idx >= len(cursor.bboxes):
-                return ErrorConcern(
-                    message=f"Ran out of bboxes at '{cursor.char}'.",
-                )
+                return ErrorConcern(message=f"Ran out of bboxes at '{cursor.char}'.")
 
             if self.manager._match_grouped_chars(cursor):
                 continue

@@ -119,11 +119,7 @@ def register_routes(app: Flask):
             abort(400, "Missing n_bboxes.")
         except ValueError:
             abort(400, "Invalid integer for n_bboxes.")
-        row = session.resolve_char_concern(
-            sub_idx,
-            action=action,
-            n_bboxes=n_bboxes,
-        )
+        row = session.resolve_char_concern(sub_idx, action=action, n_bboxes=n_bboxes)
         return _render_subtitle_row(session, row)
 
     @app.post("/subtitles/<int:sub_idx>/concern/gap")
@@ -178,10 +174,7 @@ def _render_index(session: OcrValidationSession) -> str:
     Returns:
         rendered subtitle list
     """
-    return render_template(
-        "index.html",
-        index_body=_render_index_body(session),
-    )
+    return render_template("index.html", index_body=_render_index_body(session))
 
 
 def _render_index_body(session: OcrValidationSession) -> str:

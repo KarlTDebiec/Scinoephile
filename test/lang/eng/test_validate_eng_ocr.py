@@ -86,7 +86,7 @@ def test_validate_eng_ocr_uses_supplied_validation_manager(
 
     manager = cast(ValidationManager, FakeValidationManager())
 
-    output = validate_eng_ocr(tiny_image_series, validation_manager=manager)
+    output = validate_eng_ocr(tiny_image_series, manager)
 
     assert output is tiny_image_series
     assert validate_calls == [tiny_image_series]

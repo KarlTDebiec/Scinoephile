@@ -223,21 +223,11 @@ class OcrValidateCli(ScinoephileCliBase):
         ) as exc:
             parser.error(str(exc))
 
+        validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
         if language == "eng":
-            validation_manager = ValidationManager(
-                cache_dir_path=cache_dir_path,
-                dev=dev,
-            )
-            validated = validate_eng_ocr(
-                series,
-                validation_manager=validation_manager,
-            )
+            validated = validate_eng_ocr(series, validation_manager)
         else:
-            validated = validate_zho_ocr(
-                series,
-                cache_dir_path=cache_dir_path,
-                dev=dev,
-            )
+            validated = validate_zho_ocr(series, validation_manager)
 
         write_series(parser, validated, outfile_path, overwrite)
 

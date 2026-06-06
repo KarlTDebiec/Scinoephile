@@ -42,7 +42,22 @@ def test_ocr_validate_zho_cli(
         infile_path.mkdir()
 
     load_paths: list[Path] = []
-    validate_calls: list[tuple[ImageSeries, Path, bool]] = []
+    manager_instances: list[object] = []
+    manager_calls: list[tuple[Path | str | None, bool]] = []
+    validate_calls: list[tuple[ImageSeries, object]] = []
+
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def __init__(
+            self,
+            *,
+            cache_dir_path: Path | str | None = None,
+            dev: bool = False,
+        ):
+            """Initialize."""
+            manager_instances.append(self)
+            manager_calls.append((cache_dir_path, dev))
 
     def fake_load(path: Path) -> ImageSeries:
         """Fake image subtitle loading.
@@ -57,20 +72,17 @@ def test_ocr_validate_zho_cli(
 
     def fake_validate_zho_ocr(
         series: ImageSeries,
-        *,
-        cache_dir_path: Path,
-        dev: bool = False,
+        validation_manager: object,
     ) -> ImageSeries:
         """Fake standard Chinese OCR validation.
 
         Arguments:
             series: ImageSeries to validate
-            cache_dir_path: cache directory path
-            dev: whether to write validation data updates to the repo
+            validation_manager: validation manager to use
         Returns:
             configured validated image series
         """
-        validate_calls.append((series, cache_dir_path, dev))
+        validate_calls.append((series, validation_manager))
         return tiny_image_series
 
     monkeypatch.setattr(
@@ -80,6 +92,10 @@ def test_ocr_validate_zho_cli(
     monkeypatch.setattr(
         "scinoephile.cli.ocr.ocr_validate_cli.validate_zho_ocr",
         fake_validate_zho_ocr,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.ValidationManager",
+        FakeValidationManager,
     )
 
     outfile_path = tmp_path / "validated.srt"
@@ -91,10 +107,93 @@ def test_ocr_validate_zho_cli(
     )
 
     assert load_paths == [infile_path]
-    assert validate_calls == [(tiny_image_series, cache_dir_path.resolve(), False)]
+    assert manager_calls == [(cache_dir_path.resolve(), False)]
+    assert validate_calls == [(tiny_image_series, manager_instances[0])]
     output = outfile_path.read_text(encoding="utf-8")
     assert "recognized" in output
     assert "validated" in output
+
+
+def test_ocr_validate_zho_cli_dev(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test OCR validate CLI forwards dev mode for Chinese subtitles.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+    """
+    manager_instances: list[object] = []
+    manager_calls: list[tuple[Path | str | None, bool]] = []
+    validate_calls: list[tuple[ImageSeries, object]] = []
+
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def __init__(
+            self,
+            *,
+            cache_dir_path: Path | str | None = None,
+            dev: bool = False,
+        ):
+            """Initialize."""
+            manager_instances.append(self)
+            manager_calls.append((cache_dir_path, dev))
+
+    def fake_load(path: Path) -> ImageSeries:
+        """Fake image subtitle loading.
+
+        Arguments:
+            path: image subtitle input path
+        Returns:
+            configured image subtitle series
+        """
+        _ = path
+        return tiny_image_series
+
+    def mock_validate_zho_ocr(
+        series: ImageSeries,
+        validation_manager: object,
+    ) -> ImageSeries:
+        """Mock Chinese OCR validation.
+
+        Arguments:
+            series: ImageSeries to validate
+            validation_manager: validation manager to use
+        Returns:
+            input image series
+        """
+        validate_calls.append((series, validation_manager))
+        return series
+
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_zho_ocr",
+        mock_validate_zho_ocr,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.ImageSeries.load",
+        fake_load,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.ValidationManager",
+        FakeValidationManager,
+    )
+    full_input_path = tmp_path / "image"
+    full_input_path.mkdir()
+    outfile_path = Path(tmp_path) / "validated.srt"
+    cache_dir_path = tmp_path / "cache"
+
+    run_cli_with_args(
+        OcrValidateCli,
+        f"--language zho --infile {full_input_path} --outfile {outfile_path} "
+        f"--cache-dir {cache_dir_path} --dev",
+    )
+
+    assert manager_calls == [(cache_dir_path.resolve(), True)]
+    assert validate_calls == [(tiny_image_series, manager_instances[0])]
 
 
 def test_ocr_validate_zho_cli_web(
