@@ -1,15 +1,8 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interfaces for cache operations.
+"""Shared command-line interface helper modules.
 
 Package hierarchy (modules may import from any above):
-* output
-* cache_clear_cli / cache_list_cli / cache_prune_cli / cache_stats_cli
-* cache_cli
+* argument_bundle_field_action / cache
+* llms / web
 """
-
-from __future__ import annotations
-
-from .cache_cli import CacheCli
-
-__all__ = ["CacheCli"]

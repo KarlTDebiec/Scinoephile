@@ -3,7 +3,7 @@
 """Cache inspection and invalidation helpers.
 
 Package hierarchy (modules may import from any above):
-* cache_entry / cache_stats / duration
+* cache_entry / cache_stats
 * operations
 """
 

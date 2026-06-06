@@ -7,13 +7,13 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import (
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
-    add_llm_provider_arguments,
+    add_llm_provider_args,
     read_llm_additional_context,
 )
-from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_or_dir_arg,
@@ -95,6 +95,7 @@ class OcrProcessCli(ScinoephileCliBase):
     """Process image subtitle OCR and fuse output for a selected language."""
 
     localizations = merge_localizations(
+        CACHE_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         OCR_PROCESS_LOCALIZATIONS,
     )
@@ -158,17 +159,16 @@ class OcrProcessCli(ScinoephileCliBase):
             action="store_true",
             help="maintainer option: write validation data updates to repo data",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--cache-dir",
-            default=cache_dir_path_arg("media", "subtitles"),
-            dest="cache_dir_path",
-            type=cache_dir_path_arg,
-            help=(
+        add_cache_dir_arg(
+            arg_groups["operation arguments"],
+            "media",
+            "subtitles",
+            help_text=(
                 "cache directory for extracted media subtitle artifacts "
                 "(default: %(default)s)"
             ),
         )
-        add_llm_provider_arguments(
+        add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
 
