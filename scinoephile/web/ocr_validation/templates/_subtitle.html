@@ -2,7 +2,7 @@
    #{{ row.number }}:{{ row.start }}->{{ row.end }}
    <div>
       <figure style="--subtitle-image-width: {{ row.image_width }}px">
-         {% if row.concern.kind == "char-dims" or row.concern.kind == "space-gap" or row.concern.kind == "tab-gap" %}
+         {% if row.has_concern_image %}
             <img
                src="/subtitles/{{ row.sub_idx }}/concern.png?v={{ row.image_cache_key }}"
                width="{{ row.image_width }}"

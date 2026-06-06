@@ -26,11 +26,11 @@ from scinoephile.image.subtitles import ImageSeries
 from .concerns import (
     CharDimsConcern,
     ConcernKind,
-    DoneConcern,
     ErrorConcern,
     GapConcern,
     OcrConcern,
     SubtitleRowView,
+    ValidationStatus,
 )
 from .html_index import HtmlSubtitleEntry, load_html_entries, update_html_entry_text
 
@@ -51,6 +51,8 @@ class _SubtitleValidationState:
     """Gap validation cursor."""
     char_n_bboxes: int = 1
     """Number of bboxes selected for the current character concern."""
+    status: ValidationStatus | None = None
+    """Row-level validation status."""
     concern: OcrConcern | None = None
     """Current validation concern."""
 
@@ -139,8 +141,8 @@ class OcrValidationSession:
             subtitle row view model
         """
         self._validate_sub_idx(sub_idx)
-        concern = self._state(sub_idx).concern
-        if concern is None:
+        state = self._state(sub_idx)
+        if state.status is None:
             raise ValueError(f"Subtitle {sub_idx} has no validation state.")
         entry = self.entries[sub_idx]
         image_width = self.series.events[sub_idx].img.width
@@ -153,7 +155,8 @@ class OcrValidationSession:
             image_width=image_width,
             image_height=image_height,
             text=entry.text,
-            concern=concern,
+            status=state.status,
+            concern=state.concern,
             text_color_css=self.text_color_css,
             text_shadow_color_css=self.text_shadow_color_css,
             text_font_size_px=self.text_font_size_px,
@@ -182,7 +185,7 @@ class OcrValidationSession:
         """
         if self.include_done_subtitles:
             return True
-        return not isinstance(row.concern, DoneConcern)
+        return row.status != ValidationStatus.DONE
 
     def concern_image(self, sub_idx: int) -> Image.Image:
         """Return an annotated image for the current concern.
@@ -482,7 +485,7 @@ class OcrValidationSession:
         if state.phase == "chars":
             char_concern = self._scan_chars(state)
             if char_concern is not None:
-                state.concern = char_concern
+                self._set_concern(state, char_concern)
                 return
             state.phase = "gaps"
             cursor = self._char_cursor(state)
@@ -491,10 +494,11 @@ class OcrValidationSession:
         if state.phase == "gaps":
             gap_concern = self._scan_gaps(state)
             if gap_concern is not None:
-                state.concern = gap_concern
+                self._set_concern(state, gap_concern)
                 return
 
-        state.concern = DoneConcern()
+        state.status = ValidationStatus.DONE
+        state.concern = None
 
     def _scan_chars(self, state: _SubtitleValidationState) -> OcrConcern | None:
         """Scan character bboxes until a concern is found or chars complete.
@@ -632,6 +636,19 @@ class OcrValidationSession:
         if cursor.gap_chars not in (cursor.expected_tab, "\n"):
             self._gap_replace_text(cursor, cursor.expected_tab)
         return None
+
+    def _set_concern(self, state: _SubtitleValidationState, concern: OcrConcern):
+        """Set the current concern and matching row-level status.
+
+        Arguments:
+            state: subtitle validation state
+            concern: current validation concern
+        """
+        if isinstance(concern, ErrorConcern):
+            state.status = ValidationStatus.ERROR
+        else:
+            state.status = ValidationStatus.NEEDS_ACTION
+        state.concern = concern
 
     def _replace_gap_text(
         self,

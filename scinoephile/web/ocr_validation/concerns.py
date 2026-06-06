@@ -16,11 +16,11 @@ from scinoephile.lang.yue.romanization import get_yue_text_romanized
 __all__ = [
     "CharDimsConcern",
     "ConcernKind",
-    "DoneConcern",
     "ErrorConcern",
     "GapConcern",
     "OcrConcern",
     "SubtitleRowView",
+    "ValidationStatus",
 ]
 
 
@@ -35,8 +35,6 @@ class ConcernKind(StrEnum):
     """Gap may need a tab or wide space."""
     ERROR = "error"
     """Validation cannot continue for this subtitle."""
-    DONE = "done"
-    """Subtitle has no unresolved concerns."""
 
 
 @dataclass(frozen=True)
@@ -84,21 +82,6 @@ class CharDimsConcern:
     def status_label(self) -> str:
         """Short status label for templates."""
         return "Check character box"
-
-
-@dataclass(frozen=True)
-class DoneConcern:
-    """Subtitle with no unresolved validation concerns."""
-
-    message: str = "OK"
-    """Done message."""
-    kind: ConcernKind = field(default=ConcernKind.DONE, init=False)
-    """Concern kind."""
-
-    @property
-    def status_label(self) -> str:
-        """Short status label for templates."""
-        return self.message
 
 
 @dataclass(frozen=True)
@@ -193,6 +176,17 @@ class GapConcern:
         return _cutoff_range_display(self.tab_prompt)
 
 
+class ValidationStatus(StrEnum):
+    """Row-level OCR validation status."""
+
+    DONE = "done"
+    """Subtitle has no unresolved concerns."""
+    ERROR = "error"
+    """Subtitle validation hit an unrecoverable state."""
+    NEEDS_ACTION = "needs-action"
+    """Subtitle has a concern awaiting human action."""
+
+
 @dataclass(frozen=True)
 class SubtitleRowView:
     """Template view model for one OCR subtitle row."""
@@ -211,7 +205,9 @@ class SubtitleRowView:
     """Subtitle image height in pixels."""
     text: str
     """Editable subtitle OCR text."""
-    concern: OcrConcern
+    status: ValidationStatus
+    """Row-level validation status."""
+    concern: OcrConcern | None
     """Current validation concern for this subtitle."""
     text_color_css: str = "rgb(255, 255, 255)"
     """Detected subtitle fill color as a CSS color."""
@@ -233,12 +229,21 @@ class SubtitleRowView:
                 f"{self.concern.kind}-{self.concern.char_1_idx}-"
                 f"{self.concern.char_2_idx}-{self.concern.gap}"
             )
-        return str(self.concern.kind)
+        return str(self.status)
+
+    @property
+    def has_concern_image(self) -> bool:
+        """Whether this row should render the focused concern image."""
+        return isinstance(self.concern, CharDimsConcern | GapConcern)
 
     @property
     def status_label(self) -> str:
         """Short validation status label."""
-        return self.concern.status_label
+        if self.concern is not None:
+            return self.concern.status_label
+        if self.status == ValidationStatus.DONE:
+            return "OK"
+        return "Needs review"
 
     @property
     def text_font_size_cqw_css(self) -> str:
@@ -256,7 +261,7 @@ class SubtitleRowView:
         return _px_to_cqw_css(10, self.image_width)
 
 
-OcrConcern = CharDimsConcern | DoneConcern | ErrorConcern | GapConcern
+OcrConcern = CharDimsConcern | ErrorConcern | GapConcern
 """Validation concern shown by the OCR validation web UI."""
 
 
