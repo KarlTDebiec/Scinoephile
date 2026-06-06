@@ -9,13 +9,16 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
+from scinoephile.common.argument_parsing import (
+    duration_arg,
+    get_arg_groups_by_name,
+    int_arg,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import get_cache_entries, prune_cache
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 
-from .argument_types import duration_arg
 from .output import print_entries
 
 __all__ = ["CachePruneCli"]
