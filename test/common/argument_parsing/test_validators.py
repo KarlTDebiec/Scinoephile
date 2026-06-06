@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 from scinoephile.common.argument_parsing import (
+    duration_arg,
     float_arg,
     input_dir_arg,
     input_file_arg,
@@ -19,6 +20,16 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
+
+
+def test_duration_arg():
+    """Test duration_arg validator."""
+    validator = duration_arg
+
+    assert validator("12h").total_seconds() == 12 * 60 * 60
+
+    with pytest.raises(ArgumentTypeError, match="Invalid duration"):
+        validator("yesterday")
 
 
 def test_float_arg():

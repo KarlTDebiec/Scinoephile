@@ -14,18 +14,18 @@ from .argument_bundle_field_action import ArgumentBundleFieldAction
 __all__ = [
     "WEB_LOCALIZATIONS",
     "WebServerArguments",
-    "add_web_server_arguments",
+    "add_web_server_args",
 ]
 
 WEB_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "host for the OCR validation web UI": "OCR 校验网页界面的主机",
-        "port for the OCR validation web UI": "OCR 校验网页界面的端口",
+        "host for the local web server": "本地网页服务器的主机",
+        "port for the local web server": "本地网页服务器的端口",
         "web arguments": "网页参数",
     },
     "zh-hant": {
-        "host for the OCR validation web UI": "OCR 驗證網頁介面的主機",
-        "port for the OCR validation web UI": "OCR 驗證網頁介面的連接埠",
+        "host for the local web server": "本機網頁伺服器的主機",
+        "port for the local web server": "本機網頁伺服器的連接埠",
         "web arguments": "網頁參數",
     },
 }
@@ -42,7 +42,7 @@ class WebServerArguments:
     """Port for the local web server."""
 
 
-def add_web_server_arguments(web_arg_group: _ArgumentGroup):
+def add_web_server_args(web_arg_group: _ArgumentGroup):
     """Add standard local web server arguments to an argument group.
 
     Arguments:
@@ -56,7 +56,7 @@ def add_web_server_arguments(web_arg_group: _ArgumentGroup):
         field_name="host",
         metavar="HOST",
         type=str,
-        help="host for the OCR validation web UI",
+        help="host for the local web server",
     )
     web_arg_group.add_argument(
         "--port",
@@ -65,6 +65,6 @@ def add_web_server_arguments(web_arg_group: _ArgumentGroup):
         dest="web_args",
         field_name="port",
         metavar="PORT",
-        type=int_arg(min_value=1),
-        help="port for the OCR validation web UI",
+        type=int_arg(min_value=1, max_value=65535),
+        help="port for the local web server",
     )

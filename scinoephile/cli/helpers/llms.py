@@ -32,7 +32,7 @@ from .argument_bundle_field_action import ArgumentBundleFieldAction
 __all__ = [
     "LLM_LOCALIZATIONS",
     "LlmArguments",
-    "add_llm_provider_arguments",
+    "add_llm_provider_args",
     "llm_provider_name_arg",
     "read_llm_additional_context",
 ]
@@ -86,7 +86,7 @@ class LlmArguments:
     """Optional path to additional LLM prompt context."""
 
 
-def add_llm_provider_arguments(
+def add_llm_provider_args(
     llm_arg_group: _ArgumentGroup,
     additional_help_arg_group: _ArgumentGroup,
 ):

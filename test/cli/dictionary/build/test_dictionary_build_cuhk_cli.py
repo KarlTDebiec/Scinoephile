@@ -21,7 +21,7 @@ def test_dictionary_build_cuhk_cli_passes_cache_dir_to_service(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test CUHK dictionary build CLI uses the shared cache directory parser.
+    """Test CUHK CLI forwards parsed cache dirs without parser-time creation.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture

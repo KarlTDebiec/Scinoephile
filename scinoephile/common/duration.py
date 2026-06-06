@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Duration parsing for cache maintenance operations."""
+"""Duration parsing helpers."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from datetime import timedelta
 
 __all__ = ["parse_duration"]
 
-
 _DURATION_PATTERN = re.compile(
     r"^\s*(?P<value>\d+)\s*(?P<unit>seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w)\s*$",
     re.IGNORECASE,
 )
+"""Pattern matching supported duration strings."""
 
 
 def parse_duration(value: str) -> timedelta:

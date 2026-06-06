@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -125,7 +125,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             action="store_true",
             help="include additional subtitle stream details",
         )
-        add_cache_dir_argument(
+        add_cache_dir_arg(
             arg_groups["operation arguments"],
             "media",
             "subtitles",

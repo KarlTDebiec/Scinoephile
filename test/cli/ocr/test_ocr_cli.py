@@ -16,6 +16,7 @@ from scinoephile.cli.ocr import (
     OcrPaddleCli,
     OcrTesseractCli,
 )
+from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series, Subtitle
@@ -364,6 +365,128 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
 
     assert excinfo.value.code == 2
     assert "--detect-italics may only be used with --language eng" in stderr.getvalue()
+
+
+@pytest.mark.parametrize(
+    (
+        "cli",
+        "load_target",
+        "ocr_target",
+        "writer_target",
+        "extra_args",
+        "expected_ocr_kwargs",
+    ),
+    [
+        (
+            OcrLensCli,
+            "scinoephile.cli.ocr.ocr_lens_cli.ImageSeries.load",
+            "scinoephile.cli.ocr.ocr_lens_cli.ocr_image_series_with_lens",
+            "scinoephile.cli.ocr.ocr_lens_cli.write_series",
+            "--language zh-CN --retries 5",
+            {"language": "zh-CN", "retries": 5},
+        ),
+        (
+            OcrPaddleCli,
+            "scinoephile.cli.ocr.ocr_paddle_cli.ImageSeries.load",
+            "scinoephile.cli.ocr.ocr_paddle_cli.ocr_image_series_with_paddle",
+            "scinoephile.cli.ocr.ocr_paddle_cli.write_series",
+            "--language ch",
+            {"language": "ch"},
+        ),
+        (
+            OcrTesseractCli,
+            "scinoephile.cli.ocr.ocr_tesseract_cli.ImageSeries.load",
+            "scinoephile.cli.ocr.ocr_tesseract_cli.ocr_image_series_with_tesseract",
+            "scinoephile.cli.ocr.ocr_tesseract_cli.write_series",
+            "--detect-italics",
+            {"detect_italics": True, "language": "eng"},
+        ),
+    ],
+)
+def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+    cli: type[CommandLineInterface],
+    load_target: str,
+    ocr_target: str,
+    writer_target: str,
+    extra_args: str,
+    expected_ocr_kwargs: dict[str, object],
+):
+    """Test OCR engine CLIs delegate subtitle output writing to shared helper.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+        cli: OCR engine CLI under test
+        load_target: monkeypatch target for image subtitle loading
+        ocr_target: monkeypatch target for OCR operation
+        writer_target: monkeypatch target for subtitle output writing
+        extra_args: operation arguments for the CLI under test
+        expected_ocr_kwargs: expected keyword arguments passed to OCR operation
+    """
+    input_paths = _patch_image_series_load(
+        monkeypatch,
+        load_target,
+        tiny_image_series,
+    )
+    input_path = _write_placeholder_sup_path(tmp_path)
+    recognized_series = Series(
+        events=[Subtitle(start=1000, end=2000, text="recognized")]
+    )
+    ocr_calls: list[tuple[tuple[object, ...], dict[str, object]]] = []
+    writer_calls: list[tuple[object, Series, Path, bool]] = []
+
+    def fake_ocr_image_series(*args: object, **kwargs: object) -> Series:
+        """Fake image subtitle OCR operation.
+
+        Arguments:
+            *args: positional arguments
+            **kwargs: keyword arguments
+        Returns:
+            text subtitle series
+        """
+        ocr_calls.append((args, kwargs))
+        return recognized_series
+
+    def fake_write_series(
+        parser: object,
+        series: Series,
+        outfile: str | Path,
+        overwrite: bool,
+    ):
+        """Fake subtitle output writing.
+
+        Arguments:
+            parser: parser used for user-facing error output
+            series: subtitle series to write
+            outfile: output path
+            overwrite: whether existing files may be overwritten
+        """
+        writer_calls.append((parser, series, Path(outfile), overwrite))
+
+    monkeypatch.setattr(ocr_target, fake_ocr_image_series)
+    monkeypatch.setattr(writer_target, fake_write_series)
+
+    output_path = tmp_path / "ocr.srt"
+    run_cli_with_args(
+        cli,
+        f"--infile {input_path} --outfile {output_path} {extra_args} --overwrite",
+    )
+
+    assert input_paths == [input_path.resolve()]
+    assert len(ocr_calls) == 1
+    assert len(ocr_calls[0][0]) == 1
+    assert ocr_calls[0][0][0] is tiny_image_series
+    assert ocr_calls[0][1] == expected_ocr_kwargs
+    assert len(writer_calls) == 1
+    parser, output_series, outfile_path, overwrite = writer_calls[0]
+    assert parser is not None
+    assert output_series is recognized_series
+    assert outfile_path == output_path.resolve()
+    assert overwrite is True
 
 
 @skip_if_ci()

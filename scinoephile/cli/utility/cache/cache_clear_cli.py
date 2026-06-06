@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import clear_cache, get_cache_entries
@@ -75,9 +75,8 @@ class CacheClearCli(ScinoephileCliBase):
         )
 
         # Input arguments
-        add_cache_dir_argument(
+        add_cache_dir_arg(
             arg_groups["input arguments"],
-            None,
             help_text="cache root directory to inspect (default: %(default)s)",
         )
 

@@ -62,6 +62,8 @@ def write_series(
     series: Series,
     outfile: str | Path,
     overwrite: bool,
+    *,
+    format_: str = "srt",
 ):
     """Write a subtitle series to stdout or a file.
 
@@ -70,9 +72,10 @@ def write_series(
         series: subtitle series to write
         outfile: output path or "-"
         overwrite: whether existing files may be overwritten
+        format_: output file format
     """
     if str(outfile) == "-":
-        stdout.write(series.to_string(format_="srt"))
+        stdout.write(series.to_string(format_=format_))
         return
 
     try:
@@ -82,4 +85,4 @@ def write_series(
 
     if outfile_path.exists() and not overwrite:
         parser.error(f"{outfile_path} already exists")
-    series.save(outfile_path)
+    series.save(outfile_path, format_=format_)

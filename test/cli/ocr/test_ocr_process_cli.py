@@ -9,11 +9,11 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.helpers.cache import cache_dir_path_arg
 from scinoephile.cli.ocr.ocr_cli import OcrCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
+from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.workflows.ocr_processing import OcrProcessingResult
 
 
@@ -105,7 +105,7 @@ def test_ocr_process_cli_passes_zho_arguments_to_workflow(tmp_path: Path):
         infile_path=infile_path.resolve(),
         output_dir_path=output_dir_path.resolve(),
         stream_index=3,
-        cache_dir_path=cache_dir_path_arg("media", "subtitles"),
+        cache_dir_path=get_runtime_cache_dir_path("media", "subtitles", create=False),
         script="simplified",
         clean=True,
         interactive=False,
@@ -154,7 +154,7 @@ def test_ocr_process_cli_passes_traditional_script_to_zho_workflow(tmp_path: Pat
         infile_path=infile_path.resolve(),
         output_dir_path=output_dir_path.resolve(),
         stream_index=3,
-        cache_dir_path=cache_dir_path_arg("media", "subtitles"),
+        cache_dir_path=get_runtime_cache_dir_path("media", "subtitles", create=False),
         script="traditional",
         clean=False,
         interactive=False,

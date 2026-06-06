@@ -7,17 +7,17 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
-    add_llm_provider_arguments,
+    add_llm_provider_args,
     read_llm_additional_context,
 )
 from scinoephile.cli.helpers.web import (
     WEB_LOCALIZATIONS,
     WebServerArguments,
-    add_web_server_arguments,
+    add_web_server_args,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -168,7 +168,7 @@ class OcrProcessCli(ScinoephileCliBase):
             action="store_true",
             help="maintainer option: write validation data updates to repo data",
         )
-        add_cache_dir_argument(
+        add_cache_dir_arg(
             arg_groups["operation arguments"],
             "media",
             "subtitles",
@@ -177,7 +177,7 @@ class OcrProcessCli(ScinoephileCliBase):
                 "(default: %(default)s)"
             ),
         )
-        add_llm_provider_arguments(
+        add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
 
@@ -187,7 +187,7 @@ class OcrProcessCli(ScinoephileCliBase):
             action="store_true",
             help="launch the local OCR validation web UI",
         )
-        add_web_server_arguments(arg_groups["web arguments"])
+        add_web_server_args(arg_groups["web arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
