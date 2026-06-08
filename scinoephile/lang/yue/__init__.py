@@ -3,5 +3,5 @@
 """Code related to Cantonese (yue) text.
 
 Package hierarchy (modules may import from any above):
-* conversion / prompts / romanization
+* analysis / conversion / prompts / romanization
 """
