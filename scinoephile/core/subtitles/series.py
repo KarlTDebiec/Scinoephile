@@ -272,8 +272,6 @@ class Series(SSAFile):
                 series.events = [
                     cls.event_class(**ssaevent.as_dict()) for ssaevent in series
                 ]
-        except ScinoephileError:
-            raise
         except (OSError, UnicodeError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to load {cls.__name__} from {path}: {exc}"

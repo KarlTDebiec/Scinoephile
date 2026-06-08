@@ -73,8 +73,6 @@ def validate_ocr(
         image_series = ImageSeries.load(infile_path)
         if text_series is not None:
             image_series.copy_text_from(text_series)
-    except ScinoephileError:
-        raise
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to load OCR image subtitles from {infile_path}: {exc}"
@@ -103,8 +101,6 @@ def _apply_text_series(infile_path: Path, text_series: Series):
         image_series = ImageSeries.load(infile_path)
         image_series.copy_text_from(text_series)
         image_series.save(infile_path)
-    except ScinoephileError:
-        raise
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to apply OCR text to image subtitle directory {infile_path}: {exc}"
@@ -137,8 +133,6 @@ def _run_interactive_validation(
             dev=dev,
         )
         run_app(session, host, port)
-    except ScinoephileError:
-        raise
     except (ImportError, OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to run interactive OCR validation for {image_dir_path}: {exc}"
@@ -162,8 +156,6 @@ def _run_noninteractive_validation(
     try:
         validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
         return validation_manager.validate(image_series)
-    except ScinoephileError:
-        raise
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to run noninteractive OCR validation: {exc}"
@@ -179,8 +171,6 @@ def _save_validated_series(series: Series, outfile_path: Path):
     """
     try:
         series.save(outfile_path, format_="srt", exist_ok=True)
-    except ScinoephileError:
-        raise
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to save validated OCR output to {outfile_path}: {exc}"

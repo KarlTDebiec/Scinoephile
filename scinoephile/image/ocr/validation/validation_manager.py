@@ -75,8 +75,6 @@ class ValidationManager:
         """
         try:
             self._init_data(cache_dir_path, dev)
-        except ScinoephileError:
-            raise
         except (OSError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to initialize OCR validation data: {exc}"

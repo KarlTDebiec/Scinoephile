@@ -222,8 +222,6 @@ class ImageSeries(Series):
                 f"{cls.__name__}'s path must be path to a directory containing "
                 "one index.html file and N png files, or a .sup file."
             )
-        except ScinoephileError:
-            raise
         except (OSError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to load {cls.__name__} from {path}: {exc}"

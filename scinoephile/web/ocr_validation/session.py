@@ -132,8 +132,6 @@ class OcrValidationSession:
             )
             session._save_outfile()
             return session
-        except ScinoephileError:
-            raise
         except (OSError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to initialize OCR validation session from {dir_path}: {exc}"

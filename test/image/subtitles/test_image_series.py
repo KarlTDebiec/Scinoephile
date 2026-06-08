@@ -94,6 +94,23 @@ def test_load_rejects_unsupported_input_file(tmp_path: Path):
         ImageSeries.load(input_path)
 
 
+def test_image_series_load_wraps_input_path_errors(tmp_path: Path):
+    """Test image subtitle loading path errors are user-facing.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    input_path = tmp_path / "missing"
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to load ImageSeries from .*missing",
+    ) as excinfo:
+        ImageSeries.load(input_path)
+
+    assert isinstance(excinfo.value.__cause__, OSError)
+
+
 def test_copy_text_from_mutates_image_subtitle_texts():
     """Test copying text from a text series mutates image subtitles in place."""
     image_subtitle = ImageSubtitle(

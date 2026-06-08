@@ -389,8 +389,6 @@ def _load_image_series(
             infile_path, stream, cache_dir_path=cache_dir_path
         )
         return ImageSeries.load(stream_path)
-    except ScinoephileError:
-        raise
     except (OSError, RuntimeError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to load OCR image subtitles from {infile_path}: {exc}"
@@ -566,8 +564,6 @@ def _load_or_create_series_output(
         else:
             series = create_series()
             series.save(output_path, format_="srt")
-    except ScinoephileError:
-        raise
     except (OSError, RuntimeError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to load or create {display_name} at {output_path}: {exc}"

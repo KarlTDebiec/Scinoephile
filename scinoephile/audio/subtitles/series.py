@@ -12,6 +12,7 @@ from typing import Any, Self, TypedDict, override
 
 import ffmpeg
 from pydub import AudioSegment
+from pydub.exceptions import PydubException
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
@@ -199,24 +200,29 @@ class AudioSeries(Series):
         Returns:
             loaded series
         """
-        validated_path = val_input_dir_path(path)
-        buffer = kwargs.pop("buffer", 1000)
-        validated_srt_path = val_input_path(
-            validated_path / f"{validated_path.stem}.srt"
-        )
-        text_series = Series.load(
-            validated_srt_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+        try:
+            validated_path = val_input_dir_path(path)
+            buffer = kwargs.pop("buffer", 1000)
+            validated_srt_path = val_input_path(
+                validated_path / f"{validated_path.stem}.srt"
+            )
+            text_series = Series.load(
+                validated_srt_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
 
-        validated_audio_path = val_input_path(
-            validated_path / f"{validated_path.stem}.wav"
-        )
-        full_audio = AudioSegment.from_wav(validated_audio_path)
+            validated_audio_path = val_input_path(
+                validated_path / f"{validated_path.stem}.wav"
+            )
+            full_audio = AudioSegment.from_wav(validated_audio_path)
+        except (OSError, PydubException, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from {path}: {exc}"
+            ) from exc
         logger.info(f"Loaded full audio from {validated_audio_path}")
 
         return cls.build_series(text_series, full_audio, buffer)
