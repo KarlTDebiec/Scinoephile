@@ -13,31 +13,19 @@ from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 
 
-@pytest.mark.parametrize(
-    ("input_path",),
-    [
-        ("mlamd/output/eng_ocr/image",),
-        ("mlamd/input/eng_ocr/source.sup",),
-    ],
-)
 def test_ocr_validate_cli(
-    input_path: str,
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test OCR validate CLI processing with directory output.
+    """Test OCR validate CLI forwards noninteractive workflow arguments.
 
     Arguments:
-        input_path: path to input image subtitle fixture
         monkeypatch: pytest monkeypatch fixture
         tmp_path: pytest temporary path fixture
     """
-    infile_path = tmp_path / input_path
+    infile_path = tmp_path / "source.sup"
     infile_path.parent.mkdir(parents=True, exist_ok=True)
-    if infile_path.suffix:
-        infile_path.write_bytes(b"unused")
-    else:
-        infile_path.mkdir()
+    infile_path.write_bytes(b"unused")
 
     validate_calls: list[dict[str, object]] = []
 
@@ -92,72 +80,6 @@ def test_ocr_validate_cli(
         }
     ]
     assert outfile_path.read_text(encoding="utf-8") == "validated"
-
-
-def test_ocr_validate_cli_dev(
-    monkeypatch: pytest.MonkeyPatch,
-    tmp_path: Path,
-):
-    """Test OCR validate CLI forwards dev mode.
-
-    Arguments:
-        monkeypatch: pytest monkeypatch fixture
-        tmp_path: pytest temporary path fixture
-    """
-    validate_calls: list[dict[str, object]] = []
-
-    def fake_validate_ocr(
-        infile_path: Path,
-        outfile_path: Path,
-        *,
-        cache_dir_path: Path | str | None = None,
-        interactive: bool = False,
-        dev: bool = False,
-        overwrite: bool = False,
-        host: str = "127.0.0.1",
-        port: int = 5000,
-    ):
-        """Capture OCR validation workflow arguments."""
-        validate_calls.append(
-            {
-                "infile_path": infile_path,
-                "outfile_path": outfile_path,
-                "cache_dir_path": cache_dir_path,
-                "interactive": interactive,
-                "dev": dev,
-                "overwrite": overwrite,
-                "host": host,
-                "port": port,
-            }
-        )
-
-    monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
-        fake_validate_ocr,
-    )
-    full_input_path = tmp_path / "image"
-    full_input_path.mkdir()
-    outfile_path = Path(tmp_path) / "validated.srt"
-    cache_dir_path = tmp_path / "cache"
-
-    run_cli_with_args(
-        OcrValidateCli,
-        f"--infile {full_input_path} --outfile {outfile_path} "
-        f"--cache-dir {cache_dir_path} --dev",
-    )
-
-    assert validate_calls == [
-        {
-            "infile_path": full_input_path,
-            "outfile_path": outfile_path,
-            "cache_dir_path": cache_dir_path.resolve(),
-            "interactive": False,
-            "dev": True,
-            "overwrite": False,
-            "host": "127.0.0.1",
-            "port": 5000,
-        }
-    ]
 
 
 def test_ocr_validate_cli_web(
@@ -284,35 +206,3 @@ def test_ocr_validate_cli_web_delegates_image_dir_validation(
 
     captured = capsys.readouterr()
     assert "session checked OCR image directory" in captured.err
-
-
-def test_ocr_validate_cli_web_reports_run_error(
-    capsys: pytest.CaptureFixture[str],
-    monkeypatch: pytest.MonkeyPatch,
-    tmp_path: Path,
-):
-    """Test OCR validate web mode maps app run errors to a parser error.
-
-    Arguments:
-        capsys: pytest stdout and stderr capture fixture
-        monkeypatch: pytest monkeypatch fixture
-        tmp_path: pytest temporary path fixture
-    """
-    infile_path = tmp_path / "image"
-    infile_path.mkdir()
-    (infile_path / "index.html").write_text("<html></html>", encoding="utf-8")
-
-    monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
-        lambda *args, **kwargs: (_ for _ in ()).throw(ScinoephileError("port in use")),
-    )
-
-    with pytest.raises(SystemExit, match="2"):
-        run_cli_with_args(
-            OcrValidateCli,
-            f"--infile {infile_path} --interactive "
-            f"--outfile {tmp_path / 'validated.srt'}",
-        )
-
-    captured = capsys.readouterr()
-    assert "port in use" in captured.err

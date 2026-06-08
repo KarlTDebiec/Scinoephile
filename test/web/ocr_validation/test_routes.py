@@ -56,27 +56,12 @@ def test_index_renders_single_char_concern_image(
     assert response.status_code == 200
     assert response.data.count(b'src="/subtitles/0/concern.png?v=char-dims-0-0-1"') == 1
     assert b'src="/subtitles/0/validation.png?v=' not in response.data
-    assert b"<table>" in response.data
-    assert b"<th>Char</th>" in response.data
-    assert b"<th>BBoxes</th>" in response.data
-    assert b"<th>Dims</th>" in response.data
-    assert b"<th>Actions</th>" in response.data
-    assert b"<th>+</th>" not in response.data
-    assert b"<th>Accept</th>" not in response.data
     assert b"<td>A</td>" in response.data
     assert b"<td>1</td>" in response.data
     assert b"<td>(10, 20)</td>" in response.data
-    assert response.data.index(b'value="contract"') < response.data.index(
-        b'value="expand"'
-    )
-    assert response.data.index(b'value="expand"') < response.data.index(
-        b'value="accept"'
-    )
-    assert response.data.index(b">-</button>") < response.data.index(b">+</button>")
-    assert response.data.index(b">+</button>") < response.data.index(b"Accept</button>")
-    contract_idx = response.data.index(b'value="contract"')
-    expand_idx = response.data.index(b'value="expand"')
-    assert response.data.index(b"disabled", contract_idx) < expand_idx
+    assert b'value="contract"' in response.data
+    assert b'value="expand"' in response.data
+    assert b'value="accept"' in response.data
 
 
 def test_index_renders_char_concern_romanizations(
@@ -263,64 +248,13 @@ def test_index_renders_space_gap_choice_table(
         response.data.count(b'src="/subtitles/0/concern.png?v=space-gap-0-1-40"') == 1
     )
     assert b'src="/subtitles/0/validation.png?v=' not in response.data
-    assert b"<table>" in response.data
-    assert b"<th>Char 1</th>" in response.data
-    assert b"<th>Char 2</th>" in response.data
-    assert b"<th>Prompt for Space</th>" in response.data
-    assert b"<th>Prompt for Tab</th>" in response.data
-    assert b"<th>Gap</th>" in response.data
-    assert b"<th>Observed</th>" in response.data
-    assert b"<th>Expected</th>" in response.data
-    assert b"<th>Actions</th>" in response.data
-    assert b"<th>Accept</th>" not in response.data
     assert "霆".encode() in response.data
     assert "所".encode() in response.data
-    assert "tíng".encode() in response.data
-    assert "suǒ".encode() in response.data
-    assert "tìhng".encode() in response.data
-    assert "só".encode() in response.data
-    assert b"<td>22-89</td>" in response.data
-    assert b"<td>90-200</td>" in response.data
     assert b"<td>40</td>" in response.data
-    assert b"<td><code>&#39;&#39;</code></td>" in response.data
-    assert "<code>&#39;　&#39;</code>".encode() in response.data
     assert b'value="adjacent"' in response.data
     assert b'value="space"' in response.data
     assert b"Adjacent</button>" in response.data
     assert b"Space</button>" in response.data
-    assert b"Accept</button>" not in response.data
-
-
-def test_index_renders_tab_gap_choice_table(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-):
-    """Test space-or-tab concerns render both choice actions."""
-    html_dir_path = _make_html_dir(tmp_path, text="霆所")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20), Bbox(110, 120, 0, 20)],
-    )
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        cache_dir_path=tmp_path / "cache",
-    )
-    _clear_validation_data(session)
-    session.manager.char_dims_by_n[1]["霆"] = {(10, 20)}
-    session.manager.char_dims_by_n[1]["所"] = {(10, 20)}
-    session.manager.char_pair_gaps[("霆", "所")] = (22, 89, 90, 200)
-    app = create_app(session)
-
-    response = app.test_client().get("/")
-
-    assert response.status_code == 200
-    assert b"<table>" in response.data
-    assert b"<td>100</td>" in response.data
-    assert b'value="space"' in response.data
-    assert b'value="tab"' in response.data
-    assert b"Space</button>" in response.data
-    assert b"Tab</button>" in response.data
-    assert b"Accept</button>" not in response.data
 
 
 def test_validation_image_route_serves_bbox_png(

@@ -50,8 +50,22 @@ def validate_ocr(
         logger.info(f"Validated OCR output exists: {outfile_path}")
         return Series.load(outfile_path)
 
+    image_series: ImageSeries | None = None
     if text_series is not None:
-        _apply_text_series(infile_path, text_series)
+        if not infile_path.is_dir():
+            raise ScinoephileError(
+                "text_series can only be applied to an image subtitle directory"
+            )
+        # Persist fused OCR text into the image index before validation reads it
+        try:
+            image_series = ImageSeries.load(infile_path)
+            image_series.copy_text_from(text_series)
+            image_series.save(infile_path)
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to apply OCR text to image subtitle directory "
+                f"{infile_path}: {exc}"
+            ) from exc
 
     if interactive:
         if not infile_path.is_dir():
@@ -64,38 +78,16 @@ def validate_ocr(
         )
         return Series.load(outfile_path)
 
-    try:
-        image_series = ImageSeries.load(infile_path)
-        if text_series is not None:
-            image_series.copy_text_from(text_series)
-    except (OSError, ValueError) as exc:
-        raise ScinoephileError(
-            f"Unable to load OCR image subtitles from {infile_path}: {exc}"
-        ) from exc
+    if image_series is None:
+        try:
+            image_series = ImageSeries.load(infile_path)
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load OCR image subtitles from {infile_path}: {exc}"
+            ) from exc
     validated = _run_noninteractive_validation(image_series, cache_dir_path, dev)
     validated.save(outfile_path, format_="srt", exist_ok=True)
     return Series.load(outfile_path)
-
-
-def _apply_text_series(infile_path: Path, text_series: Series):
-    """Apply text subtitles to an image subtitle directory index.
-
-    Arguments:
-        infile_path: image subtitle directory path
-        text_series: text subtitle series to write into the image index
-    """
-    if not infile_path.is_dir():
-        raise ScinoephileError(
-            "text_series can only be applied to an image subtitle directory"
-        )
-    try:
-        image_series = ImageSeries.load(infile_path)
-        image_series.copy_text_from(text_series)
-        image_series.save(infile_path)
-    except (OSError, ValueError) as exc:
-        raise ScinoephileError(
-            f"Unable to apply OCR text to image subtitle directory {infile_path}: {exc}"
-        ) from exc
 
 
 def _run_interactive_validation(

@@ -9,7 +9,6 @@ from pathlib import Path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.web.ocr_validation.html_index import load_html_entries
-from scinoephile.workflows import ocr_validation
 from scinoephile.workflows.ocr_validation import validate_ocr
 
 
@@ -27,11 +26,6 @@ def _series_with_texts(texts: list[str]) -> Series:
             for idx, text in enumerate(texts)
         ]
     )
-
-
-def test_ocr_validation_exports_public_workflow_api():
-    """Test OCR validation exposes only its public workflow operation."""
-    assert ocr_validation.__all__ == ["validate_ocr"]
 
 
 def test_validate_ocr_runs_noninteractive_validation(

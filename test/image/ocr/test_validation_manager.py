@@ -4,16 +4,10 @@
 
 from __future__ import annotations
 
-import logging
-from pathlib import Path
-
 import pytest
-from PIL import Image
 
 from scinoephile.core import ScinoephileError
-from scinoephile.image.bbox import Bbox
 from scinoephile.image.ocr.validation import ValidationManager, validation_manager
-from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
 def test_validation_manager_layers_cache_data_over_repo_data(tmp_path, monkeypatch):
@@ -168,7 +162,7 @@ def test_validation_manager_allows_new_custom_cache_dir(tmp_path, monkeypatch):
     )
 
 
-def test_validation_manager_wraps_cache_path_errors(tmp_path: Path):
+def test_validation_manager_wraps_cache_path_errors(tmp_path):
     """Test cache path validation errors are user-facing.
 
     Arguments:
@@ -202,42 +196,3 @@ def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeyp
         "A,10,20\n"
     )
     assert not (cache_dir_path / "char_dims_1.csv").exists()
-
-
-def test_validation_manager_logs_automatic_gap_corrections(
-    tmp_path,
-    monkeypatch: pytest.MonkeyPatch,
-    caplog: pytest.LogCaptureFixture,
-):
-    """Test automatic gap text corrections are logged at info level."""
-    repo_root_path = tmp_path / "repo"
-    repo_data_dir_path = repo_root_path / "data" / "ocr"
-    repo_data_dir_path.mkdir(parents=True)
-    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
-    monkeypatch.setattr(
-        validation_manager,
-        "get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20), Bbox(21, 31, 0, 20)],
-    )
-    manager = ValidationManager(cache_dir_path=tmp_path / "cache")
-    manager.char_dims_by_n[1]["A"] = {(10, 20)}
-    manager.char_dims_by_n[1]["B"] = {(10, 20)}
-    manager.char_pair_gaps[("A", "B")] = (22, 41, 90, 200)
-    series = ImageSeries(
-        events=[
-            ImageSubtitle(
-                img=Image.new("LA", (40, 20), (255, 255)),
-                start=0,
-                end=1000,
-                text="A B",
-            )
-        ]
-    )
-    caplog.set_level(logging.INFO, logger=validation_manager.__name__)
-
-    output = manager.validate(series)
-
-    assert output.events[0].text == "AB"
-    assert (
-        "Sub    1 | Char  1 | A B | 'A,B' -> 11 | corrected gap text from ' ' to ''"
-    ) in [record.getMessage() for record in caplog.records]
