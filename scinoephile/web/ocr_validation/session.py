@@ -115,8 +115,8 @@ class OcrValidationSession:
         dir_path = Path(dir_path).resolve()
         if not dir_path.is_dir():
             raise ScinoephileError(f"Expected {dir_path} to be a directory.")
-        if not (dir_path / "index.html").exists():
-            raise ScinoephileError(f"Expected {dir_path / 'index.html'} to exist.")
+        if not (dir_path / "index.html").is_file():
+            raise ScinoephileError(f"Expected {dir_path / 'index.html'} to be a file.")
 
         entries = load_html_entries(dir_path)
         series = ImageSeries.load(dir_path)

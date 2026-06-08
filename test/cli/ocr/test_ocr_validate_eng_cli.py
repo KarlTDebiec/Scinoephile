@@ -10,6 +10,7 @@ import pytest
 
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
 from scinoephile.common.testing import run_cli_with_args
+from scinoephile.core import ScinoephileError
 from scinoephile.image.subtitles import ImageSeries
 
 
@@ -287,6 +288,41 @@ def test_ocr_validate_eng_cli_web_rejects_sup_input(
 
     captured = capsys.readouterr()
     assert "must be a directory when --interactive is set" in captured.err
+
+
+def test_ocr_validate_eng_cli_web_delegates_image_dir_validation(
+    capsys: pytest.CaptureFixture[str],
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test web mode lets the session validate OCR image directory contents.
+
+    Arguments:
+        capsys: pytest stdout and stderr capture fixture
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+    """
+    infile_path = tmp_path / "image"
+    infile_path.mkdir()
+
+    def fake_session_from_dir_path(*args: object, **kwargs: object) -> object:
+        """Raise the session-level validation error."""
+        raise ScinoephileError("session checked OCR image directory")
+
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.OcrValidationSession.from_dir_path",
+        fake_session_from_dir_path,
+    )
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            OcrValidateCli,
+            f"--language eng --infile {infile_path} --interactive "
+            f"--outfile {tmp_path / 'validated.srt'}",
+        )
+
+    captured = capsys.readouterr()
+    assert "session checked OCR image directory" in captured.err
 
 
 def test_ocr_validate_eng_cli_web_reports_missing_dependency(

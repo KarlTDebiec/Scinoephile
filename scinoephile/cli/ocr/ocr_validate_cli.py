@@ -198,10 +198,6 @@ class OcrValidateCli(ScinoephileCliBase):
                 parser.error(
                     f"{infile_path} must be a directory when --interactive is set"
                 )
-            if not (infile_path / "index.html").is_file():
-                parser.error(
-                    f"{infile_path} must contain index.html when --interactive is set"
-                )
             try:
                 session = OcrValidationSession.from_dir_path(
                     infile_path,

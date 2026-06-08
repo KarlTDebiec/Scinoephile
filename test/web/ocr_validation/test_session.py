@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox import Bbox
 from scinoephile.web.ocr_validation.concerns import (
     CharDimsConcern,
@@ -38,6 +39,16 @@ def test_session_loads_rows_from_html_index(tmp_path: Path):
     assert rows[0].image_width == 2
     assert rows[0].image_height == 2
     assert rows[0].text == "recognized"
+
+
+def test_session_requires_index_html_file(tmp_path: Path):
+    """Test session construction rejects a non-file index.html path."""
+    html_dir_path = tmp_path / "image"
+    html_dir_path.mkdir()
+    (html_dir_path / "index.html").mkdir()
+
+    with pytest.raises(ScinoephileError, match="Expected .*index\\.html to be a file"):
+        OcrValidationSession.from_dir_path(html_dir_path)
 
 
 def test_concern_kind_excludes_done_state():
