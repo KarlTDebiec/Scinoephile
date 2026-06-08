@@ -9,6 +9,7 @@ from pathlib import Path
 
 from scinoephile.common import package_root
 from scinoephile.common.validation import val_input_dir_path, val_output_dir_path
+from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.text import whitespace_chars
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
@@ -60,13 +61,55 @@ class ValidationManager:
       * Lower bound for 'tab' characters
     """
 
-    def __init__(  # noqa: PLR0912
+    def __init__(
         self,
         *,
         cache_dir_path: Path | str | None = None,
         dev: bool = False,
     ):
         """Initialize.
+
+        Arguments:
+            cache_dir_path: cache directory for local OCR validation data
+            dev: whether validation data updates should write to repo data
+        """
+        try:
+            self._init_data(cache_dir_path, dev)
+        except ScinoephileError:
+            raise
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(str(exc)) from exc
+
+    def validate(
+        self,
+        series: ImageSeries,
+    ) -> ImageSeries:
+        """Validate all subtitles in an image series.
+
+        Arguments:
+            series: image series to validate
+        Returns:
+            validated image series
+        """
+        messages = []
+        events = []
+        for sub_idx, sub in enumerate(series.events):
+            sub_messages = self._validate_sub(sub, sub_idx)
+            messages.extend(sub_messages)
+            events.append(
+                ImageSubtitle(img=sub.img, start=sub.start, end=sub.end, text=sub.text)
+            )
+        output_series = ImageSeries(events=events)
+        for message in messages:
+            logger.warning(message)
+        return output_series
+
+    def _init_data(  # noqa: PLR0912
+        self,
+        cache_dir_path: Path | str | None,
+        dev: bool,
+    ):
+        """Initialize OCR validation data.
 
         Arguments:
             cache_dir_path: cache directory for local OCR validation data
@@ -134,30 +177,6 @@ class ValidationManager:
             if file_path.exists():
                 self.cache_char_pair_gaps = load_char_pair_gaps(file_path)
                 self.char_pair_gaps.update(self.cache_char_pair_gaps)
-
-    def validate(
-        self,
-        series: ImageSeries,
-    ) -> ImageSeries:
-        """Validate all subtitles in an image series.
-
-        Arguments:
-            series: image series to validate
-        Returns:
-            validated image series
-        """
-        messages = []
-        events = []
-        for sub_idx, sub in enumerate(series.events):
-            sub_messages = self._validate_sub(sub, sub_idx)
-            messages.extend(sub_messages)
-            events.append(
-                ImageSubtitle(img=sub.img, start=sub.start, end=sub.end, text=sub.text)
-            )
-        output_series = ImageSeries(events=events)
-        for message in messages:
-            logger.warning(message)
-        return output_series
 
     def _validate_sub(self, sub: ImageSubtitle, sub_idx: int) -> list[str]:
         """Validate per-character bboxes for a subtitle.

@@ -13,7 +13,10 @@ from .session import OcrValidationSession
 if TYPE_CHECKING:
     from flask import Flask
 
-__all__ = ["create_app"]
+__all__ = [
+    "create_app",
+    "run_app",
+]
 
 _WEB_EXTRA_MESSAGE = (
     "OCR validation web UI support requires optional web dependencies. "
@@ -42,3 +45,21 @@ def create_app(session: OcrValidationSession) -> Flask:
     app.config["OCR_VALIDATION_SESSION"] = session
     register_routes(app)
     return app
+
+
+def run_app(session: OcrValidationSession, host: str, port: int):
+    """Run the OCR validation Flask app.
+
+    Arguments:
+        session: OCR validation session
+        host: host address to bind
+        port: port to bind
+    Raises:
+        ScinoephileError: if optional dependencies are missing or server startup fails
+    """
+    try:
+        create_app(session).run(host, port)
+    except ScinoephileError:
+        raise
+    except (OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc

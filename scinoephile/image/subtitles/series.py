@@ -198,20 +198,25 @@ class ImageSeries(Series):
             loaded series
         """
         try:
-            validated_path = val_input_dir_path(path)
-            return cls._load_html(
-                validated_path,
-                encoding=encoding,
-                errors=errors,
-            )
-        except (DirectoryNotFoundError, NotADirectoryError):
-            validated_path = val_input_path(path)
-            if format_ == "sup" or validated_path.suffix == ".sup":
-                return cls._load_sup(validated_path)
-            raise ValueError(
-                f"{cls.__name__}'s path must be path to a directory containing one "
-                "index.html file and N png files, or a .sup file."
-            )
+            try:
+                validated_path = val_input_dir_path(path)
+                return cls._load_html(
+                    validated_path,
+                    encoding=encoding,
+                    errors=errors,
+                )
+            except (DirectoryNotFoundError, NotADirectoryError):
+                validated_path = val_input_path(path)
+                if format_ == "sup" or validated_path.suffix == ".sup":
+                    return cls._load_sup(validated_path)
+                raise ScinoephileError(
+                    f"{cls.__name__}'s path must be path to a directory containing "
+                    "one index.html file and N png files, or a .sup file."
+                )
+        except ScinoephileError:
+            raise
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(str(exc)) from exc
 
     @override
     def _init_blocks(self):

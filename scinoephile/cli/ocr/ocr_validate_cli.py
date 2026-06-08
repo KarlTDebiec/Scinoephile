@@ -21,8 +21,12 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, write_series
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.workflows.ocr_validation import run_ocr_validation_web, validate_ocr
+from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
+from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
+from scinoephile.web.ocr_validation import OcrValidationSession
+from scinoephile.web.ocr_validation.app import run_app
 
 __all__ = ["OcrValidateCli"]
 
@@ -231,14 +235,13 @@ class OcrValidateCli(ScinoephileCliBase):
             web_args: web server arguments
             dev: whether validation should write data updates to repo data
         """
-        run_ocr_validation_web(
+        session = OcrValidationSession.from_dir_path(
             infile_path,
-            outfile_path,
-            cache_dir_path,
-            host=web_args.host,
-            port=web_args.port,
+            outfile_path=outfile_path,
+            cache_dir_path=cache_dir_path,
             dev=dev,
         )
+        run_app(session, web_args.host, web_args.port)
 
     @staticmethod
     def _run_noninteractive_validation(
@@ -257,12 +260,11 @@ class OcrValidateCli(ScinoephileCliBase):
         Returns:
             validated image subtitle series
         """
-        return validate_ocr(
-            infile_path,
-            language,
-            cache_dir_path=cache_dir_path,
-            dev=dev,
-        )
+        series = ImageSeries.load(infile_path)
+        validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
+        if language == "eng":
+            return validate_eng_ocr(series, validation_manager)
+        return validate_zho_ocr(series, validation_manager)
 
 
 if __name__ == "__main__":

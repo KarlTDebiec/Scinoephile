@@ -4,10 +4,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 from PIL import Image
 
 from scinoephile.common.file import get_temp_directory_path
+from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -75,6 +78,19 @@ def test_load_html(
         assert event.end >= event.start
         assert event.img.size[0] > 0
         assert event.img.size[1] > 0
+
+
+def test_load_rejects_unsupported_input_file(tmp_path: Path):
+    """Test unsupported image subtitle input files raise user-facing errors.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    input_path = tmp_path / "subtitles.txt"
+    input_path.write_text("not image subtitles", encoding="utf-8")
+
+    with pytest.raises(ScinoephileError, match="directory containing one index.html"):
+        ImageSeries.load(input_path)
 
 
 def test_save_html(tiny_image_series: ImageSeries):

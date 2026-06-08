@@ -12,7 +12,7 @@ from typing import cast
 import pytest
 
 from scinoephile.core import ScinoephileError
-from scinoephile.web.ocr_validation.app import create_app
+from scinoephile.web.ocr_validation.app import create_app, run_app
 from scinoephile.web.ocr_validation.session import OcrValidationSession
 
 
@@ -50,6 +50,32 @@ def test_create_app_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
         create_app(cast(OcrValidationSession, object()))
 
     assert isinstance(excinfo.value.__cause__, ImportError)
+
+
+def test_run_app_wraps_server_errors(monkeypatch: pytest.MonkeyPatch):
+    """Test web app server errors are user-facing."""
+
+    class FakeApp:
+        """Fake Flask app."""
+
+        def run(self, host: str, port: int):
+            """Raise a server startup error.
+
+            Arguments:
+                host: Flask app host
+                port: Flask app port
+            """
+            raise OSError(f"cannot bind {host}:{port}")
+
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.app.create_app",
+        lambda session: FakeApp(),
+    )
+
+    with pytest.raises(ScinoephileError, match="cannot bind 127.0.0.1:5000") as excinfo:
+        run_app(cast(OcrValidationSession, object()), "127.0.0.1", 5000)
+
+    assert isinstance(excinfo.value.__cause__, OSError)
 
 
 def test_web_package_imports_flask_only_when_needed():

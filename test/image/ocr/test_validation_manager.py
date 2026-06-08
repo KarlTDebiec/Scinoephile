@@ -5,10 +5,12 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 
 import pytest
 from PIL import Image
 
+from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.ocr.validation import ValidationManager, validation_manager
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -164,6 +166,21 @@ def test_validation_manager_allows_new_custom_cache_dir(tmp_path, monkeypatch):
     assert (cache_dir_path / "char_dims_1.csv").read_text(encoding="utf-8") == (
         "A,10,20\n"
     )
+
+
+def test_validation_manager_wraps_cache_path_errors(tmp_path: Path):
+    """Test cache path validation errors are user-facing.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    cache_dir_path = tmp_path / "cache-file"
+    cache_dir_path.write_text("not a directory", encoding="utf-8")
+
+    with pytest.raises(ScinoephileError) as excinfo:
+        ValidationManager(cache_dir_path=cache_dir_path)
+
+    assert isinstance(excinfo.value.__cause__, OSError)
 
 
 def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeypatch):

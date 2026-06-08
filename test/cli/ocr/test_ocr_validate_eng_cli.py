@@ -42,22 +42,61 @@ def test_ocr_validate_eng_cli(
     else:
         infile_path.mkdir()
 
-    validate_calls: list[tuple[Path, str, Path, bool]] = []
+    load_paths: list[Path] = []
+    manager_instances: list[object] = []
+    manager_calls: list[tuple[Path | str | None, bool]] = []
+    validate_calls: list[tuple[ImageSeries, object]] = []
 
-    def fake_validate_ocr(
-        path: Path,
-        language: str,
-        *,
-        cache_dir_path: Path,
-        dev: bool = False,
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def __init__(
+            self,
+            *,
+            cache_dir_path: Path | str | None = None,
+            dev: bool = False,
+        ):
+            """Initialize."""
+            manager_instances.append(self)
+            manager_calls.append((cache_dir_path, dev))
+
+    def fake_load(path: Path) -> ImageSeries:
+        """Fake image subtitle loading.
+
+        Arguments:
+            path: image subtitle input path
+        Returns:
+            configured image subtitle series
+        """
+        load_paths.append(path)
+        return tiny_image_series
+
+    def fake_validate_eng_ocr(
+        series: ImageSeries,
+        validation_manager: object,
     ) -> ImageSeries:
-        """Fake OCR validation workflow."""
-        validate_calls.append((path, language, cache_dir_path, dev))
+        """Fake English OCR validation.
+
+        Arguments:
+            series: ImageSeries to validate
+            validation_manager: validation manager to use
+        Returns:
+            configured validated image series
+        """
+        validate_calls.append((series, validation_manager))
         return tiny_image_series
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
-        fake_validate_ocr,
+        "scinoephile.cli.ocr.ocr_validate_cli.ImageSeries.load",
+        fake_load,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_eng_ocr",
+        fake_validate_eng_ocr,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.ValidationManager",
+        FakeValidationManager,
     )
 
     outfile_path = tmp_path / "validated.srt"
@@ -68,7 +107,9 @@ def test_ocr_validate_eng_cli(
         f"--cache-dir {cache_dir_path}",
     )
 
-    assert validate_calls == [(infile_path, "eng", cache_dir_path.resolve(), False)]
+    assert load_paths == [infile_path]
+    assert manager_calls == [(cache_dir_path.resolve(), False)]
+    assert validate_calls == [(tiny_image_series, manager_instances[0])]
     output = outfile_path.read_text(encoding="utf-8")
     assert "recognized" in output
     assert "validated" in output
@@ -86,22 +127,59 @@ def test_ocr_validate_eng_cli_dev(
         tmp_path: pytest temporary path fixture
         tiny_image_series: small image subtitle series
     """
-    validate_calls: list[tuple[Path, str, Path, bool]] = []
+    manager_instances: list[object] = []
+    manager_calls: list[tuple[Path | str | None, bool]] = []
+    validate_calls: list[tuple[ImageSeries, object]] = []
 
-    def fake_validate_ocr(
-        path: Path,
-        language: str,
-        *,
-        cache_dir_path: Path,
-        dev: bool = False,
-    ) -> ImageSeries:
-        """Fake OCR validation workflow."""
-        validate_calls.append((path, language, cache_dir_path, dev))
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def __init__(
+            self,
+            *,
+            cache_dir_path: Path | str | None = None,
+            dev: bool = False,
+        ):
+            """Initialize."""
+            manager_instances.append(self)
+            manager_calls.append((cache_dir_path, dev))
+
+    def fake_load(_path: Path) -> ImageSeries:
+        """Fake image subtitle loading.
+
+        Arguments:
+            _path: image subtitle input path
+        Returns:
+            configured image subtitle series
+        """
         return tiny_image_series
 
+    def mock_validate_eng_ocr(
+        series: ImageSeries,
+        validation_manager: object,
+    ) -> ImageSeries:
+        """Mock English OCR validation.
+
+        Arguments:
+            series: ImageSeries to validate
+            validation_manager: validation manager to use
+        Returns:
+            input image series
+        """
+        validate_calls.append((series, validation_manager))
+        return series
+
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
-        fake_validate_ocr,
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_eng_ocr",
+        mock_validate_eng_ocr,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.ImageSeries.load",
+        fake_load,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.ValidationManager",
+        FakeValidationManager,
     )
     full_input_path = tmp_path / "image"
     full_input_path.mkdir()
@@ -114,7 +192,8 @@ def test_ocr_validate_eng_cli_dev(
         f"--cache-dir {cache_dir_path} --dev",
     )
 
-    assert validate_calls == [(full_input_path, "eng", cache_dir_path.resolve(), True)]
+    assert manager_calls == [(cache_dir_path.resolve(), True)]
+    assert validate_calls == [(tiny_image_series, manager_instances[0])]
 
 
 def test_ocr_validate_eng_cli_web(
@@ -130,23 +209,31 @@ def test_ocr_validate_eng_cli_web(
     infile_path = tmp_path / "image"
     infile_path.mkdir()
     (infile_path / "index.html").write_text("<html></html>", encoding="utf-8")
-    run_calls: list[tuple[Path, Path, Path, str, int, bool]] = []
+    run_calls = []
+    session = object()
 
-    def fake_run_ocr_validation_web(
-        path: Path,
-        outfile_path: Path,
-        cache_dir_path: Path,
+    def fake_session_from_dir_path(
+        dir_path: Path,
         *,
-        host: str,
-        port: int,
-        dev: bool,
-    ):
-        """Capture web validation workflow arguments."""
-        run_calls.append((path, outfile_path, cache_dir_path, host, port, dev))
+        outfile_path: Path | None = None,
+        cache_dir_path: Path | None = None,
+        dev: bool = False,
+    ) -> object:
+        """Capture web session construction arguments."""
+        run_calls.append(("from_dir_path", dir_path, outfile_path, cache_dir_path, dev))
+        return session
+
+    def fake_run_app(value: object, host: str, port: int):
+        """Capture web app run arguments."""
+        run_calls.append(("run_app", value, host, port))
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.run_ocr_validation_web",
-        fake_run_ocr_validation_web,
+        "scinoephile.cli.ocr.ocr_validate_cli.OcrValidationSession.from_dir_path",
+        fake_session_from_dir_path,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.run_app",
+        fake_run_app,
     )
 
     outfile_path = tmp_path / "validated.srt"
@@ -158,7 +245,8 @@ def test_ocr_validate_eng_cli_web(
     )
 
     assert run_calls == [
-        (infile_path, outfile_path, cache_dir_path.resolve(), "127.0.0.1", 5000, False)
+        ("from_dir_path", infile_path, outfile_path, cache_dir_path.resolve(), False),
+        ("run_app", session, "127.0.0.1", 5000),
     ]
 
 
@@ -202,13 +290,13 @@ def test_ocr_validate_eng_cli_web_delegates_image_dir_validation(
     infile_path = tmp_path / "image"
     infile_path.mkdir()
 
-    def fake_run_ocr_validation_web(*args: object, **kwargs: object):
-        """Raise the workflow-level validation error."""
+    def fake_session_from_dir_path(*args: object, **kwargs: object) -> object:
+        """Raise the session-level validation error."""
         raise ScinoephileError("session checked OCR image directory")
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.run_ocr_validation_web",
-        fake_run_ocr_validation_web,
+        "scinoephile.cli.ocr.ocr_validate_cli.OcrValidationSession.from_dir_path",
+        fake_session_from_dir_path,
     )
 
     with pytest.raises(SystemExit, match="2"):
@@ -222,12 +310,12 @@ def test_ocr_validate_eng_cli_web_delegates_image_dir_validation(
     assert "session checked OCR image directory" in captured.err
 
 
-def test_ocr_validate_eng_cli_web_reports_missing_dependency(
+def test_ocr_validate_eng_cli_web_reports_run_error(
     capsys: pytest.CaptureFixture[str],
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test OCR validate web mode maps missing Flask to a parser error.
+    """Test OCR validate web mode maps app run errors to a parser error.
 
     Arguments:
         capsys: pytest stdout and stderr capture fixture
@@ -239,10 +327,12 @@ def test_ocr_validate_eng_cli_web_reports_missing_dependency(
     (infile_path / "index.html").write_text("<html></html>", encoding="utf-8")
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.run_ocr_validation_web",
-        lambda *args, **kwargs: (_ for _ in ()).throw(
-            ScinoephileError("Install with 'web' extra")
-        ),
+        "scinoephile.cli.ocr.ocr_validate_cli.OcrValidationSession.from_dir_path",
+        lambda *args, **kwargs: object(),
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.run_app",
+        lambda *args, **kwargs: (_ for _ in ()).throw(ScinoephileError("port in use")),
     )
 
     with pytest.raises(SystemExit, match="2"):
@@ -253,4 +343,4 @@ def test_ocr_validate_eng_cli_web_reports_missing_dependency(
         )
 
     captured = capsys.readouterr()
-    assert "Install with 'web' extra" in captured.err
+    assert "port in use" in captured.err
