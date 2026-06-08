@@ -228,7 +228,6 @@ def test_ocr_validate_zho_cli_web(
 
         def run(
             self,
-            *,
             host: str = "127.0.0.1",
             port: int = 5000,
         ):
