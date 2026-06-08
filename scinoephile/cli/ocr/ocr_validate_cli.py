@@ -189,15 +189,15 @@ class OcrValidateCli(ScinoephileCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
+        if interactive and not infile_path.is_dir():
+            parser.error(f"{infile_path} must be a directory when --interactive is set")
 
+        # Read inputs
         if interactive:
-            if not infile_path.is_dir():
-                parser.error(
-                    f"{infile_path} must be a directory when --interactive is set"
-                )
             try:
                 session = OcrValidationSession.from_dir_path(
                     infile_path,
@@ -205,28 +205,33 @@ class OcrValidateCli(ScinoephileCliBase):
                     cache_dir_path=cache_dir_path,
                     dev=dev,
                 )
-                create_app(session).run(host=web_args.host, port=web_args.port)
             except (
                 FileNotFoundError,
-                ImportError,
                 NotADirectoryError,
                 ScinoephileError,
                 ValueError,
             ) as exc:
                 parser.error(str(exc))
-            return
+        else:
+            try:
+                series = ImageSeries.load(infile_path)
+            except (
+                DirectoryNotFoundError,
+                FileNotFoundError,
+                NotADirectoryError,
+                NotAFileError,
+                ScinoephileError,
+                ValueError,
+            ) as exc:
+                parser.error(str(exc))
 
-        try:
-            series = ImageSeries.load(infile_path)
-        except (
-            DirectoryNotFoundError,
-            FileNotFoundError,
-            NotADirectoryError,
-            NotAFileError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        # Perform operations
+        if interactive:
+            try:
+                create_app(session).run(host=web_args.host, port=web_args.port)
+            except (ImportError, ScinoephileError, ValueError) as exc:
+                parser.error(str(exc))
+            return
 
         validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
         if language == "eng":
@@ -234,6 +239,7 @@ class OcrValidateCli(ScinoephileCliBase):
         else:
             validated = validate_zho_ocr(series, validation_manager)
 
+        # Write outputs
         write_series(parser, validated, outfile_path, overwrite)
 
 
