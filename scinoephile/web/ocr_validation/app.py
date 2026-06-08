@@ -4,12 +4,19 @@
 
 from __future__ import annotations
 
-from flask import Flask
+from typing import TYPE_CHECKING
 
-from .routes import register_routes
 from .session import OcrValidationSession
 
+if TYPE_CHECKING:
+    from flask import Flask
+
 __all__ = ["create_app"]
+
+_WEB_EXTRA_MESSAGE = (
+    "OCR validation web UI support requires optional web dependencies. "
+    "Install scinoephile with the 'web' extra."
+)
 
 
 def create_app(session: OcrValidationSession) -> Flask:
@@ -19,7 +26,16 @@ def create_app(session: OcrValidationSession) -> Flask:
         session: OCR validation session
     Returns:
         Flask app
+    Raises:
+        ImportError: if optional web dependencies are not installed
     """
+    try:
+        from flask import Flask  # noqa: PLC0415
+
+        from .routes import register_routes  # noqa: PLC0415
+    except ImportError as exc:
+        raise ImportError(_WEB_EXTRA_MESSAGE) from exc
+
     app = Flask(__name__)
     app.config["OCR_VALIDATION_SESSION"] = session
     register_routes(app)

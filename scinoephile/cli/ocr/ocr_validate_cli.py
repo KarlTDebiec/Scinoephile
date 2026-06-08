@@ -202,13 +202,22 @@ class OcrValidateCli(ScinoephileCliBase):
                 parser.error(
                     f"{infile_path} must contain index.html when --interactive is set"
                 )
-            session = OcrValidationSession.from_dir_path(
-                infile_path,
-                outfile_path=outfile_path,
-                cache_dir_path=cache_dir_path,
-                dev=dev,
-            )
-            create_app(session).run(host=web_args.host, port=web_args.port)
+            try:
+                session = OcrValidationSession.from_dir_path(
+                    infile_path,
+                    outfile_path=outfile_path,
+                    cache_dir_path=cache_dir_path,
+                    dev=dev,
+                )
+                create_app(session).run(host=web_args.host, port=web_args.port)
+            except (
+                FileNotFoundError,
+                ImportError,
+                NotADirectoryError,
+                ScinoephileError,
+                ValueError,
+            ) as exc:
+                parser.error(str(exc))
             return
 
         try:

@@ -287,3 +287,39 @@ def test_ocr_validate_eng_cli_web_rejects_sup_input(
 
     captured = capsys.readouterr()
     assert "must be a directory when --interactive is set" in captured.err
+
+
+def test_ocr_validate_eng_cli_web_reports_missing_dependency(
+    capsys: pytest.CaptureFixture[str],
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test OCR validate web mode maps missing Flask to a parser error.
+
+    Arguments:
+        capsys: pytest stdout and stderr capture fixture
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+    """
+    infile_path = tmp_path / "image"
+    infile_path.mkdir()
+    (infile_path / "index.html").write_text("<html></html>", encoding="utf-8")
+
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.OcrValidationSession.from_dir_path",
+        lambda *args, **kwargs: object(),
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.create_app",
+        lambda session: (_ for _ in ()).throw(ImportError("Install with 'web' extra")),
+    )
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            OcrValidateCli,
+            f"--language eng --infile {infile_path} --interactive "
+            f"--outfile {tmp_path / 'validated.srt'}",
+        )
+
+    captured = capsys.readouterr()
+    assert "Install with 'web' extra" in captured.err
