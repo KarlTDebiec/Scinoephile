@@ -21,7 +21,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.workflows.ocr_validation import validate_ocr_from_path
+from scinoephile.workflows.ocr_validation import validate_ocr
 
 __all__ = ["OcrValidateCli"]
 
@@ -192,7 +192,7 @@ class OcrValidateCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            validate_ocr_from_path(
+            validate_ocr(
                 infile_path,
                 language,
                 outfile_path,

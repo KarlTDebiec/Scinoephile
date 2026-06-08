@@ -8,8 +8,9 @@ from pathlib import Path
 
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
+from scinoephile.web.ocr_validation.html_index import load_html_entries
 from scinoephile.workflows import ocr_validation
-from scinoephile.workflows.ocr_validation import validate_ocr_from_path
+from scinoephile.workflows.ocr_validation import validate_ocr
 
 
 def _series_with_texts(texts: list[str]) -> Series:
@@ -30,13 +31,10 @@ def _series_with_texts(texts: list[str]) -> Series:
 
 def test_ocr_validation_exports_public_workflow_api():
     """Test OCR validation exposes only its public workflow operation."""
-    assert ocr_validation.__all__ == [
-        "validate_ocr",
-        "validate_ocr_from_path",
-    ]
+    assert ocr_validation.__all__ == ["validate_ocr"]
 
 
-def test_validate_ocr_from_path_runs_noninteractive_validation(
+def test_validate_ocr_runs_noninteractive_validation(
     monkeypatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
@@ -90,7 +88,7 @@ def test_validate_ocr_from_path_runs_noninteractive_validation(
         fake_validate_eng_ocr,
     )
 
-    validated = validate_ocr_from_path(
+    validated = validate_ocr(
         infile_path,
         "eng",
         outfile_path,
@@ -109,7 +107,69 @@ def test_validate_ocr_from_path_runs_noninteractive_validation(
     assert "validated" in outfile_path.read_text(encoding="utf-8")
 
 
-def test_validate_ocr_from_path_runs_interactive_validation(
+def test_validate_ocr_applies_text_series_to_image_dir(
+    monkeypatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test OCR validation can apply text to an image subtitle directory."""
+    infile_path = tmp_path / "image"
+    tiny_image_series.save(infile_path)
+    outfile_path = tmp_path / "validated.srt"
+    text_series = _series_with_texts(["fused 1", "fused 2"])
+    manager_instances: list[object] = []
+    validate_calls: list[tuple[list[str], object]] = []
+
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def __init__(
+            self,
+            *,
+            cache_dir_path: Path | str | None = None,
+            dev: bool = False,
+        ):
+            """Initialize."""
+            manager_instances.append(self)
+
+    def fake_validate_eng_ocr(
+        series: ImageSeries,
+        validation_manager: object,
+    ) -> Series:
+        """Fake English OCR validation."""
+        validate_calls.append(
+            ([subtitle.text for subtitle in series], validation_manager)
+        )
+        return _series_with_texts(["validated 1", "validated 2"])
+
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_validation.ValidationManager",
+        FakeValidationManager,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_validation.validate_eng_ocr",
+        fake_validate_eng_ocr,
+    )
+
+    validated = validate_ocr(
+        infile_path,
+        "eng",
+        outfile_path,
+        text_series=text_series,
+    )
+
+    assert validate_calls == [(["fused 1", "fused 2"], manager_instances[0])]
+    assert [entry.text for entry in load_html_entries(infile_path)] == [
+        "fused 1",
+        "fused 2",
+    ]
+    assert [subtitle.text for subtitle in validated] == [
+        "validated 1",
+        "validated 2",
+    ]
+
+
+def test_validate_ocr_runs_interactive_validation(
     monkeypatch,
     tmp_path: Path,
 ):
@@ -146,7 +206,7 @@ def test_validate_ocr_from_path_runs_interactive_validation(
         fake_run_app,
     )
 
-    validated = validate_ocr_from_path(
+    validated = validate_ocr(
         infile_path,
         "zho",
         outfile_path,

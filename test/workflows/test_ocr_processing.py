@@ -408,11 +408,11 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
     validate_calls: list[dict[str, object]] = []
 
     def fake_validate_ocr(
-        series: ImageSeries,
+        infile_path: Path,
         language: str,
         outfile_path: Path,
         *,
-        image_dir_path: Path | None = None,
+        text_series: Series | None = None,
         cache_dir_path: Path | str | None = None,
         interactive: bool = False,
         dev: bool = False,
@@ -421,12 +421,13 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
         port: int = 5000,
     ) -> Series:
         """Fake web validation by writing the expected validation output."""
+        assert text_series is not None
         validate_calls.append(
             {
-                "texts": [subtitle.text for subtitle in series],
+                "infile_path": infile_path,
                 "language": language,
                 "outfile_path": outfile_path,
-                "image_dir_path": image_dir_path,
+                "texts": [subtitle.text for subtitle in text_series],
                 "cache_dir_path": cache_dir_path,
                 "interactive": interactive,
                 "dev": dev,
@@ -482,10 +483,10 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
     validate_path = output_dir_path / "fuse_clean_validate.srt"
     assert validate_calls == [
         {
-            "texts": ["fused 1…", "fused 2…"],
+            "infile_path": output_dir_path / "image",
             "language": "eng",
             "outfile_path": validate_path,
-            "image_dir_path": output_dir_path / "image",
+            "texts": ["fused 1…", "fused 2…"],
             "cache_dir_path": None,
             "interactive": True,
             "dev": True,
@@ -529,7 +530,10 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
         ]
     )
     existing_image_series.save(image_dir_path)
-    original_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
+    original_images = {
+        image_path.name: image_path.read_bytes()
+        for image_path in image_dir_path.glob("*.png")
+    }
     validate_texts: list[list[str]] = []
     validate_managers: list[object] = []
 
@@ -572,8 +576,14 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
 
     assert validate_texts == [["fused 1…", "fused 2…"]]
     assert len(validate_managers) == 1
+    current_images = {
+        image_path.name: image_path.read_bytes()
+        for image_path in image_dir_path.glob("*.png")
+    }
+    assert current_images == original_images
     current_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
-    assert current_index == original_index
+    assert "fused 1…" in current_index
+    assert "fused 2…" in current_index
 
 
 def test_process_zho_ocr_runs_lens_paddle_and_fusion(

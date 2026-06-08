@@ -41,7 +41,7 @@ def test_ocr_validate_eng_cli(
 
     validate_calls: list[dict[str, object]] = []
 
-    def fake_validate_ocr_from_path(
+    def fake_validate_ocr(
         infile_path_arg: Path,
         language: str,
         outfile_path_arg: Path,
@@ -70,8 +70,8 @@ def test_ocr_validate_eng_cli(
         outfile_path_arg.write_text("validated", encoding="utf-8")
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr_from_path",
-        fake_validate_ocr_from_path,
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
+        fake_validate_ocr,
     )
 
     outfile_path = tmp_path / "validated.srt"
@@ -110,7 +110,7 @@ def test_ocr_validate_eng_cli_dev(
     """
     validate_calls: list[dict[str, object]] = []
 
-    def fake_validate_ocr_from_path(
+    def fake_validate_ocr(
         infile_path: Path,
         language: str,
         outfile_path: Path,
@@ -138,8 +138,8 @@ def test_ocr_validate_eng_cli_dev(
         )
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr_from_path",
-        fake_validate_ocr_from_path,
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
+        fake_validate_ocr,
     )
     full_input_path = tmp_path / "image"
     full_input_path.mkdir()
@@ -182,7 +182,7 @@ def test_ocr_validate_eng_cli_web(
     (infile_path / "index.html").write_text("<html></html>", encoding="utf-8")
     validate_calls: list[dict[str, object]] = []
 
-    def fake_validate_ocr_from_path(
+    def fake_validate_ocr(
         infile_path_arg: Path,
         language: str,
         outfile_path_arg: Path,
@@ -210,8 +210,8 @@ def test_ocr_validate_eng_cli_web(
         )
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr_from_path",
-        fake_validate_ocr_from_path,
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
+        fake_validate_ocr,
     )
 
     outfile_path = tmp_path / "validated.srt"
@@ -277,13 +277,13 @@ def test_ocr_validate_eng_cli_web_delegates_image_dir_validation(
     infile_path = tmp_path / "image"
     infile_path.mkdir()
 
-    def fake_validate_ocr_from_path(*args: object, **kwargs: object):
+    def fake_validate_ocr(*args: object, **kwargs: object):
         """Raise the workflow-level validation error."""
         raise ScinoephileError("session checked OCR image directory")
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr_from_path",
-        fake_validate_ocr_from_path,
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
+        fake_validate_ocr,
     )
 
     with pytest.raises(SystemExit, match="2"):
@@ -314,7 +314,7 @@ def test_ocr_validate_eng_cli_web_reports_run_error(
     (infile_path / "index.html").write_text("<html></html>", encoding="utf-8")
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr_from_path",
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_ocr",
         lambda *args, **kwargs: (_ for _ in ()).throw(ScinoephileError("port in use")),
     )
 
