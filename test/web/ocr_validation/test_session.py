@@ -73,7 +73,10 @@ def test_session_wraps_image_series_load_errors(
         fake_load,
     )
 
-    with pytest.raises(ScinoephileError, match="could not be loaded") as excinfo:
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to initialize OCR validation session from .*could not be loaded",
+    ) as excinfo:
         OcrValidationSession.from_dir_path(html_dir_path)
 
     assert isinstance(excinfo.value.__cause__, ValueError)

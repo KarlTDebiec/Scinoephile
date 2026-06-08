@@ -72,7 +72,13 @@ def test_run_app_wraps_server_errors(monkeypatch: pytest.MonkeyPatch):
         lambda session: FakeApp(),
     )
 
-    with pytest.raises(ScinoephileError, match="cannot bind 127.0.0.1:5000") as excinfo:
+    with pytest.raises(
+        ScinoephileError,
+        match=(
+            "Unable to run OCR validation web app on 127.0.0.1:5000: "
+            "cannot bind 127.0.0.1:5000"
+        ),
+    ) as excinfo:
         run_app(cast(OcrValidationSession, object()), "127.0.0.1", 5000)
 
     assert isinstance(excinfo.value.__cause__, OSError)

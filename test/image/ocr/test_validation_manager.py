@@ -177,7 +177,10 @@ def test_validation_manager_wraps_cache_path_errors(tmp_path: Path):
     cache_dir_path = tmp_path / "cache-file"
     cache_dir_path.write_text("not a directory", encoding="utf-8")
 
-    with pytest.raises(ScinoephileError) as excinfo:
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to initialize OCR validation data",
+    ) as excinfo:
         ValidationManager(cache_dir_path=cache_dir_path)
 
     assert isinstance(excinfo.value.__cause__, OSError)

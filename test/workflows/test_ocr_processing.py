@@ -168,7 +168,12 @@ def test_process_ocr_wraps_filesystem_errors(
         fake_load,
     )
 
-    with pytest.raises(ScinoephileError, match="source.sup missing") as excinfo:
+    with pytest.raises(
+        ScinoephileError,
+        match=(
+            "Unable to load OCR image subtitles from .*source.sup.*source.sup missing"
+        ),
+    ) as excinfo:
         process_ocr(source_path, output_dir_path, validate=False)
 
     assert isinstance(excinfo.value.__cause__, FileNotFoundError)

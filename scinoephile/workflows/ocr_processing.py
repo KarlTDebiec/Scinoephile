@@ -300,7 +300,9 @@ def _ensure_output_dir(output_dir_path: Path):
     try:
         output_dir_path.mkdir(parents=True, exist_ok=True)
     except OSError as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to create OCR output directory {output_dir_path}: {exc}"
+        ) from exc
     logger.info(f"Created output directory: {output_dir_path}")
 
 
@@ -325,7 +327,9 @@ def _export_image_series(
         try:
             image_series.save(image_dir_path)
         except (OSError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
+            raise ScinoephileError(
+                f"Unable to save source image subtitles to {image_dir_path}: {exc}"
+            ) from exc
     output_paths["image"] = image_dir_path
 
 
@@ -347,7 +351,9 @@ def _get_media_subtitle_stream(
     try:
         streams = get_subtitle_streams(infile_path)
     except (OSError, RuntimeError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to inspect subtitle streams in {infile_path}: {exc}"
+        ) from exc
 
     for stream in streams:
         if stream.index == stream_index:
@@ -386,7 +392,9 @@ def _load_image_series(
     except ScinoephileError:
         raise
     except (OSError, RuntimeError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to load OCR image subtitles from {infile_path}: {exc}"
+        ) from exc
 
 
 def _load_or_create_eng_clean_output(
@@ -561,7 +569,9 @@ def _load_or_create_series_output(
     except ScinoephileError:
         raise
     except (OSError, RuntimeError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to load or create {display_name} at {output_path}: {exc}"
+        ) from exc
     output_paths[output_name] = output_path
     return series
 
@@ -624,7 +634,10 @@ def _validate_fuse_clean_output(
         try:
             Series.load(validate_path)
         except (OSError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
+            raise ScinoephileError(
+                f"Unable to load existing validated OCR output from "
+                f"{validate_path}: {exc}"
+            ) from exc
         output_paths["fuse_clean_validate"] = validate_path
         return
 

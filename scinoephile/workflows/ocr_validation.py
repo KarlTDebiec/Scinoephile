@@ -76,7 +76,9 @@ def validate_ocr(
     except ScinoephileError:
         raise
     except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to load OCR image subtitles from {infile_path}: {exc}"
+        ) from exc
     validated = _run_noninteractive_validation(
         image_series,
         cache_dir_path,
@@ -104,7 +106,9 @@ def _apply_text_series(infile_path: Path, text_series: Series):
     except ScinoephileError:
         raise
     except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to apply OCR text to image subtitle directory {infile_path}: {exc}"
+        ) from exc
 
 
 def _load_validated_series(outfile_path: Path) -> Series:
@@ -120,7 +124,9 @@ def _load_validated_series(outfile_path: Path) -> Series:
     except ScinoephileError:
         raise
     except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to load validated OCR output from {outfile_path}: {exc}"
+        ) from exc
 
 
 def _run_interactive_validation(
@@ -142,21 +148,19 @@ def _run_interactive_validation(
         port: OCR validation web UI port
     """
     try:
-        if isinstance(cache_dir_path, str):
-            session_cache_dir_path = Path(cache_dir_path)
-        else:
-            session_cache_dir_path = cache_dir_path
         session = OcrValidationSession.from_dir_path(
             image_dir_path,
             outfile_path=outfile_path,
-            cache_dir_path=session_cache_dir_path,
+            cache_dir_path=cache_dir_path,
             dev=dev,
         )
         run_app(session, host, port)
     except ScinoephileError:
         raise
     except (ImportError, OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to run interactive OCR validation for {image_dir_path}: {exc}"
+        ) from exc
 
 
 def _run_noninteractive_validation(
@@ -179,7 +183,9 @@ def _run_noninteractive_validation(
     except ScinoephileError:
         raise
     except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to run noninteractive OCR validation: {exc}"
+        ) from exc
 
 
 def _save_validated_series(series: Series, outfile_path: Path):
@@ -194,4 +200,6 @@ def _save_validated_series(series: Series, outfile_path: Path):
     except ScinoephileError:
         raise
     except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to save validated OCR output to {outfile_path}: {exc}"
+        ) from exc

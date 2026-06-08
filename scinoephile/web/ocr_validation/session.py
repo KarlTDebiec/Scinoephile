@@ -98,7 +98,7 @@ class OcrValidationSession:
         *,
         include_done_subtitles: bool = False,
         outfile_path: Path | None = None,
-        cache_dir_path: Path | None = None,
+        cache_dir_path: Path | str | None = None,
         dev: bool = False,
     ) -> Self:
         """Create a session from an OCR image directory.
@@ -135,7 +135,9 @@ class OcrValidationSession:
         except ScinoephileError:
             raise
         except (OSError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
+            raise ScinoephileError(
+                f"Unable to initialize OCR validation session from {dir_path}: {exc}"
+            ) from exc
 
     def subtitle_row(self, sub_idx: int) -> SubtitleRowView:
         """Return one subtitle row view model.

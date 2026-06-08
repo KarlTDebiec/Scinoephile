@@ -62,4 +62,6 @@ def run_app(session: OcrValidationSession, host: str, port: int):
     except ScinoephileError:
         raise
     except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
+        raise ScinoephileError(
+            f"Unable to run OCR validation web app on {host}:{port}: {exc}"
+        ) from exc

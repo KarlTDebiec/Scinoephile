@@ -78,7 +78,9 @@ class ValidationManager:
         except ScinoephileError:
             raise
         except (OSError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
+            raise ScinoephileError(
+                f"Unable to initialize OCR validation data: {exc}"
+            ) from exc
 
     def validate(
         self,

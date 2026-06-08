@@ -225,7 +225,9 @@ class ImageSeries(Series):
         except ScinoephileError:
             raise
         except (OSError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from {path}: {exc}"
+            ) from exc
 
     @override
     def _init_blocks(self):
