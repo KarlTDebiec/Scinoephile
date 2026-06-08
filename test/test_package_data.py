@@ -30,6 +30,10 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
         for path in source_data_dir_path.rglob("*")
         if path.is_file() and path != ignored_local_dump_path
     )
+    expected_package_file_paths = [
+        "web/ocr_validation/static/htmx.min.js",
+        "web/ocr_validation/templates/index.html",
+    ]
     ignored_local_dump_path.parent.mkdir(parents=True, exist_ok=True)
     ignored_local_dump_path.write_text("{}\n", encoding="utf-8")
 
@@ -68,6 +72,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
 
     smoke_env = command_env.copy()
     smoke_env["EXPECTED_DATA_FILES"] = json.dumps(expected_data_file_paths)
+    smoke_env["EXPECTED_PACKAGE_FILES"] = json.dumps(expected_package_file_paths)
     smoke_env["PYTHONPATH"] = str(install_dir_path)
     result = subprocess.run(
         [
@@ -80,6 +85,7 @@ import os
 from scinoephile.common import package_root
 
 expected_data_file_paths = json.loads(os.environ["EXPECTED_DATA_FILES"])
+expected_package_file_paths = json.loads(os.environ["EXPECTED_PACKAGE_FILES"])
 missing_data_file_paths = [
     data_file_path
     for data_file_path in expected_data_file_paths
@@ -91,6 +97,15 @@ if missing_data_file_paths:
     )
 if (package_root / "data/dictionaries/wiktionary/entries.jsonl").exists():
     raise AssertionError("Installed wheel includes ignored Wiktionary dump")
+missing_package_file_paths = [
+    package_file_path
+    for package_file_path in expected_package_file_paths
+    if not (package_root / package_file_path).is_file()
+]
+if missing_package_file_paths:
+    raise AssertionError(
+        f"Missing installed package files: {missing_package_file_paths}"
+    )
 """,
         ],
         cwd=tmp_path,

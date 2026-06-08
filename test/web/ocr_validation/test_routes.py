@@ -23,7 +23,8 @@ def test_index_renders_subtitle_list(tmp_path: Path):
     response = app.test_client().get("/")
 
     assert response.status_code == 200
-    assert b"https://unpkg.com/htmx.org" in response.data
+    assert b"https://unpkg.com/htmx.org" not in response.data
+    assert b'src="/static/htmx.min.js"' in response.data
     assert b'class="subtitle"' in response.data
     assert b"<figure" in response.data
     assert b"#1:" in response.data
@@ -31,6 +32,16 @@ def test_index_renders_subtitle_list(tmp_path: Path):
     _assert_index_subtitle_figure(response.data)
     _assert_index_textarea(response.data)
     assert b"<hr" in response.data
+
+
+def test_static_htmx_asset_is_served(tmp_path: Path):
+    """Test the web UI serves its vendored HTMX asset locally."""
+    app = create_app(_session(tmp_path, text="recognized", include_done_subtitles=True))
+
+    response = app.test_client().get("/static/htmx.min.js")
+
+    assert response.status_code == 200
+    assert b"htmx" in response.data.lower()
 
 
 def test_index_renders_single_char_concern_image(

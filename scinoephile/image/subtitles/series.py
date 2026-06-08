@@ -15,10 +15,8 @@ from typing import Any, Self, override
 import numpy as np
 from PIL import Image
 
-from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.validation import (
-    val_input_dir_path,
-    val_input_path,
+    val_input_file_or_dir_path,
     val_output_dir_path,
     val_output_path,
 )
@@ -198,21 +196,19 @@ class ImageSeries(Series):
             loaded series
         """
         try:
-            try:
-                validated_path = val_input_dir_path(path)
+            validated_path = val_input_file_or_dir_path(path)
+            if validated_path.is_dir():
                 return cls._load_html(
                     validated_path,
                     encoding=encoding,
                     errors=errors,
                 )
-            except (DirectoryNotFoundError, NotADirectoryError):
-                validated_path = val_input_path(path)
-                if format_ == "sup" or validated_path.suffix == ".sup":
-                    return cls._load_sup(validated_path)
-                raise ScinoephileError(
-                    f"{cls.__name__}'s path must be path to a directory containing "
-                    "one index.html file and N png files, or a .sup file."
-                )
+            if format_ == "sup" or validated_path.suffix == ".sup":
+                return cls._load_sup(validated_path)
+            raise ScinoephileError(
+                f"{cls.__name__}'s path must be path to a directory containing "
+                "one index.html file and N png files, or a .sup file."
+            )
         except ScinoephileError:
             raise
         except (OSError, ValueError) as exc:

@@ -92,6 +92,7 @@ def test_session_uses_one_font_size_for_series(
     html_dir_path = _make_two_image_html_dir(tmp_path, text_1="A", text_2="B")
 
     def mock_get_bboxes(img: Image.Image) -> list[Bbox]:
+        """Return bboxes that vary by image width."""
         if img.width == 2:
             return [Bbox(0, 10, 0, 52)]
         return [
