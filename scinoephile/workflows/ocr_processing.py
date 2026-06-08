@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from functools import wraps
 from logging import getLogger
 from pathlib import Path
 from typing import Any
@@ -61,31 +60,6 @@ class OcrProcessingResult:
     """Output paths keyed by output name."""
 
 
-def _wrap_user_facing_errors[**P](
-    func: Callable[P, OcrProcessingResult],
-) -> Callable[P, OcrProcessingResult]:
-    """Wrap user-facing lower-level OCR workflow errors.
-
-    Arguments:
-        func: OCR workflow function to wrap
-    Returns:
-        wrapped OCR workflow function
-    """
-
-    @wraps(func)
-    def wrapped(*args: P.args, **kwargs: P.kwargs) -> OcrProcessingResult:
-        """Call the wrapped OCR workflow function."""
-        try:
-            return func(*args, **kwargs)
-        except ScinoephileError:
-            raise
-        except (ImportError, OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
-
-    return wrapped
-
-
-@_wrap_user_facing_errors
 def process_eng_ocr(
     infile_path: Path,
     output_dir_path: Path,
@@ -200,7 +174,6 @@ def process_eng_ocr(
     )
 
 
-@_wrap_user_facing_errors
 def process_zho_ocr(
     infile_path: Path,
     output_dir_path: Path,
@@ -330,7 +303,10 @@ def _ensure_output_dir(output_dir_path: Path):
     """
     if output_dir_path.exists():
         return
-    output_dir_path.mkdir(parents=True, exist_ok=True)
+    try:
+        output_dir_path.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        raise ScinoephileError(str(exc)) from exc
     logger.info(f"Created output directory: {output_dir_path}")
 
 
@@ -352,7 +328,10 @@ def _export_image_series(
     if image_dir_path.exists() and not overwrite:
         logger.info(f"Image OCR output exists: {image_dir_path}")
     else:
-        image_series.save(image_dir_path)
+        try:
+            image_series.save(image_dir_path)
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(str(exc)) from exc
     output_paths["image"] = image_dir_path
 
 
@@ -405,7 +384,12 @@ def _get_media_subtitle_stream(
     if stream_index is None:
         raise ScinoephileError("stream index is required for media OCR input")
 
-    for stream in get_subtitle_streams(infile_path):
+    try:
+        streams = get_subtitle_streams(infile_path)
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
+
+    for stream in streams:
         if stream.index == stream_index:
             if stream.extension != "sup":
                 raise ScinoephileError(
@@ -429,15 +413,20 @@ def _load_image_series(
     Returns:
         image subtitle series
     """
-    if infile_path.is_dir() or infile_path.suffix.lower() == ".sup":
-        return ImageSeries.load(infile_path)
+    try:
+        if infile_path.is_dir() or infile_path.suffix.lower() == ".sup":
+            return ImageSeries.load(infile_path)
 
-    stream = _get_media_subtitle_stream(infile_path, stream_index)
-    cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
-    stream_path = get_subtitle_cache_path(
-        infile_path, stream, cache_dir_path=cache_dir_path
-    )
-    return ImageSeries.load(stream_path)
+        stream = _get_media_subtitle_stream(infile_path, stream_index)
+        cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
+        stream_path = get_subtitle_cache_path(
+            infile_path, stream, cache_dir_path=cache_dir_path
+        )
+        return ImageSeries.load(stream_path)
+    except ScinoephileError:
+        raise
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
 
 
 def _load_or_create_eng_clean_output(
@@ -598,16 +587,21 @@ def _load_or_create_series_output(
         text subtitle series
     """
     output_path = output_dir_path / f"{output_name}.srt"
-    if output_path.exists() and not overwrite:
-        logger.info(f"{display_name} exists: {output_path}")
-        series = Series.load(output_path)
-    elif source_path is not None and source_path.exists():
-        logger.info(f"Using existing {display_name}: {source_path}")
-        series = Series.load(source_path)
-        series.save(output_path, format_="srt")
-    else:
-        series = create_series()
-        series.save(output_path, format_="srt")
+    try:
+        if output_path.exists() and not overwrite:
+            logger.info(f"{display_name} exists: {output_path}")
+            series = Series.load(output_path)
+        elif source_path is not None and source_path.exists():
+            logger.info(f"Using existing {display_name}: {source_path}")
+            series = Series.load(source_path)
+            series.save(output_path, format_="srt")
+        else:
+            series = create_series()
+            series.save(output_path, format_="srt")
+    except ScinoephileError:
+        raise
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
     output_paths[output_name] = output_path
     return series
 
@@ -757,15 +751,22 @@ def _load_or_create_validation_image_series(
         image subtitle series with OCR text
     """
     image_dir_path = output_dir_path / "image"
-    if image_dir_path.exists() and not overwrite:
-        logger.info(f"Image OCR output exists: {image_dir_path}")
-        stored_image_series = ImageSeries.load(image_dir_path)
-        validation_image_series = _get_image_series_with_text(
-            stored_image_series, text_series
-        )
-    else:
-        validation_image_series = _get_image_series_with_text(image_series, text_series)
-        validation_image_series.save(image_dir_path)
+    try:
+        if image_dir_path.exists() and not overwrite:
+            logger.info(f"Image OCR output exists: {image_dir_path}")
+            stored_image_series = ImageSeries.load(image_dir_path)
+            validation_image_series = _get_image_series_with_text(
+                stored_image_series, text_series
+            )
+        else:
+            validation_image_series = _get_image_series_with_text(
+                image_series, text_series
+            )
+            validation_image_series.save(image_dir_path)
+    except ScinoephileError:
+        raise
+    except (OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
     output_paths["image"] = image_dir_path
     return validation_image_series
 
@@ -803,7 +804,10 @@ def _load_or_create_validation_output(
     if validate_path.exists() and not overwrite:
         logger.info(f"Validated OCR output exists: {validate_path}")
         output_paths["fuse_clean_validate"] = validate_path
-        return Series.load(validate_path)
+        try:
+            return Series.load(validate_path)
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(str(exc)) from exc
 
     validation_image_series = _load_or_create_validation_image_series(
         output_dir_path,
@@ -816,9 +820,15 @@ def _load_or_create_validation_output(
         _run_interactive_validation(output_dir_path, validate_path, dev, host, port)
     else:
         validated = _validate_ocr(validation_image_series, language, dev)
-        validated.save(validate_path, format_="srt", exist_ok=True)
+        try:
+            validated.save(validate_path, format_="srt", exist_ok=True)
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(str(exc)) from exc
     output_paths["fuse_clean_validate"] = validate_path
-    return Series.load(validate_path)
+    try:
+        return Series.load(validate_path)
+    except (OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
 
 
 def _run_interactive_validation(
@@ -837,17 +847,22 @@ def _run_interactive_validation(
         host: OCR validation web UI host
         port: OCR validation web UI port
     """
-    from scinoephile.web.ocr_validation import (  # noqa: PLC0415
-        OcrValidationSession,
-        create_app,
-    )
+    try:
+        from scinoephile.web.ocr_validation import (  # noqa: PLC0415
+            OcrValidationSession,
+            create_app,
+        )
 
-    session = OcrValidationSession.from_dir_path(
-        output_dir_path / "image",
-        outfile_path=outfile_path,
-        dev=dev,
-    )
-    create_app(session).run(host=host, port=port)
+        session = OcrValidationSession.from_dir_path(
+            output_dir_path / "image",
+            outfile_path=outfile_path,
+            dev=dev,
+        )
+        create_app(session).run(host=host, port=port)
+    except ScinoephileError:
+        raise
+    except (ImportError, OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
 
 
 def _source_output_path(source_dir_path: Path | None, output_name: str) -> Path | None:
@@ -874,7 +889,12 @@ def _validate_ocr(image_series: ImageSeries, language: str, dev: bool) -> Series
     Returns:
         validated text subtitle series
     """
-    validation_manager = ValidationManager(dev=dev)
-    if language == "eng":
-        return validate_eng_ocr(image_series, validation_manager)
-    return validate_zho_ocr(image_series, validation_manager)
+    try:
+        validation_manager = ValidationManager(dev=dev)
+        if language == "eng":
+            return validate_eng_ocr(image_series, validation_manager)
+        return validate_zho_ocr(image_series, validation_manager)
+    except ScinoephileError:
+        raise
+    except (OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
