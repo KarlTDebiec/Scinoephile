@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from scinoephile.core import ScinoephileError
+
 from .session import OcrValidationSession
 
 if TYPE_CHECKING:
@@ -27,14 +29,14 @@ def create_app(session: OcrValidationSession) -> Flask:
     Returns:
         Flask app
     Raises:
-        ImportError: if optional web dependencies are not installed
+        ScinoephileError: if optional web dependencies are not installed
     """
     try:
         from flask import Flask  # noqa: PLC0415
 
         from .routes import register_routes  # noqa: PLC0415
     except ImportError as exc:
-        raise ImportError(_WEB_EXTRA_MESSAGE) from exc
+        raise ScinoephileError(_WEB_EXTRA_MESSAGE) from exc
 
     app = Flask(__name__)
     app.config["OCR_VALIDATION_SESSION"] = session

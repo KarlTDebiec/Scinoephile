@@ -118,19 +118,24 @@ class OcrValidationSession:
         if not (dir_path / "index.html").is_file():
             raise ScinoephileError(f"Expected {dir_path / 'index.html'} to be a file.")
 
-        entries = load_html_entries(dir_path)
-        series = ImageSeries.load(dir_path)
-        manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
-        session = cls(
-            dir_path=dir_path,
-            entries=entries,
-            series=series,
-            manager=manager,
-            include_done_subtitles=include_done_subtitles,
-            outfile_path=outfile_path,
-        )
-        session._save_outfile()
-        return session
+        try:
+            entries = load_html_entries(dir_path)
+            series = ImageSeries.load(dir_path)
+            manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
+            session = cls(
+                dir_path=dir_path,
+                entries=entries,
+                series=series,
+                manager=manager,
+                include_done_subtitles=include_done_subtitles,
+                outfile_path=outfile_path,
+            )
+            session._save_outfile()
+            return session
+        except ScinoephileError:
+            raise
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(str(exc)) from exc
 
     def subtitle_row(self, sub_idx: int) -> SubtitleRowView:
         """Return one subtitle row view model.

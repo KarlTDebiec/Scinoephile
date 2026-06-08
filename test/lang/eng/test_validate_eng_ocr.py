@@ -9,6 +9,7 @@ from typing import cast
 
 import pytest
 
+from scinoephile.core import ScinoephileError
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
@@ -90,3 +91,27 @@ def test_validate_eng_ocr_uses_supplied_validation_manager(
 
     assert output is tiny_image_series
     assert validate_calls == [tiny_image_series]
+
+
+def test_validate_eng_ocr_wraps_validation_errors(
+    tiny_image_series: ImageSeries,
+):
+    """Test English OCR validation maps validation errors to user-facing errors.
+
+    Arguments:
+        tiny_image_series: small image subtitle series
+    """
+
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def validate(self, series: ImageSeries) -> ImageSeries:
+            """Fail validation."""
+            raise ValueError("validation failed")
+
+    manager = cast(ValidationManager, FakeValidationManager())
+
+    with pytest.raises(ScinoephileError, match="validation failed") as excinfo:
+        validate_eng_ocr(tiny_image_series, manager)
+
+    assert isinstance(excinfo.value.__cause__, ValueError)

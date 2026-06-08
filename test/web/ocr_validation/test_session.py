@@ -11,6 +11,7 @@ from PIL import Image
 
 from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox import Bbox
+from scinoephile.image.subtitles import ImageSeries
 from scinoephile.web.ocr_validation.concerns import (
     CharDimsConcern,
     ConcernKind,
@@ -49,6 +50,33 @@ def test_session_requires_index_html_file(tmp_path: Path):
 
     with pytest.raises(ScinoephileError, match="Expected .*index\\.html to be a file"):
         OcrValidationSession.from_dir_path(html_dir_path)
+
+
+def test_session_wraps_image_series_load_errors(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test session construction wraps image series loading errors.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+    """
+    html_dir_path = _make_html_dir(tmp_path, text="recognized")
+
+    def fake_load(path: Path) -> ImageSeries:
+        """Fake image subtitle loading failure."""
+        raise ValueError(f"{path} could not be loaded")
+
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.session.ImageSeries.load",
+        fake_load,
+    )
+
+    with pytest.raises(ScinoephileError, match="could not be loaded") as excinfo:
+        OcrValidationSession.from_dir_path(html_dir_path)
+
+    assert isinstance(excinfo.value.__cause__, ValueError)
 
 
 def test_concern_kind_excludes_done_state():

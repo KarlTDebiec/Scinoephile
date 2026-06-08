@@ -21,11 +21,8 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, write_series
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
-from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
-from scinoephile.web.ocr_validation import OcrValidationSession, create_app
+from scinoephile.workflows.ocr_validation import run_ocr_validation_web, validate_ocr
 
 __all__ = ["OcrValidateCli"]
 
@@ -234,18 +231,14 @@ class OcrValidateCli(ScinoephileCliBase):
             web_args: web server arguments
             dev: whether validation should write data updates to repo data
         """
-        try:
-            session = OcrValidationSession.from_dir_path(
-                infile_path,
-                outfile_path=outfile_path,
-                cache_dir_path=cache_dir_path,
-                dev=dev,
-            )
-            create_app(session).run(web_args.host, web_args.port)
-        except ScinoephileError:
-            raise
-        except (ImportError, OSError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
+        run_ocr_validation_web(
+            infile_path,
+            outfile_path,
+            cache_dir_path,
+            host=web_args.host,
+            port=web_args.port,
+            dev=dev,
+        )
 
     @staticmethod
     def _run_noninteractive_validation(
@@ -264,18 +257,12 @@ class OcrValidateCli(ScinoephileCliBase):
         Returns:
             validated image subtitle series
         """
-        try:
-            series = ImageSeries.load(infile_path)
-            validation_manager = ValidationManager(
-                cache_dir_path=cache_dir_path, dev=dev
-            )
-            if language == "eng":
-                return validate_eng_ocr(series, validation_manager)
-            return validate_zho_ocr(series, validation_manager)
-        except ScinoephileError:
-            raise
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
+        return validate_ocr(
+            infile_path,
+            language,
+            cache_dir_path=cache_dir_path,
+            dev=dev,
+        )
 
 
 if __name__ == "__main__":

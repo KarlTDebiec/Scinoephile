@@ -11,6 +11,7 @@ from typing import cast
 
 import pytest
 
+from scinoephile.core import ScinoephileError
 from scinoephile.web.ocr_validation.app import create_app
 from scinoephile.web.ocr_validation.session import OcrValidationSession
 
@@ -45,8 +46,10 @@ def test_create_app_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with pytest.raises(ImportError, match="'web' extra"):
+    with pytest.raises(ScinoephileError, match="'web' extra") as excinfo:
         create_app(cast(OcrValidationSession, object()))
+
+    assert isinstance(excinfo.value.__cause__, ImportError)
 
 
 def test_web_package_imports_flask_only_when_needed():

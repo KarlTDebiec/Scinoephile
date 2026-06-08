@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from scinoephile.core import ScinoephileError
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
 
@@ -22,6 +23,11 @@ def validate_eng_ocr(
     Returns:
         validated image subtitle series
     """
-    if validation_manager is None:
-        validation_manager = ValidationManager()
-    return validation_manager.validate(series)
+    try:
+        if validation_manager is None:
+            validation_manager = ValidationManager()
+        return validation_manager.validate(series)
+    except ScinoephileError:
+        raise
+    except (OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
