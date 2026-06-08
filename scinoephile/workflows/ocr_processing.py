@@ -631,13 +631,7 @@ def _validate_fuse_clean_output(
     validate_path = output_dir_path / "fuse_clean_validate.srt"
     if validate_path.exists() and not overwrite:
         logger.info(f"Validated OCR output exists: {validate_path}")
-        try:
-            Series.load(validate_path)
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to load existing validated OCR output from "
-                f"{validate_path}: {exc}"
-            ) from exc
+        Series.load(validate_path)
         output_paths["fuse_clean_validate"] = validate_path
         return
 

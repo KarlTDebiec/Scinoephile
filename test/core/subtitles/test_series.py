@@ -4,7 +4,12 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
+import pytest
+
 from scinoephile.common.file import get_temp_file_path
+from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from test.helpers import assert_series_equal, test_data_root
 
@@ -19,3 +24,20 @@ def test_series_round_trips_srt():
         output = Series.load(output_path)
 
     assert_series_equal(output, series)
+
+
+def test_series_load_wraps_input_path_errors(tmp_path: Path):
+    """Test subtitle loading path errors are user-facing.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    path = tmp_path / "missing.srt"
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to load Series from .*missing.srt",
+    ) as excinfo:
+        Series.load(path)
+
+    assert isinstance(excinfo.value.__cause__, FileNotFoundError)

@@ -13,6 +13,7 @@ from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
 
 from scinoephile.common.validation import val_input_path, val_output_path
+from scinoephile.core.exceptions import ScinoephileError
 
 from .subtitle import Subtitle
 
@@ -258,16 +259,25 @@ class Series(SSAFile):
         Returns:
             loaded series
         """
-        validated_path = val_input_path(path)
+        try:
+            validated_path = val_input_path(path)
 
-        with open(str(validated_path), encoding=encoding, errors=errors) as input_file:
-            series = cast(
-                Self,
-                cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
-            )
-            series.events = [
-                cls.event_class(**ssaevent.as_dict()) for ssaevent in series
-            ]
+            with open(
+                str(validated_path), encoding=encoding, errors=errors
+            ) as input_file:
+                series = cast(
+                    Self,
+                    cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
+                )
+                series.events = [
+                    cls.event_class(**ssaevent.as_dict()) for ssaevent in series
+                ]
+        except ScinoephileError:
+            raise
+        except (OSError, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from {path}: {exc}"
+            ) from exc
 
         logger.info(f"Loaded series from {validated_path}")
         return series

@@ -48,7 +48,7 @@ def validate_ocr(
     """
     if outfile_path.exists() and not overwrite:
         logger.info(f"Validated OCR output exists: {outfile_path}")
-        return _load_validated_series(outfile_path)
+        return Series.load(outfile_path)
 
     if text_series is not None:
         _apply_text_series(infile_path, text_series)
@@ -67,7 +67,7 @@ def validate_ocr(
             host,
             port,
         )
-        return _load_validated_series(outfile_path)
+        return Series.load(outfile_path)
 
     try:
         image_series = ImageSeries.load(infile_path)
@@ -85,7 +85,7 @@ def validate_ocr(
         dev,
     )
     _save_validated_series(validated, outfile_path)
-    return _load_validated_series(outfile_path)
+    return Series.load(outfile_path)
 
 
 def _apply_text_series(infile_path: Path, text_series: Series):
@@ -108,24 +108,6 @@ def _apply_text_series(infile_path: Path, text_series: Series):
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to apply OCR text to image subtitle directory {infile_path}: {exc}"
-        ) from exc
-
-
-def _load_validated_series(outfile_path: Path) -> Series:
-    """Load validated OCR subtitles.
-
-    Arguments:
-        outfile_path: validated subtitle output path
-    Returns:
-        validated subtitle series
-    """
-    try:
-        return Series.load(outfile_path)
-    except ScinoephileError:
-        raise
-    except (OSError, ValueError) as exc:
-        raise ScinoephileError(
-            f"Unable to load validated OCR output from {outfile_path}: {exc}"
         ) from exc
 
 
