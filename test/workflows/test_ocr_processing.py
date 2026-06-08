@@ -368,11 +368,11 @@ def test_process_eng_ocr_validates_fuse_clean_output(
         ),
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.validate_eng_ocr",
+        "scinoephile.workflows.ocr_validation.validate_eng_ocr",
         fake_validate,
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ValidationManager",
+        "scinoephile.workflows.ocr_validation.ValidationManager",
         FakeValidationManager,
     )
 
@@ -405,20 +405,41 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
     source_path = tmp_path / "source.sup"
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
-    web_calls: list[tuple[Path, Path, bool, str, int]] = []
+    validate_calls: list[dict[str, object]] = []
 
-    def fake_run_interactive_validation(
-        image_output_dir_path: Path,
+    def fake_validate_ocr(
+        series: ImageSeries,
+        language: str,
         outfile_path: Path,
-        dev: bool,
-        host: str,
-        port: int,
-    ):
+        *,
+        image_dir_path: Path | None = None,
+        cache_dir_path: Path | str | None = None,
+        interactive: bool = False,
+        dev: bool = False,
+        overwrite: bool = False,
+        host: str = "127.0.0.1",
+        port: int = 5000,
+    ) -> Series:
         """Fake web validation by writing the expected validation output."""
-        web_calls.append((image_output_dir_path, outfile_path, dev, host, port))
-        _series_with_texts(["interactive validated 1", "interactive validated 2"]).save(
-            outfile_path
+        validate_calls.append(
+            {
+                "texts": [subtitle.text for subtitle in series],
+                "language": language,
+                "outfile_path": outfile_path,
+                "image_dir_path": image_dir_path,
+                "cache_dir_path": cache_dir_path,
+                "interactive": interactive,
+                "dev": dev,
+                "overwrite": overwrite,
+                "host": host,
+                "port": port,
+            }
         )
+        validated = _series_with_texts(
+            ["interactive validated 1", "interactive validated 2"]
+        )
+        validated.save(outfile_path)
+        return validated
 
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.ImageSeries.load",
@@ -445,14 +466,8 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
         ),
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.validate_eng_ocr",
-        lambda *args, **kwargs: pytest.fail(
-            "Non-interactive validation should not run"
-        ),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing._run_interactive_validation",
-        fake_run_interactive_validation,
+        "scinoephile.workflows.ocr_processing.validate_ocr",
+        fake_validate_ocr,
     )
 
     result = process_eng_ocr(
@@ -465,7 +480,20 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
     )
 
     validate_path = output_dir_path / "fuse_clean_validate.srt"
-    assert web_calls == [(output_dir_path, validate_path, True, "0.0.0.0", 5050)]
+    assert validate_calls == [
+        {
+            "texts": ["fused 1…", "fused 2…"],
+            "language": "eng",
+            "outfile_path": validate_path,
+            "image_dir_path": output_dir_path / "image",
+            "cache_dir_path": None,
+            "interactive": True,
+            "dev": True,
+            "overwrite": False,
+            "host": "0.0.0.0",
+            "port": 5050,
+        }
+    ]
     assert result.output_paths["fuse_clean_validate"] == validate_path
     assert [subtitle.text for subtitle in Series.load(validate_path)] == [
         "interactive validated 1",
@@ -536,7 +564,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
         ),
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.validate_eng_ocr",
+        "scinoephile.workflows.ocr_validation.validate_eng_ocr",
         fake_validate,
     )
 
@@ -839,11 +867,11 @@ def test_process_zho_ocr_validates_fuse_clean_output(
         lambda lens, paddle, **kwargs: _series_with_texts(["fused 1...", "fused 2..."]),
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.validate_zho_ocr",
+        "scinoephile.workflows.ocr_validation.validate_zho_ocr",
         fake_validate,
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ValidationManager",
+        "scinoephile.workflows.ocr_validation.ValidationManager",
         FakeValidationManager,
     )
 

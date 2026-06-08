@@ -19,14 +19,9 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.image.ocr.validation import ValidationManager
-from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
-from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
-from scinoephile.web.ocr_validation import OcrValidationSession
-from scinoephile.web.ocr_validation.app import run_app
+from scinoephile.workflows.ocr_validation import validate_ocr_from_path
 
 __all__ = ["OcrValidateCli"]
 
@@ -197,30 +192,19 @@ class OcrValidateCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            if interactive:
-                session = OcrValidationSession.from_dir_path(
-                    infile_path,
-                    outfile_path=outfile_path,
-                    cache_dir_path=cache_dir_path,
-                    dev=dev,
-                )
-                run_app(session, web_args.host, web_args.port)
-                return
-
-            series = ImageSeries.load(infile_path)
-            validation_manager = ValidationManager(
+            validate_ocr_from_path(
+                infile_path,
+                language,
+                outfile_path,
                 cache_dir_path=cache_dir_path,
+                interactive=interactive,
                 dev=dev,
+                overwrite=overwrite,
+                host=web_args.host,
+                port=web_args.port,
             )
-            if language == "eng":
-                validated = validate_eng_ocr(series, validation_manager)
-            else:
-                validated = validate_zho_ocr(series, validation_manager)
         except ScinoephileError as exc:
             parser.error(str(exc))
-
-        # Write outputs
-        write_series(parser, validated, outfile_path, overwrite)
 
 
 if __name__ == "__main__":

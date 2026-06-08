@@ -21,23 +21,21 @@ from scinoephile.image.ocr.paddle import (
     ocr_image_series_with_paddle,
 )
 from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
-from scinoephile.image.ocr.validation import ValidationManager
-from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
+from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
-from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
-from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
     get_subtitle_cache_path,
 )
+from scinoephile.workflows.ocr_validation import validate_ocr
 
 __all__ = [
     "OcrProcessingResult",
@@ -154,7 +152,7 @@ def process_eng_ocr(
 
     # Validation
     if validate:
-        _load_or_create_validation_output(
+        _validate_fuse_clean_output(
             output_dir_path,
             image_series,
             fuse_clean,
@@ -275,7 +273,7 @@ def process_zho_ocr(
 
     # Validation
     if validate:
-        _load_or_create_validation_output(
+        _validate_fuse_clean_output(
             output_dir_path,
             image_series,
             fuse_clean,
@@ -333,40 +331,6 @@ def _export_image_series(
         except (OSError, ValueError) as exc:
             raise ScinoephileError(str(exc)) from exc
     output_paths["image"] = image_dir_path
-
-
-def _get_image_series_with_text(
-    image_series: ImageSeries,
-    text_series: Series,
-) -> ImageSeries:
-    """Get a copy of image subtitles with matching text subtitle text.
-
-    Arguments:
-        image_series: image subtitle series
-        text_series: text subtitle series
-    Returns:
-        copied image subtitle series with text
-    """
-    if len(text_series) != len(image_series):
-        raise ScinoephileError(
-            f"Length mismatch: {len(text_series)} vs {len(image_series)}"
-        )
-    image_subtitles: list[ImageSubtitle] = []
-    for text_subtitle, image_subtitle in zip(text_series, image_series.events):
-        if image_subtitle.bboxes is None:
-            bboxes = None
-        else:
-            bboxes = list(image_subtitle.bboxes)
-        image_subtitles.append(
-            ImageSubtitle(
-                img=image_subtitle.img.copy(),
-                bboxes=bboxes,
-                start=image_subtitle.start,
-                end=image_subtitle.end,
-                text=text_subtitle.text,
-            )
-        )
-    return ImageSeries(events=image_subtitles)
 
 
 def _get_media_subtitle_stream(
@@ -635,6 +599,100 @@ def _load_or_create_tesseract_output(
     )
 
 
+def _load_or_create_validation_image_series(
+    output_dir_path: Path,
+    image_series: ImageSeries,
+    text_series: Series,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+) -> ImageSeries:
+    """Load or create image subtitles with OCR text.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        image_series: source image subtitle series
+        text_series: text subtitle series to copy into image subtitles
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+    Returns:
+        image subtitle series with OCR text
+    """
+    image_dir_path = output_dir_path / "image"
+    try:
+        if image_dir_path.exists() and not overwrite:
+            logger.info(f"Image OCR output exists: {image_dir_path}")
+            validation_image_series = ImageSeries.load(image_dir_path)
+            validation_image_series.copy_text_from(text_series)
+        else:
+            validation_image_series = image_series
+            validation_image_series.copy_text_from(text_series)
+            validation_image_series.save(image_dir_path)
+    except ScinoephileError:
+        raise
+    except (OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
+    output_paths["image"] = image_dir_path
+    return validation_image_series
+
+
+def _validate_fuse_clean_output(
+    output_dir_path: Path,
+    image_series: ImageSeries,
+    text_series: Series,
+    language: str,
+    *,
+    interactive: bool,
+    dev: bool,
+    overwrite: bool,
+    host: str,
+    port: int,
+    output_paths: dict[str, Path],
+):
+    """Validate cleaned fused OCR output.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        image_series: source image subtitle series
+        text_series: cleaned fused OCR output
+        language: OCR validation language
+        interactive: whether to launch the OCR validation web UI
+        dev: whether validation should write data updates to repo data
+        overwrite: whether to overwrite existing workflow outputs
+        host: OCR validation web UI host
+        port: OCR validation web UI port
+        output_paths: output paths to update
+    """
+    validate_path = output_dir_path / "fuse_clean_validate.srt"
+    if validate_path.exists() and not overwrite:
+        logger.info(f"Validated OCR output exists: {validate_path}")
+        try:
+            Series.load(validate_path)
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(str(exc)) from exc
+        output_paths["fuse_clean_validate"] = validate_path
+        return
+
+    validation_image_series = _load_or_create_validation_image_series(
+        output_dir_path,
+        image_series,
+        text_series,
+        overwrite,
+        output_paths,
+    )
+    validate_ocr(
+        validation_image_series,
+        language,
+        validate_path,
+        image_dir_path=output_dir_path / "image",
+        interactive=interactive,
+        dev=dev,
+        overwrite=overwrite,
+        host=host,
+        port=port,
+    )
+    output_paths["fuse_clean_validate"] = validate_path
+
+
 def _load_or_create_zho_clean_output(
     output_dir_path: Path,
     output_name: str,
@@ -732,139 +790,6 @@ def _get_fuser_kw(
     return kwargs
 
 
-def _load_or_create_validation_image_series(
-    output_dir_path: Path,
-    image_series: ImageSeries,
-    text_series: Series,
-    overwrite: bool,
-    output_paths: dict[str, Path],
-) -> ImageSeries:
-    """Load or create image subtitles with OCR text.
-
-    Arguments:
-        output_dir_path: OCR output directory
-        image_series: source image subtitle series
-        text_series: text subtitle series to copy into image subtitles
-        overwrite: whether to overwrite existing workflow outputs
-        output_paths: output paths to update
-    Returns:
-        image subtitle series with OCR text
-    """
-    image_dir_path = output_dir_path / "image"
-    try:
-        if image_dir_path.exists() and not overwrite:
-            logger.info(f"Image OCR output exists: {image_dir_path}")
-            stored_image_series = ImageSeries.load(image_dir_path)
-            validation_image_series = _get_image_series_with_text(
-                stored_image_series, text_series
-            )
-        else:
-            validation_image_series = _get_image_series_with_text(
-                image_series, text_series
-            )
-            validation_image_series.save(image_dir_path)
-    except ScinoephileError:
-        raise
-    except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
-    output_paths["image"] = image_dir_path
-    return validation_image_series
-
-
-def _load_or_create_validation_output(
-    output_dir_path: Path,
-    image_series: ImageSeries,
-    text_series: Series,
-    language: str,
-    *,
-    interactive: bool,
-    dev: bool,
-    overwrite: bool,
-    host: str,
-    port: int,
-    output_paths: dict[str, Path],
-) -> Series:
-    """Load or create OCR validation output.
-
-    Arguments:
-        output_dir_path: OCR output directory
-        image_series: source image subtitle series
-        text_series: text subtitle series to validate
-        language: OCR validation language
-        interactive: whether to launch the OCR validation web UI
-        dev: whether validation should write data updates to repo data
-        overwrite: whether to overwrite existing workflow outputs
-        host: OCR validation web UI host
-        port: OCR validation web UI port
-        output_paths: output paths to update
-    Returns:
-        validated text subtitle series
-    """
-    validate_path = output_dir_path / "fuse_clean_validate.srt"
-    if validate_path.exists() and not overwrite:
-        logger.info(f"Validated OCR output exists: {validate_path}")
-        output_paths["fuse_clean_validate"] = validate_path
-        try:
-            return Series.load(validate_path)
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
-
-    validation_image_series = _load_or_create_validation_image_series(
-        output_dir_path,
-        image_series,
-        text_series,
-        overwrite,
-        output_paths,
-    )
-    if interactive:
-        _run_interactive_validation(output_dir_path, validate_path, dev, host, port)
-    else:
-        validated = _validate_ocr(validation_image_series, language, dev)
-        try:
-            validated.save(validate_path, format_="srt", exist_ok=True)
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(str(exc)) from exc
-    output_paths["fuse_clean_validate"] = validate_path
-    try:
-        return Series.load(validate_path)
-    except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
-
-
-def _run_interactive_validation(
-    output_dir_path: Path,
-    outfile_path: Path,
-    dev: bool,
-    host: str,
-    port: int,
-):
-    """Run interactive OCR validation.
-
-    Arguments:
-        output_dir_path: OCR output directory
-        outfile_path: validated subtitle output path
-        dev: whether validation should write data updates to repo data
-        host: OCR validation web UI host
-        port: OCR validation web UI port
-    """
-    try:
-        from scinoephile.web.ocr_validation import (  # noqa: PLC0415
-            OcrValidationSession,
-            create_app,
-        )
-
-        session = OcrValidationSession.from_dir_path(
-            output_dir_path / "image",
-            outfile_path=outfile_path,
-            dev=dev,
-        )
-        create_app(session).run(host=host, port=port)
-    except ScinoephileError:
-        raise
-    except (ImportError, OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
-
-
 def _source_output_path(source_dir_path: Path | None, output_name: str) -> Path | None:
     """Get source OCR output path if a source directory was provided.
 
@@ -877,24 +802,3 @@ def _source_output_path(source_dir_path: Path | None, output_name: str) -> Path 
     if source_dir_path is None:
         return None
     return source_dir_path / f"{output_name}.srt"
-
-
-def _validate_ocr(image_series: ImageSeries, language: str, dev: bool) -> Series:
-    """Validate OCR subtitles against image subtitles.
-
-    Arguments:
-        image_series: image subtitle series with OCR text
-        language: OCR validation language
-        dev: whether validation should write data updates to repo data
-    Returns:
-        validated text subtitle series
-    """
-    try:
-        validation_manager = ValidationManager(dev=dev)
-        if language == "eng":
-            return validate_eng_ocr(image_series, validation_manager)
-        return validate_zho_ocr(image_series, validation_manager)
-    except ScinoephileError:
-        raise
-    except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
