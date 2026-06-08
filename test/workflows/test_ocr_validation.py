@@ -62,18 +62,15 @@ def test_validate_ocr_runs_noninteractive_validation(
             manager_instances.append(self)
             manager_calls.append((cache_dir_path, dev))
 
+        def validate(self, series: ImageSeries) -> Series:
+            """Validate an image series."""
+            validate_calls.append((series, self))
+            return _series_with_texts(["validated"])
+
     def fake_load(path: Path) -> ImageSeries:
         """Fake image subtitle loading."""
         load_calls.append(path)
         return tiny_image_series
-
-    def fake_validate_eng_ocr(
-        series: ImageSeries,
-        validation_manager: object,
-    ) -> Series:
-        """Fake English OCR validation."""
-        validate_calls.append((series, validation_manager))
-        return _series_with_texts(["validated"])
 
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_validation.ImageSeries.load",
@@ -83,14 +80,9 @@ def test_validate_ocr_runs_noninteractive_validation(
         "scinoephile.workflows.ocr_validation.ValidationManager",
         FakeValidationManager,
     )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_validation.validate_eng_ocr",
-        fake_validate_eng_ocr,
-    )
 
     validated = validate_ocr(
         infile_path,
-        "eng",
         outfile_path,
         cache_dir_path=cache_dir_path,
         interactive=False,
@@ -132,28 +124,18 @@ def test_validate_ocr_applies_text_series_to_image_dir(
             """Initialize."""
             manager_instances.append(self)
 
-    def fake_validate_eng_ocr(
-        series: ImageSeries,
-        validation_manager: object,
-    ) -> Series:
-        """Fake English OCR validation."""
-        validate_calls.append(
-            ([subtitle.text for subtitle in series], validation_manager)
-        )
-        return _series_with_texts(["validated 1", "validated 2"])
+        def validate(self, series: ImageSeries) -> Series:
+            """Validate an image series."""
+            validate_calls.append(([subtitle.text for subtitle in series], self))
+            return _series_with_texts(["validated 1", "validated 2"])
 
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_validation.ValidationManager",
         FakeValidationManager,
     )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_validation.validate_eng_ocr",
-        fake_validate_eng_ocr,
-    )
 
     validated = validate_ocr(
         infile_path,
-        "eng",
         outfile_path,
         text_series=text_series,
     )
@@ -208,7 +190,6 @@ def test_validate_ocr_runs_interactive_validation(
 
     validated = validate_ocr(
         infile_path,
-        "zho",
         outfile_path,
         cache_dir_path=cache_dir_path,
         interactive=True,

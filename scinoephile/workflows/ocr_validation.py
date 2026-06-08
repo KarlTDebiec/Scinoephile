@@ -11,81 +11,19 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
-from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from scinoephile.web.ocr_validation import OcrValidationSession
 from scinoephile.web.ocr_validation.app import run_app
 
-__all__ = [
-    "validate_ocr",
-    "validate_ocr_from_path",
-]
+__all__ = ["validate_ocr"]
 
 logger = getLogger(__name__)
 
 
 def validate_ocr(
-    image_series: ImageSeries,
-    language: str,
-    outfile_path: Path,
-    *,
-    image_dir_path: Path | None = None,
-    cache_dir_path: Path | str | None = None,
-    interactive: bool = False,
-    dev: bool = False,
-    overwrite: bool = False,
-    host: str = "127.0.0.1",
-    port: int = 5000,
-) -> Series:
-    """Validate OCR text against image subtitles.
-
-    Arguments:
-        image_series: image subtitle series to validate
-        language: OCR validation language
-        outfile_path: validated subtitle output path
-        image_dir_path: image subtitle directory for interactive validation
-        cache_dir_path: cache directory for local OCR validation data
-        interactive: whether to launch the OCR validation web UI
-        dev: whether validation should write data updates to repo data
-        overwrite: whether to overwrite existing validation output
-        host: OCR validation web UI host
-        port: OCR validation web UI port
-    Returns:
-        validated subtitle series
-    """
-    if outfile_path.exists() and not overwrite:
-        logger.info(f"Validated OCR output exists: {outfile_path}")
-        return _load_validated_series(outfile_path)
-
-    if interactive:
-        if image_dir_path is None:
-            raise ScinoephileError(
-                "image_dir_path is required for interactive OCR validation"
-            )
-        _run_interactive_validation(
-            image_dir_path,
-            outfile_path,
-            cache_dir_path,
-            dev,
-            host,
-            port,
-        )
-    else:
-        validated = _run_noninteractive_validation(
-            image_series,
-            language,
-            cache_dir_path,
-            dev,
-        )
-        _save_validated_series(validated, outfile_path)
-    return _load_validated_series(outfile_path)
-
-
-def validate_ocr_from_path(
     infile_path: Path,
-    language: str,
     outfile_path: Path,
     *,
+    text_series: Series | None = None,
     cache_dir_path: Path | str | None = None,
     interactive: bool = False,
     dev: bool = False,
@@ -97,8 +35,8 @@ def validate_ocr_from_path(
 
     Arguments:
         infile_path: image subtitle input path
-        language: OCR validation language
         outfile_path: validated subtitle output path
+        text_series: optional OCR text to apply to the image subtitle directory
         cache_dir_path: cache directory for local OCR validation data
         interactive: whether to launch the OCR validation web UI
         dev: whether validation should write data updates to repo data
@@ -111,6 +49,9 @@ def validate_ocr_from_path(
     if outfile_path.exists() and not overwrite:
         logger.info(f"Validated OCR output exists: {outfile_path}")
         return _load_validated_series(outfile_path)
+
+    if text_series is not None:
+        _apply_text_series(infile_path, text_series)
 
     if interactive:
         if not infile_path.is_dir():
@@ -130,18 +71,40 @@ def validate_ocr_from_path(
 
     try:
         image_series = ImageSeries.load(infile_path)
+        if text_series is not None:
+            image_series.copy_text_from(text_series)
     except ScinoephileError:
         raise
     except (OSError, ValueError) as exc:
         raise ScinoephileError(str(exc)) from exc
-    return validate_ocr(
+    validated = _run_noninteractive_validation(
         image_series,
-        language,
-        outfile_path,
-        cache_dir_path=cache_dir_path,
-        dev=dev,
-        overwrite=overwrite,
+        cache_dir_path,
+        dev,
     )
+    _save_validated_series(validated, outfile_path)
+    return _load_validated_series(outfile_path)
+
+
+def _apply_text_series(infile_path: Path, text_series: Series):
+    """Apply text subtitles to an image subtitle directory index.
+
+    Arguments:
+        infile_path: image subtitle directory path
+        text_series: text subtitle series to write into the image index
+    """
+    if not infile_path.is_dir():
+        raise ScinoephileError(
+            "text_series can only be applied to an image subtitle directory"
+        )
+    try:
+        image_series = ImageSeries.load(infile_path)
+        image_series.copy_text_from(text_series)
+        image_series.save(infile_path)
+    except ScinoephileError:
+        raise
+    except (OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
 
 
 def _load_validated_series(outfile_path: Path) -> Series:
@@ -198,7 +161,6 @@ def _run_interactive_validation(
 
 def _run_noninteractive_validation(
     image_series: ImageSeries,
-    language: str,
     cache_dir_path: Path | str | None,
     dev: bool,
 ) -> Series:
@@ -206,23 +168,14 @@ def _run_noninteractive_validation(
 
     Arguments:
         image_series: image subtitle series to validate
-        language: OCR validation language
         cache_dir_path: cache directory for local OCR validation data
         dev: whether validation should write data updates to repo data
     Returns:
         validated subtitle series
     """
     try:
-        if cache_dir_path is None:
-            validation_manager = ValidationManager(dev=dev)
-        else:
-            validation_manager = ValidationManager(
-                cache_dir_path=cache_dir_path,
-                dev=dev,
-            )
-        if language == "eng":
-            return validate_eng_ocr(image_series, validation_manager)
-        return validate_zho_ocr(image_series, validation_manager)
+        validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
+        return validation_manager.validate(image_series)
     except ScinoephileError:
         raise
     except (OSError, ValueError) as exc:

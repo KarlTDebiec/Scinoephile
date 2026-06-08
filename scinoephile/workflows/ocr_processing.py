@@ -154,9 +154,7 @@ def process_eng_ocr(
     if validate:
         _validate_fuse_clean_output(
             output_dir_path,
-            image_series,
             fuse_clean,
-            "eng",
             interactive=interactive,
             dev=dev,
             overwrite=overwrite,
@@ -275,9 +273,7 @@ def process_zho_ocr(
     if validate:
         _validate_fuse_clean_output(
             output_dir_path,
-            image_series,
             fuse_clean,
-            "zho",
             interactive=interactive,
             dev=dev,
             overwrite=overwrite,
@@ -599,47 +595,9 @@ def _load_or_create_tesseract_output(
     )
 
 
-def _load_or_create_validation_image_series(
-    output_dir_path: Path,
-    image_series: ImageSeries,
-    text_series: Series,
-    overwrite: bool,
-    output_paths: dict[str, Path],
-) -> ImageSeries:
-    """Load or create image subtitles with OCR text.
-
-    Arguments:
-        output_dir_path: OCR output directory
-        image_series: source image subtitle series
-        text_series: text subtitle series to copy into image subtitles
-        overwrite: whether to overwrite existing workflow outputs
-        output_paths: output paths to update
-    Returns:
-        image subtitle series with OCR text
-    """
-    image_dir_path = output_dir_path / "image"
-    try:
-        if image_dir_path.exists() and not overwrite:
-            logger.info(f"Image OCR output exists: {image_dir_path}")
-            validation_image_series = ImageSeries.load(image_dir_path)
-            validation_image_series.copy_text_from(text_series)
-        else:
-            validation_image_series = image_series
-            validation_image_series.copy_text_from(text_series)
-            validation_image_series.save(image_dir_path)
-    except ScinoephileError:
-        raise
-    except (OSError, ValueError) as exc:
-        raise ScinoephileError(str(exc)) from exc
-    output_paths["image"] = image_dir_path
-    return validation_image_series
-
-
 def _validate_fuse_clean_output(
     output_dir_path: Path,
-    image_series: ImageSeries,
     text_series: Series,
-    language: str,
     *,
     interactive: bool,
     dev: bool,
@@ -652,9 +610,7 @@ def _validate_fuse_clean_output(
 
     Arguments:
         output_dir_path: OCR output directory
-        image_series: source image subtitle series
         text_series: cleaned fused OCR output
-        language: OCR validation language
         interactive: whether to launch the OCR validation web UI
         dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing workflow outputs
@@ -672,18 +628,10 @@ def _validate_fuse_clean_output(
         output_paths["fuse_clean_validate"] = validate_path
         return
 
-    validation_image_series = _load_or_create_validation_image_series(
-        output_dir_path,
-        image_series,
-        text_series,
-        overwrite,
-        output_paths,
-    )
     validate_ocr(
-        validation_image_series,
-        language,
+        output_dir_path / "image",
         validate_path,
-        image_dir_path=output_dir_path / "image",
+        text_series=text_series,
         interactive=interactive,
         dev=dev,
         overwrite=overwrite,

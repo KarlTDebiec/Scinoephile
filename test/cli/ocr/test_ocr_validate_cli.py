@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of the OCR validate CLI for English subtitles."""
+"""Tests of the OCR validate CLI."""
 
 from __future__ import annotations
 
@@ -20,12 +20,12 @@ from scinoephile.core import ScinoephileError
         ("mlamd/input/eng_ocr/source.sup",),
     ],
 )
-def test_ocr_validate_eng_cli(
+def test_ocr_validate_cli(
     input_path: str,
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test OCR validate CLI processing for English subtitles with directory output.
+    """Test OCR validate CLI processing with directory output.
 
     Arguments:
         input_path: path to input image subtitle fixture
@@ -43,7 +43,6 @@ def test_ocr_validate_eng_cli(
 
     def fake_validate_ocr(
         infile_path_arg: Path,
-        language: str,
         outfile_path_arg: Path,
         *,
         cache_dir_path: Path | str | None = None,
@@ -57,7 +56,6 @@ def test_ocr_validate_eng_cli(
         validate_calls.append(
             {
                 "infile_path": infile_path_arg,
-                "language": language,
                 "outfile_path": outfile_path_arg,
                 "cache_dir_path": cache_dir_path,
                 "interactive": interactive,
@@ -78,14 +76,12 @@ def test_ocr_validate_eng_cli(
     cache_dir_path = tmp_path / "cache"
     run_cli_with_args(
         OcrValidateCli,
-        f"--language eng --infile {infile_path} --outfile {outfile_path} "
-        f"--cache-dir {cache_dir_path}",
+        f"--infile {infile_path} --outfile {outfile_path} --cache-dir {cache_dir_path}",
     )
 
     assert validate_calls == [
         {
             "infile_path": infile_path,
-            "language": "eng",
             "outfile_path": outfile_path,
             "cache_dir_path": cache_dir_path.resolve(),
             "interactive": False,
@@ -98,11 +94,11 @@ def test_ocr_validate_eng_cli(
     assert outfile_path.read_text(encoding="utf-8") == "validated"
 
 
-def test_ocr_validate_eng_cli_dev(
+def test_ocr_validate_cli_dev(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test OCR validate CLI forwards dev mode for English subtitles.
+    """Test OCR validate CLI forwards dev mode.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -112,7 +108,6 @@ def test_ocr_validate_eng_cli_dev(
 
     def fake_validate_ocr(
         infile_path: Path,
-        language: str,
         outfile_path: Path,
         *,
         cache_dir_path: Path | str | None = None,
@@ -126,7 +121,6 @@ def test_ocr_validate_eng_cli_dev(
         validate_calls.append(
             {
                 "infile_path": infile_path,
-                "language": language,
                 "outfile_path": outfile_path,
                 "cache_dir_path": cache_dir_path,
                 "interactive": interactive,
@@ -148,14 +142,13 @@ def test_ocr_validate_eng_cli_dev(
 
     run_cli_with_args(
         OcrValidateCli,
-        f"--language eng --infile {full_input_path} --outfile {outfile_path} "
+        f"--infile {full_input_path} --outfile {outfile_path} "
         f"--cache-dir {cache_dir_path} --dev",
     )
 
     assert validate_calls == [
         {
             "infile_path": full_input_path,
-            "language": "eng",
             "outfile_path": outfile_path,
             "cache_dir_path": cache_dir_path.resolve(),
             "interactive": False,
@@ -167,11 +160,11 @@ def test_ocr_validate_eng_cli_dev(
     ]
 
 
-def test_ocr_validate_eng_cli_web(
+def test_ocr_validate_cli_web(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test OCR validate CLI launches web validation for English subtitles.
+    """Test OCR validate CLI launches web validation.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -184,7 +177,6 @@ def test_ocr_validate_eng_cli_web(
 
     def fake_validate_ocr(
         infile_path_arg: Path,
-        language: str,
         outfile_path_arg: Path,
         *,
         cache_dir_path: Path | str | None = None,
@@ -198,7 +190,6 @@ def test_ocr_validate_eng_cli_web(
         validate_calls.append(
             {
                 "infile_path": infile_path_arg,
-                "language": language,
                 "outfile_path": outfile_path_arg,
                 "cache_dir_path": cache_dir_path,
                 "interactive": interactive,
@@ -218,26 +209,25 @@ def test_ocr_validate_eng_cli_web(
     cache_dir_path = tmp_path / "cache"
     run_cli_with_args(
         OcrValidateCli,
-        f"--language eng --infile {infile_path} --interactive "
+        f"--infile {infile_path} --dev --interactive --host 0.0.0.0 --port 5050 "
         f"--cache-dir {cache_dir_path} --outfile {outfile_path}",
     )
 
     assert validate_calls == [
         {
             "infile_path": infile_path,
-            "language": "eng",
             "outfile_path": outfile_path,
             "cache_dir_path": cache_dir_path.resolve(),
             "interactive": True,
-            "dev": False,
+            "dev": True,
             "overwrite": False,
-            "host": "127.0.0.1",
-            "port": 5000,
+            "host": "0.0.0.0",
+            "port": 5050,
         }
     ]
 
 
-def test_ocr_validate_eng_cli_web_rejects_sup_input(
+def test_ocr_validate_cli_web_rejects_sup_input(
     capsys: pytest.CaptureFixture[str],
     tmp_path: Path,
 ):
@@ -254,15 +244,14 @@ def test_ocr_validate_eng_cli_web_rejects_sup_input(
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             OcrValidateCli,
-            f"--language eng --infile {infile_path} --interactive "
-            f"--outfile {outfile_path}",
+            f"--infile {infile_path} --interactive --outfile {outfile_path}",
         )
 
     captured = capsys.readouterr()
     assert "must be a directory when --interactive is set" in captured.err
 
 
-def test_ocr_validate_eng_cli_web_delegates_image_dir_validation(
+def test_ocr_validate_cli_web_delegates_image_dir_validation(
     capsys: pytest.CaptureFixture[str],
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -289,7 +278,7 @@ def test_ocr_validate_eng_cli_web_delegates_image_dir_validation(
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             OcrValidateCli,
-            f"--language eng --infile {infile_path} --interactive "
+            f"--infile {infile_path} --interactive "
             f"--outfile {tmp_path / 'validated.srt'}",
         )
 
@@ -297,7 +286,7 @@ def test_ocr_validate_eng_cli_web_delegates_image_dir_validation(
     assert "session checked OCR image directory" in captured.err
 
 
-def test_ocr_validate_eng_cli_web_reports_run_error(
+def test_ocr_validate_cli_web_reports_run_error(
     capsys: pytest.CaptureFixture[str],
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -321,7 +310,7 @@ def test_ocr_validate_eng_cli_web_reports_run_error(
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             OcrValidateCli,
-            f"--language eng --infile {infile_path} --interactive "
+            f"--infile {infile_path} --interactive "
             f"--outfile {tmp_path / 'validated.srt'}",
         )
 

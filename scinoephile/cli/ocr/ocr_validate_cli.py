@@ -16,7 +16,6 @@ from scinoephile.cli.helpers.web import (
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     output_file_arg,
-    str_arg,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
@@ -34,9 +33,6 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "OCR 字幕校验命令行界面"
         ),
         "launch the local OCR validation web UI": "启动本地 OCR 校验网页界面",
-        "language of the OCR text to validate (eng or zho)": (
-            "要校验的 OCR 文本语言（eng 或 zho）"
-        ),
         "OCR image subtitle infile path (directory containing index.html and png "
         "files, or a .sup file)": (
             "OCR 图像字幕输入路径（包含 index.html 和 png 文件的目录，或 .sup 文件）"
@@ -56,9 +52,6 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "OCR 字幕驗證命令列介面"
         ),
         "launch the local OCR validation web UI": "啟動本機 OCR 驗證網頁介面",
-        "language of the OCR text to validate (eng or zho)": (
-            "要驗證的 OCR 文字語言（eng 或 zho）"
-        ),
         "OCR image subtitle infile path (directory containing index.html and png "
         "files, or a .sup file)": (
             "OCR 影像字幕輸入路徑（包含 index.html 和 png 檔案的目錄，或 .sup 檔）"
@@ -116,13 +109,6 @@ class OcrValidateCli(ScinoephileCliBase):
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
-            "--language",
-            required=True,
-            metavar="{eng,zho}",
-            type=str_arg(options=("eng", "zho")),
-            help="language of the OCR text to validate (eng or zho)",
-        )
-        arg_groups["operation arguments"].add_argument(
             "--dev",
             action="store_true",
             help="maintainer option: write validation data updates to repo data",
@@ -174,7 +160,6 @@ class OcrValidateCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_path: Path,
-        language: str,
         interactive: bool,
         dev: bool,
         cache_dir_path: Path,
@@ -194,7 +179,6 @@ class OcrValidateCli(ScinoephileCliBase):
         try:
             validate_ocr(
                 infile_path,
-                language,
                 outfile_path,
                 cache_dir_path=cache_dir_path,
                 interactive=interactive,
