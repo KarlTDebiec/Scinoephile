@@ -3,7 +3,7 @@
 """Command-line interfaces for media operations.
 
 Package hierarchy (modules may import from any above):
-* media_extract_subs_cli / media_offset_cli / media_probe_cli
+* media_extract_subs_cli / media_offset_cli / media_probe_cli / media_search_subs_cli
 * media_cli
 """
 
@@ -13,10 +13,12 @@ from .media_cli import MediaCli
 from .media_extract_subs_cli import MediaExtractSubsCli
 from .media_offset_cli import MediaOffsetCli
 from .media_probe_cli import MediaProbeCli
+from .media_search_subs_cli import MediaSearchSubsCli
 
 __all__ = [
     "MediaCli",
     "MediaExtractSubsCli",
     "MediaOffsetCli",
     "MediaProbeCli",
+    "MediaSearchSubsCli",
 ]
