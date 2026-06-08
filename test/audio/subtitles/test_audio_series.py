@@ -8,6 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 
 from scinoephile.audio.subtitles import AudioSeries
@@ -55,3 +56,22 @@ def test_audio_series_load_wraps_decode_errors(tmp_path: Path):
             AudioSeries.load(input_path)
 
     assert isinstance(excinfo.value.__cause__, CouldntDecodeError)
+
+
+def test_audio_series_save_wraps_output_path_errors(tmp_path: Path):
+    """Test audio subtitle saving path errors are user-facing.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    output_path = tmp_path / "audio_output"
+    output_path.touch()
+    series = AudioSeries(audio=AudioSegment.silent(duration=1000))
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to save AudioSeries to .*audio_output",
+    ) as excinfo:
+        series.save(output_path)
+
+    assert isinstance(excinfo.value.__cause__, OSError)

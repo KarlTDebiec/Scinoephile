@@ -10,7 +10,7 @@ import pytest
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import assert_series_equal, test_data_root
 
 
@@ -41,3 +41,20 @@ def test_series_load_wraps_input_path_errors(tmp_path: Path):
         Series.load(path)
 
     assert isinstance(excinfo.value.__cause__, FileNotFoundError)
+
+
+def test_series_save_wraps_output_path_errors(tmp_path: Path):
+    """Test subtitle saving path errors are user-facing.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    series = Series(events=[Subtitle(start=1000, end=2000, text="Text")])
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to save Series to ",
+    ) as excinfo:
+        series.save(tmp_path)
+
+    assert isinstance(excinfo.value.__cause__, OSError)

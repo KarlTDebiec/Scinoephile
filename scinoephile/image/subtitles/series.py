@@ -161,28 +161,33 @@ class ImageSeries(Series):
         """
         path = Path(path)
 
-        # Check if directory
-        if format_ == "html" or (not format_ and path.suffix == ""):
-            validated_output_dir_path = val_output_dir_path(path)
-            self._save_html(
-                validated_output_dir_path,
-                encoding=encoding,
-                errors=errors,
-            )
-            logger.info(f"Saved series to {validated_output_dir_path}")
-            return
+        try:
+            # Check if directory
+            if format_ == "html" or (not format_ and path.suffix == ""):
+                validated_output_dir_path = val_output_dir_path(path)
+                self._save_html(
+                    validated_output_dir_path,
+                    encoding=encoding,
+                    errors=errors,
+                )
+                logger.info(f"Saved series to {validated_output_dir_path}")
+                return
 
-        # Otherwise, continue as superclass
-        exist_ok = kwargs.pop("exist_ok", False)
-        validated_output_path = val_output_path(path, exist_ok=exist_ok)
-        super().save(
-            validated_output_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+            # Otherwise, continue as superclass
+            exist_ok = kwargs.pop("exist_ok", False)
+            validated_output_path = val_output_path(path, exist_ok=exist_ok)
+            super().save(
+                validated_output_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
+        except (OSError, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to save {type(self).__name__} to {path}: {exc}"
+            ) from exc
         logger.info(f"Saved series to {validated_output_path}")
 
     @classmethod

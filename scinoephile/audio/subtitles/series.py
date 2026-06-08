@@ -141,23 +141,28 @@ class AudioSeries(Series):
         """
         path = Path(path)
 
-        # Check if directory
-        if format_ == "wav" or (not format_ and path.suffix == ""):
-            validated_output_dir_path = val_output_dir_path(path)
-            self._save_wav(validated_output_dir_path)
-            logger.info(f"Saved series to {validated_output_dir_path}")
-            return
+        try:
+            # Check if directory
+            if format_ == "wav" or (not format_ and path.suffix == ""):
+                validated_output_dir_path = val_output_dir_path(path)
+                self._save_wav(validated_output_dir_path)
+                logger.info(f"Saved series to {validated_output_dir_path}")
+                return
 
-        # Otherwise, continue as superclass
-        validated_output_path = val_output_path(path, exist_ok=True)
-        super().save(
-            validated_output_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+            # Otherwise, continue as superclass
+            validated_output_path = val_output_path(path, exist_ok=True)
+            super().save(
+                validated_output_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
+        except (OSError, PydubException, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to save {type(self).__name__} to {path}: {exc}"
+            ) from exc
         logger.info(f"Saved series to {validated_output_path}")
 
     @override

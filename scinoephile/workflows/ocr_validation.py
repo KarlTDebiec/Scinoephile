@@ -60,12 +60,7 @@ def validate_ocr(
                 "is enabled"
             )
         _run_interactive_validation(
-            infile_path,
-            outfile_path,
-            cache_dir_path,
-            dev,
-            host,
-            port,
+            infile_path, outfile_path, cache_dir_path, dev, host, port
         )
         return Series.load(outfile_path)
 
@@ -77,12 +72,8 @@ def validate_ocr(
         raise ScinoephileError(
             f"Unable to load OCR image subtitles from {infile_path}: {exc}"
         ) from exc
-    validated = _run_noninteractive_validation(
-        image_series,
-        cache_dir_path,
-        dev,
-    )
-    _save_validated_series(validated, outfile_path)
+    validated = _run_noninteractive_validation(image_series, cache_dir_path, dev)
+    validated.save(outfile_path, format_="srt", exist_ok=True)
     return Series.load(outfile_path)
 
 
@@ -159,19 +150,4 @@ def _run_noninteractive_validation(
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to run noninteractive OCR validation: {exc}"
-        ) from exc
-
-
-def _save_validated_series(series: Series, outfile_path: Path):
-    """Save validated OCR subtitles.
-
-    Arguments:
-        series: validated subtitle series
-        outfile_path: validated subtitle output path
-    """
-    try:
-        series.save(outfile_path, format_="srt", exist_ok=True)
-    except (OSError, ValueError) as exc:
-        raise ScinoephileError(
-            f"Unable to save validated OCR output to {outfile_path}: {exc}"
         ) from exc

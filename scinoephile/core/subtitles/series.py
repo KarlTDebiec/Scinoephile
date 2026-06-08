@@ -152,16 +152,21 @@ class Series(SSAFile):
             errors: encoding error handling
             **kwargs: additional keyword arguments
         """
-        validated_path = val_output_path(path, exist_ok=True)
-        SSAFile.save(
-            self,
-            str(validated_path),
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+        try:
+            validated_path = val_output_path(path, exist_ok=True)
+            SSAFile.save(
+                self,
+                str(validated_path),
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
+        except (OSError, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to save {type(self).__name__} to {path}: {exc}"
+            ) from exc
         logger.info(f"Saved series to {validated_path}")
 
     def slice(self, start: int, end: int) -> Self:

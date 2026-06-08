@@ -174,6 +174,27 @@ def test_save_html(tiny_image_series: ImageSeries):
         assert len(png_files) == len(tiny_image_series)
 
 
+def test_image_series_save_wraps_output_path_errors(
+    tiny_image_series: ImageSeries, tmp_path: Path
+):
+    """Test image subtitle saving path errors are user-facing.
+
+    Arguments:
+        tiny_image_series: small image subtitle series
+        tmp_path: pytest temporary directory path
+    """
+    output_path = tmp_path / "image_output"
+    output_path.touch()
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to save ImageSeries to .*image_output",
+    ) as excinfo:
+        tiny_image_series.save(output_path)
+
+    assert isinstance(excinfo.value.__cause__, OSError)
+
+
 def test_series_fill_and_outline_colors():
     """Test fill and outline colors are detected at the image series level."""
     img = Image.new("LA", (3, 3), (0, 255))
