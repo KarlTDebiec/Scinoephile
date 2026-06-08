@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 
 import pytest
@@ -13,7 +14,11 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
-from scinoephile.workflows.ocr_processing import process_eng_ocr, process_zho_ocr
+from scinoephile.workflows.ocr_processing import (
+    OcrProcessingResult,
+    process_eng_ocr,
+    process_zho_ocr,
+)
 
 
 def _series(text: str) -> Series:
@@ -132,6 +137,41 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
     assert [
         subtitle.text for subtitle in Series.load(output_dir_path / "fuse_clean.srt")
     ] == ["fused"]
+
+
+@pytest.mark.parametrize("process_ocr", [process_eng_ocr, process_zho_ocr])
+def test_process_ocr_wraps_filesystem_errors(
+    process_ocr: Callable[..., OcrProcessingResult],
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test OCR processing maps filesystem errors to user-facing errors.
+
+    Arguments:
+        process_ocr: OCR processing workflow function to test
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+    """
+
+    def fake_load(path: Path) -> ImageSeries:
+        """Fake image subtitle loading failure.
+
+        Arguments:
+            path: image subtitle input path
+        """
+        raise FileNotFoundError(f"{path} missing")
+
+    source_path = tmp_path / "source.sup"
+    output_dir_path = tmp_path / "output"
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ImageSeries.load",
+        fake_load,
+    )
+
+    with pytest.raises(ScinoephileError, match="source.sup missing") as excinfo:
+        process_ocr(source_path, output_dir_path, validate=False)
+
+    assert isinstance(excinfo.value.__cause__, FileNotFoundError)
 
 
 def test_process_eng_ocr_can_clean_provider_outputs_before_fusion(

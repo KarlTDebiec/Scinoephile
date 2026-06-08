@@ -275,15 +275,7 @@ class OcrProcessCli(ScinoephileCliBase):
                     provider=provider,
                     additional_context=additional_context,
                 )
-        except (
-            FileNotFoundError,
-            ImportError,
-            NotADirectoryError,
-            OSError,
-            RuntimeError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
+        except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write outputs

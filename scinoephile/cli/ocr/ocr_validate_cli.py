@@ -13,13 +13,11 @@ from scinoephile.cli.helpers.web import (
     WebServerArguments,
     add_web_server_args,
 )
-from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exceptions import NotAFileError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, write_series
 from scinoephile.core.cli.localization import merge_localizations
@@ -196,51 +194,86 @@ class OcrValidateCli(ScinoephileCliBase):
         if interactive and not infile_path.is_dir():
             parser.error(f"{infile_path} must be a directory when --interactive is set")
 
-        # Read inputs
-        if interactive:
-            try:
-                session = OcrValidationSession.from_dir_path(
-                    infile_path,
-                    outfile_path=outfile_path,
-                    cache_dir_path=cache_dir_path,
-                    dev=dev,
-                )
-            except (
-                FileNotFoundError,
-                NotADirectoryError,
-                ScinoephileError,
-                ValueError,
-            ) as exc:
-                parser.error(str(exc))
-        else:
-            try:
-                series = ImageSeries.load(infile_path)
-            except (
-                DirectoryNotFoundError,
-                FileNotFoundError,
-                NotADirectoryError,
-                NotAFileError,
-                ScinoephileError,
-                ValueError,
-            ) as exc:
-                parser.error(str(exc))
-
         # Perform operations
-        if interactive:
-            try:
-                create_app(session).run(host=web_args.host, port=web_args.port)
-            except (ImportError, ScinoephileError, ValueError) as exc:
-                parser.error(str(exc))
-            return
-
-        validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
-        if language == "eng":
-            validated = validate_eng_ocr(series, validation_manager)
-        else:
-            validated = validate_zho_ocr(series, validation_manager)
+        try:
+            if interactive:
+                _run_interactive_validation(
+                    infile_path,
+                    outfile_path,
+                    cache_dir_path,
+                    web_args,
+                    dev,
+                )
+                return
+            validated = _run_noninteractive_validation(
+                infile_path,
+                language,
+                cache_dir_path,
+                dev,
+            )
+        except ScinoephileError as exc:
+            parser.error(str(exc))
 
         # Write outputs
         write_series(parser, validated, outfile_path, overwrite)
+
+
+def _run_interactive_validation(
+    infile_path: Path,
+    outfile_path: Path,
+    cache_dir_path: Path,
+    web_args: WebServerArguments,
+    dev: bool,
+):
+    """Run interactive OCR validation.
+
+    Arguments:
+        infile_path: OCR image subtitle directory path
+        outfile_path: validated subtitle output path
+        cache_dir_path: OCR validation cache directory path
+        web_args: web server arguments
+        dev: whether validation should write data updates to repo data
+    """
+    try:
+        session = OcrValidationSession.from_dir_path(
+            infile_path,
+            outfile_path=outfile_path,
+            cache_dir_path=cache_dir_path,
+            dev=dev,
+        )
+        create_app(session).run(host=web_args.host, port=web_args.port)
+    except ScinoephileError:
+        raise
+    except (ImportError, OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
+
+
+def _run_noninteractive_validation(
+    infile_path: Path,
+    language: str,
+    cache_dir_path: Path,
+    dev: bool,
+) -> ImageSeries:
+    """Run non-interactive OCR validation.
+
+    Arguments:
+        infile_path: OCR image subtitle input path
+        language: OCR validation language
+        cache_dir_path: OCR validation cache directory path
+        dev: whether validation should write data updates to repo data
+    Returns:
+        validated image subtitle series
+    """
+    try:
+        series = ImageSeries.load(infile_path)
+        validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
+        if language == "eng":
+            return validate_eng_ocr(series, validation_manager)
+        return validate_zho_ocr(series, validation_manager)
+    except ScinoephileError:
+        raise
+    except (OSError, ValueError) as exc:
+        raise ScinoephileError(str(exc)) from exc
 
 
 if __name__ == "__main__":

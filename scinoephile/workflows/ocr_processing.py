@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from functools import wraps
 from logging import getLogger
 from pathlib import Path
 from typing import Any
@@ -60,6 +61,31 @@ class OcrProcessingResult:
     """Output paths keyed by output name."""
 
 
+def _wrap_user_facing_errors[**P](
+    func: Callable[P, OcrProcessingResult],
+) -> Callable[P, OcrProcessingResult]:
+    """Wrap user-facing lower-level OCR workflow errors.
+
+    Arguments:
+        func: OCR workflow function to wrap
+    Returns:
+        wrapped OCR workflow function
+    """
+
+    @wraps(func)
+    def wrapped(*args: P.args, **kwargs: P.kwargs) -> OcrProcessingResult:
+        """Call the wrapped OCR workflow function."""
+        try:
+            return func(*args, **kwargs)
+        except ScinoephileError:
+            raise
+        except (ImportError, OSError, RuntimeError, ValueError) as exc:
+            raise ScinoephileError(str(exc)) from exc
+
+    return wrapped
+
+
+@_wrap_user_facing_errors
 def process_eng_ocr(
     infile_path: Path,
     output_dir_path: Path,
@@ -174,6 +200,7 @@ def process_eng_ocr(
     )
 
 
+@_wrap_user_facing_errors
 def process_zho_ocr(
     infile_path: Path,
     output_dir_path: Path,
