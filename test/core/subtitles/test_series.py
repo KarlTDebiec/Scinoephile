@@ -43,6 +43,15 @@ def test_series_load_wraps_input_path_errors(tmp_path: Path):
     assert isinstance(excinfo.value.__cause__, FileNotFoundError)
 
 
+def test_series_from_string_wraps_parser_errors():
+    """Test subtitle parsing errors are user-facing."""
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to parse Series from string",
+    ):
+        Series.from_string("text", format_="unsupported")
+
+
 def test_series_save_wraps_output_path_errors(tmp_path: Path):
     """Test subtitle saving path errors are user-facing.
 
@@ -58,3 +67,14 @@ def test_series_save_wraps_output_path_errors(tmp_path: Path):
         series.save(tmp_path)
 
     assert isinstance(excinfo.value.__cause__, OSError)
+
+
+def test_series_to_string_wraps_serializer_errors():
+    """Test subtitle string serialization errors are user-facing."""
+    series = Series(events=[Subtitle(start=1000, end=2000, text="Text")])
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to serialize Series to string",
+    ):
+        series.to_string(format_="unsupported")
