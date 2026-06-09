@@ -31,7 +31,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
         if path.is_file() and path != ignored_local_dump_path
     )
     expected_package_file_paths = [
-        "web/ocr_validation/static/htmx.min.js",
+        "web/static/htmx.min.js",
         "web/ocr_validation/templates/index.html",
     ]
     ignored_local_dump_path.parent.mkdir(parents=True, exist_ok=True)

@@ -109,7 +109,7 @@ scinoephile = [
     "data/dictionaries/unihan/*.txt",
     "data/ocr/*.csv",
     "data/ocr/*.txt",
-    "web/ocr_validation/static/*.js",
+    "web/static/*.js",
     "web/ocr_validation/templates/*.html",
 ]
 

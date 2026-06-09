@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 
 from .session import OcrValidationSession
@@ -41,7 +42,8 @@ def create_app(session: OcrValidationSession) -> Flask:
     except ImportError as exc:
         raise ScinoephileError(_WEB_EXTRA_MESSAGE) from exc
 
-    app = Flask(__name__)
+    static_dir_path = package_root / "web/static"
+    app = Flask(__name__, static_folder=str(static_dir_path))
     app.config["OCR_VALIDATION_SESSION"] = session
     register_routes(app)
     return app

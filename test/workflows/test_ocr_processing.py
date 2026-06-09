@@ -14,6 +14,7 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
+from scinoephile.web.ocr_validation.html_index import load_html_entries
 from scinoephile.workflows.ocr_processing import (
     OcrProcessingResult,
     process_eng_ocr,
@@ -415,7 +416,6 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
         infile_path: Path,
         outfile_path: Path,
         *,
-        text_series: Series | None = None,
         cache_dir_path: Path | str | None = None,
         interactive: bool = False,
         dev: bool = False,
@@ -424,12 +424,11 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
         port: int = 5000,
     ) -> Series:
         """Fake web validation by writing the expected validation output."""
-        assert text_series is not None
         validate_calls.append(
             {
                 "infile_path": infile_path,
                 "outfile_path": outfile_path,
-                "texts": [subtitle.text for subtitle in text_series],
+                "texts": [entry.text for entry in load_html_entries(infile_path)],
                 "cache_dir_path": cache_dir_path,
                 "interactive": interactive,
                 "dev": dev,

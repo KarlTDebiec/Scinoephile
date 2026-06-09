@@ -631,10 +631,15 @@ def _validate_fuse_clean_output(
         output_paths["fuse_clean_validate"] = validate_path
         return
 
+    image_dir_path = output_dir_path / "image"
+    # Validation reads OCR text from the image index, so write fused text there
+    image_series = ImageSeries.load(image_dir_path)
+    image_series.copy_text_from(text_series)
+    image_series.save(image_dir_path)
+
     validate_ocr(
-        output_dir_path / "image",
+        image_dir_path,
         validate_path,
-        text_series=text_series,
         interactive=interactive,
         dev=dev,
         overwrite=overwrite,

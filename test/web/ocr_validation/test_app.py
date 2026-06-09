@@ -7,13 +7,23 @@ from __future__ import annotations
 import subprocess
 import sys
 from collections.abc import Mapping, Sequence
+from pathlib import Path
 from typing import cast
 
 import pytest
 
+from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.web.ocr_validation.app import create_app, run_app
 from scinoephile.web.ocr_validation.session import OcrValidationSession
+
+
+def test_create_app_uses_shared_web_static_dir():
+    """Test OCR validation serves shared web static assets."""
+    app = create_app(cast(OcrValidationSession, object()))
+
+    assert app.static_folder is not None
+    assert Path(app.static_folder) == package_root / "web/static"
 
 
 def test_create_app_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
