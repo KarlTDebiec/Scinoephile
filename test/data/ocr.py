@@ -190,7 +190,6 @@ def _ocr(
     workflow_kw: dict[str, Any] = {
         "infile_path": infile_path,
         "output_dir_path": output_dir_path,
-        "source_dir_path": input_dir_path,
         "clean": True,
         "dev": True,
         "overwrite": overwrite,

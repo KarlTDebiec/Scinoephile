@@ -35,7 +35,8 @@ from scinoephile.media.subtitles.cache import (
     cache_subtitles,
     get_subtitle_cache_path,
 )
-from scinoephile.workflows.ocr_validation import validate_ocr
+
+from .ocr_validation import validate_ocr
 
 __all__ = [
     "OcrProcessingResult",
@@ -62,7 +63,6 @@ def process_eng_ocr(
     infile_path: Path,
     output_dir_path: Path,
     *,
-    source_dir_path: Path | None = None,
     stream_index: int | None = None,
     cache_dir_path: Path | None = None,
     clean: bool = False,
@@ -81,7 +81,6 @@ def process_eng_ocr(
     Arguments:
         infile_path: SUP, image subtitle directory, or media input path
         output_dir_path: directory where OCR outputs are written
-        source_dir_path: optional directory containing existing provider OCR outputs
         stream_index: media subtitle stream index when infile is media
         cache_dir_path: media subtitle cache directory path
         clean: whether to clean OCR subtitle outputs before fusing
@@ -101,38 +100,48 @@ def process_eng_ocr(
     image_series = _load_image_series(infile_path, stream_index, cache_dir_path)
 
     # Write outputs
-    _ensure_output_dir(output_dir_path)
     output_paths = {}
 
     # Image
     _export_image_series(image_series, output_dir_path, overwrite, output_paths)
 
     # Google Lens
-    lens = _load_or_create_lens_output(
-        image_series,
+    lens = _load_or_create_series_output(
         output_dir_path,
-        "en",
+        "lens",
+        "Lens OCR output",
         overwrite,
         output_paths,
-        _source_output_path(source_dir_path, "lens"),
+        lambda: ocr_image_series_with_lens(image_series, language="en"),
     )
 
     # Tesseract
-    tesseract = _load_or_create_tesseract_output(
-        image_series,
+    tesseract = _load_or_create_series_output(
         output_dir_path,
+        "tesseract",
+        "Tesseract OCR output",
         overwrite,
         output_paths,
-        _source_output_path(source_dir_path, "tesseract"),
+        lambda: ocr_image_series_with_tesseract(image_series, language="eng"),
     )
 
     # Clean provider outputs
     if clean:
-        lens = _load_or_create_eng_clean_output(
-            output_dir_path, "lens", lens, overwrite, output_paths
+        lens = _load_or_create_series_output(
+            output_dir_path,
+            "lens_clean",
+            "Cleaned Lens OCR output",
+            overwrite,
+            output_paths,
+            lambda: get_eng_cleaned(lens, remove_empty=False),
         )
-        tesseract = _load_or_create_eng_clean_output(
-            output_dir_path, "tesseract", tesseract, overwrite, output_paths
+        tesseract = _load_or_create_series_output(
+            output_dir_path,
+            "tesseract_clean",
+            "Cleaned Tesseract OCR output",
+            overwrite,
+            output_paths,
+            lambda: get_eng_cleaned(tesseract, remove_empty=False),
         )
 
     # Fusion
@@ -146,8 +155,13 @@ def process_eng_ocr(
         fuser_kw,
         output_paths,
     )
-    fuse_clean = _load_or_create_eng_clean_output(
-        output_dir_path, "fuse", fuse, overwrite, output_paths
+    fuse_clean = _load_or_create_series_output(
+        output_dir_path,
+        "fuse_clean",
+        "Cleaned fused OCR output",
+        overwrite,
+        output_paths,
+        lambda: get_eng_cleaned(fuse, remove_empty=False),
     )
 
     # Validation
@@ -174,7 +188,6 @@ def process_zho_ocr(
     infile_path: Path,
     output_dir_path: Path,
     *,
-    source_dir_path: Path | None = None,
     stream_index: int | None = None,
     cache_dir_path: Path | None = None,
     script: ChineseScript = "simplified",
@@ -194,7 +207,6 @@ def process_zho_ocr(
     Arguments:
         infile_path: SUP, image subtitle directory, or media input path
         output_dir_path: directory where OCR outputs are written
-        source_dir_path: optional directory containing existing provider OCR outputs
         stream_index: media subtitle stream index when infile is media
         cache_dir_path: media subtitle cache directory path
         script: Chinese script to OCR, either simplified or traditional
@@ -218,39 +230,48 @@ def process_zho_ocr(
     image_series = _load_image_series(infile_path, stream_index, cache_dir_path)
 
     # Write outputs
-    _ensure_output_dir(output_dir_path)
     output_paths = {}
 
     # Image
     _export_image_series(image_series, output_dir_path, overwrite, output_paths)
 
     # Google Lens
-    lens = _load_or_create_lens_output(
-        image_series,
+    lens = _load_or_create_series_output(
         output_dir_path,
-        lens_language,
+        "lens",
+        "Lens OCR output",
         overwrite,
         output_paths,
-        _source_output_path(source_dir_path, "lens"),
+        lambda: ocr_image_series_with_lens(image_series, language=lens_language),
     )
 
     # PaddleOCR
-    paddle = _load_or_create_paddle_output(
-        image_series,
+    paddle = _load_or_create_series_output(
         output_dir_path,
-        paddle_language,
+        "paddle",
+        "PaddleOCR output",
         overwrite,
         output_paths,
-        _source_output_path(source_dir_path, "paddle"),
+        lambda: ocr_image_series_with_paddle(image_series, language=paddle_language),
     )
 
     # Clean provider outputs
     if clean:
-        lens = _load_or_create_zho_clean_output(
-            output_dir_path, "lens", lens, overwrite, output_paths
+        lens = _load_or_create_series_output(
+            output_dir_path,
+            "lens_clean",
+            "Cleaned Lens OCR output",
+            overwrite,
+            output_paths,
+            lambda: get_zho_cleaned(lens, remove_empty=False),
         )
-        paddle = _load_or_create_zho_clean_output(
-            output_dir_path, "paddle", paddle, overwrite, output_paths
+        paddle = _load_or_create_series_output(
+            output_dir_path,
+            "paddle_clean",
+            "Cleaned PaddleOCR output",
+            overwrite,
+            output_paths,
+            lambda: get_zho_cleaned(paddle, remove_empty=False),
         )
 
     # Fusion
@@ -265,8 +286,13 @@ def process_zho_ocr(
         fuser_kw,
         output_paths,
     )
-    fuse_clean = _load_or_create_zho_clean_output(
-        output_dir_path, "fuse", fuse, overwrite, output_paths
+    fuse_clean = _load_or_create_series_output(
+        output_dir_path,
+        "fuse_clean",
+        "Cleaned fused OCR output",
+        overwrite,
+        output_paths,
+        lambda: get_zho_cleaned(fuse, remove_empty=False),
     )
 
     # Validation
@@ -289,23 +315,6 @@ def process_zho_ocr(
     )
 
 
-def _ensure_output_dir(output_dir_path: Path):
-    """Ensure an OCR output directory exists.
-
-    Arguments:
-        output_dir_path: OCR output directory
-    """
-    if output_dir_path.exists():
-        return
-    try:
-        output_dir_path.mkdir(parents=True, exist_ok=True)
-    except OSError as exc:
-        raise ScinoephileError(
-            f"Unable to create OCR output directory {output_dir_path}: {exc}"
-        ) from exc
-    logger.info(f"Created output directory: {output_dir_path}")
-
-
 def _export_image_series(
     image_series: ImageSeries,
     output_dir_path: Path,
@@ -324,12 +333,7 @@ def _export_image_series(
     if image_dir_path.exists() and not overwrite:
         logger.info(f"Image OCR output exists: {image_dir_path}")
     else:
-        try:
-            image_series.save(image_dir_path)
-        except (OSError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to save source image subtitles to {image_dir_path}: {exc}"
-            ) from exc
+        image_series.save(image_dir_path)
     output_paths["image"] = image_dir_path
 
 
@@ -395,40 +399,6 @@ def _load_image_series(
         ) from exc
 
 
-def _load_or_create_eng_clean_output(
-    output_dir_path: Path,
-    output_name: str,
-    series: Series,
-    overwrite: bool,
-    output_paths: dict[str, Path],
-) -> Series:
-    """Load or create a cleaned English OCR provider output.
-
-    Arguments:
-        output_dir_path: OCR output directory
-        output_name: output name
-        series: source series to clean
-        overwrite: whether to overwrite existing workflow outputs
-        output_paths: output paths to update
-    Returns:
-        cleaned series
-    """
-    if output_name == "fuse":
-        display_name = "Cleaned fused OCR output"
-    elif output_name == "tesseract":
-        display_name = "Cleaned Tesseract OCR output"
-    else:
-        display_name = "Cleaned Lens OCR output"
-    return _load_or_create_series_output(
-        output_dir_path,
-        f"{output_name}_clean",
-        display_name,
-        overwrite,
-        output_paths,
-        lambda: get_eng_cleaned(series, remove_empty=False),
-    )
-
-
 def _load_or_create_eng_fuse_output(
     output_dir_path: Path,
     lens: Series,
@@ -468,68 +438,6 @@ def _load_or_create_eng_fuse_output(
     )
 
 
-def _load_or_create_lens_output(
-    image_series: ImageSeries,
-    output_dir_path: Path,
-    language: str,
-    overwrite: bool,
-    output_paths: dict[str, Path],
-    source_path: Path | None,
-) -> Series:
-    """Load or create Google Lens OCR output.
-
-    Arguments:
-        image_series: image subtitle series
-        output_dir_path: OCR output directory
-        language: Google Lens language code
-        overwrite: whether to overwrite existing workflow outputs
-        output_paths: output paths to update
-        source_path: optional existing Google Lens OCR output path
-    Returns:
-        Google Lens OCR series
-    """
-    return _load_or_create_series_output(
-        output_dir_path,
-        "lens",
-        "Lens OCR output",
-        overwrite,
-        output_paths,
-        lambda: ocr_image_series_with_lens(image_series, language=language),
-        source_path,
-    )
-
-
-def _load_or_create_paddle_output(
-    image_series: ImageSeries,
-    output_dir_path: Path,
-    language: str,
-    overwrite: bool,
-    output_paths: dict[str, Path],
-    source_path: Path | None,
-) -> Series:
-    """Load or create PaddleOCR output.
-
-    Arguments:
-        image_series: image subtitle series
-        output_dir_path: OCR output directory
-        language: PaddleOCR language code
-        overwrite: whether to overwrite existing workflow outputs
-        output_paths: output paths to update
-        source_path: optional existing PaddleOCR output path
-    Returns:
-        PaddleOCR series
-    """
-    return _load_or_create_series_output(
-        output_dir_path,
-        "paddle",
-        "PaddleOCR output",
-        overwrite,
-        output_paths,
-        lambda: ocr_image_series_with_paddle(image_series, language=language),
-        source_path,
-    )
-
-
 def _load_or_create_series_output(
     output_dir_path: Path,
     output_name: str,
@@ -537,7 +445,6 @@ def _load_or_create_series_output(
     overwrite: bool,
     output_paths: dict[str, Path],
     create_series: Callable[[], Series],
-    source_path: Path | None = None,
 ) -> Series:
     """Load or create a text subtitle output.
 
@@ -548,7 +455,6 @@ def _load_or_create_series_output(
         overwrite: whether to overwrite existing workflow outputs
         output_paths: output paths to update
         create_series: function that creates the series when needed
-        source_path: optional existing source output path to copy from
     Returns:
         text subtitle series
     """
@@ -557,10 +463,6 @@ def _load_or_create_series_output(
         if output_path.exists() and not overwrite:
             logger.info(f"{display_name} exists: {output_path}")
             series = Series.load(output_path)
-        elif source_path is not None and source_path.exists():
-            logger.info(f"Using existing {display_name}: {source_path}")
-            series = Series.load(source_path)
-            series.save(output_path, format_="srt")
         else:
             series = create_series()
             series.save(output_path, format_="srt")
@@ -570,35 +472,6 @@ def _load_or_create_series_output(
         ) from exc
     output_paths[output_name] = output_path
     return series
-
-
-def _load_or_create_tesseract_output(
-    image_series: ImageSeries,
-    output_dir_path: Path,
-    overwrite: bool,
-    output_paths: dict[str, Path],
-    source_path: Path | None,
-) -> Series:
-    """Load or create Tesseract OCR output.
-
-    Arguments:
-        image_series: image subtitle series
-        output_dir_path: OCR output directory
-        overwrite: whether to overwrite existing workflow outputs
-        output_paths: output paths to update
-        source_path: optional existing Tesseract OCR output path
-    Returns:
-        Tesseract OCR series
-    """
-    return _load_or_create_series_output(
-        output_dir_path,
-        "tesseract",
-        "Tesseract OCR output",
-        overwrite,
-        output_paths,
-        lambda: ocr_image_series_with_tesseract(image_series, language="eng"),
-        source_path,
-    )
 
 
 def _validate_fuse_clean_output(
@@ -647,40 +520,6 @@ def _validate_fuse_clean_output(
         port=port,
     )
     output_paths["fuse_clean_validate"] = validate_path
-
-
-def _load_or_create_zho_clean_output(
-    output_dir_path: Path,
-    output_name: str,
-    series: Series,
-    overwrite: bool,
-    output_paths: dict[str, Path],
-) -> Series:
-    """Load or create a cleaned Chinese OCR provider output.
-
-    Arguments:
-        output_dir_path: OCR output directory
-        output_name: output name
-        series: source series to clean
-        overwrite: whether to overwrite existing workflow outputs
-        output_paths: output paths to update
-    Returns:
-        cleaned series
-    """
-    if output_name == "fuse":
-        display_name = "Cleaned fused OCR output"
-    elif output_name == "paddle":
-        display_name = "Cleaned PaddleOCR output"
-    else:
-        display_name = "Cleaned Lens OCR output"
-    return _load_or_create_series_output(
-        output_dir_path,
-        f"{output_name}_clean",
-        display_name,
-        overwrite,
-        output_paths,
-        lambda: get_zho_cleaned(series, remove_empty=False),
-    )
 
 
 def _load_or_create_zho_fuse_output(
@@ -744,17 +583,3 @@ def _get_fuser_kw(
         kwargs = dict(fuser_kw)
     kwargs.setdefault("additional_context", additional_context)
     return kwargs
-
-
-def _source_output_path(source_dir_path: Path | None, output_name: str) -> Path | None:
-    """Get source OCR output path if a source directory was provided.
-
-    Arguments:
-        source_dir_path: optional source OCR output directory
-        output_name: OCR output name
-    Returns:
-        source OCR output path, if available
-    """
-    if source_dir_path is None:
-        return None
-    return source_dir_path / f"{output_name}.srt"
