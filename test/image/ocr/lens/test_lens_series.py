@@ -11,7 +11,7 @@ from PIL import Image
 
 import scinoephile.image.ocr.lens as lens_ocr
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.image.ocr.lens import ocr_image_series_with_lens
+from scinoephile.image.ocr.lens import lens_recognizer, ocr_image_series_with_lens
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
@@ -89,6 +89,7 @@ def test_lens_module_exposes_only_current_public_helpers():
     """Test Google Lens module no longer exposes removed helper functions."""
     assert not hasattr(lens_ocr, "get_lens_recognizer")
     assert not hasattr(lens_ocr, "get_lens_language_code")
+    assert lens_ocr.LensRecognizerKwargs is lens_recognizer.LensRecognizerKwargs
 
 
 def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
@@ -125,6 +126,47 @@ def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
     ]
     recognizer = FakeRecognizer.instances[0]
     assert [image.size for image in recognizer.images] == [(10, 8), (12, 9)]
+
+
+def test_ocr_image_series_with_lens_logs_progress(
+    caplog: pytest.LogCaptureFixture,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test Google Lens image series processing logs OCR progress.
+
+    Arguments:
+        caplog: pytest log capture fixture
+        monkeypatch: pytest monkeypatch fixture
+    """
+    image_series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=1000,
+                end=2000,
+                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+            ),
+            ImageSubtitle(
+                start=3000,
+                end=4000,
+                img=Image.new("RGBA", (12, 9), (255, 255, 255, 0)),
+            ),
+        ]
+    )
+    FakeRecognizer.texts = ["first", "second"]
+    FakeRecognizer.instances = []
+    monkeypatch.setattr("scinoephile.image.ocr.lens.LensRecognizer", FakeRecognizer)
+
+    with caplog.at_level("INFO", logger="scinoephile.image.ocr.lens"):
+        ocr_image_series_with_lens(image_series)
+
+    assert [
+        record.message
+        for record in caplog.records
+        if record.name == "scinoephile.image.ocr.lens"
+    ] == [
+        "OCRing subtitle 1/2 with Google Lens",
+        "OCRing subtitle 2/2 with Google Lens",
+    ]
 
 
 def test_ocr_image_series_with_lens_uses_runtime_cache(

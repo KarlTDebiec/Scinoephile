@@ -10,7 +10,7 @@ import os
 from dataclasses import asdict
 from logging import getLogger
 from pathlib import Path
-from typing import Any, override
+from typing import Any, TypedDict, override
 
 import numpy as np
 from PIL import Image
@@ -21,7 +21,10 @@ from scinoephile.core import Language
 from .bounding_box import PaddleOcrBoundingBox
 from .text_result import PaddleOcrTextResult
 
-__all__ = ["PaddleRecognizer"]
+__all__ = [
+    "PaddleRecognizer",
+    "PaddleRecognizerKwargs",
+]
 
 logger = getLogger(__name__)
 
@@ -37,6 +40,19 @@ _PADDLE_LANGUAGE_CODES = {
     Language.zho_hans: "ch",
     Language.zho_hant: "chinese_cht",
 }
+
+
+class PaddleRecognizerKwargs(TypedDict, total=False):
+    """Additional keyword arguments forwarded to PaddleRecognizer."""
+
+    cache_dir_path: Path | None
+    """Directory in which to cache OCR results."""
+
+    language: Language | str
+    """Scinoephile language."""
+
+    min_confidence: float
+    """Minimum confidence to include."""
 
 
 class PaddleRecognizer:

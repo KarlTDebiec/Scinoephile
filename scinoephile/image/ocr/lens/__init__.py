@@ -4,15 +4,15 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import TypedDict, Unpack, cast
+from logging import getLogger
+from typing import Unpack, cast
 
-from scinoephile.core import Language, ScinoephileError
+from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-from .lens_recognizer import LensRecognizer
+from .lens_recognizer import LensRecognizer, LensRecognizerKwargs
 
 __all__ = [
     "LensRecognizer",
@@ -20,18 +20,7 @@ __all__ = [
     "ocr_image_series_with_lens",
 ]
 
-
-class LensRecognizerKwargs(TypedDict, total=False):
-    """Additional keyword arguments forwarded to LensRecognizer."""
-
-    cache_dir_path: Path | None
-    """Directory in which to cache OCR results."""
-
-    language: Language
-    """Scinoephile language."""
-
-    retries: int
-    """Google Lens OCR request attempts per uncached image."""
+logger = getLogger(__name__)
 
 
 def ocr_image_series_with_lens(
@@ -52,7 +41,11 @@ def ocr_image_series_with_lens(
         lens_recognizer = LensRecognizer(**kwargs)
 
         events = []
-        for subtitle in image_series:
+        subtitle_count = len(image_series.events)
+        for subtitle_idx, subtitle in enumerate(image_series, 1):
+            logger.info(
+                f"OCRing subtitle {subtitle_idx}/{subtitle_count} with Google Lens"
+            )
             image_subtitle = cast(ImageSubtitle, subtitle)
             text = lens_recognizer.recognize_image(image_subtitle.img)
             events.append(

@@ -10,14 +10,17 @@ import json
 from collections.abc import Mapping
 from logging import getLogger
 from pathlib import Path
-from typing import Any, cast, override
+from typing import Any, TypedDict, cast, override
 
 from PIL import Image
 
 from scinoephile.common.validation import val_int, val_output_dir_path
 from scinoephile.core import Language
 
-__all__ = ["LensRecognizer"]
+__all__ = [
+    "LensRecognizer",
+    "LensRecognizerKwargs",
+]
 
 logger = getLogger(__name__)
 
@@ -31,6 +34,19 @@ _LENS_LANGUAGE_CODES = {
     Language.zho_hans: "zh-CN",
     Language.zho_hant: "zh-TW",
 }
+
+
+class LensRecognizerKwargs(TypedDict, total=False):
+    """Additional keyword arguments forwarded to LensRecognizer."""
+
+    cache_dir_path: Path | None
+    """Directory in which to cache OCR results."""
+
+    language: Language | str
+    """Scinoephile language."""
+
+    retries: int
+    """Google Lens OCR request attempts per uncached image."""
 
 
 class _GoogleLensRequestError(RuntimeError):
@@ -57,7 +73,10 @@ class LensRecognizer:
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
-        self.language = Language(language)
+        try:
+            self.language = Language(language)
+        except ValueError as exc:
+            raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
         try:
             self.lens_language_code = _LENS_LANGUAGE_CODES[self.language]
         except KeyError as exc:

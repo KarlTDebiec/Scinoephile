@@ -10,15 +10,14 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from logging import getLogger
-from pathlib import Path
-from typing import TypedDict, Unpack, cast
+from typing import Unpack, cast
 
-from scinoephile.core import Language, ScinoephileError
+from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-from .tesseract_recognizer import TesseractRecognizer
+from .tesseract_recognizer import TesseractRecognizer, TesseractRecognizerKwargs
 
 __all__ = [
     "TesseractRecognizer",
@@ -27,37 +26,6 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
-
-
-class TesseractRecognizerKwargs(TypedDict, total=False):
-    """Additional keyword arguments forwarded to TesseractRecognizer."""
-
-    cache_dir_path: Path | None
-    """Directory in which to cache OCR results."""
-
-    detect_italics: bool
-    """Whether to run a legacy-engine pass for italics."""
-
-    executable_path: Path | str
-    """Tesseract executable path or command name."""
-
-    language: Language
-    """Scinoephile language."""
-
-    oem: int | None
-    """Tesseract OCR engine mode, or None to omit --oem."""
-
-    psm: int
-    """Tesseract page segmentation mode."""
-
-    scale: int
-    """Image preprocessing scale."""
-
-    skip_executable_validation: bool
-    """Whether to skip executable validation."""
-
-    tessdata_dir_path: Path | None
-    """Optional tessdata directory."""
 
 
 def ocr_image_series_with_tesseract(

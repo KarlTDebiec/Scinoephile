@@ -9,7 +9,7 @@ import json
 from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import override
+from typing import TypedDict, override
 
 import requests
 from PIL import Image
@@ -26,7 +26,10 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
 from .preprocessing import preprocess_tesseract_ocr_image
 
-__all__ = ["TesseractRecognizer"]
+__all__ = [
+    "TesseractRecognizer",
+    "TesseractRecognizerKwargs",
+]
 
 logger = getLogger(__name__)
 
@@ -40,6 +43,37 @@ _TESSERACT_LANGUAGE_CODES = {
     Language.zho_hans: "chi_sim",
     Language.zho_hant: "chi_tra",
 }
+
+
+class TesseractRecognizerKwargs(TypedDict, total=False):
+    """Additional keyword arguments forwarded to TesseractRecognizer."""
+
+    cache_dir_path: Path | None
+    """Directory in which to cache OCR results."""
+
+    detect_italics: bool
+    """Whether to run a legacy-engine pass for italics."""
+
+    executable_path: Path | str
+    """Tesseract executable path or command name."""
+
+    language: Language | str
+    """Scinoephile language."""
+
+    oem: int | None
+    """Tesseract OCR engine mode, or None to omit --oem."""
+
+    psm: int
+    """Tesseract page segmentation mode."""
+
+    scale: int
+    """Image preprocessing scale."""
+
+    skip_executable_validation: bool
+    """Whether to skip executable validation."""
+
+    tessdata_dir_path: Path | None
+    """Optional tessdata directory."""
 
 
 class TesseractRecognizer:

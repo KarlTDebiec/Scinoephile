@@ -11,7 +11,10 @@ from PIL import Image
 
 import scinoephile.image.ocr.tesseract as tesseract_ocr
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
+from scinoephile.image.ocr.tesseract import (
+    ocr_image_series_with_tesseract,
+    tesseract_recognizer,
+)
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
@@ -109,6 +112,10 @@ def test_tesseract_module_exposes_only_current_public_helpers():
     """Test Tesseract module no longer exposes removed helper functions."""
     assert not hasattr(tesseract_ocr, "get_tesseract_recognizer")
     assert not hasattr(tesseract_ocr, "get_tesseract_language_code")
+    assert (
+        tesseract_ocr.TesseractRecognizerKwargs
+        is tesseract_recognizer.TesseractRecognizerKwargs
+    )
 
 
 def test_ocr_image_series_with_tesseract_preserves_timings_and_sets_text(

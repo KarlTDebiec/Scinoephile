@@ -10,15 +10,15 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import TypedDict, Unpack, cast
+from logging import getLogger
+from typing import Unpack, cast
 
-from scinoephile.core import Language, ScinoephileError
+from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-from .paddle_recognizer import PaddleRecognizer
+from .paddle_recognizer import PaddleRecognizer, PaddleRecognizerKwargs
 from .preprocessing import preprocess_paddle_ocr_image
 
 __all__ = [
@@ -27,18 +27,7 @@ __all__ = [
     "ocr_image_series_with_paddle",
 ]
 
-
-class PaddleRecognizerKwargs(TypedDict, total=False):
-    """Additional keyword arguments forwarded to PaddleRecognizer."""
-
-    cache_dir_path: Path | None
-    """Directory in which to cache OCR results."""
-
-    language: Language
-    """Scinoephile language."""
-
-    min_confidence: float
-    """Minimum confidence to include."""
+logger = getLogger(__name__)
 
 
 def ocr_image_series_with_paddle(
@@ -59,7 +48,11 @@ def ocr_image_series_with_paddle(
         paddle_recognizer = PaddleRecognizer(**kwargs)
 
         events = []
-        for subtitle in image_series:
+        subtitle_count = len(image_series.events)
+        for subtitle_idx, subtitle in enumerate(image_series, 1):
+            logger.info(
+                f"OCRing subtitle {subtitle_idx}/{subtitle_count} with PaddleOCR"
+            )
             image_subtitle = cast(ImageSubtitle, subtitle)
             preprocessed_image = preprocess_paddle_ocr_image(image_subtitle.img)
             text = paddle_recognizer.recognize_image(preprocessed_image)

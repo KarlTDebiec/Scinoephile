@@ -149,6 +149,12 @@ def test_normalize_lens_result_supports_object_results():
     assert lines == ["first", "second"]
 
 
+def test_lens_recognizer_rejects_unsupported_languages():
+    """Test Google Lens recognizer only supports English and Chinese."""
+    with pytest.raises(ValueError, match="not supported by Google Lens OCR"):
+        LensRecognizer(language="korean")
+
+
 def test_lens_recognizer_caches_results_by_image(tmp_path: Path):
     """Test Google Lens recognizer caches OCR results by image content."""
     recognizer = CountingLensRecognizer(cache_dir_path=tmp_path)
