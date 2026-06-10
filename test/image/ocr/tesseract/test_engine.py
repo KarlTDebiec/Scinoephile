@@ -12,6 +12,9 @@ from PIL import Image
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import TesseractRecognizer
+from scinoephile.image.ocr.tesseract.tesseract_recognizer import (
+    _coerce_tesseract_language,
+)
 
 
 class CountingTesseractRecognizer(TesseractRecognizer):
@@ -60,6 +63,30 @@ def test_tesseract_recognizer_caches_results_by_image(tmp_path: Path):
 
     assert recognizer.recognize_count == 1
     assert len(list(tmp_path.glob("*.json"))) == 1
+
+
+@pytest.mark.parametrize(
+    ("language", "expected"),
+    [
+        ("en", Language.eng),
+        ("eng", Language.eng),
+        ("chi_sim", Language.zho_hans),
+        ("chi_tra", Language.zho_hant),
+        ("zho-Hans", Language.zho_hans),
+        ("zho-Hant", Language.zho_hant),
+    ],
+)
+def test_coerce_tesseract_language_accepts_current_and_legacy_codes(
+    language: str,
+    expected: Language,
+):
+    """Test Tesseract language coercion accepts supported language codes.
+
+    Arguments:
+        language: language code to coerce
+        expected: expected Scinoephile language
+    """
+    assert _coerce_tesseract_language(language) is expected
 
 
 def test_tesseract_recognizer_caches_by_configuration(tmp_path: Path):

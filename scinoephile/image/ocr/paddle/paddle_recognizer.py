@@ -40,6 +40,19 @@ _PADDLE_LANGUAGE_CODES = {
     Language.zho_hans: "ch",
     Language.zho_hant: "chinese_cht",
 }
+_PADDLE_LANGUAGE_ALIASES = {
+    "ch": Language.zho_hans,
+    "chi_sim": Language.zho_hans,
+    "chinese_cht": Language.zho_hant,
+    "en": Language.eng,
+    "eng": Language.eng,
+    "zh-cn": Language.zho_hans,
+    "zh-hans": Language.zho_hans,
+    "zh-tw": Language.zho_hant,
+    "zh-hant": Language.zho_hant,
+    "zho-hans": Language.zho_hans,
+    "zho-hant": Language.zho_hant,
+}
 
 
 class PaddleRecognizerKwargs(TypedDict, total=False):
@@ -74,10 +87,7 @@ class PaddleRecognizer:
         Raises:
             ValueError: if language is unsupported
         """
-        try:
-            self.language = Language(language)
-        except ValueError as exc:
-            raise ValueError(f"{language} is not supported by PaddleOCR") from exc
+        self.language = _coerce_paddle_language(language)
         try:
             self.paddle_language_code = _PADDLE_LANGUAGE_CODES[self.language]
         except KeyError as exc:
@@ -334,3 +344,21 @@ class PaddleRecognizer:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump([asdict(result) for result in results], file, ensure_ascii=False)
+
+
+def _coerce_paddle_language(language: Language | str) -> Language:
+    """Coerce a language value into a supported PaddleOCR language.
+
+    Arguments:
+        language: Scinoephile language or legacy PaddleOCR language code
+    Returns:
+        Scinoephile language
+    Raises:
+        ValueError: if the language is unsupported
+    """
+    if isinstance(language, Language):
+        return language
+    if language_key := language.strip().casefold():
+        if language_key in _PADDLE_LANGUAGE_ALIASES:
+            return _PADDLE_LANGUAGE_ALIASES[language_key]
+    raise ValueError(f"{language} is not supported by PaddleOCR")

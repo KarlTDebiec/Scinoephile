@@ -19,7 +19,6 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .paddle_recognizer import PaddleRecognizer, PaddleRecognizerKwargs
-from .preprocessing import preprocess_paddle_ocr_image
 
 __all__ = [
     "PaddleRecognizer",
@@ -43,6 +42,8 @@ def ocr_image_series_with_paddle(
         text subtitle series
     """
     try:
+        from .preprocessing import preprocess_paddle_ocr_image  # noqa: PLC0415
+
         if "cache_dir_path" not in kwargs:
             kwargs["cache_dir_path"] = get_runtime_cache_dir_path("paddleocr")
         paddle_recognizer = PaddleRecognizer(**kwargs)

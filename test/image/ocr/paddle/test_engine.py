@@ -18,6 +18,7 @@ from PIL import Image
 from scinoephile.core import Language
 from scinoephile.image.ocr.paddle import PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
+from scinoephile.image.ocr.paddle.paddle_recognizer import _coerce_paddle_language
 from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
 
 
@@ -157,6 +158,30 @@ def test_paddle_recognizer_rejects_unsupported_languages():
     """Test PaddleOCR recognizer only supports English and Chinese."""
     with pytest.raises(ValueError, match="not supported by PaddleOCR"):
         PaddleRecognizer(language="korean")
+
+
+@pytest.mark.parametrize(
+    ("language", "expected"),
+    [
+        ("en", Language.eng),
+        ("eng", Language.eng),
+        ("ch", Language.zho_hans),
+        ("chinese_cht", Language.zho_hant),
+        ("zho-Hans", Language.zho_hans),
+        ("zho-Hant", Language.zho_hant),
+    ],
+)
+def test_coerce_paddle_language_accepts_current_and_legacy_codes(
+    language: str,
+    expected: Language,
+):
+    """Test PaddleOCR language coercion accepts supported language codes.
+
+    Arguments:
+        language: language code to coerce
+        expected: expected Scinoephile language
+    """
+    assert _coerce_paddle_language(language) is expected
 
 
 def test_format_paddle_ocr_text_orders_results_into_lines():

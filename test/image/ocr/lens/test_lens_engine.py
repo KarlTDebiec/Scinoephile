@@ -16,7 +16,10 @@ import pytest
 from PIL import Image
 
 from scinoephile.core import Language
-from scinoephile.image.ocr.lens.lens_recognizer import LensRecognizer
+from scinoephile.image.ocr.lens.lens_recognizer import (
+    LensRecognizer,
+    _coerce_lens_language,
+)
 
 
 class FakeLensApiError(RuntimeError):
@@ -153,6 +156,30 @@ def test_lens_recognizer_rejects_unsupported_languages():
     """Test Google Lens recognizer only supports English and Chinese."""
     with pytest.raises(ValueError, match="not supported by Google Lens OCR"):
         LensRecognizer(language="korean")
+
+
+@pytest.mark.parametrize(
+    ("language", "expected"),
+    [
+        ("en", Language.eng),
+        ("eng", Language.eng),
+        ("zh-CN", Language.zho_hans),
+        ("zh-TW", Language.zho_hant),
+        ("zho-Hans", Language.zho_hans),
+        ("zho-Hant", Language.zho_hant),
+    ],
+)
+def test_coerce_lens_language_accepts_current_and_legacy_codes(
+    language: str,
+    expected: Language,
+):
+    """Test Google Lens language coercion accepts supported language codes.
+
+    Arguments:
+        language: language code to coerce
+        expected: expected Scinoephile language
+    """
+    assert _coerce_lens_language(language) is expected
 
 
 def test_lens_recognizer_caches_results_by_image(tmp_path: Path):
