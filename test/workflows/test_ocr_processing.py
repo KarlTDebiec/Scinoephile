@@ -191,11 +191,11 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
         assert language is Language.eng
         return _series("tesseract")
 
-    def fake_fuse(lens: Series, tesseract: Series, **kwargs: object) -> Series:
+    def fake_fuse(lens: Series, tesseract: Series, processor: object) -> Series:
         """Fake English OCR fusion."""
         assert [subtitle.text for subtitle in lens] == ["lens"]
         assert [subtitle.text for subtitle in tesseract] == ["tesseract"]
-        assert kwargs == {"processor": fuser}
+        assert processor is fuser
         return _series("fused")
 
     fuser = object()
@@ -300,11 +300,11 @@ def test_process_eng_ocr_can_clean_provider_outputs_before_fusion(
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
 
-    def fake_fuse(lens: Series, tesseract: Series, **kwargs: object) -> Series:
+    def fake_fuse(lens: Series, tesseract: Series, processor: object) -> Series:
         """Fake English OCR fusion."""
         assert [subtitle.text for subtitle in lens] == ["lens…"]
         assert [subtitle.text for subtitle in tesseract] == ["tesseract"]
-        assert kwargs == {"processor": fuser}
+        assert processor is fuser
         return _series("fused")
 
     fuser = object()
@@ -412,7 +412,7 @@ def test_process_eng_ocr_validates_fuse_clean_output(
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, **kwargs: _series_with_texts(
+        lambda lens, tesseract, processor: _series_with_texts(
             ["fused 1...", "fused 2..."]
         ),
     )
@@ -503,7 +503,7 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, **kwargs: _series_with_texts(
+        lambda lens, tesseract, processor: _series_with_texts(
             ["fused 1...", "fused 2..."]
         ),
     )
@@ -614,7 +614,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, **kwargs: _series_with_texts(
+        lambda lens, tesseract, processor: _series_with_texts(
             ["fused 1...", "fused 2..."]
         ),
     )
@@ -665,11 +665,11 @@ def test_process_zho_ocr_runs_lens_paddle_and_fusion(
         assert language is Language.zho_hans
         return _series("paddle")
 
-    def fake_fuse(lens: Series, paddle: Series, **kwargs: object) -> Series:
+    def fake_fuse(lens: Series, paddle: Series, processor: object) -> Series:
         """Fake Chinese OCR fusion."""
         assert [subtitle.text for subtitle in lens] == ["lens"]
         assert [subtitle.text for subtitle in paddle] == ["paddle"]
-        assert kwargs == {"processor": fuser}
+        assert processor is fuser
         return _series("fused")
 
     fuser = object()
@@ -740,11 +740,11 @@ def test_process_zho_ocr_can_clean_provider_outputs_before_fusion(
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
 
-    def fake_fuse(lens: Series, paddle: Series, **kwargs: object) -> Series:
+    def fake_fuse(lens: Series, paddle: Series, processor: object) -> Series:
         """Fake Chinese OCR fusion."""
         assert [subtitle.text for subtitle in lens] == ["镜头⋯"]
         assert [subtitle.text for subtitle in paddle] == ["字幕，好？"]
-        assert kwargs == {"processor": fuser}
+        assert processor is fuser
         return _series("fused")
 
     fuser = object()
@@ -830,9 +830,9 @@ def test_process_zho_ocr_passes_zho_hant_languages_to_ocr_engines(
         assert language is Language.zho_hant
         return _series("paddle")
 
-    def fake_fuse(lens: Series, paddle: Series, **kwargs: object) -> Series:
+    def fake_fuse(lens: Series, paddle: Series, processor: object) -> Series:
         """Fake Chinese OCR fusion."""
-        assert kwargs == {"processor": fuser}
+        assert processor is fuser
         return _series("fused")
 
     monkeypatch.setattr(
@@ -933,7 +933,9 @@ def test_process_zho_ocr_validates_fuse_clean_output(
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
-        lambda lens, paddle, **kwargs: _series_with_texts(["fused 1...", "fused 2..."]),
+        lambda lens, paddle, processor: _series_with_texts(
+            ["fused 1...", "fused 2..."]
+        ),
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_validation.ValidationManager",
@@ -992,7 +994,7 @@ def test_process_eng_ocr_can_export_source_image_series(
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, **kwargs: _series_with_texts(
+        lambda lens, tesseract, processor: _series_with_texts(
             ["fused text", "fused text 2"]
         ),
     )
@@ -1069,7 +1071,7 @@ def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, **kwargs: _series("fused"),
+        lambda lens, tesseract, processor: _series("fused"),
     )
 
     process_eng_ocr(source_path, output_dir_path, stream_index=5, validate=False)
