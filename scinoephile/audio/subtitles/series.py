@@ -12,6 +12,7 @@ from typing import Any, Self, TypedDict, override
 
 import ffmpeg
 from pydub import AudioSegment
+from pydub.exceptions import PydubException
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
@@ -140,23 +141,28 @@ class AudioSeries(Series):
         """
         path = Path(path)
 
-        # Check if directory
-        if format_ == "wav" or (not format_ and path.suffix == ""):
-            validated_output_dir_path = val_output_dir_path(path)
-            self._save_wav(validated_output_dir_path)
-            logger.info(f"Saved series to {validated_output_dir_path}")
-            return
+        try:
+            # Check if directory
+            if format_ == "wav" or (not format_ and path.suffix == ""):
+                validated_output_dir_path = val_output_dir_path(path)
+                self._save_wav(validated_output_dir_path)
+                logger.info(f"Saved series to {validated_output_dir_path}")
+                return
 
-        # Otherwise, continue as superclass
-        validated_output_path = val_output_path(path, exist_ok=True)
-        super().save(
-            validated_output_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+            # Otherwise, continue as superclass
+            validated_output_path = val_output_path(path, exist_ok=True)
+            super().save(
+                validated_output_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
+        except (OSError, PydubException, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to save {type(self).__name__} to {path}: {exc}"
+            ) from exc
         logger.info(f"Saved series to {validated_output_path}")
 
     @override
@@ -199,24 +205,29 @@ class AudioSeries(Series):
         Returns:
             loaded series
         """
-        validated_path = val_input_dir_path(path)
-        buffer = kwargs.pop("buffer", 1000)
-        validated_srt_path = val_input_path(
-            validated_path / f"{validated_path.stem}.srt"
-        )
-        text_series = Series.load(
-            validated_srt_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+        try:
+            validated_path = val_input_dir_path(path)
+            buffer = kwargs.pop("buffer", 1000)
+            validated_srt_path = val_input_path(
+                validated_path / f"{validated_path.stem}.srt"
+            )
+            text_series = Series.load(
+                validated_srt_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
 
-        validated_audio_path = val_input_path(
-            validated_path / f"{validated_path.stem}.wav"
-        )
-        full_audio = AudioSegment.from_wav(validated_audio_path)
+            validated_audio_path = val_input_path(
+                validated_path / f"{validated_path.stem}.wav"
+            )
+            full_audio = AudioSegment.from_wav(validated_audio_path)
+        except (OSError, PydubException, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from {path}: {exc}"
+            ) from exc
         logger.info(f"Loaded full audio from {validated_audio_path}")
 
         return cls.build_series(text_series, full_audio, buffer)
@@ -242,21 +253,21 @@ class AudioSeries(Series):
         Returns:
             loaded series
         """
-        validated_media_path = val_input_path(media_path)
-        validated_subtitle_path = val_input_path(subtitle_path)
-        text_series = Series.load(validated_subtitle_path, **kwargs)
+        try:
+            validated_media_path = val_input_path(media_path)
+            validated_subtitle_path = val_input_path(subtitle_path)
+            text_series = Series.load(validated_subtitle_path, **kwargs)
 
-        stream = cls._get_audio_stream(validated_media_path, stream_index)
-        if stream.channels is None:
-            raise ScinoephileError(
-                f"Audio stream {stream.index} in {validated_media_path} "
-                "cannot be used for transcription."
-            )
-        channel_count = stream.channels
+            stream = cls._get_audio_stream(validated_media_path, stream_index)
+            if stream.channels is None:
+                raise ScinoephileError(
+                    f"Audio stream {stream.index} in {validated_media_path} "
+                    "cannot be used for transcription."
+                )
+            channel_count = stream.channels
 
-        with get_temp_directory_path() as temp_dir_path:
-            full_audio_path = temp_dir_path / "full_audio.wav"
-            try:
+            with get_temp_directory_path() as temp_dir_path:
+                full_audio_path = temp_dir_path / "full_audio.wav"
                 cls.extract_audio_track(
                     validated_media_path,
                     full_audio_path,
@@ -265,13 +276,12 @@ class AudioSeries(Series):
                 )
                 logger.info(f"Loading full audio from {full_audio_path}")
                 full_audio = AudioSegment.from_wav(full_audio_path)
-            except ffmpeg.Error as exc:
-                raise ScinoephileError(
-                    f"Could not extract audio stream {stream.index} from "
-                    f"{validated_media_path}"
-                ) from exc
 
-        return cls.build_series(text_series, full_audio, buffer)
+            return cls.build_series(text_series, full_audio, buffer)
+        except (ffmpeg.Error, OSError, PydubException, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from media {media_path}: {exc}"
+            ) from exc
 
     @classmethod
     def build_series(
@@ -346,32 +356,38 @@ class AudioSeries(Series):
             audio_track: media stream index of an audio stream
             channels: Number of channels in audio track
         """
-        if channels >= 6:
-            logger.info(
-                "Extracting center channel of audio stream "
-                f"{audio_track} from {video_input_path} to {audio_output_path}"
-            )
-            ffmpeg.input(str(video_input_path)).output(
-                str(audio_output_path),
-                format="wav",
-                ar=16000,
-                **{
-                    "filter_complex": f"[0:{audio_track}]pan=mono|c0=c2[out]",
-                    "map": "[out]",
-                },
-            ).run(quiet=False, overwrite_output=True)
-        else:
-            logger.info(
-                f"Downmixing audio stream {audio_track} from {video_input_path} to "
-                f"{audio_output_path}"
-            )
-            ffmpeg.input(str(video_input_path)).output(
-                str(audio_output_path),
-                format="wav",
-                ar=16000,
-                map=f"0:{audio_track}",
-                ac=1,
-            ).run(quiet=False, overwrite_output=True)
+        try:
+            if channels >= 6:
+                logger.info(
+                    "Extracting center channel of audio stream "
+                    f"{audio_track} from {video_input_path} to {audio_output_path}"
+                )
+                ffmpeg.input(str(video_input_path)).output(
+                    str(audio_output_path),
+                    format="wav",
+                    ar=16000,
+                    **{
+                        "filter_complex": f"[0:{audio_track}]pan=mono|c0=c2[out]",
+                        "map": "[out]",
+                    },
+                ).run(quiet=False, overwrite_output=True)
+            else:
+                logger.info(
+                    f"Downmixing audio stream {audio_track} from {video_input_path} "
+                    f"to {audio_output_path}"
+                )
+                ffmpeg.input(str(video_input_path)).output(
+                    str(audio_output_path),
+                    format="wav",
+                    ar=16000,
+                    map=f"0:{audio_track}",
+                    ac=1,
+                ).run(quiet=False, overwrite_output=True)
+        except (ffmpeg.Error, OSError) as exc:
+            raise ScinoephileError(
+                f"Could not extract audio stream {audio_track} from "
+                f"{video_input_path} to {audio_output_path}"
+            ) from exc
 
     @staticmethod
     def _get_audio_stream(media_path: Path, stream_index: int | None) -> AudioStream:

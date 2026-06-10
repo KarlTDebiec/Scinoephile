@@ -4,8 +4,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
+import pytest
+
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.core.subtitles import Series
+from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import assert_series_equal, test_data_root
 
 
@@ -19,3 +24,57 @@ def test_series_round_trips_srt():
         output = Series.load(output_path)
 
     assert_series_equal(output, series)
+
+
+def test_series_load_wraps_input_path_errors(tmp_path: Path):
+    """Test subtitle loading path errors are user-facing.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    path = tmp_path / "missing.srt"
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to load Series from .*missing.srt",
+    ) as excinfo:
+        Series.load(path)
+
+    assert isinstance(excinfo.value.__cause__, FileNotFoundError)
+
+
+def test_series_from_string_wraps_parser_errors():
+    """Test subtitle parsing errors are user-facing."""
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to parse Series from string",
+    ):
+        Series.from_string("text", format_="unsupported")
+
+
+def test_series_save_wraps_output_path_errors(tmp_path: Path):
+    """Test subtitle saving path errors are user-facing.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    series = Series(events=[Subtitle(start=1000, end=2000, text="Text")])
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to save Series to ",
+    ) as excinfo:
+        series.save(tmp_path)
+
+    assert isinstance(excinfo.value.__cause__, OSError)
+
+
+def test_series_to_string_wraps_serializer_errors():
+    """Test subtitle string serialization errors are user-facing."""
+    series = Series(events=[Subtitle(start=1000, end=2000, text="Text")])
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to serialize Series to string",
+    ):
+        series.to_string(format_="unsupported")
