@@ -116,8 +116,13 @@ class OcrProcessingWorkflow:
         self.dev = dev
         self.overwrite = overwrite
         self.provider = provider
-        self.additional_context = additional_context
-        self.fuser_kw = fuser_kw
+        if fuser_kw is None:
+            self.fuser_kw: dict[str, Any] = {}
+        else:
+            self.fuser_kw = dict(fuser_kw)
+        self.fuser_kw.setdefault("additional_context", additional_context)
+        if language is Language.zho_hant:
+            self.fuser_kw.setdefault("prompt_cls", OcrFusionPromptZhoHant)
         self.host = host
         self.port = port
         self.output_paths: dict[str, Path] = {}
@@ -134,11 +139,15 @@ class OcrProcessingWorkflow:
         # Export image series
         self._export_image_series(image_series)
 
-        # Process
+        # OCR
+        lens = self._lens(image_series)
         if self.language is Language.eng:
-            fuse_clean = self._process_eng_ocr(image_series)
+            secondary = self._tesseract(image_series)
         else:
-            fuse_clean = self._process_zho_ocr(image_series)
+            secondary = self._paddle(image_series)
+
+        # Fuse
+        fuse_clean = self._fuse(lens, secondary)
 
         # Validate
         if self.validate:
@@ -171,78 +180,40 @@ class OcrProcessingWorkflow:
             series.save(image_dir_path)
         self.output_paths["image"] = image_dir_path
 
-    def _fuse_eng_ocr(self, lens: Series, tesseract: Series) -> Series:
-        """Load or create fused English OCR output.
+    def _fuse(self, lens: Series, secondary: Series) -> Series:
+        """Load or create fused and cleaned OCR output.
 
         Arguments:
             lens: Google Lens OCR series
-            tesseract: Tesseract OCR series
+            secondary: Tesseract or PaddleOCR series
         Returns:
-            fused English OCR series
+            cleaned fused OCR series
         """
-        kwargs = self._get_fuser_kw()
-        path = self.output_dir_path / "fuse.srt"
-        try:
-            if path.exists() and not self.overwrite:
-                logger.info(f"Fuse OCR output exists: {path}")
-                series = Series.load(path)
-            else:
-                series = get_eng_ocr_fused(
-                    lens,
-                    tesseract,
-                    processor=get_eng_ocr_fuser(provider=self.provider, **kwargs),
-                )
-                series.save(path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to load or create Fuse OCR output at {path}: {exc}"
-            ) from exc
-        self.output_paths["fuse"] = path
-        return series
-
-    def _fuse_zho_ocr(self, lens: Series, paddle: Series) -> Series:
-        """Load or create fused Chinese OCR output.
-
-        Arguments:
-            lens: Google Lens OCR series
-            paddle: PaddleOCR series
-        Returns:
-            fused Chinese OCR series
-        """
-        kwargs = self._get_fuser_kw()
-        if self.language is Language.zho_hant:
-            kwargs.setdefault("prompt_cls", OcrFusionPromptZhoHant)
-        path = self.output_dir_path / "fuse.srt"
-        try:
-            if path.exists() and not self.overwrite:
-                logger.info(f"Fuse OCR output exists: {path}")
-                series = Series.load(path)
-            else:
-                series = get_zho_ocr_fused(
-                    lens,
-                    paddle,
-                    processor=get_zho_ocr_fuser(provider=self.provider, **kwargs),
-                )
-                series.save(path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to load or create Fuse OCR output at {path}: {exc}"
-            ) from exc
-        self.output_paths["fuse"] = path
-        return series
-
-    def _get_fuser_kw(self) -> dict[str, Any]:
-        """Get keyword arguments for OCR fuser construction.
-
-        Returns:
-            keyword arguments for OCR fuser construction
-        """
-        if self.fuser_kw is None:
-            kwargs: dict[str, Any] = {}
+        # Fuse or return pre-existing output
+        fuse_path = self.output_dir_path / "fuse.srt"
+        if fuse_path.exists() and not self.overwrite:
+            logger.info(f"Fuse OCR output exists: {fuse_path}")
+            fuse = Series.load(fuse_path)
         else:
-            kwargs = dict(self.fuser_kw)
-        kwargs.setdefault("additional_context", self.additional_context)
-        return kwargs
+            if self.language is Language.eng:
+                fuser = get_eng_ocr_fuser(provider=self.provider, **self.fuser_kw)
+                fuse = get_eng_ocr_fused(lens, secondary, fuser)
+            else:
+                fuser = get_zho_ocr_fuser(provider=self.provider, **self.fuser_kw)
+                fuse = get_zho_ocr_fused(lens, secondary, fuser)
+            fuse.save(fuse_path, format_="srt")
+        self.output_paths["fuse"] = fuse_path
+
+        # Clean or return pre-existing output
+        fuse_clean_path = self.output_dir_path / "fuse_clean.srt"
+        if fuse_clean_path.exists() and not self.overwrite:
+            logger.info(f"Cleaned fused OCR output exists: {fuse_clean_path}")
+            fuse_clean = Series.load(fuse_clean_path)
+        else:
+            fuse_clean = self.clean_function(fuse, remove_empty=False)
+            fuse_clean.save(fuse_clean_path, format_="srt")
+        self.output_paths["fuse_clean"] = fuse_clean_path
+        return fuse_clean
 
     def _load_image_series(self) -> ImageSeries:
         """Load image subtitles from SUP, image directory, or selected media stream.
@@ -361,72 +332,6 @@ class OcrProcessingWorkflow:
             tesseract_clean.save(tesseract_clean_path, format_="srt")
         self.output_paths["tesseract_clean"] = tesseract_clean_path
         return tesseract_clean
-
-    def _process_eng_ocr(  # noqa: PLR0912, PLR0915
-        self, image_series: ImageSeries
-    ) -> Series:
-        """Process English OCR outputs through fusion and cleaning.
-
-        Arguments:
-            image_series: image subtitle series
-        Returns:
-            cleaned fused OCR output
-        """
-        # Lens
-        lens = self._lens(image_series)
-
-        # Tesseract
-        tesseract = self._tesseract(image_series)
-
-        fuse = self._fuse_eng_ocr(lens, tesseract)
-        fuse_clean_path = self.output_dir_path / "fuse_clean.srt"
-        try:
-            if fuse_clean_path.exists() and not self.overwrite:
-                logger.info(f"Cleaned fused OCR output exists: {fuse_clean_path}")
-                fuse_clean = Series.load(fuse_clean_path)
-            else:
-                fuse_clean = get_eng_cleaned(fuse, remove_empty=False)
-                fuse_clean.save(fuse_clean_path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                "Unable to load or create Cleaned fused OCR output at "
-                f"{fuse_clean_path}: {exc}"
-            ) from exc
-        self.output_paths["fuse_clean"] = fuse_clean_path
-        return fuse_clean
-
-    def _process_zho_ocr(  # noqa: PLR0912, PLR0915
-        self, image_series: ImageSeries
-    ) -> Series:
-        """Process Chinese OCR outputs through fusion and cleaning.
-
-        Arguments:
-            image_series: image subtitle series
-        Returns:
-            cleaned fused OCR output
-        """
-        # Lens
-        lens = self._lens(image_series)
-
-        # Paddle
-        paddle = self._paddle(image_series)
-
-        fuse = self._fuse_zho_ocr(lens, paddle)
-        fuse_clean_path = self.output_dir_path / "fuse_clean.srt"
-        try:
-            if fuse_clean_path.exists() and not self.overwrite:
-                logger.info(f"Cleaned fused OCR output exists: {fuse_clean_path}")
-                fuse_clean = Series.load(fuse_clean_path)
-            else:
-                fuse_clean = get_zho_cleaned(fuse, remove_empty=False)
-                fuse_clean.save(fuse_clean_path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                "Unable to load or create Cleaned fused OCR output at "
-                f"{fuse_clean_path}: {exc}"
-            ) from exc
-        self.output_paths["fuse_clean"] = fuse_clean_path
-        return fuse_clean
 
     def _validate(self, series: Series):
         """Validate OCR output.
