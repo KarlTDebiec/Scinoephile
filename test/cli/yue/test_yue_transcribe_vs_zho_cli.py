@@ -160,7 +160,7 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
                 "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
                 return_value=expected_series,
             ):
-                with patch("scinoephile.core.cli.stdout", stdout_stream):
+                with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                     run_cli_with_args(
                         YueTranscribeVsZhoCli,
                         f"--media-infile {media_infile_path} "
@@ -424,7 +424,7 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
     stdout_stream = StringIO()
     stdin_stream = StringIO(zhongwen_infile_path.read_text())
 
-    with patch("scinoephile.core.cli.stdin", stdin_stream):
+    with patch("scinoephile.cli.helpers.io.stdin", stdin_stream):
         with patch(
             "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
             return_value=yuewen_audio_series,
@@ -437,7 +437,7 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
                     "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
                     return_value=expected_series,
                 ) as patched_transcribe:
-                    with patch("scinoephile.core.cli.stdout", stdout_stream):
+                    with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                         run_cli_with_args(
                             YueTranscribeVsZhoCli,
                             f"--media-infile {media_infile_path} --zho-infile -",

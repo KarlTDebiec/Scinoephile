@@ -8,8 +8,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.analysis.character_error_rate import SeriesCER
+from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.core.cli import ScinoephileCliBase, read_series
+from scinoephile.core.cli import ScinoephileCliBase
 
 __all__ = ["MultiCerCli"]
 
