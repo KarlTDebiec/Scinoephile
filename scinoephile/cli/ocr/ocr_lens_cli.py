@@ -7,6 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_image_series, write_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_or_dir_arg,
@@ -14,9 +15,8 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.ocr.lens import ocr_image_series_with_lens
-from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrLensCli"]
 
@@ -148,15 +148,7 @@ class OcrLensCli(ScinoephileCliBase):
             parser.error(f"{outfile_path} already exists")
 
         # Read inputs
-        try:
-            image_series = ImageSeries.load(infile_path)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        image_series = read_image_series(parser, infile_path)
 
         # Perform operations
         try:

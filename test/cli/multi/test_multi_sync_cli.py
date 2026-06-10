@@ -61,7 +61,7 @@ def test_multi_sync_cli_pipe(tmp_path: Path):
 
     stdout_stream = StringIO()
     with pytest.MonkeyPatch.context() as monkeypatch:
-        monkeypatch.setattr("scinoephile.core.cli.stdout", stdout_stream)
+        monkeypatch.setattr("scinoephile.cli.helpers.io.stdout", stdout_stream)
         run_cli_with_args(
             MultiSyncCli,
             f"--anchor-infile {anchor_path} --mobile-infile {mobile_path}",

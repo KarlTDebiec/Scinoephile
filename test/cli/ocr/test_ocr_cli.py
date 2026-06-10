@@ -108,7 +108,7 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
     """
     input_paths = _patch_image_series_load(
         monkeypatch,
-        "scinoephile.cli.ocr.ocr_lens_cli.ImageSeries.load",
+        "scinoephile.cli.helpers.io.ImageSeries.load",
         tiny_image_series,
     )
     input_path = _write_placeholder_sup_path(tmp_path)
@@ -193,7 +193,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
     """
     input_paths = _patch_image_series_load(
         monkeypatch,
-        "scinoephile.cli.ocr.ocr_paddle_cli.ImageSeries.load",
+        "scinoephile.cli.helpers.io.ImageSeries.load",
         tiny_image_series,
     )
     input_path = _write_placeholder_sup_path(tmp_path)
@@ -241,7 +241,7 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
     """
     input_paths = _patch_image_series_load(
         monkeypatch,
-        "scinoephile.cli.ocr.ocr_tesseract_cli.ImageSeries.load",
+        "scinoephile.cli.helpers.io.ImageSeries.load",
         tiny_image_series,
     )
     input_path = _write_placeholder_sup_path(tmp_path)
@@ -293,7 +293,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
     """
     input_paths = _patch_image_series_load(
         monkeypatch,
-        "scinoephile.cli.ocr.ocr_tesseract_cli.ImageSeries.load",
+        "scinoephile.cli.helpers.io.ImageSeries.load",
         tiny_image_series,
     )
     input_path = _write_placeholder_sup_path(tmp_path)
@@ -379,7 +379,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
     [
         (
             OcrLensCli,
-            "scinoephile.cli.ocr.ocr_lens_cli.ImageSeries.load",
+            "scinoephile.cli.helpers.io.ImageSeries.load",
             "scinoephile.cli.ocr.ocr_lens_cli.ocr_image_series_with_lens",
             "scinoephile.cli.ocr.ocr_lens_cli.write_series",
             "--language zh-CN --retries 5",
@@ -387,7 +387,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
         ),
         (
             OcrPaddleCli,
-            "scinoephile.cli.ocr.ocr_paddle_cli.ImageSeries.load",
+            "scinoephile.cli.helpers.io.ImageSeries.load",
             "scinoephile.cli.ocr.ocr_paddle_cli.ocr_image_series_with_paddle",
             "scinoephile.cli.ocr.ocr_paddle_cli.write_series",
             "--language ch",
@@ -395,7 +395,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
         ),
         (
             OcrTesseractCli,
-            "scinoephile.cli.ocr.ocr_tesseract_cli.ImageSeries.load",
+            "scinoephile.cli.helpers.io.ImageSeries.load",
             "scinoephile.cli.ocr.ocr_tesseract_cli.ocr_image_series_with_tesseract",
             "scinoephile.cli.ocr.ocr_tesseract_cli.write_series",
             "--detect-italics",

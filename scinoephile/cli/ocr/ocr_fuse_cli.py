@@ -8,10 +8,11 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import ClassVar
 
-from scinoephile.cli.conversion import (
+from scinoephile.cli.helpers.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
+from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
@@ -24,7 +25,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.eng.cleaning import get_eng_cleaned

@@ -79,7 +79,7 @@ def test_multi_timewarp_cli_pipe(tmp_path: Path):
             "scinoephile.cli.multi.multi_timewarp_cli.get_series_timewarped",
             return_value=timewarped_series,
         ),
-        patch("scinoephile.core.cli.stdout", stdout_stream),
+        patch("scinoephile.cli.helpers.io.stdout", stdout_stream),
     ):
         run_cli_with_args(
             MultiTimewarpCli,

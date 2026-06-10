@@ -76,8 +76,8 @@ def test_eng_process_cli_pipe(input_path: str, args: str, expected_path: str):
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()
-    with patch("scinoephile.core.cli.stdin", stdin_stream):
-        with patch("scinoephile.core.cli.stdout", stdout_stream):
+    with patch("scinoephile.cli.helpers.io.stdin", stdin_stream):
+        with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
             run_cli_with_args(EngProcessCli, f"--infile - {args}")
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
