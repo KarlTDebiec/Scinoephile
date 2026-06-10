@@ -13,7 +13,6 @@ from typing import Any
 from scinoephile.common.argument_parsing import enum_options_list_str
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
-from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
 from scinoephile.image.ocr.lens import get_lens_zho_code, ocr_image_series_with_lens
 from scinoephile.image.ocr.paddle import (
@@ -30,11 +29,11 @@ from scinoephile.lang.zho.ocr_fusion import (
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
-from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
     get_subtitle_cache_path,
 )
+from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
 from .ocr_validation import validate_ocr
 
@@ -143,7 +142,7 @@ class OcrProcessingWorkflow:
 
         # Validate
         if self.validate:
-            self._validate_fuse_clean_output(fuse_clean)
+            self._validate(fuse_clean)
 
         return OcrProcessingResult(
             infile_path=self.infile_path,
@@ -219,34 +218,6 @@ class OcrProcessingWorkflow:
         kwargs.setdefault("additional_context", self.additional_context)
         return kwargs
 
-    def _get_media_subtitle_stream(self) -> SubtitleStream:
-        """Get selected subtitle stream from media input.
-
-        Returns:
-            selected subtitle stream
-        """
-        if self.stream_index is None:
-            raise ScinoephileError("stream index is required for media OCR input")
-
-        try:
-            streams = get_subtitle_streams(self.infile_path)
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to inspect subtitle streams in {self.infile_path}: {exc}"
-            ) from exc
-
-        for stream in streams:
-            if stream.index == self.stream_index:
-                if stream.extension != "sup":
-                    raise ScinoephileError(
-                        f"Subtitle stream {self.stream_index} is not an "
-                        "image-based SUP stream"
-                    )
-                return stream
-        raise ScinoephileError(
-            f"No subtitle stream {self.stream_index} found in {self.infile_path}"
-        )
-
     def _load_image_series(self) -> ImageSeries:
         """Load image subtitles from SUP, image directory, or selected media stream.
 
@@ -257,7 +228,7 @@ class OcrProcessingWorkflow:
             if self.infile_path.is_dir() or self.infile_path.suffix.lower() == ".sup":
                 return ImageSeries.load(self.infile_path)
 
-            stream = self._get_media_subtitle_stream()
+            stream = get_media_subtitle_stream(self.infile_path, self.stream_index)
             cache_subtitles(
                 self.infile_path, [stream], cache_dir_path=self.cache_dir_path
             )
@@ -386,25 +357,28 @@ class OcrProcessingWorkflow:
             lambda: get_zho_cleaned(fuse, remove_empty=False),
         )
 
-    def _validate_fuse_clean_output(self, text_series: Series):
-        """Validate cleaned fused OCR output.
+    def _validate(self, series: Series):
+        """Validate OCR output.
 
         Arguments:
-            text_series: cleaned fused OCR output
+            series: cleaned fused OCR output
         """
         validate_path = self.output_dir_path / "fuse_clean_validate.srt"
+
+        # Load and return pre-existing output
         if validate_path.exists() and not self.overwrite:
             logger.info(f"Validated OCR output exists: {validate_path}")
             Series.load(validate_path)
             self.output_paths["fuse_clean_validate"] = validate_path
             return
 
+        # Copy text from input series to pre-existing image series
         image_dir_path = self.output_dir_path / "image"
-        # Validation reads OCR text from the image index, so write fused text there
         image_series = ImageSeries.load(image_dir_path)
-        image_series.copy_text_from(text_series)
+        image_series.copy_text_from(series)
         image_series.save(image_dir_path)
 
+        # Validate and save output
         validate_ocr(
             image_dir_path,
             validate_path,

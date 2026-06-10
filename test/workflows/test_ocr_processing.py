@@ -1040,7 +1040,7 @@ def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
         return tiny_image_series
 
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_subtitle_streams",
+        "scinoephile.media.subtitles.selection.get_subtitle_streams",
         lambda path: [stream],
     )
     monkeypatch.setattr(
@@ -1091,7 +1091,7 @@ def test_process_eng_ocr_media_input_requires_matching_stream_index(
     source_path = tmp_path / "movie.mkv"
     source_path.write_bytes(b"unused")
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_subtitle_streams",
+        "scinoephile.media.subtitles.selection.get_subtitle_streams",
         lambda path: [SubtitleStream(index=5, codec_name="hdmv_pgs_subtitle")],
     )
 
