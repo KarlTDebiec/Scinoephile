@@ -15,11 +15,8 @@ from scinoephile.core.llms import LLMProvider
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import ChineseScript
-from scinoephile.image.ocr.lens import get_lens_zho_code, ocr_image_series_with_lens
-from scinoephile.image.ocr.paddle import (
-    get_paddle_zho_code,
-    ocr_image_series_with_paddle,
-)
+from scinoephile.image.ocr.lens import ocr_image_series_with_lens
+from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
 from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -199,8 +196,17 @@ def process_zho_ocr(
     Returns:
         OCR processing result
     """
-    lens_language = get_lens_zho_code(script)
-    paddle_language = get_paddle_zho_code(script)
+    if script == "simplified":
+        lens_language = "zh-CN"
+        paddle_language = "ch"
+    elif script == "traditional":
+        lens_language = "zh-TW"
+        paddle_language = "chinese_cht"
+    else:
+        raise ValueError(
+            f"{script!r} is not one of the supported Chinese scripts: "
+            "simplified, traditional"
+        )
 
     # Read inputs
     image_series = _load_image_series(infile_path, stream_index, cache_dir_path)

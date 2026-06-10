@@ -10,13 +10,17 @@ import json
 from collections.abc import Mapping
 from logging import getLogger
 from pathlib import Path
-from typing import Any, cast, override
+from typing import Any, TypedDict, cast, override
 
 from PIL import Image
 
 from scinoephile.common.validation import val_int, val_output_dir_path
+from scinoephile.core import Language
 
-__all__ = ["GoogleLensRecognizer"]
+__all__ = [
+    "LensRecognizer",
+    "LensRecognizerKwargs",
+]
 
 logger = getLogger(__name__)
 
@@ -25,33 +29,67 @@ _OCR_EXTRA_MESSAGE = (
     "Install scinoephile with the 'ocr' extra."
 )
 _LENS_RETRY_DELAY_SECONDS = 1.5
+_LENS_LANGUAGE_CODES = {
+    Language.eng: "en",
+    Language.zho_hans: "zh-CN",
+    Language.zho_hant: "zh-TW",
+}
+_LENS_LANGUAGE_ALIASES = {
+    "en": Language.eng,
+    "eng": Language.eng,
+    "zh-cn": Language.zho_hans,
+    "zh-hans": Language.zho_hans,
+    "zh-tw": Language.zho_hant,
+    "zh-hant": Language.zho_hant,
+    "zho-hans": Language.zho_hans,
+    "zho-hant": Language.zho_hant,
+}
+
+
+class LensRecognizerKwargs(TypedDict, total=False):
+    """Additional keyword arguments forwarded to LensRecognizer."""
+
+    cache_dir_path: Path | None
+    """Directory in which to cache OCR results."""
+
+    language: Language | str
+    """Scinoephile language."""
+
+    retries: int
+    """Google Lens OCR request attempts per uncached image."""
 
 
 class _GoogleLensRequestError(RuntimeError):
     """Transient Google Lens request error returned as OCR text."""
 
 
-class GoogleLensRecognizer:
+class LensRecognizer:
     """Google Lens recognizer for image subtitles."""
 
     def __init__(
         self,
         *,
         cache_dir_path: Path | None = None,
-        language: str = "en",
+        language: Language | str = Language.eng,
         retries: int = 3,
     ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
-            language: Google Lens OCR language code
+            language: Scinoephile language
             retries: Google Lens OCR request attempts per uncached image
         """
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
-        self.language = language
+        self.language = _coerce_lens_language(language)
+        try:
+            self.lens_language_code = _LENS_LANGUAGE_CODES[self.language]
+        except KeyError as exc:
+            raise ValueError(
+                f"{self.language} is not supported by Google Lens OCR"
+            ) from exc
         self.retries = val_int(retries, min_value=1)
         self._lens_api_error_class = self._get_lens_api_error_class()
         self._api = self._get_lens_api_class()()
@@ -104,7 +142,9 @@ class GoogleLensRecognizer:
 
         image_bytes = image.tobytes()
         image_sha256 = hashlib.sha256(image_bytes).hexdigest()
-        cache_key = f"{image_sha256}_{image.mode}_{image.size}_{self.language}"
+        cache_key = (
+            f"{image_sha256}_{image.mode}_{image.size}_{self.lens_language_code}"
+        )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
 
@@ -174,7 +214,7 @@ class GoogleLensRecognizer:
         Returns:
             subtitle text
         """
-        return GoogleLensRecognizer._clean_text("\n".join(lines))
+        return LensRecognizer._clean_text("\n".join(lines))
 
     @staticmethod
     def _get_lens_api_class() -> Any:
@@ -247,17 +287,17 @@ class GoogleLensRecognizer:
         Returns:
             normalized OCR lines
         """
-        line_blocks = GoogleLensRecognizer._get_result_value(result, "line_blocks")
+        line_blocks = LensRecognizer._get_result_value(result, "line_blocks")
         if isinstance(line_blocks, list | tuple):
             lines = []
             for block in line_blocks:
-                text = GoogleLensRecognizer._get_result_value(block, "text")
+                text = LensRecognizer._get_result_value(block, "text")
                 if isinstance(text, str):
                     lines.append(text)
             if lines:
                 return lines
 
-        ocr_text = GoogleLensRecognizer._get_result_value(result, "ocr_text")
+        ocr_text = LensRecognizer._get_result_value(result, "ocr_text")
         if isinstance(ocr_text, str):
             return ocr_text.splitlines()
         return []
@@ -288,7 +328,7 @@ class GoogleLensRecognizer:
         except RuntimeError:
             return
         raise RuntimeError(
-            "GoogleLensRecognizer cannot run uncached Google Lens OCR from an "
+            "LensRecognizer cannot run uncached Google Lens OCR from an "
             "active asyncio event loop."
         )
 
@@ -310,7 +350,7 @@ class GoogleLensRecognizer:
                 try:
                     result = await self._api.process_image(
                         image_path=image,
-                        ocr_language=self.language,
+                        ocr_language=self.lens_language_code,
                         ocr_preserve_line_breaks=True,
                         output_format="lines",
                     )
@@ -356,3 +396,21 @@ class GoogleLensRecognizer:
         data = {"lines": lines}
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False)
+
+
+def _coerce_lens_language(language: Language | str) -> Language:
+    """Coerce a language value into a supported Google Lens language.
+
+    Arguments:
+        language: Scinoephile language or legacy Google Lens language code
+    Returns:
+        Scinoephile language
+    Raises:
+        ValueError: if the language is unsupported
+    """
+    if isinstance(language, Language):
+        return language
+    if language_key := language.strip().casefold():
+        if language_key in _LENS_LANGUAGE_ALIASES:
+            return _LENS_LANGUAGE_ALIASES[language_key]
+    raise ValueError(f"{language} is not supported by Google Lens OCR")
