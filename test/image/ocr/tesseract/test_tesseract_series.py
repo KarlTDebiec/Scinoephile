@@ -11,10 +11,7 @@ from PIL import Image
 
 import scinoephile.image.ocr.tesseract as tesseract_ocr
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.image.ocr.tesseract import (
-    get_tesseract_language_code,
-    ocr_image_series_with_tesseract,
-)
+from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
@@ -111,6 +108,7 @@ class FailingTesseractRecognizer:
 def test_tesseract_module_exposes_only_current_public_helpers():
     """Test Tesseract module no longer exposes removed helper functions."""
     assert not hasattr(tesseract_ocr, "get_tesseract_recognizer")
+    assert not hasattr(tesseract_ocr, "get_tesseract_language_code")
 
 
 def test_ocr_image_series_with_tesseract_preserves_timings_and_sets_text(
@@ -256,24 +254,6 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
     assert recognizer.scale == 3
     assert recognizer.skip_executable_validation is True
     assert recognizer.tessdata_dir_path == tessdata_dir_path
-
-
-@pytest.mark.parametrize(
-    ("language", "expected"),
-    [
-        (Language.eng, "eng"),
-        (Language.zho_hans, "chi_sim"),
-        (Language.zho_hant, "chi_tra"),
-    ],
-)
-def test_get_tesseract_language_code(language: Language, expected: str):
-    """Test Tesseract language code selection.
-
-    Arguments:
-        language: Scinoephile language
-        expected: expected Tesseract language code
-    """
-    assert get_tesseract_language_code(language) == expected
 
 
 @pytest.mark.parametrize(

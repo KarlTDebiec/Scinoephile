@@ -22,7 +22,6 @@ from scinoephile.common.validation import (
 )
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.image.ocr.language import get_tesseract_language_code
 
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
 from .preprocessing import preprocess_tesseract_ocr_image
@@ -36,6 +35,11 @@ TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE = (
     "{language}.traineddata"
 )
 """URL template for legacy-capable Tesseract traineddata."""
+_TESSERACT_LANGUAGE_CODES = {
+    Language.eng: "eng",
+    Language.zho_hans: "chi_sim",
+    Language.zho_hant: "chi_tra",
+}
 
 
 class TesseractRecognizer:
@@ -75,7 +79,12 @@ class TesseractRecognizer:
             raise ValueError(
                 "Tesseract italic detection is only supported with language eng"
             )
-        self.tesseract_language_code = get_tesseract_language_code(self.language)
+        try:
+            self.tesseract_language_code = _TESSERACT_LANGUAGE_CODES[self.language]
+        except KeyError as exc:
+            raise ValueError(
+                f"{self.language} is not supported by Tesseract OCR"
+            ) from exc
 
         self.detect_italics = detect_italics
         self.oem = oem

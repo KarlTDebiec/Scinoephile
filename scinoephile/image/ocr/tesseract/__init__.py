@@ -23,7 +23,6 @@ from .tesseract_recognizer import TesseractRecognizer
 __all__ = [
     "TesseractRecognizer",
     "TesseractRecognizerKwargs",
-    "get_tesseract_language_code",
     "ocr_image_series_with_tesseract",
 ]
 
@@ -61,23 +60,6 @@ class TesseractRecognizerKwargs(TypedDict, total=False):
     """Optional tessdata directory."""
 
 
-def get_tesseract_language_code(language: Language) -> str:
-    """Get the Tesseract language code.
-
-    Arguments:
-        language: Scinoephile language
-    Returns:
-        Tesseract language code
-    Raises:
-        ValueError: if language is not supported by Tesseract OCR
-    """
-    from scinoephile.image.ocr.language import (  # noqa: PLC0415
-        get_tesseract_language_code as get_code,
-    )
-
-    return get_code(language)
-
-
 def ocr_image_series_with_tesseract(
     image_series: ImageSeries,
     **kwargs: Unpack[TesseractRecognizerKwargs],
@@ -91,14 +73,9 @@ def ocr_image_series_with_tesseract(
         text subtitle series
     """
     try:
-        recognizer_kwargs = dict(kwargs)
-        if "cache_dir_path" not in recognizer_kwargs:
-            recognizer_kwargs["cache_dir_path"] = get_runtime_cache_dir_path(
-                "tesseract"
-            )
-        tesseract_recognizer = TesseractRecognizer(
-            **cast(TesseractRecognizerKwargs, recognizer_kwargs)
-        )
+        if "cache_dir_path" not in kwargs:
+            kwargs["cache_dir_path"] = get_runtime_cache_dir_path("tesseract")
+        tesseract_recognizer = TesseractRecognizer(**kwargs)
 
         events = []
         subtitle_count = len(image_series.events)

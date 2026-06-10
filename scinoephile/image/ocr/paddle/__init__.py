@@ -54,14 +54,9 @@ def ocr_image_series_with_paddle(
         text subtitle series
     """
     try:
-        recognizer_kwargs = dict(kwargs)
-        if "cache_dir_path" not in recognizer_kwargs:
-            recognizer_kwargs["cache_dir_path"] = get_runtime_cache_dir_path(
-                "paddleocr"
-            )
-        paddle_recognizer = PaddleRecognizer(
-            **cast(PaddleRecognizerKwargs, recognizer_kwargs)
-        )
+        if "cache_dir_path" not in kwargs:
+            kwargs["cache_dir_path"] = get_runtime_cache_dir_path("paddleocr")
+        paddle_recognizer = PaddleRecognizer(**kwargs)
 
         events = []
         for subtitle in image_series:
