@@ -90,7 +90,7 @@ def extract_subtitles(
 
     Arguments:
         infile_path: media input file
-        languages: ISO 639 language codes to extract
+        languages: language tags to extract
         output_dir_path: directory to which matching subtitles will be extracted
         cache_dir_path: cache directory path
         details: whether to include expensive stream details
@@ -118,7 +118,7 @@ def extract_subtitles(
         return SubtitleExtractionResult(infile_path=infile_path, outputs=outputs)
 
     # Select matching subtitle streams from the media container
-    language_codes = set(languages)
+    requested_language_tags = set(languages)
     streams = [
         stream
         for stream in _get_workflow_subtitle_streams(
@@ -126,8 +126,7 @@ def extract_subtitles(
             cache_dir_path=cache_dir_path,
             details=details,
         )
-        if stream.language is not None
-        and stream.language.split("-", 1)[0] in language_codes
+        if _language_matches(stream.language, requested_language_tags)
     ]
 
     # Determine subtitle file outputs and which streams need cache extraction
@@ -236,6 +235,22 @@ def _get_workflow_subtitle_streams(
     return get_subtitle_streams(infile_path)
 
 
+def _language_matches(language: str | None, requested_language_tags: set[str]) -> bool:
+    """Return whether a stream language matches requested language tags.
+
+    Arguments:
+        language: stream language tag
+        requested_language_tags: requested language tags
+    Returns:
+        whether the language matches exactly or by base language code
+    """
+    if language is None:
+        return False
+    if language in requested_language_tags:
+        return True
+    return language.split("-", 1)[0] in requested_language_tags
+
+
 def _get_stream_file_status(
     outfile_path: Path,
     *,
@@ -273,7 +288,7 @@ def _extract_sup_file(
 
     Arguments:
         infile_path: SUP input file
-        languages: ISO 639 language codes to extract
+        languages: language tags to extract
         output_dir_path: output directory
         cache_dir_path: cache directory path
         details: whether to include expensive stream details
@@ -292,11 +307,11 @@ def _extract_sup_file(
         raise ScinoephileError(f"No subtitle streams found in {infile_path}")
 
     # Determine the output SUP filename from detected stream metadata
-    language_codes = set(languages)
+    requested_language_tags = set(languages)
     stream = streams[0]
-    if (
-        stream.language is not None
-        and stream.language.split("-", 1)[0] not in language_codes
+    if stream.language is not None and not _language_matches(
+        stream.language,
+        requested_language_tags,
     ):
         return []
     outfile_name = infile_path.name
