@@ -4,10 +4,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 from PIL import Image
 
 from scinoephile.common.file import get_temp_directory_path
+from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -77,6 +80,36 @@ def test_load_html(
         assert event.img.size[1] > 0
 
 
+def test_load_rejects_unsupported_input_file(tmp_path: Path):
+    """Test unsupported image subtitle input files raise user-facing errors.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    input_path = tmp_path / "subtitles.txt"
+    input_path.write_text("not image subtitles", encoding="utf-8")
+
+    with pytest.raises(ScinoephileError, match="directory containing one index.html"):
+        ImageSeries.load(input_path)
+
+
+def test_image_series_load_wraps_input_path_errors(tmp_path: Path):
+    """Test image subtitle loading path errors are user-facing.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    input_path = tmp_path / "missing"
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to load ImageSeries from .*missing",
+    ) as excinfo:
+        ImageSeries.load(input_path)
+
+    assert isinstance(excinfo.value.__cause__, OSError)
+
+
 def test_save_html(tiny_image_series: ImageSeries):
     """Test saving HTML image subtitles.
 
@@ -95,6 +128,27 @@ def test_save_html(tiny_image_series: ImageSeries):
 
         png_files = sorted(output_path.glob("*.png"))
         assert len(png_files) == len(tiny_image_series)
+
+
+def test_image_series_save_wraps_output_path_errors(
+    tiny_image_series: ImageSeries, tmp_path: Path
+):
+    """Test image subtitle saving path errors are user-facing.
+
+    Arguments:
+        tiny_image_series: small image subtitle series
+        tmp_path: pytest temporary directory path
+    """
+    output_path = tmp_path / "image_output"
+    output_path.touch()
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to save ImageSeries to .*image_output",
+    ) as excinfo:
+        tiny_image_series.save(output_path)
+
+    assert isinstance(excinfo.value.__cause__, OSError)
 
 
 def test_series_fill_and_outline_colors():
