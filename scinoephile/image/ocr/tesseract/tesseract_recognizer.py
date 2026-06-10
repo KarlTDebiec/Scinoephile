@@ -9,7 +9,7 @@ import json
 from logging import getLogger
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import override
+from typing import TypedDict, override
 
 import requests
 from PIL import Image
@@ -20,13 +20,16 @@ from scinoephile.common.validation import (
     val_input_dir_path,
     val_output_dir_path,
 )
-from scinoephile.core import ScinoephileError
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
 from .preprocessing import preprocess_tesseract_ocr_image
 
-__all__ = ["TesseractOcrRecognizer"]
+__all__ = [
+    "TesseractRecognizer",
+    "TesseractRecognizerKwargs",
+]
 
 logger = getLogger(__name__)
 
@@ -35,9 +38,57 @@ TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE = (
     "{language}.traineddata"
 )
 """URL template for legacy-capable Tesseract traineddata."""
+_TESSERACT_LANGUAGE_CODES = {
+    Language.eng: "eng",
+    Language.zho_hans: "chi_sim",
+    Language.zho_hant: "chi_tra",
+}
+_TESSERACT_LANGUAGE_ALIASES = {
+    "chi_sim": Language.zho_hans,
+    "chi_tra": Language.zho_hant,
+    "en": Language.eng,
+    "eng": Language.eng,
+    "zh-cn": Language.zho_hans,
+    "zh-hans": Language.zho_hans,
+    "zh-tw": Language.zho_hant,
+    "zh-hant": Language.zho_hant,
+    "zho-hans": Language.zho_hans,
+    "zho-hant": Language.zho_hant,
+}
 
 
-class TesseractOcrRecognizer:
+class TesseractRecognizerKwargs(TypedDict, total=False):
+    """Additional keyword arguments forwarded to TesseractRecognizer."""
+
+    cache_dir_path: Path | None
+    """Directory in which to cache OCR results."""
+
+    detect_italics: bool
+    """Whether to run a legacy-engine pass for italics."""
+
+    executable_path: Path | str
+    """Tesseract executable path or command name."""
+
+    language: Language | str
+    """Scinoephile language."""
+
+    oem: int | None
+    """Tesseract OCR engine mode, or None to omit --oem."""
+
+    psm: int
+    """Tesseract page segmentation mode."""
+
+    scale: int
+    """Image preprocessing scale."""
+
+    skip_executable_validation: bool
+    """Whether to skip executable validation."""
+
+    tessdata_dir_path: Path | None
+    """Optional tessdata directory."""
+
+
+class TesseractRecognizer:
     """Tesseract recognizer for image subtitles."""
 
     def __init__(
@@ -46,7 +97,7 @@ class TesseractOcrRecognizer:
         cache_dir_path: Path | None = None,
         executable_path: Path | str = "tesseract",
         detect_italics: bool = False,
-        language: str = "eng",
+        language: Language | str = Language.eng,
         oem: int | None = 3,
         psm: int = 6,
         scale: int = 2,
@@ -59,19 +110,25 @@ class TesseractOcrRecognizer:
             cache_dir_path: directory in which to cache OCR results
             executable_path: Tesseract executable path or command name
             detect_italics: whether to run a legacy-engine pass for italics
-            language: Tesseract language code
+            language: Scinoephile language
             oem: Tesseract OCR engine mode, or None to omit --oem
             psm: Tesseract page segmentation mode
             scale: image preprocessing scale
             skip_executable_validation: whether to skip executable validation
             tessdata_dir_path: optional tessdata directory
         """
-        if detect_italics and language != "eng":
+        self.language = _coerce_tesseract_language(language)
+        if detect_italics and self.language is not Language.eng:
             raise ValueError(
                 "Tesseract italic detection is only supported with language eng"
             )
+        try:
+            self.tesseract_language_code = _TESSERACT_LANGUAGE_CODES[self.language]
+        except KeyError as exc:
+            raise ValueError(
+                f"{self.language} is not supported by Tesseract OCR"
+            ) from exc
 
-        self.language = language
         self.detect_italics = detect_italics
         self.oem = oem
         self.psm = psm
@@ -130,7 +187,7 @@ class TesseractOcrRecognizer:
     @property
     def _hocr_word_separator(self) -> str:
         """Text with which to join hOCR word spans."""
-        if self.language.startswith("chi_"):
+        if self.tesseract_language_code.startswith("chi_"):
             return ""
         return " "
 
@@ -148,7 +205,7 @@ class TesseractOcrRecognizer:
             str(image_path),
             str(output_base_path),
             "-l",
-            self.language,
+            self.tesseract_language_code,
             "--psm",
             str(self.psm),
             "hocr",
@@ -182,7 +239,7 @@ class TesseractOcrRecognizer:
             str(image_path),
             str(output_base_path),
             "-l",
-            self.language,
+            self.tesseract_language_code,
             "--psm",
             str(psm),
             "--oem",
@@ -244,7 +301,8 @@ class TesseractOcrRecognizer:
         image_sha256 = hashlib.sha256(image.tobytes()).hexdigest()
         cache_key = (
             f"{image_sha256}_{image.mode}_{image.size}_{self.executable_path}_"
-            f"{self.detect_italics}_{self.language}_{self.oem}_{self.psm}_"
+            f"{self.detect_italics}_{self.tesseract_language_code}_{self.oem}_"
+            f"{self.psm}_"
             f"{self.scale}_{self.tessdata_dir_path}"
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
@@ -258,7 +316,9 @@ class TesseractOcrRecognizer:
         Raises:
             ScinoephileError: if the download fails
         """
-        url = TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE.format(language=self.language)
+        url = TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE.format(
+            language=self.tesseract_language_code
+        )
         temp_traineddata_path = traineddata_path.with_suffix(".traineddata.tmp")
         logger.info(f"Downloading Tesseract legacy traineddata: {url}")
         try:
@@ -270,7 +330,8 @@ class TesseractOcrRecognizer:
             temp_traineddata_path.unlink(missing_ok=True)
             raise ScinoephileError(
                 "Tesseract legacy OCR requires legacy-capable traineddata. "
-                f"Failed to download {self.language}.traineddata from {url}."
+                "Failed to download "
+                f"{self.tesseract_language_code}.traineddata from {url}."
             ) from exc
         logger.info(f"Downloaded Tesseract legacy traineddata: {traineddata_path}")
 
@@ -289,7 +350,9 @@ class TesseractOcrRecognizer:
                 self.cache_dir_path / "legacy-tessdata"
             )
 
-        traineddata_path = legacy_tessdata_dir_path / f"{self.language}.traineddata"
+        traineddata_path = (
+            legacy_tessdata_dir_path / f"{self.tesseract_language_code}.traineddata"
+        )
         if traineddata_path.exists():
             logger.info(
                 f"Using cached Tesseract legacy traineddata: {traineddata_path}"
@@ -327,7 +390,7 @@ class TesseractOcrRecognizer:
             if self._is_usable_legacy_blank_fallback_text(fallback_text):
                 logger.info(
                     "Using Tesseract legacy fallback for blank OCR result "
-                    f"with language {self.language}"
+                    f"with language {self.tesseract_language_code}"
                 )
                 return fallback_text
             return text
@@ -457,3 +520,21 @@ class TesseractOcrRecognizer:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump({"text": text}, file, ensure_ascii=False)
+
+
+def _coerce_tesseract_language(language: Language | str) -> Language:
+    """Coerce a language value into a supported Tesseract language.
+
+    Arguments:
+        language: Scinoephile language or legacy Tesseract language code
+    Returns:
+        Scinoephile language
+    Raises:
+        ValueError: if the language is unsupported
+    """
+    if isinstance(language, Language):
+        return language
+    if language_key := language.strip().casefold():
+        if language_key in _TESSERACT_LANGUAGE_ALIASES:
+            return _TESSERACT_LANGUAGE_ALIASES[language_key]
+    raise ValueError(f"{language} is not supported by Tesseract OCR")

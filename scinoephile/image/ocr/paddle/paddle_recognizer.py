@@ -10,21 +10,24 @@ import os
 from dataclasses import asdict
 from logging import getLogger
 from pathlib import Path
-from typing import Any, override
+from typing import Any, TypedDict, override
 
 import numpy as np
 from PIL import Image
 
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core import Language
 
 from .bounding_box import PaddleOcrBoundingBox
 from .text_result import PaddleOcrTextResult
 
-__all__ = ["PaddleOcrRecognizer"]
+__all__ = [
+    "PaddleRecognizer",
+    "PaddleRecognizerKwargs",
+]
 
 logger = getLogger(__name__)
 
-_SUPPORTED_LANGUAGES = {"ch", "chinese_cht", "en"}
 _TEXT_DETECTION_MODEL_NAME = "PP-OCRv5_server_det"
 _TEXT_RECOGNITION_MODEL_NAME = "PP-OCRv5_server_rec"
 _TEXTLINE_ORIENTATION_MODEL_NAME = "PP-LCNet_x1_0_textline_ori"
@@ -32,35 +35,65 @@ _OCR_EXTRA_MESSAGE = (
     "PaddleOCR support requires optional OCR dependencies. "
     "Install scinoephile with the 'ocr' extra."
 )
+_PADDLE_LANGUAGE_CODES = {
+    Language.eng: "en",
+    Language.zho_hans: "ch",
+    Language.zho_hant: "chinese_cht",
+}
+_PADDLE_LANGUAGE_ALIASES = {
+    "ch": Language.zho_hans,
+    "chi_sim": Language.zho_hans,
+    "chinese_cht": Language.zho_hant,
+    "en": Language.eng,
+    "eng": Language.eng,
+    "zh-cn": Language.zho_hans,
+    "zh-hans": Language.zho_hans,
+    "zh-tw": Language.zho_hant,
+    "zh-hant": Language.zho_hant,
+    "zho-hans": Language.zho_hans,
+    "zho-hant": Language.zho_hant,
+}
 
 
-class PaddleOcrRecognizer:
+class PaddleRecognizerKwargs(TypedDict, total=False):
+    """Additional keyword arguments forwarded to PaddleRecognizer."""
+
+    cache_dir_path: Path | None
+    """Directory in which to cache OCR results."""
+
+    language: Language | str
+    """Scinoephile language."""
+
+    min_confidence: float
+    """Minimum confidence to include."""
+
+
+class PaddleRecognizer:
     """PaddleOCR recognizer for image subtitles."""
 
     def __init__(
         self,
         *,
         cache_dir_path: Path | None = None,
-        language: str = "en",
+        language: Language | str = Language.eng,
         min_confidence: float = 0.0,
     ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
-            language: PaddleOCR language code
+            language: Scinoephile language
             min_confidence: minimum confidence to include
         Raises:
             ValueError: if language is unsupported
         """
-        if language not in _SUPPORTED_LANGUAGES:
-            raise ValueError(
-                "PaddleOCR language must be one of: "
-                f"{', '.join(sorted(_SUPPORTED_LANGUAGES))}"
-            )
+        self.language = _coerce_paddle_language(language)
+        try:
+            self.paddle_language_code = _PADDLE_LANGUAGE_CODES[self.language]
+        except KeyError as exc:
+            raise ValueError(f"{self.language} is not supported by PaddleOCR") from exc
         os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
 
-        self.language = language
         self.min_confidence = min_confidence
         self.cache_dir_path = None
         if cache_dir_path is not None:
@@ -68,7 +101,7 @@ class PaddleOcrRecognizer:
 
         paddle_ocr_cls = self._get_paddle_ocr_class()
         self._ocr = paddle_ocr_cls(
-            lang=language,
+            lang=self.paddle_language_code,
             use_doc_orientation_classify=False,
             use_doc_unwarping=False,
             use_textline_orientation=True,
@@ -131,7 +164,7 @@ class PaddleOcrRecognizer:
         image_bytes = image.tobytes()
         image_sha256 = hashlib.sha256(image_bytes).hexdigest()
         cache_key = (
-            f"{image_sha256}_{image.mode}_{image.size}_{self.language}_"
+            f"{image_sha256}_{image.mode}_{image.size}_{self.paddle_language_code}_"
             f"{_TEXT_DETECTION_MODEL_NAME}_"
             f"{_TEXT_RECOGNITION_MODEL_NAME}_"
             f"{_TEXTLINE_ORIENTATION_MODEL_NAME}"
@@ -311,3 +344,21 @@ class PaddleOcrRecognizer:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump([asdict(result) for result in results], file, ensure_ascii=False)
+
+
+def _coerce_paddle_language(language: Language | str) -> Language:
+    """Coerce a language value into a supported PaddleOCR language.
+
+    Arguments:
+        language: Scinoephile language or legacy PaddleOCR language code
+    Returns:
+        Scinoephile language
+    Raises:
+        ValueError: if the language is unsupported
+    """
+    if isinstance(language, Language):
+        return language
+    if language_key := language.strip().casefold():
+        if language_key in _PADDLE_LANGUAGE_ALIASES:
+            return _PADDLE_LANGUAGE_ALIASES[language_key]
+    raise ValueError(f"{language} is not supported by PaddleOCR")
