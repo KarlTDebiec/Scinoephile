@@ -17,7 +17,6 @@ from PIL import Image
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import Language
-from scinoephile.image.ocr.language import get_paddle_language_code
 
 from .bounding_box import PaddleOcrBoundingBox
 from .text_result import PaddleOcrTextResult
@@ -33,6 +32,11 @@ _OCR_EXTRA_MESSAGE = (
     "PaddleOCR support requires optional OCR dependencies. "
     "Install scinoephile with the 'ocr' extra."
 )
+_PADDLE_LANGUAGE_CODES = {
+    Language.eng: "en",
+    Language.zho_hans: "ch",
+    Language.zho_hant: "chinese_cht",
+}
 
 
 class PaddleRecognizer:
@@ -58,7 +62,10 @@ class PaddleRecognizer:
             self.language = Language(language)
         except ValueError as exc:
             raise ValueError(f"{language} is not supported by PaddleOCR") from exc
-        self.paddle_language_code = get_paddle_language_code(self.language)
+        try:
+            self.paddle_language_code = _PADDLE_LANGUAGE_CODES[self.language]
+        except KeyError as exc:
+            raise ValueError(f"{self.language} is not supported by PaddleOCR") from exc
         os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
 
         self.min_confidence = min_confidence

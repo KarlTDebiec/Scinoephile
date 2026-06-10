@@ -9,26 +9,41 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+import scinoephile.image.ocr.lens as lens_ocr
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.image.ocr.lens import (
-    LensRecognizer,
-    get_lens_language_code,
-    ocr_image_series_with_lens,
-)
+from scinoephile.image.ocr.lens import ocr_image_series_with_lens
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
-class FakeRecognizer(LensRecognizer):
+class FakeRecognizer:
     """Fake Google Lens recognizer for tests."""
 
-    def __init__(self, texts: list[str]):
+    texts: list[str] = []
+    """Texts to return from subsequent recognitions."""
+
+    instances: list[FakeRecognizer] = []
+    """Fake recognizer instances created by the OCR helper."""
+
+    def __init__(
+        self,
+        *,
+        cache_dir_path: Path | None = None,
+        language: Language = Language.eng,
+        retries: int = 3,
+    ):
         """Initialize.
 
         Arguments:
-            texts: texts to return from subsequent recognitions
+            cache_dir_path: directory in which to cache OCR results
+            language: Scinoephile language
+            retries: Google Lens OCR request attempts per uncached image
         """
-        self.texts = texts
+        self.cache_dir_path = cache_dir_path
+        self.language = language
+        self.retries = retries
+        self.texts = list(type(self).texts)
         self.images: list[Image.Image] = []
+        type(self).instances.append(self)
 
     def recognize_image(self, image: Image.Image) -> str:
         """Recognize text from an image.
@@ -42,16 +57,19 @@ class FakeRecognizer(LensRecognizer):
         return self.texts.pop(0)
 
 
-class FailingRecognizer(LensRecognizer):
+class FailingRecognizer:
     """Fake Google Lens recognizer that raises a configured exception."""
 
-    def __init__(self, exception: Exception):
+    exception: Exception | None = None
+    """Exception raised during recognition."""
+
+    def __init__(self, **kwargs: object):
         """Initialize.
 
         Arguments:
-            exception: exception to raise from recognition
+            **kwargs: ignored recognizer keyword arguments
         """
-        self.exception = exception
+        _ = kwargs
 
     def recognize_image(self, image: Image.Image) -> str:
         """Recognize text from an image.
@@ -62,11 +80,25 @@ class FailingRecognizer(LensRecognizer):
             Exception: configured exception
         """
         _ = image
+        if self.exception is None:
+            raise AssertionError("FailingRecognizer.exception must be configured")
         raise self.exception
 
 
-def test_ocr_image_series_with_lens_preserves_timings_and_sets_text():
-    """Test Google Lens image series processing preserves timings and text."""
+def test_lens_module_exposes_only_current_public_helpers():
+    """Test Google Lens module no longer exposes removed helper functions."""
+    assert not hasattr(lens_ocr, "get_lens_recognizer")
+    assert not hasattr(lens_ocr, "get_lens_language_code")
+
+
+def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test Google Lens image series processing preserves timings and text.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
@@ -81,17 +113,17 @@ def test_ocr_image_series_with_lens_preserves_timings_and_sets_text():
             ),
         ]
     )
-    recognizer = FakeRecognizer(["first", "second"])
+    FakeRecognizer.texts = ["first", "second"]
+    FakeRecognizer.instances = []
+    monkeypatch.setattr("scinoephile.image.ocr.lens.LensRecognizer", FakeRecognizer)
 
-    text_series = ocr_image_series_with_lens(
-        image_series,
-        recognizer=recognizer,
-    )
+    text_series = ocr_image_series_with_lens(image_series)
 
     assert [(event.start, event.end, event.text) for event in text_series] == [
         (1000, 2000, "first"),
         (3000, 4000, "second"),
     ]
+    recognizer = FakeRecognizer.instances[0]
     assert [image.size for image in recognizer.images] == [(10, 8), (12, 9)]
 
 
@@ -106,38 +138,14 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
         tmp_path: temporary path fixture
     """
     cache_dir_path = tmp_path / "cache"
-    observed_cache_dir_paths = []
-    observed_retries = []
-
-    class FakeDefaultRecognizer(FakeRecognizer):
-        """Fake default recognizer with cache directory tracking."""
-
-        def __init__(
-            self,
-            *,
-            cache_dir_path: Path | None = None,
-            language: Language = Language.eng,
-            retries: int = 3,
-        ):
-            """Initialize.
-
-            Arguments:
-                cache_dir_path: directory in which to cache OCR results
-                language: Scinoephile language
-                retries: Google Lens OCR request attempts per uncached image
-            """
-            super().__init__([language.tag])
-            observed_cache_dir_paths.append(cache_dir_path)
-            observed_retries.append(retries)
+    FakeRecognizer.texts = [Language.zho_hans.tag]
+    FakeRecognizer.instances = []
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.lens.get_runtime_cache_dir_path",
         lambda *parts: cache_dir_path,
     )
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.LensRecognizer",
-        FakeDefaultRecognizer,
-    )
+    monkeypatch.setattr("scinoephile.image.ocr.lens.LensRecognizer", FakeRecognizer)
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
@@ -155,8 +163,10 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
     )
 
     assert [event.text for event in text_series] == ["zho-Hans"]
-    assert observed_cache_dir_paths == [cache_dir_path]
-    assert observed_retries == [5]
+    recognizer = FakeRecognizer.instances[0]
+    assert recognizer.cache_dir_path == cache_dir_path
+    assert recognizer.language is Language.zho_hans
+    assert recognizer.retries == 5
 
 
 @pytest.mark.parametrize(
@@ -169,12 +179,21 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
         ValueError("invalid lens response"),
     ],
 )
-def test_ocr_image_series_with_lens_wraps_processing_errors(exception: Exception):
+def test_ocr_image_series_with_lens_wraps_processing_errors(
+    monkeypatch: pytest.MonkeyPatch,
+    exception: Exception,
+):
     """Test Lens image series processing wraps implementation errors.
 
     Arguments:
+        monkeypatch: pytest monkeypatch fixture
         exception: implementation exception raised during OCR
     """
+    FailingRecognizer.exception = exception
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.LensRecognizer",
+        FailingRecognizer,
+    )
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
@@ -189,27 +208,6 @@ def test_ocr_image_series_with_lens_wraps_processing_errors(exception: Exception
         ScinoephileError,
         match="Unable to OCR image series with Google Lens",
     ) as excinfo:
-        ocr_image_series_with_lens(
-            image_series,
-            recognizer=FailingRecognizer(exception),
-        )
+        ocr_image_series_with_lens(image_series)
 
     assert excinfo.value.__cause__ is exception
-
-
-@pytest.mark.parametrize(
-    ("language", "expected"),
-    [
-        (Language.eng, "en"),
-        (Language.zho_hans, "zh-CN"),
-        (Language.zho_hant, "zh-TW"),
-    ],
-)
-def test_get_lens_language_code(language: Language, expected: str):
-    """Test Google Lens language code selection.
-
-    Arguments:
-        language: Scinoephile language
-        expected: expected Google Lens language code
-    """
-    assert get_lens_language_code(language) == expected

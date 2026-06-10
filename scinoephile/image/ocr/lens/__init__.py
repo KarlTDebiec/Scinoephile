@@ -15,16 +15,17 @@ from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from .lens_recognizer import LensRecognizer
 
 __all__ = [
-    "GoogleLensRecognizerKwargs",
     "LensRecognizer",
-    "get_lens_recognizer",
-    "get_lens_language_code",
+    "LensRecognizerKwargs",
     "ocr_image_series_with_lens",
 ]
 
 
-class GoogleLensRecognizerKwargs(TypedDict, total=False):
+class LensRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to LensRecognizer."""
+
+    cache_dir_path: Path | None
+    """Directory in which to cache OCR results."""
 
     language: Language
     """Scinoephile language."""
@@ -33,63 +34,27 @@ class GoogleLensRecognizerKwargs(TypedDict, total=False):
     """Google Lens OCR request attempts per uncached image."""
 
 
-def get_lens_recognizer(
-    *,
-    cache_dir_path: Path | None = None,
-    **kwargs: Unpack[GoogleLensRecognizerKwargs],
-) -> LensRecognizer:
-    """Get Google Lens recognizer with provided configuration.
-
-    Arguments:
-        cache_dir_path: directory in which to cache OCR results
-        **kwargs: additional keyword arguments for LensRecognizer
-    Returns:
-        Google Lens recognizer
-    """
-    if cache_dir_path is None:
-        cache_dir_path = get_runtime_cache_dir_path("google-lens")
-    return LensRecognizer(cache_dir_path=cache_dir_path, **kwargs)
-
-
-def get_lens_language_code(language: Language) -> str:
-    """Get the Google Lens language code.
-
-    Arguments:
-        language: Scinoephile language
-    Returns:
-        Google Lens language code
-    Raises:
-        ValueError: if language is not supported by Google Lens OCR
-    """
-    from scinoephile.image.ocr.language import (  # noqa: PLC0415
-        get_lens_language_code as get_code,
-    )
-
-    return get_code(language)
-
-
 def ocr_image_series_with_lens(
     image_series: ImageSeries,
-    *,
-    language: Language = Language.eng,
-    retries: int = 3,
-    recognizer: LensRecognizer | None = None,
+    **kwargs: Unpack[LensRecognizerKwargs],
 ) -> Series:
     """OCR an image subtitle series with Google Lens.
 
     Arguments:
         image_series: image subtitle series
-        language: Scinoephile language
-        retries: Google Lens OCR request attempts per uncached image
-        recognizer: Google Lens-compatible recognizer
+        **kwargs: additional keyword arguments for LensRecognizer
     Returns:
         text subtitle series
     """
     try:
-        if recognizer is None:
-            lens_recognizer = get_lens_recognizer(language=language, retries=retries)
-        else:
-            lens_recognizer = recognizer
+        recognizer_kwargs = dict(kwargs)
+        if "cache_dir_path" not in recognizer_kwargs:
+            recognizer_kwargs["cache_dir_path"] = get_runtime_cache_dir_path(
+                "google-lens"
+            )
+        lens_recognizer = LensRecognizer(
+            **cast(LensRecognizerKwargs, recognizer_kwargs)
+        )
 
         events = []
         for subtitle in image_series:

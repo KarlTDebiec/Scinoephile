@@ -16,7 +16,6 @@ from PIL import Image
 
 from scinoephile.common.validation import val_int, val_output_dir_path
 from scinoephile.core import Language
-from scinoephile.image.ocr.language import get_lens_language_code
 
 __all__ = ["LensRecognizer"]
 
@@ -27,6 +26,11 @@ _OCR_EXTRA_MESSAGE = (
     "Install scinoephile with the 'ocr' extra."
 )
 _LENS_RETRY_DELAY_SECONDS = 1.5
+_LENS_LANGUAGE_CODES = {
+    Language.eng: "en",
+    Language.zho_hans: "zh-CN",
+    Language.zho_hant: "zh-TW",
+}
 
 
 class _GoogleLensRequestError(RuntimeError):
@@ -54,7 +58,12 @@ class LensRecognizer:
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
         self.language = Language(language)
-        self.lens_language_code = get_lens_language_code(self.language)
+        try:
+            self.lens_language_code = _LENS_LANGUAGE_CODES[self.language]
+        except KeyError as exc:
+            raise ValueError(
+                f"{self.language} is not supported by Google Lens OCR"
+            ) from exc
         self.retries = val_int(retries, min_value=1)
         self._lens_api_error_class = self._get_lens_api_error_class()
         self._api = self._get_lens_api_class()()

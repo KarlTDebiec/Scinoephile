@@ -24,14 +24,15 @@ from .preprocessing import preprocess_paddle_ocr_image
 __all__ = [
     "PaddleRecognizer",
     "PaddleRecognizerKwargs",
-    "get_paddle_language_code",
-    "get_paddle_recognizer",
     "ocr_image_series_with_paddle",
 ]
 
 
 class PaddleRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to PaddleRecognizer."""
+
+    cache_dir_path: Path | None
+    """Directory in which to cache OCR results."""
 
     language: Language
     """Scinoephile language."""
@@ -40,61 +41,27 @@ class PaddleRecognizerKwargs(TypedDict, total=False):
     """Minimum confidence to include."""
 
 
-def get_paddle_recognizer(
-    *,
-    cache_dir_path: Path | None = None,
-    **kwargs: Unpack[PaddleRecognizerKwargs],
-) -> PaddleRecognizer:
-    """Get PaddleOCR recognizer with provided configuration.
-
-    Arguments:
-        cache_dir_path: directory in which to cache OCR results
-        **kwargs: additional keyword arguments for PaddleRecognizer
-    Returns:
-        PaddleOCR recognizer
-    """
-    if cache_dir_path is None:
-        cache_dir_path = get_runtime_cache_dir_path("paddleocr")
-    return PaddleRecognizer(cache_dir_path=cache_dir_path, **kwargs)
-
-
-def get_paddle_language_code(language: Language) -> str:
-    """Get the PaddleOCR language code.
-
-    Arguments:
-        language: Scinoephile language
-    Returns:
-        PaddleOCR language code
-    Raises:
-        ValueError: if language is not supported by PaddleOCR
-    """
-    from scinoephile.image.ocr.language import (  # noqa: PLC0415
-        get_paddle_language_code as get_code,
-    )
-
-    return get_code(language)
-
-
 def ocr_image_series_with_paddle(
     image_series: ImageSeries,
-    *,
-    recognizer: PaddleRecognizer | None = None,
-    language: Language = Language.eng,
+    **kwargs: Unpack[PaddleRecognizerKwargs],
 ) -> Series:
     """OCR an image subtitle series with PaddleOCR.
 
     Arguments:
         image_series: image subtitle series
-        recognizer: PaddleOCR-compatible recognizer
-        language: Scinoephile language
+        **kwargs: additional keyword arguments for PaddleRecognizer
     Returns:
         text subtitle series
     """
     try:
-        if recognizer is None:
-            paddle_recognizer = get_paddle_recognizer(language=language)
-        else:
-            paddle_recognizer = recognizer
+        recognizer_kwargs = dict(kwargs)
+        if "cache_dir_path" not in recognizer_kwargs:
+            recognizer_kwargs["cache_dir_path"] = get_runtime_cache_dir_path(
+                "paddleocr"
+            )
+        paddle_recognizer = PaddleRecognizer(
+            **cast(PaddleRecognizerKwargs, recognizer_kwargs)
+        )
 
         events = []
         for subtitle in image_series:

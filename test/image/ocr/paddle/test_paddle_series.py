@@ -9,26 +9,41 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+import scinoephile.image.ocr.paddle as paddle_ocr
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.image.ocr.paddle import (
-    PaddleRecognizer,
-    get_paddle_language_code,
-    ocr_image_series_with_paddle,
-)
+from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
-class FakeRecognizer(PaddleRecognizer):
+class FakeRecognizer:
     """Fake PaddleOCR recognizer for tests."""
 
-    def __init__(self, texts: list[str]):
+    texts: list[str] = []
+    """Texts to return from subsequent recognitions."""
+
+    instances: list[FakeRecognizer] = []
+    """Fake recognizer instances created by the OCR helper."""
+
+    def __init__(
+        self,
+        *,
+        cache_dir_path: Path | None = None,
+        language: Language = Language.eng,
+        min_confidence: float = 0.0,
+    ):
         """Initialize.
 
         Arguments:
-            texts: texts to return from subsequent recognitions
+            cache_dir_path: directory in which to cache OCR results
+            language: Scinoephile language
+            min_confidence: minimum confidence to include
         """
-        self.texts = texts
+        self.cache_dir_path = cache_dir_path
+        self.language = language
+        self.min_confidence = min_confidence
+        self.texts = list(type(self).texts)
         self.images: list[Image.Image] = []
+        type(self).instances.append(self)
 
     def recognize_image(self, image: Image.Image) -> str:
         """Recognize text from an image.
@@ -42,16 +57,19 @@ class FakeRecognizer(PaddleRecognizer):
         return self.texts.pop(0)
 
 
-class FailingRecognizer(PaddleRecognizer):
+class FailingRecognizer:
     """Fake PaddleOCR recognizer that raises a configured exception."""
 
-    def __init__(self, exception: Exception):
+    exception: Exception | None = None
+    """Exception raised during recognition."""
+
+    def __init__(self, **kwargs: object):
         """Initialize.
 
         Arguments:
-            exception: exception to raise from recognition
+            **kwargs: ignored recognizer keyword arguments
         """
-        self.exception = exception
+        _ = kwargs
 
     def recognize_image(self, image: Image.Image) -> str:
         """Recognize text from an image.
@@ -62,11 +80,25 @@ class FailingRecognizer(PaddleRecognizer):
             Exception: configured exception
         """
         _ = image
+        if self.exception is None:
+            raise AssertionError("FailingRecognizer.exception must be configured")
         raise self.exception
 
 
-def test_ocr_image_series_with_paddle_preserves_timings_and_sets_text():
-    """Test PaddleOCR image series processing preserves timings and writes text."""
+def test_paddle_module_exposes_only_current_public_helpers():
+    """Test PaddleOCR module no longer exposes removed helper functions."""
+    assert not hasattr(paddle_ocr, "get_paddle_recognizer")
+    assert not hasattr(paddle_ocr, "get_paddle_language_code")
+
+
+def test_ocr_image_series_with_paddle_preserves_timings_and_sets_text(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test PaddleOCR image series processing preserves timings and writes text.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
@@ -81,17 +113,20 @@ def test_ocr_image_series_with_paddle_preserves_timings_and_sets_text():
             ),
         ]
     )
-    recognizer = FakeRecognizer(["first", "second"])
-
-    text_series = ocr_image_series_with_paddle(
-        image_series,
-        recognizer=recognizer,
+    FakeRecognizer.texts = ["first", "second"]
+    FakeRecognizer.instances = []
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.paddle.PaddleRecognizer",
+        FakeRecognizer,
     )
+
+    text_series = ocr_image_series_with_paddle(image_series)
 
     assert [(event.start, event.end, event.text) for event in text_series] == [
         (1000, 2000, "first"),
         (3000, 4000, "second"),
     ]
+    recognizer = FakeRecognizer.instances[0]
     assert [image.size for image in recognizer.images] == [(50, 48), (52, 49)]
 
 
@@ -106,28 +141,8 @@ def test_ocr_image_series_with_paddle_uses_runtime_cache(
         tmp_path: temporary path fixture
     """
     cache_dir_path = tmp_path / "cache"
-    observed_cache_dir_paths = []
-
-    class FakeDefaultRecognizer(FakeRecognizer):
-        """Fake default recognizer with cache directory tracking."""
-
-        def __init__(
-            self,
-            *,
-            language: Language,
-            cache_dir_path: Path | None = None,
-            min_confidence: float = 0.0,
-        ):
-            """Initialize.
-
-            Arguments:
-                language: Scinoephile language
-                cache_dir_path: directory in which to cache OCR results
-                min_confidence: minimum confidence to include
-            """
-            _ = min_confidence
-            super().__init__([language.tag])
-            observed_cache_dir_paths.append(cache_dir_path)
+    FakeRecognizer.texts = [Language.zho_hans.tag]
+    FakeRecognizer.instances = []
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.paddle.get_runtime_cache_dir_path",
@@ -135,7 +150,7 @@ def test_ocr_image_series_with_paddle_uses_runtime_cache(
     )
     monkeypatch.setattr(
         "scinoephile.image.ocr.paddle.PaddleRecognizer",
-        FakeDefaultRecognizer,
+        FakeRecognizer,
     )
     image_series = ImageSeries(
         events=[
@@ -147,28 +162,17 @@ def test_ocr_image_series_with_paddle_uses_runtime_cache(
         ]
     )
 
-    text_series = ocr_image_series_with_paddle(image_series, language=Language.zho_hans)
+    text_series = ocr_image_series_with_paddle(
+        image_series,
+        language=Language.zho_hans,
+        min_confidence=0.8,
+    )
 
     assert [event.text for event in text_series] == ["zho-Hans"]
-    assert observed_cache_dir_paths == [cache_dir_path]
-
-
-@pytest.mark.parametrize(
-    ("language", "expected"),
-    [
-        (Language.eng, "en"),
-        (Language.zho_hans, "ch"),
-        (Language.zho_hant, "chinese_cht"),
-    ],
-)
-def test_get_paddle_language_code(language: Language, expected: str):
-    """Test PaddleOCR language code selection.
-
-    Arguments:
-        language: Scinoephile language
-        expected: expected PaddleOCR language code
-    """
-    assert get_paddle_language_code(language) == expected
+    recognizer = FakeRecognizer.instances[0]
+    assert recognizer.cache_dir_path == cache_dir_path
+    assert recognizer.language is Language.zho_hans
+    assert recognizer.min_confidence == 0.8
 
 
 @pytest.mark.parametrize(
@@ -180,12 +184,21 @@ def test_get_paddle_language_code(language: Language, expected: str):
         ValueError("invalid paddle response"),
     ],
 )
-def test_ocr_image_series_with_paddle_wraps_processing_errors(exception: Exception):
+def test_ocr_image_series_with_paddle_wraps_processing_errors(
+    monkeypatch: pytest.MonkeyPatch,
+    exception: Exception,
+):
     """Test PaddleOCR image series processing wraps implementation errors.
 
     Arguments:
+        monkeypatch: pytest monkeypatch fixture
         exception: implementation exception raised during OCR
     """
+    FailingRecognizer.exception = exception
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.paddle.PaddleRecognizer",
+        FailingRecognizer,
+    )
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
@@ -200,9 +213,6 @@ def test_ocr_image_series_with_paddle_wraps_processing_errors(exception: Excepti
         ScinoephileError,
         match="Unable to OCR image series with PaddleOCR",
     ) as excinfo:
-        ocr_image_series_with_paddle(
-            image_series,
-            recognizer=FailingRecognizer(exception),
-        )
+        ocr_image_series_with_paddle(image_series)
 
     assert excinfo.value.__cause__ is exception
