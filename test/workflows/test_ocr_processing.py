@@ -6,10 +6,11 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import pytest
 
-from scinoephile.core import ScinoephileError
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
@@ -17,8 +18,7 @@ from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.web.ocr_validation.html_index import load_html_entries
 from scinoephile.workflows.ocr_processing import (
     OcrProcessingResult,
-    process_eng_ocr,
-    process_zho_ocr,
+    OcrProcessingWorkflow,
 )
 
 
@@ -47,6 +47,110 @@ def _series_with_texts(texts: list[str]) -> Series:
             for idx, text in enumerate(texts)
         ]
     )
+
+
+def process_eng_ocr(
+    infile_path: Path,
+    output_dir_path: Path,
+    **kwargs: Any,
+) -> OcrProcessingResult:
+    """Run English OCR processing workflow for tests.
+
+    Arguments:
+        infile_path: OCR image subtitle input path
+        output_dir_path: OCR processing output directory path
+        kwargs: additional OCR processing workflow arguments
+    Returns:
+        OCR processing result
+    """
+    return OcrProcessingWorkflow(
+        infile_path,
+        output_dir_path,
+        language="eng",
+        **kwargs,
+    )()
+
+
+def process_zho_ocr(
+    infile_path: Path,
+    output_dir_path: Path,
+    *,
+    language: str = "zho-Hans",
+    **kwargs: Any,
+) -> OcrProcessingResult:
+    """Run Chinese OCR processing workflow for tests.
+
+    Arguments:
+        infile_path: OCR image subtitle input path
+        output_dir_path: OCR processing output directory path
+        language: Chinese OCR processing language
+        kwargs: additional OCR processing workflow arguments
+    Returns:
+        OCR processing result
+    """
+    return OcrProcessingWorkflow(
+        infile_path,
+        output_dir_path,
+        language=language,
+        **kwargs,
+    )()
+
+
+def test_ocr_processing_workflow_is_callable(
+    tmp_path: Path,
+):
+    """Test OCR processing workflow exposes a callable class API.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    """
+    source_path = tmp_path / "source.sup"
+    output_dir_path = tmp_path / "output"
+
+    workflow = OcrProcessingWorkflow(
+        source_path,
+        output_dir_path,
+        language="eng",
+        validate=False,
+    )
+
+    assert callable(workflow)
+    assert workflow.language is Language.eng
+
+
+def test_ocr_processing_workflow_accepts_language_object(tmp_path: Path):
+    """Test OCR processing workflow accepts a core language object.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    """
+    workflow = OcrProcessingWorkflow(
+        tmp_path / "source.sup",
+        tmp_path / "output",
+        language=Language.zho_hans,
+        validate=False,
+    )
+
+    assert workflow.language is Language.zho_hans
+
+
+def test_ocr_processing_workflow_rejects_invalid_language_in_init(tmp_path: Path):
+    """Test OCR processing workflow rejects invalid languages during initialization.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    """
+    invalid_language: Any = "spa"
+
+    with pytest.raises(
+        ScinoephileError,
+        match="language must be eng, zho-Hans, or zho-Hant, not spa",
+    ):
+        OcrProcessingWorkflow(
+            tmp_path / "source.sup",
+            tmp_path / "output",
+            language=invalid_language,
+        )
 
 
 def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
@@ -697,12 +801,12 @@ def test_process_zho_ocr_can_clean_provider_outputs_before_fusion(
     ] == ["字幕，好？"]
 
 
-def test_process_zho_ocr_passes_traditional_languages_to_ocr_engines(
+def test_process_zho_ocr_passes_zho_hant_languages_to_ocr_engines(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
-    """Test Chinese OCR processing maps traditional script to OCR language codes.
+    """Test Chinese OCR processing maps zho-Hant to OCR language codes.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -759,7 +863,12 @@ def test_process_zho_ocr_passes_traditional_languages_to_ocr_engines(
         fake_fuse,
     )
 
-    process_zho_ocr(source_path, output_dir_path, script="traditional", validate=False)
+    process_zho_ocr(
+        source_path,
+        output_dir_path,
+        language="zho-Hant",
+        validate=False,
+    )
     assert fuser_kwargs == [
         {
             "provider": None,

@@ -26,8 +26,7 @@ from scinoephile.common import CommandLineInterface
     ("cli", "option", "metavar"),
     [
         (OcrFuseCli, "--language", "{eng,zho}"),
-        (OcrProcessCli, "--language", "{eng,zho}"),
-        (OcrProcessCli, "--script", "{simplified,traditional}"),
+        (OcrProcessCli, "--language", "{eng,zho-Hans,zho-Hant}"),
         (MultiStackCli, "--sync", "{anchor-top,anchor-bottom,off}"),
         (YueProcessCli, "--proofread", "{simplified,traditional}"),
         (YueReviewVsZhoCli, "--mode", "{block,line}"),

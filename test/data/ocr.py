@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from scinoephile.core import ScinoephileError
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.eng.block_review import (
@@ -25,12 +25,7 @@ from scinoephile.lang.zho.block_review import (
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.workflows.ocr_processing import (
-    process_eng_ocr as process_eng_ocr_workflow,
-)
-from scinoephile.workflows.ocr_processing import (
-    process_zho_ocr as process_zho_ocr_workflow,
-)
+from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
 
 __all__ = [
     "process_eng_ocr",
@@ -195,16 +190,14 @@ def _ocr(
         "overwrite": overwrite,
         "fuser_kw": fuser_kw,
     }
-    if lang.endswith("-Hans"):
-        workflow_kw["script"] = "simplified"
-    elif lang.endswith("-Hant"):
-        workflow_kw["script"] = "traditional"
-
     # Run workflow
     if lang == "eng":
-        process_eng_ocr_workflow(**workflow_kw)
+        language = Language.eng
+    elif lang.endswith("-Hans"):
+        language = Language.zho_hans
     else:
-        process_zho_ocr_workflow(**workflow_kw)
+        language = Language.zho_hant
+    OcrProcessingWorkflow(language=language, **workflow_kw)()
 
     # Load and return final result
     return Series.load(output_dir_path / "fuse_clean_validate.srt")
