@@ -223,14 +223,14 @@ class ImageSeries(Series):
                 )
             if format_ == "sup" or validated_path.suffix == ".sup":
                 return cls._load_sup(validated_path)
-            raise ScinoephileError(
-                f"{cls.__name__}'s path must be path to a directory containing "
-                "one index.html file and N png files, or a .sup file."
-            )
-        except (OSError, ValueError) as exc:
+        except (OSError, UnicodeError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to load {cls.__name__} from {path}: {exc}"
             ) from exc
+        raise ScinoephileError(
+            f"{cls.__name__}'s path must be path to a directory containing one "
+            "index.html file and N png files, or a .sup file."
+        )
 
     @override
     def _init_blocks(self):
