@@ -268,117 +268,97 @@ class OcrProcessingWorkflow:
             ) from exc
 
     def _lens(self, image_series: ImageSeries) -> Series:
+        """Load or create Google Lens OCR output.
+
+        Arguments:
+            image_series: image subtitle series
+        Returns:
+            Google Lens OCR series
+        """
         # OCR or return pre-existing output
         lens_path = self.output_dir_path / "lens.srt"
-        try:
-            if lens_path.exists() and not self.overwrite:
-                logger.info(f"Lens OCR output exists: {lens_path}")
-                lens = Series.load(lens_path)
-            else:
-                lens = ocr_image_series_with_lens(image_series, language=self.language)
-                lens.save(lens_path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to load or create Lens OCR output at {lens_path}: {exc}"
-            ) from exc
+        if lens_path.exists() and not self.overwrite:
+            logger.info(f"Lens OCR output exists: {lens_path}")
+            lens = Series.load(lens_path)
+        else:
+            lens = ocr_image_series_with_lens(image_series, language=self.language)
+            lens.save(lens_path, format_="srt")
         self.output_paths["lens"] = lens_path
-
-        # Clean (if applicable) or return pre-existing output
         if not self.clean:
             return lens
+
+        # Clean or return pre-existing output
         lens_clean_path = self.output_dir_path / "lens_clean.srt"
-        try:
-            if lens_clean_path.exists() and not self.overwrite:
-                logger.info(f"Lens OCR output exists: {lens_clean_path}")
-                lens_clean = Series.load(lens_clean_path)
-            else:
-                lens_clean = self.clean_function(lens, remove_empty=False)
-                lens_clean.save(lens_clean_path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                "Unable to load or create cleaned Lens OCR output at "
-                f"{lens_clean_path}: {exc}"
-            ) from exc
+        if lens_clean_path.exists() and not self.overwrite:
+            logger.info(f"Lens OCR output exists: {lens_clean_path}")
+            lens_clean = Series.load(lens_clean_path)
+        else:
+            lens_clean = self.clean_function(lens, remove_empty=False)
+            lens_clean.save(lens_clean_path, format_="srt")
         self.output_paths["lens_clean"] = lens_clean_path
         return lens_clean
 
     def _paddle(self, image_series: ImageSeries) -> Series:
-        if self.language.script is None:
-            raise ScinoephileError(
-                f"language {self.language} does not specify a Chinese script"
-            )
+        """Load or create PaddleOCR output.
 
+        Arguments:
+            image_series: image subtitle series
+        Returns:
+            PaddleOCR series
+        """
         # OCR or return pre-existing output
         paddle_path = self.output_dir_path / "paddle.srt"
-        try:
-            if paddle_path.exists() and not self.overwrite:
-                logger.info(f"Paddle OCR output exists: {paddle_path}")
-                paddle = Series.load(paddle_path)
-            else:
-                paddle = ocr_image_series_with_paddle(
-                    image_series, language=self.language
-                )
-                paddle.save(paddle_path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Unable to load or create PaddleOCR output at {paddle_path}: {exc}"
-            ) from exc
+        if paddle_path.exists() and not self.overwrite:
+            logger.info(f"Paddle OCR output exists: {paddle_path}")
+            paddle = Series.load(paddle_path)
+        else:
+            paddle = ocr_image_series_with_paddle(image_series, language=self.language)
+            paddle.save(paddle_path, format_="srt")
         self.output_paths["paddle"] = paddle_path
-
-        # Clean (if applicable) or return pre-existing output
         if not self.clean:
             return paddle
+
+        # Clean or return pre-existing output
         paddle_clean_path = self.output_dir_path / "paddle_clean.srt"
-        try:
-            if paddle_clean_path.exists() and not self.overwrite:
-                logger.info(f"Paddle OCR output exists: {paddle_clean_path}")
-                paddle_clean = Series.load(paddle_clean_path)
-            else:
-                paddle_clean = self.clean_function(paddle, remove_empty=False)
-                paddle_clean.save(paddle_clean_path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                "Unable to load or create cleaned PaddleOCR output at "
-                f"{paddle_clean_path}: {exc}"
-            ) from exc
+        if paddle_clean_path.exists() and not self.overwrite:
+            logger.info(f"Paddle OCR output exists: {paddle_clean_path}")
+            paddle_clean = Series.load(paddle_clean_path)
+        else:
+            paddle_clean = self.clean_function(paddle, remove_empty=False)
+            paddle_clean.save(paddle_clean_path, format_="srt")
         self.output_paths["paddle_clean"] = paddle_clean_path
         return paddle_clean
 
     def _tesseract(self, image_series: ImageSeries) -> Series:
+        """Load or create Tesseract OCR output.
+
+        Arguments:
+            image_series: image subtitle series
+        Returns:
+            Tesseract OCR series
+        """
         # OCR or return pre-existing output
         tesseract_path = self.output_dir_path / "tesseract.srt"
-        try:
-            if tesseract_path.exists() and not self.overwrite:
-                logger.info(f"Tesseract OCR output exists: {tesseract_path}")
-                tesseract = Series.load(tesseract_path)
-            else:
-                tesseract = ocr_image_series_with_tesseract(
-                    image_series, language=Language.eng
-                )
-                tesseract.save(tesseract_path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                "Unable to load or create Tesseract OCR output at "
-                f"{tesseract_path}: {exc}"
-            ) from exc
+        if tesseract_path.exists() and not self.overwrite:
+            logger.info(f"Tesseract OCR output exists: {tesseract_path}")
+            tesseract = Series.load(tesseract_path)
+        else:
+            tesseract = ocr_image_series_with_tesseract(
+                image_series, language=Language.eng
+            )
+            tesseract.save(tesseract_path, format_="srt")
         self.output_paths["tesseract"] = tesseract_path
-
-        # Clean (if applicable) or return pre-existing output
         if not self.clean:
             return tesseract
+
+        # Clean or return pre-existing output
         tesseract_clean_path = self.output_dir_path / "tesseract_clean.srt"
-        try:
-            if tesseract_clean_path.exists() and not self.overwrite:
-                logger.info(f"Tesseract OCR output exists: {tesseract_clean_path}")
-                tesseract_clean = Series.load(tesseract_clean_path)
-            else:
-                tesseract_clean = self.clean_function(tesseract, remove_empty=False)
-                tesseract_clean.save(tesseract_clean_path, format_="srt")
-        except (OSError, RuntimeError, ValueError) as exc:
-            raise ScinoephileError(
-                "Unable to load or create cleaned Tesseract OCR output at "
-                f"{tesseract_clean_path}: {exc}"
-            ) from exc
+        if tesseract_clean_path.exists() and not self.overwrite:
+            logger.info(f"Tesseract OCR output exists: {tesseract_clean_path}")
+            tesseract_clean = Series.load(tesseract_clean_path)
+        else:
+            tesseract_clean = self.clean_function(tesseract, remove_empty=False)
+            tesseract_clean.save(tesseract_clean_path, format_="srt")
         self.output_paths["tesseract_clean"] = tesseract_clean_path
         return tesseract_clean
 
