@@ -10,8 +10,8 @@ from dataclasses import asdict, dataclass
 from logging import getLogger
 from pathlib import Path
 
+from scinoephile.core.language import is_chinese_language_tag
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.media.language import is_chinese
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
@@ -68,7 +68,7 @@ def analyze_zho_subtitle_stream_script(
     Returns:
         subtitle script analysis
     """
-    if not is_chinese(stream.language):
+    if not is_chinese_language_tag(stream.language):
         return ZhoSubtitleScriptAnalysis(
             failure_reason="not a Chinese subtitle stream",
         )

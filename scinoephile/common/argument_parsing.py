@@ -36,6 +36,9 @@ __all__ = [
     "StrValidatorKwargs",
     "duration_arg",
     "enum_arg",
+    "enum_metavar",
+    "enum_options",
+    "enum_options_list_str",
     "float_arg",
     "get_arg_groups_by_name",
     "get_optional_args_group",
@@ -281,12 +284,52 @@ def enum_arg[T: Enum](enum_type: type[T]) -> Callable[[Any], T]:
         try:
             return enum_type(value)
         except ValueError as exc:
-            options = ", ".join(str(member.value) for member in enum_type)
+            options = ", ".join(enum_options(enum_type))
             raise ArgumentTypeError(
                 f"{value!r} is not one of the supported values: {options}"
             ) from exc
 
     return wrapped
+
+
+def enum_metavar(enum_type: type[Enum]) -> str:
+    """Get argparse metavar for enum values.
+
+    Arguments:
+        enum_type: enum class
+    Returns:
+        argparse metavar for enum values
+    """
+    return f"{{{','.join(enum_options(enum_type))}}}"
+
+
+def enum_options(enum_type: type[Enum]) -> tuple[str, ...]:
+    """Get enum values as strings.
+
+    Arguments:
+        enum_type: enum class
+    Returns:
+        enum values in declaration order
+    """
+    return tuple(str(member.value) for member in enum_type)
+
+
+def enum_options_list_str(enum_type: type[Enum]) -> str:
+    """Get human-readable enum value list.
+
+    Arguments:
+        enum_type: enum class
+    Returns:
+        human-readable enum value list
+    """
+    options = enum_options(enum_type)
+    if not options:
+        return ""
+    if len(options) == 1:
+        return options[0]
+    if len(options) == 2:
+        return f"{options[0]} or {options[1]}"
+    return f"{', '.join(options[:-1])}, or {options[-1]}"
 
 
 def input_dir_arg() -> Callable[[Any], Path | list[Path]]:
