@@ -24,19 +24,19 @@ from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
-from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
-from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
     get_subtitle_cache_path,
 )
+
+from .ocr_validation import validate_ocr
 
 __all__ = [
     "OcrProcessingResult",
@@ -151,7 +151,6 @@ def process_eng_ocr(
             output_dir_path,
             image_series,
             fuse_clean,
-            "eng",
             dev=dev,
             overwrite=overwrite,
             output_paths=output_paths,
@@ -263,7 +262,6 @@ def process_zho_ocr(
             output_dir_path,
             image_series,
             fuse_clean,
-            "zho",
             dev=dev,
             overwrite=overwrite,
             output_paths=output_paths,
@@ -725,7 +723,6 @@ def _load_or_create_validation_image_series(
         )
     else:
         validation_image_series = _get_image_series_with_text(image_series, text_series)
-        validation_image_series.save(image_dir_path)
     output_paths["image"] = image_dir_path
     return validation_image_series
 
@@ -734,7 +731,6 @@ def _load_or_create_validation_output(
     output_dir_path: Path,
     image_series: ImageSeries,
     text_series: Series,
-    language: str,
     *,
     dev: bool,
     overwrite: bool,
@@ -746,7 +742,6 @@ def _load_or_create_validation_output(
         output_dir_path: OCR output directory
         image_series: source image subtitle series
         text_series: text subtitle series to validate
-        language: OCR validation language
         dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing workflow outputs
         output_paths: output paths to update
@@ -766,10 +761,15 @@ def _load_or_create_validation_output(
         overwrite,
         output_paths,
     )
-    validated = _validate_ocr(validation_image_series, language, dev)
-    validated.save(validate_path, format_="srt", exist_ok=True)
+    validation_image_series.save(output_dir_path / "image")
+    validated = validate_ocr(
+        output_dir_path / "image",
+        validate_path,
+        dev=dev,
+        overwrite=overwrite,
+    )
     output_paths["fuse_clean_validate"] = validate_path
-    return Series.load(validate_path)
+    return validated
 
 
 def _source_output_path(source_dir_path: Path | None, output_name: str) -> Path | None:
@@ -784,18 +784,3 @@ def _source_output_path(source_dir_path: Path | None, output_name: str) -> Path 
     if source_dir_path is None:
         return None
     return source_dir_path / f"{output_name}.srt"
-
-
-def _validate_ocr(image_series: ImageSeries, language: str, dev: bool) -> Series:
-    """Validate OCR subtitles against image subtitles.
-
-    Arguments:
-        image_series: image subtitle series with OCR text
-        language: OCR validation language
-        dev: whether validation should write data updates to repo data
-    Returns:
-        validated text subtitle series
-    """
-    if language == "eng":
-        return validate_eng_ocr(image_series, interactive=dev, dev=dev)
-    return validate_zho_ocr(image_series, interactive=dev, dev=dev)

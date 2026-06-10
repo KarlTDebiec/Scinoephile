@@ -293,22 +293,42 @@ def test_process_eng_ocr_validates_fuse_clean_output(
     source_path = tmp_path / "source.sup"
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
-    validate_calls: list[tuple[list[str], bool, bool]] = []
+    original_load = ImageSeries.load
+    validate_calls: list[tuple[Path, Path, list[str], bool, bool]] = []
 
-    def fake_validate(
-        series: ImageSeries,
-        interactive: bool = False,
+    def fake_load(path: Path) -> ImageSeries:
+        """Fake image subtitle loading."""
+        if path == source_path:
+            return tiny_image_series
+        return original_load(path)
+
+    def fake_validate_ocr(
+        infile_path: Path,
+        outfile_path: Path,
+        *,
+        cache_dir_path: Path | str | None = None,
         dev: bool = False,
+        overwrite: bool = False,
     ) -> Series:
         """Fake English OCR validation."""
+        _ = cache_dir_path
+        series = original_load(infile_path)
         validate_calls.append(
-            ([subtitle.text for subtitle in series], interactive, dev)
+            (
+                infile_path,
+                outfile_path,
+                [subtitle.text for subtitle in series],
+                dev,
+                overwrite,
+            )
         )
-        return _series_with_texts(["validated 1", "validated 2"])
+        validated = _series_with_texts(["validated 1", "validated 2"])
+        validated.save(outfile_path)
+        return validated
 
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
+        fake_load,
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
@@ -331,8 +351,8 @@ def test_process_eng_ocr_validates_fuse_clean_output(
         ),
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.validate_eng_ocr",
-        fake_validate,
+        "scinoephile.workflows.ocr_processing.validate_ocr",
+        fake_validate_ocr,
     )
 
     result = process_eng_ocr(
@@ -345,19 +365,27 @@ def test_process_eng_ocr_validates_fuse_clean_output(
     assert result.output_paths["fuse_clean_validate"] == (
         output_dir_path / "fuse_clean_validate.srt"
     )
-    assert validate_calls == [(["fused 1…", "fused 2…"], True, True)]
+    assert validate_calls == [
+        (
+            output_dir_path / "image",
+            output_dir_path / "fuse_clean_validate.srt",
+            ["fused 1…", "fused 2…"],
+            True,
+            False,
+        )
+    ]
     assert [
         subtitle.text
         for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
     ] == ["validated 1", "validated 2"]
 
 
-def test_process_eng_ocr_uses_interactive_validation_when_dev(
+def test_process_eng_ocr_forwards_dev_to_validation_workflow(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
-    """Test dev OCR validation uses interactive validation prompts.
+    """Test dev OCR validation forwards dev mode to the shared workflow.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -367,22 +395,33 @@ def test_process_eng_ocr_uses_interactive_validation_when_dev(
     source_path = tmp_path / "source.sup"
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
+    original_load = ImageSeries.load
     validate_calls: list[tuple[bool, bool]] = []
 
-    def fake_validate(
-        series: ImageSeries,
-        stop_at_idx: int | None = None,
-        interactive: bool = False,
-        output_dir_path: Path | str | None = None,
+    def fake_load(path: Path) -> ImageSeries:
+        """Fake image subtitle loading."""
+        if path == source_path:
+            return tiny_image_series
+        return original_load(path)
+
+    def fake_validate_ocr(
+        infile_path: Path,
+        outfile_path: Path,
+        *,
+        cache_dir_path: Path | str | None = None,
         dev: bool = False,
+        overwrite: bool = False,
     ) -> Series:
         """Fake English OCR validation."""
-        validate_calls.append((interactive, dev))
-        return _series_with_texts(["validated 1", "validated 2"])
+        _ = infile_path, cache_dir_path
+        validate_calls.append((dev, overwrite))
+        validated = _series_with_texts(["validated 1", "validated 2"])
+        validated.save(outfile_path)
+        return validated
 
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
+        fake_load,
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
@@ -405,8 +444,8 @@ def test_process_eng_ocr_uses_interactive_validation_when_dev(
         ),
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.validate_eng_ocr",
-        fake_validate,
+        "scinoephile.workflows.ocr_processing.validate_ocr",
+        fake_validate_ocr,
     )
 
     process_eng_ocr(
@@ -415,7 +454,7 @@ def test_process_eng_ocr_uses_interactive_validation_when_dev(
         dev=True,
     )
 
-    assert validate_calls == [(True, True)]
+    assert validate_calls == [(True, False)]
 
 
 def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
@@ -434,6 +473,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
     image_dir_path = output_dir_path / "image"
+    original_load = ImageSeries.load
     existing_image_series = ImageSeries(
         events=[
             type(tiny_image_series.events[0])(
@@ -446,21 +486,37 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
         ]
     )
     existing_image_series.save(image_dir_path)
-    original_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
+    original_images = {
+        image_path.name: image_path.read_bytes()
+        for image_path in image_dir_path.glob("*.png")
+    }
     validate_texts: list[list[str]] = []
 
-    def fake_validate(
-        series: ImageSeries,
-        interactive: bool = False,
+    def fake_load(path: Path) -> ImageSeries:
+        """Fake image subtitle loading."""
+        if path == source_path:
+            return tiny_image_series
+        return original_load(path)
+
+    def fake_validate_ocr(
+        infile_path: Path,
+        outfile_path: Path,
+        *,
+        cache_dir_path: Path | str | None = None,
         dev: bool = False,
+        overwrite: bool = False,
     ) -> Series:
         """Fake English OCR validation."""
+        _ = cache_dir_path, dev, overwrite
+        series = original_load(infile_path)
         validate_texts.append([subtitle.text for subtitle in series])
-        return _series_with_texts(["validated 1", "validated 2"])
+        validated = _series_with_texts(["validated 1", "validated 2"])
+        validated.save(outfile_path)
+        return validated
 
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
+        fake_load,
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
@@ -483,8 +539,8 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
         ),
     )
     monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.validate_eng_ocr",
-        fake_validate,
+        "scinoephile.workflows.ocr_processing.validate_ocr",
+        fake_validate_ocr,
     )
 
     process_eng_ocr(
@@ -493,8 +549,14 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
     )
 
     assert validate_texts == [["fused 1…", "fused 2…"]]
+    current_images = {
+        image_path.name: image_path.read_bytes()
+        for image_path in image_dir_path.glob("*.png")
+    }
+    assert current_images == original_images
     current_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
-    assert current_index == original_index
+    assert "fused 1…" in current_index
+    assert "fused 2…" in current_index
 
 
 def test_process_zho_ocr_runs_lens_paddle_and_fusion(
