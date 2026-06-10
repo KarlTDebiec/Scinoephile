@@ -12,6 +12,7 @@ from scinoephile.cli.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
+from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
@@ -28,7 +29,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.zho.script.conversion import OpenCCConfig

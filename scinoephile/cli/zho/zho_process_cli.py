@@ -11,6 +11,7 @@ from scinoephile.cli.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
+from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
@@ -25,7 +26,7 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.zho.block_review import (

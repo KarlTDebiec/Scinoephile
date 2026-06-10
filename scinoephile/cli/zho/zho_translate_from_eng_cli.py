@@ -11,6 +11,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
@@ -23,7 +24,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.zho_eng.gapped_translation import (
