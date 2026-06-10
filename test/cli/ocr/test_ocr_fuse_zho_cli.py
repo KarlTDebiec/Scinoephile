@@ -126,7 +126,7 @@ def test_ocr_fuse_zho_cli_writes_stdout(tmp_path: Path):
             "scinoephile.cli.ocr.ocr_fuse_cli.get_zho_ocr_fused",
             return_value=fused,
         ),
-        patch("scinoephile.core.cli.stdout", stdout_stream),
+        patch("scinoephile.cli.helpers.io.stdout", stdout_stream),
     ):
         run_cli_with_args(
             OcrFuseCli,

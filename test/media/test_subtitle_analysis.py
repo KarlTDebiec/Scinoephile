@@ -12,7 +12,7 @@ import ffmpeg
 import pytest
 from PIL import Image
 
-from scinoephile.core import ScinoephileError
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -260,8 +260,9 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     def fake_ocr_image_series_with_paddle(
         sampled_series: ImageSeries,
         *,
-        language: str,
+        language: Language,
     ) -> Series:
+        assert language in (Language.zho_hans, Language.zho_hant)
         ocr_sizes.append(
             [cast(ImageSubtitle, event).img.size for event in sampled_series]
         )

@@ -9,14 +9,16 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import (
-    TesseractOcrRecognizer,
+    TesseractRecognizer,
+    get_tesseract_language_code,
     ocr_image_series_with_tesseract,
 )
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
-class FakeTesseractRecognizer(TesseractOcrRecognizer):
+class FakeTesseractRecognizer(TesseractRecognizer):
     """Fake Tesseract recognizer for tests."""
 
     def __init__(self, texts: list[str]):
@@ -38,6 +40,29 @@ class FakeTesseractRecognizer(TesseractOcrRecognizer):
         """
         self.images.append(image)
         return self.texts.pop(0)
+
+
+class FailingTesseractRecognizer(TesseractRecognizer):
+    """Fake Tesseract recognizer that raises a configured exception."""
+
+    def __init__(self, exception: Exception):
+        """Initialize.
+
+        Arguments:
+            exception: exception to raise from recognition
+        """
+        self.exception = exception
+
+    def recognize_image(self, image: Image.Image) -> str:
+        """Recognize text from an image.
+
+        Arguments:
+            image: input image
+        Raises:
+            Exception: configured exception
+        """
+        _ = image
+        raise self.exception
 
 
 def test_ocr_image_series_with_tesseract_preserves_timings_and_sets_text():
@@ -127,7 +152,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
             cache_dir_path: Path | None = None,
             executable_path: Path | str = "tesseract",
             detect_italics: bool = False,
-            language: str = "eng",
+            language: Language = Language.eng,
             oem: int = 3,
             psm: int = 6,
             scale: int = 2,
@@ -140,7 +165,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
                 cache_dir_path: directory in which to cache OCR results
                 executable_path: Tesseract executable path or command name
                 detect_italics: whether to run a legacy-engine pass for italics
-                language: Tesseract language code
+                language: Scinoephile language
                 oem: Tesseract OCR engine mode
                 psm: Tesseract page segmentation mode
                 scale: image preprocessing scale
@@ -156,7 +181,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
                 skip_executable_validation,
                 tessdata_dir_path,
             )
-            super().__init__([language])
+            super().__init__([language.tag])
             observed_cache_dir_paths.append(cache_dir_path)
 
     monkeypatch.setattr(
@@ -164,7 +189,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
         lambda *parts: observed_cache_namespaces.extend(parts) or cache_dir_path,
     )
     monkeypatch.setattr(
-        "scinoephile.image.ocr.tesseract.TesseractOcrRecognizer",
+        "scinoephile.image.ocr.tesseract.TesseractRecognizer",
         FakeDefaultRecognizer,
     )
     image_series = ImageSeries(
@@ -177,8 +202,67 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
         ]
     )
 
-    text_series = ocr_image_series_with_tesseract(image_series, language="eng")
+    text_series = ocr_image_series_with_tesseract(
+        image_series, language=Language.zho_hant
+    )
 
-    assert [event.text for event in text_series] == ["eng"]
+    assert [event.text for event in text_series] == ["zho-Hant"]
     assert observed_cache_dir_paths == [cache_dir_path]
     assert observed_cache_namespaces == ["tesseract"]
+
+
+@pytest.mark.parametrize(
+    ("language", "expected"),
+    [
+        (Language.eng, "eng"),
+        (Language.zho_hans, "chi_sim"),
+        (Language.zho_hant, "chi_tra"),
+    ],
+)
+def test_get_tesseract_language_code(language: Language, expected: str):
+    """Test Tesseract language code selection.
+
+    Arguments:
+        language: Scinoephile language
+        expected: expected Tesseract language code
+    """
+    assert get_tesseract_language_code(language) == expected
+
+
+@pytest.mark.parametrize(
+    "exception",
+    [
+        ImportError("missing tesseract dependency"),
+        OSError("cache read failed"),
+        RuntimeError("tesseract request failed"),
+        ValueError("invalid tesseract response"),
+    ],
+)
+def test_ocr_image_series_with_tesseract_wraps_processing_errors(
+    exception: Exception,
+):
+    """Test Tesseract image series processing wraps implementation errors.
+
+    Arguments:
+        exception: implementation exception raised during OCR
+    """
+    image_series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=1000,
+                end=2000,
+                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+            ),
+        ]
+    )
+
+    with pytest.raises(
+        ScinoephileError,
+        match="Unable to OCR image series with Tesseract",
+    ) as excinfo:
+        ocr_image_series_with_tesseract(
+            image_series,
+            recognizer=FailingTesseractRecognizer(exception),
+        )
+
+    assert excinfo.value.__cause__ is exception

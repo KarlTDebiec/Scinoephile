@@ -16,15 +16,16 @@ import numpy as np
 from PIL import Image
 
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core import Language
+from scinoephile.image.ocr.language import get_paddle_language_code
 
 from .bounding_box import PaddleOcrBoundingBox
 from .text_result import PaddleOcrTextResult
 
-__all__ = ["PaddleOcrRecognizer"]
+__all__ = ["PaddleRecognizer"]
 
 logger = getLogger(__name__)
 
-_SUPPORTED_LANGUAGES = {"ch", "chinese_cht", "en"}
 _TEXT_DETECTION_MODEL_NAME = "PP-OCRv5_server_det"
 _TEXT_RECOGNITION_MODEL_NAME = "PP-OCRv5_server_rec"
 _TEXTLINE_ORIENTATION_MODEL_NAME = "PP-LCNet_x1_0_textline_ori"
@@ -34,33 +35,32 @@ _OCR_EXTRA_MESSAGE = (
 )
 
 
-class PaddleOcrRecognizer:
+class PaddleRecognizer:
     """PaddleOCR recognizer for image subtitles."""
 
     def __init__(
         self,
         *,
         cache_dir_path: Path | None = None,
-        language: str = "en",
+        language: Language | str = Language.eng,
         min_confidence: float = 0.0,
     ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
-            language: PaddleOCR language code
+            language: Scinoephile language
             min_confidence: minimum confidence to include
         Raises:
             ValueError: if language is unsupported
         """
-        if language not in _SUPPORTED_LANGUAGES:
-            raise ValueError(
-                "PaddleOCR language must be one of: "
-                f"{', '.join(sorted(_SUPPORTED_LANGUAGES))}"
-            )
+        try:
+            self.language = Language(language)
+        except ValueError as exc:
+            raise ValueError(f"{language} is not supported by PaddleOCR") from exc
+        self.paddle_language_code = get_paddle_language_code(self.language)
         os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
 
-        self.language = language
         self.min_confidence = min_confidence
         self.cache_dir_path = None
         if cache_dir_path is not None:
@@ -68,7 +68,7 @@ class PaddleOcrRecognizer:
 
         paddle_ocr_cls = self._get_paddle_ocr_class()
         self._ocr = paddle_ocr_cls(
-            lang=language,
+            lang=self.paddle_language_code,
             use_doc_orientation_classify=False,
             use_doc_unwarping=False,
             use_textline_orientation=True,
@@ -131,7 +131,7 @@ class PaddleOcrRecognizer:
         image_bytes = image.tobytes()
         image_sha256 = hashlib.sha256(image_bytes).hexdigest()
         cache_key = (
-            f"{image_sha256}_{image.mode}_{image.size}_{self.language}_"
+            f"{image_sha256}_{image.mode}_{image.size}_{self.paddle_language_code}_"
             f"{_TEXT_DETECTION_MODEL_NAME}_"
             f"{_TEXT_RECOGNITION_MODEL_NAME}_"
             f"{_TEXTLINE_ORIENTATION_MODEL_NAME}"
@@ -143,7 +143,7 @@ class PaddleOcrRecognizer:
     def _get_paddle_ocr_class() -> Any:
         """Import PaddleOCR on demand."""
         try:
-            from paddleocr import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from paddleocr import (  # noqa: PLC0415
                 PaddleOCR,
             )
         except ImportError as exc:

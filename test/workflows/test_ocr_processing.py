@@ -175,20 +175,20 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
         loaded_paths.append(path)
         return tiny_image_series
 
-    def fake_lens(image_series: ImageSeries, *, language: str) -> Series:
+    def fake_lens(image_series: ImageSeries, *, language: Language) -> Series:
         """Fake Google Lens OCR."""
         assert image_series is tiny_image_series
-        assert language == "en"
+        assert language is Language.eng
         return _series("lens")
 
     def fake_tesseract(
         image_series: ImageSeries,
         *,
-        language: str,
+        language: Language,
     ) -> Series:
         """Fake Tesseract OCR."""
         assert image_series is tiny_image_series
-        assert language == "eng"
+        assert language is Language.eng
         return _series("tesseract")
 
     def fake_fuse(lens: Series, tesseract: Series, **kwargs: object) -> Series:
@@ -653,16 +653,16 @@ def test_process_zho_ocr_runs_lens_paddle_and_fusion(
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
 
-    def fake_lens(image_series: ImageSeries, *, language: str) -> Series:
+    def fake_lens(image_series: ImageSeries, *, language: Language) -> Series:
         """Fake Google Lens OCR."""
         assert image_series is tiny_image_series
-        assert language == "zh-CN"
+        assert language is Language.zho_hans
         return _series("lens")
 
-    def fake_paddle(image_series: ImageSeries, *, language: str) -> Series:
+    def fake_paddle(image_series: ImageSeries, *, language: Language) -> Series:
         """Fake PaddleOCR."""
         assert image_series is tiny_image_series
-        assert language == "ch"
+        assert language is Language.zho_hans
         return _series("paddle")
 
     def fake_fuse(lens: Series, paddle: Series, **kwargs: object) -> Series:
@@ -818,16 +818,16 @@ def test_process_zho_ocr_passes_zho_hant_languages_to_ocr_engines(
     output_dir_path = tmp_path / "output"
     fuser = object()
 
-    def fake_lens(image_series: ImageSeries, *, language: str) -> Series:
+    def fake_lens(image_series: ImageSeries, *, language: Language) -> Series:
         """Fake Google Lens OCR."""
         assert image_series is tiny_image_series
-        assert language == "zh-TW"
+        assert language is Language.zho_hant
         return _series("lens")
 
-    def fake_paddle(image_series: ImageSeries, *, language: str) -> Series:
+    def fake_paddle(image_series: ImageSeries, *, language: Language) -> Series:
         """Fake PaddleOCR."""
         assert image_series is tiny_image_series
-        assert language == "chinese_cht"
+        assert language is Language.zho_hant
         return _series("paddle")
 
     def fake_fuse(lens: Series, paddle: Series, **kwargs: object) -> Series:

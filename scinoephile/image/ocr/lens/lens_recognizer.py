@@ -15,8 +15,10 @@ from typing import Any, cast, override
 from PIL import Image
 
 from scinoephile.common.validation import val_int, val_output_dir_path
+from scinoephile.core import Language
+from scinoephile.image.ocr.language import get_lens_language_code
 
-__all__ = ["GoogleLensRecognizer"]
+__all__ = ["LensRecognizer"]
 
 logger = getLogger(__name__)
 
@@ -31,27 +33,28 @@ class _GoogleLensRequestError(RuntimeError):
     """Transient Google Lens request error returned as OCR text."""
 
 
-class GoogleLensRecognizer:
+class LensRecognizer:
     """Google Lens recognizer for image subtitles."""
 
     def __init__(
         self,
         *,
         cache_dir_path: Path | None = None,
-        language: str = "en",
+        language: Language | str = Language.eng,
         retries: int = 3,
     ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
-            language: Google Lens OCR language code
+            language: Scinoephile language
             retries: Google Lens OCR request attempts per uncached image
         """
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
-        self.language = language
+        self.language = Language(language)
+        self.lens_language_code = get_lens_language_code(self.language)
         self.retries = val_int(retries, min_value=1)
         self._lens_api_error_class = self._get_lens_api_error_class()
         self._api = self._get_lens_api_class()()
@@ -104,7 +107,9 @@ class GoogleLensRecognizer:
 
         image_bytes = image.tobytes()
         image_sha256 = hashlib.sha256(image_bytes).hexdigest()
-        cache_key = f"{image_sha256}_{image.mode}_{image.size}_{self.language}"
+        cache_key = (
+            f"{image_sha256}_{image.mode}_{image.size}_{self.lens_language_code}"
+        )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
 
@@ -174,7 +179,7 @@ class GoogleLensRecognizer:
         Returns:
             subtitle text
         """
-        return GoogleLensRecognizer._clean_text("\n".join(lines))
+        return LensRecognizer._clean_text("\n".join(lines))
 
     @staticmethod
     def _get_lens_api_class() -> Any:
@@ -186,7 +191,7 @@ class GoogleLensRecognizer:
             ImportError: if chrome-lens-py is not installed
         """
         try:
-            from chrome_lens_py import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from chrome_lens_py import (  # noqa: PLC0415
                 LensAPI,
             )
         except ImportError as exc:
@@ -203,12 +208,12 @@ class GoogleLensRecognizer:
             ImportError: if chrome-lens-py is not installed
         """
         try:
-            from chrome_lens_py.exceptions import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from chrome_lens_py.exceptions import (  # noqa: PLC0415
                 LensAPIError,
             )
         except ImportError as module_exc:
             try:
-                from chrome_lens_py import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+                from chrome_lens_py import (  # noqa: PLC0415
                     LensAPIError,
                 )
             except ImportError as package_exc:
@@ -247,17 +252,17 @@ class GoogleLensRecognizer:
         Returns:
             normalized OCR lines
         """
-        line_blocks = GoogleLensRecognizer._get_result_value(result, "line_blocks")
+        line_blocks = LensRecognizer._get_result_value(result, "line_blocks")
         if isinstance(line_blocks, list | tuple):
             lines = []
             for block in line_blocks:
-                text = GoogleLensRecognizer._get_result_value(block, "text")
+                text = LensRecognizer._get_result_value(block, "text")
                 if isinstance(text, str):
                     lines.append(text)
             if lines:
                 return lines
 
-        ocr_text = GoogleLensRecognizer._get_result_value(result, "ocr_text")
+        ocr_text = LensRecognizer._get_result_value(result, "ocr_text")
         if isinstance(ocr_text, str):
             return ocr_text.splitlines()
         return []
@@ -288,7 +293,7 @@ class GoogleLensRecognizer:
         except RuntimeError:
             return
         raise RuntimeError(
-            "GoogleLensRecognizer cannot run uncached Google Lens OCR from an "
+            "LensRecognizer cannot run uncached Google Lens OCR from an "
             "active asyncio event loop."
         )
 
@@ -310,7 +315,7 @@ class GoogleLensRecognizer:
                 try:
                     result = await self._api.process_image(
                         image_path=image,
-                        ocr_language=self.language,
+                        ocr_language=self.lens_language_code,
                         ocr_preserve_line_breaks=True,
                         output_format="lines",
                     )

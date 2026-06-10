@@ -10,19 +10,24 @@ import pytest
 import requests
 from PIL import Image
 
-from scinoephile.core import ScinoephileError
-from scinoephile.image.ocr.tesseract import TesseractOcrRecognizer
+from scinoephile.core import Language, ScinoephileError
+from scinoephile.image.ocr.tesseract import TesseractRecognizer
 
 
-class CountingTesseractOcrRecognizer(TesseractOcrRecognizer):
+class CountingTesseractRecognizer(TesseractRecognizer):
     """Tesseract recognizer that counts uncached recognitions."""
 
-    def __init__(self, cache_dir_path: Path | None = None, *, language: str = "eng"):
+    def __init__(
+        self,
+        cache_dir_path: Path | None = None,
+        *,
+        language: Language = Language.eng,
+    ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
-            language: Tesseract language code
+            language: Scinoephile language
         """
         super().__init__(
             cache_dir_path=cache_dir_path,
@@ -42,12 +47,12 @@ class CountingTesseractOcrRecognizer(TesseractOcrRecognizer):
             recognized text
         """
         self.recognize_count += 1
-        return f"cached text {self.language}"
+        return f"cached text {self.tesseract_language_code}"
 
 
-def test_tesseract_ocr_recognizer_caches_results_by_image(tmp_path: Path):
+def test_tesseract_recognizer_caches_results_by_image(tmp_path: Path):
     """Test Tesseract recognizer caches OCR results by image content."""
-    recognizer = CountingTesseractOcrRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingTesseractRecognizer(cache_dir_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
     assert recognizer.recognize_image(image) == "cached text eng"
@@ -57,36 +62,36 @@ def test_tesseract_ocr_recognizer_caches_results_by_image(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 1
 
 
-def test_tesseract_ocr_recognizer_caches_by_configuration(tmp_path: Path):
+def test_tesseract_recognizer_caches_by_configuration(tmp_path: Path):
     """Test Tesseract recognizer includes configuration in cache keys."""
-    english_recognizer = CountingTesseractOcrRecognizer(
+    english_recognizer = CountingTesseractRecognizer(
         cache_dir_path=tmp_path,
-        language="eng",
+        language=Language.eng,
     )
-    french_recognizer = CountingTesseractOcrRecognizer(
+    chinese_recognizer = CountingTesseractRecognizer(
         cache_dir_path=tmp_path,
-        language="fra",
+        language=Language.zho_hans,
     )
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
     assert english_recognizer.recognize_image(image) == "cached text eng"
-    assert french_recognizer.recognize_image(image) == "cached text fra"
+    assert chinese_recognizer.recognize_image(image) == "cached text chi_sim"
 
     assert english_recognizer.recognize_count == 1
-    assert french_recognizer.recognize_count == 1
+    assert chinese_recognizer.recognize_count == 1
     assert len(list(tmp_path.glob("*.json"))) == 2
 
 
-def test_tesseract_ocr_recognizer_cache_key_ignores_engine_version(tmp_path: Path):
+def test_tesseract_recognizer_cache_key_ignores_engine_version(tmp_path: Path):
     """Test Tesseract recognizer cache keys do not include an engine version."""
 
-    class VersionedCountingRecognizer(CountingTesseractOcrRecognizer):
+    class VersionedCountingRecognizer(CountingTesseractRecognizer):
         """Counting recognizer with a legacy cache version attribute."""
 
         engine_version = "unused-version"
 
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
-    unversioned_recognizer = CountingTesseractOcrRecognizer(cache_dir_path=tmp_path)
+    unversioned_recognizer = CountingTesseractRecognizer(cache_dir_path=tmp_path)
     versioned_recognizer = VersionedCountingRecognizer(cache_dir_path=tmp_path)
 
     assert unversioned_recognizer.recognize_image(image) == "cached text eng"
@@ -103,7 +108,7 @@ def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
     tessdata_dir_path = tmp_path / "tessdata"
     tessdata_dir_path.mkdir()
 
-    class CommandCapturingRecognizer(TesseractOcrRecognizer):
+    class CommandCapturingRecognizer(TesseractRecognizer):
         """Recognizer that captures command arguments."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
@@ -124,7 +129,7 @@ def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
 
     recognizer = CommandCapturingRecognizer(
         executable_path=Path("tesseract"),
-        language="eng",
+        language=Language.eng,
         tessdata_dir_path=tessdata_dir_path,
         skip_executable_validation=True,
     )
@@ -150,7 +155,7 @@ def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
 def test_tesseract_chinese_hocr_words_are_joined_without_spaces():
     """Test Chinese hOCR word spans are joined without spaces."""
 
-    class ChineseRecognizer(TesseractOcrRecognizer):
+    class ChineseRecognizer(TesseractRecognizer):
         """Recognizer that writes Chinese hOCR output."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
@@ -176,7 +181,7 @@ def test_tesseract_chinese_hocr_words_are_joined_without_spaces():
 
     recognizer = ChineseRecognizer(
         executable_path=Path("tesseract"),
-        language="chi_sim",
+        language=Language.zho_hans,
         skip_executable_validation=True,
     )
 
@@ -190,7 +195,7 @@ def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
     legacy_tessdata_dir_path.mkdir()
     (legacy_tessdata_dir_path / "eng.traineddata").touch()
 
-    class CommandCapturingRecognizer(TesseractOcrRecognizer):
+    class CommandCapturingRecognizer(TesseractRecognizer):
         """Recognizer that captures primary and legacy command arguments."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
@@ -225,7 +230,7 @@ def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
     recognizer = CommandCapturingRecognizer(
         cache_dir_path=tmp_path,
         executable_path=Path("tesseract"),
-        language="eng",
+        language=Language.eng,
         detect_italics=True,
         skip_executable_validation=True,
     )
@@ -251,10 +256,10 @@ def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
 def test_tesseract_detect_italics_rejects_non_english_language():
     """Test italic detection is only supported for English Tesseract OCR."""
     with pytest.raises(ValueError, match="only supported with language eng"):
-        TesseractOcrRecognizer(
+        TesseractRecognizer(
             executable_path=Path("tesseract"),
             detect_italics=True,
-            language="chi_sim",
+            language=Language.zho_hans,
             skip_executable_validation=True,
         )
 
@@ -294,7 +299,7 @@ def test_tesseract_detect_italics_downloads_missing_legacy_tessdata(
 
     monkeypatch.setattr(requests, "get", fake_get)
 
-    class CommandCapturingRecognizer(TesseractOcrRecognizer):
+    class CommandCapturingRecognizer(TesseractRecognizer):
         """Recognizer that writes primary and legacy hOCR output."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
@@ -315,7 +320,7 @@ def test_tesseract_detect_italics_downloads_missing_legacy_tessdata(
     recognizer = CommandCapturingRecognizer(
         cache_dir_path=tmp_path,
         executable_path=Path("tesseract"),
-        language="eng",
+        language=Language.eng,
         detect_italics=True,
         skip_executable_validation=True,
     )
@@ -360,7 +365,7 @@ def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
 
     monkeypatch.setattr(requests, "get", fail_get)
 
-    class CommandCapturingRecognizer(TesseractOcrRecognizer):
+    class CommandCapturingRecognizer(TesseractRecognizer):
         """Recognizer that writes primary and legacy hOCR output."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
@@ -381,7 +386,7 @@ def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
     recognizer = CommandCapturingRecognizer(
         cache_dir_path=tmp_path,
         executable_path=Path("tesseract"),
-        language="eng",
+        language=Language.eng,
         detect_italics=True,
         skip_executable_validation=True,
     )
@@ -396,7 +401,7 @@ def test_tesseract_blank_english_result_uses_legacy_fallback(tmp_path: Path):
     legacy_tessdata_dir_path.mkdir()
     (legacy_tessdata_dir_path / "eng.traineddata").touch()
 
-    class LegacyFallbackRecognizer(TesseractOcrRecognizer):
+    class LegacyFallbackRecognizer(TesseractRecognizer):
         """Recognizer that simulates blank primary OCR and useful legacy OCR."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
@@ -424,7 +429,7 @@ def test_tesseract_blank_english_result_uses_legacy_fallback(tmp_path: Path):
     recognizer = LegacyFallbackRecognizer(
         cache_dir_path=tmp_path,
         executable_path=Path("tesseract"),
-        language="eng",
+        language=Language.eng,
         skip_executable_validation=True,
     )
 
@@ -447,7 +452,7 @@ def test_tesseract_blank_chinese_result_uses_legacy_fallback(tmp_path: Path):
     legacy_tessdata_dir_path.mkdir()
     (legacy_tessdata_dir_path / "chi_tra.traineddata").touch()
 
-    class LegacyFallbackRecognizer(TesseractOcrRecognizer):
+    class LegacyFallbackRecognizer(TesseractRecognizer):
         """Recognizer that simulates blank primary OCR and useful legacy OCR."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
@@ -472,7 +477,7 @@ def test_tesseract_blank_chinese_result_uses_legacy_fallback(tmp_path: Path):
     recognizer = LegacyFallbackRecognizer(
         cache_dir_path=tmp_path,
         executable_path=Path("tesseract"),
-        language="chi_tra",
+        language=Language.zho_hant,
         skip_executable_validation=True,
     )
 
@@ -486,7 +491,7 @@ def test_tesseract_detect_italics_raises_clear_legacy_error(tmp_path: Path):
     legacy_tessdata_dir_path.mkdir()
     (legacy_tessdata_dir_path / "eng.traineddata").touch()
 
-    class LegacyFailingRecognizer(TesseractOcrRecognizer):
+    class LegacyFailingRecognizer(TesseractRecognizer):
         """Recognizer that simulates a missing legacy Tesseract model."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
@@ -531,7 +536,7 @@ def test_tesseract_raises_and_does_not_cache_when_output_is_missing(
         tmp_path: temporary directory path
     """
 
-    class MissingOutputRecognizer(TesseractOcrRecognizer):
+    class MissingOutputRecognizer(TesseractRecognizer):
         """Recognizer that simulates a successful command without hOCR output."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:

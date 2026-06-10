@@ -10,7 +10,10 @@ import pytest
 
 from scinoephile.cli.multi.multi_stack_cli import MultiStackCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
+from scinoephile.cli.ocr.ocr_lens_cli import OcrLensCli
+from scinoephile.cli.ocr.ocr_paddle_cli import OcrPaddleCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
+from scinoephile.cli.ocr.ocr_tesseract_cli import OcrTesseractCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
@@ -26,7 +29,10 @@ from scinoephile.common import CommandLineInterface
     ("cli", "option", "metavar"),
     [
         (OcrFuseCli, "--language", "{eng,zho}"),
+        (OcrLensCli, "--language", "{eng,zho-Hans,zho-Hant}"),
+        (OcrPaddleCli, "--language", "{eng,zho-Hans,zho-Hant}"),
         (OcrProcessCli, "--language", "{eng,zho-Hans,zho-Hant}"),
+        (OcrTesseractCli, "--language", "{eng,zho-Hans,zho-Hant}"),
         (MultiStackCli, "--sync", "{anchor-top,anchor-bottom,off}"),
         (YueProcessCli, "--proofread", "{simplified,traditional}"),
         (YueReviewVsZhoCli, "--mode", "{block,line}"),

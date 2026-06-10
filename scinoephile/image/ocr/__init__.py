@@ -3,5 +3,6 @@
 """OCR-related image processing.
 
 Package hierarchy (modules may import from any above):
-* lens / paddle / tesseract / validation
+* language / validation
+* lens / paddle / tesseract
 """

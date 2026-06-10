@@ -15,12 +15,13 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from scinoephile.image.ocr.paddle import PaddleOcrRecognizer
+from scinoephile.core import Language
+from scinoephile.image.ocr.paddle import PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
 from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
 
 
-class CountingPaddleOcrRecognizer(PaddleOcrRecognizer):
+class CountingPaddleRecognizer(PaddleRecognizer):
     """PaddleOCR recognizer that counts uncached predictions."""
 
     def __init__(self, cache_dir_path: Path | None = None):
@@ -29,7 +30,8 @@ class CountingPaddleOcrRecognizer(PaddleOcrRecognizer):
         Arguments:
             cache_dir_path: directory in which to cache OCR results
         """
-        self.language = "en"
+        self.language = Language.eng
+        self.paddle_language_code = "en"
         self.min_confidence = 0.0
         self.cache_dir_path = cache_dir_path
         self.predict_count = 0
@@ -53,9 +55,9 @@ class CountingPaddleOcrRecognizer(PaddleOcrRecognizer):
         ]
 
 
-def test_paddle_ocr_recognizer_caches_results_by_image(tmp_path: Path):
+def test_paddle_recognizer_caches_results_by_image(tmp_path: Path):
     """Test PaddleOCR recognizer caches OCR results by image content."""
-    recognizer = CountingPaddleOcrRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingPaddleRecognizer(cache_dir_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
     assert recognizer.recognize_image(image) == "cached text"
@@ -65,7 +67,7 @@ def test_paddle_ocr_recognizer_caches_results_by_image(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 1
 
 
-def test_paddle_ocr_recognizer_uses_server_models(
+def test_paddle_recognizer_uses_server_models(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test PaddleOCR recognizer hardcodes PP-OCRv5 server models.
@@ -90,13 +92,14 @@ def test_paddle_ocr_recognizer_uses_server_models(
     setattr(paddleocr, "PaddleOCR", FakePaddleOCR)
     monkeypatch.setitem(sys.modules, "paddleocr", paddleocr)
 
-    PaddleOcrRecognizer(language="ch")
+    PaddleRecognizer(language=Language.zho_hans)
 
+    assert observed_kwargs["lang"] == "ch"
     assert observed_kwargs["text_detection_model_name"] == "PP-OCRv5_server_det"
     assert observed_kwargs["text_recognition_model_name"] == "PP-OCRv5_server_rec"
 
 
-def test_paddle_ocr_recognizer_imports_paddleocr_only_when_needed():
+def test_paddle_recognizer_imports_paddleocr_only_when_needed():
     """Test importing PaddleOCR recognizer does not import paddleocr."""
     result = subprocess.run(
         [
@@ -104,7 +107,7 @@ def test_paddle_ocr_recognizer_imports_paddleocr_only_when_needed():
             "-c",
             (
                 "import sys;"
-                "import scinoephile.image.ocr.paddle.paddle_ocr_recognizer;"
+                "import scinoephile.image.ocr.paddle.paddle_recognizer;"
                 "raise SystemExit('paddleocr' in sys.modules)"
             ),
         ],
@@ -147,13 +150,13 @@ def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr("builtins.__import__", fake_import)
 
     with pytest.raises(ImportError, match="'ocr' extra"):
-        PaddleOcrRecognizer._get_paddle_ocr_class()
+        PaddleRecognizer._get_paddle_ocr_class()
 
 
-def test_paddle_ocr_recognizer_rejects_unsupported_languages():
+def test_paddle_recognizer_rejects_unsupported_languages():
     """Test PaddleOCR recognizer only supports English and Chinese."""
-    with pytest.raises(ValueError, match="PaddleOCR language must be one of"):
-        PaddleOcrRecognizer(language="korean")
+    with pytest.raises(ValueError, match="not supported by PaddleOCR"):
+        PaddleRecognizer(language="korean")
 
 
 def test_format_paddle_ocr_text_orders_results_into_lines():
@@ -165,7 +168,7 @@ def test_format_paddle_ocr_text_orders_results_into_lines():
         _result("Top left", 10, 10),
     ]
 
-    text = PaddleOcrRecognizer._format_paddle_ocr_text(results)
+    text = PaddleRecognizer._format_paddle_ocr_text(results)
 
     assert text == "Top left Top right\\NBottom left Bottom right"
 
@@ -185,7 +188,7 @@ def test_normalize_paddle_ocr_results_parses_paddleocr3_result_dict():
         }
     ]
 
-    results = PaddleOcrRecognizer._normalize_paddle_ocr_results(raw_results)
+    results = PaddleRecognizer._normalize_paddle_ocr_results(raw_results)
 
     assert [(result.text, result.confidence) for result in results] == [
         ("left", 0.95),
