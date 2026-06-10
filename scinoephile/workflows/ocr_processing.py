@@ -425,12 +425,6 @@ class OcrProcessingWorkflow:
         Returns:
             cleaned fused OCR output
         """
-        script = self.language.script
-        if script is None:
-            raise ScinoephileError(
-                f"language {self.language} does not specify a Chinese script"
-            )
-
         # Lens
         lens = self._lens(image_series)
 
