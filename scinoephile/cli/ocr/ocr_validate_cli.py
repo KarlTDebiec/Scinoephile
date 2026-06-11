@@ -7,63 +7,51 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.common import DirectoryNotFoundError
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
-    int_arg,
-    output_dir_arg,
-    str_arg,
+    output_file_arg,
 )
-from scinoephile.common.exceptions import NotAFileError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
-from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
+from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.workflows.ocr_validation import validate_ocr
 
 __all__ = ["OcrValidateCli"]
 
 OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
+        "cache directory for local OCR validation data (default: %(default)s)": (
+            "本地 OCR 校验数据的缓存目录（默认：%(default)s）"
+        ),
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕校验命令行界面"
-        ),
-        "directory in which to save validation image outputs": (
-            "保存校验图像输出的目录"
-        ),
-        "language of the OCR text to validate (eng or zho)": (
-            "要校验的 OCR 文本语言（eng 或 zho）"
         ),
         "OCR image subtitle infile path (directory containing index.html and png "
         "files, or a .sup file)": (
             "OCR 图像字幕输入路径（包含 index.html 和 png 文件的目录，或 .sup 文件）"
         ),
-        "overwrite outfile directory if it exists": "若输出目录已存在则覆盖",
-        "prompt for interactive validation decisions": "提示进行交互式校验决策",
-        "stop validation after this subtitle index": "校验到此字幕索引后停止",
+        "overwrite outfile if it exists": "若输出文件已存在则覆盖",
         "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
+        "validated subtitle outfile path": "已校验字幕输出文件路径",
         "maintainer option: write validation data updates to repo data": (
             "维护者选项：将校验数据更新写入仓库数据"
         ),
     },
     "zh-hant": {
+        "cache directory for local OCR validation data (default: %(default)s)": (
+            "本機 OCR 驗證資料的快取目錄（預設：%(default)s）"
+        ),
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕驗證命令列介面"
-        ),
-        "directory in which to save validation image outputs": (
-            "儲存驗證影像輸出的目錄"
-        ),
-        "language of the OCR text to validate (eng or zho)": (
-            "要驗證的 OCR 文字語言（eng 或 zho）"
         ),
         "OCR image subtitle infile path (directory containing index.html and png "
         "files, or a .sup file)": (
             "OCR 影像字幕輸入路徑（包含 index.html 和 png 檔案的目錄，或 .sup 檔）"
         ),
-        "overwrite outfile directory if it exists": "若輸出目錄已存在則覆寫",
-        "prompt for interactive validation decisions": "提示進行互動式驗證決策",
-        "stop validation after this subtitle index": "驗證到此字幕索引後停止",
+        "overwrite outfile if it exists": "若輸出檔已存在則覆寫",
         "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
+        "validated subtitle outfile path": "已驗證字幕輸出檔路徑",
         "maintainer option: write validation data updates to repo data": (
             "維護者選項：將驗證資料更新寫入儲存庫資料"
         ),
@@ -75,7 +63,10 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class OcrValidateCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
 
-    localizations = OCR_VALIDATE_LOCALIZATIONS
+    localizations = merge_localizations(
+        CACHE_LOCALIZATIONS,
+        OCR_VALIDATE_LOCALIZATIONS,
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -94,6 +85,7 @@ class OcrValidateCli(ScinoephileCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
@@ -106,41 +98,33 @@ class OcrValidateCli(ScinoephileCliBase):
             ),
         )
 
-        arg_groups["operation arguments"].add_argument(
-            "--language",
-            required=True,
-            metavar="{eng,zho}",
-            type=str_arg(options=("eng", "zho")),
-            help="language of the OCR text to validate (eng or zho)",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--stop-at-idx",
-            type=int_arg(min_value=0),
-            help="stop validation after this subtitle index",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--interactive",
-            action="store_true",
-            help="prompt for interactive validation decisions",
-        )
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--dev",
             action="store_true",
             help="maintainer option: write validation data updates to repo data",
         )
+        add_cache_dir_arg(
+            arg_groups["operation arguments"],
+            "ocr_validation",
+            help_text=(
+                "cache directory for local OCR validation data (default: %(default)s)"
+            ),
+        )
 
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
             dest="outfile_path",
             required=True,
-            type=output_dir_arg(create=False),
-            help="directory in which to save validation image outputs",
+            type=output_file_arg(exist_ok=True),
+            help="validated subtitle outfile path",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
             action="store_true",
-            help="overwrite outfile directory if it exists",
+            help="overwrite outfile if it exists",
         )
         parser.set_defaults(_parser=parser)
 
@@ -159,46 +143,28 @@ class OcrValidateCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_path: Path,
-        language: str,
-        stop_at_idx: int | None,
-        interactive: bool,
         dev: bool,
+        cache_dir_path: Path,
         outfile_path: Path,
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
 
+        # Perform operations
         try:
-            series = ImageSeries.load(infile_path)
-        except (
-            DirectoryNotFoundError,
-            FileNotFoundError,
-            NotADirectoryError,
-            NotAFileError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
+            validate_ocr(
+                infile_path,
+                outfile_path,
+                cache_dir_path=cache_dir_path,
+                dev=dev,
+                overwrite=overwrite,
+            )
+        except ScinoephileError as exc:
             parser.error(str(exc))
-
-        if language == "eng":
-            validated = validate_eng_ocr(
-                series,
-                stop_at_idx=stop_at_idx,
-                interactive=interactive,
-                dev=dev,
-            )
-        else:
-            validated = validate_zho_ocr(
-                series,
-                stop_at_idx=stop_at_idx,
-                interactive=interactive,
-                dev=dev,
-            )
-
-        validated.save(outfile_path)
 
 
 if __name__ == "__main__":
