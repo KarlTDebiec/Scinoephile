@@ -98,6 +98,13 @@ ignore = [
 [tool.ruff.lint.pydocstyle]
 convention = 'google'
 
+[tool.ty.analysis]
+allowed-unresolved-imports = [
+    "chrome_lens_py",
+    "chrome_lens_py.**",
+    "paddleocr",
+]
+
 [tool.setuptools]
 include-package-data = true
 packages = { find = { include = ["scinoephile*"] } }

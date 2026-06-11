@@ -22,7 +22,6 @@ from scinoephile.cli.helpers.web import (
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
-    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_or_dir_arg,
     int_arg,
@@ -39,11 +38,6 @@ from scinoephile.workflows.ocr_processing import (
 
 __all__ = ["OcrProcessCli"]
 
-_LANGUAGE_HELP = (
-    f"language of the OCR text to process ({enum_options_list_str(Language)})"
-)
-"""Help text for OCR processing language selection."""
-
 OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "cache directory for extracted media subtitle artifacts (default: "
@@ -54,7 +48,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "image subtitle or media infile path": "图像字幕或媒体输入文件路径",
         "launch the local OCR validation web UI": "启动本地 OCR 校验网页界面",
-        _LANGUAGE_HELP: "要处理的 OCR 文本语言（eng、zho-Hans 或 zho-Hant）",
+        "language of the OCR text to process": "要处理的 OCR 文本语言",
         "maintainer option: write validation data updates to repo data": (
             "维护者选项：将校验数据更新写入仓库数据"
         ),
@@ -76,7 +70,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "image subtitle or media infile path": "影像字幕或媒體輸入檔案路徑",
         "launch the local OCR validation web UI": "啟動本機 OCR 驗證網頁介面",
-        _LANGUAGE_HELP: "要處理的 OCR 文字語言（eng、zho-Hans 或 zho-Hant）",
+        "language of the OCR text to process": "要處理的 OCR 文字語言",
         "maintainer option: write validation data updates to repo data": (
             "維護者選項：將驗證資料更新寫入儲存庫資料"
         ),
@@ -144,7 +138,7 @@ class OcrProcessCli(ScinoephileCliBase):
             required=True,
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help=_LANGUAGE_HELP,
+            help="language of the OCR text to process",
         )
         arg_groups["operation arguments"].add_argument(
             "--clean",
