@@ -19,6 +19,7 @@ from scinoephile.cli.ocr import (
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
+from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
 from test.helpers import (
@@ -85,6 +86,8 @@ def test_ocr_lens_cli_help_lists_language_and_retry_options_only():
     assert stderr.getvalue() == ""
     help_text = " ".join(stdout.getvalue().split())
     assert "--language" in help_text
+    assert "{eng,zho-Hans,zho-Hant}" in help_text
+    assert "zh-CN" not in help_text
     assert "--retries" in help_text
     assert "--api-key" not in help_text
     assert "--client-region" not in help_text
@@ -134,19 +137,20 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
     output_path = tmp_path / "ocr.srt"
     run_cli_with_args(
         OcrLensCli,
-        f"--infile {input_path} --outfile {output_path} --language zh-CN --retries 5",
+        f"--infile {input_path} --outfile {output_path} "
+        "--language zho-Hans --retries 5",
     )
 
     assert input_paths == [input_path.resolve()]
-    assert observed_kwargs == [{"language": "zh-CN", "retries": 5}]
+    assert observed_kwargs == [{"language": Language.zho_hans, "retries": 5}]
     output = Series.load(output_path)
     assert [(event.start, event.end, event.text) for event in output] == [
         (1000, 2000, "recognized")
     ]
 
 
-def test_ocr_paddle_cli_help_lists_language_codes():
-    """Test PaddleOCR CLI help lists common subtitle language codes."""
+def test_ocr_paddle_cli_help_lists_language_options():
+    """Test PaddleOCR CLI help lists supported Scinoephile language options."""
     stdout = StringIO()
     stderr = StringIO()
     with pytest.raises(SystemExit) as excinfo:
@@ -157,13 +161,12 @@ def test_ocr_paddle_cli_help_lists_language_codes():
     assert excinfo.value.code == 0
     assert stderr.getvalue() == ""
     help_text = " ".join(stdout.getvalue().split())
-    assert "en (English)" in help_text
-    assert "ch (simplified Chinese and English)" in help_text
-    assert "chinese_cht (traditional Chinese)" in help_text
+    assert "{eng,zho-Hans,zho-Hant}" in help_text
+    assert "chinese_cht" not in help_text
 
 
-def test_ocr_tesseract_cli_help_lists_default_language():
-    """Test Tesseract OCR CLI help lists default language code."""
+def test_ocr_tesseract_cli_help_lists_language_options():
+    """Test Tesseract OCR CLI help lists supported Scinoephile language options."""
     stdout = StringIO()
     stderr = StringIO()
     with pytest.raises(SystemExit) as excinfo:
@@ -174,8 +177,8 @@ def test_ocr_tesseract_cli_help_lists_default_language():
     assert excinfo.value.code == 0
     assert stderr.getvalue() == ""
     help_text = " ".join(stdout.getvalue().split())
-    assert "Tesseract language code installed in Tesseract" in help_text
-    assert "such as eng or chi_sim (default: eng)" in help_text
+    assert "{eng,zho-Hans,zho-Hant}" in help_text
+    assert "chi_sim" not in help_text
     assert "run a second legacy-engine pass to detect italic text" in help_text
 
 
@@ -197,6 +200,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         tiny_image_series,
     )
     input_path = _write_placeholder_sup_path(tmp_path)
+    observed_kwargs = []
 
     def fake_ocr_image_series_with_paddle(*args: object, **kwargs: object) -> Series:
         """Fake PaddleOCR image series processing.
@@ -207,6 +211,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         Returns:
             text subtitle series
         """
+        observed_kwargs.append(kwargs)
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
     monkeypatch.setattr(
@@ -217,10 +222,11 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
     output_path = tmp_path / "ocr.srt"
     run_cli_with_args(
         OcrPaddleCli,
-        f"--infile {input_path} --outfile {output_path}",
+        f"--infile {input_path} --language zho-Hant --outfile {output_path}",
     )
 
     assert input_paths == [input_path.resolve()]
+    assert observed_kwargs == [{"language": Language.zho_hant}]
     output = Series.load(output_path)
     assert [(event.start, event.end, event.text) for event in output] == [
         (1000, 2000, "recognized")
@@ -257,7 +263,7 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
         """
         assert kwargs == {
             "detect_italics": False,
-            "language": "eng",
+            "language": Language.eng,
         }
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
@@ -309,7 +315,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
         """
         assert kwargs == {
             "detect_italics": True,
-            "language": "eng",
+            "language": Language.eng,
         }
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
@@ -358,7 +364,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
             run_cli_with_args(
                 OcrTesseractCli,
                 f"--infile {input_path} "
-                "--language chi_sim "
+                "--language zho-Hans "
                 "--detect-italics "
                 f"--outfile {output_path}",
             )
@@ -382,16 +388,16 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
             "scinoephile.cli.helpers.io.ImageSeries.load",
             "scinoephile.cli.ocr.ocr_lens_cli.ocr_image_series_with_lens",
             "scinoephile.cli.ocr.ocr_lens_cli.write_series",
-            "--language zh-CN --retries 5",
-            {"language": "zh-CN", "retries": 5},
+            "--language zho-Hans --retries 5",
+            {"language": Language.zho_hans, "retries": 5},
         ),
         (
             OcrPaddleCli,
             "scinoephile.cli.helpers.io.ImageSeries.load",
             "scinoephile.cli.ocr.ocr_paddle_cli.ocr_image_series_with_paddle",
             "scinoephile.cli.ocr.ocr_paddle_cli.write_series",
-            "--language ch",
-            {"language": "ch"},
+            "--language zho-Hans",
+            {"language": Language.zho_hans},
         ),
         (
             OcrTesseractCli,
@@ -399,7 +405,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
             "scinoephile.cli.ocr.ocr_tesseract_cli.ocr_image_series_with_tesseract",
             "scinoephile.cli.ocr.ocr_tesseract_cli.write_series",
             "--detect-italics",
-            {"detect_italics": True, "language": "eng"},
+            {"detect_italics": True, "language": Language.eng},
         ),
     ],
 )
@@ -514,7 +520,7 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
         run_cli_with_args(
             OcrLensCli,
             f"--infile {full_sup_path} "
-            "--language en "
+            "--language eng "
             f"--outfile {output_path} "
             "--overwrite",
         )
@@ -538,12 +544,12 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
     [
         (
             "mlamd/input/zho-Hans_ocr/source.sup",
-            "ch",
+            "zho-Hans",
             "mlamd/output/zho-Hans_ocr/paddle.srt",
         ),
         (
             "mlamd/input/zho-Hant_ocr/source.sup",
-            "chinese_cht",
+            "zho-Hant",
             "mlamd/output/zho-Hant_ocr/paddle.srt",
         ),
     ],
@@ -560,7 +566,7 @@ def test_ocr_paddle_cli_matches_mlamd_sup_ocr_fixtures(
     Arguments:
         monkeypatch: pytest monkeypatch fixture
         sup_path: source SUP subtitle path
-        language: PaddleOCR language code
+        language: Scinoephile language tag
         expected_path: expected OCR subtitle fixture path
         tmp_path: temporary path fixture
     """
