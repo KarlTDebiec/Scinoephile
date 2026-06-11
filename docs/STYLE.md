@@ -53,10 +53,7 @@
 ## Type Annotations
 * Include type annotations for all function and method signatures, with the following exception:
   * If a function always returns `None`, omit the return type annotation.
-* Use `object` when a value may be any type but must be inspected or narrowed
-  before type-specific use; use `Any` only for intentionally unchecked
-  passthrough values, and use a narrower type, protocol, `TypedDict`, or alias
-  when the shape is known.
+* Use `object` when a value may be any type but must be inspected or narrowed before type-specific use; use `Any` only for intentionally unchecked passthrough values, and use a narrower type, protocol, `TypedDict`, or alias when the shape is known.
 
 ## Exceptions
 * Raise `ScinoephileError` for Scinoephile domain failures that should be shown directly to CLI users.
@@ -71,32 +68,19 @@
   * Follow the repository pattern of defining a module-level `logger = getLogger(__name__)`.
 
 ## Command Line Interface
-* In CLI modules, group arguments using the repository's standard
-  `get_arg_groups_by_name(...)` helper when one is available.
+* In CLI modules, group arguments using the repository's standard `get_arg_groups_by_name(...)` helper when one is available.
   * Standard group names are:
     * `input arguments`
     * `operation arguments`
     * `output arguments`
-  * Rename the default optional group to `additional arguments` via
-    `optional_arguments_name="additional arguments"`.
-* Define CLI implementation methods with explicit keyword-only `_main`
-  signatures whose parameters match the names produced by `argparse`; do not
-  add per-CLI `TypedDict` classes just to type parsed kwargs.
-* Use `dest=...` when command-line names should parse to Python-facing names
-  such as `infile_path`, `outfile_path`, or `cache_dir_path`.
-* Use argument `type=` validators, including `enum_arg(...)`, so `_main`
-  receives the type it expects instead of reparsing strings.
-  * Cache directory arguments should parse to `cache_dir_path` and include
-    `(default: %(default)s)` in the help text.
-* Base command CLIs that dispatch to subcommands should call the selected
-  subcommand directly, such as
-  `cls.subcommands()[subcommand_name]._main(**kwargs)`.
-* CLI modules should support localization by defining a `localizations` mapping when
-  the repository's CLI base supports it, and writing `help`, `description`, and
-  argument-group titles using stable English strings that can be translated.
-  * User-facing CLI help for the full command tree must have both `zh-hans`
-    (`zho-Hans`) and `zh-hant` (`zho-Hant`) translations; do not leave new
-    descriptions, argument help, or group titles to fall back to English.
+  * Rename the default optional group to `additional arguments` via `optional_arguments_name="additional arguments"`.
+* Define CLI implementation methods with explicit keyword-only `_main` signatures whose parameters match the names produced by `argparse`; do not add per-CLI `TypedDict` classes just to type parsed kwargs.
+* Use `dest=...` when command-line names should parse to Python-facing names such as `infile_path`, `outfile_path`, or `cache_dir_path`.
+* Use argument `type=` validators, including `enum_arg(...)`, so `_main` receives the type it expects instead of reparsing strings.
+  * Cache directory arguments should parse to `cache_dir_path` and include `(default: %(default)s)` in the help text.
+* Base command CLIs that dispatch to subcommands should call the selected subcommand directly, such as `cls.subcommands()[subcommand_name]._main(**kwargs)`.
+* CLI modules should support localization by defining a `localizations` mapping when the repository's CLI base supports it, and writing `help`, `description`, and argument-group titles using stable English strings that can be translated.
+  * User-facing CLI help for the full command tree must have both `zh-hans` (`zho-Hans`) and `zh-hant` (`zho-Hant`) translations; do not leave new descriptions, argument help, or group titles to fall back to English.
 
 ## Testing
 * Test modules do **not** need `__init__.py` files. Pytest can discover tests without them.
