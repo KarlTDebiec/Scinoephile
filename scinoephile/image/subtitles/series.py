@@ -126,6 +126,19 @@ class ImageSeries(Series):
         """
         self._blocks = blocks
 
+    def copy_text_from(self, source: Series):
+        """Copy subtitle text from a source series into this image series.
+
+        Arguments:
+            source: source text subtitle series
+        Raises:
+            ScinoephileError: if source and image subtitle counts differ
+        """
+        if len(source) != len(self):
+            raise ScinoephileError(f"Length mismatch: {len(source)} vs {len(self)}")
+        for source_subtitle, image_subtitle in zip(source, self.events):
+            image_subtitle.text = source_subtitle.text
+
     @override
     def save(
         self,
