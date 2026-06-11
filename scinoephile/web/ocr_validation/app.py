@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from logging import getLogger
 from typing import TYPE_CHECKING
 
 from scinoephile.common import package_root
@@ -23,6 +24,8 @@ _WEB_EXTRA_MESSAGE = (
     "OCR validation web UI support requires optional web dependencies. "
     "Install scinoephile with the 'web' extra."
 )
+
+logger = getLogger(__name__)
 
 
 def create_app(session: OcrValidationSession) -> Flask:
@@ -66,6 +69,7 @@ def run_app(session: OcrValidationSession, host: str, port: int):
         app = create_app(session)
         server = make_server(host, port, app)
         app.config["OCR_VALIDATION_SERVER"] = server
+        logger.info(f"OCR validation web UI: http://{host}:{port}/")
         server.serve_forever()
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
