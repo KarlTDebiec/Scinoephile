@@ -371,7 +371,7 @@ def test_process_eng_ocr_validates_fuse_clean_output(
     output_dir_path = tmp_path / "output"
     manager_instances: list[object] = []
     manager_calls: list[bool] = []
-    validate_calls: list[tuple[list[str], object]] = []
+    validate_calls: list[tuple[list[str], object, bool]] = []
 
     class FakeValidationManager:
         """Fake validation manager."""
@@ -388,7 +388,9 @@ def test_process_eng_ocr_validates_fuse_clean_output(
 
         def validate(self, series: ImageSeries, interactive: bool = False) -> Series:
             """Validate an image series."""
-            validate_calls.append(([subtitle.text for subtitle in series], self))
+            validate_calls.append(
+                ([subtitle.text for subtitle in series], self, interactive)
+            )
             return _series_with_texts(["validated 1", "validated 2"])
 
     monkeypatch.setattr(
@@ -427,7 +429,7 @@ def test_process_eng_ocr_validates_fuse_clean_output(
         output_dir_path / "fuse_clean_validate.srt"
     )
     assert manager_calls == [True]
-    assert validate_calls == [(["fused 1…", "fused 2…"], manager_instances[0])]
+    assert validate_calls == [(["fused 1…", "fused 2…"], manager_instances[0], True)]
     assert [
         subtitle.text
         for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
@@ -466,6 +468,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
         image_path.name: image_path.read_bytes()
         for image_path in image_dir_path.glob("*.png")
     }
+    original_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
     validate_texts: list[list[str]] = []
     validate_managers: list[object] = []
 
@@ -525,8 +528,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
     }
     assert current_images == original_images
     current_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
-    assert "fused 1…" in current_index
-    assert "fused 2…" in current_index
+    assert current_index == original_index
 
 
 def test_process_zho_ocr_runs_lens_paddle_and_fusion(
@@ -787,7 +789,7 @@ def test_process_zho_ocr_validates_fuse_clean_output(
     output_dir_path = tmp_path / "output"
     manager_instances: list[object] = []
     manager_calls: list[bool] = []
-    validate_calls: list[tuple[list[str], object]] = []
+    validate_calls: list[tuple[list[str], object, bool]] = []
 
     class FakeValidationManager:
         """Fake validation manager."""
@@ -804,7 +806,9 @@ def test_process_zho_ocr_validates_fuse_clean_output(
 
         def validate(self, series: ImageSeries, interactive: bool = False) -> Series:
             """Validate an image series."""
-            validate_calls.append(([subtitle.text for subtitle in series], self))
+            validate_calls.append(
+                ([subtitle.text for subtitle in series], self, interactive)
+            )
             return _series_with_texts(["validated 1", "validated 2"])
 
     monkeypatch.setattr(
@@ -841,7 +845,7 @@ def test_process_zho_ocr_validates_fuse_clean_output(
         output_dir_path / "fuse_clean_validate.srt"
     )
     assert manager_calls == [True]
-    assert validate_calls == [(["fused 1⋯", "fused 2⋯"], manager_instances[0])]
+    assert validate_calls == [(["fused 1⋯", "fused 2⋯"], manager_instances[0], True)]
     assert [
         subtitle.text
         for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")

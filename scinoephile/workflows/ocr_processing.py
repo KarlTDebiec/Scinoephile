@@ -344,12 +344,12 @@ class OcrProcessingWorkflow:
         image_dir_path = self.output_dir_path / "image"
         image_series = ImageSeries.load(image_dir_path)
         image_series.copy_text_from(series)
-        image_series.save(image_dir_path)
 
         # Validate and save output
         validate_ocr(
-            image_dir_path,
+            image_series,
             validate_path,
+            interactive=self.dev,
             dev=self.dev,
             overwrite=self.overwrite,
         )

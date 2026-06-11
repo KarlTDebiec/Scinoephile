@@ -18,19 +18,21 @@ logger = getLogger(__name__)
 
 
 def validate_ocr(
-    infile_path: Path,
+    source: Path | ImageSeries,
     outfile_path: Path,
     *,
     cache_dir_path: Path | str | None = None,
+    interactive: bool = False,
     dev: bool = False,
     overwrite: bool = False,
 ) -> Series:
     """Validate OCR text from an image subtitle input path.
 
     Arguments:
-        infile_path: image subtitle input path
+        source: image subtitle input path or image series
         outfile_path: validated subtitle output path
         cache_dir_path: cache directory for local OCR validation data
+        interactive: whether validation should prompt for confirmations
         dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing validation output
     Returns:
@@ -41,9 +43,15 @@ def validate_ocr(
         return Series.load(outfile_path)
 
     try:
-        image_series = ImageSeries.load(infile_path)
+        if isinstance(source, ImageSeries):
+            image_series = source
+        else:
+            image_series = ImageSeries.load(source)
         validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
-        validated = validation_manager.validate(image_series, interactive=False)
+        validated = validation_manager.validate(
+            image_series,
+            interactive=interactive,
+        )
         validated.save(outfile_path, format_="srt", exist_ok=True)
         return Series.load(outfile_path)
     except ScinoephileError:
