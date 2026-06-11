@@ -6,12 +6,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import StrEnum
-from functools import cache
 
-from pypinyin import Style, lazy_pinyin
-
-from scinoephile.core import ScinoephileError
-from scinoephile.lang.yue.romanization import get_yue_text_romanized
+from scinoephile.lang.cmn.romanization import get_cmn_char_romanized
+from scinoephile.lang.yue.romanization import get_yue_char_romanized
 
 __all__ = [
     "CharDimsConcern",
@@ -71,12 +68,12 @@ class CharDimsConcern:
     @property
     def char_pinyin(self) -> str:
         """Pinyin for the character being validated."""
-        return _char_pinyin(self.char)
+        return get_cmn_char_romanized(self.char)
 
     @property
     def char_yale(self) -> str:
         """Cantonese Yale for the character being validated."""
-        return _char_yale(self.char)
+        return get_yue_char_romanized(self.char)
 
     @property
     def status_label(self) -> str:
@@ -131,37 +128,39 @@ class GapConcern:
     @property
     def char_1_pinyin(self) -> str:
         """Pinyin for the first character."""
-        return _char_pinyin(self.char_1)
+        return get_cmn_char_romanized(self.char_1)
 
     @property
     def char_1_yale(self) -> str:
         """Cantonese Yale for the first character."""
-        return _char_yale(self.char_1)
+        return get_yue_char_romanized(self.char_1)
 
     @property
     def char_2_pinyin(self) -> str:
         """Pinyin for the second character."""
-        return _char_pinyin(self.char_2)
+        return get_cmn_char_romanized(self.char_2)
 
     @property
     def char_2_yale(self) -> str:
         """Cantonese Yale for the second character."""
-        return _char_yale(self.char_2)
+        return get_yue_char_romanized(self.char_2)
 
     @property
     def expected_display(self) -> str:
         """Proposed replacement gap text for display."""
-        return _gap_text_display(self.expected)
+        escaped = self.expected.replace("\n", "\\n")
+        return f"'{escaped}'"
 
     @property
     def observed_display(self) -> str:
         """Observed gap text for display."""
-        return _gap_text_display(self.observed)
+        escaped = self.observed.replace("\n", "\\n")
+        return f"'{escaped}'"
 
     @property
     def space_prompt_display(self) -> str:
         """Gap range prompting for a normal space, formatted for display."""
-        return _cutoff_range_display(self.space_prompt)
+        return f"{self.space_prompt[0]}-{self.space_prompt[1]}"
 
     @property
     def status_label(self) -> str:
@@ -173,7 +172,7 @@ class GapConcern:
     @property
     def tab_prompt_display(self) -> str:
         """Gap range prompting for a tab or wide space, formatted for display."""
-        return _cutoff_range_display(self.tab_prompt)
+        return f"{self.tab_prompt[0]}-{self.tab_prompt[1]}"
 
 
 class ValidationStatus(StrEnum):
@@ -263,53 +262,6 @@ class SubtitleRowView:
 
 OcrConcern = CharDimsConcern | ErrorConcern | GapConcern
 """Validation concern shown by the OCR validation web UI."""
-
-
-@cache
-def _char_pinyin(value: str) -> str:
-    """Return tone-mark pinyin for Hanzi text.
-
-    Arguments:
-        value: character or short character run
-    Returns:
-        tone-mark pinyin, or empty string for non-Hanzi text
-    """
-    return " ".join(lazy_pinyin(value, style=Style.TONE, errors="ignore", strict=False))
-
-
-@cache
-def _char_yale(value: str) -> str:
-    """Return Cantonese Yale for Hanzi text.
-
-    Arguments:
-        value: character or short character run
-    Returns:
-        Cantonese Yale romanization, or empty string for non-Hanzi text
-    """
-    try:
-        yale = get_yue_text_romanized(value)
-    except ScinoephileError:
-        return ""
-    if yale == value:
-        return ""
-    return yale
-
-
-def _cutoff_range_display(value: tuple[int, int]) -> str:
-    """Format a cutoff range for display.
-
-    Arguments:
-        value: cutoff pair
-    Returns:
-        formatted cutoff range
-    """
-    return f"{value[0]}-{value[1]}"
-
-
-def _gap_text_display(value: str) -> str:
-    """Format gap text so empty and whitespace-only strings are visible."""
-    escaped = value.replace("\n", "\\n")
-    return f"'{escaped}'"
 
 
 def _px_to_cqw_css(value: int, container_width: int) -> str:

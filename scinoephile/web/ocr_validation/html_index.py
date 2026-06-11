@@ -19,6 +19,17 @@ __all__ = [
     "write_html_entries",
 ]
 
+_ENTRY_PATTERN = re.compile(
+    r"#(?P<index>\d+):(?P<start>[^-]+)->(?P<end>[^<]+)"
+    r"<div style=['\"]text-align:center['\"]>"
+    r"<img src=['\"](?P<img>[^'\"]+)['\"] />"
+    r"(?:<br /><div style=['\"]font-size:22px; "
+    r"background-color:WhiteSmoke['\"]>(?P<text>.*?)</div>)?"
+    r"</div><br /><hr />",
+    re.DOTALL,
+)
+"""Regex pattern for image subtitle HTML entries."""
+
 
 @dataclass(frozen=True)
 class HtmlSubtitleEntry:
@@ -50,7 +61,7 @@ def load_html_entries(dir_path: Path) -> list[HtmlSubtitleEntry]:
 
     html_text = html_path.read_text(encoding="utf-8")
     entries = []
-    for match in _entry_pattern().finditer(html_text):
+    for match in _ENTRY_PATTERN.finditer(html_text):
         raw_text = match.group("text") or ""
         text = unescape(raw_text.replace("<br />", "\n")).replace("\n", "\\N")
         entries.append(
@@ -132,20 +143,3 @@ def write_html_entries(dir_path: Path, entries: list[HtmlSubtitleEntry]):
         html_lines.append(line)
     html_lines.extend(["</body>", "</html>"])
     (dir_path / "index.html").write_text("\n".join(html_lines), encoding="utf-8")
-
-
-def _entry_pattern() -> re.Pattern[str]:
-    """Regex pattern for image subtitle HTML entries.
-
-    Returns:
-        compiled regex pattern
-    """
-    return re.compile(
-        r"#(?P<index>\d+):(?P<start>[^-]+)->(?P<end>[^<]+)"
-        r"<div style=['\"]text-align:center['\"]>"
-        r"<img src=['\"](?P<img>[^'\"]+)['\"] />"
-        r"(?:<br /><div style=['\"]font-size:22px; "
-        r"background-color:WhiteSmoke['\"]>(?P<text>.*?)</div>)?"
-        r"</div><br /><hr />",
-        re.DOTALL,
-    )
