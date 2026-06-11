@@ -40,20 +40,10 @@ TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE = (
 """URL template for legacy-capable Tesseract traineddata."""
 _TESSERACT_LANGUAGE_CODES = {
     Language.eng: "eng",
+    Language.yue_hans: "chi_sim",
+    Language.yue_hant: "chi_tra",
     Language.zho_hans: "chi_sim",
     Language.zho_hant: "chi_tra",
-}
-_TESSERACT_LANGUAGE_ALIASES = {
-    "chi_sim": Language.zho_hans,
-    "chi_tra": Language.zho_hant,
-    "en": Language.eng,
-    "eng": Language.eng,
-    "zh-cn": Language.zho_hans,
-    "zh-hans": Language.zho_hans,
-    "zh-tw": Language.zho_hant,
-    "zh-hant": Language.zho_hant,
-    "zho-hans": Language.zho_hans,
-    "zho-hant": Language.zho_hant,
 }
 
 
@@ -69,7 +59,7 @@ class TesseractRecognizerKwargs(TypedDict, total=False):
     executable_path: Path | str
     """Tesseract executable path or command name."""
 
-    language: Language | str
+    language: Language
     """Scinoephile language."""
 
     oem: int | None
@@ -97,7 +87,7 @@ class TesseractRecognizer:
         cache_dir_path: Path | None = None,
         executable_path: Path | str = "tesseract",
         detect_italics: bool = False,
-        language: Language | str = Language.eng,
+        language: Language = Language.eng,
         oem: int | None = 3,
         psm: int = 6,
         scale: int = 2,
@@ -117,7 +107,7 @@ class TesseractRecognizer:
             skip_executable_validation: whether to skip executable validation
             tessdata_dir_path: optional tessdata directory
         """
-        self.language = _coerce_tesseract_language(language)
+        self.language = language
         if detect_italics and self.language is not Language.eng:
             raise ValueError(
                 "Tesseract italic detection is only supported with language eng"
@@ -520,21 +510,3 @@ class TesseractRecognizer:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump({"text": text}, file, ensure_ascii=False)
-
-
-def _coerce_tesseract_language(language: Language | str) -> Language:
-    """Coerce a language value into a supported Tesseract language.
-
-    Arguments:
-        language: Scinoephile language or legacy Tesseract language code
-    Returns:
-        Scinoephile language
-    Raises:
-        ValueError: if the language is unsupported
-    """
-    if isinstance(language, Language):
-        return language
-    if language_key := language.strip().casefold():
-        if language_key in _TESSERACT_LANGUAGE_ALIASES:
-            return _TESSERACT_LANGUAGE_ALIASES[language_key]
-    raise ValueError(f"{language} is not supported by Tesseract OCR")

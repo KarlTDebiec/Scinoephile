@@ -12,9 +12,6 @@ from PIL import Image
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import TesseractRecognizer
-from scinoephile.image.ocr.tesseract.tesseract_recognizer import (
-    _coerce_tesseract_language,
-)
 
 
 class CountingTesseractRecognizer(TesseractRecognizer):
@@ -66,27 +63,33 @@ def test_tesseract_recognizer_caches_results_by_image(tmp_path: Path):
 
 
 @pytest.mark.parametrize(
-    ("language", "expected"),
+    ("language", "expected_code"),
     [
-        ("en", Language.eng),
-        ("eng", Language.eng),
-        ("chi_sim", Language.zho_hans),
-        ("chi_tra", Language.zho_hant),
-        ("zho-Hans", Language.zho_hans),
-        ("zho-Hant", Language.zho_hant),
+        (Language.eng, "eng"),
+        (Language.yue_hans, "chi_sim"),
+        (Language.yue_hant, "chi_tra"),
+        (Language.zho_hans, "chi_sim"),
+        (Language.zho_hant, "chi_tra"),
     ],
 )
-def test_coerce_tesseract_language_accepts_current_and_legacy_codes(
-    language: str,
-    expected: Language,
+def test_tesseract_recognizer_maps_supported_languages_to_engine_codes(
+    language: Language,
+    expected_code: str,
 ):
-    """Test Tesseract language coercion accepts supported language codes.
+    """Test Tesseract recognizer maps supported languages to engine codes.
 
     Arguments:
-        language: language code to coerce
-        expected: expected Scinoephile language
+        language: language to use
+        expected_code: expected Tesseract language code
     """
-    assert _coerce_tesseract_language(language) is expected
+    recognizer = TesseractRecognizer(
+        executable_path=Path("tesseract"),
+        language=language,
+        skip_executable_validation=True,
+    )
+
+    assert recognizer.language is language
+    assert recognizer.tesseract_language_code == expected_code
 
 
 def test_tesseract_recognizer_caches_by_configuration(tmp_path: Path):
