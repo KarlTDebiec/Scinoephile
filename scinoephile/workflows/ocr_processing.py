@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
@@ -160,7 +161,7 @@ class OcrProcessingWorkflow:
         )
 
     @property
-    def clean_function(self):
+    def clean_function(self) -> Callable[..., Series]:
         """OCR output cleaning function for the workflow language."""
         if self.language is Language.eng:
             return get_eng_cleaned

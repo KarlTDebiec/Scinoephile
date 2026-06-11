@@ -20,7 +20,7 @@ logger = getLogger(__name__)
 
 
 def validate_ocr(
-    infile_path: Path,
+    source: Path | ImageSeries,
     outfile_path: Path,
     *,
     cache_dir_path: Path | str | None = None,
@@ -30,10 +30,10 @@ def validate_ocr(
     host: str = "127.0.0.1",
     port: int = 5000,
 ) -> Series:
-    """Validate OCR text from an image subtitle input path.
+    """Validate OCR text from image subtitles.
 
     Arguments:
-        infile_path: image subtitle input path
+        source: image subtitle input path or image series
         outfile_path: validated subtitle output path
         cache_dir_path: cache directory for local OCR validation data
         interactive: whether to launch the OCR validation web UI
@@ -48,30 +48,31 @@ def validate_ocr(
         logger.info(f"Validated OCR output exists: {outfile_path}")
         return Series.load(outfile_path)
 
-    # Interactive validation
-    if interactive:
-        if not infile_path.is_dir():
-            raise ScinoephileError(
-                f"{infile_path} must be a directory when interactive validation "
-                "is enabled"
-            )
-        session = OcrValidationSession.from_dir_path(
-            infile_path,
-            outfile_path=outfile_path,
-            cache_dir_path=cache_dir_path,
-            dev=dev,
-        )
-        run_app(session, host, port)
-        return Series.load(outfile_path)
-
-    # Non-interactive validation
-    image_series = ImageSeries.load(infile_path)
     try:
+        if interactive:
+            if not isinstance(source, Path) or not source.is_dir():
+                raise ScinoephileError(
+                    f"{source} must be a directory when interactive validation "
+                    "is enabled"
+                )
+            session = OcrValidationSession.from_dir_path(
+                source,
+                outfile_path=outfile_path,
+                cache_dir_path=cache_dir_path,
+                dev=dev,
+            )
+            run_app(session, host, port)
+            return Series.load(outfile_path)
+
+        if isinstance(source, ImageSeries):
+            image_series = source
+        else:
+            image_series = ImageSeries.load(source)
         validation_manager = ValidationManager(cache_dir_path=cache_dir_path, dev=dev)
         validated = validation_manager.validate(image_series)
-    except (OSError, ValueError) as exc:
-        raise ScinoephileError(
-            f"Unable to run noninteractive OCR validation: {exc}"
-        ) from exc
-    validated.save(outfile_path, format_="srt", exist_ok=True)
-    return Series.load(outfile_path)
+        validated.save(outfile_path, format_="srt", exist_ok=True)
+        return Series.load(outfile_path)
+    except ScinoephileError:
+        raise
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise ScinoephileError(f"Unable to validate OCR: {exc}") from exc
