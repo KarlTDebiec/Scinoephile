@@ -30,7 +30,6 @@ from .concerns import (
     GapConcern,
     OcrConcern,
     SubtitleRowView,
-    ValidationStatus,
 )
 from .html_index import HtmlSubtitleEntry, load_html_entries, update_html_entry_text
 
@@ -51,8 +50,6 @@ class _SubtitleValidationState:
     """Gap validation cursor."""
     char_n_bboxes: int = 1
     """Number of bboxes selected for the current character concern."""
-    status: ValidationStatus | None = None
-    """Row-level validation status."""
     concern: OcrConcern | None = None
     """Current validation concern."""
 
@@ -146,8 +143,6 @@ class OcrValidationSession:
         """
         self._validate_sub_idx(sub_idx)
         state = self._state(sub_idx)
-        if state.status is None:
-            raise ValueError(f"Subtitle {sub_idx} has no validation state.")
         entry = self.entries[sub_idx]
         image_width = self.series.events[sub_idx].img.width
         image_height = self.series.events[sub_idx].img.height
@@ -159,7 +154,6 @@ class OcrValidationSession:
             image_width=image_width,
             image_height=image_height,
             text=entry.text,
-            status=state.status,
             concern=state.concern,
             text_color_css=self.text_color_css,
             text_shadow_color_css=self.text_shadow_color_css,
@@ -189,7 +183,7 @@ class OcrValidationSession:
         """
         if self.include_done_subtitles:
             return True
-        return row.status != ValidationStatus.DONE
+        return row.concern is not None
 
     def concern_image(self, sub_idx: int) -> Image.Image:
         """Return an annotated image for the current concern.
@@ -220,11 +214,7 @@ class OcrValidationSession:
             updated subtitle row view model
         """
         self._validate_sub_idx(sub_idx)
-        update_html_entry_text(self.dir_path, sub_idx, text)
-        self.entries = load_html_entries(self.dir_path)
-        self.series.events[sub_idx].text = text
-        self._states.pop(sub_idx, None)
-        self._save_outfile()
+        self._set_text(sub_idx, text, reset_state=True)
         return self.subtitle_row(sub_idx)
 
     def validation_image(self, sub_idx: int) -> Image.Image:
@@ -299,12 +289,8 @@ class OcrValidationSession:
         else:
             expected_gap_chars = self._resolve_tab_gap_action(cursor, cutoffs, action)
 
-        return self._replace_gap_text(
-            sub_idx,
-            start_idx=cursor.char_1_idx + 1,
-            end_idx=cursor.char_2_idx,
-            replacement=expected_gap_chars,
-        )
+        self._replace_gap_text(cursor, expected_gap_chars, reset_state=True)
+        return self.subtitle_row(sub_idx)
 
     def _accept_char_dims(self, state: _SubtitleValidationState, n_bboxes: int):
         """Accept selected bbox dimensions for the current character.
@@ -386,32 +372,12 @@ class OcrValidationSession:
             self.manager.update_pair_gaps(cursor.char_pair, cutoffs)
         return cutoffs
 
-    def _gap_replace_text(self, cursor: GapCursor, replacement: str):
-        """Replace the current gap text without resetting validation state.
-
-        Arguments:
-            cursor: prepared gap cursor
-            replacement: replacement gap text
-        """
-        text = cursor.sub.text_with_newline
-        start_idx = cursor.char_1_idx + 1
-        end_idx = cursor.char_2_idx
-        updated_text = f"{text[:start_idx]}{replacement}{text[end_idx:]}"
-        cursor.sub.text = updated_text.replace("\n", "\\N")
-        cursor.char_2_idx = start_idx + len(replacement)
-        cursor.gap_chars = replacement
-        update_html_entry_text(self.dir_path, cursor.sub_idx, cursor.sub.text)
-        self.entries = load_html_entries(self.dir_path)
-        self._save_outfile()
-
     def _gap_concern(
         self,
         cursor: GapCursor,
         cutoffs: tuple[int, int, int, int],
         *,
         kind: ConcernKind,
-        expected: str | None = None,
-        action_options: tuple[tuple[str, str], ...] | None = None,
     ) -> GapConcern:
         """Build a gap concern for the current cursor position.
 
@@ -419,20 +385,15 @@ class OcrValidationSession:
             cursor: gap cursor
             cutoffs: gap cutoff tuple
             kind: gap concern kind
-            expected: expected replacement gap text
-            action_options: optional form actions
         Returns:
             gap concern
         """
-        if expected is None or action_options is None:
-            if kind == ConcernKind.SPACE_GAP:
-                expected = cursor.expected_space
-                action_options = (("adjacent", "Adjacent"), ("space", "Space"))
-            elif kind == ConcernKind.TAB_GAP:
-                expected = cursor.expected_tab
-                action_options = (("space", "Space"), ("tab", "Tab"))
-            else:
-                raise ValueError(f"Invalid gap concern kind: {kind}")
+        if kind == ConcernKind.SPACE_GAP:
+            expected = cursor.expected_space
+        elif kind == ConcernKind.TAB_GAP:
+            expected = cursor.expected_tab
+        else:
+            raise ValueError(f"Invalid gap concern kind: {kind}")
 
         return GapConcern(
             sub_idx=cursor.sub_idx,
@@ -445,7 +406,6 @@ class OcrValidationSession:
             tab_prompt=(cutoffs[2], cutoffs[3]),
             observed=cursor.gap_chars,
             expected=expected,
-            action_options=action_options,
             kind=kind,
         )
 
@@ -492,7 +452,7 @@ class OcrValidationSession:
         if state.phase == "chars":
             char_concern = self._scan_chars(state)
             if char_concern is not None:
-                self._set_concern(state, char_concern)
+                state.concern = char_concern
                 return
             state.phase = "gaps"
             cursor = self._char_cursor(state)
@@ -501,10 +461,9 @@ class OcrValidationSession:
         if state.phase == "gaps":
             gap_concern = self._scan_gaps(state)
             if gap_concern is not None:
-                self._set_concern(state, gap_concern)
+                state.concern = gap_concern
                 return
 
-        state.status = ValidationStatus.DONE
         state.concern = None
 
     def _scan_chars(self, state: _SubtitleValidationState) -> OcrConcern | None:
@@ -587,6 +546,22 @@ class OcrValidationSession:
         self.outfile_path.parent.mkdir(parents=True, exist_ok=True)
         self.series.save(self.outfile_path, format_="srt", exist_ok=True)
 
+    def _set_text(self, sub_idx: int, text: str, *, reset_state: bool):
+        """Persist OCR text for one subtitle.
+
+        Arguments:
+            sub_idx: zero-based subtitle index
+            text: replacement subtitle text using ASS newline escapes
+            reset_state: whether to rebuild this subtitle's validation state
+        """
+        self._validate_sub_idx(sub_idx)
+        update_html_entry_text(self.dir_path, sub_idx, text)
+        self.entries = load_html_entries(self.dir_path)
+        self.series.events[sub_idx].text = text
+        if reset_state:
+            self._states.pop(sub_idx, None)
+        self._save_outfile()
+
     def _scan_gap_with_cutoffs(  # noqa: PLR0911
         self,
         cursor: GapCursor,
@@ -602,7 +577,7 @@ class OcrValidationSession:
         """
         if cursor.gap <= cutoffs[0]:
             if cursor.gap_chars != "":
-                self._gap_replace_text(cursor, "")
+                self._replace_gap_text(cursor, "")
             return None
 
         if cutoffs[0] < cursor.gap < cutoffs[1]:
@@ -622,7 +597,7 @@ class OcrValidationSession:
 
         if cutoffs[1] <= cursor.gap <= cutoffs[2]:
             if cursor.gap_chars != cursor.expected_space:
-                self._gap_replace_text(cursor, cursor.expected_space)
+                self._replace_gap_text(cursor, cursor.expected_space)
             return None
 
         if cutoffs[2] < cursor.gap < cutoffs[3]:
@@ -641,43 +616,31 @@ class OcrValidationSession:
             return self._gap_concern(cursor, cutoffs, kind=ConcernKind.TAB_GAP)
 
         if cursor.gap_chars not in (cursor.expected_tab, "\n"):
-            self._gap_replace_text(cursor, cursor.expected_tab)
+            self._replace_gap_text(cursor, cursor.expected_tab)
         return None
-
-    def _set_concern(self, state: _SubtitleValidationState, concern: OcrConcern):
-        """Set the current concern and matching row-level status.
-
-        Arguments:
-            state: subtitle validation state
-            concern: current validation concern
-        """
-        if isinstance(concern, ErrorConcern):
-            state.status = ValidationStatus.ERROR
-        else:
-            state.status = ValidationStatus.NEEDS_ACTION
-        state.concern = concern
 
     def _replace_gap_text(
         self,
-        sub_idx: int,
-        *,
-        start_idx: int,
-        end_idx: int,
+        cursor: GapCursor,
         replacement: str,
-    ) -> SubtitleRowView:
-        """Replace text between two non-whitespace characters.
+        *,
+        reset_state: bool = False,
+    ):
+        """Replace the current gap text.
 
         Arguments:
-            sub_idx: zero-based subtitle index
-            start_idx: start character index
-            end_idx: end character index
+            cursor: prepared gap cursor
             replacement: replacement gap text
-        Returns:
-            updated subtitle row view model
+            reset_state: whether to rebuild this subtitle's validation state
         """
-        text = self.series.events[sub_idx].text_with_newline
+        text = cursor.sub.text_with_newline
+        start_idx = cursor.char_1_idx + 1
+        end_idx = cursor.char_2_idx
         updated_text = f"{text[:start_idx]}{replacement}{text[end_idx:]}"
-        return self.update_text(sub_idx, updated_text.replace("\n", "\\N"))
+        cursor.sub.text = updated_text.replace("\n", "\\N")
+        cursor.char_2_idx = start_idx + len(replacement)
+        cursor.gap_chars = replacement
+        self._set_text(cursor.sub_idx, cursor.sub.text, reset_state=reset_state)
 
     def _resolve_adjacent_gap_action(
         self,

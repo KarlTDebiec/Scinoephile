@@ -4,9 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from io import BytesIO
-from typing import NoReturn
 
 from flask import (
     Flask,
@@ -30,6 +28,7 @@ def register_routes(app: Flask):
     Arguments:
         app: Flask app
     """
+    _register_error_handlers(app)
 
     @app.get("/")
     def index() -> str:
@@ -63,7 +62,7 @@ def register_routes(app: Flask):
             rendered subtitle row
         """
         session = _session()
-        row = _session_call(session.subtitle_row, sub_idx)
+        row = session.subtitle_row(sub_idx)
         return _render_subtitle_row(session, row)
 
     @app.get("/subtitles/<int:sub_idx>/concern.png")
@@ -76,7 +75,7 @@ def register_routes(app: Flask):
             PNG response
         """
         session = _session()
-        image = _session_call(session.concern_image, sub_idx)
+        image = session.concern_image(sub_idx)
         return _png_response(image)
 
     @app.get("/subtitles/<int:sub_idx>/validation.png")
@@ -89,7 +88,7 @@ def register_routes(app: Flask):
             PNG response
         """
         session = _session()
-        image = _session_call(session.validation_image, sub_idx)
+        image = session.validation_image(sub_idx)
         return _png_response(image)
 
     @app.post("/subtitles/<int:sub_idx>/text")
@@ -102,7 +101,7 @@ def register_routes(app: Flask):
             rendered updated subtitle row
         """
         session = _session()
-        row = _session_call(session.update_text, sub_idx, request.form.get("text", ""))
+        row = session.update_text(sub_idx, request.form.get("text", ""))
         return _render_subtitle_row(session, row)
 
     @app.post("/subtitles/<int:sub_idx>/concern/char")
@@ -124,8 +123,7 @@ def register_routes(app: Flask):
             abort(400, "Missing n_bboxes.")
         except ValueError:
             abort(400, "Invalid integer for n_bboxes.")
-        row = _session_call(
-            session.resolve_char_concern,
+        row = session.resolve_char_concern(
             sub_idx,
             action=action,
             n_bboxes=n_bboxes,
@@ -145,39 +143,30 @@ def register_routes(app: Flask):
         action = request.form.get("action")
         if action is None:
             abort(400, "Missing action.")
-        row = _session_call(session.resolve_gap_concern, sub_idx, action=action)
+        row = session.resolve_gap_concern(sub_idx, action=action)
         return _render_subtitle_row(session, row)
 
 
-def _abort_session_error(exc: IndexError | ValueError) -> NoReturn:
-    """Abort a request for a session validation error.
+def _handle_index_error(exc: IndexError) -> tuple[str, int]:
+    """Handle out-of-range subtitle requests.
 
     Arguments:
-        exc: session error
-    """
-    if isinstance(exc, IndexError):
-        abort(404, str(exc))
-    abort(400, str(exc))
-
-
-def _session_call[T](
-    call: Callable[..., T],
-    *args: object,
-    **kwargs: object,
-) -> T:
-    """Call a session method and abort on request-facing validation errors.
-
-    Arguments:
-        call: session method
-        args: positional arguments
-        kwargs: keyword arguments
+        exc: index error
     Returns:
-        session method return value
+        error response body and status
     """
-    try:
-        return call(*args, **kwargs)
-    except (IndexError, ValueError) as exc:
-        _abort_session_error(exc)
+    return str(exc), 404
+
+
+def _handle_value_error(exc: ValueError) -> tuple[str, int]:
+    """Handle request-facing validation errors.
+
+    Arguments:
+        exc: validation error
+    Returns:
+        error response body and status
+    """
+    return str(exc), 400
 
 
 def _png_response(image: Image.Image) -> Response:
@@ -191,6 +180,16 @@ def _png_response(image: Image.Image) -> Response:
     output = BytesIO()
     image.save(output, format="PNG")
     return Response(output.getvalue(), mimetype="image/png")
+
+
+def _register_error_handlers(app: Flask):
+    """Register request-facing validation error handlers.
+
+    Arguments:
+        app: Flask app
+    """
+    app.register_error_handler(IndexError, _handle_index_error)
+    app.register_error_handler(ValueError, _handle_value_error)
 
 
 def _render_subtitle_row(session: OcrValidationSession, row: SubtitleRowView) -> str:

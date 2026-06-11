@@ -120,10 +120,17 @@ class GapConcern:
     """Observed text between characters."""
     expected: str
     """Proposed replacement gap text."""
-    action_options: tuple[tuple[str, str], ...]
-    """Form actions available for this gap prompt."""
     kind: ConcernKind
     """Concern kind."""
+
+    @property
+    def action_options(self) -> tuple[tuple[str, str], ...]:
+        """Form actions available for this gap prompt."""
+        if self.kind == ConcernKind.SPACE_GAP:
+            return (("adjacent", "Adjacent"), ("space", "Space"))
+        if self.kind == ConcernKind.TAB_GAP:
+            return (("space", "Space"), ("tab", "Tab"))
+        raise ValueError(f"Invalid gap concern kind: {self.kind}")
 
     @property
     def char_1_pinyin(self) -> str:
@@ -204,8 +211,6 @@ class SubtitleRowView:
     """Subtitle image height in pixels."""
     text: str
     """Editable subtitle OCR text."""
-    status: ValidationStatus
-    """Row-level validation status."""
     concern: OcrConcern | None
     """Current validation concern for this subtitle."""
     text_color_css: str = "rgb(255, 255, 255)"
@@ -236,13 +241,20 @@ class SubtitleRowView:
         return isinstance(self.concern, CharDimsConcern | GapConcern)
 
     @property
+    def status(self) -> ValidationStatus:
+        """Row-level validation status."""
+        if self.concern is None:
+            return ValidationStatus.DONE
+        if isinstance(self.concern, ErrorConcern):
+            return ValidationStatus.ERROR
+        return ValidationStatus.NEEDS_ACTION
+
+    @property
     def status_label(self) -> str:
         """Short validation status label."""
         if self.concern is not None:
             return self.concern.status_label
-        if self.status == ValidationStatus.DONE:
-            return "OK"
-        return "Needs review"
+        return "OK"
 
     @property
     def text_font_size_cqw_css(self) -> str:
