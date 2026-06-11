@@ -28,6 +28,8 @@ from test.helpers import (
     test_data_root,
 )
 
+OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
+
 
 def _patch_image_series_load(
     monkeypatch: pytest.MonkeyPatch,
@@ -86,7 +88,7 @@ def test_ocr_lens_cli_help_lists_language_and_retry_options_only():
     assert stderr.getvalue() == ""
     help_text = " ".join(stdout.getvalue().split())
     assert "--language" in help_text
-    assert "{eng,zho-Hans,zho-Hant}" in help_text
+    assert OCR_LANGUAGE_METAVAR in help_text
     assert "zh-CN" not in help_text
     assert "--retries" in help_text
     assert "--api-key" not in help_text
@@ -161,7 +163,7 @@ def test_ocr_paddle_cli_help_lists_language_options():
     assert excinfo.value.code == 0
     assert stderr.getvalue() == ""
     help_text = " ".join(stdout.getvalue().split())
-    assert "{eng,zho-Hans,zho-Hant}" in help_text
+    assert OCR_LANGUAGE_METAVAR in help_text
     assert "chinese_cht" not in help_text
 
 
@@ -177,7 +179,7 @@ def test_ocr_tesseract_cli_help_lists_language_options():
     assert excinfo.value.code == 0
     assert stderr.getvalue() == ""
     help_text = " ".join(stdout.getvalue().split())
-    assert "{eng,zho-Hans,zho-Hant}" in help_text
+    assert OCR_LANGUAGE_METAVAR in help_text
     assert "chi_sim" not in help_text
     assert "run a second legacy-engine pass to detect italic text" in help_text
 

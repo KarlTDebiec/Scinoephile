@@ -65,7 +65,10 @@ def run_app(session: OcrValidationSession, host: str, port: int):
         ScinoephileError: if optional dependencies are missing or server startup fails
     """
     try:
-        from werkzeug.serving import make_server  # noqa: PLC0415
+        try:
+            from werkzeug.serving import make_server  # noqa: PLC0415
+        except ImportError as exc:
+            raise ScinoephileError(_WEB_EXTRA_MESSAGE) from exc
 
         app = create_app(session)
         server_port = port

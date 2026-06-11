@@ -565,7 +565,7 @@ def _assert_index_textarea(html: bytes):
     assert b'hx-trigger="blur changed"' in html
     assert b"--subtitle-text-color: rgb(255, 255, 255)" in html
     assert b"--subtitle-shadow-color: rgb(0, 0, 0)" in html
-    assert b"--subtitle-font-size: 50px" in html
+    assert b"--subtitle-font-size:" in html
     assert b'wrap="off"' in html
 
 

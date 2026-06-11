@@ -92,6 +92,42 @@ def test_run_app_wraps_server_errors(monkeypatch: pytest.MonkeyPatch):
     assert isinstance(excinfo.value.__cause__, OSError)
 
 
+def test_run_app_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
+    """Test missing Werkzeug dependency produces an actionable error."""
+    real_import = __import__
+
+    def fake_import(
+        name: str,
+        globals_: Mapping[str, object] | None = None,
+        locals_: Mapping[str, object] | None = None,
+        fromlist: Sequence[str] | None = (),
+        level: int = 0,
+    ) -> object:
+        """Fake import that treats Werkzeug as missing.
+
+        Arguments:
+            name: module name
+            globals_: global namespace
+            locals_: local namespace
+            fromlist: names to import
+            level: import level
+        Returns:
+            imported module
+        Raises:
+            ImportError: if importing werkzeug
+        """
+        if name == "werkzeug.serving":
+            raise ImportError("missing werkzeug")
+        return real_import(name, globals_, locals_, fromlist, level)
+
+    monkeypatch.setattr("builtins.__import__", fake_import)
+
+    with pytest.raises(ScinoephileError, match="'web' extra") as excinfo:
+        run_app(cast(OcrValidationSession, object()), "127.0.0.1", 5000)
+
+    assert isinstance(excinfo.value.__cause__, ImportError)
+
+
 def test_run_app_uses_available_port_when_requested_port_is_in_use(
     caplog: pytest.LogCaptureFixture,
     monkeypatch: pytest.MonkeyPatch,

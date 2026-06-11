@@ -24,15 +24,17 @@ from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCl
 from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
 
+OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
+
 
 @pytest.mark.parametrize(
     ("cli", "option", "metavar"),
     [
         (OcrFuseCli, "--language", "{eng,zho}"),
-        (OcrLensCli, "--language", "{eng,zho-Hans,zho-Hant}"),
-        (OcrPaddleCli, "--language", "{eng,zho-Hans,zho-Hant}"),
-        (OcrProcessCli, "--language", "{eng,zho-Hans,zho-Hant}"),
-        (OcrTesseractCli, "--language", "{eng,zho-Hans,zho-Hant}"),
+        (OcrLensCli, "--language", OCR_LANGUAGE_METAVAR),
+        (OcrPaddleCli, "--language", OCR_LANGUAGE_METAVAR),
+        (OcrProcessCli, "--language", OCR_LANGUAGE_METAVAR),
+        (OcrTesseractCli, "--language", OCR_LANGUAGE_METAVAR),
         (MultiStackCli, "--sync", "{anchor-top,anchor-bottom,off}"),
         (YueProcessCli, "--proofread", "{simplified,traditional}"),
         (YueReviewVsZhoCli, "--mode", "{block,line}"),
