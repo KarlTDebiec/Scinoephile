@@ -59,9 +59,11 @@
   when the shape is known.
 
 ## Exceptions
-* Prefer repository-specific exceptions from for domain-specific errors that should be user-facing.
-* Prefer built-in exceptions such as `ValueError` and `TypeError` for programming errors or invalid internal state.
-* When wrapping a caught exception, use exception chaining with `raise ... from err` to preserve context.
+* Raise `ScinoephileError` for Scinoephile domain failures that should be shown directly to CLI users.
+* Raise built-in exceptions such as `ValueError`, `TypeError`, `IndexError`, and `OSError` subclasses for programming errors, generic validation failures, and low-level helper or parser failures.
+* Public Scinoephile operations should wrap lower-level exceptions in `ScinoephileError` when callers should not need to know implementation-specific failure types.
+* CLI implementations should generally catch `ScinoephileError` and convert it to `parser.error(...)`.
+* When wrapping a caught exception, use exception chaining with `raise ... from exc` to preserve context.
 
 ## Logging
 * Use the `logging` module rather than `print` for any user-facing output in scripts or libraries.
