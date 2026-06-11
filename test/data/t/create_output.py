@@ -23,15 +23,15 @@ actions = {
     "eng_ocr",
     "zho-Hans_ocr",
     "zho-Hant_ocr",
-    "zho-Hans_eng",
+    # "zho-Hans_eng",
 }
 
 if "eng_ocr" in actions:
-    process_ocr(title_root, Language.eng, overwrite=False)
+    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
 if "zho-Hans_ocr" in actions:
-    process_ocr(title_root, Language.zho_hans, overwrite=False)
+    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
 if "zho-Hant_ocr" in actions:
-    process_ocr(title_root, Language.zho_hant, overwrite=False)
+    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
 if "zho-Hans_eng" in actions:
     zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
