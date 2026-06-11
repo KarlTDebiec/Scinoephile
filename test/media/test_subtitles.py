@@ -8,12 +8,12 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.media.subtitles.cache import get_subtitle_cache_path
 from scinoephile.media.subtitles.extraction import extract_subtitle_stream
+from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
 
 def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
