@@ -15,24 +15,29 @@ from scinoephile.cli.helpers.llms import (
     read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_or_dir_arg,
     int_arg,
     output_dir_arg,
-    str_arg,
 )
-from scinoephile.core import ScinoephileError
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.core.text import ChineseScript
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.ocr_processing import (
     OcrProcessingResult,
-    process_eng_ocr,
-    process_zho_ocr,
+    OcrProcessingWorkflow,
 )
 
 __all__ = ["OcrProcessCli"]
+
+_LANGUAGE_HELP = (
+    f"language of the OCR text to process ({enum_options_list_str(Language)})"
+)
+"""Help text for OCR processing language selection."""
 
 OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
@@ -43,9 +48,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "写入 OCR 处理输出的目录"
         ),
         "image subtitle or media infile path": "图像字幕或媒体输入文件路径",
-        "language of the OCR text to process (eng or zho)": (
-            "要处理的 OCR 文本语言（eng 或 zho）"
-        ),
+        _LANGUAGE_HELP: "要处理的 OCR 文本语言（eng、zho-Hans 或 zho-Hant）",
         "maintainer option: write validation data updates to repo data": (
             "维护者选项：将校验数据更新写入仓库数据"
         ),
@@ -57,9 +60,6 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "处理图像字幕 OCR 并融合所选语言的输出"
         ),
         "Processed OCR outputs:": "已处理的 OCR 输出：",
-        "script for standard Chinese OCR (default: simplified)": (
-            "标准中文 OCR 使用的字形（默认：简体）"
-        ),
     },
     "zh-hant": {
         "cache directory for extracted media subtitle artifacts (default: "
@@ -69,9 +69,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "寫入 OCR 處理輸出的目錄"
         ),
         "image subtitle or media infile path": "影像字幕或媒體輸入檔案路徑",
-        "language of the OCR text to process (eng or zho)": (
-            "要處理的 OCR 文字語言（eng 或 zho）"
-        ),
+        _LANGUAGE_HELP: "要處理的 OCR 文字語言（eng、zho-Hans 或 zho-Hant）",
         "maintainer option: write validation data updates to repo data": (
             "維護者選項：將驗證資料更新寫入儲存庫資料"
         ),
@@ -83,9 +81,6 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "處理影像字幕 OCR 並融合所選語言的輸出"
         ),
         "Processed OCR outputs:": "已處理的 OCR 輸出：",
-        "script for standard Chinese OCR (default: simplified)": (
-            "標準中文 OCR 使用的字形（預設：簡體）"
-        ),
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -138,16 +133,9 @@ class OcrProcessCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--language",
             required=True,
-            metavar="{eng,zho}",
-            type=str_arg(options=("eng", "zho")),
-            help="language of the OCR text to process (eng or zho)",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--script",
-            default=None,
-            metavar="{simplified,traditional}",
-            type=str_arg(options=("simplified", "traditional")),
-            help="script for standard Chinese OCR (default: simplified)",
+            metavar=enum_metavar(Language),
+            type=enum_arg(Language),
+            help=_LANGUAGE_HELP,
         )
         arg_groups["operation arguments"].add_argument(
             "--clean",
@@ -204,8 +192,7 @@ class OcrProcessCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         infile_path: Path,
         stream_index: int | None,
-        language: str,
-        script: ChineseScript | None,
+        language: Language,
         clean: bool,
         dev: bool,
         cache_dir_path: Path,
@@ -216,8 +203,6 @@ class OcrProcessCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        if language == "eng" and script is not None:
-            parser.error("--script may only be used when --language is zho")
         additional_context = read_llm_additional_context(
             parser, llm_args.additional_context_file_path
         )
@@ -225,40 +210,19 @@ class OcrProcessCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            if language == "eng":
-                result = process_eng_ocr(
-                    infile_path=infile_path,
-                    output_dir_path=output_dir_path,
-                    stream_index=stream_index,
-                    cache_dir_path=cache_dir_path,
-                    clean=clean,
-                    dev=dev,
-                    overwrite=overwrite,
-                    provider=provider,
-                    additional_context=additional_context,
-                )
-            else:
-                result = process_zho_ocr(
-                    infile_path=infile_path,
-                    output_dir_path=output_dir_path,
-                    stream_index=stream_index,
-                    cache_dir_path=cache_dir_path,
-                    script=script or "simplified",
-                    clean=clean,
-                    dev=dev,
-                    overwrite=overwrite,
-                    provider=provider,
-                    additional_context=additional_context,
-                )
-        except (
-            FileNotFoundError,
-            ImportError,
-            NotADirectoryError,
-            OSError,
-            RuntimeError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
+            result = OcrProcessingWorkflow(
+                infile_path,
+                output_dir_path,
+                language=language,
+                stream_index=stream_index,
+                cache_dir_path=cache_dir_path,
+                clean=clean,
+                dev=dev,
+                overwrite=overwrite,
+                provider=provider,
+                additional_context=additional_context,
+            )()
+        except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write outputs
