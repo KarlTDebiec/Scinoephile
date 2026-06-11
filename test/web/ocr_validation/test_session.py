@@ -118,6 +118,23 @@ def test_session_uses_one_font_size_for_series(
 
     assert rows[0].text_font_size_css == "60px"
     assert rows[1].text_font_size_css == "60px"
+    assert rows[0].text_letter_spacing_css == "0px"
+    assert rows[1].text_letter_spacing_css == "0px"
+
+
+def test_session_uses_cjk_letter_spacing(tmp_path: Path):
+    """Test editable text keeps subtitle letter spacing for CJK text."""
+    html_dir_path = _make_html_dir(tmp_path, text="姐")
+    session = OcrValidationSession.from_dir_path(
+        html_dir_path,
+        include_done_subtitles=True,
+        cache_dir_path=tmp_path / "cache",
+    )
+    _clear_validation_data(session)
+
+    row = session.subtitle_row(0)
+
+    assert row.text_letter_spacing_css == "10px"
 
 
 def test_session_rebuilds_raw_bboxes_for_validation_state(

@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
@@ -83,9 +84,20 @@ class OcrValidationSession:
         self.manager = manager
         self.include_done_subtitles = include_done_subtitles
         self.outfile_path = outfile_path
-        self.text_color_css = _gray_css(self.series.fill_color)
-        self.text_shadow_color_css = _gray_css(self.series.outline_color)
+        self.text_color_css = (
+            f"rgb({self.series.fill_color}, {self.series.fill_color}, "
+            f"{self.series.fill_color})"
+        )
+        self.text_shadow_color_css = (
+            f"rgb({self.series.outline_color}, {self.series.outline_color}, "
+            f"{self.series.outline_color})"
+        )
         self.text_font_size_px = self.series.text_font_size
+        text = "".join(entry.text for entry in self.entries)
+        if re.search(r"[\u3400-\u9fff]", text):
+            self.text_letter_spacing_px = 10
+        else:
+            self.text_letter_spacing_px = 0
         self._states: dict[int, _SubtitleValidationState] = {}
 
     @classmethod
@@ -162,6 +174,7 @@ class OcrValidationSession:
             text_color_css=self.text_color_css,
             text_shadow_color_css=self.text_shadow_color_css,
             text_font_size_px=self.text_font_size_px,
+            text_letter_spacing_px=self.text_letter_spacing_px,
         )
 
     def subtitle_rows(self) -> list[SubtitleRowView]:
@@ -748,14 +761,3 @@ class OcrValidationSession:
         """
         if sub_idx < 0 or sub_idx >= len(self.entries):
             raise IndexError(f"Subtitle index {sub_idx} out of range.")
-
-
-def _gray_css(value: int) -> str:
-    """Format a grayscale value as a CSS rgb color.
-
-    Arguments:
-        value: grayscale color value
-    Returns:
-        CSS rgb color
-    """
-    return f"rgb({value}, {value}, {value})"

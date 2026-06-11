@@ -36,8 +36,7 @@ logger = getLogger(__name__)
 
 
 _DEFAULT_TEXT_FONT_SIZE = 50
-_MIN_TEXT_BBOX_HEIGHT = 20
-_MIN_TEXT_BBOX_WIDTH = 8
+_TEXT_FONT_SIZE_PERCENTILE = 0.75
 
 
 class ImageSeries(Series):
@@ -266,21 +265,20 @@ class ImageSeries(Series):
                 bboxes = get_bboxes(subtitle.img)
             else:
                 bboxes = subtitle.bboxes
-            for bbox in bboxes:
-                if (
-                    bbox.height >= _MIN_TEXT_BBOX_HEIGHT
-                    and bbox.width >= _MIN_TEXT_BBOX_WIDTH
-                ):
-                    size_counts[bbox.height] += 1
+            size_counts.update(bbox.height for bbox in bboxes)
 
         if not size_counts:
             self._text_font_size = _DEFAULT_TEXT_FONT_SIZE
             return
 
-        self._text_font_size = max(
-            size_counts.items(),
-            key=lambda item: (item[1], item[0]),
-        )[0]
+        threshold = sum(size_counts.values()) * _TEXT_FONT_SIZE_PERCENTILE
+        cumulative_count = 0
+        for height in sorted(size_counts):
+            cumulative_count += size_counts[height]
+            if cumulative_count >= threshold:
+                self._text_font_size = height
+                return
+        self._text_font_size = max(size_counts)
 
     def _save_html(
         self,

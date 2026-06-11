@@ -205,18 +205,15 @@ def test_series_fill_and_outline_colors():
     assert series.outline_color == 0
 
 
-def test_text_font_size_defaults_when_no_useful_bboxes():
-    """Test text font size falls back when no useful bboxes are present."""
+def test_text_font_size_defaults_when_no_bboxes():
+    """Test text font size falls back when no bboxes are present."""
     series = ImageSeries(
         events=[
             ImageSubtitle(
                 start=0,
                 end=1000,
                 img=Image.new("LA", (4, 4), (255, 255)),
-                bboxes=[
-                    Bbox(0, 4, 0, 16),
-                    Bbox(0, 6, 0, 60),
-                ],
+                bboxes=[],
             )
         ]
     )
@@ -251,7 +248,7 @@ def test_text_font_size_invalidates_when_events_change():
     assert series.text_font_size == 60
 
 
-def test_text_font_size_uses_most_common_useful_bbox_height():
+def test_text_font_size_uses_upper_weighted_useful_bbox_height():
     """Test text font size is detected across the image series."""
     series = ImageSeries(
         events=[
@@ -277,3 +274,25 @@ def test_text_font_size_uses_most_common_useful_bbox_height():
     )
 
     assert series.text_font_size == 60
+
+
+def test_text_font_size_uses_ascender_height_for_latin_bboxes():
+    """Test Latin text size favors ascenders over lowercase x-height."""
+    series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=0,
+                end=1000,
+                img=Image.new("LA", (2, 2), (255, 255)),
+                bboxes=[
+                    Bbox(0, 10, 0, 29),
+                    Bbox(12, 22, 0, 29),
+                    Bbox(24, 34, 0, 29),
+                    Bbox(36, 46, 0, 39),
+                    Bbox(48, 58, 0, 39),
+                ],
+            ),
+        ]
+    )
+
+    assert series.text_font_size == 39

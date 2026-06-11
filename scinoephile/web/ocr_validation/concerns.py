@@ -219,6 +219,8 @@ class SubtitleRowView:
     """Detected subtitle outline color as a CSS color."""
     text_font_size_px: int = 50
     """Detected series subtitle font size in pixels."""
+    text_letter_spacing_px: int = 10
+    """Detected subtitle letter spacing in pixels."""
 
     @property
     def image_cache_key(self) -> str:
@@ -267,9 +269,14 @@ class SubtitleRowView:
         return f"{self.text_font_size_px}px"
 
     @property
+    def text_letter_spacing_css(self) -> str:
+        """Subtitle letter spacing as a CSS length."""
+        return f"{self.text_letter_spacing_px}px"
+
+    @property
     def text_letter_spacing_cqw_css(self) -> str:
         """Subtitle letter spacing as a container query length."""
-        return _px_to_cqw_css(10, self.image_width)
+        return _px_to_cqw_css(self.text_letter_spacing_px, self.image_width)
 
 
 OcrConcern = CharDimsConcern | ErrorConcern | GapConcern
