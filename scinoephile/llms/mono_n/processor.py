@@ -9,6 +9,7 @@ from logging import getLogger
 from scinoephile.core.llms import Processor
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
+from scinoephile.core.text import sanitize_text
 
 from .manager import MonoNManager
 from .prompt import MonoNPrompt
@@ -62,7 +63,7 @@ class MonoNProcessor(Processor):
             for sub_idx, subtitle in enumerate(block):
                 key = self.prompt_cls.output(sub_idx + 1)
                 if output_text := getattr(test_case.answer, key):
-                    subtitle.text = output_text
+                    subtitle.text = sanitize_text(output_text)
                 output_series.append(subtitle)
 
             start_idx = current_idx
