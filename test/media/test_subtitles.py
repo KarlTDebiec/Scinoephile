@@ -13,6 +13,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.media.subtitles.cache import get_subtitle_cache_path
 from scinoephile.media.subtitles.extraction import extract_subtitle_stream
+from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
 
 def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
@@ -103,3 +104,69 @@ def test_extract_subtitle_stream_rejects_unknown_codec(tmp_path: Path):
             outfile_path=outfile_path,
             cache_dir_path=tmp_path / "cache",
         )
+
+
+def test_get_media_subtitle_stream_returns_matching_sup_stream(tmp_path: Path):
+    """Test media subtitle stream selection returns the matching SUP stream."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    stream = SubtitleStream(index=5, codec_name="hdmv_pgs_subtitle")
+
+    with patch(
+        "scinoephile.media.subtitles.selection.get_subtitle_streams",
+        return_value=[stream],
+    ) as get_subtitle_streams:
+        selected_stream = get_media_subtitle_stream(infile_path, 5)
+
+    assert selected_stream is stream
+    get_subtitle_streams.assert_called_once_with(infile_path)
+
+
+def test_get_media_subtitle_stream_requires_stream_index(tmp_path: Path):
+    """Test media subtitle stream selection requires a stream index."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with pytest.raises(
+        ScinoephileError,
+        match="stream index is required for media OCR input",
+    ):
+        get_media_subtitle_stream(infile_path, None)
+
+
+def test_get_media_subtitle_stream_rejects_non_sup_stream(tmp_path: Path):
+    """Test media subtitle stream selection rejects non-SUP subtitle streams."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with (
+        patch(
+            "scinoephile.media.subtitles.selection.get_subtitle_streams",
+            return_value=[SubtitleStream(index=5, codec_name="subrip")],
+        ),
+        pytest.raises(
+            ScinoephileError,
+            match="Subtitle stream 5 is not an image-based SUP stream",
+        ),
+    ):
+        get_media_subtitle_stream(infile_path, 5)
+
+
+def test_get_media_subtitle_stream_wraps_probe_errors(tmp_path: Path):
+    """Test media subtitle stream selection wraps probe failures."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with (
+        patch(
+            "scinoephile.media.subtitles.selection.get_subtitle_streams",
+            side_effect=RuntimeError("ffprobe failed"),
+        ),
+        pytest.raises(
+            ScinoephileError,
+            match="Unable to inspect subtitle streams in .*video.mkv.*ffprobe failed",
+        ) as excinfo,
+    ):
+        get_media_subtitle_stream(infile_path, 5)
+
+    assert isinstance(excinfo.value.__cause__, RuntimeError)

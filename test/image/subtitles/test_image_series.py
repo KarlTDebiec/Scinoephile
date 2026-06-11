@@ -11,6 +11,7 @@ from PIL import Image
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -108,6 +109,49 @@ def test_image_series_load_wraps_input_path_errors(tmp_path: Path):
         ImageSeries.load(input_path)
 
     assert isinstance(excinfo.value.__cause__, OSError)
+
+
+def test_copy_text_from_mutates_image_subtitle_texts():
+    """Test copying text from a text series mutates image subtitles in place."""
+    image_subtitle = ImageSubtitle(
+        start=1000,
+        end=2000,
+        img=Image.new("LA", (2, 2), (0, 255)),
+        bboxes=[Bbox(0, 1, 2, 3)],
+        text="old",
+    )
+    image_series = ImageSeries(events=[image_subtitle])
+    text_series = Series(events=[Subtitle(start=1100, end=2100, text="new")])
+
+    image_series.copy_text_from(text_series)
+
+    assert image_series.events[0] is image_subtitle
+    assert image_series.events[0].start == 1000
+    assert image_series.events[0].end == 2000
+    assert image_series.events[0].text == "new"
+    assert image_series.events[0].bboxes == [Bbox(0, 1, 2, 3)]
+
+
+def test_copy_text_from_rejects_length_mismatch():
+    """Test copying text rejects length mismatches."""
+    image_series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=1000,
+                end=2000,
+                img=Image.new("LA", (2, 2), (0, 255)),
+            )
+        ]
+    )
+    text_series = Series(
+        events=[
+            Subtitle(start=1000, end=2000, text="one"),
+            Subtitle(start=3000, end=4000, text="two"),
+        ]
+    )
+
+    with pytest.raises(ScinoephileError, match="Length mismatch: 2 vs 1"):
+        image_series.copy_text_from(text_series)
 
 
 def test_save_html(tiny_image_series: ImageSeries):
