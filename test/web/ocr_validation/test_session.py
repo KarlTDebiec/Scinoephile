@@ -216,6 +216,16 @@ def test_session_update_text_rewrites_index(tmp_path: Path):
     assert "line" in outfile_path.read_text(encoding="utf-8")
 
 
+def test_session_does_not_write_outfile_on_init(tmp_path: Path):
+    """Test session construction does not write the validated outfile."""
+    html_dir_path = _make_html_dir(tmp_path, text="recognized")
+    outfile_path = tmp_path / "validated.srt"
+
+    OcrValidationSession.from_dir_path(html_dir_path, outfile_path=outfile_path)
+
+    assert not outfile_path.exists()
+
+
 def test_session_reports_char_dims_concern(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

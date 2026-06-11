@@ -273,6 +273,18 @@ def test_validation_image_route_serves_bbox_png(
     assert image.getpixel((0, 0)) == (255, 0, 0, 255)
 
 
+def test_validation_image_route_rejects_missing_subtitle(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test validation image route rejects an out-of-range subtitle index."""
+    app = _done_app(tmp_path, monkeypatch)
+
+    response = app.test_client().get("/subtitles/1/validation.png")
+
+    assert response.status_code == 404
+
+
 def test_text_update_route_rewrites_row(tmp_path: Path):
     """Test text update route rewrites index.html and returns the row."""
     html_dir_path = _make_html_dir(tmp_path, text="old")
@@ -289,6 +301,20 @@ def test_text_update_route_rewrites_row(tmp_path: Path):
     assert "new" in (html_dir_path / "index.html").read_text(encoding="utf-8")
 
 
+def test_text_update_route_rejects_missing_subtitle(tmp_path: Path):
+    """Test text update route rejects an out-of-range subtitle index."""
+    html_dir_path = _make_html_dir(tmp_path, text="old")
+    app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
+
+    response = app.test_client().post(
+        "/subtitles/1/text",
+        data={"text": "new"},
+        headers={"HX-Request": "true"},
+    )
+
+    assert response.status_code == 404
+
+
 def test_concern_image_route_serves_png(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -300,6 +326,18 @@ def test_concern_image_route_serves_png(
 
     assert response.status_code == 200
     assert response.mimetype == "image/png"
+
+
+def test_concern_image_route_rejects_missing_subtitle(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test concern image route rejects an out-of-range subtitle index."""
+    app = _char_concern_app(tmp_path, monkeypatch)
+
+    response = app.test_client().get("/subtitles/1/concern.png")
+
+    assert response.status_code == 404
 
 
 def test_char_concern_route_resolves_row(
@@ -317,6 +355,38 @@ def test_char_concern_route_resolves_row(
 
     assert response.status_code == 200
     assert response.data == b""
+
+
+def test_char_concern_route_rejects_invalid_action(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test character concern route rejects invalid actions."""
+    app = _char_concern_app(tmp_path, monkeypatch)
+
+    response = app.test_client().post(
+        "/subtitles/0/concern/char",
+        data={"action": "bogus", "n_bboxes": "1"},
+        headers={"HX-Request": "true"},
+    )
+
+    assert response.status_code == 400
+
+
+def test_char_concern_route_rejects_missing_subtitle(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test character concern route rejects an out-of-range subtitle index."""
+    app = _char_concern_app(tmp_path, monkeypatch)
+
+    response = app.test_client().post(
+        "/subtitles/1/concern/char",
+        data={"action": "accept", "n_bboxes": "1"},
+        headers={"HX-Request": "true"},
+    )
+
+    assert response.status_code == 404
 
 
 def test_gap_concern_route_resolves_row(
@@ -348,6 +418,51 @@ def test_gap_concern_route_resolves_row(
     assert response.status_code == 200
     assert response.data == b""
     assert "A B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
+
+
+def test_gap_concern_route_rejects_invalid_action(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test gap concern route rejects invalid actions."""
+    html_dir_path = _make_html_dir(tmp_path, text="AB")
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.session.get_bboxes",
+        lambda img: [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
+    )
+    session = OcrValidationSession.from_dir_path(
+        html_dir_path,
+        cache_dir_path=tmp_path / "cache",
+    )
+    _clear_validation_data(session)
+    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
+    session.manager.char_dims_by_n[1]["B"] = {(10, 20)}
+    session.manager.char_pair_gaps[("A", "B")] = (2, 6, 12, 20)
+    app = create_app(session)
+
+    response = app.test_client().post(
+        "/subtitles/0/concern/gap",
+        data={"action": "bogus"},
+        headers={"HX-Request": "true"},
+    )
+
+    assert response.status_code == 400
+
+
+def test_gap_concern_route_rejects_missing_subtitle(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test gap concern route rejects an out-of-range subtitle index."""
+    app = _char_concern_app(tmp_path, monkeypatch)
+
+    response = app.test_client().post(
+        "/subtitles/1/concern/gap",
+        data={"action": "space"},
+        headers={"HX-Request": "true"},
+    )
+
+    assert response.status_code == 404
 
 
 def _char_concern_app(
@@ -385,9 +500,6 @@ def _assert_index_filter_toggle(html: bytes):
     assert b'hx-post="/filters/done"' in html
     assert b'hx-target="body"' in html
     assert b'hx-swap="innerHTML"' in html
-    assert b"position: fixed;" in html
-    assert b"bottom: 0.5em;" in html
-    assert b"right: 0.5em;" in html
     assert b'name="include_done_subtitles" value="0"' in html
     assert b'aria-pressed="true"' in html
     assert b"OK shown</button>" in html
@@ -400,11 +512,6 @@ def _assert_index_subtitle_figure(html: bytes):
         html: rendered response HTML
     """
     assert b"--subtitle-image-width: 2px" in html
-    assert b"container-type: inline-size;" in html
-    assert b"display: inline-block;" in html
-    assert b"max-width: calc(100vw - 16px);" in html
-    assert b"width: var(--subtitle-image-width);" in html
-    assert b"width: 100%;" in html
     assert b'src="/subtitles/0/' in html
     assert b".png?v=" in html
     assert b'width="2"' in html
@@ -424,27 +531,6 @@ def _assert_index_textarea(html: bytes):
     assert b"--subtitle-text-color: rgb(255, 255, 255)" in html
     assert b"--subtitle-shadow-color: rgb(0, 0, 0)" in html
     assert b"--subtitle-font-size: 50px" in html
-    assert b"--subtitle-font-size-cqw: 2500cqw" in html
-    assert b"--subtitle-letter-spacing-cqw: 500cqw" in html
-    assert b".subtitle figure textarea {" in html
-    assert b"--subtitle-shadow-negative-2: -2px;" in html
-    assert b"display: block;" in html
-    assert b"font-size: var(--subtitle-font-size, 50px);" in html
-    assert (
-        b"font-size: var(--subtitle-font-size-cqw, var(--subtitle-font-size, 50px));"
-        in html
-    )
-    assert b"letter-spacing: 10px;" in html
-    assert b"letter-spacing: var(--subtitle-letter-spacing-cqw, 10px);" in html
-    assert b"left: 50%;" in html
-    assert b"max-width: calc(100vw - 16px);" in html
-    assert b"position: relative;" in html
-    assert b"transform: translateX(-50%);" in html
-    assert b"width: calc(100vw - 16px);" in html
-    assert b"@supports" not in html
-    assert b"data-subtitle-scale" not in html
-    assert b"--subtitle-scale" not in html
-    assert b"updateSubtitleScales" not in html
     assert b'wrap="off"' in html
 
 

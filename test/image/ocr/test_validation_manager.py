@@ -104,7 +104,7 @@ def test_validation_manager_writes_updates_to_cache_by_default(tmp_path, monkeyp
 
     manager = ValidationManager(cache_dir_path=cache_dir_path)
 
-    manager._update_char_dims("A", (10, 20))
+    manager.update_char_dims("A", (10, 20))
 
     assert (cache_dir_path / "char_dims_1.csv").read_text(encoding="utf-8") == (
         "A,10,20\n"
@@ -130,9 +130,9 @@ def test_validation_manager_writes_only_cache_updates_to_cache(tmp_path, monkeyp
 
     manager = ValidationManager(cache_dir_path=cache_dir_path)
 
-    manager._update_char_dims("B", (30, 40))
+    manager.update_char_dims("B", (30, 40))
     manager._update_char_grp_dims("CD", (60, 20))
-    manager._update_pair_gaps(("B", "C"), (5, 6, 7, 8))
+    manager.update_pair_gaps(("B", "C"), (5, 6, 7, 8))
 
     assert (cache_dir_path / "char_dims_1.csv").read_text(encoding="utf-8") == (
         "B,30,40\n"
@@ -155,7 +155,7 @@ def test_validation_manager_allows_new_custom_cache_dir(tmp_path, monkeypatch):
 
     manager = ValidationManager(cache_dir_path=cache_dir_path)
 
-    manager._update_char_dims("A", (10, 20))
+    manager.update_char_dims("A", (10, 20))
 
     assert (cache_dir_path / "char_dims_1.csv").read_text(encoding="utf-8") == (
         "A,10,20\n"
@@ -190,7 +190,7 @@ def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeyp
 
     manager = ValidationManager(cache_dir_path=cache_dir_path, dev=True)
 
-    manager._update_char_dims("A", (10, 20))
+    manager.update_char_dims("A", (10, 20))
 
     assert (repo_data_dir_path / "char_dims_1.csv").read_text(encoding="utf-8") == (
         "A,10,20\n"

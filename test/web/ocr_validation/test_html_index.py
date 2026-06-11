@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
 from PIL import Image
 
 from scinoephile.image.subtitles import ImageSeries
@@ -50,6 +51,22 @@ def test_update_html_entry_text_does_not_touch_png(tmp_path: Path):
     update_html_entry_text(html_dir_path, 0, "new")
 
     assert image_path.read_bytes() == original_image_bytes
+
+
+def test_update_html_entry_text_rejects_negative_index(tmp_path: Path):
+    """Test updating OCR text rejects negative subtitle indexes."""
+    html_dir_path = _make_html_dir(tmp_path, text="old")
+
+    with pytest.raises(IndexError, match="Subtitle index out of range: -1"):
+        update_html_entry_text(html_dir_path, -1, "new")
+
+
+def test_update_html_entry_text_rejects_out_of_range_index(tmp_path: Path):
+    """Test updating OCR text rejects out-of-range subtitle indexes."""
+    html_dir_path = _make_html_dir(tmp_path, text="old")
+
+    with pytest.raises(IndexError, match="Subtitle index out of range: 1"):
+        update_html_entry_text(html_dir_path, 1, "new")
 
 
 def _make_html_dir(tmp_path: Path, *, text: str) -> Path:
