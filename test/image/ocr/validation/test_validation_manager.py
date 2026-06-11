@@ -55,6 +55,26 @@ def test_validate_confident_adjacent_gap_updates_text(
     assert _warning_messages(caplog) == []
 
 
+def test_validate_confident_tab_gap_updates_newline_to_tab(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    caplog: pytest.LogCaptureFixture,
+):
+    """Test confident tab gap replaces an OCR newline without warning."""
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.validation.validation_manager.get_bboxes",
+        lambda img: [Bbox(0, 10, 0, 20), Bbox(32, 42, 0, 20)],
+    )
+    manager = _prepared_manager(tmp_path)
+    series = _series("A\\NB")
+    caplog.set_level(logging.WARNING)
+
+    output = manager.validate(series)
+
+    assert output.events[0].text == "A    B"
+    assert _warning_messages(caplog) == []
+
+
 def test_validate_ambiguous_gap_warns_without_updating_text(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

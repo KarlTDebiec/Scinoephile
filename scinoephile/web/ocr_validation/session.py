@@ -624,7 +624,7 @@ class OcrValidationSession:
                     (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
                 )
                 return None
-            if cursor.gap_chars in (cursor.expected_tab, "\n"):
+            if cursor.gap_chars == cursor.expected_tab:
                 self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),
@@ -632,7 +632,7 @@ class OcrValidationSession:
                 return None
             return self._gap_concern(cursor, cutoffs, kind=ConcernKind.TAB_GAP)
 
-        if cursor.gap_chars not in (cursor.expected_tab, "\n"):
+        if cursor.gap_chars != cursor.expected_tab:
             self._replace_gap_text(cursor, cursor.expected_tab)
         return None
 

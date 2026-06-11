@@ -448,9 +448,9 @@ class ValidationManager:
                     )
                     cursor.advance()
                     continue
-                if cursor.gap == cutoffs[3] - 1 and cursor.gap_chars in (
-                    cursor.expected_tab,
-                    "\n",
+                if (
+                    cursor.gap == cutoffs[3] - 1
+                    and cursor.gap_chars == cursor.expected_tab
                 ):
                     self.update_pair_gaps(
                         cursor.char_pair,
@@ -467,7 +467,7 @@ class ValidationManager:
 
             # Tab
             if cutoffs[3] <= cursor.gap:
-                if cursor.gap_chars not in (cursor.expected_tab, "\n"):
+                if cursor.gap_chars != cursor.expected_tab:
                     self._replace_gap_text(cursor, cursor.expected_tab)
                 cursor.advance()
                 continue

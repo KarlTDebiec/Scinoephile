@@ -9,6 +9,7 @@ from typing import Any
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewed,
@@ -139,8 +140,14 @@ def _ocr(
     # Run workflow
     OcrProcessingWorkflow(language=language, **workflow_kw)()
 
-    # Load and return final result
-    return Series.load(output_dir_path / "fuse_clean_validate.srt")
+    # Load final result and copy validated text back into image cache
+    validated = Series.load(output_dir_path / "fuse_clean_validate.srt")
+    image_dir_path = output_dir_path / "image"
+    if image_dir_path.exists():
+        image_series = ImageSeries.load(image_dir_path, encoding="utf-8")
+        image_series.copy_text_from(validated)
+        image_series.save(image_dir_path, encoding="utf-8")
+    return validated
 
 
 def _process_ocr(

@@ -543,6 +543,27 @@ def test_known_tab_gap_mismatch_updates_text_without_concern(
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
 
 
+def test_known_tab_gap_replaces_newline_without_concern(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test known tab gaps with newline text update without a user concern."""
+    html_dir_path = _make_html_dir(tmp_path, text="A<br />B")
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.session.get_bboxes",
+        lambda img: [Bbox(0, 10, 0, 20), Bbox(32, 42, 0, 20)],
+    )
+    session = _prepared_gap_session(html_dir_path, tmp_path)
+
+    row = session.subtitle_row(0)
+
+    assert row.text == "A    B"
+    assert row.status == ValidationStatus.DONE
+    assert row.concern is None
+    assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
+    assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
+
+
 def test_tab_gap_choice_updates_index_text(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
