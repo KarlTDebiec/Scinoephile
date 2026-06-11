@@ -152,6 +152,9 @@ def _ocr(
     *,
     sup_path: Path | None,
     fuser_kw: Any | None,
+    interactive: bool,
+    host: str,
+    port: int,
     overwrite: bool,
 ) -> Series:
     """Load or create validated OCR subtitles.
@@ -162,6 +165,9 @@ def _ocr(
         lang: language tag
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
+        interactive: whether to launch the OCR validation web UI
+        host: OCR validation web UI host
+        port: OCR validation web UI port
         overwrite: whether to overwrite existing outputs
     Returns:
         validated series
@@ -187,6 +193,9 @@ def _ocr(
         "output_dir_path": output_dir_path,
         "clean": True,
         "dev": True,
+        "interactive": interactive,
+        "host": host,
+        "port": port,
         "overwrite": overwrite,
         "fuser_kw": fuser_kw,
     }
@@ -214,6 +223,9 @@ def _process_ocr(
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
+    interactive: bool = False,
+    host: str = "127.0.0.1",
+    port: int = 5000,
 ) -> Series:
     """Process OCR subtitles through validation, review, and flattening.
 
@@ -227,6 +239,9 @@ def _process_ocr(
         overwrite_srt: legacy alias for overwriting subtitle outputs
         overwrite_img: legacy alias for overwriting image outputs
         force_validation: legacy alias for overwriting validation output
+        interactive: whether to launch the OCR validation web UI
+        host: OCR validation web UI host
+        port: OCR validation web UI port
     Returns:
         flattened reviewed series
     """
@@ -246,6 +261,9 @@ def _process_ocr(
         lang,
         sup_path=sup_path,
         fuser_kw=fuser_kw,
+        interactive=interactive,
+        host=host,
+        port=port,
         overwrite=overwrite,
     )
 

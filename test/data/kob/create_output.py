@@ -61,8 +61,8 @@ yue_hans_transcribe_path = output_path / "yue-Hans_transcribe"
 
 actions = {
     "eng_ocr",
-    "zho-Hant_ocr",
-    "zho-Hans_eng",
+    # "zho-Hant_ocr",
+    # "zho-Hans_eng",
     # "yue-Hant",
     # "yue-Hans",
     # "eng",
@@ -72,9 +72,9 @@ actions = {
 }
 
 if "eng_ocr" in actions:
-    process_eng_ocr(title_root, overwrite=False)
+    process_eng_ocr(title_root, overwrite=False, interactive=True)
 if "zho-Hant_ocr" in actions:
-    process_zho_hant_ocr(title_root, overwrite=False)
+    process_zho_hant_ocr(title_root, overwrite=False, interactive=True)
 if "zho-Hans_eng" in actions:
     zho_hans_srt_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"

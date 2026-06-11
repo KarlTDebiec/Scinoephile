@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from io import BytesIO
+from threading import Thread
 
 from flask import (
     Flask,
@@ -29,27 +30,14 @@ def register_routes(app: Flask):
         app: Flask app
     """
     _register_error_handlers(app)
+    _register_exit_route(app)
+    _register_filter_routes(app)
 
     @app.get("/")
     def index() -> str:
         """Render the subtitle list."""
         session = _session()
         session.reset_states()
-        return _render_index(session)
-
-    @app.post("/filters/done")
-    def update_done_filter() -> str:
-        """Update whether completed subtitles are shown.
-
-        Returns:
-            rendered subtitle list
-        """
-        session = _session()
-        include_done_subtitles = request.form.get("include_done_subtitles") == "1"
-        session.include_done_subtitles = include_done_subtitles
-        session.reset_states()
-        if request.headers.get("HX-Request") == "true":
-            return _render_index_body(session)
         return _render_index(session)
 
     @app.get("/subtitles/<int:sub_idx>")
@@ -190,6 +178,54 @@ def _register_error_handlers(app: Flask):
     """
     app.register_error_handler(IndexError, _handle_index_error)
     app.register_error_handler(ValueError, _handle_value_error)
+
+
+def _register_exit_route(app: Flask):
+    """Register the route that finishes validation and stops the web server.
+
+    Arguments:
+        app: Flask app
+    """
+
+    @app.post("/exit")
+    def exit_validation() -> str:
+        """Finish validation and stop the local web server.
+
+        Returns:
+            exit confirmation
+        """
+        session = _session()
+        session.finish()
+        server = current_app.config.get("OCR_VALIDATION_SERVER")
+        if server is not None:
+            if current_app.testing:
+                server.shutdown()
+            else:
+                Thread(target=server.shutdown, daemon=True).start()
+        return "Validation exited. You can close this tab."
+
+
+def _register_filter_routes(app: Flask):
+    """Register filter update routes.
+
+    Arguments:
+        app: Flask app
+    """
+
+    @app.post("/filters/done")
+    def update_done_filter() -> str:
+        """Update whether completed subtitles are shown.
+
+        Returns:
+            rendered subtitle list
+        """
+        session = _session()
+        include_done_subtitles = request.form.get("include_done_subtitles") == "1"
+        session.include_done_subtitles = include_done_subtitles
+        session.reset_states()
+        if request.headers.get("HX-Request") == "true":
+            return _render_index_body(session)
+        return _render_index(session)
 
 
 def _render_subtitle_row(session: OcrValidationSession, row: SubtitleRowView) -> str:

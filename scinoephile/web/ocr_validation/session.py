@@ -133,6 +133,10 @@ class OcrValidationSession:
                 f"Unable to initialize OCR validation session from {dir_path}: {exc}"
             ) from exc
 
+    def finish(self):
+        """Persist current validation output before closing the web UI."""
+        self._save_outfile()
+
     def subtitle_row(self, sub_idx: int) -> SubtitleRowView:
         """Return one subtitle row view model.
 

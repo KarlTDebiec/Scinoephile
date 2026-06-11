@@ -15,7 +15,6 @@
 {%- endmacro %}
 
 {% if row.concern is none %}
-   <div>{{ row.status_label }}</div>
 {% elif row.concern.kind == "char-dims" %}
    <form
       hx-post="/subtitles/{{ row.sub_idx }}/concern/char"

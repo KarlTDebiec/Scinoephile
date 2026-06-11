@@ -160,7 +160,7 @@ def test_done_filter_route_toggles_ok_subtitles(
     assert b"#1:" not in response.data
     assert b'name="include_done_subtitles" value="1"' in response.data
     assert b'aria-pressed="false"' in response.data
-    assert b"OK hidden</button>" in response.data
+    assert b"Show Validated</button>" in response.data
 
     response = client.post(
         "/filters/done",
@@ -173,7 +173,7 @@ def test_done_filter_route_toggles_ok_subtitles(
     assert b"#1:" in response.data
     assert b'name="include_done_subtitles" value="0"' in response.data
     assert b'aria-pressed="true"' in response.data
-    assert b"OK shown</button>" in response.data
+    assert b"Hide Validated</button>" in response.data
 
     response = client.post(
         "/filters/done",
@@ -185,7 +185,40 @@ def test_done_filter_route_toggles_ok_subtitles(
     assert b"#1:" not in response.data
     assert b'name="include_done_subtitles" value="1"' in response.data
     assert b'aria-pressed="false"' in response.data
-    assert b"OK hidden</button>" in response.data
+    assert b"Show Validated</button>" in response.data
+
+
+def test_exit_route_saves_output_and_shuts_down_server(tmp_path: Path):
+    """Test exit route persists validation output and shuts down the server."""
+
+    class FakeServer:
+        """Fake server registered on the Flask app."""
+
+        def __init__(self):
+            """Initialize."""
+            self.shutdown_called = False
+
+        def shutdown(self):
+            """Record shutdown."""
+            self.shutdown_called = True
+
+    html_dir_path = _make_html_dir(tmp_path, text="recognized")
+    outfile_path = tmp_path / "validated.srt"
+    session = OcrValidationSession.from_dir_path(
+        html_dir_path,
+        outfile_path=outfile_path,
+    )
+    app = create_app(session)
+    app.testing = True
+    server = FakeServer()
+    app.config["OCR_VALIDATION_SERVER"] = server
+
+    response = app.test_client().post("/exit", headers={"HX-Request": "true"})
+
+    assert response.status_code == 200
+    assert b"Validation exited. You can close this tab." in response.data
+    assert outfile_path.exists()
+    assert server.shutdown_called
 
 
 def test_char_concern_image_url_changes_after_accept(
@@ -498,11 +531,13 @@ def _assert_index_filter_toggle(html: bytes):
     """
     assert b'class="filter-toggle"' in html
     assert b'hx-post="/filters/done"' in html
+    assert b'hx-post="/exit"' in html
     assert b'hx-target="body"' in html
     assert b'hx-swap="innerHTML"' in html
     assert b'name="include_done_subtitles" value="0"' in html
     assert b'aria-pressed="true"' in html
-    assert b"OK shown</button>" in html
+    assert b"Hide Validated</button>" in html
+    assert b"Exit Validation</button>" in html
 
 
 def _assert_index_subtitle_figure(html: bytes):

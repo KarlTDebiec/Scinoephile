@@ -64,22 +64,15 @@ def test_create_app_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
 
 def test_run_app_wraps_server_errors(monkeypatch: pytest.MonkeyPatch):
     """Test web app server errors are user-facing."""
-
-    class FakeApp:
-        """Fake Flask app."""
-
-        def run(self, host: str, port: int):
-            """Raise a server startup error.
-
-            Arguments:
-                host: Flask app host
-                port: Flask app port
-            """
-            raise OSError(f"cannot bind {host}:{port}")
-
     monkeypatch.setattr(
         "scinoephile.web.ocr_validation.app.create_app",
-        lambda session: FakeApp(),
+        lambda session: object(),
+    )
+    monkeypatch.setattr(
+        "werkzeug.serving.make_server",
+        lambda host, port, app: (_ for _ in ()).throw(
+            OSError(f"cannot bind {host}:{port}")
+        ),
     )
 
     with pytest.raises(

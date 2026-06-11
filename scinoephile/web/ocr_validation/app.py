@@ -45,6 +45,7 @@ def create_app(session: OcrValidationSession) -> Flask:
     static_dir_path = package_root / "web/static"
     app = Flask(__name__, static_folder=str(static_dir_path))
     app.config["OCR_VALIDATION_SESSION"] = session
+    app.config["OCR_VALIDATION_SERVER"] = None
     register_routes(app)
     return app
 
@@ -60,7 +61,12 @@ def run_app(session: OcrValidationSession, host: str, port: int):
         ScinoephileError: if optional dependencies are missing or server startup fails
     """
     try:
-        create_app(session).run(host, port)
+        from werkzeug.serving import make_server  # noqa: PLC0415
+
+        app = create_app(session)
+        server = make_server(host, port, app)
+        app.config["OCR_VALIDATION_SERVER"] = server
+        server.serve_forever()
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to run OCR validation web app on {host}:{port}: {exc}"
