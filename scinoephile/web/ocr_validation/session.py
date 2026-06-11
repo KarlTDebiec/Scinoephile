@@ -130,7 +130,6 @@ class OcrValidationSession:
                 include_done_subtitles=include_done_subtitles,
                 outfile_path=outfile_path,
             )
-            session._save_outfile()
             return session
         except (OSError, ValueError) as exc:
             raise ScinoephileError(
@@ -200,6 +199,7 @@ class OcrValidationSession:
         Returns:
             annotated concern image
         """
+        self._validate_sub_idx(sub_idx)
         state = self._state(sub_idx)
         sub = self.series.events[sub_idx]
         if isinstance(state.concern, CharDimsConcern):
@@ -235,6 +235,7 @@ class OcrValidationSession:
         Returns:
             annotated validation image
         """
+        self._validate_sub_idx(sub_idx)
         self._state(sub_idx)
         sub = self.series.events[sub_idx]
         if sub.bboxes is None:
@@ -318,7 +319,7 @@ class OcrValidationSession:
         dims = get_dims_tuple(bbox_grp)
         merged_bbox = get_merged_bbox(bbox_grp)
         cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [merged_bbox]
-        self.manager._update_char_dims(cursor.char, dims)
+        self.manager.update_char_dims(cursor.char, dims)
         cursor.advance(n_chars=1, n_bboxes=1)
         state.char_n_bboxes = 1
         state.concern = None
@@ -382,7 +383,7 @@ class OcrValidationSession:
         cutoffs = self.manager.char_pair_gaps.get(cursor.char_pair)
         if cutoffs is None:
             cutoffs = get_default_char_pair_cutoffs(cursor.char_1, cursor.char_2)
-            self.manager._update_pair_gaps(cursor.char_pair, cutoffs)
+            self.manager.update_pair_gaps(cursor.char_pair, cutoffs)
         return cutoffs
 
     def _gap_replace_text(self, cursor: GapCursor, replacement: str):
@@ -456,6 +457,7 @@ class OcrValidationSession:
         Returns:
             validation state
         """
+        self._validate_sub_idx(sub_idx)
         state = self._states.get(sub_idx)
         if state is None:
             sub = self.series.events[sub_idx]
@@ -522,9 +524,9 @@ class OcrValidationSession:
             if cursor.bbox_idx >= len(cursor.bboxes):
                 return ErrorConcern(message=f"Ran out of bboxes at '{cursor.char}'.")
 
-            if self.manager._match_grouped_chars(cursor):
+            if self.manager.match_grouped_chars(cursor):
                 continue
-            if self.manager._match_char_dims(cursor):
+            if self.manager.match_char_dims(cursor):
                 continue
 
             return self._char_dims_concern(state)
@@ -605,13 +607,13 @@ class OcrValidationSession:
 
         if cutoffs[0] < cursor.gap < cutoffs[1]:
             if cursor.gap == cutoffs[0] + 1 and cursor.gap_chars == "":
-                self.manager._update_pair_gaps(
+                self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cursor.gap, cutoffs[1], cutoffs[2], cutoffs[3]),
                 )
                 return None
             if cursor.gap_chars and cursor.gap_chars == cursor.expected_space:
-                self.manager._update_pair_gaps(
+                self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3]),
                 )
@@ -625,13 +627,13 @@ class OcrValidationSession:
 
         if cutoffs[2] < cursor.gap < cutoffs[3]:
             if cursor.gap_chars == cursor.expected_space:
-                self.manager._update_pair_gaps(
+                self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
                 )
                 return None
             if cursor.gap_chars in (cursor.expected_tab, "\n"):
-                self.manager._update_pair_gaps(
+                self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),
                 )
@@ -694,7 +696,7 @@ class OcrValidationSession:
             updated_cutoffs = (cursor.gap, cutoffs[1], cutoffs[2], cutoffs[3])
         else:
             updated_cutoffs = (cursor.gap, cursor.gap, cutoffs[2], cutoffs[3])
-        self.manager._update_pair_gaps(cursor.char_pair, updated_cutoffs)
+        self.manager.update_pair_gaps(cursor.char_pair, updated_cutoffs)
 
     def _resolve_space_gap_action(
         self,
@@ -713,7 +715,7 @@ class OcrValidationSession:
         """
         if action == "space":
             if cutoffs[0] < cursor.gap < cutoffs[1]:
-                self.manager._update_pair_gaps(
+                self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3]),
                 )
@@ -740,14 +742,14 @@ class OcrValidationSession:
         """
         if action == "tab":
             if cutoffs[2] < cursor.gap < cutoffs[3]:
-                self.manager._update_pair_gaps(
+                self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),
                 )
             return cursor.expected_tab
         if action == "space":
             if cutoffs[2] < cursor.gap < cutoffs[3]:
-                self.manager._update_pair_gaps(
+                self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
                 )

@@ -4,9 +4,7 @@
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
-from html import escape, unescape
 from pathlib import Path
 
 from scinoephile.core import ScinoephileError
@@ -18,17 +16,6 @@ __all__ = [
     "update_html_entry_text",
     "write_html_entries",
 ]
-
-_ENTRY_PATTERN = re.compile(
-    r"#(?P<index>\d+):(?P<start>[^-]+)->(?P<end>[^<]+)"
-    r"<div style=['\"]text-align:center['\"]>"
-    r"<img src=['\"](?P<img>[^'\"]+)['\"] />"
-    r"(?:<br /><div style=['\"]font-size:22px; "
-    r"background-color:WhiteSmoke['\"]>(?P<text>.*?)</div>)?"
-    r"</div><br /><hr />",
-    re.DOTALL,
-)
-"""Regex pattern for image subtitle HTML entries."""
 
 
 @dataclass(frozen=True)
@@ -60,25 +47,17 @@ def load_html_entries(dir_path: Path) -> list[HtmlSubtitleEntry]:
         raise ScinoephileError(f"Expected {html_path} to exist.")
 
     html_text = html_path.read_text(encoding="utf-8")
-    entries = []
-    for match in _ENTRY_PATTERN.finditer(html_text):
-        raw_text = match.group("text") or ""
-        text = unescape(raw_text.replace("<br />", "\n")).replace("\n", "\\N")
-        entries.append(
-            HtmlSubtitleEntry(
-                index=int(match.group("index")),
-                start=ImageSeries._parse_html_time(match.group("start")),
-                end=ImageSeries._parse_html_time(match.group("end")),
-                image_name=match.group("img"),
-                text=text,
-            )
+    html_events = ImageSeries.parse_html_events(html_text, dir_path)
+    return [
+        HtmlSubtitleEntry(
+            index=html_event["index"],
+            start=html_event["start"],
+            end=html_event["end"],
+            image_name=html_event["path"].name,
+            text=html_event["text"],
         )
-
-    if not entries:
-        raise ScinoephileError(
-            f"No subtitle entries found in HTML file for {dir_path}."
-        )
-    return entries
+        for html_event in html_events
+    ]
 
 
 def update_html_entry_text(dir_path: Path, sub_idx: int, text: str):
@@ -90,6 +69,8 @@ def update_html_entry_text(dir_path: Path, sub_idx: int, text: str):
         text: replacement subtitle text using ASS newline escapes
     """
     entries = load_html_entries(dir_path)
+    if sub_idx < 0 or sub_idx >= len(entries):
+        raise IndexError(f"Subtitle index out of range: {sub_idx}")
     old_entry = entries[sub_idx]
     entries[sub_idx] = HtmlSubtitleEntry(
         index=old_entry.index,
@@ -108,38 +89,16 @@ def write_html_entries(dir_path: Path, entries: list[HtmlSubtitleEntry]):
         dir_path: directory containing index.html and subtitle images
         entries: subtitle entries to write
     """
-    html_lines = [
-        "<!DOCTYPE html>",
-        "<html>",
-        "<head>",
-        '   <meta charset="UTF-8" />',
-        "   <title>Subtitle images</title>",
-        "   <style>",
-        "      img {",
-        "         image-rendering: pixelated;",
-        "         image-rendering: crisp-edges;",
-        "      }",
-        "   </style>",
-        "</head>",
-        "<body>",
-    ]
+    html_lines = ImageSeries.html_header_lines()
     for entry in entries:
-        start = ImageSeries._format_html_time(entry.start)
-        end = ImageSeries._format_html_time(entry.end)
-        line = (
-            f"#{entry.index}:{start}->{end}"
-            "<div style='text-align:center'>"
-            f"<img src='{escape(entry.image_name, quote=True)}' />"
-        )
-        text = entry.text.replace("\\N", "\n")
-        if text.strip():
-            html_text = escape(text).replace("\n", "<br />")
-            line += (
-                "<br />"
-                "<div style='font-size:22px; background-color:WhiteSmoke'>"
-                f"{html_text}</div>"
+        html_lines.append(
+            ImageSeries.format_html_entry(
+                index=entry.index,
+                start=entry.start,
+                end=entry.end,
+                image_name=entry.image_name,
+                text=entry.text,
             )
-        line += "</div><br /><hr />"
-        html_lines.append(line)
-    html_lines.extend(["</body>", "</html>"])
+        )
+    html_lines.extend(ImageSeries.html_footer_lines())
     (dir_path / "index.html").write_text("\n".join(html_lines), encoding="utf-8")
