@@ -4,7 +4,7 @@
 
 This module may import from: common, core
 
-Hierarchy within module (lower may import from higher)::
+Hierarchy within module (lower may import from higher):
 * bbox / colors
 * bboxes / drawing
 * subtitles

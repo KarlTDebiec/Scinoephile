@@ -7,6 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core import Language
 from scinoephile.core.stacking import get_stacked_series
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -18,7 +19,7 @@ from scinoephile.multilang.eng_zho.guided_translation import (
     get_eng_translated_from_zho_with_eng_guidance,
     get_eng_zho_guided_translator,
 )
-from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
+from test.data.ocr import process_ocr
 from test.data.prompts import EngGuidedTranslationVsZhoOfYuePrompt
 from test.data.stacking import process_zho_hans_eng
 from test.helpers import test_data_root
@@ -56,28 +57,25 @@ Movie-specific names and terminology:
 """
 
 actions = {
-    # "繁體中文 (OCR)",
-    # "简体中文 (OCR)",
-    # "English (OCR)",
-    # "Bilingual 简体中文 and English",
-    "Guided English from 粤语",
-    "Bilingual 简体中文 and guided English from 粤语",
+    "eng_ocr",
+    "zho-Hans_ocr",
+    "zho-Hant_ocr",
+    "zho-Hans_eng",
+    # "yue_eng",
+    # "yue_zho-Hans_eng",
 }
 
-if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "简体中文 (OCR)" in actions:
-    process_zho_hans_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "English (OCR)" in actions:
-    process_eng_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "Bilingual 简体中文 and English" in actions:
-    process_zho_hans_eng(
-        title_root,
-        zho_hans_path=zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        eng_path=eng_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        overwrite=True,
-    )
-if "Guided English from 粤语" in actions:
+if "eng_ocr" in actions:
+    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
+if "zho-Hans_ocr" in actions:
+    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
+if "zho-Hant_ocr" in actions:
+    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
+if "zho-Hans_eng" in actions:
+    zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
+if "yue_eng" in actions:
     yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")
     jpn_eng = Series.load(input_path / "jpn_eng.srt")
     translator = get_eng_zho_guided_translator(
@@ -94,7 +92,7 @@ if "Guided English from 粤语" in actions:
         translator=translator,
     )
     yue_eng.save(output_path / "yue_eng/eng.srt")
-if "Bilingual 简体中文 and guided English from 粤语" in actions:
+if "yue_zho-Hans_eng" in actions:
     yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")
     yue_zho_hant = get_zho_cleaned(yue_zho_hant)
     yue_zho_hant = get_zho_flattened(yue_zho_hant)

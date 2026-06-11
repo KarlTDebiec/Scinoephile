@@ -10,19 +10,20 @@ import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from types import ModuleType, SimpleNamespace
-from typing import Any
+from typing import Any, cast
 
 import pytest
 from PIL import Image
 
-from scinoephile.image.ocr.lens.google_lens_recognizer import GoogleLensRecognizer
+from scinoephile.core import Language
+from scinoephile.image.ocr.lens.lens_recognizer import LensRecognizer
 
 
 class FakeLensApiError(RuntimeError):
     """Fake chrome-lens-py LensAPIError."""
 
 
-class CountingGoogleLensRecognizer(GoogleLensRecognizer):
+class CountingLensRecognizer(LensRecognizer):
     """Google Lens recognizer that counts uncached predictions."""
 
     def __init__(
@@ -39,7 +40,8 @@ class CountingGoogleLensRecognizer(GoogleLensRecognizer):
             results: normalized OCR lines to return from subsequent recognitions
         """
         self.cache_dir_path = cache_dir_path
-        self.language = "en"
+        self.language = Language.eng
+        self.lens_language_code = "en"
         self.retries = 3
         self.predict_count = 0
         self.exceptions = exceptions
@@ -86,7 +88,7 @@ def patch_google_lens_sleep(monkeypatch: pytest.MonkeyPatch) -> list[float]:
         delays.append(delay)
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.google_lens_recognizer.asyncio.sleep",
+        "scinoephile.image.ocr.lens.lens_recognizer.asyncio.sleep",
         fake_sleep,
     )
     return delays
@@ -94,7 +96,7 @@ def patch_google_lens_sleep(monkeypatch: pytest.MonkeyPatch) -> list[float]:
 
 def test_clean_google_lens_text_ignores_empty_and_error_messages():
     """Test Google Lens text cleanup suppresses non-subtitle messages."""
-    text = GoogleLensRecognizer._clean_text(
+    text = LensRecognizer._clean_text(
         "No OCR text found.\nRequest error (possibly proxy-related)\n"
     )
 
@@ -103,7 +105,7 @@ def test_clean_google_lens_text_ignores_empty_and_error_messages():
 
 def test_clean_google_lens_text_joins_standalone_dash_and_ellipsis():
     """Test SubtitleEdit GoogleLensSharp line cleanup rules."""
-    text = GoogleLensRecognizer._clean_text("-\nHello\n...\nworld")
+    text = LensRecognizer._clean_text("-\nHello\n...\nworld")
 
     assert text == "- Hello ...\nworld"
 
@@ -112,7 +114,7 @@ def test_normalize_lens_result_falls_back_to_ocr_text_lines():
     """Test normalization falls back to full OCR text lines."""
     result = {"ocr_text": "full\ntext", "line_blocks": []}
 
-    lines = GoogleLensRecognizer._normalize_lens_result(result)
+    lines = LensRecognizer._normalize_lens_result(result)
 
     assert lines == ["full", "text"]
 
@@ -127,7 +129,7 @@ def test_normalize_lens_result_prefers_line_blocks():
         ],
     }
 
-    lines = GoogleLensRecognizer._normalize_lens_result(result)
+    lines = LensRecognizer._normalize_lens_result(result)
 
     assert lines == ["first", "second"]
 
@@ -142,14 +144,62 @@ def test_normalize_lens_result_supports_object_results():
         ],
     )
 
-    lines = GoogleLensRecognizer._normalize_lens_result(result)
+    lines = LensRecognizer._normalize_lens_result(result)
 
     assert lines == ["first", "second"]
 
 
-def test_google_lens_recognizer_caches_results_by_image(tmp_path: Path):
+def test_lens_recognizer_rejects_unsupported_languages():
+    """Test Google Lens recognizer only supports English and Chinese."""
+    with pytest.raises(ValueError, match="not supported by Google Lens OCR"):
+        LensRecognizer(language=cast(Language, "korean"))
+
+
+@pytest.mark.parametrize(
+    ("language", "expected_code"),
+    [
+        (Language.eng, "en"),
+        (Language.yue_hans, "zh-CN"),
+        (Language.yue_hant, "zh-TW"),
+        (Language.zho_hans, "zh-CN"),
+        (Language.zho_hant, "zh-TW"),
+    ],
+)
+def test_lens_recognizer_maps_supported_languages_to_engine_codes(
+    monkeypatch: pytest.MonkeyPatch,
+    language: Language,
+    expected_code: str,
+):
+    """Test Google Lens recognizer maps supported languages to engine codes.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        language: language to use
+        expected_code: expected Google Lens language code
+    """
+
+    class FakeLensApi:
+        """Fake chrome-lens-py LensAPI class."""
+
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer._get_lens_api_class",
+        staticmethod(lambda: FakeLensApi),
+    )
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer."
+        "_get_lens_api_error_class",
+        staticmethod(lambda: FakeLensApiError),
+    )
+
+    recognizer = LensRecognizer(language=language)
+
+    assert recognizer.language is language
+    assert recognizer.lens_language_code == expected_code
+
+
+def test_lens_recognizer_caches_results_by_image(tmp_path: Path):
     """Test Google Lens recognizer caches OCR results by image content."""
-    recognizer = CountingGoogleLensRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingLensRecognizer(cache_dir_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
     assert recognizer.recognize_image(image) == "cached\ntext"
@@ -159,9 +209,9 @@ def test_google_lens_recognizer_caches_results_by_image(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 1
 
 
-def test_google_lens_recognizer_formats_cached_results(tmp_path: Path):
+def test_lens_recognizer_formats_cached_results(tmp_path: Path):
     """Test cached Google Lens results are formatted after loading."""
-    recognizer = CountingGoogleLensRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingLensRecognizer(cache_dir_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
     assert recognizer.recognize_image(image) == "cached\ntext"
@@ -176,7 +226,7 @@ def test_google_lens_recognizer_formats_cached_results(tmp_path: Path):
     assert recognizer.predict_count == 1
 
 
-def test_google_lens_recognizer_does_not_cache_request_errors(
+def test_lens_recognizer_does_not_cache_request_errors(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
@@ -187,7 +237,7 @@ def test_google_lens_recognizer_does_not_cache_request_errors(
         tmp_path: temporary path fixture
     """
     patch_google_lens_sleep(monkeypatch)
-    recognizer = CountingGoogleLensRecognizer(
+    recognizer = CountingLensRecognizer(
         cache_dir_path=tmp_path,
         results=[["Request error (possibly proxy-related)"]],
     )
@@ -200,7 +250,7 @@ def test_google_lens_recognizer_does_not_cache_request_errors(
     assert not list(tmp_path.glob("*.json"))
 
 
-def test_google_lens_recognizer_retries_request_errors_before_caching(
+def test_lens_recognizer_retries_request_errors_before_caching(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
@@ -211,7 +261,7 @@ def test_google_lens_recognizer_retries_request_errors_before_caching(
         tmp_path: temporary path fixture
     """
     patch_google_lens_sleep(monkeypatch)
-    recognizer = CountingGoogleLensRecognizer(
+    recognizer = CountingLensRecognizer(
         cache_dir_path=tmp_path,
         results=[
             ["Request error (possibly proxy-related): 502 Bad Gateway"],
@@ -228,7 +278,7 @@ def test_google_lens_recognizer_retries_request_errors_before_caching(
     assert len(list(tmp_path.glob("*.json"))) == 1
 
 
-def test_google_lens_recognizer_raises_last_request_error_after_retries(
+def test_lens_recognizer_raises_last_request_error_after_retries(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
@@ -239,7 +289,7 @@ def test_google_lens_recognizer_raises_last_request_error_after_retries(
         tmp_path: temporary path fixture
     """
     patch_google_lens_sleep(monkeypatch)
-    recognizer = CountingGoogleLensRecognizer(
+    recognizer = CountingLensRecognizer(
         cache_dir_path=tmp_path,
         results=[
             ["Request error (possibly proxy-related): attempt 1"],
@@ -257,7 +307,7 @@ def test_google_lens_recognizer_raises_last_request_error_after_retries(
     assert not list(tmp_path.glob("*.json"))
 
 
-def test_google_lens_recognizer_retries_in_one_asyncio_run(
+def test_lens_recognizer_retries_in_one_asyncio_run(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test Google Lens retries within one asyncio.run call.
@@ -283,10 +333,10 @@ def test_google_lens_recognizer_retries_in_one_asyncio_run(
         return real_asyncio_run(main, **kwargs)
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.lens.google_lens_recognizer.asyncio.run",
+        "scinoephile.image.ocr.lens.lens_recognizer.asyncio.run",
         counting_run,
     )
-    recognizer = CountingGoogleLensRecognizer(
+    recognizer = CountingLensRecognizer(
         results=[
             ["Request error (possibly proxy-related): 502 Bad Gateway"],
             ["Request error (possibly proxy-related): 502 Bad Gateway"],
@@ -301,7 +351,7 @@ def test_google_lens_recognizer_retries_in_one_asyncio_run(
     assert recognizer.predict_count == 3
 
 
-def test_google_lens_recognizer_waits_between_transient_retries(
+def test_lens_recognizer_waits_between_transient_retries(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test Google Lens waits before retrying transient failures.
@@ -310,7 +360,7 @@ def test_google_lens_recognizer_waits_between_transient_retries(
         monkeypatch: pytest monkeypatch fixture
     """
     delays = patch_google_lens_sleep(monkeypatch)
-    recognizer = CountingGoogleLensRecognizer(
+    recognizer = CountingLensRecognizer(
         results=[
             ["Request error (possibly proxy-related): 502 Bad Gateway"],
             ["Request error (possibly proxy-related): 502 Bad Gateway"],
@@ -324,7 +374,7 @@ def test_google_lens_recognizer_waits_between_transient_retries(
     assert delays == [1.5, 1.5]
 
 
-def test_google_lens_recognizer_retries_lens_api_errors(
+def test_lens_recognizer_retries_lens_api_errors(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test Google Lens retries transient chrome-lens-py API errors.
@@ -333,7 +383,7 @@ def test_google_lens_recognizer_retries_lens_api_errors(
         monkeypatch: pytest monkeypatch fixture
     """
     patch_google_lens_sleep(monkeypatch)
-    recognizer = CountingGoogleLensRecognizer(
+    recognizer = CountingLensRecognizer(
         exceptions=[
             FakeLensApiError("502 Bad Gateway"),
             FakeLensApiError("502 Bad Gateway"),
@@ -348,9 +398,9 @@ def test_google_lens_recognizer_retries_lens_api_errors(
     assert recognizer.predict_count == 3
 
 
-def test_google_lens_recognizer_does_not_retry_nontransient_errors():
+def test_lens_recognizer_does_not_retry_nontransient_errors():
     """Test Google Lens does not retry deterministic API errors."""
-    recognizer = CountingGoogleLensRecognizer(
+    recognizer = CountingLensRecognizer(
         exceptions=[ValueError("deterministic failure")],
     )
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
@@ -361,7 +411,7 @@ def test_google_lens_recognizer_does_not_retry_nontransient_errors():
     assert recognizer.predict_count == 1
 
 
-def test_google_lens_recognizer_rejects_uncached_calls_in_async_loop(
+def test_lens_recognizer_rejects_uncached_calls_in_async_loop(
     tmp_path: Path,
 ):
     """Test uncached synchronous recognition fails clearly in an async loop.
@@ -369,7 +419,7 @@ def test_google_lens_recognizer_rejects_uncached_calls_in_async_loop(
     Arguments:
         tmp_path: temporary path fixture
     """
-    recognizer = CountingGoogleLensRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingLensRecognizer(cache_dir_path=tmp_path)
 
     async def recognize() -> None:
         """Run synchronous recognition from an async context."""
@@ -379,7 +429,7 @@ def test_google_lens_recognizer_rejects_uncached_calls_in_async_loop(
     asyncio.run(recognize())
 
 
-def test_google_lens_recognizer_import_error_is_actionable(
+def test_lens_recognizer_import_error_is_actionable(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test missing chrome-lens-py dependency produces an actionable error.
@@ -416,10 +466,10 @@ def test_google_lens_recognizer_import_error_is_actionable(
     monkeypatch.setattr("builtins.__import__", fake_import)
 
     with pytest.raises(ImportError, match="'ocr' extra"):
-        GoogleLensRecognizer._get_lens_api_class()
+        LensRecognizer._get_lens_api_class()
 
 
-def test_google_lens_recognizer_imports_chrome_lens_py_only_when_needed():
+def test_lens_recognizer_imports_chrome_lens_py_only_when_needed():
     """Test importing Google Lens OCR does not import chrome-lens-py."""
     result = subprocess.run(
         [
@@ -427,7 +477,7 @@ def test_google_lens_recognizer_imports_chrome_lens_py_only_when_needed():
             "-c",
             (
                 "import sys;"
-                "import scinoephile.image.ocr.lens.google_lens_recognizer;"
+                "import scinoephile.image.ocr.lens.lens_recognizer;"
                 "raise SystemExit('chrome_lens_py' in sys.modules)"
             ),
         ],
@@ -439,7 +489,7 @@ def test_google_lens_recognizer_imports_chrome_lens_py_only_when_needed():
     assert result.returncode == 0, result.stderr
 
 
-def test_google_lens_recognizer_reuses_lens_api_client_per_instance(
+def test_lens_recognizer_reuses_lens_api_client_per_instance(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test each Google Lens recognizer reuses one LensAPI client.
@@ -471,8 +521,10 @@ def test_google_lens_recognizer_reuses_lens_api_client_per_instance(
     setattr(chrome_lens_py, "LensAPI", FakeLensApi)
     setattr(chrome_lens_py, "LensAPIError", FakeLensApiError)
     monkeypatch.setitem(sys.modules, "chrome_lens_py", chrome_lens_py)
-    recognizer = GoogleLensRecognizer()
+    recognizer = LensRecognizer()
 
+    assert recognizer.language is Language.eng
+    assert recognizer.lens_language_code == "en"
     assert recognizer.retries == 3
     assert recognizer.recognize_image(Image.new("RGBA", (10, 8))) == "recognized"
     assert recognizer.recognize_image(Image.new("RGBA", (12, 9))) == "recognized"

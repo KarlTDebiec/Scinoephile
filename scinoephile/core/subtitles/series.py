@@ -10,9 +10,11 @@ from os import PathLike
 from typing import Any, Self, cast, override
 
 from pysubs2 import SSAFile
+from pysubs2.exceptions import Pysubs2Error
 from pysubs2.time import ms_to_str
 
 from scinoephile.common.validation import val_input_path, val_output_path
+from scinoephile.core.exceptions import ScinoephileError
 
 from .subtitle import Subtitle
 
@@ -151,16 +153,21 @@ class Series(SSAFile):
             errors: encoding error handling
             **kwargs: additional keyword arguments
         """
-        validated_path = val_output_path(path, exist_ok=True)
-        SSAFile.save(
-            self,
-            str(validated_path),
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+        try:
+            validated_path = val_output_path(path, exist_ok=True)
+            SSAFile.save(
+                self,
+                str(validated_path),
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
+        except (OSError, Pysubs2Error, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to save {type(self).__name__} to {path}: {exc}"
+            ) from exc
         logger.info(f"Saved series to {validated_path}")
 
     def slice(self, start: int, end: int) -> Self:
@@ -208,6 +215,29 @@ class Series(SSAFile):
             )
         return string.rstrip()
 
+    @override
+    def to_string(
+        self,
+        format_: str,
+        fps: float | None = None,
+        **kwargs: Any,
+    ) -> str:
+        """Serialize series to a string.
+
+        Arguments:
+            format_: output string format
+            fps: frames per second
+            **kwargs: additional keyword arguments
+        Returns:
+            serialized subtitle series
+        """
+        try:
+            return super().to_string(format_, fps=fps, **kwargs)
+        except (Pysubs2Error, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to serialize {type(self).__name__} to string: {exc}"
+            ) from exc
+
     @classmethod
     @override
     def from_string(
@@ -227,11 +257,18 @@ class Series(SSAFile):
         Returns:
             parsed series
         """
-        series = cast(
-            Self,
-            super().from_string(string, format_=format_, fps=fps, **kwargs),
-        )
-        series.events = [cls.event_class(**ssaevent.as_dict()) for ssaevent in series]
+        try:
+            series = cast(
+                Self,
+                super().from_string(string, format_=format_, fps=fps, **kwargs),
+            )
+            series.events = [
+                cls.event_class(**ssaevent.as_dict()) for ssaevent in series
+            ]
+        except (Pysubs2Error, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to parse {cls.__name__} from string: {exc}"
+            ) from exc
 
         return series
 
@@ -258,16 +295,23 @@ class Series(SSAFile):
         Returns:
             loaded series
         """
-        validated_path = val_input_path(path)
+        try:
+            validated_path = val_input_path(path)
 
-        with open(str(validated_path), encoding=encoding, errors=errors) as input_file:
-            series = cast(
-                Self,
-                cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
-            )
-            series.events = [
-                cls.event_class(**ssaevent.as_dict()) for ssaevent in series
-            ]
+            with open(
+                str(validated_path), encoding=encoding, errors=errors
+            ) as input_file:
+                series = cast(
+                    Self,
+                    cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
+                )
+                series.events = [
+                    cls.event_class(**ssaevent.as_dict()) for ssaevent in series
+                ]
+        except (OSError, Pysubs2Error, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from {path}: {exc}"
+            ) from exc
 
         logger.info(f"Loaded series from {validated_path}")
         return series

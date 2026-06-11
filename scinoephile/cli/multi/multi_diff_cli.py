@@ -8,12 +8,13 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.analysis.diff import SeriesDiff
+from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series
+from scinoephile.core.cli import ScinoephileCliBase
 
 __all__ = ["MultiDiffCli"]
 

@@ -7,9 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-
-# noinspection PyProtectedMember
-from scinoephile.lang.cmn.romanization import _get_cmn_text_romanized, get_cmn_romanized
+from scinoephile.lang.cmn.romanization import get_cmn_romanized, get_cmn_text_romanized
 from test.helpers import assert_series_equal
 
 
@@ -66,10 +64,10 @@ def test_get_cmn_romanized_titles(
     ],
 )
 def test_get_mandarin_text_romanization(text: str, expected: str):
-    """Test _get_mandarin_text_romanization.
+    """Test get_cmn_text_romanized.
 
     Arguments:
         text: Text to romanize
         expected: Expected romanization
     """
-    assert _get_cmn_text_romanized(text) == expected
+    assert get_cmn_text_romanized(text) == expected

@@ -1,0 +1,40 @@
+<div id="subtitle-{{ row.sub_idx }}" class="subtitle">
+   #{{ row.number }}:{{ row.start }}->{{ row.end }}
+   <div>
+      <figure style="--subtitle-image-width: {{ row.image_width }}px">
+         {% if row.has_concern_image %}
+            <img
+               src="/subtitles/{{ row.sub_idx }}/concern.png?v={{ row.image_cache_key }}"
+               width="{{ row.image_width }}"
+               height="{{ row.image_height }}"
+               loading="eager"
+            />
+         {% else %}
+            <img
+               src="/subtitles/{{ row.sub_idx }}/validation.png?v={{ row.image_cache_key }}"
+               width="{{ row.image_width }}"
+               height="{{ row.image_height }}"
+               loading="eager"
+            />
+         {% endif %}
+         <textarea
+            name="text"
+            style="
+               --subtitle-text-color: {{ row.text_color_css }};
+               --subtitle-shadow-color: {{ row.text_shadow_color_css }};
+               --subtitle-font-size: {{ row.text_font_size_css }};
+               --subtitle-font-size-cqw: {{ row.text_font_size_cqw_css }};
+               --subtitle-letter-spacing: {{ row.text_letter_spacing_css }};
+               --subtitle-letter-spacing-cqw: {{ row.text_letter_spacing_cqw_css }};
+            "
+            hx-post="/subtitles/{{ row.sub_idx }}/text"
+            hx-trigger="blur changed"
+            hx-target="#subtitle-{{ row.sub_idx }}"
+            hx-swap="outerHTML"
+            wrap="off"
+         >{{ row.text.replace("\\N", "\n") }}</textarea>
+      </figure>
+      {% include "_concern.html" %}
+   </div>
+   <br /><hr />
+</div>

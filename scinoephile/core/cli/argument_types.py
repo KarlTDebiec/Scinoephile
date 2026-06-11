@@ -6,20 +6,22 @@ from __future__ import annotations
 
 from argparse import ArgumentTypeError
 
+from scinoephile.core.language import normalize_language_tag
+
 __all__ = ["language_arg"]
 
 
 def language_arg(value: object) -> str:
-    """Validate an ISO language code argument.
+    """Validate a loose language tag argument.
 
     Arguments:
         value: value to validate
     Returns:
-        normalized language code
+        normalized language tag
     Raises:
-        ArgumentTypeError: if value is not a non-empty string
+        ArgumentTypeError: if value is not a language tag
     """
-    language = str(value).strip().lower()
-    if not language:
-        raise ArgumentTypeError("language code may not be empty")
-    return language
+    try:
+        return normalize_language_tag(str(value))
+    except ValueError as exc:
+        raise ArgumentTypeError(str(exc)) from exc

@@ -56,25 +56,9 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
 from test.helpers import test_data_root
 
 __all__ = [
-    "mlamd_eng_ocr_lens",
-    "mlamd_eng_ocr_lens_new",
-    "mlamd_eng_ocr_paddle",
-    "mlamd_eng_ocr_paddle_new",
     "mlamd_eng_ocr_sup_path",
-    "mlamd_eng_ocr_tesseract",
-    "mlamd_eng_ocr_tesseract_new",
-    "mlamd_zho_hans_ocr_lens",
-    "mlamd_zho_hans_ocr_lens_new",
-    "mlamd_zho_hans_ocr_paddle",
-    "mlamd_zho_hans_ocr_paddle_new",
     "mlamd_zho_hans_ocr_sup_path",
-    "mlamd_zho_hans_ocr_tesseract_new",
-    "mlamd_zho_hant_ocr_lens",
-    "mlamd_zho_hant_ocr_lens_new",
-    "mlamd_zho_hant_ocr_paddle",
-    "mlamd_zho_hant_ocr_paddle_new",
     "mlamd_zho_hant_ocr_sup_path",
-    "mlamd_zho_hant_ocr_tesseract_new",
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_deliniation_test_cases",
@@ -94,6 +78,10 @@ __all__ = [
     "mlamd_eng_fuse_clean_validate_review_flatten",
     "mlamd_eng_image",
     "mlamd_eng_image_path",
+    "mlamd_eng_ocr_lens",
+    "mlamd_eng_ocr_lens_clean",
+    "mlamd_eng_ocr_tesseract",
+    "mlamd_eng_ocr_tesseract_clean",
     "mlamd_yue_hans_audio",
     "mlamd_yue_hans_audio_path",
     "mlamd_yue_hans_eng",
@@ -110,6 +98,10 @@ __all__ = [
     "mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize",
     "mlamd_zho_hans_image",
     "mlamd_zho_hans_image_path",
+    "mlamd_zho_hans_ocr_lens",
+    "mlamd_zho_hans_ocr_lens_clean",
+    "mlamd_zho_hans_ocr_paddle",
+    "mlamd_zho_hans_ocr_paddle_clean",
     "mlamd_zho_hant_fuse",
     "mlamd_zho_hant_fuse_clean",
     "mlamd_zho_hant_fuse_clean_validate",
@@ -117,8 +109,13 @@ __all__ = [
     "mlamd_zho_hant_fuse_clean_validate_review_flatten",
     "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify",
     "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
+    "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize",
     "mlamd_zho_hant_image",
     "mlamd_zho_hant_image_path",
+    "mlamd_zho_hant_ocr_lens",
+    "mlamd_zho_hant_ocr_lens_clean",
+    "mlamd_zho_hant_ocr_paddle",
+    "mlamd_zho_hant_ocr_paddle_clean",
     "mlamd_zho_simplify_expected_series_diff",
 ]
 
@@ -128,69 +125,9 @@ output_dir = title_root / "output"
 
 
 @pytest.fixture
-def mlamd_eng_ocr_lens() -> Series:
-    """MLAMD English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens.srt")
-
-
-@pytest.fixture
-def mlamd_eng_ocr_lens_new() -> Series:
-    """MLAMD English subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def mlamd_eng_ocr_paddle() -> Series:
-    """MLAMD English subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "eng_ocr/paddle.srt")
-
-
-@pytest.fixture
-def mlamd_eng_ocr_paddle_new() -> Series:
-    """MLAMD English subtitles OCRed using internal PaddleOCR."""
-    return Series.load(input_dir / "eng_ocr/paddle_new.srt")
-
-
-@pytest.fixture
 def mlamd_eng_ocr_sup_path() -> Path:
     """Path to MLAMD English SUP subtitles."""
     return input_dir / "eng_ocr/source.sup"
-
-
-@pytest.fixture
-def mlamd_eng_ocr_tesseract() -> Series:
-    """MLAMD English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract.srt")
-
-
-@pytest.fixture
-def mlamd_eng_ocr_tesseract_new() -> Series:
-    """MLAMD English subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract_new.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hans_ocr_lens() -> Series:
-    """MLAMD 简体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hans_ocr/lens.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hans_ocr_lens_new() -> Series:
-    """MLAMD 简体中文 subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "zho-Hans_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hans_ocr_paddle() -> Series:
-    """MLAMD 简体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_ocr/paddle.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hans_ocr_paddle_new() -> Series:
-    """MLAMD 简体中文 subtitles OCRed using internal PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_ocr/paddle_new.srt")
 
 
 @pytest.fixture
@@ -200,45 +137,9 @@ def mlamd_zho_hans_ocr_sup_path() -> Path:
 
 
 @pytest.fixture
-def mlamd_zho_hans_ocr_tesseract_new() -> Series:
-    """MLAMD 简体中文 subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "zho-Hans_ocr/tesseract_new.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hant_ocr_lens() -> Series:
-    """MLAMD 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hant_ocr_lens_new() -> Series:
-    """MLAMD 繁体中文 subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hant_ocr_paddle() -> Series:
-    """MLAMD 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hant_ocr_paddle_new() -> Series:
-    """MLAMD 繁体中文 subtitles OCRed using internal PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle_new.srt")
-
-
-@pytest.fixture
 def mlamd_zho_hant_ocr_sup_path() -> Path:
     """Path to MLAMD 繁体中文 SUP subtitles."""
     return input_dir / "zho-Hant_ocr/source.sup"
-
-
-@pytest.fixture
-def mlamd_zho_hant_ocr_tesseract_new() -> Series:
-    """MLAMD 繁体中文 subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "zho-Hant_ocr/tesseract_new.srt")
 
 
 @cache
@@ -549,6 +450,30 @@ def mlamd_eng_image_path() -> Path:
 
 
 @pytest.fixture
+def mlamd_eng_ocr_lens() -> Series:
+    """MLAMD English subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "eng_ocr/lens.srt")
+
+
+@pytest.fixture
+def mlamd_eng_ocr_lens_clean() -> Series:
+    """MLAMD English Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def mlamd_eng_ocr_tesseract() -> Series:
+    """MLAMD English subtitles OCRed using Tesseract."""
+    return Series.load(output_dir / "eng_ocr/tesseract.srt")
+
+
+@pytest.fixture
+def mlamd_eng_ocr_tesseract_clean() -> Series:
+    """MLAMD English Tesseract OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
+
+
+@pytest.fixture
 def mlamd_yue_hans_audio() -> AudioSeries:
     """MLAMD 简体粤文 audio subtitles."""
     return AudioSeries.load(output_dir / "yue-Hans_transcribe/audio")
@@ -655,6 +580,30 @@ def mlamd_zho_hans_image_path() -> Path:
 
 
 @pytest.fixture
+def mlamd_zho_hans_ocr_lens() -> Series:
+    """MLAMD 简体中文 subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "zho-Hans_ocr/lens.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_ocr_lens_clean() -> Series:
+    """MLAMD 简体中文 Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hans_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_ocr_paddle() -> Series:
+    """MLAMD 简体中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(output_dir / "zho-Hans_ocr/paddle.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_ocr_paddle_clean() -> Series:
+    """MLAMD 简体中文 PaddleOCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
+
+
+@pytest.fixture
 def mlamd_zho_hant_fuse() -> Series:
     """MLAMD 繁体中文 fused subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
@@ -705,6 +654,18 @@ def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Serie
 
 
 @pytest.fixture
+def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -> (
+    Series
+):
+    """MLAMD 繁体中文 simplified/reviewed fused/cleaned romanized subtitles."""
+    return Series.load(
+        output_dir
+        / "zho-Hant_ocr"
+        / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
+    )
+
+
+@pytest.fixture
 def mlamd_zho_hant_image() -> ImageSeries:
     """MLAMD 繁体中文 image subtitles."""
     return ImageSeries.load(output_dir / "zho-Hant_ocr/image", encoding="utf-8")
@@ -714,6 +675,30 @@ def mlamd_zho_hant_image() -> ImageSeries:
 def mlamd_zho_hant_image_path() -> Path:
     """Path to MLAMD 繁体中文 image subtitles."""
     return output_dir / "zho-Hant_ocr/image"
+
+
+@pytest.fixture
+def mlamd_zho_hant_ocr_lens() -> Series:
+    """MLAMD 繁体中文 subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_ocr_lens_clean() -> Series:
+    """MLAMD 繁体中文 Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_ocr_paddle() -> Series:
+    """MLAMD 繁体中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_ocr_paddle_clean() -> Series:
+    """MLAMD 繁体中文 PaddleOCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
 
 
 @pytest.fixture

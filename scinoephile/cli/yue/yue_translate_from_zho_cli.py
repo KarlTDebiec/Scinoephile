@@ -11,9 +11,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import (
+from scinoephile.cli.helpers.io import read_series, write_series
+from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
-    add_llm_provider_arguments,
+    LlmArguments,
+    add_llm_provider_args,
     read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
@@ -22,7 +24,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.gapped_translation import (
@@ -136,6 +138,7 @@ class YueTranslateFromZhoCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "llm arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -179,8 +182,8 @@ class YueTranslateFromZhoCli(ScinoephileCliBase):
             type=str_arg(options=("simplified", "traditional")),
             help="script for prompts and output conversion (default: simplified)",
         )
-        add_llm_provider_arguments(
-            arg_groups["operation arguments"], arg_groups["additional help"]
+        add_llm_provider_args(
+            arg_groups["llm arguments"], arg_groups["additional help"]
         )
 
         # Output arguments
@@ -262,9 +265,7 @@ class YueTranslateFromZhoCli(ScinoephileCliBase):
         yue_gapped_infile_path: Path | str | None,
         yue_guide_infile_path: Path | str | None,
         script: str,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        llm_args: LlmArguments,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -283,9 +284,9 @@ class YueTranslateFromZhoCli(ScinoephileCliBase):
         # Read inputs
         zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
-        provider = get_provider(llm_provider_name, model=llm_model_name)
+        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
 
         # Perform operations
         if yue_gapped_infile_path is not None:

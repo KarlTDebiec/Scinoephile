@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import re
+from collections import Counter
 from html import escape, unescape
 from logging import getLogger
 from os import PathLike
@@ -14,15 +15,14 @@ from typing import Any, Self, override
 import numpy as np
 from PIL import Image
 
-from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.validation import (
-    val_input_dir_path,
-    val_input_path,
+    val_input_file_or_dir_path,
     val_output_dir_path,
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.image.bboxes import get_bboxes
 from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 from scinoephile.image.drawing import convert_rgba_img_to_la
 
@@ -33,6 +33,10 @@ __all__ = ["ImageSeries"]
 
 
 logger = getLogger(__name__)
+
+
+_DEFAULT_TEXT_FONT_SIZE = 50
+_TEXT_FONT_SIZE_PERCENTILE = 0.75
 
 
 class ImageSeries(Series):
@@ -55,7 +59,25 @@ class ImageSeries(Series):
             self.events = events
         self._fill_color = None
         self._outline_color = None
+        self._text_font_size = None
         self._blocks: list[ImageSeries] | None = None
+
+    @override
+    def __setattr__(self, name: str, value: object):
+        """Set attribute, invalidating cached image properties after event replacement.
+
+        Arguments:
+            name: attribute name
+            value: attribute value
+        """
+        super().__setattr__(name, value)
+        if name == "events":
+            if hasattr(self, "_fill_color"):
+                self._fill_color = None
+            if hasattr(self, "_outline_color"):
+                self._outline_color = None
+            if hasattr(self, "_text_font_size"):
+                self._text_font_size = None
 
     @property
     def fill_color(self) -> int:
@@ -76,6 +98,15 @@ class ImageSeries(Series):
         return self._outline_color
 
     @property
+    def text_font_size(self) -> int:
+        """Detected font size of subtitle text images."""
+        if self._text_font_size is None:
+            self._init_text_font_size()
+        if self._text_font_size is None:
+            raise ScinoephileError("Text font size could not be determined.")
+        return self._text_font_size
+
+    @property
     @override
     def blocks(self) -> list[ImageSeries]:
         """List of blocks in the series."""
@@ -93,6 +124,19 @@ class ImageSeries(Series):
             blocks: List of blocks in the series
         """
         self._blocks = blocks
+
+    def copy_text_from(self, source: Series):
+        """Copy subtitle text from a source series into this image series.
+
+        Arguments:
+            source: source text subtitle series
+        Raises:
+            ScinoephileError: if source and image subtitle counts differ
+        """
+        if len(source) != len(self):
+            raise ScinoephileError(f"Length mismatch: {len(source)} vs {len(self)}")
+        for source_subtitle, image_subtitle in zip(source, self.events):
+            image_subtitle.text = source_subtitle.text
 
     @override
     def save(
@@ -116,28 +160,33 @@ class ImageSeries(Series):
         """
         path = Path(path)
 
-        # Check if directory
-        if format_ == "html" or (not format_ and path.suffix == ""):
-            validated_output_dir_path = val_output_dir_path(path)
-            self._save_html(
-                validated_output_dir_path,
-                encoding=encoding,
-                errors=errors,
-            )
-            logger.info(f"Saved series to {validated_output_dir_path}")
-            return
+        try:
+            # Check if directory
+            if format_ == "html" or (not format_ and path.suffix == ""):
+                validated_output_dir_path = val_output_dir_path(path)
+                self._save_html(
+                    validated_output_dir_path,
+                    encoding=encoding,
+                    errors=errors,
+                )
+                logger.info(f"Saved series to {validated_output_dir_path}")
+                return
 
-        # Otherwise, continue as superclass
-        exist_ok = kwargs.pop("exist_ok", False)
-        validated_output_path = val_output_path(path, exist_ok=exist_ok)
-        super().save(
-            validated_output_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-            **kwargs,
-        )
+            # Otherwise, continue as superclass
+            exist_ok = kwargs.pop("exist_ok", False)
+            validated_output_path = val_output_path(path, exist_ok=exist_ok)
+            super().save(
+                validated_output_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
+        except (OSError, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to save {type(self).__name__} to {path}: {exc}"
+            ) from exc
         logger.info(f"Saved series to {validated_output_path}")
 
     @classmethod
@@ -164,20 +213,23 @@ class ImageSeries(Series):
             loaded series
         """
         try:
-            validated_path = val_input_dir_path(path)
-            return cls._load_html(
-                validated_path,
-                encoding=encoding,
-                errors=errors,
-            )
-        except (DirectoryNotFoundError, NotADirectoryError):
-            validated_path = val_input_path(path)
+            validated_path = val_input_file_or_dir_path(path)
+            if validated_path.is_dir():
+                return cls._load_html(
+                    validated_path,
+                    encoding=encoding,
+                    errors=errors,
+                )
             if format_ == "sup" or validated_path.suffix == ".sup":
                 return cls._load_sup(validated_path)
-            raise ValueError(
-                f"{cls.__name__}'s path must be path to a directory containing one "
-                "index.html file and N png files, or a .sup file."
-            )
+        except (OSError, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to load {cls.__name__} from {path}: {exc}"
+            ) from exc
+        raise ScinoephileError(
+            f"{cls.__name__}'s path must be path to a directory containing one "
+            "index.html file and N png files, or a .sup file."
+        )
 
     @override
     def _init_blocks(self):
@@ -204,6 +256,29 @@ class ImageSeries(Series):
         fill, outline = get_fill_and_outline_colors_from_hist(hist)
         self._fill_color = fill
         self._outline_color = outline
+
+    def _init_text_font_size(self):
+        """Initialize the representative subtitle text font size."""
+        size_counts: Counter[int] = Counter()
+        for subtitle in self.events:
+            if subtitle.bboxes is None:
+                bboxes = get_bboxes(subtitle.img)
+            else:
+                bboxes = subtitle.bboxes
+            size_counts.update(bbox.height for bbox in bboxes)
+
+        if not size_counts:
+            self._text_font_size = _DEFAULT_TEXT_FONT_SIZE
+            return
+
+        threshold = sum(size_counts.values()) * _TEXT_FONT_SIZE_PERCENTILE
+        cumulative_count = 0
+        for height in sorted(size_counts):
+            cumulative_count += size_counts[height]
+            if cumulative_count >= threshold:
+                self._text_font_size = height
+                return
+        self._text_font_size = max(size_counts)
 
     def _save_html(
         self,
@@ -236,40 +311,18 @@ class ImageSeries(Series):
         logger.info(f"Saved images to {dir_path}")
 
         # Save HTML index
-        html_lines = [
-            "<!DOCTYPE html>",
-            "<html>",
-            "<head>",
-            '   <meta charset="UTF-8" />',
-            "   <title>Subtitle images</title>",
-            "   <style>",
-            "      img {",
-            "         image-rendering: pixelated;",
-            "         image-rendering: crisp-edges;",
-            "      }",
-            "   </style>",
-            "</head>",
-            "<body>",
-        ]
+        html_lines = self.html_header_lines()
         for i, (event, image_path) in enumerate(zip(self, image_paths), 1):
-            start = self._format_html_time(event.start)
-            end = self._format_html_time(event.end)
-            line = (
-                f"#{i}:{start}->{end}"
-                "<div style='text-align:center'>"
-                f"<img src='{image_path.name}' />"
-            )
-            text = event.text_with_newline
-            if text.strip():
-                text = escape(text).replace("\n", "<br />")
-                line += (
-                    "<br />"
-                    "<div style='font-size:22px; background-color:WhiteSmoke'>"
-                    f"{text}</div>"
+            html_lines.append(
+                self.format_html_entry(
+                    index=i,
+                    start=event.start,
+                    end=event.end,
+                    image_name=image_path.name,
+                    text=event.text,
                 )
-            line += "</div><br /><hr />"
-            html_lines.append(line)
-        html_lines.extend(["</body>", "</html>"])
+            )
+        html_lines.extend(self.html_footer_lines())
         html_path = dir_path / "index.html"
         html_path.write_text("\n".join(html_lines), encoding=encoding, errors=errors)
         logger.info(f"Saved HTML to {html_path}")
@@ -294,7 +347,7 @@ class ImageSeries(Series):
         if not html_path.exists():
             raise ScinoephileError(f"Expected {html_path} to exist.")
         html_text = html_path.read_text(encoding=encoding, errors=errors)
-        html_events = cls._parse_html_events(html_text, dir_path)
+        html_events = cls.parse_html_events(html_text, dir_path)
 
         series = cls()
         series.format = "png"
@@ -350,7 +403,7 @@ class ImageSeries(Series):
         return series
 
     @classmethod
-    def _parse_html_events(
+    def parse_html_events(
         cls,
         html_text: str,
         dir_path: Path,
@@ -392,6 +445,44 @@ class ImageSeries(Series):
                 f"No subtitle entries found in HTML file for {dir_path}."
             )
         return events
+
+    @staticmethod
+    def format_html_entry(
+        *,
+        index: int,
+        start: int,
+        end: int,
+        image_name: str,
+        text: str,
+    ) -> str:
+        """Format one HTML subtitle entry.
+
+        Arguments:
+            index: one-based subtitle index
+            start: start time in milliseconds
+            end: end time in milliseconds
+            image_name: subtitle image file name
+            text: subtitle text using ASS newline escapes
+        Returns:
+            formatted HTML subtitle entry
+        """
+        start_text = ImageSeries._format_html_time(start)
+        end_text = ImageSeries._format_html_time(end)
+        line = (
+            f"#{index}:{start_text}->{end_text}"
+            "<div style='text-align:center'>"
+            f"<img src='{escape(image_name, quote=True)}' />"
+        )
+        text_with_newline = text.replace("\\N", "\n")
+        if text_with_newline.strip():
+            html_text = escape(text_with_newline).replace("\n", "<br />")
+            line += (
+                "<br />"
+                "<div style='font-size:22px; background-color:WhiteSmoke'>"
+                f"{html_text}</div>"
+            )
+        line += "</div><br /><hr />"
+        return line
 
     @staticmethod
     def _format_html_time(time_ms: int) -> str:
@@ -442,3 +533,35 @@ class ImageSeries(Series):
         else:
             raise ValueError(f"Unrecognized time format: {time_str}")
         return int(((hours * 3600) + (minutes * 60) + seconds) * 1000 + ms)
+
+    @staticmethod
+    def html_footer_lines() -> list[str]:
+        """Return HTML footer lines for image subtitle indexes.
+
+        Returns:
+            HTML footer lines
+        """
+        return ["</body>", "</html>"]
+
+    @staticmethod
+    def html_header_lines() -> list[str]:
+        """Return HTML header lines for image subtitle indexes.
+
+        Returns:
+            HTML header lines
+        """
+        return [
+            "<!DOCTYPE html>",
+            "<html>",
+            "<head>",
+            '   <meta charset="UTF-8" />',
+            "   <title>Subtitle images</title>",
+            "   <style>",
+            "      img {",
+            "         image-rendering: pixelated;",
+            "         image-rendering: crisp-edges;",
+            "      }",
+            "   </style>",
+            "</head>",
+            "<body>",
+        ]

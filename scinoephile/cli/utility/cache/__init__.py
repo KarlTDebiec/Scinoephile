@@ -3,7 +3,7 @@
 """Command-line interfaces for cache operations.
 
 Package hierarchy (modules may import from any above):
-* argument_types / output
+* output
 * cache_clear_cli / cache_list_cli / cache_prune_cli / cache_stats_cli
 * cache_cli
 """

@@ -7,13 +7,15 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.conversion import (
+from scinoephile.cli.helpers.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
-from scinoephile.cli.llms import (
+from scinoephile.cli.helpers.io import read_series, write_series
+from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
-    add_llm_provider_arguments,
+    LlmArguments,
+    add_llm_provider_args,
     read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
@@ -24,7 +26,7 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.zho.block_review import (
@@ -124,6 +126,7 @@ class ZhoProcessCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "llm arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -148,8 +151,8 @@ class ZhoProcessCli(ScinoephileCliBase):
         add_opencc_convert_argument(
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
-        add_llm_provider_arguments(
-            arg_groups["operation arguments"], arg_groups["additional help"]
+        add_llm_provider_args(
+            arg_groups["llm arguments"], arg_groups["additional help"]
         )
         arg_groups["operation arguments"].add_argument(
             "--flatten",
@@ -213,9 +216,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         flatten: bool,
         convert: OpenCCConfig | None,
         review_script: str | None,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        llm_args: LlmArguments,
         romanize: bool,
         offset: int,
         overwrite: bool,
@@ -236,7 +237,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
 
         # Perform operations
@@ -248,7 +249,7 @@ class ZhoProcessCli(ScinoephileCliBase):
             series = get_zho_flattened(series)
         if review_script is not None:
             prompt_cls = cls._get_review_prompt_cls(review_script)
-            provider = get_provider(llm_provider_name, model=llm_model_name)
+            provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
             reviewer = get_zho_reviewer(
                 prompt_cls=prompt_cls,
                 provider=provider,

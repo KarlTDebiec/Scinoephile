@@ -79,16 +79,18 @@ def get_img_with_bboxes(
     ]
 
     # Draw boxes
+    bbox_outline_width = 2
     for i, bbox in enumerate(bboxes):
         x1 = bbox.x1 * 2
         y1 = bbox.y1 * 2
         x2 = bbox.x2 * 2 - 1
         y2 = bbox.y2 * 2 - 1
-        draw.rectangle(
-            [x1, y1, x2, y2],
-            outline=palette[i],
-            width=1,
-        )
+        for offset in range(bbox_outline_width):
+            draw.rectangle(
+                [x1 - offset, y1 - offset, x2 + offset, y2 + offset],
+                outline=palette[i],
+                width=1,
+            )
 
     return img_with_bboxes
 

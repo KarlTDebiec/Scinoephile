@@ -7,9 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import (
+from scinoephile.cli.helpers.io import read_series, write_series
+from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
-    add_llm_provider_arguments,
+    LlmArguments,
+    add_llm_provider_args,
     read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
@@ -18,7 +20,7 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_file_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewed,
@@ -90,6 +92,7 @@ class EngProcessCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "llm arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -121,8 +124,8 @@ class EngProcessCli(ScinoephileCliBase):
             action="store_true",
             help="proofread subtitles using LLM",
         )
-        add_llm_provider_arguments(
-            arg_groups["operation arguments"], arg_groups["additional help"]
+        add_llm_provider_args(
+            arg_groups["llm arguments"], arg_groups["additional help"]
         )
         arg_groups["operation arguments"].add_argument(
             "--offset",
@@ -166,9 +169,7 @@ class EngProcessCli(ScinoephileCliBase):
         clean: bool,
         flatten: bool,
         proofread: bool,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        llm_args: LlmArguments,
         offset: int,
         overwrite: bool,
     ):
@@ -184,7 +185,7 @@ class EngProcessCli(ScinoephileCliBase):
         # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
 
         # Perform operations
@@ -193,7 +194,7 @@ class EngProcessCli(ScinoephileCliBase):
         if flatten:
             series = get_eng_flattened(series)
         if proofread:
-            provider = get_provider(llm_provider_name, model=llm_model_name)
+            provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
             reviewer = get_eng_block_reviewer(
                 provider=provider,
                 additional_context=additional_context,
