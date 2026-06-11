@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import getLogger
+from socket import create_connection
 from typing import TYPE_CHECKING
 
 from scinoephile.common import package_root
@@ -67,11 +68,65 @@ def run_app(session: OcrValidationSession, host: str, port: int):
         from werkzeug.serving import make_server  # noqa: PLC0415
 
         app = create_app(session)
-        server = make_server(host, port, app)
+        server_port = port
+        if _port_is_in_use(_connection_host(host), port):
+            logger.warning(
+                f"OCR validation web UI port {port} is already in use; "
+                "using an available port instead"
+            )
+            server_port = 0
+        server = make_server(host, server_port, app)
         app.config["OCR_VALIDATION_SERVER"] = server
-        logger.info(f"OCR validation web UI: http://{host}:{port}/")
+        url_host = _url_host(host)
+        url_port = getattr(server, "server_port", server_port)
+        logger.info(f"OCR validation web UI: http://{url_host}:{url_port}/")
         server.serve_forever()
     except (OSError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to run OCR validation web app on {host}:{port}: {exc}"
         ) from exc
+
+
+def _connection_host(host: str) -> str:
+    """Get host to use when checking a bind host for active connections.
+
+    Arguments:
+        host: host address to bind
+    Returns:
+        host address suitable for connection checks
+    """
+    if host in {"", "0.0.0.0", "::"}:
+        return "127.0.0.1"
+    return host
+
+
+def _port_is_in_use(host: str, port: int) -> bool:
+    """Check whether a host port already accepts connections.
+
+    Arguments:
+        host: host address to check
+        port: port to check
+    Returns:
+        whether the port accepts connections
+    """
+    if port == 0:
+        return False
+
+    try:
+        with create_connection((host, port), timeout=0.2):
+            return True
+    except OSError:
+        return False
+
+
+def _url_host(host: str) -> str:
+    """Get host to display in the validation URL.
+
+    Arguments:
+        host: host address to bind
+    Returns:
+        host address suitable for browser URLs
+    """
+    if host in {"", "0.0.0.0", "::"}:
+        return "127.0.0.1"
+    return host
