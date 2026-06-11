@@ -230,12 +230,12 @@ class ValidationManager:
                 break
 
             # Check if next bbox matches two or more characters
-            matched = self._match_grouped_chars(cursor)
+            matched = self.match_grouped_chars(cursor)
             if matched:
                 continue
 
             # Check if next one or more bboxes matches single character
-            matched = self._match_char_dims(cursor)
+            matched = self.match_char_dims(cursor)
             if matched:
                 continue
 
@@ -253,7 +253,7 @@ class ValidationManager:
 
         return messages
 
-    def _match_grouped_chars(self, cursor: CharCursor) -> bool:
+    def match_grouped_chars(self, cursor: CharCursor) -> bool:
         """Match grouped characters against approved dimensions.
 
         Arguments:
@@ -285,7 +285,7 @@ class ValidationManager:
                     return True
         return False
 
-    def _match_char_dims(self, cursor: CharCursor) -> bool:
+    def match_char_dims(self, cursor: CharCursor) -> bool:
         """Match character against approved dimensions.
 
         Arguments:
@@ -319,7 +319,7 @@ class ValidationManager:
                     cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
                         merged_bbox
                     ]
-                    self._update_char_dims(cursor.char, dims)
+                    self.update_char_dims(cursor.char, dims)
                     cursor.advance(n_chars=1, n_bboxes=1)
                     return True
         return False
@@ -394,7 +394,7 @@ class ValidationManager:
             cutoffs = self.char_pair_gaps.get(cursor.char_pair)
             if not cutoffs:
                 cutoffs = get_default_char_pair_cutoffs(cursor.char_1, cursor.char_2)
-                self._update_pair_gaps(cursor.char_pair, cutoffs)
+                self.update_pair_gaps(cursor.char_pair, cutoffs)
 
             # Adjacent
             if cursor.gap <= cutoffs[0]:
@@ -406,7 +406,7 @@ class ValidationManager:
             # Adjacent or space needs human judgment
             if cutoffs[0] < cursor.gap < cutoffs[1]:
                 if cursor.gap == cutoffs[0] + 1 and cursor.gap_chars == "":
-                    self._update_pair_gaps(
+                    self.update_pair_gaps(
                         cursor.char_pair,
                         (cursor.gap, cutoffs[1], cutoffs[2], cutoffs[3]),
                     )
@@ -416,7 +416,7 @@ class ValidationManager:
                     cursor.gap == cutoffs[1] - 1
                     and cursor.gap_chars == cursor.expected_space
                 ):
-                    self._update_pair_gaps(
+                    self.update_pair_gaps(
                         cursor.char_pair,
                         (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3]),
                     )
@@ -442,7 +442,7 @@ class ValidationManager:
                     cursor.gap == cutoffs[2] + 1
                     and cursor.gap_chars == cursor.expected_space
                 ):
-                    self._update_pair_gaps(
+                    self.update_pair_gaps(
                         cursor.char_pair,
                         (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
                     )
@@ -452,7 +452,7 @@ class ValidationManager:
                     cursor.expected_tab,
                     "\n",
                 ):
-                    self._update_pair_gaps(
+                    self.update_pair_gaps(
                         cursor.char_pair,
                         (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),
                     )
@@ -494,7 +494,7 @@ class ValidationManager:
         cursor.char_2_idx = start_idx + len(replacement)
         cursor.gap_chars = replacement
 
-    def _update_char_dims(self, char: str, dims: tuple[int, ...]):
+    def update_char_dims(self, char: str, dims: tuple[int, ...]):
         """Update char dims and save.
 
         Arguments:
@@ -534,7 +534,7 @@ class ValidationManager:
             output_char_grp_dims.setdefault(n, {}).setdefault(group, set()).add(dims)
         save_char_grp_dims(output_char_grp_dims, self._char_grp_dims_path())
 
-    def _update_pair_gaps(
+    def update_pair_gaps(
         self, char_pair: tuple[str, str], cutoffs: tuple[int, int, int, int]
     ):
         """Update char pair gaps and save.
