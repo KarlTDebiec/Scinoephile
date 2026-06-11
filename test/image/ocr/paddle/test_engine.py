@@ -9,7 +9,7 @@ import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from types import ModuleType
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import pytest
@@ -18,7 +18,6 @@ from PIL import Image
 from scinoephile.core import Language
 from scinoephile.image.ocr.paddle import PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
-from scinoephile.image.ocr.paddle.paddle_recognizer import _coerce_paddle_language
 from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
 
 
@@ -157,31 +156,55 @@ def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: pytest.MonkeyPatch):
 def test_paddle_recognizer_rejects_unsupported_languages():
     """Test PaddleOCR recognizer only supports English and Chinese."""
     with pytest.raises(ValueError, match="not supported by PaddleOCR"):
-        PaddleRecognizer(language="korean")
+        PaddleRecognizer(language=cast(Language, "korean"))
 
 
 @pytest.mark.parametrize(
-    ("language", "expected"),
+    ("language", "expected_code"),
     [
-        ("en", Language.eng),
-        ("eng", Language.eng),
-        ("ch", Language.zho_hans),
-        ("chinese_cht", Language.zho_hant),
-        ("zho-Hans", Language.zho_hans),
-        ("zho-Hant", Language.zho_hant),
+        (Language.eng, "en"),
+        (Language.yue_hans, "ch"),
+        (Language.yue_hant, "chinese_cht"),
+        (Language.zho_hans, "ch"),
+        (Language.zho_hant, "chinese_cht"),
     ],
 )
-def test_coerce_paddle_language_accepts_current_and_legacy_codes(
-    language: str,
-    expected: Language,
+def test_paddle_recognizer_maps_supported_languages_to_engine_codes(
+    monkeypatch: pytest.MonkeyPatch,
+    language: Language,
+    expected_code: str,
 ):
-    """Test PaddleOCR language coercion accepts supported language codes.
+    """Test PaddleOCR recognizer maps supported languages to engine codes.
 
     Arguments:
-        language: language code to coerce
-        expected: expected Scinoephile language
+        monkeypatch: pytest monkeypatch fixture
+        language: language to use
+        expected_code: expected PaddleOCR language code
     """
-    assert _coerce_paddle_language(language) is expected
+    observed_kwargs = {}
+
+    class FakePaddleOCR:
+        """Fake PaddleOCR implementation."""
+
+        def __init__(self, **kwargs: str | bool):
+            """Initialize.
+
+            Arguments:
+                **kwargs: PaddleOCR keyword arguments
+            """
+            observed_kwargs.update(kwargs)
+
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.paddle.paddle_recognizer.PaddleRecognizer."
+        "_get_paddle_ocr_class",
+        staticmethod(lambda: FakePaddleOCR),
+    )
+
+    recognizer = PaddleRecognizer(language=language)
+
+    assert recognizer.language is language
+    assert recognizer.paddle_language_code == expected_code
+    assert observed_kwargs["lang"] == expected_code
 
 
 def test_format_paddle_ocr_text_orders_results_into_lines():

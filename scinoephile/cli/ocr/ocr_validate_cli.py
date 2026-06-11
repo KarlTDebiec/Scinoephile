@@ -8,6 +8,11 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
+from scinoephile.cli.helpers.web import (
+    WEB_LOCALIZATIONS,
+    WebServerArguments,
+    add_web_server_args,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     output_file_arg,
@@ -27,6 +32,7 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕校验命令行界面"
         ),
+        "launch the local OCR validation web UI": "启动本地 OCR 校验网页界面",
         "OCR image subtitle infile path (directory containing index.html and png "
         "files, or a .sup file)": (
             "OCR 图像字幕输入路径（包含 index.html 和 png 文件的目录，或 .sup 文件）"
@@ -45,6 +51,7 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕驗證命令列介面"
         ),
+        "launch the local OCR validation web UI": "啟動本機 OCR 驗證網頁介面",
         "OCR image subtitle infile path (directory containing index.html and png "
         "files, or a .sup file)": (
             "OCR 影像字幕輸入路徑（包含 index.html 和 png 檔案的目錄，或 .sup 檔）"
@@ -65,6 +72,7 @@ class OcrValidateCli(ScinoephileCliBase):
 
     localizations = merge_localizations(
         CACHE_LOCALIZATIONS,
+        WEB_LOCALIZATIONS,
         OCR_VALIDATE_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
@@ -81,6 +89,7 @@ class OcrValidateCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "web arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -111,6 +120,14 @@ class OcrValidateCli(ScinoephileCliBase):
                 "cache directory for local OCR validation data (default: %(default)s)"
             ),
         )
+
+        # Web arguments
+        arg_groups["web arguments"].add_argument(
+            "--interactive",
+            action="store_true",
+            help="launch the local OCR validation web UI",
+        )
+        add_web_server_args(arg_groups["web arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -143,8 +160,10 @@ class OcrValidateCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_path: Path,
+        interactive: bool,
         dev: bool,
         cache_dir_path: Path,
+        web_args: WebServerArguments,
         outfile_path: Path,
         overwrite: bool,
     ):
@@ -153,6 +172,8 @@ class OcrValidateCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
+        if interactive and not infile_path.is_dir():
+            parser.error(f"{infile_path} must be a directory when --interactive is set")
 
         # Perform operations
         try:
@@ -160,8 +181,11 @@ class OcrValidateCli(ScinoephileCliBase):
                 infile_path,
                 outfile_path,
                 cache_dir_path=cache_dir_path,
+                interactive=interactive,
                 dev=dev,
                 overwrite=overwrite,
+                host=web_args.host,
+                port=web_args.port,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

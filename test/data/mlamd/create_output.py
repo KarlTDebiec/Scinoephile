@@ -9,6 +9,7 @@ from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
@@ -33,7 +34,7 @@ from test.data.mlamd import (
     get_mlamd_yue_deliniation_test_cases,
     get_mlamd_yue_punctuation_test_cases,
 )
-from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
+from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.helpers import test_data_root
 
@@ -50,17 +51,17 @@ actions = {
     "eng_ocr",
     "zho-Hans_ocr",
     "zho-Hant_ocr",
-    "zho-Hans_eng",
-    "yue-Hans_eng",
+    # "zho-Hans_eng",
+    # "yue-Hans_eng",
     # "yue-Hans_transcribe",
 }
 
 if "eng_ocr" in actions:
-    process_eng_ocr(title_root, overwrite=False)
+    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
 if "zho-Hans_ocr" in actions:
-    process_zho_hans_ocr(title_root, overwrite=False)
+    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
 if "zho-Hant_ocr" in actions:
-    process_zho_hant_ocr(title_root, overwrite=False)
+    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
 if "zho-Hans_eng" in actions:
     zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"

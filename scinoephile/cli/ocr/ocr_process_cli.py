@@ -14,6 +14,11 @@ from scinoephile.cli.helpers.llms import (
     add_llm_provider_args,
     read_llm_additional_context,
 )
+from scinoephile.cli.helpers.web import (
+    WEB_LOCALIZATIONS,
+    WebServerArguments,
+    add_web_server_args,
+)
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -42,9 +47,8 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "写入 OCR 处理输出的目录"
         ),
         "image subtitle or media infile path": "图像字幕或媒体输入文件路径",
-        "language of the OCR text to process (eng, zho-Hans, or zho-Hant)": (
-            "要处理的 OCR 文本语言（eng、zho-Hans 或 zho-Hant）"
-        ),
+        "launch the local OCR validation web UI": "启动本地 OCR 校验网页界面",
+        "language of the OCR text to process": "要处理的 OCR 文本语言",
         "maintainer option: write validation data updates to repo data": (
             "维护者选项：将校验数据更新写入仓库数据"
         ),
@@ -65,9 +69,8 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "寫入 OCR 處理輸出的目錄"
         ),
         "image subtitle or media infile path": "影像字幕或媒體輸入檔案路徑",
-        "language of the OCR text to process (eng, zho-Hans, or zho-Hant)": (
-            "要處理的 OCR 文字語言（eng、zho-Hans 或 zho-Hant）"
-        ),
+        "launch the local OCR validation web UI": "啟動本機 OCR 驗證網頁介面",
+        "language of the OCR text to process": "要處理的 OCR 文字語言",
         "maintainer option: write validation data updates to repo data": (
             "維護者選項：將驗證資料更新寫入儲存庫資料"
         ),
@@ -90,6 +93,7 @@ class OcrProcessCli(ScinoephileCliBase):
     localizations = merge_localizations(
         CACHE_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
+        WEB_LOCALIZATIONS,
         OCR_PROCESS_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
@@ -107,6 +111,7 @@ class OcrProcessCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "llm arguments",
+            "web arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -133,7 +138,7 @@ class OcrProcessCli(ScinoephileCliBase):
             required=True,
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help="language of the OCR text to process (eng, zho-Hans, or zho-Hant)",
+            help="language of the OCR text to process",
         )
         arg_groups["operation arguments"].add_argument(
             "--clean",
@@ -157,6 +162,14 @@ class OcrProcessCli(ScinoephileCliBase):
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
+
+        # Web arguments
+        arg_groups["web arguments"].add_argument(
+            "--interactive",
+            action="store_true",
+            help="launch the local OCR validation web UI",
+        )
+        add_web_server_args(arg_groups["web arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -192,6 +205,8 @@ class OcrProcessCli(ScinoephileCliBase):
         stream_index: int | None,
         language: Language,
         clean: bool,
+        interactive: bool,
+        web_args: WebServerArguments,
         dev: bool,
         cache_dir_path: Path,
         llm_args: LlmArguments,
@@ -215,6 +230,9 @@ class OcrProcessCli(ScinoephileCliBase):
                 stream_index=stream_index,
                 cache_dir_path=cache_dir_path,
                 clean=clean,
+                interactive=interactive,
+                host=web_args.host,
+                port=web_args.port,
                 dev=dev,
                 overwrite=overwrite,
                 provider=provider,

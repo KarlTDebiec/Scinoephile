@@ -36,8 +36,7 @@ logger = getLogger(__name__)
 
 
 _DEFAULT_TEXT_FONT_SIZE = 50
-_MIN_TEXT_BBOX_HEIGHT = 20
-_MIN_TEXT_BBOX_WIDTH = 8
+_TEXT_FONT_SIZE_PERCENTILE = 0.75
 
 
 class ImageSeries(Series):
@@ -266,21 +265,20 @@ class ImageSeries(Series):
                 bboxes = get_bboxes(subtitle.img)
             else:
                 bboxes = subtitle.bboxes
-            for bbox in bboxes:
-                if (
-                    bbox.height >= _MIN_TEXT_BBOX_HEIGHT
-                    and bbox.width >= _MIN_TEXT_BBOX_WIDTH
-                ):
-                    size_counts[bbox.height] += 1
+            size_counts.update(bbox.height for bbox in bboxes)
 
         if not size_counts:
             self._text_font_size = _DEFAULT_TEXT_FONT_SIZE
             return
 
-        self._text_font_size = max(
-            size_counts.items(),
-            key=lambda item: (item[1], item[0]),
-        )[0]
+        threshold = sum(size_counts.values()) * _TEXT_FONT_SIZE_PERCENTILE
+        cumulative_count = 0
+        for height in sorted(size_counts):
+            cumulative_count += size_counts[height]
+            if cumulative_count >= threshold:
+                self._text_font_size = height
+                return
+        self._text_font_size = max(size_counts)
 
     def _save_html(
         self,
@@ -313,40 +311,18 @@ class ImageSeries(Series):
         logger.info(f"Saved images to {dir_path}")
 
         # Save HTML index
-        html_lines = [
-            "<!DOCTYPE html>",
-            "<html>",
-            "<head>",
-            '   <meta charset="UTF-8" />',
-            "   <title>Subtitle images</title>",
-            "   <style>",
-            "      img {",
-            "         image-rendering: pixelated;",
-            "         image-rendering: crisp-edges;",
-            "      }",
-            "   </style>",
-            "</head>",
-            "<body>",
-        ]
+        html_lines = self.html_header_lines()
         for i, (event, image_path) in enumerate(zip(self, image_paths), 1):
-            start = self._format_html_time(event.start)
-            end = self._format_html_time(event.end)
-            line = (
-                f"#{i}:{start}->{end}"
-                "<div style='text-align:center'>"
-                f"<img src='{image_path.name}' />"
-            )
-            text = event.text_with_newline
-            if text.strip():
-                text = escape(text).replace("\n", "<br />")
-                line += (
-                    "<br />"
-                    "<div style='font-size:22px; background-color:WhiteSmoke'>"
-                    f"{text}</div>"
+            html_lines.append(
+                self.format_html_entry(
+                    index=i,
+                    start=event.start,
+                    end=event.end,
+                    image_name=image_path.name,
+                    text=event.text,
                 )
-            line += "</div><br /><hr />"
-            html_lines.append(line)
-        html_lines.extend(["</body>", "</html>"])
+            )
+        html_lines.extend(self.html_footer_lines())
         html_path = dir_path / "index.html"
         html_path.write_text("\n".join(html_lines), encoding=encoding, errors=errors)
         logger.info(f"Saved HTML to {html_path}")
@@ -371,7 +347,7 @@ class ImageSeries(Series):
         if not html_path.exists():
             raise ScinoephileError(f"Expected {html_path} to exist.")
         html_text = html_path.read_text(encoding=encoding, errors=errors)
-        html_events = cls._parse_html_events(html_text, dir_path)
+        html_events = cls.parse_html_events(html_text, dir_path)
 
         series = cls()
         series.format = "png"
@@ -427,7 +403,7 @@ class ImageSeries(Series):
         return series
 
     @classmethod
-    def _parse_html_events(
+    def parse_html_events(
         cls,
         html_text: str,
         dir_path: Path,
@@ -469,6 +445,44 @@ class ImageSeries(Series):
                 f"No subtitle entries found in HTML file for {dir_path}."
             )
         return events
+
+    @staticmethod
+    def format_html_entry(
+        *,
+        index: int,
+        start: int,
+        end: int,
+        image_name: str,
+        text: str,
+    ) -> str:
+        """Format one HTML subtitle entry.
+
+        Arguments:
+            index: one-based subtitle index
+            start: start time in milliseconds
+            end: end time in milliseconds
+            image_name: subtitle image file name
+            text: subtitle text using ASS newline escapes
+        Returns:
+            formatted HTML subtitle entry
+        """
+        start_text = ImageSeries._format_html_time(start)
+        end_text = ImageSeries._format_html_time(end)
+        line = (
+            f"#{index}:{start_text}->{end_text}"
+            "<div style='text-align:center'>"
+            f"<img src='{escape(image_name, quote=True)}' />"
+        )
+        text_with_newline = text.replace("\\N", "\n")
+        if text_with_newline.strip():
+            html_text = escape(text_with_newline).replace("\n", "<br />")
+            line += (
+                "<br />"
+                "<div style='font-size:22px; background-color:WhiteSmoke'>"
+                f"{html_text}</div>"
+            )
+        line += "</div><br /><hr />"
+        return line
 
     @staticmethod
     def _format_html_time(time_ms: int) -> str:
@@ -519,3 +533,35 @@ class ImageSeries(Series):
         else:
             raise ValueError(f"Unrecognized time format: {time_str}")
         return int(((hours * 3600) + (minutes * 60) + seconds) * 1000 + ms)
+
+    @staticmethod
+    def html_footer_lines() -> list[str]:
+        """Return HTML footer lines for image subtitle indexes.
+
+        Returns:
+            HTML footer lines
+        """
+        return ["</body>", "</html>"]
+
+    @staticmethod
+    def html_header_lines() -> list[str]:
+        """Return HTML header lines for image subtitle indexes.
+
+        Returns:
+            HTML header lines
+        """
+        return [
+            "<!DOCTYPE html>",
+            "<html>",
+            "<head>",
+            '   <meta charset="UTF-8" />',
+            "   <title>Subtitle images</title>",
+            "   <style>",
+            "      img {",
+            "         image-rendering: pixelated;",
+            "         image-rendering: crisp-edges;",
+            "      }",
+            "   </style>",
+            "</head>",
+            "<body>",
+        ]

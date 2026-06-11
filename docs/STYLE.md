@@ -48,6 +48,7 @@
 * Exclusively use f-strings for string interpolation.
 * Where possible, classes should implement `__repr__` methods such that they may be reconstructed from its `repr` output.
 * Avoid ternary expressions; prefer explicit `if`/`else` statements for readability.
+* Do not create public methods that only delegate to private methods with the same behavior. If the behavior belongs in the public API, put the implementation in the public method directly.
 * Use one-line block comments above continuous blocks of code when they help separate the steps of nontrivial logic; do not end these comments with periods.
 
 ## Type Annotations

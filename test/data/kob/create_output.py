@@ -9,6 +9,7 @@ from pathlib import Path
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng.block_review import (
@@ -42,7 +43,7 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
     YuePunctuationVsZhoPromptYueHant,
 )
-from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
+from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_yue_hans_transcription
 from test.helpers import test_data_root
@@ -62,7 +63,7 @@ yue_hans_transcribe_path = output_path / "yue-Hans_transcribe"
 actions = {
     "eng_ocr",
     "zho-Hant_ocr",
-    "zho-Hans_eng",
+    # "zho-Hans_eng",
     # "yue-Hant",
     # "yue-Hans",
     # "eng",
@@ -72,9 +73,9 @@ actions = {
 }
 
 if "eng_ocr" in actions:
-    process_eng_ocr(title_root, overwrite=False)
+    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
 if "zho-Hant_ocr" in actions:
-    process_zho_hant_ocr(title_root, overwrite=False)
+    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
 if "zho-Hans_eng" in actions:
     zho_hans_srt_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"

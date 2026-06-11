@@ -31,18 +31,10 @@ _OCR_EXTRA_MESSAGE = (
 _LENS_RETRY_DELAY_SECONDS = 1.5
 _LENS_LANGUAGE_CODES = {
     Language.eng: "en",
+    Language.yue_hans: "zh-CN",
+    Language.yue_hant: "zh-TW",
     Language.zho_hans: "zh-CN",
     Language.zho_hant: "zh-TW",
-}
-_LENS_LANGUAGE_ALIASES = {
-    "en": Language.eng,
-    "eng": Language.eng,
-    "zh-cn": Language.zho_hans,
-    "zh-hans": Language.zho_hans,
-    "zh-tw": Language.zho_hant,
-    "zh-hant": Language.zho_hant,
-    "zho-hans": Language.zho_hans,
-    "zho-hant": Language.zho_hant,
 }
 
 
@@ -52,7 +44,7 @@ class LensRecognizerKwargs(TypedDict, total=False):
     cache_dir_path: Path | None
     """Directory in which to cache OCR results."""
 
-    language: Language | str
+    language: Language
     """Scinoephile language."""
 
     retries: int
@@ -70,7 +62,7 @@ class LensRecognizer:
         self,
         *,
         cache_dir_path: Path | None = None,
-        language: Language | str = Language.eng,
+        language: Language = Language.eng,
         retries: int = 3,
     ):
         """Initialize.
@@ -83,13 +75,11 @@ class LensRecognizer:
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
-        self.language = _coerce_lens_language(language)
         try:
+            self.language = language
             self.lens_language_code = _LENS_LANGUAGE_CODES[self.language]
-        except KeyError as exc:
-            raise ValueError(
-                f"{self.language} is not supported by Google Lens OCR"
-            ) from exc
+        except (KeyError, ValueError) as exc:
+            raise ValueError(f"{language} is not supported by Google Lens OCR") from exc
         self.retries = val_int(retries, min_value=1)
         self._lens_api_error_class = self._get_lens_api_error_class()
         self._api = self._get_lens_api_class()()
@@ -226,7 +216,7 @@ class LensRecognizer:
             ImportError: if chrome-lens-py is not installed
         """
         try:
-            from chrome_lens_py import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from chrome_lens_py import (  # noqa: PLC0415
                 LensAPI,
             )
         except ImportError as exc:
@@ -243,12 +233,12 @@ class LensRecognizer:
             ImportError: if chrome-lens-py is not installed
         """
         try:
-            from chrome_lens_py.exceptions import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from chrome_lens_py.exceptions import (  # noqa: PLC0415
                 LensAPIError,
             )
         except ImportError as module_exc:
             try:
-                from chrome_lens_py import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+                from chrome_lens_py import (  # noqa: PLC0415
                     LensAPIError,
                 )
             except ImportError as package_exc:
@@ -396,21 +386,3 @@ class LensRecognizer:
         data = {"lines": lines}
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False)
-
-
-def _coerce_lens_language(language: Language | str) -> Language:
-    """Coerce a language value into a supported Google Lens language.
-
-    Arguments:
-        language: Scinoephile language or legacy Google Lens language code
-    Returns:
-        Scinoephile language
-    Raises:
-        ValueError: if the language is unsupported
-    """
-    if isinstance(language, Language):
-        return language
-    if language_key := language.strip().casefold():
-        if language_key in _LENS_LANGUAGE_ALIASES:
-            return _LENS_LANGUAGE_ALIASES[language_key]
-    raise ValueError(f"{language} is not supported by Google Lens OCR")

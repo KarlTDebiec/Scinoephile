@@ -7,18 +7,20 @@ from __future__ import annotations
 import re
 import unicodedata
 from copy import deepcopy
+from functools import cache
 from warnings import catch_warnings, simplefilter
 
 with catch_warnings():
     simplefilter("ignore", SyntaxWarning)
     import jieba
-from pypinyin import pinyin
+from pypinyin import Style, lazy_pinyin, pinyin
 from pypinyin.contrib.tone_convert import tone_to_tone3
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import full_to_half_punc
 
 __all__ = [
+    "get_cmn_char_romanized",
     "get_cmn_pinyin_query_strings",
     "get_cmn_romanized",
     "get_cmn_text_romanized",
@@ -38,6 +40,18 @@ RE_CMN_PINYIN = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]?$")
 RE_CMN_PINYIN_ACCENTED = re.compile(rf"^{RE_CMN_PINYIN_BASE}$")
 RE_CMN_PINYIN_NUMBERED = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]$")
 RE_CMN_PROHIBITED_TOKEN = re.compile(r"^(gw|kw|ng)|h$", re.IGNORECASE)
+
+
+@cache
+def get_cmn_char_romanized(text: str) -> str:
+    """Get Mandarin pinyin romanization of a Hanzi character or short text.
+
+    Arguments:
+        text: Hanzi character or short text
+    Returns:
+        Mandarin pinyin romanization, or empty string for non-Hanzi text
+    """
+    return " ".join(lazy_pinyin(text, style=Style.TONE, errors="ignore", strict=False))
 
 
 def get_cmn_pinyin_query_strings(text: str) -> list[str]:

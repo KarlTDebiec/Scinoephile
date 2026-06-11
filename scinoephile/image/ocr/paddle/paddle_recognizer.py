@@ -37,21 +37,10 @@ _OCR_EXTRA_MESSAGE = (
 )
 _PADDLE_LANGUAGE_CODES = {
     Language.eng: "en",
+    Language.yue_hans: "ch",
+    Language.yue_hant: "chinese_cht",
     Language.zho_hans: "ch",
     Language.zho_hant: "chinese_cht",
-}
-_PADDLE_LANGUAGE_ALIASES = {
-    "ch": Language.zho_hans,
-    "chi_sim": Language.zho_hans,
-    "chinese_cht": Language.zho_hant,
-    "en": Language.eng,
-    "eng": Language.eng,
-    "zh-cn": Language.zho_hans,
-    "zh-hans": Language.zho_hans,
-    "zh-tw": Language.zho_hant,
-    "zh-hant": Language.zho_hant,
-    "zho-hans": Language.zho_hans,
-    "zho-hant": Language.zho_hant,
 }
 
 
@@ -61,7 +50,7 @@ class PaddleRecognizerKwargs(TypedDict, total=False):
     cache_dir_path: Path | None
     """Directory in which to cache OCR results."""
 
-    language: Language | str
+    language: Language
     """Scinoephile language."""
 
     min_confidence: float
@@ -75,7 +64,7 @@ class PaddleRecognizer:
         self,
         *,
         cache_dir_path: Path | None = None,
-        language: Language | str = Language.eng,
+        language: Language = Language.eng,
         min_confidence: float = 0.0,
     ):
         """Initialize.
@@ -87,11 +76,11 @@ class PaddleRecognizer:
         Raises:
             ValueError: if language is unsupported
         """
-        self.language = _coerce_paddle_language(language)
         try:
+            self.language = language
             self.paddle_language_code = _PADDLE_LANGUAGE_CODES[self.language]
-        except KeyError as exc:
-            raise ValueError(f"{self.language} is not supported by PaddleOCR") from exc
+        except (KeyError, ValueError) as exc:
+            raise ValueError(f"{language} is not supported by PaddleOCR") from exc
         os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
 
         self.min_confidence = min_confidence
@@ -176,7 +165,7 @@ class PaddleRecognizer:
     def _get_paddle_ocr_class() -> Any:
         """Import PaddleOCR on demand."""
         try:
-            from paddleocr import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from paddleocr import (  # noqa: PLC0415
                 PaddleOCR,
             )
         except ImportError as exc:
@@ -344,21 +333,3 @@ class PaddleRecognizer:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump([asdict(result) for result in results], file, ensure_ascii=False)
-
-
-def _coerce_paddle_language(language: Language | str) -> Language:
-    """Coerce a language value into a supported PaddleOCR language.
-
-    Arguments:
-        language: Scinoephile language or legacy PaddleOCR language code
-    Returns:
-        Scinoephile language
-    Raises:
-        ValueError: if the language is unsupported
-    """
-    if isinstance(language, Language):
-        return language
-    if language_key := language.strip().casefold():
-        if language_key in _PADDLE_LANGUAGE_ALIASES:
-            return _PADDLE_LANGUAGE_ALIASES[language_key]
-    raise ValueError(f"{language} is not supported by PaddleOCR")

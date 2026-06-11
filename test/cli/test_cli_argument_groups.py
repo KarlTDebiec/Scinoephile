@@ -20,6 +20,7 @@ from scinoephile.cli.helpers.web import (
 )
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
+from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
@@ -102,6 +103,18 @@ def test_add_llm_provider_args_bundles_standard_llm_options(tmp_path):
 
     default_namespace = parser.parse_args([])
     assert default_namespace.llm_args == LlmArguments()
+
+
+@pytest.mark.parametrize("cli", (OcrProcessCli, OcrValidateCli))
+def test_ocr_web_options_are_in_web_argument_group(cli: type[CommandLineInterface]):
+    """Test OCR web options are grouped separately from operation options.
+
+    Arguments:
+        cli: CLI class to inspect
+    """
+    assert _get_action_group_title(cli, "--interactive") == "web arguments"
+    assert _get_action_group_title(cli, "--host") == "web arguments"
+    assert _get_action_group_title(cli, "--port") == "web arguments"
 
 
 def test_add_web_server_args_bundles_standard_host_and_port():

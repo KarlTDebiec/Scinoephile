@@ -10,16 +10,13 @@ import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from types import ModuleType, SimpleNamespace
-from typing import Any
+from typing import Any, cast
 
 import pytest
 from PIL import Image
 
 from scinoephile.core import Language
-from scinoephile.image.ocr.lens.lens_recognizer import (
-    LensRecognizer,
-    _coerce_lens_language,
-)
+from scinoephile.image.ocr.lens.lens_recognizer import LensRecognizer
 
 
 class FakeLensApiError(RuntimeError):
@@ -155,31 +152,49 @@ def test_normalize_lens_result_supports_object_results():
 def test_lens_recognizer_rejects_unsupported_languages():
     """Test Google Lens recognizer only supports English and Chinese."""
     with pytest.raises(ValueError, match="not supported by Google Lens OCR"):
-        LensRecognizer(language="korean")
+        LensRecognizer(language=cast(Language, "korean"))
 
 
 @pytest.mark.parametrize(
-    ("language", "expected"),
+    ("language", "expected_code"),
     [
-        ("en", Language.eng),
-        ("eng", Language.eng),
-        ("zh-CN", Language.zho_hans),
-        ("zh-TW", Language.zho_hant),
-        ("zho-Hans", Language.zho_hans),
-        ("zho-Hant", Language.zho_hant),
+        (Language.eng, "en"),
+        (Language.yue_hans, "zh-CN"),
+        (Language.yue_hant, "zh-TW"),
+        (Language.zho_hans, "zh-CN"),
+        (Language.zho_hant, "zh-TW"),
     ],
 )
-def test_coerce_lens_language_accepts_current_and_legacy_codes(
-    language: str,
-    expected: Language,
+def test_lens_recognizer_maps_supported_languages_to_engine_codes(
+    monkeypatch: pytest.MonkeyPatch,
+    language: Language,
+    expected_code: str,
 ):
-    """Test Google Lens language coercion accepts supported language codes.
+    """Test Google Lens recognizer maps supported languages to engine codes.
 
     Arguments:
-        language: language code to coerce
-        expected: expected Scinoephile language
+        monkeypatch: pytest monkeypatch fixture
+        language: language to use
+        expected_code: expected Google Lens language code
     """
-    assert _coerce_lens_language(language) is expected
+
+    class FakeLensApi:
+        """Fake chrome-lens-py LensAPI class."""
+
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer._get_lens_api_class",
+        staticmethod(lambda: FakeLensApi),
+    )
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.lens_recognizer.LensRecognizer."
+        "_get_lens_api_error_class",
+        staticmethod(lambda: FakeLensApiError),
+    )
+
+    recognizer = LensRecognizer(language=language)
+
+    assert recognizer.language is language
+    assert recognizer.lens_language_code == expected_code
 
 
 def test_lens_recognizer_caches_results_by_image(tmp_path: Path):

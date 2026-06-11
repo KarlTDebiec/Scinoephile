@@ -64,6 +64,10 @@ class Language(DescribedEnum):
 
     eng = ("eng", "English.")
     """English."""
+    yue_hans = ("yue-Hans", "Cantonese, simplified Chinese script.")
+    """Cantonese in simplified Chinese script."""
+    yue_hant = ("yue-Hant", "Cantonese, traditional Chinese script.")
+    """Cantonese in traditional Chinese script."""
     zho_hans = ("zho-Hans", "Simplified Chinese.")
     """Simplified Chinese."""
     zho_hant = ("zho-Hant", "Traditional Chinese.")
@@ -72,14 +76,19 @@ class Language(DescribedEnum):
     @property
     def is_chinese(self) -> bool:
         """Whether this language represents Chinese text."""
-        return self is Language.zho_hans or self is Language.zho_hant
+        return self in (
+            Language.yue_hans,
+            Language.yue_hant,
+            Language.zho_hans,
+            Language.zho_hant,
+        )
 
     @property
     def script(self) -> ChineseScript | None:
         """Chinese script implied by this language, if any."""
-        if self is Language.zho_hans:
+        if self in (Language.yue_hans, Language.zho_hans):
             return "simplified"
-        if self is Language.zho_hant:
+        if self in (Language.yue_hant, Language.zho_hant):
             return "traditional"
         return None
 

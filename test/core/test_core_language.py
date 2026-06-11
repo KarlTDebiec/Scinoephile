@@ -25,6 +25,13 @@ def test_language_enum_exposes_simplified_chinese_metadata():
     assert Language.zho_hans.is_chinese
 
 
+def test_language_enum_exposes_simplified_cantonese_metadata():
+    """Test simplified Cantonese language enum metadata."""
+    assert Language.yue_hans.tag == "yue-Hans"
+    assert Language.yue_hans.script == "simplified"
+    assert Language.yue_hans.is_chinese
+
+
 def test_language_enum_exposes_traditional_chinese_metadata():
     """Test traditional Chinese language enum metadata."""
     assert Language.zho_hant.tag == "zho-Hant"
@@ -32,9 +39,18 @@ def test_language_enum_exposes_traditional_chinese_metadata():
     assert Language.zho_hant.is_chinese
 
 
+def test_language_enum_exposes_traditional_cantonese_metadata():
+    """Test traditional Cantonese language enum metadata."""
+    assert Language.yue_hant.tag == "yue-Hant"
+    assert Language.yue_hant.script == "traditional"
+    assert Language.yue_hant.is_chinese
+
+
 def test_language_enum_parses_tags():
     """Test language enum parses exact supported tags."""
     assert Language("eng") is Language.eng
+    assert Language("yue-Hans") is Language.yue_hans
+    assert Language("yue-Hant") is Language.yue_hant
     assert Language("zho-Hans") is Language.zho_hans
     assert Language("zho-Hant") is Language.zho_hant
 
@@ -47,6 +63,8 @@ def test_language_rejects_unsupported_tag():
 
 def test_is_chinese_language_tag_detects_chinese_tags():
     """Test Chinese language tag detection."""
+    assert is_chinese_language_tag(Language.yue_hans)
+    assert is_chinese_language_tag(Language.yue_hant)
     assert is_chinese_language_tag(Language.zho_hans)
     assert is_chinese_language_tag(Language.zho_hant)
     assert is_chinese_language_tag("chi")

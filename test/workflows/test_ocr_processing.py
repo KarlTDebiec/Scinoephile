@@ -15,6 +15,7 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
+from scinoephile.web.ocr_validation.html_index import load_html_entries
 from scinoephile.workflows.ocr_processing import (
     OcrProcessingResult,
     OcrProcessingWorkflow,
@@ -143,7 +144,9 @@ def test_ocr_processing_workflow_rejects_invalid_language_in_init(tmp_path: Path
 
     with pytest.raises(
         ScinoephileError,
-        match="language must be eng, zho-Hans, or zho-Hant, not spa",
+        match=(
+            "language must be eng, yue-Hans, yue-Hant, zho-Hans, or zho-Hant, not spa"
+        ),
     ):
         OcrProcessingWorkflow(
             tmp_path / "source.sup",
@@ -371,7 +374,7 @@ def test_process_eng_ocr_validates_fuse_clean_output(
     output_dir_path = tmp_path / "output"
     manager_instances: list[object] = []
     manager_calls: list[bool] = []
-    validate_calls: list[tuple[list[str], object, bool]] = []
+    validate_calls: list[tuple[list[str], object]] = []
 
     class FakeValidationManager:
         """Fake validation manager."""
@@ -386,11 +389,9 @@ def test_process_eng_ocr_validates_fuse_clean_output(
             manager_instances.append(self)
             manager_calls.append(dev)
 
-        def validate(self, series: ImageSeries, interactive: bool = False) -> Series:
+        def validate(self, series: ImageSeries) -> Series:
             """Validate an image series."""
-            validate_calls.append(
-                ([subtitle.text for subtitle in series], self, interactive)
-            )
+            validate_calls.append(([subtitle.text for subtitle in series], self))
             return _series_with_texts(["validated 1", "validated 2"])
 
     monkeypatch.setattr(
@@ -429,11 +430,118 @@ def test_process_eng_ocr_validates_fuse_clean_output(
         output_dir_path / "fuse_clean_validate.srt"
     )
     assert manager_calls == [True]
-    assert validate_calls == [(["fused 1…", "fused 2…"], manager_instances[0], False)]
+    assert validate_calls == [(["fused 1…", "fused 2…"], manager_instances[0])]
     assert [
         subtitle.text
         for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
     ] == ["validated 1", "validated 2"]
+
+
+def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test interactive OCR processing launches web validation after SUP extraction.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+    """
+    source_path = tmp_path / "source.sup"
+    source_path.write_bytes(b"unused")
+    output_dir_path = tmp_path / "output"
+    validate_calls: list[dict[str, object]] = []
+
+    def fake_validate_ocr(
+        infile_path: Path,
+        outfile_path: Path,
+        *,
+        cache_dir_path: Path | str | None = None,
+        interactive: bool = False,
+        dev: bool = False,
+        overwrite: bool = False,
+        host: str = "127.0.0.1",
+        port: int = 5000,
+    ) -> Series:
+        """Fake web validation by writing the expected validation output."""
+        validate_calls.append(
+            {
+                "infile_path": infile_path,
+                "outfile_path": outfile_path,
+                "texts": [entry.text for entry in load_html_entries(infile_path)],
+                "cache_dir_path": cache_dir_path,
+                "interactive": interactive,
+                "dev": dev,
+                "overwrite": overwrite,
+                "host": host,
+                "port": port,
+            }
+        )
+        validated = _series_with_texts(
+            ["interactive validated 1", "interactive validated 2"]
+        )
+        validated.save(outfile_path)
+        return validated
+
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ImageSeries.load",
+        lambda path: tiny_image_series,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
+        lambda image_series, *, language: _series_with_texts(["lens 1", "lens 2"]),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
+        lambda image_series, *, language: _series_with_texts(
+            ["tesseract 1", "tesseract 2"]
+        ),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
+        lambda provider, additional_context: object(),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
+        lambda lens, tesseract, processor: _series_with_texts(
+            ["fused 1...", "fused 2..."]
+        ),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.validate_ocr",
+        fake_validate_ocr,
+    )
+
+    result = process_eng_ocr(
+        source_path,
+        output_dir_path,
+        interactive=True,
+        dev=True,
+        host="0.0.0.0",
+        port=5050,
+    )
+
+    validate_path = output_dir_path / "fuse_clean_validate.srt"
+    assert validate_calls == [
+        {
+            "infile_path": output_dir_path / "image",
+            "outfile_path": validate_path,
+            "texts": ["fused 1…", "fused 2…"],
+            "cache_dir_path": None,
+            "interactive": True,
+            "dev": True,
+            "overwrite": False,
+            "host": "0.0.0.0",
+            "port": 5050,
+        }
+    ]
+    assert result.output_paths["fuse_clean_validate"] == validate_path
+    assert [subtitle.text for subtitle in Series.load(validate_path)] == [
+        "interactive validated 1",
+        "interactive validated 2",
+    ]
 
 
 def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
@@ -468,7 +576,6 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
         image_path.name: image_path.read_bytes()
         for image_path in image_dir_path.glob("*.png")
     }
-    original_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
     validate_texts: list[list[str]] = []
     validate_managers: list[object] = []
 
@@ -483,7 +590,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
         ):
             """Initialize."""
 
-        def validate(self, series: ImageSeries, interactive: bool = False) -> Series:
+        def validate(self, series: ImageSeries) -> Series:
             """Validate an image series."""
             validate_managers.append(self)
             validate_texts.append([subtitle.text for subtitle in series])
@@ -528,7 +635,8 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
     }
     assert current_images == original_images
     current_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
-    assert current_index == original_index
+    assert "fused 1…" in current_index
+    assert "fused 2…" in current_index
 
 
 def test_process_zho_ocr_runs_lens_paddle_and_fusion(
@@ -789,7 +897,7 @@ def test_process_zho_ocr_validates_fuse_clean_output(
     output_dir_path = tmp_path / "output"
     manager_instances: list[object] = []
     manager_calls: list[bool] = []
-    validate_calls: list[tuple[list[str], object, bool]] = []
+    validate_calls: list[tuple[list[str], object]] = []
 
     class FakeValidationManager:
         """Fake validation manager."""
@@ -804,11 +912,9 @@ def test_process_zho_ocr_validates_fuse_clean_output(
             manager_instances.append(self)
             manager_calls.append(dev)
 
-        def validate(self, series: ImageSeries, interactive: bool = False) -> Series:
+        def validate(self, series: ImageSeries) -> Series:
             """Validate an image series."""
-            validate_calls.append(
-                ([subtitle.text for subtitle in series], self, interactive)
-            )
+            validate_calls.append(([subtitle.text for subtitle in series], self))
             return _series_with_texts(["validated 1", "validated 2"])
 
     monkeypatch.setattr(
@@ -845,7 +951,7 @@ def test_process_zho_ocr_validates_fuse_clean_output(
         output_dir_path / "fuse_clean_validate.srt"
     )
     assert manager_calls == [True]
-    assert validate_calls == [(["fused 1⋯", "fused 2⋯"], manager_instances[0], False)]
+    assert validate_calls == [(["fused 1⋯", "fused 2⋯"], manager_instances[0])]
     assert [
         subtitle.text
         for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
