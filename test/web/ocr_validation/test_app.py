@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import logging
 import subprocess
 import sys
 from collections.abc import Mapping, Sequence
@@ -65,6 +66,10 @@ def test_create_app_import_error_is_actionable(monkeypatch: pytest.MonkeyPatch):
 def test_run_app_wraps_server_errors(monkeypatch: pytest.MonkeyPatch):
     """Test web app server errors are user-facing."""
     monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.app._port_is_in_use",
+        lambda host, port: False,
+    )
+    monkeypatch.setattr(
         "scinoephile.web.ocr_validation.app.create_app",
         lambda session: object(),
     )
@@ -85,6 +90,60 @@ def test_run_app_wraps_server_errors(monkeypatch: pytest.MonkeyPatch):
         run_app(cast(OcrValidationSession, object()), "127.0.0.1", 5000)
 
     assert isinstance(excinfo.value.__cause__, OSError)
+
+
+def test_run_app_uses_available_port_when_requested_port_is_in_use(
+    caplog: pytest.LogCaptureFixture,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test web app falls back when the requested port is already occupied."""
+
+    class FakeServer:
+        """Fake Werkzeug server."""
+
+        server_port = 54321
+
+        def serve_forever(self):
+            """Serve until stopped."""
+
+    class FakeApp:
+        """Fake Flask app."""
+
+        def __init__(self):
+            """Initialize."""
+            self.config: dict[str, object] = {}
+
+    captured: dict[str, int] = {}
+
+    def fake_make_server(host: str, port: int, app: object) -> FakeServer:
+        """Fake Werkzeug server factory.
+
+        Arguments:
+            host: host address to bind
+            port: port to bind
+            app: WSGI app
+        Returns:
+            fake server
+        """
+        captured["port"] = port
+        return FakeServer()
+
+    caplog.set_level(logging.INFO, logger="scinoephile.web.ocr_validation.app")
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.app._port_is_in_use",
+        lambda host, port: True,
+    )
+    monkeypatch.setattr(
+        "scinoephile.web.ocr_validation.app.create_app",
+        lambda session: FakeApp(),
+    )
+    monkeypatch.setattr("werkzeug.serving.make_server", fake_make_server)
+
+    run_app(cast(OcrValidationSession, object()), "127.0.0.1", 5000)
+
+    assert captured["port"] == 0
+    assert "OCR validation web UI port 5000 is already in use" in caplog.text
+    assert "OCR validation web UI: http://127.0.0.1:54321/" in caplog.text
 
 
 def test_web_package_imports_flask_only_when_needed():
