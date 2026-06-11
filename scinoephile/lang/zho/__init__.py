@@ -3,7 +3,7 @@
 """Code related to Chinese (zho) text.
 
 Package hierarchy (modules may import from any above):
-* cleaning / flattening / ocr_validation / script
+* cleaning / flattening / script
 * prompts / subtitles
 * block_review / ocr_fusion
 """

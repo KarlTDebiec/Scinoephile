@@ -8,13 +8,15 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import ClassVar
 
-from scinoephile.cli.conversion import (
+from scinoephile.cli.helpers.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
-from scinoephile.cli.llms import (
+from scinoephile.cli.helpers.io import read_series, write_series
+from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
-    add_llm_provider_arguments,
+    LlmArguments,
+    add_llm_provider_args,
     read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
@@ -23,7 +25,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -117,6 +119,7 @@ class OcrFuseCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "llm arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -162,8 +165,8 @@ class OcrFuseCli(ScinoephileCliBase):
         add_opencc_convert_argument(
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
-        add_llm_provider_arguments(
-            arg_groups["operation arguments"], arg_groups["additional help"]
+        add_llm_provider_args(
+            arg_groups["llm arguments"], arg_groups["additional help"]
         )
 
         # Output arguments
@@ -202,9 +205,7 @@ class OcrFuseCli(ScinoephileCliBase):
         paddle_infile_path: Path | str | None,
         clean: bool,
         convert: OpenCCConfig | None,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        llm_args: LlmArguments,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -214,9 +215,9 @@ class OcrFuseCli(ScinoephileCliBase):
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
         additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
+            parser, llm_args.additional_context_file_path
         )
-        provider = get_provider(llm_provider_name, model=llm_model_name)
+        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
 
         # Dispatch to language-specific implementation
         if language == "eng":

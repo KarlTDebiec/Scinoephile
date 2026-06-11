@@ -7,20 +7,23 @@ from __future__ import annotations
 import re
 import unicodedata
 from copy import deepcopy
+from functools import cache
 from warnings import catch_warnings, simplefilter
 
 with catch_warnings():
     simplefilter("ignore", SyntaxWarning)
     import jieba
-from pypinyin import pinyin
+from pypinyin import Style, lazy_pinyin, pinyin
 from pypinyin.contrib.tone_convert import tone_to_tone3
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import full_to_half_punc
 
 __all__ = [
+    "get_cmn_char_romanized",
     "get_cmn_pinyin_query_strings",
     "get_cmn_romanized",
+    "get_cmn_text_romanized",
     "is_accented_pinyin",
     "is_numbered_pinyin",
 ]
@@ -37,6 +40,18 @@ RE_CMN_PINYIN = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]?$")
 RE_CMN_PINYIN_ACCENTED = re.compile(rf"^{RE_CMN_PINYIN_BASE}$")
 RE_CMN_PINYIN_NUMBERED = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]$")
 RE_CMN_PROHIBITED_TOKEN = re.compile(r"^(gw|kw|ng)|h$", re.IGNORECASE)
+
+
+@cache
+def get_cmn_char_romanized(text: str) -> str:
+    """Get Mandarin pinyin romanization of a Hanzi character or short text.
+
+    Arguments:
+        text: Hanzi character or short text
+    Returns:
+        Mandarin pinyin romanization, or empty string for non-Hanzi text
+    """
+    return " ".join(lazy_pinyin(text, style=Style.TONE, errors="ignore", strict=False))
 
 
 def get_cmn_pinyin_query_strings(text: str) -> list[str]:
@@ -85,7 +100,7 @@ def get_cmn_romanized(series: Series, append: bool = True) -> Series:
     """
     series = deepcopy(series)
     for event in series:
-        romanized = _get_cmn_text_romanized(event.text)
+        romanized = get_cmn_text_romanized(event.text)
         if append:
             if romanized:
                 event.text = f"{event.text}\\N{romanized}"
@@ -155,7 +170,7 @@ def is_numbered_pinyin(text: str) -> bool:
     return all(RE_CMN_PINYIN_NUMBERED.fullmatch(token) for token in tokens)
 
 
-def _get_cmn_text_romanized(text: str) -> str:
+def get_cmn_text_romanized(text: str) -> str:
     """Get the Mandarin pinyin romanization of Hanzi text.
 
     Arguments:

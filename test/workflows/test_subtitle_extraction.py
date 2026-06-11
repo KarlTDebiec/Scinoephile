@@ -133,6 +133,42 @@ def test_extract_subtitles_details_uses_detected_chinese_script(tmp_path: Path):
     assert result.outputs[0].path == output_dir_path / "zho-Hant-4.srt"
 
 
+def test_extract_subtitles_matches_script_qualified_language_tag(tmp_path: Path):
+    """Test subtitle extraction matches script-qualified language tags.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
+    cache_dir_path = tmp_path / "cache"
+    cache_path = cache_dir_path / "zho-Hant-4.srt"
+    stream = SubtitleStream(index=4, language="zho-Hant", codec_name="subrip")
+
+    with (
+        patch(
+            "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
+            return_value=[stream],
+        ),
+        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
+        patch(
+            "scinoephile.workflows.subtitle_extraction.get_subtitle_cache_path",
+            return_value=cache_path,
+        ),
+        patch("scinoephile.workflows.subtitle_extraction.copy2") as copy,
+    ):
+        result = extract_subtitles(
+            infile_path=infile_path,
+            languages=["zho-Hant"],
+            output_dir_path=output_dir_path,
+            cache_dir_path=cache_dir_path,
+        )
+
+    copy.assert_called_once_with(cache_path, output_dir_path / "zho-Hant-4.srt")
+    assert result.outputs[0].stream is stream
+
+
 def test_extract_subtitles_reports_existing_outputs(tmp_path: Path):
     """Test subtitle extraction workflow reports existing files.
 

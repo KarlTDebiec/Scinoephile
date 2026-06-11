@@ -7,11 +7,9 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-
-# noinspection PyProtectedMember
 from scinoephile.lang.yue.romanization import (
-    _get_yue_text_romanized,
     get_yue_romanized,
+    get_yue_text_romanized,
 )
 from test.helpers import assert_series_equal
 
@@ -64,10 +62,10 @@ def test_get_yue_romanized_titles(
     ],
 )
 def test_get_yue_text_romanized(text: str, expected: str):
-    """Test _get_cantonese_text_romanization.
+    """Test get_yue_text_romanized.
 
     Arguments:
         text: Text to romanize
         expected: Expected romanization
     """
-    assert _get_yue_text_romanized(text) == expected
+    assert get_yue_text_romanized(text) == expected

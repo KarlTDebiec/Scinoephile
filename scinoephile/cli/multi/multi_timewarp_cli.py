@@ -7,6 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -14,7 +15,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.timing import get_series_timewarped
 
 __all__ = ["MultiTimewarpCli"]

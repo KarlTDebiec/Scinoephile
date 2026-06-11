@@ -15,6 +15,7 @@ from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
 from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
+from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
@@ -34,6 +35,7 @@ from scinoephile.common.testing import run_cli_with_args
         EngTranslateFromYueCli,
         EngTranslateFromZhoCli,
         OcrFuseCli,
+        OcrProcessCli,
         YueProcessCli,
         YueReviewVsZhoCli,
         YueTranscribeVsZhoCli,
@@ -65,7 +67,7 @@ def test_list_llm_providers(cli: type[CommandLineInterface]):
     assert "default model: deepseek-v4-flash" in listing
     assert "API key env: DEEPSEEK_API_KEY" in listing
     assert "  openai    OpenAI LLM Provider." in listing
-    assert "default model: gpt-5.4" in listing
+    assert "default model: gpt-5.4-mini" in listing
     assert "API key env: OPENAI_API_KEY" in listing
 
 
@@ -87,7 +89,7 @@ def test_list_llm_providers_uses_simplified_chinese_descriptions():
     assert "default model: deepseek-v4-flash" in listing
     assert "API key env: DEEPSEEK_API_KEY" in listing
     assert "  openai    OpenAI LLM 提供商。" in listing
-    assert "default model: gpt-5.4" in listing
+    assert "default model: gpt-5.4-mini" in listing
     assert "API key env: OPENAI_API_KEY" in listing
 
 

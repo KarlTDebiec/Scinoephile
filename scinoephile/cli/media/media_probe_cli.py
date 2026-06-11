@@ -7,13 +7,14 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.media import SubtitleStream
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_streams
@@ -44,7 +45,7 @@ MEDIA_PROBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class MediaProbeCli(ScinoephileCliBase):
     """List media streams in a media file."""
 
-    localizations = MEDIA_PROBE_LOCALIZATIONS
+    localizations = merge_localizations(CACHE_LOCALIZATIONS, MEDIA_PROBE_LOCALIZATIONS)
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -77,12 +78,11 @@ class MediaProbeCli(ScinoephileCliBase):
             action="store_true",
             help="include additional stream details",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--cache-dir",
-            default=cache_dir_path_arg("media", "subtitles"),
-            dest="cache_dir_path",
-            type=cache_dir_path_arg,
-            help=(
+        add_cache_dir_arg(
+            arg_groups["operation arguments"],
+            "media",
+            "subtitles",
+            help_text=(
                 "cache directory for reusable media stream inspection data "
                 "(default: %(default)s)"
             ),

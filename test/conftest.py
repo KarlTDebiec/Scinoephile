@@ -15,6 +15,7 @@ from test.data.kob import *
 from test.data.mlamd import *
 from test.data.mnt import *
 from test.data.t import *
+from test.data.tmm import *
 
 
 @pytest.fixture

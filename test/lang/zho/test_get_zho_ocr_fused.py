@@ -4,7 +4,10 @@
 
 from __future__ import annotations
 
-from scinoephile.core.subtitles import Series
+from unittest.mock import Mock
+
+from scinoephile.core.llms import LLMProvider
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
@@ -34,6 +37,35 @@ def _test_get_zho_ocr_fused(
 
     assert len(output) == len(expected)
     assert_series_equal(output, expected)
+
+
+def test_get_zho_ocr_fused_treats_newline_forms_as_identical():
+    """Test OCR fusion skips queries when texts only differ by newline form."""
+    lens = Series(
+        [
+            Subtitle(
+                start=0,
+                end=1000,
+                text="嗯达摩\n达摩祖师果然厉害",
+            )
+        ]
+    )
+    paddle = Series(
+        [
+            Subtitle(
+                start=0,
+                end=1000,
+                text="嗯达摩\\N达摩祖师果然厉害",
+            )
+        ]
+    )
+    provider = Mock(spec=LLMProvider)
+    processor = get_zho_ocr_fuser(provider=provider)
+
+    output = get_zho_ocr_fused(lens, paddle, processor=processor)
+
+    assert output.events[0].text == "嗯达摩\n达摩祖师果然厉害"
+    provider.chat_completion.assert_not_called()
 
 
 def test_get_zho_ocr_fused_kob(

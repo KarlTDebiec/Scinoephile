@@ -6,6 +6,7 @@ __pycache__
 scinoephile.egg-info
 /local/
 /test/.coverage
+/test/data/*/input/*_ocr/source.sup
 /test/data/*/output/**/*.html
 /test/data/*/output/**/*.json
 /test/data/*/output/**/*.png

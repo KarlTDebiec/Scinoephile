@@ -17,7 +17,7 @@ dependencies = [
     "jieba>=0.42.1",
     "numba>=0.65.1",
     "numpy>=2.4.6",
-    "openai>=2.36.0",
+    "openai>=2.41.0",
     "opencc>=1.3.1",
     "pillow>=12.1.1",
     "pycantonese>=5.0.0",
@@ -39,12 +39,15 @@ ocr = [
 ]
 transcription = [
     "demucs-infer>=4.1.2",
-    "huggingface-hub>=1.17.0",
+    "huggingface-hub>=1.18.0",
     "onnxruntime>=1.26.0",
     "torch>=2.10.0",
     "torchaudio>=2.10.0,<2.11.0",
-    "transformers>=5.9.0",
+    "transformers>=5.10.2",
     "whisper-timestamped>=1.15.9",
+]
+web = [
+    "flask>=3.1.3",
 ]
 
 [project.scripts]
@@ -52,12 +55,13 @@ scinoephile = "scinoephile.cli.scinoephile_cli:ScinoephileCli.main"
 
 [dependency-groups]
 dev = [
+    "flask>=3.1.3",
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
     "pytest-github-actions-annotate-failures>=0.4.0",
     "pytest-xdist>=3.8.0",
-    "ruff>=0.15.13",
-    "ty>=0.0.40",
+    "ruff>=0.15.16",
+    "ty>=0.0.44",
 ]
 
 [tool.pytest.ini_options]
@@ -94,6 +98,13 @@ ignore = [
 [tool.ruff.lint.pydocstyle]
 convention = 'google'
 
+[tool.ty.analysis]
+allowed-unresolved-imports = [
+    "chrome_lens_py",
+    "chrome_lens_py.**",
+    "paddleocr",
+]
+
 [tool.setuptools]
 include-package-data = true
 packages = { find = { include = ["scinoephile*"] } }
@@ -105,6 +116,8 @@ scinoephile = [
     "data/dictionaries/unihan/*.txt",
     "data/ocr/*.csv",
     "data/ocr/*.txt",
+    "web/static/*.js",
+    "web/ocr_validation/templates/*.html",
 ]
 
 [tool.uv]

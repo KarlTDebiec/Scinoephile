@@ -10,6 +10,7 @@ from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
     float_arg,
@@ -19,7 +20,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.stacking import StackTimingMode, get_stacked_series
 from scinoephile.core.synchronization import (
     get_sync_offset_stats,

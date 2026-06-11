@@ -9,6 +9,7 @@ from copy import deepcopy
 from logging import getLogger
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
@@ -17,7 +18,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.synchronization import get_sync_offset_stats
 
 __all__ = ["MultiSyncCli"]
