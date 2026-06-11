@@ -429,7 +429,7 @@ def test_process_eng_ocr_validates_fuse_clean_output(
         output_dir_path / "fuse_clean_validate.srt"
     )
     assert manager_calls == [True]
-    assert validate_calls == [(["fused 1…", "fused 2…"], manager_instances[0], True)]
+    assert validate_calls == [(["fused 1…", "fused 2…"], manager_instances[0], False)]
     assert [
         subtitle.text
         for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
@@ -845,7 +845,7 @@ def test_process_zho_ocr_validates_fuse_clean_output(
         output_dir_path / "fuse_clean_validate.srt"
     )
     assert manager_calls == [True]
-    assert validate_calls == [(["fused 1⋯", "fused 2⋯"], manager_instances[0], True)]
+    assert validate_calls == [(["fused 1⋯", "fused 2⋯"], manager_instances[0], False)]
     assert [
         subtitle.text
         for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")

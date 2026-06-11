@@ -32,7 +32,7 @@ def validate_ocr(
         source: image subtitle input path or image series
         outfile_path: validated subtitle output path
         cache_dir_path: cache directory for local OCR validation data
-        interactive: whether to request interactive validation
+        interactive: accepted for compatibility; validation remains noninteractive
         dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing validation output
     Returns:
@@ -43,11 +43,6 @@ def validate_ocr(
         return Series.load(outfile_path)
 
     try:
-        if interactive:
-            raise ScinoephileError(
-                "Interactive OCR validation is not available in this workflow"
-            )
-
         if isinstance(source, ImageSeries):
             image_series = source
         else:

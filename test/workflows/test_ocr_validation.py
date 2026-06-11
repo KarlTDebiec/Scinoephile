@@ -8,7 +8,6 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.workflows.ocr_validation import validate_ocr
@@ -98,13 +97,47 @@ def test_validate_ocr_runs_noninteractive_validation(
     assert "validated" in outfile_path.read_text(encoding="utf-8")
 
 
-def test_validate_ocr_rejects_interactive_validation(
+def test_validate_ocr_ignores_interactive_validation(
+    monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
+    tiny_image_series: ImageSeries,
 ):
-    """Test interactive validation is reserved for the web workflow."""
+    """Test interactive compatibility mode remains noninteractive."""
     infile_path = tmp_path / "source.sup"
     infile_path.write_bytes(b"unused")
     outfile_path = tmp_path / "validated.srt"
+    validate_calls: list[bool] = []
 
-    with pytest.raises(ScinoephileError, match="Interactive OCR validation"):
-        validate_ocr(infile_path, outfile_path, interactive=True)
+    class FakeValidationManager:
+        """Fake validation manager."""
+
+        def __init__(
+            self,
+            *,
+            cache_dir_path: Path | str | None = None,
+            dev: bool = False,
+        ):
+            """Initialize."""
+
+        def validate(
+            self,
+            series: ImageSeries,
+            stop_at_idx: int | None = None,
+            interactive: bool = True,
+        ) -> Series:
+            """Validate an image series."""
+            validate_calls.append(interactive)
+            return _series_with_texts(["validated"])
+
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_validation.ImageSeries.load",
+        lambda path: tiny_image_series,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_validation.ValidationManager",
+        FakeValidationManager,
+    )
+
+    validate_ocr(infile_path, outfile_path, interactive=True)
+
+    assert validate_calls == [False]
