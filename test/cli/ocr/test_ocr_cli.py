@@ -200,6 +200,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         tiny_image_series,
     )
     input_path = _write_placeholder_sup_path(tmp_path)
+    observed_kwargs = []
 
     def fake_ocr_image_series_with_paddle(*args: object, **kwargs: object) -> Series:
         """Fake PaddleOCR image series processing.
@@ -210,6 +211,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         Returns:
             text subtitle series
         """
+        observed_kwargs.append(kwargs)
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
     monkeypatch.setattr(
@@ -225,6 +227,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
 
     assert input_paths == [input_path.resolve()]
     assert output_path.exists()
+    assert observed_kwargs == [{"language": Language.zho_hant}]
     output = Series.load(output_path)
     assert [(event.start, event.end, event.text) for event in output] == [
         (1000, 2000, "recognized")
