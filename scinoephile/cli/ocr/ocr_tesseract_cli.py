@@ -168,11 +168,7 @@ class OcrTesseractCli(ScinoephileCliBase):
                 detect_italics=detect_italics,
                 language=language,
             )
-        except (
-            ImportError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
+        except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write outputs

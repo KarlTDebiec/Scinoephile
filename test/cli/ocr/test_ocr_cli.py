@@ -226,6 +226,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
     )
 
     assert input_paths == [input_path.resolve()]
+    assert output_path.exists()
     assert observed_kwargs == [{"language": Language.zho_hant}]
     output = Series.load(output_path)
     assert [(event.start, event.end, event.text) for event in output] == [

@@ -149,13 +149,7 @@ class OcrPaddleCli(ScinoephileCliBase):
                 image_series,
                 language=language,
             )
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ImportError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
+        except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write outputs
