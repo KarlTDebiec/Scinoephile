@@ -167,6 +167,8 @@ def test_paddle_recognizer_rejects_unsupported_languages():
         ("eng", Language.eng),
         ("ch", Language.zho_hans),
         ("chinese_cht", Language.zho_hant),
+        ("yue-Hans", Language.yue_hans),
+        ("yue-Hant", Language.yue_hant),
         ("zho-Hans", Language.zho_hans),
         ("zho-Hant", Language.zho_hant),
     ],

@@ -37,6 +37,8 @@ _OCR_EXTRA_MESSAGE = (
 )
 _PADDLE_LANGUAGE_CODES = {
     Language.eng: "en",
+    Language.yue_hans: "ch",
+    Language.yue_hant: "chinese_cht",
     Language.zho_hans: "ch",
     Language.zho_hant: "chinese_cht",
 }
@@ -46,6 +48,8 @@ _PADDLE_LANGUAGE_ALIASES = {
     "chinese_cht": Language.zho_hant,
     "en": Language.eng,
     "eng": Language.eng,
+    "yue-hans": Language.yue_hans,
+    "yue-hant": Language.yue_hant,
     "zh-cn": Language.zho_hans,
     "zh-hans": Language.zho_hans,
     "zh-tw": Language.zho_hant,

@@ -122,7 +122,7 @@ class OcrProcessingWorkflow:
         else:
             self.fuser_kw = dict(fuser_kw)
         self.fuser_kw.setdefault("additional_context", additional_context)
-        if language is Language.zho_hant:
+        if language.script == "traditional":
             self.fuser_kw.setdefault("prompt_cls", OcrFusionPromptZhoHant)
         self.host = host
         self.port = port

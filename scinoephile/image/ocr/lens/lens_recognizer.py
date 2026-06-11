@@ -31,12 +31,16 @@ _OCR_EXTRA_MESSAGE = (
 _LENS_RETRY_DELAY_SECONDS = 1.5
 _LENS_LANGUAGE_CODES = {
     Language.eng: "en",
+    Language.yue_hans: "zh-CN",
+    Language.yue_hant: "zh-TW",
     Language.zho_hans: "zh-CN",
     Language.zho_hant: "zh-TW",
 }
 _LENS_LANGUAGE_ALIASES = {
     "en": Language.eng,
     "eng": Language.eng,
+    "yue-hans": Language.yue_hans,
+    "yue-hant": Language.yue_hant,
     "zh-cn": Language.zho_hans,
     "zh-hans": Language.zho_hans,
     "zh-tw": Language.zho_hant,

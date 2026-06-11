@@ -165,6 +165,8 @@ def test_lens_recognizer_rejects_unsupported_languages():
         ("eng", Language.eng),
         ("zh-CN", Language.zho_hans),
         ("zh-TW", Language.zho_hant),
+        ("yue-Hans", Language.yue_hans),
+        ("yue-Hant", Language.yue_hant),
         ("zho-Hans", Language.zho_hans),
         ("zho-Hant", Language.zho_hant),
     ],

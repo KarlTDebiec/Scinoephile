@@ -7,6 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core import Language
 from scinoephile.core.stacking import get_stacked_series
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -18,7 +19,7 @@ from scinoephile.multilang.eng_zho.guided_translation import (
     get_eng_translated_from_zho_with_eng_guidance,
     get_eng_zho_guided_translator,
 )
-from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
+from test.data.ocr import process_ocr
 from test.data.prompts import EngGuidedTranslationVsZhoOfYuePrompt
 from test.data.stacking import process_zho_hans_eng
 from test.helpers import test_data_root
@@ -65,11 +66,11 @@ actions = {
 }
 
 if "eng_ocr" in actions:
-    process_eng_ocr(title_root, overwrite=False)
+    process_ocr(title_root, Language.eng, overwrite=False)
 if "zho-Hans_ocr" in actions:
-    process_zho_hans_ocr(title_root, overwrite=False)
+    process_ocr(title_root, Language.zho_hans, overwrite=False)
 if "zho-Hant_ocr" in actions:
-    process_zho_hant_ocr(title_root, overwrite=False)
+    process_ocr(title_root, Language.zho_hant, overwrite=False)
 if "zho-Hans_eng" in actions:
     zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"

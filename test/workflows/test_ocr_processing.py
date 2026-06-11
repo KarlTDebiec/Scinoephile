@@ -144,7 +144,9 @@ def test_ocr_processing_workflow_rejects_invalid_language_in_init(tmp_path: Path
 
     with pytest.raises(
         ScinoephileError,
-        match="language must be eng, zho-Hans, or zho-Hant, not spa",
+        match=(
+            "language must be eng, yue-Hans, yue-Hant, zho-Hans, or zho-Hant, not spa"
+        ),
     ):
         OcrProcessingWorkflow(
             tmp_path / "source.sup",
