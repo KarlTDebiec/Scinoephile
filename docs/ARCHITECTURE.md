@@ -12,12 +12,14 @@ Modules may import from packages listed above them in that hierarchy:
 - `scinoephile.core`: core subtitle-domain logic; may import from `common`
 - `analysis`, `image`, and `llms`: domain packages that may import from `common`
   and `core`
+- `scinoephile.media`: media probing, extraction, subtitle cache, and offset logic
+  built on the lower layers
 - `scinoephile.lang`: language-specific subtitle operations that may import from
   the packages above
-- `audio` and `dictionaries`: audio and dictionary packages that may import from
-  the packages above
-- `scinoephile.multilang`: cross-language workflows that may import from the
-  packages above
+- `audio`, `dictionaries`, and `web`: audio, dictionary, and web UI packages that
+  may import from the packages above
+- `multilang` and `workflows`: cross-language operations and reusable workflow
+  orchestration that may import from the packages above
 - `scinoephile.optimization`: prompt optimization tooling that may import from the
   packages above
 - `scinoephile.cli`: user-facing command-line wrappers that may import from any
@@ -36,12 +38,14 @@ to keep dependencies flowing toward earlier layers:
   - **`analysis`**: metrics and comparisons (for example CER and diffing).
   - **`image`**: image/OCR representations and helpers.
   - **`llms`**: prompt definitions, providers, and model-facing processing utilities.
+- **`media`**: media-file probing, subtitle extraction helpers, subtitle cache
+  analysis, and visual offset estimation.
 - **`lang`**: language-specific subtitle operations (English, standard Chinese,
   written Cantonese, etc.).
-- **`audio` and `dictionaries`**: audio extraction/representation, transcription
-  tooling, and dictionary lookup/build logic.
-- **`multilang`**: cross-language pipelines (for example Yue vs. Zho workflows)
-  that coordinate multiple domain packages.
+- **`audio`, `dictionaries`, and `web`**: audio representation and transcription
+  tooling, dictionary lookup/build logic, and web interfaces.
+- **`multilang` and `workflows`**: cross-language pipelines and reusable
+  end-to-end orchestration that coordinate multiple domain packages.
 - **`optimization`**: prompt optimization operations and persisted test-case
   synchronization.
 - **`cli`**: thin wrappers around lower layers; argument parsing, validation, and
@@ -73,14 +77,6 @@ The CLI is organized as a tree of `argparse` subparsers. The complete command
 surface (commands and subcommands) is:
 
 - `scinoephile`
-  - `analysis`
-    - `cer`: character error rate (CER) analysis
-    - `diff`: diff analysis between two subtitle series
-  - `cache`
-    - `clear`: remove cached files
-    - `list`: list cached files
-    - `prune`: remove stale cached files
-    - `stats`: inspect cache size and entry counts
   - `dictionary`
     - `build`
       - `cuhk`: build CUHK dictionary cache
@@ -90,23 +86,44 @@ surface (commands and subcommands) is:
       - `wiktionary`: build Wiktionary dictionary cache
     - `search`: search one or more configured dictionaries
   - `eng`
-    - `fuse`: fuse OCR output (Lens + Tesseract)
     - `process`: process English subtitles (clean/flatten/proofread)
-    - `validate-ocr`: validate OCR text against subtitle images
-  - `extract`: extract matching subtitle streams from media
-  - `optimization`
-    - `sync-test-cases`: synchronize persisted prompt-optimization test cases
-  - `sync`: combine two series into a synchronized top/bottom series
-  - `timewarp`: shift/stretch timings of one series to match another
+    - `translate-from-yue`: translate English subtitles from written Cantonese subtitles
+    - `translate-from-zho`: translate English subtitles from standard Chinese subtitles
+  - `media`
+    - `extract-subs`: extract matching subtitle streams from a video file
+    - `offset`: estimate visual offset between two media files
+    - `probe`: list media streams in a media file
+  - `multi`
+    - `cer`: calculate character error rate (CER) for one series relative to another
+    - `diff`: calculate the diff between two series
+    - `stack`: stack two series into top and bottom subtitle lines
+    - `sync`: estimate subtitle offset and shift a mobile series to an anchor series
+    - `timewarp`: shift/stretch timings of one series to match another
+  - `ocr`
+    - `fuse`: fuse OCR output for a selected language
+    - `lens`: recognize image subtitles with Google Lens
+    - `paddle`: recognize image subtitles with PaddleOCR
+    - `process`: process image subtitle OCR and fuse output for a selected language
+    - `tesseract`: recognize image subtitles with Tesseract OCR
+    - `validate`: validate OCR text against subtitle images
+  - `utility`
+    - `cache`
+      - `clear`: remove cached files
+      - `list`: list cached files
+      - `prune`: remove stale cached files
+      - `stats`: inspect cache size and entry counts
+    - `optimization`
+      - `sync-test-cases`: synchronize persisted prompt-optimization test cases
   - `yue`
     - `process`: process written Cantonese subtitles (clean/convert/flatten/proofread/romanize)
     - `review-vs-zho`: review written Cantonese against standard Chinese
     - `transcribe-vs-zho`: transcribe from media audio using standard Chinese as reference
-    - `translate-vs-zho`: translate missing Cantonese lines using standard Chinese as reference
+    - `translate-from-eng`: translate written Cantonese subtitles from English subtitles
+    - `translate-from-zho`: translate written Cantonese subtitles from standard Chinese subtitles
   - `zho`
-    - `fuse`: fuse OCR output (Lens + PaddleOCR)
     - `process`: process standard Chinese subtitles (clean/convert/flatten/proofread/romanize)
-    - `validate-ocr`: validate OCR text against subtitle images
+    - `translate-from-eng`: translate standard Chinese subtitles from English subtitles
+    - `translate-from-yue`: translate standard Chinese subtitles from written Cantonese subtitles
 
 Each subcommand lives under `scinoephile/cli/` and is responsible for:
 
