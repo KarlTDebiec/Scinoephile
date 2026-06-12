@@ -20,3 +20,22 @@ def test_web_dependencies_are_optional():
     assert any(
         dependency.startswith("flask") for dependency in optional_dependencies["web"]
     )
+
+
+def test_ocr_cuda_extra_uses_gpu_paddle_without_cpu_paddle():
+    """Test CUDA OCR dependencies do not include conflicting CPU Paddle."""
+    pyproject_path = Path(__file__).resolve().parents[1] / "pyproject.toml"
+    pyproject = tomllib.loads(pyproject_path.read_text(encoding="utf-8"))
+
+    optional_dependencies = pyproject["project"]["optional-dependencies"]
+    ocr_cuda_dependencies = optional_dependencies["ocr-cuda"]
+
+    assert any(
+        dependency.startswith("paddlepaddle-gpu")
+        for dependency in ocr_cuda_dependencies
+    )
+    assert not any(
+        dependency.startswith("paddlepaddle")
+        and not dependency.startswith("paddlepaddle-gpu")
+        for dependency in ocr_cuda_dependencies
+    )

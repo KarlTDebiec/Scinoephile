@@ -10,6 +10,7 @@ import os
 from dataclasses import asdict
 from logging import getLogger
 from pathlib import Path
+from platform import system
 from typing import Any, TypedDict, override
 
 import numpy as np
@@ -97,6 +98,7 @@ class PaddleRecognizer:
             text_detection_model_name=_TEXT_DETECTION_MODEL_NAME,
             text_recognition_model_name=_TEXT_RECOGNITION_MODEL_NAME,
             textline_orientation_model_name=_TEXTLINE_ORIENTATION_MODEL_NAME,
+            enable_mkldnn=system() != "Windows",
         )
 
     @override
