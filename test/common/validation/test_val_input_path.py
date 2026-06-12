@@ -9,8 +9,8 @@ from pathlib import Path
 import pytest
 
 from scinoephile.common.exceptions import NotAFileError
-from scinoephile.common.testing import create_symlink_or_skip
 from scinoephile.common.validation import val_input_path
+from test.helpers import create_symlink_or_skip
 
 
 def test_val_input_path_valid(tmp_path: Path):

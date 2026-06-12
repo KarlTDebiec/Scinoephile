@@ -7,7 +7,6 @@ from __future__ import annotations
 import sys
 from ctypes import POINTER, byref, c_int, c_void_p, c_wchar_p
 from inspect import getfile
-from pathlib import Path
 from platform import system
 from shlex import split
 from unittest.mock import patch
@@ -15,30 +14,9 @@ from unittest.mock import patch
 from .command_line_interface import CommandLineInterface
 
 __all__ = [
-    "create_symlink_or_skip",
     "echo_command",
     "run_cli_with_args",
 ]
-
-
-def create_symlink_or_skip(
-    symlink_path: Path, target_path: Path, *, target_is_directory: bool = False
-):
-    """Create a symlink, skipping when Windows privileges do not allow it.
-
-    Arguments:
-        symlink_path: path at which to create the symlink
-        target_path: symlink target path
-        target_is_directory: whether the target is a directory
-    """
-    try:
-        symlink_path.symlink_to(target_path, target_is_directory=target_is_directory)
-    except OSError as exc:
-        if getattr(exc, "winerror", None) == 1314:
-            import pytest  # noqa: PLC0415
-
-            pytest.skip("Windows symlink privilege is not available")
-        raise
 
 
 def echo_command(*arguments: str) -> list[str]:
