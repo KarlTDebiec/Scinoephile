@@ -236,6 +236,31 @@ def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
     assert (image_dir_path / "index.html").exists()
 
 
+def test_cache_subtitles_can_skip_image_cache_for_sup_stream(tmp_path: Path):
+    """Test subtitle caching can skip rendering cached SUP subtitle images.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
+    _cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"not a real sup")
+
+    with patch(
+        "scinoephile.media.subtitles.cache.ImageSeries.load",
+        side_effect=ValueError("SUP segment data is truncated."),
+    ) as load:
+        cache_subtitles(
+            infile_path,
+            [stream],
+            cache_dir_path=tmp_path / "cache",
+            render_images=False,
+        )
+
+    load.assert_not_called()
+
+
 def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     tmp_path: Path,
     monkeypatch,

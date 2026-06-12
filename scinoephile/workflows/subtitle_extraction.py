@@ -152,6 +152,7 @@ def extract_subtitles(
             infile_path,
             streams_to_extract,
             cache_dir_path=cache_dir_path,
+            render_images=False,
         )
 
     # Copy cached subtitle files into place and optionally render SUP image directories
@@ -166,14 +167,14 @@ def extract_subtitles(
             )
         handled_outputs.append(output)
         if output.stream.extension == "sup" and export_images:
-            handled_outputs.append(
-                _extract_sup_image_series(
-                    output.stream,
-                    output.path,
-                    output.path.with_suffix(""),
-                    overwrite=overwrite,
-                )
+            image_output = _try_extract_sup_image_series(
+                output.stream,
+                output.path,
+                output.path.with_suffix(""),
+                overwrite=overwrite,
             )
+            if image_output is not None:
+                handled_outputs.append(image_output)
     return SubtitleExtractionResult(infile_path=infile_path, outputs=handled_outputs)
 
 
@@ -411,3 +412,34 @@ def _extract_sup_image_series(
         stream=stream,
         path=output_dir_path,
     )
+
+
+def _try_extract_sup_image_series(
+    stream: SubtitleStream,
+    infile_path: Path,
+    output_dir_path: Path,
+    *,
+    overwrite: bool,
+) -> SubtitleExtractionOutput | None:
+    """Convert a SUP subtitle file to images, warning on parse failures.
+
+    Arguments:
+        stream: subtitle stream associated with the SUP file
+        infile_path: SUP subtitle file
+        output_dir_path: output image directory
+        overwrite: whether to overwrite existing output
+    Returns:
+        output handled for the image directory, if rendering succeeded
+    """
+    try:
+        return _extract_sup_image_series(
+            stream,
+            infile_path,
+            output_dir_path,
+            overwrite=overwrite,
+        )
+    except (OSError, RuntimeError, ValueError) as exc:
+        logger.warning(
+            f"Could not export SUP image series for stream #{stream.index}: {exc}"
+        )
+        return None

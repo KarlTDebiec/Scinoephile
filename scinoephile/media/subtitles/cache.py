@@ -29,6 +29,7 @@ def cache_subtitles(
     streams: list[SubtitleStream],
     *,
     cache_dir_path: Path | None = None,
+    render_images: bool = True,
 ):
     """Cache extracted subtitle streams.
 
@@ -36,6 +37,7 @@ def cache_subtitles(
         infile_path: media input file
         streams: subtitle streams to cache
         cache_dir_path: cache directory path
+        render_images: whether to render SUP streams to image directories
     """
     # Validate arguments
     if cache_dir_path is None:
@@ -83,22 +85,13 @@ def cache_subtitles(
         for _, stream_path in missing:
             logger.info(f"Saved subtitle stream to cache: {stream_path}")
 
-    # Render cached SUP subtitle streams to image directories
-    for stream in streams:
-        if stream.extension != "sup":
-            continue
-        stream_path = get_subtitle_cache_path(
+    # Render cached SUP subtitle streams to image directories when requested
+    if render_images:
+        _cache_image_subtitle_series(
             infile_path,
-            stream,
+            streams,
             cache_dir_path=cache_dir_path,
         )
-        image_dir_path = stream_path.parent / "image-series"
-        if (image_dir_path / "index.html").exists():
-            logger.info(f"Loaded image subtitle series from cache: {image_dir_path}")
-            continue
-        image_series = ImageSeries.load(stream_path)
-        image_series.save(image_dir_path)
-        logger.info(f"Saved image subtitle series to cache: {image_dir_path}")
 
 
 def get_subtitle_cache_path(
@@ -132,3 +125,33 @@ def get_subtitle_cache_path(
     encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
     cache_key = hashlib.sha256(encoded_payload).hexdigest()
     return cache_dir_path / cache_key / f"{stream.index}.{stream.extension}"
+
+
+def _cache_image_subtitle_series(
+    infile_path: Path,
+    streams: list[SubtitleStream],
+    *,
+    cache_dir_path: Path,
+):
+    """Render cached SUP subtitle streams to image directories.
+
+    Arguments:
+        infile_path: media input file
+        streams: subtitle streams to cache
+        cache_dir_path: cache directory path
+    """
+    for stream in streams:
+        if stream.extension != "sup":
+            continue
+        stream_path = get_subtitle_cache_path(
+            infile_path,
+            stream,
+            cache_dir_path=cache_dir_path,
+        )
+        image_dir_path = stream_path.parent / "image-series"
+        if (image_dir_path / "index.html").exists():
+            logger.info(f"Loaded image subtitle series from cache: {image_dir_path}")
+            continue
+        image_series = ImageSeries.load(stream_path)
+        image_series.save(image_dir_path)
+        logger.info(f"Saved image subtitle series to cache: {image_dir_path}")
