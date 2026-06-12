@@ -5,11 +5,14 @@
 from __future__ import annotations
 
 import sqlite3
+from contextlib import closing
 from pathlib import Path
+
+import pytest
 
 from scinoephile.core.llms import OperationSpec
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
+    YuePunctuationVsZhoPromptYueHans,
     YueZhoPunctuationManager,
 )
 from scinoephile.optimization.persistence.test_cases import (
@@ -24,7 +27,7 @@ def get_punctuation_operation_spec() -> OperationSpec:
         operation="unit-punctuation",
         test_case_table_name="test_cases__unit__punctuation",
         manager_cls=YueZhoPunctuationManager,
-        prompt_cls=YueVsZhoYueHansPunctuationPrompt,
+        prompt_cls=YuePunctuationVsZhoPromptYueHans,
         list_fields={"query.yuewen_to_punctuate": 10},
     )
 
@@ -53,7 +56,7 @@ def test_store_upsert_and_fetch(tmp_path: Path):
     assert loaded.answer == {"a": 2}
     assert "x.json" in loaded.source_paths
 
-    with sqlite3.connect(db_path) as connection:
+    with closing(sqlite3.connect(db_path)) as connection:
         columns = {
             str(row[1])
             for row in connection.execute(f"PRAGMA table_info({table_name})")
@@ -183,7 +186,7 @@ def test_store_splits_configured_list_fields(tmp_path: Path):
     assert loaded is not None
     assert loaded.query == tc.query
 
-    with sqlite3.connect(db_path) as connection:
+    with closing(sqlite3.connect(db_path)) as connection:
         row = connection.execute(
             f"""SELECT query__yuewen_to_punctuate_01,
                        query__yuewen_to_punctuate_02,
@@ -223,12 +226,8 @@ def test_store_rejects_configured_list_fields_over_max(tmp_path: Path):
         source_paths=["x.json"],
     )
 
-    try:
+    with pytest.raises(ValueError, match="supports at most 10 items"):
         store.upsert_table_test_cases(table_name, [tc], source_path="x.json")
-    except ValueError as err:
-        assert "supports at most 10 items" in str(err)
-    else:
-        raise AssertionError("Expected ValueError for oversized list field.")
 
 
 def test_store_source_path_index(tmp_path: Path):

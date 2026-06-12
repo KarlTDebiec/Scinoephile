@@ -7,11 +7,22 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.conversion import (
+from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_converted,
     get_zho_converter,
+    get_zho_text_converted,
 )
+from test.helpers import assert_series_equal
+
+
+def test_opencc_config_metadata():
+    """Test OpenCCConfig metadata."""
+    config = OpenCCConfig.s2t
+    assert config.code == "s2t"
+    assert config.description == "Simplified Chinese to Traditional Chinese."
+    assert str(config) == "s2t"
+    assert OpenCCConfig("s2t") is config
 
 
 def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected: Series):
@@ -24,16 +35,30 @@ def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected: Seri
     """
     output = get_zho_converted(series, config)
     assert len(series) == len(output)
+    assert_series_equal(output, expected)
 
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
 
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
+@pytest.mark.parametrize(
+    ("text", "config", "expected"),
+    [
+        ("台臺", OpenCCConfig.t2s, "台臺"),
+        ("台臺", OpenCCConfig.s2t, "台臺"),
+        ("台灣臺灣", OpenCCConfig.t2s, "台湾臺湾"),
+        ("台湾臺湾", OpenCCConfig.s2t, "台灣臺灣"),
+        ("这家伙", OpenCCConfig.s2t, "這傢伙"),
+    ],
+)
+def test_get_zho_text_converted_applies_exclusions_by_character_position(
+    text: str, config: OpenCCConfig, expected: str
+):
+    """Test conversion exclusions preserve only original excluded characters.
+
+    Arguments:
+        text: Text to convert
+        config: Conversion configuration
+        expected: Expected converted text
+    """
+    assert get_zho_text_converted(text, config) == expected
 
 
 def test_get_zho_converted_kob(

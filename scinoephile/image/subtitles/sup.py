@@ -39,7 +39,11 @@ def _render_sup_image(
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
-def read_sup_image_array(bytes_: np.ndarray, height: int, width: int) -> np.ndarray:
+def read_sup_image_array(  # noqa: PLR0912, PLR0915
+    bytes_: np.ndarray,
+    height: int,
+    width: int,
+) -> np.ndarray:
     """Read a palette-compressed image from a block of bytes.
 
     Arguments:
@@ -54,8 +58,12 @@ def read_sup_image_array(bytes_: np.ndarray, height: int, width: int) -> np.ndar
     row_i = 0
     col_i = 0
     while byte_i < len(bytes_):
+        if row_i >= height:
+            raise ValueError("SUP image data extends past declared image height.")
         byte_1 = bytes_[byte_i]
         if byte_1 == 0x00:  # 00 | Special behaviors
+            if byte_i + 1 >= len(bytes_):
+                raise ValueError("SUP image data ended inside an RLE sequence.")
             byte_2 = bytes_[byte_i + 1]
             if byte_2 == 0x00:  # 00 00 | New line
                 byte_i += 2
@@ -63,16 +71,22 @@ def read_sup_image_array(bytes_: np.ndarray, height: int, width: int) -> np.ndar
                 col_i = 0
             else:
                 if (byte_2 & 0xC0) == 0x40:  # 00 4X XX | Color 0, X times
+                    if byte_i + 2 >= len(bytes_):
+                        raise ValueError("SUP image data ended inside an RLE sequence.")
                     byte_3 = bytes_[byte_i + 2]
                     n_pixels = ((byte_2 - 0x40) << 8) + byte_3
                     color = 0
                     byte_i += 3
                 elif (byte_2 & 0xC0) == 0x80:  # 00 8Y XX | Color X,  Y times
+                    if byte_i + 2 >= len(bytes_):
+                        raise ValueError("SUP image data ended inside an RLE sequence.")
                     byte_3 = bytes_[byte_i + 2]
                     n_pixels = byte_2 - 0x80
                     color = byte_3
                     byte_i += 3
                 elif (byte_2 & 0xC0) != 0x00:  # 00 CY YY XX | Color X, Y times
+                    if byte_i + 3 >= len(bytes_):
+                        raise ValueError("SUP image data ended inside an RLE sequence.")
                     byte_3 = bytes_[byte_i + 2]
                     byte_4 = bytes_[byte_i + 3]
                     n_pixels = ((byte_2 - 0xC0) << 8) + byte_3
@@ -82,9 +96,13 @@ def read_sup_image_array(bytes_: np.ndarray, height: int, width: int) -> np.ndar
                     n_pixels = byte_2
                     color = 0
                     byte_i += 2
+                if col_i + n_pixels > width:
+                    raise ValueError("SUP image data extends past declared row width.")
                 array[row_i, col_i : col_i + n_pixels] = color
                 col_i += n_pixels
         else:  # XX | Color X, once
+            if col_i >= width:
+                raise ValueError("SUP image data extends past declared row width.")
             color = byte_1
             array[row_i, col_i] = color
             col_i += 1
@@ -137,6 +155,13 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
     current_image = np.zeros((0, 0), np.uint8)
     has_current_image = False
 
+    pending_image_data = np.zeros(0, np.uint8)
+    pending_image_data_length = -1
+    pending_image_height = 0
+    pending_image_object_id = -1
+    pending_image_version = -1
+    pending_image_width = 0
+
     active_start = -1.0
     active_image = np.zeros((0, 0, 4), np.uint8)
     has_active_image = False
@@ -148,6 +173,8 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
 
     byte_i = 0
     while byte_i < len(bytes_):
+        if byte_i + 13 > len(bytes_):
+            raise ValueError("SUP segment header is truncated.")
         byte_i += 2
         timestamp = (
             int(bytes_[byte_i]) * 16777216
@@ -160,19 +187,89 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
         byte_i += 1
         size = int(bytes_[byte_i]) * 256 + int(bytes_[byte_i + 1])
         byte_i += 2
+        if byte_i + size > len(bytes_):
+            raise ValueError("SUP segment data is truncated.")
         segment_bytes = bytes_[byte_i : byte_i + size]
 
         if set_timestamp < 0:
             set_timestamp = timestamp
 
         if segment_kind == 0x14:  # Palette
+            if size < 2 or (size - 2) % 5 != 0:
+                raise ValueError("SUP palette segment is truncated.")
             palette = read_sup_palette(segment_bytes[2:])
         elif segment_kind == 0x15:  # Image
-            width = int(segment_bytes[7]) * 256 + int(segment_bytes[8])
-            height = int(segment_bytes[9]) * 256 + int(segment_bytes[10])
-            current_image = read_sup_image_array(segment_bytes[11:], height, width)
-            has_current_image = True
+            if size < 4:
+                raise ValueError("SUP image segment is truncated.")
+            object_id = int(segment_bytes[0]) * 256 + int(segment_bytes[1])
+            object_version = int(segment_bytes[2])
+            sequence_descriptor = int(segment_bytes[3])
+            if (sequence_descriptor & 0x3F) != 0:
+                raise ValueError("SUP image segment has invalid sequence descriptor.")
+
+            if (sequence_descriptor & 0x80) != 0:
+                if pending_image_object_id >= 0:
+                    raise ValueError(
+                        "SUP image segment started before previous image completed."
+                    )
+                if size < 11:
+                    raise ValueError("SUP image segment is truncated.")
+                object_data_length = (
+                    int(segment_bytes[4]) * 65536
+                    + int(segment_bytes[5]) * 256
+                    + int(segment_bytes[6])
+                )
+                if object_data_length < 4:
+                    raise ValueError("SUP image segment is truncated.")
+                pending_image_data = segment_bytes[11:]
+                pending_image_data_length = object_data_length - 4
+                pending_image_height = int(segment_bytes[9]) * 256 + int(
+                    segment_bytes[10]
+                )
+                pending_image_object_id = object_id
+                pending_image_version = object_version
+                pending_image_width = int(segment_bytes[7]) * 256 + int(
+                    segment_bytes[8]
+                )
+            else:
+                if pending_image_object_id < 0:
+                    raise ValueError(
+                        "Encountered SUP image continuation without initial image "
+                        "segment."
+                    )
+                if (
+                    object_id != pending_image_object_id
+                    or object_version != pending_image_version
+                ):
+                    raise ValueError(
+                        "SUP image continuation does not match initial image segment."
+                    )
+                pending_image_data = np.concatenate(
+                    (pending_image_data, segment_bytes[4:])
+                )
+
+            if len(pending_image_data) > pending_image_data_length:
+                raise ValueError(
+                    "SUP image data extends past declared object data length."
+                )
+            if (sequence_descriptor & 0x40) != 0:
+                if len(pending_image_data) != pending_image_data_length:
+                    raise ValueError("SUP image segment data is truncated.")
+                current_image = read_sup_image_array(
+                    pending_image_data,
+                    pending_image_height,
+                    pending_image_width,
+                )
+                has_current_image = True
+                pending_image_data = np.zeros(0, np.uint8)
+                pending_image_data_length = -1
+                pending_image_height = 0
+                pending_image_object_id = -1
+                pending_image_version = -1
+                pending_image_width = 0
         elif segment_kind == 0x16:  # Presentation Composition
+            if size < 11:
+                raise ValueError("SUP presentation composition segment is truncated.")
             set_composition_number = int(segment_bytes[5]) * 256 + int(segment_bytes[6])
             set_has_object = segment_bytes[10] > 0
         elif segment_kind == 0x80:  # End
@@ -212,6 +309,9 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
             set_has_object = False
 
         byte_i += size
+
+    if pending_image_object_id >= 0:
+        raise ValueError("SUP image segment data is truncated.")
 
     if has_active_image:
         starts.append(active_start)

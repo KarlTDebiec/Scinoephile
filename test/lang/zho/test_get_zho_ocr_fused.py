@@ -4,17 +4,19 @@
 
 from __future__ import annotations
 
-import pytest
+from unittest.mock import Mock
 
-from scinoephile.core.subtitles import Series
+from scinoephile.core.llms import LLMProvider
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHantOcrFusionPrompt,
+    OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionProcessor
+from test.helpers import assert_series_equal
 
 
 def _test_get_zho_ocr_fused(
@@ -34,16 +36,36 @@ def _test_get_zho_ocr_fused(
     output = get_zho_ocr_fused(lens, paddle, processor=processor)
 
     assert len(output) == len(expected)
+    assert_series_equal(output, expected)
 
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
 
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies:\n" + "\n".join(errors))
+def test_get_zho_ocr_fused_treats_newline_forms_as_identical():
+    """Test OCR fusion skips queries when texts only differ by newline form."""
+    lens = Series(
+        [
+            Subtitle(
+                start=0,
+                end=1000,
+                text="嗯达摩\n达摩祖师果然厉害",
+            )
+        ]
+    )
+    paddle = Series(
+        [
+            Subtitle(
+                start=0,
+                end=1000,
+                text="嗯达摩\\N达摩祖师果然厉害",
+            )
+        ]
+    )
+    provider = Mock(spec=LLMProvider)
+    processor = get_zho_ocr_fuser(provider=provider)
+
+    output = get_zho_ocr_fused(lens, paddle, processor=processor)
+
+    assert output.events[0].text == "嗯达摩\n达摩祖师果然厉害"
+    provider.chat_completion.assert_not_called()
 
 
 def test_get_zho_ocr_fused_kob(
@@ -68,7 +90,7 @@ def test_get_zho_ocr_fused_kob(
         lens,
         paddle,
         kob_zho_hant_ocr_fuse,
-        get_zho_ocr_fuser(prompt_cls=ZhoHantOcrFusionPrompt),
+        get_zho_ocr_fuser(prompt_cls=OcrFusionPromptZhoHant),
     )
 
 

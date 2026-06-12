@@ -4,22 +4,17 @@
 
 from __future__ import annotations
 
+from contextlib import redirect_stderr, redirect_stdout
+from io import StringIO
+from os import environ
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from test.helpers import assert_cli_help, assert_cli_usage
-
-
-def test_scinoephile_help():
-    """Test root CLI help output."""
-    assert_cli_help((ScinoephileCli,))
-
-
-def test_scinoephile_usage():
-    """Test root CLI usage output."""
-    assert_cli_usage((ScinoephileCli,))
+from scinoephile.common.testing import run_cli_with_args
+from test.helpers import assert_cli_help
 
 
 def test_scinoephile_help_does_not_create_default_cache_dir(
@@ -37,3 +32,96 @@ def test_scinoephile_help_does_not_create_default_cache_dir(
     assert_cli_help((ScinoephileCli,))
 
     assert not cache_dir_path.exists()
+
+
+def test_scinoephile_all_commands_lists_complete_hierarchy():
+    """Test root CLI can list the complete subcommand hierarchy."""
+    stdout = StringIO()
+    stderr = StringIO()
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                run_cli_with_args(ScinoephileCli, "--all-commands")
+
+    output = stdout.getvalue()
+    assert excinfo.value.code == 0
+    assert stderr.getvalue() == ""
+    assert output.startswith("Available subcommands:\n\n")
+    lines = output.splitlines()
+    assert not any(line.startswith("analysis") for line in lines)
+    assert not any(line.startswith("cache") for line in lines)
+    assert not any(line.startswith("optimization") for line in lines)
+    assert not any(line.startswith("sync") for line in lines)
+    assert not any(line.startswith("timewarp") for line in lines)
+    assert "\nmulti" in output
+    assert "\n    cer" in output
+    assert "\n    diff" in output
+    assert "\n    stack" in output
+    assert "\n    sync" in output
+    assert "\n    timewarp" in output
+    assert "\ndictionary" in output
+    assert "\n    build" in output
+    assert "\n        wiktionary" in output
+    assert "\neng" in output
+    eng_section = output.split("\neng", maxsplit=1)[1].split("\nmedia", maxsplit=1)[0]
+    assert all(
+        command in eng_section
+        for command in (
+            "\n    process",
+            "\n    translate-from-yue",
+            "\n    translate-from-zho",
+        )
+    )
+    assert "\nocr" in output
+    assert "\n    fuse" in output
+    assert "\n    validate" in output
+    assert "\nutility" in output
+    assert "\n    cache" in output
+    assert "\n        clear" in output
+    assert "\n    optimization" in output
+    assert "\n        sync-test-cases" in output
+    yue_section = output.split("\nyue", maxsplit=1)[1].split("\nzho", maxsplit=1)[0]
+    assert all(
+        command in yue_section
+        for command in ("\n    translate-from-eng", "\n    translate-from-zho")
+    )
+    assert "\nzho" in output
+    zho_section = output.split("\nzho", maxsplit=1)[1]
+    assert all(
+        command in zho_section
+        for command in (
+            "\n    process",
+            "\n    translate-from-eng",
+            "\n    translate-from-yue",
+        )
+    )
+    assert all(len(line) <= 80 for line in output.splitlines())
+    assert "    transcribe-vs-zho" in output
+    assert "transcribe subtitles from audio and revise using" in output
+    assert "standard Chinese text" in output
+    assert "\n                        standard Chinese text" in output
+
+
+def test_scinoephile_all_commands_localized():
+    """Test all-commands output localizes command descriptions."""
+    with patch.dict(environ, {"LC_ALL": "zh-hant"}):
+        stdout = StringIO()
+        stderr = StringIO()
+        with pytest.raises(SystemExit) as excinfo:
+            with redirect_stdout(stdout):
+                with redirect_stderr(stderr):
+                    run_cli_with_args(ScinoephileCli, "--all-commands")
+
+    output = stdout.getvalue()
+    assert excinfo.value.code == 0
+    assert stderr.getvalue() == ""
+    assert "可用子命令：" in output
+    assert "子命令" in output
+    assert "\nzho" in output
+    assert "\nmulti" in output
+    assert "\nocr" in output
+    assert "\nutility" in output
+    assert "\n    process" in output
+    assert "修改標準中文字幕" in output
+    assert "香港中文大學現代標準漢語與粵語對照資料庫" not in output
+    assert "由 2004 年第二版《廣州話正音字典》整理而成" not in output

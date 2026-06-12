@@ -4,40 +4,34 @@
 
 from __future__ import annotations
 
+from os import getenv
+
 import pytest
 
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.block_review import (
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHant,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
-from scinoephile.llms.mono_block import MonoBlockProcessor
+from scinoephile.llms.mono_n import MonoNProcessor
+from test.helpers import assert_series_equal, skip_if_ci
 
 
 def _test_get_zho_block_reviewed(
-    series: Series, expected: Series, processor: MonoBlockProcessor | None = None
+    series: Series, expected: Series, processor: MonoNProcessor | None = None
 ):
     """Test get_zho_block_reviewed.
 
     Arguments:
         series: Series with which to test
         expected: Expected output series
-        processor: MonoBlockProcessor to use for the test
+        processor: MonoNProcessor to use for the test
     """
     output = get_zho_block_reviewed(series, processor=processor)
 
     assert len(output) == len(expected)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies:\n" + "\n".join(errors))
+    assert_series_equal(output, expected)
 
 
 def test_get_zho_block_reviewed_kob(
@@ -55,10 +49,15 @@ def test_get_zho_block_reviewed_kob(
     _test_get_zho_block_reviewed(
         kob_zho_hant_ocr_fuse_clean_validate,
         kob_zho_hant_ocr_fuse_clean_validate_review,
-        get_zho_reviewer(prompt_cls=ZhoHantBlockReviewPrompt),
+        get_zho_reviewer(prompt_cls=BlockReviewPromptZhoHant),
     )
 
 
+@skip_if_ci()
+@pytest.mark.skipif(
+    not getenv("SCINOEPHILE_RUN_LLM_TESTS"),
+    reason="Requires live LLM integration tests",
+)
 def test_get_zho_block_reviewed_mlamd(
     mlamd_zho_hans_fuse_clean_validate: Series,
     mlamd_zho_hans_fuse_clean_validate_review: Series,
@@ -77,6 +76,11 @@ def test_get_zho_block_reviewed_mlamd(
     )
 
 
+@skip_if_ci()
+@pytest.mark.skipif(
+    not getenv("SCINOEPHILE_RUN_LLM_TESTS"),
+    reason="Requires live LLM integration tests",
+)
 def test_get_zho_block_reviewed_mnt(
     mnt_zho_hans_fuse_clean_validate: Series,
     mnt_zho_hans_fuse_clean_validate_review: Series,
@@ -94,6 +98,11 @@ def test_get_zho_block_reviewed_mnt(
     )
 
 
+@skip_if_ci()
+@pytest.mark.skipif(
+    not getenv("SCINOEPHILE_RUN_LLM_TESTS"),
+    reason="Requires live LLM integration tests",
+)
 def test_get_zho_block_reviewed_t(
     t_zho_hans_fuse_clean_validate: Series,
     t_zho_hans_fuse_clean_validate_review: Series,

@@ -11,63 +11,33 @@ from unittest.mock import Mock, patch
 import pytest
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.cli.yue.yue_cli import YueCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.multilang.yue_zho.transcription import (
+    DEFAULT_YUE_WHISPER_MODEL_NAME,
+    DemucsMode,
+    VADMode,
+)
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-    YueVsZhoYueHantDeliniationPrompt,
+    YueDeliniationVsZhoPromptYueHans,
+    YueDeliniationVsZhoPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-    YueVsZhoYueHantPunctuationPrompt,
+    YuePunctuationVsZhoPromptYueHans,
+    YuePunctuationVsZhoPromptYueHant,
 )
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (YueTranscribeVsZhoCli,),
-        (YueCli, YueTranscribeVsZhoCli),
-        (ScinoephileCli, YueCli, YueTranscribeVsZhoCli),
-    ],
+from test.helpers import (
+    assert_series_equal,
+    test_data_root,
 )
-def test_yue_transcribe_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test written Cantonese transcribe-vs-zho CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
 
 
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (YueTranscribeVsZhoCli,),
-        (YueCli, YueTranscribeVsZhoCli),
-        (ScinoephileCli, YueCli, YueTranscribeVsZhoCli),
-    ],
-)
-def test_yue_transcribe_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test written Cantonese transcribe-vs-zho CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
-
-
-def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options():
-    """Test written Cantonese CLI help lists prompt and conversion options."""
+def test_yue_transcribe_vs_zho_help_lists_transcription_options():
+    """Test written Cantonese CLI help lists transcription options."""
     stdout = StringIO()
     stderr = StringIO()
 
@@ -79,20 +49,35 @@ def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options(
     help_text = stdout.getvalue()
     normalized_help_text = " ".join(help_text.split())
     assert stderr.getvalue() == ""
-    assert "--script SCRIPT" in help_text
+    assert "--script {simplified,traditional}" in help_text
     assert "script used for transcription prompts" in help_text
     assert "--convert CONVERT" in normalized_help_text
     assert (
-        "convert Chinese characters using specified OpenCC configuration"
+        "convert Chinese characters with an OpenCC code such as s2t, t2s, or s2hk"
         in normalized_help_text
     )
-    assert "--demucs DEMUCS" in help_text
+    assert "--demucs {on,off}" in help_text
     assert "Demucs vocal-separation mode" in help_text
     assert "options: on, off;" in help_text
     assert "default: off" in help_text
-    assert "--vad VAD" in help_text
+    assert "--vad {auto,on,off}" in help_text
     assert "Whisper voice activity detection mode" in help_text
     assert "off, auto; default: auto" in help_text
+    assert "--whisper-model WHISPER_MODEL_NAME" in help_text
+    assert "Whisper model identifier used for transcription" in help_text
+    assert "default: first audio stream" in help_text
+
+
+def test_yue_transcribe_vs_zho_cli_uses_default_whisper_model_constant():
+    """Test CLI default Whisper model matches the transcription default."""
+    parser = YueTranscribeVsZhoCli.argparser()
+    whisper_model_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--whisper-model" in action.option_strings
+    )
+
+    assert whisper_model_action.default == DEFAULT_YUE_WHISPER_MODEL_NAME
 
 
 def test_yue_transcribe_vs_zho_cli_writes_file():
@@ -124,32 +109,32 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
                     run_cli_with_args(
                         YueTranscribeVsZhoCli,
                         f"--media-infile {media_infile_path} "
-                        f"--zhongwen-infile {zhongwen_infile_path} "
+                        f"--zho-infile {zhongwen_infile_path} "
                         f"--stream-index 1 -o {outfile_path}",
                     )
         output_series = Series.load(outfile_path)
 
     assert (
         patched_factory.call_args.kwargs["deliniation_prompt_cls"]
-        is YueVsZhoYueHansDeliniationPrompt
+        is YueDeliniationVsZhoPromptYueHans
     )
     assert (
         patched_factory.call_args.kwargs["punctuation_prompt_cls"]
-        is YueVsZhoYueHansPunctuationPrompt
+        is YuePunctuationVsZhoPromptYueHans
     )
     assert patched_factory.call_args.kwargs["convert"] is None
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.OFF
     assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.AUTO
     called_kwargs = patched_transcribe.call_args.kwargs
     assert called_kwargs["yuewen"] == yuewen_audio_series
-    assert called_kwargs["zhongwen"] == Series.load(zhongwen_infile_path)
+    assert_series_equal(called_kwargs["zhongwen"], Series.load(zhongwen_infile_path))
     assert called_kwargs["transcriber"] == "transcriber"
     patched_loader.assert_called_once_with(
         media_path=media_infile_path,
         subtitle_path=zhongwen_infile_path,
         stream_index=1,
     )
-    assert output_series == expected_series
+    assert_series_equal(output_series, expected_series)
 
 
 def test_yue_transcribe_vs_zho_cli_writes_stdout():
@@ -166,7 +151,7 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
     with patch(
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
         return_value=yuewen_audio_series,
-    ):
+    ) as patched_loader:
         with patch(
             "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
             return_value="transcriber",
@@ -175,18 +160,23 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
                 "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
                 return_value=expected_series,
             ):
-                with patch("scinoephile.core.cli.stdout", stdout_stream):
+                with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                     run_cli_with_args(
                         YueTranscribeVsZhoCli,
                         f"--media-infile {media_infile_path} "
-                        f"--zhongwen-infile {zhongwen_infile_path}",
+                        f"--zho-infile {zhongwen_infile_path}",
                     )
 
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    assert output_series == expected_series
+    patched_loader.assert_called_once_with(
+        media_path=media_infile_path,
+        subtitle_path=zhongwen_infile_path,
+        stream_index=None,
+    )
+    assert_series_equal(output_series, expected_series)
 
 
-def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
+def test_yue_transcribe_vs_zho_cli_passes_llm_options(tmp_path):
     """Test written Cantonese transcribe-vs-zho CLI passes through explicit VAD mode."""
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
@@ -195,6 +185,8 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
         format_="srt",
     )
     yuewen_audio_series = Mock(spec=AudioSeries)
+    context_path = tmp_path / "context.txt"
+    context_path.write_text("Prefer existing subtitles.\n", encoding="utf-8")
 
     with patch(
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
@@ -211,10 +203,15 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
                 run_cli_with_args(
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
-                    f"--zhongwen-infile {zhongwen_infile_path} --vad off",
+                    f"--zho-infile {zhongwen_infile_path} --vad off "
+                    f"--llm-additional-content-file {context_path}",
                 )
 
     assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.OFF
+    assert (
+        patched_factory.call_args.kwargs["additional_context"]
+        == "Prefer existing subtitles.\n"
+    )
 
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
@@ -242,10 +239,42 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
                 run_cli_with_args(
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
-                    f"--zhongwen-infile {zhongwen_infile_path} --demucs on",
+                    f"--zho-infile {zhongwen_infile_path} --demucs on",
                 )
 
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.ON
+
+
+def test_yue_transcribe_vs_zho_cli_passes_requested_whisper_model():
+    """Test written Cantonese CLI passes through explicit Whisper model."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+    expected_series = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
+    yuewen_audio_series = Mock(spec=AudioSeries)
+
+    with patch(
+        "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
+        return_value=yuewen_audio_series,
+    ):
+        with patch(
+            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
+            return_value="transcriber",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
+                return_value=expected_series,
+            ):
+                run_cli_with_args(
+                    YueTranscribeVsZhoCli,
+                    f"--media-infile {media_infile_path} "
+                    f"--zho-infile {zhongwen_infile_path} "
+                    "--whisper-model openai/whisper-large-v3",
+                )
+
+    assert patched_factory.call_args.kwargs["model_name"] == "openai/whisper-large-v3"
 
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_convert():
@@ -273,7 +302,7 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_convert():
                 run_cli_with_args(
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
-                    f"--zhongwen-infile {zhongwen_infile_path} --convert s2hk",
+                    f"--zho-infile {zhongwen_infile_path} --convert s2hk",
                 )
 
     assert patched_factory.call_args.kwargs["convert"] == OpenCCConfig.s2hk
@@ -287,7 +316,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_bare_convert_flag():
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path} --convert",
+            f"--zho-infile {zhongwen_infile_path} --convert",
         )
 
 
@@ -316,17 +345,17 @@ def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
                 run_cli_with_args(
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
-                    f"--zhongwen-infile {zhongwen_infile_path} "
+                    f"--zho-infile {zhongwen_infile_path} "
                     "--script traditional --convert hk2s",
                 )
 
     assert (
         patched_factory.call_args.kwargs["deliniation_prompt_cls"]
-        is YueVsZhoYueHantDeliniationPrompt
+        is YueDeliniationVsZhoPromptYueHant
     )
     assert (
         patched_factory.call_args.kwargs["punctuation_prompt_cls"]
-        is YueVsZhoYueHantPunctuationPrompt
+        is YuePunctuationVsZhoPromptYueHant
     )
     assert patched_factory.call_args.kwargs["convert"] == OpenCCConfig.hk2s
 
@@ -339,7 +368,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path} --stream-index -1",
+            f"--zho-infile {zhongwen_infile_path} --stream-index -1",
         )
 
 
@@ -349,13 +378,13 @@ def test_yue_transcribe_vs_zho_cli_stream_errors_are_user_facing():
     media_infile_path = "/tmp/test_media.mp4"
     with patch(
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
-        side_effect=ScinoephileError("Invalid audio stream index 7"),
+        side_effect=ScinoephileError("No stream index 7 found"),
     ):
         with pytest.raises(SystemExit, match="2"):
             run_cli_with_args(
                 YueTranscribeVsZhoCli,
                 f"--media-infile {media_infile_path} "
-                f"--zhongwen-infile {zhongwen_infile_path} --stream-index 7",
+                f"--zho-infile {zhongwen_infile_path} --stream-index 7",
             )
 
 
@@ -367,8 +396,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_subtitle_infile():
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
-            f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path}",
+            f"--media-infile {media_infile_path} --zho-infile {zhongwen_infile_path}",
         )
 
 
@@ -380,8 +408,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_media_infile():
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
-            f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path}",
+            f"--media-infile {media_infile_path} --zho-infile {zhongwen_infile_path}",
         )
 
 
@@ -395,9 +422,9 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
     )
     yuewen_audio_series = Mock(spec=AudioSeries)
     stdout_stream = StringIO()
-    stdin_stream = StringIO(zhongwen_infile_path.read_text())
+    stdin_stream = StringIO(zhongwen_infile_path.read_text(encoding="utf-8"))
 
-    with patch("scinoephile.core.cli.stdin", stdin_stream):
+    with patch("scinoephile.cli.helpers.io.stdin", stdin_stream):
         with patch(
             "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
             return_value=yuewen_audio_series,
@@ -410,20 +437,20 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
                     "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
                     return_value=expected_series,
                 ) as patched_transcribe:
-                    with patch("scinoephile.core.cli.stdout", stdout_stream):
+                    with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                         run_cli_with_args(
                             YueTranscribeVsZhoCli,
-                            f"--media-infile {media_infile_path} --zhongwen-infile -",
+                            f"--media-infile {media_infile_path} --zho-infile -",
                         )
 
     called_kwargs = patched_transcribe.call_args.kwargs
     assert called_kwargs["yuewen"] == yuewen_audio_series
-    assert called_kwargs["zhongwen"] == Series.load(zhongwen_infile_path)
+    assert_series_equal(called_kwargs["zhongwen"], Series.load(zhongwen_infile_path))
     patched_loader.assert_called_once()
     assert patched_loader.call_args.kwargs["media_path"] == media_infile_path
     assert patched_loader.call_args.kwargs["subtitle_path"] != "-"
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    assert output_series == expected_series
+    assert_series_equal(output_series, expected_series)
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_two_stdin_infiles():
@@ -431,7 +458,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_two_stdin_infiles():
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
-            "--media-infile - --zhongwen-infile -",
+            "--media-infile - --zho-infile -",
         )
 
 
@@ -444,5 +471,18 @@ def test_yue_transcribe_vs_zho_cli_rejects_overwrite_without_outfile():
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path} --overwrite",
+            f"--zho-infile {zhongwen_infile_path} --overwrite",
+        )
+
+
+def test_yue_transcribe_vs_zho_cli_rejects_old_zhongwen_infile_flag():
+    """Test written Cantonese CLI rejects the old Zhongwen infile flag."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            YueTranscribeVsZhoCli,
+            f"--media-infile {media_infile_path} "
+            f"--zhongwen-infile {zhongwen_infile_path}",
         )

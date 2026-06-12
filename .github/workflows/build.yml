@@ -6,82 +6,49 @@ on:
   pull_request:
     branches: [ master ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Linux:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          submodules: true
+        uses: actions/checkout@v6
 
       - name: Determine default branch
         run: echo "DEFAULT_BRANCH=${GITHUB_BASE_REF:-${{ github.event.repository.default_branch }}}" >> $GITHUB_ENV
 
       - name: Fetch default branch
-        run: git fetch origin $DEFAULT_BRANCH
+        run: git fetch --depth=1 origin $DEFAULT_BRANCH
 
       - name: Define a cache dependency glob
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.13
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libcairo2-dev pkg-config python3-dev
-
       - name: Install the project
-        run: uv sync --all-extras --dev
+        run: uv sync --dev --frozen
 
       - name: Run ruff
         run: |
-          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
-          uv run ruff check --output-format json | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.json || echo
-
-      - name: Annotate with ruff results
-        uses: KarlTDebiec/LinterPrinter@main
-        with:
-          tool: ruff
-          tool_infile: .github/outputs/ruff.json
+          uv run ruff check --output-format=github
 
       - name: Run ty
         run: |
-          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
-          uv run ty check --output-format gitlab . | tee ${GITHUB_WORKSPACE}/.github/outputs/ty.json || echo
-
-      - name: Annotate with ty results
-        uses: KarlTDebiec/LinterPrinter@main
-        with:
-          tool: ty
-          tool_infile: .github/outputs/ty.json
+          uv run ty check --output-format=github .
 
       - name: Run pytest
         run: |
-          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
+          cd ${GITHUB_WORKSPACE}
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
-          cd ${GITHUB_WORKSPACE}/test
-          uv run pytest -n auto -v --cov=scinoephile --cov-report term . | tee ${GITHUB_WORKSPACE}/.github/outputs/pytest.txt || echo
-        continue-on-error: true
-
-      - name: Annotate with pytest results
-        uses: KarlTDebiec/LinterPrinter@main
-        with:
-          tool: pytest
-          tool_infile: .github/outputs/pytest.txt
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-results
-          path: .github/outputs/
+          uv run pytest -n auto -v --cov=scinoephile --cov-report term test

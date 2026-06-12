@@ -11,36 +11,51 @@ import pytest
 
 from scinoephile.common import package_root
 from scinoephile.core.llms import TestCase
-from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
-from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.block_review import BlockReviewPromptEng
+from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
 )
 from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHansOcrFusionPrompt,
-    ZhoHantOcrFusionPrompt,
+    OcrFusionPromptZhoHans,
+    OcrFusionPromptZhoHant,
 )
 from scinoephile.llms.default_test_cases import (
     ENG_BLOCK_REVIEW_JSON_PATHS,
     ENG_OCR_FUSION_JSON_PATHS,
-    YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+    ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    ENG_ZHO_TRANSLATION_JSON_PATHS,
     YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
+    YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
     YUE_ZHO_LINE_REVIEW_JSON_PATHS,
+    YUE_ZHO_TRANSLATION_JSON_PATHS,
     ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
     ZHO_HANS_OCR_FUSION_JSON_PATHS,
     ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
     ZHO_HANT_OCR_FUSION_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.llms.dual_block.manager import DualBlockManager
-from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
-from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
-from scinoephile.llms.mono_block.manager import MonoBlockManager
-from scinoephile.multilang.yue_zho.block_review import YueVsZhoYueHansBlockReviewPrompt
-from scinoephile.multilang.yue_zho.line_review import YueVsZhoYueHansLineReviewPrompt
+from scinoephile.llms.dual_1_to_1.ocr_fusion.manager import OcrFusionManager
+from scinoephile.llms.dual_n_minus_m_to_n.manager import DualNMinusMToNManager
+from scinoephile.llms.dual_n_to_m.manager import DualNToMManager
+from scinoephile.llms.dual_n_to_n.manager import DualNToNManager
+from scinoephile.llms.mono_n.manager import MonoNManager
+from scinoephile.multilang.eng_zho.gapped_translation import (
+    EngGappedTranslationVsZhoPrompt,
+)
+from scinoephile.multilang.eng_zho.translation import EngTranslationVsZhoPrompt
+from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
+)
+from scinoephile.multilang.yue_zho.guided_translation import (
+    YueGuidedTranslationVsZhoPromptYueHans,
+)
+from scinoephile.multilang.yue_zho.line_review import YueLineReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
-from scinoephile.multilang.yue_zho.translation import YueVsZhoYueHansTranslationPrompt
+from scinoephile.multilang.yue_zho.translation import YueTranslationVsZhoPromptYueHans
 
 
 def _get_expected_case_count(relative_paths: list[str]) -> int:
@@ -68,7 +83,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "eng_block_review",
             lambda: load_default_test_cases(
-                MonoBlockManager, EngBlockReviewPrompt, ENG_BLOCK_REVIEW_JSON_PATHS
+                MonoNManager, BlockReviewPromptEng, ENG_BLOCK_REVIEW_JSON_PATHS
             ),
             [
                 "kob/output/eng_ocr/lang/eng/block_review.json",
@@ -81,7 +96,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "eng_ocr_fusion",
             lambda: load_default_test_cases(
-                OcrFusionManager, EngOcrFusionPrompt, ENG_OCR_FUSION_JSON_PATHS
+                OcrFusionManager, OcrFusionPromptEng, ENG_OCR_FUSION_JSON_PATHS
             ),
             [
                 "kob/output/eng_ocr/lang/eng/ocr_fusion.json",
@@ -91,10 +106,28 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             ],
         ),
         (
+            "eng_zho_translation",
+            lambda: load_default_test_cases(
+                DualNToMManager,
+                EngTranslationVsZhoPrompt,
+                ENG_ZHO_TRANSLATION_JSON_PATHS,
+            ),
+            [],
+        ),
+        (
+            "eng_zho_gapped_translation",
+            lambda: load_default_test_cases(
+                DualNMinusMToNManager,
+                EngGappedTranslationVsZhoPrompt,
+                ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+            ),
+            [],
+        ),
+        (
             "zho_hans_block_review",
             lambda: load_default_test_cases(
-                MonoBlockManager,
-                ZhoHansBlockReviewPrompt,
+                MonoNManager,
+                BlockReviewPromptZhoHans,
                 ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
@@ -106,8 +139,8 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "zho_hant_block_review",
             lambda: load_default_test_cases(
-                MonoBlockManager,
-                ZhoHantBlockReviewPrompt,
+                MonoNManager,
+                BlockReviewPromptZhoHant,
                 ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
@@ -121,7 +154,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "zho_hans_ocr_fusion",
             lambda: load_default_test_cases(
                 OcrFusionManager,
-                ZhoHansOcrFusionPrompt,
+                OcrFusionPromptZhoHans,
                 ZHO_HANS_OCR_FUSION_JSON_PATHS,
             ),
             [
@@ -134,7 +167,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "zho_hant_ocr_fusion",
             lambda: load_default_test_cases(
                 OcrFusionManager,
-                ZhoHantOcrFusionPrompt,
+                OcrFusionPromptZhoHant,
                 ZHO_HANT_OCR_FUSION_JSON_PATHS,
             ),
             [
@@ -148,7 +181,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "yue_zho_line_review",
             lambda: load_default_test_cases(
                 YueZhoLineReviewManager,
-                YueVsZhoYueHansLineReviewPrompt,
+                YueLineReviewVsZhoPromptYueHans,
                 YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             ),
             [
@@ -160,8 +193,8 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "yue_zho_block_review",
             lambda: load_default_test_cases(
-                DualBlockManager,
-                YueVsZhoYueHansBlockReviewPrompt,
+                DualNToNManager,
+                YueBlockReviewVsZhoPromptYueHans,
                 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
@@ -171,17 +204,35 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             ],
         ),
         (
-            "yue_from_zho_translation",
+            "yue_vs_zho_gapped_translation",
             lambda: load_default_test_cases(
-                DualBlockGappedManager,
-                YueVsZhoYueHansTranslationPrompt,
-                YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+                DualNMinusMToNManager,
+                YueGappedTranslationVsZhoPromptYueHans,
+                YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
             ),
             [
-                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/cuda.json",
-                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/cpu.json",
-                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/mps.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cuda.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cpu.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/mps.json",
             ],
+        ),
+        (
+            "yue_zho_translation",
+            lambda: load_default_test_cases(
+                DualNToMManager,
+                YueTranslationVsZhoPromptYueHans,
+                YUE_ZHO_TRANSLATION_JSON_PATHS,
+            ),
+            [],
+        ),
+        (
+            "yue_zho_guided_translation",
+            lambda: load_default_test_cases(
+                DualNToMManager,
+                YueGuidedTranslationVsZhoPromptYueHans,
+                YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+            ),
+            [],
         ),
     ],
 )

@@ -6,12 +6,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Sequence
 from logging import getLogger
 from pathlib import Path
-from typing import Any
-
-import whisper_timestamped as whisper
-from pydub import AudioSegment
+from typing import TYPE_CHECKING, Any
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
@@ -20,6 +18,15 @@ from scinoephile.core.ml import get_torch_device
 from .transcribed_segment import TranscribedSegment
 
 __all__ = ["WhisperTranscriber"]
+
+_LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
+_TRANSCRIPTION_EXTRA_MESSAGE = (
+    "Whisper transcription support requires optional transcription dependencies. "
+    "Install scinoephile with the 'transcription' extra."
+)
+
+if TYPE_CHECKING:
+    from pydub import AudioSegment
 
 logger = getLogger(__name__)
 
@@ -74,7 +81,23 @@ class WhisperTranscriber:
             loaded Whisper model
         """
         if self._model is None:
-            self._model = whisper.load_model(self.model_name, device=get_torch_device())
+            whisper = self._get_whisper_module()
+            try:
+                self._model = whisper.load_model(
+                    self.model_name, device=get_torch_device()
+                )
+            except FileNotFoundError:
+                if not self._model_name_is_huggingface_repo_id():
+                    raise
+                logger.warning(
+                    "Whisper model load failed due to missing cache file; "
+                    "re-downloading HuggingFace snapshot and retrying."
+                )
+                snapshot_download = self._get_snapshot_download()
+                snapshot_download(repo_id=self.model_name)
+                self._model = whisper.load_model(
+                    self.model_name, device=get_torch_device()
+                )
         return self._model
 
     def get_cached_transcription(
@@ -94,6 +117,11 @@ class WhisperTranscriber:
         logger.info(f"Loaded from cache: {cache_path}")
         with cache_path.open("r", encoding="utf-8") as file:
             segments = [TranscribedSegment.model_validate(s) for s in json.load(file)]
+        segments = self._normalize_transcription_segments(
+            segments,
+            source="cache",
+            cache_path=cache_path,
+        )
         cache_path.touch()
         return segments
 
@@ -114,6 +142,7 @@ class WhisperTranscriber:
 
         # Transcribe using Whisper
         cache_path = self._get_cache_path(cache_audio)
+        whisper = self._get_whisper_module()
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             result = whisper.transcribe(
@@ -123,6 +152,11 @@ class WhisperTranscriber:
                 vad=self.use_vad,
             )
         segments = [TranscribedSegment(**s) for s in result["segments"]]
+        segments = self._normalize_transcription_segments(
+            segments,
+            source="whisper",
+            cache_path=cache_path,
+        )
 
         # Update cache
         if cache_path is not None:
@@ -133,6 +167,177 @@ class WhisperTranscriber:
                 logger.info(f"Saved transcription to cache: {cache_path}")
 
         return segments
+
+    def _model_name_is_huggingface_repo_id(self) -> bool:
+        """Determine whether model name looks like a HuggingFace repo ID.
+
+        Returns:
+            whether the model name should be passed to HuggingFace Hub
+        """
+        model_path = Path(self.model_name)
+        model_path_parts = model_path.parts
+        if (
+            model_path.is_absolute()
+            or model_path.suffix
+            or (
+                len(model_path_parts) > 0
+                and model_path_parts[0] in {".", "..", "~", *_LOCAL_MODEL_PATH_PREFIXES}
+            )
+        ):
+            return False
+        hf_validation_error_cls, validate_repo_id = (
+            self._get_huggingface_repo_validation()
+        )
+        try:
+            validate_repo_id(self.model_name)
+        except hf_validation_error_cls:
+            return False
+        return "/" in self.model_name
+
+    def _normalize_transcription_segments(
+        self,
+        segments: Sequence[TranscribedSegment],
+        *,
+        source: str,
+        cache_path: Path | None,
+    ) -> list[TranscribedSegment]:
+        """Normalize malformed transcription segments from Whisper output.
+
+        Arguments:
+            segments: raw transcription segments
+            source: source of the segments, for logging
+            cache_path: cache path associated with the segments, if any
+        Returns:
+            normalized transcription segments
+        """
+        normalized_segments: list[TranscribedSegment] = []
+        segment_idx = 0
+        while segment_idx < len(segments):
+            segment = segments[segment_idx].model_copy(deep=True)
+
+            if segment_idx + 1 < len(segments):
+                next_segment = segments[segment_idx + 1]
+                if segment_text_from_words := self._get_duplicate_segment_pair_text(
+                    segment,
+                    next_segment,
+                ):
+                    logger.warning(
+                        f"Coalescing malformed Whisper segment pair for "
+                        f"model={self.model_name} vad={self.use_vad} "
+                        f"source={source} cache={cache_path} "
+                        f"segment_idxs=({segment_idx},{segment_idx + 1}) "
+                        f"ids=({segment.id},{next_segment.id}) "
+                        f"text={segment_text_from_words!r}"
+                    )
+                    normalized_segments.append(
+                        self._get_coalesced_segment(
+                            segment,
+                            next_segment,
+                            text=segment_text_from_words,
+                        )
+                    )
+                    segment_idx += 2
+                    continue
+
+            if segment.text.strip() and not segment.words:
+                logger.warning(
+                    f"Whisper segment is missing word timings for "
+                    f"model={self.model_name} vad={self.use_vad} "
+                    f"source={source} cache={cache_path} "
+                    f"segment_idx={segment_idx} id={segment.id} "
+                    f"start={segment.start} end={segment.end} "
+                    f"text={segment.text!r}"
+                )
+
+            normalized_segments.append(segment)
+            segment_idx += 1
+
+        return normalized_segments
+
+    @staticmethod
+    def _get_coalesced_segment(
+        segment_with_words: TranscribedSegment,
+        duplicate_segment: TranscribedSegment,
+        *,
+        text: str,
+    ) -> TranscribedSegment:
+        """Coalesce a malformed empty-text/timed and text-only duplicate pair.
+
+        Arguments:
+            segment_with_words: first segment containing word timings
+            duplicate_segment: following duplicate segment lacking word timings
+            text: repaired segment text
+        Returns:
+            coalesced segment
+        """
+        coalesced_segment = duplicate_segment.model_copy(deep=True)
+        coalesced_segment.start = min(segment_with_words.start, duplicate_segment.start)
+        coalesced_segment.end = max(segment_with_words.end, duplicate_segment.end)
+        coalesced_segment.text = text
+        coalesced_segment.words = [
+            word.model_copy(deep=True) for word in (segment_with_words.words or [])
+        ]
+        return coalesced_segment
+
+    @staticmethod
+    def _get_duplicate_segment_pair_text(
+        segment: TranscribedSegment,
+        next_segment: TranscribedSegment,
+    ) -> str | None:
+        """Get repaired text for a known malformed duplicate-segment pair.
+
+        Arguments:
+            segment: current segment
+            next_segment: following segment
+        Returns:
+            repaired text if the pair matches the known malformed pattern
+        """
+        if (
+            not segment.words
+            or next_segment.words
+            or segment.text.strip()
+            or not next_segment.text.strip()
+            or next_segment.start > segment.end
+        ):
+            return None
+
+        segment_text_from_words = "".join(word.text for word in segment.words)
+        if not segment_text_from_words or next_segment.text != segment_text_from_words:
+            return None
+
+        return segment_text_from_words
+
+    @staticmethod
+    def _get_huggingface_repo_validation() -> tuple[type[Exception], Any]:
+        """Import HuggingFace repo validation helpers on demand."""
+        try:
+            from huggingface_hub.utils import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+                HFValidationError,
+                validate_repo_id,
+            )
+        except ImportError as exc:
+            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        return HFValidationError, validate_repo_id
+
+    @staticmethod
+    def _get_snapshot_download() -> Any:
+        """Import HuggingFace snapshot downloader on demand."""
+        try:
+            from huggingface_hub import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+                snapshot_download,
+            )
+        except ImportError as exc:
+            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        return snapshot_download
+
+    @staticmethod
+    def _get_whisper_module() -> Any:
+        """Import whisper-timestamped on demand."""
+        try:
+            import whisper_timestamped as whisper  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+        except ImportError as exc:
+            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        return whisper
 
     def _get_cache_path(self, audio: AudioSegment) -> Path | None:
         """Get cache path based on hash of audio data.

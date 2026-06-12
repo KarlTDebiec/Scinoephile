@@ -10,12 +10,12 @@ from typing import Any, ClassVar
 
 from scinoephile.core.llms import Prompt
 
-from .conversion import OpenCCConfig, get_zho_text_converted
+from .script.conversion import OpenCCConfig, get_zho_text_converted
 
-__all__ = ["ZhoHansPrompt"]
+__all__ = ["PromptZhoHans"]
 
 
-class ZhoHansPrompt(Prompt, ABC):
+class PromptZhoHans(Prompt, ABC):
     """LLM correspondence text for simplified standard Chinese."""
 
     opencc_config: ClassVar[OpenCCConfig | None] = None

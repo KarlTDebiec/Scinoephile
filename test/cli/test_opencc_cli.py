@@ -11,9 +11,9 @@ from unittest.mock import patch
 
 import pytest
 
+from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from scinoephile.cli.zho.zho_fuse_cli import ZhoFuseCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
@@ -23,7 +23,7 @@ from scinoephile.common.testing import run_cli_with_args
     "cli",
     [
         ZhoProcessCli,
-        ZhoFuseCli,
+        OcrFuseCli,
         YueProcessCli,
         YueTranscribeVsZhoCli,
     ],

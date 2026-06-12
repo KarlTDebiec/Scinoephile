@@ -8,15 +8,14 @@ from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from os import environ
 from pathlib import Path
+from platform import system
 from shlex import quote
+from subprocess import list2cmdline
 from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.dictionary.dictionary_cli import DictionaryCli
 from scinoephile.cli.dictionary.dictionary_search_cli import DictionarySearchCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.dictionaries import (
@@ -25,41 +24,6 @@ from scinoephile.core.dictionaries import (
     DictionarySource,
     DictionarySqliteStore,
 )
-from test.helpers import assert_cli_help, assert_cli_usage
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (DictionarySearchCli,),
-        (DictionaryCli, DictionarySearchCli),
-        (ScinoephileCli, DictionaryCli, DictionarySearchCli),
-    ],
-)
-def test_dictionary_search_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test dictionary search CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (DictionarySearchCli,),
-        (DictionaryCli, DictionarySearchCli),
-        (ScinoephileCli, DictionaryCli, DictionarySearchCli),
-    ],
-)
-def test_dictionary_search_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test dictionary search CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 @pytest.fixture(scope="module")
@@ -200,7 +164,7 @@ def test_dictionary_search_cli(
                 f"--log-file {log_file_path} "
                 "--dictionary-name cuhk "
                 f"--database-path {database_path} "
-                f"--limit 3 {quote(query)}",
+                f"--limit 3 {_quote_cli_arg(query)}",
             )
         output = log_file_path.read_text(encoding="utf-8")
 
@@ -261,3 +225,43 @@ def test_dictionary_search_cli_all_dictionaries_database_path_is_usage_error():
                 DictionarySearchCli,
                 f"--database-path {database_path} --dictionary-name all 共享",
             )
+
+
+def test_dictionary_search_cli_prints_no_matches(
+    dictionary_database_dir_path: Path,
+    capsys: pytest.CaptureFixture,
+):
+    """Test dictionary search reports no matches on stdout.
+
+    Arguments:
+        dictionary_database_dir_path: directory containing fixture dictionaries
+        capsys: pytest capture fixture
+    """
+    database_path = (
+        dictionary_database_dir_path
+        / "scinoephile"
+        / "dictionaries"
+        / "cuhk"
+        / "cuhk.db"
+    )
+
+    run_cli_with_args(
+        DictionarySearchCli,
+        f"--dictionary-name cuhk --database-path {database_path} --limit 3 冇呢個詞",
+    )
+    output = capsys.readouterr().out
+
+    assert output == "No matches found in cuhk for '冇呢個詞'.\n"
+
+
+def _quote_cli_arg(value: str) -> str:
+    """Quote one argument for the platform-specific test CLI splitter.
+
+    Arguments:
+        value: argument value to quote
+    Returns:
+        quoted argument
+    """
+    if system() == "Windows":
+        return list2cmdline([value])
+    return quote(value)

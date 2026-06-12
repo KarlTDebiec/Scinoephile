@@ -19,10 +19,10 @@ from scinoephile.core.synchronization import (
     get_sync_groups_string,
     get_sync_overlap_matrix,
 )
-from scinoephile.llms.dual_pair import DualPairManager
+from scinoephile.llms.dual_2_to_2 import Dual2To2Manager
 
-from .deliniation import YueVsZhoYueHansDeliniationPrompt
-from .punctuation import YueVsZhoYueHansPunctuationPrompt, YueZhoPunctuationManager
+from .deliniation import YueDeliniationVsZhoPromptYueHans
+from .punctuation import YuePunctuationVsZhoPromptYueHans, YueZhoPunctuationManager
 
 __all__ = ["Alignment"]
 
@@ -197,10 +197,10 @@ class Alignment:
         yw_2 = "".join([self.yuewen[i].text for i in sg_2_yw_idxs])
 
         # Return
-        if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
+        if len(yw_1) == 0 and len(yw_2) == 0:
             return None
-        test_case_cls = DualPairManager.get_test_case_cls(
-            prompt_cls=YueVsZhoYueHansDeliniationPrompt
+        test_case_cls = Dual2To2Manager.get_test_case_cls(
+            prompt_cls=YueDeliniationVsZhoPromptYueHans
         )
         query_kwargs = {
             test_case_cls.prompt_cls.src_1_sub_1: zw_1,
@@ -246,7 +246,7 @@ class Alignment:
 
         # Return punctuate query
         test_case_cls = YueZhoPunctuationManager.get_test_case_cls(
-            prompt_cls=YueVsZhoYueHansPunctuationPrompt
+            prompt_cls=YuePunctuationVsZhoPromptYueHans
         )
         query_kwargs = {
             test_case_cls.prompt_cls.src_2: zw,

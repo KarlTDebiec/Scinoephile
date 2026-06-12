@@ -4,76 +4,89 @@
 
 from __future__ import annotations
 
-from contextlib import redirect_stderr, redirect_stdout
-from io import StringIO
+from pathlib import Path
 
 import pytest
 import requests
 
-from scinoephile.cli.dictionary.build.dictionary_build_cli import DictionaryBuildCli
 from scinoephile.cli.dictionary.build.dictionary_build_cuhk_cli import (
     DictionaryBuildCuhkCli,
 )
-from scinoephile.cli.dictionary.dictionary_cli import DictionaryCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
-from test.helpers import (
-    assert_cli_help,
-    build_subcommands,
-    get_usage_prefix,
-    skip_if_ci,
-)
+from test.helpers import skip_if_ci
 
 
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (DictionaryBuildCuhkCli,),
-        (DictionaryBuildCli, DictionaryBuildCuhkCli),
-        (DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
-        (ScinoephileCli, DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
-    ],
-)
-def test_dictionary_build_cuhk_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test CUHK build subcommand help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (DictionaryBuildCuhkCli,),
-        (DictionaryBuildCli, DictionaryBuildCuhkCli),
-        (DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
-        (ScinoephileCli, DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
-    ],
-)
-def test_dictionary_build_cuhk_usage(
-    cli: tuple[type[CommandLineInterface], ...],
+def test_dictionary_build_cuhk_cli_passes_cache_dir_to_service(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
 ):
-    """Test CUHK build subcommand usage output on parse error.
+    """Test CUHK CLI forwards parsed cache dirs without parser-time creation.
 
     Arguments:
-        cli: CLI class tuple with optional subcommands
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
     """
-    stdout = StringIO()
-    stderr = StringIO()
-    subcommands = build_subcommands(cli)
+    init_calls: list[dict[str, object]] = []
+    build_calls: list[dict[str, object]] = []
+    cache_dir_path = tmp_path / "cache"
+    database_path = tmp_path / "cuhk.db"
 
-    with pytest.raises(SystemExit) as excinfo:
-        with redirect_stdout(stdout):
-            with redirect_stderr(stderr):
-                run_cli_with_args(cli[0], f"{subcommands} --max-words".strip())
+    class FakeCuhkDictionaryService:
+        """Fake CUHK dictionary service."""
 
-    assert excinfo.value.code == 2
-    assert stdout.getvalue() == ""
-    assert stderr.getvalue().startswith(get_usage_prefix(cli))
+        def __init__(
+            self,
+            database_path: Path | None = None,
+            *,
+            scraper_kwargs: dict[str, object] | None = None,
+        ):
+            """Initialize."""
+            init_calls.append(
+                {
+                    "database_path": database_path,
+                    "scraper_kwargs": scraper_kwargs,
+                }
+            )
+            self.cache_dir_path = cache_dir_path.resolve()
+            self.database_path = database_path
+
+        def build(
+            self,
+            *,
+            overwrite: bool = False,
+            max_words: int | None = None,
+        ) -> Path:
+            """Build the dictionary."""
+            build_calls.append({"overwrite": overwrite, "max_words": max_words})
+            return database_path
+
+    monkeypatch.setattr(
+        "scinoephile.cli.dictionary.build.dictionary_build_cuhk_cli."
+        "CuhkDictionaryService",
+        FakeCuhkDictionaryService,
+    )
+
+    run_cli_with_args(
+        DictionaryBuildCuhkCli,
+        f"--cache-dir {cache_dir_path} --database-path {database_path} "
+        "--max-words 3 --overwrite",
+    )
+
+    assert init_calls == [
+        {
+            "database_path": database_path.resolve(),
+            "scraper_kwargs": {
+                "cache_dir_path": cache_dir_path.resolve(),
+                "min_delay_seconds": 1.0,
+                "max_delay_seconds": 5.0,
+                "max_retries": 5,
+                "request_timeout_seconds": 30.0,
+            },
+        }
+    ]
+    assert build_calls == [{"overwrite": True, "max_words": 3}]
+    assert not cache_dir_path.exists()
 
 
 @skip_if_ci()

@@ -5,17 +5,20 @@
 This module may import from: common
 
 Hierarchy within module (lower may import from higher):
-* cache / cli / dictionaries / exceptions / llms / media / ml / optimization
-  / paths / subtitles
-* pairs / text / timing
-* synchronization
+* dictionaries / exceptions / ml / optimization / paths
+* cache / llms / subtitles / text
+* language / pairs / timing
+* cli / media / synchronization
+* stacking
 """
 
 from __future__ import annotations
 
 from .exceptions import ScinoephileError, UnsupportedCharacterError
+from .language import Language
 
 __all__ = [
+    "Language",
     "ScinoephileError",
     "UnsupportedCharacterError",
 ]

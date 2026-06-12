@@ -25,18 +25,22 @@ from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.llms.providers.registry import get_provider
 
 from .aligner import Aligner
-from .deliniation import YueVsZhoYueHansDeliniationPrompt
-from .punctuation import YueVsZhoYueHansPunctuationPrompt
+from .deliniation import YueDeliniationVsZhoPromptYueHans
+from .punctuation import YuePunctuationVsZhoPromptYueHans
 
 __all__ = [
+    "DEFAULT_YUE_WHISPER_MODEL_NAME",
     "DemucsMode",
     "VADMode",
     "YueTranscriber",
 ]
+
+DEFAULT_YUE_WHISPER_MODEL_NAME = "khleeloo/whisper-large-v3-cantonese"
+"""Default Whisper model name for written Cantonese transcription."""
 
 logger = getLogger(__name__)
 
@@ -67,13 +71,14 @@ class YueTranscriber:
     def __init__(
         self,
         *,
-        model_name: str = "khleeloo/whisper-large-v3-cantonese",
+        model_name: str = DEFAULT_YUE_WHISPER_MODEL_NAME,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
         provider: LLMProvider | None = None,
         convert: OpenCCConfig | None = None,
-        deliniation_prompt_cls: type[YueVsZhoYueHansDeliniationPrompt],
-        punctuation_prompt_cls: type[YueVsZhoYueHansPunctuationPrompt],
+        additional_context: str | None = None,
+        deliniation_prompt_cls: type[YueDeliniationVsZhoPromptYueHans],
+        punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHans],
         test_case_directory_path: Path,
         deliniation_test_cases: list[TestCase],
         punctuation_test_cases: list[TestCase],
@@ -86,6 +91,7 @@ class YueTranscriber:
             vad_mode: Whisper VAD mode for transcription
             provider: provider to use for LLM queryers
             convert: OpenCC configuration used to convert transcribed text
+            additional_context: additional context to include in LLM prompts
             deliniation_prompt_cls: prompt class for block-boundary deliniation
             punctuation_prompt_cls: prompt class for line punctuation
             test_case_directory_path: path to directory containing test cases
@@ -98,10 +104,12 @@ class YueTranscriber:
         self.demucs_mode = demucs_mode
         self.convert = convert
         if provider is None:
-            provider = get_default_provider()
+            provider = get_provider()
         self.demucs_separator = None
         if demucs_mode == DemucsMode.ON:
-            self.demucs_separator = DemucsSeparator()
+            self.demucs_separator = DemucsSeparator(
+                cache_dir_path=get_runtime_cache_dir_path("demucs")
+            )
         self.vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.ON):
             self.vad_transcriber = self._get_whisper_transcriber(use_vad=True)
@@ -114,6 +122,7 @@ class YueTranscriber:
             verified_test_cases=[tc for tc in deliniation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
+            additional_context=additional_context,
         )
         punctuation_queryer_cls = Queryer.get_queryer_cls(punctuation_prompt_cls)
         self.punctuation_queryer = punctuation_queryer_cls(
@@ -121,6 +130,7 @@ class YueTranscriber:
             verified_test_cases=[tc for tc in punctuation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
+            additional_context=additional_context,
         )
         self.aligner = Aligner(
             deliniation_queryer=self.deliniation_queryer,
@@ -226,10 +236,16 @@ class YueTranscriber:
 
         assert self.vad_transcriber is not None
         cached_segments = self.vad_transcriber.get_cached_transcription(cache_audio)
-        if cached_segments is not None and any(
-            segment.text.strip() for segment in cached_segments
-        ):
+        if cached_segments is not None and self._segments_are_usable(cached_segments):
             return cached_segments
+        if self.no_vad_transcriber is not None:
+            cached_segments = self.no_vad_transcriber.get_cached_transcription(
+                cache_audio
+            )
+            if cached_segments is not None and self._segments_are_usable(
+                cached_segments
+            ):
+                return cached_segments
 
         return None
 
@@ -274,10 +290,36 @@ class YueTranscriber:
             return self.no_vad_transcriber(audio, cache_audio=cache_audio)
 
         assert self.vad_transcriber is not None
-        segments = self.vad_transcriber(audio, cache_audio=cache_audio)
-        if any(segment.text.strip() for segment in segments):
+        try:
+            segments = self.vad_transcriber(audio, cache_audio=cache_audio)
+        except AssertionError as exc:
+            logger.warning(
+                f"Retrying block transcription without VAD after Whisper assertion: "
+                f"{exc}"
+            )
+            assert self.no_vad_transcriber is not None
+            return self.no_vad_transcriber(audio, cache_audio=cache_audio)
+        if self._segments_are_usable(segments):
             return segments
 
-        logger.info("Retrying block transcription without VAD after empty result")
+        logger.info(
+            "Retrying block transcription without VAD after unusable VAD result"
+        )
         assert self.no_vad_transcriber is not None
         return self.no_vad_transcriber(audio, cache_audio=cache_audio)
+
+    @staticmethod
+    def _segments_are_usable(segments: list[TranscribedSegment]) -> bool:
+        """Determine whether transcribed segments are usable for alignment.
+
+        Arguments:
+            segments: transcribed segments to inspect
+        Returns:
+            whether the segments contain non-empty text with word timings
+        """
+        if not any(segment.text.strip() for segment in segments):
+            return False
+
+        return not any(
+            segment.text.strip() and not segment.words for segment in segments
+        )

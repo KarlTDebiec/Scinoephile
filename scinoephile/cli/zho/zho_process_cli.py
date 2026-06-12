@@ -7,9 +7,16 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.conversion import (
+from scinoephile.cli.helpers.conversion import (
+    CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
-    merge_conversion_localizations,
+)
+from scinoephile.cli.helpers.io import read_series, write_series
+from scinoephile.cli.helpers.llms import (
+    LLM_LOCALIZATIONS,
+    LlmArguments,
+    add_llm_provider_args,
+    read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -19,88 +26,91 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import (
+from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.lang.zho.script.conversion import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
     get_zho_converted,
 )
-from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["ZhoProcessCli"]
+
+ZHO_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "append Mandarin romanization to subtitles": "为字幕追加普通话罗马字",
+        "clean subtitles of closed-caption annotations and other anomalies": (
+            "清理字幕中的隐藏字幕标注及其他异常"
+        ),
+        "command-line interface for standard Chinese subtitle processing": (
+            "标准中文字幕处理命令行界面"
+        ),
+        "flatten multi-line subtitles into single lines": ("将多行字幕合并为单行"),
+        "modify standard Chinese subtitles": "修改标准中文字幕",
+        "proofread subtitles using LLM (default: simplified)": (
+            "使用大语言模型校对字幕（默认：简体）"
+        ),
+        "script for prompts and output conversion (default: simplified)": (
+            "提示词和输出转换使用的字形（默认：简体）"
+        ),
+        "shift subtitle timings by this many milliseconds": (
+            "按指定毫秒数平移字幕时间"
+        ),
+        'Standard Chinese subtitle infile path or "-" for stdin': (
+            '标准中文字幕输入文件路径，或使用 "-" 表示标准输入'
+        ),
+        "Standard Chinese subtitle outfile path (default: stdout)": (
+            "标准中文字幕输出文件路径（默认：标准输出）"
+        ),
+    },
+    "zh-hant": {
+        "append Mandarin romanization to subtitles": "為字幕附加普通話羅馬字",
+        "clean subtitles of closed-caption annotations and other anomalies": (
+            "清理字幕中的隱藏字幕標註及其他異常"
+        ),
+        "command-line interface for standard Chinese subtitle processing": (
+            "標準中文字幕處理命令列介面"
+        ),
+        "flatten multi-line subtitles into single lines": ("將多行字幕合併為單行"),
+        "modify standard Chinese subtitles": "修改標準中文字幕",
+        "proofread subtitles using LLM (default: simplified)": (
+            "使用大型語言模型校對字幕（預設：簡體）"
+        ),
+        "script for prompts and output conversion (default: simplified)": (
+            "提示詞與輸出轉換使用的字形（預設：簡體）"
+        ),
+        "shift subtitle timings by this many milliseconds": (
+            "依指定毫秒數平移字幕時間"
+        ),
+        'Standard Chinese subtitle infile path or "-" for stdin': (
+            '標準中文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
+        ),
+        "Standard Chinese subtitle outfile path (default: stdout)": (
+            "標準中文字幕輸出檔路徑（預設：標準輸出）"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
 
 
 class ZhoProcessCli(ScinoephileCliBase):
     """Modify standard Chinese subtitles."""
 
-    localizations = merge_conversion_localizations(
-        {
-            "zh-hans": {
-                "append Mandarin romanization to subtitles": "为字幕追加普通话罗马字",
-                "clean subtitles of closed-caption annotations and other anomalies": (
-                    "清理字幕中的隐藏字幕标注及其他异常"
-                ),
-                "command-line interface for standard Chinese subtitle processing": (
-                    "标准中文字幕处理命令行界面"
-                ),
-                "flatten multi-line subtitles into single lines": (
-                    "将多行字幕合并为单行"
-                ),
-                "modify standard Chinese subtitles": "修改标准中文字幕",
-                "proofread subtitles using LLM (default: simplified)": (
-                    "使用大语言模型校对字幕（默认：简体）"
-                ),
-                "script for prompts and output conversion (default: simplified)": (
-                    "提示词和输出转换使用的字形（默认：简体）"
-                ),
-                "shift subtitle timings by this many milliseconds": (
-                    "按指定毫秒数平移字幕时间"
-                ),
-                'Standard Chinese subtitle infile path or "-" for stdin': (
-                    '标准中文字幕输入文件路径，或使用 "-" 表示标准输入'
-                ),
-                "Standard Chinese subtitle outfile path (default: stdout)": (
-                    "标准中文字幕输出文件路径（默认：标准输出）"
-                ),
-            },
-            "zh-hant": {
-                "append Mandarin romanization to subtitles": "為字幕附加普通話羅馬字",
-                "clean subtitles of closed-caption annotations and other anomalies": (
-                    "清理字幕中的隱藏字幕標註及其他異常"
-                ),
-                "command-line interface for standard Chinese subtitle processing": (
-                    "標準中文字幕處理命令列介面"
-                ),
-                "flatten multi-line subtitles into single lines": (
-                    "將多行字幕合併為單行"
-                ),
-                "modify standard Chinese subtitles": "修改標準中文字幕",
-                "proofread subtitles using LLM (default: simplified)": (
-                    "使用大型語言模型校對字幕（預設：簡體）"
-                ),
-                "script for prompts and output conversion (default: simplified)": (
-                    "提示詞與輸出轉換使用的字形（預設：簡體）"
-                ),
-                "shift subtitle timings by this many milliseconds": (
-                    "依指定毫秒數平移字幕時間"
-                ),
-                'Standard Chinese subtitle infile path or "-" for stdin': (
-                    '標準中文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
-                ),
-                "Standard Chinese subtitle outfile path (default: stdout)": (
-                    "標準中文字幕輸出檔路徑（預設：標準輸出）"
-                ),
-            },
-        }
+    localizations = merge_localizations(
+        CONVERSION_LOCALIZATIONS,
+        LLM_LOCALIZATIONS,
+        ZHO_PROCESS_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -116,6 +126,7 @@ class ZhoProcessCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "llm arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -140,6 +151,9 @@ class ZhoProcessCli(ScinoephileCliBase):
         add_opencc_convert_argument(
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
+        add_llm_provider_args(
+            arg_groups["llm arguments"], arg_groups["additional help"]
+        )
         arg_groups["operation arguments"].add_argument(
             "--flatten",
             action="store_true",
@@ -150,6 +164,7 @@ class ZhoProcessCli(ScinoephileCliBase):
             dest="review_script",
             nargs="?",
             const="simplified",
+            metavar="{simplified,traditional}",
             type=str_arg(options=("simplified", "traditional")),
             help="proofread subtitles using LLM (default: simplified)",
         )
@@ -171,7 +186,7 @@ class ZhoProcessCli(ScinoephileCliBase):
             "--outfile",
             default=None,
             dest="outfile_path",
-            type=output_file_arg(),
+            type=output_file_arg(exist_ok=True),
             help="Standard Chinese subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
@@ -201,6 +216,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         flatten: bool,
         convert: OpenCCConfig | None,
         review_script: str | None,
+        llm_args: LlmArguments,
         romanize: bool,
         offset: int,
         overwrite: bool,
@@ -212,16 +228,17 @@ class ZhoProcessCli(ScinoephileCliBase):
         if not (clean or flatten or convert or review_script or romanize or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
-        cls._validate_review_script(parser, convert, review_script)
+            parser.error("--overwrite may only be used with --outfile")
+        try:
+            cls._validate_review_script(convert, review_script)
+        except ArgumentConflictError as exc:
+            parser.error(str(exc))
 
-        # Read input
+        # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
+        additional_context = read_llm_additional_context(
+            parser, llm_args.additional_context_file_path
+        )
 
         # Perform operations
         if clean:
@@ -232,14 +249,19 @@ class ZhoProcessCli(ScinoephileCliBase):
             series = get_zho_flattened(series)
         if review_script is not None:
             prompt_cls = cls._get_review_prompt_cls(review_script)
-            proofreader = get_zho_reviewer(prompt_cls=prompt_cls)
-            series = get_zho_block_reviewed(series, processor=proofreader)
+            provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
+            reviewer = get_zho_reviewer(
+                prompt_cls=prompt_cls,
+                provider=provider,
+                additional_context=additional_context,
+            )
+            series = get_zho_block_reviewed(series, processor=reviewer)
         if romanize:
             series = get_cmn_romanized(series, append=True)
         if offset:
             series.shift(ms=offset)
 
-        # Write output
+        # Write outputs
         write_series(
             parser, series, outfile_path if outfile_path is not None else "-", overwrite
         )
@@ -247,7 +269,7 @@ class ZhoProcessCli(ScinoephileCliBase):
     @classmethod
     def _get_review_prompt_cls(
         cls, review_script: str
-    ) -> type[ZhoHansBlockReviewPrompt]:
+    ) -> type[BlockReviewPromptZhoHans]:
         """Get the block-review prompt class for the selected script.
 
         Arguments:
@@ -256,8 +278,8 @@ class ZhoProcessCli(ScinoephileCliBase):
             block-review prompt class
         """
         if review_script == "traditional":
-            return ZhoHantBlockReviewPrompt
-        return ZhoHansBlockReviewPrompt
+            return BlockReviewPromptZhoHant
+        return BlockReviewPromptZhoHans
 
     @classmethod
     def _get_script_for_conversion(cls, convert: OpenCCConfig) -> str | None:
@@ -277,14 +299,12 @@ class ZhoProcessCli(ScinoephileCliBase):
     @classmethod
     def _validate_review_script(
         cls,
-        parser: ArgumentParser,
         convert: OpenCCConfig | None,
         review_script: str | None,
     ):
         """Validate that review script matches conversion output.
 
         Arguments:
-            parser: argument parser for error reporting
             convert: OpenCC configuration
             review_script: script identifier for block review
         """
@@ -294,7 +314,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         if convert_script is None:
             return
         if convert_script != review_script:
-            parser.error(
+            raise ArgumentConflictError(
                 "Review script must match post-conversion script: "
                 f"{convert} yields {convert_script}"
             )

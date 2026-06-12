@@ -30,16 +30,16 @@ from scinoephile.dictionaries.dictionary_tools import (
     lookup_dictionary,
 )
 from scinoephile.multilang.yue_zho.block_review import (
-    YueVsZhoYueHansBlockReviewPrompt,
+    YueBlockReviewVsZhoPromptYueHans,
     get_yue_vs_zho_block_reviewer,
 )
-from scinoephile.multilang.yue_zho.line_review import (
-    YueVsZhoYueHansLineReviewPrompt,
-    get_yue_vs_zho_line_reviewer,
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
+    get_yue_vs_zho_gapped_translator,
 )
-from scinoephile.multilang.yue_zho.translation import (
-    YueVsZhoYueHansTranslationPrompt,
-    get_yue_vs_zho_translator,
+from scinoephile.multilang.yue_zho.line_review import (
+    YueLineReviewVsZhoPromptYueHans,
+    get_yue_vs_zho_line_reviewer,
 )
 
 
@@ -236,9 +236,9 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
 @pytest.mark.parametrize(
     ("prompt_cls", "factory"),
     [
-        (YueVsZhoYueHansTranslationPrompt, get_yue_vs_zho_translator),
-        (YueVsZhoYueHansBlockReviewPrompt, get_yue_vs_zho_block_reviewer),
-        (YueVsZhoYueHansLineReviewPrompt, get_yue_vs_zho_line_reviewer),
+        (YueGappedTranslationVsZhoPromptYueHans, get_yue_vs_zho_gapped_translator),
+        (YueBlockReviewVsZhoPromptYueHans, get_yue_vs_zho_block_reviewer),
+        (YueLineReviewVsZhoPromptYueHans, get_yue_vs_zho_line_reviewer),
     ],
 )
 def test_processors_use_prompt_dictionary_tooling(

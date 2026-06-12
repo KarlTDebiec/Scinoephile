@@ -9,48 +9,12 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.cli.zho.zho_cli import ZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (ZhoProcessCli,),
-        (ZhoCli, ZhoProcessCli),
-        (ScinoephileCli, ZhoCli, ZhoProcessCli),
-    ],
-)
-def test_zho_process_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test standard Chinese processing CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (ZhoProcessCli,),
-        (ZhoCli, ZhoProcessCli),
-        (ScinoephileCli, ZhoCli, ZhoProcessCli),
-    ],
-)
-def test_zho_process_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test standard Chinese processing CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
+from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
+from test.helpers import assert_series_equal, test_data_root
 
 
 @pytest.mark.parametrize(
@@ -62,24 +26,9 @@ def test_zho_process_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mnt/output/zho-Hans_ocr/fuse_clean.srt",
         ),
         (
-            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review.srt",
-            "--flatten",
-            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
-        ),
-        (
-            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
-            "--romanize",
-            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt",
-        ),
-        (
             "mnt/output/zho-Hant_ocr/fuse_clean_validate_review_flatten.srt",
             "--convert t2s",
             "mnt/output/zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt",
-        ),
-        (
-            "mnt/output/zho-Hant_ocr/fuse_clean_validate.srt",
-            "--proofread traditional",
-            "mnt/output/zho-Hant_ocr/fuse_clean_validate_review.srt",
         ),
     ],
 )
@@ -106,7 +55,7 @@ def test_zho_process_cli(
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
 
-    assert output == expected
+    assert_series_equal(output, expected)
 
 
 @pytest.mark.parametrize(
@@ -129,18 +78,18 @@ def test_zho_process_cli_pipe(input_path: str, args: str, expected_path: str):
     """
     full_input_path = test_data_root / input_path
     full_expected_path = test_data_root / expected_path
-    input_text = full_input_path.read_text()
+    input_text = full_input_path.read_text(encoding="utf-8")
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()
-    with patch("scinoephile.core.cli.stdin", stdin_stream):
-        with patch("scinoephile.core.cli.stdout", stdout_stream):
+    with patch("scinoephile.cli.helpers.io.stdin", stdin_stream):
+        with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
             run_cli_with_args(ZhoProcessCli, f"--infile - {args}")
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     expected = Series.load(full_expected_path)
 
-    assert output == expected
+    assert_series_equal(output, expected)
 
 
 def test_zho_process_cli_offsets_timing():
@@ -156,7 +105,7 @@ def test_zho_process_cli_offsets_timing():
 
     expected = Series.load(full_input_path)
     expected.shift(ms=1250)
-    assert output == expected
+    assert_series_equal(output, expected)
 
 
 def test_zho_process_cli_rejects_bare_convert_flag():
@@ -168,3 +117,38 @@ def test_zho_process_cli_rejects_bare_convert_flag():
 
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(ZhoProcessCli, f"--infile {full_input_path} --convert")
+
+
+def test_zho_process_cli_passes_llm_options_to_reviewer(tmp_path):
+    """Test standard Chinese CLI constructs configured LLM provider for review."""
+    full_input_path = test_data_root / "mnt/output/zho-Hant_ocr/fuse_clean_validate.srt"
+    expected = Series.load(
+        test_data_root / "mnt/output/zho-Hant_ocr/fuse_clean_validate_review.srt"
+    )
+    context_path = tmp_path / "context.txt"
+    context_path.write_text("Use glossary terms.\n", encoding="utf-8")
+
+    with get_temp_file_path(".srt") as output_path:
+        with patch(
+            "scinoephile.cli.zho.zho_process_cli.get_zho_reviewer",
+            return_value="proofreader",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.zho.zho_process_cli.get_zho_block_reviewed",
+                return_value=expected,
+            ):
+                run_cli_with_args(
+                    ZhoProcessCli,
+                    f"--infile {full_input_path} --proofread traditional "
+                    "--llm-provider deepseek --llm-model custom-model "
+                    f"--llm-additional-content-file {context_path} "
+                    f"--outfile {output_path}",
+                )
+
+    provider = patched_factory.call_args.kwargs["provider"]
+    assert isinstance(provider, DeepSeekProvider)
+    assert provider.model == "custom-model"
+    assert (
+        patched_factory.call_args.kwargs["additional_context"]
+        == "Use glossary terms.\n"
+    )

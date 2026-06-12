@@ -14,14 +14,14 @@ from scinoephile.llms.default_test_cases import (
     ENG_OCR_FUSION_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager, OcrFusionProcessor
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager, OcrFusionProcessor
+from scinoephile.llms.providers.registry import get_provider
 
-from .prompts import EngOcrFusionPrompt
+from .prompts import OcrFusionPromptEng
 
 __all__ = [
     "ENG_OCR_FUSION_OPERATION_SPEC",
-    "EngOcrFusionPrompt",
+    "OcrFusionPromptEng",
     "EngOcrFusionProcessKwargs",
     "EngOcrFusionProcessorKwargs",
     "get_eng_ocr_fuser",
@@ -32,7 +32,7 @@ ENG_OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="eng-ocr-fusion",
     test_case_table_name="test_cases__eng__ocr_fusion",
     manager_cls=OcrFusionManager,
-    prompt_cls=EngOcrFusionPrompt,
+    prompt_cls=OcrFusionPromptEng,
 )
 """Operation specification for English OCR fusion."""
 
@@ -49,6 +49,8 @@ class EngOcrFusionProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     """Path where encountered test cases are persisted."""
+    additional_context: str | None
+    """Additional context to include in the system prompt."""
     auto_verify: bool
     """Whether generated test cases should be marked verified automatically."""
 
@@ -75,7 +77,7 @@ def get_eng_ocr_fused(
 
 
 def get_eng_ocr_fuser(
-    prompt_cls: type[EngOcrFusionPrompt] = EngOcrFusionPrompt,
+    prompt_cls: type[OcrFusionPromptEng] = OcrFusionPromptEng,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[EngOcrFusionProcessorKwargs],
@@ -99,7 +101,7 @@ def get_eng_ocr_fuser(
             )
         )
     if provider is None:
-        provider = get_default_provider()
+        provider = get_provider()
     return OcrFusionProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

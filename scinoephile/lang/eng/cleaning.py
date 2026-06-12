@@ -41,11 +41,15 @@ def _get_english_text_cleaned(text: str) -> str | None:
     Returns:
         Cleaned text, or None if no text remains
     """
-    line_sep = r"\\N"
-    cleaned = text.strip()
+    line_sep = "\\N"
+    cleaned = text.replace("\xa0", " ").strip()
 
     # Remove ASS hard-space \h
     cleaned = re.sub(r"\\h", "", cleaned)
+
+    # Remove extraction markup from EIA-608 captions
+    cleaned = re.sub(r"</?font\b[^>]*>", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\{\\an\d+\}", "", cleaned)
 
     # Remove closed caption annotations ([...])
     cleaned = re.sub(r"\[.*?][^\S\n]*", "", cleaned, flags=re.DOTALL).strip()

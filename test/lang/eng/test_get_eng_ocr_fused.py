@@ -4,11 +4,10 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
+from test.helpers import assert_series_equal
 
 
 def _test_get_eng_ocr_fused(lens: Series, tesseract: Series, expected: Series):
@@ -22,16 +21,7 @@ def _test_get_eng_ocr_fused(lens: Series, tesseract: Series, expected: Series):
     output = get_eng_ocr_fused(lens, tesseract)
 
     assert len(lens) == len(output)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies:\n" + "\n".join(errors))
+    assert_series_equal(output, expected)
 
 
 def test_get_eng_ocr_fused_kob(

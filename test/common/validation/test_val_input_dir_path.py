@@ -10,6 +10,7 @@ import pytest
 
 from scinoephile.common.exceptions import DirectoryNotFoundError
 from scinoephile.common.validation import val_input_dir_path
+from test.helpers import create_symlink_or_skip
 
 
 def test_val_input_dir_path_valid(tmp_path: Path):
@@ -66,7 +67,7 @@ def test_val_input_dir_path_resolves_symlink(tmp_path: Path):
     test_dir.mkdir()
 
     symlink = tmp_path / "linkdir"
-    symlink.symlink_to(test_dir)
+    create_symlink_or_skip(symlink, test_dir, target_is_directory=True)
 
     result = val_input_dir_path(symlink)
     assert result == test_dir.resolve()

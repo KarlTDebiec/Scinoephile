@@ -1,6 +1,11 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Provider composition layer for LLM integrations outside `scinoephile.core`."""
+"""Provider composition layer for LLM integrations outside `scinoephile.core`.
+
+Package hierarchy (modules may import from any above):
+* deepseek_provider / openai_provider
+* registry
+"""
 
 from __future__ import annotations
 

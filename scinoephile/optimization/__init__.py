@@ -9,4 +9,7 @@ This module may import from:
 - lang
 - audio / dictionaries
 - multilang
+
+Package hierarchy (modules may import from any above):
+* operations / persistence
 """

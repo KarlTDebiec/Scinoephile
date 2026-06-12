@@ -7,60 +7,77 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.helpers.io import read_series, write_series
+from scinoephile.cli.helpers.llms import (
+    LLM_LOCALIZATIONS,
+    LlmArguments,
+    add_llm_provider_args,
+    read_llm_additional_context,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
     output_file_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.lang.eng.block_review import get_eng_block_reviewed
+from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.lang.eng.block_review import (
+    get_eng_block_reviewed,
+    get_eng_block_reviewer,
+)
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
+from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["EngProcessCli"]
+
+ENG_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "clean subtitles of closed-caption annotations and other anomalies": (
+            "清理字幕中的隐藏字幕标注及其他异常"
+        ),
+        'English subtitle infile path or "-" for stdin': (
+            '英文字幕输入文件路径，或使用 "-" 表示标准输入'
+        ),
+        "English subtitle outfile path (default: stdout)": (
+            "英文字幕输出文件路径（默认：标准输出）"
+        ),
+        "flatten multi-line subtitles into single lines": ("将多行字幕合并为单行"),
+        "modify English subtitles": "修改英文字幕",
+        "shift subtitle timings by this many milliseconds": (
+            "按指定毫秒数平移字幕时间"
+        ),
+        "proofread subtitles using LLM": "使用大语言模型校对字幕",
+    },
+    "zh-hant": {
+        "clean subtitles of closed-caption annotations and other anomalies": (
+            "清理字幕中的隱藏字幕標註及其他異常"
+        ),
+        'English subtitle infile path or "-" for stdin': (
+            '英文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
+        ),
+        "English subtitle outfile path (default: stdout)": (
+            "英文字幕輸出檔路徑（預設：標準輸出）"
+        ),
+        "flatten multi-line subtitles into single lines": ("將多行字幕合併為單行"),
+        "modify English subtitles": "修改英文字幕",
+        "shift subtitle timings by this many milliseconds": (
+            "依指定毫秒數平移字幕時間"
+        ),
+        "proofread subtitles using LLM": "使用大型語言模型校對字幕",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
 
 
 class EngProcessCli(ScinoephileCliBase):
     """Modify English subtitles."""
 
-    localizations = {
-        "zh-hans": {
-            "clean subtitles of closed-caption annotations and other anomalies": (
-                "清理字幕中的隐藏字幕标注及其他异常"
-            ),
-            'English subtitle infile path or "-" for stdin': (
-                '英文字幕输入文件路径，或使用 "-" 表示标准输入'
-            ),
-            "English subtitle outfile path (default: stdout)": (
-                "英文字幕输出文件路径（默认：标准输出）"
-            ),
-            "flatten multi-line subtitles into single lines": "将多行字幕合并为单行",
-            "modify English subtitles": "修改英文字幕",
-            "shift subtitle timings by this many milliseconds": (
-                "按指定毫秒数平移字幕时间"
-            ),
-            "proofread subtitles using LLM": "使用大语言模型校对字幕",
-        },
-        "zh-hant": {
-            "clean subtitles of closed-caption annotations and other anomalies": (
-                "清理字幕中的隱藏字幕標註及其他異常"
-            ),
-            'English subtitle infile path or "-" for stdin': (
-                '英文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
-            ),
-            "English subtitle outfile path (default: stdout)": (
-                "英文字幕輸出檔路徑（預設：標準輸出）"
-            ),
-            "flatten multi-line subtitles into single lines": "將多行字幕合併為單行",
-            "modify English subtitles": "修改英文字幕",
-            "shift subtitle timings by this many milliseconds": (
-                "依指定毫秒數平移字幕時間"
-            ),
-            "proofread subtitles using LLM": "使用大型語言模型校對字幕",
-        },
-    }
+    localizations = merge_localizations(
+        LLM_LOCALIZATIONS,
+        ENG_PROCESS_LOCALIZATIONS,
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -75,7 +92,9 @@ class EngProcessCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "llm arguments",
             "output arguments",
+            "additional help",
             optional_arguments_name="additional arguments",
         )
 
@@ -105,6 +124,9 @@ class EngProcessCli(ScinoephileCliBase):
             action="store_true",
             help="proofread subtitles using LLM",
         )
+        add_llm_provider_args(
+            arg_groups["llm arguments"], arg_groups["additional help"]
+        )
         arg_groups["operation arguments"].add_argument(
             "--offset",
             default=0,
@@ -118,7 +140,7 @@ class EngProcessCli(ScinoephileCliBase):
             "--outfile",
             default=None,
             dest="outfile_path",
-            type=output_file_arg(),
+            type=output_file_arg(exist_ok=True),
             help="English subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
@@ -147,6 +169,7 @@ class EngProcessCli(ScinoephileCliBase):
         clean: bool,
         flatten: bool,
         proofread: bool,
+        llm_args: LlmArguments,
         offset: int,
         overwrite: bool,
     ):
@@ -157,15 +180,13 @@ class EngProcessCli(ScinoephileCliBase):
         if not (clean or flatten or proofread or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
-        # Read input
+        # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
+        additional_context = read_llm_additional_context(
+            parser, llm_args.additional_context_file_path
+        )
 
         # Perform operations
         if clean:
@@ -173,11 +194,16 @@ class EngProcessCli(ScinoephileCliBase):
         if flatten:
             series = get_eng_flattened(series)
         if proofread:
-            series = get_eng_block_reviewed(series)
+            provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
+            reviewer = get_eng_block_reviewer(
+                provider=provider,
+                additional_context=additional_context,
+            )
+            series = get_eng_block_reviewed(series, processor=reviewer)
         if offset:
             series.shift(ms=offset)
 
-        # Write output
+        # Write outputs
         write_series(
             parser, series, outfile_path if outfile_path is not None else "-", overwrite
         )

@@ -43,6 +43,127 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## SubtitleEdit (adapted OCR preprocessing, grouping, and cleanup logic)
+
+Scinoephile's PaddleOCR preprocessing and text grouping code, selected Google
+Lens OCR text cleanup behavior, and Tesseract OCR preprocessing and hOCR parsing
+code are informed by and partially adapted from the `SubtitleEdit` project:
+
+- Project: https://github.com/SubtitleEdit/subtitleedit
+- License: MIT
+- Copyright: Copyright (c) 2026 Nikolaj Olsson
+
+The `SubtitleEdit` license permits use, modification, and distribution, provided
+the copyright and permission notice are included in copies or substantial
+portions of the software.
+
+For the complete license text used by `SubtitleEdit`, see:
+
+- https://github.com/SubtitleEdit/subtitleedit/blob/master/LICENSE
+
+MIT license text (from `SubtitleEdit`):
+
+```text
+MIT License
+
+Copyright (c) 2026 Nikolaj Olsson
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## vs_align (adapted video alignment logic)
+
+Scinoephile's visual video offset detection code is informed by and partially
+adapted from the `vs_align` project:
+
+- Project: https://github.com/pifroggi/vs_align
+- License: MIT
+- Copyright: Copyright (c) 2024, pifroggi
+
+The `vs_align` license permits use, modification, and distribution, provided the
+copyright and permission notice are included in copies or substantial portions
+of the software.
+
+For the complete license text used by `vs_align`, see:
+
+- https://github.com/pifroggi/vs_align/blob/main/LICENSE
+
+MIT license text (from `vs_align`):
+
+```text
+MIT License
+
+Copyright (c) 2024, pifroggi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## htmx (vendored web UI runtime)
+
+Scinoephile vendors the HTMX runtime for the OCR validation web UI:
+
+- Project: https://github.com/bigskysoftware/htmx
+- Package: https://www.npmjs.com/package/htmx.org/v/2.0.4
+- Vendored file: `scinoephile/web/ocr_validation/static/htmx.min.js`
+- License: 0BSD
+
+The HTMX package metadata for version 2.0.4 identifies the package license as
+0BSD.
+
+For the complete license text used by HTMX, see:
+
+- https://unpkg.com/htmx.org@2.0.4/LICENSE
+
+0BSD license text (from HTMX 2.0.4):
+
+```text
+Zero-Clause BSD
+=============
+
+Permission to use, copy, modify, and/or distribute this software for
+any purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE
+FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
+DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
+OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+```
+
 ## CUHK dictionary data source
 
 The CUHK data source used by the scraper is:

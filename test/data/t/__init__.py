@@ -15,32 +15,25 @@ import pytest
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
-from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
-from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.block_review import BlockReviewPromptEng
+from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
 )
 from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHansOcrFusionPrompt,
-    ZhoHantOcrFusionPrompt,
+    OcrFusionPromptZhoHans,
+    OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.dual_single import DualSinglePrompt
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
-from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
+from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
+from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from test.helpers import test_data_root
 
 __all__ = [
     "t_eng",
-    "t_eng_ocr_lens",
-    "t_eng_ocr_tesseract",
     "t_zho_hans",
-    "t_zho_hans_ocr_lens",
-    "t_zho_hans_ocr_paddle",
     "t_zho_hant",
-    "t_zho_hant_ocr_lens",
-    "t_zho_hant_ocr_paddle",
     "get_t_eng_block_review_test_cases",
     "get_t_eng_ocr_fusion_test_cases",
     "get_t_zho_hans_block_review_test_cases",
@@ -53,7 +46,10 @@ __all__ = [
     "t_eng_fuse_clean_validate",
     "t_eng_fuse_clean_validate_review",
     "t_eng_fuse_clean_validate_review_flatten",
-    "t_eng_image",
+    "t_eng_ocr_lens",
+    "t_eng_ocr_lens_clean",
+    "t_eng_ocr_tesseract",
+    "t_eng_ocr_tesseract_clean",
     "t_zho_hans_eng",
     "t_zho_hans_fuse",
     "t_zho_hans_fuse_clean",
@@ -61,7 +57,10 @@ __all__ = [
     "t_zho_hans_fuse_clean_validate_review",
     "t_zho_hans_fuse_clean_validate_review_flatten",
     "t_zho_hans_fuse_clean_validate_review_flatten_romanize",
-    "t_zho_hans_image",
+    "t_zho_hans_ocr_lens",
+    "t_zho_hans_ocr_lens_clean",
+    "t_zho_hans_ocr_paddle",
+    "t_zho_hans_ocr_paddle_clean",
     "t_zho_hant_fuse",
     "t_zho_hant_fuse_clean",
     "t_zho_hant_fuse_clean_validate",
@@ -69,7 +68,11 @@ __all__ = [
     "t_zho_hant_fuse_clean_validate_review_flatten",
     "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
     "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
-    "t_zho_hant_image",
+    "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize",
+    "t_zho_hant_ocr_lens",
+    "t_zho_hant_ocr_lens_clean",
+    "t_zho_hant_ocr_paddle",
+    "t_zho_hant_ocr_paddle_clean",
     "t_zho_simplify_expected_series_diff",
 ]
 
@@ -85,33 +88,9 @@ def t_eng() -> Series:
 
 
 @pytest.fixture
-def t_eng_ocr_lens() -> Series:
-    """T English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens.srt")
-
-
-@pytest.fixture
-def t_eng_ocr_tesseract() -> Series:
-    """T English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract.srt")
-
-
-@pytest.fixture
 def t_zho_hans() -> Series:
     """T 简体中文 series."""
     return Series.load(input_dir / "zho-Hans.srt")
-
-
-@pytest.fixture
-def t_zho_hans_ocr_lens() -> Series:
-    """T 简体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hans_ocr/lens.srt")
-
-
-@pytest.fixture
-def t_zho_hans_ocr_paddle() -> Series:
-    """T 简体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_ocr/paddle.srt")
 
 
 @pytest.fixture
@@ -120,21 +99,9 @@ def t_zho_hant() -> Series:
     return Series.load(input_dir / "zho-Hant.srt")
 
 
-@pytest.fixture
-def t_zho_hant_ocr_lens() -> Series:
-    """T 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
-
-
-@pytest.fixture
-def t_zho_hant_ocr_paddle() -> Series:
-    """T 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle.srt")
-
-
 @cache
 def get_t_eng_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get T English block review test cases.
@@ -147,13 +114,13 @@ def get_t_eng_block_review_test_cases(
     """
     path = output_dir / "eng_ocr/lang/eng/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_t_eng_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get T English OCR fusion test cases.
@@ -172,7 +139,7 @@ def get_t_eng_ocr_fusion_test_cases(
 
 @cache
 def get_t_zho_hans_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get T 简体中文 block review test cases.
@@ -185,13 +152,13 @@ def get_t_zho_hans_block_review_test_cases(
     """
     path = output_dir / "zho-Hans_ocr/lang/zho/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_t_zho_hans_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get T 简体中文 OCR fusion test cases.
@@ -210,7 +177,7 @@ def get_t_zho_hans_ocr_fusion_test_cases(
 
 @cache
 def get_t_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get T 繁体中文 block review test cases.
@@ -223,13 +190,13 @@ def get_t_zho_hant_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_t_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get T 繁体中文 OCR fusion test cases.
@@ -248,7 +215,7 @@ def get_t_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_t_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get T 繁体中文 simplification block review test cases.
@@ -261,7 +228,7 @@ def get_t_zho_hant_simplify_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -296,9 +263,27 @@ def t_eng_fuse_clean_validate_review_flatten() -> Series:
 
 
 @pytest.fixture
-def t_eng_image() -> ImageSeries:
-    """T English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_ocr/image", encoding="utf-8")
+def t_eng_ocr_lens() -> Series:
+    """T English subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "eng_ocr/lens.srt")
+
+
+@pytest.fixture
+def t_eng_ocr_lens_clean() -> Series:
+    """T English Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def t_eng_ocr_tesseract() -> Series:
+    """T English subtitles OCRed using Tesseract."""
+    return Series.load(output_dir / "eng_ocr/tesseract.srt")
+
+
+@pytest.fixture
+def t_eng_ocr_tesseract_clean() -> Series:
+    """T English Tesseract OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
 @pytest.fixture
@@ -348,9 +333,27 @@ def t_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
 
 
 @pytest.fixture
-def t_zho_hans_image() -> ImageSeries:
-    """T 简体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hans_ocr/image", encoding="utf-8")
+def t_zho_hans_ocr_lens() -> Series:
+    """T 简体中文 subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "zho-Hans_ocr/lens.srt")
+
+
+@pytest.fixture
+def t_zho_hans_ocr_lens_clean() -> Series:
+    """T 简体中文 Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hans_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def t_zho_hans_ocr_paddle() -> Series:
+    """T 简体中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(output_dir / "zho-Hans_ocr/paddle.srt")
+
+
+@pytest.fixture
+def t_zho_hans_ocr_paddle_clean() -> Series:
+    """T 简体中文 PaddleOCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
 
 
 @pytest.fixture
@@ -404,9 +407,37 @@ def t_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
 
 
 @pytest.fixture
-def t_zho_hant_image() -> ImageSeries:
-    """T 繁体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hant_ocr/image", encoding="utf-8")
+def t_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -> Series:
+    """T 繁体中文 simplified/reviewed fused/cleaned romanized subtitles."""
+    return Series.load(
+        output_dir
+        / "zho-Hant_ocr"
+        / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
+    )
+
+
+@pytest.fixture
+def t_zho_hant_ocr_lens() -> Series:
+    """T 繁体中文 subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
+
+
+@pytest.fixture
+def t_zho_hant_ocr_lens_clean() -> Series:
+    """T 繁体中文 Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def t_zho_hant_ocr_paddle() -> Series:
+    """T 繁体中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
+
+
+@pytest.fixture
+def t_zho_hant_ocr_paddle_clean() -> Series:
+    """T 繁体中文 PaddleOCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
 
 
 @pytest.fixture

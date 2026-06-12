@@ -25,6 +25,7 @@ __all__ = [
     "val_executable",
     "val_float",
     "val_input_dir_path",
+    "val_input_file_or_dir_path",
     "val_input_path",
     "val_int",
     "val_literal",
@@ -210,6 +211,72 @@ def val_input_dir_path(
 
     # Handle iterables
     return [_val_input_dir(value_to_validate) for value_to_validate in value]
+
+
+@overload
+def val_input_file_or_dir_path(value: Path | str | PathLike[Any]) -> Path: ...
+
+
+@overload
+def val_input_file_or_dir_path(
+    value: Iterable[Path | str | PathLike[Any]],
+) -> list[Path]: ...
+
+
+def val_input_file_or_dir_path(
+    value: Path | str | PathLike[Any] | Iterable[Path | str | PathLike[Any]],
+) -> Path | list[Path]:
+    """Validate input file or directory path(s) and make them absolute.
+
+    Arguments:
+        value: Path or paths to input files or directories
+    Returns:
+        Validated path or paths
+    Raises:
+        FileNotFoundError: If any path does not exist
+        TypeError: If any value cannot be cast to Path
+        ValueError: If any path is neither a file nor a directory
+    """
+
+    def _val_input_file_or_dir_path(
+        value_to_validate: Path | str | PathLike[Any],
+    ) -> Path:
+        """Validate a path.
+
+        Arguments:
+            value_to_validate: Path to validate
+        Returns:
+            Validated path
+        Raises:
+            FileNotFoundError: If path does not exist
+            TypeError: If value cannot be cast to Path
+            ValueError: If path is neither a file nor a directory
+        """
+        try:
+            validated_value = Path(
+                expandvars(expanduser(str(value_to_validate)))
+            ).resolve()
+        except ValueError as exc:
+            raise TypeError(
+                f"{value_to_validate} is of type "
+                f"{type(value_to_validate)}, cannot be cast to Path"
+            ) from exc
+        if not validated_value.exists():
+            raise FileNotFoundError(f"Input path {validated_value} does not exist")
+        if not validated_value.is_file() and not validated_value.is_dir():
+            raise ValueError(
+                f"Input path {validated_value} is neither a file nor a directory"
+            )
+        return validated_value
+
+    # Handle non-iterables and iterables we don't want to iterate over
+    if isinstance(value, Path | str | PathLike) or not isinstance(value, Iterable):
+        return _val_input_file_or_dir_path(value)
+
+    # Handle iterables
+    return [
+        _val_input_file_or_dir_path(value_to_validate) for value_to_validate in value
+    ]
 
 
 @overload
@@ -582,8 +649,9 @@ def val_str(value: Any, options: Iterable[Any]) -> str:
     value = value.lower()
 
     if value not in case_insensitive_options:
+        options_text = ", ".join(case_insensitive_options.values())
         raise ValueError(
-            f"'{value}' is not one of options '{case_insensitive_options.keys()}'"
+            f"'{value}' is not one of the supported values: {options_text}"
         ) from None
 
     return case_insensitive_options[value]

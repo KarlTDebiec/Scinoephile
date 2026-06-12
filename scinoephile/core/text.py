@@ -9,10 +9,12 @@ import unicodedata
 from enum import Enum
 from functools import cache
 from textwrap import dedent
+from typing import Literal
 
 from .exceptions import ScinoephileError
 
 __all__ = [
+    "ChineseScript",
     "half_punc",
     "full_punc",
     "whitespace",
@@ -31,7 +33,12 @@ __all__ = [
     "is_full_width_char",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
+    "sanitize_text",
 ]
+
+
+type ChineseScript = Literal["simplified", "traditional"]
+"""Chinese script supported by text processing helpers."""
 
 
 class AnsiColor(Enum):
@@ -281,9 +288,8 @@ def get_char_type(char: str) -> str:
         return "half"
 
     # Raise exception if character type is not recognized
-    raise ScinoephileError(
-        f"Unrecognized char type for '{char}' of name {unicodedata.name(char)}"
-    )
+    name = unicodedata.name(char, "<unnamed>")
+    raise ScinoephileError(f"Unrecognized char type for {char!r} of name {name}")
 
 
 def is_full_width_char(char: str) -> bool:
@@ -322,4 +328,18 @@ def remove_punc_and_whitespace(text: str) -> str:
     chars_to_remove = half_punc_chars | full_punc_chars | whitespace_chars
     return "".join(
         char for char in text if not char.isspace() and char not in chars_to_remove
+    )
+
+
+def sanitize_text(text: str) -> str:
+    """Replace invalid control characters in generated text.
+
+    Arguments:
+        text: text to sanitize
+    Returns:
+        text with unsupported control characters replaced by spaces
+    """
+    return "".join(
+        char if unicodedata.category(char)[0] != "C" or char in "\t\n\r" else " "
+        for char in text
     )

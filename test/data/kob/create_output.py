@@ -9,6 +9,7 @@ from pathlib import Path
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng.block_review import (
@@ -19,31 +20,31 @@ from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.block_review import (
-    YueVsZhoYueHansBlockReviewPrompt,
-    YueVsZhoYueHantBlockReviewPrompt,
+    YueBlockReviewVsZhoPromptYueHans,
+    YueBlockReviewVsZhoPromptYueHant,
+)
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
+    YueGappedTranslationVsZhoPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.line_review import (
-    YueVsZhoYueHansLineReviewPrompt,
-    YueVsZhoYueHantLineReviewPrompt,
+    YueLineReviewVsZhoPromptYueHans,
+    YueLineReviewVsZhoPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-    YueVsZhoYueHantDeliniationPrompt,
+    YueDeliniationVsZhoPromptYueHans,
+    YueDeliniationVsZhoPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-    YueVsZhoYueHantPunctuationPrompt,
+    YuePunctuationVsZhoPromptYueHans,
+    YuePunctuationVsZhoPromptYueHant,
 )
-from scinoephile.multilang.yue_zho.translation import (
-    YueVsZhoYueHansTranslationPrompt,
-    YueVsZhoYueHantTranslationPrompt,
-)
-from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
-from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
+from test.data.ocr import process_ocr
+from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_yue_hans_transcription
 from test.helpers import test_data_root
 
@@ -60,32 +61,28 @@ yue_hans_path = output_path / "yue-Hans"
 yue_hans_transcribe_path = output_path / "yue-Hans_transcribe"
 
 actions = {
-    # "繁體中文 (OCR)",
-    # "English (OCR)",
-    # "Bilingual 繁體中文 and English",
-    # "繁體粵文 (SRT)",
-    # "简体粤文 (SRT)",
-    # "English (SRT)",
-    # "Bilingual 简体粤文 and English",
-    # "简体粤文 (Transcription)",
-    "简体粤文 (Diff)",
+    "eng_ocr",
+    "zho-Hant_ocr",
+    # "zho-Hans_eng",
+    # "yue-Hant",
+    # "yue-Hans",
+    # "eng",
+    # "yue-Hans_eng",
+    # "yue-Hans_transcribe",
+    # "yue-Hans_diff",
 }
 
-if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(title_root, overwrite_srt=False, force_validation=False)
-if "English (OCR)" in actions:
-    process_eng_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "Bilingual 繁體中文 and English" in actions:
-    zho_hans_path = (
+if "eng_ocr" in actions:
+    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
+if "zho-Hant_ocr" in actions:
+    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
+if "zho-Hans_eng" in actions:
+    zho_hans_srt_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
-    process_zho_hans_eng(
-        title_root,
-        zho_hans_path=zho_hans_path,
-        eng_path=eng_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        overwrite=True,
-    )
-if "繁體粵文 (SRT)" in actions:
+    eng_srt_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    process_zho_hans_eng(title_root, zho_hans_srt_path, eng_srt_path, overwrite=False)
+if "yue-Hant" in actions:
     zho_hant = Series.load(zho_hant_ocr_path / "fuse_clean_validate_review.srt")
     yue_hant = Series.load(input_path / "yue-Hant.srt")
     yue_hant_timewarp = get_series_timewarped(
@@ -96,7 +93,7 @@ if "繁體粵文 (SRT)" in actions:
     clean.save(yue_hant_path / "timewarp_clean.srt")
     flatten = get_zho_flattened(clean)
     flatten.save(yue_hant_path / "timewarp_clean_flatten.srt")
-if "简体粤文 (SRT)" in actions:
+if "yue-Hans" in actions:
     zho_hant = Series.load(zho_hant_ocr_path / "fuse_clean_validate_review.srt")
     yue_hans = Series.load(input_path / "yue-Hans.srt")
     yue_hans_timewarp = get_series_timewarped(
@@ -109,7 +106,7 @@ if "简体粤文 (SRT)" in actions:
     yue_hans_reference.save(yue_hans_path / "timewarp_clean_flatten.srt")
     yue_hans_romanized = get_yue_romanized(yue_hans_reference, append=True)
     yue_hans_romanized.save(yue_hans_path / "timewarp_clean_flatten_romanize.srt")
-if "English (SRT)" in actions:
+if "eng" in actions:
     eng_ocr = Series.load(eng_ocr_path / "fuse_clean_validate_review.srt")
     eng_srt = Series.load(input_path / "eng.srt")
     eng_timewarp = get_series_timewarped(eng_ocr, eng_srt, one_end_idx=1421)
@@ -124,14 +121,11 @@ if "English (SRT)" in actions:
     eng_proofread.save(eng_path / "timewarp_clean_review.srt")
     eng_flatten = get_eng_flattened(eng_proofread)
     eng_flatten.save(eng_path / "timewarp_clean_review_flatten.srt")
-if "Bilingual 简体粤文 and English" in actions:
-    process_yue_hans_eng(
-        title_root,
-        yue_hans_path=yue_hans_path / "timewarp_clean_flatten.srt",
-        eng_path=eng_path / "timewarp_clean_review_flatten.srt",
-        overwrite=True,
-    )
-if "简体粤文 (Transcription)" in actions:
+if "yue-Hans_eng" in actions:
+    yue_hans_srt_path = yue_hans_path / "timewarp_clean_flatten.srt"
+    eng_srt_path = eng_path / "timewarp_clean_review_flatten.srt"
+    process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=False)
+if "yue-Hans_transcribe" in actions:
     zh_hant_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
     zho_hans_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
@@ -152,13 +146,13 @@ if "简体粤文 (Transcription)" in actions:
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
             "convert": OpenCCConfig.hk2s,
-            "deliniation_prompt_cls": YueVsZhoYueHansDeliniationPrompt,
-            "punctuation_prompt_cls": YueVsZhoYueHansPunctuationPrompt,
+            "deliniation_prompt_cls": YueDeliniationVsZhoPromptYueHans,
+            "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHans,
         },
-        line_reviewer_kw={"prompt_cls": YueVsZhoYueHansLineReviewPrompt},
-        translator_kw={"prompt_cls": YueVsZhoYueHansTranslationPrompt},
-        block_reviewer_kw={"prompt_cls": YueVsZhoYueHansBlockReviewPrompt},
-        overwrite_srt=True,
+        line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHans},
+        translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHans},
+        block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHans},
+        overwrite_srt=False,
     )
 
     process_yue_hans_transcription(
@@ -173,15 +167,15 @@ if "简体粤文 (Transcription)" in actions:
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
             "convert": OpenCCConfig.s2hk,
-            "deliniation_prompt_cls": YueVsZhoYueHantDeliniationPrompt,
-            "punctuation_prompt_cls": YueVsZhoYueHantPunctuationPrompt,
+            "deliniation_prompt_cls": YueDeliniationVsZhoPromptYueHant,
+            "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHant,
         },
-        line_reviewer_kw={"prompt_cls": YueVsZhoYueHantLineReviewPrompt},
-        translator_kw={"prompt_cls": YueVsZhoYueHantTranslationPrompt},
-        block_reviewer_kw={"prompt_cls": YueVsZhoYueHantBlockReviewPrompt},
-        overwrite_srt=True,
+        line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHant},
+        translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHant},
+        block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHant},
+        overwrite_srt=False,
     )
-if "简体粤文 (Diff)" in actions:
+if "yue-Hans_diff" in actions:
     # yue_hans_transcribe = Series.load(
     #     yue_hans_transcribe_path / "test_simplified/transcribe.srt"
     # )

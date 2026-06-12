@@ -48,6 +48,7 @@ class Queryer[
         *,
         provider: LLMProvider,
         cache_dir_path: str | None = None,
+        additional_context: str | None = None,
         max_attempts: int = 5,
         auto_verify: bool = False,
         tool_box: ToolBox | None = None,
@@ -60,6 +61,7 @@ class Queryer[
               LLM need not be queried
             provider: provider to use for queries
             cache_dir_path: directory in which to cache
+            additional_context: additional context to include in the system prompt
             max_attempts: maximum number of attempts
             auto_verify: automatically mark test cases as verified if no changes
             tool_box: available tools and handlers
@@ -80,6 +82,8 @@ class Queryer[
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
+        self.additional_context = additional_context
+        """Additional context to include in the system prompt."""
         self.max_attempts = max_attempts
         """Maximum number of query attempts."""
         self.auto_verify = auto_verify
@@ -164,7 +168,7 @@ class Queryer[
             # Validate test case
             try:
                 test_case = type(test_case).model_validate(
-                    {**test_case.model_dump(), "answer": answer}
+                    {**test_case.model_dump(), "answer": answer, "verified": False}
                 )
                 if self.auto_verify and test_case.get_auto_verified():
                     test_case.verified = True
@@ -237,8 +241,8 @@ class Queryer[
             test_case: test case to log
         """
         key = test_case.query.key
-        test_case.prompt = key in self.prompt_test_cases
-        test_case.verified = key in self.verified_test_cases
+        test_case.prompt = test_case.prompt or key in self.prompt_test_cases
+        test_case.verified = test_case.verified or key in self.verified_test_cases
         self.encountered_test_cases[key] = test_case
         logger.debug(f"Logged test case: {test_case.query.key_str}")
 
@@ -317,6 +321,8 @@ class Queryer[
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
 
         system_prompt = self.prompt_cls.base_system_prompt
+        if self.additional_context:
+            system_prompt += f"\n\nAdditional context:\n{self.additional_context}"
         system_prompt += self.get_prompt_test_cases_few_shot_str()
         system_prompt += f"\n\n{self.prompt_cls.schema_intro}\n{schema_json}\n"
 

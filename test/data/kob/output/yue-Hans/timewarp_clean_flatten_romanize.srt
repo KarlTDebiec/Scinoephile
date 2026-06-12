@@ -1046,7 +1046,7 @@ ngóh sān wàih gwóng jāu jēung gwān
 210
 00:11:46,795 --> 00:11:49,172
 梗系要嚟拉你这些害群之马啦
-gáng haih yiu làih lāai néih jéh sē hoih kàhn jī máh lā
+gáng haih yiu làih lāai néih jéh sē hoih kwàhn jī máh lā
 
 211
 00:11:49,255 --> 00:11:50,256
@@ -5851,7 +5851,7 @@ hùhng chāt gūng joih chí sèuih gám fong si!
 1171
 01:16:09,446 --> 01:16:11,030
 我当年定下帮规！
-ngóh dōng nìhn dihng hah bōng kāi!
+ngóh dōng nìhn dihng hah bōng kwāi!
 
 1172
 01:16:11,114 --> 01:16:13,949
@@ -5906,7 +5906,7 @@ juhng wàih jó jāng dyuht kéuih yìh gáau dou koi bōng sei fān nǵh liht!
 1182
 01:16:36,343 --> 01:16:39,096
 五年冇帮主在位！你地惭唔惭愧？
-nǵh nìhn móuh bōng jyú joih waih! néih deih chàahm m̀h chàahm káih?
+nǵh nìhn móuh bōng jyú joih waih! néih deih chàahm m̀h chàahm kwáih?
 
 1183
 01:16:39,680 --> 01:16:40,931
@@ -5936,7 +5936,7 @@ daahn haih tīn chòih wàahng yaht! chūng mìhng jyuht díng!
 1188
 01:16:46,811 --> 01:16:48,980
 仲系我洪某嘅传人洪日新亲手提携！
-juhng haih ngóh hùhng máuh ge chyùhn yàhn hùhng yaht sān chān sáu tàih kàih!
+juhng haih ngóh hùhng máuh ge chyùhn yàhn hùhng yaht sān chān sáu tàih kwàih!
 
 1189
 01:16:49,063 --> 01:16:50,732
@@ -6176,7 +6176,7 @@ yìhng yahp yaht yuht maahn léih fūng
 1236
 01:19:45,509 --> 01:19:49,011
 笑揖清风洗我狂
-siu yāp chīng fūng sái ngóh kòhng
+siu yāp chīng fūng sái ngóh kwòhng
 
 1237
 01:19:49,845 --> 01:19:53,766
@@ -7302,4 +7302,3 @@ juhng m̀h dō jeh yàhn?
 01:38:18,476 --> 01:38:21,354
 多谢晒！
 dō jeh saai!
-

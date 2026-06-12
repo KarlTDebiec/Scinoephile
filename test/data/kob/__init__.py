@@ -17,40 +17,35 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
-from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
-from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.block_review import BlockReviewPromptEng
+from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
 )
-from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
-from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
-from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
-from scinoephile.llms.dual_single import DualSinglePrompt
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
-from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
+from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
+from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
+from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
+from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
+from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from scinoephile.multilang.yue_zho.line_review import (
-    YueVsZhoYueHansLineReviewPrompt,
+    YueLineReviewVsZhoPromptYueHans,
     YueZhoLineReviewManager,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
+    YueDeliniationVsZhoPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
+    YuePunctuationVsZhoPromptYueHans,
     YueZhoPunctuationManager,
 )
 from test.helpers import SeriesCERResult, test_data_root
 
 __all__ = [
     "kob_eng",
-    "kob_eng_ocr_lens",
-    "kob_eng_ocr_tesseract",
     "kob_yue_hans",
     "kob_yue_hant",
-    "kob_zho_hant_ocr_lens",
-    "kob_zho_hant_ocr_paddle",
     "get_kob_eng_block_review_test_cases",
     "get_kob_eng_ocr_fusion_test_cases",
     "get_kob_yue_deliniation_test_cases",
@@ -65,7 +60,10 @@ __all__ = [
     "kob_eng_ocr_fuse_clean_validate",
     "kob_eng_ocr_fuse_clean_validate_review",
     "kob_eng_ocr_fuse_clean_validate_review_flatten",
-    "kob_eng_ocr_image",
+    "kob_eng_ocr_lens",
+    "kob_eng_ocr_lens_clean",
+    "kob_eng_ocr_tesseract",
+    "kob_eng_ocr_tesseract_clean",
     "kob_eng_timewarp",
     "kob_eng_timewarp_clean",
     "kob_eng_timewarp_clean_review",
@@ -93,7 +91,10 @@ __all__ = [
     "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
     "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
     "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
-    "kob_zho_hant_ocr_image",
+    "kob_zho_hant_ocr_lens",
+    "kob_zho_hant_ocr_lens_clean",
+    "kob_zho_hant_ocr_paddle",
+    "kob_zho_hant_ocr_paddle_clean",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -112,18 +113,6 @@ def kob_eng() -> Series:
 
 
 @pytest.fixture
-def kob_eng_ocr_lens() -> Series:
-    """KOB English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens.srt")
-
-
-@pytest.fixture
-def kob_eng_ocr_tesseract() -> Series:
-    """KOB English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract.srt")
-
-
-@pytest.fixture
 def kob_yue_hans() -> Series:
     """KOB 简体粤文 subtitles (input)."""
     return Series.load(input_dir / "yue-Hans.srt")
@@ -135,21 +124,9 @@ def kob_yue_hant() -> Series:
     return Series.load(input_dir / "yue-Hant.srt")
 
 
-@pytest.fixture
-def kob_zho_hant_ocr_lens() -> Series:
-    """KOB 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_paddle() -> Series:
-    """KOB 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle.srt")
-
-
 @cache
 def get_kob_eng_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English block review test cases.
@@ -163,17 +140,17 @@ def get_kob_eng_block_review_test_cases(
     ocr_path = output_dir / "eng_ocr/lang/eng/block_review.json"
     srt_path = output_dir / "eng/lang/eng/block_review.json"
     ocr_test_cases = load_test_cases_from_json(
-        ocr_path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        ocr_path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
     srt_test_cases = load_test_cases_from_json(
-        srt_path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        srt_path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
     return ocr_test_cases + srt_test_cases
 
 
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
@@ -192,7 +169,7 @@ def get_kob_eng_ocr_fusion_test_cases(
 
 @cache
 def get_kob_yue_deliniation_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueVsZhoYueHansDeliniationPrompt,
+    prompt_cls: type[Dual2To2Prompt] = YueDeliniationVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 deliniation test cases.
@@ -213,13 +190,13 @@ def get_kob_yue_deliniation_test_cases(
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
+        path, Dual2To2Manager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_kob_yue_punctuation_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoYueHansPunctuationPrompt,
+    prompt_cls: type[DualNTo1Prompt] = YuePunctuationVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 punctuation test cases.
@@ -246,7 +223,7 @@ def get_kob_yue_punctuation_test_cases(
 
 @cache
 def get_kob_yue_vs_zho_line_review_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueVsZhoYueHansLineReviewPrompt,
+    prompt_cls: type[Dual1To1Prompt] = YueLineReviewVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 vs 简体中文 line-review test cases.
@@ -272,7 +249,7 @@ def get_kob_yue_vs_zho_line_review_test_cases(
 
 @cache
 def get_kob_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 block review test cases.
@@ -285,13 +262,13 @@ def get_kob_zho_hant_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 OCR fusion test cases.
@@ -310,7 +287,7 @@ def get_kob_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_kob_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 simplification block review test cases.
@@ -323,7 +300,7 @@ def get_kob_zho_hant_simplify_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -511,9 +488,27 @@ def kob_eng_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 
 @pytest.fixture
-def kob_eng_ocr_image() -> ImageSeries:
-    """KOB English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_ocr/image", encoding="utf-8")
+def kob_eng_ocr_lens() -> Series:
+    """KOB English subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "eng_ocr/lens.srt")
+
+
+@pytest.fixture
+def kob_eng_ocr_lens_clean() -> Series:
+    """KOB English Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def kob_eng_ocr_tesseract() -> Series:
+    """KOB English subtitles OCRed using Tesseract."""
+    return Series.load(output_dir / "eng_ocr/tesseract.srt")
+
+
+@pytest.fixture
+def kob_eng_ocr_tesseract_clean() -> Series:
+    """KOB English Tesseract OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
 @pytest.fixture
@@ -714,6 +709,24 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize
 
 
 @pytest.fixture
-def kob_zho_hant_ocr_image() -> ImageSeries:
-    """KOB 繁体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hant_ocr/image", encoding="utf-8")
+def kob_zho_hant_ocr_lens() -> Series:
+    """KOB 繁体中文 subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_ocr_lens_clean() -> Series:
+    """KOB 繁体中文 Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_ocr_paddle() -> Series:
+    """KOB 繁体中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_ocr_paddle_clean() -> Series:
+    """KOB 繁体中文 PaddleOCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")

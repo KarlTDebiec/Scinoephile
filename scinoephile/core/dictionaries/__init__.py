@@ -1,6 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core dictionary models and shared lookup metadata."""
+"""Core dictionary models and shared lookup metadata.
+
+Package hierarchy (modules may import from any above):
+* dictionary_definition / dictionary_lookup_response / dictionary_source
+  / dictionary_tool_prompt
+* dictionary_entry
+* serialization / sqlite_store
+"""
 
 from __future__ import annotations
 

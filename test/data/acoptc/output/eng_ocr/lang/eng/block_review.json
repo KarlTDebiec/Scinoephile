@@ -1,0 +1,2840 @@
+[
+  {
+    "query": {
+      "subtitle_1": "Very pretty"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Everybody!",
+      "subtitle_2": "I'm sorry to you. It'll OK soon"
+    },
+    "answer": {
+      "revised_2": "I'm sorry to you. It'll be OK soon",
+      "note_2": "Inserted 'be' in 'It'll be OK soon'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Sorry…sorry",
+      "subtitle_2": "Granny, you can't light it up in this way",
+      "subtitle_3": "You've just got the oil,\nbut you haven't got a lampwick",
+      "subtitle_4": "I know that",
+      "subtitle_5": "But I've lost the lampwick.\nI can do nothing about it",
+      "subtitle_6": "Buy a new one",
+      "subtitle_7": "It's reasonable…",
+      "subtitle_8": "Miss, excuse me",
+      "subtitle_9": "if it is the lamp of Buddha",
+      "subtitle_10": "where to buy a new lampwick for it?",
+      "subtitle_11": "Show your real image!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "The Four Kings from the Nantian Gate\nand Erland God",
+      "subtitle_2": "Zixia. Your sister Zixia and you",
+      "subtitle_3": "is the lampwick",
+      "subtitle_4": "inside the lamp of Buddha",
+      "subtitle_5": "You left Heaven without permission",
+      "subtitle_6": "You told the public that",
+      "subtitle_7": "the one who can pull your Magic Sword\nout",
+      "subtitle_8": "is your best love",
+      "subtitle_9": "You're an immortal.\nYou can't love any ordinary man",
+      "subtitle_10": "If a devil pulls your sword out",
+      "subtitle_11": "we'll become the laughing-stocks",
+      "subtitle_12": "No matter who he is,\nan immortal or a devil",
+      "subtitle_13": "the sword can only be pulled out\nby me and my lover",
+      "subtitle_14": "I will stand by him forever",
+      "subtitle_15": "I will stand by him forever",
+      "subtitle_16": "If I can't be with the one who I love",
+      "subtitle_17": "I won't be happy\neven if I were Heaven Emperor",
+      "subtitle_18": "How dare you are",
+      "subtitle_19": "You're this stubborn",
+      "subtitle_20": "I'm gonna kill you",
+      "subtitle_21": "You're gonna vanish",
+      "subtitle_22": "That's fine.\nI don't wanna be a lonely immortal",
+      "subtitle_23": "Look out!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "No need to say anything",
+      "subtitle_2": "I'll kill whoever speaks it out",
+      "subtitle_3": "I've said it's not permitted to speak it out",
+      "subtitle_4": "I wanna tell you",
+      "subtitle_5": "Your beloved dog is doing that\nwith a bitch",
+      "subtitle_6": "How dare it is!",
+      "subtitle_7": "Ok, I'll kill it. Let's eat it",
+      "subtitle_8": "Ok…",
+      "subtitle_9": "We've decided to do so for a long time"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Jing Jing"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Jing Jing",
+      "subtitle_2": "Jing Jing, where are they?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Immortals?",
+      "subtitle_2": "Devils",
+      "subtitle_3": "Thank you"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Please go into the Spider Web Cave",
+      "subtitle_2": "spider Web Cave?",
+      "subtitle_3": "Don't cheat me! It is the Waterfall Cave"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Spider Web Cave, what a nice name"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Just call it Spider Web Cave"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I live at here",
+      "subtitle_2": "Hold it"
+    },
+    "answer": {
+      "revised_1": "I live here",
+      "note_1": "Removed the unnecessary 'at'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Listen to me",
+      "subtitle_2": "all things here belong to me!",
+      "subtitle_3": "Including you!",
+      "subtitle_4": "Me?",
+      "subtitle_5": "Yes",
+      "subtitle_6": "just like a donkey,\nlet me make a mark on you"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "You're my guy now",
+      "subtitle_2": "Don't scare of anyone.\nJust tell them you know me",
+      "subtitle_3": "I'm called Spider Web Immortal now",
+      "subtitle_4": "Spider Web Immortal?",
+      "subtitle_5": "500 years ago?"
+    },
+    "answer": {
+      "revised_2": "Don't be scared of anyone.\nJust tell them you know me",
+      "note_2": "Corrected 'scare of' to 'be scared of'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "You hasn't turned back into\nthe Monkey King because",
+      "subtitle_2": "you haven't met the guy who'll give you\nthe 3 birthmarks"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Open the door",
+      "subtitle_2": "Close the door"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I can't believe it…",
+      "subtitle_2": "I don't wanna be the Monkey King",
+      "subtitle_3": "I have to save Jing Jing",
+      "subtitle_4": "Give me back the Box",
+      "subtitle_5": "Open the door"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I have heard that she said “open the door”"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Open the door"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "How dare you are?"
+    },
+    "answer": {
+      "revised_1": "How dare you?",
+      "note_1": "Removed the incorrect 'are' to correct the typo and punctuation."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Let's go there through another way",
+      "subtitle_2": "Be careful"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "That way",
+      "subtitle_2": "Open the door",
+      "subtitle_3": "Who?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Is it necessary?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "It's great!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "We needn't scare of Qingxia",
+      "subtitle_2": "since we've got the box",
+      "subtitle_3": "Come out! Are you really this shy?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "this Box is… It's me!",
+      "subtitle_2": "I've said that all things here are mine",
+      "subtitle_3": "What do you want?",
+      "subtitle_4": "Nothing…",
+      "subtitle_5": "I've heard that you wanna go",
+      "subtitle_6": "Can you bring me with you?",
+      "subtitle_7": "Are you also chased after by someone?",
+      "subtitle_8": "I'm going to save someone",
+      "subtitle_9": "Save whom?",
+      "subtitle_10": "save my wife",
+      "subtitle_11": "It's Pak Jing Jing. You know her",
+      "subtitle_12": "I don't know her",
+      "subtitle_13": "I know that. But you'll know her soon",
+      "subtitle_14": "Because she'll be your disciple.",
+      "subtitle_15": "And this Box…",
+      "subtitle_16": "It's mine!",
+      "subtitle_17": "I know that",
+      "subtitle_18": "But in fact, I gave you this",
+      "subtitle_19": "Then, you gave me back at that time",
+      "subtitle_20": "So I come back and",
+      "subtitle_21": "give it back to you again now",
+      "subtitle_22": "Do you understand?",
+      "subtitle_23": "Yes, you're crazy Yes",
+      "subtitle_24": "And you have to bring me with you",
+      "subtitle_25": "Why need I do so good to you?",
+      "subtitle_26": "This is because you're my master",
+      "subtitle_27": "It's meaningless if you leave me here",
+      "subtitle_28": "Really?",
+      "subtitle_29": "Sit down",
+      "subtitle_30": "Ground",
+      "subtitle_31": "Give me your hand",
+      "subtitle_32": "I'll buy a new clothes",
+      "subtitle_33": "for you later",
+      "subtitle_34": "Bark!",
+      "subtitle_35": "Wow!",
+      "subtitle_36": "louder!",
+      "subtitle_37": "Wow…"
+    },
+    "answer": {
+      "revised_1": "This Box is… It's me!",
+      "note_1": "Capitalized 'this' to 'This'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Immortal…",
+      "subtitle_2": "Be quick, the moon has come out",
+      "subtitle_3": "Go!",
+      "subtitle_4": "Where to go?",
+      "subtitle_5": "Are you leaving?",
+      "subtitle_6": "If you aren't, give me the Box.\nI'm leaving",
+      "subtitle_7": "What Box?",
+      "subtitle_8": "Listen to me",
+      "subtitle_9": "I won't wait until tomorrow",
+      "subtitle_10": "Be quick, shut up",
+      "subtitle_11": "Then your bitch sister will come here",
+      "subtitle_12": "Shit, how dare you tell the others that\nI do bad to her",
+      "subtitle_13": "What?",
+      "subtitle_14": "I'm that bitch's sister",
+      "subtitle_15": "Don't listen to her nonsense words",
+      "subtitle_16": "Joker",
+      "subtitle_17": "Joker",
+      "subtitle_18": "Why didn't tell me to wake up last night?"
+    },
+    "answer": {
+      "revised_18": "Why didn't you tell me to wake up last night?",
+      "note_18": "Inserted 'you' to correct the missing pronoun."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "What?",
+      "subtitle_2": "Where have you been? Stand still",
+      "subtitle_3": "Sit down",
+      "subtitle_4": "Chair"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "What about you?",
+      "subtitle_2": "Why are you looking at me in this way?",
+      "subtitle_3": "What did you see?",
+      "subtitle_4": "Did you see her?",
+      "subtitle_5": "Did you see my sister?",
+      "subtitle_6": "She's come",
+      "subtitle_7": "What did she tell you?",
+      "subtitle_8": "don't trust her, she's crazy!",
+      "subtitle_9": "Maybe she had a fierce fight with me\nin our past lives",
+      "subtitle_10": "So Buddha",
+      "subtitle_11": "turned us into a lampwick",
+      "subtitle_12": "told us to practise more",
+      "subtitle_13": "solve our disputes",
+      "subtitle_14": "But we couldn't do that",
+      "subtitle_15": "We are still fighting with each other",
+      "subtitle_16": "don't say that anymore",
+      "subtitle_17": "Let's go"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Do you think that I'm crazy?",
+      "subtitle_2": "No. That's really my sister",
+      "subtitle_3": "Don't you believe me?",
+      "subtitle_4": "Come on, come on",
+      "subtitle_5": "Let's tie our hand up",
+      "subtitle_6": "You will know that tonight"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I don't think the moon will come out\ntonight",
+      "subtitle_2": "Really?",
+      "subtitle_3": "Bitch",
+      "subtitle_4": "You can't escape from me"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "What's you name?",
+      "subtitle_2": "My surname is Lin?",
+      "subtitle_3": "You're Lin Qingxia.\nMy brother talks about you usually",
+      "subtitle_4": "Your brother?",
+      "subtitle_5": "The guy who you beat up is called Joker",
+      "subtitle_6": "How about you?",
+      "subtitle_7": "I'm his twin brother Broker",
+      "subtitle_8": "Joker? Broker? You tell lies",
+      "subtitle_9": "You're so smart",
+      "subtitle_10": "My brother is called Qin Han.",
+      "subtitle_11": "I'm called Qin Xiang Lin",
+      "subtitle_12": "What are you doing?",
+      "subtitle_13": "I admire you",
+      "subtitle_14": "You admire me?",
+      "subtitle_15": "Not only admire, I don't want to lose you",
+      "subtitle_16": "So I tie myself with you.",
+      "subtitle_17": "Please accept my love",
+      "subtitle_18": "Let's go together",
+      "subtitle_19": "You have to pay something for my love",
+      "subtitle_20": "You hate your sister so much",
+      "subtitle_21": "I've lied to her that\nI would kill you tonight",
+      "subtitle_22": "Then you have nothing to worry",
+      "subtitle_23": "So I have to take a thing as a sign",
+      "subtitle_24": "Do you have valuable thing such as…",
+      "subtitle_25": "jewels or Pandora's Box…",
+      "subtitle_26": "ok, but they are useless",
+      "subtitle_27": "Give her my Magic Sword tonight",
+      "subtitle_28": "She'll believe it",
+      "subtitle_29": "Fine"
+    },
+    "answer": {
+      "revised_1": "What's your name?",
+      "note_1": "Corrected 'What's you name?' to 'What's your name?'"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "It's him"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Bring me to the market\nsince it's not dark yet"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "What?",
+      "subtitle_2": "What's up?",
+      "subtitle_3": "My heart is pounding",
+      "subtitle_4": "What to do?",
+      "subtitle_5": "Follow me",
+      "subtitle_6": "Now Big Brother has turned back into\nhuman face",
+      "subtitle_7": "and he's with Zixia Immortal",
+      "subtitle_8": "Did Zixia has a part in",
+      "subtitle_9": "the capture of Master?",
+      "subtitle_10": "We should keep it secret",
+      "subtitle_11": "My martial arts skills and IQ",
+      "subtitle_12": "is better than him",
+      "subtitle_13": "But there is Zixia Immortal now",
+      "subtitle_14": "She's better than me, I think",
+      "subtitle_15": "I'm here",
+      "subtitle_16": "She's better than me because",
+      "subtitle_17": "I've got a burden, it's you",
+      "subtitle_18": "Give me half of this pig head, thanks",
+      "subtitle_19": "I don't sell pig head.\nDo you like pig penis?"
+    },
+    "answer": {
+      "revised_8": "Did Zixia have a part in",
+      "note_8": "Corrected 'has' to 'have' to match the intended grammar."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "What?",
+      "subtitle_2": "My lover is nearby",
+      "subtitle_3": "Did you see him?",
+      "subtitle_4": "No",
+      "subtitle_5": "because my Magic Sword is beeping",
+      "subtitle_6": "Where does the beeping sound\ncome from?",
+      "subtitle_7": "Do…do…do…right?",
+      "subtitle_8": "you made this, not the sword",
+      "subtitle_9": "I know you didn't hear that.\nSo I made it for you",
+      "subtitle_10": "I'm scared!",
+      "subtitle_11": "I'm really scared!",
+      "subtitle_12": "What?",
+      "subtitle_13": "It's fate. So don't be afraid",
+      "subtitle_14": "Come again?",
+      "subtitle_15": "My heart is pounding",
+      "subtitle_16": "My heart is beeping",
+      "subtitle_17": "What?",
+      "subtitle_18": "How should I tell him?",
+      "subtitle_19": "Just tell him",
+      "subtitle_20": "it is fate",
+      "subtitle_21": "If he doesn't like me, what to do?",
+      "subtitle_22": "If he has wife, what should I do?",
+      "subtitle_23": "It's fate. It's God's order.\nHe has to accept this",
+      "subtitle_24": "Really?",
+      "subtitle_25": "It's fate! He has to accept this",
+      "subtitle_26": "Yes! Yes…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "He's come",
+      "subtitle_2": "It's me?",
+      "subtitle_3": "It's you. How do you know? It's you",
+      "subtitle_4": "I didn't know",
+      "subtitle_5": "how to tell you",
+      "subtitle_6": "You're so smart",
+      "subtitle_7": "But I have a wife",
+      "subtitle_8": "I know, but I can do nothing about it",
+      "subtitle_9": "This is fate. You have to accept this",
+      "subtitle_10": "You just need to leave your wife",
+      "subtitle_11": "And then follow me",
+      "subtitle_12": "That's great!",
+      "subtitle_13": "Fine?",
+      "subtitle_14": "That's fine",
+      "subtitle_15": "Let's start our affair",
+      "subtitle_16": "Ok, let's start",
+      "subtitle_17": "Kiss me first",
+      "subtitle_18": "Fine, come to me",
+      "subtitle_19": "Come!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Give me!",
+      "subtitle_2": "You deceive me",
+      "subtitle_3": "You don't wanna kiss me",
+      "subtitle_4": "You deceived me! You lied to me!",
+      "subtitle_5": "I'm serious. Give me the Box first",
+      "subtitle_6": "Should I show you my heart?",
+      "subtitle_7": "No, I do this"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Wow! Your heart looks like a coconut",
+      "subtitle_2": "Miss, I'm ugly",
+      "subtitle_3": "But I'm a gentleman",
+      "subtitle_4": "Tell me honestly",
+      "subtitle_5": "does she love his wife?",
+      "subtitle_6": "I'll kill the one who're gonna block\nmy way",
+      "subtitle_7": "Granpa Buddha, look",
+      "subtitle_8": "Look!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "He doesn't move"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I know that"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Let's go"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Brother, what is this mean?",
+      "subtitle_2": "I know you've got good figure,\nso I touch you",
+      "subtitle_3": "Yes, please go on",
+      "subtitle_4": "That's fine. Touch me again",
+      "subtitle_5": "Whose hand is it?",
+      "subtitle_6": "What are you talking about?",
+      "subtitle_7": "Take away",
+      "subtitle_8": "Devil"
+    },
+    "answer": {
+      "revised_1": "Brother, what does this mean?",
+      "note_1": "Corrected 'is this mean' to 'does this mean'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Have you finished?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Don't get angry, I just do that for fun",
+      "subtitle_2": "Take care of sister",
+      "subtitle_3": "She will give you back",
+      "subtitle_4": "sister, I won't angry at you",
+      "subtitle_5": "We should regard you as Goddess and\nworship you"
+    },
+    "answer": {
+      "revised_4": "sister, I won't be angry at you",
+      "note_4": "Added 'be' before 'angry' for correct grammar."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "It's dark. I will go to find sister",
+      "subtitle_2": "Good luck"
+    },
+    "answer": {
+      "revised_1": "It's dark. I will go find sister",
+      "note_1": "Removed 'to' from 'go to find' for correct phrasing."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "It's really lucky"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Qingxia",
+      "subtitle_2": "Where are you?",
+      "subtitle_3": "Come out",
+      "subtitle_4": "I've killed your sister"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Monkey King",
+      "subtitle_2": "You bastard",
+      "subtitle_3": "You wanted to marry\nthe King Bull's sister",
+      "subtitle_4": "But you regarded the Longevity Monk\nas a wedding gift",
+      "subtitle_5": "And you invited all devils to eat his flesh",
+      "subtitle_6": "Do you admit your guilt?",
+      "subtitle_7": "Bitch!",
+      "subtitle_8": "She's chased me for 3 whole days",
+      "subtitle_9": "I didn't beat you up\nbecause you're a woman",
+      "subtitle_10": "Don't think I'm scared of you",
+      "subtitle_11": "Monkey King",
+      "subtitle_12": "Don't say that to Goddess",
+      "subtitle_13": "Shut up!",
+      "subtitle_14": "You scare me again!",
+      "subtitle_15": "Monkey King, Longevity Monk?",
+      "subtitle_16": "Do you know you've committed offences",
+      "subtitle_17": "You've grabbed Zixia Immortal's\nPandora's Box",
+      "subtitle_18": "You don't want to see me",
+      "subtitle_19": "Now, I can't escape",
+      "subtitle_20": "I'm gonna fight against you!",
+      "subtitle_21": "What's up?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Monkey King, you're so naughty",
+      "subtitle_2": "I've told you don't throw things",
+      "subtitle_3": "It's wrong to throw things",
+      "subtitle_4": "I haven't finished yet.\nYou've thrown away the stick",
+      "subtitle_5": "The Box is a treasure",
+      "subtitle_6": "You'll pollute the environment!",
+      "subtitle_7": "What to do if kids are hurt?",
+      "subtitle_8": "It's still bad",
+      "subtitle_9": "if you hurt plants",
+      "subtitle_10": "What are you doing?",
+      "subtitle_11": "Let go!",
+      "subtitle_12": "What do you want?",
+      "subtitle_13": "Tell me if you like it",
+      "subtitle_14": "I will give you that if you like it",
+      "subtitle_15": "Of course, I will give you if you like it",
+      "subtitle_16": "I won't give you if you don't like it",
+      "subtitle_17": "I'm pretty sure that I won't give you\nif you don't like it",
+      "subtitle_18": "We're reasonable",
+      "subtitle_19": "I'll count to 3",
+      "subtitle_20": "Tell me if you want it!",
+      "subtitle_21": "Monkey King"
+    },
+    "answer": {
+      "revised_5": "The box is a treasure",
+      "note_5": "Corrected 'Box' to 'box' for proper common noun usage."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "You know him now",
+      "subtitle_2": "This guy is very annoying",
+      "subtitle_3": "Ver disturbing",
+      "subtitle_4": "Just like a fly",
+      "subtitle_5": "sorry, not a fly",
+      "subtitle_6": "but a swarm of flies"
+    },
+    "answer": {
+      "revised_3": "Very disturbing",
+      "note_3": "Corrected 'Ver' to 'Very'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Fly into your ears",
+      "subtitle_2": "Help…",
+      "subtitle_3": "Help!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "So I tear the fly's belly open.",
+      "subtitle_2": "Tear out its intestines",
+      "subtitle_3": "Put them around its neck, then pull them",
+      "subtitle_4": "Then its tongue comes out\nand I use my blade to cut!",
+      "subtitle_5": "The world's silent then"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "We all know this now",
+      "subtitle_2": "why I kill it",
+      "subtitle_3": "Really?",
+      "subtitle_4": "So many excuses",
+      "subtitle_5": "You don't want to get scriptures",
+      "subtitle_6": "I won't forgive you",
+      "subtitle_7": "because you're so cruel to your master",
+      "subtitle_8": "Sister",
+      "subtitle_9": "you're wrong",
+      "subtitle_10": "The Monkey King wanted to eat me",
+      "subtitle_11": "It's just a thought",
+      "subtitle_12": "Not a fact",
+      "subtitle_13": "You haven't got any evidence",
+      "subtitle_14": "He's not guility!",
+      "subtitle_15": "Just wait, when he's eaten me up",
+      "subtitle_16": "you can prove him guilty",
+      "subtitle_17": "Longevity Monk, I know you're annoying",
+      "subtitle_18": "But I don't know you're this annoying",
+      "subtitle_19": "I gave you the Gold Ring to control\nthis monkey",
+      "subtitle_20": "But you don't use the ring",
+      "subtitle_21": "The size of that ring doesn't suit him",
+      "subtitle_22": "He can't wear it",
+      "subtitle_23": "It makes him very uneasy",
+      "subtitle_24": "He can't sleep at night. It disturbed me, too",
+      "subtitle_25": "Although it is just a monkey",
+      "subtitle_26": "you cannot do that do it",
+      "subtitle_27": "I'll be indicted animal abused\nif the government knows it",
+      "subtitle_28": "That Gold Ring…",
+      "subtitle_29": "I met iron-smith last year\nat the Chan's village",
+      "subtitle_30": "His skill is wonderful and the price is low",
+      "subtitle_31": "Really fair price",
+      "subtitle_32": "I think",
+      "subtitle_33": "you should buy a new one from him",
+      "subtitle_34": "Shut up!",
+      "subtitle_35": "Shut up!"
+    },
+    "answer": {
+      "revised_14": "He's not guilty!",
+      "note_14": "Corrected 'guility' to 'guilty'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "It's a sin…",
+      "subtitle_2": "Now, I think you know my pain!",
+      "subtitle_3": "Answer me!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "It's Ok!",
+      "subtitle_2": "I've told you not to throw things",
+      "subtitle_3": "Look!"
+    },
+    "answer": {
+      "revised_1": "It's OK!",
+      "note_1": "Corrected 'Ok' to 'OK'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Monkey devil, go to hell"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "You can't defeat me!",
+      "subtitle_2": "You're not Buddha",
+      "subtitle_3": "No more fighting…",
+      "subtitle_4": "Goddess",
+      "subtitle_5": "Please let the Monkey King go,\ndon't hurt him"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "No more fighting"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I'm gonna kill him!",
+      "subtitle_2": "Goddess, stop!",
+      "subtitle_3": "It's normal to make mistakes",
+      "subtitle_4": "He's my disciple",
+      "subtitle_5": "I have to take the responsibility",
+      "subtitle_6": "Goddess, please let him go",
+      "subtitle_7": "If I won't kill him",
+      "subtitle_8": "I can't report to Heaven Emperor",
+      "subtitle_9": "I know that",
+      "subtitle_10": "Please tell Heaven Emperor that",
+      "subtitle_11": "I'm gonna sacrifice my life to him",
+      "subtitle_12": "What?",
+      "subtitle_13": "It is a master’s responsibility",
+      "subtitle_14": "Goddess, please listen to me",
+      "subtitle_15": "I just wanna teach him…",
+      "subtitle_16": "in order to show my spirit"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "That's great…",
+      "subtitle_2": "Monkey King, I hope you'll learn",
+      "subtitle_3": "your master's spirit!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Namonitabhaya"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Dreaming again?",
+      "subtitle_2": "It's big trouble.",
+      "subtitle_3": "I always have nightmares",
+      "subtitle_4": "Where is Qingxia?",
+      "subtitle_5": "Not here",
+      "subtitle_6": "Qingxia…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Everybody, how are you?",
+      "subtitle_2": "It's cold!",
+      "subtitle_3": "Have you worn more clothes",
+      "subtitle_4": "I've lost my way",
+      "subtitle_5": "I wanna find a place to stay at night",
+      "subtitle_6": "Go there to sleep",
+      "subtitle_7": "Thank you very much.",
+      "subtitle_8": "Wish you all long live"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I saw him come here",
+      "subtitle_2": "Where is he now?",
+      "subtitle_3": "Why did you go to pee?\nYou have to take the blame",
+      "subtitle_4": "It won't hurt you",
+      "subtitle_5": "Is it illegal?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Old Black Mountain Devil?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Monkey King",
+      "subtitle_2": "You turn into human face again",
+      "subtitle_3": "Do you still recognise me?",
+      "subtitle_4": "You are the fly",
+      "subtitle_5": "Monkey King…",
+      "subtitle_6": "Impossible, I must be dreaming",
+      "subtitle_7": "It is still early to make dreams, but…",
+      "subtitle_8": "I dream of you",
+      "subtitle_9": "when I was travel through time and space",
+      "subtitle_10": "Do you miss me?",
+      "subtitle_11": "The Box is at your side?",
+      "subtitle_12": "Yes, it is. Do you want it?",
+      "subtitle_13": "Who?",
+      "subtitle_14": "What's up?",
+      "subtitle_15": "Soldier",
+      "subtitle_16": "Soldier",
+      "subtitle_17": "My dad also wanna stay here",
+      "subtitle_18": "No problem",
+      "subtitle_19": "It's your dad!",
+      "subtitle_20": "Yes, dad, come out to say hello to all bros",
+      "subtitle_21": "Where does he come from?",
+      "subtitle_22": "From India",
+      "subtitle_23": "India? Where is it?",
+      "subtitle_24": "I need to carry on tomorrow. Sleep there",
+      "subtitle_25": "Thanks",
+      "subtitle_26": "It's really noisy",
+      "subtitle_27": "Annoying",
+      "subtitle_28": "Sleep inside",
+      "subtitle_29": "It is the problem of time difference",
+      "subtitle_30": "I have just slept in India.\nNow you tell me to sleep again",
+      "subtitle_31": "You go to sleep",
+      "subtitle_32": "Where is the Pandora's Box?",
+      "subtitle_33": "Monkey King, can you behave yourself?",
+      "subtitle_34": "Look, just keep calm"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "What is he doing ?",
+      "subtitle_2": "He's breathing in life",
+      "subtitle_3": "Pretend to sleep.",
+      "subtitle_4": "I hope that he won't breath in ours",
+      "subtitle_5": "Go to sleep!"
+    },
+    "answer": {
+      "revised_1": "What is he doing?",
+      "note_1": "Removed the extra space before the question mark.",
+      "revised_4": "I hope that he won't breathe in ours",
+      "note_4": "Corrected 'breath' to 'breathe'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Do you know me?",
+      "subtitle_2": "That Indian…",
+      "subtitle_3": "You like it, take it",
+      "subtitle_4": "My disciple is calling me, bye bye"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Don't play with fire again",
+      "subtitle_2": "bye",
+      "subtitle_3": "Please don't follow us. I don't know you",
+      "subtitle_4": "It's great to see you",
+      "subtitle_5": "Where is the Box? The Box?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "The King Bull?",
+      "subtitle_2": "Bro. catch the Longevity Monk\nand give him to me"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Miss, handkerchief",
+      "subtitle_2": "It's wedding day, why are you weeping?",
+      "subtitle_3": "I'm not weeping. My mouth is watering"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "It's a very happy day",
+      "subtitle_2": "What?",
+      "subtitle_3": "It's not only the wedding day of my sister",
+      "subtitle_4": "but also the day of my marriage\nwith my concubine",
+      "subtitle_5": "Concubine?",
+      "subtitle_6": "What does sister-in-law say about this?",
+      "subtitle_7": "That bitch",
+      "subtitle_8": "She's now at the Flame Mountain",
+      "subtitle_9": "She can do nothing about this even if\nshe knows it",
+      "subtitle_10": "Bull, how did you know",
+      "subtitle_11": "this new wife?",
+      "subtitle_12": "I passed the desert yesterday",
+      "subtitle_13": "I saw a pretty girl",
+      "subtitle_14": "She's dying",
+      "subtitle_15": "Master, what to do now?",
+      "subtitle_16": "Fine! No problem…",
+      "subtitle_17": "Really? We succeed now!",
+      "subtitle_18": "Zixia, what a nice name you've got",
+      "subtitle_19": "Let me introduce my sister and\nmy brother-in-law to you",
+      "subtitle_20": "Xiang Xiang, Bro",
+      "subtitle_21": "Come here, follow me"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "This my brother-in-law",
+      "subtitle_2": "This is my sister Xiang Xiang",
+      "subtitle_3": "Zixia!"
+    },
+    "answer": {
+      "revised_1": "This is my brother-in-law",
+      "note_1": "Added 'is' to correct the sentence."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "How can you get marry here?",
+      "subtitle_2": "I can!",
+      "subtitle_3": "How about your wife?",
+      "subtitle_4": "My wife? Do you know her?",
+      "subtitle_5": "You've got a wife?",
+      "subtitle_6": "We're divorced",
+      "subtitle_7": "I haven't heard you say that before",
+      "subtitle_8": "Sister…",
+      "subtitle_9": "It's normal that a man has many wives.",
+      "subtitle_10": "Take it easy"
+    },
+    "answer": {
+      "revised_1": "How can you get married here?",
+      "note_1": "Corrected 'get marry' to 'get married'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Bro, do you think so?",
+      "subtitle_2": "Yes…",
+      "subtitle_3": "Zixia, be honest",
+      "subtitle_4": "I think I've fallen for you",
+      "subtitle_5": "after these two days",
+      "subtitle_6": "I wanna show my sincerity",
+      "subtitle_7": "Thus I'm gonna request you to marry me\nin front of my bros",
+      "subtitle_8": "This Pandora's Box",
+      "subtitle_9": "is my gift to you",
+      "subtitle_10": "I hope you'll marry me",
+      "subtitle_11": "I object this marriage!",
+      "subtitle_12": "Why?",
+      "subtitle_13": "Let me speak…",
+      "subtitle_14": "What a good couple they are!",
+      "subtitle_15": "You're a devil,\nyou're not qualified to object",
+      "subtitle_16": "You have to pass Zixia's test first",
+      "subtitle_17": "If you can pass it",
+      "subtitle_18": "I won't object it anymore",
+      "subtitle_19": "What test?",
+      "subtitle_20": "She has sworn that",
+      "subtitle_21": "she would marry the guy",
+      "subtitle_22": "who could pull out"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "her Magic Sword",
+      "subtitle_2": "Listen to me",
+      "subtitle_3": "It's untrue",
+      "subtitle_4": "It's just a joke",
+      "subtitle_5": "What joke?",
+      "subtitle_6": "It's not important",
+      "subtitle_7": "who can pull out the sword"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Stop nagging in my place!",
+      "subtitle_2": "I'm gonna kill the ones\nwho block my way"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I'm gonna kill the ones\nwho blcok my way",
+      "subtitle_2": "King, Iron Fan Princess has come"
+    },
+    "answer": {
+      "revised_1": "I'm gonna kill the ones\nwho block my way",
+      "note_1": "Corrected 'blcok' to 'block'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Why are you here?",
+      "subtitle_2": "At this time, the sword is close to me",
+      "subtitle_3": "0.01cm I think",
+      "subtitle_4": "But after 0.01 seconds",
+      "subtitle_5": "the owner of the sword will fall for me",
+      "subtitle_6": "This is because I've decided to tell lies",
+      "subtitle_7": "Although I have told many lies before",
+      "subtitle_8": "this is the best, I think",
+      "subtitle_9": "You're gonna kill me\nif you step forward again",
+      "subtitle_10": "You should do that",
+      "subtitle_11": "I deserve to die",
+      "subtitle_12": "I have had my best love before",
+      "subtitle_13": "but I didn't treasure her",
+      "subtitle_14": "When I lose her",
+      "subtitle_15": "I fell regretful",
+      "subtitle_16": "It is the most painful matter in this world",
+      "subtitle_17": "Just cut my throat!",
+      "subtitle_18": "No hesitation",
+      "subtitle_19": "If God can give me",
+      "subtitle_20": "another chance",
+      "subtitle_21": "I will say 3 words to her",
+      "subtitle_22": "I love you",
+      "subtitle_23": "If you have to give a time limit to\nthis love",
+      "subtitle_24": "I hope it is 10 thousand year"
+    },
+    "answer": {
+      "revised_15": "I feel regretful",
+      "note_15": "Corrected 'fell' to 'feel'.",
+      "revised_21": "I will say 3 words to her:",
+      "note_21": "Added a colon to match the intended subtitle punctuation.",
+      "revised_24": "I hope it is 10,000 years",
+      "note_24": "Corrected 'year' to 'years' and formatted '10 thousand' as '10,000'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "But how will you tell your wife?",
+      "subtitle_2": "I have to tell her",
+      "subtitle_3": "So I must get the Box back",
+      "subtitle_4": "Tell her clearly and go back with you",
+      "subtitle_5": "I won't listen to the others opinions",
+      "subtitle_6": "I won't listen to the others",
+      "subtitle_7": "objections",
+      "subtitle_8": "I will take all those on my own",
+      "subtitle_9": "Don't lie to me!",
+      "subtitle_10": "But I hate myself",
+      "subtitle_11": "because I can't get back the Box",
+      "subtitle_12": "l",
+      "subtitle_13": "I'll help you",
+      "subtitle_14": "No! it's dangerous",
+      "subtitle_15": "You don't want",
+      "subtitle_16": "I want",
+      "subtitle_17": "I won't hide a woman",
+      "subtitle_18": "It's just rumour",
+      "subtitle_19": "I won't trust you anymore…",
+      "subtitle_20": "What are you doing here?"
+    },
+    "answer": {
+      "revised_14": "No! It's dangerous",
+      "note_14": "Capitalized 'It's' after the sentence break."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Who's he?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I'm asking you, who's he?",
+      "subtitle_2": "He",
+      "subtitle_3": "Bro, who's he? Tell me",
+      "subtitle_4": "He's my wife",
+      "subtitle_5": "Bro, it's too much of you",
+      "subtitle_6": "Bros",
+      "subtitle_7": "You marry your sister to him!",
+      "subtitle_8": "So his wife pointed a sword at him",
+      "subtitle_9": "You follow me,\nI have something to ask you",
+      "subtitle_10": "You've got a wife",
+      "subtitle_11": "I've lost my feeling to her",
+      "subtitle_12": "Tell me what's going on",
+      "subtitle_13": "I've told you…Sister-in-law",
+      "subtitle_14": "Sister-in-law?",
+      "subtitle_15": "sorry, Madam Bull",
+      "subtitle_16": "When you watched the moon with me\nin the past",
+      "subtitle_17": "you called me Sweetie",
+      "subtitle_18": "Now you yet your new lover!\nCall me Madam Bull?",
+      "subtitle_19": "Sweetie?",
+      "subtitle_20": "Do you think that I come here for",
+      "subtitle_21": "that ugly Bull?",
+      "subtitle_22": "I come here for you, heartless monkey",
+      "subtitle_23": "Bro, thank you",
+      "subtitle_24": "It's none of business",
+      "subtitle_25": "Sorry",
+      "subtitle_26": "wait for me here at midnight",
+      "subtitle_27": "I have something to tell you"
+    },
+    "answer": {
+      "revised_24": "It's none of my business",
+      "note_24": "Inserted 'my' to correct the phrase 'none of business'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "If I were you",
+      "subtitle_2": "I'll die when my husband decides to get\na concubine",
+      "subtitle_3": "Really?",
+      "subtitle_4": "Yes! But I'll castrate you first",
+      "subtitle_5": "Follow me"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Zixia, I …",
+      "subtitle_2": "I trust you",
+      "subtitle_3": "I'll get the Box today",
+      "subtitle_4": "Wait for me here at midnight",
+      "subtitle_5": "Bro…",
+      "subtitle_6": "Let me go to see my bros first",
+      "subtitle_7": "See you tonight"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Damn monkey, it's midnight now.\nWhere is he?",
+      "subtitle_2": "Big Brother!",
+      "subtitle_3": "I've told you that",
+      "subtitle_4": "Big Brother won't do so to us",
+      "subtitle_5": "He'll come to save Master",
+      "subtitle_6": "Gout at night, wanna pee?",
+      "subtitle_7": "No need to praise me",
+      "subtitle_8": "I'm just better than you a little bit",
+      "subtitle_9": "Stop nagging, go to save Master"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I can't take this anymore",
+      "subtitle_2": "I'm sure that Master is inside",
+      "subtitle_3": "Right…",
+      "subtitle_4": "He's very annoying.\nI can't take this anymore",
+      "subtitle_5": "You go in, I stay back…",
+      "subtitle_6": "Go! You at the middle",
+      "subtitle_7": "This way…Master is here, go in",
+      "subtitle_8": "Master",
+      "subtitle_9": "Master, master",
+      "subtitle_10": "We come to bring you out",
+      "subtitle_11": "I won't go",
+      "subtitle_12": "Really? Why? No",
+      "subtitle_13": "There're full of obstacles in the way of",
+      "subtitle_14": "getting scriptures",
+      "subtitle_15": "This is because we're not united enough",
+      "subtitle_16": "so the devils can do bad to us",
+      "subtitle_17": "Ok, now it is the case",
+      "subtitle_18": "Staying in this prison or not is\njust the same",
+      "subtitle_19": "The outside world",
+      "subtitle_20": "is just a larger prison to me",
+      "subtitle_21": "You go out first,\nI have something to talk to Big Brother",
+      "subtitle_22": "Master",
+      "subtitle_23": "Piggy, you're naughty again",
+      "subtitle_24": "No, Master",
+      "subtitle_25": "I go out and protect you",
+      "subtitle_26": "sandy, follow me. Yes",
+      "subtitle_27": "You stand aside"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Blow up and blow up the ball",
+      "subtitle_2": "You've dropped your thing",
+      "subtitle_3": "Bro, keep it",
+      "subtitle_4": "Why should I keep it?",
+      "subtitle_5": "Because I'm stronger than you",
+      "subtitle_6": "stronger than your shit!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Come in and have a sit"
+    },
+    "answer": {
+      "revised_1": "Come in and have a seat",
+      "note_1": "Corrected 'sit' to 'seat'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Honestly, I'm not your bro",
+      "subtitle_2": "I don't want to be your disciple",
+      "subtitle_3": "Master, be kind to me",
+      "subtitle_4": "Please let go of me, alright?",
+      "subtitle_5": "Do you know what “Dong, Dong…”is?",
+      "subtitle_6": "What “Dong, Dong, Dong”?",
+      "subtitle_7": "Only you…\ncan take me to get scriptures in the west",
+      "subtitle_8": "Only you… can kill the devils",
+      "subtitle_9": "Only you… can protect me",
+      "subtitle_10": "No need to eat by the monster",
+      "subtitle_11": "Only you are that strong"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Only you…\ndon't blame the master so talkative",
+      "subtitle_2": "Wear the ring back",
+      "subtitle_3": "Don't scare the death",
+      "subtitle_4": "Don't scare the shit",
+      "subtitle_5": "Do your best, if you scare,\nI'll be with you…",
+      "subtitle_6": "Namonitabhaya"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I can't take this anymore!",
+      "subtitle_2": "Oh your shit! Stop it!",
+      "subtitle_3": "I've said I can't take this anymore",
+      "subtitle_4": "But you still sing",
+      "subtitle_5": "You disregard my feelings",
+      "subtitle_6": "I'll kill you if you sing again",
+      "subtitle_7": "Monkey King, you kill you again",
+      "subtitle_8": "Life and death are minor"
+    },
+    "answer": {
+      "revised_2": "Oh, your shit! Stop it!",
+      "note_2": "Added a comma after 'Oh'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "You'll sing this song with me",
+      "subtitle_2": "when you know making sacrifices is\nso meaningful",
+      "subtitle_3": "Namonitabhaya…."
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Zixia"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Bro, why are you taking a woman\nwith you?",
+      "subtitle_2": "Master has gone",
+      "subtitle_3": "He said we had to wait for him\nat the forest 300 miles away",
+      "subtitle_4": "Go there quickly, please",
+      "subtitle_5": "Hold it!t",
+      "subtitle_6": "What?",
+      "subtitle_7": "Ambush at the front",
+      "subtitle_8": "I can see it, no need to listen",
+      "subtitle_9": "Stupid",
+      "subtitle_10": "Hold you",
+      "subtitle_11": "Xiang Xiang!",
+      "subtitle_12": "Why are you here?",
+      "subtitle_13": "Wow! Why is there so much blood\non your hand?",
+      "subtitle_14": "This is the blood",
+      "subtitle_15": "of the woman you're holding",
+      "subtitle_16": "Her blood?",
+      "subtitle_17": "Yes! It's hers",
+      "subtitle_18": "I stabbed her",
+      "subtitle_19": "when she's sleeping",
+      "subtitle_20": "If this woman is still alive",
+      "subtitle_21": "you won't come back to me",
+      "subtitle_22": "You have to let it be",
+      "subtitle_23": "It is fate",
+      "subtitle_24": "Bullshit!",
+      "subtitle_25": "If it is fate that you love Piggy",
+      "subtitle_26": "will you love him?",
+      "subtitle_27": "If this is God's order",
+      "subtitle_28": "I have to accept it",
+      "subtitle_29": "Great!",
+      "subtitle_30": "You don't have to wait for God's order"
+    },
+    "answer": {
+      "revised_5": "Hold it!",
+      "note_5": "Removed the extra 't' in 'Hold it!t'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Wow! What are you going to do?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Go, go…",
+      "subtitle_2": "Changing Image Magic!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I will turn you into a rock",
+      "subtitle_2": "Let go of me!",
+      "subtitle_3": "Grab your breasts!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Zixia…!",
+      "subtitle_2": "Wake up",
+      "subtitle_3": "Big Bro, why are you embracing me?",
+      "subtitle_4": "Piggy?",
+      "subtitle_5": "Yes!",
+      "subtitle_6": "Where is Zixia?",
+      "subtitle_7": "Qin Xianglin…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Qingxia?",
+      "subtitle_2": "Wow! Please don't play joke!",
+      "subtitle_3": "I'm also hurt!",
+      "subtitle_4": "My chest muscles nearly touch\nmy stomach",
+      "subtitle_5": "Do you hate me?",
+      "subtitle_6": "No!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "You hate me!",
+      "subtitle_2": "Fine! End now!",
+      "subtitle_3": "Stop! Give me some time",
+      "subtitle_4": "I just vomit. I'll vomit all things out soon",
+      "subtitle_5": "Fine! I trust you",
+      "subtitle_6": "Give you some time",
+      "subtitle_7": "Try to get used to it now",
+      "subtitle_8": "I'm used to it already",
+      "subtitle_9": "Fine, I'm OK",
+      "subtitle_10": "I wanna vomit!",
+      "subtitle_11": "You're so disgusting!",
+      "subtitle_12": "If you're not, he won't vomit"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Please be good to me",
+      "subtitle_2": "I will marry him",
+      "subtitle_3": "I'll give him a warm family",
+      "subtitle_4": "Give birth to many kids",
+      "subtitle_5": "Xianglin"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I will kill you!",
+      "subtitle_2": "Kill you",
+      "subtitle_3": "Bro, you're also hurt?",
+      "subtitle_4": "Turn me back!",
+      "subtitle_5": "Shut up!",
+      "subtitle_6": "Listen to me!",
+      "subtitle_7": "Change me back!",
+      "subtitle_8": "I also want to do so!",
+      "subtitle_9": "I've used my power once.",
+      "subtitle_10": "I need 49 days to recover",
+      "subtitle_11": "49 days! I…",
+      "subtitle_12": "Xianglin, face the reality!",
+      "subtitle_13": "Use your energy!",
+      "subtitle_14": "Use your energy! Stop playing!",
+      "subtitle_15": "Be quick!",
+      "subtitle_16": "Who is inside you?",
+      "subtitle_17": "I don't know where I am",
+      "subtitle_18": "Two voices?",
+      "subtitle_19": "Who are you?",
+      "subtitle_20": "I'm Piggy. Who are you?",
+      "subtitle_21": "I'm Zixia",
+      "subtitle_22": "Xianglin",
+      "subtitle_23": "Joker",
+      "subtitle_24": "Bro",
+      "subtitle_25": "Zixia",
+      "subtitle_26": "Ziaxia, you're still here",
+      "subtitle_27": "You bitch!",
+      "subtitle_28": "I find you at last",
+      "subtitle_29": "What are you doing?",
+      "subtitle_30": "Long time no see, and you become this",
+      "subtitle_31": "Where's the Pandora's Box?",
+      "subtitle_32": "I didn't take it",
+      "subtitle_33": "Kidding",
+      "subtitle_34": "Give me",
+      "subtitle_35": "Wait",
+      "subtitle_36": "What will you do to the Box?",
+      "subtitle_37": "Go with me!",
+      "subtitle_38": "Fat woman! Don't hang around with me",
+      "subtitle_39": "Xianglin will go away with you…\nThe King Bull"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Don't dream",
+      "subtitle_2": "you ask him if you don't believe it",
+      "subtitle_3": "You said you love me",
+      "subtitle_4": "because you wanna take this and",
+      "subtitle_5": "go away with her?",
+      "subtitle_6": "Wait…",
+      "subtitle_7": "It's not true",
+      "subtitle_8": "Don't want you to throw it away",
+      "subtitle_9": "Great!",
+      "subtitle_10": "You should not do that",
+      "subtitle_11": "Look at you",
+      "subtitle_12": "Don't deny it!",
+      "subtitle_13": "I'll throw that away!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Bro…",
+      "subtitle_2": "What a man!",
+      "subtitle_3": "Shut up!",
+      "subtitle_4": "I love that!",
+      "subtitle_5": "You can't leave anymore",
+      "subtitle_6": "Bull, you're seriously hurt",
+      "subtitle_7": "Do you think that bitch hurt lesser?",
+      "subtitle_8": "Have a look!",
+      "subtitle_9": "You've deceived me so long",
+      "subtitle_10": "In fact, I'm not",
+      "subtitle_11": "Xianglin, who's that woman?",
+      "subtitle_12": "I won't listen to you!",
+      "subtitle_13": "Bastard! I'll leave you",
+      "subtitle_14": "You affairs are none of my business",
+      "subtitle_15": "You get yours! And I get mine!",
+      "subtitle_16": "Help Zixia, you have a part in the body"
+    },
+    "answer": {
+      "revised_14": "Your affairs are none of my business",
+      "note_14": "Corrected 'You affairs' to 'Your affairs'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Beat it up, make it hurt! Then you can\ndo nothing about it even if you",
+      "subtitle_2": "Yes!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Wanna go?",
+      "subtitle_2": "Explain it clearly or you can't leave!",
+      "subtitle_3": "Don't hit him!",
+      "subtitle_4": "Bitch",
+      "subtitle_5": "Bitch, stand aside,\nit's none of your business",
+      "subtitle_6": "stop it!",
+      "subtitle_7": "I'm afraid that she'll hurt my body",
+      "subtitle_8": "I won't help you",
+      "subtitle_9": "Shut up!",
+      "subtitle_10": "I'll help her and beat you up",
+      "subtitle_11": "Have a try!",
+      "subtitle_12": "I'm a woman. Please don't hit her strongly.\nI'll kill you"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I won't give help.\nI just wanna see your fight!",
+      "subtitle_2": "Go!",
+      "subtitle_3": "No",
+      "subtitle_4": "I'll take the Box for you",
+      "subtitle_5": "And you can explain to your wife",
+      "subtitle_6": "Wow, you're great! Perfect!",
+      "subtitle_7": "Really?",
+      "subtitle_8": "You're as perfect as possible"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Wait!"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitle_1": "You!",
+      "subtitle_2": "Bitch, don't hit my girl",
+      "subtitle_3": "I like to do it",
+      "subtitle_4": "Your man has gone",
+      "subtitle_5": "How cool he is!",
+      "subtitle_6": "I'm a lucky woman!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Ok, I can play jumping down\nfrom the cliff"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Go nearer"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Monkey King",
+      "subtitle_2": "Don't jump!",
+      "subtitle_3": "I don't want to do so",
+      "subtitle_4": "You prefer jumping down to seeing me",
+      "subtitle_5": "Ok,\nI'd better go back to the Flam Mountain"
+    },
+    "answer": {
+      "revised_5": "Ok,\nI'd better go back to the Flaming Mountain",
+      "note_5": "Corrected 'Flam Mountain' to 'Flaming Mountain'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "I won't do this case",
+      "subtitle_2": "if I know this before",
+      "subtitle_3": "I don't know stealing grapes will\nmake me suffer such punishment",
+      "subtitle_4": "If I know that, I won't be a robber",
+      "subtitle_5": "Yes, sure",
+      "subtitle_6": "Like me, being a soldier",
+      "subtitle_7": "you have no chance yet",
+      "subtitle_8": "unless immortal comes to save you"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I won't be a soldier"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Immortal has come",
+      "subtitle_2": "Immortal!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Granpa Buddha",
+      "subtitle_2": "He steams buns",
+      "subtitle_3": "None of your business!",
+      "subtitle_4": "Jing Jing!"
+    },
+    "answer": {
+      "revised_1": "Grandpa Buddha",
+      "note_1": "Corrected 'Granpa' to 'Grandpa'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Don't flirt me!",
+      "subtitle_2": "I flirt you because I love you",
+      "subtitle_3": "Listen, if you want to be my wife",
+      "subtitle_4": "don't do bad anymore in the future",
+      "subtitle_5": "Sure!",
+      "subtitle_6": "Let's go",
+      "subtitle_7": "Drink tea",
+      "subtitle_8": "Thank you!",
+      "subtitle_9": "You're welcome"
+    },
+    "answer": {
+      "revised_1": "Don't flirt with me!",
+      "note_1": "Inserted 'with' to correct the phrase 'flirt with me'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Why bring me back to this cave?",
+      "subtitle_2": "I didn't bring you back",
+      "subtitle_3": "It's you who brought us back"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "It may be because I miss Jing Jing\nvery much",
+      "subtitle_2": "Yes! When you fainted",
+      "subtitle_3": "you spoke out the name Jing Jing\n98 times!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Jing Jing is my wife",
+      "subtitle_2": "and a name Zixia",
+      "subtitle_3": "You repeated 784 times",
+      "subtitle_4": "784 times",
+      "subtitle_5": "She must have owed you lots of money",
+      "subtitle_6": "I want Spider Web Cave Immortal to be\nmy master",
+      "subtitle_7": "she's changed Waterfall Cave into\nSpider Web Cave",
+      "subtitle_8": "You tell me there's no such person!",
+      "subtitle_9": "We don't know"
+    },
+    "answer": {
+      "revised_1": "Jing Jing is my wife,",
+      "note_1": "Added a comma at the end of the subtitle.",
+      "revised_2": "and a name Zixia,",
+      "note_2": "Added a comma at the end of the subtitle."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Son of a bitch, you're still here!",
+      "subtitle_2": "Why did you do that to me?",
+      "subtitle_3": "Jing Jing"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Jing Jing, it's nice to see you",
+      "subtitle_2": "What?",
+      "subtitle_3": "You've got thinner",
+      "subtitle_4": "I'm not the Monkey King",
+      "subtitle_5": "But I don't how to tell you",
+      "subtitle_6": "because you won't believe in it",
+      "subtitle_7": "I will",
+      "subtitle_8": "Because that damn monkey won't be\nso gentle to me",
+      "subtitle_9": "Who are you?",
+      "subtitle_10": "I'll be your husband 500 years later",
+      "subtitle_11": "500 years later",
+      "subtitle_12": "you will give up this affair because of me",
+      "subtitle_13": "What I did is totally",
+      "subtitle_14": "just for you",
+      "subtitle_15": "Jing Jing, I miss you",
+      "subtitle_16": "I miss you much and much",
+      "subtitle_17": "I miss you much and much and much",
+      "subtitle_18": "Don't you trust me?",
+      "subtitle_19": "No!",
+      "subtitle_20": "I can't blame you",
+      "subtitle_21": "Let me see what's going on",
+      "subtitle_22": "But I think I know you",
+      "subtitle_23": "Absolutely",
+      "subtitle_24": "Very and absolutely",
+      "subtitle_25": "Very and absolutely and extremely!",
+      "subtitle_26": "How will we meet 500 years later?",
+      "subtitle_27": "At a pitch-dark night",
+      "subtitle_28": "I'm Joker, you're Pak Jing Jing",
+      "subtitle_29": "Fantastic love",
+      "subtitle_30": "starts from a fire at the bridge",
+      "subtitle_31": "When I turn back,\nyou point at me with your finger",
+      "subtitle_32": "then my hand gets burning",
+      "subtitle_33": "you rush to me and hit me!",
+      "subtitle_34": "Hit and hit and hit!",
+      "subtitle_35": "No…",
+      "subtitle_36": "look at me…",
+      "subtitle_37": "yes, can you see it!",
+      "subtitle_38": "there are many",
+      "subtitle_39": "twists and turns",
+      "subtitle_40": "Suddenly, the King Bull comes to us",
+      "subtitle_41": "I fight with him with a bone",
+      "subtitle_42": "He grabbed me to the Spider Web Cave",
+      "subtitle_43": "It's right that time flies",
+      "subtitle_44": "The following is the main content",
+      "subtitle_45": "On the cliff, we reach the climax",
+      "subtitle_46": "At that time, I touch you",
+      "subtitle_47": "You touch me too",
+      "subtitle_48": "We make promise that we won't separate"
+    },
+    "answer": {
+      "revised_5": "But I don't know how to tell you",
+      "note_5": "Corrected 'don't how' to 'don't know'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "But happiness is always a flash of time",
+      "subtitle_2": "We only have endless pain!",
+      "subtitle_3": "Why will you die?",
+      "subtitle_4": "So I use the Box to travel back",
+      "subtitle_5": "to the past",
+      "subtitle_6": "I discover that you kill yourself",
+      "subtitle_7": "At the last moment",
+      "subtitle_8": "I save your life!",
+      "subtitle_9": "But at the last time of time travel",
+      "subtitle_10": "the Box doesn't work properly.",
+      "subtitle_11": "I go back to 500 years ago",
+      "subtitle_12": "That is the story"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "What are you gonna do now?",
+      "subtitle_2": "I've found you, I needn't go back now",
+      "subtitle_3": "Let's get married!",
+      "subtitle_4": "I … I just wake up",
+      "subtitle_5": "I have nothing to do",
+      "subtitle_6": "So I come here. I wanna be a disciple",
+      "subtitle_7": "You request marriage suddenly",
+      "subtitle_8": "I…haven't brushed my teeth!",
+      "subtitle_9": "I know you're suspecting…",
+      "subtitle_10": "If I can give you my heart",
+      "subtitle_11": "you'll know I'm not cheating you",
+      "subtitle_12": "it's very simple!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "You look like a thing",
+      "subtitle_2": "Coconut?",
+      "subtitle_3": "A girl said that to me",
+      "subtitle_4": "Oh, coconut",
+      "subtitle_5": "are his words all true?",
+      "subtitle_6": "No need to think!",
+      "subtitle_7": "You search the bottom!",
+      "subtitle_8": "Coconut, thank you very much",
+      "subtitle_9": "Please tell you, am I his best love?",
+      "subtitle_10": "You've come back for a long time",
+      "subtitle_11": "You just wanna get the Pandora's Box",
+      "subtitle_12": "What do you mean?",
+      "subtitle_13": "I'm asking you when we will get marry",
+      "subtitle_14": "But you keep saying no",
+      "subtitle_15": "Will you marry me?",
+      "subtitle_16": "I do!"
+    },
+    "answer": {
+      "revised_13": "I'm asking you when we will get married",
+      "note_13": "Corrected 'get marry' to 'get married'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Is your sister crazy?",
+      "subtitle_2": "she keeps speaking nonsense all day long",
+      "subtitle_3": "She's not crazy.\nShe's something wrong with the brain",
+      "subtitle_4": "If she promises…",
+      "subtitle_5": "she has promised to marry him\n7 days later",
+      "subtitle_6": "you have made up your mind?",
+      "subtitle_7": "I cheated him",
+      "subtitle_8": "I'm waiting for my man to pick me up!",
+      "subtitle_9": "You think that bastard will come to\npick you up?",
+      "subtitle_10": "Congratulations!",
+      "subtitle_11": "But even if he comes back",
+      "subtitle_12": "he can't get you back",
+      "subtitle_13": "from the King Bull",
+      "subtitle_14": "It is fate that he can pull out\nmy Magic Sword",
+      "subtitle_15": "He must be an inordinary man",
+      "subtitle_16": "I'm sure",
+      "subtitle_17": "I know he'll come back one day",
+      "subtitle_18": "appear in public",
+      "subtitle_19": "wearing golden armour",
+      "subtitle_20": "and stepping on colorful cloud,\ncome to marry me",
+      "subtitle_21": "You are crazy!",
+      "subtitle_22": "I'm not crazy! This is just my hope",
+      "subtitle_23": "Promise me! Little psycho",
+      "subtitle_24": "No!"
+    },
+    "answer": {
+      "revised_3": "She's not crazy.\nShe has something wrong with the brain",
+      "note_3": "Corrected 'She's something wrong with the brain' to 'She has something wrong with the brain'.",
+      "revised_20": "and stepping on a colorful cloud,\ncome to marry me",
+      "note_20": "Inserted 'a' before 'colorful cloud' for correct grammar."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Bro, things are always unpredictable",
+      "subtitle_2": "I can't think you'll get marry with\nMiss Pak so soon",
+      "subtitle_3": "Yes, me too",
+      "subtitle_4": "We're happy for you!",
+      "subtitle_5": "Thank you!",
+      "subtitle_6": "You made dreams last night",
+      "subtitle_7": "You repeated the name Zixia 785 times",
+      "subtitle_8": "One time more than last night"
+    },
+    "answer": {
+      "revised_2": "I can't think you'll get married with\nMiss Pak so soon",
+      "note_2": "Corrected 'marry' to 'married'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "6 days have passed.\nYou'll get marry tomorrow",
+      "subtitle_2": "He will come? I don't think so"
+    },
+    "answer": {
+      "revised_1": "6 days have passed.\nYou'll get married tomorrow",
+      "note_1": "Corrected 'get marry' to 'get married'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Yesterday, I told a spider to tell you",
+      "subtitle_2": "Told you I missed you much",
+      "subtitle_3": "Do you know?",
+      "subtitle_4": "You don't know again",
+      "subtitle_5": "I am cheating you",
+      "subtitle_6": "That's fine!",
+      "subtitle_7": "Just like a moth",
+      "subtitle_8": "it flies to fire even it knows it'll get hurt"
+    },
+    "answer": {
+      "revised_8": "it flies to fire even if it knows it'll get hurt",
+      "note_8": "Corrected 'even it' to 'even if'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Moth is so silly!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Come out, grapes",
+      "subtitle_2": "I don't want to watch you",
+      "subtitle_3": "I just want to study",
+      "subtitle_4": "the interesting relationship among humans",
+      "subtitle_5": "Bro, you're a robber",
+      "subtitle_6": "Don't pretend to be a scholar",
+      "subtitle_7": "Even a robber has its own knowledge",
+      "subtitle_8": "Stop it, go to sleep",
+      "subtitle_9": "In your mind,\nis Zixia an\nexclamation mark?",
+      "subtitle_10": "Or she's a full stop?",
+      "subtitle_11": "Is your mind full of question marks?",
+      "subtitle_12": "Zixia is just a girl who I know",
+      "subtitle_13": "I lied to her in the past",
+      "subtitle_14": "I'm just feeling a little bit regretful",
+      "subtitle_15": "I hate him",
+      "subtitle_16": "I'll get marry today. What do you want?",
+      "subtitle_17": "When you discover that",
+      "subtitle_18": "you've fallen in love with a man you hate",
+      "subtitle_19": "this affair is really hurting you",
+      "subtitle_20": "But how can I fall in love\nwith a person I hate?",
+      "subtitle_21": "Please give me a reason. Please!",
+      "subtitle_22": "We don't need any reason to love a person",
+      "subtitle_23": "Don't we?",
+      "subtitle_24": "Do we?",
+      "subtitle_25": "Don't we?",
+      "subtitle_26": "Do we?",
+      "subtitle_27": "Don't we?",
+      "subtitle_28": "Let me study it for you",
+      "subtitle_29": "Why are you so serious? Need we?"
+    },
+    "answer": {
+      "revised_16": "I'll get married today. What do you want?",
+      "note_16": "Corrected 'marry' to 'married'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Who?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Time's up"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "How many brothers and sisters\ndo you have?",
+      "subtitle_2": "Are you parents alive?",
+      "subtitle_3": "Speak up!",
+      "subtitle_4": "I just wanna make a new friend",
+      "subtitle_5": "when I'm going to die",
+      "subtitle_6": "How to save Master?",
+      "subtitle_7": "Being a devil is the same as\nbeing a human",
+      "subtitle_8": "We should be kind",
+      "subtitle_9": "If we are kind",
+      "subtitle_10": "we are not a devil, we are a hybrid",
+      "subtitle_11": "He understand?",
+      "subtitle_12": "do you understand?"
+    },
+    "answer": {
+      "revised_2": "Are your parents alive?",
+      "note_2": "Corrected 'Are you parents' to 'Are your parents'.",
+      "revised_11": "Does he understand?",
+      "note_11": "Corrected 'He understand?' to 'Does he understand?'",
+      "revised_12": "Do you understand?",
+      "note_12": "Capitalized the first word of the subtitle."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "No one will come to pick you up"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Your letter",
+      "subtitle_2": "Thank you"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Your conscience told me that",
+      "subtitle_2": "I'm not your best love",
+      "subtitle_3": "Your best love is another woman",
+      "subtitle_4": "When I saw the thing left by her\nin your heart",
+      "subtitle_5": "I know that you came back not for me",
+      "subtitle_6": "but for her",
+      "subtitle_7": "This is God's order",
+      "subtitle_8": "It is also called fate"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Jing Jing's gone",
+      "subtitle_2": "I know",
+      "subtitle_3": "I've read the letter",
+      "subtitle_4": "Granpa Buddha",
+      "subtitle_5": "What's going on with her?",
+      "subtitle_6": "Have you read this letter?",
+      "subtitle_7": "No",
+      "subtitle_8": "You read it",
+      "subtitle_9": "Good",
+      "subtitle_10": "Wanna go?"
+    },
+    "answer": {
+      "revised_4": "Grandpa Buddha",
+      "note_4": "Corrected 'Granpa' to 'Grandpa'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "I know my sister Pak Jing Jing\nhas been here",
+      "subtitle_2": "Where is she now?",
+      "subtitle_3": "Speak up!",
+      "subtitle_4": "Does she owe you this much?",
+      "subtitle_5": "You don't let your sister go",
+      "subtitle_6": "Just tell me",
+      "subtitle_7": "I don't know",
+      "subtitle_8": "I don't know",
+      "subtitle_9": "it is heard that you're kind",
+      "subtitle_10": "They are your friends?",
+      "subtitle_11": "No!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Do you know?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Kill me if you must kill someone",
+      "subtitle_2": "They don't know your sister",
+      "subtitle_3": "All of them are innocent",
+      "subtitle_4": "I agree!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I admire bold people very much",
+      "subtitle_2": "If you're one of them",
+      "subtitle_3": "I can fulfill your desire!",
+      "subtitle_4": "Wait!",
+      "subtitle_5": "I really think that\nyou aren't scared of death!",
+      "subtitle_6": "I'm gonna die. Please do me a favor",
+      "subtitle_7": "I've heard that if you cut fast and\naccurately",
+      "subtitle_8": "the man got hurt won't die at once\nwhen he's cut open",
+      "subtitle_9": "He can still see",
+      "subtitle_10": "Help me, do it as fast as you can",
+      "subtitle_11": "Tear out my heart",
+      "subtitle_12": "Let you see it clearly",
+      "subtitle_13": "What are you talking about?",
+      "subtitle_14": "A friend of mind",
+      "subtitle_15": "left something in my heart",
+      "subtitle_16": "I want to know what's that"
+    },
+    "answer": {
+      "revised_8": "the man hurt won't die at once\nwhen he's cut open",
+      "note_8": "Removed the extra word 'got' from 'the man got hurt' to correct the typo.",
+      "revised_14": "A friend of mine",
+      "note_14": "Corrected 'mind' to 'mine'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "It's strange"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Humans and devils are born\nby their mothers",
+      "subtitle_2": "Different person acts as a different mom",
+      "subtitle_3": "A devil's mom is a devil's mom",
+      "subtitle_4": "I can take this"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "What's your name of your mom?",
+      "subtitle_2": "Kowtow to Heaven and Earth",
+      "subtitle_3": "Let's marry",
+      "subtitle_4": "Wait!",
+      "subtitle_5": "Look!",
+      "subtitle_6": "Now, she is the younger sister and\nshe'll save her elder sister",
+      "subtitle_7": "The elder sister\nwill save the younger sister",
+      "subtitle_8": "What do you want?",
+      "subtitle_9": "We're married today. Let my sister go",
+      "subtitle_10": "I won't break my promise"
+    },
+    "answer": {
+      "revised_1": "What's your mom's name?",
+      "note_1": "Reordered and corrected 'name of your mom' to 'mom's name'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "I don't want to fight anymore",
+      "subtitle_2": "You go!",
+      "subtitle_3": "I just have one sister in my life"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Sister",
+      "subtitle_2": "King Bull!",
+      "subtitle_3": "I won't let my sister marry you",
+      "subtitle_4": "Sister",
+      "subtitle_5": "What are you talking about?",
+      "subtitle_6": "I just have one sister in my whole life",
+      "subtitle_7": "Come on!",
+      "subtitle_8": "I'm right"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Faster than me",
+      "subtitle_2": "you're so great"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "It's time",
+      "subtitle_2": "Changing image"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Xiang Xiang?",
+      "subtitle_2": "I'm not your sister",
+      "subtitle_3": "Xiang Xiang, what are you doing?",
+      "subtitle_4": "Brother",
+      "subtitle_5": "Brother, my Changing Image Magic…",
+      "subtitle_6": "Xiang Xiang",
+      "subtitle_7": "Turn me into a dog",
+      "subtitle_8": "Who are you?",
+      "subtitle_9": "I'm Qingxia!",
+      "subtitle_10": "Sister…",
+      "subtitle_11": "I will kill you",
+      "subtitle_12": "Go to save Master!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Don't hit my sister!",
+      "subtitle_2": "Come to save us"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Kill that girl!",
+      "subtitle_2": "No!",
+      "subtitle_3": "It's you!…Go away!",
+      "subtitle_4": "I'll kill the one who block my way",
+      "subtitle_5": "Goddess",
+      "subtitle_6": "I'm about to understand your words",
+      "subtitle_7": "I use my eyes to see",
+      "subtitle_8": "When I'm dying",
+      "subtitle_9": "I use my heart to see this world",
+      "subtitle_10": "and all things",
+      "subtitle_11": "I see it clearly",
+      "subtitle_12": "That girl…",
+      "subtitle_13": "left a drop of tear in my heart",
+      "subtitle_14": "I felt",
+      "subtitle_15": "her sorrow",
+      "subtitle_16": "Have you given up",
+      "subtitle_17": "all things in human world?",
+      "subtitle_18": "Yes",
+      "subtitle_19": "Life and death",
+      "subtitle_20": "is minor",
+      "subtitle_21": "Great, great",
+      "subtitle_22": "Congratulations",
+      "subtitle_23": "Bro, what's up?",
+      "subtitle_24": "Come on, have a sit",
+      "subtitle_25": "Have a sit",
+      "subtitle_26": "It's unlucky that 3 friends of mine were\nget involved",
+      "subtitle_27": "It's none of their business!",
+      "subtitle_28": "But I don't understand",
+      "subtitle_29": "Why can human hatred lasts 10 years,\n50 years",
+      "subtitle_30": "and even 500 years?",
+      "subtitle_31": "What hatred is it?",
+      "subtitle_32": "So the Longevity Monk went to the west",
+      "subtitle_33": "and got scriptures",
+      "subtitle_34": "which clean our heart",
+      "subtitle_35": "Understand",
+      "subtitle_36": "I wanna stay. There are",
+      "subtitle_37": "many things waiting for me to do",
+      "subtitle_38": "You go to have your next lives\nas soon as possible!",
+      "subtitle_39": "Good!",
+      "subtitle_40": "You're slashed because of me",
+      "subtitle_41": "I hope I can pay you back in my next life",
+      "subtitle_42": "Pay back more",
+      "subtitle_43": "I can do what I can do, grapes",
+      "subtitle_44": "Goodbye",
+      "subtitle_45": "We're leaving"
+    },
+    "answer": {
+      "revised_4": "I'll kill the one who blocks my way",
+      "note_4": "Corrected 'block' to 'blocks'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "I wanna warn you again",
+      "subtitle_2": "After wearing the Gold Ring",
+      "subtitle_3": "you're no longer a normal human",
+      "subtitle_4": "You can't touch human desires anymore",
+      "subtitle_5": "If you do so",
+      "subtitle_6": "the Gold Ring will get smaller and smaller",
+      "subtitle_7": "It's very uncomfortable",
+      "subtitle_8": "Ok!",
+      "subtitle_9": "Before wearing this Ring",
+      "subtitle_10": "what do you wanna say?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I had my best love",
+      "subtitle_2": "But I don't treasure her",
+      "subtitle_3": "When I lost her, I felt regretful",
+      "subtitle_4": "It is the most painful thing in this world",
+      "subtitle_5": "If God can give me",
+      "subtitle_6": "another chance",
+      "subtitle_7": "I will say “I love you” to her!",
+      "subtitle_8": "If there is a time limit",
+      "subtitle_9": "I hope…it is 10 thousand years"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Kowtow",
+      "subtitle_2": "Kowtow"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Kowtow to the forefather,\ndrink wedding wine",
+      "subtitle_2": "Now you're a member of the Bull Family"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Colorful clouds…",
+      "subtitle_2": "Look like mashmallow",
+      "subtitle_3": "Really?"
+    },
+    "answer": {
+      "revised_2": "Look like marshmallow",
+      "note_2": "Corrected 'mashmallow' to 'marshmallow'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Be careful!",
+      "subtitle_2": "Thundering",
+      "subtitle_3": "It's raining, get the clothes"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Damn monkey, you flirt with my life"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Although we are friends",
+      "subtitle_2": "I'll indict you slander if you repeat again",
+      "subtitle_3": "Kill him"
+    },
+    "answer": {
+      "revised_2": "I'll indict you for slander if you repeat that again",
+      "note_2": "Corrected 'you slander' to 'you for slander' and added 'that' for the intended meaning."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Sorry!",
+      "subtitle_2": "This sneeze may make you disappointed"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Joker"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Are you satisfied this time?",
+      "subtitle_2": "Master",
+      "subtitle_3": "It's the Monkey King",
+      "subtitle_4": "I just thought it's a piece of cloud",
+      "subtitle_5": "Master, I committed many offences\nin the past",
+      "subtitle_6": "It's lucky that Goddess show a right road\nto me",
+      "subtitle_7": "Now I'm gonna worship Buddha\nwhole-heartedly",
+      "subtitle_8": "I won't feel reluctant to give up\nhuman desires",
+      "subtitle_9": "Master",
+      "subtitle_10": "I will take the responsibility",
+      "subtitle_11": "Great",
+      "subtitle_12": "You're now on the right road",
+      "subtitle_13": "Joker",
+      "subtitle_14": "Joker, you're here eventually",
+      "subtitle_15": "Miss!",
+      "subtitle_16": "I… know a friend called Joker",
+      "subtitle_17": "He ask me to tell Zixia Immortal\nsomething",
+      "subtitle_18": "Is it you ?",
+      "subtitle_19": "Joker",
+      "subtitle_20": "Stop!",
+      "subtitle_21": "I'm asking you, is it you?",
+      "subtitle_22": "Is it you?",
+      "subtitle_23": "Speak up",
+      "subtitle_24": "Yes",
+      "subtitle_25": "He said he had went back to the\nstarting point",
+      "subtitle_26": "And he hoped that",
+      "subtitle_27": "she would find her best love\nas soon as possible"
+    },
+    "answer": {
+      "revised_6": "It's lucky that the Goddess showed a right road\nto me",
+      "note_6": "Corrected 'Goddess show' to 'the Goddess showed'.",
+      "revised_17": "He asked me to tell Zixia Immortal\nsomething",
+      "note_17": "Corrected 'ask' to 'asked'.",
+      "revised_18": "Is it you?",
+      "note_18": "Removed the extra space before the question mark.",
+      "revised_25": "He said he had gone back to the\nstarting point",
+      "note_25": "Corrected 'had went' to 'had gone'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Don't kid me, Joker",
+      "subtitle_2": "Let me tell you again",
+      "subtitle_3": "I'm the Monkey…King",
+      "subtitle_4": "Don't make any mistake"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I'm gonna kill you today",
+      "subtitle_2": "Change!",
+      "subtitle_3": "Beat you to death, damn monkey"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Look out my fork"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I like barbecued chicken wing!",
+      "subtitle_2": "Use my fork to make\nbarbecued chicken wing?",
+      "subtitle_3": "I nearly forget it",
+      "subtitle_4": "I'm a vegetarian",
+      "subtitle_5": "Give me back!"
+    },
+    "answer": {
+      "revised_1": "I like barbecued chicken wings!",
+      "note_1": "Corrected 'wing' to 'wings'.",
+      "revised_2": "Use my fork to make\nbarbecued chicken wings?",
+      "note_2": "Corrected 'wing' to 'wings'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Is it funny! Tell me!",
+      "subtitle_2": "Tell me…",
+      "subtitle_3": "Why are you so quiet?",
+      "subtitle_4": "Help me",
+      "subtitle_5": "Sorry",
+      "subtitle_6": "I don't want you lose face in front of\nyour bros",
+      "subtitle_7": "Let me help you"
+    },
+    "answer": {
+      "revised_6": "I don't want you to lose face in front of\nyour bros",
+      "note_6": "Inserted 'to' after 'you' for correct grammar."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Give back to you"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Great! Look out",
+      "subtitle_2": "Super bugs"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I'm scared, so many bugs"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "It's lucky that I have many little monkeys"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Kill all the monkeys",
+      "subtitle_2": "Let him kill"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Are you the Monkey King ?",
+      "subtitle_2": "Will you go to the west to get scriptures?",
+      "subtitle_3": "bring me with you"
+    },
+    "answer": {
+      "revised_1": "Are you the Monkey King?",
+      "note_1": "Removed the extra space before the question mark."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Yes!",
+      "subtitle_2": "She can act as a whore",
+      "subtitle_3": "if she goes with me",
+      "subtitle_4": "That's great…",
+      "subtitle_5": "I can't take this anymore",
+      "subtitle_6": "Come here, hold me tight!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "You can't take me anymore",
+      "subtitle_2": "I can",
+      "subtitle_3": "I can't take you anymore",
+      "subtitle_4": "You're so ugly, we're immortals",
+      "subtitle_5": "please no more sexual harassment",
+      "subtitle_6": "Why did you do that to me?",
+      "subtitle_7": "Are you angry?",
+      "subtitle_8": "I would get angry!",
+      "subtitle_9": "Cry if you want"
+    },
+    "answer": {
+      "revised_5": "Please, no more sexual harassment",
+      "note_5": "Capitalized 'Please' and added a comma after it."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "I'll kill you all bastards"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Magic Fan"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Help me",
+      "subtitle_2": "So troublesome!",
+      "subtitle_3": "Master!",
+      "subtitle_4": "Monkey King, help me!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I can't believe that you do that to me",
+      "subtitle_2": "You two protect Master",
+      "subtitle_3": "I know"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Zixia, no"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "What are you doing?",
+      "subtitle_2": "Will you come?",
+      "subtitle_3": "Why are you so concerned about me?\nLet me die",
+      "subtitle_4": "I'm not concerned about out.",
+      "subtitle_5": "We'll treasure our lives",
+      "subtitle_6": "You are no immortals",
+      "subtitle_7": "Monkey King, you can't defeat me"
+    },
+    "answer": {
+      "revised_4": "I'm not concerned about you.",
+      "note_4": "Corrected 'out' to 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "What a wide ditch",
+      "subtitle_2": "It's coming!",
+      "subtitle_3": "stop kidding",
+      "subtitle_4": "Put the whole city to the side of the sun",
+      "subtitle_5": "Whom can you save now?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Don't bother me, you go to hell",
+      "subtitle_2": "Wait!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Lie to me again?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Damn monkey,\nhow dare you stop my attack!",
+      "subtitle_2": "Go!",
+      "subtitle_3": "Go back!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Shit, burning",
+      "subtitle_2": "Stupid!",
+      "subtitle_3": "Bitch! What do you want?",
+      "subtitle_4": "Stupid!",
+      "subtitle_5": "you're stupid!",
+      "subtitle_6": "You're not human",
+      "subtitle_7": "You're not human",
+      "subtitle_8": "Don't get mad",
+      "subtitle_9": "Do you understand what I've told you?",
+      "subtitle_10": "Do you know I'm not an immortal now?",
+      "subtitle_11": "I only understand one thing",
+      "subtitle_12": "Love means pain",
+      "subtitle_13": "Don't bullshit with me",
+      "subtitle_14": "You've mistaken me!",
+      "subtitle_15": "Where did you buy these gold rings?"
+    },
+    "answer": {
+      "revised_5": "You're stupid!",
+      "note_5": "Corrected capitalization of 'you're' at the start of the subtitle."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Be careful!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Master, look out!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "My lover is a hero",
+      "subtitle_2": "One day he'll come with a cloud,\ncome to me and marry me",
+      "subtitle_3": "I've guessed the start",
+      "subtitle_4": "But I haven't guessed the ending"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Master…",
+      "subtitle_2": "I want your life!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "It's very hot! You'll be a roast pig",
+      "subtitle_2": "It'll explode",
+      "subtitle_3": "We have to get the help of Pandora's Box",
+      "subtitle_4": "Go"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "The sun is coming, hurry up",
+      "subtitle_2": "Bring Master go",
+      "subtitle_3": "Hurry up!",
+      "subtitle_4": "Qingxia",
+      "subtitle_5": "My sister is not here",
+      "subtitle_6": "I think I should go back\nto be Buddha's lampwick again",
+      "subtitle_7": "Goodbye"
+    },
+    "answer": {
+      "revised_2": "Bring Master, go",
+      "note_2": "Added a comma after 'Master' for correct punctuation."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Big Brother, you get up so early!",
+      "subtitle_2": "What's happened?",
+      "subtitle_3": "Big Brother, you've forgot it",
+      "subtitle_4": "I met a storm last night",
+      "subtitle_5": "You brought me here!",
+      "subtitle_6": "Go!",
+      "subtitle_7": "Master, where are we going now?",
+      "subtitle_8": "India",
+      "subtitle_9": "Why does Master speak in this way?",
+      "subtitle_10": "Master is a clear cut guy. Let's go",
+      "subtitle_11": "Master, walk slowly please"
+    },
+    "answer": {
+      "revised_3": "Big Brother, you've forgotten it",
+      "note_3": "Corrected 'forgot' to 'forgotten'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Bro, be careful!",
+      "subtitle_2": "Thanks!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "It is said that this was the Waterfall Cave\n500 years ago",
+      "subtitle_2": "It's the living place of the Monkey King",
+      "subtitle_3": "since he's killed the King Bull",
+      "subtitle_4": "and saved the Longevity Monk",
+      "subtitle_5": "there are no devils in the world",
+      "subtitle_6": "After that, many people came here,\nfooling around",
+      "subtitle_7": "That guy put on a pig head",
+      "subtitle_8": "and say that he's Piggy",
+      "subtitle_9": "Bro",
+      "subtitle_10": "There is only make-upon your face",
+      "subtitle_11": "Please be more professional",
+      "subtitle_12": "Look at your hair",
+      "subtitle_13": "There are two cakes on your head",
+      "subtitle_14": "You should pay more money to make\nyourself up",
+      "subtitle_15": "What's up?",
+      "subtitle_16": "Your image is really disgusting",
+      "subtitle_17": "Don't angry at me,\nI'm always an honest guy",
+      "subtitle_18": "I won't get angry",
+      "subtitle_19": "Cut me if you like",
+      "subtitle_20": "You son of bitch!\nDo you think I daren't do so?",
+      "subtitle_21": "Thanks"
+    },
+    "answer": {
+      "revised_10": "There is only make-up on your face",
+      "note_10": "Corrected 'make-upon' to 'make-up on'.",
+      "revised_17": "Don't be angry at me,\nI'm always an honest guy",
+      "note_17": "Corrected 'Don't angry' to 'Don't be angry'.",
+      "revised_20": "You son of a bitch!\nDo you think I daren't do so?",
+      "note_20": "Added 'a' in 'son of a bitch'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "This is really sage"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Big Bro",
+      "subtitle_2": "Bro, let's go"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Buddha Cave",
+      "subtitle_2": "Fine, thanks"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Thanks…",
+      "subtitle_2": "Big Bro, what are you looking at?",
+      "subtitle_3": "Both girls who know Piggy",
+      "subtitle_4": "Who?",
+      "subtitle_5": "Beancurd Beauty",
+      "subtitle_6": "It is heard that",
+      "subtitle_7": "they sell beancurds",
+      "subtitle_8": "They have earned much money",
+      "subtitle_9": "for their husbands to attend\nthe civil service exam"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "The Highest Graduate"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "Mei!",
+      "subtitle_2": "Congratulations!",
+      "subtitle_3": "You husband has become\nthe Highest Graduates of the exam",
+      "subtitle_4": "Go to welcome him",
+      "subtitle_5": "Honey",
+      "subtitle_6": "Honey Honey",
+      "subtitle_7": "Go away, no one of your business",
+      "subtitle_8": "Honey, Ah",
+      "subtitle_9": "You work so hard in making beancurds",
+      "subtitle_10": "You work so hard in making beancurd",
+      "subtitle_11": "Honey",
+      "subtitle_12": "Honey",
+      "subtitle_13": "I know how to make beancurds, too",
+      "subtitle_14": "Go!",
+      "subtitle_15": "Go!"
+    },
+    "answer": {
+      "revised_3": "Your husband has become\nthe Highest Graduates of the exam",
+      "note_3": "Corrected 'You' to 'Your'.",
+      "revised_7": "Go away, none of your business",
+      "note_7": "Corrected 'no one of your business' to 'none of your business'.",
+      "revised_9": "You work so hard in making beancurd",
+      "note_9": "Corrected 'beancurds' to 'beancurd'.",
+      "revised_13": "I know how to make beancurd, too",
+      "note_13": "Corrected 'beancurds' to 'beancurd'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "Blow the ball",
+      "subtitle_2": "I blow the ball up",
+      "subtitle_3": "Blow the ball up and up",
+      "subtitle_4": "Come here!",
+      "subtitle_5": "It's crowded!",
+      "subtitle_6": "Monkey King",
+      "subtitle_7": "Master",
+      "subtitle_8": "Have a look",
+      "subtitle_9": "Ok!"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "They've stood there for 3 days",
+      "subtitle_2": "They didn't",
+      "subtitle_3": "Look, devil"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "I think I shouldn't come",
+      "subtitle_2": "It's too late",
+      "subtitle_3": "Leave some memories, Ok?",
+      "subtitle_4": "I don't need memory",
+      "subtitle_5": "I want you",
+      "subtitle_6": "You can just get my body",
+      "subtitle_7": "instead of my spirit",
+      "subtitle_8": "I've got a lover already",
+      "subtitle_9": "We won't have godd result",
+      "subtitle_10": "Let go of me",
+      "subtitle_11": "I'll let you go",
+      "subtitle_12": "But you have to kiss me\nbefore you've left",
+      "subtitle_13": "Have a kiss…",
+      "subtitle_14": "Kiss…",
+      "subtitle_15": "I'm just a powerless warrior",
+      "subtitle_16": "If kiss you",
+      "subtitle_17": "my image will be ruined",
+      "subtitle_18": "You're lying",
+      "subtitle_19": "You daren't kiss me",
+      "subtitle_20": "Because you still love me",
+      "subtitle_21": "I'm telling you",
+      "subtitle_22": "If you reject me",
+      "subtitle_23": "you'll regret for you whole life",
+      "subtitle_24": "I won't kiss you even if I regret",
+      "subtitle_25": "It's fate"
+    },
+    "answer": {
+      "revised_9": "We won't have good result",
+      "note_9": "Corrected 'godd' to 'good'.",
+      "revised_23": "you'll regret it for your whole life",
+      "note_23": "Corrected 'regret for you whole life' to 'regret it for your whole life'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "subtitle_1": "I will stay here for my whole life",
+      "subtitle_2": "I love you"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "subtitle_1": "What's up?",
+      "subtitle_2": "That guy looks strange",
+      "subtitle_3": "I know",
+      "subtitle_4": "He looks like a dog!"
+    },
+    "answer": {}
+  }
+]

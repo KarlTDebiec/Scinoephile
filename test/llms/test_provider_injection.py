@@ -120,6 +120,88 @@ def test_queryer_requires_injected_provider():
         queryer_cls()
 
 
+def test_queryer_includes_additional_context_before_few_shot_prompt():
+    """Test queryer includes additional context before few-shot examples."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"output":"done"}'
+    queryer_cls = Queryer.get_queryer_cls(_Prompt)
+    prompt_test_case = _TestCase(
+        query=_Query(text="example"),
+        answer=_Answer(output="example output"),
+        prompt=True,
+    )
+    queryer = queryer_cls(
+        additional_context="Use canonical names.",
+        prompt_test_cases=[prompt_test_case],
+        provider=provider,
+        max_attempts=1,
+    )
+
+    test_case = _TestCase(query=_Query(text="input"))
+    queryer(test_case)
+
+    messages = provider.chat_completion.call_args.args[0]
+    system_message = messages[0]["content"]
+    assert "Additional context:\nUse canonical names." in system_message
+    assert system_message.index("Additional context:") < system_message.index(
+        _Prompt.few_shot_intro
+    )
+
+
+def test_queryer_preserves_existing_encountered_test_case_metadata():
+    """Test queryer preserves existing prompt and verified metadata."""
+    provider = Mock(spec=LLMProvider)
+    queryer_cls = Queryer.get_queryer_cls(_Prompt)
+    queryer = queryer_cls(provider=provider)
+    test_case = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="done"),
+        prompt=True,
+        verified=True,
+    )
+
+    queryer.log_encountered_test_case(test_case)
+
+    encountered_test_case = queryer.encountered_test_cases[test_case.query.key]
+    assert encountered_test_case.prompt is True
+    assert encountered_test_case.verified is True
+
+
+def test_queryer_clears_stale_verified_metadata_after_generating_answer():
+    """Test queryer clears stale verified metadata after generating an answer."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"output":"new"}'
+    queryer_cls = Queryer.get_queryer_cls(_Prompt)
+    queryer = queryer_cls(provider=provider, max_attempts=1)
+    test_case = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="old"),
+        prompt=True,
+        verified=True,
+    )
+
+    output_test_case = queryer(test_case)
+
+    assert output_test_case.answer is not None
+    assert output_test_case.answer.output == "new"
+    assert output_test_case.prompt is True
+    assert output_test_case.verified is False
+
+
+def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
+    """Test queryer preserves auto-verified encountered test cases."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"output":"done"}'
+    monkeypatch.setattr(_TestCase, "get_auto_verified", lambda self: True)
+    queryer_cls = Queryer.get_queryer_cls(_Prompt)
+    queryer = queryer_cls(provider=provider, max_attempts=1, auto_verify=True)
+
+    test_case = queryer(_TestCase(query=_Query(text="input")))
+
+    encountered_test_case = queryer.encountered_test_cases[test_case.query.key]
+    assert encountered_test_case.verified is True
+
+
 def test_processor_passes_injected_provider_to_queryer():
     """Test processor wires injected providers into its queryer."""
     provider = Mock(spec=LLMProvider)

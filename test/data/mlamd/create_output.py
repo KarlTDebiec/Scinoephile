@@ -9,12 +9,17 @@ from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
+)
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    get_yue_gapped_translated_vs_zho,
+    get_yue_vs_zho_gapped_translator,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     get_yue_line_reviewed_vs_zho,
@@ -25,16 +30,12 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
-from scinoephile.multilang.yue_zho.translation import (
-    get_yue_translated_vs_zho,
-    get_yue_vs_zho_translator,
-)
 from test.data.mlamd import (
     get_mlamd_yue_deliniation_test_cases,
     get_mlamd_yue_punctuation_test_cases,
 )
-from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
-from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
+from test.data.ocr import process_ocr
+from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -47,43 +48,25 @@ zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 yue_hans_transcribe_path = output_path / "yue-Hans_transcribe"
 
 actions = {
-    # "繁體中文 (OCR)",
-    # "简体中文 (OCR)",
-    # "English (OCR)",
-    # "Bilingual 简体中文 and English",
-    "Bilingual 简体粤文 and English",
-    # "简体粤文 (Transcription)",
+    "eng_ocr",
+    "zho-Hans_ocr",
+    "zho-Hant_ocr",
+    # "zho-Hans_eng",
+    # "yue-Hans_eng",
+    # "yue-Hans_transcribe",
 }
 
-if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(
-        title_root,
-        input_path / "zho-Hant_ocr/source.sup",
-        overwrite_srt=True,
-        force_validation=True,
-    )
-if "简体中文 (OCR)" in actions:
-    process_zho_hans_ocr(
-        title_root,
-        input_path / "zho-Hans_ocr/source.sup",
-        overwrite_srt=True,
-        force_validation=True,
-    )
-if "English (OCR)" in actions:
-    process_eng_ocr(
-        title_root,
-        input_path / "eng_ocr/source.sup",
-        overwrite_srt=True,
-        force_validation=True,
-    )
-if "Bilingual 简体中文 and English" in actions:
-    process_zho_hans_eng(
-        title_root,
-        zho_hans_path=zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        eng_path=eng_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        overwrite=True,
-    )
-if "简体粤文 (Transcription)" in actions:
+if "eng_ocr" in actions:
+    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
+if "zho-Hans_ocr" in actions:
+    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
+if "zho-Hant_ocr" in actions:
+    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
+if "zho-Hans_eng" in actions:
+    zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
+if "yue-Hans_transcribe" in actions:
     # Stage
     zho_hans = Series.load(zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt")
     if (
@@ -129,15 +112,15 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_line_reviewed.save(outfile_path)
 
     # Translate
-    translator = get_yue_vs_zho_translator(
+    translator = get_yue_vs_zho_gapped_translator(
         test_case_path=yue_hans_transcribe_path
         / "multilang"
         / "yue_zho"
-        / "translation"
+        / "gap_translation"
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_review_translate = get_yue_translated_vs_zho(
+    yue_hans_review_translate = get_yue_gapped_translated_vs_zho(
         yue_hans_line_reviewed, zho_hans, translator=translator
     )
     outfile_path = yue_hans_transcribe_path / "transcribe_review_translate.srt"
@@ -159,11 +142,9 @@ if "简体粤文 (Transcription)" in actions:
         yue_hans_transcribe_path / "transcribe_review_translate_block_review.srt"
     )
     yue_hans_review_translate_block_review.save(outfile_path)
-if "Bilingual 简体粤文 and English" in actions:
-    process_yue_hans_eng(
-        title_root,
-        yue_hans_path=yue_hans_transcribe_path
-        / "transcribe_review_translate_block_review.srt",
-        eng_path=eng_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        overwrite=True,
+if "yue-Hans_eng" in actions:
+    yue_hans_path = (
+        yue_hans_transcribe_path / "transcribe_review_translate_block_review.srt"
     )
+    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)

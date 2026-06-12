@@ -18,12 +18,7 @@ from scinoephile.audio.subtitles import (
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import (
-    Answer,
-    Query,
-    Queryer,
-    TestCase,
-)
+from scinoephile.core.llms import Answer, Query, Queryer, TestCase
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
@@ -31,10 +26,8 @@ from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
 from .alignment import Alignment
-from .deliniation import (
-    YueVsZhoYueHansDeliniationPrompt as YueZhoHansDelineationPrompt,
-)
-from .punctuation import YueVsZhoYueHansPunctuationPrompt
+from .deliniation import YueDeliniationVsZhoPromptYueHans
+from .punctuation import YuePunctuationVsZhoPromptYueHans
 
 __all__ = ["Aligner"]
 
@@ -131,7 +124,7 @@ class Aligner:
                 message = "Delineation query returned no answer."
                 logger.error(message)
                 raise ScinoephileError(message)
-            prompt_cls: type[YueZhoHansDelineationPrompt] = getattr(
+            prompt_cls: type[YueDeliniationVsZhoPromptYueHans] = getattr(
                 test_case, "prompt_cls"
             )
             yuewen_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, None)
@@ -177,7 +170,9 @@ class Aligner:
         sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get written Cantonese
-        prompt_cls: type[YueZhoHansDelineationPrompt] = getattr(query, "prompt_cls")
+        prompt_cls: type[YueDeliniationVsZhoPromptYueHans] = getattr(
+            query, "prompt_cls"
+        )
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
         yw_1 = getattr(query, prompt_cls.src_2_sub_1, "")
@@ -330,7 +325,7 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            prompt_cls: type[YueVsZhoYueHansPunctuationPrompt] = getattr(
+            prompt_cls: type[YuePunctuationVsZhoPromptYueHans] = getattr(
                 test_case, "prompt_cls"
             )
             yuewen_punctuated = getattr(test_case.answer, prompt_cls.output, None)

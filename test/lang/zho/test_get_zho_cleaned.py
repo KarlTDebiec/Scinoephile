@@ -4,10 +4,9 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
+from scinoephile.lang.zho.cleaning import _get_zho_text_cleaned, get_zho_cleaned
+from test.helpers import assert_series_equal
 
 
 def _test_get_zho_cleaned(series: Series, expected: Series):
@@ -18,16 +17,14 @@ def _test_get_zho_cleaned(series: Series, expected: Series):
         expected: Expected output series
     """
     output = get_zho_cleaned(series, remove_empty=False)
+    assert_series_equal(output, expected)
 
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
 
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
+def test_get_zho_text_cleaned_removes_subtitle_markup():
+    """Test subtitle extraction markup is removed from standard Chinese text."""
+    text = '<font face="Monospace">{\\an7}中文\xa0測試</font>'
+
+    assert _get_zho_text_cleaned(text) == "中文 測試"
 
 
 def test_get_zho_cleaned_kob(

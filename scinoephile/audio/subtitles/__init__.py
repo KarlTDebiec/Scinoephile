@@ -1,6 +1,11 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Audio subtitle data structures and helpers."""
+"""Audio subtitle data structures and helpers.
+
+Package hierarchy (modules may import from any above):
+* subtitle
+* series
+"""
 
 from __future__ import annotations
 

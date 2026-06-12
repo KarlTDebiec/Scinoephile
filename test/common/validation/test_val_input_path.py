@@ -10,6 +10,7 @@ import pytest
 
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.validation import val_input_path
+from test.helpers import create_symlink_or_skip
 
 
 def test_val_input_path_valid(tmp_path: Path):
@@ -66,7 +67,7 @@ def test_val_input_path_resolves_symlink(tmp_path: Path):
     test_file.write_text("test content")
 
     symlink = tmp_path / "link.txt"
-    symlink.symlink_to(test_file)
+    create_symlink_or_skip(symlink, test_file)
 
     result = val_input_path(symlink)
     assert result == test_file.resolve()

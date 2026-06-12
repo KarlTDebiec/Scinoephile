@@ -15,17 +15,17 @@ from scinoephile.llms.default_test_cases import (
     ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.mono_n import MonoNManager, MonoNProcessor
+from scinoephile.llms.providers.registry import get_provider
 
-from .prompts import ZhoHansBlockReviewPrompt, ZhoHantBlockReviewPrompt
+from .prompts import BlockReviewPromptZhoHans, BlockReviewPromptZhoHant
 
 __all__ = [
     "ZHO_BLOCK_REVIEW_OPERATION_SPEC",
     "ZhoBlockReviewProcessKwargs",
     "ZhoBlockReviewProcessorKwargs",
-    "ZhoHansBlockReviewPrompt",
-    "ZhoHantBlockReviewPrompt",
+    "BlockReviewPromptZhoHans",
+    "BlockReviewPromptZhoHant",
     "get_zho_block_reviewed",
     "get_zho_reviewer",
 ]
@@ -33,39 +33,41 @@ __all__ = [
 ZHO_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="zho-block-review",
     test_case_table_name="test_cases__zho__block_review",
-    manager_cls=MonoBlockManager,
-    prompt_cls=ZhoHansBlockReviewPrompt,
+    manager_cls=MonoNManager,
+    prompt_cls=BlockReviewPromptZhoHans,
 )
 """Operation specification for standard Chinese block review."""
 
 
 class ZhoBlockReviewProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for MonoBlockProcessor.process."""
+    """Keyword arguments for MonoNProcessor.process."""
 
     stop_at_idx: int | None
     """Subtitle index at which to stop processing, inclusive."""
 
 
 class ZhoBlockReviewProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for MonoBlockProcessor initialization."""
+    """Keyword arguments for MonoNProcessor initialization."""
 
     test_case_path: Path | None
     """Path where encountered test cases are persisted."""
+    additional_context: str | None
+    """Additional context to include in the system prompt."""
     auto_verify: bool
     """Whether generated test cases should be marked verified automatically."""
 
 
 def get_zho_block_reviewed(
     series: Series,
-    processor: MonoBlockProcessor | None = None,
+    processor: MonoNProcessor | None = None,
     **kwargs: Unpack[ZhoBlockReviewProcessKwargs],
 ) -> Series:
     """Get standard Chinese series block reviewed.
 
     Arguments:
         series: Series to block review
-        processor: MonoBlockProcessor to use
-        **kwargs: additional keyword arguments for MonoBlockProcessor.process
+        processor: MonoNProcessor to use
+        **kwargs: additional keyword arguments for MonoNProcessor.process
     Returns:
         block-reviewed Series
     """
@@ -75,26 +77,26 @@ def get_zho_block_reviewed(
 
 
 def get_zho_reviewer(
-    prompt_cls: type[ZhoHansBlockReviewPrompt] = ZhoHansBlockReviewPrompt,
+    prompt_cls: type[BlockReviewPromptZhoHans] = BlockReviewPromptZhoHans,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ZhoBlockReviewProcessorKwargs],
-) -> MonoBlockProcessor:
-    """Get MonoBlockProcessor with provided configuration.
+) -> MonoNProcessor:
+    """Get MonoNProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
-        **kwargs: additional keyword arguments for MonoBlockProcessor
+        **kwargs: additional keyword arguments for MonoNProcessor
     Returns:
-        MonoBlockProcessor with provided configuration
+        MonoNProcessor with provided configuration
     """
     if test_cases is None:
-        if prompt_cls is ZhoHantBlockReviewPrompt:
+        if prompt_cls is BlockReviewPromptZhoHant:
             test_cases = list(
                 load_default_test_cases(
-                    MonoBlockManager,
+                    MonoNManager,
                     prompt_cls,
                     ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
                 )
@@ -102,14 +104,14 @@ def get_zho_reviewer(
         else:
             test_cases = list(
                 load_default_test_cases(
-                    MonoBlockManager,
+                    MonoNManager,
                     prompt_cls,
                     ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
                 )
             )
     if provider is None:
-        provider = get_default_provider()
-    return MonoBlockProcessor(
+        provider = get_provider()
+    return MonoNProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,

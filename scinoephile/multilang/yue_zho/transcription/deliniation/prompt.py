@@ -7,17 +7,17 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import EngPrompt
-from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.dual_pair import DualPairPrompt
+from scinoephile.lang.eng.prompts import PromptEng
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.llms.dual_2_to_2 import Dual2To2Prompt
 
 __all__ = [
-    "YueVsZhoYueHansDeliniationPrompt",
-    "YueVsZhoYueHantDeliniationPrompt",
+    "YueDeliniationVsZhoPromptYueHans",
+    "YueDeliniationVsZhoPromptYueHant",
 ]
 
 
-class YueVsZhoYueHansDeliniationPrompt(DualPairPrompt, EngPrompt):
+class YueDeliniationVsZhoPromptYueHans(Dual2To2Prompt, PromptEng):
     """Text for LLM correspondence for simplified written Cantonese deliniation."""
 
     # Prompt
@@ -107,7 +107,7 @@ class YueVsZhoYueHansDeliniationPrompt(DualPairPrompt, EngPrompt):
         )
 
 
-class YueVsZhoYueHantDeliniationPrompt(YueVsZhoYueHansDeliniationPrompt):
+class YueDeliniationVsZhoPromptYueHant(YueDeliniationVsZhoPromptYueHans):
     """Text for LLM correspondence for traditional written Cantonese deliniation."""
 
     opencc_config = OpenCCConfig.s2hk

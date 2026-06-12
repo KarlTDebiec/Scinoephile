@@ -12,29 +12,47 @@ dependencies = [
     "aiofiles>=25.1.0",
     "audioop-lts>=0.2.2",
     "beautifulsoup4>=4.14.3",
-    "demucs-infer>=4.1.2",
     "ffmpeg-python>=0.2.0",
     "hkscs-unicode-converter>=1.1.0",
     "jieba>=0.42.1",
     "numba>=0.65.1",
-    "numpy>=2.4.3",
-    "onnxruntime>=1.25.1",
-    "openai>=2.33.0",
-    "opencc>=1.3.0",
+    "numpy>=2.4.6",
+    "openai>=2.41.0",
+    "opencc>=1.3.1",
     "pillow>=12.1.1",
-    "pycantonese>=4.1.0",
-    "pydantic>=2.13.3",
+    "pycantonese>=5.0.0",
+    "pydantic>=2.13.4",
     "pydub>=0.25.1",
     "pypinyin>=0.55.0",
     "pysubs2>=1.8.1",
-    "requests>=2.33.1",
+    "requests>=2.34.2",
     "setuptools>=82.0.1",
-    "sqlalchemy>=2.0.49",
+    "sqlalchemy>=2.0.50",
+    "typing-extensions>=4.15.0",
+]
+
+[project.optional-dependencies]
+ocr = [
+    "chrome-lens-py>=3.4.5",
+    "paddleocr>=3.1.0",
+    "paddlepaddle>=3.3.1; (platform_machine == 'arm64' and sys_platform == 'darwin') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine == 'AMD64' and sys_platform == 'win32')",
+]
+ocr-cuda = [
+    "chrome-lens-py>=3.4.5",
+    "paddleocr>=3.1.0",
+    "paddlepaddle-gpu==3.2.2; platform_machine == 'AMD64' and sys_platform == 'win32'",
+]
+transcription = [
+    "demucs-infer>=4.1.2",
+    "huggingface-hub>=1.18.0",
+    "onnxruntime>=1.26.0",
     "torch>=2.10.0",
     "torchaudio>=2.10.0,<2.11.0",
-    "transformers>=5.7.0",
-    "typing-extensions>=4.15.0",
+    "transformers>=5.10.2",
     "whisper-timestamped>=1.15.9",
+]
+web = [
+    "flask>=3.1.3",
 ]
 
 [project.scripts]
@@ -42,11 +60,13 @@ scinoephile = "scinoephile.cli.scinoephile_cli:ScinoephileCli.main"
 
 [dependency-groups]
 dev = [
+    "flask>=3.1.3",
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
+    "pytest-github-actions-annotate-failures>=0.4.0",
     "pytest-xdist>=3.8.0",
-    "ruff>=0.15.12",
-    "ty>=0.0.34",
+    "ruff>=0.15.16",
+    "ty>=0.0.44",
 ]
 
 [tool.pytest.ini_options]
@@ -83,8 +103,35 @@ ignore = [
 [tool.ruff.lint.pydocstyle]
 convention = 'google'
 
+[tool.ty.analysis]
+allowed-unresolved-imports = [
+    "chrome_lens_py",
+    "chrome_lens_py.**",
+    "paddleocr",
+]
+
 [tool.setuptools]
+include-package-data = true
 packages = { find = { include = ["scinoephile*"] } }
+
+[tool.setuptools.package-data]
+scinoephile = [
+    "data/*.md",
+    "data/dictionaries/kaifangcidian/*.csv",
+    "data/dictionaries/unihan/*.txt",
+    "data/ocr/*.csv",
+    "data/ocr/*.txt",
+    "web/static/*.js",
+    "web/ocr_validation/templates/*.html",
+]
 
 [tool.uv]
 package = true
+
+[[tool.uv.index]]
+name = "paddlepaddle-cu126"
+url = "https://www.paddlepaddle.org.cn/packages/stable/cu126/"
+explicit = true
+
+[tool.uv.sources]
+paddlepaddle-gpu = { index = "paddlepaddle-cu126" }

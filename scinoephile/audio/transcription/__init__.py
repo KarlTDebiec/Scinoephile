@@ -1,13 +1,22 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to audio transcription."""
+"""Code related to audio transcription.
+
+Package hierarchy (modules may import from any above):
+* demucs_separator / transcribed_word
+* transcribed_segment
+* whisper_transcriber
+"""
 
 from __future__ import annotations
 
 from copy import deepcopy
 from logging import getLogger
 
-from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.lang.zho.script.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+)
 
 from .demucs_separator import DemucsSeparator
 from .transcribed_segment import TranscribedSegment
@@ -89,7 +98,11 @@ def get_segment_split_at_idx(
         tuple of two new segments created by splitting the original segment
     """
     if segment.words is None or len(segment.words) == 0:
-        message = "Cannot split segment without word timing data."
+        message = (
+            "Cannot split segment without word timing data: "
+            f"id={segment.id} start={segment.start} end={segment.end} "
+            f"text={segment.text!r} text_len={len(segment.text)}."
+        )
         logger.error(message)
         raise ValueError(message)
     if idx <= 0 or idx >= len(segment.text):
