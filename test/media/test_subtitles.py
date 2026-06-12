@@ -48,7 +48,10 @@ def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
     assert outfile_path.read_text(encoding="utf-8") == "cached subtitles"
     assert f"Created subtitle output directory: {outfile_path.parent}" in caplog.text
     cache.assert_called_once_with(
-        infile_path, [stream], cache_dir_path=tmp_path / "cache"
+        infile_path,
+        [stream],
+        cache_dir_path=tmp_path / "cache",
+        render_images=False,
     )
 
 
@@ -70,6 +73,7 @@ def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
         streams: list[SubtitleStream],
         *,
         cache_dir_path: Path | None = None,
+        render_images: bool = True,
     ):
         stream_path.parent.mkdir(parents=True)
         stream_path.write_text("new subtitles", encoding="utf-8")
@@ -87,7 +91,12 @@ def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
 
     assert extracted_path == outfile_path
     assert outfile_path.read_text(encoding="utf-8") == "new subtitles"
-    cache.assert_called_once_with(infile_path, [stream], cache_dir_path=cache_dir_path)
+    cache.assert_called_once_with(
+        infile_path,
+        [stream],
+        cache_dir_path=cache_dir_path,
+        render_images=False,
+    )
 
 
 def test_extract_subtitle_stream_rejects_unknown_codec(tmp_path: Path):
