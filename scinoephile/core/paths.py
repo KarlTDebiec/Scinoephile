@@ -26,16 +26,13 @@ def get_runtime_cache_dir_path(*parts: str, create: bool = True) -> Path:
     if configured_cache_dir_path := getenv("SCINOEPHILE_CACHE_DIR"):
         cache_root_path = Path(configured_cache_dir_path)
     elif system() == "Darwin":
-        cache_root_path = _get_home_cache_root_path("Library", "Caches")
+        cache_root_path = Path.home() / "Library/Caches"
     elif system() == "Windows":
-        if local_appdata := getenv("LOCALAPPDATA"):
-            cache_root_path = Path(local_appdata)
-        else:
-            cache_root_path = _get_home_cache_root_path("AppData", "Local")
+        cache_root_path = _get_windows_cache_root_path()
     elif xdg_cache_home := getenv("XDG_CACHE_HOME"):
         cache_root_path = Path(xdg_cache_home)
     else:
-        cache_root_path = _get_home_cache_root_path(".cache")
+        cache_root_path = Path.home() / ".cache"
 
     return val_output_dir_path(
         cache_root_path / "scinoephile" / Path(*parts),
@@ -43,15 +40,15 @@ def get_runtime_cache_dir_path(*parts: str, create: bool = True) -> Path:
     )
 
 
-def _get_home_cache_root_path(*parts: str) -> Path:
-    """Get a home-relative cache root path, falling back to temp if home is absent.
+def _get_windows_cache_root_path() -> Path:
+    """Get the Windows cache root path, falling back to temp if home is absent.
 
-    Arguments:
-        *parts: cache root components beneath the user home directory
     Returns:
         cache root path
     """
+    if local_appdata := getenv("LOCALAPPDATA"):
+        return Path(local_appdata)
     try:
-        return Path.home() / Path(*parts)
+        return Path.home() / "AppData/Local"
     except RuntimeError:
         return Path(gettempdir())
