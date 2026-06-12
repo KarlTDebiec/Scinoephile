@@ -12,25 +12,16 @@ from platform import system
 from shlex import split
 from unittest.mock import patch
 
-import pytest
-
 from .command_line_interface import CommandLineInterface
 
-__all__ = ["run_cli_with_args"]
+__all__ = [
+    "create_symlink_or_skip",
+    "echo_command",
+    "run_cli_with_args",
+]
 
 
-def run_cli_with_args(cli: type[CommandLineInterface], args: str = ""):
-    """Run CommandLineInterface as if from shell with provided args.
-
-    Arguments:
-        cli: CommandLineInterface to run
-        args: Arguments to pass
-    """
-    with patch.object(sys, "argv", [getfile(cli)] + _split_cli_args(args)):
-        cli.main()
-
-
-def _create_symlink(
+def create_symlink_or_skip(
     symlink_path: Path, target_path: Path, *, target_is_directory: bool = False
 ):
     """Create a symlink, skipping when Windows privileges do not allow it.
@@ -44,11 +35,13 @@ def _create_symlink(
         symlink_path.symlink_to(target_path, target_is_directory=target_is_directory)
     except OSError as exc:
         if getattr(exc, "winerror", None) == 1314:
+            import pytest  # noqa: PLC0415
+
             pytest.skip("Windows symlink privilege is not available")
         raise
 
 
-def _echo_command(*arguments: str) -> list[str]:
+def echo_command(*arguments: str) -> list[str]:
     """Build a portable command that echoes arguments without shell expansion.
 
     Arguments:
@@ -66,6 +59,17 @@ def _echo_command(*arguments: str) -> list[str]:
         ),
         *arguments,
     ]
+
+
+def run_cli_with_args(cli: type[CommandLineInterface], args: str = ""):
+    """Run CommandLineInterface as if from shell with provided args.
+
+    Arguments:
+        cli: CommandLineInterface to run
+        args: Arguments to pass
+    """
+    with patch.object(sys, "argv", [getfile(cli)] + _split_cli_args(args)):
+        cli.main()
 
 
 def _split_cli_args(args: str) -> list[str]:
