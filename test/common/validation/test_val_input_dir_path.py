@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from scinoephile.common.exceptions import DirectoryNotFoundError
+from scinoephile.common.testing import _create_symlink
 from scinoephile.common.validation import val_input_dir_path
 
 
@@ -161,21 +162,3 @@ def test_val_input_dir_path_expands_vars(
     result = val_input_dir_path("$TEST_DIR")
     assert result.exists()
     assert result.is_dir()
-
-
-def _create_symlink(
-    symlink_path: Path, target_path: Path, *, target_is_directory: bool = False
-):
-    """Create a symlink, skipping when Windows privileges do not allow it.
-
-    Arguments:
-        symlink_path: path at which to create the symlink
-        target_path: symlink target path
-        target_is_directory: whether the target is a directory
-    """
-    try:
-        symlink_path.symlink_to(target_path, target_is_directory=target_is_directory)
-    except OSError as exc:
-        if getattr(exc, "winerror", None) == 1314:
-            pytest.skip("Windows symlink privilege is not available")
-        raise
