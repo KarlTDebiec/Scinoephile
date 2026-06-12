@@ -67,10 +67,10 @@ def test_paddle_recognizer_caches_results_by_image(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 1
 
 
-def test_paddle_recognizer_uses_server_models(
+def test_paddle_recognizer_uses_server_models_and_disables_mkldnn_on_windows(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test PaddleOCR recognizer hardcodes PP-OCRv5 server models.
+    """Test PaddleOCR recognizer hardcodes server models and Windows MKL-DNN.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -91,12 +91,51 @@ def test_paddle_recognizer_uses_server_models(
     paddleocr = ModuleType("paddleocr")
     setattr(paddleocr, "PaddleOCR", FakePaddleOCR)
     monkeypatch.setitem(sys.modules, "paddleocr", paddleocr)
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.paddle.paddle_recognizer.system",
+        lambda: "Windows",
+    )
 
     PaddleRecognizer(language=Language.zho_hans)
 
     assert observed_kwargs["lang"] == "ch"
     assert observed_kwargs["text_detection_model_name"] == "PP-OCRv5_server_det"
     assert observed_kwargs["text_recognition_model_name"] == "PP-OCRv5_server_rec"
+    assert observed_kwargs["enable_mkldnn"] is False
+
+
+def test_paddle_recognizer_keeps_mkldnn_enabled_off_windows(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test PaddleOCR recognizer keeps MKL-DNN enabled off Windows.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    observed_kwargs = {}
+
+    class FakePaddleOCR:
+        """Fake PaddleOCR implementation."""
+
+        def __init__(self, **kwargs: str | bool):
+            """Initialize.
+
+            Arguments:
+                **kwargs: PaddleOCR keyword arguments
+            """
+            observed_kwargs.update(kwargs)
+
+    paddleocr = ModuleType("paddleocr")
+    setattr(paddleocr, "PaddleOCR", FakePaddleOCR)
+    monkeypatch.setitem(sys.modules, "paddleocr", paddleocr)
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.paddle.paddle_recognizer.system",
+        lambda: "Linux",
+    )
+
+    PaddleRecognizer(language=Language.zho_hans)
+
+    assert observed_kwargs["enable_mkldnn"] is True
 
 
 def test_paddle_recognizer_imports_paddleocr_only_when_needed():
