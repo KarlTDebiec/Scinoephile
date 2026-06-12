@@ -7,6 +7,7 @@ from __future__ import annotations
 from os import getenv
 from pathlib import Path
 from platform import system
+from tempfile import gettempdir
 
 from scinoephile.common.validation import val_output_dir_path
 
@@ -25,13 +26,32 @@ def get_runtime_cache_dir_path(*parts: str, create: bool = True) -> Path:
     if configured_cache_dir_path := getenv("SCINOEPHILE_CACHE_DIR"):
         cache_root_path = Path(configured_cache_dir_path)
     elif system() == "Darwin":
-        cache_root_path = Path.home() / "Library/Caches"
+        cache_root_path = _get_home_cache_root_path("Library", "Caches")
     elif system() == "Windows":
-        cache_root_path = Path(getenv("LOCALAPPDATA") or Path.home() / "AppData/Local")
+        if local_appdata := getenv("LOCALAPPDATA"):
+            cache_root_path = Path(local_appdata)
+        else:
+            cache_root_path = _get_home_cache_root_path("AppData", "Local")
+    elif xdg_cache_home := getenv("XDG_CACHE_HOME"):
+        cache_root_path = Path(xdg_cache_home)
     else:
-        cache_root_path = Path(getenv("XDG_CACHE_HOME") or Path.home() / ".cache")
+        cache_root_path = _get_home_cache_root_path(".cache")
 
     return val_output_dir_path(
         cache_root_path / "scinoephile" / Path(*parts),
         create=create,
     )
+
+
+def _get_home_cache_root_path(*parts: str) -> Path:
+    """Get a home-relative cache root path, falling back to temp if home is absent.
+
+    Arguments:
+        *parts: cache root components beneath the user home directory
+    Returns:
+        cache root path
+    """
+    try:
+        return Path.home() / Path(*parts)
+    except RuntimeError:
+        return Path(gettempdir())

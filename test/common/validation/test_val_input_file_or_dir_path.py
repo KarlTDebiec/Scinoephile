@@ -42,8 +42,26 @@ def test_val_input_file_or_dir_path_resolves_symlink(tmp_path: Path):
     file_path = tmp_path / "test.txt"
     file_path.write_text("test content")
     symlink_path = tmp_path / "link.txt"
-    symlink_path.symlink_to(file_path)
+    _create_symlink(symlink_path, file_path)
 
     result = val_input_file_or_dir_path(symlink_path)
 
     assert result == file_path.resolve()
+
+
+def _create_symlink(
+    symlink_path: Path, target_path: Path, *, target_is_directory: bool = False
+):
+    """Create a symlink, skipping when Windows privileges do not allow it.
+
+    Arguments:
+        symlink_path: path at which to create the symlink
+        target_path: symlink target path
+        target_is_directory: whether the target is a directory
+    """
+    try:
+        symlink_path.symlink_to(target_path, target_is_directory=target_is_directory)
+    except OSError as exc:
+        if getattr(exc, "winerror", None) == 1314:
+            pytest.skip("Windows symlink privilege is not available")
+        raise

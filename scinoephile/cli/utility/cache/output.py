@@ -29,7 +29,7 @@ def format_cache_entry(entry: CacheEntry) -> dict[str, Any]:
     """
     return {
         "namespace": entry.namespace,
-        "path": str(entry.relative_path),
+        "path": entry.relative_path.as_posix(),
         "size_bytes": entry.size_bytes,
         "file_count": entry.file_count,
         "modified_at": _format_datetime(entry.modified_at),

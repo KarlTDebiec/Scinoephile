@@ -14,7 +14,7 @@ from scinoephile.common.subprocess import run_command
 
 def test_run_command_success_list():
     """Test running a successful command with list format."""
-    exitcode, stdout, stderr = run_command(["echo", "Hello World"])
+    exitcode, stdout, stderr = run_command(_echo_command("Hello World"))
 
     assert exitcode == 0
     assert "Hello World" in stdout
@@ -23,7 +23,7 @@ def test_run_command_success_list():
 
 def test_run_command_with_arguments():
     """Test running a command with multiple arguments."""
-    exitcode, stdout, stderr = run_command(["echo", "arg1", "arg2", "arg3"])
+    exitcode, stdout, stderr = run_command(_echo_command("arg1", "arg2", "arg3"))
 
     assert exitcode == 0
     assert "arg1" in stdout
@@ -33,7 +33,7 @@ def test_run_command_with_arguments():
 
 def test_run_command_with_spaces():
     """Test running a command with arguments containing spaces."""
-    exitcode, stdout, stderr = run_command(["echo", "hello world"])
+    exitcode, stdout, stderr = run_command(_echo_command("hello world"))
 
     assert exitcode == 0
     assert "hello world" in stdout
@@ -42,7 +42,7 @@ def test_run_command_with_spaces():
 def test_run_command_with_special_chars():
     """Test running a command with special shell characters."""
     # Test with characters that would be problematic with shell=True
-    exitcode, stdout, stderr = run_command(["echo", "$HOME", "$(whoami)", "; ls"])
+    exitcode, stdout, stderr = run_command(_echo_command("$HOME", "$(whoami)", "; ls"))
 
     assert exitcode == 0
     # These should be printed literally, not expanded
@@ -59,19 +59,19 @@ def test_run_command_injection_prevention():
     being executed as shell commands.
     """
     # This would be dangerous with shell=True, but is safe now
-    exitcode, stdout, stderr = run_command(["echo", "test; rm -rf /"])
+    exitcode, stdout, stderr = run_command(_echo_command("test; rm -rf /"))
 
     assert exitcode == 0
     # The semicolon and rm command should be in the output as literal text
     assert "test; rm -rf /" in stdout
 
     # Test pipe character
-    exitcode, stdout, stderr = run_command(["echo", "test | cat /etc/passwd"])
+    exitcode, stdout, stderr = run_command(_echo_command("test | cat /etc/passwd"))
     assert exitcode == 0
     assert "test | cat /etc/passwd" in stdout
 
     # Test backticks
-    exitcode, stdout, stderr = run_command(["echo", "`whoami`"])
+    exitcode, stdout, stderr = run_command(_echo_command("`whoami`"))
     assert exitcode == 0
     assert "`whoami`" in stdout
 
@@ -79,7 +79,7 @@ def test_run_command_injection_prevention():
 def test_run_command_with_quotes():
     """Test running a command with quoted arguments."""
     exitcode, stdout, stderr = run_command(
-        ["echo", "'single quotes'", '"double quotes"']
+        _echo_command("'single quotes'", '"double quotes"')
     )
 
     assert exitcode == 0
@@ -131,7 +131,7 @@ def test_run_command_timeout():
 
 def test_run_command_unicode_output():
     """Test handling of unicode output."""
-    exitcode, stdout, stderr = run_command(["echo", "Hello 世界"])
+    exitcode, stdout, stderr = run_command(_echo_command("Hello 世界"))
 
     assert exitcode == 0
     assert "Hello" in stdout
@@ -163,3 +163,23 @@ def test_run_command_with_path():
 
     assert exitcode == 0
     assert "test" in stdout
+
+
+def _echo_command(*arguments: str) -> list[str]:
+    """Build a portable command that echoes arguments without shell expansion.
+
+    Arguments:
+        *arguments: arguments to echo
+    Returns:
+        command argument list
+    """
+    return [
+        sys.executable,
+        "-c",
+        (
+            "import sys; "
+            "sys.stdout.reconfigure(encoding='utf-8'); "
+            "print(' '.join(sys.argv[1:]))"
+        ),
+        *arguments,
+    ]
