@@ -10,6 +10,7 @@ from time import monotonic
 import pytest
 
 from scinoephile.common.subprocess import run_command
+from scinoephile.common.testing import _echo_command
 
 
 def test_run_command_success_list():
@@ -163,23 +164,3 @@ def test_run_command_with_path():
 
     assert exitcode == 0
     assert "test" in stdout
-
-
-def _echo_command(*arguments: str) -> list[str]:
-    """Build a portable command that echoes arguments without shell expansion.
-
-    Arguments:
-        *arguments: arguments to echo
-    Returns:
-        command argument list
-    """
-    return [
-        sys.executable,
-        "-c",
-        (
-            "import sys; "
-            "sys.stdout.reconfigure(encoding='utf-8'); "
-            "print(' '.join(sys.argv[1:]))"
-        ),
-        *arguments,
-    ]

@@ -27,6 +27,26 @@ def run_cli_with_args(cli: type[CommandLineInterface], args: str = ""):
         cli.main()
 
 
+def _echo_command(*arguments: str) -> list[str]:
+    """Build a portable command that echoes arguments without shell expansion.
+
+    Arguments:
+        *arguments: arguments to echo
+    Returns:
+        command argument list
+    """
+    return [
+        sys.executable,
+        "-c",
+        (
+            "import sys; "
+            "sys.stdout.reconfigure(encoding='utf-8'); "
+            "print(' '.join(sys.argv[1:]))"
+        ),
+        *arguments,
+    ]
+
+
 def _split_cli_args(args: str) -> list[str]:
     """Split command-line arguments using platform-appropriate rules.
 
