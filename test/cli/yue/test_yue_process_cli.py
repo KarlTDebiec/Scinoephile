@@ -72,7 +72,7 @@ def test_yue_process_cli_pipe(input_path: str, args: str, expected_path: str):
     """
     full_input_path = test_data_root / input_path
     full_expected_path = test_data_root / expected_path
-    input_text = full_input_path.read_text()
+    input_text = full_input_path.read_text(encoding="utf-8")
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()

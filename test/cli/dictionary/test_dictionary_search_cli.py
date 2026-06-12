@@ -8,7 +8,9 @@ from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from os import environ
 from pathlib import Path
+from platform import system
 from shlex import quote
+from subprocess import list2cmdline
 from unittest.mock import patch
 
 import pytest
@@ -162,7 +164,7 @@ def test_dictionary_search_cli(
                 f"--log-file {log_file_path} "
                 "--dictionary-name cuhk "
                 f"--database-path {database_path} "
-                f"--limit 3 {quote(query)}",
+                f"--limit 3 {_quote_cli_arg(query)}",
             )
         output = log_file_path.read_text(encoding="utf-8")
 
@@ -250,3 +252,16 @@ def test_dictionary_search_cli_prints_no_matches(
     output = capsys.readouterr().out
 
     assert output == "No matches found in cuhk for '冇呢個詞'.\n"
+
+
+def _quote_cli_arg(value: str) -> str:
+    """Quote one argument for the platform-specific test CLI splitter.
+
+    Arguments:
+        value: argument value to quote
+    Returns:
+        quoted argument
+    """
+    if system() == "Windows":
+        return list2cmdline([value])
+    return quote(value)

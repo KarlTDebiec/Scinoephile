@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from scinoephile.common.validation import val_input_file_or_dir_path
+from test.helpers import create_symlink_or_skip
 
 
 def test_val_input_file_or_dir_path_accepts_file(tmp_path: Path):
@@ -42,7 +43,7 @@ def test_val_input_file_or_dir_path_resolves_symlink(tmp_path: Path):
     file_path = tmp_path / "test.txt"
     file_path.write_text("test content")
     symlink_path = tmp_path / "link.txt"
-    symlink_path.symlink_to(file_path)
+    create_symlink_or_skip(symlink_path, file_path)
 
     result = val_input_file_or_dir_path(symlink_path)
 

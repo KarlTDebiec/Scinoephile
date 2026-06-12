@@ -422,7 +422,7 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
     )
     yuewen_audio_series = Mock(spec=AudioSeries)
     stdout_stream = StringIO()
-    stdin_stream = StringIO(zhongwen_infile_path.read_text())
+    stdin_stream = StringIO(zhongwen_infile_path.read_text(encoding="utf-8"))
 
     with patch("scinoephile.cli.helpers.io.stdin", stdin_stream):
         with patch(

@@ -11,11 +11,12 @@ from time import monotonic
 import pytest
 
 from scinoephile.common.subprocess import run_command_live
+from scinoephile.common.testing import echo_command
 
 
 def test_run_command_live_success_list():
     """Test running a successful command with live output using list format."""
-    exitcode, stdout, stderr = run_command_live(["echo", "Hello World"])
+    exitcode, stdout, stderr = run_command_live(echo_command("Hello World"))
 
     assert exitcode == 0
     assert "Hello World" in stdout
@@ -24,7 +25,7 @@ def test_run_command_live_success_list():
 
 def test_run_command_live_with_arguments():
     """Test running a command with multiple arguments."""
-    exitcode, stdout, stderr = run_command_live(["echo", "arg1", "arg2", "arg3"])
+    exitcode, stdout, stderr = run_command_live(echo_command("arg1", "arg2", "arg3"))
 
     assert exitcode == 0
     assert "arg1" in stdout
@@ -34,7 +35,7 @@ def test_run_command_live_with_arguments():
 
 def test_run_command_live_with_spaces():
     """Test running a command with arguments containing spaces."""
-    exitcode, stdout, stderr = run_command_live(["echo", "hello world"])
+    exitcode, stdout, stderr = run_command_live(echo_command("hello world"))
 
     assert exitcode == 0
     assert "hello world" in stdout
@@ -43,7 +44,9 @@ def test_run_command_live_with_spaces():
 def test_run_command_live_with_special_chars():
     """Test running a command with special shell characters."""
     # Test with characters that would be problematic with shell=True
-    exitcode, stdout, stderr = run_command_live(["echo", "$HOME", "$(whoami)", "; ls"])
+    exitcode, stdout, stderr = run_command_live(
+        echo_command("$HOME", "$(whoami)", "; ls")
+    )
 
     assert exitcode == 0
     # These should be printed literally, not expanded
@@ -60,19 +63,19 @@ def test_run_command_live_injection_prevention():
     being executed as shell commands.
     """
     # This would be dangerous with shell=True, but is safe now
-    exitcode, stdout, stderr = run_command_live(["echo", "test; rm -rf /"])
+    exitcode, stdout, stderr = run_command_live(echo_command("test; rm -rf /"))
 
     assert exitcode == 0
     # The semicolon and rm command should be in the output as literal text
     assert "test; rm -rf /" in stdout
 
     # Test pipe character
-    exitcode, stdout, stderr = run_command_live(["echo", "test | cat /etc/passwd"])
+    exitcode, stdout, stderr = run_command_live(echo_command("test | cat /etc/passwd"))
     assert exitcode == 0
     assert "test | cat /etc/passwd" in stdout
 
     # Test backticks
-    exitcode, stdout, stderr = run_command_live(["echo", "`whoami`"])
+    exitcode, stdout, stderr = run_command_live(echo_command("`whoami`"))
     assert exitcode == 0
     assert "`whoami`" in stdout
 
@@ -80,7 +83,7 @@ def test_run_command_live_injection_prevention():
 def test_run_command_live_with_quotes():
     """Test running a command with quoted arguments."""
     exitcode, stdout, stderr = run_command_live(
-        ["echo", "'single quotes'", '"double quotes"']
+        echo_command("'single quotes'", '"double quotes"')
     )
 
     assert exitcode == 0

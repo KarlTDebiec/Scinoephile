@@ -28,6 +28,7 @@ __all__ = [
     "assert_expected_warnings",
     "assert_series_equal",
     "build_subcommands",
+    "create_symlink_or_skip",
     "get_warning_messages",
     "get_usage_prefix",
     "parametrized_fixture",
@@ -113,6 +114,24 @@ def build_subcommands(cli: tuple[type[CommandLineInterface], ...]) -> str:
         subcommand string to append to the base CLI
     """
     return " ".join(f"{command.name()}" for command in cli[1:])
+
+
+def create_symlink_or_skip(
+    symlink_path: Path, target_path: Path, *, target_is_directory: bool = False
+):
+    """Create a symlink, skipping when Windows privileges do not allow it.
+
+    Arguments:
+        symlink_path: path at which to create the symlink
+        target_path: symlink target path
+        target_is_directory: whether the target is a directory
+    """
+    try:
+        symlink_path.symlink_to(target_path, target_is_directory=target_is_directory)
+    except OSError as exc:
+        if getattr(exc, "winerror", None) == 1314:
+            pytest.skip("Windows symlink privilege is not available")
+        raise
 
 
 def get_usage_prefix(cli: tuple[type[CommandLineInterface], ...]) -> str:

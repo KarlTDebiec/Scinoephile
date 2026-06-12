@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+import sys
 from logging import DEBUG, ERROR, INFO, WARNING, Formatter, StreamHandler, getLogger
+from typing import TextIO
 
 DEFAULT_LOG_FORMAT = "%(levelname)s: %(name)s: %(message)s"
 """Default format for log messages."""
@@ -45,7 +47,7 @@ def configure_logging(verbosity: int = 1, log_format: str | None = None):
     root_logger.handlers.clear()
 
     # Add console handler with formatter
-    console_handler = StreamHandler()
+    console_handler = StreamHandler(_get_unicode_safe_stderr())
     console_handler.setLevel(level)
     formatter = Formatter(log_format)
     console_handler.setFormatter(formatter)
@@ -61,3 +63,19 @@ def set_logging_verbosity(verbosity: int):
         verbosity: level of verbosity (0=ERROR, 1=WARNING, 2=INFO, 3+=DEBUG)
     """
     configure_logging(verbosity)
+
+
+def _get_unicode_safe_stderr() -> TextIO:
+    """Get stderr configured to tolerate messages outside the console code page.
+
+    Windows consoles may use legacy encodings such as cp1252, while CLI output can
+    include Chinese dictionary text or other Unicode characters. Replacing
+    unencodable characters prevents logging errors from interrupting CLI execution.
+
+    Returns:
+        standard error stream
+    """
+    reconfigure = getattr(sys.stderr, "reconfigure", None)
+    if callable(reconfigure):
+        reconfigure(errors="backslashreplace")
+    return sys.stderr
