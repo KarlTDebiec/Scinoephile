@@ -68,6 +68,10 @@ def set_logging_verbosity(verbosity: int):
 def _get_unicode_safe_stderr() -> TextIO:
     """Get stderr configured to tolerate messages outside the console code page.
 
+    Windows consoles may use legacy encodings such as cp1252, while CLI output can
+    include Chinese dictionary text or other Unicode characters. Replacing
+    unencodable characters prevents logging errors from interrupting CLI execution.
+
     Returns:
         standard error stream
     """
