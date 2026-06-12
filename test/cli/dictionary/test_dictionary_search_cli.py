@@ -7,8 +7,8 @@ from __future__ import annotations
 from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from os import environ
-from os import name as os_name
 from pathlib import Path
+from platform import system
 from shlex import quote
 from subprocess import list2cmdline
 from unittest.mock import patch
@@ -262,6 +262,6 @@ def _quote_cli_arg(value: str) -> str:
     Returns:
         quoted argument
     """
-    if os_name == "nt":
+    if system() == "Windows":
         return list2cmdline([value])
     return quote(value)

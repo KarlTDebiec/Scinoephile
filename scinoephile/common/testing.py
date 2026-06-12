@@ -7,7 +7,7 @@ from __future__ import annotations
 import sys
 from ctypes import POINTER, byref, c_int, c_void_p, c_wchar_p
 from inspect import getfile
-from os import name as os_name
+from platform import system
 from shlex import split
 from unittest.mock import patch
 
@@ -38,7 +38,7 @@ def _split_cli_args(args: str) -> list[str]:
     args = args.strip()
     if not args:
         return []
-    if os_name != "nt":
+    if system() != "Windows":
         return split(args)
 
     from ctypes import WinDLL  # noqa: PLC0415
