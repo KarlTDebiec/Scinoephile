@@ -200,7 +200,9 @@ class MonoNManager(Manager):
             )
             if output_text != "":
                 if input_text == output_text:
-                    raise ValueError(prompt_cls.output_unmodified_err(idx + 1))
+                    setattr(model.answer, prompt_cls.output(idx + 1), "")
+                    setattr(model.answer, prompt_cls.note(idx + 1), "")
+                    continue
                 if note == "":
                     raise ValueError(prompt_cls.note_missing_err(idx + 1))
             elif note != "":
