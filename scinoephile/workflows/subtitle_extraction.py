@@ -438,7 +438,7 @@ def _try_extract_sup_image_series(
             output_dir_path,
             overwrite=overwrite,
         )
-    except (OSError, RuntimeError, ValueError) as exc:
+    except (OSError, RuntimeError, ScinoephileError, ValueError) as exc:
         logger.warning(
             f"Could not export SUP image series for stream #{stream.index}: {exc}"
         )

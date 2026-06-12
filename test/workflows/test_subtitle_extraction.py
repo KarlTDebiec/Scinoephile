@@ -417,7 +417,10 @@ def test_extract_subtitles_warns_when_sup_image_export_fails(
         patch("scinoephile.workflows.subtitle_extraction.copy2"),
         patch(
             "scinoephile.workflows.subtitle_extraction.ImageSeries.load",
-            side_effect=ValueError("SUP segment data is truncated."),
+            side_effect=ScinoephileError(
+                "Unable to load ImageSeries from eng-10.sup: "
+                "SUP segment data is truncated."
+            ),
         ),
     ):
         result = extract_subtitles(
