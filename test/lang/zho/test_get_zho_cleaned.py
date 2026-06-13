@@ -4,20 +4,10 @@
 
 from __future__ import annotations
 
-from scinoephile.core.subtitles import Series
+import pytest
+
 from scinoephile.lang.zho.cleaning import _get_zho_text_cleaned, get_zho_cleaned
 from test.helpers import assert_series_equal
-
-
-def _test_get_zho_cleaned(series: Series, expected: Series):
-    """Test get_zho_cleaned.
-
-    Arguments:
-        series: Series with which to test
-        expected: Expected output series
-    """
-    output = get_zho_cleaned(series, remove_empty=False)
-    assert_series_equal(output, expected)
 
 
 def test_get_zho_text_cleaned_removes_subtitle_markup():
@@ -27,57 +17,29 @@ def test_get_zho_text_cleaned_removes_subtitle_markup():
     assert _get_zho_text_cleaned(text) == "中文 測試"
 
 
-def test_get_zho_cleaned_kob(
-    kob_zho_hant_ocr_fuse: Series,
-    kob_zho_hant_ocr_fuse_clean: Series,
+@pytest.mark.parametrize(
+    ("series_fixture", "expected_fixture"),
+    [
+        ("kob_zho_hant_ocr_fuse", "kob_zho_hant_ocr_fuse_clean"),
+        ("mlamd_zho_hans_fuse", "mlamd_zho_hans_fuse_clean"),
+        ("mnt_zho_hans_fuse", "mnt_zho_hans_fuse_clean"),
+        ("t_zho_hans_fuse", "t_zho_hans_fuse_clean"),
+    ],
+)
+def test_get_zho_cleaned(
+    request: pytest.FixtureRequest,
+    series_fixture: str,
+    expected_fixture: str,
 ):
-    """Test get_zho_cleaned with KOB traditional standard Chinese subtitles.
+    """Test get_zho_cleaned against expected cleaned outputs.
 
     Arguments:
-        kob_zho_hant_ocr_fuse: KOB traditional standard Chinese series fixture
-        kob_zho_hant_ocr_fuse_clean: Expected cleaned KOB traditional standard
-          Chinese series fixture
+        request: pytest request for fixture lookup
+        series_fixture: fixture name for input series
+        expected_fixture: fixture name for expected output series
     """
-    _test_get_zho_cleaned(kob_zho_hant_ocr_fuse, kob_zho_hant_ocr_fuse_clean)
-
-
-def test_get_zho_cleaned_mlamd(
-    mlamd_zho_hans_fuse: Series,
-    mlamd_zho_hans_fuse_clean: Series,
-):
-    """Test get_zho_cleaned with MLAMD simplified standard Chinese subtitles.
-
-    Arguments:
-        mlamd_zho_hans_fuse: MLAMD simplified standard Chinese series fixture
-        mlamd_zho_hans_fuse_clean: Expected cleaned MLAMD simplified standard
-          Chinese series fixture
-    """
-    _test_get_zho_cleaned(mlamd_zho_hans_fuse, mlamd_zho_hans_fuse_clean)
-
-
-def test_get_zho_cleaned_mnt(
-    mnt_zho_hans_fuse: Series,
-    mnt_zho_hans_fuse_clean: Series,
-):
-    """Test get_zho_cleaned with MNT simplified standard Chinese subtitles.
-
-    Arguments:
-        mnt_zho_hans_fuse: MNT simplified standard Chinese series fixture
-        mnt_zho_hans_fuse_clean: Expected cleaned MNT simplified standard Chinese
-          series fixture
-    """
-    _test_get_zho_cleaned(mnt_zho_hans_fuse, mnt_zho_hans_fuse_clean)
-
-
-def test_get_zho_cleaned_t(
-    t_zho_hans_fuse: Series,
-    t_zho_hans_fuse_clean: Series,
-):
-    """Test get_zho_cleaned with T simplified standard Chinese subtitles.
-
-    Arguments:
-        t_zho_hans_fuse: T simplified standard Chinese series fixture
-        t_zho_hans_fuse_clean: Expected cleaned T simplified standard Chinese
-          series fixture
-    """
-    _test_get_zho_cleaned(t_zho_hans_fuse, t_zho_hans_fuse_clean)
+    output = get_zho_cleaned(
+        request.getfixturevalue(series_fixture),
+        remove_empty=False,
+    )
+    assert_series_equal(output, request.getfixturevalue(expected_fixture))

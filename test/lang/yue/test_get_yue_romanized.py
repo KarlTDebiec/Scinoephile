@@ -6,23 +6,11 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core.subtitles import Series
 from scinoephile.lang.yue.romanization import (
     get_yue_romanized,
     get_yue_text_romanized,
 )
 from test.helpers import assert_series_equal
-
-
-def _test_get_yue_romanized(series: Series, expected: Series):
-    """Test get_yue_romanized.
-
-    Arguments:
-        series: Series with which to test
-        expected: Expected output series
-    """
-    output = get_yue_romanized(series, append=True)
-    assert_series_equal(output, expected)
 
 
 @pytest.mark.parametrize(
@@ -34,7 +22,7 @@ def _test_get_yue_romanized(series: Series, expected: Series):
         ),
     ],
 )
-def test_get_yue_romanized_titles(
+def test_get_yue_romanized(
     request: pytest.FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
@@ -46,10 +34,11 @@ def test_get_yue_romanized_titles(
         series_fixture: Fixture name for input series
         expected_fixture: Fixture name for expected output series
     """
-    _test_get_yue_romanized(
+    output = get_yue_romanized(
         request.getfixturevalue(series_fixture),
-        request.getfixturevalue(expected_fixture),
+        append=True,
     )
+    assert_series_equal(output, request.getfixturevalue(expected_fixture))
 
 
 @pytest.mark.parametrize(

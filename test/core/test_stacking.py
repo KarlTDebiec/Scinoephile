@@ -16,18 +16,6 @@ from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import assert_series_equal
 
 
-def _test_get_stacked_series(one: Series, two: Series, expected: Series):
-    """Test get_stacked_series.
-
-    Arguments:
-        one: subtitles series one
-        two: subtitles series two
-        expected: expected output series
-    """
-    output = get_stacked_series(one, two)
-    assert_series_equal(output, expected)
-
-
 def test_get_stacked_series_does_not_overlap_union_timing():
     """Test stack never emits overlapping subtitles when inputs do not overlap."""
     one = Series(
@@ -144,61 +132,42 @@ def test_get_stacked_series_overlap_error_includes_event_context():
         get_stacked_series_from_groups(one, Series(), [([0], []), ([1], [])])
 
 
-def test_get_stacked_series_kob(
-    kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review: Series,
-    kob_eng_ocr_fuse_clean_validate_review_flatten: Series,
-    kob_zho_hans_eng: Series,
+@pytest.mark.parametrize(
+    ("one_fixture", "two_fixture", "expected_fixture"),
+    [
+        (
+            "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
+            "kob_eng_ocr_fuse_clean_validate_review_flatten",
+            "kob_zho_hans_eng",
+        ),
+        (
+            "mlamd_zho_hans_fuse_clean_validate_review_flatten",
+            "mlamd_eng_fuse_clean_validate_review_flatten",
+            "mlamd_zho_hans_eng",
+        ),
+        (
+            "t_zho_hans_fuse_clean_validate_review_flatten",
+            "t_eng_fuse_clean_validate_review_flatten",
+            "t_zho_hans_eng",
+        ),
+    ],
+)
+def test_get_stacked_series(
+    request: pytest.FixtureRequest,
+    one_fixture: str,
+    two_fixture: str,
+    expected_fixture: str,
 ):
-    """Test get_stacked_series with KOB subtitles.
+    """Test get_stacked_series against expected stacked outputs.
 
     Arguments:
-        kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review:
-          simplified standard Chinese subtitle fixture
-        kob_eng_ocr_fuse_clean_validate_review_flatten: English subtitle fixture
-        kob_zho_hans_eng: expected stacked subtitles fixture
+        request: pytest request for fixture lookup
+        one_fixture: fixture name for first input series
+        two_fixture: fixture name for second input series
+        expected_fixture: fixture name for expected output series
     """
-    _test_get_stacked_series(
-        kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review,
-        kob_eng_ocr_fuse_clean_validate_review_flatten,
-        kob_zho_hans_eng,
+    output = get_stacked_series(
+        request.getfixturevalue(one_fixture),
+        request.getfixturevalue(two_fixture),
     )
-
-
-def test_get_stacked_series_mlamd(
-    mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
-    mlamd_eng_fuse_clean_validate_review_flatten: Series,
-    mlamd_zho_hans_eng: Series,
-):
-    """Test get_stacked_series with MLAMD subtitles.
-
-    Arguments:
-        mlamd_zho_hans_fuse_clean_validate_review_flatten: simplified standard
-          Chinese subtitle fixture
-        mlamd_eng_fuse_clean_validate_review_flatten: English subtitle fixture
-        mlamd_zho_hans_eng: expected stacked subtitle fixture
-    """
-    _test_get_stacked_series(
-        mlamd_zho_hans_fuse_clean_validate_review_flatten,
-        mlamd_eng_fuse_clean_validate_review_flatten,
-        mlamd_zho_hans_eng,
-    )
-
-
-def test_get_stacked_series_t(
-    t_zho_hans_fuse_clean_validate_review_flatten: Series,
-    t_eng_fuse_clean_validate_review_flatten: Series,
-    t_zho_hans_eng: Series,
-):
-    """Test get_stacked_series with T subtitles.
-
-    Arguments:
-        t_zho_hans_fuse_clean_validate_review_flatten: simplified standard Chinese
-          subtitle fixture
-        t_eng_fuse_clean_validate_review_flatten: English subtitle fixture
-        t_zho_hans_eng: expected stacked subtitle fixture
-    """
-    _test_get_stacked_series(
-        t_zho_hans_fuse_clean_validate_review_flatten,
-        t_eng_fuse_clean_validate_review_flatten,
-        t_zho_hans_eng,
-    )
+    assert_series_equal(output, request.getfixturevalue(expected_fixture))

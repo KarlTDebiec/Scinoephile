@@ -8,113 +8,73 @@ from os import getenv
 
 import pytest
 
-from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHant,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
-from scinoephile.llms.mono_n import MonoNProcessor
 from test.helpers import assert_series_equal, skip_if_ci
 
+_LIVE_LLM_MARKS = [
+    skip_if_ci(),
+    pytest.mark.skipif(
+        not getenv("SCINOEPHILE_RUN_LLM_TESTS"),
+        reason="Requires live LLM integration tests",
+    ),
+]
+"""Marks for live LLM integration cases."""
 
-def _test_get_zho_block_reviewed(
-    series: Series, expected: Series, processor: MonoNProcessor | None = None
+
+@pytest.mark.parametrize(
+    ("series_fixture", "expected_fixture", "use_traditional_prompt"),
+    [
+        (
+            "kob_zho_hant_ocr_fuse_clean_validate",
+            "kob_zho_hant_ocr_fuse_clean_validate_review",
+            True,
+        ),
+        pytest.param(
+            "mlamd_zho_hans_fuse_clean_validate",
+            "mlamd_zho_hans_fuse_clean_validate_review",
+            False,
+            marks=_LIVE_LLM_MARKS,
+        ),
+        pytest.param(
+            "mnt_zho_hans_fuse_clean_validate",
+            "mnt_zho_hans_fuse_clean_validate_review",
+            False,
+            marks=_LIVE_LLM_MARKS,
+        ),
+        pytest.param(
+            "t_zho_hans_fuse_clean_validate",
+            "t_zho_hans_fuse_clean_validate_review",
+            False,
+            marks=_LIVE_LLM_MARKS,
+        ),
+    ],
+)
+def test_get_zho_block_reviewed(
+    request: pytest.FixtureRequest,
+    series_fixture: str,
+    expected_fixture: str,
+    use_traditional_prompt: bool,
 ):
-    """Test get_zho_block_reviewed.
+    """Test get_zho_block_reviewed against expected block-reviewed outputs.
 
     Arguments:
-        series: Series with which to test
-        expected: Expected output series
-        processor: MonoNProcessor to use for the test
+        request: pytest request for fixture lookup
+        series_fixture: fixture name for input series
+        expected_fixture: fixture name for expected output series
+        use_traditional_prompt: whether to use the traditional prompt reviewer
     """
-    output = get_zho_block_reviewed(series, processor=processor)
+    processor = None
+    if use_traditional_prompt:
+        processor = get_zho_reviewer(prompt_cls=BlockReviewPromptZhoHant)
+    expected = request.getfixturevalue(expected_fixture)
+    output = get_zho_block_reviewed(
+        request.getfixturevalue(series_fixture),
+        processor=processor,
+    )
 
     assert len(output) == len(expected)
     assert_series_equal(output, expected)
-
-
-def test_get_zho_block_reviewed_kob(
-    kob_zho_hant_ocr_fuse_clean_validate: Series,
-    kob_zho_hant_ocr_fuse_clean_validate_review: Series,
-):
-    """Test get_zho_block_reviewed with KOB traditional standard Chinese subtitles.
-
-    Arguments:
-        kob_zho_hant_ocr_fuse_clean_validate: KOB traditional standard Chinese
-          series fixture
-        kob_zho_hant_ocr_fuse_clean_validate_review: Expected block-reviewed KOB
-          traditional standard Chinese series fixture
-    """
-    _test_get_zho_block_reviewed(
-        kob_zho_hant_ocr_fuse_clean_validate,
-        kob_zho_hant_ocr_fuse_clean_validate_review,
-        get_zho_reviewer(prompt_cls=BlockReviewPromptZhoHant),
-    )
-
-
-@skip_if_ci()
-@pytest.mark.skipif(
-    not getenv("SCINOEPHILE_RUN_LLM_TESTS"),
-    reason="Requires live LLM integration tests",
-)
-def test_get_zho_block_reviewed_mlamd(
-    mlamd_zho_hans_fuse_clean_validate: Series,
-    mlamd_zho_hans_fuse_clean_validate_review: Series,
-):
-    """Test get_zho_block_reviewed with MLAMD simplified standard Chinese subtitles.
-
-    Arguments:
-        mlamd_zho_hans_fuse_clean_validate: MLAMD simplified standard Chinese
-          series fixture
-        mlamd_zho_hans_fuse_clean_validate_review: Expected block-reviewed MLAMD
-          simplified standard Chinese series fixture
-    """
-    _test_get_zho_block_reviewed(
-        mlamd_zho_hans_fuse_clean_validate,
-        mlamd_zho_hans_fuse_clean_validate_review,
-    )
-
-
-@skip_if_ci()
-@pytest.mark.skipif(
-    not getenv("SCINOEPHILE_RUN_LLM_TESTS"),
-    reason="Requires live LLM integration tests",
-)
-def test_get_zho_block_reviewed_mnt(
-    mnt_zho_hans_fuse_clean_validate: Series,
-    mnt_zho_hans_fuse_clean_validate_review: Series,
-):
-    """Test get_zho_block_reviewed with MNT simplified standard Chinese subtitles.
-
-    Arguments:
-        mnt_zho_hans_fuse_clean_validate: MNT simplified standard Chinese series fixture
-        mnt_zho_hans_fuse_clean_validate_review: Expected block-reviewed MNT
-          simplified standard Chinese series fixture
-    """
-    _test_get_zho_block_reviewed(
-        mnt_zho_hans_fuse_clean_validate,
-        mnt_zho_hans_fuse_clean_validate_review,
-    )
-
-
-@skip_if_ci()
-@pytest.mark.skipif(
-    not getenv("SCINOEPHILE_RUN_LLM_TESTS"),
-    reason="Requires live LLM integration tests",
-)
-def test_get_zho_block_reviewed_t(
-    t_zho_hans_fuse_clean_validate: Series,
-    t_zho_hans_fuse_clean_validate_review: Series,
-):
-    """Test get_zho_block_reviewed with T simplified standard Chinese subtitles.
-
-    Arguments:
-        t_zho_hans_fuse_clean_validate: T simplified standard Chinese series fixture
-        t_zho_hans_fuse_clean_validate_review: Expected block-reviewed T
-          simplified standard Chinese series fixture
-    """
-    _test_get_zho_block_reviewed(
-        t_zho_hans_fuse_clean_validate,
-        t_zho_hans_fuse_clean_validate_review,
-    )

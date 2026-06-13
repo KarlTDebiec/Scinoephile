@@ -6,20 +6,46 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from test.helpers import assert_series_equal
 
 # noinspection PyProtectedMember
 
 
-def _test_get_zho_flattened(series: Series, expected: Series):
-    """Test get_zho_flattened.
+@pytest.mark.parametrize(
+    ("series_fixture", "expected_fixture"),
+    [
+        (
+            "kob_zho_hant_ocr_fuse_clean_validate_review",
+            "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
+        ),
+        (
+            "mlamd_zho_hans_fuse_clean_validate_review",
+            "mlamd_zho_hans_fuse_clean_validate_review_flatten",
+        ),
+        (
+            "mnt_zho_hant_fuse_clean_validate_review",
+            "mnt_zho_hant_fuse_clean_validate_review_flatten",
+        ),
+        (
+            "t_zho_hans_fuse_clean_validate_review",
+            "t_zho_hans_fuse_clean_validate_review_flatten",
+        ),
+    ],
+)
+def test_get_zho_flattened(
+    request: pytest.FixtureRequest,
+    series_fixture: str,
+    expected_fixture: str,
+):
+    """Test get_zho_flattened against expected flattened outputs.
 
     Arguments:
-        series: Series with which to test
-        expected: Expected output series
+        request: pytest request for fixture lookup
+        series_fixture: fixture name for input series
+        expected_fixture: fixture name for expected output series
     """
+    series = request.getfixturevalue(series_fixture)
     output = get_zho_flattened(series)
     assert len(series) == len(output)
 
@@ -32,76 +58,4 @@ def _test_get_zho_flattened(series: Series, expected: Series):
         for error in errors:
             print(error)
         pytest.fail(f"Found {len(errors)} discrepancies")
-    assert_series_equal(output, expected)
-
-
-def test_get_zho_flattened_kob(
-    kob_zho_hant_ocr_fuse_clean_validate_review: Series,
-    kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Series,
-):
-    """Test get_zho_flattened with KOB traditional standard Chinese subtitles.
-
-    Arguments:
-        kob_zho_hant_ocr_fuse_clean_validate_review: KOB traditional standard
-          Chinese series fixture
-        kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Expected flattened KOB
-          traditional standard Chinese series fixture
-    """
-    _test_get_zho_flattened(
-        kob_zho_hant_ocr_fuse_clean_validate_review,
-        kob_zho_hant_ocr_fuse_clean_validate_review_flatten,
-    )
-
-
-def test_get_zho_flattened_mlamd(
-    mlamd_zho_hans_fuse_clean_validate_review: Series,
-    mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
-):
-    """Test get_zho_flattened with MLAMD simplified standard Chinese subtitles.
-
-    Arguments:
-        mlamd_zho_hans_fuse_clean_validate_review: MLAMD simplified standard
-          Chinese series fixture
-        mlamd_zho_hans_fuse_clean_validate_review_flatten: Expected flattened
-          MLAMD simplified standard Chinese series fixture
-    """
-    _test_get_zho_flattened(
-        mlamd_zho_hans_fuse_clean_validate_review,
-        mlamd_zho_hans_fuse_clean_validate_review_flatten,
-    )
-
-
-def test_get_zho_flattened_mnt(
-    mnt_zho_hant_fuse_clean_validate_review: Series,
-    mnt_zho_hant_fuse_clean_validate_review_flatten: Series,
-):
-    """Test get_zho_flattened with MNT traditional standard Chinese subtitles.
-
-    Arguments:
-        mnt_zho_hant_fuse_clean_validate_review: MNT traditional standard Chinese
-          series fixture
-        mnt_zho_hant_fuse_clean_validate_review_flatten: Expected flattened MNT
-          traditional standard Chinese series fixture
-    """
-    _test_get_zho_flattened(
-        mnt_zho_hant_fuse_clean_validate_review,
-        mnt_zho_hant_fuse_clean_validate_review_flatten,
-    )
-
-
-def test_get_zho_flattened_t(
-    t_zho_hans_fuse_clean_validate_review: Series,
-    t_zho_hans_fuse_clean_validate_review_flatten: Series,
-):
-    """Test get_zho_flattened with T simplified standard Chinese subtitles.
-
-    Arguments:
-        t_zho_hans_fuse_clean_validate_review: T simplified standard Chinese
-          series fixture
-        t_zho_hans_fuse_clean_validate_review_flatten: Expected flattened T
-          simplified standard Chinese series fixture
-    """
-    _test_get_zho_flattened(
-        t_zho_hans_fuse_clean_validate_review,
-        t_zho_hans_fuse_clean_validate_review_flatten,
-    )
+    assert_series_equal(output, request.getfixturevalue(expected_fixture))
