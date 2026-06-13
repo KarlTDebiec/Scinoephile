@@ -74,9 +74,7 @@ def test_line_alignment_operations(
 
 def test_line_alignment_operation_table_uses_numeric_array():
     """Test alignment operation table uses a compact numeric array."""
-    alignment = object.__new__(LineAlignment)
-    alignment.one = "廣東話"
-    alignment.two = "广东话"
+    alignment = LineAlignment("廣東話", "广东话")
 
     operation_table = alignment._get_operation_table()
 

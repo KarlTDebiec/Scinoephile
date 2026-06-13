@@ -79,12 +79,18 @@ def test_separate_vocals_uses_default_demucs_shifts():
     separator._model.eval.return_value = separator._model
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000).set_channels(1)
     separated_sources = torch.zeros((1, 1, 2, 16000), dtype=torch.float32)
-    apply_model = Mock(return_value=separated_sources)
+    apply_model_kwargs: list[dict[str, object]] = []
+
+    def apply_model(*args: object, **kwargs: object) -> object:
+        """Record Demucs apply_model keyword arguments."""
+        assert args
+        apply_model_kwargs.append(kwargs)
+        return separated_sources
 
     with patch.object(DemucsSeparator, "_get_apply_model", return_value=apply_model):
         output_audio = separator.separate_vocals(input_audio)
 
     assert isinstance(output_audio, AudioSegment)
     assert output_audio.frame_rate == input_audio.frame_rate
-    apply_model.assert_called_once()
-    assert "shifts" not in apply_model.call_args.kwargs
+    assert len(apply_model_kwargs) == 1
+    assert "shifts" not in apply_model_kwargs[0]

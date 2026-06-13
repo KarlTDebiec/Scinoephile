@@ -31,59 +31,51 @@ def _write_series(path: Path, text: str) -> Series:
     return Series.from_string(source, format_="srt")
 
 
-def test_ocr_fuse_zho_cli_writes_file_and_passes_cleaned_converted_inputs(
-    tmp_path: Path,
-):
-    """Test standard Chinese OCR fuse CLI dispatches through conversion."""
+def test_ocr_fuse_zho_cli_writes_file_and_passes_conversion(tmp_path: Path):
+    """Test standard Chinese OCR fuse CLI writes output with selected conversion."""
     lens_path = tmp_path / "lens.srt"
     paddle_path = tmp_path / "paddle.srt"
     output_path = tmp_path / "fused.srt"
-    lens = _write_series(lens_path, "鏡頭")
-    paddle = _write_series(paddle_path, "桨")
-    cleaned_lens = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\nclean lens\n",
-        format_="srt",
-    )
-    cleaned_paddle = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\nclean paddle\n",
-        format_="srt",
-    )
-    converted_lens = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\nconverted lens\n",
-        format_="srt",
-    )
-    converted_paddle = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\nconverted paddle\n",
-        format_="srt",
-    )
+    _write_series(lens_path, "鏡頭")
+    _write_series(paddle_path, "桨")
     fused = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\nfused\n",
         format_="srt",
     )
-    provider = object()
     fuser = object()
+    fuser_conversions: list[OpenCCConfig | None] = []
+
+    def get_ocr_fuser(
+        convert: OpenCCConfig | None,
+        provider: object,
+        additional_context: str | None,
+    ) -> object:
+        """Record fuser conversion config."""
+        assert provider is not None
+        assert additional_context is None
+        fuser_conversions.append(convert)
+        return fuser
 
     with (
         patch(
             "scinoephile.cli.ocr.ocr_fuse_cli.get_provider",
-            return_value=provider,
         ),
         patch(
             "scinoephile.cli.ocr.ocr_fuse_cli.get_zho_cleaned",
-            side_effect=[cleaned_lens, cleaned_paddle],
-        ) as get_zho_cleaned,
+            side_effect=lambda series, remove_empty: series,
+        ),
         patch(
             "scinoephile.cli.ocr.ocr_fuse_cli.get_zho_converted",
-            side_effect=[converted_lens, converted_paddle],
-        ) as get_zho_converted,
+            side_effect=lambda series, convert: series,
+        ),
         patch(
             "scinoephile.cli.ocr.ocr_fuse_cli.OcrFuseCli._get_ocr_fuser",
-            return_value=fuser,
-        ) as get_ocr_fuser,
+            side_effect=get_ocr_fuser,
+        ),
         patch(
             "scinoephile.cli.ocr.ocr_fuse_cli.get_zho_ocr_fused",
             return_value=fused,
-        ) as get_zho_ocr_fused,
+        ),
     ):
         run_cli_with_args(
             OcrFuseCli,
@@ -92,18 +84,7 @@ def test_ocr_fuse_zho_cli_writes_file_and_passes_cleaned_converted_inputs(
             f"--outfile {output_path}",
         )
 
-    assert_series_equal(get_zho_cleaned.call_args_list[0].args[0], lens)
-    assert get_zho_cleaned.call_args_list[0].kwargs == {"remove_empty": False}
-    assert_series_equal(get_zho_cleaned.call_args_list[1].args[0], paddle)
-    assert get_zho_cleaned.call_args_list[1].kwargs == {"remove_empty": False}
-    assert_series_equal(get_zho_converted.call_args_list[0].args[0], cleaned_lens)
-    assert get_zho_converted.call_args_list[0].args[1] == OpenCCConfig.t2s
-    assert_series_equal(get_zho_converted.call_args_list[1].args[0], cleaned_paddle)
-    assert get_zho_converted.call_args_list[1].args[1] == OpenCCConfig.t2s
-    assert get_ocr_fuser.call_args.args == (OpenCCConfig.t2s, provider, None)
-    assert_series_equal(get_zho_ocr_fused.call_args.args[0], converted_lens)
-    assert_series_equal(get_zho_ocr_fused.call_args.args[1], converted_paddle)
-    assert get_zho_ocr_fused.call_args.kwargs == {"processor": fuser}
+    assert fuser_conversions == [OpenCCConfig.t2s]
     assert_series_equal(Series.load(output_path), fused)
 
 

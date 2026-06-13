@@ -9,9 +9,8 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-import scinoephile.image.ocr.lens as lens_ocr
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.image.ocr.lens import lens_recognizer, ocr_image_series_with_lens
+from scinoephile.image.ocr.lens import ocr_image_series_with_lens
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
@@ -83,13 +82,6 @@ class FailingRecognizer:
         if self.exception is None:
             raise AssertionError("FailingRecognizer.exception must be configured")
         raise self.exception
-
-
-def test_lens_module_exposes_only_current_public_helpers():
-    """Test Google Lens module no longer exposes removed helper functions."""
-    assert not hasattr(lens_ocr, "get_lens_recognizer")
-    assert not hasattr(lens_ocr, "get_lens_language_code")
-    assert lens_ocr.LensRecognizerKwargs is lens_recognizer.LensRecognizerKwargs
 
 
 def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(

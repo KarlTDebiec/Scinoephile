@@ -133,8 +133,7 @@ def test_eng_zho_translation_wrappers_delegate_to_processor(
             Subtitle(start=2100, end=3000, text="Second translated"),
         ]
     )
-    processor = Mock()
-    processor.process.return_value = expected
+    processor = _RecordingProcessor(expected)
 
     if mode == "regular":
         output = get_eng_translated_from_zho(
@@ -155,10 +154,36 @@ def test_eng_zho_translation_wrappers_delegate_to_processor(
         )
 
     assert output == expected
-    call_args = processor.process.call_args.args
-    assert call_args[0] is source_one
+    assert processor.source_one is source_one
     if uses_empty_context:
-        assert isinstance(call_args[1], Series)
-        assert len(call_args[1].events) == 0
+        assert isinstance(processor.source_two, Series)
+        assert len(processor.source_two.events) == 0
     else:
-        assert call_args[1] is source_two
+        assert processor.source_two is source_two
+
+
+class _RecordingProcessor:
+    """Processor test double that records process inputs."""
+
+    def __init__(self, output: Series):
+        """Initialize.
+
+        Arguments:
+            output: series to return
+        """
+        self.output = output
+        self.source_one: Series | None = None
+        self.source_two: Series | None = None
+
+    def process(self, source_one: Series, source_two: Series) -> Series:
+        """Record inputs and return configured output.
+
+        Arguments:
+            source_one: first source series
+            source_two: second source series
+        Returns:
+            configured output series
+        """
+        self.source_one = source_one
+        self.source_two = source_two
+        return self.output

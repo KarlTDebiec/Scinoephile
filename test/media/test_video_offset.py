@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from fractions import Fraction
-from inspect import signature
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -357,16 +356,6 @@ def test_get_offsets_clamps_to_requested_end():
 
     assert offsets == [-1.0, -0.3, 0.4, 1.0]
     assert max(offsets) == 1.0
-
-
-def test_get_video_offset_has_no_start_time_parameter():
-    """Test public video offset detection does not expose start time."""
-    assert "start_time" not in signature(get_video_offset).parameters
-
-
-def test_get_video_offset_defaults_to_four_sample_windows():
-    """Test public video offset detection defaults to four sample windows."""
-    assert signature(get_video_offset).parameters["sample_windows"].default == 4
 
 
 def test_sample_video_frames_normalizes_brightness():

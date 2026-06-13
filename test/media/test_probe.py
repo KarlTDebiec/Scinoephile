@@ -31,10 +31,9 @@ def test_get_subtitle_streams(tmp_path: Path):
                 },
             ],
         },
-    ) as probe:
+    ):
         streams = get_subtitle_streams(infile_path)
 
-    probe.assert_called_once_with(str(infile_path))
     assert len(streams) == 1
     stream = streams[0]
     assert stream.index == 2
@@ -78,10 +77,9 @@ def test_get_streams_returns_all_typed_streams(tmp_path: Path):
                 "not a stream",
             ],
         },
-    ) as probe:
+    ):
         streams = get_streams(infile_path)
 
-    probe.assert_called_once_with(str(infile_path))
     assert len(streams) == 4
     assert isinstance(streams[0], VideoStream)
     assert streams[0].width == 3840

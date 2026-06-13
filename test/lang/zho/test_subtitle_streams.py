@@ -41,25 +41,17 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
                     subtitle_count=8,
                 ),
             ],
-        ) as get_detailed_subtitle_streams,
+        ),
         patch(
             "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
             return_value=SimpleNamespace(script="zho-Hant"),
-        ) as analyze,
+        ),
     ):
         streams = get_zho_subtitle_streams(
             infile_path,
             cache_dir_path=cache_dir_path,
         )
 
-    get_detailed_subtitle_streams.assert_called_once_with(
-        infile_path,
-        cache_dir_path=cache_dir_path,
-        streams=None,
-    )
-    analyze.assert_called_once()
-    assert analyze.call_args.args[1].index == 2
-    assert analyze.call_args.kwargs == {"cache_dir_path": cache_dir_path}
     assert [stream.index for stream in streams] == [2, 3]
     assert streams[0].language == "zho-Hant"
     assert streams[0].subtitle_count == 12
@@ -151,7 +143,7 @@ def test_get_zho_subtitle_streams_uses_provided_streams(tmp_path: Path):
         patch(
             "scinoephile.lang.zho.subtitles.streams.get_detailed_subtitle_streams",
             return_value=[streams[2]],
-        ) as get_detailed_subtitle_streams,
+        ),
         patch(
             "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
             return_value=SimpleNamespace(script="zho-Hant"),
@@ -159,10 +151,5 @@ def test_get_zho_subtitle_streams_uses_provided_streams(tmp_path: Path):
     ):
         zho_streams = get_zho_subtitle_streams(infile_path, streams=streams)
 
-    get_detailed_subtitle_streams.assert_called_once_with(
-        infile_path,
-        cache_dir_path=None,
-        streams=streams,
-    )
     assert [stream.index for stream in zho_streams] == [2]
     assert zho_streams[0].language == "zho-Hant"

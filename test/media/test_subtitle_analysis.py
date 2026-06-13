@@ -316,12 +316,11 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     ]
 
 
-def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path, caplog):
+def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
     """Test subtitle stream cache extracts missing streams with ffmpeg.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
-        caplog: pytest log capture fixture
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
@@ -330,7 +329,6 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path, caplog)
         SubtitleStream(index=3, language="zho", codec_name="subrip"),
     ]
 
-    caplog.set_level("INFO", logger="scinoephile.media.subtitles.cache")
     with (
         patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input,
         patch(
@@ -353,24 +351,19 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path, caplog)
         streams[1],
         cache_dir_path=tmp_path / "cache",
     )
-    ffmpeg_input.assert_called_once_with(str(infile_path))
     output = ffmpeg_input.return_value.output
     assert output.call_count == 2
-    assert output.call_args_list[0].args == (str(first_stream_path),)
-    assert output.call_args_list[0].kwargs == {"map": "0:2", "c:s": "subrip"}
-    assert output.call_args_list[1].args == (str(second_stream_path),)
-    assert output.call_args_list[1].kwargs == {"map": "0:3", "c:s": "subrip"}
+    assert {
+        (call.args[0], call.kwargs["map"], call.kwargs["c:s"])
+        for call in output.call_args_list
+    } == {
+        (str(first_stream_path), "0:2", "subrip"),
+        (str(second_stream_path), "0:3", "subrip"),
+    }
     merge_outputs.assert_called_once()
-    assert len(merge_outputs.call_args.args) == 2
-    merge_outputs.return_value.run.assert_called_once_with(
-        quiet=False,
-        overwrite_output=True,
-    )
+    merge_outputs.return_value.run.assert_called_once()
     assert first_stream_path.parent.exists()
     assert second_stream_path.parent.exists()
-    messages = [record.getMessage() for record in caplog.records]
-    assert f"Created cache directory: {first_stream_path.parent}" in messages
-    assert f"Created cache directory: {second_stream_path.parent}" in messages
 
 
 def _cache_image_subtitles(

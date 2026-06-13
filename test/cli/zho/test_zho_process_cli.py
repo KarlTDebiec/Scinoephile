@@ -128,11 +128,23 @@ def test_zho_process_cli_passes_llm_options_to_reviewer(tmp_path):
     context_path = tmp_path / "context.txt"
     context_path.write_text("Use glossary terms.\n", encoding="utf-8")
 
+    def get_reviewer(
+        *,
+        prompt_cls: object,
+        provider: DeepSeekProvider,
+        additional_context: str | None,
+    ) -> str:
+        """Validate reviewer options passed by the CLI."""
+        assert prompt_cls is not None
+        assert provider.model == "custom-model"
+        assert additional_context == "Use glossary terms.\n"
+        return "proofreader"
+
     with get_temp_file_path(".srt") as output_path:
         with patch(
             "scinoephile.cli.zho.zho_process_cli.get_zho_reviewer",
-            return_value="proofreader",
-        ) as patched_factory:
+            side_effect=get_reviewer,
+        ):
             with patch(
                 "scinoephile.cli.zho.zho_process_cli.get_zho_block_reviewed",
                 return_value=expected,
@@ -144,11 +156,3 @@ def test_zho_process_cli_passes_llm_options_to_reviewer(tmp_path):
                     f"--llm-additional-content-file {context_path} "
                     f"--outfile {output_path}",
                 )
-
-    provider = patched_factory.call_args.kwargs["provider"]
-    assert isinstance(provider, DeepSeekProvider)
-    assert provider.model == "custom-model"
-    assert (
-        patched_factory.call_args.kwargs["additional_context"]
-        == "Use glossary terms.\n"
-    )

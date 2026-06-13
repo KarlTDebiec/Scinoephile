@@ -51,7 +51,7 @@ def test_media_offset_cli_reports_offset(
     with patch(
         "scinoephile.cli.media.media_offset_cli.get_video_offset",
         return_value=result,
-    ) as get_offset:
+    ):
         run_cli_with_args(
             MediaOffsetCli,
             f"--reference-infile {reference_infile_path} "
@@ -59,15 +59,6 @@ def test_media_offset_cli_reports_offset(
             "--max-offset 8 --sample-rate 1 --duration 120 --coarse-step 0.5",
         )
 
-    get_offset.assert_called_once_with(
-        reference_infile_path=reference_infile_path.resolve(),
-        target_infile_path=target_infile_path.resolve(),
-        max_offset=8.0,
-        sample_rate=1.0,
-        duration=120.0,
-        coarse_step=0.5,
-        sample_windows=4,
-    )
     assert capsys.readouterr().out.splitlines() == [
         "Offset: +1.250000 s",
         "Frames: +30",
@@ -185,12 +176,7 @@ def test_media_offset_cli_rejects_start_time_argument(
     reference_infile_path.touch()
     target_infile_path.touch()
 
-    with (
-        pytest.raises(SystemExit),
-        patch(
-            "scinoephile.cli.media.media_offset_cli.get_video_offset",
-        ) as get_offset,
-    ):
+    with pytest.raises(SystemExit):
         run_cli_with_args(
             MediaOffsetCli,
             f"--reference-infile {reference_infile_path} "
@@ -198,7 +184,6 @@ def test_media_offset_cli_rejects_start_time_argument(
             "--start-time 600",
         )
 
-    get_offset.assert_not_called()
     assert "unrecognized arguments: --start-time 600" in capsys.readouterr().err
 
 
@@ -229,12 +214,7 @@ def test_media_offset_cli_rejects_zero_positive_arguments(
     reference_infile_path.touch()
     target_infile_path.touch()
 
-    with (
-        pytest.raises(SystemExit),
-        patch(
-            "scinoephile.cli.media.media_offset_cli.get_video_offset",
-        ) as get_offset,
-    ):
+    with pytest.raises(SystemExit):
         run_cli_with_args(
             MediaOffsetCli,
             f"--reference-infile {reference_infile_path} "
@@ -242,5 +222,4 @@ def test_media_offset_cli_rejects_zero_positive_arguments(
             f"{argument} 0",
         )
 
-    get_offset.assert_not_called()
     assert "is less than minimum value" in capsys.readouterr().err

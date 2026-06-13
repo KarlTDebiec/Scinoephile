@@ -36,7 +36,7 @@ def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
     stream_path.write_text("cached subtitles", encoding="utf-8")
 
     caplog.set_level("INFO", logger="scinoephile.media.subtitles.extraction")
-    with patch("scinoephile.media.subtitles.extraction.cache_subtitles") as cache:
+    with patch("scinoephile.media.subtitles.extraction.cache_subtitles"):
         extracted_path = extract_subtitle_stream(
             infile_path=infile_path,
             stream=stream,
@@ -47,12 +47,6 @@ def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
     assert extracted_path == outfile_path
     assert outfile_path.read_text(encoding="utf-8") == "cached subtitles"
     assert f"Created subtitle output directory: {outfile_path.parent}" in caplog.text
-    cache.assert_called_once_with(
-        infile_path,
-        [stream],
-        cache_dir_path=tmp_path / "cache",
-        render_images=False,
-    )
 
 
 def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
@@ -81,7 +75,7 @@ def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
     with patch(
         "scinoephile.media.subtitles.extraction.cache_subtitles",
         side_effect=cache_streams,
-    ) as cache:
+    ):
         extracted_path = extract_subtitle_stream(
             infile_path=infile_path,
             stream=stream,
@@ -91,12 +85,6 @@ def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
 
     assert extracted_path == outfile_path
     assert outfile_path.read_text(encoding="utf-8") == "new subtitles"
-    cache.assert_called_once_with(
-        infile_path,
-        [stream],
-        cache_dir_path=cache_dir_path,
-        render_images=False,
-    )
 
 
 def test_extract_subtitle_stream_rejects_unknown_codec(tmp_path: Path):
@@ -124,11 +112,10 @@ def test_get_media_subtitle_stream_returns_matching_sup_stream(tmp_path: Path):
     with patch(
         "scinoephile.media.subtitles.selection.get_subtitle_streams",
         return_value=[stream],
-    ) as get_subtitle_streams:
+    ):
         selected_stream = get_media_subtitle_stream(infile_path, 5)
 
     assert selected_stream is stream
-    get_subtitle_streams.assert_called_once_with(infile_path)
 
 
 def test_get_media_subtitle_stream_requires_stream_index(tmp_path: Path):

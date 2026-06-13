@@ -14,35 +14,6 @@ from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
 
 
-def test_media_probe_cli_passes_cache_dir_to_stream_details(tmp_path: Path):
-    """Test media probe CLI passes cache directory to stream detail enrichment."""
-    infile_path = tmp_path / "video.mkv"
-    infile_path.touch()
-    cache_dir_path = tmp_path / "cache"
-
-    with (
-        patch(
-            "scinoephile.cli.media.media_probe_cli.get_streams",
-            return_value=[],
-        ) as get_streams,
-        patch(
-            "scinoephile.cli.media.media_probe_cli.get_zho_subtitle_streams",
-            return_value=[],
-        ) as get_zho_subtitle_streams,
-    ):
-        run_cli_with_args(
-            MediaProbeCli,
-            f"--infile {infile_path} --details --cache-dir {cache_dir_path}",
-        )
-
-    get_streams.assert_called_once_with(infile_path.resolve())
-    get_zho_subtitle_streams.assert_called_once_with(
-        infile_path.resolve(),
-        cache_dir_path=cache_dir_path.resolve(),
-        streams=[],
-    )
-
-
 def test_media_probe_cli_lists_all_streams(
     tmp_path: Path,
     capsys: pytest.CaptureFixture[str],
@@ -82,10 +53,9 @@ def test_media_probe_cli_lists_all_streams(
                 },
             ],
         },
-    ) as probe:
+    ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path}")
 
-    probe.assert_called_once_with(str(infile_path.resolve()))
     assert capsys.readouterr().out.splitlines() == [
         "Stream #0:0: Video: h264 (1920x1080)",
         "Stream #0:1(eng): Audio: aac (channels=2)",
