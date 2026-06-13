@@ -6,7 +6,12 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.lang.zho.script.analysis import get_zho_script_analysis
+from scinoephile.lang.zho.script.analysis import (
+    get_zho_script_analysis,
+    is_simplified,
+    is_traditional,
+)
+from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
 
 
 @pytest.mark.parametrize(
@@ -33,3 +38,31 @@ def test_get_zho_script_analysis(text: str, expected_script: str | None):
     analysis = get_zho_script_analysis(text)
 
     assert analysis.script == expected_script
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [(case.text, case.is_simplified) for case in LANGUAGE_ID_TEST_CASES],
+)
+def test_is_simplified(text: str, expected: bool):
+    """Detect simplified Chinese text.
+
+    Arguments:
+        text: text to classify
+        expected: expected simplified classification
+    """
+    assert is_simplified(text) is expected
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [(case.text, case.is_traditional) for case in LANGUAGE_ID_TEST_CASES],
+)
+def test_is_traditional(text: str, expected: bool):
+    """Detect traditional Chinese text.
+
+    Arguments:
+        text: text to classify
+        expected: expected traditional classification
+    """
+    assert is_traditional(text) is expected
