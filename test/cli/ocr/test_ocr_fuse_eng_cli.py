@@ -12,20 +12,7 @@ from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
 from test.helpers import assert_series_equal
-
-
-def _write_series(path: Path, text: str) -> Series:
-    """Write a one-subtitle SRT fixture.
-
-    Arguments:
-        path: path to write
-        text: subtitle text
-    Returns:
-        written subtitle series
-    """
-    source = f"1\n00:00:00,000 --> 00:00:01,000\n{text}\n"
-    path.write_text(source, encoding="utf-8")
-    return Series.from_string(source, format_="srt")
+from test.helpers.series_files import write_srt_series
 
 
 def test_ocr_fuse_eng_cli_writes_file(tmp_path: Path):
@@ -33,8 +20,8 @@ def test_ocr_fuse_eng_cli_writes_file(tmp_path: Path):
     lens_path = tmp_path / "lens.srt"
     tesseract_path = tmp_path / "tesseract.srt"
     output_path = tmp_path / "fused.srt"
-    _write_series(lens_path, "lens")
-    _write_series(tesseract_path, "tesseract")
+    write_srt_series(lens_path, "lens")
+    write_srt_series(tesseract_path, "tesseract")
     fused = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\nfused\n",
         format_="srt",
@@ -69,8 +56,8 @@ def test_ocr_fuse_eng_cli_writes_stdout(tmp_path: Path):
     """Test English OCR fuse CLI writes stdout when outfile is omitted."""
     lens_path = tmp_path / "lens.srt"
     tesseract_path = tmp_path / "tesseract.srt"
-    _write_series(lens_path, "lens")
-    _write_series(tesseract_path, "tesseract")
+    write_srt_series(lens_path, "lens")
+    write_srt_series(tesseract_path, "tesseract")
     fused = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\nfused\n",
         format_="srt",
@@ -101,8 +88,8 @@ def test_ocr_fuse_eng_cli_overwrites_existing_file(tmp_path: Path):
     lens_path = tmp_path / "lens.srt"
     tesseract_path = tmp_path / "tesseract.srt"
     output_path = tmp_path / "fused.srt"
-    _write_series(lens_path, "lens")
-    _write_series(tesseract_path, "tesseract")
+    write_srt_series(lens_path, "lens")
+    write_srt_series(tesseract_path, "tesseract")
     output_path.write_text("existing\n", encoding="utf-8")
     fused = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\nfused\n",

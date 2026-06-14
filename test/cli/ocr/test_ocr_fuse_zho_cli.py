@@ -15,20 +15,7 @@ from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from test.helpers import assert_series_equal
-
-
-def _write_series(path: Path, text: str) -> Series:
-    """Write a one-subtitle SRT fixture.
-
-    Arguments:
-        path: path to write
-        text: subtitle text
-    Returns:
-        written subtitle series
-    """
-    source = f"1\n00:00:00,000 --> 00:00:01,000\n{text}\n"
-    path.write_text(source, encoding="utf-8")
-    return Series.from_string(source, format_="srt")
+from test.helpers.series_files import write_srt_series
 
 
 def test_ocr_fuse_zho_cli_writes_file_and_passes_conversion(tmp_path: Path):
@@ -36,8 +23,8 @@ def test_ocr_fuse_zho_cli_writes_file_and_passes_conversion(tmp_path: Path):
     lens_path = tmp_path / "lens.srt"
     paddle_path = tmp_path / "paddle.srt"
     output_path = tmp_path / "fused.srt"
-    _write_series(lens_path, "鏡頭")
-    _write_series(paddle_path, "桨")
+    write_srt_series(lens_path, "鏡頭")
+    write_srt_series(paddle_path, "桨")
     fused = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\nfused\n",
         format_="srt",
@@ -92,8 +79,8 @@ def test_ocr_fuse_zho_cli_writes_stdout(tmp_path: Path):
     """Test standard Chinese OCR fuse CLI writes stdout when outfile is omitted."""
     lens_path = tmp_path / "lens.srt"
     paddle_path = tmp_path / "paddle.srt"
-    _write_series(lens_path, "鏡頭")
-    _write_series(paddle_path, "桨")
+    write_srt_series(lens_path, "鏡頭")
+    write_srt_series(paddle_path, "桨")
     fused = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n融合\n",
         format_="srt",
@@ -122,8 +109,8 @@ def test_ocr_fuse_zho_cli_rejects_bare_convert_flag(tmp_path: Path):
     """Test OCR fuse CLI requires an explicit conversion config."""
     lens_path = tmp_path / "lens.srt"
     paddle_path = tmp_path / "paddle.srt"
-    _write_series(lens_path, "鏡頭")
-    _write_series(paddle_path, "桨")
+    write_srt_series(lens_path, "鏡頭")
+    write_srt_series(paddle_path, "桨")
 
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(

@@ -14,6 +14,12 @@ from PIL import Image
 from scinoephile.image.bbox import Bbox
 from scinoephile.web.ocr_validation.app import create_app
 from scinoephile.web.ocr_validation.session import OcrValidationSession
+from test.helpers.ocr_validation import (
+    clear_validation_data,
+    make_ocr_html_dir,
+    patch_ocr_validation_bboxes,
+    prepared_gap_session,
+)
 
 
 def test_index_renders_subtitle_list(tmp_path: Path):
@@ -69,16 +75,13 @@ def test_index_renders_char_concern_romanizations(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test character concern tables render romanizations below Hanzi."""
-    html_dir_path = _make_html_dir(tmp_path, text="霆")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20)],
-    )
+    html_dir_path = make_ocr_html_dir(tmp_path, text="霆")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         cache_dir_path=tmp_path / "cache",
     )
-    _clear_validation_data(session)
+    clear_validation_data(session)
     app = create_app(session)
 
     response = app.test_client().get("/")
@@ -96,16 +99,13 @@ def test_index_omits_romanizations_for_unrecognized_symbol(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test character concern tables skip romanization for non-Hanzi symbols."""
-    html_dir_path = _make_html_dir(tmp_path, text="▼")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20)],
-    )
+    html_dir_path = make_ocr_html_dir(tmp_path, text="▼")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         cache_dir_path=tmp_path / "cache",
     )
-    _clear_validation_data(session)
+    clear_validation_data(session)
     app = create_app(session)
 
     response = app.test_client().get("/")
@@ -121,16 +121,13 @@ def test_index_reload_reassesses_cached_subtitles(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test index reloads rebuild cached validation states."""
-    html_dir_path = _make_html_dir(tmp_path, text="A")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20)],
-    )
+    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         cache_dir_path=tmp_path / "cache",
     )
-    _clear_validation_data(session)
+    clear_validation_data(session)
     app = create_app(session)
 
     response = app.test_client().get("/")
@@ -202,7 +199,7 @@ def test_exit_route_saves_output_and_shuts_down_server(tmp_path: Path):
             """Record shutdown."""
             self.shutdown_called = True
 
-    html_dir_path = _make_html_dir(tmp_path, text="recognized")
+    html_dir_path = make_ocr_html_dir(tmp_path, text="recognized")
     outfile_path = tmp_path / "validated.srt"
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
@@ -226,16 +223,16 @@ def test_char_concern_image_url_changes_after_accept(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test accepting one character returns a fresh next concern image URL."""
-    html_dir_path = _make_html_dir(tmp_path, text="AB")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)],
+    html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(20, 30, 0, 20)],
     )
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         cache_dir_path=tmp_path / "cache",
     )
-    _clear_validation_data(session)
+    clear_validation_data(session)
     app = create_app(session)
 
     response = app.test_client().get("/")
@@ -259,19 +256,18 @@ def test_index_renders_space_gap_choice_table(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test adjacent-or-space concerns render both choice actions."""
-    html_dir_path = _make_html_dir(tmp_path, text="霆所")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20), Bbox(50, 60, 0, 20)],
+    html_dir_path = make_ocr_html_dir(tmp_path, text="霆所")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(50, 60, 0, 20)],
     )
-    session = OcrValidationSession.from_dir_path(
+    session = prepared_gap_session(
         html_dir_path,
-        cache_dir_path=tmp_path / "cache",
+        tmp_path,
+        char_1="霆",
+        char_2="所",
+        cutoffs=(22, 89, 90, 200),
     )
-    _clear_validation_data(session)
-    session.manager.char_dims_by_n[1]["霆"] = {(10, 20)}
-    session.manager.char_dims_by_n[1]["所"] = {(10, 20)}
-    session.manager.char_pair_gaps[("霆", "所")] = (22, 89, 90, 200)
     app = create_app(session)
 
     response = app.test_client().get("/")
@@ -320,7 +316,7 @@ def test_validation_image_route_rejects_missing_subtitle(
 
 def test_text_update_route_rewrites_row(tmp_path: Path):
     """Test text update route rewrites index.html and returns the row."""
-    html_dir_path = _make_html_dir(tmp_path, text="old")
+    html_dir_path = make_ocr_html_dir(tmp_path, text="old")
     app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
 
     response = app.test_client().post(
@@ -336,7 +332,7 @@ def test_text_update_route_rewrites_row(tmp_path: Path):
 
 def test_text_update_route_rejects_missing_subtitle(tmp_path: Path):
     """Test text update route rejects an out-of-range subtitle index."""
-    html_dir_path = _make_html_dir(tmp_path, text="old")
+    html_dir_path = make_ocr_html_dir(tmp_path, text="old")
     app = create_app(OcrValidationSession.from_dir_path(html_dir_path))
 
     response = app.test_client().post(
@@ -427,19 +423,12 @@ def test_gap_concern_route_resolves_row(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test resolving the final gap concern persists text and omits the row."""
-    html_dir_path = _make_html_dir(tmp_path, text="AB")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
+    html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
     )
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        cache_dir_path=tmp_path / "cache",
-    )
-    _clear_validation_data(session)
-    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
-    session.manager.char_dims_by_n[1]["B"] = {(10, 20)}
-    session.manager.char_pair_gaps[("A", "B")] = (2, 6, 12, 20)
+    session = prepared_gap_session(html_dir_path, tmp_path)
     app = create_app(session)
 
     response = app.test_client().post(
@@ -458,19 +447,12 @@ def test_gap_concern_route_rejects_invalid_action(
     monkeypatch: pytest.MonkeyPatch,
 ):
     """Test gap concern route rejects invalid actions."""
-    html_dir_path = _make_html_dir(tmp_path, text="AB")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
+    html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
     )
-    session = OcrValidationSession.from_dir_path(
-        html_dir_path,
-        cache_dir_path=tmp_path / "cache",
-    )
-    _clear_validation_data(session)
-    session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
-    session.manager.char_dims_by_n[1]["B"] = {(10, 20)}
-    session.manager.char_pair_gaps[("A", "B")] = (2, 6, 12, 20)
+    session = prepared_gap_session(html_dir_path, tmp_path)
     app = create_app(session)
 
     response = app.test_client().post(
@@ -510,16 +492,13 @@ def _char_concern_app(
     Returns:
         Flask app
     """
-    html_dir_path = _make_html_dir(tmp_path, text="A")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20)],
-    )
+    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         cache_dir_path=tmp_path / "cache",
     )
-    _clear_validation_data(session)
+    clear_validation_data(session)
     return create_app(session)
 
 
@@ -584,33 +563,16 @@ def _done_app(
     Returns:
         Flask app
     """
-    html_dir_path = _make_html_dir(tmp_path, text="A")
-    monkeypatch.setattr(
-        "scinoephile.web.ocr_validation.session.get_bboxes",
-        lambda img: [Bbox(0, 10, 0, 20)],
-    )
+    html_dir_path = make_ocr_html_dir(tmp_path, text="A")
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
     session = OcrValidationSession.from_dir_path(
         html_dir_path,
         include_done_subtitles=include_done_subtitles,
         cache_dir_path=tmp_path / "cache",
     )
-    _clear_validation_data(session)
+    clear_validation_data(session)
     session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
     return create_app(session)
-
-
-def _clear_validation_data(session: OcrValidationSession):
-    """Clear loaded OCR validation data for deterministic tests.
-
-    Arguments:
-        session: OCR validation session
-    """
-    session.manager.char_dims_by_n = {n: {} for n in range(1, 6)}
-    session.manager.cache_char_dims_by_n = {n: {} for n in range(1, 6)}
-    session.manager.char_grp_dims_by_n = {}
-    session.manager.cache_char_grp_dims_by_n = {}
-    session.manager.char_pair_gaps = {}
-    session.manager.cache_char_pair_gaps = {}
 
 
 def _session(
@@ -629,44 +591,6 @@ def _session(
         OCR validation session
     """
     return OcrValidationSession.from_dir_path(
-        _make_html_dir(tmp_path, text=text),
+        make_ocr_html_dir(tmp_path, text=text),
         include_done_subtitles=include_done_subtitles,
     )
-
-
-def _make_html_dir(tmp_path: Path, *, text: str) -> Path:
-    """Create an OCR image HTML directory.
-
-    Arguments:
-        tmp_path: pytest temporary directory path
-        text: HTML subtitle text content
-    Returns:
-        OCR image HTML directory path
-    """
-    html_dir_path = tmp_path / "image"
-    html_dir_path.mkdir()
-    image = Image.new("LA", (2, 2))
-    image.putdata([(255, 255), (0, 255), (255, 255), (0, 255)])
-    image.save(html_dir_path / "0001.png")
-    (html_dir_path / "index.html").write_text(
-        "\n".join(
-            [
-                "<!DOCTYPE html>",
-                "<html>",
-                "<head>",
-                '   <meta charset="UTF-8" />',
-                "   <title>Subtitle images</title>",
-                "</head>",
-                "<body>",
-                "#1:1,000->2,000"
-                "<div style='text-align:center'>"
-                "<img src='0001.png' />"
-                "<br /><div style='font-size:22px; background-color:WhiteSmoke'>"
-                f"{text}</div></div><br /><hr />",
-                "</body>",
-                "</html>",
-            ]
-        ),
-        encoding="utf-8",
-    )
-    return html_dir_path

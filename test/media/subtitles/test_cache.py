@@ -183,12 +183,24 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
         SubtitleStream(index=2, language="eng", codec_name="subrip"),
         SubtitleStream(index=3, language="zho", codec_name="subrip"),
     ]
+    input_stream = _RecordingFfmpegInput()
+    merged_streams: list[_RecordingMergedFfmpegStream] = []
+
+    def merge_outputs(*outputs: object) -> _RecordingMergedFfmpegStream:
+        """Record merged ffmpeg outputs."""
+        merged_stream = _RecordingMergedFfmpegStream(list(outputs))
+        merged_streams.append(merged_stream)
+        return merged_stream
 
     with (
-        patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input,
         patch(
-            "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs"
-        ) as merge_outputs,
+            "scinoephile.media.subtitles.cache.ffmpeg.input",
+            return_value=input_stream,
+        ),
+        patch(
+            "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs",
+            side_effect=merge_outputs,
+        ),
     ):
         cache_subtitles(
             infile_path,
@@ -206,16 +218,54 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
         streams[1],
         cache_dir_path=tmp_path / "cache",
     )
-    output = ffmpeg_input.return_value.output
-    assert output.call_count == 2
-    assert {
-        (call.args[0], call.kwargs["map"], call.kwargs["c:s"])
-        for call in output.call_args_list
-    } == {
+    assert set(input_stream.output_calls) == {
         (str(first_stream_path), "0:2", "subrip"),
         (str(second_stream_path), "0:3", "subrip"),
     }
-    merge_outputs.assert_called_once()
-    merge_outputs.return_value.run.assert_called_once()
+    assert len(merged_streams) == 1
+    assert len(merged_streams[0].outputs) == 2
+    assert merged_streams[0].run_count == 1
     assert first_stream_path.parent.exists()
     assert second_stream_path.parent.exists()
+
+
+class _RecordingFfmpegInput:
+    """Recording fake for an ffmpeg input stream."""
+
+    def __init__(self):
+        """Initialize."""
+        self.output_calls: list[tuple[str, str, str]] = []
+
+    def output(self, outfile_path: str, **kwargs: object) -> object:
+        """Record an ffmpeg output stream.
+
+        Arguments:
+            outfile_path: output file path
+            kwargs: ffmpeg output keyword arguments
+        Returns:
+            fake output stream
+        """
+        self.output_calls.append((outfile_path, str(kwargs["map"]), str(kwargs["c:s"])))
+        return object()
+
+
+class _RecordingMergedFfmpegStream:
+    """Recording fake for merged ffmpeg output streams."""
+
+    def __init__(self, outputs: list[object]):
+        """Initialize.
+
+        Arguments:
+            outputs: ffmpeg output streams to merge
+        """
+        self.outputs = outputs
+        self.run_count = 0
+
+    def run(self, **kwargs: object):
+        """Record ffmpeg execution.
+
+        Arguments:
+            kwargs: ffmpeg run keyword arguments
+        """
+        _ = kwargs
+        self.run_count += 1
