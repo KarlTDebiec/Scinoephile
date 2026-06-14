@@ -4,10 +4,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from fractions import Fraction
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any, TypedDict
 from unittest.mock import patch
 
 import numpy as np
@@ -15,11 +15,21 @@ import pytest
 
 from scinoephile.core import ScinoephileError
 from scinoephile.media.offset.video import (
-    VideoOffsetResult,
     _get_offsets,
     _sample_video_frames,
     get_video_offset,
 )
+
+
+class _VideoOffsetKwargs(TypedDict, total=False):
+    """Keyword arguments for video offset detection."""
+
+    max_offset: float
+    sample_rate: float
+    coarse_step: float
+    sample_windows: int
+    width: int
+    height: int
 
 
 def test_get_video_offset_prefers_known_shift():
@@ -204,6 +214,7 @@ def test_get_video_offset_samples_multiple_windows_and_aggregates_frames():
         )
         side_effect.extend([reference_samples, target_samples])
 
+    sampler = _RecordingVideoSampler(side_effect)
     with (
         patch(
             "scinoephile.media.offset.video.ffmpeg.probe",
@@ -214,8 +225,8 @@ def test_get_video_offset_samples_multiple_windows_and_aggregates_frames():
         ),
         patch(
             "scinoephile.media.offset.video._sample_video_frames",
-            side_effect=side_effect,
-        ) as sample_video_frames,
+            new=sampler,
+        ),
     ):
         result = get_video_offset(
             reference_infile_path=Path("reference.mkv"),
@@ -227,8 +238,14 @@ def test_get_video_offset_samples_multiple_windows_and_aggregates_frames():
             sample_windows=3,
         )
 
-    starts = [call.kwargs["start_time"] for call in sample_video_frames.call_args_list]
-    assert starts == [9.0, 9.0, 45.0, 45.0, 81.0, 81.0]
+    assert [call["start_time"] for call in sampler.calls] == [
+        9.0,
+        9.0,
+        45.0,
+        45.0,
+        81.0,
+        81.0,
+    ]
     assert [window.offset_frames for window in result.windows] == [-20, -20, -21]
     assert result.aggregate is not None
     assert result.offset_frames == -20
@@ -245,6 +262,7 @@ def test_get_video_offset_clamps_duration_to_shared_runtime():
     reference_samples = _get_samples([0.0, 1.0, 2.0, 3.0], [10, 20, 30, 40])
     target_samples = _get_samples([0.0, 1.0, 2.0, 3.0], [10, 20, 30, 40])
 
+    sampler = _RecordingVideoSampler([reference_samples, target_samples])
     with (
         patch(
             "scinoephile.media.offset.video.ffmpeg.probe",
@@ -255,8 +273,8 @@ def test_get_video_offset_clamps_duration_to_shared_runtime():
         ),
         patch(
             "scinoephile.media.offset.video._sample_video_frames",
-            side_effect=[reference_samples, target_samples],
-        ) as sample_video_frames,
+            new=sampler,
+        ),
     ):
         result = get_video_offset(
             reference_infile_path=Path("reference.mkv"),
@@ -266,13 +284,11 @@ def test_get_video_offset_clamps_duration_to_shared_runtime():
         )
 
     assert result.offset_frames == 0
-    assert [
-        call.kwargs["start_time"] for call in sample_video_frames.call_args_list
-    ] == [
+    assert [call["start_time"] for call in sampler.calls] == [
         0.0,
         0.0,
     ]
-    assert [call.kwargs["duration"] for call in sample_video_frames.call_args_list] == [
+    assert [call["duration"] for call in sampler.calls] == [
         20.0,
         20.0,
     ]
@@ -370,11 +386,8 @@ def test_sample_video_frames_normalizes_brightness():
 
     with patch(
         "scinoephile.media.offset.video.ffmpeg.input",
-    ) as input_:
-        input_.return_value.filter.return_value.filter.return_value.filter.return_value.output.return_value.run.return_value = (  # noqa: E501
-            output,
-            b"",
-        )
+        return_value=_FakeFfmpegInput(output),
+    ):
         samples = _sample_video_frames(
             Path("video.mkv"),
             sample_rate=1.0,
@@ -391,70 +404,50 @@ def test_sample_video_frames_normalizes_brightness():
 
 
 @pytest.mark.parametrize(
-    ("call", "message"),
+    ("kwargs", "message"),
     [
         (
-            lambda: get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                max_offset=0.0,
-            ),
+            {"max_offset": 0.0},
             "0.0 is less than minimum value",
         ),
         (
-            lambda: get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                sample_rate=0.0,
-            ),
+            {"sample_rate": 0.0},
             "0.0 is less than minimum value",
         ),
         (
-            lambda: get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                coarse_step=0.0,
-            ),
+            {"coarse_step": 0.0},
             "0.0 is less than minimum value",
         ),
         (
-            lambda: get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                sample_windows=0,
-            ),
+            {"sample_windows": 0},
             "0 is less than minimum value of 1",
         ),
         (
-            lambda: get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                width=0,
-            ),
+            {"width": 0},
             "0 is less than minimum value of 1",
         ),
         (
-            lambda: get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                height=0,
-            ),
+            {"height": 0},
             "0 is less than minimum value of 1",
         ),
     ],
 )
 def test_get_video_offset_rejects_invalid_numeric_parameters(
-    call: Callable[[], VideoOffsetResult],
+    kwargs: _VideoOffsetKwargs,
     message: str,
 ):
     """Test video offset rejects invalid numeric parameters.
 
     Arguments:
-        call: call with invalid arguments
+        kwargs: invalid keyword arguments
         message: expected error message
     """
     with pytest.raises(ValueError, match=message):
-        call()
+        get_video_offset(
+            reference_infile_path=Path("reference.mkv"),
+            target_infile_path=Path("target.mkv"),
+            **kwargs,
+        )
 
 
 def test_get_video_offset_propagates_sampling_failures():
@@ -493,6 +486,50 @@ def _get_sample(time: float, frame: np.ndarray) -> SimpleNamespace:
     return SimpleNamespace(time=time, frame=frame)
 
 
+class _FakeFfmpegInput:
+    """Fake ffmpeg input chain returning fixed raw video bytes."""
+
+    def __init__(self, output: bytes):
+        """Initialize.
+
+        Arguments:
+            output: raw video output bytes
+        """
+        self.output_bytes = output
+
+    def filter(self, *args: object, **kwargs: object) -> _FakeFfmpegInput:
+        """Return self for chained ffmpeg filters.
+
+        Arguments:
+            args: positional filter arguments
+            kwargs: keyword filter arguments
+        Returns:
+            self
+        """
+        return self
+
+    def output(self, *args: object, **kwargs: object) -> _FakeFfmpegInput:
+        """Return self for chained ffmpeg output configuration.
+
+        Arguments:
+            args: positional output arguments
+            kwargs: keyword output arguments
+        Returns:
+            self
+        """
+        return self
+
+    def run(self, **kwargs: object) -> tuple[bytes, bytes]:
+        """Return fixed raw video bytes.
+
+        Arguments:
+            kwargs: ffmpeg run options
+        Returns:
+            raw stdout and empty stderr
+        """
+        return self.output_bytes, b""
+
+
 def _get_probe(
     *,
     duration: float = 100.0,
@@ -516,6 +553,53 @@ def _get_probe(
         ],
         "format": {"duration": str(duration)},
     }
+
+
+class _RecordingVideoSampler:
+    """Recording fake for sampled video frames."""
+
+    def __init__(self, outputs: list[list[SimpleNamespace]]):
+        """Initialize.
+
+        Arguments:
+            outputs: sampled frame outputs to return in call order
+        """
+        self.calls: list[dict[str, Any]] = []
+        self.outputs = list(outputs)
+
+    def __call__(
+        self,
+        infile_path: Path,
+        *,
+        sample_rate: float,
+        start_time: float,
+        duration: float,
+        width: int,
+        height: int,
+    ) -> list[SimpleNamespace]:
+        """Record a sampling call and return the next configured output.
+
+        Arguments:
+            infile_path: media input path
+            sample_rate: samples per second
+            start_time: sample start timestamp
+            duration: sample duration
+            width: sampled frame width
+            height: sampled frame height
+        Returns:
+            configured sampled frames
+        """
+        self.calls.append(
+            {
+                "infile_path": infile_path,
+                "sample_rate": sample_rate,
+                "start_time": start_time,
+                "duration": duration,
+                "width": width,
+                "height": height,
+            }
+        )
+        return self.outputs.pop(0)
 
 
 def _get_samples(times: list[float], values: list[int]) -> list[SimpleNamespace]:
