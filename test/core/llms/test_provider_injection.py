@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
+from typing import Any, Unpack
 from unittest.mock import Mock
 
 import pytest
@@ -19,6 +20,8 @@ from scinoephile.core.llms import (
     Queryer,
     TestCase,
 )
+from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
+from scinoephile.core.llms.tool_box import ToolBox
 
 
 class _Prompt(Prompt):
@@ -97,10 +100,34 @@ class _Processor(Processor):
     """Manager fixture class."""
 
 
+class _RecordingProvider(LLMProvider):
+    """Recording provider fixture."""
+
+    def __init__(self, response: str = '{"output":"done"}'):
+        """Initialize.
+
+        Arguments:
+            response: completion response to return
+        """
+        self.calls: list[list[dict[str, Any]]] = []
+        self.response = response
+
+    def chat_completion(
+        self,
+        messages: list[dict[str, Any]],
+        response_format: type[Answer] | None = None,
+        tool_box: ToolBox | None = None,
+        **kwargs: Unpack[ChatCompletionKwargs],
+    ) -> str:
+        """Record messages and return a fixed completion response."""
+        _ = (response_format, tool_box, kwargs)
+        self.calls.append(messages)
+        return self.response
+
+
 def test_queryer_uses_injected_provider():
     """Test queryer uses the injected provider for completions."""
-    provider = Mock(spec=LLMProvider)
-    provider.chat_completion.return_value = '{"output":"done"}'
+    provider = _RecordingProvider()
     queryer_cls = Queryer.get_queryer_cls(_Prompt)
     queryer = queryer_cls(provider=provider, max_attempts=1)
 
@@ -109,7 +136,7 @@ def test_queryer_uses_injected_provider():
 
     assert output_test_case.answer is not None
     assert output_test_case.answer.output == "done"
-    provider.chat_completion.assert_called_once()
+    assert len(provider.calls) == 1
 
 
 def test_queryer_requires_injected_provider():
@@ -122,8 +149,7 @@ def test_queryer_requires_injected_provider():
 
 def test_queryer_includes_additional_context_before_few_shot_prompt():
     """Test queryer includes additional context before few-shot examples."""
-    provider = Mock(spec=LLMProvider)
-    provider.chat_completion.return_value = '{"output":"done"}'
+    provider = _RecordingProvider()
     queryer_cls = Queryer.get_queryer_cls(_Prompt)
     prompt_test_case = _TestCase(
         query=_Query(text="example"),
@@ -140,7 +166,7 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
     test_case = _TestCase(query=_Query(text="input"))
     queryer(test_case)
 
-    messages = provider.chat_completion.call_args.args[0]
+    messages = provider.calls[0]
     system_message = messages[0]["content"]
     assert "Additional context:\nUse canonical names." in system_message
     assert system_message.index("Additional context:") < system_message.index(

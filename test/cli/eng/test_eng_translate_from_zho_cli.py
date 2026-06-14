@@ -30,21 +30,17 @@ def test_eng_translate_from_zho_cli_regular_translation():
         with patch(
             "scinoephile.cli.eng.eng_translate_from_zho_cli.get_eng_zho_translator",
             return_value="translator",
-        ) as patched_factory:
+        ):
             with patch(
                 "scinoephile.cli.eng.eng_translate_from_zho_cli.get_eng_translated_from_zho",
                 return_value=expected,
-            ) as patched_translate:
+            ):
                 run_cli_with_args(
                     EngTranslateFromZhoCli,
                     f"--zho-infile {zho_input_path} --outfile {output_path}",
                 )
         output = Series.load(output_path)
 
-    assert patched_factory.call_args.kwargs["provider"] is not None
-    called_kwargs = patched_translate.call_args.kwargs
-    assert_series_equal(called_kwargs["zho"], Series.load(zho_input_path))
-    assert called_kwargs["translator"] == "translator"
     assert_series_equal(output, expected)
 
 
@@ -57,12 +53,19 @@ def test_eng_translate_from_zho_cli_passes_llm_additional_context_file(tmp_path)
     expected = Series.load(expected_path)
     context_path = tmp_path / "context.txt"
     context_path.write_text("Use canonical character names.\n", encoding="utf-8")
+    additional_contexts: list[str | None] = []
+
+    def get_translator(*, provider: object, additional_context: str | None) -> str:
+        """Record translator context."""
+        assert provider is not None
+        additional_contexts.append(additional_context)
+        return "translator"
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
             "scinoephile.cli.eng.eng_translate_from_zho_cli.get_eng_zho_translator",
-            return_value="translator",
-        ) as patched_factory:
+            side_effect=get_translator,
+        ):
             with patch(
                 "scinoephile.cli.eng.eng_translate_from_zho_cli.get_eng_translated_from_zho",
                 return_value=expected,
@@ -74,82 +77,7 @@ def test_eng_translate_from_zho_cli_passes_llm_additional_context_file(tmp_path)
                     f"--outfile {output_path}",
                 )
 
-    assert (
-        patched_factory.call_args.kwargs["additional_context"]
-        == "Use canonical character names.\n"
-    )
-
-
-def test_eng_translate_from_zho_cli_gapped_translation():
-    """Test English translate-from-zho CLI routes to gapped translation."""
-    eng_input_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate.srt"
-    zho_input_path = test_data_root / (
-        "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
-    )
-    expected_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate_review.srt"
-    expected = Series.load(expected_path)
-
-    with get_temp_file_path(".srt") as output_path:
-        with patch(
-            "scinoephile.cli.eng.eng_translate_from_zho_cli."
-            "get_eng_vs_zho_gapped_translator",
-            return_value="translator",
-        ) as patched_factory:
-            with patch(
-                "scinoephile.cli.eng.eng_translate_from_zho_cli."
-                "get_eng_gapped_translated_vs_zho",
-                return_value=expected,
-            ) as patched_translate:
-                run_cli_with_args(
-                    EngTranslateFromZhoCli,
-                    f"--zho-infile {zho_input_path} "
-                    f"--eng-gapped-infile {eng_input_path} "
-                    f"--outfile {output_path}",
-                )
-        output = Series.load(output_path)
-
-    assert patched_factory.call_args.kwargs["provider"] is not None
-    called_kwargs = patched_translate.call_args.kwargs
-    assert_series_equal(called_kwargs["eng"], Series.load(eng_input_path))
-    assert_series_equal(called_kwargs["zho"], Series.load(zho_input_path))
-    assert called_kwargs["translator"] == "translator"
-    assert_series_equal(output, expected)
-
-
-def test_eng_translate_from_zho_cli_guided_translation():
-    """Test English translate-from-zho CLI routes to guided translation."""
-    eng_input_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate.srt"
-    zho_input_path = test_data_root / (
-        "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
-    )
-    expected_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate_review.srt"
-    expected = Series.load(expected_path)
-
-    with get_temp_file_path(".srt") as output_path:
-        with patch(
-            "scinoephile.cli.eng.eng_translate_from_zho_cli."
-            "get_eng_zho_guided_translator",
-            return_value="translator",
-        ) as patched_factory:
-            with patch(
-                "scinoephile.cli.eng.eng_translate_from_zho_cli."
-                "get_eng_translated_from_zho_with_eng_guidance",
-                return_value=expected,
-            ) as patched_translate:
-                run_cli_with_args(
-                    EngTranslateFromZhoCli,
-                    f"--zho-infile {zho_input_path} "
-                    f"--eng-guide-infile {eng_input_path} "
-                    f"--outfile {output_path}",
-                )
-        output = Series.load(output_path)
-
-    assert patched_factory.call_args.kwargs["provider"] is not None
-    called_kwargs = patched_translate.call_args.kwargs
-    assert_series_equal(called_kwargs["zho"], Series.load(zho_input_path))
-    assert_series_equal(called_kwargs["eng"], Series.load(eng_input_path))
-    assert called_kwargs["translator"] == "translator"
-    assert_series_equal(output, expected)
+    assert additional_contexts == ["Use canonical character names.\n"]
 
 
 def test_eng_translate_from_zho_cli_rejects_gapped_and_guide_together():

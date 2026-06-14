@@ -30,7 +30,7 @@ def test_load_char_pair_gaps_rejects_nonmonotonic_cutoffs(tmp_path: Path):
 
 def test_repo_char_pair_gaps_have_monotonic_cutoffs():
     """Test repository character pair gap data has ordered cutoffs."""
-    file_path = Path(__file__).parents[3] / "scinoephile/data/ocr/char_pair_gaps.csv"
+    file_path = Path(__file__).parents[4] / "scinoephile/data/ocr/char_pair_gaps.csv"
 
     with file_path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.reader(handle)

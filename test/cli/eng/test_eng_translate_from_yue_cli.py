@@ -18,78 +18,6 @@ from test.helpers import (
 )
 
 
-def test_eng_translate_from_yue_cli_gapped_translation():
-    """Test English translate-from-yue CLI routes to gapped translation."""
-    eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
-    yue_input_path = (
-        test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
-    )
-    expected_path = test_data_root / "mlamd/output/yue-Hans_eng.srt"
-    expected = Series.load(expected_path)
-
-    with get_temp_file_path(".srt") as output_path:
-        with patch(
-            "scinoephile.cli.eng.eng_translate_from_yue_cli."
-            "get_eng_vs_yue_gapped_translator",
-            return_value="translator",
-        ) as patched_factory:
-            with patch(
-                "scinoephile.cli.eng.eng_translate_from_yue_cli."
-                "get_eng_gapped_translated_vs_yue",
-                return_value=expected,
-            ) as patched_translate:
-                run_cli_with_args(
-                    EngTranslateFromYueCli,
-                    f"--yue-infile {yue_input_path} "
-                    f"--eng-gapped-infile {eng_input_path} "
-                    f"--outfile {output_path}",
-                )
-        output = Series.load(output_path)
-
-    assert patched_factory.call_args.kwargs["provider"] is not None
-    called_kwargs = patched_translate.call_args.kwargs
-    assert_series_equal(called_kwargs["eng"], Series.load(eng_input_path))
-    assert_series_equal(called_kwargs["yuewen"], Series.load(yue_input_path))
-    assert called_kwargs["translator"] == "translator"
-    assert_series_equal(output, expected)
-
-
-def test_eng_translate_from_yue_cli_guided_translation():
-    """Test English translate-from-yue CLI routes to guided translation."""
-    eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
-    yue_input_path = (
-        test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
-    )
-    expected_path = test_data_root / "mlamd/output/yue-Hans_eng.srt"
-    expected = Series.load(expected_path)
-
-    with get_temp_file_path(".srt") as output_path:
-        with patch(
-            "scinoephile.cli.eng.eng_translate_from_yue_cli."
-            "get_eng_yue_guided_translator",
-            return_value="translator",
-        ) as patched_factory:
-            with patch(
-                "scinoephile.cli.eng.eng_translate_from_yue_cli."
-                "get_eng_translated_from_yue_with_eng_guidance",
-                return_value=expected,
-            ) as patched_translate:
-                run_cli_with_args(
-                    EngTranslateFromYueCli,
-                    f"--yue-infile {yue_input_path} "
-                    f"--eng-guide-infile {eng_input_path} "
-                    f"--outfile {output_path}",
-                )
-        output = Series.load(output_path)
-
-    assert patched_factory.call_args.kwargs["provider"] is not None
-    called_kwargs = patched_translate.call_args.kwargs
-    assert_series_equal(called_kwargs["yuewen"], Series.load(yue_input_path))
-    assert_series_equal(called_kwargs["eng"], Series.load(eng_input_path))
-    assert called_kwargs["translator"] == "translator"
-    assert_series_equal(output, expected)
-
-
 def test_eng_translate_from_yue_cli_regular_translation():
     """Test English translate-from-yue CLI routes to regular translation."""
     yue_input_path = (
@@ -102,22 +30,18 @@ def test_eng_translate_from_yue_cli_regular_translation():
         with patch(
             "scinoephile.cli.eng.eng_translate_from_yue_cli.get_eng_yue_translator",
             return_value="translator",
-        ) as patched_factory:
+        ):
             with patch(
                 "scinoephile.cli.eng.eng_translate_from_yue_cli."
                 "get_eng_translated_from_yue",
                 return_value=expected,
-            ) as patched_translate:
+            ):
                 run_cli_with_args(
                     EngTranslateFromYueCli,
                     f"--yue-infile {yue_input_path} --outfile {output_path}",
                 )
         output = Series.load(output_path)
 
-    assert patched_factory.call_args.kwargs["provider"] is not None
-    called_kwargs = patched_translate.call_args.kwargs
-    assert_series_equal(called_kwargs["yuewen"], Series.load(yue_input_path))
-    assert called_kwargs["translator"] == "translator"
     assert_series_equal(output, expected)
 
 

@@ -25,19 +25,6 @@ def test_opencc_config_metadata():
     assert OpenCCConfig("s2t") is config
 
 
-def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected: Series):
-    """Test get_zho_converted.
-
-    Arguments:
-        series: Series with which to test
-        config: OpenCCConfig for conversion
-        expected: Expected output series
-    """
-    output = get_zho_converted(series, config)
-    assert len(series) == len(output)
-    assert_series_equal(output, expected)
-
-
 @pytest.mark.parametrize(
     ("text", "config", "expected"),
     [
@@ -74,9 +61,13 @@ def test_get_zho_converted_kob(
           simplified
           KOB traditional standard Chinese series fixture
     """
-    _test_get_zho_converted(
+    output = get_zho_converted(
         kob_zho_hant_ocr_fuse_clean_validate_review_flatten,
         OpenCCConfig.t2s,
+    )
+    assert len(kob_zho_hant_ocr_fuse_clean_validate_review_flatten) == len(output)
+    assert_series_equal(
+        output,
         kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify,
     )
 

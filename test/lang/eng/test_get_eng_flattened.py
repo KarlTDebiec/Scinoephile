@@ -6,20 +6,45 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core.subtitles import Series
-
 # noinspection PyProtectedMember
 from scinoephile.lang.eng.flattening import _get_eng_text_flattened, get_eng_flattened
 from test.helpers import assert_series_equal
 
 
-def _test_get_eng_flattened(series: Series, expected: Series):
-    """Test get_eng_flattened.
+@pytest.mark.parametrize(
+    ("series_fixture", "expected_fixture"),
+    [
+        (
+            "kob_eng_ocr_fuse_clean_validate_review",
+            "kob_eng_ocr_fuse_clean_validate_review_flatten",
+        ),
+        (
+            "mlamd_eng_fuse_clean_validate_review",
+            "mlamd_eng_fuse_clean_validate_review_flatten",
+        ),
+        (
+            "mnt_eng_fuse_clean_validate_review",
+            "mnt_eng_fuse_clean_validate_review_flatten",
+        ),
+        (
+            "t_eng_fuse_clean_validate_review",
+            "t_eng_fuse_clean_validate_review_flatten",
+        ),
+    ],
+)
+def test_get_eng_flattened(
+    request: pytest.FixtureRequest,
+    series_fixture: str,
+    expected_fixture: str,
+):
+    """Test get_eng_flattened against expected flattened outputs.
 
     Arguments:
-        series: Series with which to test
-        expected: Expected output series
+        request: pytest request for fixture lookup
+        series_fixture: fixture name for input series
+        expected_fixture: fixture name for expected output series
     """
+    series = request.getfixturevalue(series_fixture)
     output = get_eng_flattened(series)
 
     assert len(series) == len(output)
@@ -33,75 +58,7 @@ def _test_get_eng_flattened(series: Series, expected: Series):
         for error in errors:
             print(error)
         pytest.fail(f"Found {len(errors)} discrepancies")
-    assert_series_equal(output, expected)
-
-
-def test_get_eng_flattened_kob(
-    kob_eng_ocr_fuse_clean_validate_review: Series,
-    kob_eng_ocr_fuse_clean_validate_review_flatten: Series,
-):
-    """Test get_eng_flattened with KOB English subtitles.
-
-    Arguments:
-        kob_eng_ocr_fuse_clean_validate_review: KOB English series fixture
-        kob_eng_ocr_fuse_clean_validate_review_flatten: Expected flattened KOB English
-          series fixture
-    """
-    _test_get_eng_flattened(
-        kob_eng_ocr_fuse_clean_validate_review,
-        kob_eng_ocr_fuse_clean_validate_review_flatten,
-    )
-
-
-def test_get_eng_flattened_mlamd(
-    mlamd_eng_fuse_clean_validate_review: Series,
-    mlamd_eng_fuse_clean_validate_review_flatten: Series,
-):
-    """Test get_eng_flattened with MLAMD English subtitles.
-
-    Arguments:
-        mlamd_eng_fuse_clean_validate_review: MLAMD English series fixture
-        mlamd_eng_fuse_clean_validate_review_flatten: Expected flattened MLAMD
-          English series fixture
-    """
-    _test_get_eng_flattened(
-        mlamd_eng_fuse_clean_validate_review,
-        mlamd_eng_fuse_clean_validate_review_flatten,
-    )
-
-
-def test_get_eng_flattened_mnt(
-    mnt_eng_fuse_clean_validate_review: Series,
-    mnt_eng_fuse_clean_validate_review_flatten: Series,
-):
-    """Test get_eng_flattened with MNT English subtitles.
-
-    Arguments:
-        mnt_eng_fuse_clean_validate_review: MNT English series fixture
-        mnt_eng_fuse_clean_validate_review_flatten: Expected flattened MNT English
-          series fixture
-    """
-    _test_get_eng_flattened(
-        mnt_eng_fuse_clean_validate_review,
-        mnt_eng_fuse_clean_validate_review_flatten,
-    )
-
-
-def test_get_eng_flattened_t(
-    t_eng_fuse_clean_validate_review: Series,
-    t_eng_fuse_clean_validate_review_flatten: Series,
-):
-    """Test get_eng_flattened with T English subtitles.
-
-    Arguments:
-        t_eng_fuse_clean_validate_review: T English series fixture
-        t_eng_fuse_clean_validate_review_flatten: Expected flattened T English series
-          fixture
-    """
-    _test_get_eng_flattened(
-        t_eng_fuse_clean_validate_review,
-        t_eng_fuse_clean_validate_review_flatten,
-    )
+    assert_series_equal(output, request.getfixturevalue(expected_fixture))
 
 
 @pytest.mark.parametrize(

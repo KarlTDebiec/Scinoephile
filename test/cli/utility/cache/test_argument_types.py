@@ -17,21 +17,29 @@ def test_add_cache_dir_arg_resolves_runtime_cache_subpath():
     """Test cache directory defaults may include runtime cache subpath parts."""
     parser = ArgumentParser()
     cache_arg_group = parser.add_argument_group("operation arguments")
+    runtime_cache_parts: list[tuple[str, ...]] = []
+    create_values: list[bool] = []
+
+    def get_runtime_cache_dir_path(
+        *parts: str,
+        create: bool,
+    ) -> Path:
+        """Record runtime cache default arguments."""
+        runtime_cache_parts.append(parts)
+        create_values.append(create)
+        return Path("/cache/media/subtitles")
 
     with patch(
         "scinoephile.cli.helpers.cache.get_runtime_cache_dir_path",
-        return_value=Path("/cache/media/subtitles"),
-    ) as get_runtime_cache_dir_path:
+        side_effect=get_runtime_cache_dir_path,
+    ):
         add_cache_dir_arg(cache_arg_group, "media", "subtitles")
 
     namespace = parser.parse_args([])
 
     assert namespace.cache_dir_path == Path("/cache/media/subtitles")
-    get_runtime_cache_dir_path.assert_called_once_with(
-        "media",
-        "subtitles",
-        create=False,
-    )
+    assert runtime_cache_parts == [("media", "subtitles")]
+    assert create_values == [False]
 
 
 def test_add_cache_dir_arg_resolves_user_path_without_creating(tmp_path: Path):

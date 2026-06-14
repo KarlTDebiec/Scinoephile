@@ -5,12 +5,14 @@
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 import pytest
+from PIL import Image
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.workflows.subtitle_extraction import (
     SubtitleExtractionOutputKind,
     SubtitleExtractionOutputStatus,
@@ -30,6 +32,9 @@ def test_extract_subtitles_extracts_matching_streams(tmp_path: Path):
     cache_dir_path = tmp_path / "cache"
     cache_eng_path = cache_dir_path / "eng-2.srt"
     cache_zho_path = cache_dir_path / "zho-4.srt"
+    cache_eng_path.parent.mkdir()
+    cache_eng_path.write_text("english", encoding="utf-8")
+    cache_zho_path.write_text("chinese", encoding="utf-8")
     streams = [
         SubtitleStream(index=2, language="eng", codec_name="subrip"),
         SubtitleStream(index=3, language="jpn", codec_name="subrip"),
@@ -40,15 +45,12 @@ def test_extract_subtitles_extracts_matching_streams(tmp_path: Path):
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=streams,
-        ) as get_subtitle_streams,
-        patch(
-            "scinoephile.workflows.subtitle_extraction.cache_subtitles"
-        ) as cache_subtitles,
+        ),
+        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_cache_path",
             side_effect=[cache_eng_path, cache_zho_path],
         ),
-        patch("scinoephile.workflows.subtitle_extraction.copy2") as copy,
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -57,25 +59,12 @@ def test_extract_subtitles_extracts_matching_streams(tmp_path: Path):
             cache_dir_path=cache_dir_path,
         )
 
-    get_subtitle_streams.assert_called_once_with(infile_path)
-    cache_subtitles.assert_called_once_with(
-        infile_path,
-        [streams[0], streams[2]],
-        cache_dir_path=cache_dir_path,
-        render_images=False,
-    )
-    assert copy.call_args_list[0].args == (
-        cache_eng_path,
-        output_dir_path / "eng-2.srt",
-    )
-    assert copy.call_args_list[1].args == (
-        cache_zho_path,
-        output_dir_path / "zho-4.srt",
-    )
     assert [output.path for output in result.outputs] == [
         output_dir_path / "eng-2.srt",
         output_dir_path / "zho-4.srt",
     ]
+    assert (output_dir_path / "eng-2.srt").read_text(encoding="utf-8") == "english"
+    assert (output_dir_path / "zho-4.srt").read_text(encoding="utf-8") == "chinese"
     assert [output.status for output in result.outputs] == [
         SubtitleExtractionOutputStatus.CREATED,
         SubtitleExtractionOutputStatus.CREATED,
@@ -97,6 +86,8 @@ def test_extract_subtitles_details_uses_detected_chinese_script(tmp_path: Path):
     output_dir_path = tmp_path / "subtitles"
     cache_dir_path = tmp_path / "cache"
     cache_path = cache_dir_path / "zho-Hant-4.srt"
+    cache_path.parent.mkdir()
+    cache_path.write_text("traditional", encoding="utf-8")
 
     with (
         patch(
@@ -104,19 +95,18 @@ def test_extract_subtitles_details_uses_detected_chinese_script(tmp_path: Path):
             return_value=[
                 SubtitleStream(index=4, language="zho", codec_name="subrip"),
             ],
-        ) as get_subtitle_streams,
+        ),
         patch(
             "scinoephile.workflows.subtitle_extraction.get_zho_subtitle_streams",
             return_value=[
                 SubtitleStream(index=4, language="zho-Hant", codec_name="subrip"),
             ],
-        ) as get_zho_subtitle_streams,
+        ),
         patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_cache_path",
             return_value=cache_path,
         ),
-        patch("scinoephile.workflows.subtitle_extraction.copy2"),
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -126,12 +116,8 @@ def test_extract_subtitles_details_uses_detected_chinese_script(tmp_path: Path):
             cache_dir_path=cache_dir_path,
         )
 
-    get_subtitle_streams.assert_not_called()
-    get_zho_subtitle_streams.assert_called_once_with(
-        infile_path,
-        cache_dir_path=cache_dir_path,
-    )
     assert result.outputs[0].path == output_dir_path / "zho-Hant-4.srt"
+    assert result.outputs[0].path.read_text(encoding="utf-8") == "traditional"
 
 
 def test_extract_subtitles_matches_script_qualified_language_tag(tmp_path: Path):
@@ -145,6 +131,8 @@ def test_extract_subtitles_matches_script_qualified_language_tag(tmp_path: Path)
     output_dir_path = tmp_path / "subtitles"
     cache_dir_path = tmp_path / "cache"
     cache_path = cache_dir_path / "zho-Hant-4.srt"
+    cache_path.parent.mkdir()
+    cache_path.write_text("traditional", encoding="utf-8")
     stream = SubtitleStream(index=4, language="zho-Hant", codec_name="subrip")
 
     with (
@@ -157,7 +145,6 @@ def test_extract_subtitles_matches_script_qualified_language_tag(tmp_path: Path)
             "scinoephile.workflows.subtitle_extraction.get_subtitle_cache_path",
             return_value=cache_path,
         ),
-        patch("scinoephile.workflows.subtitle_extraction.copy2") as copy,
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -166,7 +153,8 @@ def test_extract_subtitles_matches_script_qualified_language_tag(tmp_path: Path)
             cache_dir_path=cache_dir_path,
         )
 
-    copy.assert_called_once_with(cache_path, output_dir_path / "zho-Hant-4.srt")
+    assert result.outputs[0].path == output_dir_path / "zho-Hant-4.srt"
+    assert result.outputs[0].path.read_text(encoding="utf-8") == "traditional"
     assert result.outputs[0].stream is stream
 
 
@@ -218,6 +206,8 @@ def test_extract_subtitles_reports_overwritten_outputs(tmp_path: Path):
     outfile_path = output_dir_path / "eng-2.srt"
     outfile_path.touch()
     cache_path = tmp_path / "cache" / "eng-2.srt"
+    cache_path.parent.mkdir()
+    cache_path.write_text("replacement", encoding="utf-8")
     stream = SubtitleStream(index=2, language="eng", codec_name="subrip")
 
     with (
@@ -225,14 +215,11 @@ def test_extract_subtitles_reports_overwritten_outputs(tmp_path: Path):
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=[stream],
         ),
-        patch(
-            "scinoephile.workflows.subtitle_extraction.cache_subtitles"
-        ) as cache_subtitles,
+        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_cache_path",
             return_value=cache_path,
         ),
-        patch("scinoephile.workflows.subtitle_extraction.copy2") as copy,
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -241,14 +228,9 @@ def test_extract_subtitles_reports_overwritten_outputs(tmp_path: Path):
             overwrite=True,
         )
 
-    cache_subtitles.assert_called_once_with(
-        infile_path,
-        [stream],
-        cache_dir_path=None,
-        render_images=False,
-    )
-    copy.assert_called_once_with(cache_path, outfile_path)
+    assert result.outputs[0].path == outfile_path
     assert result.outputs[0].status == SubtitleExtractionOutputStatus.OVERWRITTEN
+    assert outfile_path.read_text(encoding="utf-8") == "replacement"
 
 
 def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
@@ -263,7 +245,10 @@ def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
     cache_dir_path = tmp_path / "cache"
     cache_eng_path = cache_dir_path / "eng-2.srt"
     cache_zho_path = cache_dir_path / "zho-3.sup"
-    image_series = Mock()
+    cache_eng_path.parent.mkdir()
+    cache_eng_path.write_text("english", encoding="utf-8")
+    cache_zho_path.write_bytes(b"sup")
+    image_series = _image_series()
     streams = [
         SubtitleStream(index=2, language="eng", codec_name="subrip"),
         SubtitleStream(index=3, language="zho", codec_name="hdmv_pgs_subtitle"),
@@ -274,18 +259,15 @@ def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=streams,
         ),
-        patch(
-            "scinoephile.workflows.subtitle_extraction.cache_subtitles"
-        ) as cache_subtitles,
+        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_cache_path",
             side_effect=[cache_eng_path, cache_zho_path],
         ),
-        patch("scinoephile.workflows.subtitle_extraction.copy2"),
         patch(
             "scinoephile.workflows.subtitle_extraction.ImageSeries.load",
             return_value=image_series,
-        ) as load,
+        ),
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -295,12 +277,6 @@ def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
             export_images=True,
         )
 
-    cache_subtitles.assert_called_once_with(
-        infile_path,
-        streams,
-        cache_dir_path=cache_dir_path,
-        render_images=False,
-    )
     assert [output.kind for output in result.outputs] == [
         SubtitleExtractionOutputKind.SUBTITLE,
         SubtitleExtractionOutputKind.SUBTITLE,
@@ -308,8 +284,7 @@ def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
     ]
     assert result.outputs[-1].path == output_dir_path / "zho-3"
     assert result.outputs[-1].status == SubtitleExtractionOutputStatus.CREATED
-    load.assert_called_once_with(output_dir_path / "zho-3.sup")
-    image_series.save.assert_called_once_with(output_dir_path / "zho-3")
+    assert (output_dir_path / "zho-3" / "index.html").exists()
 
 
 def test_extract_subtitles_skips_sup_parsing_when_not_exporting_images(
@@ -326,6 +301,9 @@ def test_extract_subtitles_skips_sup_parsing_when_not_exporting_images(
     cache_dir_path = tmp_path / "cache"
     cache_srt_path = cache_dir_path / "eng-8.srt"
     cache_sup_path = cache_dir_path / "eng-10.sup"
+    cache_srt_path.parent.mkdir()
+    cache_srt_path.write_text("english", encoding="utf-8")
+    cache_sup_path.write_bytes(b"sup")
     streams = [
         SubtitleStream(index=8, language="eng", codec_name="subrip"),
         SubtitleStream(index=10, language="eng", codec_name="hdmv_pgs_subtitle"),
@@ -336,14 +314,11 @@ def test_extract_subtitles_skips_sup_parsing_when_not_exporting_images(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=streams,
         ),
-        patch(
-            "scinoephile.workflows.subtitle_extraction.cache_subtitles"
-        ) as cache_subtitles,
+        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_cache_path",
             side_effect=[cache_srt_path, cache_sup_path],
         ),
-        patch("scinoephile.workflows.subtitle_extraction.copy2") as copy,
         patch(
             "scinoephile.workflows.subtitle_extraction.ImageSeries.load",
             side_effect=ValueError("SUP segment data is truncated."),
@@ -356,25 +331,13 @@ def test_extract_subtitles_skips_sup_parsing_when_not_exporting_images(
             cache_dir_path=cache_dir_path,
         )
 
-    cache_subtitles.assert_called_once_with(
-        infile_path,
-        streams,
-        cache_dir_path=cache_dir_path,
-        render_images=False,
-    )
-    assert copy.call_args_list[0].args == (
-        cache_srt_path,
-        output_dir_path / "eng-8.srt",
-    )
-    assert copy.call_args_list[1].args == (
-        cache_sup_path,
-        output_dir_path / "eng-10.sup",
-    )
     load.assert_not_called()
     assert [output.path for output in result.outputs] == [
         output_dir_path / "eng-8.srt",
         output_dir_path / "eng-10.sup",
     ]
+    assert (output_dir_path / "eng-8.srt").read_text(encoding="utf-8") == "english"
+    assert (output_dir_path / "eng-10.sup").read_bytes() == b"sup"
 
 
 def test_extract_subtitles_warns_when_sup_image_export_fails(
@@ -393,6 +356,9 @@ def test_extract_subtitles_warns_when_sup_image_export_fails(
     cache_dir_path = tmp_path / "cache"
     cache_srt_path = cache_dir_path / "eng-8.srt"
     cache_sup_path = cache_dir_path / "eng-10.sup"
+    cache_srt_path.parent.mkdir()
+    cache_srt_path.write_text("english", encoding="utf-8")
+    cache_sup_path.write_bytes(b"sup")
     streams = [
         SubtitleStream(index=8, language="eng", codec_name="subrip"),
         SubtitleStream(index=10, language="eng", codec_name="hdmv_pgs_subtitle"),
@@ -407,14 +373,11 @@ def test_extract_subtitles_warns_when_sup_image_export_fails(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=streams,
         ),
-        patch(
-            "scinoephile.workflows.subtitle_extraction.cache_subtitles"
-        ) as cache_subtitles,
+        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_cache_path",
             side_effect=[cache_srt_path, cache_sup_path],
         ),
-        patch("scinoephile.workflows.subtitle_extraction.copy2"),
         patch(
             "scinoephile.workflows.subtitle_extraction.ImageSeries.load",
             side_effect=ScinoephileError(
@@ -431,16 +394,12 @@ def test_extract_subtitles_warns_when_sup_image_export_fails(
             export_images=True,
         )
 
-    cache_subtitles.assert_called_once_with(
-        infile_path,
-        streams,
-        cache_dir_path=cache_dir_path,
-        render_images=False,
-    )
     assert [output.path for output in result.outputs] == [
         output_dir_path / "eng-8.srt",
         output_dir_path / "eng-10.sup",
     ]
+    assert (output_dir_path / "eng-8.srt").read_text(encoding="utf-8") == "english"
+    assert (output_dir_path / "eng-10.sup").read_bytes() == b"sup"
     assert "Could not export SUP image series for stream #10" in caplog.text
 
 
@@ -452,14 +411,13 @@ def test_extract_subtitles_extracts_sup_file_to_image_dir_in_place(tmp_path: Pat
     """
     infile_path = tmp_path / "source.sup"
     infile_path.touch()
-    image_series = Mock()
+    image_series = _image_series()
 
     with (
         patch(
             "scinoephile.workflows.subtitle_extraction.ImageSeries.load",
             return_value=image_series,
-        ) as load,
-        patch("scinoephile.workflows.subtitle_extraction.copy2") as copy,
+        ),
         patch(
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=[
@@ -479,9 +437,7 @@ def test_extract_subtitles_extracts_sup_file_to_image_dir_in_place(tmp_path: Pat
             overwrite=True,
         )
 
-    copy.assert_not_called()
-    load.assert_called_once_with(infile_path)
-    image_series.save.assert_called_once_with(tmp_path / "source")
+    assert (tmp_path / "source" / "index.html").exists()
     assert [output.status for output in result.outputs] == [
         SubtitleExtractionOutputStatus.EXISTED,
         SubtitleExtractionOutputStatus.CREATED,
@@ -508,7 +464,6 @@ def test_extract_subtitles_skips_sup_file_with_nonmatching_language(tmp_path: Pa
                 ),
             ],
         ),
-        patch("scinoephile.workflows.subtitle_extraction.copy2") as copy,
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -517,7 +472,6 @@ def test_extract_subtitles_skips_sup_file_with_nonmatching_language(tmp_path: Pa
             export_images=True,
         )
 
-    copy.assert_not_called()
     assert result.outputs == []
 
 
@@ -542,3 +496,20 @@ def test_extract_subtitles_rejects_sup_file_without_subtitle_streams(tmp_path: P
             languages=["zho"],
             output_dir_path=tmp_path,
         )
+
+
+def _image_series() -> ImageSeries:
+    """Build a small image subtitle series for SUP export tests.
+
+    Returns:
+        image subtitle series
+    """
+    return ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=1000,
+                end=2000,
+                img=Image.new("RGBA", (10, 8), (255, 255, 255, 0)),
+            )
+        ]
+    )

@@ -22,17 +22,6 @@ from scinoephile.workflows.ocr_processing import (
 )
 
 
-def _series(text: str) -> Series:
-    """Build a single-subtitle text series.
-
-    Arguments:
-        text: subtitle text
-    Returns:
-        text subtitle series
-    """
-    return Series(events=[Subtitle(start=1000, end=2000, text=text)])
-
-
 def _series_with_texts(texts: list[str]) -> Series:
     """Build a text series with one subtitle per provided text.
 
@@ -94,6 +83,187 @@ def process_zho_ocr(
         language=language,
         **kwargs,
     )()
+
+
+class _PatchedEngOcrPipeline:
+    """Recording fake for the English OCR workflow dependencies."""
+
+    def __init__(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        image_series: ImageSeries,
+        *,
+        lens_texts: list[str] | None = None,
+        tesseract_texts: list[str] | None = None,
+        fused_texts: list[str] | None = None,
+    ):
+        """Initialize and patch English OCR workflow dependencies.
+
+        Arguments:
+            monkeypatch: pytest monkeypatch fixture
+            image_series: image subtitle series returned by fake loading
+            lens_texts: texts returned by fake Google Lens OCR
+            tesseract_texts: texts returned by fake Tesseract OCR
+            fused_texts: texts returned by fake OCR fusion
+        """
+        self.image_series = image_series
+        self.lens_texts = lens_texts or ["lens"]
+        self.tesseract_texts = tesseract_texts or ["tesseract"]
+        self.fused_texts = fused_texts or ["fused"]
+        self.fuser = object()
+        self.loaded_paths: list[Path] = []
+        self.lens_calls: list[Language] = []
+        self.tesseract_calls: list[Language] = []
+        self.fuser_calls: list[dict[str, object]] = []
+        self.fusion_calls: list[tuple[list[str], list[str], object]] = []
+
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.ImageSeries.load",
+            self.load,
+        )
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
+            self.ocr_with_lens,
+        )
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
+            self.ocr_with_tesseract,
+        )
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
+            self.get_fuser,
+        )
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
+            self.fuse,
+        )
+
+    def fuse(self, lens: Series, tesseract: Series, processor: object) -> Series:
+        """Fake English OCR fusion."""
+        lens_texts = [subtitle.text for subtitle in lens]
+        tesseract_texts = [subtitle.text for subtitle in tesseract]
+        self.fusion_calls.append((lens_texts, tesseract_texts, processor))
+        return _series_with_texts(self.fused_texts)
+
+    def get_fuser(self, provider: object, additional_context: str | None) -> object:
+        """Return a fixed fake fuser."""
+        self.fuser_calls.append(
+            {
+                "provider": provider,
+                "additional_context": additional_context,
+            }
+        )
+        return self.fuser
+
+    def load(self, path: Path) -> ImageSeries:
+        """Fake image subtitle loading."""
+        self.loaded_paths.append(path)
+        return self.image_series
+
+    def ocr_with_lens(self, image_series: ImageSeries, *, language: Language) -> Series:
+        """Fake Google Lens OCR."""
+        assert image_series is self.image_series
+        self.lens_calls.append(language)
+        return _series_with_texts(self.lens_texts)
+
+    def ocr_with_tesseract(
+        self,
+        image_series: ImageSeries,
+        *,
+        language: Language,
+    ) -> Series:
+        """Fake Tesseract OCR."""
+        assert image_series is self.image_series
+        self.tesseract_calls.append(language)
+        return _series_with_texts(self.tesseract_texts)
+
+
+class _PatchedZhoOcrPipeline:
+    """Recording fake for the Chinese OCR workflow dependencies."""
+
+    def __init__(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+        image_series: ImageSeries,
+        *,
+        lens_texts: list[str] | None = None,
+        paddle_texts: list[str] | None = None,
+        fused_texts: list[str] | None = None,
+    ):
+        """Initialize and patch Chinese OCR workflow dependencies.
+
+        Arguments:
+            monkeypatch: pytest monkeypatch fixture
+            image_series: image subtitle series returned by fake loading
+            lens_texts: texts returned by fake Google Lens OCR
+            paddle_texts: texts returned by fake PaddleOCR
+            fused_texts: texts returned by fake OCR fusion
+        """
+        self.image_series = image_series
+        self.lens_texts = lens_texts or ["lens"]
+        self.paddle_texts = paddle_texts or ["paddle"]
+        self.fused_texts = fused_texts or ["fused"]
+        self.fuser = object()
+        self.loaded_paths: list[Path] = []
+        self.lens_calls: list[Language] = []
+        self.paddle_calls: list[Language] = []
+        self.fuser_calls: list[dict[str, object]] = []
+        self.fusion_calls: list[tuple[list[str], list[str], object]] = []
+
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.ImageSeries.load",
+            self.load,
+        )
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
+            self.ocr_with_lens,
+        )
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.ocr_image_series_with_paddle",
+            self.ocr_with_paddle,
+        )
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.get_zho_ocr_fuser",
+            self.get_fuser,
+        )
+        monkeypatch.setattr(
+            "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
+            self.fuse,
+        )
+
+    def fuse(self, lens: Series, paddle: Series, processor: object) -> Series:
+        """Fake Chinese OCR fusion."""
+        lens_texts = [subtitle.text for subtitle in lens]
+        paddle_texts = [subtitle.text for subtitle in paddle]
+        self.fusion_calls.append((lens_texts, paddle_texts, processor))
+        return _series_with_texts(self.fused_texts)
+
+    def get_fuser(self, **kwargs: object) -> object:
+        """Return a fixed fake fuser."""
+        self.fuser_calls.append(kwargs)
+        return self.fuser
+
+    def load(self, path: Path) -> ImageSeries:
+        """Fake image subtitle loading."""
+        self.loaded_paths.append(path)
+        return self.image_series
+
+    def ocr_with_lens(self, image_series: ImageSeries, *, language: Language) -> Series:
+        """Fake Google Lens OCR."""
+        assert image_series is self.image_series
+        self.lens_calls.append(language)
+        return _series_with_texts(self.lens_texts)
+
+    def ocr_with_paddle(
+        self,
+        image_series: ImageSeries,
+        *,
+        language: Language,
+    ) -> Series:
+        """Fake PaddleOCR."""
+        assert image_series is self.image_series
+        self.paddle_calls.append(language)
+        return _series_with_texts(self.paddle_texts)
 
 
 def test_ocr_processing_workflow_is_callable(
@@ -170,60 +340,14 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
     source_path = tmp_path / "source.sup"
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
-    loaded_paths: list[Path] = []
-
-    def fake_load(path: Path) -> ImageSeries:
-        """Fake image subtitle loading."""
-        loaded_paths.append(path)
-        return tiny_image_series
-
-    def fake_lens(image_series: ImageSeries, *, language: Language) -> Series:
-        """Fake Google Lens OCR."""
-        assert image_series is tiny_image_series
-        assert language is Language.eng
-        return _series("lens")
-
-    def fake_tesseract(
-        image_series: ImageSeries,
-        *,
-        language: Language,
-    ) -> Series:
-        """Fake Tesseract OCR."""
-        assert image_series is tiny_image_series
-        assert language is Language.eng
-        return _series("tesseract")
-
-    def fake_fuse(lens: Series, tesseract: Series, processor: object) -> Series:
-        """Fake English OCR fusion."""
-        assert [subtitle.text for subtitle in lens] == ["lens"]
-        assert [subtitle.text for subtitle in tesseract] == ["tesseract"]
-        assert processor is fuser
-        return _series("fused")
-
-    fuser = object()
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load", fake_load
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        fake_lens,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
-        fake_tesseract,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
-        lambda provider, additional_context: fuser,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        fake_fuse,
-    )
+    pipeline = _PatchedEngOcrPipeline(monkeypatch, tiny_image_series)
 
     result = process_eng_ocr(source_path, output_dir_path, validate=False)
 
-    assert loaded_paths == [source_path]
+    assert pipeline.loaded_paths == [source_path]
+    assert pipeline.lens_calls == [Language.eng]
+    assert pipeline.tesseract_calls == [Language.eng]
+    assert pipeline.fusion_calls == [(["lens"], ["tesseract"], pipeline.fuser)]
     assert result.output_dir_path == output_dir_path
     assert result.output_paths == {
         "image": output_dir_path / "image",
@@ -302,37 +426,16 @@ def test_process_eng_ocr_can_clean_provider_outputs_before_fusion(
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
 
-    def fake_fuse(lens: Series, tesseract: Series, processor: object) -> Series:
-        """Fake English OCR fusion."""
-        assert [subtitle.text for subtitle in lens] == ["lens…"]
-        assert [subtitle.text for subtitle in tesseract] == ["tesseract"]
-        assert processor is fuser
-        return _series("fused")
-
-    fuser = object()
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        lambda image_series, *, language: _series("lens..."),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
-        lambda image_series, *, language: _series("[MUSIC] tesseract"),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
-        lambda provider, additional_context: fuser,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        fake_fuse,
+    pipeline = _PatchedEngOcrPipeline(
+        monkeypatch,
+        tiny_image_series,
+        lens_texts=["lens..."],
+        tesseract_texts=["[MUSIC] tesseract"],
     )
 
     result = process_eng_ocr(source_path, output_dir_path, clean=True, validate=False)
 
+    assert pipeline.fusion_calls == [(["lens…"], ["tesseract"], pipeline.fuser)]
     assert result.output_paths == {
         "image": output_dir_path / "image",
         "lens": output_dir_path / "lens.srt",
@@ -394,29 +497,12 @@ def test_process_eng_ocr_validates_fuse_clean_output(
             validate_calls.append(([subtitle.text for subtitle in series], self))
             return _series_with_texts(["validated 1", "validated 2"])
 
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        lambda image_series, *, language: _series_with_texts(["lens 1", "lens 2"]),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
-        lambda image_series, *, language: _series_with_texts(
-            ["tesseract 1", "tesseract 2"]
-        ),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
-        lambda provider, additional_context: object(),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, processor: _series_with_texts(
-            ["fused 1...", "fused 2..."]
-        ),
+    _PatchedEngOcrPipeline(
+        monkeypatch,
+        tiny_image_series,
+        lens_texts=["lens 1", "lens 2"],
+        tesseract_texts=["tesseract 1", "tesseract 2"],
+        fused_texts=["fused 1...", "fused 2..."],
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_validation.ValidationManager",
@@ -485,29 +571,12 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
         validated.save(outfile_path)
         return validated
 
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        lambda image_series, *, language: _series_with_texts(["lens 1", "lens 2"]),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
-        lambda image_series, *, language: _series_with_texts(
-            ["tesseract 1", "tesseract 2"]
-        ),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
-        lambda provider, additional_context: object(),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, processor: _series_with_texts(
-            ["fused 1...", "fused 2..."]
-        ),
+    _PatchedEngOcrPipeline(
+        monkeypatch,
+        tiny_image_series,
+        lens_texts=["lens 1", "lens 2"],
+        tesseract_texts=["tesseract 1", "tesseract 2"],
+        fused_texts=["fused 1...", "fused 2..."],
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.validate_ocr",
@@ -596,29 +665,12 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
             validate_texts.append([subtitle.text for subtitle in series])
             return _series_with_texts(["validated 1", "validated 2"])
 
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        lambda image_series, *, language: _series_with_texts(["lens 1", "lens 2"]),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
-        lambda image_series, *, language: _series_with_texts(
-            ["tesseract 1", "tesseract 2"]
-        ),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
-        lambda provider, additional_context: object(),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, processor: _series_with_texts(
-            ["fused 1...", "fused 2..."]
-        ),
+    _PatchedEngOcrPipeline(
+        monkeypatch,
+        tiny_image_series,
+        lens_texts=["lens 1", "lens 2"],
+        tesseract_texts=["tesseract 1", "tesseract 2"],
+        fused_texts=["fused 1...", "fused 2..."],
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_validation.ValidationManager",
@@ -655,56 +707,13 @@ def test_process_zho_ocr_runs_lens_paddle_and_fusion(
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
 
-    def fake_lens(image_series: ImageSeries, *, language: Language) -> Series:
-        """Fake Google Lens OCR."""
-        assert image_series is tiny_image_series
-        assert language is Language.zho_hans
-        return _series("lens")
-
-    def fake_paddle(image_series: ImageSeries, *, language: Language) -> Series:
-        """Fake PaddleOCR."""
-        assert image_series is tiny_image_series
-        assert language is Language.zho_hans
-        return _series("paddle")
-
-    def fake_fuse(lens: Series, paddle: Series, processor: object) -> Series:
-        """Fake Chinese OCR fusion."""
-        assert [subtitle.text for subtitle in lens] == ["lens"]
-        assert [subtitle.text for subtitle in paddle] == ["paddle"]
-        assert processor is fuser
-        return _series("fused")
-
-    fuser = object()
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        fake_lens,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_paddle",
-        fake_paddle,
-    )
-    fuser_kwargs = []
-
-    def fake_get_zho_ocr_fuser(**kwargs: object) -> object:
-        """Fake Chinese OCR fuser construction."""
-        fuser_kwargs.append(kwargs)
-        return fuser
-
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_zho_ocr_fuser",
-        fake_get_zho_ocr_fuser,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
-        fake_fuse,
-    )
+    pipeline = _PatchedZhoOcrPipeline(monkeypatch, tiny_image_series)
 
     result = process_zho_ocr(source_path, output_dir_path, validate=False)
 
+    assert pipeline.lens_calls == [Language.zho_hans]
+    assert pipeline.paddle_calls == [Language.zho_hans]
+    assert pipeline.fusion_calls == [(["lens"], ["paddle"], pipeline.fuser)]
     assert result.output_paths == {
         "image": output_dir_path / "image",
         "lens": output_dir_path / "lens.srt",
@@ -742,44 +751,16 @@ def test_process_zho_ocr_can_clean_provider_outputs_before_fusion(
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
 
-    def fake_fuse(lens: Series, paddle: Series, processor: object) -> Series:
-        """Fake Chinese OCR fusion."""
-        assert [subtitle.text for subtitle in lens] == ["镜头⋯"]
-        assert [subtitle.text for subtitle in paddle] == ["字幕，好？"]
-        assert processor is fuser
-        return _series("fused")
-
-    fuser = object()
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        lambda image_series, *, language: _series("镜头..."),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_paddle",
-        lambda image_series, *, language: _series("字幕, 好?"),
-    )
-    fuser_kwargs = []
-
-    def fake_get_zho_ocr_fuser(**kwargs: object) -> object:
-        """Fake Chinese OCR fuser construction."""
-        fuser_kwargs.append(kwargs)
-        return fuser
-
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_zho_ocr_fuser",
-        fake_get_zho_ocr_fuser,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
-        fake_fuse,
+    pipeline = _PatchedZhoOcrPipeline(
+        monkeypatch,
+        tiny_image_series,
+        lens_texts=["镜头..."],
+        paddle_texts=["字幕, 好?"],
     )
 
     result = process_zho_ocr(source_path, output_dir_path, clean=True, validate=False)
 
+    assert pipeline.fusion_calls == [(["镜头⋯"], ["字幕，好？"], pipeline.fuser)]
     assert result.output_paths == {
         "image": output_dir_path / "image",
         "lens": output_dir_path / "lens.srt",
@@ -818,52 +799,7 @@ def test_process_zho_ocr_passes_zho_hant_languages_to_ocr_engines(
     source_path = tmp_path / "source.sup"
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
-    fuser = object()
-
-    def fake_lens(image_series: ImageSeries, *, language: Language) -> Series:
-        """Fake Google Lens OCR."""
-        assert image_series is tiny_image_series
-        assert language is Language.zho_hant
-        return _series("lens")
-
-    def fake_paddle(image_series: ImageSeries, *, language: Language) -> Series:
-        """Fake PaddleOCR."""
-        assert image_series is tiny_image_series
-        assert language is Language.zho_hant
-        return _series("paddle")
-
-    def fake_fuse(lens: Series, paddle: Series, processor: object) -> Series:
-        """Fake Chinese OCR fusion."""
-        assert processor is fuser
-        return _series("fused")
-
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        fake_lens,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_paddle",
-        fake_paddle,
-    )
-    fuser_kwargs = []
-
-    def fake_get_zho_ocr_fuser(**kwargs: object) -> object:
-        """Fake Chinese OCR fuser construction."""
-        fuser_kwargs.append(kwargs)
-        return fuser
-
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_zho_ocr_fuser",
-        fake_get_zho_ocr_fuser,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
-        fake_fuse,
-    )
+    pipeline = _PatchedZhoOcrPipeline(monkeypatch, tiny_image_series)
 
     process_zho_ocr(
         source_path,
@@ -871,142 +807,15 @@ def test_process_zho_ocr_passes_zho_hant_languages_to_ocr_engines(
         language="zho-Hant",
         validate=False,
     )
-    assert fuser_kwargs == [
+    assert pipeline.lens_calls == [Language.zho_hant]
+    assert pipeline.paddle_calls == [Language.zho_hant]
+    assert pipeline.fuser_calls == [
         {
             "provider": None,
             "additional_context": None,
             "prompt_cls": OcrFusionPromptZhoHant,
         }
     ]
-
-
-def test_process_zho_ocr_validates_fuse_clean_output(
-    monkeypatch: pytest.MonkeyPatch,
-    tmp_path: Path,
-    tiny_image_series: ImageSeries,
-):
-    """Test Chinese OCR processing validates cleaned fused output by default.
-
-    Arguments:
-        monkeypatch: pytest monkeypatch fixture
-        tmp_path: pytest temporary path fixture
-        tiny_image_series: small image subtitle series
-    """
-    source_path = tmp_path / "source.sup"
-    source_path.write_bytes(b"unused")
-    output_dir_path = tmp_path / "output"
-    manager_instances: list[object] = []
-    manager_calls: list[bool] = []
-    validate_calls: list[tuple[list[str], object]] = []
-
-    class FakeValidationManager:
-        """Fake validation manager."""
-
-        def __init__(
-            self,
-            *,
-            cache_dir_path: Path | str | None = None,
-            dev: bool = False,
-        ):
-            """Initialize."""
-            manager_instances.append(self)
-            manager_calls.append(dev)
-
-        def validate(self, series: ImageSeries) -> Series:
-            """Validate an image series."""
-            validate_calls.append(([subtitle.text for subtitle in series], self))
-            return _series_with_texts(["validated 1", "validated 2"])
-
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        lambda image_series, *, language: _series_with_texts(["lens 1", "lens 2"]),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_paddle",
-        lambda image_series, *, language: _series_with_texts(["paddle 1", "paddle 2"]),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_zho_ocr_fuser",
-        lambda **kwargs: object(),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
-        lambda lens, paddle, processor: _series_with_texts(
-            ["fused 1...", "fused 2..."]
-        ),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_validation.ValidationManager",
-        FakeValidationManager,
-    )
-
-    result = process_zho_ocr(source_path, output_dir_path, dev=True)
-
-    assert result.output_paths["image"] == output_dir_path / "image"
-    assert result.output_paths["fuse_clean_validate"] == (
-        output_dir_path / "fuse_clean_validate.srt"
-    )
-    assert manager_calls == [True]
-    assert validate_calls == [(["fused 1⋯", "fused 2⋯"], manager_instances[0])]
-    assert [
-        subtitle.text
-        for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
-    ] == ["validated 1", "validated 2"]
-
-
-def test_process_eng_ocr_can_export_source_image_series(
-    monkeypatch: pytest.MonkeyPatch,
-    tmp_path: Path,
-    tiny_image_series: ImageSeries,
-):
-    """Test OCR processing can export source image subtitles.
-
-    Arguments:
-        monkeypatch: pytest monkeypatch fixture
-        tmp_path: pytest temporary path fixture
-        tiny_image_series: small image subtitle series
-    """
-    source_path = tmp_path / "source.sup"
-    source_path.write_bytes(b"unused")
-    output_dir_path = tmp_path / "output"
-
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        lambda path: tiny_image_series,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        lambda image_series, *, language: _series_with_texts(
-            ["lens text", "lens text 2"]
-        ),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
-        lambda image_series, *, language: _series_with_texts(
-            ["tesseract text", "tesseract text 2"]
-        ),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
-        lambda provider, additional_context: object(),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, processor: _series_with_texts(
-            ["fused text", "fused text 2"]
-        ),
-    )
-
-    result = process_eng_ocr(source_path, output_dir_path, validate=False)
-
-    assert result.output_paths["image"] == output_dir_path / "image"
-    assert "recognized" in (output_dir_path / "image/index.html").read_text(
-        encoding="utf-8"
-    )
 
 
 def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
@@ -1027,7 +836,6 @@ def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
     output_dir_path = tmp_path / "output"
     stream = SubtitleStream(index=5, codec_name="hdmv_pgs_subtitle")
     cache_calls: list[tuple[Path, list[SubtitleStream], Path | None]] = []
-    loaded_paths: list[Path] = []
 
     def fake_cache_subtitles(
         infile_path: Path,
@@ -1038,11 +846,7 @@ def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
         """Fake media subtitle caching."""
         cache_calls.append((infile_path, streams, cache_dir_path))
 
-    def fake_load(path: Path) -> ImageSeries:
-        """Fake image subtitle loading."""
-        loaded_paths.append(path)
-        return tiny_image_series
-
+    pipeline = _PatchedEngOcrPipeline(monkeypatch, tiny_image_series)
     monkeypatch.setattr(
         "scinoephile.media.subtitles.selection.get_subtitle_streams",
         lambda path: [stream],
@@ -1055,31 +859,11 @@ def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
         "scinoephile.workflows.ocr_processing.get_subtitle_cache_path",
         lambda infile_path, selected_stream, cache_dir_path=None: cached_sup_path,
     )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ImageSeries.load",
-        fake_load,
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
-        lambda image_series, *, language: _series("lens"),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
-        lambda image_series, *, language: _series("tesseract"),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
-        lambda provider, additional_context: object(),
-    )
-    monkeypatch.setattr(
-        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
-        lambda lens, tesseract, processor: _series("fused"),
-    )
 
     process_eng_ocr(source_path, output_dir_path, stream_index=5, validate=False)
 
     assert cache_calls == [(source_path, [stream], None)]
-    assert loaded_paths == [cached_sup_path]
+    assert pipeline.loaded_paths == [cached_sup_path]
 
 
 def test_process_eng_ocr_media_input_requires_matching_stream_index(

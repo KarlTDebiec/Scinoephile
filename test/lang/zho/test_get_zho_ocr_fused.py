@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from unittest.mock import Mock
 
+import pytest
+
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
@@ -15,28 +17,7 @@ from scinoephile.lang.zho.ocr_fusion import (
     get_zho_ocr_fuser,
 )
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionProcessor
 from test.helpers import assert_series_equal
-
-
-def _test_get_zho_ocr_fused(
-    lens: Series,
-    paddle: Series,
-    expected: Series,
-    processor: OcrFusionProcessor | None = None,
-):
-    """Test get_zho_ocr_fused.
-
-    Arguments:
-        lens: subtitles OCRed using Google Lens
-        paddle: subtitles OCRed using PaddleOCR
-        expected: expected output series
-        processor: processor to use
-    """
-    output = get_zho_ocr_fused(lens, paddle, processor=processor)
-
-    assert len(output) == len(expected)
-    assert_series_equal(output, expected)
 
 
 def test_get_zho_ocr_fused_treats_newline_forms_as_identical():
@@ -68,90 +49,83 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical():
     provider.chat_completion.assert_not_called()
 
 
-def test_get_zho_ocr_fused_kob(
-    kob_zho_hant_ocr_lens: Series,
-    kob_zho_hant_ocr_paddle: Series,
-    kob_zho_hant_ocr_fuse: Series,
+@pytest.mark.parametrize(
+    (
+        "lens_fixture",
+        "paddle_fixture",
+        "expected_fixture",
+        "convert",
+        "use_traditional_prompt",
+    ),
+    [
+        (
+            "kob_zho_hant_ocr_lens",
+            "kob_zho_hant_ocr_paddle",
+            "kob_zho_hant_ocr_fuse",
+            OpenCCConfig.s2t,
+            True,
+        ),
+        (
+            "mlamd_zho_hans_ocr_lens",
+            "mlamd_zho_hans_ocr_paddle",
+            "mlamd_zho_hans_fuse",
+            None,
+            False,
+        ),
+        (
+            "mnt_zho_hans_ocr_lens",
+            "mnt_zho_hans_ocr_paddle",
+            "mnt_zho_hans_fuse",
+            None,
+            False,
+        ),
+        (
+            "t_zho_hans_ocr_lens",
+            "t_zho_hans_ocr_paddle",
+            "t_zho_hans_fuse",
+            None,
+            False,
+        ),
+    ],
+)
+def test_get_zho_ocr_fused(
+    request: pytest.FixtureRequest,
+    lens_fixture: str,
+    paddle_fixture: str,
+    expected_fixture: str,
+    convert: OpenCCConfig | None,
+    use_traditional_prompt: bool,
 ):
-    """Test get_zho_ocr_fused with KOB standard Chinese subtitles.
+    """Test get_zho_ocr_fused against expected fused outputs.
 
     Arguments:
-        kob_zho_hant_ocr_lens: KOB standard Chinese subtitles OCRed using
-          Google Lens fixture
-        kob_zho_hant_ocr_paddle: KOB standard Chinese subtitles OCRed using
-          PaddleOCR fixture
-        kob_zho_hant_ocr_fuse: Expected fused KOB standard Chinese subtitles fixture
+        request: pytest request for fixture lookup
+        lens_fixture: fixture name for Google Lens OCR subtitles
+        paddle_fixture: fixture name for PaddleOCR subtitles
+        expected_fixture: fixture name for expected output series
+        convert: OpenCC conversion to apply before fusing
+        use_traditional_prompt: whether to use the traditional prompt fuser
     """
-    lens = get_zho_cleaned(kob_zho_hant_ocr_lens, remove_empty=False)
-    lens = get_zho_converted(lens, config=OpenCCConfig.s2t)
-    paddle = get_zho_cleaned(kob_zho_hant_ocr_paddle, remove_empty=False)
-    paddle = get_zho_converted(paddle, config=OpenCCConfig.s2t)
-    _test_get_zho_ocr_fused(
+    lens = get_zho_cleaned(request.getfixturevalue(lens_fixture), remove_empty=False)
+    paddle = get_zho_cleaned(
+        request.getfixturevalue(paddle_fixture), remove_empty=False
+    )
+    if convert is None:
+        lens = get_zho_converted(lens)
+        paddle = get_zho_converted(paddle)
+    else:
+        lens = get_zho_converted(lens, config=convert)
+        paddle = get_zho_converted(paddle, config=convert)
+
+    processor = None
+    if use_traditional_prompt:
+        processor = get_zho_ocr_fuser(prompt_cls=OcrFusionPromptZhoHant)
+    expected = request.getfixturevalue(expected_fixture)
+    output = get_zho_ocr_fused(
         lens,
         paddle,
-        kob_zho_hant_ocr_fuse,
-        get_zho_ocr_fuser(prompt_cls=OcrFusionPromptZhoHant),
+        processor=processor,
     )
 
-
-def test_get_zho_ocr_fused_mlamd(
-    mlamd_zho_hans_ocr_lens: Series,
-    mlamd_zho_hans_ocr_paddle: Series,
-    mlamd_zho_hans_fuse: Series,
-):
-    """Test get_zho_ocr_fused with MLAMD standard Chinese subtitles.
-
-    Arguments:
-        mlamd_zho_hans_ocr_lens: MLAMD standard Chinese subtitles OCRed using
-          Google Lens fixture
-        mlamd_zho_hans_ocr_paddle: MLAMD standard Chinese subtitles OCRed using
-          PaddleOCR fixture
-        mlamd_zho_hans_fuse: Expected fused MLAMD standard Chinese subtitles fixture
-    """
-    lens = get_zho_cleaned(mlamd_zho_hans_ocr_lens, remove_empty=False)
-    lens = get_zho_converted(lens)
-    paddle = get_zho_cleaned(mlamd_zho_hans_ocr_paddle, remove_empty=False)
-    paddle = get_zho_converted(paddle)
-    _test_get_zho_ocr_fused(lens, paddle, mlamd_zho_hans_fuse)
-
-
-def test_get_zho_ocr_fused_mnt(
-    mnt_zho_hans_ocr_lens: Series,
-    mnt_zho_hans_ocr_paddle: Series,
-    mnt_zho_hans_fuse: Series,
-):
-    """Test get_zho_ocr_fused with MNT standard Chinese subtitles.
-
-    Arguments:
-        mnt_zho_hans_ocr_lens: MNT standard Chinese subtitles OCRed using
-          Google Lens fixture
-        mnt_zho_hans_ocr_paddle: MNT standard Chinese subtitles OCRed using
-          PaddleOCR fixture
-        mnt_zho_hans_fuse: Expected fused MNT standard Chinese subtitles fixture
-    """
-    lens = get_zho_cleaned(mnt_zho_hans_ocr_lens, remove_empty=False)
-    lens = get_zho_converted(lens)
-    paddle = get_zho_cleaned(mnt_zho_hans_ocr_paddle, remove_empty=False)
-    paddle = get_zho_converted(paddle)
-    _test_get_zho_ocr_fused(lens, paddle, mnt_zho_hans_fuse)
-
-
-def test_get_zho_ocr_fused_t(
-    t_zho_hans_ocr_lens: Series,
-    t_zho_hans_ocr_paddle: Series,
-    t_zho_hans_fuse: Series,
-):
-    """Test get_zho_ocr_fused with T standard Chinese subtitles.
-
-    Arguments:
-        t_zho_hans_ocr_lens: T standard Chinese subtitles OCRed using Google
-          Lens fixture
-        t_zho_hans_ocr_paddle: T standard Chinese subtitles OCRed using
-          PaddleOCR fixture
-        t_zho_hans_fuse: Expected fused T standard Chinese subtitles fixture
-    """
-    lens = get_zho_cleaned(t_zho_hans_ocr_lens, remove_empty=False)
-    lens = get_zho_converted(lens)
-    paddle = get_zho_cleaned(t_zho_hans_ocr_paddle, remove_empty=False)
-    paddle = get_zho_converted(paddle)
-    _test_get_zho_ocr_fused(lens, paddle, t_zho_hans_fuse)
+    assert len(output) == len(expected)
+    assert_series_equal(output, expected)
