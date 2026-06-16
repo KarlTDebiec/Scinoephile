@@ -352,8 +352,11 @@ class OcrProcessingWorkflow:
         # Copy text from input series to pre-existing image series
         image_dir_path = self.output_dir_path / "image"
         image_series = ImageSeries.load(image_dir_path)
-        image_series.copy_text_from(series)
-        image_series.save(image_dir_path)
+        image_texts = [subtitle.text for subtitle in image_series]
+        series_texts = [subtitle.text for subtitle in series]
+        if image_texts != series_texts:
+            image_series.copy_text_from(series)
+            image_series.save(image_dir_path)
 
         # Validate and save output
         validate_ocr(

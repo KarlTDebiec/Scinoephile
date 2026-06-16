@@ -143,8 +143,11 @@ def _ocr(
     image_dir_path = output_dir_path / "image"
     if image_dir_path.exists():
         image_series = ImageSeries.load(image_dir_path, encoding="utf-8")
-        image_series.copy_text_from(validated)
-        image_series.save(image_dir_path, encoding="utf-8")
+        image_texts = [subtitle.text for subtitle in image_series]
+        validated_texts = [subtitle.text for subtitle in validated]
+        if image_texts != validated_texts:
+            image_series.copy_text_from(validated)
+            image_series.save(image_dir_path, encoding="utf-8")
     return validated
 
 
