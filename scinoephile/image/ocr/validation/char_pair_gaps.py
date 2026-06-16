@@ -10,6 +10,8 @@ from pathlib import Path
 
 from scinoephile.core.text import full_punc, get_char_type
 
+from .csv_io import save_csv_rows
+
 __all__ = [
     "get_default_char_pair_cutoffs",
     "get_expected_space",
@@ -157,9 +159,7 @@ def save_char_pair_gaps(
         cutoff_1, cutoff_2, cutoff_3, cutoff_4 = cutoffs
         rows.append((char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4))
     rows = sorted({tuple(row) for row in rows})
-    with file_path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.writer(handle)
-        writer.writerows(rows)
+    save_csv_rows(rows, file_path)
     logger.info(f"Saved {file_path}.")
 
 
