@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import os
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,47 @@ from scinoephile.workflows.ocr_processing import (
     OcrProcessingResult,
     OcrProcessingWorkflow,
 )
+
+OLD_MTIME = 1_700_000_000
+"""Older file modification time used by timestamp-sensitive tests."""
+NEW_MTIME = OLD_MTIME + 10
+"""Newer file modification time used by timestamp-sensitive tests."""
+
+
+def _image_series_with_texts(
+    image_series: ImageSeries,
+    texts: list[str],
+) -> ImageSeries:
+    """Build an image series with copied image data and replacement text.
+
+    Arguments:
+        image_series: source image series
+        texts: replacement subtitle texts
+    Returns:
+        image series with replacement text
+    """
+    assert len(image_series.events) == len(texts)
+    return ImageSeries(
+        events=[
+            type(subtitle)(
+                start=subtitle.start,
+                end=subtitle.end,
+                img=subtitle.img,
+                text=text,
+            )
+            for subtitle, text in zip(image_series.events, texts)
+        ]
+    )
+
+
+def _set_mtime(file_path: Path, mtime: int):
+    """Set a deterministic file modification time.
+
+    Arguments:
+        file_path: file path to update
+        mtime: modification time as seconds since epoch
+    """
+    os.utime(file_path, (mtime, mtime))
 
 
 def _series_with_texts(texts: list[str]) -> Series:
@@ -689,6 +731,96 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
     current_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
     assert "fused 1…" in current_index
     assert "fused 2…" in current_index
+
+
+def test_ocr_validation_keeps_newer_image_index_text(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test validation keeps image index text when it is newer than fuse_clean.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+    """
+    validate_texts: list[list[str]] = []
+    output_dir_path = tmp_path / "output"
+    image_dir_path = output_dir_path / "image"
+    image_series = _image_series_with_texts(tiny_image_series, ["edited 1", "edited 2"])
+    image_series.save(image_dir_path)
+    source_series = _series_with_texts(["fused 1", "fused 2"])
+    source_path = output_dir_path / "fuse_clean.srt"
+    source_series.save(source_path, format_="srt")
+    _set_mtime(source_path, OLD_MTIME)
+    _set_mtime(image_dir_path / "index.html", NEW_MTIME)
+
+    def fake_validate_ocr(source: Path, outfile_path: Path, **kwargs: object):
+        """Record text passed to validation."""
+        validate_texts.append([subtitle.text for subtitle in ImageSeries.load(source)])
+
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.validate_ocr",
+        fake_validate_ocr,
+    )
+    workflow = OcrProcessingWorkflow(
+        tmp_path / "source.sup",
+        output_dir_path,
+        language=Language.eng,
+    )
+
+    workflow._validate(source_series)
+
+    assert validate_texts == [["edited 1", "edited 2"]]
+    current_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
+    assert "edited 1" in current_index
+    assert "fused 1" not in current_index
+
+
+def test_ocr_validation_uses_newer_fuse_clean_text(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test validation syncs image index text when fuse_clean is newer.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+    """
+    validate_texts: list[list[str]] = []
+    output_dir_path = tmp_path / "output"
+    image_dir_path = output_dir_path / "image"
+    image_series = _image_series_with_texts(tiny_image_series, ["edited 1", "edited 2"])
+    image_series.save(image_dir_path)
+    source_series = _series_with_texts(["fused 1", "fused 2"])
+    source_path = output_dir_path / "fuse_clean.srt"
+    source_series.save(source_path, format_="srt")
+    _set_mtime(image_dir_path / "index.html", OLD_MTIME)
+    _set_mtime(source_path, NEW_MTIME)
+
+    def fake_validate_ocr(source: Path, outfile_path: Path, **kwargs: object):
+        """Record text passed to validation."""
+        validate_texts.append([subtitle.text for subtitle in ImageSeries.load(source)])
+
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.validate_ocr",
+        fake_validate_ocr,
+    )
+    workflow = OcrProcessingWorkflow(
+        tmp_path / "source.sup",
+        output_dir_path,
+        language=Language.eng,
+    )
+
+    workflow._validate(source_series)
+
+    assert validate_texts == [["fused 1", "fused 2"]]
+    current_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
+    assert "fused 1" in current_index
+    assert "edited 1" not in current_index
 
 
 def test_process_zho_ocr_runs_lens_paddle_and_fusion(
