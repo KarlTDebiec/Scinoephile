@@ -50,14 +50,10 @@
       "subtitle_47": "this guy keeps talking all the time",
       "subtitle_48": "we don't know what he's talking about",
       "subtitle_49": "He's just like a fly hanging around",
-      "subtitle_50": "sorry, not a fly",
+      "subtitle_50": "Sorry, not a fly",
       "subtitle_51": "It's a swarm of flies flying near your ears"
     },
-    "answer": {
-      "revised_7": "You've followed me for 3 days.",
-      "note_7": "Added a period at the end of the subtitle."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -80,7 +76,7 @@
       "subtitle_10": "Now you know why I need to kill",
       "subtitle_11": "Monkey King, you have so many excuses",
       "subtitle_12": "You don't want to get\nscriptures in the west",
-      "subtitle_13": "shut up please! Beat!"
+      "subtitle_13": "Shut up please! Beat!"
     },
     "answer": {}
   },
@@ -89,10 +85,7 @@
       "subtitle_1": "I've got a super body. You can't hurt me",
       "subtitle_2": "I don't scare of any god"
     },
-    "answer": {
-      "revised_2": "I don't fear any god",
-      "note_2": "Corrected 'scare of' to 'fear'."
-    },
+    "answer": {},
     "difficulty": 1
   },
   {
@@ -132,7 +125,7 @@
     },
     "answer": {
       "revised_1": "What did he say?",
-      "note_1": "Corrected 'said' to 'say' and removed the extra space before the question mark."
+      "note_1": "Removed the extra 'd' in 'said' and fixed spacing before the question mark."
     },
     "difficulty": 1
   },
@@ -143,7 +136,7 @@
     },
     "answer": {
       "revised_1": "Who the hell are you?",
-      "note_1": "Corrected word order to form the proper question."
+      "note_1": "Corrected word order in the question."
     },
     "difficulty": 1
   },
@@ -166,10 +159,7 @@
       "subtitle_15": "So can I",
       "subtitle_16": "Who the hell you are?"
     },
-    "answer": {
-      "revised_16": "Who the hell are you?",
-      "note_16": "Corrected the word order in the question."
-    },
+    "answer": {},
     "difficulty": 1
   },
   {
@@ -179,8 +169,8 @@
       "subtitle_3": "Money or your heads"
     },
     "answer": {
-      "revised_2": "Nothing gets in my way and survives",
-      "note_2": "Corrected 'get' to 'gets' and 'into' to 'in' for grammar and usage."
+      "revised_2": "Nothing gets into my way and survives",
+      "note_2": "Corrected 'get' to 'gets' and 'survive' to 'survives' for subject-verb agreement."
     },
     "difficulty": 1
   },
@@ -190,7 +180,8 @@
       "subtitle_2": "This devil is a fierce robber",
       "subtitle_3": "Is here having big business?"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1
   },
   {
     "query": {
@@ -238,7 +229,8 @@
       "subtitle_42": "Ma'am 30th",
       "subtitle_43": "No need to scare! I'm here!"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1
   },
   {
     "query": {
@@ -293,7 +285,7 @@
       "subtitle_4": "Kill us all if you can!",
       "subtitle_5": "Forgive me…",
       "subtitle_6": "Forgive me, heroine…",
-      "subtitle_7": "stupid! Do you think she will let you go?",
+      "subtitle_7": "Stupid! Do you think she will let you go ?",
       "subtitle_8": "I'm gonna fight",
       "subtitle_9": "even if I lost my life!",
       "subtitle_10": "That's fine. Since you're willing to beg me",
@@ -301,7 +293,11 @@
       "subtitle_12": "Thanks a lot!…",
       "subtitle_13": "You…you're so righteous!"
     },
-    "answer": {}
+    "answer": {
+      "revised_7": "Stupid! Do you think she will let you go?",
+      "note_7": "Removed the extra space before the question mark."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -309,8 +305,8 @@
       "subtitle_2": "You all clean your sole and wait for me outside"
     },
     "answer": {
-      "revised_2": "You all clean your soles and wait for me outside",
-      "note_2": "Corrected 'sole' to 'soles'."
+      "revised_2": "You all clean your soul and wait for me outside",
+      "note_2": "Corrected 'sole' to 'soul'."
     },
     "difficulty": 1
   },
@@ -335,7 +331,11 @@
       "subtitle_17": "I not only peeped on you",
       "subtitle_18": "I've peeped on you all"
     },
-    "answer": {}
+    "answer": {
+      "revised_6": "why she wanna see our soles?",
+      "note_6": "Corrected 'sole' to 'soles'."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -439,13 +439,19 @@
   },
   {
     "query": {
-      "subtitle_1": "What's up?",
+      "subtitle_1": "What's up ?",
       "subtitle_2": "A spider is running after Master?",
-      "subtitle_3": "This way? No…",
+      "subtitle_3": "This way? No….",
       "subtitle_4": "This way!",
       "subtitle_5": "Fine, be quick!"
     },
-    "answer": {}
+    "answer": {
+      "revised_1": "What's up?",
+      "note_1": "Removed the extra space before the question mark.",
+      "revised_3": "This way? No…",
+      "note_3": "Removed the extra period after the ellipsis."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -471,7 +477,7 @@
     },
     "answer": {
       "revised_8": "No! It's Master! Master…",
-      "note_8": "Corrected 'it's' to 'It's' at the start of the sentence."
+      "note_8": "Capitalized 'it's' to 'It's'."
     },
     "difficulty": 1
   },
@@ -592,7 +598,7 @@
     },
     "answer": {
       "revised_17": "I'm going to put out the fire, too",
-      "note_17": "Corrected 'to out' to 'put out'."
+      "note_17": "Corrected 'out' to 'put out' to form the intended phrase."
     },
     "difficulty": 1
   },
@@ -625,7 +631,7 @@
       "subtitle_25": "I've told you to kill Ma'am 30th.",
       "subtitle_26": "Have you done that?",
       "subtitle_27": "Ma'am 30th is a devil!",
-      "subtitle_28": "spider Woman!",
+      "subtitle_28": "Spider Woman!",
       "subtitle_29": "I'm a rational man",
       "subtitle_30": "I can't accept such ridiculous thing!",
       "subtitle_31": "Kill her!",
@@ -641,8 +647,8 @@
       "subtitle_41": "Why I go first everytime…"
     },
     "answer": {
-      "revised_41": "Why do I go first every time…",
-      "note_41": "Corrected 'everytime' to 'every time' and 'Why I go' to 'Why do I go'."
+      "revised_41": "Why do I go first everytime…",
+      "note_41": "Corrected 'Why I go first' to 'Why do I go first' for grammar."
     },
     "difficulty": 1
   },
@@ -663,7 +669,7 @@
       "subtitle_1": "Sons of bitches!",
       "subtitle_2": "Get! You are not fooling me",
       "subtitle_3": "Listen to me",
-      "subtitle_4": "stop that",
+      "subtitle_4": "Stop that",
       "subtitle_5": "Fainted?",
       "subtitle_6": "Big Cow, Younger Tiger",
       "subtitle_7": "You're all useless. Let me do this"
@@ -733,13 +739,13 @@
     },
     "answer": {
       "revised_1": "Only thrust the thigh once,\nbut there are so many holes",
-      "note_1": "Corrected \"there're\" to \"there are\"."
+      "note_1": "Corrected 'there're' to 'there are'."
     },
     "difficulty": 1
   },
   {
     "query": {
-      "subtitle_1": "sister, why did you leave?",
+      "subtitle_1": "Sister, why did you leave?",
       "subtitle_2": "You ran to this poor village",
       "subtitle_3": "and you're forced to reveal",
       "subtitle_4": "your real image",
@@ -758,7 +764,7 @@
       "subtitle_17": "The top secret says that\nhe'll become human",
       "subtitle_18": "and he has three birthmarks on his sole",
       "subtitle_19": "you can find the Monk\nif you know where Monkey King is.",
-      "subtitle_20": "sister, do you still think\nI'm speaking nonsense?",
+      "subtitle_20": "Sister, do you still think\nI'm speaking nonsense?",
       "subtitle_21": "You just want to see that monkey",
       "subtitle_22": "You can do nothing even if you see him",
       "subtitle_23": "The difference is that\nhe died in Goddess's hands last time",
@@ -768,15 +774,7 @@
       "subtitle_27": "You know the reason!",
       "subtitle_28": "Do you wanna fight over him with me?"
     },
-    "answer": {
-      "revised_1": "Sister, why did you leave?",
-      "note_1": "Capitalized 'sister' at the start of the subtitle.",
-      "revised_10": "You can make Grandpa Buddha",
-      "note_10": "Corrected 'Granpa' to 'Grandpa'.",
-      "revised_20": "Sister, do you still think\nI'm speaking nonsense?",
-      "note_20": "Capitalized 'sister' at the start of the subtitle."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -815,11 +813,7 @@
       "subtitle_5": "Tell the King about this",
       "subtitle_6": "he will bestow on us"
     },
-    "answer": {
-      "revised_6": "he will bestow it on us",
-      "note_6": "Added 'it' for correct grammar and to complete the sentence."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -863,8 +857,8 @@
     "answer": {
       "revised_6": "We needn't be robbers anymore…",
       "note_6": "Removed the unnecessary 'to' from 'needn't to'.",
-      "revised_12": "Walk both girls out",
-      "note_12": "Corrected 'away' to 'out'."
+      "revised_10": "OK, I'm leaving, please take a rest",
+      "note_10": "Corrected 'Ok' to 'OK'."
     },
     "difficulty": 1
   },
@@ -899,16 +893,12 @@
       "subtitle_2": "Yes!",
       "subtitle_3": "Ok, let's play again"
     },
-    "answer": {
-      "revised_3": "OK, let's play again",
-      "note_3": "Corrected 'Ok' to 'OK'."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
       "subtitle_1": "Play again?",
-      "subtitle_2": "I don't wanna play…",
+      "subtitle_2": "I don't wanna play….",
       "subtitle_3": "You said who's got eight claws?",
       "subtitle_4": "I can't remember it…",
       "subtitle_5": "What?",
@@ -959,7 +949,7 @@
     },
     "answer": {
       "revised_3": "I thought I was the only one",
-      "note_3": "Corrected 'am' to 'was' for correct tense."
+      "note_3": "Corrected 'am' to 'was' for proper tense agreement."
     },
     "difficulty": 1
   },
@@ -1022,8 +1012,8 @@
       "subtitle_9": "He can't enjoy it"
     },
     "answer": {
-      "revised_4": "I have waited for you 3 years.",
-      "note_4": "Added a period at the end of the subtitle."
+      "revised_7": "He said give it to Miss Pak\nwhen you come here",
+      "note_7": "Inserted 'to' after 'give it'."
     },
     "difficulty": 1
   },
@@ -1039,19 +1029,19 @@
       "subtitle_1": "The hair on the sole has shaved off",
       "subtitle_2": "I don't know when it will grow again"
     },
-    "answer": {}
+    "answer": {
+      "revised_1": "The hair on the sole has been shaved off",
+      "note_1": "Inserted 'been' for correct passive voice construction."
+    },
+    "difficulty": 1
   },
   {
     "query": {
-      "subtitle_1": "shit! They come first!",
+      "subtitle_1": "Shit! They come first!",
       "subtitle_2": "I have to inform",
       "subtitle_3": "these innocent people"
     },
-    "answer": {
-      "revised_1": "Shit! They come first!",
-      "note_1": "Capitalized the first word."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -1082,8 +1072,10 @@
       "subtitle_6": "Ok, that's fine!"
     },
     "answer": {
+      "revised_1": "We have to go, Master, or we'll be late.",
+      "note_1": "Added a missing period at the end.",
       "revised_4": "Who dares to do so?",
-      "note_4": "Corrected 'dare' to 'dares' for subject-verb agreement.",
+      "note_4": "Corrected 'dare' to 'dares' for subject-verb agreement and added a question mark.",
       "revised_6": "OK, that's fine!",
       "note_6": "Corrected 'Ok' to 'OK'."
     },
@@ -1096,7 +1088,11 @@
       "subtitle_3": "Rob the sole",
       "subtitle_4": "I have no legs. What to do?"
     },
-    "answer": {}
+    "answer": {
+      "revised_3": "Rob the sole.",
+      "note_3": "Added a period at the end of the subtitle."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -1133,12 +1129,12 @@
       "subtitle_10": "If you don't believe me",
       "subtitle_11": "you can use my Magic Mirror!",
       "subtitle_12": "I use your Mom's mirror!",
-      "subtitle_13": "Say! Listen to me",
+      "subtitle_13": "Say ! Listen to me",
       "subtitle_14": "Have you stolen my grapes?",
       "subtitle_15": "No!",
       "subtitle_16": "Where are my grapes!",
       "subtitle_17": "I'm your grapes!",
-      "subtitle_18": "louder!",
+      "subtitle_18": "Louder!",
       "subtitle_19": "I'm your grapes",
       "subtitle_20": "Why aren't you an apple?",
       "subtitle_21": "Listen to me",
@@ -1162,7 +1158,19 @@
       "subtitle_39": "It's not dark yet,\nhow come is there a moon?",
       "subtitle_40": "Tell me…"
     },
-    "answer": {}
+    "answer": {
+      "revised_5": "Stop the nonsense.",
+      "note_5": "Corrected 'non-sense' to 'nonsense'.",
+      "revised_7": "I turned myself into grapes and saved you",
+      "note_7": "Corrected 'save' to 'saved' for tense agreement.",
+      "revised_13": "Say! Listen to me",
+      "note_13": "Removed the extra space before the exclamation mark.",
+      "revised_16": "Where are my grapes?",
+      "note_16": "Changed the ending punctuation from exclamation mark to question mark.",
+      "revised_36": "What a pretty moon. Let’s…",
+      "note_36": "Corrected the apostrophe in 'Let'…' to a closing quotation-style apostrophe."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -1177,7 +1185,7 @@
       "subtitle_9": "You trust me now!",
       "subtitle_10": "Yes, I trust you",
       "subtitle_11": "Why do we have devil here?",
-      "subtitle_12": "stupid fool, listen to me",
+      "subtitle_12": "Stupid fool, listen to me",
       "subtitle_13": "These devils are waiting\nfor the Longevity Monk",
       "subtitle_14": "Longevity Monk?",
       "subtitle_15": "500 years ago,\nMonkey King was destroyed by Goddess",
@@ -1204,7 +1212,7 @@
       "subtitle_36": "looking at me",
       "subtitle_37": "make me embarrassed",
       "subtitle_38": "Your eyes look like the eyes in my dream",
-      "subtitle_39": "sometimes, my face becomes red",
+      "subtitle_39": "Sometimes, my face becomes red",
       "subtitle_40": "I have to face the devils tonight!",
       "subtitle_41": "Yes! You are facing devils tonight!",
       "subtitle_42": "Two Magic Bags here,\nand some invisible stickers",
@@ -1242,21 +1250,14 @@
       "subtitle_4": "You wait a moment",
       "subtitle_5": "Asst. Master"
     },
-    "answer": {
-      "revised_3": "It is Master’s order",
-      "note_3": "Corrected the apostrophe in 'Master's'."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
       "subtitle_1": "Tell the others, Master is looking for us",
       "subtitle_2": "Go"
     },
-    "answer": {
-      "revised_1": "Tell the others, Master is looking for us.",
-      "note_1": "Added a period at the end of the subtitle."
-    },
+    "answer": {},
     "difficulty": 1
   },
   {
@@ -1269,14 +1270,10 @@
   {
     "query": {
       "subtitle_1": "Sister",
-      "subtitle_2": "ΟΚ…",
+      "subtitle_2": "OK….",
       "subtitle_3": "Let's keep quiet and see what they want"
     },
-    "answer": {
-      "revised_2": "OK…",
-      "note_2": "Corrected Greek letters 'ΟΚ' to English 'OK'."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -1286,7 +1283,7 @@
   },
   {
     "query": {
-      "subtitle_1": "sister, you drink too"
+      "subtitle_1": "Sister, you drink too"
     },
     "answer": {}
   },
@@ -1353,8 +1350,8 @@
       "subtitle_12": "Yes!"
     },
     "answer": {
-      "revised_9": "That's better than nothing",
-      "note_9": "Corrected 'zxa' to 'than'."
+      "revised_4": "I paid you back last month",
+      "note_4": "Removed 'have' to correct the tense in 'I paid you back last month'."
     },
     "difficulty": 1
   },
@@ -1365,11 +1362,7 @@
       "subtitle_3": "The Magic Bag is here.\nThey wanna frame you",
       "subtitle_4": "Traitor, you betray me"
     },
-    "answer": {
-      "revised_4": "Traitor, you betray me.",
-      "note_4": "Added a missing period at the end."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -1408,7 +1401,7 @@
       "subtitle_17": "Shut up!",
       "subtitle_18": "Wong Choi",
       "subtitle_19": "The string you're biting is so familiar",
-      "subtitle_20": "stranger",
+      "subtitle_20": "Stranger",
       "subtitle_21": "It is the string for my Magic Bag",
       "subtitle_22": "Son of a bitch",
       "subtitle_23": "How dare you come here!",
@@ -1417,7 +1410,7 @@
       "subtitle_26": "Then you won't find the Longevity Monk",
       "subtitle_27": "What?",
       "subtitle_28": "He is the Monkey King?",
-      "subtitle_29": "say you're the Monkey King",
+      "subtitle_29": "Say you're the Monkey King",
       "subtitle_30": "or we'll all die",
       "subtitle_31": "He's not the Monkey King",
       "subtitle_32": "He can't even withstand my Skeleton Fire",
@@ -1469,18 +1462,14 @@
       "subtitle_13": "Are you that heartless guy?",
       "subtitle_14": "You deceived me last night!",
       "subtitle_15": "That Monkey King",
-      "subtitle_16": "sister will not be married just\nbecause of you",
+      "subtitle_16": "Sister will not be married just\nbecause of you",
       "subtitle_17": "Me?",
       "subtitle_18": "Get the Joker!",
       "subtitle_19": "Go!",
-      "subtitle_20": "stop that",
+      "subtitle_20": "Stop that",
       "subtitle_21": "Master, go"
     },
-    "answer": {
-      "revised_20": "Stop that",
-      "note_20": "Capitalized the first word of the subtitle."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -1498,11 +1487,15 @@
     "query": {
       "subtitle_1": "Blindy, I'm here, no need to scare"
     },
-    "answer": {}
+    "answer": {
+      "revised_1": "Blindy, I'm here, no need to scare me",
+      "note_1": "Added 'me' to complete the sentence."
+    },
+    "difficulty": 1
   },
   {
     "query": {
-      "subtitle_1": "sorry, Blindy!",
+      "subtitle_1": "Sorry, Blindy!",
       "subtitle_2": "You have made a mistake",
       "subtitle_3": "You won't blame me, will you?",
       "subtitle_4": "For my whole life I know",
@@ -1546,8 +1539,8 @@
       "subtitle_11": "Get lost!"
     },
     "answer": {
-      "revised_2": "Only one man can benefit by it",
-      "note_2": "Corrected 'be benefit' to 'benefit'.",
+      "revised_2": "Only one man can benefit from it",
+      "note_2": "Corrected 'can be benefit by' to 'can benefit from'.",
       "revised_4": "You won't gain anything even\nif you hurt me",
       "note_4": "Corrected 'gian' to 'gain'."
     },
@@ -1673,7 +1666,7 @@
     },
     "answer": {
       "revised_1": "My Little Buddha is hurt",
-      "note_1": "Inserted 'is' to correct the grammar and meaning."
+      "note_1": "Inserted 'is' to correct the grammar."
     },
     "difficulty": 1
   },
@@ -1689,11 +1682,11 @@
       "subtitle_2": "Master wanna see you",
       "subtitle_3": "What place is this?",
       "subtitle_4": "Spider Web Cave",
-      "subtitle_5": "spider Web Cave?",
+      "subtitle_5": "Spider Web Cave?",
       "subtitle_6": "Yes!",
       "subtitle_7": "I'm Spider Devil's disciple Spider Woman",
       "subtitle_8": "This is Spider Web Cave",
-      "subtitle_9": "spider Web Cave?",
+      "subtitle_9": "Spider Web Cave?",
       "subtitle_10": "Let's go! Monkey",
       "subtitle_11": "Hey, you have gone mad",
       "subtitle_12": "I'm your Master, monkey!",
@@ -1813,7 +1806,7 @@
   },
   {
     "query": {
-      "subtitle_1": "sister, do you remember\nhow he treated you in the past?",
+      "subtitle_1": "Sister, do you remember\nhow he treated you in the past?",
       "subtitle_2": "He deceived you, refused to marry you",
       "subtitle_3": "You had a good marriage with\nChilian Immortal",
       "subtitle_4": "He ruined it",
@@ -1829,7 +1822,7 @@
     },
     "answer": {
       "revised_8": "Have you finished? Son of a bitch!",
-      "note_8": "Inserted 'a' in 'Son of a bitch'."
+      "note_8": "Added 'a' in 'Son of a bitch'."
     },
     "difficulty": 1
   },
@@ -1847,7 +1840,8 @@
       "subtitle_4": "Yes…",
       "subtitle_5": "More than the bugs in my body. Search!"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1
   },
   {
     "query": {
@@ -1862,7 +1856,9 @@
     },
     "answer": {
       "revised_5": "Jing Jing is still very pretty",
-      "note_5": "Corrected 'till' to 'still'."
+      "note_5": "Corrected 'till' to 'still'.",
+      "revised_8": "Meal time, Ma'am, 30th",
+      "note_8": "Added a comma after 'Ma'am'."
     },
     "difficulty": 1
   },
@@ -1875,7 +1871,7 @@
       "subtitle_5": "Kiss her, breath life to her",
       "subtitle_6": "Maybe it will be stopped",
       "subtitle_7": "Scare me!",
-      "subtitle_8": "sister, you can't defeat me",
+      "subtitle_8": "Sister, you can't defeat me",
       "subtitle_9": "Really?",
       "subtitle_10": "I'll break you neck if you move",
       "subtitle_11": "Give me the key! Lock him up",
@@ -1884,10 +1880,8 @@
       "subtitle_14": "Goodbye!"
     },
     "answer": {
-      "revised_8": "Sister, you can't defeat me",
-      "note_8": "Capitalized 'sister' to 'Sister'.",
       "revised_10": "I'll break your neck if you move",
-      "note_10": "Corrected 'you' to 'your' in 'break your neck'."
+      "note_10": "Corrected 'you neck' to 'your neck'."
     },
     "difficulty": 1
   },
@@ -1904,7 +1898,8 @@
       "subtitle_1": "Stop beat my cock, thanks",
       "subtitle_2": "There is a chicken, Ma'am 30th"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1
   },
   {
     "query": {
@@ -1953,7 +1948,7 @@
   },
   {
     "query": {
-      "subtitle_1": "seductive magic"
+      "subtitle_1": "Seductive magic"
     },
     "answer": {}
   },
@@ -1998,10 +1993,10 @@
       "subtitle_20": "if you were unhappy"
     },
     "answer": {
-      "revised_2": "You'll die if you aren't cured",
-      "note_2": "Corrected 'don't cured' to 'aren't cured'.",
-      "revised_14": "Don't you scare me that I will kill you?",
-      "note_14": "Inserted 'me' to correct the sentence."
+      "revised_2": "You'll die if you don't get cured",
+      "note_2": "Corrected 'don't cured' to 'don't get cured'.",
+      "revised_14": "Don't you fear that I will kill you?",
+      "note_14": "Corrected 'scare' to 'fear' for the intended meaning."
     },
     "difficulty": 1
   },
@@ -2025,7 +2020,7 @@
   },
   {
     "query": {
-      "subtitle_1": "sorry, I don't mean it",
+      "subtitle_1": "Sorry, I don't mean it",
       "subtitle_2": "You do it strongly",
       "subtitle_3": "So I wanna do it with you",
       "subtitle_4": "Although I'm not a righteous man",
@@ -2034,8 +2029,6 @@
       "subtitle_7": "Let's wait till night"
     },
     "answer": {
-      "revised_1": "Sorry, I don't mean it",
-      "note_1": "Capitalized the first word.",
       "revised_5": "I won't take advantage of the others",
       "note_5": "Corrected 'take advantages' to 'take advantage'.",
       "revised_6": "I'm not used to doing it at daytime",
@@ -2050,11 +2043,7 @@
       "subtitle_3": "From now on",
       "subtitle_4": "I'll be with you"
     },
-    "answer": {
-      "revised_2": "Call me if you need me",
-      "note_2": "Capitalized the first letter of the subtitle."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -2089,7 +2078,11 @@
       "subtitle_13": "He don't know if a maiden is\na man or woman",
       "subtitle_14": "That's right"
     },
-    "answer": {}
+    "answer": {
+      "revised_13": "He doesn't know if a maiden is\na man or a woman",
+      "note_13": "Corrected 'don't' to 'doesn't' and added 'a' before 'woman'."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -2117,7 +2110,7 @@
     },
     "answer": {
       "revised_2": "It is worth it!",
-      "note_2": "Corrected 'It worths!' to 'It is worth it!' for correct grammar."
+      "note_2": "Corrected 'It worths!' to 'It is worth it!'."
     },
     "difficulty": 1
   },
@@ -2151,10 +2144,14 @@
   {
     "query": {
       "subtitle_1": "Joker",
-      "subtitle_2": "sister can't take this anymore.\nYou go ahead!",
+      "subtitle_2": "Sister can't take this anymore.\nYou go ahead!",
       "subtitle_3": "Let me…do that"
     },
-    "answer": {}
+    "answer": {
+      "revised_3": "Let me... do that",
+      "note_3": "Corrected the ellipsis spacing and added a space after the ellipsis."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -2183,10 +2180,10 @@
   },
   {
     "query": {
-      "subtitle_1": "she thought I left her alone",
+      "subtitle_1": "She thought I left her alone",
       "subtitle_2": "How long will you search?",
       "subtitle_3": "Jing Jing",
-      "subtitle_4": "she's poisoned, must have died and\nfell down from the cliff",
+      "subtitle_4": "She's poisoned, must have died and\nfell down from the cliff",
       "subtitle_5": "It's all because of you",
       "subtitle_6": "You shouldn't let me sleep\nfor a whole night",
       "subtitle_7": "I should come here as soon as possible",
@@ -2196,7 +2193,11 @@
       "subtitle_11": "I don't know anything",
       "subtitle_12": "How dare you put the blame on me!"
     },
-    "answer": {}
+    "answer": {
+      "revised_4": "She's poisoned, must have died and\nfallen down from the cliff",
+      "note_4": "Corrected 'fell' to 'fallen' for agreement with 'must have died and'."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -2319,7 +2320,7 @@
     },
     "answer": {
       "revised_3": "Please let go of my hand! Alright!",
-      "note_3": "Corrected 'your' to 'my' to match the intended meaning."
+      "note_3": "Corrected 'your hand' to 'my hand' to match the intended meaning."
     },
     "difficulty": 1
   },
@@ -2364,9 +2365,7 @@
       "revised_2": "Monkey King,\nyou've committed serious offences",
       "note_2": "Corrected 'you'd' to 'you've'.",
       "revised_17": "All things in human life are then\nnone of your business",
-      "note_17": "Corrected 'is' to 'are' to match the plural subject 'All things'.",
-      "revised_31": "Keep calm, please. No",
-      "note_31": "Added punctuation for correct sentence separation."
+      "note_17": "Corrected 'is' to 'are' to match the plural subject 'All things'."
     },
     "difficulty": 1
   },
@@ -2411,12 +2410,7 @@
       "subtitle_15": "Maiden, tell him",
       "subtitle_16": "Tell him!"
     },
-    "answer": {
-      "revised_3": "The flesh of the Longevity Monk isn't a must, too",
-      "note_3": "Corrected 'isn't must' to 'isn't a must'.",
-      "revised_10": "It is too coincidental",
-      "note_10": "Corrected 'coincident' to 'coincidental'."
-    },
+    "answer": {},
     "difficulty": 1
   },
   {
@@ -2424,7 +2418,8 @@
       "subtitle_1": "Yes!",
       "subtitle_2": "this is her baby with Joker"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1
   },
   {
     "query": {
@@ -2438,7 +2433,7 @@
     },
     "answer": {
       "revised_4": "Who the hell are you?",
-      "note_4": "Corrected 'you are' word order to 'are you'."
+      "note_4": "Corrected the word order in 'Who the hell you are?' to 'Who the hell are you?'"
     },
     "difficulty": 1
   },
@@ -2462,7 +2457,11 @@
       "subtitle_3": "Go",
       "subtitle_4": "Ma'am 30th"
     },
-    "answer": {}
+    "answer": {
+      "revised_4": "Ma'am, 30th",
+      "note_4": "Added a comma after 'Ma'am' for correct punctuation."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -2480,7 +2479,7 @@
     "query": {
       "subtitle_1": "Honey",
       "subtitle_2": "Tortoise Magic",
-      "subtitle_3": "slash your liver, stomach",
+      "subtitle_3": "Slash your liver, stomach",
       "subtitle_4": "and internal organs!"
     },
     "answer": {}
@@ -2554,7 +2553,7 @@
       "subtitle_12": "Honey…My wife",
       "subtitle_13": "Your wife is coming out, easy!",
       "subtitle_14": "I've not finished. How do you know?",
-      "subtitle_15": "she's coming out. Go!",
+      "subtitle_15": "She's coming out. Go!",
       "subtitle_16": "Honey, honey…",
       "subtitle_17": "Boyi Bolomi!",
       "subtitle_18": "Being immortal again!",
@@ -2564,11 +2563,7 @@
       "subtitle_22": "Honey…!",
       "subtitle_23": "Don't disturb me!"
     },
-    "answer": {
-      "revised_6": "What's that? I've forgotten that!",
-      "note_6": "Corrected 'forgot' to 'forgotten'."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -2642,8 +2637,8 @@
       "subtitle_15": "You look"
     },
     "answer": {
-      "revised_8": "No, that's not the case. Wanna die?",
-      "note_8": "Added a missing period after 'case'."
+      "revised_10": "I left because I wanna get medication\nfor you from your sister",
+      "note_10": "Corrected 'you sister' to 'your sister'."
     },
     "difficulty": 1
   },
@@ -2703,15 +2698,11 @@
   {
     "query": {
       "subtitle_1": "Don't go into the Spider Web Cave!",
-      "subtitle_2": "spider Web Cave?",
+      "subtitle_2": "Spider Web Cave?",
       "subtitle_3": "You think I'm illiterate?",
       "subtitle_4": "Waterfall Cave"
     },
-    "answer": {
-      "revised_2": "Spider Web Cave?",
-      "note_2": "Capitalized 'spider' to match the proper name."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
@@ -2740,10 +2731,7 @@
       "subtitle_5": "yes",
       "subtitle_6": "you look like a donkey,\nlet me make a mark on you"
     },
-    "answer": {
-      "revised_6": "You look like a donkey,\nlet me make a mark on you",
-      "note_6": "Capitalized the first word of the subtitle."
-    },
+    "answer": {},
     "difficulty": 1
   },
   {
@@ -2765,11 +2753,7 @@
       "subtitle_1": "You haven't turned into Monkey King",
       "subtitle_2": "because you haven't met the guy\nhaving three birthmarks"
     },
-    "answer": {
-      "revised_2": "because you haven't met the guy\nwho has three birthmarks",
-      "note_2": "Corrected 'having' to 'who has' for grammar."
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
