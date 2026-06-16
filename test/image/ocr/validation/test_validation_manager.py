@@ -11,7 +11,7 @@ import pytest
 from PIL import Image
 
 from scinoephile.image.bbox import Bbox
-from scinoephile.image.ocr.validation import ValidationManager
+from scinoephile.image.ocr.validation import MAX_CHAR_DIM_BBOXES, ValidationManager
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
@@ -107,7 +107,7 @@ def _prepared_manager(tmp_path: Path) -> ValidationManager:
         prepared validation manager
     """
     manager = ValidationManager(cache_dir_path=tmp_path / "cache")
-    manager.char_dims_by_n = {n: {} for n in range(1, 6)}
+    manager.char_dims_by_n = {n: {} for n in range(1, MAX_CHAR_DIM_BBOXES + 1)}
     manager.char_dims_by_n[1]["A"] = {(10, 20)}
     manager.char_dims_by_n[1]["B"] = {(10, 20)}
     manager.char_grp_dims_by_n = {}

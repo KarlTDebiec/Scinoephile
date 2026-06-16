@@ -321,7 +321,7 @@ def test_text_update_route_rewrites_row(tmp_path: Path):
 
     response = app.test_client().post(
         "/subtitles/0/text",
-        data={"text": "new"},
+        data={"text-0": "new"},
         headers={"HX-Request": "true"},
     )
 
@@ -539,7 +539,10 @@ def _assert_index_textarea(html: bytes):
     Arguments:
         html: rendered response HTML
     """
-    assert b'<textarea\n            name="text"' in html
+    assert b'id="subtitle-text-0"' in html
+    assert b'name="text-0"' in html
+    assert b'autocomplete="off"' in html
+    assert b'rows="1"' in html
     assert b'hx-post="/subtitles/0/text"' in html
     assert b'hx-trigger="blur changed"' in html
     assert b"--subtitle-text-color: rgb(255, 255, 255)" in html

@@ -138,6 +138,24 @@ class ImageSeries(Series):
         for source_subtitle, image_subtitle in zip(source, self.events):
             image_subtitle.text = source_subtitle.text
 
+    def save_html_index(
+        self,
+        dir_path: str | PathLike[Any],
+        encoding: str = "utf-8",
+        errors: str | None = None,
+    ):
+        """Save only the HTML index for an existing image subtitle directory.
+
+        Arguments:
+            dir_path: path to existing image subtitle directory
+            encoding: output file encoding
+            errors: encoding error handling
+        """
+        dir_path = Path(dir_path)
+        if not dir_path.exists() or not dir_path.is_dir():
+            raise ScinoephileError(f"Expected {dir_path} to be an existing directory.")
+        self._save_html_index(dir_path, encoding=encoding, errors=errors)
+
     @override
     def save(
         self,
@@ -311,14 +329,30 @@ class ImageSeries(Series):
         logger.info(f"Saved images to {dir_path}")
 
         # Save HTML index
+        self._save_html_index(dir_path, encoding=encoding, errors=errors)
+
+    def _save_html_index(
+        self,
+        dir_path: Path,
+        encoding: str = "utf-8",
+        errors: str | None = None,
+    ):
+        """Save HTML index file to an image subtitle directory.
+
+        Arguments:
+            dir_path: path to image subtitle directory
+            encoding: output file encoding
+            errors: encoding error handling
+        """
         html_lines = self.html_header_lines()
-        for i, (event, image_path) in enumerate(zip(self, image_paths), 1):
+        for i, event in enumerate(self, 1):
+            image_name = f"{i:04d}.png"
             html_lines.append(
                 self.format_html_entry(
                     index=i,
                     start=event.start,
                     end=event.end,
-                    image_name=image_path.name,
+                    image_name=image_name,
                     text=event.text,
                 )
             )

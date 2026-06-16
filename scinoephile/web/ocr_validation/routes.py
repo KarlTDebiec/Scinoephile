@@ -89,7 +89,10 @@ def register_routes(app: Flask):
             rendered updated subtitle row
         """
         session = _session()
-        row = session.update_text(sub_idx, request.form.get("text", ""))
+        text = request.form.get(f"text-{sub_idx}")
+        if text is None:
+            text = request.form.get("text", "")
+        row = session.update_text(sub_idx, text)
         return _render_subtitle_row(session, row)
 
     @app.post("/subtitles/<int:sub_idx>/concern/char")

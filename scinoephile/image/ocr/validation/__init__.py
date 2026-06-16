@@ -10,6 +10,9 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .validation_manager import ValidationManager
+from .validation_manager import MAX_CHAR_DIM_BBOXES, ValidationManager
 
-__all__ = ["ValidationManager"]
+__all__ = [
+    "MAX_CHAR_DIM_BBOXES",
+    "ValidationManager",
+]

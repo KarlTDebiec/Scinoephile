@@ -147,7 +147,7 @@ def _ocr(
         validated_texts = [subtitle.text for subtitle in validated]
         if image_texts != validated_texts:
             image_series.copy_text_from(validated)
-            image_series.save(image_dir_path, encoding="utf-8")
+            image_series.save_html_index(image_dir_path, encoding="utf-8")
     return validated
 
 
