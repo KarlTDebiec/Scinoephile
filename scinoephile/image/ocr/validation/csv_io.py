@@ -9,10 +9,13 @@ from collections.abc import Iterable
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from threading import RLock
+from time import sleep
 
 __all__ = ["save_csv_rows"]
 
 
+_REPLACE_ATTEMPTS = 10
+_REPLACE_DELAY_SECONDS = 0.05
 _save_lock = RLock()
 
 
@@ -39,7 +42,24 @@ def save_csv_rows(rows: Iterable[Iterable[object]], file_path: Path):
                 tmp_path = Path(handle.name)
                 writer = csv.writer(handle)
                 writer.writerows(rows)
-            tmp_path.replace(file_path)
+            _replace_with_retry(tmp_path, file_path)
         finally:
             if tmp_path is not None and tmp_path.exists():
                 tmp_path.unlink()
+
+
+def _replace_with_retry(source_path: Path, target_path: Path):
+    """Replace target path, retrying transient permission failures.
+
+    Arguments:
+        source_path: temporary source path
+        target_path: target path to replace
+    """
+    for attempt in range(_REPLACE_ATTEMPTS):
+        try:
+            source_path.replace(target_path)
+            return
+        except PermissionError:
+            if attempt == _REPLACE_ATTEMPTS - 1:
+                raise
+            sleep(_REPLACE_DELAY_SECONDS * (attempt + 1))
