@@ -35,7 +35,7 @@ __all__ = [
 
 def process_ocr(
     title_root_path: Path,
-    language: Language | str,
+    language: Language,
     sup_path: Path | None = None,
     **kwargs: Any,
 ) -> Series:
@@ -49,9 +49,7 @@ def process_ocr(
     Returns:
         processed series
     """
-    return _process_ocr(
-        title_root_path, Language(language), sup_path=sup_path, **kwargs
-    )
+    return _process_ocr(title_root_path, language, sup_path=sup_path, **kwargs)
 
 
 def _flatten(
