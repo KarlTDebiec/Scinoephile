@@ -22,124 +22,141 @@ __all__ = [
 ]
 
 _S2T_EXCLUDED_CHARS = {
-    "吃",  # Modern subtitles prefer 吃 over the literary traditional variant 喫.
-    "吓",  # Cantonese particle/verb is distinct from 嚇 "frighten".
-    "晒",  # Cantonese result particle uses 晒 rather than 曬 "sun-dry".
-    "才",  # Common modern form is preferred over the older adverbial 纔.
-    "托",  # 拜托 and Cantonese uses keep 托 rather than 託.
-    "蒙",  # Cantonese/colloquial 蒙 is not the weather adjective 濛.
-    "准",  # 准 remains valid in permission contexts such as 不准.
-    "群",  # Modern subtitles use 群 instead of the older variant 羣.
-    "郁",  # Cantonese 郁 "move" is not 鬱 "depressed/dense".
-    "床",  # Modern subtitles prefer 床 over the older variant 牀.
-    "台",  # 台 is kept for platform/stage/address forms instead of 臺.
-    "痴",  # 白痴 commonly keeps 痴 rather than 癡.
-    "升",  # 升仙 keeps the modern form rather than 昇.
-    "仆",  # Cantonese 仆街 is not 僕 "servant".
-    "秘",  # Modern subtitles prefer 秘 over the older variant 祕.
-    "克",  # 克制 uses 克, not 剋.
-    "借",  # 借助 is accepted in the fixture style instead of 藉助.
-    "了",  # 了解 keeps 了 rather than 瞭.
-    "里",  # 萬里 uses the distance character 里, not 裏 "inside".
-    "咸",  # Cantonese food terms such as 咸煎餅 keep 咸.
-    "虱",  # Modern/Hong Kong subtitles use 虱 instead of 蝨.
-    "响",  # Cantonese locative/verb use is kept instead of 響.
-    "峰",  # Modern subtitles prefer 峰 over the older variant 峯.
-    "扑",  # Cantonese 扑 "hit" is kept rather than 撲.
-    "伙",  # 伙記 and 家伙 keep 伙 rather than 夥.
-    "干",  # 干 has valid traditional uses such as 干擾.
-    "粽",  # Modern/Hong Kong subtitles use 粽 instead of 糉.
-    "洒",  # 瀟洒 keeps the fixture's variant rather than 灑.
-    "卺",  # 合卺 keeps 卺 rather than the rare variant 巹.
-    "皂",  # 青紅皂白 uses 皂 rather than 皁.
-    "娘",  # Profanity/kinship contexts use 娘 rather than 孃.
-    "灶",  # Modern subtitles prefer 灶 over 竈.
-    "唇",  # Modern subtitles prefer 唇 over 脣.
-    "刮",  # Shaving/scraping uses 刮, not 颳 "wind blows".
-    "幸",  # 薄幸 uses 幸, not 倖.
-    "岩",  # 金剛岩 and Cantonese 岩 are not 巖 "cliff".
-    "杰",  # Cantonese 杰 is not 傑 "outstanding".
-    "厘",  # 無厘頭 keeps the Hong Kong form 厘.
-    "注",  # 注定 uses 注, not 註 "annotation".
-    "制",  # 制定 uses 制, not 製 "manufacture".
-    "喂",  # Interjection 喂 is not 餵 "feed".
+    "吃",  # keep modern 吃; avoid literary 喫
+    "吓",  # keep Cantonese 吓 particle/verb; avoid 嚇 "frighten"
+    "晒",  # keep Cantonese 晒 result particle; avoid 曬 "sun-dry"
+    "才",  # keep modern 才; avoid older adverbial 纔
+    "托",  # keep 拜托 and Cantonese 托; avoid 託
+    "蒙",  # keep Cantonese/colloquial 蒙; avoid weather adjective 濛
+    "准",  # keep permission-context 准; avoid 準
+    "群",  # keep modern 群; avoid older variant 羣
+    "郁",  # keep Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "床",  # keep modern 床; avoid older variant 牀
+    "台",  # keep platform/stage/address 台; avoid 臺
+    "痴",  # keep common 白痴 form 痴; avoid 癡
+    "升",  # keep 升仙 form 升; avoid 昇
+    "仆",  # keep Cantonese 仆街 form 仆; avoid 僕 "servant"
+    "秘",  # keep modern 秘; avoid older variant 祕
+    "克",  # keep 克制 form 克; avoid 剋
+    "借",  # keep fixture-style 借助 form 借; avoid 藉
+    "了",  # keep 了解 form 了; avoid 瞭
+    "里",  # keep distance character 里; avoid 裏 "inside"
+    "咸",  # keep Cantonese food-term 咸; avoid 鹹
+    "虱",  # keep modern/Hong Kong 虱; avoid 蝨
+    "响",  # keep Cantonese locative/verb 响; avoid 響
+    "峰",  # keep modern 峰; avoid older variant 峯
+    "扑",  # keep Cantonese 扑 "hit"; avoid 撲
+    "伙",  # keep 伙記 and 家伙 form 伙; avoid 夥
+    "干",  # keep valid traditional 干 uses; avoid blanket 幹
+    "粽",  # keep modern/Hong Kong 粽; avoid 糉
+    "洒",  # keep fixture-style 瀟洒 form 洒; avoid 灑
+    "卺",  # keep 合卺 form 卺; avoid rare variant 巹
+    "皂",  # keep 青紅皂白 form 皂; avoid 皁
+    "娘",  # keep kinship/profanity 娘; avoid 孃
+    "灶",  # keep modern 灶; avoid older variant 竈
+    "唇",  # keep modern 唇; avoid 脣
+    "刮",  # keep shaving/scraping 刮; avoid 颳 "wind blows"
+    "幸",  # keep 薄幸 form 幸; avoid 倖
+    "岩",  # keep 金剛岩 and Cantonese 岩; avoid 巖 "cliff"
+    "杰",  # keep Cantonese 杰; avoid 傑 "outstanding"
+    "厘",  # keep Hong Kong 無厘頭 form 厘; avoid 釐
+    "注",  # keep 注定 form 注; avoid 註 "annotation"
+    "制",  # keep 制定 form 制; avoid 製 "manufacture"
+    "喂",  # keep interjection 喂; avoid 餵 "feed"
 }
 """Characters to preserve when converting simplified Chinese toward traditional."""
 
-# Likely fixture artifacts seen during s2t no-op discovery:
-# "丑",  # test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt:35 uses 丑
-#        # where standard traditional 醜 is expected for "ugly".
-# "边",  # test/data/acopopb/output/yue-Hant_ocr/fuse_clean_validate.srt:5071
-#        # contains simplified 边 in a Hant OCR output.
-# "嘘",  # test/data/acoptc/output/yue-Hant_ocr/fuse_clean_validate.srt:3899
-#        # contains simplified 嘘 where Hant 噓 is expected.
-# "只",  # test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt:2376 uses
-#        # 只 as a classifier where traditional 隻 is expected.
-# "面",  # test/data/acopopb/output/yue-Hant_ocr/fuse_clean_validate.srt:679
-#        # likely has simplified 面 for noodle 麵.
-# "云",  # test/data/acopopb/output/yue-Hant_ocr/fuse_clean_validate.srt:1787
-#        # appears in Cantonese "呢云", likely an OCR/review artifact.
-# "羡",  # test/data/tmm/output/yue-Hant_ocr/fuse_clean_validate.srt:2611
-#        # uses simplified 羡 where traditional 羨 is expected.
-# "家",  # test/data/tmm/output/yue-Hant_ocr/fuse_clean_validate.srt:4695
-#        # appears in 家伙, where the existing test expects 傢伙.
+# Inactive fixture artifacts seen during s2t no-op discovery:
+# "丑",  # inactive: expected 醜 "ugly"
+#        # found: test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt:35
+# "边",  # inactive: simplified 边 in Hant OCR output
+#        # found: test/data/acopopb/output/yue-Hant_ocr/
+#        # fuse_clean_validate.srt:5071
+# "嘘",  # inactive: simplified 嘘 where Hant 噓 is expected
+#        # found: test/data/acoptc/output/yue-Hant_ocr/
+#        # fuse_clean_validate.srt:3899
+# "只",  # inactive: classifier should be traditional 隻
+#        # found: test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt:2376
+# "面",  # inactive: noodle should be 麵
+#        # found: test/data/acopopb/output/yue-Hant_ocr/
+#        # fuse_clean_validate.srt:679
+# "云",  # inactive: likely OCR/review artifact in Cantonese "呢云"
+#        # found: test/data/acopopb/output/yue-Hant_ocr/
+#        # fuse_clean_validate.srt:1787
+# "羡",  # inactive: simplified 羡 where traditional 羨 is expected
+#        # found: test/data/tmm/output/yue-Hant_ocr/fuse_clean_validate.srt:2611
+# "家",  # inactive: existing test expects 傢伙, not 家伙
+#        # found: test/data/tmm/output/yue-Hant_ocr/fuse_clean_validate.srt:4695
 
 _T2S_EXCLUDED_CHARS = {
-    "喎",  # Cantonese sentence particle should not be replaced by 㖞.
-    "嗰",  # Cantonese demonstrative should not be replaced by 𠮶.
-    "搵",  # Cantonese 搵 "look for" is preferred over OpenCC's 揾.
-    "痾",  # Cantonese 痾 "defecate" is preferred over 疴.
-    "藉",  # 藉此 is accepted in simplified text and should not collapse to 借.
-    "劏",  # Cantonese 劏 "slaughter" is preferred over 㓥.
-    "捱",  # 捱 in the fixtures is lexical, not a generic replacement with 挨.
-    "噚",  # Cantonese 噚 should not be replaced by 㖊.
-    "燶",  # Cantonese 燶 "burnt" should not be replaced by 㶶.
-    "餸",  # Cantonese 餸 "dish" should not be replaced by 𩠌.
-    "剎",  # 一剎那 keeps 剎 as an accepted variant.
-    "覆",  # 答覆 keeps the lexical form distinct from 复.
-    "唓",  # Cantonese interjection 唓 should not be replaced by 𪠳.
+    "喎",  # keep Cantonese sentence particle 喎; avoid 㖞
+    "嗰",  # keep Cantonese demonstrative 嗰; avoid 𠮶
+    "搵",  # keep Cantonese 搵 "look for"; avoid 揾
+    "痾",  # keep Cantonese 痾 "defecate"; avoid 疴
+    "藉",  # keep simplified-text 藉此 form 藉; avoid 借
+    "劏",  # keep Cantonese 劏 "slaughter"; avoid 㓥
+    "捱",  # keep fixture lexical 捱; avoid generic 挨
+    "噚",  # keep Cantonese 噚; avoid 㖊
+    "燶",  # keep Cantonese 燶 "burnt"; avoid 㶶
+    "餸",  # keep Cantonese 餸 "dish"; avoid 𩠌
+    "剎",  # keep 一剎那 form 剎; avoid 刹
+    "覆",  # keep 答覆 lexical form 覆; avoid 复
+    "唓",  # keep Cantonese interjection 唓; avoid 𪠳
 }
 """Characters to preserve when converting traditional Chinese toward simplified."""
 
-# Likely fixture artifacts seen during t2s no-op discovery:
-# "擺",  # test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt:811
-#        # contains traditional 擺 in a Hans OCR output.
-# "換",  # test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt:3003
-#        # contains traditional 換 in a Hans OCR output.
-# "決",  # test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:63
-#        # contains traditional 決 in a Hans OCR output.
-# "綁",  # test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:1639
-#        # contains traditional 綁 in a Hans OCR output.
-# "帶",  # test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt:2675
-#        # contains traditional 帶 in a Hans OCR output.
-# "豬",  # test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt:5603
-#        # contains traditional 豬 in a Hans OCR output.
-# "潚",  # test/data/acopopb/input/zho-Hans.srt:2067 is likely an OCR artifact
-#        # for 瀟/潇 in 瀟洒.
-# "涼",  # test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:775
-#        # contains traditional 涼 in a Hans OCR output.
-# "幫",  # test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:1043
-#        # contains traditional 幫 in a Hans OCR output.
-# "蹤",  # test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:2123
-#        # contains traditional 蹤 in a Hans OCR output.
-# "內",  # test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:3195
-#        # contains traditional 內 in a Hans OCR output.
-# "瀟",  # test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt:2083
-#        # contains traditional 瀟 in a Hans OCR output.
-# "靚",  # test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt:3
-#        # contains traditional 靚 where simplified 靓 is expected.
-# "鑼",  # test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt:3983
-#        # is likely OCR for 攞 rather than simplified 锣.
-# "齋",  # test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt:5243
-#        # contains traditional 齋 in a Hans OCR output.
-# "慘",  # test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:339
-#        # contains traditional 慘 in a Hans OCR output.
-# "黃",  # test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:1751
-#        # contains traditional 黃 in a Hans OCR output.
-# "噓",  # test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:6107
-#        # contains traditional 噓 in a Hans OCR output.
-# "癲",  # test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:6147
-#        # contains traditional 癲 in a Hans OCR output.
+# Inactive fixture artifacts seen during t2s no-op discovery:
+# "擺",  # inactive: traditional 擺 in Hans OCR output
+#        # found: test/data/acoptc/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:811
+# "換",  # inactive: traditional 換 in Hans OCR output
+#        # found: test/data/acoptc/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:3003
+# "決",  # inactive: traditional 決 in Hans OCR output
+#        # found: test/data/acopopb/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:63
+# "綁",  # inactive: traditional 綁 in Hans OCR output
+#        # found: test/data/acopopb/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:1639
+# "帶",  # inactive: traditional 帶 in Hans OCR output
+#        # found: test/data/acoptc/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:2675
+# "豬",  # inactive: traditional 豬 in Hans OCR output
+#        # found: test/data/acoptc/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:5603
+# "潚",  # inactive: likely OCR artifact for 瀟/潇 in 瀟洒
+#        # found: test/data/acopopb/input/zho-Hans.srt:2067
+# "涼",  # inactive: traditional 涼 in Hans OCR output
+#        # found: test/data/acopopb/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:775
+# "幫",  # inactive: traditional 幫 in Hans OCR output
+#        # found: test/data/acopopb/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:1043
+# "蹤",  # inactive: traditional 蹤 in Hans OCR output
+#        # found: test/data/acopopb/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:2123
+# "內",  # inactive: traditional 內 in Hans OCR output
+#        # found: test/data/acopopb/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:3195
+# "瀟",  # inactive: traditional 瀟 in Hans OCR output
+#        # found: test/data/acopopb/output/zho-Hans_ocr/
+#        # fuse_clean_validate.srt:2083
+# "靚",  # inactive: traditional 靚 where simplified 靓 is expected
+#        # found: test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt:3
+# "鑼",  # inactive: likely OCR for 攞 rather than simplified 锣
+#        # found: test/data/acoptc/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:3983
+# "齋",  # inactive: traditional 齋 in Hans OCR output
+#        # found: test/data/acoptc/output/yue-Hans_ocr/
+#        # fuse_clean_validate.srt:5243
+# "慘",  # inactive: traditional 慘 in Hans OCR output
+#        # found: test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:339
+# "黃",  # inactive: traditional 黃 in Hans OCR output
+#        # found: test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:1751
+# "噓",  # inactive: traditional 噓 in Hans OCR output
+#        # found: test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:6107
+# "癲",  # inactive: traditional 癲 in Hans OCR output
+#        # found: test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:6147
 
 
 class OpenCCConfig(DescribedEnum):
