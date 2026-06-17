@@ -549,11 +549,21 @@ class ValidationManager:
             char_pair: character pair
             cutoffs: cutoffs
         """
-        if self.char_pair_gaps.get(char_pair) == cutoffs:
+        previous_cutoffs = self.char_pair_gaps.get(char_pair)
+        if previous_cutoffs == cutoffs:
+            return
+        if cutoffs == get_default_char_pair_cutoffs(*char_pair):
+            self.char_pair_gaps[char_pair] = cutoffs
+            if self.dev:
+                output_char_pair_gaps = self.char_pair_gaps
+            elif char_pair in self.cache_char_pair_gaps:
+                self.cache_char_pair_gaps.pop(char_pair, None)
+                output_char_pair_gaps = self.cache_char_pair_gaps
+            else:
+                return
+            save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
             return
         self.char_pair_gaps[char_pair] = cutoffs
-        if cutoffs == get_default_char_pair_cutoffs(*char_pair):
-            return
         logger.info(f"Added ({char_pair}, {cutoffs})")
         if self.dev:
             output_char_pair_gaps = self.char_pair_gaps
