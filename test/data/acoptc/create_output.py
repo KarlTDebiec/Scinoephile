@@ -23,7 +23,7 @@ set_logging_verbosity(2)
 actions = {
     # "eng_ocr",
     "yue-Hans_ocr",
-    # "yue-Hant_ocr",
+    "yue-Hant_ocr",
     # "zho-Hans_ocr",
     # "zho-Hant_ocr",
     # "yue-Hans_eng",
