@@ -154,7 +154,22 @@ class ImageSeries(Series):
         dir_path = Path(dir_path)
         if not dir_path.exists() or not dir_path.is_dir():
             raise ScinoephileError(f"Expected {dir_path} to be an existing directory.")
-        self._save_html_index(dir_path, encoding=encoding, errors=errors)
+        html_lines = self.html_header_lines()
+        for i, event in enumerate(self, 1):
+            image_name = f"{i:04d}.png"
+            html_lines.append(
+                self.format_html_entry(
+                    index=i,
+                    start=event.start,
+                    end=event.end,
+                    image_name=image_name,
+                    text=event.text,
+                )
+            )
+        html_lines.extend(self.html_footer_lines())
+        html_path = dir_path / "index.html"
+        html_path.write_text("\n".join(html_lines), encoding=encoding, errors=errors)
+        logger.info(f"Saved HTML to {html_path}")
 
     @override
     def save(
@@ -329,37 +344,7 @@ class ImageSeries(Series):
         logger.info(f"Saved images to {dir_path}")
 
         # Save HTML index
-        self._save_html_index(dir_path, encoding=encoding, errors=errors)
-
-    def _save_html_index(
-        self,
-        dir_path: Path,
-        encoding: str = "utf-8",
-        errors: str | None = None,
-    ):
-        """Save HTML index file to an image subtitle directory.
-
-        Arguments:
-            dir_path: path to image subtitle directory
-            encoding: output file encoding
-            errors: encoding error handling
-        """
-        html_lines = self.html_header_lines()
-        for i, event in enumerate(self, 1):
-            image_name = f"{i:04d}.png"
-            html_lines.append(
-                self.format_html_entry(
-                    index=i,
-                    start=event.start,
-                    end=event.end,
-                    image_name=image_name,
-                    text=event.text,
-                )
-            )
-        html_lines.extend(self.html_footer_lines())
-        html_path = dir_path / "index.html"
-        html_path.write_text("\n".join(html_lines), encoding=encoding, errors=errors)
-        logger.info(f"Saved HTML to {html_path}")
+        self.save_html_index(dir_path, encoding=encoding, errors=errors)
 
     @classmethod
     def _load_html(
