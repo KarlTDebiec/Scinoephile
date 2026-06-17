@@ -359,7 +359,8 @@ class OcrProcessingWorkflow:
         source_is_newer = not index_path.exists()
         if index_path.exists() and source_path.exists():
             source_is_newer = source_path.stat().st_mtime > index_path.stat().st_mtime
-        if image_texts != series_texts and source_is_newer:
+        image_texts_are_blank = all(not text.strip() for text in image_texts)
+        if image_texts != series_texts and (source_is_newer or image_texts_are_blank):
             image_series.copy_text_from(series)
             image_series.save_html_index(image_dir_path)
 

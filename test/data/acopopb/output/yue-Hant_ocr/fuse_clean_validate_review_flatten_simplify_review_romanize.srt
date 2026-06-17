@@ -30,8 +30,8 @@ jēui jó ngóh sāam yaht sāam yeh
 
 7
 00:01:07,417 --> 00:01:09,042
-见你是女人，　　唔打你
-gin néih sih néuih yán,  m̀h dá néih
+见你系女人，唔打你
+gin néih haih néuih yán, m̀h dá néih
 
 8
 00:01:09,583 --> 00:01:11,375
@@ -110,8 +110,8 @@ néih gam lyuhn gam deng yéh haih m̀h ngāam ge
 
 23
 00:01:48,458 --> 00:01:50,333
-咛，话口未完，你又掟了支棍啦
-nìhng, wah háu meih yùhn, néih yauh deng líuh jī gwan lā
+嗱，话口未完，你又掟咗支棍啦
+nàh, wah háu meih yùhn, néih yauh deng jó jī gwan lā
 
 24
 00:01:50,583 --> 00:01:52,000
@@ -280,8 +280,8 @@ wā!
 
 57
 00:03:16,125 --> 00:03:19,375
-成个世界清静哂
-sèhng go sai gaai chīng jihng chán
+成个世界清静晒
+sèhng go sai gaai chīng jihng saai
 
 58
 00:03:21,583 --> 00:03:24,250
@@ -375,8 +375,8 @@ m̀h hóu chéung!
 
 76
 00:06:52,208 --> 00:06:53,500
-酱旧肉畀佢
-jeung gauh yuhk béi kéuih
+奖旧肉俾佢
+jéung gauh yuhk béi kéuih
 
 77
 00:06:54,708 --> 00:06:55,833
@@ -385,8 +385,8 @@ daaih gā síng dihng dī!
 
 78
 00:06:56,000 --> 00:06:57,125
-出面有嗰女人入紧嚟！
-chēut mihn yáuh gó néuih yán yahp gán làih!
+出面有个女人入紧嚟！
+chēut mihn yáuh go néuih yán yahp gán làih!
 
 79
 00:06:57,333 --> 00:06:59,542
@@ -395,13 +395,13 @@ yih dong gā, néih gú wuih m̀h wuih haih gūn bīng nē?
 
 80
 00:06:59,875 --> 00:07:01,667
-怪唔知得你叫盲炳啦
-gwaai m̀h jī dāk néih giu màahng bíng lā
+怪不得你叫盲炳啦
+gwaai bāt dāk néih giu màahng bíng lā
 
 81
 00:07:02,417 --> 00:07:04,708
-头先你睇唔到哑仔扭吓个箩友嘅咩
-tàuh sīn néih tái m̀h dou á jái náu haak go lòh yáuh ge mē
+头先你睇唔到哑仔扭吓个箩友嘅咩？
+tàuh sīn néih tái m̀h dou á jái náu haak go lòh yáuh ge mē?
 
 82
 00:07:05,417 --> 00:07:07,042
@@ -410,8 +410,8 @@ gam náu faat wuih m̀h wuih sāng jih chōng àh?
 
 83
 00:07:07,250 --> 00:07:09,042
-哼！ 就算系呀
-hāng!  jauh syun haih àh
+哼！就算系呀
+hāng! jauh syun haih àh
 
 84
 00:07:09,375 --> 00:07:11,125
@@ -475,8 +475,8 @@ mohk fēi haih yāt hàahn hāk dim?
 
 96
 00:08:12,292 --> 00:08:14,917
-明知系黑店你都够胆入
-mìhng jī haih hāk dim néih dōu gau dáam yahp
+明知系黑店你都够胆入嚟
+mìhng jī haih hāk dim néih dōu gau dáam yahp làih
 
 97
 00:08:15,792 --> 00:08:18,000
@@ -545,7 +545,7 @@ néih bāan fán chéung juhng“ duhng” dī ngàhn hái go tàuh jouh mē yé
 
 110
 00:09:18,375 --> 00:09:19,292
-摆番过去！
+摆翻过去！
 báai fāan gwo heui!
 
 111
@@ -600,8 +600,8 @@ néih mohng hah néih jih géi, gwái gwái sùhng sùhng, móuh làih daaih tá
 
 121
 00:09:41,500 --> 00:09:44,708
-仲学人留到披头散发！点跟我闯荡江湖呀？　　啊？
-juhng hohk yàhn làuh dou pēi tàuh sáan faat! dím gān ngóh chóng dohng gōng wùh àh?  a?
+仲学人留到披头散发！点跟我闯荡江湖呀？啊？
+juhng hohk yàhn làuh dou pēi tàuh sáan faat! dím gān ngóh chóng dohng gōng wùh àh? a?
 
 122
 00:09:45,042 --> 00:09:46,708
@@ -710,8 +710,8 @@ m̀h haih àh bōng jyú, m̀h gám àh bōng jyú
 
 143
 00:10:24,208 --> 00:10:26,333
-唔敢？　　我踩死你我唔敢？
-m̀h gám?  ngóh cháai séi néih ngóh m̀h gám?
+唔敢？我踩死你我唔敢？
+m̀h gám? ngóh cháai séi néih ngóh m̀h gám?
 
 144
 00:10:26,500 --> 00:10:27,250
@@ -720,12 +720,12 @@ séi meih?
 
 145
 00:10:27,417 --> 00:10:29,708
-喂？我踩咁多脚应酬吓都嗌两声好嶓
-wai? ngóh cháai gam dō geuk ying chàuh haak dōu aai léuhng sīng hóu bō
+喂？我踩咁多脚应酬吓都嗌两声好噃
+wai? ngóh cháai gam dō geuk ying chàuh haak dōu aai léuhng sīng hóu bo
 
 146
 00:10:29,917 --> 00:10:32,000
-啊！
+啊！ ⋯⋯
 a!
 
 147
@@ -740,8 +740,8 @@ chēun sāam sahp nèuhng!
 
 149
 00:10:37,792 --> 00:10:39,583
-惊咩呀！　　万事有我！
-gīng mē àh!  maahn sih yáuh ngóh!
+惊咩呀！万事有我！
+gīng mē àh! maahn sih yáuh ngóh!
 
 150
 00:10:45,125 --> 00:10:46,417
@@ -790,8 +790,8 @@ júng jī dáng dou ngóh yiu dáng ge yàhn chēut yihn, ngóh jauh wuih jáu g
 
 159
 00:11:12,208 --> 00:11:14,208
-我怕你冇咁长命㖞
-ngóh pa néih móuh gam chèuhng mehng wo
+我怕你冇咁长命噃
+ngóh pa néih móuh gam chèuhng mehng bo
 
 160
 00:11:18,000 --> 00:11:18,875
@@ -800,8 +800,8 @@ néih jouh mē àh?
 
 161
 00:11:19,042 --> 00:11:21,042
-冇！小完便系番条裤啫！
-móuh! síu yùhn bihn haih fāan tìuh fu jē!
+冇！小完便揾番条裤啫！
+móuh! síu yùhn bihn wán fāan tìuh fu jē!
 
 162
 00:11:21,417 --> 00:11:22,417
@@ -840,7 +840,7 @@ mahn gwo ngóh bāan hīng daih sīn
 
 169
 00:12:12,958 --> 00:12:16,250
-冇义气呀！⋯⋯
+冇义气呀！ ⋯⋯
 móuh yih hei àh!
 
 170
@@ -870,8 +870,8 @@ yìuh mehng àh néuih yīng hùhng
 
 175
 00:12:29,125 --> 00:12:33,458
-蠢材！　你估求佢就会放过你嘅咩？
-chéun chòih!  néih gú kàuh kéuih jauh wuih fong gwo néih ge mē?
+蠢材！你估求佢就会放过你嘅咩？
+chéun chòih! néih gú kàuh kéuih jauh wuih fong gwo néih ge mē?
 
 176
 00:12:33,708 --> 00:12:35,333
@@ -905,8 +905,8 @@ yùh jí hó gaau!
 
 182
 00:13:00,833 --> 00:13:02,667
-叫大家洗干净只脚板喺外面等我！
-giu daaih gā sái gōn jihng jí geuk báan hái ngoih mihn dáng ngóh!
+叫大家洗干净只脚板喺出边等我！
+giu daaih gā sái gōn jihng jí geuk báan hái chēut bihn dáng ngóh!
 
 183
 00:13:10,125 --> 00:13:11,042
@@ -920,8 +920,8 @@ m̀h haih bā làih ge, haih wū jōu làih ge!
 
 185
 00:13:12,958 --> 00:13:15,208
-即刻洗干净佢，唔系就成只脚斩落嚟！
-jīk hāk sái gōn jihng kéuih, m̀h haih jauh sìhng jí geuk jáam lohk làih!
+即刻洗干净佢，唔系就成只脚斩落嚟
+jīk hāk sái gōn jihng kéuih, m̀h haih jauh sìhng jí geuk jáam lohk làih
 
 186
 00:13:15,417 --> 00:13:17,875
@@ -965,18 +965,18 @@ néih dím jī ngóh lòh yáuh?
 
 194
 00:13:28,083 --> 00:13:30,333
-盲炳话「庄」你冲凉见到磔嘛
-màahng bíng wah jōng néih chūng lèuhng gin dóu jaak ma
+盲炳话“庄”你冲凉见到㗎嘛
+màahng bíng wah jōng néih chūng lèuhng gin dóu ga ma
 
 195
 00:13:30,583 --> 00:13:32,083
-做乜〝庄〞我冲凉呀你？
-jouh māt“ jōng” ngóh chūng lèuhng àh néih?
+做乜“庄”我冲凉呀你？
+jouh māt jōng ngóh chūng lèuhng àh néih?
 
 196
 00:13:32,583 --> 00:13:34,458
-我唔止〝庄〞你一个，我冚扮烂都〝庄〞过哂啦
-ngóh m̀h jí“ jōng” néih yāt go, ngóh hahm baahn laahn dōu“ jōng” gwo chán lā
+我唔止“庄”你一个，我冚扮烂都“庄”过哂啦
+ngóh m̀h jí jōng néih yāt go, ngóh hahm baahn laahn dōu jōng gwo chán lā
 
 197
 00:13:39,000 --> 00:13:40,000
@@ -1025,8 +1025,8 @@ chàh haak kéuih deih geuk báan
 
 206
 00:14:03,250 --> 00:14:05,500
-如果发现有三粒痣的，既刻通知我！
-yùh gwó faat yihn yáuh sāam lāp ji dīk, gei hāk tūng jī ngóh!
+如果发现有三粒痣的，立刻通知我！
+yùh gwó faat yihn yáuh sāam lāp ji dīk, lahp hāk tūng jī ngóh!
 
 207
 00:14:12,500 --> 00:14:16,375
@@ -1065,8 +1065,8 @@ gam tái dāk héi ngóh, m̀h hóu gwa
 
 214
 00:14:32,208 --> 00:14:34,250
-我去喺啦，唔使跪啦帮主！
-ngóh heui hái lā, m̀h sái gwaih lā bōng jyú!
+我去吓啦，唔使跪啦，帮主！
+ngóh heui haak lā, m̀h sái gwaih lā, bōng jyú!
 
 215
 00:14:34,458 --> 00:14:37,000
@@ -1105,13 +1105,13 @@ néih wán dóu sāam lāp ji meih?
 
 222
 00:15:37,125 --> 00:15:38,833
-做乜个个都叫我三粒痣嘅？
-jouh māt go go dōu giu ngóh sāam lāp ji ge?
+做乜个个都叫我揾三粒痣嘅？
+jouh māt go go dōu giu ngóh wán sāam lāp ji ge?
 
 223
 00:15:39,000 --> 00:15:41,375
-揾到你就可救回佢
-wán dóu néih jauh hó gau wùih kéuih
+揾到你就可救回它
+wán dóu néih jauh hó gau wùih tā
 
 224
 00:15:41,583 --> 00:15:42,375
@@ -1135,12 +1135,12 @@ faat muhng
 
 228
 00:15:51,583 --> 00:15:53,458
-“队”冧咗个贱人系嘛！
-deuih lam jó go jihn yàhn haih ma!
+〝队〞冧咗个贱人系嘛！
+“ deuih” lam jó go jihn yàhn haih ma!
 
 229
 00:15:59,292 --> 00:16:03,250
-蜘蛛！蜘蛛呀！⋯⋯
+蜘蛛！蜘蛛呀！ ⋯⋯
 jī jyū! jī jyū àh!
 
 230
@@ -1185,8 +1185,8 @@ jouh mē àh?
 
 238
 00:17:19,625 --> 00:17:20,208
-咩嘢事？　　二当家
-mē yéh sih?  yih dong gā
+咩嘢事？二当家
+mē yéh sih? yih dong gā
 
 239
 00:17:20,500 --> 00:17:21,375
@@ -1200,8 +1200,8 @@ haih mī nē bīn àh?  m̀h haih
 
 241
 00:17:22,708 --> 00:17:25,458
-喇呢边！这边有着数！
-la nē bīn! jé bīn yáuh jeuhk sou!
+嚟啦呢边！呢边有着数！
+làih lā nē bīn! nē bīn yáuh jeuhk sou!
 
 242
 00:17:28,458 --> 00:17:29,458
@@ -1235,8 +1235,8 @@ chìhn mihn māt dōu móuh, daaih gā fāan jyun tàuh!
 
 248
 00:17:54,500 --> 00:17:55,833
-唔系！ 帮主㰀磔！帮主⋯
-m̀h haih!  bōng jyú làih jaak! bōng jyú
+唔系！帮主嚟㗎！帮主⋯
+m̀h haih! bōng jyú làih ga! bōng jyú
 
 249
 00:17:56,125 --> 00:17:57,250
@@ -1315,8 +1315,8 @@ màahng bíng
 
 264
 00:18:39,042 --> 00:18:40,125
-放火！系
-fong fó! haih
+放火！　　系
+fong fó!  haih
 
 265
 00:18:43,625 --> 00:18:44,458
@@ -1330,8 +1330,8 @@ sīu kéuih!
 
 267
 00:18:48,375 --> 00:18:50,042
-揾到个靓位，要抖抖才得啦
-wán dou go leng waih, yiu dáu dáu chòih dāk lā
+揾到个靓位，要抖抖先得啦
+wán dou go leng waih, yiu dáu dáu sīn dāk lā
 
 268
 00:18:50,250 --> 00:18:51,708
@@ -1415,7 +1415,7 @@ haih nē douh a!
 
 284
 00:20:25,917 --> 00:20:30,625
-打佢！
+打佢！ ⋯⋯
 dá kéuih!
 
 285
@@ -1465,8 +1465,8 @@ gau mehng!
 
 294
 00:20:58,792 --> 00:21:00,375
-帮主来嘅，快啲救帮主
-bōng jyú lòih ge, faai dī gau bōng jyú
+帮主来啦，快啲救帮主
+bōng jyú lòih lā, faai dī gau bōng jyú
 
 295
 00:21:03,417 --> 00:21:04,250
@@ -1485,8 +1485,8 @@ gau fó! ló séui làih àh
 
 298
 00:21:09,375 --> 00:21:11,500
-救火！救火！唔得⋯⋯
-gau fó! gau fó! m̀h dāk
+救火！救火！　　唔得⋯⋯
+gau fó! gau fó!  m̀h dāk
 
 299
 00:21:11,792 --> 00:21:12,958
@@ -1510,8 +1510,8 @@ fan dāi!
 
 303
 00:21:20,833 --> 00:21:22,500
-唔好郁， 我帮你踩熄佢！
-m̀h hóu wāt,  ngóh bōng néih cháai sīk kéuih!
+唔好郁，我帮你踩熄佢！
+m̀h hóu wāt, ngóh bōng néih cháai sīk kéuih!
 
 304
 00:21:22,708 --> 00:21:25,292
@@ -1520,8 +1520,8 @@ sīk meih! sīk meih! juhng m̀h sīk lā!
 
 305
 00:21:25,542 --> 00:21:29,708
-踩爆你！ 踩爆你！
-cháai baau néih!  cháai baau néih!
+踩爆你！踩爆你！
+cháai baau néih! cháai baau néih!
 
 306
 00:21:30,792 --> 00:21:31,958
@@ -1530,8 +1530,8 @@ wā! ngóh m̀h dāk lā
 
 307
 00:21:48,875 --> 00:21:50,000
-熄了吗？
-sīk líuh máh?
+熄咗挂？
+sīk jó gwa?
 
 308
 00:21:52,917 --> 00:21:54,292
@@ -1540,13 +1540,13 @@ yih dong gā jān haih hóu yéh!
 
 309
 00:21:54,708 --> 00:21:57,250
-咛，啲火就咁踩至熄的嘛！
-nìhng, dī fó jauh gam cháai ji sīk dīk ma!
+嗱，啲火就咁踩至熄嘅嘛！
+nàh, dī fó jauh gam cháai ji sīk ge ma!
 
 310
 00:21:57,417 --> 00:21:58,917
-死蠢！　　你真系！
-séi chéun!  néih jān haih!
+死蠢！你真系！
+séi chéun! néih jān haih!
 
 311
 00:21:59,375 --> 00:22:00,292
@@ -1565,8 +1565,8 @@ m̀h jī nē
 
 314
 00:22:04,083 --> 00:22:05,583
-估到系你的嘞！
-gú dou haih néih dīk la!
+估到系你嘅嘞！
+gú dou haih néih ge la!
 
 315
 00:22:05,958 --> 00:22:08,125
@@ -1575,8 +1575,8 @@ ngóh yāt jóu tái chyūn néih sām gōn pèih fai sahn!
 
 316
 00:22:08,500 --> 00:22:09,292
-系想坐我个位的！
-haih séung chóh ngóh go waih dīk!
+系想坐我个位嘅！
+haih séung chóh ngóh go waih ge!
 
 317
 00:22:09,500 --> 00:22:10,000
@@ -1585,18 +1585,18 @@ móuh a bōng jyú
 
 318
 00:22:10,333 --> 00:22:11,708
-乜帮主对眼冇斗鸡的？
-māt bōng jyú deui ngáahn móuh dau gāi dīk?
+乜帮主对眼冇斗鸡嘅？
+māt bōng jyú deui ngáahn móuh dau gāi ge?
 
 319
 00:22:12,958 --> 00:22:15,708
-帮主，你的七伤拳好番哂？
-bōng jyú, néih dīk chāt sēung kyùhn hóu fāan chán?
+帮主，你嘅七伤拳好番哂？
+bōng jyú, néih ge chāt sēung kyùhn hóu fāan chán?
 
 320
 00:22:16,500 --> 00:22:18,250
-系嶓！　　点解呢？
-haih bō!  dím gáai nē?
+系噃！点解呢？
+haih bo! dím gáai nē?
 
 321
 00:22:18,417 --> 00:22:21,875
@@ -1605,13 +1605,13 @@ ngóh mìhng lā! yī chāt sēung kyùhn ge fōng faat haih yíh duhk gūng duh
 
 322
 00:22:22,458 --> 00:22:23,833
-有道理！⋯⋯
+有道理！ ⋯⋯
 yáuh douh léih!
 
 323
 00:22:24,000 --> 00:22:26,292
-至于二当家啰㖞！佢系冇心之失的啫
-ji yū yih dong gā lō wo! kéuih haih móuh sām jī sāt dīk jē
+至于二当家啰㖞！佢系冇心之失嘅啫
+ji yū yih dong gā lō wo! kéuih haih móuh sām jī sāt ge jē
 
 324
 00:22:26,458 --> 00:22:27,583
@@ -1655,12 +1655,12 @@ jī jyū jīng àh!
 
 332
 00:22:43,375 --> 00:22:45,167
-大佬呀！我系一个咁理性的人
-daaih lóu àh! ngóh haih yāt go gam léih sing dīk yàhn
+大佬呀！我系一个咁理性嘅人
+daaih lóu àh! ngóh haih yāt go gam léih sing ge yàhn
 
 333
 00:22:45,417 --> 00:22:48,708
-你叫我点能够接受啲咁无稽嘅嘢得架！杀佢
+你叫我点能够接受啲咁无稽嘅嘢得㗎！杀佢
 néih giu ngóh dím nàhng gau jip sauh dī gam mòuh kāi ge yéh dāk ga! saat kéuih
 
 334
@@ -1675,8 +1675,8 @@ pa mē àh? ngóh sēung hóu fāan chán, gīng m̀h gau kéuih dá?
 
 336
 00:22:53,250 --> 00:22:54,583
-好！　　有种！
-hóu!  yáuh jung!
+好！有种！
+hóu! yáuh jung!
 
 337
 00:22:55,000 --> 00:22:56,375
@@ -1695,8 +1695,8 @@ hóu àh
 
 340
 00:22:59,500 --> 00:23:01,458
-你“是但”拿把嘢冲入佢房就劈
-néih sih daahn nàh bá yéh chūng yahp kéuih fòhng jauh pek
+你〝是但〞拿把嘢冲入佢房就劈
+néih“ sih daahn” nàh bá yéh chūng yahp kéuih fòhng jauh pek
 
 341
 00:23:01,667 --> 00:23:03,125
@@ -1710,13 +1710,13 @@ hái ngóh hauh mihn m̀h dāk
 
 343
 00:23:16,375 --> 00:23:18,625
-哇！又话掩护我，行近啲好喇
-wā! yauh wah yím wuh ngóh, hohng gahn dī hóu la
+哇！又话掩护我，行近啲好噃
+wā! yauh wah yím wuh ngóh, hohng gahn dī hóu bo
 
 344
 00:23:18,958 --> 00:23:21,708
-定啲嚟吖，我哋呢度几廿把嘢〝看〞住㗎嘛
-dihng dī làih ā, ngóh deih nē douh géi yah bá yéh“ hon” jyuh ga ma
+定啲嚟吖，我哋呢度几廿把嘢「航」住㗎嘛
+dihng dī làih ā, ngóh deih nē douh géi yah bá yéh hòhng jyuh ga ma
 
 345
 00:23:22,000 --> 00:23:23,958
@@ -1785,8 +1785,8 @@ m̀h sái gīng!
 
 358
 00:24:23,208 --> 00:24:26,708
-只要我点曲池，急宫两个穴位即时冇血流
-jí yiu ngóh dím kūk chìh, gāp gūng léuhng go yuht waih jīk sìh móuh hyut làuh
+只要我点曲池、疾宫两个穴位，即时冇血流
+jí yiu ngóh dím kūk chìh jaht gūng léuhng go yuht waih, jīk sìh móuh hyut làuh
 
 359
 00:24:43,625 --> 00:24:46,667
@@ -1810,8 +1810,8 @@ bōng jyú
 
 363
 00:24:57,583 --> 00:24:58,417
-点呀？　　系咪妖怪呀？
-dím àh?  haih mī yíu gwaai àh?
+点呀？系咪妖怪呀？
+dím àh? haih mī yíu gwaai àh?
 
 364
 00:24:58,583 --> 00:24:59,333
@@ -1825,8 +1825,8 @@ juhng haih fēi sèuhng jī gam yíu tīm!
 
 366
 00:25:01,500 --> 00:25:04,208
-搞到我心砰砰嘭嘭跳！
-gáau dou ngóh sām pīng pīng pàahng pàahng tiu!
+搞到我心乒乓乒乓跳！
+gáau dou ngóh sām bīng bām bīng bām tiu!
 
 367
 00:25:05,250 --> 00:25:06,500
@@ -1845,7 +1845,7 @@ gāau seuhng bōng jyú néih nē jung pàhng yáuh, jān haih sāam sāng yáuh
 
 370
 00:25:18,375 --> 00:25:20,417
-今日「栋」系你班手足头上啲钱
+今日“栋”系你班手足头上啲钱
 gām yaht duhng haih néih bāan sáu jūk tàuh seuhng dī chín
 
 371
@@ -1860,8 +1860,8 @@ dō jeh sāam sahp nèuhng yāt fāan méih yi
 
 373
 00:25:26,958 --> 00:25:28,417
-帮主，普通料啫
-bōng jyú, póu tūng liuh jē
+帮主，普通料嚟啫
+bōng jyú, póu tūng liuh làih jē
 
 374
 00:25:29,042 --> 00:25:30,500
@@ -1925,8 +1925,8 @@ yāt sèuhng kéuih jeuhng sāng bāt lóuh jī yuhk
 
 386
 00:26:07,833 --> 00:26:10,500
-你可以喺菩提老祖口中「氹」佢讲出呢个天机
-néih hó yíh hái pòuh tàih lóuh jóu háu jūng táhm kéuih góng chēut nē go tīn gēi
+你可以在菩提老祖口中〝氹〞佢讲出呢个天机
+néih hó yíh joih pòuh tàih lóuh jóu háu jūng“ táhm” kéuih góng chēut nē go tīn gēi
 
 387
 00:26:10,917 --> 00:26:11,708
@@ -1940,8 +1940,8 @@ lyuhn ngāp
 
 389
 00:26:12,875 --> 00:26:15,542
-乱噏？咁你走五岳山做咩？
-lyuhn ngāp? gam néih jáu nǵh ngohk sāan jouh mē?
+乱噏？咁你走嚟五岳山做咩？
+lyuhn ngāp? gam néih jáu làih nǵh ngohk sāan jouh mē?
 
 390
 00:26:15,708 --> 00:26:17,292
@@ -1985,8 +1985,8 @@ gin fāan nē go gwá chìhng bohk hahng ge yàhn yauh dím àh!
 
 398
 00:26:36,417 --> 00:26:38,708
-分别祗不过佢上次死喺观世音手上
-fān biht jī bāt gwo kéuih seuhng chi séi hái gūn sai yām sáu seuhng
+分别只不过佢上次死喺观世音手上
+fān biht jí bāt gwo kéuih seuhng chi séi hái gūn sai yām sáu seuhng
 
 399
 00:26:39,667 --> 00:26:41,708
@@ -2025,7 +2025,7 @@ bīn go?
 
 406
 00:27:08,167 --> 00:27:10,500
-妖怪！⋯⋯⋯
+妖怪！ ⋯⋯
 yíu gwaai!
 
 407
@@ -2040,8 +2040,8 @@ móuh yéh àh
 
 409
 00:27:23,042 --> 00:27:24,792
-冇？　　咁你踎低做乜嘢？
-móuh?  gam néih māu dāi jouh māt yéh?
+冇？咁你蹲低做乜嘢？
+móuh? gam néih dēun dāi jouh māt yéh?
 
 410
 00:27:25,333 --> 00:27:26,667
@@ -2150,13 +2150,13 @@ yáuh yāt go go tàuh jauh sei baak géi gān juhng
 
 431
 00:28:35,042 --> 00:28:36,500
-帮主，我似今次发到猪头炳
-bōng jyú, ngóh chíh gām chi faat dou jyū tàuh bíng
+帮主，我哋今次发到猪头炳
+bōng jyú, ngóh deih gām chi faat dou jyū tàuh bíng
 
 432
 00:28:36,708 --> 00:28:38,000
-以后唔好做山贼嘞！　　我哋净系⋯⋯
-yíh hauh m̀h hóu jouh sāan chaahk la!  ngóh deih jihng haih
+以后唔好做山贼嘞！我哋净系⋯⋯
+yíh hauh m̀h hóu jouh sāan chaahk la! ngóh deih jihng haih
 
 433
 00:28:38,375 --> 00:28:39,375
@@ -2165,8 +2165,8 @@ ngóh deih bīn yáuh yéuhng jyū dāk ga?
 
 434
 00:28:39,625 --> 00:28:40,875
-羊？我哋冇⋯冇养猪咩？
-yèuhng? ngóh deih móuh móuh yéuhng jyū mē?
+我哋冇⋯冇养猪咩？
+ngóh deih móuh móuh yéuhng jyū mē?
 
 435
 00:28:41,208 --> 00:28:43,000
@@ -2220,12 +2220,12 @@ m̀h hóu haak hei
 
 445
 00:28:56,458 --> 00:28:58,667
-早抖帮主！ 行啦
-jóu táu bōng jyú!  hohng lā
+早抖帮主！行啦
+jóu táu bōng jyú! hohng lā
 
 446
 00:28:59,792 --> 00:29:01,833
-去！ 出去！
+去！　出去！
 heui!  chēut heui!
 
 447
@@ -2250,8 +2250,8 @@ hohng!
 
 451
 00:29:24,625 --> 00:29:29,125
-唔好杀我！⋯⋯唔好杀我！
-m̀h hóu saat ngóh! m̀h hóu saat ngóh!
+唔好杀我！ ⋯⋯唔好杀我！
+m̀h hóu saat ngóh!  m̀h hóu saat ngóh!
 
 452
 00:29:31,708 --> 00:29:33,167
@@ -2335,8 +2335,8 @@ haih àh, haih àh, m̀h hóu àh
 
 468
 00:30:08,833 --> 00:30:10,958
-系咩啫！但都未变
-haih mē jē! daahn dōu meih bin
+系咩啫！佢都未变
+haih mē jē! kéuih dōu meih bin
 
 469
 00:30:13,625 --> 00:30:16,458
@@ -2360,8 +2360,8 @@ dím gáai àh?
 
 473
 00:30:24,042 --> 00:30:28,000
-我要用移魂大法迷了他，留返嚟做我嘅卧底
-ngóh yiu yuhng yìh wàhn daaih faat màih líuh tā, làuh fāan làih jouh ngóh ge ngoh dái
+我要用移魂大法迷了他，留回来做我嘅卧底
+ngóh yiu yuhng yìh wàhn daaih faat màih líuh tā, làuh wùih lòih jouh ngóh ge ngoh dái
 
 474
 00:30:32,875 --> 00:30:33,500
@@ -2385,18 +2385,18 @@ gam leng jái néih aai yáuh gwái! laahn nàih fùh m̀h séuhng bek
 
 478
 00:30:43,167 --> 00:30:44,875
-喂！呢处唔好扮嘢
-wai! nē chyu m̀h hóu baahn yéh
+喂！喺呢处唔好扮嘢
+wai! hái nē chyu m̀h hóu baahn yéh
 
 479
 00:30:45,125 --> 00:30:47,833
-唔系我会「逐忽逐忽」肉同你片出来呀
-m̀h haih ngóh wuih juhk fāt juhk fāt yuhk tùhng néih pin chēut lòih àh
+唔系我会〝逐忽逐忽〞肉同你片出来呀
+m̀h haih ngóh wuih“ juhk fāt juhk fāt” yuhk tùhng néih pin chēut lòih àh
 
 480
 00:30:48,333 --> 00:30:50,083
-哗！　你唔系咁残忍呀？
-wā!  néih m̀h haih gam chàahn yán àh?
+哗！你唔系咁残忍呀？
+wā! néih m̀h haih gam chàahn yán àh?
 
 481
 00:30:50,292 --> 00:30:51,125
@@ -2420,13 +2420,13 @@ chèuhng yeh maahn maahn, mòuh sām seuih mìhn
 
 485
 00:31:06,292 --> 00:31:07,708
-我以为我一个睡不着啫
-ngóh yíh wàih ngóh yāt go seuih bāt jeuhk jē
+我以为我一个瞓唔着啫
+ngóh yíh wàih ngóh yāt go fan m̀h jeuhk jē
 
 486
 00:31:08,000 --> 00:31:10,375
-原来晶晶姑娘，你都睡不着呀？
-yùhn lòih jīng jīng gū nèuhng, néih dōu seuih bāt jeuhk àh?
+原来晶晶姑娘，你都瞓唔着呀？
+yùhn lòih jīng jīng gū nèuhng, néih dōu fan m̀h jeuhk àh?
 
 487
 00:31:14,458 --> 00:31:17,667
@@ -2550,8 +2550,8 @@ màhn yauh m̀h dāk, móuh yauh m̀h dāk
 
 511
 00:32:06,917 --> 00:32:08,625
-你唔做山贼想做状元呀
-néih m̀h jouh sāan chaahk séung jouh johng yùhn àh
+你唔做山贼想做状元呀？
+néih m̀h jouh sāan chaahk séung jouh johng yùhn àh?
 
 512
 00:32:09,042 --> 00:32:10,167
@@ -2600,8 +2600,8 @@ lyuhn jauh lyuhn dī, dōu júng syun wùih fūk géi fān fūng chói
 
 521
 00:32:53,500 --> 00:32:55,208
-孙悟空，你同我躲出嚟！
-syūn ng̀h hūng, néih tùhng ngóh dó chēut làih!
+孙悟空，你同我𨅬出嚟！
+syūn ng̀h hūng, néih tùhng ngóh lāan chēut làih!
 
 522
 00:32:55,917 --> 00:32:56,958
@@ -2620,8 +2620,8 @@ yìh gā ngóh dáng jó néih sāam nìhn
 
 525
 00:33:00,875 --> 00:33:01,833
-你同我死出嚟！
-néih tùhng ngóh séi chēut làih!
+你同我死出来！
+néih tùhng ngóh séi chēut lòih!
 
 526
 00:33:02,458 --> 00:33:04,250
@@ -2630,8 +2630,8 @@ ngóh deih daaih wòhng yáuh dī sih hàahng hōi jó
 
 527
 00:33:04,583 --> 00:33:07,208
-佢话白姑娘嚟咗，就将呢件嘢交返俾你
-kéuih wah baahk gū nèuhng làih jó, jauh jēung nē gihn yéh gāau fáan béi néih
+佢话白姑娘嚟咗，就将呢件嘢交返给你
+kéuih wah baahk gū nèuhng làih jó, jauh jēung nē gihn yéh gāau fáan kāp néih
 
 528
 00:33:07,667 --> 00:33:09,625
@@ -2650,8 +2650,8 @@ nǵh baak nìhn lā
 
 531
 00:33:23,375 --> 00:33:26,333
-卒之找到唐三藏的踪迹啦
-jēut jī jáau dou tòhng sāam chòhng dīk jūng jīk lā
+卒之揾到唐三藏嘅踪迹啦
+jēut jī wán dou tòhng sāam chòhng ge jūng jīk lā
 
 532
 00:33:32,875 --> 00:33:36,625
@@ -2720,8 +2720,8 @@ chēut faat lā bōng jyú, m̀h haih jauh chìh dou ge lā
 
 545
 00:34:46,375 --> 00:34:47,250
-出咩嘢发呀？　　你想点呀？
-chēut mē yéh faat àh?  néih séung dím àh?
+出咩嘢发呀？你想点呀？
+chēut mē yéh faat àh? néih séung dím àh?
 
 546
 00:34:47,500 --> 00:34:48,542
@@ -2740,8 +2740,8 @@ ngóh deih heui dá gip yàhn deih àh?
 
 549
 00:34:50,917 --> 00:34:52,208
-去咪去！　　怕咗你啦！
-heui mī heui!  pa jó néih lā!
+去咪去！怕咗你啦！
+heui mī heui! pa jó néih lā!
 
 550
 00:35:00,083 --> 00:35:03,792
@@ -2750,8 +2750,8 @@ heui dá gip dá gip geuk báan
 
 551
 00:35:04,125 --> 00:35:04,667
-打劫咩嘢话？
-dá gip mē yéh wah?
+打劫咩话？
+dá gip mē wah?
 
 552
 00:35:04,833 --> 00:35:05,458
@@ -2760,8 +2760,8 @@ geuk báan wo, lóuh yèh
 
 553
 00:35:05,708 --> 00:35:07,208
-我冇脚㗎㖞，咁点呀？
-ngóh móuh geuk ga wo, gam dím àh?
+我冇脚嗰㖞，咁点呀？
+ngóh móuh geuk gó wo, gam dím àh?
 
 554
 00:35:13,542 --> 00:35:14,542
@@ -2770,8 +2770,8 @@ mohng mē àh?
 
 555
 00:35:14,708 --> 00:35:16,583
-剃净块面靓仔，妒忌呀？
-tai jihng faai mihn leng jái, dou geih àh?
+剃净咗块面靓仔咗，妒忌呀？
+tai jihng jó faai mihn leng jái jó, dou geih àh?
 
 556
 00:35:17,167 --> 00:35:18,458
@@ -2935,8 +2935,8 @@ dāk m̀h dāk àh?
 
 588
 00:36:36,167 --> 00:36:38,208
-得呀！　　头先点解兵兵嘭嘭嘅？
-dāk àh!  tàuh sīn dím gáai bīng bīng pàahng pàahng ge?
+得呀！头先点解兵兵嘭嘭嘅？
+dāk àh! tàuh sīn dím gáai bīng bīng pàahng pàahng ge?
 
 589
 00:36:38,500 --> 00:36:40,375
@@ -2975,8 +2975,8 @@ gām yaht go go yuht gwōng gam leng, bāt yùh
 
 596
 00:36:54,292 --> 00:36:55,917
-月光，　　冇呀
-yuht gwōng,  móuh àh
+月光，冇呀
+yuht gwōng, móuh àh
 
 597
 00:36:56,250 --> 00:37:00,208
@@ -2995,8 +2995,8 @@ néih góng
 
 600
 00:37:07,917 --> 00:37:10,458
-边个？　　边个老母？⋯⋯
-bīn go?  bīn go lóuh móu?
+边个？边个老母？⋯⋯
+bīn go? bīn go lóuh móu?
 
 601
 00:37:10,667 --> 00:37:11,667
@@ -3005,8 +3005,8 @@ bīn go lóuh móu?
 
 602
 00:37:11,958 --> 00:37:12,833
-我变咗提子呀
-ngóh bin jó tàih jí àh
+我变咗葡萄呀
+ngóh bin jó pòuh tòuh àh
 
 603
 00:37:13,000 --> 00:37:13,583
@@ -3020,8 +3020,8 @@ hái néih fu dōng
 
 605
 00:37:16,208 --> 00:37:17,500
-哗！　　咁大揪挂喺度
-wā!  gam daaih jāu gwa hái douh
+哗！咁大揪挂喺度
+wā! gam daaih jāu gwa hái douh
 
 606
 00:37:17,708 --> 00:37:19,375
@@ -3065,13 +3065,13 @@ tòhng sāam chòhng juhng yihn yàhn gāan?
 
 614
 00:37:38,708 --> 00:37:42,375
-五百年前孙悟空俾观音大士所消灭
-nǵh baak nìhn chìhn syūn ngh hūng béi gūn yām daaih sih só sīu miht
+五百年前孙悟空俾观音大使所消灭
+nǵh baak nìhn chìhn syūn ngh hūng béi gūn yām daaih si só sīu miht
 
 615
 00:37:42,708 --> 00:37:44,625
-但师父唐三藏为咗救佢
-daahn sī fuh tòhng sāam chòhng wàih jó gau kéuih
+佢师父唐三藏为咗救佢
+kéuih sī fuh tòhng sāam chòhng wàih jó gau kéuih
 
 616
 00:37:44,792 --> 00:37:47,792
@@ -3140,7 +3140,7 @@ m̀h gwaai dāk yāt louh yíh làih ngóh dōu faat jyu tùhng yāt go ok muhng
 
 629
 00:38:24,208 --> 00:38:27,708
-喺一片漆黑孤独嘅环境里头
+喺一遍漆黑孤独嘅环境里头
 hái yāt pin chāt hāk gū duhk ge wàahn gíng léuih tàuh
 
 630
@@ -3155,8 +3155,8 @@ lihng dou ngóh gwái séi gam m̀h hóu yi sī
 
 632
 00:38:34,667 --> 00:38:35,792
-就系你呢种眼神
-jauh haih néih nē jung ngáahn sàhn
+就系你呢挺眼神
+jauh haih néih nē tíhng ngáahn sàhn
 
 633
 00:38:36,000 --> 00:38:38,208
@@ -3170,33 +3170,33 @@ yùhn lòih jyu dihng ngóh gām yaht johng yíu!
 
 635
 00:38:40,542 --> 00:38:43,292
-系呀！　　你今日真系撞妖！
-haih àh!  néih gām yaht jān haih johng yíu!
+系呀！你今日真系撞妖！
+haih àh! néih gām yaht jān haih johng yíu!
 
 636
 00:38:43,625 --> 00:38:46,000
-呃！呢度有两个乾坤袋，一叠隐身符
-ngāak! nī douh yáuh léuhng go gōn kwān doih, yāt dihp yán sān fùh
+嗱！呢度有两个乾坤袋，一叠隐身符
+nàh! nī douh yáuh léuhng go gōn kwān doih, yāt dihp yán sān fùh
 
 637
 00:38:46,208 --> 00:38:48,500
-你一贴咗呢度符喺身，佢就睇唔到你
-néih yāt tip jó nē douh fùh hái sān, kéuih jauh tái m̀h dou néih
+你一贴咗度符喺身，佢就睇唔到你
+néih yāt tip jó douh fùh hái sān, kéuih jauh tái m̀h dou néih
 
 638
 00:38:48,708 --> 00:38:50,917
-等佢唔觉意，你就一笠笠落佢个头嗰度
-dáng kéuih m̀h gok yi, néih jauh yāt lāp lāp lohk kéuih go tàuh gó douh
+吼佢唔觉意，你就一笠笠落佢个头嗰度
+hau kéuih m̀h gok yi, néih jauh yāt lāp lāp lohk kéuih go tàuh gó douh
 
 639
 00:38:51,375 --> 00:38:52,500
-咛，我喺后面掩护你
-nìhng, ngóh hái hauh mihn yím wuh néih
+嗱我喺后面掩护你
+nàh ngóh hái hauh mihn yím wuh néih
 
 640
 00:38:52,833 --> 00:38:54,792
-哗！你句对白不嬲我讲㗎㖞
-wā! néih geui deui baahk bāt lāu ngóh góng ga wo
+哇！你句对白不「嬲」我讲嗰㖞
+wā! néih geui deui baahk bāt nāu ngóh góng gó wo
 
 641
 00:38:55,042 --> 00:38:55,792
@@ -3210,8 +3210,8 @@ tùhng kéuih lō
 
 643
 00:38:58,125 --> 00:39:01,292
-好嘢！等我帮你呢
-hóu yéh! dáng ngóh bōng néih nē
+好呃！等我帮你呢
+hóu ngāak! dáng ngóh bōng néih nē
 
 644
 00:39:01,542 --> 00:39:03,292
@@ -3220,8 +3220,8 @@ móuh dāk díng! néih bāt kwáih wàih ngóh hóu hīng daih
 
 645
 00:39:03,500 --> 00:39:04,833
-咛，你而家出去叫晒啲手足入嚟
-nìhng, néih yìh gā chēut heui giu saai dī sáu jūk yahp làih
+嗱，你而家出去叫晒啲手足入嚟
+nàh, néih yìh gā chēut heui giu saai dī sáu jūk yahp làih
 
 646
 00:39:05,167 --> 00:39:05,958
@@ -3280,8 +3280,8 @@ yáuh baahn faat, waih jó bōng jyú fān fu ja
 
 657
 00:39:42,958 --> 00:39:44,625
-你等下
-néih dáng hah
+你等一下
+néih dáng yāt hah
 
 658
 00:39:49,083 --> 00:39:51,208
@@ -3300,8 +3300,8 @@ sī jé
 
 661
 00:40:08,917 --> 00:40:11,042
-我哋不动声色，睇佢哋想点
-ngóh deih bāt duhng sīng sīk, tái kéuih deih séung dím
+我哋不动声色，看佢哋想点
+ngóh deih bāt duhng sīng sīk, hon kéuih deih séung dím
 
 662
 00:40:23,417 --> 00:40:24,000
@@ -3345,8 +3345,8 @@ jān haih tái m̀h dou wo
 
 670
 00:41:19,917 --> 00:41:21,125
-你不「嬲」都睇唔到嘅啦
-néih bāt nāu dōu tái m̀h dou ge lā
+你不嬲都睇唔到嘅啦
+néih bāt lāu dōu tái m̀h dou ge lā
 
 671
 00:41:21,250 --> 00:41:21,875
@@ -3380,8 +3380,8 @@ bōng jyú! jeuhk fó lā
 
 677
 00:42:35,125 --> 00:42:36,333
-好还钱㖞，靓仔！
-hóu wàahn chín wo, leng jái!
+好讨钱㖞，靓仔！
+hóu tóu chín wo, leng jái!
 
 678
 00:42:36,625 --> 00:42:37,875
@@ -3445,13 +3445,13 @@ m̀h wàahn wái néih yùhng dōu dāk a
 
 690
 00:43:15,000 --> 00:43:16,292
-喂，手，我上个月咪还咗俾你啰
-wai, sáu, ngóh seuhng go yuht mī wàahn jó béi néih lō
+喂，我上个月咪还咗俾你啰
+wai, ngóh seuhng go yuht mī wàahn jó béi néih lō
 
 691
 00:43:16,542 --> 00:43:19,125
-还咗？　　啊系啵，还咗啵
-wàahn jó?  a haih bō, wàahn jó bō
+还咗？啊系噃，还咗噃
+wàahn jó? a haih bo, wàahn jó bo
 
 692
 00:43:19,417 --> 00:43:22,250
@@ -3465,18 +3465,18 @@ syun lā, tàuh sīn yauh haih ngóh m̀h ngāam sīn ge
 
 694
 00:43:26,250 --> 00:43:28,667
-切咗佢！　　都煨晒咯
-chit jó kéuih!  dōu wūi saai lohk
+切咗佢！都煨晒咯
+chit jó kéuih! dōu wūi saai lohk
 
 695
 00:43:29,125 --> 00:43:31,458
-香口啲啫！　　总好过冇
-hēung háu dī jē!  júng hóu gwo móuh
+香口啲啫！总好过冇
+hēung háu dī jē! júng hóu gwo móuh
 
 696
 00:43:31,833 --> 00:43:34,167
-明刀明枪同佢拼过！现身啦！兄弟
-mìhng dōu mìhng chēung tùhng kéuih ping gwo! yihn sān lā! hīng daih
+明刀明枪同佢炼过！现身啦！兄弟
+mìhng dōu mìhng chēung tùhng kéuih lihn gwo! yihn sān lā! hīng daih
 
 697
 00:43:34,333 --> 00:43:35,375
@@ -3490,8 +3490,8 @@ léuhng jek yíu gwaai chēut làih sauh séi
 
 699
 00:43:43,000 --> 00:43:44,625
-乾坤袋呢？　喂！
-kìhn kwān doih nē?  wai!
+乾坤袋呢？喂！
+kìhn kwān doih nē? wai!
 
 700
 00:43:45,125 --> 00:43:48,250
@@ -3530,8 +3530,8 @@ ngóh pòuh tàih lóuh jóu wàih jó fuhk yíu chèuih mō
 
 707
 00:44:06,792 --> 00:44:08,250
-除咗条底裤都要了
-chèuih jó tìuh dái fu dōu yiu líuh
+除咗条底裤都要啦
+chèuih jó tìuh dái fu dōu yiu lā
 
 708
 00:44:12,250 --> 00:44:15,333
@@ -3545,7 +3545,7 @@ pìhng sìh tìuh yáu sí haak kéuih jouh yéh, gáng tēui sāam tēui sei ge
 
 710
 00:44:17,833 --> 00:44:19,667
-今次咁顺摊，梗有「景轰」啦
+今次咁顺摊，梗有“景轰”啦
 gām chi gam seuhn tāan, gáng yáuh gíng gwáng lā
 
 711
@@ -3560,8 +3560,8 @@ haih
 
 713
 00:44:22,583 --> 00:44:23,583
-行，⋯⋯行呀
-hohng, hohng àh
+行， ⋯⋯行呀
+hohng,  hohng àh
 
 714
 00:44:23,708 --> 00:44:24,583
@@ -3585,7 +3585,7 @@ gwaih dāi
 
 718
 00:44:32,000 --> 00:44:35,083
-你条「沐契」，今晚我就㓥咗你当烧猪食
+你条“沐契”，今晚我就㓥咗你当烧猪食
 néih tìuh muhk kai, gām máahn ngóh jauh tōng jó néih dong sīu jyū sihk
 
 719
@@ -3755,8 +3755,8 @@ ngóh m̀h pa la! haih mī àh!?
 
 752
 00:45:44,667 --> 00:45:45,958
-系晒！
-haih saai!
+系噃！
+haih bo!
 
 753
 00:45:50,542 --> 00:45:52,792
@@ -3780,8 +3780,8 @@ wūi la
 
 757
 00:46:09,958 --> 00:46:12,167
-真系烧到烂晒都冇事㖞
-jān haih sīu dou laahn saai dōu móuh sih wo
+真系烧到㶶晒都冇事㖞
+jān haih sīu dou lūng saai dōu móuh sih wo
 
 758
 00:46:13,375 --> 00:46:14,500
@@ -3790,8 +3790,8 @@ fong sáu!
 
 759
 00:46:15,583 --> 00:46:16,917
-而家知我坚嚟㗎啦
-yìh gā jī ngóh gīn làih ga lā
+而家知我坚㗎啦
+yìh gā jī ngóh gīn ga lā
 
 760
 00:46:17,125 --> 00:46:17,875
@@ -3910,8 +3910,8 @@ néih m̀h wuih gwaai ngóh ā ma?
 
 783
 00:47:40,083 --> 00:47:43,292
-我呢一世人都盲累累做人，我知
-ngóh nē yāt sai yàhn dōu màahng leuih leuih jouh yàhn, ngóh jī
+我呢一世人都盲累累做人　我知
+ngóh nē yāt sai yàhn dōu màahng leuih leuih jouh yàhn  ngóh jī
 
 784
 00:47:43,583 --> 00:47:44,875
@@ -3975,13 +3975,13 @@ néih dá sēung jó ngóh, dōu nǵh gin dāk yāt dihng yáuh séui sihk ā
 
 796
 00:48:19,625 --> 00:48:20,917
-睇吓你自己只掌
-tái haak néih jih géi jí jéung
+睇吓你自己只手掌
+tái haak néih jih géi jek sáu jéung
 
 797
 00:48:22,042 --> 00:48:23,250
-吓！　　黑寡妇
-haak!  hāk gwá fúh
+吓！黑寡妇
+haak! hāk gwá fúh
 
 798
 00:48:25,625 --> 00:48:27,000
@@ -4015,8 +4015,8 @@ jūng yū dōu lèuhng sām faat yihn lā néih
 
 804
 00:48:40,167 --> 00:48:42,500
-唔系呀！出面嚟咗只猛嘢呀
-m̀h haih àh! chēut mihn làih jó jí máahng yéh àh
+唔系呀！　出面嚟咗只猛嘢呀
+m̀h haih àh!  chēut mihn làih jó jí máahng yéh àh
 
 805
 00:48:44,250 --> 00:48:45,167
@@ -4125,8 +4125,8 @@ ngóh saat jó néih nē go ngāu yih sóu ge fáan gwāt jái!
 
 826
 00:49:52,083 --> 00:49:53,958
-何方妖女！　　报上名来
-hòh fōng yíu néuih!  bou seuhng mìhng lòih
+何方妖女！报上名来
+hòh fōng yíu néuih! bou seuhng mìhng lòih
 
 827
 00:49:54,542 --> 00:49:57,125
@@ -4170,8 +4170,8 @@ líhng gaau ngóh ge baahk gwāt bīn lā!
 
 835
 00:50:39,417 --> 00:50:39,875
-丝
-sī
+变
+bin
 
 836
 00:50:41,792 --> 00:50:42,667
@@ -4225,8 +4225,8 @@ béi kéuih jíng sēung tìuh pòuh tàih gān
 
 846
 00:52:10,083 --> 00:52:12,125
-起码练番一百几十年先至可以再同佢练过
-héi máh lihn fāan yāt baak géi sahp nìhn sīn ji hó yíh joi tùhng kéuih lihn gwo
+起码练番一百几廿年先至可以再同佢练过
+héi máh lihn fāan yāt baak géi yah nìhn sīn ji hó yíh joi tùhng kéuih lihn gwo
 
 847
 00:52:17,375 --> 00:52:18,917
@@ -4280,8 +4280,8 @@ pùhn sī duhng?
 
 857
 00:52:41,500 --> 00:52:42,542
-行啦！　死马骝
-hohng lā!  séi máh làuh
+行啦！死马骝
+hohng lā! séi máh làuh
 
 858
 00:52:42,958 --> 00:52:43,875
@@ -4330,8 +4330,8 @@ jiu yíu geng?
 
 867
 00:53:05,625 --> 00:53:07,042
-咛，睇到啦嘛
-nìhng, tái dou lā ma
+嗱，睇到啦嘛
+nàh, tái dou lā ma
 
 868
 00:53:07,333 --> 00:53:08,542
@@ -4390,8 +4390,8 @@ jyú yàhn àh! séi máh làuh làih jó lā
 
 879
 00:53:31,542 --> 00:53:34,292
-唐三藏究竟喺边？　　马骝精
-tòhng sāam chòhng gau gíng hái bīn?  máh lāu jīng
+唐三藏究竟喺边？马骝精
+tòhng sāam chòhng gau gíng hái bīn? máh lāu jīng
 
 880
 00:53:36,708 --> 00:53:38,542
@@ -4400,8 +4400,8 @@ hóu daaih ge ngh wuih àh gok wái
 
 881
 00:53:39,208 --> 00:53:40,333
-呢个误会大到点吖？
-nē go ngh wuih daaih dou dím ā?
+呢个误会大到点吖嗱？
+nē go ngh wuih daaih dou dím ā nàh?
 
 882
 00:53:40,625 --> 00:53:41,375
@@ -4430,8 +4430,8 @@ néih ló làih jiu haak ā
 
 887
 00:53:46,917 --> 00:53:47,542
-假嘅，　　假嘅
-gá ge,  gá ge
+假嘅，假嘅
+gá ge, gá ge
 
 888
 00:53:47,708 --> 00:53:48,500
@@ -4440,8 +4440,8 @@ gá ge néih dōu gau dáam
 
 889
 00:53:48,708 --> 00:53:49,708
-哼！　　你唔好再扮嘢呀
-hāng!  néih m̀h hóu joi baahn yéh àh
+哼！你唔好再扮嘢呀
+hāng! néih m̀h hóu joi baahn yéh àh
 
 890
 00:53:51,000 --> 00:53:52,083
@@ -4510,8 +4510,8 @@ sī jé, ngóh móuh ngāak néih
 
 903
 00:54:17,167 --> 00:54:19,000
-有呃我慨？ 喵你一剑杀咗佰吖
-yáuh ngāak ngóh koi?  mēu néih yāt gim saat jó baak ā
+有呃我嘅？咁你一剑杀咗佢吖
+yáuh ngāak ngóh ge? gam néih yāt gim saat jó kéuih ā
 
 904
 00:54:19,875 --> 00:54:21,000
@@ -4535,7 +4535,7 @@ dōu m̀h jéun
 
 908
 00:54:34,208 --> 00:54:35,042
-俾把剑佢！
+俾把劍佢！
 béi bá gim kéuih!
 
 909
@@ -4550,8 +4550,8 @@ saat kéuih
 
 911
 00:54:43,250 --> 00:54:44,542
-你片咗我大腿一嘢呀
-néih pin jó ngóh daaih téui yāt yéh àh
+你片咗我大脾一嘢呀
+néih pin jó ngóh daaih pèih yāt yéh àh
 
 912
 00:54:44,708 --> 00:54:45,625
@@ -4560,8 +4560,8 @@ ngóh yáuh sām ge
 
 913
 00:54:45,833 --> 00:54:47,000
-咁你开张单我俾番钱你吖？
-gam néih hōi jēung dāan ngóh béi fāan chín néih ā?
+咁你开张单嚟我俾番钱你吖？
+gam néih hōi jēung dāan làih ngóh béi fāan chín néih ā?
 
 914
 00:54:47,167 --> 00:54:48,083
@@ -4605,8 +4605,8 @@ ngóh oi dihng néih yāt go
 
 922
 00:55:32,292 --> 00:55:33,208
-响出边
-héung chēut bihn
+墙外边
+chèuhng ngoih bihn
 
 923
 00:55:33,458 --> 00:55:34,458
@@ -4615,13 +4615,13 @@ douh mùhn díng m̀h díng dāk jyuh ga?
 
 924
 00:55:34,708 --> 00:55:37,000
-度门系祖师爷用万年金刚岩做砌成
-douh mùhn haih jóu sī yèh yuhng maahn nìhn gām gōng ngàahm jouh chai sìhng
+度门系祖师爷用万年金刚岩做㗎
+douh mùhn haih jóu sī yèh yuhng maahn nìhn gām gōng ngàahm jouh ga
 
 925
 00:55:40,542 --> 00:55:41,250
-行开
-hàahng hōi
+走开
+jáu hōi
 
 926
 00:55:44,625 --> 00:55:47,250
@@ -4640,8 +4640,8 @@ néih yùhn bún tùhng chek lihn sàhn gwān yáuh dyuhn daaih hóu ge yān yù
 
 929
 00:55:51,875 --> 00:55:52,792
-都系俾佢又喔㗎咋
-dōu haih béi kéuih yauh āk ga ja
+都系俾佢又㖞㗎咋
+dōu haih béi kéuih yauh wo ga ja
 
 930
 00:55:53,375 --> 00:55:54,250
@@ -4660,8 +4660,8 @@ mī yauh m̀h léih néih
 
 933
 00:55:56,542 --> 00:55:57,417
-讲完未？ 八婆
-góng yùhn meih?  baat pòh
+讲完未？八婆
+góng yùhn meih? baat pòh
 
 934
 00:55:57,625 --> 00:55:59,000
@@ -4690,8 +4690,8 @@ dou sìh kéuih wuih sī bin néih jauh jī séi!
 
 939
 00:56:10,125 --> 00:56:11,708
-我吓大㗎！　　八婆
-ngóh haak daaih ga!  baat pòh
+我吓大㗎！八婆
+ngóh haak daaih ga! baat pòh
 
 940
 00:56:19,125 --> 00:56:20,125
@@ -4705,8 +4705,8 @@ daaih wòhng, nī douh yáuh géi chīn go sāan tàuh, sāan duhng yauh dō
 
 942
 00:56:23,292 --> 00:56:24,583
-唔知边个系盘丝洞嘅入口？
-m̀h jī bīn go haih pùhn sī duhng ge yahp háu?
+唔知边个系盘丝洞嘅入口㖞？
+m̀h jī bīn go haih pùhn sī duhng ge yahp háu wo?
 
 943
 00:56:24,708 --> 00:56:25,708
@@ -4725,13 +4725,13 @@ wai
 
 946
 00:57:01,083 --> 00:57:02,667
-你冇事吖嘛？
-néih móuh sih ā ma?
+你冇事吖吗？
+néih móuh sih ā máh?
 
 947
 00:57:02,875 --> 00:57:04,292
-里面点呀？　　死得未呀？
-léuih mihn dím àh?  séi dāk meih àh?
+里面点呀？死得未呀？
+léuih mihn dím àh? séi dāk meih àh?
 
 948
 00:57:06,083 --> 00:57:07,458
@@ -4815,8 +4815,8 @@ néih yāt wāt chān ngóh jauh lihn dyuhn néih tìuh géng
 
 964
 00:57:43,042 --> 00:57:45,042
-摆条匙！ 困但系里面
-báai tìuh sìh!  kwan daahn haih léuih mihn
+摆条匙嚟！困佢喺里面
+báai tìuh sìh làih! kwan kéuih hái léuih mihn
 
 965
 00:57:46,417 --> 00:57:47,917
@@ -4870,7 +4870,7 @@ a, m̀h hóu àh
 
 975
 00:58:40,667 --> 00:58:42,375
-一式佢就唔郁嘅
+一息佢就唔郁嘅
 yāt sīk kéuih jauh m̀h wāt ge
 
 976
@@ -4930,8 +4930,8 @@ néih jouh mē àh?
 
 987
 00:59:46,833 --> 00:59:48,083
-我打了个冷震
-ngóh dá líuh go láahng jan
+我打咗个冷震
+ngóh dá jó go láahng jan
 
 988
 00:59:49,125 --> 00:59:50,292
@@ -4940,8 +4940,8 @@ hóu gwo yáhn àh
 
 989
 00:59:50,458 --> 00:59:52,458
-吓，你系我身上打个冷震
-haak, néih haih ngóh sān seuhng dá go láahng jan
+吓，你系我身上打咗个冷震
+haak, néih haih ngóh sān seuhng dá jó go láahng jan
 
 990
 00:59:53,000 --> 00:59:53,917
@@ -4995,8 +4995,8 @@ ngóh wuih saat jó néih
 
 1000
 01:00:52,667 --> 01:00:54,292
-我的确唔系佢
-ngóh dīk kok m̀h haih kéuih
+我的而且确唔系佢
+ngóh dīk yìh ché kok m̀h haih kéuih
 
 1001
 01:00:54,625 --> 01:00:56,792
@@ -5095,8 +5095,8 @@ dōu meih ji yū wah sìhng yàhn jī ngàih a
 
 1020
 01:02:49,167 --> 01:02:51,000
-日光日白唔惯呀
-yaht gwōng yaht baahk m̀h gwaan àh
+日光日白不惯呀
+yaht gwōng yaht baahk bāt gwaan àh
 
 1021
 01:02:51,458 --> 01:02:52,667
@@ -5185,8 +5185,8 @@ daih yaht kéuih daaih jó néih m̀h hóu yihng kéuih ge mē tīm wo
 
 1038
 01:04:14,042 --> 01:04:15,500
-咁？　　咁我认佢嘅咩呀？
-gam?  gam ngóh yihng kéuih ge mē àh?
+咁？咁我认佢嘅咩呀？
+gam? gam ngóh yihng kéuih ge mē àh?
 
 1039
 01:04:15,667 --> 01:04:16,625
@@ -5225,8 +5225,8 @@ haih néih?
 
 1046
 01:04:45,917 --> 01:04:47,500
-想唔想知道唐三藏边度？
-séung m̀h séung jī dou tòhng sāam chòhng bīn douh?
+想唔想知道唐三藏喺边度？
+séung m̀h séung jī dou tòhng sāam chòhng hái bīn douh?
 
 1047
 01:04:50,958 --> 01:04:51,833
@@ -5250,13 +5250,13 @@ jihk dāk ge!
 
 1051
 01:05:04,000 --> 01:05:06,125
-如果你肯给解药我救白晶晶的话
-yùh gwó néih háng kāp gáai yeuhk ngóh gau baahk jīng jīng dīk wah
+如果你肯俾解药我救白晶晶嘅话
+yùh gwó néih háng béi gáai yeuhk ngóh gau baahk jīng jīng ge wá
 
 1052
 01:05:06,417 --> 01:05:07,833
-我就话你知唐僧在边
-ngóh jauh wah néih jī tòhng jāng joih bīn
+我就话你知唐僧喺边
+ngóh jauh wah néih jī tòhng jāng hái bīn
 
 1053
 01:05:09,083 --> 01:05:10,500
@@ -5275,7 +5275,7 @@ náaih mā
 
 1056
 01:05:23,958 --> 01:05:25,667
-奶妈息番你
+奶妈识番你
 náaih mā sīk fāan néih
 
 1057
@@ -5340,13 +5340,13 @@ m̀h haih haak?
 
 1069
 01:06:47,375 --> 01:06:48,333
-晶晶
-jīng jīng
+晶晶！
+jīng jīng!
 
 1070
 01:06:49,833 --> 01:06:51,458
-晶晶
-jīng jīng
+晶晶！
+jīng jīng!
 
 1071
 01:06:57,208 --> 01:06:58,875
@@ -5360,8 +5360,8 @@ juhng yiu wán géi noih àh?
 
 1073
 01:07:00,875 --> 01:07:01,917
-首映　晶晶
-sáu yíng  jīng jīng
+晶晶
+jīng jīng
 
 1074
 01:07:02,583 --> 01:07:04,250
@@ -5450,13 +5450,13 @@ chói néih dōu sòh ga
 
 1091
 01:07:47,583 --> 01:07:49,708
-咦，块地都唔系好硬
-yí, faai deih dōu m̀h haih hóu ngaahng
+咦，这块地都唔系好硬
+yí, jé faai deih dōu m̀h haih hóu ngaahng
 
 1092
 01:07:50,000 --> 01:07:51,083
-今次无死喇
-gām chi mòuh séi la
+今次冇死喇
+gām chi móuh séi la
 
 1093
 01:07:54,667 --> 01:07:56,792
@@ -5465,8 +5465,8 @@ goi sai mō wòhng, sàhn gūng wuh tái
 
 1094
 01:07:58,667 --> 01:08:00,042
-我而家医番好你嘅伤
-ngóh yìh gā yī fāan hóu néih ge sēung
+我而家医返好你嘅伤
+ngóh yìh gā yī fáan hóu néih ge sēung
 
 1095
 01:08:00,208 --> 01:08:02,542
@@ -5485,7 +5485,7 @@ dou sìh sihk tòhng jāng yuhk m̀h síu dāk néih gó fahn
 
 1098
 01:08:06,250 --> 01:08:08,917
-如果唔系我就要你死得俾而家痛苦十倍
+如果唔系我就要你死得比而家痛苦十倍
 yùh gwó m̀h haih ngóh jauh yiu néih séi dāk béi yìh gā tung fú sahp púih
 
 1099
@@ -5505,8 +5505,8 @@ mē yéh làih nē?
 
 1102
 01:08:45,542 --> 01:08:48,167
-般若波罗蜜，梵文嚟嗰㖞
-būn yeuhk bō lòh maht, faahn màhn làih gó wo
+般若波罗蜜，梵文嚟㗎㖞
+būn yeuhk bō lòh maht, faahn màhn làih ga wo
 
 1103
 01:08:49,708 --> 01:08:51,542
@@ -5530,8 +5530,8 @@ faai dī daai ngóh yahp pùhn sī duhng
 
 1107
 01:09:31,500 --> 01:09:32,792
-个肚做乜突然咁痛嘅呢？
-go tóuh jouh māt daht yìhn gam tung ge nē?
+个肚做乜突然咁痛嘅呢
+go tóuh jouh māt daht yìhn gam tung ge nē
 
 1108
 01:09:35,792 --> 01:09:36,708
@@ -5545,8 +5545,8 @@ yuht hohng yuht sāp ge?
 
 1110
 01:10:17,500 --> 01:10:19,208
-大王你返嚟拿？！
-daaih wòhng néih fáan làih nàh?!
+大王你返嚟嗱？！
+daaih wòhng néih fāan làih nàh?!
 
 1111
 01:10:31,458 --> 01:10:32,917
@@ -5575,8 +5575,8 @@ néih jouh mē yéh
 
 1116
 01:10:42,167 --> 01:10:44,000
-你生仔嘛，手我帮你接生啰
-néih sāang jái ma, sáu ngóh bōng néih jip sāng lō
+你生仔嘛，我帮你接生啰
+néih sāang jái ma, ngóh bōng néih jip sāng lō
 
 1117
 01:10:44,458 --> 01:10:45,500
@@ -5585,8 +5585,8 @@ go tàuh chēut làih wo!
 
 1118
 01:10:45,875 --> 01:10:47,042
-系咩？点解我都唔知慨？
-haih mē? dím gáai ngóh dōu m̀h jī koi?
+系咩？点解我都唔知嘅？
+haih mē? dím gáai ngóh dōu m̀h jī ge?
 
 1119
 01:10:47,208 --> 01:10:48,167
@@ -5605,7 +5605,7 @@ gwaai m̀h jī móuh tàuh faat lā
 
 1122
 01:10:51,583 --> 01:10:52,667
-有人嚟紧　　有人嚟呀
+有人嚟紧 有人嚟呀
 yáuh yàhn làih gán  yáuh yàhn làih àh
 
 1123
@@ -5780,8 +5780,8 @@ néih láahng jihng dī hóu máh  m̀h dāk
 
 1157
 01:12:28,292 --> 01:12:30,167
-冷静，　　淡定
-láahng jihng,  daahm dihng
+冷静，淡定
+láahng jihng, daahm dihng
 
 1158
 01:12:30,500 --> 01:12:32,625
@@ -5825,8 +5825,8 @@ jūk jyuh lā, sāng lā
 
 1166
 01:12:55,958 --> 01:12:57,417
-唐三藏出世啦，快拍⋯
-tòhng sāam chòhng chēut sai lā, faai paak
+唐三藏出咗世啦，快啲揾
+tòhng sāam chòhng chēut jó sai lā, faai dī wán
 
 1167
 01:12:57,583 --> 01:12:58,542
@@ -5900,8 +5900,8 @@ go sai louh néih ga?
 
 1181
 01:13:38,000 --> 01:13:40,333
-系呀！　　系我同至尊宝生嘅
-haih àh!  haih ngóh tùhng ji jyūn bóu sāng ge
+系呀！系我同至尊宝生嘅
+haih àh! haih ngóh tùhng ji jyūn bóu sāng ge
 
 1182
 01:13:42,125 --> 01:13:43,125
@@ -6020,8 +6020,8 @@ hóu chói jáu dāk fáan chēut làih
 
 1205
 01:15:09,458 --> 01:15:10,583
-首音　晶晶
-sáu yām  jīng jīng
+晶晶
+jīng jīng
 
 1206
 01:15:36,250 --> 01:15:37,208
@@ -6035,8 +6035,8 @@ gwāi sūk daaih faat
 
 1208
 01:15:43,083 --> 01:15:44,792
-我片你啲内脏，问你点挡？
-ngóh pin néih dī noih johng, mahn néih dím dóng?
+我劈你啲内脏，问你点挡？
+ngóh pek néih dī noih johng, mahn néih dím dóng?
 
 1209
 01:15:48,500 --> 01:15:49,542
@@ -6105,8 +6105,8 @@ néih deih jáu sīn lā! jáu!
 
 1222
 01:16:42,500 --> 01:16:43,708
-我唔走！　　要走一齐走！
-ngóh m̀h jáu!  yiu jáu yāt chàih jáu!
+我唔走！要走一齐走！
+ngóh m̀h jáu! yiu jáu yāt chàih jáu!
 
 1223
 01:16:44,667 --> 01:16:45,417
@@ -6115,8 +6115,8 @@ ting jyuh
 
 1224
 01:16:46,792 --> 01:16:48,458
-好好哋凑大我哋嗰仔
-hóu hóu deih chau daaih ngóh deih gó jái
+好好哋凑大我哋嗰仔，佢
+hóu hóu deih chau daaih ngóh deih gó jái, kéuih
 
 1225
 01:16:52,625 --> 01:16:53,583
@@ -6125,8 +6125,8 @@ jáu àh!
 
 1226
 01:16:56,667 --> 01:16:58,708
-我哋嗰仔！　　娘子！
-ngóh deih gó jái!  nèuhng jí!
+我哋嗰仔！娘子！
+ngóh deih gó jái! nèuhng jí!
 
 1227
 01:16:59,708 --> 01:17:01,125
@@ -6135,8 +6135,8 @@ néih joi m̀h jáu, ngóh jīk hāk séi hái néih ge mihn chìhn!
 
 1228
 01:17:01,333 --> 01:17:03,042
-吓！　　唔好啊
-haak!  m̀h hóu a
+吓！唔好啊
+haak! m̀h hóu a
 
 1229
 01:17:06,708 --> 01:17:07,500
@@ -6180,7 +6180,7 @@ bō yéh mātQ yéh àh? m̀h gei dāk jó àh!
 
 1237
 01:17:26,958 --> 01:17:32,625
-般若波罗密！般若波罗密！⋯⋯
+般若波罗密！般若波罗密！ ⋯⋯
 būn yeuhk bō lòh maht! būn yeuhk bō lòh maht!
 
 1238
@@ -6230,7 +6230,7 @@ ngóh dōu meih góng yùhn, néih dím jī nē?
 
 1247
 01:18:03,125 --> 01:18:04,250
-真系出嚟㖞 走呀
+真系出嚟㖞　走呀
 jān haih chēut làih wo  jáu àh
 
 1248
@@ -6250,7 +6250,7 @@ wā, yauh sīng sīn lā!
 
 1251
 01:18:18,083 --> 01:18:19,583
-点解我讲“又”嘅？
+点解我讲「又」嘅？
 dím gáai ngóh góng yauh ge?
 
 1252
@@ -6285,23 +6285,23 @@ wai jouh māt yéh yiu giu ngóh mī fàahn néih? juhng yiu gíng gou ngóh a
 
 1258
 01:18:44,375 --> 01:18:45,625
-你好「寻」呀！仆街！
-néih hóu chàhm àh! pūk gāai!
+你好〝寻〞呀！仆街！
+néih hóu“ chàhm” àh! pūk gāai!
 
 1259
 01:18:45,833 --> 01:18:47,292
-系啰！我都觉得自己好子「寻」啊
-haih lō! ngóh dōu gok dāk jih géi hóu jí chàhm a
+系啰！我都觉得自己好〝寻〞啊
+haih lō! ngóh dōu gok dāk jih géi hóu“ chàhm” a
 
 1260
 01:18:47,500 --> 01:18:49,375
-点解呀？　　我好惊呀！
-dím gáai àh?  ngóh hóu gīng àh!
+点解呀？我好惊呀！
+dím gáai àh? ngóh hóu gīng àh!
 
 1261
 01:18:50,042 --> 01:18:50,625
-出嚟啦！？
-chēut làih lā!?
+出嚟啦！
+chēut làih lā!
 
 1262
 01:18:50,708 --> 01:18:51,542
@@ -6310,7 +6310,7 @@ jáu!
 
 1263
 01:18:53,292 --> 01:18:56,208
-娘子！娘子！⋯⋯⋯⋯⋯
+娘子！娘子！⋯⋯
 nèuhng jí! nèuhng jí!
 
 1264
@@ -6320,13 +6320,13 @@ nèuhng jí àh
 
 1265
 01:18:58,625 --> 01:19:00,875
-般若波罗密⋯⋯
+般若波罗蜜⋯⋯
 būn yeuhk bō lòh maht
 
 1266
 01:19:01,042 --> 01:19:02,917
-「妖」你咪一样咁「寻」
-yíu néih mī yāt yeuhng gam chàhm
+〝妖〞你咪一样咁〝寻〞
+“ yíu” néih mī yāt yeuhng gam“ chàhm”
 
 1267
 01:19:10,708 --> 01:19:12,625
@@ -6340,7 +6340,7 @@ hóu bīn
 
 1269
 01:19:15,708 --> 01:19:17,958
-老婆！老婆！⋯⋯⋯⋯
+老婆！老婆！ ⋯⋯
 lóuh pòh! lóuh pòh!
 
 1270
@@ -6430,8 +6430,8 @@ m̀h ngāam gam ā! néih béi go saat ngóh ge léih yàuh ngóh sīn lā
 
 1287
 01:20:38,167 --> 01:20:39,708
-好呀！  你粒声唔出揼低我唔理
-hóu àh!  néih lāp sēng m̀h chēut dahp dāi ngóh m̀h léih
+好呀！你粒声唔出揼低我唔理
+hóu àh! néih lāp sēng m̀h chēut dahp dāi ngóh m̀h léih
 
 1288
 01:20:40,083 --> 01:20:41,250
@@ -6440,7 +6440,7 @@ juhng tùhng ngóh sī jé sāng màaih go jái!
 
 1289
 01:20:41,583 --> 01:20:43,542
-咁你误会晒嘞呢趟　　想死呀？
+咁你误会晒嘞呢趟 想死呀？
 gam néih ngh wuih saai la nē tong  séung séi àh?
 
 1290
@@ -6480,13 +6480,13 @@ heui jó bīn nē?
 
 1297
 01:21:04,708 --> 01:21:06,125
-石门落咗就开唔返
-sehk mùhn lohk jó jauh hōi m̀h fáan
+石门落了就开不番
+sehk mùhn lohk líuh jauh hōi bāt fāan
 
 1298
 01:21:06,375 --> 01:21:07,458
-你快啲冲出去
-néih faai dī chūng chēut heui
+你快点冲出去
+néih faai dím chūng chēut heui
 
 1299
 01:21:16,500 --> 01:21:17,375
@@ -6540,8 +6540,8 @@ nèuhng jí
 
 1309
 01:21:42,208 --> 01:21:43,208
-再嚟
-joi làih
+再来
+joi lòih
 
 1310
 01:21:46,042 --> 01:21:49,917
@@ -6550,13 +6550,13 @@ būn yeuhk bō lòh maht
 
 1311
 01:22:00,583 --> 01:22:01,542
-晶晶
-jīng jīng
+晶晶！
+jīng jīng!
 
 1312
 01:22:26,917 --> 01:22:29,708
-人呢？　　去哂边呀？
-yàhn nē?  heui chán bīn àh?
+人呢？去哂边呀？
+yàhn nē? heui chán bīn àh?
 
 1313
 01:22:32,000 --> 01:22:33,292
@@ -6590,8 +6590,8 @@ pùhn sī duhng?
 
 1319
 01:23:17,375 --> 01:23:18,292
-你〝瞎〞我唔识字呀！
-néih“ haht” ngóh m̀h sīk jih àh!
+你「吓」我唔识字呀！
+néih haak ngóh m̀h sīk jih àh!
 
 1320
 01:23:18,542 --> 01:23:20,167
@@ -6655,8 +6655,8 @@ néih yíh gīng haih ngóh ge yàhn lā
 
 1332
 01:24:10,083 --> 01:24:12,208
-如果有人「欺」你，你就「挞」我啦
-yùh gwó yáuh yàhn hēi néih, néih jauh tāat ngóh lā
+如果有人「恰」你，你就「挞」我啦
+yùh gwó yáuh yàhn hāp néih, néih jauh tāat ngóh lā
 
 1333
 01:24:12,417 --> 01:24:14,792
@@ -6680,8 +6680,8 @@ néih meih bin sìhng syūn ngh hūng tok sai
 
 1337
 01:24:26,625 --> 01:24:29,333
-因为你未遇到俾三粒痣你嘅人
-yān waih néih meih yuh dou béi sāam lāp ji néih ge yàhn
+因为你未遇到给三粒痣你的人
+yān waih néih meih yuh dou kāp sāam lāp ji néih dīk yàhn
 
 1338
 01:24:56,208 --> 01:24:57,250
