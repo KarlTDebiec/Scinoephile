@@ -49,6 +49,7 @@ _S2T_EXCLUDED_CHARS = {
     "伙",  # keep 伙記 and 家伙 form 伙; avoid 夥
     "干",  # keep valid traditional 干 uses; avoid blanket 幹
     "粽",  # keep modern/Hong Kong 粽; avoid 糉
+    "丑",  # keep TMM fixture phrase 丑大了; avoid blanket 醜
     "洒",  # keep fixture-style 瀟洒 form 洒; avoid 灑
     "卺",  # keep 合卺 form 卺; avoid rare variant 巹
     "皂",  # keep 青紅皂白 form 皂; avoid 皁
@@ -67,8 +68,6 @@ _S2T_EXCLUDED_CHARS = {
 """Characters to preserve when converting simplified Chinese toward traditional."""
 
 # Inactive fixture artifacts seen during s2t no-op discovery:
-# "丑",  # inactive: expected 醜 "ugly"
-#        # found: test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt:35
 # "边",  # inactive: simplified 边 in Hant OCR output
 #        # found: test/data/acopopb/output/yue-Hant_ocr/
 #        # fuse_clean_validate.srt:5071

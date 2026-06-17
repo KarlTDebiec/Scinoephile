@@ -35,7 +35,7 @@ def test_opencc_config_metadata():
         ("这家伙", OpenCCConfig.s2t, "這傢伙"),
         ("呢個嗰度喎", OpenCCConfig.t2s, "呢个嗰度喎"),
         ("希望藉此答覆", OpenCCConfig.t2s, "希望藉此答覆"),
-        ("丑大了", OpenCCConfig.s2t, "醜大了"),
+        ("丑大了", OpenCCConfig.s2t, "丑大了"),
         ("移形換影", OpenCCConfig.t2s, "移形换影"),
         ("黃大富", OpenCCConfig.t2s, "黄大富"),
     ],
