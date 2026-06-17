@@ -13,11 +13,9 @@ from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
-input_path = title_root / "input"
-output_path = title_root / "output"
-eng_ocr_path = output_path / "eng_ocr"
-yue_hans_ocr_path = output_path / "yue-Hans_ocr"
-zho_hans_ocr_path = output_path / "zho-Hans_ocr"
+eng_ocr_path = title_root / "output" / "eng_ocr"
+yue_hans_ocr_path = title_root / "output" / "yue-Hans_ocr"
+zho_hans_ocr_path = title_root / "output" / "zho-Hans_ocr"
 
 set_logging_verbosity(2)
 
