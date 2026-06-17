@@ -28,11 +28,16 @@ def test_opencc_config_metadata():
 @pytest.mark.parametrize(
     ("text", "config", "expected"),
     [
-        ("台臺", OpenCCConfig.t2s, "台臺"),
         ("台臺", OpenCCConfig.s2t, "台臺"),
-        ("台灣臺灣", OpenCCConfig.t2s, "台湾臺湾"),
-        ("台湾臺湾", OpenCCConfig.s2t, "台灣臺灣"),
+        ("台臺", OpenCCConfig.t2s, "台台"),
+        ("你吃吓晒啦", OpenCCConfig.s2t, "你吃吓晒啦"),
+        ("一群牛虱", OpenCCConfig.s2t, "一群牛虱"),
         ("这家伙", OpenCCConfig.s2t, "這傢伙"),
+        ("呢個嗰度喎", OpenCCConfig.t2s, "呢个嗰度喎"),
+        ("希望藉此答覆", OpenCCConfig.t2s, "希望藉此答覆"),
+        ("丑大了", OpenCCConfig.s2t, "醜大了"),
+        ("移形換影", OpenCCConfig.t2s, "移形换影"),
+        ("黃大富", OpenCCConfig.t2s, "黄大富"),
     ],
 )
 def test_get_zho_text_converted_applies_exclusions_by_character_position(
