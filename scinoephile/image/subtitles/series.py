@@ -16,6 +16,7 @@ import numpy as np
 from PIL import Image
 
 from scinoephile.common.validation import (
+    val_input_dir_path,
     val_input_file_or_dir_path,
     val_output_dir_path,
     val_output_path,
@@ -151,24 +152,29 @@ class ImageSeries(Series):
             encoding: output file encoding
             errors: encoding error handling
         """
-        dir_path = Path(dir_path)
-        if not dir_path.exists() or not dir_path.is_dir():
-            raise ScinoephileError(f"Expected {dir_path} to be an existing directory.")
-        html_lines = self.html_header_lines()
-        for i, event in enumerate(self, 1):
-            image_name = f"{i:04d}.png"
-            html_lines.append(
-                self.format_html_entry(
-                    index=i,
-                    start=event.start,
-                    end=event.end,
-                    image_name=image_name,
-                    text=event.text,
+        try:
+            validated_dir_path = val_input_dir_path(dir_path)
+            html_lines = self.html_header_lines()
+            for i, event in enumerate(self, 1):
+                image_name = f"{i:04d}.png"
+                html_lines.append(
+                    self.format_html_entry(
+                        index=i,
+                        start=event.start,
+                        end=event.end,
+                        image_name=image_name,
+                        text=event.text,
+                    )
                 )
+            html_lines.extend(self.html_footer_lines())
+            html_path = validated_dir_path / "index.html"
+            html_path.write_text(
+                "\n".join(html_lines), encoding=encoding, errors=errors
             )
-        html_lines.extend(self.html_footer_lines())
-        html_path = dir_path / "index.html"
-        html_path.write_text("\n".join(html_lines), encoding=encoding, errors=errors)
+        except (OSError, TypeError, UnicodeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Unable to save HTML index to {dir_path}: {exc}"
+            ) from exc
         logger.info(f"Saved HTML to {html_path}")
 
     @override
