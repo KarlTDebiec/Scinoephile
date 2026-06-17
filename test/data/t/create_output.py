@@ -23,7 +23,7 @@ actions = {
     "eng_ocr",
     "zho-Hans_ocr",
     "zho-Hant_ocr",
-    # "zho-Hans_eng",
+    "zho-Hans_eng",
 }
 
 if "eng_ocr" in actions:

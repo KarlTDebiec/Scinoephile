@@ -2466,14 +2466,10 @@
   {
     "query": {
       "zimu_1": "唔好呀",
-      "zimu_2": "好边",
+      "zimu_2": "好攰",
       "zimu_3": "老婆！老婆！ ⋯⋯"
     },
-    "answer": {
-      "xiugai_2": "好邊",
-      "beizhu_2": "將「边」修正為繁體「邊」。"
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
