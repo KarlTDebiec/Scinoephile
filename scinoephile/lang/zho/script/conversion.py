@@ -68,7 +68,7 @@ _S2T_EXCLUDED_CHARS = {
 """Characters to preserve when converting simplified Chinese toward traditional."""
 
 # Inactive fixture artifacts seen during s2t no-op discovery:
-# "边",  # inactive: simplified 边 in Hant OCR output
+# "边",  # inactive: OCR/subtitle error for Cantonese 攰 in 好攰
 #        # found: test/data/acopopb/output/yue-Hant_ocr/
 #        # fuse_clean_validate.srt:5071
 # "嘘",  # inactive: simplified 嘘 where Hant 噓 is expected
