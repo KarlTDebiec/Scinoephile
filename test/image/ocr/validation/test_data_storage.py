@@ -145,6 +145,22 @@ def test_validation_manager_writes_only_cache_updates_to_cache(tmp_path, monkeyp
     )
 
 
+def test_validation_manager_does_not_persist_default_pair_gaps(tmp_path, monkeypatch):
+    """Test default character pair gaps are remembered without cache writes."""
+    repo_root_path = tmp_path / "repo"
+    repo_data_dir_path = repo_root_path / "data" / "ocr"
+    repo_data_dir_path.mkdir(parents=True)
+    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
+    cache_dir_path = tmp_path / "cache" / "ocr_validation"
+    cache_dir_path.mkdir(parents=True)
+    manager = ValidationManager(cache_dir_path=cache_dir_path)
+
+    manager.update_pair_gaps(("你", "本"), (22, 89, 90, 200))
+
+    assert manager.char_pair_gaps[("你", "本")] == (22, 89, 90, 200)
+    assert not (cache_dir_path / "char_pair_gaps.csv").exists()
+
+
 def test_validation_manager_allows_new_custom_cache_dir(tmp_path, monkeypatch):
     """Test missing custom cache directories are created on first write."""
     repo_root_path = tmp_path / "repo"

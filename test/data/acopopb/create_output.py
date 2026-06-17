@@ -24,8 +24,8 @@ set_logging_verbosity(2)
 actions = {
     # "eng_ocr",
     # "yue-Hans_ocr",
-    # "yue-Hant_ocr",
-    "zho-Hans_ocr",
+    "yue-Hant_ocr",
+    # "zho-Hans_ocr",
     # "zho-Hant_ocr",
     # "yue-Hans_eng",
     # "zho-Hans_eng",
@@ -36,9 +36,9 @@ if "eng_ocr" in actions:
 if "yue-Hans_ocr" in actions:
     process_ocr(title_root, Language.yue_hans, overwrite=False, interactive=False)
 if "yue-Hant_ocr" in actions:
-    process_ocr(title_root, Language.yue_hant, overwrite=False, interactive=False)
+    process_ocr(title_root, Language.yue_hant, overwrite=False, interactive=True)
 if "zho-Hans_ocr" in actions:
-    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
+    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=False)
 if "zho-Hant_ocr" in actions:
     process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=False)
 if "yue-Hans_eng" in actions:

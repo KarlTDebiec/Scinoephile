@@ -552,6 +552,8 @@ class ValidationManager:
         if self.char_pair_gaps.get(char_pair) == cutoffs:
             return
         self.char_pair_gaps[char_pair] = cutoffs
+        if cutoffs == get_default_char_pair_cutoffs(*char_pair):
+            return
         logger.info(f"Added ({char_pair}, {cutoffs})")
         if self.dev:
             output_char_pair_gaps = self.char_pair_gaps

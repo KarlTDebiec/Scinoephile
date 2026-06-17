@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 from scinoephile.image.ocr.validation.char_pair_gaps import (
+    get_default_char_pair_cutoffs,
     load_char_pair_gaps,
     save_char_pair_gaps,
 )
@@ -41,6 +42,42 @@ def test_repo_char_pair_gaps_have_monotonic_cutoffs():
             assert cutoffs == tuple(sorted(cutoffs)), (
                 f"{file_path}:{line_no} has non-monotonic cutoffs {cutoffs}"
             )
+
+
+def test_repo_char_pair_gaps_exclude_default_cutoffs():
+    """Test repository character pair gap data stores only default overrides."""
+    file_path = Path(__file__).parents[4] / "scinoephile/data/ocr/char_pair_gaps.csv"
+
+    with file_path.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.reader(handle)
+        for line_no, row in enumerate(reader, start=1):
+            if not row:
+                continue
+            char_1, char_2 = row[:2]
+            cutoffs = tuple(map(int, row[2:]))
+            default_cutoffs = get_default_char_pair_cutoffs(char_1, char_2)
+            assert cutoffs != default_cutoffs, (
+                f"{file_path}:{line_no} has default cutoffs {cutoffs}"
+            )
+
+
+def test_save_char_pair_gaps_omits_default_cutoffs(tmp_path: Path):
+    """Test saving omits character pair gaps that match defaults.
+
+    Arguments:
+        tmp_path: temporary directory path
+    """
+    file_path = tmp_path / "char_pair_gaps.csv"
+
+    save_char_pair_gaps(
+        {
+            ("娘", "一"): get_default_char_pair_cutoffs("娘", "一"),
+            ("娘", "二"): (23, 89, 90, 200),
+        },
+        file_path,
+    )
+
+    assert file_path.read_text(encoding="utf-8") == "娘,二,23,89,90,200\n"
 
 
 def test_save_char_pair_gaps_rejects_nonmonotonic_cutoffs(tmp_path: Path):
