@@ -68,9 +68,6 @@ _S2T_EXCLUDED_CHARS = {
 """Characters to preserve when converting simplified Chinese toward traditional."""
 
 # Inactive fixture artifacts seen during s2t no-op discovery:
-# "嘘",  # inactive: simplified 嘘 where Hant 噓 is expected
-#        # found: test/data/acoptc/output/yue-Hant_ocr/
-#        # fuse_clean_validate.srt:3899
 # "只",  # inactive: classifier should be traditional 隻
 #        # found: test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt:2376
 # "面",  # inactive: noodle should be 麵
