@@ -3,7 +3,8 @@
 """OCR validation for image subtitles.
 
 Package hierarchy (modules may import from any above):
-* char_cursor / char_dims / char_grp_dims / char_pair_gaps
+* char_cursor / csv
+* char_dims / char_grp_dims / char_pair_gaps
 * gap_cursor
 * validation_manager
 """

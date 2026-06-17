@@ -10,7 +10,7 @@ from pathlib import Path
 
 from scinoephile.image.bbox import Bbox
 
-from .csv_io import save_csv_rows
+from .csv import save_csv_rows
 
 __all__ = [
     "get_dims_tuple",

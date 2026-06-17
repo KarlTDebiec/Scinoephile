@@ -10,7 +10,7 @@ from pathlib import Path
 
 from scinoephile.core.text import full_punc, get_char_type
 
-from .csv_io import save_csv_rows
+from .csv import save_csv_rows
 
 __all__ = [
     "get_default_char_pair_cutoffs",

@@ -8,7 +8,7 @@ import csv
 from logging import getLogger
 from pathlib import Path
 
-from .csv_io import save_csv_rows
+from .csv import save_csv_rows
 
 __all__ = [
     "load_char_grp_dims",
