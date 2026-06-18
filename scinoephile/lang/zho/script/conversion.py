@@ -88,22 +88,6 @@ _T2S_EXCLUDED_CHARS = {
 }
 """Characters to preserve when converting traditional Chinese toward simplified."""
 
-# Inactive fixture artifacts seen during t2s no-op discovery:
-# test/data/acopopb/input/zho-Hans.srt:
-# "潚",  # inactive: subtitle typo for 瀟/潇; expected 潇
-#        # found: subtitle 517 (TYPO; not OCR error)
-#
-# test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:
-# "決",  # inactive: traditional 決 in Hans OCR output; expected 决
-#        # found: subtitle 16 (LEGIT; not OCR error)
-# "幫",  # inactive: traditional 幫 in Hans OCR output; expected 帮
-#        # found: subtitle 261 (LEGIT; not OCR error)
-#
-# test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt:
-# "瀟",  # inactive: traditional 瀟 in Hans OCR output; expected 潇
-#        # found: subtitle 521
-
-
 class OpenCCConfig(DescribedEnum):
     """OpenCC configuration names for standard Chinese character set conversion."""
 
