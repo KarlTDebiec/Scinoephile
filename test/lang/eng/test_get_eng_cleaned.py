@@ -25,6 +25,17 @@ def test_get_english_text_cleaned_removes_eia_608_markup():
     assert _get_english_text_cleaned(text) == "WOODY: Look out!"
 
 
+def test_get_english_text_cleaned_normalizes_fullwidth_alphanumerics():
+    """Test fullwidth letters and digits are normalized in English text."""
+    fullwidth_text = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
+    fullwidth_text = f"{fullwidth_text} ａｂｃｄｅｆｇｈｉｊｋｌｍ"
+    fullwidth_text = f"{fullwidth_text}ｎｏｐｑｒｓｔｕｖｗｘｙｚ ０１２３４５６７８９"
+
+    assert _get_english_text_cleaned(fullwidth_text) == (
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789"
+    )
+
+
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [

@@ -7,7 +7,11 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.text import get_char_type, sanitize_text
+from scinoephile.core.text import (
+    get_char_type,
+    normalize_fullwidth_alphanumerics,
+    sanitize_text,
+)
 
 
 def test_get_char_type_handles_unnamed_control_char() -> None:
@@ -20,6 +24,13 @@ def test_get_char_type_handles_unnamed_control_char() -> None:
 def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
     """Fullwidth Latin forms are classified as full-width characters."""
     assert get_char_type(char) == "full"
+
+
+def test_normalize_fullwidth_alphanumerics() -> None:
+    """Fullwidth letters and digits are converted to regular ASCII."""
+    assert normalize_fullwidth_alphanumerics("ＫＡＴＥ ｋａｔｅ １２３") == (
+        "KATE kate 123"
+    )
 
 
 def test_sanitize_text_replaces_control_chars() -> None:

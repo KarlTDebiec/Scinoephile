@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import logging
 import subprocess
 import sys
 from collections.abc import Mapping, Sequence
@@ -136,6 +137,45 @@ def test_paddle_recognizer_keeps_mkldnn_enabled_off_windows(
     PaddleRecognizer(language=Language.zho_hans)
 
     assert observed_kwargs["enable_mkldnn"] is True
+
+
+def test_paddle_recognizer_preserves_root_logger_level(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test PaddleOCR construction does not change root logging level.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+
+    class FakePaddleOCR:
+        """Fake PaddleOCR implementation that mutates root logging."""
+
+        def __init__(self, **kwargs: object):
+            """Initialize.
+
+            Arguments:
+                **kwargs: PaddleOCR keyword arguments
+            """
+            _ = kwargs
+            logging.getLogger().setLevel(logging.WARNING)
+
+    root_logger = logging.getLogger()
+    previous_level = root_logger.level
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.paddle.paddle_recognizer.PaddleRecognizer."
+        "_get_paddle_ocr_class",
+        staticmethod(lambda: FakePaddleOCR),
+    )
+
+    try:
+        root_logger.setLevel(logging.INFO)
+
+        PaddleRecognizer(language=Language.zho_hans)
+
+        assert root_logger.level == logging.INFO
+    finally:
+        root_logger.setLevel(previous_level)
 
 
 def test_paddle_recognizer_imports_paddleocr_only_when_needed():
