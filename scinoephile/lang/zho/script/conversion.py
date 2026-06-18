@@ -14,37 +14,47 @@ from scinoephile.core.subtitles import Series
 
 __all__ = [
     "OpenCCConfig",
+    "S2T_EXCLUSIONS",
     "SIMPLIFIED_CONFIGS",
+    "T2S_EXCLUSIONS",
     "TRADITIONAL_CONFIGS",
     "get_zho_converted",
     "get_zho_converter",
     "get_zho_text_converted",
 ]
 
-_S2T_EXCLUSIONS: set[str] = {
+S2T_EXCLUSIONS: set[str] = {
     "吃",  # keep modern 吃; avoid literary 喫
     "吓",  # keep Cantonese 吓 particle/verb; avoid 嚇 "frighten"
     "晒",  # keep Cantonese 晒 result particle; avoid 曬 "sun-dry"
-    "才",  # keep modern 才; avoid older adverbial 纔
     "群",  # keep modern 群; avoid older variant 羣
     "床",  # keep modern 床; avoid older variant 牀
     "台",  # keep platform/stage/address 台; avoid 臺
     "痴",  # keep common 白痴 form 痴; avoid 癡
     "秘",  # keep modern 秘; avoid older variant 祕
-    "了",  # keep common aspect/result 了; avoid blanket 瞭
     "虱",  # keep modern/Hong Kong 虱; avoid 蝨
     "峰",  # keep modern 峰; avoid older variant 峯
     "粽",  # keep modern/Hong Kong 粽; avoid 糉
     "卺",  # keep 合卺 form 卺; avoid rare variant 巹
     "皂",  # keep 青紅皂白 form 皂; avoid 皁
-    "娘",  # keep modern kinship/profanity 娘; avoid 孃
     "灶",  # keep modern 灶; avoid older variant 竈
     "唇",  # keep modern 唇; avoid 脣
     "岩",  # keep rock/Cantonese 岩; avoid blanket 巖
     "不准",  # permission sense in subtitles; avoid blanket 準
     "丑了",  # preserve subtitle idiom 丑大/丑了; avoid 醜陋 sense
     "丑大",  # preserve subtitle idiom 丑大/丑了; avoid 醜陋 sense
-    "制定",  # 制 is "formulate"; avoid 製 "manufacture"
+    "了解",  # modern 了解; avoid older 瞭解 in subtitles
+    "才不",  # modern adverbial 才; avoid older 纔
+    "才可",  # modern adverbial 才; avoid older 纔
+    "才回",  # modern adverbial 才; avoid older 纔
+    "才好",  # modern adverbial 才; avoid older 纔
+    "才怪",  # modern adverbial 才; avoid older 纔
+    "才跟",  # modern adverbial 才; avoid older 纔
+    "才是",  # modern adverbial 才; avoid older 纔
+    "才行",  # modern adverbial 才; avoid older 纔
+    "才要",  # modern adverbial 才; avoid older 纔
+    "才有",  # modern adverbial 才; avoid older 纔
+    "才能夠",  # modern adverbial 才; avoid older 纔
     "合卺",  # fixed wedding term; avoid rare variant 巹
     "呢云",  # Cantonese OCR phrase; avoid weather/cloud 雲
     "克制",  # 克 is "restrain"; avoid 剋 "overcome/defeat"
@@ -93,6 +103,7 @@ _S2T_EXCLUSIONS: set[str] = {
     "嚟扑",  # Cantonese 扑 "hit"; avoid 撲 "pounce"
     "燒到扑",  # Cantonese result phrase; avoid 撲 "pounce"
     "家伙",  # subtitle lexeme 家伙; avoid 傢伙 furniture radical
+    "幹你娘的",  # profanity phrase keeps 娘; avoid 孃
     "干擾",  # legal/source text uses 干擾; avoid 幹擾
     "拜托",  # fixture spelling for "please"; avoid 拜託
     "散伙",  # group-dispersal phrase; avoid 夥 variant
@@ -103,19 +114,20 @@ _S2T_EXCLUSIONS: set[str] = {
     "瀟洒",  # accepted variant of 瀟灑 in fixtures
     "薄幸",  # fixed term; avoid 倖 "fortunate by chance"
     "萬里",  # distance unit 里; avoid 裏 "inside"
-    "只蟑螂",  # fixture uses 只 before animal; avoid classifier 隻
+    "聰明了",  # aspect/result 了; avoid 瞭
+    "剛才看",  # modern 剛才; avoid older 剛纔
+    "還有只蟑螂",  # fixture classifier phrase uses 只; avoid 隻
     "那只九官鳥",  # fixture uses 只; avoid classifier 隻
     "仆你",  # Cantonese profanity 仆街 family; avoid 僕 "servant"
-    "仆街",  # Cantonese profanity; avoid 僕 "servant"
     "伙記",  # Cantonese waiter/worker term; avoid 夥 variant
     "碗面",  # Cantonese/HK noodle spelling; avoid 麵/麪
     "喂你",  # interjection/address 喂; avoid 餵 "feed"
-    "呀喂",  # interjection 喂; avoid 餵 "feed"
     "蒙蒙",  # character name/baby-talk; avoid 濛濛 "misty"
+    "香港制定",  # 制定 means "formulate"; avoid 製 "manufacture"
 }
 """Text spans to preserve when converting simplified Chinese toward traditional."""
 
-_T2S_EXCLUSIONS: set[str] = {
+T2S_EXCLUSIONS: set[str] = {
     "喎",  # keep Cantonese sentence particle 喎; avoid 㖞
     "嗰",  # keep Cantonese demonstrative 嗰; avoid 𠮶
     "搵",  # keep Cantonese 搵 "look for"; avoid 揾
@@ -247,9 +259,9 @@ def get_zho_text_converted(
     converter = get_zho_converter(config)
 
     if apply_exclusions and config in SIMPLIFIED_CONFIGS:
-        return _get_zho_text_converted_with_exclusions(text, converter, _T2S_EXCLUSIONS)
+        return _get_zho_text_converted_with_exclusions(text, converter, T2S_EXCLUSIONS)
     if apply_exclusions and config in TRADITIONAL_CONFIGS:
-        return _get_zho_text_converted_with_exclusions(text, converter, _S2T_EXCLUSIONS)
+        return _get_zho_text_converted_with_exclusions(text, converter, S2T_EXCLUSIONS)
     return converter.convert(text)
 
 

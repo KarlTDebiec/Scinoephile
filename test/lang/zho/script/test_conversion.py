@@ -8,6 +8,8 @@ import pytest
 
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import (
+    S2T_EXCLUSIONS,
+    T2S_EXCLUSIONS,
     OpenCCConfig,
     get_zho_converted,
     get_zho_converter,
@@ -63,6 +65,28 @@ def test_get_zho_text_converted_applies_exclusions(
         expected: Expected converted text
     """
     assert get_zho_text_converted(text, config) == expected
+
+
+@pytest.mark.parametrize("text", sorted(S2T_EXCLUSIONS))
+def test_s2t_exclusions_are_raw_opencc_changes(text: str):
+    """Test every simplified-to-traditional exclusion changes under raw OpenCC.
+
+    Arguments:
+        text: excluded text span
+    """
+    converted_text = get_zho_converter(OpenCCConfig.s2t).convert(text)
+    assert converted_text != text
+
+
+@pytest.mark.parametrize("text", sorted(T2S_EXCLUSIONS))
+def test_t2s_exclusions_are_raw_opencc_changes(text: str):
+    """Test every traditional-to-simplified exclusion changes under raw OpenCC.
+
+    Arguments:
+        text: excluded text span
+    """
+    converted_text = get_zho_converter(OpenCCConfig.t2s).convert(text)
+    assert converted_text != text
 
 
 def test_get_zho_converted_kob(
