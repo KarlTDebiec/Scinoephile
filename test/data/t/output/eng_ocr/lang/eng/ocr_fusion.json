@@ -56,7 +56,8 @@
       "output": "stocks, real estate,\nand even chestnuts are more profitable!",
       "note": "Used lower-case 'stocks' from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -247,7 +248,8 @@
       "output": "if I said I'd fucked your mother,\ndid I really fuck her?",
       "note": "Used 'I' instead of '|' and kept the Lens wording."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -390,7 +392,8 @@
       "output": "- I'm sorry. The rice is cold?\n- I want tea.",
       "note": "Used Lens text for the first word on the second line, correcting Tesseract's '|' to 'I'."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -413,7 +416,8 @@
       "output": "- I want tea.\n- Give me a second. I'll show you the way.",
       "note": "Used Lens text for the first word; kept Tesseract line breaks and dialogue formatting."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -496,7 +500,8 @@
       "output": "I told you to bring some decent-looking guys.",
       "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -579,7 +584,8 @@
       "output": "she was coughing.\nI don't wanna spend money on meds.",
       "note": "Used lower-case 'she' from Tesseract; kept the rest from Lens and removed the stray '|' from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -674,7 +680,8 @@
       "output": "- I'll spank you.\n- Good girl.",
       "note": "Used Google Lens text and kept Tesseract's dialogue line break with hyphen on the second line."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -685,7 +692,8 @@
       "output": "\"Whoring, gambling, drinking, roaming…",
       "note": "Used the cleaner opening quote from Lens and kept the ellipsis."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -744,7 +752,8 @@
       "output": "I'll be fatter than Chow Yun-fat.",
       "note": "Used capital 'I' from Google Lens instead of lower-case 'l'."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -803,7 +812,8 @@
       "output": "RMB¥30K for Chief Chen. Please count it.",
       "note": "Used Lens text and Tesseract's space instead of newline."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -898,7 +908,8 @@
       "output": "I don't have\nto eat lunch boxes with you.",
       "note": "Used 'I' from Google Lens instead of '|'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1113,7 +1124,8 @@
       "output": "Thanks to connections,\nI didn't need to rot in jail.",
       "note": "Used Lens text and corrected the stray '|' in Tesseract to 'I'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1232,7 +1244,8 @@
       "output": "I imported the Chinese\nretired soldiers to Hong Kong.",
       "note": "Used 'I' from Google Lens instead of '|'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1339,7 +1352,8 @@
       "output": "- I thought I was on my way.\n- You've scared the hell out of us.",
       "note": "Used the clearer Lens text for the first line; kept the Tesseract line break and dialogue dash formatting."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -1362,7 +1376,8 @@
       "output": "- I'm sorry.\n- You've frightened her.",
       "note": "Used Google Lens text and corrected Tesseract's misread \"|\" as \"I\" in \"I'm\"."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -1385,7 +1400,8 @@
       "output": "A greedy, smuggling, tax-evading petit bourgeois!",
       "note": "Used Tesseract's single-line formatting instead of Lens line break."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -1576,7 +1592,8 @@
       "output": "Go! Go! Go!",
       "note": "Used Lens line breaks and corrected Tesseract's final 'Gol!' to 'Go!'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1587,7 +1604,8 @@
       "output": "Mr Cheuk, you know who Kun-xi is?",
       "note": "Used 'know' from Lens instead of Tesseract's capitalized 'Know'."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -1658,7 +1676,8 @@
       "output": "I can't just go back empty-handed.",
       "note": "Used 'I' from Google Lens instead of '|'."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -1705,7 +1724,8 @@
       "output": "I understand. Don't worry.",
       "note": "Used Lens text and Tesseract line break correction; removed the stray vertical bar from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1932,7 +1952,8 @@
       "output": "I killed 3 plainclothes",
       "note": "Used Lens text but followed Tesseract's line break as a space."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1955,7 +1976,8 @@
       "output": "Do you think only Yip had AK-47?",
       "note": "Used 'AK-47' from Google Lens instead of 'AK-4/7'."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -1966,7 +1988,8 @@
       "output": "- I just took advantage of the situation…\n- Hold on! Don't hang up.",
       "note": "Used Google's 'I' instead of Tesseract's '|'; kept the ellipsis and dialogue line breaks."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -2049,7 +2072,8 @@
       "output": "If you don't treat me as your Big Bro,\nlet's split!",
       "note": "Used 'If' from Google Lens instead of 'lf'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2168,7 +2192,8 @@
       "output": "I thought you went to the restroom.\nWhy are you here?",
       "note": "Used Google Lens text for the first word, correcting Tesseract's '|' to 'I'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2179,6 +2204,7 @@
       "output": "- I want tea.\n- Give me a second.",
       "note": "Used Google's correct 'I' instead of Tesseract's '|' and kept Tesseract's line breaks."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   }
 ]

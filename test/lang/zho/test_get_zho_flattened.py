@@ -31,6 +31,10 @@ from test.helpers import assert_series_equal
             "t_zho_hans_fuse_clean_validate_review",
             "t_zho_hans_fuse_clean_validate_review_flatten",
         ),
+        (
+            "t_zho_hant_fuse_clean_validate_review",
+            "t_zho_hant_fuse_clean_validate_review_flatten",
+        ),
     ],
 )
 def test_get_zho_flattened(

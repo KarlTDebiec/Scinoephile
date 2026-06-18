@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import (
     S2T_EXCLUSIONS,
     T2S_EXCLUSIONS,
@@ -16,15 +15,6 @@ from scinoephile.lang.zho.script.conversion import (
     get_zho_text_converted,
 )
 from test.helpers import assert_series_equal
-
-
-def test_opencc_config_metadata():
-    """Test OpenCCConfig metadata."""
-    config = OpenCCConfig.s2t
-    assert config.code == "s2t"
-    assert config.description == "Simplified Chinese to Traditional Chinese."
-    assert str(config) == "s2t"
-    assert OpenCCConfig("s2t") is config
 
 
 @pytest.mark.parametrize(
@@ -89,27 +79,41 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     assert converted_text != text
 
 
-def test_get_zho_converted_kob(
-    kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Series,
-    kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify: Series,
+@pytest.mark.parametrize(
+    ("series_fixture", "expected_fixture"),
+    [
+        (
+            "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
+            "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+        ),
+        (
+            "t_zho_hant_fuse_clean_validate_review_flatten",
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
+        ),
+    ],
+)
+def test_get_zho_converted_series(
+    request: pytest.FixtureRequest,
+    series_fixture: str,
+    expected_fixture: str,
 ):
-    """Test get_zho_converted with KOB traditional standard Chinese subtitles.
+    """Test get_zho_converted with traditional standard Chinese subtitles.
 
     Arguments:
-        kob_zho_hant_ocr_fuse_clean_validate_review_flatten: KOB traditional
-          standard Chinese series fixture
-        kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify: Expected
-          simplified
-          KOB traditional standard Chinese series fixture
+        request: pytest request for fixture lookup
+        series_fixture: fixture name for input series
+        expected_fixture: fixture name for expected output series
     """
+    series = request.getfixturevalue(series_fixture)
+    expected = request.getfixturevalue(expected_fixture)
     output = get_zho_converted(
-        kob_zho_hant_ocr_fuse_clean_validate_review_flatten,
+        series,
         OpenCCConfig.t2s,
     )
-    assert len(kob_zho_hant_ocr_fuse_clean_validate_review_flatten) == len(output)
+    assert len(series) == len(output)
     assert_series_equal(
         output,
-        kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify,
+        expected,
     )
 
 

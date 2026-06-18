@@ -27,23 +27,45 @@ def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
     assert get_char_type(char) == "full"
 
 
-def test_normalize_fullwidth_alphanumerics() -> None:
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("ＫＡＴＥ ｋａｔｅ １２３", "KATE kate 123"),
+    ],
+)
+def test_normalize_fullwidth_alphanumerics(text: str, expected: str) -> None:
     """Fullwidth letters and digits are converted to regular ASCII."""
-    assert normalize_fullwidth_alphanumerics("ＫＡＴＥ ｋａｔｅ １２３") == (
-        "KATE kate 123"
-    )
+    assert normalize_fullwidth_alphanumerics(text) == expected
 
 
-def test_normalize_ocr_confusables_to_ascii() -> None:
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("ΟΚ, οκ.", "OK, ok."),
+    ],
+)
+def test_normalize_ocr_confusables_to_ascii(text: str, expected: str) -> None:
     """OCR-confusable characters are converted to regular ASCII."""
-    assert normalize_ocr_confusables_to_ascii("ΟΚ, οκ.") == "OK, ok."
+    assert normalize_ocr_confusables_to_ascii(text) == expected
 
 
-def test_sanitize_text_replaces_control_chars() -> None:
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("好呀！\x00\x00你", "好呀！  你"),
+    ],
+)
+def test_sanitize_text_replaces_control_chars(text: str, expected: str) -> None:
     """Control characters that are not text whitespace are replaced."""
-    assert sanitize_text("好呀！\x00\x00你") == "好呀！  你"
+    assert sanitize_text(text) == expected
 
 
-def test_sanitize_text_preserves_text_whitespace() -> None:
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("one\ntwo\tthree\r", "one\ntwo\tthree\r"),
+    ],
+)
+def test_sanitize_text_preserves_text_whitespace(text: str, expected: str) -> None:
     """Line and tab whitespace are preserved."""
-    assert sanitize_text("one\ntwo\tthree\r") == "one\ntwo\tthree\r"
+    assert sanitize_text(text) == expected

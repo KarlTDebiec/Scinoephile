@@ -25,6 +25,10 @@ from test.helpers import assert_series_equal
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_zho_hans_fuse_clean_validate_review_flatten_romanize",
         ),
+        (
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize",
+        ),
     ],
 )
 def test_get_cmn_romanized(

@@ -35,6 +35,9 @@ def test_get_zho_text_cleaned_normalizes_fullwidth_alphanumerics():
         ("mlamd_zho_hans_fuse", "mlamd_zho_hans_fuse_clean"),
         ("mnt_zho_hans_fuse", "mnt_zho_hans_fuse_clean"),
         ("t_zho_hans_fuse", "t_zho_hans_fuse_clean"),
+        ("t_zho_hans_ocr_paddle", "t_zho_hans_ocr_paddle_clean"),
+        ("t_zho_hant_fuse", "t_zho_hant_fuse_clean"),
+        ("t_zho_hant_ocr_paddle", "t_zho_hant_ocr_paddle_clean"),
     ],
 )
 def test_get_zho_cleaned(

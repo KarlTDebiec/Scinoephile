@@ -4,14 +4,23 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from os import getenv
+from unittest.mock import Mock
 
 import pytest
 
+from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.zho.block_review import (
+    BlockReviewPromptZhoHans,
     BlockReviewPromptZhoHant,
     get_zho_block_reviewed,
     get_zho_reviewer,
+)
+from test.data.t import (
+    get_t_zho_hans_block_review_test_cases,
+    get_t_zho_hant_block_review_test_cases,
+    get_t_zho_hant_simplify_block_review_test_cases,
 )
 from test.helpers import assert_series_equal, skip_if_ci
 
@@ -78,3 +87,59 @@ def test_get_zho_block_reviewed(
 
     assert len(output) == len(expected)
     assert_series_equal(output, expected)
+
+
+@pytest.mark.parametrize(
+    ("series_fixture", "expected_fixture", "test_case_loader", "prompt_cls"),
+    [
+        (
+            "t_zho_hans_fuse_clean_validate",
+            "t_zho_hans_fuse_clean_validate_review",
+            get_t_zho_hans_block_review_test_cases,
+            BlockReviewPromptZhoHans,
+        ),
+        (
+            "t_zho_hant_fuse_clean_validate",
+            "t_zho_hant_fuse_clean_validate_review",
+            get_t_zho_hant_block_review_test_cases,
+            BlockReviewPromptZhoHant,
+        ),
+        (
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
+            get_t_zho_hant_simplify_block_review_test_cases,
+            BlockReviewPromptZhoHans,
+        ),
+    ],
+)
+def test_get_zho_block_reviewed_t_from_verified_cases(
+    request: pytest.FixtureRequest,
+    series_fixture: str,
+    expected_fixture: str,
+    test_case_loader: Callable[[], list[TestCase]],
+    prompt_cls: type[BlockReviewPromptZhoHans],
+):
+    """Test get_zho_block_reviewed with T verified block review cases.
+
+    Arguments:
+        request: pytest request for fixture lookup
+        series_fixture: fixture name for input series
+        expected_fixture: fixture name for expected output series
+        test_case_loader: test case loader for the review path
+        prompt_cls: prompt class for the review path
+    """
+    provider = Mock(spec=LLMProvider)
+    processor = get_zho_reviewer(
+        prompt_cls=prompt_cls,
+        test_cases=test_case_loader(),
+        provider=provider,
+    )
+    expected = request.getfixturevalue(expected_fixture)
+    output = get_zho_block_reviewed(
+        request.getfixturevalue(series_fixture),
+        processor=processor,
+    )
+
+    assert len(output) == len(expected)
+    assert_series_equal(output, expected)
+    provider.chat_completion.assert_not_called()

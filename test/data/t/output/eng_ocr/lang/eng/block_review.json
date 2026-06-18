@@ -54,7 +54,8 @@
       "subtitle_14": "Look, there's blood everywhere!",
       "subtitle_15": "Take it, jerk!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -82,7 +83,8 @@
       "subtitle_5": "40%.",
       "subtitle_6": "Bro Foon, you always have your way!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -109,13 +111,15 @@
       "subtitle_3": "There's no more business between us!",
       "subtitle_4": "We go separate ways!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Light, Bro Foon."
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -307,7 +311,8 @@
       "subtitle_20": "how much will you “lend” me?",
       "subtitle_21": "$3 billion."
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -933,7 +938,8 @@
       "subtitle_47": "Stand firm.",
       "subtitle_48": "Shoot the hell out of him."
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1638,7 +1644,8 @@
       "subtitle_11": "Bro Foon, Cheuk has gone mad!",
       "subtitle_12": "He set up a special phone line to look for you."
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1821,7 +1828,8 @@
       "subtitle_10": "Give me the number!",
       "subtitle_11": "Sure."
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {

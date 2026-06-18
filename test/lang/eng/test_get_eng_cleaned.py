@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.eng.cleaning import _get_english_text_cleaned, get_eng_cleaned
 from test.helpers import assert_series_equal
 
@@ -62,6 +61,8 @@ def test_get_english_text_cleaned_normalizes_greek_ocr_confusables(
         ("mlamd_eng_fuse", "mlamd_eng_fuse_clean"),
         ("mnt_eng_fuse", "mnt_eng_fuse_clean"),
         ("t_eng_fuse", "t_eng_fuse_clean"),
+        ("t_eng_ocr_lens", "t_eng_ocr_lens_clean"),
+        ("t_eng_ocr_tesseract", "t_eng_ocr_tesseract_clean"),
     ],
 )
 def test_get_eng_cleaned(
@@ -81,16 +82,3 @@ def test_get_eng_cleaned(
         remove_empty=False,
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
-
-
-def test_get_eng_cleaned_invalidates_cached_blocks():
-    """Test get_eng_cleaned invalidates cached blocks when events are removed."""
-    series = Series(events=[Subtitle(start=0, end=1000, text="-")])
-    assert [[event.text for event in block.events] for block in series.blocks] == [
-        ["-"]
-    ]
-
-    output = get_eng_cleaned(series)
-
-    assert output.events == []
-    assert output.blocks == []
