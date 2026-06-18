@@ -8,7 +8,8 @@
       "ronghe": "检查一下收到",
       "beizhu": "省略了 Google Lens OCR 中存在的换行符，并将 PaddleOCR 中的空格去除，以还原为连贯字幕。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -79,7 +80,8 @@
       "ronghe": "恋一生\n差一些\n不可一起",
       "beizhu": "保留了 Google Lens OCR 中的换行格式，并省略了 PaddleOCR 中对应的空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -90,7 +92,8 @@
       "ronghe": "只一心　　等一天　　日月如飞　　却等不到你",
       "beizhu": "采用 PaddleOCR 的连续文本内容，并将 Google Lens 中显示为换行、PaddleOCR 中显示为空格的分隔统一融合为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -101,7 +104,8 @@
       "ronghe": "愿忘记　　又想起你",
       "beizhu": "将 Google Lens OCR 中显示为换行符、而 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -112,7 +116,8 @@
       "ronghe": "红裙　　红丝巾",
       "beizhu": "将 Google Lens OCR 中显示为换行符、而 PaddleOCR 中显示为空格的间隙，替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -159,7 +164,8 @@
       "ronghe": "拿着什么？",
       "beizhu": "省略了 Google Lens OCR 中的换行符，并去除了 PaddleOCR 中多余的空格；保留了 Google Lens 中更可靠的标点符号。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -182,7 +188,8 @@
       "ronghe": "不要吐饭是冷的！",
       "beizhu": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，并将空格合并为连续文本。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -205,7 +212,8 @@
       "ronghe": "快点小姐，麻烦你告诉我⋯",
       "beizhu": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符，并保留了 Google Lens 中更可靠的标点符号。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -276,7 +284,8 @@
       "ronghe": "有人找你　　喂",
       "beizhu": "将 Google Lens OCR 中的换行符与 PaddleOCR 中的空格对应位置融合为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -287,7 +296,8 @@
       "ronghe": "我待会打你屁股　　真乖",
       "beizhu": "将 Google Lens OCR 中的换行符与 PaddleOCR 中的空格间隙统一为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -502,7 +512,8 @@
       "ronghe": "不好意思把小女孩吓坏了",
       "beizhu": "省略了 Google Lens OCR 中存在但 PaddleOCR 中仅表现为分隔的换行符，以及 PaddleOCR 中多余的空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -717,7 +728,8 @@
       "ronghe": "喂　　这边请",
       "beizhu": "将 Google Lens OCR 中的换行符与 PaddleOCR 中的空格间隙统一为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {

@@ -50,7 +50,8 @@
       "zimu_47": "哎⋯不關我的事啊",
       "zimu_48": "哎　神僊就大了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -122,7 +123,8 @@
       "zimu_66": "我財神為了顧全大局",
       "zimu_67": "請玉帝批准我跟他單挑"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -144,7 +146,8 @@
       "zimu_16": "押啊⋯押他們下去",
       "zimu_17": "啊　哎　慢點　觀音來了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -233,7 +236,8 @@
       "xiugai_52": "降龍，就用你的誠意去感化他們",
       "beizhu_52": "將全形空格改為標點。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -309,7 +313,8 @@
       "zimu_70": "怕了嘛",
       "zimu_71": "我怕你　我怕你可以了吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -317,7 +322,8 @@
       "zimu_2": "降龍伏虎在這一邊",
       "zimu_3": "至於求子嘛⋯就要拜觀音大士"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -339,7 +345,8 @@
       "zimu_16": "我們還沒拜神呢",
       "zimu_17": "哦　拜神⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -353,7 +360,8 @@
       "zimu_8": "在哪兒摘的",
       "zimu_9": "就在那邊摘的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -366,7 +374,8 @@
       "zimu_7": "你自己跟他說吧　他就快要出來了"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -374,7 +383,8 @@
       "zimu_2": "男的還是女的",
       "zimu_3": "是少爺　恭喜老爺⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -430,7 +440,8 @@
       "zimu_50": "啊⋯你的肚子⋯",
       "zimu_51": "哎呀　糟糕　扇子忘了　快⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -438,7 +449,8 @@
       "zimu_2": "哎呀　原來要生孩子",
       "zimu_3": "我們快點去準備一下　幫幫他們嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -449,7 +461,8 @@
       "xiugai_1": "啊⋯哎⋯老婆 是男的還是女的",
       "beizhu_1": "將全形空格修正為半形空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -461,19 +474,22 @@
       "zimu_6": "現在給他穿上就剛剛好了",
       "zimu_7": "來⋯我來把你吹大"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "再吹一下"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "搞定了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -498,7 +514,8 @@
       "zimu_19": "摸摸⋯",
       "zimu_20": "哎⋯ 「摸摸」在那個姐姐身上　快過去拿"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -533,7 +550,8 @@
       "zimu_29": "跟他多玩一會好了　我去看看公文",
       "zimu_30": "我也去做點刺繡"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -553,7 +571,8 @@
       "xiugai_4": "我沒什麼時間呢　你聽著　你是神仙",
       "beizhu_4": "將「神僊」修正為「神仙」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -600,7 +619,8 @@
       "zimu_41": "剛講完就要打雷了",
       "zimu_42": "真是老天有眼　劈死她"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -608,7 +628,8 @@
       "zimu_2": "在那一邊　看準一點　再來"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -622,13 +643,15 @@
       "zimu_8": "摸摸⋯",
       "zimu_9": "幹什麼你們⋯放開我"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "九世「野雞」"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -636,13 +659,15 @@
       "zimu_2": "她是「野雞」啊",
       "zimu_3": "「雞」都有愛國的嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "謝了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -662,14 +687,16 @@
       "zimu_14": "爸爸⋯",
       "zimu_15": "摸摸⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "摸摸",
       "zimu_2": "就是這裏了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -684,13 +711,15 @@
       "zimu_9": "上個月那一次來爭的人可多著呢",
       "zimu_10": "你到底是土地公還是老大"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "金身就在這裏"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -700,7 +729,8 @@
       "zimu_4": "哎⋯你們兩個頭放錯了",
       "zimu_5": "不會吧　先換過來"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -708,7 +738,8 @@
       "zimu_2": "木魚",
       "zimu_3": "魚"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -736,7 +767,8 @@
       "zimu_22": "拿衣服來",
       "zimu_23": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -750,7 +782,8 @@
       "zimu_8": "你這麼癲　就叫濟癲吧",
       "zimu_9": "非常好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -759,7 +792,8 @@
       "zimu_3": "不要啊"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -767,20 +801,23 @@
       "zimu_2": "啊　袁霸天　快躲"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "袁霸天來了　先到我家躲一躲　走",
       "zimu_2": "土地公"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "九世惡人　全都到齊了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -791,7 +828,8 @@
       "zimu_5": "我要避開你　但是避不了",
       "zimu_6": "你打我的頭好了　不要打我的背啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -802,20 +840,23 @@
       "xiugai_1": "好 我把廟也燒了 看你能往哪兒跑",
       "beizhu_1": "將全形空白修正為半形空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我要燒你　你竟敢吹滅我的火"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -825,7 +866,8 @@
       "zimu_4": "我不會生氣　我疼你　我愛你",
       "zimu_5": "重新做人　乖孩子"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -835,14 +877,16 @@
       "xiugai_1": "不可能 我的娘哎",
       "beizhu_1": "修正了全形空格為半形空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "回去上個廁所想清楚",
       "zimu_2": "我會很快回來找你的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -858,7 +902,8 @@
       "zimu_10": "霍　我換了髮型　不錯吧",
       "zimu_11": "啊　房子怎麼也變了樣了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -905,13 +950,15 @@
       "zimu_41": "哎　睡一會兒倒可以",
       "zimu_42": "我⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "扇扇⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -949,7 +996,8 @@
       "xiugai_18": "一定是它媽媽勾引那隻九官鳥",
       "beizhu_18": "「只」修正為「隻」，屬量詞用字錯誤。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -961,7 +1009,8 @@
       "zimu_6": "啊　師傅　你怎麼把我當豬",
       "zimu_7": "一看到我就叫我睡覺"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -973,7 +1022,8 @@
       "xiugai_1": "大種，你老爸來找你了",
       "beizhu_1": "修正排版標點，將空格分隔改為逗號。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1032,7 +1082,8 @@
       "zimu_53": "少雞貓子喊叫了　鬼不是這樣子",
       "zimu_54": "鬼是這樣子的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1076,13 +1127,15 @@
       "xiugai_20": "我要做一個神仙乞丐",
       "beizhu_20": "「神僊」修正為常用正字「神仙」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不是我　我很臭　不能吃啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1091,7 +1144,8 @@
       "zimu_3": "我被你嚇得尿褲子"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1137,14 +1191,16 @@
       "zimu_40": "哎　走了",
       "zimu_41": "那你就丑大囉　你說是不是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "哎　一夜之間死了一百多個人呢",
       "zimu_2": "哎　一定是有妖精作怪"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1178,7 +1234,8 @@
       "zimu_28": "啊⋯送死⋯到哪兒去找⋯",
       "zimu_29": "哎　怡香院裏多的是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1191,7 +1248,8 @@
       "zimu_7": "由不得她們不肯了",
       "zimu_8": "大家一起進去　地保　你先走啊　快⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1219,14 +1277,16 @@
       "zimu_22": "駝子躺下",
       "zimu_23": "哎　好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "他的腳趾向誰就是誰了"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1246,7 +1306,8 @@
       "zimu_14": "抓她去沐浴更衣　走",
       "zimu_15": "不要啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1258,7 +1319,8 @@
       "xiugai_1": "哇，好漂亮，燒死了多可惜",
       "beizhu_1": "將全形空格修正為標點，屬排版修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1271,7 +1333,8 @@
       "zimu_7": "我⋯照我吩咐做　燒啊⋯",
       "zimu_8": "吉時已到"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1279,7 +1342,8 @@
       "zimu_2": "你怎麼知道燒死了她就會沒有瘟疫呢",
       "zimu_3": "哎⋯玉帝托夢告訴我的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1309,21 +1373,24 @@
       "zimu_24": "沒有水　隨便什麼水都可以",
       "zimu_25": "哦　我明白了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "嗯　你實在太神勇了　避都不避啊",
       "zimu_2": "口水嘛　又不是沒吃過"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "謝謝你",
       "zimu_2": "不客氣"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1349,7 +1416,8 @@
       "zimu_20": "你除了會躺下收錢之外",
       "zimu_21": "你還會做什麼"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1371,7 +1439,8 @@
       "zimu_16": "哎　不會吧　師傅",
       "zimu_17": "狗肉穿腸過　徒弟的肚子好餓"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1385,7 +1454,8 @@
       "zimu_8": "你這個臭小子　除了要飯你還會什麼\n師傅　你給我一塊嘛",
       "zimu_9": "師傅"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1410,7 +1480,8 @@
       "xiugai_7": "快點　你玩了　換我了啦",
       "beizhu_7": "修正錯別字「歡玩」為「玩」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1425,7 +1496,8 @@
       "zimu_9": "啊　哦　她是改了　只是用錯方法了",
       "zimu_10": "大種　跟我來"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1447,21 +1519,24 @@
       "zimu_16": "所有的人都可以救",
       "zimu_17": "上面的人聽著　我贏定了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你壞壞　偷看人家洗澡",
       "zimu_2": "嗯　你才壞呢　不許你這樣說我"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "就是這個造型",
       "zimu_2": "一個好女孩本來就是應該這個樣子"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1469,7 +1544,8 @@
       "zimu_2": "不然我怎麼會穿這種衣服",
       "zimu_3": "可以的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1480,13 +1556,15 @@
       "zimu_5": "那麼「雞」一樣可以變鳳凰啊",
       "zimu_6": "那我要做鳳凰　行不行"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "鳳凰"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1500,7 +1578,8 @@
       "xiugai_3": "你有什麼吩咐 儘管說",
       "beizhu_3": "將全形空白修正為半形空白。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1529,7 +1608,8 @@
       "xiugai_11": "啊 我",
       "beizhu_11": "刪除多餘空白"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1543,7 +1623,8 @@
       "xiugai_1": "大爺，你要切記",
       "beizhu_1": "「大種」應為錯別字，依語境修正為「大爺」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1555,7 +1636,8 @@
       "zimu_6": "哎呀　不要緊　她偶爾客串一下",
       "zimu_7": "你跟我來吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1568,7 +1650,8 @@
       "zimu_7": "是不是我說錯話了",
       "zimu_8": "真會吃"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1585,13 +1668,15 @@
       "zimu_11": "買豆腐",
       "zimu_12": "哎喲　你壞死嘍"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "哦　來得正好　順便把你解決"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1601,7 +1686,8 @@
       "zimu_4": "幹掉他",
       "zimu_5": "是⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1616,13 +1702,15 @@
       "zimu_9": "去你的媽",
       "zimu_10": "打到你去"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "開我的玩笑　藤條"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1633,26 +1721,30 @@
       "xiugai_2": "媽的 好累呀",
       "beizhu_2": "將全形空格修正為一般空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "看你往哪兒跑"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "他媽的二百五　教不會的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "服不服氣",
       "zimu_2": "服你的媽"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1675,14 +1767,16 @@
       "zimu_17": "耶",
       "zimu_18": "哎呀　我是來嫖妓的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "事到如今　我只好以暴制暴",
       "zimu_2": "鐵頭功"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1690,13 +1784,15 @@
       "zimu_2": "叫你當和尚　又不叫你去死",
       "zimu_3": "馬上乖乖跟我回去"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你真是冥頑不靈啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1709,7 +1805,8 @@
       "xiugai_2": "總之不能殺人，行不行",
       "beizhu_2": "將全形空格修正為標點，補正排版。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1719,21 +1816,24 @@
       "xiugai_1": "他媽的 到底是人還是禽獸",
       "beizhu_1": "將全形空白修正為半形空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "覺得怎麼樣",
       "zimu_2": "好「黃」啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "沒想到我們磨了一個晚上的豆漿",
       "zimu_2": "還這麼開心"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1742,7 +1842,8 @@
       "zimu_3": "只要你現在不要去找小玉的麻煩",
       "zimu_4": "我們的賬以後再算"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1750,13 +1851,15 @@
       "zimu_2": "你這個混球",
       "zimu_3": "我忍無可忍了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我佛慈悲　大吉大利"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1768,7 +1871,8 @@
       "xiugai_1": "啊　醜了　大鐘　時辰到了",
       "beizhu_1": "修正錯別字：「丑」改為「醜」，「種」改為「鐘」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1786,7 +1890,8 @@
       "zimu_12": "臭小子　你好面熟啊",
       "zimu_13": "兩位壯士　你們認錯人了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1796,7 +1901,8 @@
       "zimu_4": "你還想白吃啊",
       "zimu_5": "沒有　我沒有白吃　我有錢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1829,7 +1935,8 @@
       "zimu_27": "讓你開開眼界",
       "zimu_28": "求你放了她吧　大爺"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1837,7 +1944,8 @@
       "zimu_2": "救我",
       "zimu_3": "我跟你拼了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1848,7 +1956,8 @@
       "zimu_5": "記著關門啊　來　吃香蕉",
       "zimu_6": "哎　對不起⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1865,19 +1974,22 @@
       "xiugai_3": "都變回乞丐了，快點走啊",
       "beizhu_3": "將全形空格改為標點。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "啊　袁霸天"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大種乞丐　趕緊死吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1887,7 +1999,8 @@
       "xiugai_1": "不要叫我大種，叫我朱大常",
       "beizhu_1": "將「大種」後的異常空格修正為標點「，」"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1897,7 +2010,8 @@
       "zimu_4": "明天有　明天你就知道厲害了",
       "zimu_5": "撒謊呢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1906,13 +2020,15 @@
       "zimu_3": "轉過去⋯過去　再過去　看好"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "把眼睛睜開"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1921,13 +2037,15 @@
       "zimu_3": "剛才看得真爽　眼睛都不眨一下啊",
       "zimu_4": "不過剛才真的精采呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "這一次你還不死啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1955,7 +2073,8 @@
       "zimu_22": "哎⋯千萬不可以拿金身來開玩笑啊",
       "zimu_23": "不行也得行"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1974,7 +2093,8 @@
       "zimu_13": "那就把你變個大字",
       "zimu_14": "不行　啊　怎麼變"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1985,7 +2105,8 @@
       "zimu_5": "不是",
       "zimu_6": "我呸"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1995,7 +2116,8 @@
       "zimu_4": "聽懂了沒有",
       "zimu_5": "哎呀　你好大的膽子　不要過來⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2019,7 +2141,8 @@
       "zimu_18": "王八蛋　你個死黑鬼　好　換了"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2031,7 +2154,8 @@
       "xiugai_1": "大爺　我再怎麼樣也要帶你回去",
       "beizhu_1": "修正「大種」為「大爺」以符合常見字幕用字與明顯錯別字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2039,7 +2163,8 @@
       "zimu_2": "你居然還吸他的魂魄",
       "zimu_3": "我壞嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2051,13 +2176,15 @@
       "zimu_6": "哎呀　這下可慘了　連金身都被人家拿走",
       "zimu_7": "大種⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大種"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2068,7 +2195,8 @@
       "xiugai_1": "主公，我一定照你的吩咐",
       "beizhu_1": "修正全形空白為標點，補上逗號。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2092,7 +2220,8 @@
       "xiugai_9": "裏面那票神仙說",
       "beizhu_9": "將「神僊」修正為「神仙」錯別字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2100,7 +2229,8 @@
       "zimu_2": "濟癲　那個金身呢",
       "zimu_3": "你死定了　惹這麼大的禍"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2113,13 +2243,15 @@
       "xiugai_2": "哎呀，這次禍闖大了",
       "beizhu_2": "修正排版，將全形空白改為標點逗號。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "師傅　快走了　師傅　快走吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2131,7 +2263,8 @@
       "zimu_6": "師傅⋯快走吧⋯待會兒打雷下來⋯",
       "zimu_7": "師傅⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2140,13 +2273,15 @@
       "zimu_3": "連你也怪我",
       "zimu_4": "你還原"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "真的是逼我走絕路"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2164,7 +2299,8 @@
       "zimu_12": "什麼時候輪得到你們兩個",
       "zimu_13": "好啊　一起上也可以"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2179,7 +2315,8 @@
       "zimu_9": "是真的",
       "zimu_10": "娶了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2188,7 +2325,8 @@
       "zimu_3": "無論前世種種　今生何樣",
       "zimu_4": "此生永不言悔"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2200,7 +2338,8 @@
       "zimu_6": "你愛我有多深呢",
       "zimu_7": "就好像愛大種一樣"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2218,7 +2357,8 @@
       "xiugai_5": "哦，我好怕",
       "beizhu_5": "將全形空格改為標點，修正排版。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2241,7 +2381,8 @@
       "xiugai_10": "如果我們神仙跟凡人結合的話",
       "beizhu_10": "「神僊」修正為「神仙」，屬錯別字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2266,7 +2407,8 @@
       "zimu_19": "你以為我不知道",
       "zimu_20": "我什麼都知道"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2274,7 +2416,8 @@
       "zimu_2": "什麼都沒有了",
       "zimu_3": "真的什麼都沒有了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2282,26 +2425,30 @@
       "zimu_2": "這一輩子我再也不要什麼愛情了",
       "zimu_3": "不要"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我再也不要愛情"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "救命啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "殺了你就剛好湊足了",
       "zimu_2": "七七四十九人的血"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2309,7 +2456,8 @@
       "zimu_2": "就算他找到了　武功也已經全廢"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2317,20 +2465,23 @@
       "zimu_2": "就像只死狗一樣",
       "zimu_3": "天字派的出來"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "羅漢壓頂",
       "zimu_2": "天將神助"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "把那個王八蛋給我抓過來"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2338,7 +2489,8 @@
       "zimu_2": "你是打不死我的",
       "zimu_3": "嘿　是嗎"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2350,7 +2502,8 @@
       "xiugai_3": "我打死你 打死你⋯",
       "beizhu_3": "修正全形空白為一般空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2367,7 +2520,8 @@
       "xiugai_3": "你就可以再做神仙呢",
       "beizhu_3": "修正錯別字「神僊」為「神仙」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2375,7 +2529,8 @@
       "zimu_2": "主公幫我換了一個千年不死的心",
       "zimu_3": "哼　你們是弄不死我的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2383,7 +2538,8 @@
       "zimu_2": "石頭　怎麼會這樣"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2412,7 +2568,8 @@
       "xiugai_13": "搞到所有神仙全跑光了",
       "beizhu_13": "「神僊」應為「神仙」，修正錯別字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2430,13 +2587,15 @@
       "zimu_12": "繼續濫殺無辜　你是不是想這麼做",
       "zimu_13": "是的話你就拿回去吧　拿"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "下輩子不要再讓我做人"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2450,7 +2609,8 @@
       "zimu_8": "來不及了",
       "zimu_9": "降龍⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2461,7 +2621,8 @@
       "zimu_5": "來吧",
       "zimu_6": "好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2471,7 +2632,8 @@
       "xiugai_1": "哎呀 糟了",
       "beizhu_1": "將全形空格修正為半形空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2482,7 +2644,8 @@
       "zimu_5": "我們又見面了　啊　快走吧"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2497,7 +2660,8 @@
       "xiugai_1": "師傅　你幹嗎來這裡呀",
       "beizhu_1": "「這裏」修正為「這裡」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2517,7 +2681,8 @@
       "xiugai_3": "將剩下來的金粉打入黑羅煞身體",
       "beizhu_3": "補上「的」字，修正語法與排版性錯誤。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2529,7 +2694,8 @@
       "zimu_6": "我也不願意啊",
       "zimu_7": "吞了這些金粉　我肚子覺得怪怪的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2540,7 +2706,8 @@
       "xiugai_1": "師傅，你快點想想辦法，把金粉拉出來",
       "beizhu_1": "將全形空格排版修正為標點符號。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2551,7 +2718,8 @@
       "xiugai_2": "金身還有兩顆金牙在我嘴裡",
       "beizhu_2": "將「嘴裏」修正為「嘴裡」，統一為繁體字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2569,7 +2737,8 @@
       "xiugai_4": "師傅 幫我最後一個忙",
       "beizhu_4": "刪除多餘空白，修正排版。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2578,7 +2747,8 @@
       "zimu_3": "哼　怕了吧",
       "zimu_4": "那跪下磕三個響頭　我就饒了你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2589,20 +2759,23 @@
       "xiugai_2": "濟顛",
       "beizhu_2": "「癲」應為慣用寫法「顛」"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "濟癲⋯"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "阿彌陀佛　南無阿彌陀佛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2628,7 +2801,8 @@
       "zimu_20": "你們看看",
       "zimu_21": "這一輩子他不用再做乞丐"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2636,7 +2810,8 @@
       "zimu_2": "但是她再也不做「野雞」",
       "zimu_3": "而是真正的在賣豆腐"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2645,7 +2820,8 @@
       "zimu_3": "他在臨死前懺悔是不想再做人",
       "zimu_4": "現在他已經轉入輪迴了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2658,7 +2834,8 @@
       "zimu_7": "啊⋯這只是開玩笑嘛⋯",
       "zimu_8": "不過又多了一個降龍尊者"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2666,14 +2843,16 @@
       "zimu_2": "一不小心就升級了",
       "zimu_3": "加冕儀式開始"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "恭喜你",
       "zimu_2": "謝謝"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2684,6 +2863,7 @@
       "zimu_5": "讓他們明白",
       "zimu_6": "只要有愛　哪裏都是天堂"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   }
 ]
