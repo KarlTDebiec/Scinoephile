@@ -37,6 +37,25 @@ def test_get_english_text_cleaned_normalizes_fullwidth_alphanumerics():
 
 
 @pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("ΟΚ, οκ.", "OK, ok."),
+    ],
+)
+def test_get_english_text_cleaned_normalizes_greek_ocr_confusables(
+    text: str,
+    expected: str,
+):
+    """Test Greek OCR confusables are normalized in English text.
+
+    Arguments:
+        text: text to clean
+        expected: expected cleaned text
+    """
+    assert _get_english_text_cleaned(text) == expected
+
+
+@pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
         ("kob_eng_ocr_fuse", "kob_eng_ocr_fuse_clean"),
