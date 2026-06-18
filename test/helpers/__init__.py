@@ -34,7 +34,6 @@ __all__ = [
     "parametrized_fixture",
     "skip_if_ci",
     "skip_if_codex",
-    "skip_unless_run_llm_tests",
     "test_data_root",
 ]
 
@@ -205,16 +204,4 @@ def skip_if_codex() -> Any:
     return mark.skipif(
         bool(getenv("CODEX_ENV_PYTHON_VERSION")),
         reason="Skip when running in Codex environment",
-    )
-
-
-def skip_unless_run_llm_tests() -> Any:
-    """Build a decorator that skips live LLM tests unless explicitly enabled.
-
-    Returns:
-        pytest mark decorator
-    """
-    return mark.skipif(
-        not getenv("SCINOEPHILE_RUN_LLM_TESTS"),
-        reason="Requires live LLM integration tests",
     )
