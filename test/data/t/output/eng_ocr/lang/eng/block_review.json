@@ -48,14 +48,13 @@
       "subtitle_8": "The 5 gold shops lost $10M in total.",
       "subtitle_9": "The police believe the mastermind",
       "subtitle_10": "is the “Most Wanted” Yip Kwok-foon.",
-      "subtitle_11": "Bro foon, you're unbeatable!",
+      "subtitle_11": "Bro Foon, you're unbeatable!",
       "subtitle_12": "But shit has hit the fan!",
       "subtitle_13": "I told you to put more newspaper underneath!",
       "subtitle_14": "Look, there's blood everywhere!",
       "subtitle_15": "Take it, jerk!"
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -76,21 +75,14 @@
   },
   {
     "query": {
-      "subtitle_1": "Especially for your swag, Bro foon!",
+      "subtitle_1": "Especially for your swag, Bro Foon!",
       "subtitle_2": "It took us 2 years to fence it last time!",
       "subtitle_3": "Stocks, real estate,\nand even chestnuts are more profitable!",
       "subtitle_4": "Do me a favor.",
       "subtitle_5": "40%.",
-      "subtitle_6": "Bro foon, you always have your way!"
+      "subtitle_6": "Bro Foon, you always have your way!"
     },
-    "answer": {
-      "revised_1": "Especially for your swag, Bro Foon!",
-      "note_1": "Corrected 'Bro foon' to 'Bro Foon' to capitalise the name as is standard for proper nouns.",
-      "revised_6": "Bro Foon, you always have your way!",
-      "note_6": "Corrected 'Bro foon' to 'Bro Foon' to capitalise the name as is standard for proper nouns."
-    },
-    "difficulty": 1,
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -112,28 +104,18 @@
   },
   {
     "query": {
-      "subtitle_1": "Thanks so much, Bro foon.",
+      "subtitle_1": "Thanks so much, Bro Foon.",
       "subtitle_2": "Don't look me up in the future.",
       "subtitle_3": "There's no more business between us!",
       "subtitle_4": "We go separate ways!"
     },
-    "answer": {
-      "revised_1": "Thanks so much, Bro Foon.",
-      "note_1": "Corrected 'Bro foon.' to 'Bro Foon.' (capitalized proper noun)."
-    },
-    "difficulty": 1,
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
-      "subtitle_1": "Light, Bro foon."
+      "subtitle_1": "Light, Bro Foon."
     },
-    "answer": {
-      "revised_1": "Light, Bro Foon.",
-      "note_1": "Corrected 'foon' to 'Foon' to capitalize the proper noun."
-    },
-    "difficulty": 1,
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -315,9 +297,9 @@
       "subtitle_10": "is all right.",
       "subtitle_11": "I came here to borrow money from Mr Tycoon.",
       "subtitle_12": "Is that a crime?",
-      "subtitle_13": "Mr Ho, tell us if he's threatening you.",
+      "subtitle_13": "Mr Ho, tell us if he’s threatening you.",
       "subtitle_14": "We can arrest him right away!",
-      "subtitle_15": "No, he's not.",
+      "subtitle_15": "No, he’s not.",
       "subtitle_16": "Have you heard it loud and clear, Officer?",
       "subtitle_17": "I said he's not threatening me!",
       "subtitle_18": "Calm down, Royal Hong Kong Police!",
@@ -325,8 +307,7 @@
       "subtitle_20": "how much will you “lend” me?",
       "subtitle_21": "$3 billion."
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -921,7 +902,7 @@
       "subtitle_16": "At least millions of dollars will be involved.",
       "subtitle_17": "What 3 Kings of Thieves?",
       "subtitle_18": "Say it!",
-      "subtitle_19": "Bro foon, are you making a comeback?",
+      "subtitle_19": "Bro Foon, are you making a comeback?",
       "subtitle_20": "This time with Cheuk Tze-keung\nand Kwai Ching-hung.",
       "subtitle_21": "The 3 Kings of Thieves are collaborating?",
       "subtitle_22": "Someone has seen you three meeting in China.",
@@ -952,12 +933,7 @@
       "subtitle_47": "Stand firm.",
       "subtitle_48": "Shoot the hell out of him."
     },
-    "answer": {
-      "revised_19": "Bro Foon, are you making a comeback?",
-      "note_19": "Corrected 'Bro foon' to 'Bro Foon' to capitalize the name properly."
-    },
-    "difficulty": 1,
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -1659,15 +1635,10 @@
       "subtitle_8": "Get out!",
       "subtitle_9": "It's insane!",
       "subtitle_10": "What happened?",
-      "subtitle_11": "Bro foon, Cheuk has gone mad!",
+      "subtitle_11": "Bro Foon, Cheuk has gone mad!",
       "subtitle_12": "He set up a special phone line to look for you."
     },
-    "answer": {
-      "revised_11": "Bro Foon, Cheuk has gone mad!",
-      "note_11": "Capitalized 'Foon' to match the proper noun format for a name."
-    },
-    "difficulty": 1,
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -1842,22 +1813,15 @@
       "subtitle_2": "and connections well…",
       "subtitle_3": "What did you say?",
       "subtitle_4": "Fisherman!",
-      "subtitle_5": "Yes, Bro foon.",
+      "subtitle_5": "Yes, Bro Foon.",
       "subtitle_6": "Give me Cheuk's number.",
-      "subtitle_7": "Bro foon.",
+      "subtitle_7": "Bro Foon.",
       "subtitle_8": "You got something to say?",
       "subtitle_9": "No.",
       "subtitle_10": "Give me the number!",
       "subtitle_11": "Sure."
     },
-    "answer": {
-      "revised_5": "Yes, Bro Foon.",
-      "note_5": "Corrected 'Bro foon.' to 'Bro Foon.' to capitalize the name as appropriate.",
-      "revised_7": "Bro Foon.",
-      "note_7": "Corrected 'Bro foon.' to 'Bro Foon.' to capitalize the name as appropriate."
-    },
-    "difficulty": 1,
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
