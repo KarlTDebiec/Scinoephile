@@ -20,118 +20,53 @@ Run each Hans file through `t2s` and each Hant file through `s2t`. These are no-
 - The fixture contains a typo or OCR/review artifact and should stay inactive.
 - The conversion audit has surfaced a real subtitle problem for review.
 
-## Run The CLI
+## Run The Audit
 
-Use the project CLI, not a hidden module entry point. Choose `zho process` for standard Chinese files and `yue process` for written Cantonese files.
+Run the bundled Python script from the repository root. It discovers all regular and OCR/PCR subtitle fixtures, runs the appropriate no-op direction conversion, filters active exclusions and known inactive exceptions, and prints Markdown tables with unexpected changes and image dump links.
 
 PowerShell:
 
 ```powershell
 $env:UV_CACHE_DIR = "/tmp/uv-cache"
-uv run scinoephile zho process -i test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt --convert t2s -o local/zho-Hans.t2s.srt --overwrite
-uv run scinoephile zho process -i test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt --convert s2t -o local/zho-Hant.s2t.srt --overwrite
-uv run scinoephile yue process -i test/data/tmm/output/yue-Hans_ocr/fuse_clean_validate.srt --convert t2s -o local/yue-Hans.t2s.srt --overwrite
-uv run scinoephile yue process -i test/data/tmm/output/yue-Hant_ocr/fuse_clean_validate.srt --convert s2t -o local/yue-Hant.s2t.srt --overwrite
+uv run python skills/audit-zho-conversion-exclusions/scripts/audit_zho_conversion_exclusions.py
 ```
 
 Bash:
 
 ```bash
 export UV_CACHE_DIR=/tmp/uv-cache
-uv run scinoephile zho process -i test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt --convert t2s -o local/zho-Hans.t2s.srt --overwrite
-uv run scinoephile zho process -i test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt --convert s2t -o local/zho-Hant.s2t.srt --overwrite
-uv run scinoephile yue process -i test/data/tmm/output/yue-Hans_ocr/fuse_clean_validate.srt --convert t2s -o local/yue-Hans.t2s.srt --overwrite
-uv run scinoephile yue process -i test/data/tmm/output/yue-Hant_ocr/fuse_clean_validate.srt --convert s2t -o local/yue-Hant.s2t.srt --overwrite
+uv run python skills/audit-zho-conversion-exclusions/scripts/audit_zho_conversion_exclusions.py
 ```
 
-For batch work, discover targets first, then run the matching command for each path.
-
-PowerShell:
-
-```powershell
-$targets = Get-ChildItem test/data -Recurse -Filter *.srt | Where-Object {
-    $_.FullName -match "\\input\\(yue|zho)-Han[st]\.srt$" -or
-    $_.FullName -match "\\output\\(yue|zho)-Han[st]_ocr\\fuse_clean_validate\.srt$"
-}
-
-foreach ($target in $targets) {
-    $language = [regex]::Match($target.FullName, "(yue|zho)-Han[st]").Groups[1].Value
-    $config = if ($target.FullName -match "-Hant") { "s2t" } else { "t2s" }
-    $command = if ($language -eq "yue") { "yue" } else { "zho" }
-    $out = "local/conversion-audit/$($target.FullName -replace '[:\\\\/]', '_').$config.srt"
-    New-Item -ItemType Directory -Force (Split-Path $out) | Out-Null
-    uv run scinoephile $command process -i $target.FullName --convert $config -o $out --overwrite
-}
-```
-
-Bash:
+Pass `--root PATH` when running outside the repository root:
 
 ```bash
-export UV_CACHE_DIR=/tmp/uv-cache
-find test/data -type f -name "*.srt" \
-    | grep -E "/input/(yue|zho)-Han[st]\.srt$|/output/(yue|zho)-Han[st]_ocr/fuse_clean_validate\.srt$" \
-    | sort \
-    | while IFS= read -r target; do
-        if [[ "$target" == *"-Hant"* ]]; then
-            config=s2t
-        else
-            config=t2s
-        fi
-
-        if [[ "$target" == *"/yue-Han"* ]]; then
-            command=yue
-        else
-            command=zho
-        fi
-
-        out="local/conversion-audit/${target//[\/:]/_}.${config}.srt"
-        mkdir -p "$(dirname "$out")"
-        uv run scinoephile "$command" process -i "$target" --convert "$config" -o "$out" --overwrite
-    done
+uv run python skills/audit-zho-conversion-exclusions/scripts/audit_zho_conversion_exclusions.py --root /path/to/Scinoephile
 ```
 
-Compare parsed subtitle text, not raw file bytes, because CLI output may normalize SRT serialization.
+The script compares parsed subtitle text, not raw file bytes, and uses `get_zho_text_converted(..., apply_exclusions=False)` for raw OpenCC counts plus `apply_exclusions=True` for reportable changes after active exclusions.
 
 ## Report Format
 
-Group findings by source file. Report only unexpected changes. Use this comment style, without the word `inactive:`:
+Report only unexpected changes as a merged Markdown table:
 
-```python
-# test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:
-# "決",  # traditional 決 in Hans OCR output; expected 决
-#        # found: subtitle 16 (LEGIT; not OCR error)
-```
+| Source | Image dump | Character | Expected | Subtitle | Note |
+| --- | --- | --- | --- | --- | --- |
+| [ACOPB yue-Hans](C:/Users/karls/Code/Scinoephile/test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt) | [image](C:/Users/karls/Code/Scinoephile/test/data/acopopb/output/yue-Hans_ocr/image/index.html) | `決` | `决` | 16 | Traditional `決` in Hans OCR output; LEGIT, not OCR error |
 
 For Hant audited through `s2t`, write comments as simplified-to-traditional expectations. For Hans audited through `t2s`, write comments as traditional-to-simplified expectations.
+
+Use compact source labels such as `TMM zho-Hans`, linked to the source SRT file. The script derives image dump paths from OCR/PCR fixture paths by replacing `fuse_clean_validate.srt` with `image/index.html`. For example, `test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt` maps to `test/data/tmm/output/zho-Hant_ocr/image/index.html`. It uses absolute local Markdown links. For regular `input/*.srt` findings, it includes an image link only when a corresponding OCR/PCR `image/index.html` exists.
 
 ## Known t2s No-Op Exceptions
 
 Do not report these as unexpected if the same character appears at the same subtitle:
 
-```python
-# test/data/acopopb/input/zho-Hans.srt:
-# "潚",  # subtitle typo for 瀟/潇; expected 潇
-#        # found: subtitle 517 (TYPO; not OCR error)
-#
-# test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:
-# "決",  # traditional 決 in Hans OCR output; expected 决
-#        # found: subtitle 16 (LEGIT; not OCR error)
-# "幫",  # traditional 幫 in Hans OCR output; expected 帮
-#        # found: subtitle 261 (LEGIT; not OCR error)
-#
-# test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt:
-# "瀟",  # traditional 瀟 in Hans OCR output; expected 潇
-#        # found: subtitle 521 (TYPO; not OCR error)
-```
+| Source | Character | Expected | Subtitle | Note |
+| --- | --- | --- | --- | --- |
+| `test/data/acopopb/input/zho-Hans.srt` | `潚` | `潇` | 517 | Subtitle typo for `瀟`/`潇`; TYPO, not OCR error |
+| `test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt` | `決` | `决` | 16 | Traditional `決` in Hans OCR output; LEGIT, not OCR error |
+| `test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt` | `幫` | `帮` | 261 | Traditional `幫` in Hans OCR output; LEGIT, not OCR error |
+| `test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt` | `潚` | `㴋` | 521 | Traditional `潚` in Hans OCR output; known exception |
 
-## Practical Comparison Helper
-
-When the user asks for an audit report rather than converted fixture files, use a temporary Python snippet to compare parsed SRT events and print the report. It should:
-
-1. Discover the regular and OCR/PCR target files above.
-2. Select `t2s` for `*-Hans*` and `s2t` for `*-Hant*`.
-3. Use `get_zho_text_converted(text, OpenCCConfig(...), apply_exclusions=False)` so the audit finds raw OpenCC changes rather than current exclusion behavior.
-4. For each event whose text changes, emit the source path, original character, expected converted character, and subtitle number.
-5. Remove any exact known exceptions before printing.
-
-Keep the final response concise: list unexpected changes only, then mention if there were no unexpected changes.
+Keep the final response concise: paste the script output, or summarize it only if the user asks for a summary.
