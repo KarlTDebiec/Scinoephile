@@ -316,7 +316,7 @@ class OcrProcessingWorkflow:
             tesseract = Series.load(tesseract_path)
         else:
             tesseract = ocr_image_series_with_tesseract(
-                image_series, language=Language.eng
+                image_series, detect_italics=True, language=Language.eng
             )
             tesseract.save(tesseract_path, format_="srt")
         self.output_paths["tesseract"] = tesseract_path
