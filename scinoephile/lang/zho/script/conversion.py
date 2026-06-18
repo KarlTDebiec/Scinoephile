@@ -42,6 +42,10 @@ _S2T_EXCLUDED_CHARS = {
     "了",  # keep 了解 form 了; avoid 瞭
     "里",  # keep distance character 里; avoid 裏 "inside"
     "咸",  # keep Cantonese food-term 咸; avoid 鹹
+    "只",  # keep legitimate traditional-subtitle 只; avoid blanket 隻
+    "面",  # keep legitimate traditional-subtitle 面; avoid blanket 麵
+    "云",  # keep legitimate traditional-subtitle 云; avoid blanket 雲
+    "家",  # keep legitimate traditional-subtitle 家; avoid blanket 傢
     "虱",  # keep modern/Hong Kong 虱; avoid 蝨
     "响",  # keep Cantonese locative/verb 响; avoid 響
     "峰",  # keep modern 峰; avoid older variant 峯
@@ -67,20 +71,6 @@ _S2T_EXCLUDED_CHARS = {
 }
 """Characters to preserve when converting simplified Chinese toward traditional."""
 
-# Inactive fixture artifacts seen during s2t no-op discovery:
-# "只",  # inactive: classifier should be traditional 隻
-#        # found: test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt:2376
-# "面",  # inactive: noodle should be 麵
-#        # found: test/data/acopopb/output/yue-Hant_ocr/
-#        # fuse_clean_validate.srt:679
-# "云",  # inactive: likely OCR/review artifact in Cantonese "呢云"
-#        # found: test/data/acopopb/output/yue-Hant_ocr/
-#        # fuse_clean_validate.srt:1787
-# "羡",  # inactive: simplified 羡 where traditional 羨 is expected
-#        # found: test/data/tmm/output/yue-Hant_ocr/fuse_clean_validate.srt:2611
-# "家",  # inactive: existing test expects 傢伙, not 家伙
-#        # found: test/data/tmm/output/yue-Hant_ocr/fuse_clean_validate.srt:4695
-
 _T2S_EXCLUDED_CHARS = {
     "喎",  # keep Cantonese sentence particle 喎; avoid 㖞
     "嗰",  # keep Cantonese demonstrative 嗰; avoid 𠮶
@@ -99,57 +89,19 @@ _T2S_EXCLUDED_CHARS = {
 """Characters to preserve when converting traditional Chinese toward simplified."""
 
 # Inactive fixture artifacts seen during t2s no-op discovery:
-# "擺",  # inactive: traditional 擺 in Hans OCR output
-#        # found: test/data/acoptc/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:811
-# "換",  # inactive: traditional 換 in Hans OCR output
-#        # found: test/data/acoptc/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:3003
-# "決",  # inactive: traditional 決 in Hans OCR output
-#        # found: test/data/acopopb/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:63
-# "綁",  # inactive: traditional 綁 in Hans OCR output
-#        # found: test/data/acopopb/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:1639
-# "帶",  # inactive: traditional 帶 in Hans OCR output
-#        # found: test/data/acoptc/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:2675
-# "豬",  # inactive: traditional 豬 in Hans OCR output
-#        # found: test/data/acoptc/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:5603
-# "潚",  # inactive: likely OCR artifact for 瀟/潇 in 瀟洒
-#        # found: test/data/acopopb/input/zho-Hans.srt:2067
-# "涼",  # inactive: traditional 涼 in Hans OCR output
-#        # found: test/data/acopopb/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:775
-# "幫",  # inactive: traditional 幫 in Hans OCR output
-#        # found: test/data/acopopb/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:1043
-# "蹤",  # inactive: traditional 蹤 in Hans OCR output
-#        # found: test/data/acopopb/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:2123
-# "內",  # inactive: traditional 內 in Hans OCR output
-#        # found: test/data/acopopb/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:3195
-# "瀟",  # inactive: traditional 瀟 in Hans OCR output
-#        # found: test/data/acopopb/output/zho-Hans_ocr/
-#        # fuse_clean_validate.srt:2083
-# "靚",  # inactive: traditional 靚 where simplified 靓 is expected
-#        # found: test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt:3
-# "鑼",  # inactive: likely OCR for 攞 rather than simplified 锣
-#        # found: test/data/acoptc/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:3983
-# "齋",  # inactive: traditional 齋 in Hans OCR output
-#        # found: test/data/acoptc/output/yue-Hans_ocr/
-#        # fuse_clean_validate.srt:5243
-# "慘",  # inactive: traditional 慘 in Hans OCR output
-#        # found: test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:339
-# "黃",  # inactive: traditional 黃 in Hans OCR output
-#        # found: test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:1751
-# "噓",  # inactive: traditional 噓 in Hans OCR output
-#        # found: test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:6107
-# "癲",  # inactive: traditional 癲 in Hans OCR output
-#        # found: test/data/tmm/output/zho-Hans_ocr/fuse_clean_validate.srt:6147
+# test/data/acopopb/input/zho-Hans.srt:
+# "潚",  # inactive: subtitle typo for 瀟/潇; expected 潇
+#        # found: subtitle 517 (TYPO; not OCR error)
+#
+# test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt:
+# "決",  # inactive: traditional 決 in Hans OCR output; expected 决
+#        # found: subtitle 16 (LEGIT; not OCR error)
+# "幫",  # inactive: traditional 幫 in Hans OCR output; expected 帮
+#        # found: subtitle 261 (LEGIT; not OCR error)
+#
+# test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt:
+# "瀟",  # inactive: traditional 瀟 in Hans OCR output; expected 潇
+#        # found: subtitle 521
 
 
 class OpenCCConfig(DescribedEnum):

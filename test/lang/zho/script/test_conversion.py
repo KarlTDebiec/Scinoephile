@@ -32,7 +32,7 @@ def test_opencc_config_metadata():
         ("台臺", OpenCCConfig.t2s, "台台"),
         ("你吃吓晒啦", OpenCCConfig.s2t, "你吃吓晒啦"),
         ("一群牛虱", OpenCCConfig.s2t, "一群牛虱"),
-        ("这家伙", OpenCCConfig.s2t, "這傢伙"),
+        ("这家伙", OpenCCConfig.s2t, "這家伙"),
         ("呢個嗰度喎", OpenCCConfig.t2s, "呢个嗰度喎"),
         ("希望藉此答覆", OpenCCConfig.t2s, "希望藉此答覆"),
         ("丑大了", OpenCCConfig.s2t, "丑大了"),
