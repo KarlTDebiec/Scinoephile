@@ -23,6 +23,7 @@ _KNOWN_INACTIVE_EXCEPTIONS: set[_KnownExceptionKey] = {
     ("test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt", "決", "16"),
     ("test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt", "幫", "261"),
     ("test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt", "潚", "521"),
+    ("test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt", "決", "326"),
 }
 """Known fixture artifacts that should not be reported as unexpected."""
 

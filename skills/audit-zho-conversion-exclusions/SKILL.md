@@ -68,5 +68,6 @@ Do not report these as unexpected if the same character appears at the same subt
 | `test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt` | `決` | `决` | 16 | Traditional `決` in Hans OCR output; LEGIT, not OCR error |
 | `test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt` | `幫` | `帮` | 261 | Traditional `幫` in Hans OCR output; LEGIT, not OCR error |
 | `test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt` | `潚` | `㴋` | 521 | Traditional `潚` in Hans OCR output; known exception |
+| `test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt` | `決` | `决` | 326 | Traditional `決` in Hans OCR output; known exception |
 
 Keep the final response concise: paste the script output, or summarize it only if the user asks for a summary.
