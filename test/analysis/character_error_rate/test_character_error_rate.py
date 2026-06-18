@@ -191,15 +191,17 @@ def test_series_cer_ignores_separator_only_line_wrapping(
         "expected_fixture_name",
     ),
     [
-        (
+        pytest.param(
             "kob_yue_hans_timewarp_clean_flatten",
             "kob_yue_hans_transcribe",
             "kob_yue_hans_transcribe_expected_cer",
+            id="kob-yue-transcribe",
         ),
-        (
+        pytest.param(
             "kob_yue_hans_timewarp_clean_flatten",
             "kob_yue_hans_transcribe_review_translate_block_review",
             "kob_yue_hans_transcribe_review_translate_block_review_expected_cer",
+            id="kob-yue-block-review",
         ),
     ],
 )

@@ -35,13 +35,41 @@ def test_get_zho_text_cleaned(text: str, expected: str):
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        ("kob_zho_hant_ocr_fuse", "kob_zho_hant_ocr_fuse_clean"),
-        ("mlamd_zho_hans_fuse", "mlamd_zho_hans_fuse_clean"),
-        ("mnt_zho_hans_fuse", "mnt_zho_hans_fuse_clean"),
-        ("t_zho_hans_fuse", "t_zho_hans_fuse_clean"),
-        ("t_zho_hans_ocr_paddle", "t_zho_hans_ocr_paddle_clean"),
-        ("t_zho_hant_fuse", "t_zho_hant_fuse_clean"),
-        ("t_zho_hant_ocr_paddle", "t_zho_hant_ocr_paddle_clean"),
+        pytest.param(
+            "kob_zho_hant_ocr_fuse",
+            "kob_zho_hant_ocr_fuse_clean",
+            id="kob-zho-hant-fuse",
+        ),
+        pytest.param(
+            "mlamd_zho_hans_fuse",
+            "mlamd_zho_hans_fuse_clean",
+            id="mlamd-zho-hans-fuse",
+        ),
+        pytest.param(
+            "mnt_zho_hans_fuse",
+            "mnt_zho_hans_fuse_clean",
+            id="mnt-zho-hans-fuse",
+        ),
+        pytest.param(
+            "t_zho_hans_fuse",
+            "t_zho_hans_fuse_clean",
+            id="t-zho-hans-fuse",
+        ),
+        pytest.param(
+            "t_zho_hans_ocr_paddle",
+            "t_zho_hans_ocr_paddle_clean",
+            id="t-zho-hans-paddle",
+        ),
+        pytest.param(
+            "t_zho_hant_fuse",
+            "t_zho_hant_fuse_clean",
+            id="t-zho-hant-fuse",
+        ),
+        pytest.param(
+            "t_zho_hant_ocr_paddle",
+            "t_zho_hant_ocr_paddle_clean",
+            id="t-zho-hant-paddle",
+        ),
     ],
 )
 def test_get_zho_cleaned(

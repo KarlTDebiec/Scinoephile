@@ -28,29 +28,33 @@ from test.helpers import assert_series_equal
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture", "test_case_loader", "prompt_cls"),
     [
-        (
+        pytest.param(
             "kob_zho_hant_ocr_fuse_clean_validate",
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             get_kob_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
+            id="kob-zho-hant",
         ),
-        (
+        pytest.param(
             "t_zho_hans_fuse_clean_validate",
             "t_zho_hans_fuse_clean_validate_review",
             get_t_zho_hans_block_review_test_cases,
             BlockReviewPromptZhoHans,
+            id="t-zho-hans",
         ),
-        (
+        pytest.param(
             "t_zho_hant_fuse_clean_validate",
             "t_zho_hant_fuse_clean_validate_review",
             get_t_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
+            id="t-zho-hant",
         ),
-        (
+        pytest.param(
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             get_t_zho_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
+            id="t-zho-hant-simplify",
         ),
     ],
 )

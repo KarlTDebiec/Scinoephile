@@ -22,29 +22,33 @@ from test.helpers import assert_series_equal
 @pytest.mark.parametrize(
     ("lens_fixture", "tesseract_fixture", "expected_fixture", "test_case_loader"),
     [
-        (
+        pytest.param(
             "kob_eng_ocr_lens",
             "kob_eng_ocr_tesseract",
             "kob_eng_ocr_fuse",
             get_kob_eng_ocr_fusion_test_cases,
+            id="kob-eng",
         ),
-        (
+        pytest.param(
             "mlamd_eng_ocr_lens",
             "mlamd_eng_ocr_tesseract",
             "mlamd_eng_fuse",
             get_mlamd_eng_ocr_fusion_test_cases,
+            id="mlamd-eng",
         ),
-        (
+        pytest.param(
             "mnt_eng_ocr_lens",
             "mnt_eng_ocr_tesseract",
             "mnt_eng_fuse",
             get_mnt_eng_ocr_fusion_test_cases,
+            id="mnt-eng",
         ),
-        (
+        pytest.param(
             "t_eng_ocr_lens",
             "t_eng_ocr_tesseract",
             "t_eng_fuse",
             get_t_eng_ocr_fusion_test_cases,
+            id="t-eng",
         ),
     ],
 )

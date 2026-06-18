@@ -19,7 +19,12 @@ from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 @pytest.mark.parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
-        ("mlamd_eng_ocr_sup_path", 942, (953, 63)),
+        pytest.param(
+            "mlamd_eng_ocr_sup_path",
+            942,
+            (953, 63),
+            id="mlamd-eng-sup",
+        ),
     ],
 )
 def test_load_sup(
@@ -52,7 +57,12 @@ def test_load_sup(
 @pytest.mark.parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
-        ("mlamd_eng_image_path", 942, (953, 63)),
+        pytest.param(
+            "mlamd_eng_image_path",
+            942,
+            (953, 63),
+            id="mlamd-eng-html",
+        ),
     ],
 )
 def test_load_html(

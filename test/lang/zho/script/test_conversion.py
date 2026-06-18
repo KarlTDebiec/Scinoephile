@@ -82,13 +82,15 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        (
+        pytest.param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="kob-zho-hant",
         ),
-        (
+        pytest.param(
             "t_zho_hant_fuse_clean_validate_review_flatten",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
+            id="t-zho-hant",
         ),
     ],
 )

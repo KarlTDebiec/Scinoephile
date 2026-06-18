@@ -135,20 +135,23 @@ def test_get_stacked_series_overlap_error_includes_event_context():
 @pytest.mark.parametrize(
     ("one_fixture", "two_fixture", "expected_fixture"),
     [
-        (
+        pytest.param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hans_eng",
+            id="kob-zho-hans-eng",
         ),
-        (
+        pytest.param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             "mlamd_eng_fuse_clean_validate_review_flatten",
             "mlamd_zho_hans_eng",
+            id="mlamd-zho-hans-eng",
         ),
-        (
+        pytest.param(
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_eng_fuse_clean_validate_review_flatten",
             "t_zho_hans_eng",
+            id="t-zho-hans-eng",
         ),
     ],
 )

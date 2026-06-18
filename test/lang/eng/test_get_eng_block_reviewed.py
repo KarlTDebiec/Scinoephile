@@ -22,15 +22,17 @@ from test.helpers import assert_series_equal
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture", "test_case_loader"),
     [
-        (
+        pytest.param(
             "kob_eng_ocr_fuse_clean_validate",
             "kob_eng_ocr_fuse_clean_validate_review",
             get_kob_eng_block_review_test_cases,
+            id="kob-eng",
         ),
-        (
+        pytest.param(
             "t_eng_fuse_clean_validate",
             "t_eng_fuse_clean_validate_review",
             get_t_eng_block_review_test_cases,
+            id="t-eng",
         ),
     ],
 )

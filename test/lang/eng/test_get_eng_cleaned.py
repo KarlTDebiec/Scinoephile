@@ -43,12 +43,36 @@ def test_get_eng_text_cleaned(
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        ("kob_eng_ocr_fuse", "kob_eng_ocr_fuse_clean"),
-        ("mlamd_eng_fuse", "mlamd_eng_fuse_clean"),
-        ("mnt_eng_fuse", "mnt_eng_fuse_clean"),
-        ("t_eng_fuse", "t_eng_fuse_clean"),
-        ("t_eng_ocr_lens", "t_eng_ocr_lens_clean"),
-        ("t_eng_ocr_tesseract", "t_eng_ocr_tesseract_clean"),
+        pytest.param(
+            "kob_eng_ocr_fuse",
+            "kob_eng_ocr_fuse_clean",
+            id="kob-eng-fuse",
+        ),
+        pytest.param(
+            "mlamd_eng_fuse",
+            "mlamd_eng_fuse_clean",
+            id="mlamd-eng-fuse",
+        ),
+        pytest.param(
+            "mnt_eng_fuse",
+            "mnt_eng_fuse_clean",
+            id="mnt-eng-fuse",
+        ),
+        pytest.param(
+            "t_eng_fuse",
+            "t_eng_fuse_clean",
+            id="t-eng-fuse",
+        ),
+        pytest.param(
+            "t_eng_ocr_lens",
+            "t_eng_ocr_lens_clean",
+            id="t-eng-lens",
+        ),
+        pytest.param(
+            "t_eng_ocr_tesseract",
+            "t_eng_ocr_tesseract_clean",
+            id="t-eng-tesseract",
+        ),
     ],
 )
 def test_get_eng_cleaned(
