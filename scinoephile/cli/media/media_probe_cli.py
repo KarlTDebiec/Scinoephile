@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from dataclasses import replace
 from pathlib import Path
 
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
@@ -16,6 +17,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.media import SubtitleStream
+from scinoephile.lang.zho.subtitles.analysis import analyze_zho_subtitle_stream_script
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_streams
 
@@ -23,17 +25,23 @@ __all__ = ["MediaProbeCli"]
 
 MEDIA_PROBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "command-line interface for probing media streams": ("探测媒体流的命令行界面"),
+        "command-line interface for probing media streams": "探测媒体流的命令行界面",
         "cache directory for reusable media stream inspection data (default: "
-        "%(default)s)": ("可复用媒体流检查数据的缓存目录（默认：%(default)s）"),
+        "%(default)s)": "可复用媒体流检查数据的缓存目录（默认：%(default)s）",
+        "force Chinese script analysis for a standalone SUP infile": (
+            "对独立 SUP 输入文件强制执行中文脚本分析"
+        ),
         "list media streams in a media file": "列出媒体文件中的媒体流",
         "include additional stream details": "包含更多媒体流详细信息",
         "video infile containing media streams": "包含媒体流的视频输入文件",
     },
     "zh-hant": {
-        "command-line interface for probing media streams": ("探測媒體流的命令列介面"),
+        "command-line interface for probing media streams": "探測媒體流的命令列介面",
         "cache directory for reusable media stream inspection data (default: "
-        "%(default)s)": ("可重用媒體流檢查資料的快取目錄（預設：%(default)s）"),
+        "%(default)s)": "可重用媒體流檢查資料的快取目錄（預設：%(default)s）",
+        "force Chinese script analysis for a standalone SUP infile": (
+            "對獨立 SUP 輸入檔強制執行中文腳本分析"
+        ),
         "list media streams in a media file": "列出媒體檔中的媒體流",
         "include additional stream details": "包含更多媒體流詳細資訊",
         "video infile containing media streams": "包含媒體流的影片輸入檔",
@@ -78,6 +86,11 @@ class MediaProbeCli(ScinoephileCliBase):
             action="store_true",
             help="include additional stream details",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--force-check-script",
+            action="store_true",
+            help="force Chinese script analysis for a standalone SUP infile",
+        )
         add_cache_dir_arg(
             arg_groups["operation arguments"],
             "media",
@@ -105,15 +118,36 @@ class MediaProbeCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         infile_path: Path,
         details: bool,
+        force_check_script: bool,
         cache_dir_path: Path,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
+        if force_check_script and infile_path.suffix.lower() != ".sup":
+            parser.error("--force-check-script requires a SUP infile")
 
         # Perform operations
         try:
-            if details:
+            if force_check_script:
+                stream = SubtitleStream(
+                    index=0,
+                    codec_type="subtitle",
+                    codec_name="hdmv_pgs_subtitle",
+                    language="zho",
+                )
+                analysis = analyze_zho_subtitle_stream_script(
+                    infile_path,
+                    stream,
+                    cache_dir_path=cache_dir_path,
+                )
+                language = "zho-Unknown"
+                if analysis.script is not None:
+                    language = analysis.script
+                streams = [
+                    replace(stream, language=language),
+                ]
+            elif details:
                 streams = get_streams(infile_path)
                 detailed_subtitle_streams = get_zho_subtitle_streams(
                     infile_path,
