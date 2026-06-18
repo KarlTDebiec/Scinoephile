@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import asyncio
-import subprocess
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -15,6 +14,7 @@ from typing import Any, cast
 import pytest
 from PIL import Image
 
+from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
 from scinoephile.image.ocr.lens.lens_recognizer import LensRecognizer
 
@@ -471,7 +471,7 @@ def test_lens_recognizer_import_error_is_actionable(
 
 def test_lens_recognizer_imports_chrome_lens_py_only_when_needed():
     """Test importing Google Lens OCR does not import chrome-lens-py."""
-    result = subprocess.run(
+    exitcode, _, _ = run_command(
         [
             sys.executable,
             "-c",
@@ -481,12 +481,9 @@ def test_lens_recognizer_imports_chrome_lens_py_only_when_needed():
                 "raise SystemExit('chrome_lens_py' in sys.modules)"
             ),
         ],
-        check=False,
-        capture_output=True,
-        text=True,
     )
 
-    assert result.returncode == 0, result.stderr
+    assert exitcode == 0
 
 
 def test_lens_recognizer_reuses_lens_api_client_per_instance(

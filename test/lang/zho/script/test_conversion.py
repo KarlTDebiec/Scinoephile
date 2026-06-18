@@ -92,7 +92,7 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
         ),
     ],
 )
-def test_get_zho_converted_series(
+def test_get_zho_converted(
     request: pytest.FixtureRequest,
     series_fixture: str,
     expected_fixture: str,

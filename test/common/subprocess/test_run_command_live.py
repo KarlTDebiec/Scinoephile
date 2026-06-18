@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+import os
 import sys
+from pathlib import Path
 from subprocess import TimeoutExpired
 from time import monotonic
 
@@ -64,6 +66,45 @@ def test_run_command_live_failure_custom_acceptable():
     )
 
     assert exitcode == 42
+
+
+def test_run_command_live_with_cwd_path(tmp_path: Path):
+    """Test running a live command with a working directory.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    exitcode, stdout, stderr = run_command_live(
+        [
+            sys.executable,
+            "-c",
+            "from pathlib import Path; print(Path.cwd())",
+        ],
+        cwd_path=tmp_path,
+    )
+
+    assert exitcode == 0
+    assert stdout.strip() == str(tmp_path)
+    assert stderr == ""
+
+
+def test_run_command_live_with_env():
+    """Test running a live command with environment variables."""
+    env = os.environ.copy()
+    env["SCINOEPHILE_TEST_RUN_COMMAND_LIVE_ENV"] = "expected"
+
+    exitcode, stdout, stderr = run_command_live(
+        [
+            sys.executable,
+            "-c",
+            "import os; print(os.environ['SCINOEPHILE_TEST_RUN_COMMAND_LIVE_ENV'])",
+        ],
+        env=env,
+    )
+
+    assert exitcode == 0
+    assert stdout.strip() == "expected"
+    assert stderr == ""
 
 
 def test_run_command_live_timeout():

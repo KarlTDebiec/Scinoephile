@@ -6,52 +6,38 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.lang.eng.cleaning import _get_english_text_cleaned, get_eng_cleaned
+from scinoephile.lang.eng.cleaning import get_eng_cleaned, get_eng_text_cleaned
 from test.helpers import assert_series_equal
-
-# noinspection PyProtectedMember
-
-
-def test_get_english_text_cleaned_removes_ass_dash_only_line():
-    """Test ASS multiline dash-only line removal."""
-    assert _get_english_text_cleaned("hello\\N-\\Nworld") == "hello\\Nworld"
-
-
-def test_get_english_text_cleaned_removes_eia_608_markup():
-    """Test EIA-608 extraction markup is removed from English text."""
-    text = '<font face="Monospace">{\\an7}WOODY:\xa0Look out!</font>'
-
-    assert _get_english_text_cleaned(text) == "WOODY: Look out!"
-
-
-def test_get_english_text_cleaned_normalizes_fullwidth_alphanumerics():
-    """Test fullwidth letters and digits are normalized in English text."""
-    fullwidth_text = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
-    fullwidth_text = f"{fullwidth_text} ａｂｃｄｅｆｇｈｉｊｋｌｍ"
-    fullwidth_text = f"{fullwidth_text}ｎｏｐｑｒｓｔｕｖｗｘｙｚ ０１２３４５６７８９"
-
-    assert _get_english_text_cleaned(fullwidth_text) == (
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789"
-    )
 
 
 @pytest.mark.parametrize(
     ("text", "expected"),
     [
+        ("hello\\N-\\Nworld", "hello\\Nworld"),
+        (
+            '<font face="Monospace">{\\an7}WOODY:\xa0Look out!</font>',
+            "WOODY: Look out!",
+        ),
+        (
+            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
+            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
+            "０１２３４５６７８９",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
+        ),
         ("ΟΚ, οκ.", "OK, ok."),
     ],
 )
-def test_get_english_text_cleaned_normalizes_greek_ocr_confusables(
+def test_get_eng_text_cleaned(
     text: str,
     expected: str,
 ):
-    """Test Greek OCR confusables are normalized in English text.
+    """Test get_eng_text_cleaned.
 
     Arguments:
         text: text to clean
         expected: expected cleaned text
     """
-    assert _get_english_text_cleaned(text) == expected
+    assert get_eng_text_cleaned(text) == expected
 
 
 @pytest.mark.parametrize(

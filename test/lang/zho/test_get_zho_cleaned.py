@@ -6,26 +6,30 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.lang.zho.cleaning import _get_zho_text_cleaned, get_zho_cleaned
+from scinoephile.lang.zho.cleaning import get_zho_cleaned, get_zho_text_cleaned
 from test.helpers import assert_series_equal
 
 
-def test_get_zho_text_cleaned_removes_subtitle_markup():
-    """Test subtitle extraction markup is removed from standard Chinese text."""
-    text = '<font face="Monospace">{\\an7}中文\xa0測試</font>'
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ('<font face="Monospace">{\\an7}中文\xa0測試</font>', "中文 測試"),
+        (
+            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
+            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
+            "０１２３４５６７８９",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
+        ),
+    ],
+)
+def test_get_zho_text_cleaned(text: str, expected: str):
+    """Test get_zho_text_cleaned.
 
-    assert _get_zho_text_cleaned(text) == "中文 測試"
-
-
-def test_get_zho_text_cleaned_normalizes_fullwidth_alphanumerics():
-    """Test fullwidth letters and digits are normalized in Chinese text."""
-    fullwidth_text = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
-    fullwidth_text = f"{fullwidth_text} ａｂｃｄｅｆｇｈｉｊｋｌｍ"
-    fullwidth_text = f"{fullwidth_text}ｎｏｐｑｒｓｔｕｖｗｘｙｚ ０１２３４５６７８９"
-
-    assert _get_zho_text_cleaned(fullwidth_text) == (
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789"
-    )
+    Arguments:
+        text: text to clean
+        expected: expected cleaned text
+    """
+    assert get_zho_text_cleaned(text) == expected
 
 
 @pytest.mark.parametrize(
