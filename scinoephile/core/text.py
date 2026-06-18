@@ -272,6 +272,8 @@ def get_char_type(char: str) -> str:
             "\U00030000" <= char <= "\U0003134a",  # CJK Unified Ideographs Ext G
             "\U00031350" <= char <= "\U000323af",  # CJK Unified Ideographs Ext H
             "\u3000" <= char <= "\u303f",  # CJK Symbols and Punctuation
+            "\uff01" <= char <= "\uff60",  # Fullwidth ASCII variants
+            "\uffe0" <= char <= "\uffe6",  # Fullwidth symbol variants
         ]
     ):
         return "full"

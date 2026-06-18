@@ -406,6 +406,31 @@ def test_known_adjacent_gap_mismatch_updates_text_without_concern(
     assert "臭和" in (html_dir_path / "index.html").read_text(encoding="utf-8")
 
 
+def test_fullwidth_latin_gap_uses_default_cutoffs(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test fullwidth Latin characters use default full-width gap cutoffs."""
+    html_dir_path = make_ocr_html_dir(tmp_path, text="你Ｋ")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(18, 28, 0, 20)],
+    )
+    session = OcrValidationSession.from_dir_path(
+        html_dir_path,
+        cache_dir_path=tmp_path / "cache",
+    )
+    clear_validation_data(session)
+    session.manager.char_dims_by_n[1]["你"] = {(10, 20)}
+    session.manager.char_dims_by_n[1]["Ｋ"] = {(10, 20)}
+
+    row = session.subtitle_row(0)
+
+    assert row.status == ValidationStatus.DONE
+    assert row.concern is None
+    assert session.manager.char_pair_gaps[("你", "Ｋ")] == (22, 89, 90, 200)
+
+
 def test_adjacent_gap_choice_updates_cutoff(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

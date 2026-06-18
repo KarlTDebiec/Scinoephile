@@ -554,6 +554,8 @@ class ValidationManager:
             return
         if cutoffs == get_default_char_pair_cutoffs(*char_pair):
             self.char_pair_gaps[char_pair] = cutoffs
+            if previous_cutoffs is None:
+                return
             if self.dev:
                 output_char_pair_gaps = self.char_pair_gaps
             elif char_pair in self.cache_char_pair_gaps:

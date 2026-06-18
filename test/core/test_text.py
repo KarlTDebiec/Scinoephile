@@ -16,6 +16,12 @@ def test_get_char_type_handles_unnamed_control_char() -> None:
         get_char_type("\x00")
 
 
+@pytest.mark.parametrize("char", ["Ｋ", "Ａ", "１", "ｋ"])
+def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
+    """Fullwidth Latin forms are classified as full-width characters."""
+    assert get_char_type(char) == "full"
+
+
 def test_sanitize_text_replaces_control_chars() -> None:
     """Control characters that are not text whitespace are replaced."""
     assert sanitize_text("好呀！\x00\x00你") == "好呀！  你"
