@@ -673,15 +673,14 @@
   },
   {
     "query": {
-      "lens": "- I'll spank you.\nGood girl.",
+      "lens": "- I'll spank you.\nGood girl.\n-",
       "tesseract": "- l'll spank you.\n- Good girl."
     },
     "answer": {
       "output": "- I'll spank you.\n- Good girl.",
-      "note": "Used Google Lens text and kept Tesseract's dialogue line break with hyphen on the second line."
+      "note": "Used Google Lens text for 'I'll' and Tesseract line breaks/dialogue dash for the second line."
     },
-    "difficulty": 2,
-    "verified": true
+    "difficulty": 2
   },
   {
     "query": {
