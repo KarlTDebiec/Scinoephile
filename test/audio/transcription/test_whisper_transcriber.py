@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import builtins
 import os
-import subprocess
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -19,6 +18,7 @@ from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
+from scinoephile.common.subprocess import run_command
 
 _OPTIONAL_TRANSCRIPTION_MODULES = (
     "demucs_infer",
@@ -132,16 +132,13 @@ def test_transcription_imports_without_optional_runtime_dependencies():
     env["PYTHONPATH"] = os.pathsep.join(
         [str(_REPO_ROOT_PATH), env.get("PYTHONPATH", "")]
     )
-    result = subprocess.run(
+    exitcode, _, _ = run_command(
         [sys.executable, "-c", script],
-        cwd=_REPO_ROOT_PATH,
+        cwd_path=_REPO_ROOT_PATH,
         env=env,
-        check=False,
-        capture_output=True,
-        text=True,
     )
 
-    assert result.returncode == 0, result.stderr
+    assert exitcode == 0
 
 
 def test_whisper_module_requires_transcription_extra(monkeypatch: pytest.MonkeyPatch):

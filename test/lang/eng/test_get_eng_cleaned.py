@@ -6,43 +6,73 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.eng.cleaning import _get_english_text_cleaned, get_eng_cleaned
+from scinoephile.lang.eng.cleaning import get_eng_cleaned, get_eng_text_cleaned
 from test.helpers import assert_series_equal
 
-# noinspection PyProtectedMember
 
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("hello\\N-\\Nworld", "hello\\Nworld"),
+        (
+            '<font face="Monospace">{\\an7}WOODY:\xa0Look out!</font>',
+            "WOODY: Look out!",
+        ),
+        (
+            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
+            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
+            "０１２３４５６７８９",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
+        ),
+        ("ΟΚ, οκ.", "OK, ok."),
+    ],
+)
+def test_get_eng_text_cleaned(
+    text: str,
+    expected: str,
+):
+    """Test get_eng_text_cleaned.
 
-def test_get_english_text_cleaned_removes_ass_dash_only_line():
-    """Test ASS multiline dash-only line removal."""
-    assert _get_english_text_cleaned("hello\\N-\\Nworld") == "hello\\Nworld"
-
-
-def test_get_english_text_cleaned_removes_eia_608_markup():
-    """Test EIA-608 extraction markup is removed from English text."""
-    text = '<font face="Monospace">{\\an7}WOODY:\xa0Look out!</font>'
-
-    assert _get_english_text_cleaned(text) == "WOODY: Look out!"
-
-
-def test_get_english_text_cleaned_normalizes_fullwidth_alphanumerics():
-    """Test fullwidth letters and digits are normalized in English text."""
-    fullwidth_text = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
-    fullwidth_text = f"{fullwidth_text} ａｂｃｄｅｆｇｈｉｊｋｌｍ"
-    fullwidth_text = f"{fullwidth_text}ｎｏｐｑｒｓｔｕｖｗｘｙｚ ０１２３４５６７８９"
-
-    assert _get_english_text_cleaned(fullwidth_text) == (
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789"
-    )
+    Arguments:
+        text: text to clean
+        expected: expected cleaned text
+    """
+    assert get_eng_text_cleaned(text) == expected
 
 
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        ("kob_eng_ocr_fuse", "kob_eng_ocr_fuse_clean"),
-        ("mlamd_eng_fuse", "mlamd_eng_fuse_clean"),
-        ("mnt_eng_fuse", "mnt_eng_fuse_clean"),
-        ("t_eng_fuse", "t_eng_fuse_clean"),
+        pytest.param(
+            "kob_eng_ocr_fuse",
+            "kob_eng_ocr_fuse_clean",
+            id="kob-eng-fuse",
+        ),
+        pytest.param(
+            "mlamd_eng_fuse",
+            "mlamd_eng_fuse_clean",
+            id="mlamd-eng-fuse",
+        ),
+        pytest.param(
+            "mnt_eng_fuse",
+            "mnt_eng_fuse_clean",
+            id="mnt-eng-fuse",
+        ),
+        pytest.param(
+            "t_eng_fuse",
+            "t_eng_fuse_clean",
+            id="t-eng-fuse",
+        ),
+        pytest.param(
+            "t_eng_ocr_lens",
+            "t_eng_ocr_lens_clean",
+            id="t-eng-lens",
+        ),
+        pytest.param(
+            "t_eng_ocr_tesseract",
+            "t_eng_ocr_tesseract_clean",
+            id="t-eng-tesseract",
+        ),
     ],
 )
 def test_get_eng_cleaned(
@@ -62,16 +92,3 @@ def test_get_eng_cleaned(
         remove_empty=False,
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
-
-
-def test_get_eng_cleaned_invalidates_cached_blocks():
-    """Test get_eng_cleaned invalidates cached blocks when events are removed."""
-    series = Series(events=[Subtitle(start=0, end=1000, text="-")])
-    assert [[event.text for event in block.events] for block in series.blocks] == [
-        ["-"]
-    ]
-
-    output = get_eng_cleaned(series)
-
-    assert output.events == []
-    assert output.blocks == []

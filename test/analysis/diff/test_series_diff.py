@@ -164,33 +164,37 @@ def test_series_diff_keeps_uncovered_insert_separate():
         "expected_fixture_name",
     ),
     [
-        (
+        pytest.param(
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
             "kob_eng_timewarp_clean_review_flatten",
             "OCR",
             "SRT",
             "kob_eng_expected_series_diff",
+            id="kob-eng-ocr-vs-srt",
         ),
-        (
+        pytest.param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             "SIMP",
             "TRAD",
             "mlamd_zho_simplify_expected_series_diff",
+            id="mlamd-zho-simplify",
         ),
-        (
+        pytest.param(
             "mnt_zho_hans_fuse_clean_validate_review_flatten",
             "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             "SIMP",
             "TRAD",
             "mnt_zho_simplify_expected_series_diff",
+            id="mnt-zho-simplify",
         ),
-        (
+        pytest.param(
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             "SIMP",
             "TRAD",
             "t_zho_simplify_expected_series_diff",
+            id="t-zho-simplify",
         ),
     ],
 )

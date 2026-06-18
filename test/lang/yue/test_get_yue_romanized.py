@@ -16,9 +16,10 @@ from test.helpers import assert_series_equal
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        (
+        pytest.param(
             "kob_yue_hans_timewarp_clean_flatten",
             "kob_yue_hans_timewarp_clean_flatten_romanize",
+            id="kob-yue-hans",
         ),
     ],
 )

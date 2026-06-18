@@ -6,35 +6,70 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.lang.zho.cleaning import _get_zho_text_cleaned, get_zho_cleaned
+from scinoephile.lang.zho.cleaning import get_zho_cleaned, get_zho_text_cleaned
 from test.helpers import assert_series_equal
 
 
-def test_get_zho_text_cleaned_removes_subtitle_markup():
-    """Test subtitle extraction markup is removed from standard Chinese text."""
-    text = '<font face="Monospace">{\\an7}中文\xa0測試</font>'
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ('<font face="Monospace">{\\an7}中文\xa0測試</font>', "中文 測試"),
+        (
+            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
+            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
+            "０１２３４５６７８９",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
+        ),
+    ],
+)
+def test_get_zho_text_cleaned(text: str, expected: str):
+    """Test get_zho_text_cleaned.
 
-    assert _get_zho_text_cleaned(text) == "中文 測試"
-
-
-def test_get_zho_text_cleaned_normalizes_fullwidth_alphanumerics():
-    """Test fullwidth letters and digits are normalized in Chinese text."""
-    fullwidth_text = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
-    fullwidth_text = f"{fullwidth_text} ａｂｃｄｅｆｇｈｉｊｋｌｍ"
-    fullwidth_text = f"{fullwidth_text}ｎｏｐｑｒｓｔｕｖｗｘｙｚ ０１２３４５６７８９"
-
-    assert _get_zho_text_cleaned(fullwidth_text) == (
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789"
-    )
+    Arguments:
+        text: text to clean
+        expected: expected cleaned text
+    """
+    assert get_zho_text_cleaned(text) == expected
 
 
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        ("kob_zho_hant_ocr_fuse", "kob_zho_hant_ocr_fuse_clean"),
-        ("mlamd_zho_hans_fuse", "mlamd_zho_hans_fuse_clean"),
-        ("mnt_zho_hans_fuse", "mnt_zho_hans_fuse_clean"),
-        ("t_zho_hans_fuse", "t_zho_hans_fuse_clean"),
+        pytest.param(
+            "kob_zho_hant_ocr_fuse",
+            "kob_zho_hant_ocr_fuse_clean",
+            id="kob-zho-hant-fuse",
+        ),
+        pytest.param(
+            "mlamd_zho_hans_fuse",
+            "mlamd_zho_hans_fuse_clean",
+            id="mlamd-zho-hans-fuse",
+        ),
+        pytest.param(
+            "mnt_zho_hans_fuse",
+            "mnt_zho_hans_fuse_clean",
+            id="mnt-zho-hans-fuse",
+        ),
+        pytest.param(
+            "t_zho_hans_fuse",
+            "t_zho_hans_fuse_clean",
+            id="t-zho-hans-fuse",
+        ),
+        pytest.param(
+            "t_zho_hans_ocr_paddle",
+            "t_zho_hans_ocr_paddle_clean",
+            id="t-zho-hans-paddle",
+        ),
+        pytest.param(
+            "t_zho_hant_fuse",
+            "t_zho_hant_fuse_clean",
+            id="t-zho-hant-fuse",
+        ),
+        pytest.param(
+            "t_zho_hant_ocr_paddle",
+            "t_zho_hant_ocr_paddle_clean",
+            id="t-zho-hant-paddle",
+        ),
     ],
 )
 def test_get_zho_cleaned(

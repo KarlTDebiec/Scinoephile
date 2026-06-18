@@ -7,11 +7,12 @@ from __future__ import annotations
 import json
 import os
 import shutil
-import subprocess
 import sys
 from pathlib import Path
 
 import pytest
+
+from scinoephile.common.subprocess import run_command
 
 
 def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
@@ -43,7 +44,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     command_env = os.environ.copy()
     command_env["UV_CACHE_DIR"] = command_env.get("UV_CACHE_DIR", "/tmp/uv-cache")
 
-    _run_required_command(
+    run_command(
         [
             uv_path,
             "build",
@@ -56,7 +57,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     )
     wheel_path = _get_single_wheel_path(wheel_dir_path)
 
-    _run_required_command(
+    run_command(
         [
             uv_path,
             "pip",
@@ -74,7 +75,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     smoke_env["EXPECTED_DATA_FILES"] = json.dumps(expected_data_file_paths)
     smoke_env["EXPECTED_PACKAGE_FILES"] = json.dumps(expected_package_file_paths)
     smoke_env["PYTHONPATH"] = str(install_dir_path)
-    result = subprocess.run(
+    exitcode, _, _ = run_command(
         [
             sys.executable,
             "-c",
@@ -108,14 +109,11 @@ if missing_package_file_paths:
     )
 """,
         ],
-        cwd=tmp_path,
         env=smoke_env,
-        text=True,
-        capture_output=True,
-        check=False,
+        cwd_path=tmp_path,
     )
 
-    assert result.returncode == 0, result.stderr
+    assert exitcode == 0
 
 
 def _copy_build_source(project_root_path: Path, output_dir_path: Path) -> Path:
@@ -161,33 +159,3 @@ def _get_single_wheel_path(wheel_dir_path: Path) -> Path:
             f"{wheel_dir_path}, found {len(wheel_paths)}: {found_file_names}"
         )
     return wheel_paths[0]
-
-
-def _run_required_command(
-    args: list[str],
-    *,
-    cwd_path: Path,
-    env: dict[str, str],
-) -> subprocess.CompletedProcess[str]:
-    """Run a required subprocess command.
-
-    Arguments:
-        args: command and arguments to run
-        cwd_path: working directory
-        env: environment variables
-    Returns:
-        completed subprocess result
-    """
-    result = subprocess.run(
-        args,
-        cwd=cwd_path,
-        env=env,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    if result.returncode != 0:
-        pytest.fail(
-            f"Command failed: {' '.join(args)}\n{result.stdout}\n{result.stderr}"
-        )
-    return result

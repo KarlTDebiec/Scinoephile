@@ -109,7 +109,7 @@ is the “Most Wanted” Yip Kwok-foon.
 
 26
 00:03:58,167 --> 00:04:02,333
-Bro foon, you're unbeatable!
+Bro Foon, you're unbeatable!
 
 27
 00:04:02,875 --> 00:04:04,958
@@ -169,7 +169,7 @@ The cops are on the prowl!
 
 41
 00:04:42,417 --> 00:04:45,333
-Especially for your swag, Bro foon!
+Especially for your swag, Bro Foon!
 
 42
 00:04:45,333 --> 00:04:49,000
@@ -177,7 +177,7 @@ It took us 2 years to fence it last time!
 
 43
 00:04:49,208 --> 00:04:52,417
-Stocks, real estate,
+stocks, real estate,
 and even chestnuts are more profitable!
 
 44
@@ -190,7 +190,7 @@ Do me a favor.
 
 46
 00:05:00,875 --> 00:05:04,625
-Bro foon, you always have your way!
+Bro Foon, you always have your way!
 
 47
 00:05:09,583 --> 00:05:11,792
@@ -218,7 +218,7 @@ Don't make me do it.
 
 53
 00:05:58,667 --> 00:06:00,708
-Thanks so much, Bro foon.
+Thanks so much, Bro Foon.
 
 54
 00:06:02,333 --> 00:06:04,792
@@ -234,7 +234,7 @@ We go separate ways!
 
 57
 00:06:45,667 --> 00:06:47,875
-Light, Bro foon.
+Light, Bro Foon.
 
 58
 00:07:17,042 --> 00:07:18,375
@@ -533,7 +533,7 @@ Is that a crime?
 
 131
 00:12:59,250 --> 00:13:01,708
-Mr Ho, tell us if he's threatening you.
+Mr Ho, tell us if he’s threatening you.
 
 132
 00:13:01,708 --> 00:13:03,000
@@ -541,7 +541,7 @@ We can arrest him right away!
 
 133
 00:13:03,417 --> 00:13:04,167
-No, he's not.
+No, he’s not.
 
 134
 00:13:04,167 --> 00:13:06,250
@@ -847,7 +847,7 @@ Let me order.
 
 209
 00:18:15,292 --> 00:18:18,042
-Shall we have a seafood platter?
+shall we have a seafood platter?
 
 210
 00:18:18,458 --> 00:18:19,875
@@ -928,11 +928,11 @@ Your rice is coming right away.
 
 229
 00:19:11,083 --> 00:19:13,000
-Sometimes he would send his driver away.
+sometimes he would send his driver away.
 
 230
 00:19:13,000 --> 00:19:15,125
-Sorry to keep you waiting.
+sorry to keep you waiting.
 
 231
 00:19:15,125 --> 00:19:16,333
@@ -980,7 +980,7 @@ Give me a second.
 
 241
 00:19:34,625 --> 00:19:35,542
-Sure, I'll get you tea.
+sure, I'll get you tea.
 
 242
 00:19:35,542 --> 00:19:38,042
@@ -1409,7 +1409,7 @@ Don't let her drink it.
 
 347
 00:26:04,875 --> 00:26:07,292
-She was coughing.
+she was coughing.
 I don't wanna spend money on meds.
 
 348
@@ -1450,15 +1450,15 @@ Bro Coke, dig in.
 
 357
 00:26:39,167 --> 00:26:40,250
-She's not eating with us?
+she's not eating with us?
 
 358
 00:26:40,250 --> 00:26:42,167
-She has to work night shift.
+she has to work night shift.
 
 359
 00:26:45,250 --> 00:26:47,167
-She's a legit masseuse.
+she's a legit masseuse.
 
 360
 00:26:48,375 --> 00:26:49,917
@@ -1474,7 +1474,7 @@ You seldom eat veggies.
 
 363
 00:26:55,875 --> 00:26:57,750
-Shall we go to Ocean Park?
+shall we go to Ocean Park?
 
 364
 00:27:00,458 --> 00:27:02,208
@@ -1494,7 +1494,7 @@ Stop making noise, or the landlady will be nasty.
 
 368
 00:27:20,583 --> 00:27:22,833
-She's nasty because you haven't paid the rent.
+she's nasty because you haven't paid the rent.
 
 369
 00:27:22,833 --> 00:27:24,333
@@ -1781,7 +1781,7 @@ Da-bao Electronics
 
 439
 00:31:15,792 --> 00:31:17,625
-She is greedy.
+she is greedy.
 
 440
 00:31:18,375 --> 00:31:20,167
@@ -1814,7 +1814,7 @@ What's wrong?
 
 447
 00:31:35,042 --> 00:31:36,042
-Something wrong with the goods?
+something wrong with the goods?
 
 448
 00:31:36,042 --> 00:31:38,042
@@ -1926,11 +1926,11 @@ What 3 Kings of Thieves?
 
 474
 00:33:07,500 --> 00:33:08,875
-Say it!
+say it!
 
 475
 00:33:09,875 --> 00:33:13,583
-Bro foon, are you making a comeback?
+Bro Foon, are you making a comeback?
 
 476
 00:33:13,583 --> 00:33:16,125
@@ -1943,7 +1943,7 @@ The 3 Kings of Thieves are collaborating?
 
 478
 00:33:21,625 --> 00:33:24,000
-Someone has seen you three meeting in China.
+someone has seen you three meeting in China.
 
 479
 00:33:25,458 --> 00:33:27,083
@@ -1993,7 +1993,7 @@ We are so different. How can it work?
 
 490
 00:33:51,542 --> 00:33:53,625
-Smuggle more goods with me.
+smuggle more goods with me.
 
 491
 00:33:53,625 --> 00:33:55,458
@@ -3182,7 +3182,7 @@ What happened?
 
 784
 00:55:19,875 --> 00:55:21,500
-She's naughty.
+she's naughty.
 
 785
 00:55:21,500 --> 00:55:23,625
@@ -3311,11 +3311,11 @@ Who do you think you are?
 
 816
 00:57:43,000 --> 00:57:44,750
-A pet it bourgeois!
+A petit bourgeois!
 
 817
 00:57:45,500 --> 00:57:49,917
-A greedy, smuggling, tax-evading pet it bourgeois!
+A greedy, smuggling, tax-evading petit bourgeois!
 
 818
 00:57:50,750 --> 00:57:53,000
@@ -3399,7 +3399,7 @@ What happened?
 
 838
 00:59:40,375 --> 00:59:42,833
-Bro foon, Cheuk has gone mad!
+Bro Foon, Cheuk has gone mad!
 
 839
 00:59:42,833 --> 00:59:45,917
@@ -3598,7 +3598,7 @@ you richer than any kings.
 
 887
 01:02:06,500 --> 01:02:08,000
-See if you can win.
+see if you can win.
 
 888
 01:02:08,000 --> 01:02:12,708
@@ -3768,7 +3768,7 @@ Fisherman!
 
 929
 01:07:49,208 --> 01:07:50,583
-Yes, Bro foon.
+Yes, Bro Foon.
 
 930
 01:07:52,875 --> 01:07:54,667
@@ -3776,7 +3776,7 @@ Give me Cheuk's number.
 
 931
 01:07:55,917 --> 01:07:57,167
-Bro foon.
+Bro Foon.
 
 932
 01:07:57,167 --> 01:07:58,833
@@ -3868,7 +3868,7 @@ Share it.
 
 954
 01:09:47,917 --> 01:09:49,625
-Seriously, we can make it work.
+seriously, we can make it work.
 
 955
 01:09:49,625 --> 01:09:51,208
@@ -3984,7 +3984,7 @@ Guangdong province
 
 983
 01:13:45,833 --> 01:13:49,917
-Sai Wan Container Terminal, Hong Kong
+sai Wan Container Terminal, Hong Kong
 
 984
 01:14:56,208 --> 01:14:57,333
@@ -4493,7 +4493,7 @@ What are you fighting for?
 
 1109
 01:23:03,500 --> 01:23:06,667
-Sorry, we're tourists.
+sorry, we're tourists.
 
 1110
 01:23:06,667 --> 01:23:10,458
@@ -4656,7 +4656,7 @@ Waiter.
 
 1149
 01:31:28,000 --> 01:31:29,875
-Sir, have you reserved a table?
+sir, have you reserved a table?
 
 1150
 01:31:29,875 --> 01:31:31,417
@@ -4692,7 +4692,7 @@ Your rice is coming right away.
 
 1158
 01:31:47,250 --> 01:31:49,167
-Sorry to keep you waiting.
+sorry to keep you waiting.
 
 1159
 01:31:49,167 --> 01:31:50,375

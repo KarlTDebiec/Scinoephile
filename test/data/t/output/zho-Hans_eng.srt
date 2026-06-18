@@ -141,12 +141,12 @@ is the “Most Wanted” Yip Kwok-foon.
 29
 00:03:58,167 --> 00:04:00,250
 一夫当关，万夫莫敌！
-Bro foon, you're unbeatable!
+Bro Foon, you're unbeatable!
 
 30
 00:04:00,250 --> 00:04:02,333
 真是威风！欢哥！
-Bro foon, you're unbeatable!
+Bro Foon, you're unbeatable!
 
 31
 00:04:02,875 --> 00:04:04,958
@@ -676,7 +676,7 @@ Is that a crime?
 136
 00:12:59,250 --> 00:13:01,708
 何先生，如果有人威胁你，你说一句
-Mr Ho, tell us if he's threatening you.
+Mr Ho, tell us if he’s threatening you.
 
 137
 00:13:01,708 --> 00:13:03,000
@@ -686,7 +686,7 @@ We can arrest him right away!
 138
 00:13:03,417 --> 00:13:04,167
 没有
-No, he's not.
+No, he’s not.
 
 139
 00:13:04,167 --> 00:13:06,250

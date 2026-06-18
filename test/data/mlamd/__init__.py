@@ -16,7 +16,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
@@ -95,6 +95,7 @@ __all__ = [
     "mlamd_zho_hans_fuse_clean_validate",
     "mlamd_zho_hans_fuse_clean_validate_review",
     "mlamd_zho_hans_fuse_clean_validate_review_flatten",
+    "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
     "mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize",
     "mlamd_zho_hans_image",
     "mlamd_zho_hans_image_path",
@@ -556,6 +557,17 @@ def mlamd_zho_hans_fuse_clean_validate_review_flatten() -> Series:
     """MLAMD 简体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
+    )
+
+
+@pytest.fixture
+def mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539(
+    mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
+) -> Series:
+    """MLAMD 简体中文 flattened subtitles with subtitle 539 merged."""
+    return get_series_with_subs_merged(
+        mlamd_zho_hans_fuse_clean_validate_review_flatten,
+        539,
     )
 
 

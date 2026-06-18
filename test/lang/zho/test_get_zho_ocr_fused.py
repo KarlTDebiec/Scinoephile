@@ -4,30 +4,50 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from unittest.mock import Mock
 
 import pytest
 
-from scinoephile.core.llms import LLMProvider
+from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.ocr_fusion import (
+    OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
+from test.data.kob import get_kob_zho_hant_ocr_fusion_test_cases
+from test.data.mlamd import get_mlamd_zho_hans_ocr_fusion_test_cases
+from test.data.mnt import get_mnt_zho_hans_ocr_fusion_test_cases
+from test.data.t import get_t_zho_hans_ocr_fusion_test_cases
 from test.helpers import assert_series_equal
 
 
-def test_get_zho_ocr_fused_treats_newline_forms_as_identical():
+@pytest.mark.parametrize(
+    ("lens_text", "paddle_text", "expected_text"),
+    [
+        pytest.param(
+            "嗯达摩\n达摩祖师果然厉害",
+            "嗯达摩\\N达摩祖师果然厉害",
+            "嗯达摩\n达摩祖师果然厉害",
+            id="newline-form",
+        ),
+    ],
+)
+def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
+    lens_text: str,
+    paddle_text: str,
+    expected_text: str,
+):
     """Test OCR fusion skips queries when texts only differ by newline form."""
     lens = Series(
         [
             Subtitle(
                 start=0,
                 end=1000,
-                text="嗯达摩\n达摩祖师果然厉害",
+                text=lens_text,
             )
         ]
     )
@@ -36,16 +56,16 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical():
             Subtitle(
                 start=0,
                 end=1000,
-                text="嗯达摩\\N达摩祖师果然厉害",
+                text=paddle_text,
             )
         ]
     )
     provider = Mock(spec=LLMProvider)
-    processor = get_zho_ocr_fuser(provider=provider)
+    processor = get_zho_ocr_fuser(test_cases=[], provider=provider)
 
     output = get_zho_ocr_fused(lens, paddle, processor=processor)
 
-    assert output.events[0].text == "嗯达摩\n达摩祖师果然厉害"
+    assert output.events[0].text == expected_text
     provider.chat_completion.assert_not_called()
 
 
@@ -54,37 +74,41 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical():
         "lens_fixture",
         "paddle_fixture",
         "expected_fixture",
-        "convert",
-        "use_traditional_prompt",
+        "prompt_cls",
+        "test_case_loader",
     ),
     [
-        (
+        pytest.param(
             "kob_zho_hant_ocr_lens",
             "kob_zho_hant_ocr_paddle",
             "kob_zho_hant_ocr_fuse",
-            OpenCCConfig.s2t,
-            True,
+            OcrFusionPromptZhoHant,
+            get_kob_zho_hant_ocr_fusion_test_cases,
+            id="kob-zho-hant",
         ),
-        (
+        pytest.param(
             "mlamd_zho_hans_ocr_lens",
             "mlamd_zho_hans_ocr_paddle",
             "mlamd_zho_hans_fuse",
-            None,
-            False,
+            OcrFusionPromptZhoHans,
+            get_mlamd_zho_hans_ocr_fusion_test_cases,
+            id="mlamd-zho-hans",
         ),
-        (
+        pytest.param(
             "mnt_zho_hans_ocr_lens",
             "mnt_zho_hans_ocr_paddle",
             "mnt_zho_hans_fuse",
-            None,
-            False,
+            OcrFusionPromptZhoHans,
+            get_mnt_zho_hans_ocr_fusion_test_cases,
+            id="mnt-zho-hans",
         ),
-        (
+        pytest.param(
             "t_zho_hans_ocr_lens",
             "t_zho_hans_ocr_paddle",
             "t_zho_hans_fuse",
-            None,
-            False,
+            OcrFusionPromptZhoHans,
+            get_t_zho_hans_ocr_fusion_test_cases,
+            id="t-zho-hans",
         ),
     ],
 )
@@ -93,8 +117,8 @@ def test_get_zho_ocr_fused(
     lens_fixture: str,
     paddle_fixture: str,
     expected_fixture: str,
-    convert: OpenCCConfig | None,
-    use_traditional_prompt: bool,
+    prompt_cls: type[OcrFusionPromptZhoHans],
+    test_case_loader: Callable[[], list[TestCase]],
 ):
     """Test get_zho_ocr_fused against expected fused outputs.
 
@@ -103,23 +127,20 @@ def test_get_zho_ocr_fused(
         lens_fixture: fixture name for Google Lens OCR subtitles
         paddle_fixture: fixture name for PaddleOCR subtitles
         expected_fixture: fixture name for expected output series
-        convert: OpenCC conversion to apply before fusing
-        use_traditional_prompt: whether to use the traditional prompt fuser
+        prompt_cls: OCR fusion prompt class
+        test_case_loader: loader for OCR fusion test cases
     """
     lens = get_zho_cleaned(request.getfixturevalue(lens_fixture), remove_empty=False)
     paddle = get_zho_cleaned(
-        request.getfixturevalue(paddle_fixture), remove_empty=False
+        request.getfixturevalue(paddle_fixture),
+        remove_empty=False,
     )
-    if convert is None:
-        lens = get_zho_converted(lens)
-        paddle = get_zho_converted(paddle)
-    else:
-        lens = get_zho_converted(lens, config=convert)
-        paddle = get_zho_converted(paddle, config=convert)
-
-    processor = None
-    if use_traditional_prompt:
-        processor = get_zho_ocr_fuser(prompt_cls=OcrFusionPromptZhoHant)
+    provider = Mock(spec=LLMProvider)
+    processor = get_zho_ocr_fuser(
+        prompt_cls=prompt_cls,
+        test_cases=test_case_loader(),
+        provider=provider,
+    )
     expected = request.getfixturevalue(expected_fixture)
     output = get_zho_ocr_fused(
         lens,
@@ -129,3 +150,4 @@ def test_get_zho_ocr_fused(
 
     assert len(output) == len(expected)
     assert_series_equal(output, expected)
+    provider.chat_completion.assert_not_called()

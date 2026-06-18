@@ -32,6 +32,7 @@ __all__ = [
     "get_char_type",
     "is_full_width_char",
     "normalize_fullwidth_alphanumerics",
+    "normalize_ocr_confusables_to_ascii",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
     "sanitize_text",
@@ -190,6 +191,16 @@ _FULLWIDTH_ALPHANUMERICS_TO_ASCII = str.maketrans(
 )
 """Mapping from fullwidth ASCII letters and digits to regular ASCII."""
 
+_OCR_CONFUSABLES_TO_ASCII = str.maketrans(
+    {
+        "Κ": "K",
+        "Ο": "O",
+        "κ": "k",
+        "ο": "o",
+    }
+)
+"""Mapping from OCR-confusable characters to regular ASCII."""
+
 RE_HANZI = re.compile(
     r"[\u4e00-\u9fff"
     r"\u3400-\u4DBF"
@@ -326,6 +337,17 @@ def normalize_fullwidth_alphanumerics(text: str) -> str:
         text with fullwidth alphanumeric characters normalized
     """
     return text.translate(_FULLWIDTH_ALPHANUMERICS_TO_ASCII)
+
+
+def normalize_ocr_confusables_to_ascii(text: str) -> str:
+    """Convert OCR-confusable characters to regular ASCII.
+
+    Arguments:
+        text: text to normalize
+    Returns:
+        text with OCR-confusable characters normalized
+    """
+    return text.translate(_OCR_CONFUSABLES_TO_ASCII)
 
 
 def remove_non_punc_and_whitespace(text: str) -> str:

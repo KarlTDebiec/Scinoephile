@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import logging
-import subprocess
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -16,6 +15,7 @@ import numpy as np
 import pytest
 from PIL import Image
 
+from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
 from scinoephile.image.ocr.paddle import PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
@@ -180,7 +180,7 @@ def test_paddle_recognizer_preserves_root_logger_level(
 
 def test_paddle_recognizer_imports_paddleocr_only_when_needed():
     """Test importing PaddleOCR recognizer does not import paddleocr."""
-    result = subprocess.run(
+    exitcode, _, _ = run_command(
         [
             sys.executable,
             "-c",
@@ -190,12 +190,9 @@ def test_paddle_recognizer_imports_paddleocr_only_when_needed():
                 "raise SystemExit('paddleocr' in sys.modules)"
             ),
         ],
-        check=False,
-        capture_output=True,
-        text=True,
     )
 
-    assert result.returncode == 0, result.stderr
+    assert exitcode == 0
 
 
 def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: pytest.MonkeyPatch):

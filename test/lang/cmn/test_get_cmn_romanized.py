@@ -13,17 +13,25 @@ from test.helpers import assert_series_equal
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        (
+        pytest.param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize",
+            id="mlamd-zho-hans",
         ),
-        (
+        pytest.param(
             "mnt_zho_hans_fuse_clean_validate_review_flatten",
             "mnt_zho_hans_fuse_clean_validate_review_flatten_romanize",
+            id="mnt-zho-hans",
         ),
-        (
+        pytest.param(
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_zho_hans_fuse_clean_validate_review_flatten_romanize",
+            id="t-zho-hans",
+        ),
+        pytest.param(
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize",
+            id="t-zho-hant-simplify-review",
         ),
     ],
 )

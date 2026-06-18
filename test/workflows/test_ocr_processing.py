@@ -156,6 +156,7 @@ class _PatchedEngOcrPipeline:
         self.loaded_paths: list[Path] = []
         self.lens_calls: list[Language] = []
         self.tesseract_calls: list[Language] = []
+        self.tesseract_detect_italics_calls: list[bool] = []
         self.fuser_calls: list[dict[str, object]] = []
         self.fusion_calls: list[tuple[list[str], list[str], object]] = []
 
@@ -212,11 +213,13 @@ class _PatchedEngOcrPipeline:
         self,
         image_series: ImageSeries,
         *,
+        detect_italics: bool,
         language: Language,
     ) -> Series:
         """Fake Tesseract OCR."""
         assert image_series is self.image_series
         self.tesseract_calls.append(language)
+        self.tesseract_detect_italics_calls.append(detect_italics)
         return _series_with_texts(self.tesseract_texts)
 
 
@@ -389,6 +392,7 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
     assert pipeline.loaded_paths == [source_path]
     assert pipeline.lens_calls == [Language.eng]
     assert pipeline.tesseract_calls == [Language.eng]
+    assert pipeline.tesseract_detect_italics_calls == [True]
     assert pipeline.fusion_calls == [(["lens"], ["tesseract"], pipeline.fuser)]
     assert result.output_dir_path == output_dir_path
     assert result.output_paths == {
