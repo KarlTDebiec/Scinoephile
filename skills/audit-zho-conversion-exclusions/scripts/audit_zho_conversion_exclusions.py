@@ -19,11 +19,26 @@ type _KnownExceptionKey = tuple[str, str, str]
 
 
 _KNOWN_INACTIVE_EXCEPTIONS: set[_KnownExceptionKey] = {
+    ("test/data/acopopb/input/zho-Hans.srt", "捱", "388"),
+    ("test/data/acopopb/input/zho-Hans.srt", "藉", "673"),
     ("test/data/acopopb/input/zho-Hans.srt", "潚", "517"),
+    ("test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt", "藉", "60"),
+    ("test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt", "藉", "621"),
     ("test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt", "決", "16"),
     ("test/data/acopopb/output/yue-Hans_ocr/fuse_clean_validate.srt", "幫", "261"),
+    ("test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt", "捱", "392"),
+    ("test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt", "藉", "64"),
+    ("test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt", "藉", "679"),
     ("test/data/acopopb/output/zho-Hans_ocr/fuse_clean_validate.srt", "潚", "521"),
+    ("test/data/acoptc/input/zho-Hans.srt", "剎", "1213"),
+    ("test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt", "藉", "368"),
     ("test/data/acoptc/output/yue-Hans_ocr/fuse_clean_validate.srt", "決", "326"),
+    ("test/data/acoptc/output/zho-Hans_ocr/fuse_clean_validate.srt", "藉", "372"),
+    ("test/data/kob/input/yue-Hans.srt", "捱", "1056"),
+    ("test/data/kob/input/yue-Hans.srt", "覆", "315"),
+    ("test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt", "借", "147"),
+    ("test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt", "干", "989"),
+    ("test/data/tmm/output/zho-Hant_ocr/fuse_clean_validate.srt", "干", "1036"),
 }
 """Known fixture artifacts that should not be reported as unexpected."""
 

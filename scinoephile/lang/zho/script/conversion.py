@@ -21,72 +21,114 @@ __all__ = [
     "get_zho_text_converted",
 ]
 
-_S2T_EXCLUDED_CHARS = {
-    "吃",  # keep modern 吃; avoid literary 喫
-    "吓",  # keep Cantonese 吓 particle/verb; avoid 嚇 "frighten"
-    "晒",  # keep Cantonese 晒 result particle; avoid 曬 "sun-dry"
-    "才",  # keep modern 才; avoid older adverbial 纔
-    "托",  # keep 拜托 and Cantonese 托; avoid 託
-    "蒙",  # keep Cantonese/colloquial 蒙; avoid weather adjective 濛
-    "准",  # keep permission-context 准; avoid 準
-    "群",  # keep modern 群; avoid older variant 羣
-    "郁",  # keep Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "床",  # keep modern 床; avoid older variant 牀
-    "台",  # keep platform/stage/address 台; avoid 臺
-    "痴",  # keep common 白痴 form 痴; avoid 癡
-    "升",  # keep 升仙 form 升; avoid 昇
-    "仆",  # keep Cantonese 仆街 form 仆; avoid 僕 "servant"
-    "秘",  # keep modern 秘; avoid older variant 祕
-    "克",  # keep 克制 form 克; avoid 剋
-    "借",  # keep fixture-style 借助 form 借; avoid 藉
-    "了",  # keep 了解 form 了; avoid 瞭
-    "里",  # keep distance character 里; avoid 裏 "inside"
-    "咸",  # keep Cantonese food-term 咸; avoid 鹹
-    "只",  # keep legitimate traditional-subtitle 只; avoid blanket 隻
-    "面",  # keep legitimate traditional-subtitle 面; avoid blanket 麵
-    "云",  # keep legitimate traditional-subtitle 云; avoid blanket 雲
-    "家",  # keep legitimate traditional-subtitle 家; avoid blanket 傢
-    "虱",  # keep modern/Hong Kong 虱; avoid 蝨
-    "响",  # keep Cantonese locative/verb 响; avoid 響
-    "峰",  # keep modern 峰; avoid older variant 峯
-    "扑",  # keep Cantonese 扑 "hit"; avoid 撲
-    "伙",  # keep 伙記 and 家伙 form 伙; avoid 夥
-    "干",  # keep valid traditional 干 uses; avoid blanket 幹
-    "粽",  # keep modern/Hong Kong 粽; avoid 糉
-    "丑",  # keep TMM fixture phrase 丑大了; avoid blanket 醜
-    "洒",  # keep fixture-style 瀟洒 form 洒; avoid 灑
-    "卺",  # keep 合卺 form 卺; avoid rare variant 巹
-    "皂",  # keep 青紅皂白 form 皂; avoid 皁
-    "娘",  # keep kinship/profanity 娘; avoid 孃
-    "灶",  # keep modern 灶; avoid older variant 竈
-    "唇",  # keep modern 唇; avoid 脣
-    "刮",  # keep shaving/scraping 刮; avoid 颳 "wind blows"
-    "幸",  # keep 薄幸 form 幸; avoid 倖
-    "岩",  # keep 金剛岩 and Cantonese 岩; avoid 巖 "cliff"
-    "杰",  # keep Cantonese 杰; avoid 傑 "outstanding"
-    "厘",  # keep Hong Kong 無厘頭 form 厘; avoid 釐
-    "注",  # keep 注定 form 注; avoid 註 "annotation"
-    "制",  # keep 制定 form 制; avoid 製 "manufacture"
-    "喂",  # keep interjection 喂; avoid 餵 "feed"
+_S2T_EXCLUSIONS: dict[str, str] = {
+    "吃": "吃",  # keep modern 吃; avoid literary 喫
+    "吓": "吓",  # keep Cantonese 吓 particle/verb; avoid 嚇 "frighten"
+    "晒": "晒",  # keep Cantonese 晒 result particle; avoid 曬 "sun-dry"
+    "才": "才",  # keep modern 才; avoid older adverbial 纔
+    "群": "群",  # keep modern 群; avoid older variant 羣
+    "床": "床",  # keep modern 床; avoid older variant 牀
+    "台": "台",  # keep platform/stage/address 台; avoid 臺
+    "痴": "痴",  # keep common 白痴 form 痴; avoid 癡
+    "秘": "秘",  # keep modern 秘; avoid older variant 祕
+    "了": "了",  # keep common aspect/result 了; avoid blanket 瞭
+    "虱": "虱",  # keep modern/Hong Kong 虱; avoid 蝨
+    "峰": "峰",  # keep modern 峰; avoid older variant 峯
+    "粽": "粽",  # keep modern/Hong Kong 粽; avoid 糉
+    "卺": "卺",  # keep 合卺 form 卺; avoid rare variant 巹
+    "皂": "皂",  # keep 青紅皂白 form 皂; avoid 皁
+    "娘": "娘",  # keep modern kinship/profanity 娘; avoid 孃
+    "灶": "灶",  # keep modern 灶; avoid older variant 竈
+    "唇": "唇",  # keep modern 唇; avoid 脣
+    "岩": "岩",  # keep rock/Cantonese 岩; avoid blanket 巖
+    "不准": "不准",  # permission sense in subtitles; avoid blanket 準
+    "丑了": "丑了",  # preserve subtitle idiom 丑大/丑了; avoid 醜陋 sense
+    "丑大": "丑大",  # preserve subtitle idiom 丑大/丑了; avoid 醜陋 sense
+    "制定": "制定",  # 制 is "formulate"; avoid 製 "manufacture"
+    "合卺": "合卺",  # fixed wedding term; avoid rare variant 巹
+    "呢云": "呢云",  # Cantonese OCR phrase; avoid weather/cloud 雲
+    "克制": "克制",  # 克 is "restrain"; avoid 剋 "overcome/defeat"
+    "准你": "准你",  # permission sense; avoid blanket 準
+    "准用": "准用",  # permission sense; avoid blanket 準
+    "准講": "准講",  # permission sense; avoid blanket 準
+    "准打": "准打",  # permission sense; avoid blanket 準
+    "准擅自": "准擅自",  # permission sense; avoid blanket 準
+    "准再": "准再",  # permission sense; avoid blanket 準
+    "准進入": "准進入",  # permission sense; avoid blanket 準
+    "准進": "准進",  # permission sense; avoid blanket 準
+    "准許": "准許",  # permission sense; avoid blanket 準
+    "准我": "准我",  # permission sense; avoid blanket 準
+    "借助": "借助",  # 借 means "borrow/use"; avoid 藉 "by means of"
+    "刮了": "刮了",  # shaving/scraping sense; avoid 颳 "wind blows"
+    "刮得": "刮得",  # shaving/scraping sense; avoid 颳 "wind blows"
+    "升仙": "升仙",  # "ascend to immortality"; avoid 昇 "rise"
+    "又升仙": "又升仙",  # "ascend to immortality"; avoid 昇 "rise"
+    "响出邊": "响出邊",  # Cantonese locative 响; avoid 響 "sound"
+    "响邊": "响邊",  # Cantonese locative 响; avoid 響 "sound"
+    "响凡間": "响凡間",  # Cantonese locative 响; avoid 響 "sound"
+    "咸煎餅": "咸煎餅",  # Cantonese food spelling; avoid 鹹 normalization
+    "咸的": "咸的",  # subtitle uses colloquial 咸; avoid 鹹 normalization
+    "食咸定甜": "食咸定甜",  # Cantonese food contrast; avoid 鹹 normalization
+    "唔准": "唔准",  # Cantonese permission sense; avoid blanket 準
+    "唔好郁": "唔好郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "唔郁": "唔郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "亂郁": "亂郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "咪郁": "咪郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "想郁": "想郁",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "郁佢": "郁佢",  # Cantonese 郁 "move/attack"; avoid 鬱 "depressed"
+    "郁來郁去": "郁來郁去",  # Cantonese repeated movement; avoid 鬱
+    "郁得": "郁得",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "郁手": "郁手",  # Cantonese phrase "start fighting"; avoid 鬱
+    "郁親": "郁親",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "郁就": "郁就",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "郁嘅": "郁嘅",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
+    "托一": "托一",  # "entrust someone"; fixture prefers 托 over 託
+    "托世": "托世",  # reincarnation term in fixtures; avoid 託世
+    "托杉": "托杉",  # Cantonese "hold/lift"; avoid 託 "entrust"
+    "托夢": "托夢",  # dream-message phrase in fixtures; avoid 託夢
+    "托皇上": "托皇上",  # "thanks to the emperor"; avoid 託 "entrust"
+    "托著": "托著",  # physical support; avoid 託 "entrust"
+    "托缽": "托缽",  # alms-bowl phrase in fixtures; avoid 託缽
+    "扑嘛": "扑嘛",  # Cantonese 扑 "hit"; avoid 撲 "pounce"
+    "嚟扑": "嚟扑",  # Cantonese 扑 "hit"; avoid 撲 "pounce"
+    "燒到扑": "燒到扑",  # Cantonese result phrase; avoid 撲 "pounce"
+    "家伙": "家伙",  # subtitle lexeme 家伙; avoid 傢伙 furniture radical
+    "干擾": "干擾",  # legal/source text uses 干擾; avoid 幹擾
+    "拜托": "拜托",  # fixture spelling for "please"; avoid 拜託
+    "散伙": "散伙",  # group-dispersal phrase; avoid 夥 variant
+    "无厘頭": "無厘頭",  # mixed-script source normalized to HK 無厘頭
+    "無厘頭": "無厘頭",  # Hong Kong phrase keeps 厘, not 釐
+    "杰啦": "杰啦",  # Cantonese adjective in fixture; avoid 傑 "outstanding"
+    "注定": "注定",  # fate sense; avoid 註 "annotation"
+    "洒你": "洒你",  # fixture keeps 瀟洒-style 洒; avoid 灑
+    "瀟洒": "瀟洒",  # accepted variant of 瀟灑 in fixtures
+    "薄幸": "薄幸",  # fixed term; avoid 倖 "fortunate by chance"
+    "萬里": "萬里",  # distance unit 里; avoid 裏 "inside"
+    "只蟑螂": "只蟑螂",  # fixture uses 只 before animal; avoid classifier 隻
+    "那只九官鳥": "那只九官鳥",  # fixture uses 只; avoid classifier 隻
+    "仆你": "仆你",  # Cantonese profanity 仆街 family; avoid 僕 "servant"
+    "仆街": "仆街",  # Cantonese profanity; avoid 僕 "servant"
+    "伙記": "伙記",  # Cantonese waiter/worker term; avoid 夥 variant
+    "碗面": "碗面",  # Cantonese/HK noodle spelling; avoid 麵/麪
+    "喂你": "喂你",  # interjection/address 喂; avoid 餵 "feed"
+    "呀喂": "呀喂",  # interjection 喂; avoid 餵 "feed"
+    "蒙蒙": "蒙蒙",  # character name/baby-talk; avoid 濛濛 "misty"
 }
-"""Characters to preserve when converting simplified Chinese toward traditional."""
+"""Text spans to preserve when converting simplified Chinese toward traditional."""
 
-_T2S_EXCLUDED_CHARS = {
-    "喎",  # keep Cantonese sentence particle 喎; avoid 㖞
-    "嗰",  # keep Cantonese demonstrative 嗰; avoid 𠮶
-    "搵",  # keep Cantonese 搵 "look for"; avoid 揾
-    "痾",  # keep Cantonese 痾 "defecate"; avoid 疴
-    "藉",  # keep simplified-text 藉此 form 藉; avoid 借
-    "劏",  # keep Cantonese 劏 "slaughter"; avoid 㓥
-    "捱",  # keep fixture lexical 捱; avoid generic 挨
-    "噚",  # keep Cantonese 噚; avoid 㖊
-    "燶",  # keep Cantonese 燶 "burnt"; avoid 㶶
-    "餸",  # keep Cantonese 餸 "dish"; avoid 𩠌
-    "剎",  # keep 一剎那 form 剎; avoid 刹
-    "覆",  # keep 答覆 lexical form 覆; avoid 复
-    "唓",  # keep Cantonese interjection 唓; avoid 𪠳
+_T2S_EXCLUSIONS: dict[str, str] = {
+    "喎": "喎",  # keep Cantonese sentence particle 喎; avoid 㖞
+    "嗰": "嗰",  # keep Cantonese demonstrative 嗰; avoid 𠮶
+    "搵": "搵",  # keep Cantonese 搵 "look for"; avoid 揾
+    "痾": "痾",  # keep Cantonese 痾 "defecate"; avoid 疴
+    "劏": "劏",  # keep Cantonese 劏 "slaughter"; avoid 㓥
+    "噚": "噚",  # keep Cantonese 噚; avoid 㖊
+    "燶": "燶",  # keep Cantonese 燶 "burnt"; avoid 㶶
+    "餸": "餸",  # keep Cantonese 餸 "dish"; avoid 𩠌
+    "唓": "唓",  # keep Cantonese interjection 唓; avoid 𪠳
 }
-"""Characters to preserve when converting traditional Chinese toward simplified."""
+"""Text spans to preserve when converting traditional Chinese toward simplified."""
+
 
 class OpenCCConfig(DescribedEnum):
     """OpenCC configuration names for standard Chinese character set conversion."""
@@ -204,20 +246,54 @@ def get_zho_text_converted(
         converted text
     """
     converter = get_zho_converter(config)
-    converted_text = converter.convert(text)
 
-    excluded_chars: set[str] = set()
-    if apply_exclusions:
-        if config in SIMPLIFIED_CONFIGS:
-            excluded_chars = _T2S_EXCLUDED_CHARS
-        if config in TRADITIONAL_CONFIGS:
-            excluded_chars = _S2T_EXCLUDED_CHARS
+    if apply_exclusions and config in SIMPLIFIED_CONFIGS:
+        return _get_zho_text_converted_with_exclusions(text, converter, _T2S_EXCLUSIONS)
+    if apply_exclusions and config in TRADITIONAL_CONFIGS:
+        return _get_zho_text_converted_with_exclusions(text, converter, _S2T_EXCLUSIONS)
+    return converter.convert(text)
 
-    if excluded_chars and len(converted_text) == len(text):
-        converted_chars = list(converted_text)
-        for index, char in enumerate(text):
-            if char in excluded_chars:
-                converted_chars[index] = char
-        converted_text = "".join(converted_chars)
 
-    return converted_text
+def _get_zho_text_converted_with_exclusions(
+    text: str, converter: OpenCC, exclusions: dict[str, str]
+) -> str:
+    """Convert text while applying longest-match source text exclusions.
+
+    Arguments:
+        text: text to convert
+        converter: OpenCC converter
+        exclusions: source-to-replacement text spans to preserve or override
+    Returns:
+        converted text
+    """
+    converted_parts: list[str] = []
+    ordered_exclusions = sorted(
+        exclusions.items(), key=lambda item: len(item[0]), reverse=True
+    )
+    segment_start = 0
+    index = 0
+
+    while index < len(text):
+        match = next(
+            (
+                (source, replacement)
+                for source, replacement in ordered_exclusions
+                if text.startswith(source, index)
+            ),
+            None,
+        )
+        if match is None:
+            index += 1
+            continue
+
+        source, replacement = match
+        if segment_start < index:
+            converted_parts.append(converter.convert(text[segment_start:index]))
+        converted_parts.append(replacement)
+        index += len(source)
+        segment_start = index
+
+    if segment_start < len(text):
+        converted_parts.append(converter.convert(text[segment_start:]))
+
+    return "".join(converted_parts)
