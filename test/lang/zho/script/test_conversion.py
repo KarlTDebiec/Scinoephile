@@ -46,14 +46,16 @@ def test_opencc_config_metadata():
         ("制定", OpenCCConfig.s2t, "制定"),
         ("注定", OpenCCConfig.s2t, "注定"),
         ("标准", OpenCCConfig.s2t, "標準"),
+        ("無厘頭", OpenCCConfig.s2t, "無厘頭"),
+        ("无厘頭", OpenCCConfig.s2t, "無釐頭"),
         ("答覆", OpenCCConfig.t2s, "答复"),
         ("藉口", OpenCCConfig.t2s, "借口"),
     ],
 )
-def test_get_zho_text_converted_applies_exclusions_by_character_position(
+def test_get_zho_text_converted_applies_exclusions(
     text: str, config: OpenCCConfig, expected: str
 ):
-    """Test conversion exclusions preserve only original excluded characters.
+    """Test conversion exclusions preserve only excluded text spans.
 
     Arguments:
         text: Text to convert
