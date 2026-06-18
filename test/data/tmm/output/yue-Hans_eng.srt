@@ -690,7 +690,7 @@ Greetings to Goddess
 
 139
 00:08:10,083 --> 00:08:13,833
-玉帝，我哋每一位成仙至今
+玉帝，我们每一位成仙至今
 Heavenly Highness, each one of us has been a fairy…
 
 140
@@ -700,12 +700,12 @@ Heavenly Highness, each one of us has been a fairy…
 
 141
 00:08:17,750 --> 00:08:22,833
-世情种种，凡间一切，在我哋嚟讲
+世情种种，凡间一切，在我哋讲
 Worldly affairs to us…
 
 142
 00:08:22,833 --> 00:08:25,750
-系遥远而微不足道架
+系遥远而微不足道㗎
 …are distant and trivial
 
 143
@@ -1470,12 +1470,12 @@ Master, madam, look
 
 295
 00:14:26,167 --> 00:14:28,250
-喺边度摘㗎？　　呢⋯嗰度罗
+喺边度摘架？　　呢⋯嗰度啰
 - Where did you pluck it?    - Over there
 
 296
 00:14:30,708 --> 00:14:33,625
-老爷呀，点解会咁㗎？　　老爷，夫人
+老爷呀，点解会咁架？　　老爷，夫人
 - Master, why?    - Master, madam
 
 297
@@ -1500,7 +1500,7 @@ our future young master
 
 301
 00:14:39,708 --> 00:14:40,875
-一定系贵人嚟㗎啦
+一定系贵人嚟架啦
 must be a dignitary
 
 302
@@ -1540,12 +1540,12 @@ Hey… why have we landed here?
 
 309
 00:15:03,583 --> 00:15:04,792
-呢度什么地方呀？
+呢度咩地方呀？
 What's this place?
 
 310
 00:15:04,792 --> 00:15:05,708
-街罗
+街佬
 The main street
 
 311
@@ -1560,7 +1560,7 @@ I asked you to take me to Dragon Fighter's birthplace
 
 313
 00:15:10,167 --> 00:15:11,708
-行过几条咪系罗
+行过几条咪系囉
 Just a few streets further
 
 314
@@ -2105,7 +2105,7 @@ Little brother
 
 422
 00:19:31,500 --> 00:19:33,125
-乱讲，啫啫一 fling fling吖嘛
+乱讲，啫啫一f l i ng f l i ng吖嘛
 Nonsense! Brother comes in strips
 
 423
@@ -2190,12 +2190,12 @@ Let the thunder split up the cover,
 
 439
 00:20:25,542 --> 00:20:27,042
-咁你就记得返晒㗎喇
+咁你就记得番晒㗎喇
 then you'll revive your memory
 
 440
 00:20:28,667 --> 00:20:29,583
-边个鬼咁刹咁嘈
+边个鬼刹咁嘈
 Who's making all that noise there?
 
 441
@@ -2220,7 +2220,7 @@ Hurray…
 
 445
 00:20:40,250 --> 00:20:41,917
-嘈嘈闭，慌你唔系又濑咗尿，睇过
+嘈嘈敝，慌你唔系又濑咗尿，睇过
 So noisy? Must have wet your pants, let me see
 
 446
@@ -2555,7 +2555,7 @@ Thanks
 
 512
 00:23:14,292 --> 00:23:16,042
-我好快会返嚟揾你
+我好快去会返嚟揾你
 I'll come back to you very soon
 
 513
@@ -2565,7 +2565,7 @@ Hey, what's your name?
 
 514
 00:23:18,667 --> 00:23:20,833
-姓名祇系代号，点叫都系一样架啫
+姓名祇系代号，点叫都系一样㗎啫
 A name is just a label, so makes no difference
 
 515
@@ -2655,7 +2655,7 @@ Also, your golden body…
 
 532
 00:24:28,958 --> 00:24:31,333
-上个月嗰剂，就至迭友嘞
+上个月嗰剂，就至跌友嘞
 Most people came last month
 
 533
@@ -2780,7 +2780,7 @@ I came down on a mission
 
 557
 00:25:30,792 --> 00:25:32,375
-至于搞啲咩嘢，就唔洗你理嘅
+至于搞啲咩嘢，就唔使你理嘅
 As regards what the mission is, you need not know
 
 558
@@ -2905,17 +2905,17 @@ Horrible! Really horrible
 
 582
 00:26:30,083 --> 00:26:31,875
-吓？袁霸天呀
+吓？袁霸天呀？
 What? Yun Ba Tin
 
 583
 00:26:31,958 --> 00:26:33,333
-哎呀⋯快啲躲埋先嘞
+哎呀⋯快啲喱埋先嘞
 Hide quickly
 
 584
 00:26:35,625 --> 00:26:37,458
-喂，袁霸天来了呀
+喂，袁霸天嚟咗呀
 Hey, Yun is here!
 
 585
@@ -3075,7 +3075,7 @@ Brother. Milk… Brother. Milk.
 
 616
 00:28:47,375 --> 00:28:50,042
-阿仔，你做乜搞成咁呀？ 伯伯
+阿仔，你做乜搞成咁呀？　　伯伯
 - Son, what happened to you?    - Bakbak
 
 617
@@ -3445,7 +3445,7 @@ Worth to greet me as Master?
 
 690
 00:31:56,792 --> 00:32:01,000
-师父，有咩我可以效劳架即管吩咐我
+师父，有咩我可以效劳架，即管吩咐我
 Master, what can I do for you? Just let me know
 
 691
@@ -3460,12 +3460,12 @@ Master, I am like a pig. I only sleep in daylight
 
 693
 00:32:11,292 --> 00:32:13,125
-大种，你老逗揾你呀
+大种，你老豆揾你呀
 Dai Jung, your dad is here for you
 
 694
 00:32:13,250 --> 00:32:16,417
-你阿妈揾你呀，我老逗死咗好耐啦
+你阿妈揾你呀，我老豆死咗好耐啦
 Your mom found you. My dad died a long time ago
 
 695
@@ -3945,7 +3945,7 @@ BBQ pork…
 
 790
 00:35:47,417 --> 00:35:49,042
-我好臭架，唔好食呀
+我好臭呀，唔好食呀
 I'm stunk! Don't eat me.
 
 791
@@ -3965,12 +3965,12 @@ You scared the piss out of me
 
 794
 00:36:08,458 --> 00:36:10,708
-骑呢怪，做咩搞到咁乌黑？
+骑呢怪，做咩搞到咁乌 where ？
 Unicorn, why look so miserable?
 
 795
 00:36:11,292 --> 00:36:13,417
-我扮到咁乌黑都系为咗掩人耳目
+我扮到咁乌 where 都系为咗掩人耳目
 I dressed up to hide my identity,
 
 796
@@ -4490,12 +4490,12 @@ Whoever his toe points to, will be the one
 
 899
 00:40:13,500 --> 00:40:16,458
-转啦⋯转呀转⋯ 好惊呀⋯
+转啦⋯转呀转⋯　　好惊呀⋯
 - Turn…    - So scary…
 
 900
 00:40:30,458 --> 00:40:32,875
-哦⋯你奸猫
+哦⋯你奸茅
 You're cheating
 
 901
@@ -4525,7 +4525,7 @@ Remember what you said to me yesterday?
 
 906
 00:40:43,042 --> 00:40:45,208
-话你收得贵罗，行啦
+话你收得贵咯，行啦
 I said you charged a high price. Move
 
 907
@@ -4555,7 +4555,7 @@ Braise
 
 912
 00:40:59,375 --> 00:41:02,083
-咁就有排啦　　唔系我呀⋯
+咁就有排啦　唔系我呀⋯
 - It'll take a long time then    - Not me…
 
 913
@@ -4575,7 +4575,7 @@ No…
 
 916
 00:41:20,958 --> 00:41:24,167
-哗，咁靓，烧咗佢𠻀啲喎
+哗，咁靓，烧咗佢喎啲
 She's so beautiful. What a waste to burn her?
 
 917
@@ -4615,12 +4615,12 @@ Go
 
 924
 00:41:40,958 --> 00:41:41,917
-嗱我解你听你就明啦
+嗱我解释你听你就明架嘞
 You'll understand once I explain to you
 
 925
 00:41:41,917 --> 00:41:44,583
-唔洗嘞，你点讲我都唔明啦
+唔使嘞，你点讲我都唔明架嘞
 No need. I don't understand anyway
 
 926
@@ -4705,7 +4705,7 @@ Everyone, he has made an agreement with Queen Mother,
 
 942
 00:42:40,417 --> 00:42:41,792
-以后唔会再有瘟疫架嘞
+以后唔会再有瘟疫架喇
 there'll be no more plague
 
 943
@@ -4815,7 +4815,7 @@ Don't go
 
 964
 00:44:40,333 --> 00:44:43,917
-放心啦，嗰啲人唔会再嚟烧你架嘞
+放心啦，嗰啲人唔会再嚟烧你㗎嘞
 Don't worry, they won't burn you again
 
 965
@@ -4830,7 +4830,7 @@ Why did they want to burn me to death?
 
 967
 00:44:49,792 --> 00:44:52,458
-个原因系咁嘅，啲人嚟揾你
+个原因系咁嘅，啲人嚟搵你
 It's simple Those men who come to you,
 
 968
@@ -4960,7 +4960,7 @@ There's one left. Try and I'll know
 
 993
 00:46:01,292 --> 00:46:02,708
-呢只狗生前咬瓜过两个人
+呢只狗生前咬死过两个人
 This dog has bitten two people to death before
 
 994
@@ -5005,7 +5005,7 @@ Be kind! Hey! Why not? Hey
 
 1002
 00:46:26,375 --> 00:46:29,042
-嗱⋯ ，唔好玩嘞，我知你未吞呀
+嗱⋯，唔好玩嘞，我知你未吞呀
 Don't play! I know you haven't swallowed it
 
 1003
@@ -5390,7 +5390,7 @@ Otherwise, gold will turn back to dog shit,
 
 1079
 00:51:10,375 --> 00:51:12,375
-大疮都会标番晒出嚟
+大孖疮都会标番晒出嚟
 and the sores will emerge again
 
 1080
@@ -5485,7 +5485,7 @@ What do you do?
 
 1098
 00:52:04,000 --> 00:52:06,292
-乞儿　　哦？
+乞儿 哦？
 - I'm a beggar    - What?
 
 1099
@@ -5565,7 +5565,7 @@ Yes
 
 1114
 00:52:57,208 --> 00:53:01,500
-咩事呀⋯，睇吓⋯咩事呀⋯
+咩事呀⋯ ，睇吓⋯咩事呀⋯
 What happened… Look… what happened?
 
 1115
@@ -5625,7 +5625,7 @@ Scared now?
 
 1126
 00:53:27,417 --> 00:53:28,833
-唉⋯好吧
+唉⋯好饿
 I'm tired
 
 1127
@@ -5770,7 +5770,7 @@ I only want you to be a monk, not go to hell
 
 1155
 00:55:54,042 --> 00:55:55,417
-即刻乖乖地跟我返去
+即刻乖乖哋跟我返去
 Be good and come with me now
 
 1156
@@ -5825,7 +5825,7 @@ after knowing him too
 
 1166
 00:56:41,792 --> 00:56:43,417
-今晚当我买，你怕
+今晚当我买你怕
 OK, you're on the upside tonight
 
 1167
@@ -5835,7 +5835,7 @@ Let's compromise! If you back off
 
 1168
 00:56:44,708 --> 00:56:45,833
-祇要你今日唔上去搞亚玉
+只要你今日唔上去搅亚玉
 and leave Siu Yuk alone tonight,
 
 1169
@@ -5845,7 +5845,7 @@ we'll settle our score later
 
 1170
 00:56:55,417 --> 00:56:58,375
-哗⋯如果我唔系变咗身咪俾你对死了
+哗⋯如果我唔系变咗身咪俾你对死咗
 If I hadn't changed to Patriarch Dharma, I'd have been killed by you
 
 1171
@@ -5960,7 +5960,7 @@ Outrageous!
 
 1193
 00:58:21,875 --> 00:58:23,583
-叫咗你唔好俾我见到你架啦
+叫咗你唔好俾我见到你㗎啦
 I warned you not to let me see you
 
 1194
@@ -5980,7 +5980,7 @@ No, I didn't
 
 1197
 00:58:28,875 --> 00:58:30,250
-我有钱架
+我有钱㗎
 I have money
 
 1198
@@ -5990,12 +5990,12 @@ Shit! The gold changed…
 
 1199
 00:58:40,333 --> 00:58:42,875
-你唔好打佢啦，佢唔系叫霸王鸡呀
+你唔好打佢啦，佢唔是叫霸王鸡呀
 Don't beat him! He's not a sponger
 
 1200
 00:58:43,333 --> 00:58:44,458
-佢系我条仔嚟架
+佢是我条仔嚟架
 He's my boyfriend
 
 1201
@@ -6030,7 +6030,7 @@ You're pretending
 
 1207
 00:58:56,833 --> 00:58:58,167
-我似个满面胡须嗰丫差咩？
+我似个满面胡须嗰亚差咩？
 Do I look like that moustached Singh?
 
 1208
@@ -6050,7 +6050,7 @@ You're siding with a stranger
 
 1211
 00:59:02,042 --> 00:59:03,083
-我讲道理咋啫
+我讲道理咋幡
 I talk sense
 
 1212
@@ -6060,7 +6060,7 @@ Go to hell
 
 1213
 00:59:05,708 --> 00:59:06,750
-嗱⋯系咪呢，而家打亲人嘞
+嗱⋯是咪呢，而家打亲人嘞
 See! You've hurt someone
 
 1214
@@ -6145,7 +6145,7 @@ Why didn't you knock?
 
 1230
 00:59:48,958 --> 00:59:49,917
-对唔住，揾错
+对唔住揾错
 Sorry, I got the wrong place
 
 1231
@@ -6440,12 +6440,12 @@ Let me borrow it, I'll pay you lots of interest
 
 1289
 01:02:48,750 --> 01:02:50,167
-唔得　　咁就大字型架啦喎
+唔得　一晚咁多呢
 - No    - OK, then a cross
 
 1290
 01:02:50,167 --> 01:02:51,667
-唔得　咩大字型？
+唔得　咩大字形？
 What cross?
 
 1291
@@ -6700,7 +6700,7 @@ Won't give me a face?
 
 1341
 01:07:31,292 --> 01:07:33,125
-我话晒都系嚟度嘅妥哋喎
+我话晒都系嚟度嘅陀哋喎
 I'm in charge here
 
 1342
@@ -6790,7 +6790,7 @@ the golden body cannot leave the temple
 
 1359
 01:08:44,417 --> 01:08:46,333
-而家搅到神憎鬼厌
+而家搞到神憎鬼厌
 Now you've caused anger among men and gods
 
 1360
@@ -6860,7 +6860,7 @@ What's the matter, Miss Siu Yuk?
 
 1373
 01:09:31,792 --> 01:09:33,000
-我唔收钱，你济？
+我不收钱，你济？
 If I don't charge you money, would you take me?
 
 1374
@@ -7280,7 +7280,7 @@ Lo Han on top
 
 1457
 01:14:12,125 --> 01:14:13,333
-天降帮拖
+天将帮扶
 Heaven Soldiers reinforce
 
 1458
@@ -7305,12 +7305,12 @@ Really?
 
 1462
 01:14:48,500 --> 01:14:50,375
-睇吓边个凶⋯
+睇吓边个恶⋯
 See which of us is tougher…
 
 1463
 01:14:52,208 --> 01:14:57,208
-打谢你⋯呀⋯
+多谢你⋯呀⋯
 I'll kill you…
 
 1464
@@ -7330,12 +7330,12 @@ you can be a fairy again
 
 1467
 01:15:10,042 --> 01:15:11,917
-而家时间无多，要返回上去架啦
+而家时间无多，要返上去啦
 Time is running out, go back quickly
 
 1468
 01:15:11,917 --> 01:15:12,667
-等我搅掂埋佢先
+等我搞掂埋佢先
 Let me get rid of him first
 
 1469
@@ -7345,12 +7345,12 @@ Hurry
 
 1470
 01:15:14,542 --> 01:15:16,667
-死仆街，我一早杀咗你
+死仆街，我一早杀咗你，就唔洗死咁多人
 Bastard, had I killed you
 
 1471
 01:15:16,667 --> 01:15:17,708
-就唔使死咁多人
+就唔洗死咁多人
 many lives would have been spared
 
 1472
@@ -7360,7 +7360,7 @@ The skin of Hak Lo Sat?
 
 1473
 01:15:22,875 --> 01:15:25,167
-主公同我换咗个千年不死嘅心
+主宫同我换了个千年不死嘅心
 Lord has given me an immortal heart
 
 1474
@@ -7380,7 +7380,7 @@ What? A stone? How can this be?
 
 1477
 01:15:46,500 --> 01:15:47,750
-主宫⋯
+主公⋯
 My lord…
 
 1478
@@ -7390,12 +7390,12 @@ This is a fatal heart.
 
 1479
 01:15:49,542 --> 01:15:51,083
-佢要你帮佢做到塔底咋
+佢要你帮佢做到塔哋咋
 He just wants your dedication to him
 
 1480
 01:15:51,083 --> 01:15:54,375
-主宫⋯你呃我⋯呀⋯
+主公⋯你呃我⋯呀⋯
 Lord… you fool me…
 
 1481
@@ -7720,7 +7720,7 @@ How are you going to do it?
 
 1545
 01:21:55,750 --> 01:21:57,708
-我想劳烦你帮我张大佢个口
+我想劳烦你帮我撑大佢个口
 Just help me to open his mouth
 
 1546
@@ -7795,12 +7795,12 @@ But I'm always constipated
 
 1560
 01:22:47,333 --> 01:22:48,208
-我醒起了
+我醒起嘞
 I remember now
 
 1561
 01:22:48,208 --> 01:22:49,708
-金身仲有两只金牙，在我度架
+金身仲有两只金牙，在我这儿呢
 I've still got two golden teeth
 
 1562
@@ -7820,7 +7820,7 @@ I can't hang on any longer… please do my last favour
 
 1565
 01:23:02,833 --> 01:23:04,625
-咩呀？　　想办法插大佢个口
+咩呀？　　谂办法塞大佢个口
 - What?    - Find a way to open his mouth
 
 1566
@@ -7865,7 +7865,7 @@ Mad Monk…
 
 1574
 01:23:32,333 --> 01:23:34,500
-济颠⋯
+济癫⋯
 Mad Monk…
 
 1575
@@ -8000,7 +8000,7 @@ It means he got back his pride
 
 1601
 01:25:32,792 --> 01:25:35,583
-至于小玉，块面虽然系花了
+至于小玉，块面虽然系花咗
 Though Siu Yuk was defaced,
 
 1602
@@ -8075,7 +8075,7 @@ Why are you here?
 
 1616
 01:26:14,875 --> 01:26:17,375
-哗⋯仲做埋尊者添吖 佢都可以做尊者？
+哗⋯仲做埋尊者添吖　佢都可以做尊者？
 - He'll be a senior    - Could he be a senior?
 
 1617
