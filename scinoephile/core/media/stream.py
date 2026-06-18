@@ -9,7 +9,7 @@ from dataclasses import dataclass
 __all__ = ["Stream"]
 
 
-@dataclass(frozen=True)
+@dataclass
 class Stream:
     """Media stream metadata."""
 
@@ -36,7 +36,7 @@ class Stream:
                     normalized_parts.append("Unknown")
                 else:
                     normalized_parts.append(part)
-            object.__setattr__(self, "language", "-".join(normalized_parts))
+            self.language = "-".join(normalized_parts)
 
     @property
     def description(self) -> str:

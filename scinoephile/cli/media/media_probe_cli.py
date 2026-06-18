@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from dataclasses import replace
 from pathlib import Path
 
 from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_arg
@@ -141,30 +140,28 @@ class MediaProbeCli(ScinoephileCliBase):
                     stream,
                     cache_dir_path=cache_dir_path,
                 )
-                language = "zho-Unknown"
-                if analysis.script is not None:
-                    language = analysis.script
-                streams = [
-                    replace(stream, language=language),
-                ]
-            elif details:
-                streams = get_streams(infile_path)
-                detailed_subtitle_streams = get_zho_subtitle_streams(
-                    infile_path,
-                    cache_dir_path=cache_dir_path,
-                    streams=streams,
-                )
-                detailed_subtitle_streams_by_index = {
-                    stream.index: stream for stream in detailed_subtitle_streams
-                }
-                streams = [
-                    detailed_subtitle_streams_by_index.get(stream.index, stream)
-                    if isinstance(stream, SubtitleStream)
-                    else stream
-                    for stream in streams
-                ]
+                language = analysis.script
+                if language is None:
+                    language = "zho-Unknown"
+                stream.language = language
+                streams = [stream]
             else:
                 streams = get_streams(infile_path)
+                if details:
+                    detailed_subtitle_streams_by_index = {
+                        stream.index: stream
+                        for stream in get_zho_subtitle_streams(
+                            infile_path,
+                            cache_dir_path=cache_dir_path,
+                            streams=streams,
+                        )
+                    }
+                    for index, stream in enumerate(streams):
+                        if isinstance(stream, SubtitleStream):
+                            streams[index] = detailed_subtitle_streams_by_index.get(
+                                stream.index,
+                                stream,
+                            )
         except ScinoephileError as exc:
             parser.error(str(exc))
 

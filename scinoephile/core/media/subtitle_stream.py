@@ -15,7 +15,7 @@ from .stream import Stream
 __all__ = ["SubtitleStream"]
 
 
-@dataclass(frozen=True)
+@dataclass
 class SubtitleStream(Stream):
     """Subtitle stream metadata needed for extraction."""
 
