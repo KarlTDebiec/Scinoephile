@@ -10,6 +10,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.text import (
     get_char_type,
     normalize_fullwidth_alphanumerics,
+    normalize_ocr_confusables_to_ascii,
     sanitize_text,
 )
 
@@ -31,6 +32,11 @@ def test_normalize_fullwidth_alphanumerics() -> None:
     assert normalize_fullwidth_alphanumerics("ＫＡＴＥ ｋａｔｅ １２３") == (
         "KATE kate 123"
     )
+
+
+def test_normalize_ocr_confusables_to_ascii() -> None:
+    """OCR-confusable characters are converted to regular ASCII."""
+    assert normalize_ocr_confusables_to_ascii("ΟΚ, οκ.") == "OK, ok."
 
 
 def test_sanitize_text_replaces_control_chars() -> None:

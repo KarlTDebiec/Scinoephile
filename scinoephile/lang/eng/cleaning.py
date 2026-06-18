@@ -8,7 +8,10 @@ import re
 from copy import deepcopy
 
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import normalize_fullwidth_alphanumerics
+from scinoephile.core.text import (
+    normalize_fullwidth_alphanumerics,
+    normalize_ocr_confusables_to_ascii,
+)
 
 __all__ = ["get_eng_cleaned"]
 
@@ -45,6 +48,7 @@ def _get_english_text_cleaned(text: str) -> str | None:
     line_sep = "\\N"
     cleaned = text.replace("\xa0", " ").strip()
     cleaned = normalize_fullwidth_alphanumerics(cleaned)
+    cleaned = normalize_ocr_confusables_to_ascii(cleaned)
 
     # Remove ASS hard-space \h
     cleaned = re.sub(r"\\h", "", cleaned)
