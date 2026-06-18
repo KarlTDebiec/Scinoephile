@@ -1012,11 +1012,11 @@
   {
     "query": {
       "lens": "那儿有 Disneyland 和Hello Kitty Land",
-      "paddle": "那儿有Disneyｌand 和Hello Kitty Land"
+      "paddle": "那儿有Disneyland 和Hello Kitty Land"
     },
     "answer": {
-      "ronghe": "那儿有Disneyland 和Hello Kitty Land",
-      "beizhu": "采用了 Google Lens OCR 中更准确的单词拼写，省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的多余空格。"
+      "ronghe": "那儿有 Disneyland 和Hello Kitty Land",
+      "beizhu": "采用了 Google Lens 中存在的空格，保留了 Google Lens 的汉字识别；其余内容与 PaddleOCR 一致。"
     },
     "difficulty": 1,
     "verified": true

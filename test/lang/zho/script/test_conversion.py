@@ -8,6 +8,8 @@ import pytest
 
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import (
+    S2T_EXCLUSIONS,
+    T2S_EXCLUSIONS,
     OpenCCConfig,
     get_zho_converted,
     get_zho_converter,
@@ -28,17 +30,34 @@ def test_opencc_config_metadata():
 @pytest.mark.parametrize(
     ("text", "config", "expected"),
     [
-        ("台臺", OpenCCConfig.t2s, "台臺"),
         ("台臺", OpenCCConfig.s2t, "台臺"),
-        ("台灣臺灣", OpenCCConfig.t2s, "台湾臺湾"),
-        ("台湾臺湾", OpenCCConfig.s2t, "台灣臺灣"),
-        ("这家伙", OpenCCConfig.s2t, "這傢伙"),
+        ("台臺", OpenCCConfig.t2s, "台台"),
+        ("你吃吓晒啦", OpenCCConfig.s2t, "你吃吓晒啦"),
+        ("一群牛虱", OpenCCConfig.s2t, "一群牛虱"),
+        ("这家伙", OpenCCConfig.s2t, "這家伙"),
+        ("呢個嗰度喎", OpenCCConfig.t2s, "呢个嗰度喎"),
+        ("希望藉此答覆", OpenCCConfig.t2s, "希望借此答复"),
+        ("丑大了", OpenCCConfig.s2t, "丑大了"),
+        ("移形換影", OpenCCConfig.t2s, "移形换影"),
+        ("黃大富", OpenCCConfig.t2s, "黄大富"),
+        ("干杯", OpenCCConfig.s2t, "乾杯"),
+        ("一只猫", OpenCCConfig.s2t, "一隻貓"),
+        ("方便面", OpenCCConfig.s2t, "方便麪"),
+        ("家具", OpenCCConfig.s2t, "傢俱"),
+        ("制作", OpenCCConfig.s2t, "製作"),
+        ("制定", OpenCCConfig.s2t, "制定"),
+        ("注定", OpenCCConfig.s2t, "注定"),
+        ("标准", OpenCCConfig.s2t, "標準"),
+        ("無厘頭", OpenCCConfig.s2t, "無厘頭"),
+        ("无厘頭", OpenCCConfig.s2t, "無釐頭"),
+        ("答覆", OpenCCConfig.t2s, "答复"),
+        ("藉口", OpenCCConfig.t2s, "借口"),
     ],
 )
-def test_get_zho_text_converted_applies_exclusions_by_character_position(
+def test_get_zho_text_converted_applies_exclusions(
     text: str, config: OpenCCConfig, expected: str
 ):
-    """Test conversion exclusions preserve only original excluded characters.
+    """Test conversion exclusions preserve only excluded text spans.
 
     Arguments:
         text: Text to convert
@@ -46,6 +65,28 @@ def test_get_zho_text_converted_applies_exclusions_by_character_position(
         expected: Expected converted text
     """
     assert get_zho_text_converted(text, config) == expected
+
+
+@pytest.mark.parametrize("text", sorted(S2T_EXCLUSIONS))
+def test_s2t_exclusions_are_raw_opencc_changes(text: str):
+    """Test every simplified-to-traditional exclusion changes under raw OpenCC.
+
+    Arguments:
+        text: excluded text span
+    """
+    converted_text = get_zho_converter(OpenCCConfig.s2t).convert(text)
+    assert converted_text != text
+
+
+@pytest.mark.parametrize("text", sorted(T2S_EXCLUSIONS))
+def test_t2s_exclusions_are_raw_opencc_changes(text: str):
+    """Test every traditional-to-simplified exclusion changes under raw OpenCC.
+
+    Arguments:
+        text: excluded text span
+    """
+    converted_text = get_zho_converter(OpenCCConfig.t2s).convert(text)
+    assert converted_text != text
 
 
 def test_get_zho_converted_kob(

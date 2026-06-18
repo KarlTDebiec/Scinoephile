@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from dataclasses import replace
 from pathlib import Path
 
 from scinoephile.core.language import is_chinese_language_tag
@@ -56,5 +55,6 @@ def get_zho_subtitle_streams(
             language = f"{language}-{script}"
         else:
             language = f"{language}-Unknown"
-        zho_streams.append(replace(stream, language=language))
+        stream.language = language
+        zho_streams.append(stream)
     return zho_streams

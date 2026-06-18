@@ -35,7 +35,8 @@
       "zimu_32": "人嚟，馬上同我捉降龍上殿",
       "zimu_33": "係"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -55,7 +56,8 @@
       "zimu_14": "超，神仙大晒咩？",
       "zimu_15": "哎，哎呀⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -149,7 +151,8 @@
       "zimu_88": "咩呀？",
       "zimu_89": "咪住，唔好亂嚟⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -287,7 +290,8 @@
       "zimu_132": "至於求子啦喎",
       "zimu_133": "咁就梗係要拜觀音大使啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -309,7 +313,8 @@
       "zimu_16": "我哋仲未拜神呀",
       "zimu_17": "拜神⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -331,7 +336,8 @@
       "zimu_16": "夫人，呢個仔⋯",
       "zimu_17": "你自己同佢講啦，佢而家出緊嚟啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -339,11 +345,8 @@
       "zimu_2": "仔定女呀？",
       "zimu_3": "仔嚟架，恭喜呀老爺　　恭喜呀老爺⋯"
     },
-    "answer": {
-      "xiugai_3": "仔嚟㗎，恭喜呀老爺　　恭喜呀老爺⋯",
-      "beizhu_3": "將「架」修正為粵語慣用字「㗎」。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -410,21 +413,22 @@
     },
     "answer": {
       "xiugai_2": "呢度咩地方呀？",
-      "beizhu_2": "「咩哋方」修正為「咩地方」，屬錯別字。",
+      "beizhu_2": "將「咩哋方」修正為「咩地方」。「地方」屬排版性錯別字。",
       "xiugai_8": "鬼叫你正話郁嚟郁去咩",
-      "beizhu_8": "「郁來郁去」依粵語用字修正為「郁嚟郁去」。",
-      "xiugai_14": "唏⋯頂頂",
-      "beizhu_14": "移除多餘空格，合併重複字之間的排版間隔。",
+      "beizhu_8": "將「郁來」修正為「郁嚟」；屬字詞排版錯誤。",
+      "xiugai_14": "唏⋯頂　頂",
+      "beizhu_14": "刪除多餘空格，修正排版。",
       "xiugai_16": "十萬火急⋯係呀⋯",
-      "beizhu_16": "移除多餘空格，修正排版。",
+      "beizhu_16": "將中間多餘空格修正為省略號，調整排版。",
       "xiugai_20": "咁冇風度架⋯咁就走咗去",
-      "beizhu_20": "移除多餘空格，修正排版。",
+      "beizhu_20": "刪除多餘空格，修正排版。",
       "xiugai_28": "快啲攞嚟啦⋯喂⋯龍⋯",
-      "beizhu_28": "移除多餘空格，修正排版。",
-      "xiugai_30": "唏呀，揀兩隻至好打吖嘛⋯懶叻吖",
-      "beizhu_30": "移除多餘空格，修正排版。"
+      "beizhu_28": "將多餘空格修正為省略號，調整排版。",
+      "xiugai_46": "到時呀，你靜靜雞攞番啲法力吖嘛",
+      "beizhu_46": "將「呀嘛」修正為「吖嘛」；屬常見輸入錯字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -432,7 +436,8 @@
       "zimu_2": "哎呀原來要生仔呀",
       "zimu_3": "我哋快啲準備啲嘢，幫下人啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -449,19 +454,15 @@
       "zimu_11": "整多濟　　吓？",
       "zimu_12": "吓？"
     },
-    "answer": {
-      "xiugai_7": "⋯係我修緣細細個嗰陣就戴過㗎啦",
-      "beizhu_7": "「架」修正為「㗎」，屬口語助詞用字錯誤。",
-      "xiugai_11": "整多濟吓？",
-      "beizhu_11": "刪除多餘空白字元，修正排版。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "搞掂"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -480,14 +481,16 @@
       "zimu_13": "一定係識變戲法嘅，好教我囉喎",
       "zimu_14": "蒙蒙⋯　　你仲扮低能呀嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "啲蒙蒙係嗰個姐姐度呀",
       "zimu_2": "你過去攞吖"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -520,7 +523,8 @@
       "zimu_27": "終於都中番個啦啩",
       "zimu_28": "洗白白"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -528,7 +532,8 @@
       "zimu_2": "同佢玩一陣好啦，我去改埋啲文件",
       "zimu_3": "我都要趕埋啲刺繡佢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -544,7 +549,8 @@
       "zimu_10": "邊個鬼剎咁嘈",
       "zimu_11": "搞到我篤尿痾到窒吓窒吓？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -557,7 +563,8 @@
       "zimu_7": "唉⋯查實邊有得救嘅，真陰公",
       "zimu_8": "扇扇⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -603,14 +610,16 @@
       "zimu_40": "啱啱講完，真係劈呀",
       "zimu_41": "天有眼呀，劈佢啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "差咁遠呀，嗰邊呀嘛",
       "zimu_2": "瞄準啲，再嚟呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -633,7 +642,20 @@
       "zimu_17": "都有愛國嘅",
       "zimu_18": "係喎"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_1": "你冇事嘛⋯　有冇事吖⋯",
+      "beizhu_1": "刪除多餘空格，修正排版。",
+      "xiugai_6": "蒙蒙　攞條女去浸豬籠",
+      "beizhu_6": "刪除多餘空格，修正排版。",
+      "xiugai_10": "唔好呀⋯　唔着衫通街走",
+      "beizhu_10": "刪除多餘空格，修正排版。",
+      "xiugai_12": "九世雞？　敗類呀，真係賤格呀",
+      "beizhu_12": "刪除多餘空格，修正排版。",
+      "xiugai_13": "一於拉佢去浸豬籠啦　唔好呀",
+      "beizhu_13": "刪除多餘空格，修正排版。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -653,17 +675,19 @@
     },
     "answer": {
       "xiugai_2": "我好快就會返嚟搵你",
-      "beizhu_2": "「快趣」應為「快就」，屬錯別字修正。",
-      "xiugai_4": "姓名只係代號，點叫都係一樣架啫",
-      "beizhu_4": "「祗」修正為「只」；「架」為口語用字，保留原意不變。"
+      "beizhu_2": "「快趣」疑為錯字，修正為「快就」以符合常見用字與語意。",
+      "xiugai_4": "姓名祗係代號，點叫都係一樣㗎啫",
+      "beizhu_4": "「架啫」修正為「㗎啫」；其餘不改動。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "係呢度啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -677,17 +701,16 @@
       "zimu_8": "上個月嗰劑，就至疊友嘞",
       "zimu_9": "你係土地，定陀哋呀？"
     },
-    "answer": {
-      "xiugai_9": "你係土地，定陀地呀？",
-      "beizhu_9": "將「陀哋」更正為「陀地」，屬同音錯別字。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "金身就喺呢度"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -698,7 +721,8 @@
       "zimu_5": "唔係掛",
       "zimu_6": "換番佢先啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -706,7 +730,8 @@
       "zimu_2": "木魚呀",
       "zimu_3": "魚魚"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -735,7 +760,12 @@
       "zimu_23": "我一見到佢就欣賞佢",
       "zimu_24": "攞件衫嚟　　唔"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_14": "至於搞啲咩嘢，就唔使你理嘅",
+      "beizhu_14": "修正錯別字「唔洗」為「唔使」。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -760,23 +790,29 @@
       "zimu_19": "喂，土地"
     },
     "answer": {
-      "xiugai_1": "砸錫",
-      "beizhu_1": "「抵」應為「砸」，屬錯別字。",
-      "xiugai_4": "呢轆嘢係鐵嚟㗎，唔食得㗎",
-      "beizhu_4": "修正口語字詞書寫為「嚟㗎」、「得㗎」。",
+      "xiugai_1": "抵食",
+      "beizhu_1": "「錫」為錯別字，應為「食」。",
+      "xiugai_4": "呢轆嘢係鐵嚟架，唔食得㗎",
+      "beizhu_4": "補正語氣助詞與排版，將「架」改為「㗎」。",
+      "xiugai_5": "吔後面嗰舊啦",
+      "beizhu_5": "「鼓」為錯別字，應為「舊」。",
       "xiugai_11": "哎呀⋯，救命呀，唔好追我⋯",
       "beizhu_11": "刪除多餘空格，修正標點排版。",
+      "xiugai_16": "哎呀⋯快啲躲埋先嘞",
+      "beizhu_16": "「喱」為錯別字，應為「躲」。",
       "xiugai_17": "喂，袁霸天嚟咗呀",
-      "beizhu_17": "修正「嚟左」為「嚟咗」，屬錯別字。"
+      "beizhu_17": "「左」為錯別字，應為「咗」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "九世惡人？",
       "zimu_2": "搵都慳番"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -788,7 +824,8 @@
       "zimu_6": "哎呀⋯都係打頭",
       "zimu_7": "唔好打背脊呀，哎呀⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -796,19 +833,23 @@
       "zimu_2": "睇你走得去邊",
       "zimu_3": "燒埋你個臭和尚"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "吓？我要燒你，你夠膽吹熄我把火？"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -821,22 +862,25 @@
     },
     "answer": {
       "xiugai_2": "家下你了解到，俾人欺負嘅痛苦呢？",
-      "beizhu_2": "「家吓」修正為「家下」，屬常見用字/輸入錯誤。"
+      "beizhu_2": "「家吓」修正為「家下」，屬排版/錯別字修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "冇可能⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "返去閂埋門諗清楚",
       "zimu_2": "我好快會再搵你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -846,7 +890,8 @@
       "zimu_4": "唔濟呀，唔去呀",
       "zimu_5": "行啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -888,7 +933,7 @@
       "zimu_36": "佢呢種叫做鴛鴦蝴蝶命",
       "zimu_37": "死親都一對嘅",
       "zimu_38": "佢兩個下一世將會再續未了緣",
-      "zimu_39": "唉⋯真是羡煞旁人呀",
+      "zimu_39": "唉⋯真是羨煞旁人呀",
       "zimu_40": "少爺，咁我哋而家點呀？",
       "zimu_41": "咁高興，梗係斬隻雞返嚟賀一賀佢啦",
       "zimu_42": "仲有你，搵個忤怍佬返嚟送佢哋一程",
@@ -901,9 +946,10 @@
     },
     "answer": {
       "xiugai_12": "老爺⋯，佢哋殺晒我哋全屋嘅畜牲呀",
-      "beizhu_12": "修正多餘空格，標點排版調整。"
+      "beizhu_12": "刪除多餘空格，修正標點排版。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -933,7 +979,8 @@
       "zimu_24": "超",
       "zimu_25": "而家我想嗒你哋，邊個願意就跟我行呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -943,7 +990,8 @@
       "zimu_4": "夜啦，你瞓陣先啦",
       "zimu_5": "吓，師父，我同豬一樣日頭至瞓架喎"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -952,12 +1000,13 @@
       "zimu_3": "望一望吖"
     },
     "answer": {
-      "xiugai_1": "大聖，你老豆搵你呀",
-      "beizhu_1": "修正錯別字：「大種」改為「大聖」；「逗」改為「豆」。",
+      "xiugai_1": "大佬，你老豆搵你呀",
+      "beizhu_1": "修正錯別字：「大種」改為「大佬」，「逗」改為「豆」。",
       "xiugai_2": "你阿媽搵你呀，我老豆死咗好耐啦",
       "beizhu_2": "修正錯別字：「老逗」改為「老豆」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1054,11 +1103,8 @@
       "zimu_91": "正衰仔嚟架，生嚿叉燒好過生你",
       "zimu_92": "叉燒？"
     },
-    "answer": {
-      "xiugai_15": "嘩⋯呢位大人請埋面坐",
-      "beizhu_15": "「面座」應為「面坐」，屬輸入錯誤。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1066,20 +1112,27 @@
       "zimu_2": "叉燒⋯",
       "zimu_3": "我好臭架，唔好食呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "伏虎羅漢現真身"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "污辱我呀？",
       "zimu_2": "我俾你嚇到瀨尿呀"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_1": "侮辱我呀？",
+      "beizhu_1": "「污辱」應為「侮辱」。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1128,23 +1181,26 @@
     },
     "answer": {
       "xiugai_1": "騎呢怪，做咩搞到咁烏where？",
-      "beizhu_1": "修正英數混排中的空格，合併為「where」並刪除多餘空格。"
+      "beizhu_1": "修正英文片段排版，移除多餘空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "一晚之內死百幾人呀",
       "zimu_2": "梗係有妖孽呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "死乞兒吖",
       "zimu_2": "生咁大個孖瘡唔見生死你呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1188,7 +1244,18 @@
       "zimu_38": "關乎全城人嘅安危，點到佢唔肯呀",
       "zimu_39": "大家一齊入去講，地保，你先"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_3": "哎呀⋯弊啦⋯",
+      "beizhu_3": "「幣」修正為「弊」。",
+      "xiugai_5": "我有大疤瘡呀⋯死啦⋯",
+      "beizhu_5": "「孖瘡」疑為錯別字，修正為「疤瘡」。",
+      "xiugai_13": "咁就會消災解難㗎嘞",
+      "beizhu_13": "「架嘞」修正為口語常用寫法「㗎嘞」。",
+      "xiugai_15": "可能要我減壽十年㗎幡",
+      "beizhu_15": "「架幡」疑為錯別字，修正為「㗎幡」。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1212,24 +1279,31 @@
       "zimu_18": "快啲⋯爽手啲啦，埋嚟⋯　　激死人⋯",
       "zimu_19": "駝背佬，瞓低"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "隻腳指向邊個，邊個中",
       "zimu_2": "轉啦⋯轉呀轉⋯　　好驚呀⋯"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_2": "轉啦⋯轉呀轉⋯好驚呀⋯",
+      "beizhu_2": "刪除多餘空格。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "哦⋯你奸茅"
     },
     "answer": {
-      "xiugai_1": "哦⋯你奸詐",
-      "beizhu_1": "「茅」應為錯別字，修正為「詐」。"
+      "xiugai_1": "哦⋯你奸猾",
+      "beizhu_1": "「奸茅」應為錯別字，修正為常見用法「奸猾」；其餘不改。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1249,7 +1323,8 @@
       "zimu_14": "捉佢沐浴更衣，行",
       "zimu_15": "唔好呀⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1258,11 +1333,8 @@
       "zimu_3": "靚至救呀？",
       "zimu_4": "咁燒你就唔駛救啦係嘛？"
     },
-    "answer": {
-      "xiugai_1": "嘩，咁靚，燒咗佢㗎啲喎",
-      "beizhu_1": "將異體/誤輸入字「𠻀」修正為「㗎」，屬排版性錯誤。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1279,10 +1351,11 @@
       "zimu_11": "因為玉帝托夢話我知嘅　　哦⋯"
     },
     "answer": {
-      "xiugai_5": "嗱我解你聽，你就明架嘞",
-      "beizhu_5": "補上標點，修正漏字造成的斷句問題。"
+      "xiugai_5": "嗱，我解你聽你就明架嘞",
+      "beizhu_5": "補上缺少的標點"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1294,7 +1367,8 @@
       "zimu_6": "啱時候嘞，鬧佢",
       "zimu_7": "我唔夠膽"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1318,14 +1392,16 @@
       "zimu_18": "冇井水啫，求其乜水都好，攞嚟啦",
       "zimu_19": "哦⋯明白"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "嘩⋯你咁勇，避都唔避吓",
       "zimu_2": "吓？口水嚟之嘛，怕咩呀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1333,7 +1409,8 @@
       "zimu_2": "應該嘅",
       "zimu_3": "我⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1358,7 +1435,8 @@
       "zimu_19": "仲衰過個馬桶",
       "zimu_20": "你除咗曉瞓低收錢之外仲曉做啲咩呀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1368,7 +1446,8 @@
       "zimu_4": "譬如話，賣吓豆腐，咁得唔得啫？",
       "zimu_5": "個檔口擺喺門口定係床邊呀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1384,7 +1463,9 @@
       "zimu_10": "唔係呀師父",
       "zimu_11": "狗肉穿腸過，徒弟好肚餓呀⋯"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1397,11 +1478,8 @@
       "zimu_7": "第二樣唔見你咁有鬥志",
       "zimu_8": "幫幫忙啦⋯嚟呀⋯"
     },
-    "answer": {
-      "xiugai_5": "嗱⋯，唔好玩嘞，我知你未吞呀",
-      "beizhu_5": "修正標點與空格：刪除多餘空格，補正全形標點。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1419,7 +1497,8 @@
       "zimu_12": "好意思話照足我吩咐嘅",
       "zimu_13": "錯嘞，我賣緊豆腐架⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1433,7 +1512,12 @@
       "zimu_8": "佢肯改嘅，係用錯方法嘅啫",
       "zimu_9": "大種，跟我來"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_9": "大聰，跟我來",
+      "beizhu_9": "「大種」疑為輸入錯誤，修正為「大聰」。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1455,35 +1539,32 @@
       "zimu_16": "邊個話佢哋冇得救，係人都有得救",
       "zimu_17": "上面你班友聽住，呢鑊我贏硬呀"
     },
-    "answer": {
-      "xiugai_2": "千祈唔好喺呢條街附近呢",
-      "beizhu_2": "「千其」修正為「千祈」。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "喺呢個世上，除咗佢我邊個都唔嫁"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "曳呀你，裝人沖涼",
       "zimu_2": "好衰架，唔准講人哋架吓"
     },
-    "answer": {
-      "xiugai_2": "好衰㗎，唔准講人哋㗎吓",
-      "beizhu_2": "將「架」修正為粵語常用字「㗎」，屬排版/錯別字修正。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "就係呢個造型",
       "zimu_2": "一個好女子，就應該係咁樣"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1491,11 +1572,8 @@
       "zimu_2": "唔係點會變成咁吖",
       "zimu_3": "得嘅"
     },
-    "answer": {
-      "xiugai_1": "都唔痛嘅？我都知係發緊夢㗎啦",
-      "beizhu_1": "將「架」修正為口語慣用字「㗎」"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1506,13 +1584,15 @@
       "zimu_5": "咁雞⋯都一樣可以變鳳凰",
       "zimu_6": "我又要做鳳凰，得唔得吖？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "鳳凰？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1533,7 +1613,8 @@
       "zimu_15": "我？",
       "zimu_16": "一個風度翩翩嘅靚仔"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1543,7 +1624,14 @@
       "zimu_4": "大孖瘡都會標番晒出嚟",
       "zimu_5": "咁嚇親人就冇謂"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_3": "若然唔係，黃金會變返狗屎",
+      "beizhu_3": "將「番」修正為「返」，屬字形錯別字。",
+      "xiugai_4": "大疴瘡都會標番晒出嚟",
+      "beizhu_4": "將「孖瘡」修正為「疴瘡」，屬明顯錯別字。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1556,7 +1644,8 @@
       "zimu_7": "佢耐唔中都要客串下嘅",
       "zimu_8": "公子，跟我嚟啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1569,7 +1658,8 @@
       "zimu_7": "冇咩唔妥吖嘛？",
       "zimu_8": "識貨"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1585,13 +1675,16 @@
       "zimu_10": "⋯買豆腐",
       "zimu_11": "咦⋯好衰架"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "啱晒，順便攪掂埋你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1601,7 +1694,8 @@
       "zimu_4": "郁佢",
       "zimu_5": "係"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1617,43 +1711,46 @@
     },
     "answer": {
       "xiugai_1": "咩事呀⋯，睇吓⋯咩事呀⋯",
-      "beizhu_1": "修正標點空格，刪除多餘空格。"
+      "beizhu_1": "修正標點排版，刪除多餘空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "開玩笑呀⋯藤條",
       "zimu_2": "睇少我係話",
       "zimu_3": "怕未？",
-      "zimu_4": "唉⋯好边",
+      "zimu_4": "唉⋯好攰",
       "zimu_5": "呀⋯ ，走呀⋯"
     },
     "answer": {
-      "xiugai_4": "唉⋯好邊",
-      "beizhu_4": "將「边」修正為繁體「邊」",
       "xiugai_5": "呀⋯，走呀⋯",
-      "beizhu_5": "修正標點排版，去除多餘空格並補上逗號"
+      "beizhu_5": "刪除多餘空格，調整標點排版。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "走去邊？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "冚家富貴，教極唔聽係話"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "服未？　　服你老味"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1678,24 +1775,16 @@
       "zimu_19": "Yeah⋯",
       "zimu_20": "哎呀⋯我嚟叫雞架幡"
     },
-    "answer": {
-      "xiugai_1": "呀⋯原來呀邊個係神仙嚟㗎",
-      "beizhu_1": "修正口語字詞「架」為「㗎」。",
-      "xiugai_8": "我聽日賣埋豆漿㗎",
-      "beizhu_8": "修正口語字詞「架」為「㗎」。",
-      "xiugai_15": "佢鍾意食狗肉㗎",
-      "beizhu_15": "修正口語字詞「架」為「㗎」。",
-      "xiugai_20": "哎呀⋯我嚟叫雞㗎幡",
-      "beizhu_20": "修正口語字詞「架」為「㗎」。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "既然係咁，我唯有以暴易暴",
       "zimu_2": "鐵頭功"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1703,13 +1792,15 @@
       "zimu_2": "而家叫你做和尚啫又唔係叫你去死",
       "zimu_3": "即刻乖乖哋跟我返去"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "真係冥頑不靈⋯哼"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1717,16 +1808,18 @@
       "zimu_2": "總之以後唔好再殺人，得嘞啩"
     },
     "answer": {
-      "xiugai_1": "算嘞⋯，唔做和尚就罷嘞",
-      "beizhu_1": "刪除多餘空格，並修正重複字詞「罷就嘞」為「罷嘞」。"
+      "xiugai_1": "算嘞⋯，唔做和尚就罷咯",
+      "beizhu_1": "修正多餘空格與標點格式，並將「罷就嘞」校正為較合理的原文用字「罷咯」以符合口語字幕排版。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "仆你個街吖，究竟係人定係野獸？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1737,7 +1830,12 @@
       "zimu_5": "咁又係嘅，我都係識咗佢之後",
       "zimu_6": "先發覺自己有自尊"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_4": "今世，我一定要嫁俾阿邊個先甘心嘅",
+      "beizhu_4": "「呀邊個」疑為錯別字，修正為「阿邊個」。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1747,10 +1845,15 @@
       "zimu_4": "我同你筆賬就第二日至算啦"
     },
     "answer": {
-      "xiugai_3": "祇要你今日唔上去攪亞玉",
-      "beizhu_3": "「祗」修正為常見正字「祇」"
+      "xiugai_1": "今晚當我買，你怕",
+      "beizhu_1": "補上標點，分隔語意",
+      "xiugai_2": "嗱，一人行一步吖，嗱",
+      "beizhu_2": "補上標點，分隔語意",
+      "xiugai_3": "只要你今日唔上去攪亞玉",
+      "beizhu_3": "「祗」修正為「只」"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1758,13 +1861,19 @@
       "zimu_2": "你個死剷吖",
       "zimu_3": "忍無可忍嘞"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_1": "嘩⋯如果我唔係變咗身，咪俾你對死咗",
+      "beizhu_1": "補上缺少的標點符號「，」"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我佛慈悲，大吉大利"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1787,13 +1896,8 @@
       "zimu_17": "靚仔，好熟面口喎",
       "zimu_18": "兩位壯士，怕認錯人嘞"
     },
-    "answer": {
-      "xiugai_4": "唔使理佢架　　哦",
-      "beizhu_4": "「唔洗」改為「唔使」；其餘不變。",
-      "xiugai_14": "有呀，好似走咗去茅廁嗰邊",
-      "beizhu_14": "「厠」改為「廁」。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1805,7 +1909,8 @@
       "zimu_6": "我有錢架",
       "zimu_7": "死嘞，黃金變⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1840,20 +1945,23 @@
       "xiugai_13": "我講道理咋嘛",
       "beizhu_13": "修正錯別字「幡」為「嘛」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小玉⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "救命呀",
       "zimu_2": "大嚿衰"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1869,33 +1977,39 @@
       "zimu_10": "師父，我走唔到呀"
     },
     "answer": {
-      "xiugai_3": "對唔住，搵錯",
-      "beizhu_3": "補上缺少的標點符號「，」"
+      "xiugai_4": "順手閂門呀。",
+      "beizhu_4": "補上句末標點。",
+      "xiugai_5": "食蕉呀。",
+      "beizhu_5": "補上句末標點。",
+      "xiugai_9": "打回原形嘞，哼哼聲走啦。",
+      "beizhu_9": "補上句末標點。",
+      "xiugai_10": "師父，我走唔到呀。",
+      "beizhu_10": "補上句末標點。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "吓？袁霸天"
     },
-    "answer": {
-      "xiugai_1": "哈？袁霸天",
-      "beizhu_1": "將「吓」修正為「哈」，屬錯別字/排版性修正。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "去死啦，大種乞兒"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "唔好再叫我大種",
       "zimu_2": "我叫周溢祥"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1907,7 +2021,20 @@
       "zimu_6": "你冇晒法術呢",
       "zimu_7": "聽日有，聽日你就知死"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_3": "大種⋯你唔好死住呀，大種",
+      "beizhu_3": "補上標點，修正停頓處的分隔。",
+      "xiugai_4": "你頂多陣呀！",
+      "beizhu_4": "補上句末標點。",
+      "xiugai_5": "大種⋯你唔死得㗎，大種",
+      "beizhu_5": "修正用字「架」為口語常用的「㗎」。",
+      "xiugai_6": "你冇晒法術呢？",
+      "beizhu_6": "補上句末標點。",
+      "xiugai_7": "聽日有，聽日你就知死！",
+      "beizhu_7": "補上句末標點。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1917,15 +2044,17 @@
     },
     "answer": {
       "xiugai_2": "擰佢塊面過嚟　擰番塊面呀",
-      "beizhu_2": "刪除多餘空格，屬排版性錯誤。"
+      "beizhu_2": "刪除多餘空格，修正排版。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "猛開佢對眼"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1934,7 +2063,8 @@
       "zimu_3": "吓⋯講真又幾精彩喎",
       "zimu_4": "係囉"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1965,16 +2095,15 @@
       "zimu_25": "唔得都要得架嘞"
     },
     "answer": {
-      "xiugai_5": "點樣先至可以救返大種乞兒？",
-      "beizhu_5": "「番」應為「返」。",
       "xiugai_6": "人嘅生死早有定數，天條規矩冇得變",
-      "beizhu_6": "補上標點，修正排版。",
-      "xiugai_8": "無論如何都要搵番佢上嚟",
-      "beizhu_8": "「猛」應為「搵」，屬明顯錯別字。",
+      "beizhu_6": "補上缺少的標點符號「，」",
+      "xiugai_8": "無論如何都要掹番佢上嚟",
+      "beizhu_8": "將「猛」修正為「掹」；屬錯別字修正",
       "xiugai_20": "喂⋯我係普通料嚟咋，仲未有資格落去",
-      "beizhu_20": "補上標點，修正排版。"
+      "beizhu_20": "補上缺少的標點符號「，」"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1989,10 +2118,11 @@
       "zimu_9": "唔得　咩大字型？"
     },
     "answer": {
-      "xiugai_9": "唔得　咩大字形？",
-      "beizhu_9": "將「大字型」修正為「大字形」，屬排版性錯別字修正。"
+      "xiugai_9": "唔得　咩「大字型」？",
+      "beizhu_9": "將「大字型」加上引號以符合字幕排版；其餘不改動。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2004,7 +2134,8 @@
       "zimu_6": "唔係",
       "zimu_7": "挑"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2015,7 +2146,8 @@
       "zimu_5": "你夠膽？咪嚟呀",
       "zimu_6": "咪嚟呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2040,7 +2172,12 @@
       "zimu_19": "你定呀",
       "zimu_20": "放低你個金身"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_10": "一係⋯我幫你修修啲腳甲，佢呀咁長",
+      "beizhu_10": "「腳甲佢」間有排版/標點錯誤，補上逗號為「腳甲，佢」"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2048,7 +2185,8 @@
       "zimu_2": "你做咩吸走佢嘅魂魄呀？",
       "zimu_3": "我奸架嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2061,20 +2199,23 @@
       "zimu_7": "大種⋯",
       "zimu_8": "大種⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大種⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "主宮，我一定照你嘅吩咐",
       "zimu_2": "幫你完成你嘅大業"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2091,7 +2232,18 @@
       "zimu_11": "對唔住嘞，我就嚟咬長糧",
       "zimu_12": "焗住跟大隊啦⋯係咁先啦"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_4": "我話晒都係嚟度嘅佗哋喎",
+      "beizhu_4": "「陀哋」修正為「佗哋」以符合常見字幕用字。",
+      "xiugai_5": "我都話咗呢單嘢濟唔過㗎啦",
+      "beizhu_5": "「架」修正為口語助詞「㗎」。",
+      "xiugai_6": "咩事啫，究竟？",
+      "beizhu_6": "補上逗號，修正標點。",
+      "xiugai_10": "冚嗪呤走晒，呢班友返嚟執行李㗎咋",
+      "beizhu_10": "「架」修正為「㗎」，並補正「呢班友返嚟執行李架咋」的口語助詞寫法。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2099,7 +2251,8 @@
       "zimu_2": "濟癲，個金身呢？",
       "zimu_3": "你死嘞，攪個禍出嚟啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2107,7 +2260,8 @@
       "zimu_2": "今次闖禍嘞",
       "zimu_3": "哎呀，慘喇⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2119,7 +2273,8 @@
       "zimu_6": "師父，快啲走啦",
       "zimu_7": "話唔定一個雷劈落嚟，將間廟擘冧呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2127,17 +2282,15 @@
       "zimu_2": "走啦⋯",
       "zimu_3": "還原"
     },
-    "answer": {
-      "xiugai_1": "連你都怪我？ 走啦⋯連觀音都冧咗啦",
-      "beizhu_1": "修正多餘空格，將全形空白排版統一。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "真係趕到我咁絕？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2155,7 +2308,8 @@
       "zimu_12": "幾時輪到你哋？",
       "zimu_13": "我先架⋯　　我先⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2169,7 +2323,8 @@
       "zimu_8": "梗係啦",
       "zimu_9": "娶你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2178,7 +2333,8 @@
       "zimu_3": "無論佢前世種種，今生各樣",
       "zimu_4": "此誓永不言悔"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2210,13 +2366,15 @@
       "zimu_26": "慢慢會變成一嚿木頭",
       "zimu_27": "我唔准你講吖⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "呀⋯你隻腳"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2240,14 +2398,16 @@
       "zimu_18": "你估我唔知呀",
       "zimu_19": "我乜都知"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "呢鑊輸晒喇呢鑊",
       "zimu_2": "咩都冇，真係咩都冇"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2255,33 +2415,38 @@
       "zimu_2": "我就呢世都唔要愛情",
       "zimu_3": "唔好呀⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我以後都唔要愛情"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "救命呀⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "殺埋你，就啱啱好儲夠",
       "zimu_2": "七七四十九個人嘅血"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "主宮，我而家就攞濟公嘅金身浸落去",
       "zimu_2": "佢搵到嚟都廢咗武功啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2289,20 +2454,27 @@
       "zimu_2": "你已經成隻死狗咁嘞",
       "zimu_3": "天字派蒲頭"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "羅漢壓頂",
       "zimu_2": "天將幫拖"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_2": "天將幫他",
+      "beizhu_2": "修正錯別字「拖」為「他」。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "扚個冚家剷埋嚟"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2310,14 +2482,16 @@
       "zimu_2": "你係打我唔死嘅",
       "zimu_3": "係咩？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "睇吓邊個惡⋯",
       "zimu_2": "打謝你⋯呀⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2330,7 +2504,18 @@
       "zimu_7": "死仆街，我一早殺咗你",
       "zimu_8": "就唔洗死咁多人"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_2": "只要你肯認輸，再連降三級",
+      "beizhu_2": "修正錯別字「祗」為「只」",
+      "xiugai_4": "而家時間無多，要返上去啦",
+      "beizhu_4": "調整「架」為「啦」，屬標點/用字修正",
+      "xiugai_5": "等我搞掂埋佢先",
+      "beizhu_5": "修正錯別字「攪」為「搞」",
+      "xiugai_8": "就唔使死咁多人",
+      "beizhu_8": "修正錯別字「洗」為「使」"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2338,14 +2523,16 @@
       "zimu_2": "主宮同我換咗個千年不死嘅心",
       "zimu_3": "你哋玩我唔死嘅"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "睇清楚你個千年不死心啦",
       "zimu_2": "吓？石頭？點解會咁樣架？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2382,13 +2569,16 @@
       "zimu_31": "繼續殺啲無辜嘅人，你係咪想咁樣？",
       "zimu_32": "係嘅話，咁你擺番但，擺呀"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "咁下世唔好俾我再做人喇⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2404,7 +2594,8 @@
       "zimu_10": "喂⋯等唔到啦",
       "zimu_11": "降龍⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2415,19 +2606,22 @@
       "zimu_5": "嚟咪嚟",
       "zimu_6": "好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "嘩"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "哎呀，大鑊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2436,13 +2630,8 @@
       "zimu_3": "濟癲　　師父",
       "zimu_4": "我哋又見返啦，走啦"
     },
-    "answer": {
-      "xiugai_2": "濟癲　師父",
-      "beizhu_2": "修正多餘空格，將連續空白整理為一致排版。",
-      "xiugai_3": "濟癲　師父",
-      "beizhu_3": "修正多餘空格，將連續空白整理為一致排版。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2452,7 +2641,8 @@
       "zimu_4": "因為我一直最欣賞嘅人，都係你",
       "zimu_5": "又嚟啦，走呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2468,7 +2658,9 @@
       "zimu_10": "濟唔濟呀？",
       "zimu_11": "梗係唔濟啦"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2481,7 +2673,8 @@
       "zimu_7": "你估我想嘅咩？",
       "zimu_8": "而家我個肚呀，仲不知幾咁唔舒服呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2489,29 +2682,38 @@
       "zimu_2": "痾番啲金粉出嚟吖",
       "zimu_3": "我長期便秘架"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_2": "痾返啲金粉出嚟吖",
+      "beizhu_2": "「番」應為「返」，屬錯別字修正。",
+      "xiugai_3": "我長期便秘㗎",
+      "beizhu_3": "「架」應為語氣助詞「㗎」，屬錯別字修正。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我醒起嘞",
       "zimu_2": "金身仲有兩隻金牙，喺我度架"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "吓？師父你偷嘢呀？",
-      "zimu_2": "嘘⋯我冇牙借嚟用住先咋",
+      "zimu_2": "噓⋯我冇牙借嚟用住先咋",
       "zimu_3": "頂唔住啦⋯求你幫我最後一個忙",
       "zimu_4": "咩呀？　　諗辦法猛大佢個口"
     },
     "answer": {
-      "xiugai_2": "嘘⋯我冇牙，借嚟用住先咋",
-      "beizhu_2": "補上缺少的標點，將「冇牙」與後文分開。",
-      "xiugai_4": "咩呀？諗辦法猛大佢個口",
-      "beizhu_4": "刪除多餘空格。"
+      "xiugai_2": "噓⋯我冇牙，借嚟用住先咋",
+      "beizhu_2": "補上漏字標點，將「冇牙借」修正為「冇牙，借」以符合原句排版。",
+      "xiugai_4": "咩呀？　　諗辦法撬大佢個口",
+      "beizhu_4": "將明顯錯別字「猛」修正為「撬」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2524,19 +2726,23 @@
       "zimu_7": "笑得咁過癮吖嗱",
       "zimu_8": "濟癲⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "濟癲⋯"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "阿彌陀佛，南無南無阿彌陀佛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2566,7 +2772,8 @@
       "zimu_24": "你哋睇吓　　有嘢睇喎⋯",
       "zimu_25": "佢今世唔洗再做乞兒喇　　係喎⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2585,7 +2792,8 @@
       "zimu_13": "好彩我同你執番咋嗱",
       "zimu_14": "但係就多咗個降龍尊者"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2596,17 +2804,19 @@
       "zimu_5": "加冕儀式開始"
     },
     "answer": {
-      "xiugai_2": "嘩⋯仲做埋尊者添吖，但都可以做尊者？",
-      "beizhu_2": "修正排版標點，將原本異常空白改為逗號。"
+      "xiugai_1": "你點會喺度㗎⋯",
+      "beizhu_1": "「架」修正為口語助詞「㗎」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "恭喜晒",
       "zimu_2": "多謝"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2615,6 +2825,15 @@
       "zimu_3": "我想成為一個和平使者向凡間宣揚愛心",
       "zimu_4": "等佢哋明解只要有愛心，邊度都係天堂"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_2": "有咩志願呀？",
+      "beizhu_2": "「吖」應為口語用字，修正為「呀」。",
+      "xiugai_3": "我想成為一個和平使者，向凡間宣揚愛心",
+      "beizhu_3": "補上標點。",
+      "xiugai_4": "等佢哋明白只要有愛心，邊度都係天堂",
+      "beizhu_4": "「明解」應為「明白」。"
+    },
+    "difficulty": 1,
+    "verified": true
   }
 ]

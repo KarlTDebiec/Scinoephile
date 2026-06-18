@@ -31,6 +31,7 @@ __all__ = [
     "dedent_and_compact",
     "get_char_type",
     "is_full_width_char",
+    "normalize_fullwidth_alphanumerics",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
     "sanitize_text",
@@ -180,6 +181,15 @@ half_to_full_punc = {
 full_to_half_punc = {v: k for k, v in half_to_full_punc.items()}
 """Mapping from full-width to half-width punctuation characters."""
 
+_FULLWIDTH_ALPHANUMERICS_TO_ASCII = str.maketrans(
+    {
+        **{chr(code): chr(code - 0xFEE0) for code in range(0xFF10, 0xFF1A)},
+        **{chr(code): chr(code - 0xFEE0) for code in range(0xFF21, 0xFF3B)},
+        **{chr(code): chr(code - 0xFEE0) for code in range(0xFF41, 0xFF5B)},
+    }
+)
+"""Mapping from fullwidth ASCII letters and digits to regular ASCII."""
+
 RE_HANZI = re.compile(
     r"[\u4e00-\u9fff"
     r"\u3400-\u4DBF"
@@ -272,6 +282,8 @@ def get_char_type(char: str) -> str:
             "\U00030000" <= char <= "\U0003134a",  # CJK Unified Ideographs Ext G
             "\U00031350" <= char <= "\U000323af",  # CJK Unified Ideographs Ext H
             "\u3000" <= char <= "\u303f",  # CJK Symbols and Punctuation
+            "\uff01" <= char <= "\uff60",  # Fullwidth ASCII variants
+            "\uffe0" <= char <= "\uffe6",  # Fullwidth symbol variants
         ]
     ):
         return "full"
@@ -303,6 +315,17 @@ def is_full_width_char(char: str) -> bool:
     if char in full_punc_chars:
         return True
     return get_char_type(char) == "full"
+
+
+def normalize_fullwidth_alphanumerics(text: str) -> str:
+    """Convert fullwidth ASCII letters and digits to regular ASCII.
+
+    Arguments:
+        text: text to normalize
+    Returns:
+        text with fullwidth alphanumeric characters normalized
+    """
+    return text.translate(_FULLWIDTH_ALPHANUMERICS_TO_ASCII)
 
 
 def remove_non_punc_and_whitespace(text: str) -> str:

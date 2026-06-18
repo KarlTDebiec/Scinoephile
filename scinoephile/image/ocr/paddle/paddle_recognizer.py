@@ -90,16 +90,21 @@ class PaddleRecognizer:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
         paddle_ocr_cls = self._get_paddle_ocr_class()
-        self._ocr = paddle_ocr_cls(
-            lang=self.paddle_language_code,
-            use_doc_orientation_classify=False,
-            use_doc_unwarping=False,
-            use_textline_orientation=True,
-            text_detection_model_name=_TEXT_DETECTION_MODEL_NAME,
-            text_recognition_model_name=_TEXT_RECOGNITION_MODEL_NAME,
-            textline_orientation_model_name=_TEXTLINE_ORIENTATION_MODEL_NAME,
-            enable_mkldnn=system() != "Windows",
-        )
+        root_logger = getLogger()
+        root_logger_level = root_logger.level
+        try:
+            self._ocr = paddle_ocr_cls(
+                lang=self.paddle_language_code,
+                use_doc_orientation_classify=False,
+                use_doc_unwarping=False,
+                use_textline_orientation=True,
+                text_detection_model_name=_TEXT_DETECTION_MODEL_NAME,
+                text_recognition_model_name=_TEXT_RECOGNITION_MODEL_NAME,
+                textline_orientation_model_name=_TEXTLINE_ORIENTATION_MODEL_NAME,
+                enable_mkldnn=system() != "Windows",
+            )
+        finally:
+            root_logger.setLevel(root_logger_level)
 
     @override
     def __repr__(self) -> str:

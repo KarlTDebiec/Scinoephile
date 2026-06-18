@@ -17,6 +17,17 @@ def test_get_zho_text_cleaned_removes_subtitle_markup():
     assert _get_zho_text_cleaned(text) == "中文 測試"
 
 
+def test_get_zho_text_cleaned_normalizes_fullwidth_alphanumerics():
+    """Test fullwidth letters and digits are normalized in Chinese text."""
+    fullwidth_text = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
+    fullwidth_text = f"{fullwidth_text} ａｂｃｄｅｆｇｈｉｊｋｌｍ"
+    fullwidth_text = f"{fullwidth_text}ｎｏｐｑｒｓｔｕｖｗｘｙｚ ０１２３４５６７８９"
+
+    assert _get_zho_text_cleaned(fullwidth_text) == (
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789"
+    )
+
+
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [

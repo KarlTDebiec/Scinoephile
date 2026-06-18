@@ -2600,7 +2600,7 @@ Go to have a look
 
 521
 00:30:37,917 --> 00:30:39,958
-这么英雄潇洒你说有鬼！
+这么英气潇洒你说有鬼！
 You said a ghost!
 
 522
@@ -2615,7 +2615,7 @@ Don't be pretentious around here
 
 524
 00:30:46,208 --> 00:30:48,208
-等一下我一块肉一块肉的给你割下来
+等一下我一块肉一块肉地给你割下来
 Or I will cut you into pieces
 
 525
