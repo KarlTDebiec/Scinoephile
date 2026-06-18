@@ -12,7 +12,7 @@ from typing import Self
 from PIL import Image
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.text import whitespace_chars
+from scinoephile.core.text import WHITESPACE_CHARS
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.ocr.validation import ValidationManager
@@ -493,7 +493,7 @@ class OcrValidationSession:
         """
         cursor = self._char_cursor(state)
         while cursor.char_idx < len(cursor.sub.text_with_newline):
-            if cursor.char in whitespace_chars or cursor.char == "\n":
+            if cursor.char in WHITESPACE_CHARS or cursor.char == "\n":
                 cursor.advance(n_chars=1, n_bboxes=0)
                 continue
 

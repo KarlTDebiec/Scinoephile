@@ -15,14 +15,14 @@ from .exceptions import ScinoephileError
 
 __all__ = [
     "ChineseScript",
-    "half_punc",
-    "full_punc",
-    "whitespace",
-    "half_punc_chars",
-    "full_punc_chars",
-    "whitespace_chars",
-    "half_to_full_punc",
-    "full_to_half_punc",
+    "HALF_PUNC",
+    "FULL_PUNC",
+    "WHITESPACE",
+    "HALF_PUNC_CHARS",
+    "FULL_PUNC_CHARS",
+    "WHITESPACE_CHARS",
+    "HALF_TO_FULL_PUNC",
+    "FULL_TO_HALF_PUNC",
     "RE_HANZI",
     "RE_PRIVATE_USE_AREA_BMP",
     "RE_WESTERN",
@@ -60,7 +60,7 @@ class AnsiColor(Enum):
 
 # See https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
 # See https://en.wikipedia.org/wiki/CJK_Symbols_and_Punctuation
-half_punc = {
+HALF_PUNC = {
     "APOSTROPHE": "'",
     "BULLET": "•",
     "BULLET OPERATOR": "∙",
@@ -107,7 +107,7 @@ half_punc = {
 }
 """Selected half-width punctuation characters."""
 
-full_punc = {
+FULL_PUNC = {
     "BOX DRAWINGS LIGHT HORIZONTAL": "─",
     "DOUBLE PRIME QUOTATION MARK": "〞",
     "FULLWIDTH APOSTROPHE": "＇",
@@ -152,26 +152,26 @@ full_punc = {
 }
 """Selected full-width punctuation characters."""
 
-whitespace = {
+WHITESPACE = {
     "IDEOGRAPHIC SPACE": "　",
     "SPACE": " ",
 }
 """Selected whitespace characters."""
 
-half_punc_chars = set(half_punc.values())
+HALF_PUNC_CHARS = set(HALF_PUNC.values())
 """Set of half-width punctuation characters."""
 
-full_punc_chars = set(full_punc.values())
+FULL_PUNC_CHARS = set(FULL_PUNC.values())
 """Set of full-width punctuation characters."""
 
-whitespace_chars = set(whitespace.values())
+WHITESPACE_CHARS = set(WHITESPACE.values())
 """Set of whitespace characters."""
 
-half_to_full_punc = {
+HALF_TO_FULL_PUNC = {
     **{
-        half_punc[key]: full_punc[f"FULLWIDTH {key}"]
-        for key in half_punc
-        if f"FULLWIDTH {key}" in full_punc
+        HALF_PUNC[key]: FULL_PUNC[f"FULLWIDTH {key}"]
+        for key in HALF_PUNC
+        if f"FULLWIDTH {key}" in FULL_PUNC
     },
     "“": "〝",
     "”": "〞",
@@ -179,7 +179,7 @@ half_to_full_punc = {
 }
 """Mapping from half-width to full-width punctuation characters."""
 
-full_to_half_punc = {v: k for k, v in half_to_full_punc.items()}
+FULL_TO_HALF_PUNC = {v: k for k, v in HALF_TO_FULL_PUNC.items()}
 """Mapping from full-width to half-width punctuation characters."""
 
 _FULLWIDTH_ALPHANUMERICS_TO_ASCII = str.maketrans(
@@ -272,7 +272,7 @@ def get_char_type(char: str) -> str:
     Raises:
         ScinoephileError: If character type is not recognized
     """
-    punctuation = set(half_punc.values()) | set(full_punc.values())
+    punctuation = set(HALF_PUNC.values()) | set(FULL_PUNC.values())
 
     # Check if character is punctuation
     if char in punctuation:
@@ -323,7 +323,7 @@ def is_full_width_char(char: str) -> bool:
     Returns:
         whether the character should use full-width spacing
     """
-    if char in full_punc_chars:
+    if char in FULL_PUNC_CHARS:
         return True
     return get_char_type(char) == "full"
 
@@ -358,7 +358,7 @@ def remove_non_punc_and_whitespace(text: str) -> str:
     Returns:
         Stripped text with only punctuation and whitespace remaining
     """
-    chars_to_keep = half_punc_chars | full_punc_chars | whitespace_chars
+    chars_to_keep = HALF_PUNC_CHARS | FULL_PUNC_CHARS | WHITESPACE_CHARS
     return "".join(char for char in text if char.isspace() or char in chars_to_keep)
 
 
@@ -370,7 +370,7 @@ def remove_punc_and_whitespace(text: str) -> str:
     Returns:
         Stripped text with punctuation and whitespace removed
     """
-    chars_to_remove = half_punc_chars | full_punc_chars | whitespace_chars
+    chars_to_remove = HALF_PUNC_CHARS | FULL_PUNC_CHARS | WHITESPACE_CHARS
     return "".join(
         char for char in text if not char.isspace() and char not in chars_to_remove
     )

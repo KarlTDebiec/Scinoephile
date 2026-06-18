@@ -8,7 +8,7 @@ import csv
 from logging import getLogger
 from pathlib import Path
 
-from scinoephile.core.text import full_punc, get_char_type
+from scinoephile.core.text import FULL_PUNC, get_char_type
 
 from .csv import save_csv_rows
 
@@ -85,9 +85,9 @@ def get_expected_space(char_1: str, char_2: str) -> str:
 
     if char_1_type == "full" and char_2_type == "full":
         return "　"
-    if char_1_type == "full" and char_2 in full_punc.values():
+    if char_1_type == "full" and char_2 in FULL_PUNC.values():
         return "　"
-    if char_1 in full_punc.values() and char_2_type == "full":
+    if char_1 in FULL_PUNC.values() and char_2_type == "full":
         return "　"
     return " "
 
@@ -106,9 +106,9 @@ def get_expected_tab(char_1: str, char_2: str) -> str:
 
     if char_1_type == "full" and char_2_type == "full":
         return "　　"
-    if char_1_type == "full" and char_2 in full_punc.values():
+    if char_1_type == "full" and char_2 in FULL_PUNC.values():
         return "　　"
-    if char_1 in full_punc.values() and char_2_type == "full":
+    if char_1 in FULL_PUNC.values() and char_2_type == "full":
         return "　　"
     return "    "
 

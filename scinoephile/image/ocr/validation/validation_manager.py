@@ -11,7 +11,7 @@ from scinoephile.common import package_root
 from scinoephile.common.validation import val_input_dir_path, val_output_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.core.text import whitespace_chars
+from scinoephile.core.text import WHITESPACE_CHARS
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -224,7 +224,7 @@ class ValidationManager:
         cursor = CharCursor(sub=sub, sub_idx=sub_idx)
         while cursor.char_idx < len(sub.text_with_newline):
             # No validation to perform for whitespace
-            if cursor.char in whitespace_chars or cursor.char == "\n":
+            if cursor.char in WHITESPACE_CHARS or cursor.char == "\n":
                 cursor.advance(n_chars=1, n_bboxes=0)
                 continue
 
@@ -271,7 +271,7 @@ class ValidationManager:
             if cursor.char_idx + n_chars > len(cursor.sub.text_with_newline):
                 continue
             char_grp = cursor.char_grp(n_chars)
-            if any(c in whitespace_chars for c in char_grp) or "\n" in char_grp:
+            if any(c in WHITESPACE_CHARS for c in char_grp) or "\n" in char_grp:
                 continue
             dims = get_dims_tuple(cursor.bboxes[cursor.bbox_idx])
             ok_dims = self.char_grp_dims_by_n[n_chars].get(char_grp, set())
