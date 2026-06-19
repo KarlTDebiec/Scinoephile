@@ -47,6 +47,9 @@ def test_get_yue_romanized(
     [
         ("广东话", "gwóng dūng wá"),
         ("你好世界", "néih hóu sai gaai"),
+        ("你好,世界!", "néih hóu, sai gaai!"),
+        ("「你好」世界？", "「néih hóu」 sai gaai?"),
+        ("你好：世界；再见。", "néih hóu: sai gaai; joi gin."),
         ("原来少爷", "yùhn lòih siu yèh"),
         ("龙飞凤舞，苏察哈尔灿", "lùhng fēi fuhng móuh, sōu chaat hā yíh chaan"),
     ],

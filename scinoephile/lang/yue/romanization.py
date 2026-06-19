@@ -15,7 +15,12 @@ import pycantonese
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import FULL_TO_HALF_PUNC, RE_WESTERN, get_char_type
+from scinoephile.core.text import RE_WESTERN, get_char_type
+from scinoephile.lang.romanization import (
+    is_romanized_punctuation,
+    join_romanized_tokens,
+    normalize_romanized_punctuation,
+)
 from scinoephile.lang.zho.script.conversion import get_zho_converter
 
 __all__ = [
@@ -140,23 +145,25 @@ def get_yue_text_romanized(text: str) -> str:
     Returns:
         Yale Cantonese romanization
     """
-    text_romanization = ""
+    lines: list[str] = []
     for line in text.split("\n"):
-        line_romanization = ""
+        sections: list[str] = []
         for section in line.split():
-            section_romanization = ""
+            tokens: list[str] = []
             index = 0
             while index < len(section):
                 char = section[index]
-                if char in FULL_TO_HALF_PUNC:
-                    if char in {"＜", "＞"}:
-                        section_romanization += char
-                    else:
-                        section_romanization += FULL_TO_HALF_PUNC[char]
+                if is_romanized_punctuation(char):
+                    tokens.append(normalize_romanized_punctuation(char))
                     index += 1
                 elif RE_WESTERN.match(char):
-                    section_romanization += char
-                    index += 1
+                    end_index = index + 1
+                    while end_index < len(section) and RE_WESTERN.match(
+                        section[end_index]
+                    ):
+                        end_index += 1
+                    tokens.append(section[index:end_index])
+                    index = end_index
                 elif get_char_type(char) == "full":
                     end_index = index + 1
                     while (
@@ -166,15 +173,13 @@ def get_yue_text_romanized(text: str) -> str:
                         end_index += 1
                     hanzi_run = section[index:end_index]
                     hanzi_run_romanization = _romanize_yue_hanzi_run(hanzi_run)
-                    if hanzi_run_romanization[:1] != hanzi_run[:1]:
-                        section_romanization += " "
-                    section_romanization += hanzi_run_romanization
+                    tokens.append(hanzi_run_romanization)
                     index = end_index
                 else:
                     index += 1
-            line_romanization += "  " + section_romanization.strip()
-        text_romanization += "\n" + line_romanization.strip()
-    return text_romanization.strip()
+            sections.append(join_romanized_tokens(tokens))
+        lines.append("  ".join(section for section in sections if section))
+    return "\n".join(lines).strip()
 
 
 def _jyutping_to_yale(jyutping: str) -> str | None:
