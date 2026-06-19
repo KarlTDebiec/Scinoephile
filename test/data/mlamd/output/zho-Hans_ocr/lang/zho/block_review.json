@@ -170,12 +170,13 @@
       "zimu_55": "我买所房子给妈妈！"
     },
     "answer": {
-      "xiugai_5": "就是有点游魂的M iss Chan",
-      "beizhu_5": "将“M i ss”中的空格排版错误修正为“M iss”。",
-      "xiugai_18": "M iss Chan，我点过两次了！",
-      "beizhu_18": "将“M i ss”中的空格排版错误修正为“M iss”。"
+      "xiugai_5": "就是有点游魂的 Miss Chan",
+      "beizhu_5": "将“M i ss”中的空格排版错误修正为“ Miss”。",
+      "xiugai_18": "Miss Chan，我点过两次了！",
+      "beizhu_18": "将“M i ss”中的空格排版错误修正为“Miss”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -231,7 +232,8 @@
       "xiugai_4": "是All Things Bright and Beautiful吧？",
       "beizhu_4": "将英文单词中的多余空格去除，统一为正常排版。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -270,7 +272,8 @@
       "xiugai_6": "欢迎大家收看《麦太世界》",
       "beizhu_6": "将书名号误写的尖括号“＜＞”修正为中文书名号“《》”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -399,10 +402,13 @@
       "zimu_19": "座落于印度洋的世外桃源"
     },
     "answer": {
-      "xiugai_5": "那儿有Disneyland 和 Hello Kitty Land",
-      "beizhu_5": "将英文品牌名中的分隔空格修正为正确连写，并补充词间空格。"
+      "xiugai_5": "那儿有 Disneyland 和 Hello Kitty Land",
+      "beizhu_5": "将英文品牌名中的分隔空格修正为正确连写，并补充中英间空格。",
+      "xiugai_10": "那儿有很多水上活动，还有鱼翅吃",
+      "beizhu_10": "将“很好多”修正为“很多”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -841,7 +847,12 @@
       "zimu_18": "「抢包山」从此被禁！",
       "zimu_19": "而长洲独有的传统，亦渐被遗忘"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_17": "在1978年两座包山忽然倒下，多人重伤",
+      "beizhu_17": "删除年份数字中的多余空格。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1075,12 +1086,11 @@
       "zimu_50": "有如天使预早送来的福音"
     },
     "answer": {
-      "xiugai_36": "让我们明天去超级市场捉火鸡",
-      "beizhu_36": "将“揪”更正为“捉”，以符合常见字幕用字。",
-      "xiugai_37": "我跟妈妈把火鸡捉回家的路上⋯",
-      "beizhu_37": "将“揪”更正为“捉”，以统一用字。"
+      "xiugai_47": "12月24日",
+      "beizhu_47": "删除月份数字中的多余空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1165,18 +1175,13 @@
       "zimu_56": "我好后悔要妈妈扔掉最后几件火鸡"
     },
     "answer": {
-      "xiugai_10": "上面淋了老抽生粉芡",
-      "beizhu_10": "将“献”更正为“芡”，符合常见菜肴用字。",
       "xiugai_15": "我大着胆跟妈妈说：不如去饮茶吖",
       "beizhu_15": "将“著”改为“着”，统一为简体字。",
-      "xiugai_24": "栗子焖火鸡丝煲",
-      "beizhu_24": "将“炆”“㷛”分别更正为常用简体字“焖”“煲”。",
-      "xiugai_32": "我脑部一时想不通，哭起来",
-      "beizhu_32": "将“唔”更正为“不”，修正明显错字。",
       "xiugai_54": "那天，我看着天空几缕灰色的烟",
       "beizhu_54": "将“看著”中的“著”改为简体“着”，统一为简体字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
