@@ -521,7 +521,7 @@
       "subtitle_17": "You promised!",
       "subtitle_18": "Now stop crying.",
       "subtitle_19": "We will go to Maldives.",
-      "subtitle_20": "- Really?\n- Yes.",
+      "subtitle_20": "- Really?    - Yes.",
       "subtitle_21": "When?",
       "subtitle_22": "Once I get rich.",
       "subtitle_23": "But you are rich.",
@@ -529,16 +529,7 @@
       "subtitle_25": "We will go next week, ok?",
       "subtitle_26": "Bravo!"
     },
-    "answer": {
-      "revised_10": "Those words have flair.",
-      "note_10": "Corrected 'flare' to 'flair' (correct word for style or panache).",
-      "revised_15": "No, that wasn't what you meant.",
-      "note_15": "Corrected 'mean' to 'meant' for correct tense.",
-      "revised_25": "We will go next week, OK?",
-      "note_25": "Capitalized 'ok' to 'OK' for standard usage."
-    },
-    "difficulty": 1,
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -1190,7 +1181,7 @@
       "subtitle_41": "Was in fact longer than its life.",
       "subtitle_42": "I realized also, with turkey…",
       "subtitle_43": "Taking the first bite is all it matters.",
-      "subtitle_44": "Afterwards,\nit is just“be over and done with it”.",
+      "subtitle_44": "Afterwards,\nit is just\"be over and done with it\".",
       "subtitle_45": "I am no philosopher.",
       "subtitle_46": "I could not come up with any profundity.",
       "subtitle_47": "But, such thoughts…",
@@ -1205,31 +1196,12 @@
       "subtitle_56": "I regretted I made mother\nthrew the turkey away."
     },
     "answer": {
-      "revised_9": "Slices of meat,\naccompanied by gourd and potato…",
-      "note_9": "Corrected 'guard' to 'gourd', which fits the food context.",
-      "revised_10": "were dressed with soy sauce.",
-      "note_10": "Lowercased 'Were' to 'were' to continue the sentence from the previous line.",
-      "revised_20": "with me helping out at times.",
-      "note_20": "Lowercased 'With' to 'with' to continue the sentence from the previous line.",
-      "revised_28": "Turkey pâté with bread.",
-      "note_28": "Corrected 'pete' to 'pâté', the correct word for a turkey spread.",
-      "revised_35": "It was already half a year later.",
-      "note_35": "Inserted 'a' in 'half a year' for correct expression.",
-      "revised_38": "A serving turkey needs only to be raised…",
-      "note_38": "Inserted 'to' in 'needs only to be raised' for correct grammar.",
-      "revised_39": "for a few months.",
-      "note_39": "Lowercased 'For' to 'for' to continue the sentence from the previous line.",
-      "revised_41": "was in fact longer than its life.",
-      "note_41": "Lowercased 'Was' to 'was' to continue the sentence from the previous line.",
-      "revised_43": "taking the first bite is all that matters.",
-      "note_43": "Lowercased 'Taking' to continue the sentence and inserted 'that' for correct idiom 'all that matters.'",
-      "revised_44": "Afterwards,\nit is just “be over and done with it”.",
-      "note_44": "Inserted a space before the opening quotation mark for proper spacing.",
+      "revised_44": "Afterwards,\nit is just \"be over and done with it\".",
+      "note_44": "Added a space before the quotation mark.",
       "revised_56": "I regretted I made mother\nthrow the turkey away.",
-      "note_56": "Changed 'threw' to 'throw' to match the infinitive form after 'made.'"
+      "note_56": "Corrected 'threw' to 'throw'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
