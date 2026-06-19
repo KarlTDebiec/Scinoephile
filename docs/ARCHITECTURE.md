@@ -23,7 +23,7 @@ Modules may import from packages listed above them in that hierarchy:
 - `scinoephile.optimization`: prompt optimization tooling that may import from the
   packages above
 - `scinoephile.cli`: user-facing command-line wrappers that may import from any
-  lower package layer
+  package listed above it
 
 This layering is enforced socially (by convention and code review) and is intended
 to keep dependencies flowing toward earlier layers:
