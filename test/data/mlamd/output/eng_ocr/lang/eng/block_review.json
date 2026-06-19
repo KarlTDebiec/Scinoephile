@@ -1192,7 +1192,7 @@
       "subtitle_41": "Was in fact longer than its life.",
       "subtitle_42": "I realized also, with turkey…",
       "subtitle_43": "Taking the first bite is all it matters.",
-      "subtitle_44": "Afterwards,\nit is just “be over and done with it”.",
+      "subtitle_44": "Afterwards,\nit is just“be over and done with it”.",
       "subtitle_45": "I am no philosopher.",
       "subtitle_46": "I could not come up with any profundity.",
       "subtitle_47": "But, such thoughts…",
@@ -1225,6 +1225,8 @@
       "note_41": "Lowercased 'Was' to 'was' to continue the sentence from the previous line.",
       "revised_43": "taking the first bite is all that matters.",
       "note_43": "Lowercased 'Taking' to continue the sentence and inserted 'that' for correct idiom 'all that matters.'",
+      "revised_44": "Afterwards,\nit is just “be over and done with it”.",
+      "note_44": "Inserted a space before the opening quotation mark for proper spacing.",
       "revised_56": "I regretted I made mother\nthrow the turkey away.",
       "note_56": "Changed 'threw' to 'throw' to match the infinitive form after 'made.'"
     },
