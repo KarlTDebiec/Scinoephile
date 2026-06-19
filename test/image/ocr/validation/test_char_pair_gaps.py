@@ -16,6 +16,11 @@ from scinoephile.image.ocr.validation.char_pair_gaps import (
 )
 
 
+def test_default_cutoffs_treat_fullwidth_exclamation_ellipsis_as_adjacent():
+    """Test full-width exclamation before ellipsis defaults to no text gap."""
+    assert get_default_char_pair_cutoffs("！", "⋯") == (60, 89, 90, 200)
+
+
 def test_load_char_pair_gaps_rejects_nonmonotonic_cutoffs(tmp_path: Path):
     """Test loading rejects cutoffs that cannot be classified correctly.
 

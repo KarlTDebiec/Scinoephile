@@ -35,6 +35,9 @@ def get_default_char_pair_cutoffs(  # noqa: PLR0911, PLR0912
     Returns:
         default cutoff tuple
     """
+    if (char_1, char_2) == ("！", "⋯"):
+        return 60, 89, 90, 200
+
     char_1_type = get_char_type(char_1)
     char_2_type = get_char_type(char_2)
 
