@@ -8,7 +8,7 @@ from dataclasses import dataclass
 
 from PIL import Image
 
-from scinoephile.core.text import whitespace_chars
+from scinoephile.core.text import WHITESPACE_CHARS
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.subtitles import ImageSubtitle
@@ -178,7 +178,7 @@ class GapCursor:
         """
         text = self.sub.text_with_newline
         while self.char_1_idx < len(text) and (
-            text[self.char_1_idx] in whitespace_chars or text[self.char_1_idx] == "\n"
+            text[self.char_1_idx] in WHITESPACE_CHARS or text[self.char_1_idx] == "\n"
         ):
             self.char_1_idx += 1
         if self.char_1_idx >= len(text) - 1:
@@ -195,7 +195,7 @@ class GapCursor:
         text = self.sub.text_with_newline
         self.char_2_idx = self.char_1_idx + 1
         while self.char_2_idx < len(text) and (
-            text[self.char_2_idx] in whitespace_chars or text[self.char_2_idx] == "\n"
+            text[self.char_2_idx] in WHITESPACE_CHARS or text[self.char_2_idx] == "\n"
         ):
             self.char_2_idx += 1
         if self.char_2_idx >= len(text):

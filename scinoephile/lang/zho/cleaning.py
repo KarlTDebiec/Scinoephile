@@ -8,7 +8,7 @@ import re
 from copy import deepcopy
 
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import half_to_full_punc, normalize_fullwidth_alphanumerics
+from scinoephile.core.text import HALF_TO_FULL_PUNC, normalize_fullwidth_alphanumerics
 
 __all__ = [
     "get_zho_cleaned",
@@ -62,7 +62,7 @@ def get_zho_text_cleaned(text: str) -> str | None:
         cleaned_line = re.sub(r"[^\S]*…[^\S]*", "⋯", cleaned_line)
 
         # Replace half-width punctuation with full-width punctuation
-        for old_punc, new_punc in half_to_full_punc.items():
+        for old_punc, new_punc in HALF_TO_FULL_PUNC.items():
             cleaned_line = re.sub(
                 rf"[^\S]*{re.escape(old_punc)}[^\S]*", new_punc, cleaned_line
             )

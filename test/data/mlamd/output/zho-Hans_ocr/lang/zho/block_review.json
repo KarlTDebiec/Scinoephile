@@ -69,15 +69,18 @@
       "zimu_8": "就是座落界限街南昌街交界⋯",
       "zimu_9": "银城美食广场附近的⋯",
       "zimu_10": "春田花花幼稚园？",
-      "zimu_11": "对！深水埗地铁站步行不用10分钟！",
+      "zimu_11": "对！深水埗地铁站步行不用1 0分钟！",
       "zimu_12": "春田花花幼稚园，师资优良⋯",
       "zimu_13": "而且还有西人教英文！",
       "zimu_14": "西人教英文？",
       "zimu_15": "是呀！",
       "zimu_16": "春田花花，确有好多西人呀！"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_11": "对！深水埗地铁站步行不用10分钟！",
+      "beizhu_11": "将“1 0分钟”中的数字空格去除，修正为“10分钟”。"
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -114,7 +117,7 @@
       "zimu_2": "可是，对我和我一班同学",
       "zimu_3": "这儿是我们最快乐，最美丽的乐园⋯",
       "zimu_4": "⋯还有一个很疼我们",
-      "zimu_5": "就是有点游魂的Miss Chan",
+      "zimu_5": "就是有点游魂的M i ss Chan",
       "zimu_6": "她的志愿是做第二个王菲",
       "zimu_7": "做第二个陈慧琳也可以",
       "zimu_8": "我们现在开始点名",
@@ -127,7 +130,7 @@
       "zimu_15": "阿May同学！　　到！",
       "zimu_16": "麦唛同学！　　到！",
       "zimu_17": "阿May同学！",
-      "zimu_18": "Miss Chan，我点过两次了！",
+      "zimu_18": "M i ss Chan，我点过两次了！",
       "zimu_19": "呀，真的吗？",
       "zimu_20": "校长早晨！",
       "zimu_21": "校长再见！",
@@ -166,7 +169,13 @@
       "zimu_54": "那时候⋯",
       "zimu_55": "我买所房子给妈妈！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_5": "就是有点游魂的 Miss Chan",
+      "beizhu_5": "将“M i ss”中的空格排版错误修正为“ Miss”。",
+      "xiugai_18": "Miss Chan，我点过两次了！",
+      "beizhu_18": "将“M i ss”中的空格排版错误修正为“Miss”。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -207,15 +216,23 @@
   },
   {
     "query": {
-      "zimu_1": "有一首歌，Miss Chan唱的好听",
+      "zimu_1": "有一首歌，M i ss Chan唱的好听",
       "zimu_2": "我时常想著学习",
       "zimu_3": "可每次我总唱成「疴」什么什么的⋯",
-      "zimu_4": "是All Things Bright and Beautiful吧？",
+      "zimu_4": "是A l l Th i ngs Br i ght and Beaut i fu l吧？",
       "zimu_5": "是的，一切都好！",
       "zimu_6": "世上一切，一切一切⋯",
       "zimu_7": "所有那些，都好！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_1": "有一首歌，Miss Chan唱的好听",
+      "beizhu_1": "将英文人名中的多余空格去除，统一为正常排版。",
+      "xiugai_2": "我时常想着学习",
+      "beizhu_2": "将“著”改为“着”，统一为简体中文用字。",
+      "xiugai_4": "是All Things Bright and Beautiful吧？",
+      "beizhu_4": "将英文单词中的多余空格去除，统一为正常排版。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -234,7 +251,7 @@
   {
     "query": {
       "zimu_1": "是的，我妈妈真的很厉害",
-      "zimu_2": "除了兼任保险，地产经纪及trading⋯",
+      "zimu_2": "除了兼任保险，地产经纪及t rad i ng⋯",
       "zimu_3": "她还趁高科技热潮搞了个烹饪网站⋯",
       "zimu_4": "www．麦太世界．com",
       "zimu_5": "她做的菜，同样厉害",
@@ -249,7 +266,11 @@
       "zimu_14": "这一味纸包鸡就完成了，很容易是吧？",
       "zimu_15": "多谢大家收看"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_2": "除了兼任保险，地产经纪及 trading⋯",
+      "beizhu_2": "将英文词语“t rad i ng”修正为连写的“trading”，并保留原有中英混排。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -362,7 +383,7 @@
       "zimu_2": "校长再见！",
       "zimu_3": "你最喜爱的地方是哪儿？",
       "zimu_4": "我最喜爱的地方是日本",
-      "zimu_5": "那儿有Disneyland 和Hello Kitty Land",
+      "zimu_5": "那儿有D i sney l and 和He l l o K i t t y Land",
       "zimu_6": "我这个发夹也是在那儿买的",
       "zimu_7": "我最喜爱的地方是加拿大",
       "zimu_8": "婆婆跟舅父他们都在加拿大",
@@ -380,12 +401,11 @@
     },
     "answer": {
       "xiugai_5": "那儿有 Disneyland 和 Hello Kitty Land",
-      "beizhu_5": "在英文专有名词 Disneyland 与 Hello Kitty 前后补充空格，使其与中文部分分隔清晰。",
+      "beizhu_5": "将英文品牌名中的分隔空格修正为正确连写，并补充中英间空格。",
       "xiugai_10": "那儿有很多水上活动，还有鱼翅吃",
-      "beizhu_10": "将错别字“很好多”更正为“很多”。"
+      "beizhu_10": "将“很好多”修正为“很多”。"
     },
     "difficulty": 1,
-    "prompt": true,
     "verified": true
   },
   {
@@ -821,11 +841,15 @@
       "zimu_14": "数以百计的青年一涌而上抢包",
       "zimu_15": "抢得位置愈高的包，就是愈大的祝福",
       "zimu_16": "更可以表现自己的不凡身手",
-      "zimu_17": "在1978年两座包山忽然倒下，多人重伤",
+      "zimu_17": "在1 978年两座包山忽然倒下，多人重伤",
       "zimu_18": "「抢包山」从此被禁！",
       "zimu_19": "而长洲独有的传统，亦渐被遗忘"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_17": "在1978年两座包山忽然倒下，多人重伤",
+      "beizhu_17": "删除年份数字中的多余空格。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1054,12 +1078,16 @@
       "zimu_44": "红萝卜粒",
       "zimu_45": "我说：火鸡「疴烂煮」！",
       "zimu_46": "好勉强把火鸡塞进焗炉内",
-      "zimu_47": "12月24日",
+      "zimu_47": "1 2月24日",
       "zimu_48": "上升的白烟跟奇异的焦味拨动星星",
       "zimu_49": "焗炉戚戚恻恻，戚戚恻恻⋯",
       "zimu_50": "有如天使预早送来的福音"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_47": "12月24日",
+      "beizhu_47": "删除月份数字中的多余空格。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1146,12 +1174,11 @@
     },
     "answer": {
       "xiugai_15": "我大着胆跟妈妈说：不如去饮茶吖",
-      "beizhu_15": "将“著”改为“着”，统一为简体字用法。",
+      "beizhu_15": "将“著”改为“着”，统一为简体字。",
       "xiugai_54": "那天，我看着天空几缕灰色的烟",
-      "beizhu_54": "将“著”改为“着”，统一为简体字用法。"
+      "beizhu_54": "将“看著”中的“著”改为简体“着”，统一为简体字。"
     },
     "difficulty": 1,
-    "prompt": true,
     "verified": true
   },
   {

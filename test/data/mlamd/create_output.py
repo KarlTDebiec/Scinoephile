@@ -43,16 +43,12 @@ input_path = title_root / "input"
 output_path = title_root / "output"
 set_logging_verbosity(2)
 
-eng_ocr_path = output_path / "eng_ocr"
-zho_hans_ocr_path = output_path / "zho-Hans_ocr"
-yue_hans_transcribe_path = output_path / "yue-Hans_transcribe"
-
 actions = {
     "eng_ocr",
     "zho-Hans_ocr",
     "zho-Hant_ocr",
-    # "zho-Hans_eng",
-    # "yue-Hans_eng",
+    "zho-Hans_eng",
+    "yue-Hans_eng",
     # "yue-Hans_transcribe",
 }
 
@@ -63,12 +59,16 @@ if "zho-Hans_ocr" in actions:
 if "zho-Hant_ocr" in actions:
     process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
 if "zho-Hans_eng" in actions:
-    zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
-    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    zho_hans_path = (
+        output_path / "zho-Hans_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
+    eng_path = output_path / "eng_ocr" / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
 if "yue-Hans_transcribe" in actions:
     # Stage
-    zho_hans = Series.load(zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt")
+    zho_hans = Series.load(
+        output_path / "zho-Hans_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
     if (
         zho_hans.events[539].text == "不知道为什么"
         and zho_hans.events[540].text == "「珊你个头」却特别刺耳"
@@ -78,7 +78,7 @@ if "yue-Hans_transcribe" in actions:
             "structure is reversed in the 粤文."
         )
         zho_hans = get_series_with_subs_merged(zho_hans, 539)
-    audio_path = yue_hans_transcribe_path / "audio"
+    audio_path = output_path / "yue-Hans_transcribe" / "audio"
     audio_path.mkdir(parents=True, exist_ok=True)
     zho_hans.save(audio_path / "audio.srt")
 
@@ -87,18 +87,21 @@ if "yue-Hans_transcribe" in actions:
     transcriber = get_yue_vs_zho_transcriber(
         vad_mode=VADMode.ON,
         convert=OpenCCConfig.hk2s,
-        test_case_directory_path=yue_hans_transcribe_path / "multilang/yue_zho",
+        test_case_directory_path=output_path
+        / "yue-Hans_transcribe"
+        / "multilang/yue_zho",
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
     )
     yue_hans = get_yue_transcribed_vs_zho(yue_hans, zho_hans, transcriber=transcriber)
-    outfile_path = yue_hans_transcribe_path / "transcribe.srt"
+    outfile_path = output_path / "yue-Hans_transcribe" / "transcribe.srt"
     yue_hans.save(outfile_path)
 
     # Review (line-by-line)
     yue_hans = Series.load(outfile_path)
     line_reviewer = get_yue_vs_zho_line_reviewer(
-        test_case_path=yue_hans_transcribe_path
+        test_case_path=output_path
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "line_review"
@@ -108,12 +111,13 @@ if "yue-Hans_transcribe" in actions:
     yue_hans_line_reviewed = get_yue_line_reviewed_vs_zho(
         yue_hans, zho_hans, line_reviewer=line_reviewer
     )
-    outfile_path = yue_hans_transcribe_path / "transcribe_review.srt"
+    outfile_path = output_path / "yue-Hans_transcribe" / "transcribe_review.srt"
     yue_hans_line_reviewed.save(outfile_path)
 
     # Translate
     translator = get_yue_vs_zho_gapped_translator(
-        test_case_path=yue_hans_transcribe_path
+        test_case_path=output_path
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "gap_translation"
@@ -123,12 +127,15 @@ if "yue-Hans_transcribe" in actions:
     yue_hans_review_translate = get_yue_gapped_translated_vs_zho(
         yue_hans_line_reviewed, zho_hans, translator=translator
     )
-    outfile_path = yue_hans_transcribe_path / "transcribe_review_translate.srt"
+    outfile_path = (
+        output_path / "yue-Hans_transcribe" / "transcribe_review_translate.srt"
+    )
     yue_hans_review_translate.save(outfile_path)
 
     # Review (block-by-block)
     reviewer = get_yue_vs_zho_block_reviewer(
-        test_case_path=yue_hans_transcribe_path
+        test_case_path=output_path
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "block_review"
@@ -139,12 +146,16 @@ if "yue-Hans_transcribe" in actions:
         yue_hans_review_translate, zho_hans, reviewer=reviewer
     )
     outfile_path = (
-        yue_hans_transcribe_path / "transcribe_review_translate_block_review.srt"
+        output_path
+        / "yue-Hans_transcribe"
+        / "transcribe_review_translate_block_review.srt"
     )
     yue_hans_review_translate_block_review.save(outfile_path)
 if "yue-Hans_eng" in actions:
     yue_hans_path = (
-        yue_hans_transcribe_path / "transcribe_review_translate_block_review.srt"
+        output_path
+        / "yue-Hans_transcribe"
+        / "transcribe_review_translate_block_review.srt"
     )
-    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    eng_path = output_path / "eng_ocr" / "fuse_clean_validate_review_flatten.srt"
     process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)
