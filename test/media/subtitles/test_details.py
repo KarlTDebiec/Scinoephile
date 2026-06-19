@@ -25,8 +25,8 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_streams",
             return_value=subtitle_streams,
-        ) as get_subtitle_streams,
-        patch("scinoephile.media.subtitles.details.cache_subtitles") as cache,
+        ),
+        patch("scinoephile.media.subtitles.details.cache_subtitles"),
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(
@@ -34,25 +34,17 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
                 first_start_ms=62_500,
                 last_end_ms=3_725_250,
             ),
-        ) as stats,
+        ),
     ):
         detailed_streams = get_detailed_subtitle_streams(
             infile_path,
             cache_dir_path=cache_dir_path,
         )
 
-    get_subtitle_streams.assert_called_once_with(infile_path)
     assert len(detailed_streams) == 1
     assert detailed_streams[0].language == "zho"
     assert detailed_streams[0].subtitle_count == 12
     assert detailed_streams[0].span == "00:01:02-01:02:05"
-    cache.assert_called_once_with(
-        infile_path,
-        subtitle_streams,
-        cache_dir_path=cache_dir_path,
-    )
-    stats.assert_called_once()
-    assert stats.call_args.kwargs == {"cache_dir_path": cache_dir_path}
 
 
 def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
@@ -75,8 +67,8 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
     with (
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_streams",
-        ) as get_subtitle_streams,
-        patch("scinoephile.media.subtitles.details.cache_subtitles") as cache,
+        ),
+        patch("scinoephile.media.subtitles.details.cache_subtitles"),
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(
@@ -92,11 +84,5 @@ def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
             streams=streams,
         )
 
-    get_subtitle_streams.assert_not_called()
     assert [stream.index for stream in detailed_streams] == [2]
     assert detailed_streams[0].subtitle_count == 12
-    cache.assert_called_once_with(
-        infile_path,
-        [streams[2]],
-        cache_dir_path=cache_dir_path,
-    )

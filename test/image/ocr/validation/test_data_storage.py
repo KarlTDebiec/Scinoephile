@@ -4,10 +4,15 @@
 
 from __future__ import annotations
 
+from unittest.mock import patch
+
 import pytest
 
 from scinoephile.core import ScinoephileError
 from scinoephile.image.ocr.validation import ValidationManager, validation_manager
+from scinoephile.image.ocr.validation.char_pair_gaps import (
+    get_default_char_pair_cutoffs,
+)
 
 
 def test_validation_manager_layers_cache_data_over_repo_data(tmp_path, monkeypatch):
@@ -143,6 +148,91 @@ def test_validation_manager_writes_only_cache_updates_to_cache(tmp_path, monkeyp
     assert (cache_dir_path / "char_pair_gaps.csv").read_text(encoding="utf-8") == (
         "B,C,5,6,7,8\n"
     )
+
+
+def test_validation_manager_does_not_persist_default_pair_gaps(tmp_path, monkeypatch):
+    """Test default character pair gaps are remembered without cache writes."""
+    repo_root_path = tmp_path / "repo"
+    repo_data_dir_path = repo_root_path / "data" / "ocr"
+    repo_data_dir_path.mkdir(parents=True)
+    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
+    cache_dir_path = tmp_path / "cache" / "ocr_validation"
+    cache_dir_path.mkdir(parents=True)
+    manager = ValidationManager(cache_dir_path=cache_dir_path)
+
+    manager.update_pair_gaps(("你", "本"), (22, 89, 90, 200))
+
+    assert manager.char_pair_gaps[("你", "本")] == (22, 89, 90, 200)
+    assert not (cache_dir_path / "char_pair_gaps.csv").exists()
+
+
+def test_validation_manager_does_not_persist_new_default_pair_gaps_in_dev_mode(
+    tmp_path, monkeypatch
+):
+    """Test new default character pair gaps do not trigger repo writes."""
+    repo_root_path = tmp_path / "repo"
+    repo_data_dir_path = repo_root_path / "data" / "ocr"
+    repo_data_dir_path.mkdir(parents=True)
+    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
+    repo_pair_gaps_path = repo_data_dir_path / "char_pair_gaps.csv"
+    repo_pair_gaps_path.write_text("A,B,1,2,3,4\n", encoding="utf-8")
+    manager = ValidationManager(cache_dir_path=tmp_path / "cache", dev=True)
+
+    with patch(
+        "scinoephile.image.ocr.validation.validation_manager.save_char_pair_gaps",
+        side_effect=AssertionError("default pair gap should not be saved"),
+    ):
+        manager.update_pair_gaps(
+            ("你", "本"),
+            get_default_char_pair_cutoffs("你", "本"),
+        )
+
+    assert manager.char_pair_gaps[("你", "本")] == get_default_char_pair_cutoffs(
+        "你", "本"
+    )
+    assert repo_pair_gaps_path.read_text(encoding="utf-8") == "A,B,1,2,3,4\n"
+
+
+def test_validation_manager_removes_default_pair_gap_cache_override(
+    tmp_path, monkeypatch
+):
+    """Test resetting a cache pair gap override to default removes it from disk."""
+    repo_root_path = tmp_path / "repo"
+    repo_data_dir_path = repo_root_path / "data" / "ocr"
+    repo_data_dir_path.mkdir(parents=True)
+    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
+    cache_dir_path = tmp_path / "cache" / "ocr_validation"
+    cache_dir_path.mkdir(parents=True)
+    cache_pair_gaps_path = cache_dir_path / "char_pair_gaps.csv"
+    cache_pair_gaps_path.write_text("娘,一,23,89,90,200\n", encoding="utf-8")
+    manager = ValidationManager(cache_dir_path=cache_dir_path)
+
+    manager.update_pair_gaps(("娘", "一"), get_default_char_pair_cutoffs("娘", "一"))
+
+    assert manager.char_pair_gaps[("娘", "一")] == get_default_char_pair_cutoffs(
+        "娘", "一"
+    )
+    assert cache_pair_gaps_path.read_text(encoding="utf-8") == ""
+
+
+def test_validation_manager_removes_default_pair_gap_repo_override_in_dev_mode(
+    tmp_path, monkeypatch
+):
+    """Test dev-mode reset of a repo pair gap override removes it from disk."""
+    repo_root_path = tmp_path / "repo"
+    repo_data_dir_path = repo_root_path / "data" / "ocr"
+    repo_data_dir_path.mkdir(parents=True)
+    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
+    repo_pair_gaps_path = repo_data_dir_path / "char_pair_gaps.csv"
+    repo_pair_gaps_path.write_text("娘,一,23,89,90,200\n", encoding="utf-8")
+    manager = ValidationManager(cache_dir_path=tmp_path / "cache", dev=True)
+
+    manager.update_pair_gaps(("娘", "一"), get_default_char_pair_cutoffs("娘", "一"))
+
+    assert manager.char_pair_gaps[("娘", "一")] == get_default_char_pair_cutoffs(
+        "娘", "一"
+    )
+    assert repo_pair_gaps_path.read_text(encoding="utf-8") == ""
 
 
 def test_validation_manager_allows_new_custom_cache_dir(tmp_path, monkeypatch):

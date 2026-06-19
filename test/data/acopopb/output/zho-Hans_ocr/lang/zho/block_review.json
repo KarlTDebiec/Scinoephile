@@ -53,14 +53,16 @@
       "zimu_50": "对不起，不是一只",
       "zimu_51": "是一堆苍蝇围着你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "还飞到你的耳朵里面",
       "zimu_2": "救命呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -78,14 +80,16 @@
       "zimu_12": "你根本不想去取西经",
       "zimu_13": "说那么多干什么，打吧！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我老孙有金刚不坏之身",
       "zimu_2": "十个观世音都不放在眼里"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -96,13 +100,15 @@
       "zimu_5": "求姐姐跟玉皇大帝说一声",
       "zimu_6": "贫僧愿意一命赔一命"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "喃呒阿弥陀佛⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -118,19 +124,21 @@
       "zimu_10": "也是个长痔疮的官兵",
       "zimu_11": "怕什么？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "什么人？",
       "zimu_2": "难道各位看不出我是个女人吗？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你来这里干什么？",
-      "zimu_2": "世途险恶，　北风凛然",
+      "zimu_2": "世途险恶，北风凛然",
       "zimu_3": "一个弱小女子",
       "zimu_4": "想找一个栖身之所歇息一下",
       "zimu_5": "洗洗身上的风尘",
@@ -140,19 +148,14 @@
       "zimu_9": "莫非是一间黑店？",
       "zimu_10": "明知是黑店你还敢进来",
       "zimu_11": "你不怕送羊入虎口吗？",
-      "zimu_12": "谁是羊？　　谁是虎？",
+      "zimu_12": "谁是羊？谁是虎？",
       "zimu_13": "现在还言之过早",
       "zimu_14": "如果各位大爷是强盗",
       "zimu_15": "难道就不怕我是强盗头吗？",
       "zimu_16": "你到底是何方神圣？"
     },
-    "answer": {
-      "xiugai_2": "世途险恶， 北风凛然",
-      "beizhu_2": "将全角空格规范为半角空格。",
-      "xiugai_12": "谁是羊？ 谁是虎？",
-      "beizhu_12": "将全角空格规范为半角空格。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -160,7 +163,8 @@
       "zimu_2": "桃花过处，寸草不生",
       "zimu_3": "金钱落地，人头不保"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -168,7 +172,8 @@
       "zimu_2": "这个女魔头一向无宝不到",
       "zimu_3": "难道这里会有大买卖？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -197,7 +202,7 @@
       "zimu_23": "我会被人家打中鼻子吗？",
       "zimu_24": "这边啊，帮主",
       "zimu_25": "七伤拳把帮主害得真惨",
-      "zimu_26": "帮主，手 我当时是吓得跪下来嘛",
+      "zimu_26": "帮主，我当时是吓得跪下来嘛",
       "zimu_27": "我听说中了七伤拳",
       "zimu_28": "首先是变斗鸡眼",
       "zimu_29": "然后耳朵失聪，聪不到声音",
@@ -212,12 +217,19 @@
       "zimu_38": "我踩死你，不敢",
       "zimu_39": "我踩！",
       "zimu_40": "我踩那么久，就算不痛也呻吟两声嘛",
-      "zimu_41": "收到⋯啊！⋯",
+      "zimu_41": "收到⋯啊！ ⋯",
       "zimu_42": "好！大家准备带着家伙去找⋯",
       "zimu_43": "春三十娘",
       "zimu_44": "怕什么！万事有我！"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_8": "帮主，我不是二当家，我是瞎子啊",
+      "beizhu_8": "将“系”更正为“是”，修正明显错别字。",
+      "xiugai_41": "收到⋯啊！⋯",
+      "beizhu_41": "删除多余空格，规范省略号前后排版。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -234,7 +246,8 @@
       "zimu_11": "我就会离开",
       "zimu_12": "我怕你没那么长命"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -246,23 +259,26 @@
       "zimu_6": "我话你没那么长命等到你要见的人"
     },
     "answer": {
-      "xiugai_2": "小便完穿裤子",
-      "beizhu_2": "将“完便”调整为“便完”，使语序正确。"
+      "xiugai_2": "小便穿裤子",
+      "beizhu_2": "将“小完”更正为“小便”，修正明显错别字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "帮主⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "想杀我没那么容易",
       "zimu_2": "先问过我的兄弟们"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -275,23 +291,21 @@
       "zimu_7": "白痴！你以为她就会放过你吗？",
       "zimu_8": "无论说什么也要跟她拼了",
       "zimu_9": "听到了没有？",
-      "zimu_10": "男儿膝下有黄金！　　既然他们肯求我",
+      "zimu_10": "男儿膝下有黄金！既然他们肯求我",
       "zimu_11": "那么性命暂时寄存在我这里",
       "zimu_12": "谢谢女英雄！",
       "zimu_13": "至于你嘛⋯你可真有骨气"
     },
-    "answer": {
-      "xiugai_10": "男儿膝下有黄金！既然他们肯求我",
-      "beizhu_10": "删除“黄金！”后多余的空格，使字幕排版更规范。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "孺子可教",
       "zimu_2": "叫他们把脚底板洗干净在外面等我"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -314,7 +328,8 @@
       "zimu_17": "我不止偷看你一个",
       "zimu_18": "所有人我都偷看过了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -333,7 +348,8 @@
       "zimu_13": "查他们脚底板",
       "zimu_14": "如果发现有三颗痣的，立即通知我"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -353,14 +369,16 @@
       "zimu_14": "我还有双手",
       "zimu_15": "我不会屈服的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "帮主掉粪坑去了",
       "zimu_2": "帮主呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -371,23 +389,26 @@
       "zimu_5": "这里到底是什么地方？",
       "zimu_6": "什么人？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "做梦",
       "zimu_2": "把那贱人干掉了是吗？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "蜘蛛！蜘蛛呀！⋯",
+      "zimu_1": "蜘蛛！蜘蛛呀！ ⋯",
       "zimu_2": "蜘蛛用得着大惊小怪的？",
       "zimu_3": "好大只呀！",
       "zimu_4": "能有多大啊？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -395,64 +416,60 @@
       "zimu_2": "现在养出来的蜘蛛比我还大！",
       "zimu_3": "怎么办？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "糟了！这么多人它不追，老是追着我",
       "zimu_2": "一定又是我的英俊害着我"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "干什么？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "什么事？",
       "zimu_2": "帮主被蜘蛛追呀？",
-      "zimu_3": "是不是这样啊？不是⋯",
-      "zimu_4": "是这边！　　这边！",
+      "zimu_3": "是不是这样啊？　　不是⋯",
+      "zimu_4": "是这边！这边！",
       "zimu_5": "好了，快！"
     },
-    "answer": {
-      "xiugai_4": "是这边！  这边！",
-      "beizhu_4": "将字幕中的全角空格整理为普通空格，修正排版。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "有没有搞错？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "救命呀！",
-      "zimu_2": "来人呀！　　我在这里呀！",
+      "zimu_2": "来人呀！我在这里呀！",
       "zimu_3": "快！",
       "zimu_4": "我在这里！",
       "zimu_5": "救命呀！",
       "zimu_6": "瞎子！",
       "zimu_7": "前面什么都没有，大家快回头！",
-      "zimu_8": "谁说的！　　前面是帮主啊",
+      "zimu_8": "谁说的！前面是帮主啊",
       "zimu_9": "是吗？不是蟑螂吗？",
       "zimu_10": "前面是帮主呀",
       "zimu_11": "好！上",
       "zimu_12": "你们这些王八蛋，骗我的",
       "zimu_13": "帮主，我来救你"
     },
-    "answer": {
-      "xiugai_2": "来人呀！ 我在这里呀！",
-      "beizhu_2": "将多余的空格规范化为一个空格。",
-      "xiugai_8": "谁说的！ 前面是帮主啊",
-      "beizhu_8": "将多余的空格规范化为一个空格。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -461,7 +478,8 @@
       "zimu_3": "二当家那么开心扛着什么东西走啦？",
       "zimu_4": "帮主，他扛的不是你吗？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -475,7 +493,8 @@
       "zimu_8": "谁帮呀？",
       "zimu_9": "烧它⋯！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -486,27 +505,31 @@
       "zimu_5": "走开，怕什么呢？",
       "zimu_6": "烧它！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "在那里呀⋯",
       "zimu_2": "在这边，快追⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "这里还有一只",
       "zimu_2": "这只小一点"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "还跑？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -514,19 +537,22 @@
       "zimu_2": "好像在那边",
       "zimu_3": "追呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "剩下两只爪子，等我中间把你劈开"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "去死！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -534,17 +560,19 @@
       "zimu_2": "在这边！",
       "zimu_3": "打它⋯！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "拿过来"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "通通让开！　　等我来烧死它！",
+      "zimu_1": "通通让开！等我来烧死它！",
       "zimu_2": "去死啦！",
       "zimu_3": "着火了！",
       "zimu_4": "烫死我了！",
@@ -569,7 +597,9 @@
       "zimu_23": "踩死你！",
       "zimu_24": "不行了⋯"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -587,7 +617,7 @@
       "zimu_12": "我真的没有呀",
       "zimu_13": "帮主，你七伤拳全好了",
       "zimu_14": "对啊！为什么呢？",
-      "zimu_15": "我明白了！",
+      "zimu_15": "我明白　了！",
       "zimu_16": "治七伤拳的方法是要以毒攻毒",
       "zimu_17": "伤上加伤",
       "zimu_18": "有道理！",
@@ -596,7 +626,7 @@
       "zimu_21": "这伤也不会这么快就治好啊！",
       "zimu_22": "你这么维护他，是不是跟他有一腿？",
       "zimu_23": "人家对你一条痴心嘛",
-      "zimu_24": "去你妈的！　　发春呀？",
+      "zimu_24": "去你妈的！发春呀？",
       "zimu_25": "二当家，叫你杀春三十娘",
       "zimu_26": "你搅定了没有？",
       "zimu_27": "春三十娘系妖怪啊",
@@ -615,7 +645,12 @@
       "zimu_40": "我们后面掩护你",
       "zimu_41": "为什么每次都是我先⋯"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_15": "我明白了！",
+      "beizhu_15": "删除了“明白”后多余的空格，使排版更规范。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -627,7 +662,8 @@
       "zimu_6": "傻瓜！",
       "zimu_7": "大不了重伤！要死那么容易吗？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -639,7 +675,8 @@
       "zimu_6": "大牛、二虎",
       "zimu_7": "散得真快，我自己来"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -648,7 +685,8 @@
       "zimu_3": "这一招叫做忍辱偷生",
       "zimu_4": "大腿捱一刀算得了什么？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -660,9 +698,10 @@
     },
     "answer": {
       "xiugai_4": "我只要点你曲池，疾宫两个穴道",
-      "beizhu_4": "将“点我”修正为“点你”，以符合前后语义和人物指代。"
+      "beizhu_4": "将“点我曲池”中的“我”修正为“你”，使代词与语境一致。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -671,7 +710,8 @@
       "zimu_3": "两位住在这里一定会爱上它",
       "zimu_4": "晚安！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -682,7 +722,8 @@
       "zimu_5": "弄得我心卜通卜通乱跳",
       "zimu_6": "帮主请留步"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -695,14 +736,16 @@
       "zimu_7": "帮主，品味太差了吧？",
       "zimu_8": "各有所好嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大腿扎一刀嘛，浑身都是洞",
       "zimu_2": "什么意思嘛？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -735,25 +778,29 @@
       "zimu_27": "这个道理你都不懂？",
       "zimu_28": "想跟我争"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你以为只有你会变？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "谁？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "妖怪⋯！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -764,10 +811,11 @@
       "zimu_5": "我结鞋带"
     },
     "answer": {
-      "xiugai_5": "我系鞋带",
-      "beizhu_5": "将“结鞋带”更正为常用说法“系鞋带”，属于用词/错字修正。"
+      "xiugai_5": "我结鞋带。",
+      "beizhu_5": "补上句末标点“。”，使字幕排版一致。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -779,12 +827,11 @@
       "zimu_6": "一定重重有赏"
     },
     "answer": {
-      "xiugai_3": "到时候群妖会合五指山下",
-      "beizhu_3": "补全遗漏的“下”，使语句完整。",
       "xiugai_5": "把唐三藏这个消息报告给大王",
-      "beizhu_5": "将“报告比大王”中的错字“比”更正为“给”。"
+      "beizhu_5": "补全“报告比大王”中的缺字“给”，使句子通顺。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -802,7 +849,8 @@
       "zimu_12": "两位还没睡啊？",
       "zimu_13": "你在说什么？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -819,17 +867,14 @@
       "zimu_11": "我们也走了",
       "zimu_12": "顺便送两位姑娘出去",
       "zimu_13": "不行！",
-      "zimu_14": "两位， 明天我一定派相关人等",
+      "zimu_14": "两位，明天我一定派相关人等",
       "zimu_15": "在这里附近彻底搜查你们要找的人",
       "zimu_16": "谢谢帮主",
       "zimu_17": "帮主晚安！走啦",
       "zimu_18": "去！去！"
     },
-    "answer": {
-      "xiugai_14": "两位，明天我一定派相关人等",
-      "beizhu_14": "删除“， ”中多余的空格，使标点后空格规范。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -838,22 +883,25 @@
       "zimu_3": "完全没反应呢？",
       "zimu_4": "没办法"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "走！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "不要杀我！⋯不要杀我！",
+      "zimu_1": "不要杀我！ ⋯不要杀我！",
       "zimu_2": "我跟你们玩玩的",
       "zimu_3": "喜欢玩是吧？",
       "zimu_4": "我们就玩吧！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -861,13 +909,14 @@
       "zimu_2": "好玩",
       "zimu_3": "好玩再玩一次"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "还玩不玩呀？",
       "zimu_2": "不玩啦⋯",
-      "zimu_3": "刚刚谁说看到有八只爪啊",
+      "zimu_3": "刚刚谁说看到有八只爪啊？",
       "zimu_4": "我不记得了⋯",
       "zimu_5": "干嘛？",
       "zimu_6": "不要啊！",
@@ -875,13 +924,15 @@
       "zimu_8": "是呀，是呀！",
       "zimu_9": "是什么嘛？她还没有变"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "这还没变"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -891,14 +942,15 @@
       "zimu_4": "我要用移魂大法迷住他",
       "zimu_5": "留他来做我的卧底"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "嗨！",
       "zimu_2": "鬼呀！",
       "zimu_3": "过去看看",
-      "zimu_4": "这么英雄瀟洒你说有鬼！",
+      "zimu_4": "这么英雄潚洒你说有鬼！",
       "zimu_5": "真是没见过世面",
       "zimu_6": "啫！老大不小的，还给我装蒜",
       "zimu_7": "等一下我一块肉一块肉的给你割下来",
@@ -907,26 +959,34 @@
       "zimu_10": "移魂大法"
     },
     "answer": {
+      "xiugai_4": "这么英气潇洒你说有鬼！",
+      "beizhu_4": "将“英雄潚洒”中的错别字“潚”更正为“潇”，并将“英雄”调整为更符合常见搭配的“英气”。",
       "xiugai_7": "等一下我一块肉一块肉地给你割下来",
-      "beizhu_7": "将“的”修正为“地”，使其作为状语更符合语法。"
+      "beizhu_7": "将“的”改为“地”，使其作状语修饰后面的动作。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "什么人？",
-      "zimu_2": "长夜漫漫，无心睡眠",
+      "zimu_2": "长夜漫漫，　无心睡眠",
       "zimu_3": "我以为只有我睡不着觉",
       "zimu_4": "原来晶晶姑娘你也睡不着啊？"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_2": "长夜漫漫， 无心睡眠",
+      "beizhu_2": "将全角空格“　”统一为普通空格。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "是呀！不知道帮主为什么睡不着？",
       "zimu_2": "就系因为晶晶姑娘你",
       "zimu_3": "我？",
-      "zimu_4": "没错！　　自从看到晶晶姑娘之后",
+      "zimu_4": "没错！自从看到晶晶姑娘之后",
       "zimu_5": "我决定改过自新，不再做贼",
       "zimu_6": "为了表示对姑娘你的诚意",
       "zimu_7": "我不要再看见以前的我",
@@ -938,7 +998,7 @@
       "zimu_13": "你变成人样就行了吗？",
       "zimu_14": "人样？",
       "zimu_15": "看来我用三味白骨火，你是不会承认",
-      "zimu_16": "哗！　　还用得着！又烧！",
+      "zimu_16": "哗！还用得着！又烧！",
       "zimu_17": "何必呢？",
       "zimu_18": "难道我搞错了？",
       "zimu_19": "何必呢？",
@@ -960,26 +1020,20 @@
       "zimu_35": "原来晶晶姑娘喜欢我粗犷的一面"
     },
     "answer": {
-      "xiugai_4": "没错！　自从看到晶晶姑娘之后",
-      "beizhu_4": "将“没错！　　自从”中的多余空格调整为一个空格，修正排版错误。",
-      "xiugai_16": "哗！　还用得着！又烧！",
-      "beizhu_16": "将“哗！　　还用得着！”中的多余空格调整为一个空格，修正排版错误。",
       "xiugai_22": "你知不知道你少了胡子",
-      "beizhu_22": "补全明显缺失的字“子”，使“胡”成为完整词语“胡子”。",
-      "xiugai_26": "你不做山贼，你想做状元吗？",
-      "beizhu_26": "补上句末问号，修正标点错误。",
+      "beizhu_22": "补全明显缺失的字“子”，使“胡”变为“胡子”。",
       "xiugai_28": "省省吧你，改变什么形象",
-      "beizhu_28": "将错别字“形像”更正为“形象”。",
-      "xiugai_29": "好好的做你山贼这份很有前途的职业嘛",
-      "beizhu_29": "补全缺失的“的”，使语句更完整。"
+      "beizhu_28": "将错别字“形像”更正为“形象”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "乱是乱了点，总算回复了几分风采"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -993,25 +1047,24 @@
       "zimu_8": "还说感谢白姑娘的美意",
       "zimu_9": "他就无福消受了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "五百年了⋯",
       "zimu_2": "我终于找到唐三藏的踪迹了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "连脚底板的毛也剃光了",
       "zimu_2": "不知道要那一年才长得出来"
     },
-    "answer": {
-      "xiugai_2": "不知道要哪一年才长得出来",
-      "beizhu_2": "将“那一年”中的“那”改为“哪”，使疑问表达更符合规范。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1019,7 +1072,8 @@
       "zimu_2": "我菩提老祖一定要想个办法通知",
       "zimu_3": "这群无辜的人"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1030,32 +1084,24 @@
       "zimu_5": "没有人带你来，是你自己要回来",
       "zimu_6": "一个人离开家太久了，总是想回家",
       "zimu_7": "你不要耍我",
-      "zimu_8": "我的家在五岳山第四边101号B1",
-      "zimu_9": "你搞错啦，　　你听到没有？",
+      "zimu_8": "我的家在五岳山第四边1 01号B1",
+      "zimu_9": "你搞错啦，你听到没有？",
       "zimu_10": "以后不要再烦我啦，拜托！"
     },
-    "answer": {
-      "xiugai_9": "你搞错啦，你听到没有？",
-      "beizhu_9": "删除多余的全角空格“　　”，使字幕排版正常。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "出发了帮主， 不然会迟到啦",
+      "zimu_1": "出发了帮主，不然会迟到啦",
       "zimu_2": "出什么发啊？",
       "zimu_3": "抢劫呀，帮主",
       "zimu_4": "谁敢跑来抢劫啊？",
       "zimu_5": "我们去抢劫人家啦",
-      "zimu_6": "我知道啦！　　出发！"
+      "zimu_6": "我知道啦！　出发！"
     },
-    "answer": {
-      "xiugai_1": "出发了帮主，不然会迟到啦",
-      "beizhu_1": "删除“帮主，”后多余的空格，修正排版。",
-      "xiugai_6": "我知道啦！ 出发！",
-      "beizhu_6": "将句中异常的全角空格整理为正常空格，修正排版。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1064,7 +1110,8 @@
       "zimu_3": "脚底板啊，老爷",
       "zimu_4": "我没有脚啊，怎么办啊？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1076,7 +1123,8 @@
       "zimu_6": "还嘴硬！",
       "zimu_7": "葡萄？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1085,13 +1133,15 @@
       "zimu_3": "晚饭已经准备好了",
       "zimu_4": "出去"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "谁啊？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1105,16 +1155,16 @@
       "zimu_8": "你偷了我的葡萄，还菩我老母？",
       "zimu_9": "那两个女人是妖怪",
       "zimu_10": "如果你不相信",
-      "zimu_11": "我的照妖镜一照，你就会明白了",
+      "zimu_11": "我的照妖镜一照，你就会明白　了",
       "zimu_12": "我照你老母的妖镜",
-      "zimu_13": "说　你听我说",
+      "zimu_13": "说　　你听我说",
       "zimu_14": "你是不是偷了我葡萄？",
       "zimu_15": "我没有啊！",
       "zimu_16": "没有？那我的葡萄到那儿去了？",
       "zimu_17": "我就是葡萄了！",
       "zimu_18": "大声点",
       "zimu_19": "我就是你的葡萄",
-      "zimu_20": "为什么不做苹果？　　要做葡萄",
+      "zimu_20": "为什么不做苹果？要做葡萄",
       "zimu_21": "你跟我说",
       "zimu_22": "你别以为我打不过你",
       "zimu_23": "我只是不想伤及无辜",
@@ -1132,19 +1182,26 @@
       "zimu_35": "好是吗？",
       "zimu_36": "我看今天月亮这么美，不如⋯",
       "zimu_37": "月光？没有啊？",
-      "zimu_38": "那么大的月亮你没看到吗？　　看清楚点",
+      "zimu_38": "那么大的月亮你没看到吗？看清楚点",
       "zimu_39": "天还没有黑，那来的月光",
       "zimu_40": "你说啊⋯"
     },
     "answer": {
+      "xiugai_4": "什么菩提老母？",
+      "beizhu_4": "将“菩你”更正为“菩提”，与前文“菩提老祖”用词一致。",
+      "xiugai_8": "你偷了我的葡萄，还菩提老母？",
+      "beizhu_8": "将“菩我”更正为“菩提”，与相关称呼一致。",
+      "xiugai_11": "我的照妖镜一照，你就会明白了",
+      "beizhu_11": "删除多余空格“　”，并补正句末多余空格，使字幕排版正常。",
       "xiugai_13": "说 你听我说",
-      "beizhu_13": "将中间多余的全角空格排版为单个空格，统一字幕间距。",
-      "xiugai_20": "为什么不做苹果？ 要做葡萄",
-      "beizhu_20": "将多余的空格压缩为单个空格，修正排版。",
-      "xiugai_38": "那么大的月亮你没看到吗？ 看清楚点",
-      "beizhu_38": "将多余的全角空格统一为单个空格，修正排版。"
+      "beizhu_13": "删除多余全角空格“　　”，使排版正常。",
+      "xiugai_16": "没有？那我的葡萄到哪儿去了？",
+      "beizhu_16": "将“到那儿”改为“到哪儿”，修正明显用字错误。",
+      "xiugai_39": "天还没有黑，哪来的月光",
+      "beizhu_39": "将“那”改为“哪”，修正疑问用字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1178,7 +1235,7 @@
       "zimu_28": "安排他们师徒今世在这里重逢",
       "zimu_29": "继续去完成取西经的使命",
       "zimu_30": "为什么那么多妖在这儿出现",
-      "zimu_31": "你明白了",
+      "zimu_31": "你明白　了",
       "zimu_32": "怪不得我长久以来都在做同样的",
       "zimu_33": "一个恶梦",
       "zimu_34": "在一遍漆黑孤独的环境里头",
@@ -1209,16 +1266,26 @@
       "zimu_59": "对啊"
     },
     "answer": {
-      "xiugai_15": "五百年前孙悟空被观音大士所消灭",
-      "beizhu_15": "将“观音大使”中的“使”更正为“士”。"
+      "xiugai_1": "哎菩提老母？",
+      "beizhu_1": "补全明显缺失的字“提”，使词语“菩提”完整。",
+      "xiugai_2": "菩提老母？",
+      "beizhu_2": "补全明显缺失的字“提”，使词语“菩提”完整。",
+      "xiugai_31": "你明白了",
+      "beizhu_31": "将“了”前的多余空格删除。",
+      "xiugai_34": "在一片漆黑孤独的环境里头",
+      "beizhu_34": "将“遍”更正为“片”，修正错别字。",
+      "xiugai_35": "一对一对非常迷蒙的眼睛",
+      "beizhu_35": "将“迷迷”更正为“迷蒙”，修正错别字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我一定帮你的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1228,21 +1295,24 @@
       "zimu_4": "那你也得想个办法",
       "zimu_5": "二当家"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "通知其他人，帮主找我们",
       "zimu_2": "快去⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "隐身符",
       "zimu_2": "走吧⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1250,19 +1320,22 @@
       "zimu_2": "知道了⋯",
       "zimu_3": "我们不动声色，看看他们想干什么"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "师妹，喝酒呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "师姐，你也喝"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1271,7 +1344,8 @@
       "zimu_3": "不用怕，看不到的",
       "zimu_4": "不能喝就别喝嘛，真是丢人"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1279,7 +1353,8 @@
       "zimu_2": "你本来就看不到",
       "zimu_3": "走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1287,14 +1362,17 @@
       "zimu_2": "就是",
       "zimu_3": "不是说有烤鸡嘛？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "帮主！　　着火啦",
+      "zimu_1": "帮主！着火啦",
       "zimu_2": "不能脱"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1309,11 +1387,12 @@
       "zimu_9": "没记性",
       "zimu_10": "对不起"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "妈的！现在该你还钱",
+      "zimu_1": "妈的！　现在该你还钱",
       "zimu_2": "喂！你用得着那么凶吗？",
       "zimu_3": "不还钱我毁你容啊！",
       "zimu_4": "我上个月不是已经还你了吗？",
@@ -1328,9 +1407,10 @@
     },
     "answer": {
       "xiugai_10": "明刀明枪跟他们拼了",
-      "beizhu_10": "将“拚”改为“拼”，统一为简体字写法。"
+      "beizhu_10": "将“拚”修正为“拼”，统一为简体字常用写法。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1339,7 +1419,8 @@
       "zimu_3": "乾坤袋在这里，主人，他们想害你",
       "zimu_4": "吃里扒外，你出卖我们？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1348,14 +1429,16 @@
       "zimu_3": "是吗？",
       "zimu_4": "是啊！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我菩提老祖为了伏妖除魔",
       "zimu_2": "三角裤都脱了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1406,7 +1489,8 @@
       "zimu_45": "我不怕啦！对不对？",
       "zimu_46": "对啊！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1414,13 +1498,15 @@
       "zimu_2": "让他们见识，见识！",
       "zimu_3": "不就是烧手吗？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "焦了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1446,40 +1532,45 @@
       "zimu_20": "不要乱来！",
       "zimu_21": "帮主快跑呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不要杀我的兄弟呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "帮主"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "瞎子，不用怕，有我在"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "对不起啊，瞎子！",
       "zimu_2": "今次算了少走了一步",
       "zimu_3": "你不会怪我吧？",
-      "zimu_4": "我一辈子⋯我知道",
+      "zimu_4": "我一辈子⋯　　我知道",
       "zimu_5": "都是个瞎子",
       "zimu_6": "我最有眼光就是跟着帮主"
     },
     "answer": {
       "xiugai_2": "今次算是少走了一步",
-      "beizhu_2": "补全缺失的“是”，使语句通顺。"
+      "beizhu_2": "将“算了”修正为“算是”，使句子更符合原意且属于明显输入错误修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1487,9 +1578,10 @@
     },
     "answer": {
       "xiugai_1": "我跟你们拼了",
-      "beizhu_1": "将“拚”更正为简体常用字“拼”。"
+      "beizhu_1": "将“拚”更正为常用简体字“拼”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1499,7 +1591,8 @@
       "zimu_4": "还要靠他找唐僧的",
       "zimu_5": "带他回盘丝洞"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1515,24 +1608,31 @@
       "zimu_10": "师姐，我再也不敢了",
       "zimu_11": "滚开！"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_7": "你中了我的盘丝软甲毒",
+      "beizhu_7": "将“夹”更正为“甲”，修正明显错别字。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "终于良心发现了你",
-      "zimu_2": "不是啦！　　外面来了个更狠的",
+      "zimu_2": "不是啦！外面来了个更狠的",
       "zimu_3": "出去看看",
       "zimu_4": "你们上哪去？",
       "zimu_5": "别去啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "牛魔王也来了？",
       "zimu_2": "牛魔王？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1540,7 +1640,8 @@
       "zimu_2": "我也是",
       "zimu_3": "怪兽"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1561,7 +1662,8 @@
       "zimu_15": "正是小弟",
       "zimu_16": "我杀了你这个勾引二嫂的王八蛋！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1575,9 +1677,10 @@
     },
     "answer": {
       "xiugai_5": "你们两个还不知道在哪里？",
-      "beizhu_5": "将“在那里”更正为“在哪里”，修正字词错误。"
+      "beizhu_5": "将“那里”修正为“哪里”，符合问句语义。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1585,21 +1688,24 @@
       "zimu_2": "我就杀了谁",
       "zimu_3": "尝尝我的白骨鞭！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "变",
       "zimu_2": "神龙盘丝"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "快走！",
       "zimu_2": "雕虫小技"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1612,22 +1718,25 @@
     },
     "answer": {
       "xiugai_6": "死牛魔王  走",
-      "beizhu_6": "将多余的全角空格规范为普通空格，并保留原有分隔。"
+      "beizhu_6": "将原字幕中的全角空格排版调整为两个半角空格，修正字幕排版。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "他打伤了我菩提根",
       "zimu_2": "起码得练上一百八十年才能跟他们斗"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "起床了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1653,7 +1762,8 @@
       "zimu_20": "不相信你拿个照妖镜看看我是不是？",
       "zimu_21": "照妖镜？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1669,8 +1779,8 @@
       "zimu_10": "我保证你无事",
       "zimu_11": "主人！",
       "zimu_12": "主人呀！",
-      "zimu_13": "主人呀！　　臭猴子来了",
-      "zimu_14": "唐三藏究竟在哪里？　　臭猴子",
+      "zimu_13": "主人呀！臭猴子来了",
+      "zimu_14": "唐三藏究竟在哪里？臭猴子",
       "zimu_15": "好大的误会呀",
       "zimu_16": "这个误会大到怎样？",
       "zimu_17": "我偷偷地跟你们说",
@@ -1697,9 +1807,10 @@
       "zimu_38": "没有骗我？那你一剑杀了他吧",
       "zimu_39": "杀了他",
       "zimu_40": "那你不想找唐三藏吗？",
-      "zimu_41": "想呀！　但是我不相信你会一剑杀了他"
+      "zimu_41": "想呀！但是我不相信你会一剑杀了他"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1713,31 +1824,31 @@
       "zimu_8": "不用客气",
       "zimu_9": "我要杀你！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "贱人，早知道你对臭猴子余情未了",
       "zimu_2": "废话少说，干丢你"
     },
-    "answer": {
-      "xiugai_2": "废话少说，干掉你",
-      "beizhu_2": "将“丢”更正为“掉”，修正明显错别字。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "没事吗？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "在危急时刻仍这样关心我",
       "zimu_2": "从现在开始，爱你一百年"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1745,13 +1856,15 @@
       "zimu_2": "这门安全不安全呀？",
       "zimu_3": "这门是祖师爷用万年金刚石做的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "走开"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1769,31 +1882,26 @@
       "zimu_12": "今天是十五月圆之夜",
       "zimu_13": "到时候她尸变，你死得难看"
     },
-    "answer": {
-      "xiugai_6": "等他恢复真身之后",
-      "beizhu_6": "将“回复真身”中的“回复”更正为“恢复”，属用词/错别字修正。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我是吓大的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "什么？",
-      "zimu_2": "大王，这里有几千个山，　　山洞又多",
+      "zimu_2": "大王，这里有几千个山，山洞又多",
       "zimu_3": "不知道哪个才是盘丝洞的入口？",
       "zimu_4": "是啊⋯",
       "zimu_5": "是吗？比我身上的牛虱还多，给我找"
     },
-    "answer": {
-      "xiugai_2": "大王，这里有几千个山，山洞又多",
-      "beizhu_2": "删除多余空格，统一字幕排版。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1806,7 +1914,8 @@
       "zimu_7": "我俩是俊男美女",
       "zimu_8": "吃饭了三十娘"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1820,16 +1929,13 @@
       "zimu_8": "师妹，你斗不过我的",
       "zimu_9": "是吗？",
       "zimu_10": "你动一下我就扭断你的脖子",
-      "zimu_11": "快拿钥匙！　　把她关进去",
+      "zimu_11": "快拿钥匙！把她关进去",
       "zimu_12": "你这么爱进去，是不是？",
       "zimu_13": "进去！",
       "zimu_14": "再见！"
     },
-    "answer": {
-      "xiugai_11": "快拿钥匙！ 把她关进去",
-      "beizhu_11": "将原字幕中的全角空格规范为普通空格，修正排版错误。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1837,71 +1943,82 @@
       "zimu_2": "我有个很好的建议",
       "zimu_3": "先说好，不准打脸"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "那里都别打啊，拜托！",
       "zimu_2": "还有只鸡啊，三十娘"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我叫你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "这样子亲他都没反应",
       "zimu_2": "你不要锁"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "好！　你还不开门是吗？",
+      "zimu_1": "好！你还不开门是吗？",
       "zimu_2": "我警告你",
       "zimu_3": "我把你的心上人先奸后杀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "1"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "2"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "中"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "3"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "催情大法"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1912,13 +2029,15 @@
       "zimu_5": "是啊",
       "zimu_6": "我的天啊！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "如果不是妖怪那有多好！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1943,25 +2062,24 @@
       "zimu_19": "就像你说的，做人不开心",
       "zimu_20": "就算长生不死也没有用"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "来吧！",
       "zimu_2": "来就来！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "他母亲的， 是谁綁得那么紧？",
+      "zimu_1": "他母亲的，是谁绑得那么紧？",
       "zimu_2": "我来解！"
     },
-    "answer": {
-      "xiugai_1": "他母亲的，是谁绑得那么紧？",
-      "beizhu_1": "将“綁”改为简体字“绑”，并去除多余空格。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1969,15 +2087,12 @@
       "zimu_2": "我是看你那么冲动",
       "zimu_3": "配合你一下而已！",
       "zimu_4": "我虽然不是什么正人君子",
-      "zimu_5": "但也不至於乘人之危",
+      "zimu_5": "但也不至于乘人之危",
       "zimu_6": "白天我不习惯",
       "zimu_7": "晚上再说"
     },
-    "answer": {
-      "xiugai_5": "但也不至于乘人之危",
-      "beizhu_5": "将繁体字“於”改为简体字“于”，统一为简体中文字幕规范。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1986,7 +2101,8 @@
       "zimu_3": "从今天开始",
       "zimu_4": "我会一直陪着你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1994,7 +2110,8 @@
       "zimu_2": "没有",
       "zimu_3": "继续找吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2002,7 +2119,8 @@
       "zimu_2": "我春三十娘貌美如花",
       "zimu_3": "居然跟这么丑的男人有了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2021,13 +2139,15 @@
       "zimu_13": "你不说，他怎么知道男人不能做奶妈？",
       "zimu_14": "那倒也是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我找到一个很像你的人"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2036,7 +2156,8 @@
       "zimu_3": "想",
       "zimu_4": "想就别还手"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2047,34 +2168,39 @@
       "zimu_5": "又是为了那个贱人",
       "zimu_6": "不爽呀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "奶妈",
       "zimu_2": "奶妈疼你啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我爽了，明天出发吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "为了爱情",
       "zimu_2": "就算你真的毁我容，也是值得的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "快点，到底救不救人？",
       "zimu_2": "你得让我上马啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2082,34 +2208,38 @@
       "zimu_2": "你再不快点，师妹就不行了",
       "zimu_3": "你得让我上马才行呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不见了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "全都是骗我"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "过了这座山就回到菩提洞了",
       "zimu_2": "不要呀，呀⋯",
-      "zimu_3": "晶晶",
-      "zimu_4": "晶晶"
+      "zimu_3": "晶晶！",
+      "zimu_4": "晶晶！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "一定以为我丢下她不管了",
       "zimu_2": "还要找多久呀？",
-      "zimu_3": "首音　　晶晶",
+      "zimu_3": "晶晶",
       "zimu_4": "毒发滚下山咯！",
       "zimu_5": "讨厌，就是因为你",
       "zimu_6": "为什么让我睡一个晚上？",
@@ -2120,13 +2250,9 @@
       "zimu_11": "我什么都不知道",
       "zimu_12": "你自己走得慢还怪我？"
     },
-    "answer": {
-      "xiugai_3": "首音　晶晶",
-      "beizhu_3": "删除“首音”与“晶晶”之间多余的空格，修正排版。",
-      "xiugai_10": "你别希望我把唐僧的事告诉你",
-      "beizhu_10": "补全明显缺失的“事”，使语句完整；并去除多余的“的”。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2138,19 +2264,26 @@
       "zimu_6": "你不说出来",
       "zimu_7": "这一辈子都别指望出去"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_2": "大王，我们发现白晶晶昏倒山崖下",
+      "beizhu_2": "补全“山崖”后的缺失字“下”，使语句完整。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "懒得理你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "地也不是那么硬，有办法"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2161,25 +2294,29 @@
       "zimu_5": "到时候吃唐僧肉少不了你的份",
       "zimu_6": "否则我要你死得比现在痛苦十倍"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "挖隧道我也要离开这里"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "借助月亮光华可以穿梭时空"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "什么东西呀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2189,15 +2326,17 @@
     },
     "answer": {
       "xiugai_1": "般若波罗蜜，是梵文啊",
-      "beizhu_1": "将“密”更正为“蜜”，规范佛教常用词“般若波罗蜜”。"
+      "beizhu_1": "将“密”更正为“蜜”，修正常见错别字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "快带我进盘丝洞"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2207,13 +2346,16 @@
       "zimu_4": "这么多机关？",
       "zimu_5": "越走越湿呢！"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大王，你回来了？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2235,7 +2377,8 @@
       "xiugai_10": "原来是我的膝盖！",
       "beizhu_10": "将错别字“菠萝盖”更正为“膝盖”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2245,9 +2388,10 @@
     },
     "answer": {
       "xiugai_3": "求求你把你的手放开好不好？",
-      "beizhu_3": "将重复的“你”修正为“手”，使句子表达通顺。"
+      "beizhu_3": "将明显输入错误“你”修正为“手”，使句子通顺。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2281,16 +2425,19 @@
       "zimu_28": "神经病！",
       "zimu_29": "好痛呀⋯",
       "zimu_30": "放手呀",
-      "zimu_31": "你安静点行不行？不行⋯",
+      "zimu_31": "你安静点行不行？　　不行⋯",
       "zimu_32": "安静呀",
       "zimu_33": "呀！好痛呀",
       "zimu_34": "我也一样痛呀！"
     },
     "answer": {
       "xiugai_20": "你还没变成真正的孙悟空投世",
-      "beizhu_20": "将“托世”更正为“投世”，修正错别字。"
+      "beizhu_20": "将“托世”更正为“投世”，修正明显错别字。",
+      "xiugai_22": "那个给你三颗痣的人",
+      "beizhu_22": "补全原句中多余的“你”字，修正为通顺的字幕表达。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2298,17 +2445,23 @@
       "zimu_2": "追",
       "zimu_3": "走呀",
       "zimu_4": "快拉住我呀",
-      "zimu_5": "抓住了⋯，生了⋯",
+      "zimu_5": "抓住了⋯ ，生了⋯",
       "zimu_6": "唐三藏出世了，快找",
       "zimu_7": "是！"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_5": "抓住了⋯，生了⋯",
+      "beizhu_5": "删除“⋯”前多余的空格，使省略号与标点连接规范。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "是男的！长得很像你呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2329,14 +2482,17 @@
       "zimu_15": "奶妈，你告诉她吧！",
       "zimu_16": "你说呀！"
     },
-    "answer": {}
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "是！",
       "zimu_2": "她跟至尊宝生的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2348,7 +2504,8 @@
       "zimu_6": "滚开",
       "zimu_7": "把我儿子抱走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2361,7 +2518,8 @@
       "zimu_7": "救命呀⋯",
       "zimu_8": "你这么关心我，我愿意为你精尽人亡"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2370,23 +2528,22 @@
       "zimu_3": "走",
       "zimu_4": "三十娘"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "总算跑出来了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "首音　　晶晶"
+      "zimu_1": "晶晶"
     },
-    "answer": {
-      "xiugai_1": "首音　晶晶",
-      "beizhu_1": "将字幕中的多余空格合并，保留排版所需的间隔。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2395,7 +2552,8 @@
       "zimu_3": "我割你的肝！割你的胃！",
       "zimu_4": "我割你的心脏！割你的肺！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2404,16 +2562,18 @@
     },
     "answer": {
       "xiugai_2": "“元神出窍”",
-      "beizhu_2": "将字幕中的中文引号“〝〞”统一为规范中文引号““””。"
+      "beizhu_2": "将书名号样式的引号“〝 〞”改为中文常用引号“”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "贱人！别再踩我的肠子啦",
       "zimu_2": "喜欢！我要踩"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2425,44 +2585,41 @@
       "zimu_6": "出来啦！",
       "zimu_7": "走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "是不是真的能时光倒流？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "快走，走！",
-      "zimu_2": "我不走！　　要走一起走！",
+      "zimu_2": "我不走！要走一起走！",
       "zimu_3": "你听我说",
       "zimu_4": "好好带大我们的孩子"
     },
-    "answer": {
-      "xiugai_2": "我不走！要走一起走！",
-      "beizhu_2": "删除多余的空格，统一字幕排版。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "走呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "我们的孩子！　　娘子！",
+      "zimu_1": "我们的孩子！娘子！",
       "zimu_2": "你再不走我就死给你看",
       "zimu_3": "不要啊！"
     },
-    "answer": {
-      "xiugai_1": "我们的孩子！ 娘子！",
-      "beizhu_1": "将字幕中的全角空格整理为普通空格，修正排版。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2490,13 +2647,20 @@
       "zimu_22": "老婆⋯！",
       "zimu_23": "我警告你别烦我！"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_7": "般若波罗蜜⋯！",
+      "beizhu_7": "将“般若波罗密”中的“密”更正为“蜜”。",
+      "xiugai_17": "般若波罗蜜！",
+      "beizhu_17": "将“般若波罗密”中的“密”更正为“蜜”。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "为什么要我别烦你？还要警告我？",
       "zimu_2": "你真是噜嗦啊",
-      "zimu_3": "是啊！ i 我也觉得自己很噜嗦",
+      "zimu_3": "是啊！我也觉得自己很噜嗦",
       "zimu_4": "为什么？",
       "zimu_5": "出来啦！",
       "zimu_6": "走，走呀！",
@@ -2508,20 +2672,20 @@
       "zimu_12": "老婆⋯"
     },
     "answer": {
-      "xiugai_3": "是啊！I 我也觉得自己很噜嗦",
-      "beizhu_3": "将多余的空格排版调整为英文字符 I 与后文之间的正常分隔。",
-      "xiugai_8": "般若波罗蜜⋯",
-      "beizhu_8": "将错别字“密”更正为“蜜”。",
-      "xiugai_9": "〝烤〞你也够撑了",
-      "beizhu_9": "将“拷”更正为更符合语境的“烤”。"
+      "xiugai_2": "你真是啰嗦啊",
+      "beizhu_2": "将“噜”修正为“啰”，符合常用书写。",
+      "xiugai_3": "是啊！我也觉得自己很啰嗦",
+      "beizhu_3": "将“噜”修正为“啰”，符合常用书写。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "拿来"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2531,19 +2695,22 @@
       "zimu_4": "娘子⋯",
       "zimu_5": "般若波罗密⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "娘子呀，跟牛魔王出来看上帝"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "刀下留人！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2551,7 +2718,8 @@
       "zimu_2": "你为什么要自杀？",
       "zimu_3": "自杀？要死也先杀了你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2559,7 +2727,7 @@
       "zimu_2": "你放过我吧",
       "zimu_3": "放过你？",
       "zimu_4": "你给一个不杀你的理由",
-      "zimu_5": "正在想！　　你先给我一个杀我的理由",
+      "zimu_5": "正在想！你先给我一个杀我的理由",
       "zimu_6": "好呀！你一声不响丢下我",
       "zimu_7": "还跟师姐生了个儿子！",
       "zimu_8": "你完全误会了　　找死？",
@@ -2571,7 +2739,12 @@
       "zimu_14": "你不信",
       "zimu_15": "你看"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_8": "你完全误会了 找死？",
+      "beizhu_8": "删除多余的全角空格“　　”。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2582,15 +2755,17 @@
     },
     "answer": {
       "xiugai_4": "断龙石关了便打不开，快出去",
-      "beizhu_4": "补上逗号，使句子断句更清晰。"
+      "beizhu_4": "补上缺少的逗号“，”以改善句子断句。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "娘子⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2601,36 +2776,37 @@
       "zimu_5": "相公⋯",
       "zimu_6": "娘子⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "再来！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "般若波罗密⋯"
     },
-    "answer": {
-      "xiugai_1": "般若波罗蜜⋯",
-      "beizhu_1": "将“密”修正为“蜜”，以符合常用佛经用语“般若波罗蜜”。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zimu_1": "晶晶"
+      "zimu_1": "晶晶！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "人呢？都到哪儿去了？",
       "zimu_2": "怎么会这样了？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2638,7 +2814,8 @@
       "zimu_2": "妖怪？",
       "zimu_3": "谢谢！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2649,15 +2826,17 @@
     },
     "answer": {
       "xiugai_4": "水帘洞呀！",
-      "beizhu_4": "将错别字“濂”更正为“帘”。"
+      "beizhu_4": "将“濂”更正为“帘”，修正地名/专名的错别字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "盘丝洞这个名也蛮好听的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2665,7 +2844,8 @@
       "zimu_2": "以后我就住在这儿",
       "zimu_3": "等一等！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2676,7 +2856,8 @@
       "zimu_5": "是啊",
       "zimu_6": "就像我的骡仔一样先给你盖个章吧！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2686,19 +2867,22 @@
       "zimu_4": "盘丝大仙？",
       "zimu_5": "五百年前？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你没有变成孙悟空托世",
       "zimu_2": "是因为你还没碰见给你三颗痣的人"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "芝麻关门！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   }
 ]

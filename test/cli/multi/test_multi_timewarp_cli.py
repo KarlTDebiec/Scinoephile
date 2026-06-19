@@ -33,12 +33,33 @@ def test_multi_timewarp_cli_passes_arguments_and_writes_file(tmp_path: Path):
         "1\n00:00:00,000 --> 00:00:01,000\nB\n",
         format_="srt",
     )
+    timewarp_calls = 0
+
+    def get_timewarped(
+        *,
+        source_one: Series,
+        source_two: Series,
+        one_start_idx: int,
+        one_end_idx: int,
+        two_start_idx: int,
+        two_end_idx: int,
+    ) -> Series:
+        """Validate timewarp inputs."""
+        nonlocal timewarp_calls
+        timewarp_calls += 1
+        assert_series_equal(source_one, anchor_series)
+        assert_series_equal(source_two, mobile_series)
+        assert one_start_idx == 1
+        assert one_end_idx == 2
+        assert two_start_idx == 3
+        assert two_end_idx == 4
+        return timewarped_series
 
     with (
         patch(
             "scinoephile.cli.multi.multi_timewarp_cli.get_series_timewarped",
-            return_value=timewarped_series,
-        ) as get_series_timewarped,
+            side_effect=get_timewarped,
+        ),
     ):
         run_cli_with_args(
             MultiTimewarpCli,
@@ -48,13 +69,7 @@ def test_multi_timewarp_cli_passes_arguments_and_writes_file(tmp_path: Path):
             f"--outfile {output_path}",
         )
 
-    called_kwargs = get_series_timewarped.call_args.kwargs
-    assert_series_equal(called_kwargs["source_one"], anchor_series)
-    assert_series_equal(called_kwargs["source_two"], mobile_series)
-    assert called_kwargs["one_start_idx"] == 1
-    assert called_kwargs["one_end_idx"] == 2
-    assert called_kwargs["two_start_idx"] == 3
-    assert called_kwargs["two_end_idx"] == 4
+    assert timewarp_calls == 1
     assert_series_equal(Series.load(output_path), timewarped_series)
 
 

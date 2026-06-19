@@ -15,7 +15,7 @@ import pycantonese
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import RE_WESTERN, full_to_half_punc, get_char_type
+from scinoephile.core.text import FULL_TO_HALF_PUNC, RE_WESTERN, get_char_type
 from scinoephile.lang.zho.script.conversion import get_zho_converter
 
 __all__ = [
@@ -148,11 +148,11 @@ def get_yue_text_romanized(text: str) -> str:
             index = 0
             while index < len(section):
                 char = section[index]
-                if char in full_to_half_punc:
+                if char in FULL_TO_HALF_PUNC:
                     if char in {"＜", "＞"}:
                         section_romanization += char
                     else:
-                        section_romanization += full_to_half_punc[char]
+                        section_romanization += FULL_TO_HALF_PUNC[char]
                     index += 1
                 elif RE_WESTERN.match(char):
                     section_romanization += char

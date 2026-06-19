@@ -4,29 +4,63 @@
 
 from __future__ import annotations
 
-from scinoephile.core.subtitles import Series, get_series_with_subs_merged
-from scinoephile.multilang.yue_zho.block_review import get_yue_block_reviewed_vs_zho
+from collections.abc import Callable
+from unittest.mock import Mock, patch
+
+import pytest
+
+from scinoephile.core.llms import LLMProvider, TestCase
+from scinoephile.multilang.yue_zho.block_review import (
+    get_yue_block_reviewed_vs_zho,
+    get_yue_vs_zho_block_reviewer,
+)
+from test.data.mlamd import get_mlamd_yue_vs_zho_block_review_test_cases
 from test.helpers import assert_series_equal
 
 
-def test_get_yue_block_reviewed_vs_zho_mlamd(
-    mlamd_yue_hans_transcribe_review_translate: Series,
-    mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
-    mlamd_yue_hans_transcribe_review_translate_block_review: Series,
+@pytest.mark.parametrize(
+    ("yuewen_fixture", "zhongwen_fixture", "expected_fixture", "test_case_loader"),
+    [
+        pytest.param(
+            "mlamd_yue_hans_transcribe_review_translate",
+            "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
+            "mlamd_yue_hans_transcribe_review_translate_block_review",
+            get_mlamd_yue_vs_zho_block_review_test_cases,
+            id="mlamd",
+        ),
+    ],
+)
+def test_get_yue_block_reviewed_vs_zho(
+    request: pytest.FixtureRequest,
+    yuewen_fixture: str,
+    zhongwen_fixture: str,
+    expected_fixture: str,
+    test_case_loader: Callable[[], list[TestCase]],
 ):
-    """Test get_yue_block_reviewed_vs_zho with MLAMD subtitles.
+    """Test get_yue_block_reviewed_vs_zho.
 
     Arguments:
-        mlamd_yue_hans_transcribe_review_translate: input written Cantonese subtitles
-        mlamd_zho_hans_fuse_clean_validate_review_flatten: input standard
-          Chinese subtitles
-        mlamd_yue_hans_transcribe_review_translate_block_review: expected output
-            subtitles
+        request: pytest request for fixture lookup
+        yuewen_fixture: fixture name for input written Cantonese subtitles
+        zhongwen_fixture: fixture name for input standard Chinese subtitles
+        expected_fixture: fixture name for expected output subtitles
+        test_case_loader: loader for block review test cases
     """
-    zhongwen = get_series_with_subs_merged(
-        mlamd_zho_hans_fuse_clean_validate_review_flatten, 539
+    yuewen = request.getfixturevalue(yuewen_fixture)
+    zhongwen = request.getfixturevalue(zhongwen_fixture)
+    expected = request.getfixturevalue(expected_fixture)
+    provider = Mock(spec=LLMProvider)
+    with patch("test.data.mlamd.get_torch_device", return_value="cuda"):
+        test_cases = test_case_loader()
+    reviewer = get_yue_vs_zho_block_reviewer(
+        test_cases=test_cases,
+        use_dictionary_tool=False,
+        provider=provider,
     )
     output = get_yue_block_reviewed_vs_zho(
-        mlamd_yue_hans_transcribe_review_translate, zhongwen
+        yuewen,
+        zhongwen,
+        reviewer=reviewer,
     )
-    assert_series_equal(output, mlamd_yue_hans_transcribe_review_translate_block_review)
+    assert_series_equal(output, expected)
+    provider.chat_completion.assert_not_called()

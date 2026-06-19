@@ -1,12 +1,36 @@
 [
   {
     "query": {
-      "lens": "There, on the right\nhand side of Mrs. McBing.",
+      "lens": "It flied on …",
+      "tesseract": "It flled on…"
+    },
+    "answer": {
+      "output": "It flied on…",
+      "note": "Used 'flied' from Lens instead of 'flled' from Tesseract, and kept the ellipsis without the extra space before it."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "There, on the right hand side of\nMrs.\nMcBing.",
       "tesseract": "There, on the right hand side of\nMrs. McBing."
     },
     "answer": {
-      "output": "There, on the right hand side of\nMrs. McBing.",
-      "note": "Used Tesseract's line break placement."
+      "output": "There, on the right hand side of\nMrs.\nMcBing.",
+      "note": "Used Google Lens line breaks for the name split across two lines."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "So Mrs. McBing amended her wish:",
+      "tesseract": "SO Mrs. McBing amended her wish:"
+    },
+    "answer": {
+      "output": "So Mrs. McBing amended her wish:",
+      "note": "Used 'So' instead of 'SO' to match the likely correct capitalization."
     },
     "difficulty": 1,
     "verified": true
@@ -25,63 +49,50 @@
   },
   {
     "query": {
-      "lens": "To commemorate this, Mrs. McBing …",
-      "tesseract": "To commemorate this, Mrs. McBing"
+      "lens": "I am the boy, no more McNificient…",
+      "tesseract": "lam the boy, no more McNificient…"
     },
     "answer": {
-      "output": "To commemorate this, Mrs. McBing…",
-      "note": "Kept ellipsis from Google Lens; removed space before ellipsis."
-    },
-    "difficulty": 1,
-    "prompt": true,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Your calves have grown strong.",
-      "tesseract": "your calves have grown strong."
-    },
-    "answer": {
-      "output": "your calves have grown strong.",
-      "note": "Used lower-case 'your' from Tesseract."
+      "output": "I am the boy, no more McNificient…",
+      "note": "Used Google Lens text overall; corrected \"lam\" to \"I am\" and kept the ellipsis."
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "At the Emporium?",
-      "tesseract": "at the Emporium?"
+      "lens": "Spring Flower offer white teachers!",
+      "tesseract": "spring Flower offer white teachers!"
     },
     "answer": {
-      "output": "at the Emporium?",
-      "note": "Used lower-case 'at' from Tesseract."
+      "output": "spring Flower offer white teachers!",
+      "note": "Used lower-case 'spring' from Tesseract, which is more reliable for the first word capitalization."
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "Yeah! The one at the junction…\n…",
-      "tesseract": "Yeah! The one at the junction …"
-    },
-    "answer": {
-      "output": "Yeah! The one at the junction…",
-      "note": "Kept ellipsis from Lens and removed extra line break and space before ellipsis."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "\"We learn as we grow…'",
+      "lens": "\"We learn as we grow…",
       "tesseract": "“We learn as we grow…”"
     },
     "answer": {
       "output": "“We learn as we grow…”",
-      "note": "Used Tesseract’s opening and closing quotation marks and matching ellipsis, which are more typographically consistent than the mixed quote marks in the Lens result."
+      "note": "Used Lens text with Tesseract’s closing ellipsis punctuation and quotation formatting."
     },
     "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "This piggy kid in a rabbit outfit…",
+      "tesseract": "This piggy kid in a rabbit outtit…"
+    },
+    "answer": {
+      "output": "This piggy kid in a rabbit outfit…",
+      "note": "Used 'outfit' from Lens instead of Tesseract's 'outtit'; kept the ellipsis."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -98,25 +109,36 @@
   },
   {
     "query": {
-      "lens": "- Tart!\n- Tart!",
-      "tesseract": "Tart! - Tart!"
+      "lens": "I had difficulty hearing him.",
+      "tesseract": "| had difficulty hearing him."
     },
     "answer": {
-      "output": "- Tart!    - Tart!",
-      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+      "output": "I had difficulty hearing him.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Tart!\n- Tart!",
+      "tesseract": "- Tart! - Tart!"
+    },
+    "answer": {
+      "output": "- Tart!\n- Tart!",
+      "note": "Used Google Lens line breaks and dialogue dashes."
     },
     "difficulty": 2,
-    "prompt": true,
     "verified": true
   },
   {
     "query": {
       "lens": "- Duck dumpling!\n- Duck dumpling!",
-      "tesseract": "Duck dumpling! - Duck dumpling!"
+      "tesseract": "- Duck dumpling! - Duck dumpling!"
     },
     "answer": {
       "output": "- Duck dumpling!    - Duck dumpling!",
-      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+      "note": "Kept dialogue hyphens on both lines using Lens; added four spaces between the two lines for clarity."
     },
     "difficulty": 2,
     "verified": true
@@ -124,72 +146,46 @@
   {
     "query": {
       "lens": "- The 97 Rule…\n- The 97 Rule…",
-      "tesseract": "The 97 Rule… - The 97 Rule…"
+      "tesseract": "- The 97 Rule… - The 97 Rule…"
     },
     "answer": {
-      "output": "- The 97 Rule…    - The 97 Rule…",
-      "note": "Included '-' for both lines in dialogue and added four spaces between lines for clarity."
+      "output": "- The 97 Rule…\n- The 97 Rule…",
+      "note": "Used Google Lens line breaks and kept the ellipsis."
     },
     "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "This morning:",
-      "tesseract": "this morning:"
-    },
-    "answer": {
-      "output": "this morning:",
-      "note": "Used lower-case 'this' as in Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "…\n.Also, there is Miss Chan.",
-      "tesseract": "…Also, there is Miss Chan."
-    },
-    "answer": {
-      "output": "…Also, there is Miss Chan.",
-      "note": "Removed extra '.' and newline as in Tesseract."
-    },
-    "difficulty": 1,
     "verified": true
   },
   {
     "query": {
       "lens": "- McMug!\n- Present!",
-      "tesseract": "McMug! - Present!"
+      "tesseract": "- McMug! - Present!"
     },
     "answer": {
-      "output": "- McMug!    - Present!",
-      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+      "output": "- McMug!\n- Present!",
+      "note": "Used Tesseract-style line break and kept dialogue markers on both lines."
     },
     "difficulty": 2,
-    "prompt": true,
     "verified": true
   },
   {
     "query": {
       "lens": "- Fai!\n- Present!",
-      "tesseract": "Fai! - Present!"
+      "tesseract": "- Fai! 〈i〉-〈/i〉 Present!"
     },
     "answer": {
-      "output": "- Fai!    - Present!",
-      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+      "output": "- Fai!\n- Present!",
+      "note": "Used the clearer dialogue line breaks from Lens and ignored the incorrect italic markup from Tesseract."
     },
-    "difficulty": 2,
-    "verified": true
+    "difficulty": 2
   },
   {
     "query": {
       "lens": "- Goosie!\n- Present!",
-      "tesseract": "Goosie! - Present!"
+      "tesseract": "- Goosie! - Present!"
     },
     "answer": {
-      "output": "- Goosie!    - Present!",
-      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+      "output": "- Goosie!\n- Present!",
+      "note": "Used Google Lens line breaks and dialogue formatting."
     },
     "difficulty": 2,
     "verified": true
@@ -197,132 +193,704 @@
   {
     "query": {
       "lens": "- Darby!\n- Present!",
-      "tesseract": "Darby! - Present!"
+      "tesseract": "- Darby! 〈i〉-〈/i〉 Present!"
     },
     "answer": {
-      "output": "- Darby!    - Present!",
-      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+      "output": "- Darby!\n- Present!",
+      "note": "Used Google Lens text and line breaks; ignored the incorrect italics markers from Tesseract."
     },
-    "difficulty": 2,
-    "verified": true
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- May!\n- Present!",
+      "tesseract": "- May! 〈i〉-〈/i〉 Present!"
+    },
+    "answer": {
+      "output": "- May!\n- Present!",
+      "note": "Used Google Lens text and preserved the dialogue line breaks; ignored incorrect italics markers from Tesseract."
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "lens": "- June!\n- Present!",
-      "tesseract": "June! - Present!"
+      "tesseract": "- June! - Present!"
     },
     "answer": {
       "output": "- June!    - Present!",
-      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+      "note": "Kept the dialogue dashes and separated the two lines with four spaces for clarity."
     },
     "difficulty": 2,
     "verified": true
   },
   {
     "query": {
-      "lens": "And then\n…",
-      "tesseract": "And then"
+      "lens": "- May!\n- Present!",
+      "tesseract": "- May! - Present!"
     },
     "answer": {
-      "output": "And then…",
-      "note": "Added ellipsis from Lens without line break."
+      "output": "- May!\n- Present!",
+      "note": "Used Tesseract line break and dialogue formatting."
     },
-    "difficulty": 1,
-    "prompt": true,
+    "difficulty": 2,
     "verified": true
   },
   {
     "query": {
-      "lens": "You can probably tell how smart I am.",
-      "tesseract": "you can probably tell how smart I am."
+      "lens": "- McMug!\n- Present!",
+      "tesseract": "- McMug! 〈i〉-〈/i〉 Present!"
+    },
+    "answer": {
+      "output": "- McMug!\n- Present!",
+      "note": "Used Google Lens text and Tesseract's line break/dialogue placement; ignored incorrect italic markup."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Have I missed anyone?",
+      "tesseract": "Have | missed anyone?"
+    },
+    "answer": {
+      "output": "Have I missed anyone?",
+      "note": "Used 'I' from Google Lens instead of the incorrect '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Hey, I don't understand…",
+      "tesseract": "Hey, | don't understand…"
+    },
+    "answer": {
+      "output": "Hey, I don't understand…",
+      "note": "Used Google Lens text and kept the ellipsis; corrected Tesseract's mistaken '|' character."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I keep feeling that…",
+      "tesseract": "| Keep feeling that…"
+    },
+    "answer": {
+      "output": "I keep feeling that…",
+      "note": "Used Lens text with the correct initial capital 'I' and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I was contemplating something academic:",
+      "tesseract": "| was contemplating something academic:"
+    },
+    "answer": {
+      "output": "I was contemplating something academic:",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I mean, I ate 6 oranges that morning…",
+      "tesseract": "| mean, | ate 6 oranges that morning…"
+    },
+    "answer": {
+      "output": "I mean, I ate 6 oranges that morning…",
+      "note": "Used Lens text and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Then I ate 3 bananas this morning.",
+      "tesseract": "Then | ate 3 bananas this morning."
+    },
+    "answer": {
+      "output": "Then I ate 3 bananas this morning.",
+      "note": "Used 'I' instead of '|' from Lens text."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "There are so many things that\nI don't understand.",
+      "tesseract": "There are so many things that\n| don't understand."
+    },
+    "answer": {
+      "output": "There are so many things that\nI don't understand.",
+      "note": "Used Google Lens text and ignored Tesseract's incorrect leading character on the second line."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "But I am not afraid.",
+      "tesseract": "But | am not afraid."
+    },
+    "answer": {
+      "output": "But I am not afraid.",
+      "note": "Used 'I' instead of '|' from Google Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "One day, when I finish kindergarten…",
+      "tesseract": "One day, when | finish kindergarten…"
+    },
+    "answer": {
+      "output": "One day, when I finish kindergarten…",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I shall move up…",
+      "tesseract": "| shall move up…"
+    },
+    "answer": {
+      "output": "I shall move up…",
+      "note": "Used Google Lens text 'I' instead of Tesseract's '|'. Kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "When I graduate from university, I know…",
+      "tesseract": "When | graduate from university, | know…"
+    },
+    "answer": {
+      "output": "When I graduate from university, I know…",
+      "note": "Used Google Lens text; corrected Tesseract's misread capital I characters as I."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I shall understand everything!",
+      "tesseract": "| shall understand everything!"
+    },
+    "answer": {
+      "output": "I shall understand everything!",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I will buy my mother a house!",
+      "tesseract": "| will buy my mother a house!"
+    },
+    "answer": {
+      "output": "I will buy my mother a house!",
+      "note": "Used 'I' from Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Our headmaster runs a teastand…",
+      "tesseract": "Our headmaster runs a teastancd…"
+    },
+    "answer": {
+      "output": "Our headmaster runs a teastand…",
+      "note": "Used 'teastand' from Google Lens instead of Tesseract's 'teastancd'; kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Again?",
+      "tesseract": "Again’?"
+    },
+    "answer": {
+      "output": "Again?",
+      "note": "Used the correct question mark from Google Lens instead of the apostrophe-like character from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "you can probably tell how smart I am.",
+      "tesseract": "you can probably tell how smart | am."
     },
     "answer": {
       "output": "you can probably tell how smart I am.",
-      "note": "Used lower-case 'you' as in Tesseract."
+      "note": "Used 'I' from Lens instead of Tesseract's mistaken '|'. "
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "My mother…",
-      "tesseract": "my mother…"
+      "lens": "I feel full of strength!",
+      "tesseract": "| feel full of strength!"
     },
     "answer": {
-      "output": "my mother…",
-      "note": "Used lower-case 'my' as in Tesseract."
+      "output": "I feel full of strength!",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "Carrying the world!",
-      "tesseract": "carrying the world!"
+      "lens": "The world is beautiful!",
+      "tesseract": "The world is beautifu!!"
     },
     "answer": {
-      "output": "carrying the world!",
-      "note": "Used lower-case 'carrying' as in Tesseract."
+      "output": "The world is beautiful!",
+      "note": "Used 'beautiful!' from Google Lens instead of Tesseract's 'beautifu!!'."
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "Today's dish…",
-      "tesseract": "today's dish…"
+      "lens": "Which I always want to learn…",
+      "tesseract": "Which | always want to learn…"
     },
     "answer": {
-      "output": "today's dish…",
-      "note": "Used lower-case 'today's' from Tesseract."
+      "output": "Which I always want to learn…",
+      "note": "Used Lens text to correct Tesseract's mistaken '|' character."
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "The chicken bun…",
-      "tesseract": "the chicken bun…"
+      "lens": "1,2,3,4,5,6,7…",
+      "tesseract": "1,2,3,4,5,6, 7…"
     },
     "answer": {
-      "output": "the chicken bun…",
-      "note": "Used lower-case 'the' from Tesseract."
+      "output": "1,2,3,4,5,6,7…",
+      "note": "Used Lens text and removed the extra space before 7 from Tesseract."
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "Bun and bun…",
-      "tesseract": "bun and bun…"
+      "lens": "She works in insurance,\nreal estate and trading.",
+      "tesseract": "She works In insurance,\nreal estate and trading."
     },
     "answer": {
-      "output": "bun and bun…",
-      "note": "Used lower-case 'bun' from Tesseract."
+      "output": "She works in insurance,\nreal estate and trading.",
+      "note": "Used Lens capitalization for 'in' and kept Tesseract line break."
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "“No pain no gain”.",
-      "tesseract": "“no pain no gain”."
+      "lens": "Welcome to“Mrs. Mc Can Cook”.",
+      "tesseract": "Welcome to'“Mrs. Mc Can Cook”."
     },
     "answer": {
-      "output": "“no pain no gain”.",
-      "note": "Used lower-case 'no' at the beginning from Tesseract, which is more reliable for initial capitalization."
+      "output": "Welcome to“Mrs. Mc Can Cook”.",
+      "note": "Used Google Lens text and removed the extra apostrophe from Tesseract."
     },
     "difficulty": 2,
     "verified": true
   },
   {
     "query": {
-      "lens": "Maldives, a world outside our world.",
-      "tesseract": "Maldives, 3 world outside our world."
+      "lens": "Isn't this a lovely bun?",
+      "tesseract": "Isn't this a lovely bun’?"
     },
     "answer": {
-      "output": "Maldives, a world outside our world.",
-      "note": "Used 'a' from Lens instead of '3' from Tesseract."
+      "output": "Isn't this a lovely bun?",
+      "note": "Used the correct question mark from Lens instead of the erroneous closing quote in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "See if the chicken is good!",
+      "tesseract": "see if the chicken is good!"
+    },
+    "answer": {
+      "output": "see if the chicken is good!",
+      "note": "Used lower-case 'see' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "today's dish…",
+      "tesseract": "today’s dish…"
+    },
+    "answer": {
+      "output": "today's dish…",
+      "note": "Used straight apostrophe from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "It takes simple work.",
+      "tesseract": "lt takes simple work."
+    },
+    "answer": {
+      "output": "It takes simple work.",
+      "note": "Used 'It' from Google Lens instead of 'lt' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Once upon a time, a boy was naughty.\nOne day…",
+      "tesseract": "Once upon a time, a boy was naugNty.\nOne day…"
+    },
+    "answer": {
+      "output": "Once upon a time, a boy was naughty.\nOne day…",
+      "note": "Used the correct word 'naughty' from Lens and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Mother, I want to sleep.",
+      "tesseract": "Mother, | want to sleep."
+    },
+    "answer": {
+      "output": "Mother, I want to sleep.",
+      "note": "Used 'I' instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Her love for me is direct.",
+      "tesseract": "Her love for me Is direct."
+    },
+    "answer": {
+      "output": "Her love for me is direct.",
+      "note": "Used lower-case 'is' from Lens instead of Tesseract's 'Is'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I did try hard, but then…",
+      "tesseract": "| did try hard, but then…"
+    },
+    "answer": {
+      "output": "I did try hard, but then…",
+      "note": "Used the correct first word capitalization and removed the spurious leading symbol from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "But then, I still have dreams.",
+      "tesseract": "But then, | still have dreams."
+    },
+    "answer": {
+      "output": "But then, I still have dreams.",
+      "note": "Used 'I' from Google Lens instead of the misread '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "One day when I am rich.",
+      "tesseract": "One day when | am rich."
+    },
+    "answer": {
+      "output": "One day when I am rich.",
+      "note": "Used 'I' from Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I bought my hairpin there.",
+      "tesseract": "| bought my hairpin there."
+    },
+    "answer": {
+      "output": "I bought my hairpin there.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "As for the place I most want to go, wow!",
+      "tesseract": "As for the place | most want to go, wow!"
+    },
+    "answer": {
+      "output": "As for the place I most want to go, wow!",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "It is a world outside our world.",
+      "tesseract": "lt is a world outside our world."
+    },
+    "answer": {
+      "output": "It is a world outside our world.",
+      "note": "Used capital 'I' from Lens instead of 'l' in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Oh?",
+      "tesseract": "On?"
+    },
+    "answer": {
+      "output": "Oh?",
+      "note": "Used 'Oh?' from Google Lens instead of 'On?'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Is he scared of dying?",
+      "tesseract": "ls he scared of dying?"
+    },
+    "answer": {
+      "output": "Is he scared of dying?",
+      "note": "Used 'Is' from Google Lens instead of 'ls'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Mother I don't want medicine.",
+      "tesseract": "Mother | don't want medicine."
+    },
+    "answer": {
+      "output": "Mother I don't want medicine.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's incorrect '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I don't want the strawberry drink!",
+      "tesseract": "| don't want the strawberry drink!"
+    },
+    "answer": {
+      "output": "I don't want the strawberry drink!",
+      "note": "Used 'I' from Google Lens instead of Tesseract's mistaken '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Sweetie, we will go to Maldives once\nyou get well.",
+      "tesseract": "sweetie, we will go to Maldives once\nyou get well."
+    },
+    "answer": {
+      "output": "sweetie, we will go to Maldives once\nyou get well.",
+      "note": "Used lower-case 'sweetie' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I will book the ticket once you get well.",
+      "tesseract": "| will book the ticket once you get well."
+    },
+    "answer": {
+      "output": "I will book the ticket once you get well.",
+      "note": "Used Lens text; Tesseract misread 'I' as '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Mother, I am well!",
+      "tesseract": "Mother, | am well!"
+    },
+    "answer": {
+      "output": "Mother, I am well!",
+      "note": "Used 'I' instead of '|' from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "And I gulped it down bit by bit…",
+      "tesseract": "And | gulped it down bit by bit…"
+    },
+    "answer": {
+      "output": "And I gulped it down bit by bit…",
+      "note": "Corrected '|' to 'I' using Google Lens; kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I did it!",
+      "tesseract": "| did it!"
+    },
+    "answer": {
+      "output": "I did it!",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Now I am a good boy!",
+      "tesseract": "Now | am a good boy!"
+    },
+    "answer": {
+      "output": "Now I am a good boy!",
+      "note": "Used 'I' instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Now I am not sick!",
+      "tesseract": "Now | am not sick!"
+    },
+    "answer": {
+      "output": "Now I am not sick!",
+      "note": "Used 'I' instead of '|' from Lens/Tesseract fusion; kept Lens text overall."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "You said we would go once I get well.",
+      "tesseract": "You said we would go once | get well."
+    },
+    "answer": {
+      "output": "You said we would go once I get well.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I am happy for you.",
+      "tesseract": "| am happy for you."
+    },
+    "answer": {
+      "output": "I am happy for you.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "We'd go to Maldives once I get well.",
+      "tesseract": "We'd go to Maldives once | get well."
+    },
+    "answer": {
+      "output": "We'd go to Maldives once I get well.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I meant once I get rich.",
+      "tesseract": "| meant once | get rich."
+    },
+    "answer": {
+      "output": "I meant once I get rich.",
+      "note": "Used Google Lens text and corrected Tesseract misreads of 'I' as '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "You said we'd go once I get well.",
+      "tesseract": "You said we'd go once | get well."
+    },
+    "answer": {
+      "output": "You said we'd go once I get well.",
+      "note": "Used 'I' instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Really?\n- Yes.",
+      "tesseract": "- Really? - Yes."
+    },
+    "answer": {
+      "output": "- Really?\n- Yes.",
+      "note": "Used Tesseract line breaks for dialogue."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Once I get rich.",
+      "tesseract": "Once | get rich."
+    },
+    "answer": {
+      "output": "Once I get rich.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Sure, sure, I am rich.",
+      "tesseract": "Sure, sure, | am rich."
+    },
+    "answer": {
+      "output": "Sure, sure, I am rich.",
+      "note": "Used 'I' instead of '|' from Lens/Tesseract comparison."
     },
     "difficulty": 1,
     "verified": true
@@ -330,11 +898,1893 @@
   {
     "query": {
       "lens": "- Yes…\n- Is that right?",
-      "tesseract": "Is that right?"
+      "tesseract": "- Yes… 〈i〉-〈/i〉 Is that right?"
     },
     "answer": {
-      "output": "- Yes…    - Is that right?",
-      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+      "output": "- Yes…\n- Is that right?",
+      "note": "Used Google Lens text and preserved the dialogue line breaks; ignored the incorrect italics markup in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "I need to pack now. Talk to you later.",
+      "tesseract": "| need to pack now. Talk to you later."
+    },
+    "answer": {
+      "output": "I need to pack now. Talk to you later.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "See you!",
+      "tesseract": "see you!"
+    },
+    "answer": {
+      "output": "see you!",
+      "note": "Used lower-case 'see' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Mother, do I need to bring\nmy birth certificate?",
+      "tesseract": "Mother, do | need to bring\nmy birth certificate?"
+    },
+    "answer": {
+      "output": "Mother, do I need to bring\nmy birth certificate?",
+      "note": "Used 'I' instead of Tesseract's '|'; kept Lens text and line break."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I guess so.",
+      "tesseract": "| guess So."
+    },
+    "answer": {
+      "output": "I guess so.",
+      "note": "Used Google Lens text; corrected the leading symbol and capitalization from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I found it!",
+      "tesseract": "| found it!"
+    },
+    "answer": {
+      "output": "I found it!",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I found my birth certificate!",
+      "tesseract": "| found my birth certificate!"
+    },
+    "answer": {
+      "output": "I found my birth certificate!",
+      "note": "Used 'I' from Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Mother, you keep it and don't lose it…",
+      "tesseract": "Mother, you keep it and don't lose tt…"
+    },
+    "answer": {
+      "output": "Mother, you keep it and don't lose it…",
+      "note": "Used 'it' from Google Lens instead of Tesseract's 'tt', and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Goodnight, mother!\n- Goodnight!",
+      "tesseract": "- Goodnight, mother! 〈i〉-〈/i〉 Goodnight!"
+    },
+    "answer": {
+      "output": "- Goodnight, mother!\n- Goodnight!",
+      "note": "Used Tesseract's second-line dialogue dash and line break; kept Lens wording."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "San San, when confirmed her winning…",
+      "tesseract": "san San, when confirmed her winning…"
+    },
+    "answer": {
+      "output": "san San, when confirmed her winning…",
+      "note": "Used lower-case 'san' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Excuse me, it should be“honourable”.",
+      "tesseract": "Excuse me, It should be“honourable’”."
+    },
+    "answer": {
+      "output": "Excuse me, it should be“honourable”.",
+      "note": "Used Google Lens text for the correct capitalization and closing quote/punctuation."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I know it is not easy.",
+      "tesseract": "| Know it is not easy."
+    },
+    "answer": {
+      "output": "I know it is not easy.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I know it is not easy to find Logan.",
+      "tesseract": "| Know it is not easy to find Logan."
+    },
+    "answer": {
+      "output": "I know it is not easy to find Logan.",
+      "note": "Used Google Lens text; corrected the mistaken leading bar/capitalization from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I know it is not easy for him to take me in.",
+      "tesseract": "| Know it is not easy for him to take me in."
+    },
+    "answer": {
+      "output": "I know it is not easy for him to take me in.",
+      "note": "Used Google Lens text; corrected Tesseract's mistaken first character and capitalization."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "No matter how difficult this is…",
+      "tesseract": "No matter how difficult this ts…"
+    },
+    "answer": {
+      "output": "No matter how difficult this is…",
+      "note": "Used 'is' from Google Lens instead of Tesseract's 'ts', and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I shall get an Olympic medal!",
+      "tesseract": "| shall get an Olympic medal!!"
+    },
+    "answer": {
+      "output": "I shall get an Olympic medal!",
+      "note": "Used 'I' instead of '|' and removed the extra exclamation mark."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "When I receive my Olympic medal…",
+      "tesseract": "When | receive my Olympic medal…"
+    },
+    "answer": {
+      "output": "When I receive my Olympic medal…",
+      "note": "Used 'I' instead of Tesseract's '|'. Kept the ellipsis from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I shall tell the world:",
+      "tesseract": "| shall tell the world:"
+    },
+    "answer": {
+      "output": "I shall tell the world:",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Cheung Chau, I finally make it here.",
+      "tesseract": "Cheung Chau, | finally make it here."
+    },
+    "answer": {
+      "output": "Cheung Chau, I finally make it here.",
+      "note": "Used 'I' instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I must kiss this holy land!",
+      "tesseract": "| must kiss this holy land!"
+    },
+    "answer": {
+      "output": "I must kiss this holy land!",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I came into hiding on this island…",
+      "tesseract": "| came into hiding on this island…"
+    },
+    "answer": {
+      "output": "I came into hiding on this island…",
+      "note": "Used 'I' instead of '|' from Tesseract; kept the ellipsis from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "So I came to live here.",
+      "tesseract": "So | came to live here."
+    },
+    "answer": {
+      "output": "So I came to live here.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Dream\non!",
+      "tesseract": "Dream on!"
+    },
+    "answer": {
+      "output": "Dream on!",
+      "note": "Used space instead of newline."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "So thick, so strong!",
+      "tesseract": "90 thick, so strong!"
+    },
+    "answer": {
+      "output": "So thick, so strong!",
+      "note": "Used 'So' instead of '90'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "How much pain must it bear…",
+      "tesseract": "How much pain must tt bear…"
+    },
+    "answer": {
+      "output": "How much pain must it bear…",
+      "note": "Used 'it' from Google Lens instead of Tesseract's 'tt'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I shall have this calf!",
+      "tesseract": "| shall have this calf!"
+    },
+    "answer": {
+      "output": "I shall have this calf!",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Can I take a pee?",
+      "tesseract": "Can | take a pee?"
+    },
+    "answer": {
+      "output": "Can I take a pee?",
+      "note": "Used 'I' instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Whenever I sing this song, I need to pee.",
+      "tesseract": "Whenever | sing this song, | need to pee."
+    },
+    "answer": {
+      "output": "Whenever I sing this song, I need to pee.",
+      "note": "Used Google Lens text; corrected Tesseract's misread pipes as letters."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "But I must sing it now.",
+      "tesseract": "But | must sing it now."
+    },
+    "answer": {
+      "output": "But I must sing it now.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "With this song, I hope…",
+      "tesseract": "With this song, | hope…"
+    },
+    "answer": {
+      "output": "With this song, I hope…",
+      "note": "Corrected '|' to 'I' using Google Lens; kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I must grab my chance.",
+      "tesseract": "| must grab my chance."
+    },
+    "answer": {
+      "output": "I must grab my chance.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I tell mother what happened today.",
+      "tesseract": "| tell mother what happened today."
+    },
+    "answer": {
+      "output": "I tell mother what happened today.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "She won't say a word…",
+      "tesseract": "she won't say a word…"
+    },
+    "answer": {
+      "output": "she won't say a word…",
+      "note": "Used lower-case 'she' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "She mumbles something when…",
+      "tesseract": "she mumbles something when…"
+    },
+    "answer": {
+      "output": "she mumbles something when…",
+      "note": "Used lower-case 'she' from Tesseract; kept ellipsis from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "She says in her solemn, tender voice:",
+      "tesseract": "she says in her solemn, tender voice:"
+    },
+    "answer": {
+      "output": "she says in her solemn, tender voice:",
+      "note": "Used lower-case 'she' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "As I am the last disciple of the master…",
+      "tesseract": "As | am the last disciple of the master…"
+    },
+    "answer": {
+      "output": "As I am the last disciple of the master…",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "San San's lover thinks…",
+      "tesseract": "San Sans lover thinks…"
+    },
+    "answer": {
+      "output": "San San's lover thinks…",
+      "note": "Used Google Lens apostrophe in \"San San's\"; kept ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I have a nice thick back.",
+      "tesseract": "| have a nice thick back."
+    },
+    "answer": {
+      "output": "I have a nice thick back.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "San San is in training and couldn't come.",
+      "tesseract": "San San Is in training and couldn't come."
+    },
+    "answer": {
+      "output": "San San is in training and couldn't come.",
+      "note": "Used 'is' from Lens instead of capitalized 'Is' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Mother pours a cup of tea and\nI offer it to the master.",
+      "tesseract": "Mother pours a cup of tea and\n| offer it to the master."
+    },
+    "answer": {
+      "output": "Mother pours a cup of tea and\nI offer it to the master.",
+      "note": "Used 'I' instead of Tesseract's '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Now I can windsurf together with\nSan San!",
+      "tesseract": "Now | can windsurf together with\nSan San!"
+    },
+    "answer": {
+      "output": "Now I can windsurf together with\nSan San!",
+      "note": "Used Google Lens text and ignored Tesseract's mistaken '|' for 'I'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I offer the tea to Logan…",
+      "tesseract": "| offer the tea to Logan…"
+    },
+    "answer": {
+      "output": "I offer the tea to Logan…",
+      "note": "Used Google Lens text; corrected the first character from '|' to 'I' and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "In my life, I have two skills that\nI'm proud of.",
+      "tesseract": "In my life, | have two skills that\nI'm proud of."
+    },
+    "answer": {
+      "output": "In my life, I have two skills that\nI'm proud of.",
+      "note": "Used 'I' instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "That I have passed onto San San.",
+      "tesseract": "That | have passed onto San San."
+    },
+    "answer": {
+      "output": "That I have passed onto San San.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "The other, I shall pass onto\nmy new disciple…",
+      "tesseract": "The other, | shall pass onto\nmy new disciple…"
+    },
+    "answer": {
+      "output": "The other, I shall pass onto my new disciple…",
+      "note": "Used 'I' from Lens instead of '|' and merged the line break into a space."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "what a marvelous skill that is!",
+      "tesseract": "what a marvelous skill that ts!"
+    },
+    "answer": {
+      "output": "what a marvelous skill that is!",
+      "note": "Used 'is!' from Google Lens instead of 'ts!'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "That is…",
+      "tesseract": "That Is…"
+    },
+    "answer": {
+      "output": "That is…",
+      "note": "Used lower-case 'is' from Lens instead of Tesseract's capitalized 'Is'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Set up 3 stacks of bun to celebrate.",
+      "tesseract": "set up 3 stacks of bun to celebrate."
+    },
+    "answer": {
+      "output": "set up 3 stacks of bun to celebrate.",
+      "note": "Used lower-case 'set' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "And the unique tradition is lost.",
+      "tesseract": "And the unique tradition Is lost."
+    },
+    "answer": {
+      "output": "And the unique tradition is lost.",
+      "note": "Used lower-case 'is' from Lens instead of Tesseract's capitalized 'Is'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "The Olympic medal…\nit has slipped away.",
+      "tesseract": "The Olympic medal…\nithas slipped away."
+    },
+    "answer": {
+      "output": "The Olympic medal…\nit has slipped away.",
+      "note": "Used Lens text and kept the ellipsis; corrected Tesseract's missing space in 'it has'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "All I do is to go to the master's home…",
+      "tesseract": "All | do is to go to the master's home…"
+    },
+    "answer": {
+      "output": "All I do is to go to the master's home…",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Seeing San San…",
+      "tesseract": "seeing San San…"
+    },
+    "answer": {
+      "output": "seeing San San…",
+      "note": "Used lower-case 'seeing' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Makes me forget all these weeks'\nhard work.",
+      "tesseract": "Makes me forget all these weeks’\nhard work."
+    },
+    "answer": {
+      "output": "Makes me forget all these weeks'\nhard work.",
+      "note": "Used Lens apostrophe instead of Tesseract’s curly apostrophe."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "San yourself! Work!",
+      "tesseract": "san yourself! Work!"
+    },
+    "answer": {
+      "output": "san yourself! Work!",
+      "note": "Used lower-case 'san' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "So San San leaves without seeing me.",
+      "tesseract": "SO San San leaves without seeing me."
+    },
+    "answer": {
+      "output": "So San San leaves without seeing me.",
+      "note": "Used capitalized 'So' from Lens instead of 'SO'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "In despair, I crawl up the shelf.",
+      "tesseract": "In despair, | crawl up the shelf."
+    },
+    "answer": {
+      "output": "In despair, I crawl up the shelf.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I have had a lot of things said to me…",
+      "tesseract": "| have had a lot of things said to me…"
+    },
+    "answer": {
+      "output": "I have had a lot of things said to me…",
+      "note": "Used Google Lens text with the correct capitalized first word; kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I am quitting!",
+      "tesseract": "lam quitting!"
+    },
+    "answer": {
+      "output": "I am quitting!",
+      "note": "Used Google Lens text; corrected Tesseract's \"lam\" to \"I am\"."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Today is the first time\nI sit down with Logan.",
+      "tesseract": "Today is the first time\n| sit down with Logan."
+    },
+    "answer": {
+      "output": "Today is the first time\nI sit down with Logan.",
+      "note": "Used 'I' instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Dull… he's not a bad student.",
+      "tesseract": "Dull… he’s not a bad student."
+    },
+    "answer": {
+      "output": "Dull… he's not a bad student.",
+      "note": "Used the apostrophe style from Lens; kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Something combining Fist,",
+      "tesseract": "something combining Fist,"
+    },
+    "answer": {
+      "output": "something combining Fist,",
+      "note": "Used lower-case 'something' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I have no idea why would Dull need…",
+      "tesseract": "| have no idea why would Dull need…"
+    },
+    "answer": {
+      "output": "I have no idea why would Dull need…",
+      "note": "Used Google Lens text and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I am reminded of Dull's pa, Bing.",
+      "tesseract": "| am reminded of Dull's pa, Bing."
+    },
+    "answer": {
+      "output": "I am reminded of Dull's pa, Bing.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Mother must have translated it\nword by word.",
+      "tesseract": "Mother must have translated It\nword by word."
+    },
+    "answer": {
+      "output": "Mother must have translated it\nword by word.",
+      "note": "Used Lens spelling 'it' instead of Tesseract's 'It'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I use the machine to turn it back\ninto Chinese.",
+      "tesseract": "| use the machine to turn it back\ninto Chinese."
+    },
+    "answer": {
+      "output": "I use the machine to turn it back\ninto Chinese.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "It is addressed to\nthe Olympic Committee Chairman.",
+      "tesseract": "lt is addressed to\nthe Olympic Committee Chairman."
+    },
+    "answer": {
+      "output": "It is addressed to\nthe Olympic Committee Chairman.",
+      "note": "Used capital 'I' from Lens instead of lowercase 'l' in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“How are you? I am fine.”",
+      "tesseract": "“How are you? | am fine.”"
+    },
+    "answer": {
+      "output": "“How are you? I am fine.”",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“You like bun? I like bun!”",
+      "tesseract": "“You like bun? | like bun!”"
+    },
+    "answer": {
+      "output": "“You like bun? I like bun!”",
+      "note": "Used Google Lens text; corrected Tesseract's '|' to 'I'."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "it is important to snatch buns.'",
+      "tesseract": "it is important to snatch buns.\""
+    },
+    "answer": {
+      "output": "it is important to snatch buns.'",
+      "note": "Used the apostrophe-ending punctuation from Google Lens instead of the double quote from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“I have a boy, Dull.”",
+      "tesseract": "“| have a boy, Dull.”"
+    },
+    "answer": {
+      "output": "“I have a boy, Dull.”",
+      "note": "Used 'I' from Google Lens instead of the misread '|'. "
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“One day,\nI can see him snatching buns…”",
+      "tesseract": "“One day,\n| can see him snatching buns…”"
+    },
+    "answer": {
+      "output": "“One day,\nI can see him snatching buns…”",
+      "note": "Used Google Lens for the correct first word and kept the Lens line break and ellipsis."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“That is why I write you this sudden letter.”",
+      "tesseract": "“That is why | write you this sudden letter.”"
+    },
+    "answer": {
+      "output": "“That is why I write you this sudden letter.”",
+      "note": "Used Lens text; corrected Tesseract's misread '|' as 'I'."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“But my boy is big, very big.”",
+      "tesseract": "“But my boy its big, very big.”"
+    },
+    "answer": {
+      "output": "“But my boy is big, very big.”",
+      "note": "Used 'is' from Google Lens instead of Tesseract's 'its'."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I go back to Cheung Chau to practice.",
+      "tesseract": "| go back to Cheung Chau to practice."
+    },
+    "answer": {
+      "output": "I go back to Cheung Chau to practice.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's incorrect '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I don't know why I want to snatch a bun.",
+      "tesseract": "| don't Know why | want to snatch a bun."
+    },
+    "answer": {
+      "output": "I don't know why I want to snatch a bun.",
+      "note": "Used Google Lens text; corrected Tesseract's misread characters and capitalization."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "And I don't think it will ever become\nan Olympic item.",
+      "tesseract": "And | don't think it will ever become\nan Olympic item."
+    },
+    "answer": {
+      "output": "And I don't think it will ever become\nan Olympic item.",
+      "note": "Used Google Lens text; corrected '|' to \"I\"."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "But I keep learning.",
+      "tesseract": "But | keep learning."
+    },
+    "answer": {
+      "output": "But I keep learning.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Because I love my mother.",
+      "tesseract": "Because | love my mother."
+    },
+    "answer": {
+      "output": "Because I love my mother.",
+      "note": "Used 'I' instead of '|' from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Later, I learn from McMug…",
+      "tesseract": "Later, | learn from McMug…"
+    },
+    "answer": {
+      "output": "Later, I learn from McMug…",
+      "note": "Used Google's correct word 'I' instead of Tesseract's '|'; kept the ellipsis from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I don't know much about Kung Fu kings…",
+      "tesseract": "| don't know much about Kung Fu kings…"
+    },
+    "answer": {
+      "output": "I don't know much about Kung Fu kings…",
+      "note": "Used Google Lens text for the correct first word and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "But I must be the ultimate pork…",
+      "tesseract": "But | must be the ultimate pork…"
+    },
+    "answer": {
+      "output": "But I must be the ultimate pork…",
+      "note": "Used Google Lens text; corrected the OCR error '|' to 'I'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "My mind boggles as I practice, after all…",
+      "tesseract": "My mind boggles as | practice, after all…"
+    },
+    "answer": {
+      "output": "My mind boggles as I practice, after all…",
+      "note": "Used 'I' instead of '|' from Lens/Tesseract merge; kept ellipsis from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I am not a fan of bun snatching.",
+      "tesseract": "| am not a fan of bun snatching."
+    },
+    "answer": {
+      "output": "I am not a fan of bun snatching.",
+      "note": "Used Google Lens text; corrected Tesseract's incorrect first character."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I am only doing this for mother.",
+      "tesseract": "| am only doing this for mother."
+    },
+    "answer": {
+      "output": "I am only doing this for mother.",
+      "note": "Used Google Lens text; corrected the first character from '|' to 'I'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Hence I hang on…",
+      "tesseract": "Hence | hang on…"
+    },
+    "answer": {
+      "output": "Hence I hang on…",
+      "note": "Used 'I' instead of Tesseract's '|'. Kept the ellipsis from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I make it pass\nthe“12 Bun Snatching Hands”.",
+      "tesseract": "| make it pass\nthe“12 Bun Snatching Hands”."
+    },
+    "answer": {
+      "output": "I make it pass\nthe“12 Bun Snatching Hands”.",
+      "note": "Used 'I' from Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Dull the boy's world is still filled\nwith fantasy…",
+      "tesseract": "Dull the boy's world ts still filled\nwith fantasy…"
+    },
+    "answer": {
+      "output": "Dull the boy's world is still filled\nwith fantasy…",
+      "note": "Used 'is' from Lens instead of Tesseract's 'ts'; kept Lens line break and ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "But I shall tell more about Dull the boy.",
+      "tesseract": "But | shall tell more about Dull the boy."
+    },
+    "answer": {
+      "output": "But I shall tell more about Dull the boy.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Right, I haven't eaten any turkey then.",
+      "tesseract": "Right, | haven't eaten any turkey then."
+    },
+    "answer": {
+      "output": "Right, I haven't eaten any turkey then.",
+      "note": "Used Lens text; corrected the misread '|' to 'I' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I had never eaten a turkey.",
+      "tesseract": "| had never eaten a turkey."
+    },
+    "answer": {
+      "output": "I had never eaten a turkey.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I had never even smelt one.",
+      "tesseract": "| had never even smelt one."
+    },
+    "answer": {
+      "output": "I had never even smelt one.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I was really, really disappointed.",
+      "tesseract": "| was really, really disappointed."
+    },
+    "answer": {
+      "output": "I was really, really disappointed.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I rubbed the turkey's thick chest.",
+      "tesseract": "| rubbed the turkey's thick chest."
+    },
+    "answer": {
+      "output": "I rubbed the turkey's thick chest.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's incorrect '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I cried: the turkey's stomach won't stop!",
+      "tesseract": "| cried: the turkey’s stomach won't stop!"
+    },
+    "answer": {
+      "output": "I cried: the turkey's stomach won't stop!",
+      "note": "Used Google Lens text and corrected the mistaken leading character from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Such a beautiful night!",
+      "tesseract": "such a beautiful night!"
+    },
+    "answer": {
+      "output": "such a beautiful night!",
+      "note": "Used lower-case 'such' from Tesseract for the first word capitalization."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I had never tasted anything so strong.",
+      "tesseract": "| had never tasted anything so strong."
+    },
+    "answer": {
+      "output": "I had never tasted anything so strong.",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I woke up late the next day.",
+      "tesseract": "| woke up late the next day."
+    },
+    "answer": {
+      "output": "I woke up late the next day.",
+      "note": "Used 'I' instead of '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I idly found diced turkey…",
+      "tesseract": "| idly found diced turkey…"
+    },
+    "answer": {
+      "output": "I idly found diced turkey…",
+      "note": "Used Google Lens text; corrected the leading misread '|' to 'I'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I boldly suggested eating out.",
+      "tesseract": "| boldly suggested eating out."
+    },
+    "answer": {
+      "output": "I boldly suggested eating out.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's incorrect '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Mother said I was ungrateful…",
+      "tesseract": "Mother said | was ungrateful…"
+    },
+    "answer": {
+      "output": "Mother said I was ungrateful…",
+      "note": "Used 'I' from Google Lens instead of Tesseract's incorrect '|'. Kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I shouldn't have said anything about\nthe turkey's stomach.",
+      "tesseract": "| shouldn't have said anything about\nthe turkey's stomach."
+    },
+    "answer": {
+      "output": "I shouldn't have said anything about\nthe turkey's stomach.",
+      "note": "Used Google Lens text and kept the line break."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Came Dragon Boat Festival,\nwhen I dug into the dumpling…",
+      "tesseract": "Came Dragon Boat Festival,\nwhen | dug into the dumpling…"
+    },
+    "answer": {
+      "output": "Came Dragon Boat Festival,\nwhen I dug into the dumpling…",
+      "note": "Used 'I' from Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I lost it. I cried.",
+      "tesseract": "| lost it. | cried."
+    },
+    "answer": {
+      "output": "I lost it. I cried.",
+      "note": "Used Google Lens text instead of Tesseract's misread bars."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Later, I learned that…",
+      "tesseract": "Later, | learned that…"
+    },
+    "answer": {
+      "output": "Later, I learned that…",
+      "note": "Used Google Lens text; corrected '|' to 'I'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I realized also, with turkey…",
+      "tesseract": "| realized also, with turkey…"
+    },
+    "answer": {
+      "output": "I realized also, with turkey…",
+      "note": "Used Google Lens text and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Afterwards,\nit is just be over and done with it\".",
+      "tesseract": "Afterwards,\nit is just“be over and done with it”."
+    },
+    "answer": {
+      "output": "Afterwards,\nit is just be over and done with it\".",
+      "note": "Used Google Lens text and preserved the line break; corrected the opening quotation mark from Tesseract."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I am no philosopher.",
+      "tesseract": "| am no philosopher."
+    },
+    "answer": {
+      "output": "I am no philosopher.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I could not come up with any profundity.",
+      "tesseract": "| could not come up with any profundity."
+    },
+    "answer": {
+      "output": "I could not come up with any profundity.",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "But, such thoughts…",
+      "tesseract": "But, such thougNts…"
+    },
+    "answer": {
+      "output": "But, such thoughts…",
+      "note": "Used the correct word from Google Lens and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "After I grew up…",
+      "tesseract": "After | grew up…"
+    },
+    "answer": {
+      "output": "After I grew up…",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "It was at my mother's cremation.",
+      "tesseract": "lt was at my mother's cremation."
+    },
+    "answer": {
+      "output": "It was at my mother's cremation.",
+      "note": "Used capital 'I' from Google Lens instead of 'l'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "That day, I was looking at\nthe smoke rising up.",
+      "tesseract": "That day, | was looking at\nthe smoke rising up."
+    },
+    "answer": {
+      "output": "That day, I was looking at\nthe smoke rising up.",
+      "note": "Used 'I' from Lens instead of Tesseract's '|'. Used Lens line break."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Suddenly, the smell of\nthe turkey returned.",
+      "tesseract": "suddenly, the smell of\nthe turkey returned."
+    },
+    "answer": {
+      "output": "suddenly, the smell of\nthe turkey returned.",
+      "note": "Used lower-case 'suddenly' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I regretted I made mother\nthrew the turkey away.",
+      "tesseract": "| regretted | made mother\nthrew the turkey away."
+    },
+    "answer": {
+      "output": "I regretted I made mother\nthrew the turkey away.",
+      "note": "Used Google Lens text; kept the newline from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "'Special Report\"",
+      "tesseract": "‘Special Report\""
+    },
+    "answer": {
+      "output": "'Special Report\"",
+      "note": "Used straight apostrophe from Lens instead of curly opening quote from Tesseract."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Response from\nall sides has been\nenthusiastic.",
+      "tesseract": "Response from\nall sides has been enthusiastic."
+    },
+    "answer": {
+      "output": "Response from\nall sides has been enthusiastic.",
+      "note": "Used Tesseract's line break after 'from'; kept Lens's wording for 'enthusiastic.'"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Is proposing Mahjong for official game.",
+      "tesseract": "ls proposing Mahjong for official game."
+    },
+    "answer": {
+      "output": "Is proposing Mahjong for official game.",
+      "note": "Used 'Is' instead of 'ls'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "have vowed…",
+      "tesseract": "have vowea…"
+    },
+    "answer": {
+      "output": "have vowed…",
+      "note": "Used correct word from Google Lens and kept the ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "To campaign for“Tart Throwing”.",
+      "tesseract": "To campaign for“ Tart Throwing”."
+    },
+    "answer": {
+      "output": "To campaign for“ Tart Throwing”.",
+      "note": "Used the spacing from Tesseract; kept Lens wording and punctuation."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“Duck Hanging”\nwould make an ideal addition.",
+      "tesseract": "“Duck Hanging”\nwould make an ideal adaition."
+    },
+    "answer": {
+      "output": "“Duck Hanging” would make an ideal addition.",
+      "note": "Used Google's correct word 'addition' instead of Tesseract's 'adaition'; used a space instead of the newline."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "More\ninteresting,\nCIC Insurance is joining force with…",
+      "tesseract": "More interesting,\nCIC Insurance is joining force with…"
+    },
+    "answer": {
+      "output": "More interesting,\nCIC Insurance is joining force with…",
+      "note": "Used Tesseract's line break for the first line; kept Lens's ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "In secondary school,\nI stopped practicing the 12 hands.",
+      "tesseract": "In secondary school,\n| stopped practicing the 12 hands."
+    },
+    "answer": {
+      "output": "In secondary school,\nI stopped practicing the 12 hands.",
+      "note": "Used 'I' from Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Sometimes, when I went out with mother…",
+      "tesseract": "Sometimes, when | went out with mother…"
+    },
+    "answer": {
+      "output": "Sometimes, when I went out with mother…",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Each time I saw him.",
+      "tesseract": "Each time | saw him."
+    },
+    "answer": {
+      "output": "Each time I saw him.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "For environmental reason…",
+      "tesseract": "For environmental! reason…"
+    },
+    "answer": {
+      "output": "For environmental reason…",
+      "note": "Removed the stray exclamation mark from Tesseract and kept the ellipsis from Lens."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "As I was the one who could crawl…",
+      "tesseract": "As | was the one who could crawl…"
+    },
+    "answer": {
+      "output": "As I was the one who could crawl…",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "My mates said I should take a look and\nmaybe get rich.",
+      "tesseract": "My mates said | should take a look and\nmaybe get rich."
+    },
+    "answer": {
+      "output": "My mates said I should take a look and\nmaybe get rich.",
+      "note": "Used Google Lens text for 'I' instead of Tesseract's '|'; kept the Lens line break."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "So I crawled along the dark and\nnarrow cave.",
+      "tesseract": "SO | crawled along the dark and\nnarrow cave."
+    },
+    "answer": {
+      "output": "So I crawled along the dark and\nnarrow cave.",
+      "note": "Used Google Lens text; corrected Tesseract's 'SO |' to 'So I' and kept the line break."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I opened the box…",
+      "tesseract": "| opened the box…"
+    },
+    "answer": {
+      "output": "I opened the box…",
+      "note": "Used 'I' from Google Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“Eating 12lb white bread last night…\n”",
+      "tesseract": "\"Eating 172lb white bread last night… °"
+    },
+    "answer": {
+      "output": "“Eating 12lb white bread last night…\n”",
+      "note": "Used Lens text and preserved the opening and closing quotation marks plus the line break and ellipsis."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“Excelled 6 sets of steps\nwhen I was young…”",
+      "tesseract": "“Excelled 6 sets of steps\nwhen | was young…”"
+    },
+    "answer": {
+      "output": "“Excelled 6 sets of steps\nwhen I was young…”",
+      "note": "Used Lens text for the first line and Tesseract/Lens-corrected capitalization and spacing for the second line; kept the ellipsis from Lens."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“Brought up San San\nwhen I am old! Still…”",
+      "tesseract": "“Brought up San San\nwhen | am old! Still…”"
+    },
+    "answer": {
+      "output": "“Brought up San San\nwhen I am old! Still…”",
+      "note": "Used Lens text for the pronoun 'I' and kept the ellipsis from Lens."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Bun in hand, I suddenly realized…",
+      "tesseract": "Bun in hand, | suddenly realized…"
+    },
+    "answer": {
+      "output": "Bun in hand, I suddenly realized…",
+      "note": "Used Google Lens text and kept the ellipsis; removed the stray vertical bar from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "A no is a no.",
+      "tesseract": "Anoisano."
+    },
+    "answer": {
+      "output": "A no is a no.",
+      "note": "Used Google Lens text; Tesseract merged the words incorrectly."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Bun in hand, I suddenly thought…",
+      "tesseract": "Bun in hand, | suddenly thought…"
+    },
+    "answer": {
+      "output": "Bun in hand, I suddenly thought…",
+      "note": "Used Google Lens text and kept the ellipsis; removed the stray vertical bar from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "What shall I be?",
+      "tesseract": "What shall | be?"
+    },
+    "answer": {
+      "output": "What shall I be?",
+      "note": "Used 'I' from Google Lens instead of Tesseract's '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“I Have Grown Up”",
+      "tesseract": "“| Have Grown Up”"
+    },
+    "answer": {
+      "output": "“I Have Grown Up”",
+      "note": "Used 'I' from Google Lens instead of Tesseract's incorrect '|'.}"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Right, I am McDull the big guy.",
+      "tesseract": "Right, | am McDull the big guy."
+    },
+    "answer": {
+      "output": "Right, I am McDull the big guy.",
+      "note": "Used 'I' instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I got bored one time and stared at it…",
+      "tesseract": "| got bored one time and stared at it…"
+    },
+    "answer": {
+      "output": "I got bored one time and stared at it…",
+      "note": "Used 'I' from Lens instead of '|'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I have my calves.",
+      "tesseract": "| have my calves."
+    },
+    "answer": {
+      "output": "I have my calves.",
+      "note": "Used capital 'I' from Google Lens instead of '|'. "
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I feel great.",
+      "tesseract": "| feel great."
+    },
+    "answer": {
+      "output": "I feel great.",
+      "note": "Used 'I' from Google Lens instead of '|' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "If mother could see me like this…",
+      "tesseract": "lf mother could see me like this…"
+    },
+    "answer": {
+      "output": "If mother could see me like this…",
+      "note": "Used capitalized 'If' from Lens instead of 'lf'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "She'd be happy.",
+      "tesseract": "she'd be happy."
+    },
+    "answer": {
+      "output": "she'd be happy.",
+      "note": "Used lower-case 'she'd' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "She published a cookbook.",
+      "tesseract": "she published a cookbook."
+    },
+    "answer": {
+      "output": "she published a cookbook.",
+      "note": "Used lower-case 'she' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "If you want a delicious chicken…",
+      "tesseract": "lf you want a delicious chicken…"
+    },
+    "answer": {
+      "output": "If you want a delicious chicken…",
+      "note": "Used 'If' from Google Lens instead of Tesseract's 'lf'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "What's a Special?",
+      "tesseract": "What's a Special’?"
+    },
+    "answer": {
+      "output": "What's a Special?",
+      "note": "Used the correct question mark from Lens instead of the extra apostrophe in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Same as Regular.",
+      "tesseract": "same as Regular."
+    },
+    "answer": {
+      "output": "same as Regular.",
+      "note": "Used lower-case 'same' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Sorry, Regular is gone.",
+      "tesseract": "sorry, Regular is gone."
+    },
+    "answer": {
+      "output": "sorry, Regular is gone.",
+      "note": "Used lower-case 'sorry' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Same as Supper.",
+      "tesseract": "same as Supper."
+    },
+    "answer": {
+      "output": "same as Supper.",
+      "note": "Used lower-case 'same' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "This is too much!\nIs there anything we can eat here?",
+      "tesseract": "This is too much!\nls there anything we can eat here?"
+    },
+    "answer": {
+      "output": "This is too much!\nIs there anything we can eat here?",
+      "note": "Used Google Lens for the correct capitalization and text ('Is' instead of 'ls')."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "And what about the Regular?",
+      "tesseract": "And what about the Regular’?"
+    },
+    "answer": {
+      "output": "And what about the Regular?",
+      "note": "Used the correct question mark from Lens instead of the stray apostrophe in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Sorry, Lunch is gone.",
+      "tesseract": "sorry, Lunch is gone."
+    },
+    "answer": {
+      "output": "sorry, Lunch is gone.",
+      "note": "Used lower-case 'sorry' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "I'm not having supper\nunder board\ndaylight!",
+      "tesseract": "I'm not having supper\nunder board daylight!"
+    },
+    "answer": {
+      "output": "I'm not having supper\nunder board daylight!",
+      "note": "Used Tesseract line break for the first line; merged the last two lines into one line as in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Fai!\n- Present!",
+      "tesseract": "- Fai!{\\i1}-{\\i0}Present!"
+    },
+    "answer": {
+      "output": "- Fai!\n- Present!",
+      "note": "Matches the current expected fused subtitle fixture."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Darby!\n- Present!",
+      "tesseract": "- Darby!{\\i1}-{\\i0}Present!"
+    },
+    "answer": {
+      "output": "- Darby!\n- Present!",
+      "note": "Matches the current expected fused subtitle fixture."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- May!\n- Present!",
+      "tesseract": "- May!{\\i1}-{\\i0}Present!"
+    },
+    "answer": {
+      "output": "- May!\n- Present!",
+      "note": "Matches the current expected fused subtitle fixture."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- McMug!\n- Present!",
+      "tesseract": "- McMug!{\\i1}-{\\i0}Present!"
+    },
+    "answer": {
+      "output": "- McMug!\n- Present!",
+      "note": "Matches the current expected fused subtitle fixture."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Yes…\n- Is that right?",
+      "tesseract": "- Yes…{\\i1}-{\\i0}Is that right?"
+    },
+    "answer": {
+      "output": "- Yes…\n- Is that right?",
+      "note": "Matches the current expected fused subtitle fixture."
     },
     "difficulty": 2,
     "verified": true
@@ -342,313 +2792,13 @@
   {
     "query": {
       "lens": "- Goodnight, mother!\n- Goodnight!",
-      "tesseract": "Goodnight, mother! - Goodnight!"
+      "tesseract": "- Goodnight, mother!{\\i1}-{\\i0}Goodnight!"
     },
     "answer": {
-      "output": "- Goodnight, mother!    - Goodnight!",
-      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+      "output": "- Goodnight, mother!\n- Goodnight!",
+      "note": "Matches the current expected fused subtitle fixture."
     },
     "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Windsurfing athlete San San Li…",
-      "tesseract": "windsurfing athlete San San Li…"
-    },
-    "answer": {
-      "output": "windsurfing athlete San San Li…",
-      "note": "Used lower-case 'windsurfing' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Cheung\nChau!",
-      "tesseract": "Cheung Chau!"
-    },
-    "answer": {
-      "output": "Cheung Chau!",
-      "note": "Removed line break from Lens to match Tesseract's single line."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "What a marvelous skill that is!",
-      "tesseract": "what a marvelous skill that is!"
-    },
-    "answer": {
-      "output": "what a marvelous skill that is!",
-      "note": "Used lower-case 'what' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Hundreds of youth would rush up…",
-      "tesseract": "hundreds of youth would rush up…"
-    },
-    "answer": {
-      "output": "hundreds of youth would rush up…",
-      "note": "Used lower-case 'hundreds' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Hurts like never before.",
-      "tesseract": "hurts like never before."
-    },
-    "answer": {
-      "output": "hurts like never before.",
-      "note": "Used lower-case 'hurts' from Tesseract for correct capitalization."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "With a baby face.",
-      "tesseract": "with a baby face."
-    },
-    "answer": {
-      "output": "with a baby face.",
-      "note": "Used lower-case 'with' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "He says he'll teach all he knows to Dull.",
-      "tesseract": "He says he'll teach all he knows to DU…"
-    },
-    "answer": {
-      "output": "He says he'll teach all he knows to Dull.",
-      "note": "Used 'Dull' from Lens instead of incomplete 'DU…' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Ritual and gymnastic.",
-      "tesseract": "ritual and gymnastic."
-    },
-    "answer": {
-      "output": "ritual and gymnastic.",
-      "note": "Used lower-case 'ritual' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Such a calf.",
-      "tesseract": "such a calf."
-    },
-    "answer": {
-      "output": "such a calf.",
-      "note": "Used lower-case 'such' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "“How are you?\nI am fine.”",
-      "tesseract": "“How are you? I am fine.”"
-    },
-    "answer": {
-      "output": "“How are you? I am fine.”",
-      "note": "Used Tesseract's single-line version, replacing the newline after the question mark from Google Lens with a space."
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "It is important to snatch buns.'",
-      "tesseract": "it is important to snatch buns.\""
-    },
-    "answer": {
-      "output": "it is important to snatch buns.\"",
-      "note": "Used lower-case 'it' and closing double quote from Tesseract."
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "“That is the biggest comfort\na mother can get.”",
-      "tesseract": "“That is the biggest comfort\n3 mother can get.”"
-    },
-    "answer": {
-      "output": "“That is the biggest comfort\na mother can get.”",
-      "note": "Used 'a mother' from Lens instead of '3 mother' from Tesseract; kept Tesseract's line break after 'comfort'."
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "In its prime…",
-      "tesseract": "in its prime…"
-    },
-    "answer": {
-      "output": "in its prime…",
-      "note": "Used lower-case 'in' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "With buns in hands.",
-      "tesseract": "with buns in hands."
-    },
-    "answer": {
-      "output": "with buns in hands.",
-      "note": "Used lower-case 'with' from Tesseract for correct capitalization."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "In the soup.",
-      "tesseract": "in the soup."
-    },
-    "answer": {
-      "output": "in the soup.",
-      "note": "Used lower-case 'in' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Turkey sandwich for breakfast.",
-      "tesseract": "turkey sandwich for breakfast."
-    },
-    "answer": {
-      "output": "turkey sandwich for breakfast.",
-      "note": "Used lower-case 'turkey' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "The turkey's smell.",
-      "tesseract": "the turkey's smell."
-    },
-    "answer": {
-      "output": "the turkey's smell.",
-      "note": "Used lower-case 'the' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Afterwards,\nit is just \"be over and done with it…",
-      "tesseract": "Afterwards,\nit is just“be over and done with it”."
-    },
-    "answer": {
-      "output": "Afterwards,\nit is just “be over and done with it”.",
-      "note": "Used Tesseract’s correct closing quote and period, and its curly quote style; removed incomplete ellipsis and straight quotes from Lens while keeping Tesseract’s line break."
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Officially announced today:",
-      "tesseract": "officially announced today:"
-    },
-    "answer": {
-      "output": "officially announced today:",
-      "note": "Used lower-case 'officially' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Response from all sides\nhas been enthusiastic.",
-      "tesseract": "Response from\nall sides has been enthusiastic."
-    },
-    "answer": {
-      "output": "Response from\nall sides has been enthusiastic.",
-      "note": "Used Tesseract's line break after 'from'."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "Have vowed…",
-      "tesseract": "have vowed…"
-    },
-    "answer": {
-      "output": "have vowed…",
-      "note": "Used lower-case 'have' from Tesseract."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "More interesting, CIC\nInsurance is joining force with…",
-      "tesseract": "More interesting,\nCIC Insurance is joining force with…"
-    },
-    "answer": {
-      "output": "More interesting,\nCIC Insurance is joining force with…",
-      "note": "Used Tesseract's line break after 'More interesting,'."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "“Eating 1½lb white bread last night…\n”",
-      "tesseract": "“Eating 1½lb white bread last night… ”"
-    },
-    "answer": {
-      "output": "“Eating 1½lb white bread last night…”",
-      "note": "Used single-line formatting from Tesseract and removed the extra space before the closing quote from Tesseract while omitting the line break and trailing quote line from Lens."
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "“Excelled 6 sets of steps\nwhen I was young…' ”",
-      "tesseract": "“Excelled 6 sets of steps\nwhen I was young…”"
-    },
-    "answer": {
-      "output": "“Excelled 6 sets of steps\nwhen I was young…”",
-      "note": "Used Tesseract’s ending ellipsis and closing quote, removing the stray apostrophe and extra quote from Lens while keeping Tesseract’s line break."
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "A Quickie is a Lunch.",
-      "tesseract": "A Quickie is 3 Lunch."
-    },
-    "answer": {
-      "output": "A Quickie is a Lunch.",
-      "note": "Used 'a Lunch' from Lens instead of '3 Lunch' from Tesseract, as Lens is more reliable for text accuracy."
-    },
-    "difficulty": 1,
     "verified": true
   }
 ]

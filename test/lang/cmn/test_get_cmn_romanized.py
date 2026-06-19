@@ -6,40 +6,36 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core.subtitles import Series
 from scinoephile.lang.cmn.romanization import get_cmn_romanized, get_cmn_text_romanized
 from test.helpers import assert_series_equal
-
-
-def _test_get_cmn_romanized(series: Series, expected: Series):
-    """Test get_cmn_romanized.
-
-    Arguments:
-        series: Series with which to test
-        expected: Expected output series
-    """
-    output = get_cmn_romanized(series, append=True)
-    assert_series_equal(output, expected)
 
 
 @pytest.mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        (
+        pytest.param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize",
+            id="mlamd-zho-hans",
         ),
-        (
+        pytest.param(
             "mnt_zho_hans_fuse_clean_validate_review_flatten",
             "mnt_zho_hans_fuse_clean_validate_review_flatten_romanize",
+            id="mnt-zho-hans",
         ),
-        (
+        pytest.param(
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_zho_hans_fuse_clean_validate_review_flatten_romanize",
+            id="t-zho-hans",
+        ),
+        pytest.param(
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize",
+            id="t-zho-hant-simplify-review",
         ),
     ],
 )
-def test_get_cmn_romanized_titles(
+def test_get_cmn_romanized(
     request: pytest.FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
@@ -51,10 +47,11 @@ def test_get_cmn_romanized_titles(
         series_fixture: Fixture name for input series
         expected_fixture: Fixture name for expected output series
     """
-    _test_get_cmn_romanized(
+    output = get_cmn_romanized(
         request.getfixturevalue(series_fixture),
-        request.getfixturevalue(expected_fixture),
+        append=True,
     )
+    assert_series_equal(output, request.getfixturevalue(expected_fixture))
 
 
 @pytest.mark.parametrize(

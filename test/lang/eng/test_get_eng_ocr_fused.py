@@ -4,89 +4,82 @@
 
 from __future__ import annotations
 
-from scinoephile.core.subtitles import Series
+from collections.abc import Callable
+from unittest.mock import Mock
+
+import pytest
+
+from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
-from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
+from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
+from test.data.kob import get_kob_eng_ocr_fusion_test_cases
+from test.data.mlamd import get_mlamd_eng_ocr_fusion_test_cases
+from test.data.mnt import get_mnt_eng_ocr_fusion_test_cases
+from test.data.t import get_t_eng_ocr_fusion_test_cases
 from test.helpers import assert_series_equal
 
 
-def _test_get_eng_ocr_fused(lens: Series, tesseract: Series, expected: Series):
-    """Test get_eng_ocr_fused.
+@pytest.mark.parametrize(
+    ("lens_fixture", "tesseract_fixture", "expected_fixture", "test_case_loader"),
+    [
+        pytest.param(
+            "kob_eng_ocr_lens",
+            "kob_eng_ocr_tesseract",
+            "kob_eng_ocr_fuse",
+            get_kob_eng_ocr_fusion_test_cases,
+            id="kob-eng",
+        ),
+        pytest.param(
+            "mlamd_eng_ocr_lens",
+            "mlamd_eng_ocr_tesseract",
+            "mlamd_eng_fuse",
+            get_mlamd_eng_ocr_fusion_test_cases,
+            id="mlamd-eng",
+        ),
+        pytest.param(
+            "mnt_eng_ocr_lens",
+            "mnt_eng_ocr_tesseract",
+            "mnt_eng_fuse",
+            get_mnt_eng_ocr_fusion_test_cases,
+            id="mnt-eng",
+        ),
+        pytest.param(
+            "t_eng_ocr_lens",
+            "t_eng_ocr_tesseract",
+            "t_eng_fuse",
+            get_t_eng_ocr_fusion_test_cases,
+            id="t-eng",
+        ),
+    ],
+)
+def test_get_eng_ocr_fused(
+    request: pytest.FixtureRequest,
+    lens_fixture: str,
+    tesseract_fixture: str,
+    expected_fixture: str,
+    test_case_loader: Callable[[], list[TestCase]],
+):
+    """Test get_eng_ocr_fused against expected fused outputs.
 
     Arguments:
-        lens: subtitles OCRed using Google Lens
-        tesseract: subtitles OCRed using Tesseract
-        expected: expected output series
+        request: pytest request for fixture lookup
+        lens_fixture: fixture name for Google Lens OCR subtitles
+        tesseract_fixture: fixture name for Tesseract OCR subtitles
+        expected_fixture: fixture name for expected output series
+        test_case_loader: loader for OCR fusion test cases
     """
-    output = get_eng_ocr_fused(lens, tesseract)
+    lens = get_eng_cleaned(request.getfixturevalue(lens_fixture), remove_empty=False)
+    tesseract = get_eng_cleaned(
+        request.getfixturevalue(tesseract_fixture),
+        remove_empty=False,
+    )
+    provider = Mock(spec=LLMProvider)
+    processor = get_eng_ocr_fuser(
+        test_cases=test_case_loader(),
+        provider=provider,
+    )
+    output = get_eng_ocr_fused(lens, tesseract, processor=processor)
 
     assert len(lens) == len(output)
-    assert_series_equal(output, expected)
-
-
-def test_get_eng_ocr_fused_kob(
-    kob_eng_ocr_lens: Series,
-    kob_eng_ocr_tesseract: Series,
-    kob_eng_ocr_fuse: Series,
-):
-    """Test get_english_ocr_fused with KOB English subtitles.
-
-    Arguments:
-        kob_eng_ocr_lens: KOB English subtitles OCRed using Google Lens fixture
-        kob_eng_ocr_tesseract: KOB English subtitles OCRed using Tesseract fixture
-        kob_eng_ocr_fuse: Expected fused KOB English subtitles fixture
-    """
-    lens = get_eng_cleaned(kob_eng_ocr_lens, remove_empty=False)
-    tesseract = get_eng_cleaned(kob_eng_ocr_tesseract, remove_empty=False)
-    _test_get_eng_ocr_fused(lens, tesseract, kob_eng_ocr_fuse)
-
-
-def test_get_eng_ocr_fused_mlamd(
-    mlamd_eng_ocr_lens: Series,
-    mlamd_eng_ocr_tesseract: Series,
-    mlamd_eng_fuse: Series,
-):
-    """Test get_eng_ocr_fused with MLAMD English subtitles.
-
-    Arguments:
-        mlamd_eng_ocr_lens: MLAMD English subtitles OCRed using Google Lens fixture
-        mlamd_eng_ocr_tesseract: MLAMD English subtitles OCRed using Tesseract fixture
-        mlamd_eng_fuse: Expected fused MLAMD English subtitles fixture
-    """
-    lens = get_eng_cleaned(mlamd_eng_ocr_lens, remove_empty=False)
-    tesseract = get_eng_cleaned(mlamd_eng_ocr_tesseract, remove_empty=False)
-    _test_get_eng_ocr_fused(lens, tesseract, mlamd_eng_fuse)
-
-
-def test_get_eng_ocr_fused_mnt(
-    mnt_eng_ocr_lens: Series,
-    mnt_eng_ocr_tesseract: Series,
-    mnt_eng_fuse: Series,
-):
-    """Test get_eng_ocr_fused with MNT English subtitles.
-
-    Arguments:
-        mnt_eng_ocr_lens: MNT English subtitles OCRed using Google Lens fixture
-        mnt_eng_ocr_tesseract: MNT English subtitles OCRed using Tesseract fixture
-        mnt_eng_fuse: Expected fused MNT English subtitles fixture
-    """
-    lens = get_eng_cleaned(mnt_eng_ocr_lens, remove_empty=False)
-    tesseract = get_eng_cleaned(mnt_eng_ocr_tesseract, remove_empty=False)
-    _test_get_eng_ocr_fused(lens, tesseract, mnt_eng_fuse)
-
-
-def test_get_eng_ocr_fused_t(
-    t_eng_ocr_lens: Series,
-    t_eng_ocr_tesseract: Series,
-    t_eng_fuse: Series,
-):
-    """Test get_eng_ocr_fused with T English subtitles.
-
-    Arguments:
-        t_eng_ocr_lens: T English subtitles OCRed using Google Lens fixture
-        t_eng_ocr_tesseract: T English subtitles OCRed using Tesseract fixture
-        t_eng_fuse: Expected fused T English subtitles fixture
-    """
-    lens = get_eng_cleaned(t_eng_ocr_lens, remove_empty=False)
-    tesseract = get_eng_cleaned(t_eng_ocr_tesseract, remove_empty=False)
-    _test_get_eng_ocr_fused(lens, tesseract, t_eng_fuse)
+    assert_series_equal(output, request.getfixturevalue(expected_fixture))
+    provider.chat_completion.assert_not_called()

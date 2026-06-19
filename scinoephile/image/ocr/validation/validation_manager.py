@@ -11,7 +11,7 @@ from scinoephile.common import package_root
 from scinoephile.common.validation import val_input_dir_path, val_output_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.core.text import whitespace_chars
+from scinoephile.core.text import WHITESPACE_CHARS
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -25,10 +25,16 @@ from .char_pair_gaps import (
 )
 from .gap_cursor import GapCursor
 
-__all__ = ["ValidationManager"]
+__all__ = [
+    "MAX_CHAR_DIM_BBOXES",
+    "ValidationManager",
+]
 
 
 logger = getLogger(__name__)
+
+MAX_CHAR_DIM_BBOXES = 6
+"""Maximum supported bbox count for one character."""
 
 
 class ValidationManager:
@@ -119,7 +125,7 @@ class ValidationManager:
 
         # Initialize char_dims_by_n
         self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
-        for n in range(1, 6):
+        for n in range(1, MAX_CHAR_DIM_BBOXES + 1):
             self.char_dims_by_n[n] = {}
             file_path = repo_data_dir_path / f"char_dims_{n}.csv"
             if file_path.exists():
@@ -151,7 +157,7 @@ class ValidationManager:
                 self.cache_dir_path = val_output_dir_path(cache_dir_path, create=False)
 
             # Initialize char_dims_by_n
-            for n in range(1, 6):
+            for n in range(1, MAX_CHAR_DIM_BBOXES + 1):
                 self.cache_char_dims_by_n[n] = {}
                 file_path = self.cache_dir_path / f"char_dims_{n}.csv"
                 if file_path.exists():
@@ -218,7 +224,7 @@ class ValidationManager:
         cursor = CharCursor(sub=sub, sub_idx=sub_idx)
         while cursor.char_idx < len(sub.text_with_newline):
             # No validation to perform for whitespace
-            if cursor.char in whitespace_chars or cursor.char == "\n":
+            if cursor.char in WHITESPACE_CHARS or cursor.char == "\n":
                 cursor.advance(n_chars=1, n_bboxes=0)
                 continue
 
@@ -265,7 +271,7 @@ class ValidationManager:
             if cursor.char_idx + n_chars > len(cursor.sub.text_with_newline):
                 continue
             char_grp = cursor.char_grp(n_chars)
-            if any(c in whitespace_chars for c in char_grp) or "\n" in char_grp:
+            if any(c in WHITESPACE_CHARS for c in char_grp) or "\n" in char_grp:
                 continue
             dims = get_dims_tuple(cursor.bboxes[cursor.bbox_idx])
             ok_dims = self.char_grp_dims_by_n[n_chars].get(char_grp, set())
@@ -543,7 +549,21 @@ class ValidationManager:
             char_pair: character pair
             cutoffs: cutoffs
         """
-        if self.char_pair_gaps.get(char_pair) == cutoffs:
+        previous_cutoffs = self.char_pair_gaps.get(char_pair)
+        if previous_cutoffs == cutoffs:
+            return
+        if cutoffs == get_default_char_pair_cutoffs(*char_pair):
+            self.char_pair_gaps[char_pair] = cutoffs
+            if previous_cutoffs is None:
+                return
+            if self.dev:
+                output_char_pair_gaps = self.char_pair_gaps
+            elif char_pair in self.cache_char_pair_gaps:
+                self.cache_char_pair_gaps.pop(char_pair, None)
+                output_char_pair_gaps = self.cache_char_pair_gaps
+            else:
+                return
+            save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
             return
         self.char_pair_gaps[char_pair] = cutoffs
         logger.info(f"Added ({char_pair}, {cutoffs})")

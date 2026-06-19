@@ -16,7 +16,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
@@ -95,6 +95,7 @@ __all__ = [
     "mlamd_zho_hans_fuse_clean_validate",
     "mlamd_zho_hans_fuse_clean_validate_review",
     "mlamd_zho_hans_fuse_clean_validate_review_flatten",
+    "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
     "mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize",
     "mlamd_zho_hans_image",
     "mlamd_zho_hans_image_path",
@@ -560,6 +561,17 @@ def mlamd_zho_hans_fuse_clean_validate_review_flatten() -> Series:
 
 
 @pytest.fixture
+def mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539(
+    mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
+) -> Series:
+    """MLAMD 简体中文 flattened subtitles with subtitle 539 merged."""
+    return get_series_with_subs_merged(
+        mlamd_zho_hans_fuse_clean_validate_review_flatten,
+        539,
+    )
+
+
+@pytest.fixture
 def mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
     """MLAMD 简体中文 fused/cleaned/validated/reviewed/flattened romanized subs."""
     return Series.load(
@@ -705,7 +717,14 @@ def mlamd_zho_hant_ocr_paddle_clean() -> Series:
 def mlamd_zho_simplify_expected_series_diff() -> list[str]:
     """Expected differences for MLAMD Simplified vs Traditional subtitles."""
     return [
-        "edit: SIMP[178] -> TRAD[178]: '一个女人背起整个世界！' -> '一个女人支起整个世界！'",
+        "edit: SIMP[90] -> TRAD[90]: '就是有点游魂的 Miss Chan' -> '就是有点游魂的Miss Chan'",
+        "edit: SIMP[125] -> TRAD[125]: '橙，为什么会是「疴－烂－煮」呢？' -> '橙，为什么会是「痾－烂－煮」呢？'",
+        "edit: SIMP[127] -> TRAD[127]: '「疴」这个我明白，可是「烂－煮」呢？' -> '「痾」这个我明白，可是「烂－煮」呢？'",
+        "edit: SIMP[131] -> TRAD[131]: '至多是疴烂煮，怎么会下起雨来呢？' -> '至多是痾烂煮，怎么会下起雨来呢？'",
+        "edit: SIMP[161] -> TRAD[161]: '看著自己每天疴烂煮⋯' -> '看着自己每天痾烂煮⋯'",
+        "edit: SIMP[167] -> TRAD[167]: '可每次我总唱成「疴」什么什么的⋯' -> '可每次我总唱成「痾」什么什么的⋯'",
+        "edit: SIMP[175] -> TRAD[175]: '这位喊得特劲的中年母猪' -> '这位喊得特劲的中年母豬'",
+        "edit: SIMP[180] -> TRAD[180]: '除了兼任保险，地产经纪及 trading⋯' -> '除了兼任保险，地产经纪及trading⋯'",
         "edit: SIMP[227] -> TRAD[227]: '他扭了脚骹！' -> '他扭了脚骸！'",
         "edit: SIMP[420] -> TRAD[420]: '脚趾甲有一寸厚，究竟⋯' -> '脚趾甲有一吋厚，究竟⋯'",
         "edit: SIMP[461] -> TRAD[461]: '不成了！我的脚瓜太痹了！' -> '不成了！我的脚瓜太痺了！'",
@@ -713,11 +732,18 @@ def mlamd_zho_simplify_expected_series_diff() -> list[str]:
         "edit: SIMP[566] -> TRAD[566]: '脚趾甲有一寸厚，究竟⋯' -> '脚趾甲有一吋厚，究竟⋯'",
         "edit: SIMP[579] -> TRAD[579]: '难道⋯\\u3000不会吧？' -> '难道⋯不会吧？'",
         "edit: SIMP[580] -> TRAD[580]: '想不到真的让妈妈拿去了．吓得我！' -> '想不到真的让妈妈拿去了，吓得我！'",
-        "edit: SIMP[663] -> TRAD[663]: '这关于火鸡的一切，不过是我的想像' -> '这关于火鸡的一切，不过是我的想象'",
         "edit: SIMP[665] -> TRAD[665]: '连它的气味也没嗅过' -> '连牠的气味也没嗅过'",
-        "edit: SIMP[678] -> TRAD[678]: '我学著妈妈，把双手涂满盐⋯' -> '我学着妈妈，把双手涂满盐⋯'",
-        "edit: SIMP[680] -> TRAD[680]: '联火鸡时⋯' -> '拎火鸡时⋯'",
-        "edit: SIMP[723] -> TRAD[723]: '栗子炆火鸡丝㷛' -> '栗子火鸡丝堡'",
+        "edit: SIMP[674] -> TRAD[674]: '让我们明天去超级市场揪火鸡' -> '让我们明天去超级市场拣火鸡'",
+        "edit: SIMP[675] -> TRAD[675]: '我跟妈妈把火鸡揪回家的路上⋯' -> '我跟妈妈把火鸡拣回家的路上⋯'",
+        "edit: SIMP[680] -> TRAD[680]: '联火鸡时⋯' -> '烚火鸡时⋯'",
+        "edit: SIMP[683] -> TRAD[683]: '我说：火鸡「疴烂煮」！' -> '我说：火鸡「痾烂煮」！'",
+        "edit: SIMP[709] -> TRAD[709]: '上面淋了老抽生粉献' -> '上面淋了老抽生粉芡'",
+        "edit: SIMP[723] -> TRAD[723]: '栗子炆火鸡丝㷛' -> '栗子\\u3000\\u3000火鸡丝㷛'",
+        "edit: SIMP[724] -> TRAD[724]: '花生火鸡骨煲粥' -> '花生火鸡骨㷛粥'",
+        "edit: SIMP[728] -> TRAD[728]: '唉，我好后悔讲过一句「火鸡疴烂煮」' -> '唉，我好后悔讲过一句「火鸡痾烂煮」'",
+        "edit: SIMP[730] -> TRAD[730]: '发现咸蛋旁边是一件火鸡背的时候⋯' -> '发现咸蛋旁边是一件火鸡背脊的时候⋯'",
+        "edit: SIMP[740] -> TRAD[740]: '还要长过它的一生' -> '还要长过牠的一生'",
+        "edit: SIMP[753] -> TRAD[753]: '那天，我看着天空几缕灰色的烟' -> '那天，我看著天空几缕灰色的烟'",
         "edit: SIMP[847] -> TRAD[847]: '足有一寸厚' -> '足有一吋厚'",
         "edit: SIMP[855] -> TRAD[855]: '可是楝一双脚瓜站这儿⋯' -> '可是冻一双脚瓜站这儿⋯'",
     ]

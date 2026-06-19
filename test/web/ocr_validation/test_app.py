@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import logging
-import subprocess
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -14,6 +13,7 @@ from typing import cast
 import pytest
 
 from scinoephile.common import package_root
+from scinoephile.common.subprocess import run_command
 from scinoephile.core import ScinoephileError
 from scinoephile.web.ocr_validation.app import create_app, run_app
 from scinoephile.web.ocr_validation.session import OcrValidationSession
@@ -184,7 +184,7 @@ def test_run_app_uses_available_port_when_requested_port_is_in_use(
 
 def test_web_package_imports_flask_only_when_needed():
     """Test importing OCR validation web support does not import Flask."""
-    result = subprocess.run(
+    exitcode, _, _ = run_command(
         [
             sys.executable,
             "-c",
@@ -194,9 +194,6 @@ def test_web_package_imports_flask_only_when_needed():
                 "raise SystemExit('flask' in sys.modules)"
             ),
         ],
-        check=False,
-        capture_output=True,
-        text=True,
     )
 
-    assert result.returncode == 0, result.stderr
+    assert exitcode == 0

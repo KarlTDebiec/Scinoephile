@@ -919,7 +919,7 @@
   {
     "query": {
       "yuewen": "不过就有少少失魂嘅班主有Miss Chan",
-      "zhongwen": "就是有点游魂的Miss Chan"
+      "zhongwen": "就是有点游魂的 Miss Chan"
     },
     "answer": {
       "xiugai": "不过就有少少游魂嘅班主任Miss Chan",
@@ -1602,7 +1602,7 @@
   {
     "query": {
       "yuewen": "我成日想学习",
-      "zhongwen": "我时常想著学习"
+      "zhongwen": "我时常想着学习"
     },
     "answer": {
       "xiugai": "我成日想学习",
@@ -1761,7 +1761,7 @@
   {
     "query": {
       "yuewen": "除咗做保险，地产经纪同埋trading之外⋯",
-      "zhongwen": "除了兼任保险，地产经纪及trading⋯"
+      "zhongwen": "除了兼任保险，地产经纪及 trading⋯"
     },
     "answer": {
       "xiugai": "除咗做保险，地产经纪同埋trading之外⋯",

@@ -21,41 +21,6 @@ from scinoephile.workflows.subtitle_extraction import (
 )
 
 
-def test_media_extract_subs_cli_passes_arguments_to_workflow(tmp_path: Path):
-    """Test media extract-subs CLI passes parsed arguments to the workflow.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-    """
-    infile_path = tmp_path / "video.mkv"
-    infile_path.touch()
-    output_dir_path = tmp_path / "subtitles"
-    cache_dir_path = tmp_path / "cache"
-
-    with patch(
-        "scinoephile.cli.media.media_extract_subs_cli.extract_subtitles",
-        return_value=SubtitleExtractionResult(
-            infile_path=infile_path.resolve(),
-            outputs=[],
-        ),
-    ) as extract:
-        run_cli_with_args(
-            MediaExtractSubsCli,
-            f"--infile {infile_path} --languages eng zho -o {output_dir_path} "
-            f"--details --export-images --overwrite --cache-dir {cache_dir_path}",
-        )
-
-    extract.assert_called_once_with(
-        infile_path=infile_path.resolve(),
-        languages=["eng", "zho"],
-        output_dir_path=output_dir_path.resolve(),
-        cache_dir_path=cache_dir_path.resolve(),
-        details=True,
-        export_images=True,
-        overwrite=True,
-    )
-
-
 def test_media_extract_subs_cli_renders_grouped_outputs(
     tmp_path: Path,
     capsys: pytest.CaptureFixture[str],

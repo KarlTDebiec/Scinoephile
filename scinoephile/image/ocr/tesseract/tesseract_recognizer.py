@@ -343,11 +343,7 @@ class TesseractRecognizer:
         traineddata_path = (
             legacy_tessdata_dir_path / f"{self.tesseract_language_code}.traineddata"
         )
-        if traineddata_path.exists():
-            logger.info(
-                f"Using cached Tesseract legacy traineddata: {traineddata_path}"
-            )
-        else:
+        if not traineddata_path.exists():
             self._download_legacy_traineddata(traineddata_path)
         return legacy_tessdata_dir_path
 

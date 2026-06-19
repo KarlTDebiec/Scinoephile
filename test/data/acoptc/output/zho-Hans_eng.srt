@@ -10,7 +10,7 @@ Everybody!
 
 3
 00:03:30,125 --> 00:03:33,250
-担搁大家一会，很快就点着了
+耽搁大家一会，很快就点着了
 I'm sorry to you. It'll be OK soon
 
 4
@@ -230,12 +230,12 @@ We've decided to do so for a long time
 
 47
 00:06:48,625 --> 00:06:49,583
-首音　晶晶
+晶晶
 Jing Jing
 
 48
 00:07:13,083 --> 00:07:13,958
-首音　　晶晶
+晶晶
 Jing Jing
 
 49
@@ -266,7 +266,7 @@ Please go into the Spider Web Cave
 54
 00:08:00,333 --> 00:08:01,875
 盘丝洞？
-spider Web Cave?
+Spider Web Cave?
 
 55
 00:08:02,458 --> 00:08:04,542
@@ -350,12 +350,12 @@ Spider Web Immortal?
 
 71
 00:09:10,917 --> 00:09:13,000
-你没有变成孙悟空托世
-You hasn't turned back into the Monkey King because
+你没有变成孙悟空托生
+You haven't turned back into the Monkey King because
 
 72
 00:09:13,167 --> 00:09:15,708
-是因为你还没遇见给你三颗痔的人
+是因为你还没遇见给你三颗痣的人
 you haven't met the guy who'll give you the 3 birthmarks
 
 73
@@ -460,7 +460,7 @@ Come out! Are you really this shy?
 
 93
 00:11:42,417 --> 00:11:45,167
-这个月光宝盒呢⋯　我的！
+这个月光宝盒呢⋯　　我的！
 This Box is… It's me!
 
 94
@@ -506,7 +506,7 @@ Save whom?
 102
 00:11:58,000 --> 00:11:58,958
 救我娘子
-save my wife
+Save my wife
 
 103
 00:11:59,167 --> 00:12:01,583
@@ -615,7 +615,7 @@ Give me your hand
 
 124
 00:12:40,000 --> 00:12:43,000
-乖啊！　　待会给你买件新衣服
+乖啊！待会给你买件新衣服
 I'll buy a new clothes
 
 125
@@ -636,7 +636,7 @@ Wow!
 128
 00:12:47,375 --> 00:12:47,792
 用心点
-louder!
+Louder!
 
 129
 00:12:47,833 --> 00:12:50,083
@@ -816,7 +816,7 @@ told us to practise more
 164
 00:14:26,833 --> 00:14:28,250
 化解这段恩怨
-solve our disputes
+Solve our disputes
 
 165
 00:14:28,708 --> 00:14:30,583
@@ -861,7 +861,7 @@ Come on, come on
 173
 00:14:52,708 --> 00:14:54,042
 我们把手绑在一起
-Let's tie our hand up
+Let's tie our hands up
 
 174
 00:14:54,333 --> 00:14:55,333
@@ -925,7 +925,7 @@ I'm his twin brother Broker
 
 186
 00:15:43,250 --> 00:15:45,708
-至尊宝？　玉尊玉？　想骗我啊？
+至尊宝？ 玉尊玉？ 想骗我啊？
 Joker? Broker? You tell lies
 
 187
@@ -1010,7 +1010,7 @@ Do you have valuable thing such as…
 
 203
 00:16:19,208 --> 00:16:22,167
-手饰，珠宝，月光宝盒什么
+手饰，珠宝，月光宝盒什么⋯
 jewels or Pandora's Box…
 
 204
@@ -1130,7 +1130,7 @@ I've got a burden, it's you
 
 227
 00:17:29,792 --> 00:17:31,833
-这个猪头切一半给我，谢谢
+这个猪头切不半给我，谢谢
 Give me half of this pig head, thanks
 
 228
@@ -1210,7 +1210,7 @@ Come again?
 
 243
 00:18:10,208 --> 00:18:12,667
-是啊！我的心在跳
+是啊！　我的心在跳
 My heart is pounding
 
 244
@@ -1310,12 +1310,12 @@ I know, but I can do nothing about it
 
 263
 00:18:59,833 --> 00:19:02,500
-这段姻缘是上天安排的最大嘛
+这段姻缘是上天安排的最大嘛！
 This is fate. You have to accept this
 
 264
 00:19:02,708 --> 00:19:05,625
-喏！你现在呢只要甩掉你哪个老婆
+喏！你现在呢，只要甩掉你哪个老婆
 You just need to leave your wife
 
 265
@@ -1395,7 +1395,7 @@ Should I show you my heart?
 
 280
 00:19:47,125 --> 00:19:48,583
-不用 我自己来
+不用，我自己来
 No, I do this
 
 281
@@ -1426,12 +1426,12 @@ does she love his wife?
 286
 00:20:12,250 --> 00:20:13,875
 谁敢惹我就杀谁
-I'll kill the one who're gonna block my way
+I'll kill the one who's gonna block my way
 
 287
 00:20:15,583 --> 00:20:17,333
 菩提大哥你看看
-Granpa Buddha, look
+Grandpa Buddha, look
 
 288
 00:20:18,958 --> 00:20:20,000
@@ -1516,7 +1516,7 @@ She will give you back
 304
 00:21:20,333 --> 00:21:22,208
 我怎么敢生你的气呢，大姐
-sister, I won't be angry at you
+Sister, I won't be angry at you
 
 305
 00:21:22,375 --> 00:21:24,792
@@ -1526,7 +1526,7 @@ We should regard you as Goddess and worship you
 306
 00:21:33,125 --> 00:21:34,667
 天黑了，我要去找姐姐了
-It's dark. I will go find sister
+It's dark. I will go to find my sister
 
 307
 00:21:34,958 --> 00:21:35,917
@@ -1686,7 +1686,7 @@ I haven't finished yet. You've thrown away the stick
 338
 00:23:23,583 --> 00:23:24,833
 月光宝盒是宝物
-The box is a treasure
+The Box is a treasure
 
 339
 00:23:25,042 --> 00:23:26,708
@@ -1791,7 +1791,7 @@ Just like a fly
 359
 00:24:09,708 --> 00:24:11,333
 对不起，不是一只
-sorry, not a fly
+Sorry, not a fly
 
 360
 00:24:11,542 --> 00:24:13,917
@@ -1940,7 +1940,7 @@ But you don't use the ring
 
 389
 00:25:39,583 --> 00:25:42,083
-那个金刚圈尺吋太差
+那个金刚圈尺寸太差
 The size of that ring doesn't suit him
 
 390
@@ -2070,7 +2070,7 @@ Goddess
 
 415
 00:26:59,250 --> 00:27:02,083
-请你放过悟空，不要伤害他啦
+请你放过悟空，不要伤害牠啦
 Please let the Monkey King go, don't hurt him
 
 416
@@ -2286,7 +2286,7 @@ Monkey King
 458
 00:30:13,500 --> 00:30:14,917
 你又扮人样啦
-You turn into human face again
+You turn into a human face again
 
 459
 00:30:15,417 --> 00:30:16,708
@@ -2311,7 +2311,7 @@ Impossible, I must be dreaming
 463
 00:30:24,958 --> 00:30:28,542
 悟空要作梦还早着呢，不过⋯
-It is still early to make dreams, but…
+It's still early to make dreams, but…
 
 464
 00:30:28,917 --> 00:30:30,875
@@ -2321,7 +2321,7 @@ I dream of you
 465
 00:30:31,083 --> 00:30:32,708
 经常在梦里见到你
-when I was travel through time and space
+when I was travelling through time and space
 
 466
 00:30:32,917 --> 00:30:34,833
@@ -2331,7 +2331,7 @@ Do you miss me?
 467
 00:30:35,083 --> 00:30:37,958
 对了，那月光宝盒是否在你哪儿啊？
-The Box is at your side?
+Is the Box at your side?
 
 468
 00:30:38,208 --> 00:30:40,375
@@ -2361,7 +2361,7 @@ Soldier
 473
 00:30:47,917 --> 00:30:50,167
 他也想在这儿借宿一晚，是我老爸
-My dad also wanna stay here
+My dad also wanna stay here.
 
 474
 00:30:50,333 --> 00:30:51,250
@@ -2376,7 +2376,7 @@ It's your dad!
 476
 00:30:53,292 --> 00:30:57,500
 是啊，老爸，出来跟诸位大哥打招呼
-Yes, dad, come out to say hello to all bros
+Yes, dad, come out to say hello to all bros.
 
 477
 00:30:58,417 --> 00:30:59,417
@@ -2396,7 +2396,7 @@ India? Where is it?
 480
 00:31:04,083 --> 00:31:05,875
 我们明天还要赶路，你睡那边吧！
-I need to carry on tomorrow. Sleep there
+I need to carry on tomorrow. Sleep there.
 
 481
 00:31:06,375 --> 00:31:07,208
@@ -2520,7 +2520,7 @@ It's great to see you
 505
 00:33:49,875 --> 00:33:50,875
 那个盒子呢？盒子呢？
-Where is the Box? The Box?
+Where is the box? The box?
 
 506
 00:33:55,917 --> 00:33:57,208
@@ -2749,7 +2749,7 @@ I wanna show my sincerity
 
 551
 00:36:29,667 --> 00:36:31,917
-我当着这么多兄弟面前向你求婚
+我当着这么多兄弟的面前向你求婚
 Thus I'm gonna request you to marry me in front of my bros
 
 552
@@ -2854,7 +2854,7 @@ What joke?
 
 572
 00:37:17,083 --> 00:37:19,167
-这把剑谁拔得出，谁拔不出
+这把剑谁拔得出，谁拔不出都
 It's not important
 
 573
@@ -2895,7 +2895,7 @@ At this time, the sword is close to me
 580
 00:37:54,000 --> 00:37:55,333
 只有零点零一公分
-0.01cm I think
+0.01 cm I think
 
 581
 00:37:55,458 --> 00:37:57,167
@@ -2955,7 +2955,7 @@ When I lose her
 592
 00:38:25,167 --> 00:38:27,083
 我才后悔莫及
-I feel regretful
+I fell regretful
 
 593
 00:38:28,542 --> 00:38:32,292
@@ -2985,7 +2985,7 @@ another chance
 598
 00:38:44,958 --> 00:38:47,458
 我会对那个女孩说三个字
-I will say 3 words to her:
+I will say 3 words to her
 
 599
 00:38:49,625 --> 00:38:51,000
@@ -3000,7 +3000,7 @@ If you have to give a time limit to this love
 601
 00:38:58,833 --> 00:39:01,417
 我希望是一万年
-I hope it is 10,000 years
+I hope it is 10 thousand years
 
 602
 00:39:14,208 --> 00:39:17,333
@@ -3060,7 +3060,7 @@ because I can't get back the Box
 613
 00:39:45,542 --> 00:39:46,125
 我
-l
+I
 
 614
 00:39:46,375 --> 00:39:47,250
@@ -3099,7 +3099,7 @@ I won't trust you anymore…
 
 621
 00:39:59,208 --> 00:40:00,458
-你们在这儿你干什么？
+你们在这儿干什么？
 What are you doing here?
 
 622
@@ -3180,7 +3180,7 @@ Sister-in-law?
 637
 00:40:42,625 --> 00:40:44,333
 对不起，应该是牛夫人
-sorry, Madam Bull
+Sorry, Madam Bull
 
 638
 00:40:47,083 --> 00:40:49,167
@@ -3194,7 +3194,7 @@ you called me Sweetie
 
 640
 00:40:52,000 --> 00:40:55,542
-现在新人胜旧人啦！　　叫人家牛夫人
+现在新人胜旧人啦！叫人家牛夫人
 Now you yet your new lover! Call me Madam Bull?
 
 641
@@ -3225,7 +3225,7 @@ Bro, thank you
 646
 00:41:12,792 --> 00:41:13,667
 不关我的事
-It's none of my business
+It's none of business
 
 647
 00:41:14,417 --> 00:41:15,042
@@ -3339,7 +3339,7 @@ No need to praise me
 
 669
 00:42:27,083 --> 00:42:29,208
-我高你一点之嘛没什么大不了的
+我高你一点罢了没什么大不了的
 I'm just better than you a little bit
 
 670
@@ -3374,7 +3374,7 @@ You go in, I stay back…
 
 676
 00:42:45,833 --> 00:42:46,792
-走吧！　　你在中间
+走吧！你在中间
 Go! You at the middle
 
 677
@@ -3404,13 +3404,13 @@ I won't go
 
 682
 00:42:59,458 --> 00:43:01,167
-啊，是吗？为什么？不会走
+啊，是吗？为什么？　　不会走。
 Really? Why? No
 
 683
 00:43:01,417 --> 00:43:03,708
 我们师徒四人这次取西经
-There're full of obstacles in the way of
+There are full of obstacles in the way of
 
 684
 00:43:03,875 --> 00:43:06,042
@@ -3430,7 +3430,7 @@ so the devils can do bad to us
 687
 00:43:13,042 --> 00:43:14,375
 既然要这样
-Ok, now it is the case
+OK, now it is the case
 
 688
 00:43:14,583 --> 00:43:18,667
@@ -3474,8 +3474,8 @@ I go out and protect you
 
 696
 00:43:35,542 --> 00:43:37,208
-沙僧，跟我来哦
-sandy, follow me. Yes
+沙僧，跟我来　　哦
+Sandy, follow me. Yes
 
 697
 00:43:38,500 --> 00:43:39,458
@@ -3494,7 +3494,7 @@ You've dropped your thing
 
 700
 00:43:53,167 --> 00:43:54,375
-师弟呀，收起它一下
+师弟呀，收拾它一下
 Bro, keep it
 
 701
@@ -3510,7 +3510,7 @@ Because I'm stronger than you
 703
 00:43:57,625 --> 00:43:58,458
 高你的头
-stronger than your shit!
+Stronger than your shit!
 
 704
 00:44:01,500 --> 00:44:02,875
@@ -3549,17 +3549,17 @@ What “Dong, Dong, Dong”?
 
 711
 00:44:28,708 --> 00:44:39,542
-只有你能伴我取西经
+只有你　　能伴我取西经
 Only you… can take me to get scriptures in the west
 
 712
 00:44:39,875 --> 00:44:51,000
-只有你能杀妖和除魔
+只有你　　能杀妖和除魔
 Only you… can kill the devils
 
 713
 00:44:51,458 --> 00:44:57,792
-只有你能保护我
+只有你　　能保护我
 Only you… can protect me
 
 714
@@ -3585,7 +3585,7 @@ Wear the ring back
 718
 00:45:35,208 --> 00:45:41,125
 别怕死，别颤抖
-Don't scare the death
+Don't scare to death
 
 719
 00:45:41,375 --> 00:45:48,542
@@ -3610,7 +3610,7 @@ I can't take this anymore!
 723
 00:46:10,167 --> 00:46:12,458
 你有完没完呀
-Oh, your shit! Stop it!
+Oh, you're shit! Stop it!
 
 724
 00:46:12,708 --> 00:46:13,833
@@ -3619,17 +3619,17 @@ I've said I can't take this anymore
 
 725
 00:46:14,083 --> 00:46:15,208
-你还在嗷嗷
+你还在喔喔
 But you still sing
 
 726
 00:46:15,375 --> 00:46:17,708
-完全不理人家，受得了受不了
+完全不理人家受得了受不了
 You disregard my feelings
 
 727
 00:46:18,083 --> 00:46:20,375
-你再嗷，我一刀捅死你
+你再喔，我一刀捅死你
 I'll kill you if you sing again
 
 728
@@ -3885,7 +3885,7 @@ Qingxia?
 778
 00:49:23,833 --> 00:49:25,500
 这个玩笑开大了吧
-Wow! Please don't play joke!
+Wow! Please don't play a joke!
 
 779
 00:49:26,583 --> 00:49:29,542
@@ -3925,7 +3925,7 @@ Stop! Give me some time
 786
 00:49:46,625 --> 00:49:48,500
 我吐哇吐哇的就会习惯了
-I just vomit. I'll vomit all things out soon
+I just vomited. I'll vomit all things out soon
 
 787
 00:49:51,292 --> 00:49:52,708
@@ -4045,7 +4045,7 @@ I need 49 days to recover
 810
 00:50:49,292 --> 00:50:51,417
 七七四十九天以后？我⋯
-49 days! I…
+49 days! I …
 
 811
 00:50:51,958 --> 00:50:54,708
@@ -4054,7 +4054,7 @@ Xianglin, face the reality!
 
 812
 00:50:57,375 --> 00:50:58,708
-你不快发功，要你好看
+你不快发功，我要你好看
 Use your energy!
 
 813
@@ -4254,7 +4254,7 @@ I'll throw that away!
 
 852
 00:52:28,708 --> 00:52:29,917
-哥哥⋯⋯
+哥哥⋯
 Bro…
 
 853
@@ -4264,7 +4264,7 @@ What a man!
 
 854
 00:52:33,250 --> 00:52:34,042
-闭嘴！
+闭咀！
 Shut up!
 
 855
@@ -4334,7 +4334,7 @@ Help Zixia, you have a part in the body
 
 868
 00:53:25,333 --> 00:53:27,083
-打得血肉模糊的　　拿回来也没用啦
+打得血肉模糊的，拿回来也没用啦
 Beat it up, make it hurt! Then you can do nothing about it even if you
 
 869
@@ -4370,7 +4370,7 @@ Bitch, stand aside, it's none of your business
 875
 00:53:41,417 --> 00:53:42,167
 省省吧！
-stop it!
+Stop it!
 
 876
 00:53:42,375 --> 00:53:43,583
@@ -4510,7 +4510,7 @@ You prefer jumping down to seeing me
 903
 00:55:17,500 --> 00:55:19,667
 算了，我还是回火焰山吧！
-Ok, I'd better go back to the Flaming Mountain
+Ok, I'd better go back to the Flame Mountain
 
 904
 00:55:24,708 --> 00:55:26,250
@@ -4569,7 +4569,7 @@ Immortal!
 
 915
 00:56:07,875 --> 00:56:08,917
-晶晶
+晶晶！
 Jing Jing
 
 916
@@ -4589,7 +4589,7 @@ None of your business!
 
 919
 00:56:25,125 --> 00:56:26,250
-晶晶
+晶晶！
 Jing Jing!
 
 920
@@ -4680,37 +4680,37 @@ and a name Zixia,
 937
 00:57:17,625 --> 00:57:19,125
 你叫了七百八十四次
-You repeated 784 times
+You repeated 784 times,
 
 938
 00:57:21,083 --> 00:57:22,833
 七百八十四次
-784 times
+784 times,
 
 939
 00:57:23,000 --> 00:57:24,833
 这紫霞一定欠你很多钱
-She must have owed you lots of money
+She must have owed you lots of money,
 
 940
 00:57:25,792 --> 00:57:27,250
 我要拜盘丝大仙为师
-I want Spider Web Cave Immortal to be my master
+I want Spider Web Cave Immortal to be my master,
 
 941
 00:57:27,583 --> 00:57:29,167
 她分明把水濂洞改为盘丝洞
-she's changed Waterfall Cave into Spider Web Cave
+She's changed Waterfall Cave into Spider Web Cave,
 
 942
 00:57:29,417 --> 00:57:30,333
 你们竟敢骗我说没这个人？
-You tell me there's no such person!
+You tell me there's no such person,
 
 943
 00:57:30,583 --> 00:57:31,333
 不知道啊
-We don't know
+We don't know,
 
 944
 00:57:34,542 --> 00:57:37,083
@@ -4724,7 +4724,7 @@ Why did you do that to me?
 
 946
 00:57:40,083 --> 00:57:41,042
-首音 晶晶
+晶晶
 Jing Jing
 
 947
@@ -4789,7 +4789,7 @@ you will give up this affair because of me
 
 959
 00:58:11,333 --> 00:58:12,875
-我千辛万苦回来这里和做的所有事情
+我千辛万苦回来和做的所有事情
 What I did is totally
 
 960
@@ -5019,7 +5019,7 @@ the Box doesn't work properly.
 
 1005
 00:59:45,250 --> 00:59:47,208
-我〝超〞的一声回到五百年前
+我〝啪〞的一声回到五百年前
 I go back to 500 years ago
 
 1006
@@ -5175,12 +5175,12 @@ Is your sister crazy?
 1036
 01:01:07,208 --> 01:01:08,208
 一个晚上讲鬼话
-she keeps speaking nonsense all day long
+She keeps speaking nonsense all day long
 
 1037
 01:01:08,833 --> 01:01:11,083
 她不是疯了，她是神经病
-She's not crazy. She has something wrong with the brain
+She's not crazy. She's something wrong with the brain
 
 1038
 01:01:11,708 --> 01:01:13,667
@@ -5265,7 +5265,7 @@ wearing golden armour
 1054
 01:01:46,542 --> 01:01:48,583
 脚踏七色云彩来娶我
-and stepping on a colorful cloud, come to marry me
+and stepping on colorful cloud, come to marry me
 
 1055
 01:01:50,417 --> 01:01:51,917
@@ -5279,7 +5279,7 @@ I'm not crazy! This is just my hope
 
 1057
 01:01:57,458 --> 01:01:58,708
-承认吧！　　小疯子
+承认吧！小疯子
 Promise me! Little psycho
 
 1058
@@ -5315,7 +5315,7 @@ Thank you!
 1064
 01:02:30,458 --> 01:02:31,458
 昨晚你做梦
-You made dreams last night
+You had dreams last night
 
 1065
 01:02:31,792 --> 01:02:34,083
@@ -5325,7 +5325,7 @@ You repeated the name Zixia 785 times
 1066
 01:02:34,417 --> 01:02:35,833
 比上次多了一次
-One time more than last night
+One time more than last night.
 
 1067
 01:03:00,083 --> 01:03:02,708
@@ -5375,7 +5375,7 @@ Just like a moth
 1076
 01:03:45,167 --> 01:03:47,458
 明知道会受伤还是飞扑到火上
-it flies to fire even if it knows it'll get hurt
+it flies to fire even though it knows it'll get hurt
 
 1077
 01:03:50,542 --> 01:03:51,708
@@ -5564,7 +5564,7 @@ when I'm going to die
 
 1114
 01:06:24,583 --> 01:06:27,042
-糟了，1 怎么上去救师父？
+糟了，怎么上去救师父？
 How to save Master?
 
 1115
@@ -5590,12 +5590,12 @@ we are not a devil, we are a hybrid
 1119
 01:06:38,667 --> 01:06:39,917
 他明白了
-Does he understand?
+He understand?
 
 1120
 01:06:40,500 --> 01:06:41,500
 你明白了没有？
-Do you understand?
+do you understand?
 
 1121
 01:06:45,375 --> 01:06:47,708
@@ -5649,7 +5649,7 @@ This is God's order
 
 1131
 01:07:26,917 --> 01:07:29,000
-而且传说中的缘份
+亦传说中的缘份
 It is also called fate
 
 1132
@@ -5750,7 +5750,7 @@ I don't know
 1151
 01:08:16,917 --> 01:08:19,000
 听说你心肠不错呀
-it is heard that you're kind
+it is said that you're kind
 
 1152
 01:08:19,167 --> 01:08:20,208
@@ -5825,7 +5825,7 @@ I've heard that if you cut fast and accurately
 1166
 01:09:09,792 --> 01:09:12,125
 把人破开之后，人不会马上死掉
-the man hurt won't die at once when he's cut open
+the man got hurt won't die at once when he's cut open
 
 1167
 01:09:12,417 --> 01:09:13,417
@@ -5865,11 +5865,11 @@ left something in my heart
 1174
 01:09:26,042 --> 01:09:27,583
 我很想看看到底是什么？
-I want to know what's that
+I want to know what's that.
 
 1175
 01:09:57,625 --> 01:09:59,125
-莫名其妙
+莫名奇妙
 It's strange
 
 1176
@@ -5948,7 +5948,7 @@ I won't break my promise
 
 1191
 01:11:13,167 --> 01:11:14,333
-我不想再斗了
+我不想再逗了
 I don't want to fight anymore
 
 1192
@@ -5958,7 +5958,7 @@ You go!
 
 1193
 01:11:16,792 --> 01:11:18,250
-我这一世就你这么一个姐姐
+我这一辈子就你这么一个姐姐
 I just have one sister in my life
 
 1194
@@ -6189,7 +6189,7 @@ Life and death
 1239
 01:13:49,708 --> 01:13:50,667
 死亦何苦
-is minor
+Life and death
 
 1240
 01:13:50,833 --> 01:13:52,583
@@ -6209,12 +6209,12 @@ Bro, what's up?
 1243
 01:13:57,333 --> 01:13:58,042
 来，坐坐坐
-Come on, have a sit
+Come on, have a seat
 
 1244
 01:13:58,333 --> 01:13:59,167
 请坐！
-Have a sit
+Have a seat
 
 1245
 01:13:59,542 --> 01:14:01,625
@@ -6409,7 +6409,7 @@ If there is a time limit
 1283
 01:15:29,250 --> 01:15:32,083
 我希望是⋯一万年
-I hope…it is 10 thousand years
+I hope…it is 10,000 years
 
 1284
 01:15:40,875 --> 01:15:42,000
@@ -6459,7 +6459,7 @@ Thundering
 1293
 01:16:43,792 --> 01:16:46,292
 下雨，收衣服呀！
-It's raining, get the clothes
+It's raining, get the clothes.
 
 1294
 01:17:15,042 --> 01:17:16,708
@@ -6474,7 +6474,7 @@ Although we are friends
 1296
 01:17:21,542 --> 01:17:24,208
 你再乱讲话我一样会告你毁谤
-I'll indict you for slander if you repeat that again
+I'll indict you for slander if you repeat it again
 
 1297
 01:17:24,708 --> 01:17:25,708
@@ -6524,7 +6524,7 @@ Master, I committed many offences in the past
 1306
 01:18:14,333 --> 01:18:16,542
 幸得观音大士指点迷津
-It's lucky that the Goddess showed a right road to me
+It's lucky that Goddess shows the right road to me
 
 1307
 01:18:16,792 --> 01:18:18,917
@@ -6579,12 +6579,12 @@ I… know a friend called Joker
 1317
 01:18:41,875 --> 01:18:45,667
 他还有些话托一个叫紫霞仙子的说
-He asked me to tell Zixia Immortal something
+He ask me to tell Zixia Immortal something
 
 1318
 01:18:45,875 --> 01:18:46,708
 是不是你啊？
-Is it you?
+Is it you ?
 
 1319
 01:18:47,000 --> 01:18:47,833
@@ -6643,7 +6643,7 @@ Let me tell you again
 
 1330
 01:19:15,292 --> 01:19:22,458
-我的名字叫做齐天大⋯圣
+我的名字叫做齐天大圣
 I'm the Monkey…King
 
 1331
@@ -6669,12 +6669,12 @@ Beat you to death, damn monkey
 1335
 01:19:39,625 --> 01:19:40,375
 看叉
-Look out my fork
+Look at my fork
 
 1336
 01:19:45,167 --> 01:19:47,917
 烤鸡翅膀，我最爱吃！
-I like barbecued chicken wings!
+I like barbecued chicken wing!
 
 1337
 01:19:48,417 --> 01:19:50,042
@@ -6684,7 +6684,7 @@ Use my fork to make barbecued chicken wings?
 1338
 01:19:50,667 --> 01:19:52,417
 对了，我差点忘记了
-I nearly forget it
+I nearly forgot it
 
 1339
 01:19:53,292 --> 01:19:54,542
@@ -6834,7 +6834,7 @@ You're so ugly, we're immortals
 1368
 01:22:28,792 --> 01:22:30,625
 不要再性骚扰我行不行？
-Please, no more sexual harassment
+please no more sexual harassment
 
 1369
 01:22:31,375 --> 01:22:32,583
@@ -6859,7 +6859,7 @@ Cry if you want
 1373
 01:23:01,208 --> 01:23:03,583
 我送你们这些畜牲上西天
-I'll kill you all bastards
+I'll kill you, all bastards
 
 1374
 01:23:08,708 --> 01:23:09,958
@@ -6924,7 +6924,7 @@ Why are you so concerned about me? Let me die
 1386
 01:24:01,625 --> 01:24:02,708
 我不是关心你
-I'm not concerned about you.
+I'm not concerned about it.
 
 1387
 01:24:02,917 --> 01:24:04,667
@@ -6934,7 +6934,7 @@ We'll treasure our lives
 1388
 01:24:04,917 --> 01:24:07,000
 神仙干成你这个样子干脆不要干算了
-You are no immortals
+You are no immortal.
 
 1389
 01:24:07,292 --> 01:24:09,167
@@ -6954,7 +6954,7 @@ It's coming!
 1392
 01:24:34,500 --> 01:24:35,417
 开什么玩笑
-stop kidding
+Stop kidding
 
 1393
 01:24:37,708 --> 01:24:39,792
@@ -7149,7 +7149,7 @@ The sun is coming, hurry up
 1431
 01:28:51,292 --> 01:28:52,292
 带师父先走
-Bring Master, go
+Bring Master go
 
 1432
 01:28:52,958 --> 01:28:53,708
@@ -7254,7 +7254,7 @@ It's the living place of the Monkey King
 1452
 01:30:11,625 --> 01:30:12,667
 自从他打死牛魔王
-since he's killed the King Bull
+Since he's killed the King Bull
 
 1453
 01:30:12,958 --> 01:30:13,708
@@ -7279,7 +7279,7 @@ That guy put on a pig head
 1457
 01:30:18,375 --> 01:30:20,458
 装个猪头居然说自己是猪八戒
-and say that he's Piggy
+and says that he's Piggy
 
 1458
 01:30:20,708 --> 01:30:22,000
@@ -7318,7 +7318,7 @@ What's up?
 
 1465
 01:30:34,458 --> 01:30:35,583
-你的妆是恶心嘛
+你的装是恶心嘛
 Your image is really disgusting
 
 1466
@@ -7434,7 +7434,7 @@ Congratulations!
 1488
 01:31:43,417 --> 01:31:44,875
 你们相公高中状元了
-Your husband has become the Highest Graduates of the exam
+You husband has become the Highest Graduate of the exam
 
 1489
 01:31:45,250 --> 01:31:46,708
@@ -7454,7 +7454,7 @@ Honey Honey
 1492
 01:31:57,042 --> 01:31:59,000
 走开吧！三八你看什么？
-Go away, none of your business
+Go away, no one of your business
 
 1493
 01:32:01,292 --> 01:32:04,417
@@ -7484,7 +7484,7 @@ Honey
 1498
 01:32:13,833 --> 01:32:16,125
 磨豆腐有什么了不起，我也会呀
-I know how to make beancurd, too
+I know how to make beancurds, too
 
 1499
 01:32:18,042 --> 01:32:18,833
@@ -7684,7 +7684,7 @@ It's fate
 1538
 01:35:33,542 --> 01:35:35,458
 我这辈子都不会走
-I will stay here for my whole life
+I will stay here for my whole life.
 
 1539
 01:35:35,833 --> 01:35:37,000

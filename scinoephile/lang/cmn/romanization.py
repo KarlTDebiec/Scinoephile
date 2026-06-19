@@ -17,7 +17,7 @@ from pypinyin import Style, lazy_pinyin, pinyin
 from pypinyin.contrib.tone_convert import tone_to_tone3
 
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import full_to_half_punc
+from scinoephile.core.text import FULL_TO_HALF_PUNC
 
 __all__ = [
     "get_cmn_char_romanized",
@@ -184,11 +184,11 @@ def get_cmn_text_romanized(text: str) -> str:
         for section in line.split():
             section_romanization = ""
             for word in jieba.cut(section):
-                if word in full_to_half_punc:
+                if word in FULL_TO_HALF_PUNC:
                     if word in {"＜", "＞"}:
                         section_romanization += word
                     else:
-                        section_romanization += full_to_half_punc[word]
+                        section_romanization += FULL_TO_HALF_PUNC[word]
                 else:
                     section_romanization += " " + "".join([a[0] for a in pinyin(word)])
             line_romanization += "  " + section_romanization.strip()

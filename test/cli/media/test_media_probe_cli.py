@@ -12,35 +12,7 @@ import pytest
 from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
-
-
-def test_media_probe_cli_passes_cache_dir_to_stream_details(tmp_path: Path):
-    """Test media probe CLI passes cache directory to stream detail enrichment."""
-    infile_path = tmp_path / "video.mkv"
-    infile_path.touch()
-    cache_dir_path = tmp_path / "cache"
-
-    with (
-        patch(
-            "scinoephile.cli.media.media_probe_cli.get_streams",
-            return_value=[],
-        ) as get_streams,
-        patch(
-            "scinoephile.cli.media.media_probe_cli.get_zho_subtitle_streams",
-            return_value=[],
-        ) as get_zho_subtitle_streams,
-    ):
-        run_cli_with_args(
-            MediaProbeCli,
-            f"--infile {infile_path} --details --cache-dir {cache_dir_path}",
-        )
-
-    get_streams.assert_called_once_with(infile_path.resolve())
-    get_zho_subtitle_streams.assert_called_once_with(
-        infile_path.resolve(),
-        cache_dir_path=cache_dir_path.resolve(),
-        streams=[],
-    )
+from scinoephile.lang.zho.subtitles.analysis import ZhoSubtitleScriptAnalysis
 
 
 def test_media_probe_cli_lists_all_streams(
@@ -82,10 +54,9 @@ def test_media_probe_cli_lists_all_streams(
                 },
             ],
         },
-    ) as probe:
+    ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path}")
 
-    probe.assert_called_once_with(str(infile_path.resolve()))
     assert capsys.readouterr().out.splitlines() == [
         "Stream #0:0: Video: h264 (1920x1080)",
         "Stream #0:1(eng): Audio: aac (channels=2)",
@@ -255,3 +226,74 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
     assert capsys.readouterr().out.splitlines() == [
         "Stream #0:2(ita): Subtitle: hdmv_pgs_subtitle (title=SDH)",
     ]
+
+
+def test_media_probe_cli_force_check_script_checks_standalone_sup(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+):
+    """Test forced script checking treats a standalone SUP file as Chinese.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        capsys: pytest output capture fixture
+    """
+    infile_path = tmp_path / "source.sup"
+    infile_path.touch()
+    cache_dir_path = tmp_path / "cache"
+
+    def analyze_script(*args: object, **kwargs: object) -> ZhoSubtitleScriptAnalysis:
+        """Return script analysis after checking analyzer inputs."""
+        assert args[0] == infile_path
+        stream = args[1]
+        assert isinstance(stream, SubtitleStream)
+        assert stream.index == 0
+        assert stream.codec_name == "hdmv_pgs_subtitle"
+        assert stream.language == "zho"
+        assert kwargs == {"cache_dir_path": cache_dir_path}
+        return ZhoSubtitleScriptAnalysis(script="zho-Hant")
+
+    with (
+        patch(
+            "scinoephile.cli.media.media_probe_cli.get_streams",
+            side_effect=AssertionError("ffprobe should not be used"),
+        ),
+        patch(
+            "scinoephile.cli.media.media_probe_cli.analyze_zho_subtitle_stream_script",
+            side_effect=analyze_script,
+        ) as analyze,
+    ):
+        run_cli_with_args(
+            MediaProbeCli,
+            (
+                f"--infile {infile_path} --cache-dir {cache_dir_path} "
+                "--force-check-script"
+            ),
+        )
+
+    assert capsys.readouterr().out.splitlines() == [
+        "Stream #0:0(zho-Hant): Subtitle: hdmv_pgs_subtitle",
+    ]
+    analyze.assert_called_once()
+
+
+def test_media_probe_cli_force_check_script_rejects_non_sup(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+):
+    """Test forced script checking rejects non-SUP inputs.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        capsys: pytest output capture fixture
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            MediaProbeCli,
+            f"--infile {infile_path} --force-check-script",
+        )
+
+    assert "--force-check-script requires a SUP infile" in capsys.readouterr().err

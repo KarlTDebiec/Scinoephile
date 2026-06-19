@@ -8,7 +8,9 @@ import csv
 from logging import getLogger
 from pathlib import Path
 
-from scinoephile.core.text import full_punc, get_char_type
+from scinoephile.core.text import FULL_PUNC, get_char_type
+
+from .csv import save_csv_rows
 
 __all__ = [
     "get_default_char_pair_cutoffs",
@@ -83,9 +85,9 @@ def get_expected_space(char_1: str, char_2: str) -> str:
 
     if char_1_type == "full" and char_2_type == "full":
         return "　"
-    if char_1_type == "full" and char_2 in full_punc.values():
+    if char_1_type == "full" and char_2 in FULL_PUNC.values():
         return "　"
-    if char_1 in full_punc.values() and char_2_type == "full":
+    if char_1 in FULL_PUNC.values() and char_2_type == "full":
         return "　"
     return " "
 
@@ -104,9 +106,9 @@ def get_expected_tab(char_1: str, char_2: str) -> str:
 
     if char_1_type == "full" and char_2_type == "full":
         return "　　"
-    if char_1_type == "full" and char_2 in full_punc.values():
+    if char_1_type == "full" and char_2 in FULL_PUNC.values():
         return "　　"
-    if char_1 in full_punc.values() and char_2_type == "full":
+    if char_1 in FULL_PUNC.values() and char_2_type == "full":
         return "　　"
     return "    "
 
@@ -153,13 +155,14 @@ def save_char_pair_gaps(
     """
     rows: list[tuple[str, str, int, int, int, int]] = []
     for (char_1, char_2), cutoffs in char_pair_gaps.items():
-        _validate_char_pair_gap_cutoffs((char_1, char_2), cutoffs, file_path=file_path)
+        char_pair = (char_1, char_2)
+        _validate_char_pair_gap_cutoffs(char_pair, cutoffs, file_path=file_path)
+        if cutoffs == get_default_char_pair_cutoffs(char_1, char_2):
+            continue
         cutoff_1, cutoff_2, cutoff_3, cutoff_4 = cutoffs
         rows.append((char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4))
     rows = sorted({tuple(row) for row in rows})
-    with file_path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.writer(handle)
-        writer.writerows(rows)
+    save_csv_rows(rows, file_path)
     logger.info(f"Saved {file_path}.")
 
 

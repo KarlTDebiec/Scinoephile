@@ -18,7 +18,10 @@
             />
          {% endif %}
          <textarea
-            name="text"
+            id="subtitle-text-{{ row.sub_idx }}"
+            name="text-{{ row.sub_idx }}"
+            autocomplete="off"
+            rows="1"
             style="
                --subtitle-text-color: {{ row.text_color_css }};
                --subtitle-shadow-color: {{ row.text_shadow_color_css }};

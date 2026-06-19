@@ -9,87 +9,10 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-import scinoephile.image.ocr.lens as lens_ocr
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.image.ocr.lens import lens_recognizer, ocr_image_series_with_lens
+from scinoephile.image.ocr.lens import ocr_image_series_with_lens
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-
-
-class FakeRecognizer:
-    """Fake Google Lens recognizer for tests."""
-
-    texts: list[str] = []
-    """Texts to return from subsequent recognitions."""
-
-    instances: list[FakeRecognizer] = []
-    """Fake recognizer instances created by the OCR helper."""
-
-    def __init__(
-        self,
-        *,
-        cache_dir_path: Path | None = None,
-        language: Language = Language.eng,
-        retries: int = 3,
-    ):
-        """Initialize.
-
-        Arguments:
-            cache_dir_path: directory in which to cache OCR results
-            language: Scinoephile language
-            retries: Google Lens OCR request attempts per uncached image
-        """
-        self.cache_dir_path = cache_dir_path
-        self.language = language
-        self.retries = retries
-        self.texts = list(type(self).texts)
-        self.images: list[Image.Image] = []
-        type(self).instances.append(self)
-
-    def recognize_image(self, image: Image.Image) -> str:
-        """Recognize text from an image.
-
-        Arguments:
-            image: input image
-        Returns:
-            recognized text
-        """
-        self.images.append(image)
-        return self.texts.pop(0)
-
-
-class FailingRecognizer:
-    """Fake Google Lens recognizer that raises a configured exception."""
-
-    exception: Exception | None = None
-    """Exception raised during recognition."""
-
-    def __init__(self, **kwargs: object):
-        """Initialize.
-
-        Arguments:
-            **kwargs: ignored recognizer keyword arguments
-        """
-        _ = kwargs
-
-    def recognize_image(self, image: Image.Image) -> str:
-        """Recognize text from an image.
-
-        Arguments:
-            image: input image
-        Raises:
-            Exception: configured exception
-        """
-        _ = image
-        if self.exception is None:
-            raise AssertionError("FailingRecognizer.exception must be configured")
-        raise self.exception
-
-
-def test_lens_module_exposes_only_current_public_helpers():
-    """Test Google Lens module no longer exposes removed helper functions."""
-    assert not hasattr(lens_ocr, "get_lens_recognizer")
-    assert not hasattr(lens_ocr, "get_lens_language_code")
-    assert lens_ocr.LensRecognizerKwargs is lens_recognizer.LensRecognizerKwargs
+from test.helpers.ocr_recognizers import FailingOcrRecognizer, RecordingOcrRecognizer
 
 
 def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
@@ -114,9 +37,11 @@ def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
             ),
         ]
     )
-    FakeRecognizer.texts = ["first", "second"]
-    FakeRecognizer.instances = []
-    monkeypatch.setattr("scinoephile.image.ocr.lens.LensRecognizer", FakeRecognizer)
+    RecordingOcrRecognizer.reset("first", "second")
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.LensRecognizer",
+        RecordingOcrRecognizer,
+    )
 
     text_series = ocr_image_series_with_lens(image_series)
 
@@ -124,7 +49,7 @@ def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
         (1000, 2000, "first"),
         (3000, 4000, "second"),
     ]
-    recognizer = FakeRecognizer.instances[0]
+    recognizer = RecordingOcrRecognizer.instances[0]
     assert [image.size for image in recognizer.images] == [(10, 8), (12, 9)]
 
 
@@ -152,9 +77,11 @@ def test_ocr_image_series_with_lens_logs_progress(
             ),
         ]
     )
-    FakeRecognizer.texts = ["first", "second"]
-    FakeRecognizer.instances = []
-    monkeypatch.setattr("scinoephile.image.ocr.lens.LensRecognizer", FakeRecognizer)
+    RecordingOcrRecognizer.reset("first", "second")
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.LensRecognizer",
+        RecordingOcrRecognizer,
+    )
 
     with caplog.at_level("INFO", logger="scinoephile.image.ocr.lens"):
         ocr_image_series_with_lens(image_series)
@@ -180,14 +107,16 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
         tmp_path: temporary path fixture
     """
     cache_dir_path = tmp_path / "cache"
-    FakeRecognizer.texts = [Language.zho_hans.tag]
-    FakeRecognizer.instances = []
+    RecordingOcrRecognizer.reset(Language.zho_hans.tag)
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.lens.get_runtime_cache_dir_path",
         lambda *parts: cache_dir_path,
     )
-    monkeypatch.setattr("scinoephile.image.ocr.lens.LensRecognizer", FakeRecognizer)
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.LensRecognizer",
+        RecordingOcrRecognizer,
+    )
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
@@ -205,10 +134,10 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
     )
 
     assert [event.text for event in text_series] == ["zho-Hans"]
-    recognizer = FakeRecognizer.instances[0]
-    assert recognizer.cache_dir_path == cache_dir_path
-    assert recognizer.language is Language.zho_hans
-    assert recognizer.retries == 5
+    recognizer = RecordingOcrRecognizer.instances[0]
+    assert recognizer.kwargs["cache_dir_path"] == cache_dir_path
+    assert recognizer.kwargs["language"] is Language.zho_hans
+    assert recognizer.kwargs["retries"] == 5
 
 
 @pytest.mark.parametrize(
@@ -231,10 +160,10 @@ def test_ocr_image_series_with_lens_wraps_processing_errors(
         monkeypatch: pytest monkeypatch fixture
         exception: implementation exception raised during OCR
     """
-    FailingRecognizer.exception = exception
+    FailingOcrRecognizer.exception = exception
     monkeypatch.setattr(
         "scinoephile.image.ocr.lens.LensRecognizer",
-        FailingRecognizer,
+        FailingOcrRecognizer,
     )
     image_series = ImageSeries(
         events=[

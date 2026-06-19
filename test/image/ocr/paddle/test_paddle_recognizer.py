@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import subprocess
+import logging
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -15,6 +15,7 @@ import numpy as np
 import pytest
 from PIL import Image
 
+from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
 from scinoephile.image.ocr.paddle import PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
@@ -138,9 +139,48 @@ def test_paddle_recognizer_keeps_mkldnn_enabled_off_windows(
     assert observed_kwargs["enable_mkldnn"] is True
 
 
+def test_paddle_recognizer_preserves_root_logger_level(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test PaddleOCR construction does not change root logging level.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+
+    class FakePaddleOCR:
+        """Fake PaddleOCR implementation that mutates root logging."""
+
+        def __init__(self, **kwargs: object):
+            """Initialize.
+
+            Arguments:
+                **kwargs: PaddleOCR keyword arguments
+            """
+            _ = kwargs
+            logging.getLogger().setLevel(logging.WARNING)
+
+    root_logger = logging.getLogger()
+    previous_level = root_logger.level
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.paddle.paddle_recognizer.PaddleRecognizer."
+        "_get_paddle_ocr_class",
+        staticmethod(lambda: FakePaddleOCR),
+    )
+
+    try:
+        root_logger.setLevel(logging.INFO)
+
+        PaddleRecognizer(language=Language.zho_hans)
+
+        assert root_logger.level == logging.INFO
+    finally:
+        root_logger.setLevel(previous_level)
+
+
 def test_paddle_recognizer_imports_paddleocr_only_when_needed():
     """Test importing PaddleOCR recognizer does not import paddleocr."""
-    result = subprocess.run(
+    exitcode, _, _ = run_command(
         [
             sys.executable,
             "-c",
@@ -150,12 +190,9 @@ def test_paddle_recognizer_imports_paddleocr_only_when_needed():
                 "raise SystemExit('paddleocr' in sys.modules)"
             ),
         ],
-        check=False,
-        capture_output=True,
-        text=True,
     )
 
-    assert result.returncode == 0, result.stderr
+    assert exitcode == 0
 
 
 def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: pytest.MonkeyPatch):

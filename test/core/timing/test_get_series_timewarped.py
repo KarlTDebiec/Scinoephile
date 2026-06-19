@@ -9,26 +9,6 @@ from scinoephile.core.timing import get_series_timewarped
 from test.helpers import assert_series_equal
 
 
-def _test_get_series_timewarped(anchor: Series, source: Series, expected: Series):
-    """Test get_series_timewarped.
-
-    Arguments:
-        anchor: anchor subtitle fixture
-        source: source subtitle fixture
-        expected: expected timewarp subtitle fixture
-    """
-    output = get_series_timewarped(
-        anchor,
-        source,
-        one_start_idx=1,
-        one_end_idx=1421,
-        two_start_idx=1,
-        two_end_idx=1461,
-    )
-
-    assert_series_equal(output, expected)
-
-
 def test_get_series_timewarped_kob(
     kob_zho_hant_ocr_fuse_clean_validate_review: Series,
     kob_yue_hant: Series,
@@ -42,8 +22,12 @@ def test_get_series_timewarped_kob(
         kob_yue_hant: traditional written Cantonese subtitle fixture
         kob_yue_hant_timewarp: expected timewarp subtitle fixture
     """
-    _test_get_series_timewarped(
+    output = get_series_timewarped(
         kob_zho_hant_ocr_fuse_clean_validate_review,
         kob_yue_hant,
-        kob_yue_hant_timewarp,
+        one_start_idx=1,
+        one_end_idx=1421,
+        two_start_idx=1,
+        two_end_idx=1461,
     )
+    assert_series_equal(output, kob_yue_hant_timewarp)

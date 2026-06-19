@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import builtins
 import os
-import subprocess
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -19,6 +18,7 @@ from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
+from scinoephile.common.subprocess import run_command
 
 _OPTIONAL_TRANSCRIPTION_MODULES = (
     "demucs_infer",
@@ -41,6 +41,7 @@ _REPO_ROOT_PATH = Path(__file__).parents[3]
     ],
 )
 def test_get_cache_path_separates_configuration(
+    tmp_path: Path,
     field_name: str,
     first_value: object,
     second_value: object,
@@ -48,13 +49,20 @@ def test_get_cache_path_separates_configuration(
     """Test Whisper cache paths differ by cache-relevant configuration.
 
     Arguments:
+        tmp_path: temporary cache directory path
         field_name: transcriber configuration field under test
         first_value: first transcriber field value
         second_value: second transcriber field value
     """
     audio = Mock(raw_data=b"audio")
-    first_transcriber = _get_whisper_transcriber()
-    second_transcriber = _get_whisper_transcriber()
+    first_transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+    )
+    second_transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+    )
     setattr(first_transcriber, field_name, first_value)
     setattr(second_transcriber, field_name, second_value)
     first_cache_path = first_transcriber._get_cache_path(audio)
@@ -62,8 +70,8 @@ def test_get_cache_path_separates_configuration(
 
     assert first_cache_path is not None
     assert second_cache_path is not None
-    assert first_cache_path.parent == Path("/tmp/whisper")
-    assert second_cache_path.parent == Path("/tmp/whisper")
+    assert first_cache_path.parent == tmp_path
+    assert second_cache_path.parent == tmp_path
     assert first_cache_path != second_cache_path
 
 
@@ -83,8 +91,7 @@ def test_model_name_is_huggingface_repo_id_rejects_local_paths(
 ):
     """Test HuggingFace retry is skipped for local filesystem paths."""
     pytest.importorskip("huggingface_hub")
-    transcriber = object.__new__(WhisperTranscriber)
-    transcriber.model_name = model_name
+    transcriber = WhisperTranscriber(model_name=model_name)
 
     assert transcriber._model_name_is_huggingface_repo_id() is expected
 
@@ -125,16 +132,13 @@ def test_transcription_imports_without_optional_runtime_dependencies():
     env["PYTHONPATH"] = os.pathsep.join(
         [str(_REPO_ROOT_PATH), env.get("PYTHONPATH", "")]
     )
-    result = subprocess.run(
+    exitcode, _, _ = run_command(
         [sys.executable, "-c", script],
-        cwd=_REPO_ROOT_PATH,
+        cwd_path=_REPO_ROOT_PATH,
         env=env,
-        check=False,
-        capture_output=True,
-        text=True,
     )
 
-    assert result.returncode == 0, result.stderr
+    assert exitcode == 0
 
 
 def test_whisper_module_requires_transcription_extra(monkeypatch: pytest.MonkeyPatch):
@@ -160,9 +164,7 @@ def test_whisper_module_requires_transcription_extra(monkeypatch: pytest.MonkeyP
 
 def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
     """Test malformed empty-text and duplicate-text segments are coalesced."""
-    transcriber = object.__new__(WhisperTranscriber)
-    transcriber.model_name = "custom/model"
-    transcriber.use_vad = True
+    transcriber = WhisperTranscriber(model_name="custom/model")
 
     segments = [
         TranscribedSegment(
@@ -244,31 +246,3 @@ def test_get_segment_split_at_idx_includes_segment_details_in_error():
         "Cannot split segment without word timing data: "
         "id=9 start=156.4 end=161.29 text='照先生你就展示畀朕睇下係' text_len=12."
     )
-
-
-def _get_whisper_transcriber(
-    *,
-    cache_dir_path: Path = Path("/tmp/whisper"),
-    model_name: str = "custom/model",
-    language: str = "yue",
-    use_demucs: bool = False,
-    use_vad: bool = True,
-) -> WhisperTranscriber:
-    """Get a minimally initialized Whisper transcriber.
-
-    Arguments:
-        cache_dir_path: cache directory path
-        model_name: Whisper model name
-        language: transcription language code
-        use_demucs: whether Demucs preprocessing is enabled
-        use_vad: whether VAD is enabled
-    Returns:
-        minimally initialized transcriber
-    """
-    transcriber = object.__new__(WhisperTranscriber)
-    transcriber.cache_dir_path = cache_dir_path
-    transcriber.model_name = model_name
-    transcriber.language = language
-    transcriber.use_demucs = use_demucs
-    transcriber.use_vad = use_vad
-    return transcriber

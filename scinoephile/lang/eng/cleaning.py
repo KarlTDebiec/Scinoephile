@@ -8,8 +8,15 @@ import re
 from copy import deepcopy
 
 from scinoephile.core.subtitles import Series
+from scinoephile.core.text import (
+    normalize_fullwidth_alphanumerics,
+    normalize_ocr_confusables_to_ascii,
+)
 
-__all__ = ["get_eng_cleaned"]
+__all__ = [
+    "get_eng_cleaned",
+    "get_eng_text_cleaned",
+]
 
 
 def get_eng_cleaned(series: Series, remove_empty: bool = True) -> Series:
@@ -25,7 +32,7 @@ def get_eng_cleaned(series: Series, remove_empty: bool = True) -> Series:
     new_events = []
     for event in series:
         raw_text = (event.text or "").strip()
-        text = _get_english_text_cleaned(raw_text)
+        text = get_eng_text_cleaned(raw_text)
         if text or not remove_empty:
             event.text = text if text is not None else ""
             new_events.append(event)
@@ -33,16 +40,18 @@ def get_eng_cleaned(series: Series, remove_empty: bool = True) -> Series:
     return series
 
 
-def _get_english_text_cleaned(text: str) -> str | None:
+def get_eng_text_cleaned(text: str) -> str | None:
     """Get English text cleaned.
 
     Arguments:
         text: text to clean
     Returns:
-        Cleaned text, or None if no text remains
+        cleaned text, or None if no text remains
     """
     line_sep = "\\N"
     cleaned = text.replace("\xa0", " ").strip()
+    cleaned = normalize_fullwidth_alphanumerics(cleaned)
+    cleaned = normalize_ocr_confusables_to_ascii(cleaned)
 
     # Remove ASS hard-space \h
     cleaned = re.sub(r"\\h", "", cleaned)
