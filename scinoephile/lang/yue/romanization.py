@@ -148,6 +148,7 @@ def get_yue_text_romanized(text: str) -> str:
     lines: list[str] = []
     for line in text.split("\n"):
         sections: list[str] = []
+        open_symmetric_quotes: set[str] = set()
         for section in line.split():
             tokens: list[str] = []
             index = 0
@@ -177,7 +178,7 @@ def get_yue_text_romanized(text: str) -> str:
                     index = end_index
                 else:
                     index += 1
-            sections.append(join_romanized_tokens(tokens))
+            sections.append(join_romanized_tokens(tokens, open_symmetric_quotes))
         lines.append("  ".join(section for section in sections if section))
     return "\n".join(lines).strip()
 

@@ -187,11 +187,12 @@ def get_cmn_text_romanized(text: str) -> str:
     lines: list[str] = []
     for line in text.split("\n"):
         sections: list[str] = []
+        open_symmetric_quotes: set[str] = set()
         for section in line.split():
             tokens: list[str] = []
             for word in jieba.cut(section):
                 tokens.extend(_get_cmn_word_romanization_tokens(word))
-            sections.append(join_romanized_tokens(tokens))
+            sections.append(join_romanized_tokens(tokens, open_symmetric_quotes))
         lines.append("  ".join(section for section in sections if section))
     return "\n".join(lines).strip()
 
