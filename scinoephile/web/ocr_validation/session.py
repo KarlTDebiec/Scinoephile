@@ -604,7 +604,10 @@ class OcrValidationSession:
                     (cursor.gap, cutoffs[1], cutoffs[2], cutoffs[3]),
                 )
                 return None
-            if cursor.gap_chars and cursor.gap_chars == cursor.expected_space:
+            if (
+                cursor.gap == cutoffs[1] - 1
+                and cursor.gap_chars == cursor.expected_space
+            ):
                 self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3]),
@@ -618,13 +621,16 @@ class OcrValidationSession:
             return None
 
         if cutoffs[2] < cursor.gap < cutoffs[3]:
-            if cursor.gap_chars == cursor.expected_space:
+            if (
+                cursor.gap == cutoffs[2] + 1
+                and cursor.gap_chars == cursor.expected_space
+            ):
                 self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
                 )
                 return None
-            if cursor.gap_chars == cursor.expected_tab:
+            if cursor.gap == cutoffs[3] - 1 and cursor.gap_chars == cursor.expected_tab:
                 self.manager.update_pair_gaps(
                     cursor.char_pair,
                     (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),

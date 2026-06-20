@@ -35,9 +35,6 @@ def get_default_char_pair_cutoffs(  # noqa: PLR0911, PLR0912
     Returns:
         default cutoff tuple
     """
-    if (char_1, char_2) == ("！", "⋯"):
-        return 60, 89, 90, 200
-
     char_1_type = get_char_type(char_1)
     char_2_type = get_char_type(char_2)
 
@@ -70,6 +67,10 @@ def get_default_char_pair_cutoffs(  # noqa: PLR0911, PLR0912
             return 47, 89, 90, 200
         if char_1 in {"」", "』"}:
             return 61, 89, 90, 200
+        return 8, 89, 90, 200
+    if char_2 == "⋯":
+        if char_1 in FULL_PUNC.values():
+            return 60, 89, 90, 200
         return 8, 89, 90, 200
     return 8, 24, 90, 200
 
