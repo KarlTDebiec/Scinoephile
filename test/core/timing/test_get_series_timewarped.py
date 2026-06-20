@@ -46,7 +46,7 @@ from test.helpers import assert_series_equal
         ),
     ],
 )
-def test_get_series_timewarped_kob(
+def test_get_series_timewarped(
     request: pytest.FixtureRequest,
     source_one_fixture: str,
     source_two_fixture: str,
