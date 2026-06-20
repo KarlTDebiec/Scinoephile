@@ -377,11 +377,11 @@ def test_existing_space_gap_does_not_update_cutoffs(
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
 
 
-def test_punctuation_ellipsis_gap_removes_existing_space(
+def test_punctuation_ellipsis_gap_reports_existing_space_concern(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test punctuation before ellipsis is adjacent despite stale whitespace."""
+    """Test punctuation before ellipsis keeps stale whitespace as a concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="！ ⋯")
     patch_ocr_validation_bboxes(
         monkeypatch,
@@ -397,11 +397,15 @@ def test_punctuation_ellipsis_gap_removes_existing_space(
 
     row = session.subtitle_row(0)
 
-    assert row.text == "！⋯"
-    assert row.status == ValidationStatus.DONE
-    assert row.concern is None
-    assert session.manager.char_pair_gaps[("！", "⋯")] == (60, 89, 90, 200)
-    assert "！⋯" in (html_dir_path / "index.html").read_text(encoding="utf-8")
+    assert row.text == "！ ⋯"
+    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert isinstance(row.concern, GapConcern)
+    assert row.concern.kind == ConcernKind.SPACE_GAP
+    assert row.concern.char_1 == "！"
+    assert row.concern.char_2 == "⋯"
+    assert row.concern.gap == 57
+    assert session.manager.char_pair_gaps[("！", "⋯")] == (8, 89, 90, 200)
+    assert "！ ⋯" in (html_dir_path / "index.html").read_text(encoding="utf-8")
 
 
 def test_space_gap_choice_updates_index_text(
