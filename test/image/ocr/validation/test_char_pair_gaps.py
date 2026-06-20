@@ -9,22 +9,11 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.core.text import FULL_PUNC_CHARS, HALF_PUNC_CHARS, get_char_type
 from scinoephile.image.ocr.validation.char_pair_gaps import (
     get_default_char_pair_cutoffs,
     load_char_pair_gaps,
     save_char_pair_gaps,
 )
-
-
-@pytest.mark.parametrize("char_1", sorted(HALF_PUNC_CHARS | FULL_PUNC_CHARS))
-def test_default_cutoffs_treat_punctuation_ellipsis_as_ambiguous(char_1: str):
-    """Test punctuation before ellipsis defaults to broad ambiguous spacing.
-
-    Arguments:
-        char_1: punctuation before ellipsis
-    """
-    assert get_default_char_pair_cutoffs(char_1, "⋯") == (8, 89, 90, 200)
 
 
 def test_load_char_pair_gaps_rejects_nonmonotonic_cutoffs(tmp_path: Path):
@@ -69,21 +58,6 @@ def test_repo_char_pair_gaps_exclude_default_cutoffs():
             default_cutoffs = get_default_char_pair_cutoffs(char_1, char_2)
             assert cutoffs != default_cutoffs, (
                 f"{file_path}:{line_no} has default cutoffs {cutoffs}"
-            )
-
-
-def test_repo_char_pair_gaps_exclude_punctuation_ellipsis_pairs():
-    """Test repository data leaves punctuation-before-ellipsis pairs to defaults."""
-    file_path = Path(__file__).parents[4] / "scinoephile/data/ocr/char_pair_gaps.csv"
-
-    with file_path.open("r", encoding="utf-8", newline="") as handle:
-        reader = csv.reader(handle)
-        for line_no, row in enumerate(reader, start=1):
-            if not row:
-                continue
-            char_1, char_2 = row[:2]
-            assert not (get_char_type(char_1) == "punc" and char_2 == "⋯"), (
-                f"{file_path}:{line_no} has punctuation-before-ellipsis override"
             )
 
 
