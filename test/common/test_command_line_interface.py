@@ -9,13 +9,16 @@ from pathlib import Path
 from typing import ClassVar
 from unittest.mock import patch
 
-from pytest import MonkeyPatch, parametrize, raises
+from pytest import MonkeyPatch, raises
+from pytest import mark as _mark
 
 from scinoephile.common.command_line_interface import (
     CommandLineInterface,
 )
 from scinoephile.common.testing import run_cli_with_args
 from test import helpers
+
+parametrize = _mark.parametrize
 
 
 class ArgsCaptureCli(CommandLineInterface):

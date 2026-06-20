@@ -12,11 +12,14 @@ from types import ModuleType, SimpleNamespace
 from typing import Any, cast
 
 from PIL import Image
-from pytest import MonkeyPatch, parametrize, raises
+from pytest import MonkeyPatch, raises
+from pytest import mark as _mark
 
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
 from scinoephile.image.ocr.lens.lens_recognizer import LensRecognizer
+
+parametrize = _mark.parametrize
 
 
 class FakeLensApiError(RuntimeError):

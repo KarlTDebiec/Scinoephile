@@ -12,7 +12,8 @@ from pathlib import Path
 from textwrap import dedent
 from unittest.mock import Mock
 
-from pytest import MonkeyPatch, importorskip, parametrize, raises
+from pytest import MonkeyPatch, importorskip, raises
+from pytest import mark as _mark
 
 from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
@@ -20,6 +21,7 @@ from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.common.subprocess import run_command
 
+parametrize = _mark.parametrize
 _OPTIONAL_TRANSCRIPTION_MODULES = (
     "demucs_infer",
     "huggingface_hub",

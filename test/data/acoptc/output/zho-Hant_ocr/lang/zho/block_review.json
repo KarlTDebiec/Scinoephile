@@ -2739,8 +2739,8 @@
       "zimu_4": "走"
     },
     "answer": {
-      "xiugai_3": "一定要靠月光寶盒才能離開這裡……",
-      "beizhu_3": "修正結尾的排版符號，將異常的間隔句點改為省略號。"
+      "xiugai_3": "一定要靠月光寶盒才能離開這裡⋯⋯",
+      "beizhu_3": "Preserved cleaning-normalized punctuation in the block-review output."
     },
     "difficulty": 1,
     "verified": true

@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from pytest import parametrize
+from pytest import mark as _mark
 
 from scinoephile.common import package_root
 from scinoephile.core.llms import Manager, Prompt
@@ -56,6 +56,8 @@ from scinoephile.multilang.yue_zho.guided_translation import (
 from scinoephile.multilang.yue_zho.line_review import YueLineReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
 from scinoephile.multilang.yue_zho.translation import YueTranslationVsZhoPromptYueHans
+
+parametrize = _mark.parametrize
 
 
 def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:

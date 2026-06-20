@@ -109,12 +109,12 @@
     "query": {
       "zimu_1": "盘丝洞唔好乱闯！",
       "zimu_2": "盘丝洞？",
-      "zimu_3": "你“虾”我唔识字呀！",
-      "zimu_4": "“水濂洞”呀！"
+      "zimu_3": "你〝虾〞我唔识字呀！",
+      "zimu_4": "〝水濂洞〞呀！"
     },
     "answer": {
-      "xiugai_4": "“水帘洞”呀！",
-      "beizhu_4": "将错别字“濂”更正为“帘”。"
+      "xiugai_4": "〝水帘洞〞呀！",
+      "beizhu_4": "Corrected text while preserving cleaning-normalized punctuation."
     },
     "difficulty": 1,
     "verified": true
@@ -541,7 +541,8 @@
       "zimu_20": "听见就兴奋嘞",
       "zimu_21": "嚟呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -770,7 +771,8 @@
       "zimu_31": "收声呀！",
       "zimu_32": "咪嘈⋯⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1096,7 +1098,8 @@
       "zimu_36": "把剑边个开到，边个开唔到",
       "zimu_37": "根本冇关系"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1361,14 +1364,14 @@
     "query": {
       "zimu_1": "Only you，莫怪师傅暗寻",
       "zimu_2": "戴翻个箍",
-      "zimu_3": "莫怕死，咪发〞 t i 〞藤",
+      "zimu_3": "莫怕死，咪发〝 t i 〞藤",
       "zimu_4": "碰到钉咪惊，I understand",
       "zimu_5": "要全力地去do，要惊就两份惊",
       "zimu_6": "喃呒阿弥陀佛"
     },
     "answer": {
-      "xiugai_3": "莫怕死，咪发〞t i〞藤",
-      "beizhu_3": "调整英文与引号之间的空格排版，去除多余空格。"
+      "xiugai_3": "莫怕死，咪发〝t i〞藤",
+      "beizhu_3": "Preserved cleaning-normalized punctuation in the block-review output."
     },
     "difficulty": 1,
     "verified": true
@@ -1384,12 +1387,7 @@
       "zimu_7": "悟空，你即管〝队〞死我啦",
       "zimu_8": "生亦何哀，死亦何苦"
     },
-    "answer": {
-      "xiugai_6": "你唔好再烦我，我一嘢“队”死你",
-      "beizhu_6": "将引号样式从〝〞统一为中文常用引号“”。",
-      "xiugai_7": "悟空，你即管“队”死我啦",
-      "beizhu_7": "将引号样式从〝〞统一为中文常用引号“”。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2827,11 +2825,7 @@
       "xiugai_8": "你化咁嘅妆又话当系孙悟空呀？",
       "beizhu_8": "将“粧”更正为“妆”，修正错别字。",
       "xiugai_14": "你个妆系化得核突吖嘛",
-      "beizhu_14": "将“粧”更正为“妆”，修正错别字。",
-      "xiugai_17": "“队”多我三嘢添",
-      "beizhu_17": "将引号内的“〝〞”改为中文直引号““””，统一排版。",
-      "xiugai_20": "条友叫我“队”佢三嘢系咪前世欠咗我㗎",
-      "beizhu_20": "将引号内的“〝〞”改为中文直引号““””，统一排版。"
+      "beizhu_14": "将“粧”更正为“妆”，修正错别字。"
     },
     "difficulty": 1,
     "verified": true

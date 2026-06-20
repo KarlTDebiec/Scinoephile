@@ -566,10 +566,8 @@
       "beizhu_8": "将全角空格“　”统一为半角空格。",
       "xiugai_14": "你究竟是何方神圣 快说",
       "beizhu_14": "将全角空格“　”统一为半角空格。",
-      "xiugai_15": "我没有“摸摸”嘛",
-      "beizhu_15": "将直角引号〝〞统一为中文引号“”。",
-      "xiugai_20": "哎⋯“摸摸”在那个姐姐身上 快过去拿",
-      "beizhu_20": "将直角引号〝〞统一为中文引号“”，并将全角空格“　”统一为半角空格。"
+      "xiugai_20": "哎⋯〝摸摸〞在那个姐姐身上 快过去拿",
+      "beizhu_20": "Preserved cleaning-normalized punctuation in the block-review output."
     },
     "difficulty": 1,
     "verified": true
@@ -2852,8 +2850,8 @@
       "zimu_21": "这一辈子他不用再做乞丐"
     },
     "answer": {
-      "xiugai_7": "他害得那个“野鸡”刮破了脸，好可怜呢",
-      "beizhu_7": "将全角引号“〝〞”更正为中文常用引号“”。同时将分隔用的全角空格统一为标点空格。",
+      "xiugai_7": "他害得那个〝野鸡〞刮破了脸，好可怜呢",
+      "beizhu_7": "Preserved cleaning-normalized punctuation in the block-review output.",
       "xiugai_9": "临死之前呢，还多伤了几十条人命",
       "beizhu_9": "将分隔用的全角空格统一为标点空格。",
       "xiugai_15": "你算了吧，整天都说单挑",
@@ -2868,10 +2866,7 @@
       "zimu_2": "但是她再也不做〝野鸡〞",
       "zimu_3": "而是真正的在卖豆腐"
     },
-    "answer": {
-      "xiugai_2": "但是她再也不做“野鸡”",
-      "beizhu_2": "将书名号样式的引号〝〞统一为中文规范引号“”。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },

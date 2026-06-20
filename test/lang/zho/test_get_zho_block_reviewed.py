@@ -7,7 +7,8 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock
 
-from pytest import FixtureRequest, param, parametrize
+from pytest import FixtureRequest, param
+from pytest import mark as _mark
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.zho.block_review import (
@@ -51,6 +52,8 @@ from test.data.tmm import (
     get_tmm_zho_hant_simplify_block_review_test_cases,
 )
 from test.helpers import assert_series_equal
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

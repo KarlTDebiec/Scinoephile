@@ -514,7 +514,11 @@
       "zimu_19": "摸摸⋯",
       "zimu_20": "哎⋯ 「摸摸」在那個姐姐身上　快過去拿"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_20": "哎⋯「摸摸」在那個姐姐身上　快過去拿",
+      "beizhu_20": "Preserved cleaning-normalized punctuation in the block-review output."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {

@@ -8,10 +8,13 @@ from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
-from pytest import fixture, parametrize, raises
+from pytest import fixture, raises
+from pytest import mark as _mark
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.dictionaries.gzzj import GzzjDictionaryService
+
+parametrize = _mark.parametrize
 
 
 @fixture

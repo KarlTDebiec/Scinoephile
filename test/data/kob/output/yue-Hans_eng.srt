@@ -5771,7 +5771,7 @@ Isn't this stance…
 1155
 01:13:58,081 --> 01:14:00,093
 新师叔嘅睡梦罗汉拳？
-Uncle Sun's "Sleeping Disciple's Fists"?
+Uncle Sun's “Sleeping Disciple's Fists”?
 
 1156
 01:14:01,084 --> 01:14:01,970
@@ -7291,4 +7291,3 @@ Say thank you now
 01:38:18,476 --> 01:38:21,354
 多谢晒！
 Thank you, uncle
-

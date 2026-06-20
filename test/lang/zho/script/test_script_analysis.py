@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from pytest import parametrize
+from pytest import mark as _mark
 
 from scinoephile.lang.zho.script.analysis import (
     get_zho_script_analysis,
@@ -12,6 +12,8 @@ from scinoephile.lang.zho.script.analysis import (
     is_traditional,
 )
 from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

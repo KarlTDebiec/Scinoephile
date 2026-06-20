@@ -4,9 +4,11 @@
 
 from __future__ import annotations
 
-from pytest import parametrize
+from pytest import mark as _mark
 
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

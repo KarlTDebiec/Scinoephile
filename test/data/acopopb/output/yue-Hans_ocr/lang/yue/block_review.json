@@ -89,9 +89,7 @@
     },
     "answer": {
       "xiugai_1": "成个世界清静晒",
-      "beizhu_1": "将错别字“哂”更正为“晒”。",
-      "xiugai_2": "咁你而家明白……",
-      "beizhu_2": "将省略号由四个点修正为常用的六个点“……”。"
+      "beizhu_1": "将错别字“哂”更正为“晒”。"
     },
     "difficulty": 1,
     "verified": true
@@ -242,7 +240,8 @@
       "zimu_41": "惊咩呀！万事有我！"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -306,7 +305,8 @@
       "zimu_11": "多谢女英雄⋯⋯",
       "zimu_12": "至于你啰喎⋯咁有骨气！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -337,14 +337,7 @@
       "zimu_13": "做乜〝庄〞我冲凉呀你？",
       "zimu_14": "我唔止〝庄〞你一个，我冚扮烂都〝庄〞过哂啦"
     },
-    "answer": {
-      "xiugai_12": "盲炳话“庄”你冲凉见到㗎嘛",
-      "beizhu_12": "将异体引号“〝〞”统一为中文常用引号““””。",
-      "xiugai_13": "做乜“庄”我冲凉呀你？",
-      "beizhu_13": "将异体引号“〝〞”统一为中文常用引号““””。",
-      "xiugai_14": "我唔止“庄”你一个，我冚扮烂都“庄”过哂啦",
-      "beizhu_14": "将异体引号“〝〞”统一为中文常用引号““””。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -434,7 +427,8 @@
       "zimu_7": "弊啦，咁多个唔追净系追住我",
       "zimu_8": "慌我唔系又衰靓仔咩"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -526,7 +520,8 @@
       "zimu_6": "行开啦，惊乜嘢啫？",
       "zimu_7": "烧佢！⋯⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -577,7 +572,8 @@
       "zimu_5": "打死佢！",
       "zimu_6": "攞嚟"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -663,7 +659,8 @@
       "xiugai_1": "熄了挂？",
       "beizhu_1": "将口语字幕中的“嘞”修正为“了”，以统一为常用简体写法。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -744,10 +741,7 @@
       "zimu_6": "帮主，普通料嚟啫",
       "zimu_7": "各花入各眼啫！"
     },
-    "answer": {
-      "xiugai_3": "今日“栋”系你班手足头上啲钱",
-      "beizhu_3": "将异常引号样式“〝〞”统一为中文双引号“”。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -789,10 +783,7 @@
       "zimu_26": "呢个道理你明嘅！",
       "zimu_27": "想同我争！"
     },
-    "answer": {
-      "xiugai_10": "你可以喺菩提老祖口中“氹”佢讲出呢个天机",
-      "beizhu_10": "将双引号“〝〞”改为中文常用引号““””。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -814,7 +805,8 @@
     "query": {
       "zimu_1": "妖怪！⋯⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -912,7 +904,8 @@
       "xiugai_2": "我同你哋玩吓啫",
       "beizhu_2": "将“你地”修正为“你哋”，符合常见粤语书写与简体排版规范。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1176,7 +1169,8 @@
       "zimu_21": "我唔想伤及无辜咋",
       "zimu_22": "嚟，有排你伤呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1452,12 +1446,11 @@
       "zimu_20": "咪系我绑乾坤袋条绳嚟啰"
     },
     "answer": {
-      "xiugai_3": "今次咁顺摊，梗有“景轰”啦",
-      "beizhu_3": "将字幕中的弯引号样式「〝〞」统一修正为中文规范引号“”。",
-      "xiugai_11": "你条“沐契”，今晚我就劏咗你当烧猪食",
-      "beizhu_11": "将字幕中的弯引号样式「〝〞」统一修正为中文规范引号“”，并删除“契”前多余空格。"
+      "xiugai_11": "你条〝沐契〞，今晚我就劏咗你当烧猪食",
+      "beizhu_11": "Preserved cleaning-normalized punctuation in the block-review output."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1616,7 +1609,8 @@
       "zimu_4": "你哋去边呀？",
       "zimu_5": "唔好呀！⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2615,10 +2609,7 @@
       "zimu_1": "同你打番个结呀",
       "zimu_2": "〝元神出窍〞"
     },
-    "answer": {
-      "xiugai_2": "“元神出窍”",
-      "beizhu_2": "将全角引号样式统一为中文常用双引号。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2706,7 +2697,8 @@
       "zimu_22": "哇，又升仙啦！",
       "zimu_23": "点解我讲〝又〞嘅？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2732,15 +2724,9 @@
       "zimu_10": "般若波罗密⋯⋯",
       "zimu_11": "〝妖〞你咪一样咁〝寻〞"
     },
-    "answer": {
-      "xiugai_3": "你好“寻”呀！仆街！",
-      "beizhu_3": "将全角引号“〝〞”统一为中文引号“”，仅作排版修正。",
-      "xiugai_4": "系啰！我都觉得自己好“寻”啊",
-      "beizhu_4": "将全角引号“〝〞”统一为中文引号“”，仅作排版修正。",
-      "xiugai_11": "“妖”你咪一样咁“寻”",
-      "beizhu_11": "将全角引号“〝〞”统一为中文引号“”，仅作排版修正。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2748,7 +2734,8 @@
       "zimu_2": "好攰",
       "zimu_3": "老婆！老婆！⋯⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2940,10 +2927,7 @@
       "zimu_4": "盘丝大仙？",
       "zimu_5": "五百年前？"
     },
-    "answer": {
-      "xiugai_2": "如果有人“恰”你，你就“挞”我啦",
-      "beizhu_2": "将引号“〝 〞”统一为中文常用引号““ ””。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },

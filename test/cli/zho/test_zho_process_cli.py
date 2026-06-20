@@ -7,7 +7,8 @@ from __future__ import annotations
 from io import StringIO
 from unittest.mock import patch
 
-from pytest import parametrize, raises
+from pytest import mark as _mark
+from pytest import raises
 
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.common.file import get_temp_file_path
@@ -15,6 +16,8 @@ from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 from test.helpers import assert_series_equal, test_data_root
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

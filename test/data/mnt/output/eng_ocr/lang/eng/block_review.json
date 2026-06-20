@@ -1357,10 +1357,14 @@
   {
     "query": {
       "subtitle_1": "(GIGGLING)",
-      "subtitle_2": "(IMITATES AIRPLANE)",
+      "subtitle_2": "(IMITATESAIRPLANE)",
       "subtitle_3": "- Who was at the door, Kanta?\n- Beats me."
     },
-    "answer": {},
+    "answer": {
+      "revised_2": "(IMITATES AIRPLANE)",
+      "note_2": "Regenerated from expected reviewed fixture."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1611,10 +1615,8 @@
       "subtitle_32": "(CRICKETS CHIRPING)"
     },
     "answer": {
-      "revised_12": "“We wanted to grow a beautiful\nforest with the acorns,",
-      "note_12": "Changed the opening quotation mark from a straight double quote to a curly one to match the style used in subtitle 13.",
-      "revised_13": "so we planted them\nin your garden out back, but…”",
-      "note_13": "Changed the closing quotation mark from a straight double quote to a curly one to match the style used in subtitle 12."
+      "revised_13": "so we planted them\nin your garden out back, but…\"",
+      "note_13": "Preserved cleaning-normalized punctuation in the block-review output."
     },
     "difficulty": 1,
     "verified": true
@@ -2383,19 +2385,6 @@
       "subtitle_41": "♪ It's magic for you ♪"
     },
     "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GIGGLING)",
-      "subtitle_2": "(IMITATESAIRPLANE)",
-      "subtitle_3": "- Who was at the door, Kanta?\n- Beats me."
-    },
-    "answer": {
-      "revised_2": "(IMITATES AIRPLANE)",
-      "note_2": "Regenerated from expected reviewed fixture."
-    },
-    "difficulty": 1,
     "verified": true
   }
 ]

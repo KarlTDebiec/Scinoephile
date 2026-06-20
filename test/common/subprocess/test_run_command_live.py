@@ -10,10 +10,13 @@ from pathlib import Path
 from subprocess import TimeoutExpired
 from time import monotonic
 
-from pytest import parametrize, raises
+from pytest import mark as _mark
+from pytest import raises
 
 from scinoephile.common.subprocess import run_command_live
 from test.helpers.subprocess_cases import SUBPROCESS_SUCCESS_CASES
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, param, parametrize, raises
+from pytest import FixtureRequest, param, raises
+from pytest import mark as _mark
 
 from scinoephile.analysis.diff import LineDiffKind, SeriesDiff
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
+
+parametrize = _mark.parametrize
 
 
 def _get_series(*texts: str) -> Series:

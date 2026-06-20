@@ -231,7 +231,8 @@
       "zimu_40": "春三十娘！",
       "zimu_41": "驚咩呀！萬事有我！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -295,7 +296,8 @@
       "zimu_11": "多謝女英雄⋯⋯",
       "zimu_12": "至於你囉喎⋯咁有骨氣！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -406,7 +408,8 @@
       "zimu_7": "弊啦，咁多個唔追淨係追住我",
       "zimu_8": "慌我唔係又衰靚仔咩"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -488,7 +491,8 @@
       "zimu_6": "行開啦，驚乜嘢啫？",
       "zimu_7": "燒佢！⋯⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -539,7 +543,8 @@
       "zimu_5": "打死佢！",
       "zimu_6": "攞嚟"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -625,7 +630,8 @@
       "xiugai_3": "嗱，啲火就咁踩先熄嘅嘛！",
       "beizhu_3": "「至」修正為「先」，屬排版/錯別字修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -777,7 +783,8 @@
     "query": {
       "zimu_1": "妖怪！⋯⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -871,7 +878,8 @@
       "xiugai_2": "我同你哋玩吓啫",
       "beizhu_2": "「你地」修正為「你哋」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1140,7 +1148,8 @@
       "xiugai_19": "點解唔係蘋果？要係菩提子！",
       "beizhu_19": "修正錯別字「萍果」為「蘋果」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1413,7 +1422,8 @@
       "zimu_20": "咪係我綁乾坤袋條繩嚟囉"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1572,7 +1582,8 @@
       "zimu_4": "你哋去邊呀？",
       "zimu_5": "唔好呀！⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2632,7 +2643,8 @@
       "zimu_23": "點解我講〝又〞嘅？"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2666,7 +2678,8 @@
       "xiugai_11": "「妖」你咪一樣咁「尋」",
       "beizhu_11": "修正引號格式，將全形/異體引號統一為中文引號。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2674,7 +2687,8 @@
       "zimu_2": "好攰",
       "zimu_3": "老婆！老婆！⋯⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {

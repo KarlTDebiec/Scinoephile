@@ -111,12 +111,7 @@
       "zimu_3": "你〝蝦〞我唔識字呀！",
       "zimu_4": "〝水濂洞〞呀！"
     },
-    "answer": {
-      "xiugai_3": "你“蝦”我唔識字呀！",
-      "beizhu_3": "修正引號排版，將全形/異體引號改為標準中文引號。",
-      "xiugai_4": "“水濂洞”呀！",
-      "beizhu_4": "修正引號排版，將全形/異體引號改為標準中文引號。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -516,7 +511,8 @@
       "zimu_20": "聽見就興奮嘞",
       "zimu_21": "嚟呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1093,7 +1089,8 @@
       "xiugai_4": "老婆？ 乜你哋識㗎？",
       "beizhu_4": "修正全形空白為一般空格，屬排版性錯誤。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1335,8 +1332,8 @@
     "answer": {
       "xiugai_1": "Only you，莫怪師傅暗尋",
       "beizhu_1": "修正英文單字排版錯誤，將「On l y you」改為「Only you」。",
-      "xiugai_3": "莫怕死，咪發〞 t i 〞藤",
-      "beizhu_3": "修正多餘空格排版，刪除引號內不必要的空格。",
+      "xiugai_3": "莫怕死，咪發〝 t i 〞藤",
+      "beizhu_3": "Preserved cleaning-normalized punctuation in the block-review output.",
       "xiugai_4": "碰到釘咪驚，I understand",
       "beizhu_4": "修正英文單字排版錯誤，將「I under stand」改為「I understand」。"
     },

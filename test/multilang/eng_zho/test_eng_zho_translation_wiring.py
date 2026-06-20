@@ -8,7 +8,7 @@ from collections.abc import Callable
 from typing import cast
 from unittest.mock import Mock
 
-from pytest import parametrize
+from pytest import mark as _mark
 
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
@@ -33,6 +33,7 @@ from scinoephile.multilang.eng_zho.translation import (
     get_eng_zho_translator,
 )
 
+parametrize = _mark.parametrize
 _PromptCls = type[DualNToMPrompt] | type[DualNMinusMToNPrompt]
 _Processor = DualNToMProcessor | DualNMinusMToNProcessor
 _ProcessorFactory = Callable[..., _Processor]

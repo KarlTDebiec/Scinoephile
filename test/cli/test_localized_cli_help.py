@@ -10,12 +10,15 @@ from os import environ
 from pathlib import Path
 from unittest.mock import patch
 
-from pytest import MonkeyPatch, parametrize, raises
+from pytest import MonkeyPatch, raises
+from pytest import mark as _mark
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.cli import ScinoephileCliBase
+
+parametrize = _mark.parametrize
 
 
 def test_all_cli_help_text_has_chinese_localizations():

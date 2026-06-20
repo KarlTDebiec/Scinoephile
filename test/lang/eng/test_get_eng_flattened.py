@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, fail, param, parametrize
+from pytest import FixtureRequest, fail, param
+from pytest import mark as _mark
 
 # noinspection PyProtectedMember
 from scinoephile.lang.eng.flattening import _get_eng_text_flattened, get_eng_flattened
 from test.helpers import assert_series_equal
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

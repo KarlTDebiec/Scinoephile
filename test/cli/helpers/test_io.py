@@ -10,12 +10,15 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
 
-from pytest import parametrize, raises
+from pytest import mark as _mark
+from pytest import raises
 
 from scinoephile.cli.helpers.io import read_image_series, read_series, write_series
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

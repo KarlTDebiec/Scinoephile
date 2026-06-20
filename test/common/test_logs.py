@@ -6,9 +6,11 @@ from __future__ import annotations
 
 from logging import DEBUG, ERROR, INFO, WARNING, getLogger
 
-from pytest import parametrize
+from pytest import mark as _mark
 
 from scinoephile.common.logs import set_logging_verbosity
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

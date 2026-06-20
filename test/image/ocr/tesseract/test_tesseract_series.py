@@ -7,7 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from PIL import Image
-from pytest import LogCaptureFixture, MonkeyPatch, parametrize, raises
+from pytest import LogCaptureFixture, MonkeyPatch, raises
+from pytest import mark as _mark
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import (
@@ -15,6 +16,8 @@ from scinoephile.image.ocr.tesseract import (
 )
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from test.helpers.ocr_recognizers import FailingOcrRecognizer, RecordingOcrRecognizer
+
+parametrize = _mark.parametrize
 
 
 def test_ocr_image_series_with_tesseract_preserves_timings_and_sets_text(

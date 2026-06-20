@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import parametrize
+from pytest import mark as _mark
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
@@ -22,6 +22,8 @@ from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCli
 from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

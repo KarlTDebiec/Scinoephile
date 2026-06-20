@@ -1015,12 +1015,7 @@
       "subtitle_34": "“Thank you for your cooperation.”",
       "subtitle_35": "“Yours faithfully, Mrs. Mc”"
     },
-    "answer": {
-      "revised_12": "“Dear friend,",
-      "note_12": "Changed quotation mark style of split line to match the rest of the letter.",
-      "revised_13": "it is important to snatch buns.”",
-      "note_13": "Changed quotation mark style of split line to match the rest of the letter."
-    },
+    "answer": {},
     "difficulty": 1,
     "prompt": true,
     "verified": true

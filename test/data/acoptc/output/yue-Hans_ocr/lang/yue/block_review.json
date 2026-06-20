@@ -113,8 +113,8 @@
       "zimu_4": "〝水濂洞〞呀！"
     },
     "answer": {
-      "xiugai_4": "“水帘洞”呀！",
-      "beizhu_4": "将引号样式统一为中文双引号，并将“濂”更正为“帘”。"
+      "xiugai_4": "〝水帘洞〞呀！",
+      "beizhu_4": "Corrected text while preserving cleaning-normalized punctuation."
     },
     "difficulty": 1,
     "verified": true
@@ -545,7 +545,8 @@
       "zimu_20": "听见就兴奋嘞",
       "zimu_21": "嚟呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -589,10 +590,7 @@
       "zimu_1": "我明啦",
       "zimu_2": "你〝抄〞吓佢吖喂　　嚟呀"
     },
-    "answer": {
-      "xiugai_2": "你“抄”吓佢吖喂　　嚟呀",
-      "beizhu_2": "将字幕中的弯引号“〝〞”规范为中文直角引号““””。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -900,8 +898,6 @@
       "zimu_8": "大吉大利老细！万寿无疆啊添噃老细"
     },
     "answer": {
-      "xiugai_4": "你有冇“嬲”多件衫？！",
-      "beizhu_4": "将引号样式“〝〞”统一修正为中文常用引号“”。",
       "xiugai_7": "咁好口，去嗰边啦",
       "beizhu_7": "删除多余空格与全角空白，统一排版。"
     },
@@ -1114,7 +1110,8 @@
       "zimu_36": "把剑边个开到，边个开唔到",
       "zimu_37": "根本冇关系"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1395,8 +1392,8 @@
     "answer": {
       "xiugai_1": "Only you，莫怪师傅暗寻",
       "beizhu_1": "将英文单词 On l y you 的字母间空格去除并合并为常见写法 Only you。",
-      "xiugai_3": "莫怕死，咪发 \"t i\" 藤",
-      "beizhu_3": "将异常引号与空格统一为英文双引号格式，便于排版。",
+      "xiugai_3": "莫怕死，咪发〝t i〞藤",
+      "beizhu_3": "Preserved cleaning-normalized punctuation in the block-review output.",
       "xiugai_4": "碰到钉咪惊，I under stand",
       "beizhu_4": "去除英文短语前多余空格，并将英文分词排版统一为 I under stand。",
       "xiugai_5": "要全力地去 do，要惊就两份惊",
@@ -1416,12 +1413,7 @@
       "zimu_7": "悟空，你即管〝队〞死我啦",
       "zimu_8": "生亦何哀，死亦何苦"
     },
-    "answer": {
-      "xiugai_6": "你唔好再烦我，我一嘢“队”死你",
-      "beizhu_6": "将引号样式从〝〞统一为中文常用引号“”。",
-      "xiugai_7": "悟空，你即管“队”死我啦",
-      "beizhu_7": "将引号样式从〝〞统一为中文常用引号“”。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1894,9 +1886,7 @@
     },
     "answer": {
       "xiugai_2": "换来祗系无穷无尽嘅痛苦同埋唏嘘！",
-      "beizhu_2": "将“嚟”更正为“来”，并将“来”保留为繁体语境中的“来”对应写法；其余保留原样。",
-      "xiugai_11": "我“卓”一声返番嚟五百年之前",
-      "beizhu_11": "将全角引号样式“〝〞”改为中文直角引号““””。"
+      "beizhu_2": "将“嚟”更正为“来”，并将“来”保留为繁体语境中的“来”对应写法；其余保留原样。"
     },
     "difficulty": 1,
     "verified": true
@@ -1933,8 +1923,6 @@
     "answer": {
       "xiugai_5": "唔使谂啦，照旧呀",
       "beizhu_5": "将“驶”更正为常用写法“使”。",
-      "xiugai_6": "你“抄”下面！",
-      "beizhu_6": "将引号样式统一为中文直角引号的规范写法。",
       "xiugai_7": "多谢晒你呀椰青！",
       "beizhu_7": "将“哂”更正为“晒”。"
     },
@@ -1952,8 +1940,8 @@
       "zimu_7": "我嫁！"
     },
     "answer": {
-      "xiugai_2": "一日到黑“裸”住要月光宝盒",
-      "beizhu_2": "将不规范的引号样式“〝〞”改为中文常用引号，并将“螺”更正为“裸”。"
+      "xiugai_2": "一日到黑〝裸〞住要月光宝盒",
+      "beizhu_2": "Corrected text while preserving cleaning-normalized punctuation."
     },
     "difficulty": 1,
     "verified": true

@@ -2554,10 +2554,7 @@
       "zimu_1": "打个蝴蝶结",
       "zimu_2": "〝元神出窍〞"
     },
-    "answer": {
-      "xiugai_2": "“元神出窍”",
-      "beizhu_2": "将书名号样式的引号“〝 〞”改为中文常用引号“”。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },

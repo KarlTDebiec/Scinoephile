@@ -4,10 +4,13 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, param, parametrize
+from pytest import FixtureRequest, param
+from pytest import mark as _mark
 
 from scinoephile.lang.cmn.romanization import get_cmn_romanized, get_cmn_text_romanized
 from test.helpers import assert_series_equal
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

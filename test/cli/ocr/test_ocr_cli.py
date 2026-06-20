@@ -9,7 +9,8 @@ from io import StringIO
 from os import getenv
 from pathlib import Path
 
-from pytest import MonkeyPatch, parametrize, raises, skipif
+from pytest import MonkeyPatch, raises
+from pytest import mark as _mark
 
 from scinoephile.cli.ocr import (
     OcrLensCli,
@@ -28,6 +29,8 @@ from test.helpers import (
     test_data_root,
 )
 
+parametrize = _mark.parametrize
+skipif = _mark.skipif
 OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
 
 

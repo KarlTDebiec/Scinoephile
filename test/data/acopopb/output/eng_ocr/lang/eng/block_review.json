@@ -2307,8 +2307,8 @@
       "subtitle_3": "Let me…do that"
     },
     "answer": {
-      "revised_3": "Let me... do that",
-      "note_3": "Corrected the ellipsis spacing and added a space after the ellipsis."
+      "revised_3": "Let me… do that",
+      "note_3": "Preserved cleaning-normalized punctuation in the block-review output."
     },
     "difficulty": 1,
     "verified": true

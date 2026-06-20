@@ -13,13 +13,16 @@ from typing import Any, cast
 
 import numpy as np
 from PIL import Image
-from pytest import MonkeyPatch, parametrize, raises
+from pytest import MonkeyPatch, raises
+from pytest import mark as _mark
 
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
 from scinoephile.image.ocr.paddle import PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
 from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
+
+parametrize = _mark.parametrize
 
 
 class CountingPaddleRecognizer(PaddleRecognizer):

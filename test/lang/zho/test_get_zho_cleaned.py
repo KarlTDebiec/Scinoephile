@@ -4,10 +4,13 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, param, parametrize
+from pytest import FixtureRequest, param
+from pytest import mark as _mark
 
 from scinoephile.lang.zho.cleaning import get_zho_cleaned, get_zho_text_cleaned
 from test.helpers import assert_series_equal
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

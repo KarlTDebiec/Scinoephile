@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, param, parametrize
+from pytest import FixtureRequest, param
+from pytest import mark as _mark
 
 from scinoephile.lang.zho.script.conversion import (
     S2T_EXCLUSIONS,
@@ -15,6 +16,8 @@ from scinoephile.lang.zho.script.conversion import (
     get_zho_text_converted,
 )
 from test.helpers import assert_series_equal
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

@@ -4,10 +4,12 @@
 
 from __future__ import annotations
 
-from pytest import parametrize
+from pytest import mark as _mark
 
 from scinoephile.lang.cmn.romanization import is_accented_pinyin
 from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

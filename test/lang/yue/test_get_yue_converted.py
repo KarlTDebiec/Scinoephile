@@ -6,10 +6,13 @@ from __future__ import annotations
 
 from contextlib import AbstractContextManager, nullcontext
 
-from pytest import parametrize, raises
+from pytest import mark as _mark
+from pytest import raises
 
 from scinoephile.core import UnsupportedCharacterError
 from scinoephile.lang.yue.conversion import get_yue_converted
+
+parametrize = _mark.parametrize
 
 
 @parametrize(

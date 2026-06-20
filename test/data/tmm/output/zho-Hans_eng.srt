@@ -2076,7 +2076,7 @@ Who are you? Speak up
 
 423
 00:18:27,292 --> 00:18:29,208
-我没有“摸摸”嘛
+我没有〝摸摸〞嘛
 You must know some magic Come on, teach me
 
 424
@@ -2099,12 +2099,12 @@ You must know some magic Come on, teach me
 
 428
 00:18:35,583 --> 00:18:37,208
-哎⋯“摸摸”在那个姐姐身上 快过去拿
+哎⋯〝摸摸〞在那个姐姐身上 快过去拿
 Go and get milk from that lady.
 
 429
 00:18:37,208 --> 00:18:38,833
-哎⋯“摸摸”在那个姐姐身上 快过去拿
+哎⋯〝摸摸〞在那个姐姐身上 快过去拿
 Go over
 
 430
@@ -8538,7 +8538,7 @@ Now he's not only dead, he died as a beggar
 
 1740
 01:24:49,458 --> 01:24:52,292
-他害得那个“野鸡”刮破了脸，好可怜呢
+他害得那个〝野鸡〞刮破了脸，好可怜呢
 Also, that whore was disfigured. What a pity
 
 1741
@@ -8624,7 +8624,7 @@ It means he got back his pride
 1757
 01:25:19,625 --> 01:25:21,833
 这一辈子他不用再做乞丐
-- He doesn't have to be a beggar this life    - Right...
+- He doesn't have to be a beggar this life    - Right…
 
 1758
 01:25:29,292 --> 01:25:30,833
@@ -8632,7 +8632,7 @@ It means he got back his pride
 
 1759
 01:25:31,292 --> 01:25:32,937
-但是她再也不做“野鸡”
+但是她再也不做〝野鸡〞
 
 1760
 01:25:32,937 --> 01:25:35,583
