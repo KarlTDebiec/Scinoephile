@@ -112,7 +112,8 @@
       "zimu_6": "求姐姐同玉皇大帝讲声",
       "zimu_7": "贫僧愿意一命赔一命"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -143,7 +144,6 @@
       "zimu_10": "惊佢咩呀？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -232,7 +232,6 @@
       "zimu_41": "惊咩呀！万事有我！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -306,7 +305,6 @@
       "zimu_2": "叫大家洗干净只脚板喺出便等我！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -327,7 +325,6 @@
       "zimu_14": "我唔止〝庄〞你一个，我冚扮烂都〝庄〞过哂啦"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -366,7 +363,6 @@
       "zimu_12": "我唔会屈服嘅！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -387,7 +383,6 @@
       "zimu_6": "边个？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -396,7 +391,6 @@
       "zimu_2": "〝队〞冧咗个贱人系嘛！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -573,7 +567,6 @@
       "zimu_5": "帮主嚟嘅，快啲救帮主"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -634,7 +627,6 @@
       "zimu_36": "喺我后面唔得"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -657,7 +649,6 @@
       "zimu_5": "成班都系废柴，我自己嚟"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -714,7 +705,6 @@
       "zimu_7": "各花入各眼啫！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -756,7 +746,6 @@
       "zimu_27": "想同我争！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -788,7 +777,6 @@
       "zimu_4": "绑返条鞋带啰"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -916,7 +904,6 @@
       "zimu_4": "我要用移魂大法迷咗佢，留返嚟做我嘅卧底"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -945,7 +932,8 @@
       "zimu_3": "我以为我一个瞓唔着啫",
       "zimu_4": "原来晶晶姑娘，你都瞓唔着呀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1006,7 +994,6 @@
       "zimu_9": "佢就无福消受"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1015,7 +1002,6 @@
       "zimu_2": "卒之搵到唐三藏嘅踪迹啦"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1052,7 +1038,6 @@
       "zimu_15": "去咪去！怕咗你啦！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1219,7 +1204,6 @@
       "zimu_3": "你等下"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1242,7 +1226,6 @@
       "zimu_2": "我哋不动声色，睇佢哋想点"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1268,7 +1251,6 @@
       "zimu_4": "唔饮得唔好学人饮啦，真失礼"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1295,7 +1277,6 @@
       "zimu_2": "帮主！着火啦"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1329,7 +1310,6 @@
       "zimu_11": "系"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1384,7 +1364,6 @@
       "zimu_20": "咪系我绑乾坤袋条绳嚟啰"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1491,7 +1470,6 @@
       "zimu_6": "就系跟住帮主你嘞！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1526,7 +1504,10 @@
       "zimu_10": "师姐，我以后唔敢啦",
       "zimu_11": "躙开！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_11": "躝开！",
+      "beizhu_11": "将“躙”更正为“躝”。"
+    },
     "difficulty": 1,
     "verified": true
   },
@@ -1593,7 +1574,6 @@
       "zimu_6": "变⋯⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1631,7 +1611,6 @@
       "zimu_6": "死牛精　　走"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1731,7 +1710,6 @@
       "zimu_3": "佢呀！　　知道"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1752,7 +1730,6 @@
       "zimu_2": "废话少讲，攞你命"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1778,7 +1755,6 @@
       "zimu_3": "度门系祖师爷用万年金刚岩做㗎"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1852,7 +1828,6 @@
       "zimu_23": "再见"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1885,7 +1860,6 @@
       "zimu_1": "一锡佢就唔郁嘅"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2004,7 +1978,6 @@
       "zimu_7": "天黑先喇"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2032,7 +2005,6 @@
       "zimu_3": "竟然同个咁肉酸嘅男人有咗"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2095,7 +2067,6 @@
       "zimu_2": "奶妈锡番你"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2256,8 +2227,8 @@
       "zimu_3": "盘丝大仙留低嘅宝物？"
     },
     "answer": {
-      "xiugai_1": "般若波罗蜜，梵文嚟嗰喎",
-      "beizhu_1": "将“密”更正为“蜜”。"
+      "xiugai_1": "般若波罗蜜，梵文嚟㗎喎",
+      "beizhu_1": "将“密”更正为“蜜”，并将“嚟嗰喎”更正为“嚟㗎喎”。"
     },
     "difficulty": 1,
     "verified": true
@@ -2275,7 +2246,6 @@
       "zimu_2": "个肚做乜突然咁痛嘅呢"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2319,7 +2289,6 @@
       "zimu_3": "唔该你放开你只手先呀！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2379,7 +2348,6 @@
       "zimu_7": "系⋯⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2434,7 +2402,10 @@
       "zimu_4": "躙开",
       "zimu_5": "抱我个仔走"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_4": "躝开",
+      "beizhu_4": "将“躙”更正为“躝”。"
+    },
     "difficulty": 1,
     "verified": true
   },
@@ -2488,7 +2459,6 @@
       "zimu_1": "我片你啲内脏，问你点挡？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2497,7 +2467,6 @@
       "zimu_2": "〝元神出窍〞"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2612,7 +2581,6 @@
       "zimu_11": "〝妖〞你咪一样咁〝寻〞"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2689,7 +2657,6 @@
       "zimu_13": "你睇"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2700,7 +2667,6 @@
       "zimu_4": "你快啲冲出去"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2808,7 +2774,6 @@
       "zimu_5": "五百年前？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2817,7 +2782,6 @@
       "zimu_2": "因为你未遇到俾三粒痣你嘅人"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {

@@ -61,7 +61,9 @@ changes.
 Accept changes when they are clear OCR/subtitle fixes, such as:
 
 - obvious character typos: `哂 -> 晒`, `观音大使 -> 观音大士`
-- appropriate simplification in a simplified fixture: `決 -> 决`
+- script-appropriate character fixes: simplified output may use `決 -> 决`,
+  while yue-Hant review should preserve traditional-script text unless the
+  audited artifact is explicitly a simplification stage
 - punctuation preservation or correction only when the source image/text clearly
   supports it or a prior cleaning step explicitly requires it
 - Cantonese-preserving typo fixes: `既刻 -> 即刻`, not `既刻 -> 立刻`
@@ -70,6 +72,7 @@ Reject or flag changes when they:
 
 - Mandarinize written Cantonese, such as `嘅 -> 的`, `佢 -> 他`, `咗 -> 了`,
   `唔 -> 不`, `睇 -> 看`, `搵 -> 找`, `嚟 -> 来`, or `番 -> 回`
+- simplify yue-Hant text during direct `fuse_clean_validate_review.srt` review
 - replace valid Cantonese words or particles, such as `踎低`, `出便`, `锡`,
   `吖吗`, or sentence-final particles
 - add missing-looking sentence-final punctuation, such as changing `着火啦` to
