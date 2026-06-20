@@ -5,14 +5,12 @@
 from __future__ import annotations
 
 import numpy as np
-from pytest import mark as _mark
 
 from scinoephile.analysis.line_alignment import (
     LineAlignment,
     LineAlignmentOperation,
 )
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 @parametrize(

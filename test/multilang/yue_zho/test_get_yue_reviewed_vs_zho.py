@@ -8,7 +8,6 @@ from collections.abc import Callable
 from unittest.mock import Mock, patch
 
 from pytest import FixtureRequest, param
-from pytest import mark as _mark
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.multilang.yue_zho.block_review import (
@@ -17,9 +16,7 @@ from scinoephile.multilang.yue_zho.block_review import (
 )
 from test.data.kob import get_kob_yue_vs_zho_block_review_test_cases
 from test.data.mlamd import get_mlamd_yue_vs_zho_block_review_test_cases
-from test.helpers import assert_series_equal
-
-parametrize = _mark.parametrize
+from test.helpers import assert_series_equal, parametrize
 
 
 @parametrize(

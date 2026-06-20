@@ -5,12 +5,10 @@
 from __future__ import annotations
 
 from pytest import FixtureRequest, fail, param
-from pytest import mark as _mark
 
 from scinoephile.lang.zho.flattening import get_zho_flattened
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
-parametrize = _mark.parametrize
 # noinspection PyProtectedMember
 
 

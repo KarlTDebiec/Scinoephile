@@ -9,12 +9,10 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from pytest import CaptureFixture, raises
-from pytest import mark as _mark
 
 from scinoephile.cli.media.media_offset_cli import MediaOffsetCli
 from scinoephile.common.testing import run_cli_with_args
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 def test_media_offset_cli_reports_offset(tmp_path: Path, capsys: CaptureFixture[str]):

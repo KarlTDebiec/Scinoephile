@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from pytest import mark as _mark
 from pytest import raises
 
 from scinoephile.core import ScinoephileError
@@ -14,8 +13,7 @@ from scinoephile.core.text import (
     normalize_ocr_confusables_to_ascii,
     sanitize_text,
 )
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 def test_get_char_type_handles_unnamed_control_char() -> None:

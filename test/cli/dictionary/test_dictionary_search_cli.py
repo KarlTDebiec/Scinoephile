@@ -14,7 +14,6 @@ from subprocess import list2cmdline
 from unittest.mock import patch
 
 from pytest import CaptureFixture, fixture, raises
-from pytest import mark as _mark
 
 from scinoephile.cli.dictionary.dictionary_search_cli import DictionarySearchCli
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
@@ -25,8 +24,7 @@ from scinoephile.core.dictionaries import (
     DictionarySource,
     DictionarySqliteStore,
 )
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 @fixture(scope="module")

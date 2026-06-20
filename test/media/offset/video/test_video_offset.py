@@ -12,7 +12,6 @@ from unittest.mock import patch
 
 import numpy as np
 from pytest import approx, raises
-from pytest import mark as _mark
 
 from scinoephile.core import ScinoephileError
 from scinoephile.media.offset.video import (
@@ -20,8 +19,7 @@ from scinoephile.media.offset.video import (
     _sample_video_frames,
     get_video_offset,
 )
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 class _VideoOffsetKwargs(TypedDict, total=False):

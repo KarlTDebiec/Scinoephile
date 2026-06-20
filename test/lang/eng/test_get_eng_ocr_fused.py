@@ -8,7 +8,6 @@ from collections.abc import Callable
 from unittest.mock import Mock
 
 from pytest import FixtureRequest, param
-from pytest import mark as _mark
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -20,9 +19,7 @@ from test.data.mlamd import get_mlamd_eng_ocr_fusion_test_cases
 from test.data.mnt import get_mnt_eng_ocr_fusion_test_cases
 from test.data.t import get_t_eng_ocr_fusion_test_cases
 from test.data.tmm import get_tmm_eng_ocr_fusion_test_cases
-from test.helpers import assert_series_equal
-
-parametrize = _mark.parametrize
+from test.helpers import assert_series_equal, parametrize
 
 
 @parametrize(

@@ -7,7 +7,6 @@ from __future__ import annotations
 from argparse import Action, ArgumentParser
 from pathlib import Path
 
-from pytest import mark as _mark
 from pytest import raises
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
@@ -31,8 +30,8 @@ from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCli
 from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
+from test.helpers import parametrize
 
-parametrize = _mark.parametrize
 LLM_CLIS: tuple[type[CommandLineInterface], ...] = (
     EngProcessCli,
     EngTranslateFromYueCli,

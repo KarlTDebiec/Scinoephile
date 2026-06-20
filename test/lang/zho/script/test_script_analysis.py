@@ -4,16 +4,13 @@
 
 from __future__ import annotations
 
-from pytest import mark as _mark
-
 from scinoephile.lang.zho.script.analysis import (
     get_zho_script_analysis,
     is_simplified,
     is_traditional,
 )
+from test.helpers import parametrize
 from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
-
-parametrize = _mark.parametrize
 
 
 @parametrize(

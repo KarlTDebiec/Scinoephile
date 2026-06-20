@@ -6,12 +6,10 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-from pytest import mark as _mark
 from pytest import raises
 
 from scinoephile.common.duration import parse_duration
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 @parametrize(

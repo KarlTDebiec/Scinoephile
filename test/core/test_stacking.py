@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from pytest import FixtureRequest, param, raises
-from pytest import mark as _mark
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.stacking import (
@@ -14,9 +13,7 @@ from scinoephile.core.stacking import (
     get_stacked_series_from_groups,
 )
 from scinoephile.core.subtitles import Series, Subtitle
-from test.helpers import assert_series_equal
-
-parametrize = _mark.parametrize
+from test.helpers import assert_series_equal, parametrize
 
 
 def test_get_stacked_series_does_not_overlap_union_timing():

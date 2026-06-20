@@ -9,7 +9,6 @@ from io import StringIO
 from os import environ
 from unittest.mock import patch
 
-from pytest import mark as _mark
 from pytest import raises
 
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
@@ -18,8 +17,7 @@ from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 @parametrize(

@@ -21,6 +21,7 @@ from scinoephile.common.testing import run_cli_with_args
 from .series_assertions import assert_series_equal
 from .series_cer_result import SeriesCERResult
 
+parametrize = _mark.parametrize
 skipif = _mark.skipif
 __all__ = [
     "SeriesCERResult",
@@ -32,9 +33,11 @@ __all__ = [
     "create_symlink_or_skip",
     "get_warning_messages",
     "get_usage_prefix",
+    "parametrize",
     "parametrized_fixture",
     "skip_if_ci",
     "skip_if_codex",
+    "skipif",
     "test_data_root",
 ]
 

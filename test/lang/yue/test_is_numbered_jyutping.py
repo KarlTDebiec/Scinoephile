@@ -4,12 +4,9 @@
 
 from __future__ import annotations
 
-from pytest import mark as _mark
-
 from scinoephile.lang.yue.romanization import is_numbered_jyutping
+from test.helpers import parametrize
 from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
-
-parametrize = _mark.parametrize
 
 
 @parametrize(

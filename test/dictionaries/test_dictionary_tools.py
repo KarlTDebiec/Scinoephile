@@ -11,7 +11,6 @@ from typing import Any, ClassVar, cast
 from unittest.mock import patch
 
 from pytest import fixture
-from pytest import mark as _mark
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.dictionaries import (
@@ -42,8 +41,7 @@ from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
     get_yue_vs_zho_line_reviewer,
 )
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 class StubDictionaryToolPrompt(DictionaryToolPrompt):

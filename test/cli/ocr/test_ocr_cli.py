@@ -10,7 +10,6 @@ from os import getenv
 from pathlib import Path
 
 from pytest import MonkeyPatch, raises
-from pytest import mark as _mark
 
 from scinoephile.cli.ocr import (
     OcrLensCli,
@@ -25,12 +24,12 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
 from test.helpers import (
     assert_series_equal,
+    parametrize,
     skip_if_ci,
+    skipif,
     test_data_root,
 )
 
-parametrize = _mark.parametrize
-skipif = _mark.skipif
 OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
 
 

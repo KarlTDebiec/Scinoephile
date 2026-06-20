@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import Any
 
 from pytest import MonkeyPatch, raises
-from pytest import mark as _mark
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -22,8 +21,8 @@ from scinoephile.workflows.ocr_processing import (
     OcrProcessingResult,
     OcrProcessingWorkflow,
 )
+from test.helpers import parametrize
 
-parametrize = _mark.parametrize
 OLD_MTIME = 1_700_000_000
 """Older file modification time used by timestamp-sensitive tests."""
 NEW_MTIME = OLD_MTIME + 10

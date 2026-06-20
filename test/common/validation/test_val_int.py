@@ -7,13 +7,11 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any, cast
 
-from pytest import mark as _mark
 from pytest import raises
 
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.common.validation import val_int
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 @parametrize(

@@ -8,15 +8,13 @@ from pathlib import Path
 
 from PIL import Image
 from pytest import FixtureRequest, param, raises
-from pytest import mark as _mark
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 @parametrize(

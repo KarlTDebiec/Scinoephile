@@ -9,7 +9,6 @@ from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
 from pytest import fixture, raises
-from pytest import mark as _mark
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dictionaries import (
@@ -19,8 +18,7 @@ from scinoephile.core.dictionaries import (
     DictionarySqliteStore,
 )
 from scinoephile.dictionaries.cuhk import CuhkDictionaryService
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 @fixture

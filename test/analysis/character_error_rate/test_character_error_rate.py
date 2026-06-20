@@ -7,13 +7,10 @@ from __future__ import annotations
 from math import inf
 
 from pytest import FixtureRequest, param
-from pytest import mark as _mark
 
 from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
 from scinoephile.core.subtitles import Series, Subtitle
-from test.helpers import SeriesCERResult
-
-parametrize = _mark.parametrize
+from test.helpers import SeriesCERResult, parametrize
 
 
 def _get_series(*texts: str) -> Series:

@@ -4,11 +4,9 @@
 
 from __future__ import annotations
 
-from pytest import mark as _mark
-
 from scinoephile.lang.language_id import LanguageId
+from test.helpers import parametrize
 
-parametrize = _mark.parametrize
 LANGUAGE_ID_TEST_CASES: list[LanguageId] = [
     LanguageId(
         text="nǐ hǎo",

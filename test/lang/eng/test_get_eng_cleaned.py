@@ -5,12 +5,9 @@
 from __future__ import annotations
 
 from pytest import FixtureRequest, param
-from pytest import mark as _mark
 
 from scinoephile.lang.eng.cleaning import get_eng_cleaned, get_eng_text_cleaned
-from test.helpers import assert_series_equal
-
-parametrize = _mark.parametrize
+from test.helpers import assert_series_equal, parametrize
 
 
 @parametrize(

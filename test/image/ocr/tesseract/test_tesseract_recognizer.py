@@ -9,12 +9,10 @@ from pathlib import Path
 import requests
 from PIL import Image
 from pytest import MonkeyPatch, raises
-from pytest import mark as _mark
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import TesseractRecognizer
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 class CountingTesseractRecognizer(TesseractRecognizer):

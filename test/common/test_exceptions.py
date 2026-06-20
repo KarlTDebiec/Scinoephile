@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from pytest import mark as _mark
-
 from scinoephile.common.exceptions import (
     ArgumentConflictError,
     DirectoryExistsError,
@@ -17,8 +15,7 @@ from scinoephile.common.exceptions import (
     NotAFileOrDirectoryError,
     UnsupportedPlatformError,
 )
-
-parametrize = _mark.parametrize
+from test.helpers import parametrize
 
 
 @parametrize(
