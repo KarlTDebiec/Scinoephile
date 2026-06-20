@@ -12,7 +12,7 @@ from os import getenv
 from pathlib import Path
 from typing import Any
 
-from pytest import fixture, mark, raises, skip
+from pytest import fixture, raises, skip, skipif
 
 from scinoephile.common import CommandLineInterface, package_root
 from scinoephile.common.testing import run_cli_with_args
@@ -188,7 +188,7 @@ def skip_if_ci() -> Any:
     Returns:
         pytest mark decorator
     """
-    return mark.skipif(
+    return skipif(
         bool(getenv("CI")),
         reason="Skip when running in CI",
     )
@@ -200,7 +200,7 @@ def skip_if_codex() -> Any:
     Returns:
         pytest mark decorator
     """
-    return mark.skipif(
+    return skipif(
         bool(getenv("CODEX_ENV_PYTHON_VERSION")),
         reason="Skip when running in Codex environment",
     )

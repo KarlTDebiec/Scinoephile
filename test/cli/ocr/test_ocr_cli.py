@@ -499,7 +499,7 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
 
 
 @skip_if_ci()
-@skipif       (
+@skipif(
     not getenv("SCINOEPHILE_RUN_MLAMD_LENS_OCR"),
     reason=(
         "Set SCINOEPHILE_RUN_MLAMD_LENS_OCR=1 to run full MLAMD Google Lens OCR tests"
@@ -534,7 +534,7 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
 
 
 @skip_if_ci()
-@skipif       (
+@skipif(
     not getenv("SCINOEPHILE_RUN_MLAMD_PADDLE_OCR"),
     reason="Set SCINOEPHILE_RUN_MLAMD_PADDLE_OCR=1 to run full MLAMD PaddleOCR tests",
 )
