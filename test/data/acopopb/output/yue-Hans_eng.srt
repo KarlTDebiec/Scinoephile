@@ -407,7 +407,7 @@ What did he say?
 
 84
 00:06:52,208 --> 00:06:53,500
-蒋旧肉俾佢
+奖旧肉俾佢
 Give him the pork
 
 85
@@ -973,7 +973,7 @@ You're so good!
 
 198
 00:13:00,833 --> 00:13:03,000
-叫大家洗干净只脚板喺出边等我！
+叫大家洗干净只脚板喺出便等我！
 You all clean your soul and wait for me outside
 
 199
@@ -1137,7 +1137,7 @@ Check their sole
 
 231
 00:14:03,416 --> 00:14:05,750
-如果发现有三粒痣的，立刻通知我！
+如果发现有三粒痣嘅，即刻通知我！
 If you discover a guy having three birthmarks, tell me
 
 232
@@ -1192,7 +1192,7 @@ I don't think I can do this
 
 242
 00:14:32,208 --> 00:14:34,333
-我去喽，唔使跪啦帮主！
+我去喺啦，唔使跪啦帮主！
 I go, no need to kneel down
 
 243
@@ -1237,7 +1237,7 @@ Why does everyone tell me to find the three birthmarks?
 
 251
 00:15:39,000 --> 00:15:41,625
-搵到你就可救回佢
+搵到你就可救番佢
 You can save him when you find them
 
 252
@@ -1464,7 +1464,7 @@ Blindy
 
 297
 00:18:39,042 --> 00:18:40,125
-放火！　　是
+放火！　　系
 Help
 
 298
@@ -1730,7 +1730,7 @@ I can't take this…
 
 354
 00:21:48,875 --> 00:21:50,792
-熄了挂？
+熄嘞挂？
 The fire is out! Are you OK?
 
 355
@@ -1977,12 +1977,12 @@ Sons of bitches!
 
 404
 00:23:37,542 --> 00:23:39,396
-起身！喺我面前唔好〝诈诈谛谛〞，我话你听
+起身！喺我面前唔好〝诈诈谛谛〞 ，我话你听
 Get! You are not fooling me
 
 405
 00:23:39,396 --> 00:23:41,250
-起身！喺我面前唔好〝诈诈谛谛〞，我话你听
+起身！喺我面前唔好〝诈诈谛谛〞 ，我话你听
 Listen to me
 
 406
@@ -2320,12 +2320,12 @@ Nothing
 
 473
 00:27:23,042 --> 00:27:23,937
-冇？咁你蹲低做乜嘢？
+冇？咁你踎低做乜嘢？
 No!
 
 474
 00:27:23,937 --> 00:27:24,833
-冇？咁你蹲低做乜嘢？
+冇？咁你踎低做乜嘢？
 What are you doing down there?
 
 475
@@ -2664,12 +2664,12 @@ Why?
 
 542
 00:30:24,042 --> 00:30:26,083
-我要用移魂大法迷了他，留回来做我嘅卧底
+我要用移魂大法迷咗佢，留返嚟做我嘅卧底
 I'm gonna mesmerize him
 
 543
 00:30:26,083 --> 00:30:28,125
-我要用移魂大法迷了他，留回来做我嘅卧底
+我要用移魂大法迷咗佢，留返嚟做我嘅卧底
 he'll be my undercover agent
 
 544
@@ -2684,7 +2684,7 @@ Ghost!
 
 546
 00:30:35,958 --> 00:30:37,000
-过去看吓
+过去睇吓
 Go to have a look
 
 547
@@ -2704,7 +2704,7 @@ Don't be pretentious around here
 
 550
 00:30:45,500 --> 00:30:47,020
-唔系我会〝逐忽逐忽〞肉同你片出来呀
+唔系我会〝逐忽逐忽〞肉同你片出嚟呀
 Don't be pretentious around here
 
 551
@@ -2932,7 +2932,7 @@ Having the personality again
 
 596
 00:32:53,500 --> 00:32:55,208
-孙悟空，你同我躙出来！
+孙悟空，你同我躙出嚟！
 Monkey King, come out!
 
 597
@@ -2942,7 +2942,7 @@ Damn monkey
 
 598
 00:32:57,312 --> 00:32:59,562
-喺我十八岁嗰年你话会来娶我
+喺我十八岁嗰年你话会嚟娶我
 You said you would marry me when I was 18
 
 599
@@ -2952,7 +2952,7 @@ I have waited for you 3 years
 
 600
 00:33:00,916 --> 00:33:02,000
-你同我死出来！
+你同我死出嚟！
 You come out!
 
 601
@@ -2962,7 +2962,7 @@ Our King is not here
 
 602
 00:33:04,604 --> 00:33:07,542
-佢话白姑娘来了，就将呢件嘢交返俾你
+佢话白姑娘嚟咗，就将呢件嘢交返俾你
 He said give it to Miss Pak when you come here
 
 603
@@ -3396,7 +3396,7 @@ Who the hell?
 
 690
 00:37:11,958 --> 00:37:12,958
-我变咗荔枝呀
+我变咗提子呀
 I was turned into grapes
 
 691
@@ -3411,7 +3411,7 @@ In your trousers
 
 693
 00:37:16,208 --> 00:37:17,625
-哗！咁大坨挂喺度
+哗！咁大揪挂喺度
 Big grapes!
 
 694
@@ -3736,7 +3736,7 @@ OK….
 
 759
 00:40:08,917 --> 00:40:11,042
-我哋不动声色，看佢哋想点
+我哋不动声色，睇佢哋想点
 Let's keep quiet and see what they want
 
 760
@@ -4043,7 +4043,7 @@ Kneel down
 
 822
 00:44:32,000 --> 00:44:35,167
-你条〝沐契〞，今晚我就劏咗你当烧猪食
+你条〝沐契〞 ，今晚我就劏咗你当烧猪食
 You son of a bitch, I'm gonna kill you tonight
 
 823
@@ -4385,7 +4385,7 @@ You won't blame me, will you?
 
 891
 00:47:40,145 --> 00:47:43,375
-我呢一世人都盲累累做人　我知
+我呢一世人都盲累累做人　　我知
 For my whole life I know
 
 892
@@ -4480,7 +4480,7 @@ Sister, I don't dare to do so anymore
 
 910
 00:48:33,167 --> 00:48:34,208
-躲开！
+躙开！
 Get lost!
 
 911
@@ -4623,12 +4623,12 @@ Tell me your name, witch!
 
 939
 00:49:54,542 --> 00:49:55,833
-盘丝大仙座下大弟子白骨精　蜘蛛精
+盘丝大仙座下大弟子白骨精　　蜘蛛精
 I'm Boney M of Spider Devil
 
 940
 00:49:55,833 --> 00:49:57,125
-盘丝大仙座下大弟子白骨精　蜘蛛精
+盘丝大仙座下大弟子白骨精　　蜘蛛精
 Spider Woman
 
 941
@@ -4713,7 +4713,7 @@ Let me see what magic you have got
 
 957
 00:51:57,417 --> 00:51:58,875
-死牛精 走
+死牛精　　走
 King Bull Go
 
 958
@@ -5066,7 +5066,7 @@ Give the sword!
 
 1028
 00:54:37,167 --> 00:54:39,208
-佢呀！ 知道
+佢呀！　　知道
 Give! Understand
 
 1029
@@ -5134,7 +5134,7 @@ I'm gonna love forever onwards
 
 1042
 00:55:32,250 --> 00:55:33,333
-响出来
+响出边
 They are outside
 
 1043
@@ -5253,7 +5253,7 @@ More than the bugs in my body. Search!
 
 1066
 00:57:01,083 --> 00:57:02,937
-你冇事吗？
+你冇事吖吗？
 What are you doing?
 
 1067
@@ -5407,7 +5407,7 @@ I'm telling you
 
 1097
 00:58:40,667 --> 00:58:43,125
-一息佢就唔郁嘅
+一锡佢就唔郁嘅
 No reactions after a kiss
 
 1098
@@ -5652,7 +5652,7 @@ I won't take advantage of the others
 
 1147
 01:02:49,167 --> 01:02:51,000
-日光日白不惯呀
+日光日白唔惯呀
 I'm not used to doing it at daytime
 
 1148
@@ -5707,7 +5707,7 @@ I'm so pretty
 
 1158
 01:03:49,062 --> 01:03:50,833
-竟然同个咁肉酸嘅男人有了
+竟然同个咁肉酸嘅男人有咗
 I'm so pretty
 
 1159
@@ -6091,7 +6091,7 @@ The Pandora's Box
 
 1235
 01:08:54,167 --> 01:08:56,208
-盘丝大仙留下嘅宝物？
+盘丝大仙留低嘅宝物？
 The treasure left behind by Spider Web Devil?
 
 1236
@@ -6329,12 +6329,12 @@ because you haven't met the guy
 
 1284
 01:12:03,500 --> 01:12:05,104
-只是因为你未遇上嗰个俾三粒痣你嘅人
+只系因为你未遇上嗰个俾三粒痣你嘅人
 who gives you the 3 birthmarks
 
 1285
 01:12:05,104 --> 01:12:06,708
-只是因为你未遇上嗰个俾三粒痣你嘅人
+只系因为你未遇上嗰个俾三粒痣你嘅人
 After you see him
 
 1286
@@ -6426,7 +6426,7 @@ Go!
 
 1304
 01:12:48,125 --> 01:12:49,500
-快点过嚟捉住我呀
+快啲过嚟捉住我呀
 Come here and grab me
 
 1305
@@ -6436,12 +6436,12 @@ Ok, do it…Ok! It's coming
 
 1306
 01:12:55,875 --> 01:12:57,417
-唐三藏出咗世啦，快啲找
+唐三藏出咗世啦，快啲搵
 The Longevity Monk was born, go to get him!
 
 1307
 01:12:57,417 --> 01:12:58,542
-是⋯⋯
+系⋯⋯
 Yes!
 
 1308
@@ -6565,7 +6565,7 @@ You're not qualified to protect me
 
 1332
 01:14:14,292 --> 01:14:15,333
-躲开
+躙开
 Get lost
 
 1333
@@ -6658,12 +6658,12 @@ Tortoise Magic
 
 1351
 01:15:42,500 --> 01:15:43,708
-我劈你啲内脏，问你点挡？
+我片你啲内脏，问你点挡？
 Slash your liver, stomach
 
 1352
 01:15:43,708 --> 01:15:44,917
-我劈你啲内脏，问你点挡？
+我片你啲内脏，问你点挡？
 and internal organs!
 
 1353
@@ -7134,12 +7134,12 @@ You can't leave!
 
 1448
 01:21:04,708 --> 01:21:06,083
-石门落了就开不番
+石门落咗就开唔番
 When the rock is put down, the door is closed
 
 1449
 01:21:06,083 --> 01:21:07,458
-你快点冲出去
+你快啲冲出去
 When the rock is put down, the door is closed
 
 1450
@@ -7340,7 +7340,7 @@ You haven't turned into Monkey King
 
 1490
 01:24:26,916 --> 01:24:30,125
-因为你未遇到给三粒痣你的人
+因为你未遇到俾三粒痣你嘅人
 because you haven't met the guy having three birthmarks
 
 1491
