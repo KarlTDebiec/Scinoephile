@@ -835,7 +835,7 @@ What are you doing?
 
 168
 00:11:19,625 --> 00:11:20,875
-小便穿裤子
+小完便穿裤子
 I've just had a piss!
 
 169
@@ -1735,7 +1735,7 @@ I'm cured! Why?
 
 348
 00:22:18,458 --> 00:22:19,292
-我明白了！
+我明白　了！
 I know!
 
 349
@@ -1975,7 +1975,7 @@ Don't scare!
 
 396
 00:24:23,208 --> 00:24:25,125
-我只要点你曲池，疾宫两个穴道
+我只要点我曲池，疾宫两个穴道
 I can stop the bleeding
 
 397
@@ -2260,7 +2260,7 @@ What are you doing down there?
 
 453
 00:27:25,500 --> 00:27:26,500
-我结鞋带。
+我结鞋带
 I wanna tie the lace
 
 454
@@ -2600,7 +2600,7 @@ Go to have a look
 
 521
 00:30:37,917 --> 00:30:39,958
-这么英气潇洒你说有鬼！
+这么英雄潇洒你说有鬼！
 You said a ghost!
 
 522
@@ -3090,7 +3090,7 @@ No, I'm Grandma Ada?
 
 619
 00:35:52,292 --> 00:35:53,500
-什么菩提老母？
+什么菩你老母？
 What Grandma Ada?
 
 620
@@ -3110,7 +3110,7 @@ I turned myself into grapes and saved you
 
 623
 00:35:59,875 --> 00:36:03,125
-你偷了我的葡萄，还菩提老母？
+你偷了我的葡萄，还菩我老母？
 You stole my grapes and forbid me mentioning Grandma
 
 624
@@ -3125,7 +3125,7 @@ If you don't believe me
 
 626
 00:36:07,125 --> 00:36:09,375
-我的照妖镜一照，你就会明白了
+我的照妖镜一照，你就会明白　了
 you can use my Magic Mirror!
 
 627
@@ -3135,7 +3135,7 @@ I use your Mom's mirror!
 
 628
 00:36:11,208 --> 00:36:11,875
-说 你听我说
+说　　你听我说
 Say! Listen to me
 
 629
@@ -3275,12 +3275,12 @@ Tell me…
 
 656
 00:37:07,833 --> 00:37:10,625
-哎菩提老母？
+哎菩什么老母？
 Who? Who the hell…!
 
 657
 00:37:10,833 --> 00:37:11,833
-菩提老母？
+菩什么老母？
 Who the hell?
 
 658
@@ -3425,7 +3425,7 @@ Now, you know why there are so many devils here
 
 686
 00:38:17,917 --> 00:38:18,875
-你明白了
+你明白　了
 You got it
 
 687
@@ -4240,7 +4240,7 @@ Sorry, Blindy!
 
 849
 00:47:37,625 --> 00:47:38,625
-今次算是少走了一步
+今次算了少走了一步
 You have made a mistake
 
 850
@@ -4575,7 +4575,7 @@ Let me see what magic you have got
 
 916
 00:51:57,667 --> 00:51:58,875
-死牛魔王  走
+死牛魔王　　走
 King Bull Go
 
 917
@@ -6105,7 +6105,7 @@ Worship Buddha whole-heartedly
 
 1222
 01:11:59,417 --> 01:12:01,917
-你还没变成真正的孙悟空投世
+你还没变成真正的孙悟空托世
 You haven't turned into the Monkey King
 
 1223
@@ -6200,7 +6200,7 @@ Come here and grab me
 
 1241
 01:12:50,583 --> 01:12:53,708
-抓住了⋯，生了⋯
+抓住了⋯ ，生了⋯
 Ok, do it…Ok! It's coming
 
 1242
@@ -6800,7 +6800,7 @@ and you have a baby with my sister
 
 1361
 01:20:41,833 --> 01:20:42,875
-你完全误会了 找死？
+你完全误会了　　找死？
 No, that's not the case Wanna die?
 
 1362
@@ -6855,7 +6855,7 @@ You can't leave!
 
 1372
 01:21:05,125 --> 01:21:07,000
-断龙石关了便打不开，快出去
+断龙石关了便打不开快出去
 When the rock is put down, the door is closed
 
 1373

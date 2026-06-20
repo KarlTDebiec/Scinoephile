@@ -70,8 +70,7 @@ Accept changes when they are clear OCR/subtitle fixes, such as:
 - missing or extra characters when context makes the source error clear
 - script-appropriate character fixes: zho-Hans direct review should stay
   simplified, while zho-Hant direct review should stay traditional
-- punctuation preservation or correction only when the source image/text clearly
-  supports it or a prior cleaning step explicitly requires it
+- punctuation preservation when needed to keep source text intact
 
 Reject or flag changes when they:
 
@@ -79,8 +78,8 @@ Reject or flag changes when they:
 - traditionalize zho-Hans text during direct `fuse_clean_validate_review.srt`
   review
 - rewrite style, diction, or wording without source evidence
-- add missing-looking sentence-final punctuation unless the source image/text
-  proves the punctuation was omitted by OCR
+- add punctuation that is not already present in the input, including
+  missing-looking sentence-final punctuation or commas added for readability
 - rewrite quote styles or other punctuation solely for normalization, such as
   `〝虾〞 -> 「虾」`, unless that exact normalization is the audited behavior
 - make whitespace-only changes between subtitle fragments unless the user
