@@ -634,7 +634,8 @@
       "zimu_40": "我们后面掩护你",
       "zimu_41": "为什么每次都是我先⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1158,7 +1159,8 @@
       "zimu_39": "天还没有黑，那来的月光",
       "zimu_40": "你说啊⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1228,7 +1230,8 @@
       "xiugai_2": "菩提什么老母？",
       "beizhu_2": "补全“菩什么”中的缺字“提”，使“菩提”写法完整。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {

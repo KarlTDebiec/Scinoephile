@@ -244,21 +244,18 @@
     "verified": true
   },
   {
-    "query": {
-      "zimu_1": "你幹甚麼？",
-      "zimu_2": "小完便穿褲子",
-      "zimu_3": "你在這裡小便？",
-      "zimu_4": "不然你哪來這麼大缸水洗澡啊？",
-      "zimu_5": "你說甚麼？",
-      "zimu_6": "我話你沒那麼長命等到你要見的人"
-    },
-    "answer": {
-      "xiugai_2": "小便完便穿褲子",
-      "beizhu_2": "「小完便」應為「小便完」的輸入錯誤，調整為正確排版。"
-    },
-    "difficulty": 1,
-    "verified": true
+  "query": {
+    "zimu_1": "你幹甚麼？",
+    "zimu_2": "小完便穿褲子",
+    "zimu_3": "你在這裡小便？",
+    "zimu_4": "不然你哪來這麼大缸水洗澡啊？",
+    "zimu_5": "你說甚麼？",
+    "zimu_6": "我話你沒那麼長命等到你要見的人"
   },
+  "answer": {},
+  "difficulty": 1,
+  "verified": true
+},
   {
     "query": {
       "zimu_1": "幫主⋯"
@@ -643,7 +640,8 @@
       "zimu_40": "我們後面掩護你",
       "zimu_41": "為甚麼每次都是我先⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -715,10 +713,7 @@
       "zimu_5": "弄得我心卜通卜通亂跳",
       "zimu_6": "幫主請留步"
     },
-    "answer": {
-      "xiugai_5": "弄得我心扑通扑通亂跳",
-      "beizhu_5": "將「卜通卜通」修正為擬聲詞正確寫法「扑通扑通」。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -821,8 +816,6 @@
       "zimu_6": "一定重重有賞"
     },
     "answer": {
-      "xiugai_4": "向師父討塊唐僧肉吃就行吧！",
-      "beizhu_4": "「師姐」疑為錯字，修正為「師父」；其餘不動。",
       "xiugai_5": "把唐三藏這個消息報告給大王",
       "beizhu_5": "「比大王」疑為錯字，修正為「給大王」；其餘不動。"
     },
@@ -1177,13 +1170,9 @@
       "zimu_39": "天還沒有黑，那來的月光",
       "zimu_40": "你說啊⋯"
     },
-    "answer": {
-      "xiugai_4": "甚麼菩提老母？",
-      "beizhu_4": "將「菩你」修正為「菩提」，屬錯別字。",
-      "xiugai_8": "你偷了我的葡萄，還菩提老母？",
-      "beizhu_8": "將「菩我」修正為「菩提」，屬錯別字。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1247,13 +1236,9 @@
       "zimu_58": "淫蕩嗎？",
       "zimu_59": "對啊"
     },
-    "answer": {
-      "xiugai_1": "哎，菩提老母？",
-      "beizhu_1": "補上標點，將「哎」後的停頓以逗號分隔；「菩甚麼」修正為「菩提」以符合常見錯字。",
-      "xiugai_2": "菩提老母？",
-      "beizhu_2": "將「菩甚麼」修正為「菩提」以符合上下文語境。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1527,21 +1512,18 @@
     "verified": true
   },
   {
-    "query": {
-      "zimu_1": "對不起啊，瞎子！",
-      "zimu_2": "今次算了少走了一步",
-      "zimu_3": "你不會怪我吧？",
-      "zimu_4": "我一輩子⋯　　我知道",
-      "zimu_5": "都是個瞎子",
-      "zimu_6": "我最有眼光就是跟著幫主"
-    },
-    "answer": {
-      "xiugai_2": "今次算是少走了一步",
-      "beizhu_2": "修正錯別字與漏字：「算了」改為「算是」，使語句通順。"
-    },
-    "difficulty": 1,
-    "verified": true
+  "query": {
+    "zimu_1": "對不起啊，瞎子！",
+    "zimu_2": "今次算了少走了一步",
+    "zimu_3": "你不會怪我吧？",
+    "zimu_4": "我一輩子⋯　　我知道",
+    "zimu_5": "都是個瞎子",
+    "zimu_6": "我最有眼光就是跟著幫主"
   },
+  "answer": {},
+  "difficulty": 1,
+  "verified": true
+},
   {
     "query": {
       "zimu_1": "我跟你們拚了"
@@ -1674,10 +1656,7 @@
       "zimu_5": "看看你們還有甚麼法寶？",
       "zimu_6": "死牛魔王　　走"
     },
-    "answer": {
-      "xiugai_6": "死牛魔王 走",
-      "beizhu_6": "刪除多餘空白，修正排版。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2407,10 +2386,7 @@
       "zimu_6": "唐三藏出世了，快找",
       "zimu_7": "是！"
     },
-    "answer": {
-      "xiugai_5": "抓住了⋯，生了⋯",
-      "beizhu_5": "修正多餘空格，標點排版調整。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2440,10 +2416,7 @@
       "zimu_15": "奶媽，你告訴她吧！",
       "zimu_16": "你說呀！"
     },
-    "answer": {
-      "xiugai_5": "把孩子大帶大",
-      "beizhu_5": "「孩大」疑為輸入錯誤，修正為「孩子大」。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2521,10 +2494,7 @@
       "zimu_1": "打個蝴蝶結",
       "zimu_2": "〝元神出竅〞"
     },
-    "answer": {
-      "xiugai_2": "「元神出竅」",
-      "beizhu_2": "將直角引號樣式修正為中文常用引號。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2608,10 +2578,7 @@
       "zimu_22": "老婆⋯！",
       "zimu_23": "我警告你別煩我！"
     },
-    "answer": {
-      "xiugai_15": "真的出來了　走呀",
-      "beizhu_15": "刪除多餘空格。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2698,10 +2665,7 @@
       "zimu_14": "你不信",
       "zimu_15": "你看"
     },
-    "answer": {
-      "xiugai_8": "你完全誤會了，找死？",
-      "beizhu_8": "將「　　」修正為標點「，」，補正排版。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2712,10 +2676,7 @@
       "zimu_3": "你跑不掉的！",
       "zimu_4": "斷龍石關了便打不開快出去"
     },
-    "answer": {
-      "xiugai_4": "斷龍石關了便打不開，快出去",
-      "beizhu_4": "補上標點符號「，」"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2838,10 +2799,7 @@
       "zimu_1": "你沒有變成孫悟空托世",
       "zimu_2": "是因為你還沒碰見給你三顆痣的人"
     },
-    "answer": {
-      "xiugai_1": "你沒有變成孫悟空投世",
-      "beizhu_1": "「托世」應為「投世」字形錯誤。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
