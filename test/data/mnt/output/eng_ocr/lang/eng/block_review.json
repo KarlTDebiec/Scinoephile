@@ -1615,8 +1615,10 @@
       "subtitle_32": "(CRICKETS CHIRPING)"
     },
     "answer": {
-      "revised_13": "so we planted them\nin your garden out back, but…\"",
-      "note_13": "Preserved cleaning-normalized punctuation in the block-review output."
+      "revised_12": "“We wanted to grow a beautiful\nforest with the acorns,",
+      "note_12": "Changed the opening straight quote to a left double quote.",
+      "revised_13": "so we planted them\nin your garden out back, but…”",
+      "note_13": "Removed the extra opening quote on the continuation subtitle and kept the closing right double quote."
     },
     "difficulty": 1,
     "verified": true
