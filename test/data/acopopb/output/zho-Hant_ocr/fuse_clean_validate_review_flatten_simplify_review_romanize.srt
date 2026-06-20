@@ -1390,7 +1390,7 @@ jiù le bāngzhǔ le…
 
 279
 00:18:18,042 --> 00:18:20,375
-二当家那么开心扛着甚么东西走啦？
+二当家那么开心扛着什么东西走啦？
 èrdāngjiā nàme kāixīn kángzhe shénme dōngxī zǒu la?
 
 280
@@ -2780,8 +2780,8 @@ wén yě bùxíng, wǔ yě bùxíng
 
 557
 00:32:07,042 --> 00:32:08,833
-你不做山贼，你想做状元吗？
-nǐ bù zuò shānzéi, nǐ xiǎng zuò zhuàngyuán ma?
+你不做山贼，你想做状元吗
+nǐ bù zuò shānzéi, nǐ xiǎng zuò zhuàngyuán ma
 
 558
 00:32:09,208 --> 00:32:10,208
@@ -2795,8 +2795,8 @@ shěngshěng ba nǐ, gǎibiàn shénme xíngxiàng
 
 560
 00:32:12,375 --> 00:32:14,333
-好好的做你山贼这份很有前途的职业嘛
-hǎohǎo de zuò nǐ shānzéi zhèfèn hěn yǒu qiántú de zhíyè ma
+好好的做你山贼这份很有前途
+hǎohǎo de zuò nǐ shānzéi zhèfèn hěn yǒu qiántú
 
 561
 00:32:14,625 --> 00:32:15,542
@@ -2925,8 +2925,8 @@ shénme? shuǐliándòng?
 
 586
 00:34:20,708 --> 00:34:21,542
-你是谁？
-nǐ shì shuí?
+你是谁你？
+nǐ shì shuí nǐ?
 
 587
 00:34:21,792 --> 00:34:23,250
@@ -3445,8 +3445,8 @@ zài yīpiàn qīhēi gūdú de huánjìng lǐtou
 
 690
 00:38:28,208 --> 00:38:30,667
-一双一双非常迷迷的眼睛
-yīshuāng yīshuāng fēicháng mímí de yǎnjīng
+一对一对非常迷迷的眼睛
+yīduìyī duì fēicháng mímí de yǎnjīng
 
 691
 00:38:30,958 --> 00:38:32,500
@@ -6105,8 +6105,8 @@ yào quánxīn guīyī wǒfú
 
 1222
 01:11:59,417 --> 01:12:01,917
-你还没变成真正的孙悟空投世
-nǐ hái méi biànchéng zhēnzhèng de sūnwùkōng tóushì
+你还没变成真正的孙悟空托世
+nǐ hái méi biànchéng zhēnzhèng de sūnwùkōng tuōshì
 
 1223
 01:12:02,208 --> 01:12:03,292
