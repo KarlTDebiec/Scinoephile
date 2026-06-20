@@ -43,7 +43,8 @@
       "revised_30": "I'll bring this up with the Ninth Heaven",
       "note_30": "Corrected duplicated 'up' in 'bring up this up'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -67,7 +68,8 @@
       "revised_6": "It's just the same\nDragon and Tiger are the same",
       "note_6": "Removed the duplicated word 'just' in the second line."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -179,7 +181,8 @@
       "revised_66": "she'll think this is a joke of a moron",
       "note_66": "Corrected 'the joke' to 'a joke'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -333,7 +336,8 @@
       "revised_119": "You've had 2 bites of the Queen Mother's peaches too",
       "note_119": "Corrected 'You've 2 bites' to 'You've had 2 bites'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -355,7 +359,8 @@
       "subtitle_16": "We haven't prayed to the gods yet",
       "subtitle_17": "Pray…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -377,7 +382,8 @@
       "subtitle_16": "Madam, this child…",
       "subtitle_17": "Tell him yourself, he's coming out"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -385,7 +391,8 @@
       "subtitle_2": "A son or a daughter?",
       "subtitle_3": "- A son! Congratulations, master\n- Congratulations, master…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -456,7 +463,8 @@
       "revised_30": "- I hand-picked two that fight best\n- Brag",
       "note_30": "Corrected 'hand- picked' to 'hand-picked'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -464,7 +472,8 @@
       "subtitle_2": "So she's giving birth",
       "subtitle_3": "Let's get prepared and help them"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -481,13 +490,15 @@
       "subtitle_11": "- One more time\n- What",
       "subtitle_12": "What?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Done"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -512,14 +523,16 @@
       "revised_13": "You must know some magic\nCome on, teach me",
       "note_13": "Corrected 'C'mon' to 'Come on'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Go and get milk from that lady.",
       "subtitle_2": "Go over"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -560,7 +573,8 @@
       "revised_12": "I, Li Mau Cheun, won't do such a thing",
       "note_12": "Added 'a' in the phrase 'such a thing' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -568,7 +582,8 @@
       "subtitle_2": "Just play with him for a little while\nI need to revise some documents",
       "subtitle_3": "I must rush my embroidery as well"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -588,7 +603,8 @@
       "revised_6": "…because your head cover is not\nyet opened",
       "note_6": "Corrected 'head's cover' to 'head cover' to fix the typographical error."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -601,7 +617,8 @@
       "subtitle_7": "He's hopeless, poor thing",
       "subtitle_8": "Fan…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -655,14 +672,16 @@
       "revised_40": "What I just said came true! A real thunderbolt",
       "note_40": "Corrected 'thunder' to 'thunderbolt' for the intended word."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Missed by a mile. Over there",
       "subtitle_2": "Aim better. Try again"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -691,7 +710,8 @@
       "revised_3": "Dragon Fighter has reincarnated\nin the mortal world to save people",
       "note_3": "Corrected 're-incarnated' to 'reincarnated'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -713,13 +733,15 @@
       "revised_4": "A name is just a label, so makes no difference",
       "note_4": "Added a comma after 'label' to correct punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "It's here"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -737,13 +759,15 @@
       "revised_8": "Most people came last month",
       "note_8": "Corrected 'The most people' to 'Most people'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "The golden body is here"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -754,7 +778,8 @@
       "subtitle_5": "Really?",
       "subtitle_6": "Change back first"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -762,7 +787,8 @@
       "subtitle_2": "A wooden fish",
       "subtitle_3": "Fish"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -799,7 +825,8 @@
       "revised_19": "Should show you due respect",
       "note_19": "Corrected 'give' to 'show' for the standard expression 'show due respect'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -823,14 +850,16 @@
       "subtitle_18": "Hide in my home, quick",
       "subtitle_19": "Hey, God of Earth"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "A villain of 9 lives?",
       "subtitle_2": "Save my time"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -842,7 +871,8 @@
       "subtitle_6": "You can hit my head,",
       "subtitle_7": "not the back"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -854,19 +884,22 @@
       "revised_3": "I'll burn you, stinky monk, too",
       "note_3": "Added commas for correct punctuation and clarity."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "I want to burn you, how dare you\nblow out my fire?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "You…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -877,20 +910,23 @@
       "subtitle_5": "Take my advice and be a new person",
       "subtitle_6": "Good boy"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Impossible…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Think over indoors.",
       "subtitle_2": "I'll come to you soon"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -900,7 +936,8 @@
       "subtitle_4": "No, I'm not going",
       "subtitle_5": "Get going"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -961,7 +998,8 @@
       "revised_36": "They're destined to become butterfly lovers,",
       "note_36": "Corrected 'lover' to 'lovers'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -999,7 +1037,8 @@
       "revised_25": "I want to eat you now\nWhoever's willing can come with me",
       "note_25": "Corrected 'Whoever is' to the contraction 'Whoever's'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1009,7 +1048,8 @@
       "subtitle_4": "It's late, you should sleep",
       "subtitle_5": "Master, I am like a pig. I only sleep in daylight"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1021,7 +1061,8 @@
       "revised_2": "Your mom found you.\nMy dad died a long time ago",
       "note_2": "Corrected 'You' to 'Your' and changed 'finds' to 'found' to fix typographical errors."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1134,7 +1175,8 @@
       "revised_78": "…a God of Beggars",
       "note_78": "Corrected 'Beggar' to 'Beggars' for correct plural form in the title."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1146,20 +1188,23 @@
       "revised_3": "I'm stunk! Don't eat me.",
       "note_3": "Added a period at the end of the subtitle."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Tiger Fighter Lo Han transfigures"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Insulting me?",
       "subtitle_2": "You scared the piss out of me"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1224,21 +1269,24 @@
       "revised_32": "Advertising Departments are brothers,",
       "note_32": "Corrected 'Department are' to 'Departments are' for agreement."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Over a hundred died in one night",
       "subtitle_2": "An evil spirit must be behind this"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Damn beggar,",
       "subtitle_2": "why not die yet for having\nso many sores"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1300,7 +1348,8 @@
       "revised_31": "Where to find one…",
       "note_31": "Added 'one' to complete the omitted word."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1330,20 +1379,23 @@
       "revised_15": "I can save some costs",
       "note_15": "Corrected 'cost' to plural 'costs' in this context."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Whoever his toe points to, will be the one",
       "subtitle_2": "- Turn…\n- So scary…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "You're cheating"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1363,7 +1415,8 @@
       "subtitle_14": "Clean her up and get changed. Go",
       "subtitle_15": "No…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1372,7 +1425,8 @@
       "subtitle_3": "To help only the pretty one?",
       "subtitle_4": "If so, I won't save you then"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1388,7 +1442,8 @@
       "subtitle_10": "burning her will stop the plague?",
       "subtitle_11": "- Heavenly Highness told me in a dream\n- Oh…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1400,7 +1455,8 @@
       "subtitle_6": "It's time, scold him",
       "subtitle_7": "I dare not"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1428,14 +1484,16 @@
       "revised_12": "However, if the plague still persists\nafter she's burnt to death",
       "note_12": "Corrected 'If' to lowercase 'if' after 'However,'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "You're so bold, you don't even flinch",
       "subtitle_2": "It's just saliva, no need to be scared"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1443,7 +1501,8 @@
       "subtitle_2": "My pleasure",
       "subtitle_3": "I…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1476,7 +1535,8 @@
       "revised_19": "Worse than a shit-bowl",
       "note_19": "Corrected 'shit bowl' to the compound form 'shit-bowl'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1486,7 +1546,8 @@
       "subtitle_4": "…like selling bean curd?",
       "subtitle_5": "Should I put the stall at the door\nor beside the bed?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1506,7 +1567,8 @@
       "revised_1": "Master… I got half a piece of preserved bean curd",
       "note_1": "Added 'a' in the phrase 'half a piece' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1523,7 +1585,8 @@
       "revised_7": "how come you ain't that persistent\napart from begging?",
       "note_7": "Corrected 'persist' to 'persistent'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1547,7 +1610,8 @@
       "revised_9": "You have no self-respect at all",
       "note_9": "Removed the extra space in 'self- respect'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1561,7 +1625,8 @@
       "subtitle_8": "She's willing to change, just in the wrong way",
       "subtitle_9": "Dai Jung, follow me"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1589,13 +1654,15 @@
       "revised_14": "I got it",
       "note_14": "Corrected unnecessary capitalisation of 'Got'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "I won't marry any man except him in this world"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1606,14 +1673,16 @@
       "revised_1": "You're naughty, you peeping-tom",
       "note_1": "Corrected spacing in 'peeping-tom' by removing the unnecessary space after the hyphen."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "This is the style",
       "subtitle_2": "A decent girl should be like this"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1621,7 +1690,8 @@
       "subtitle_2": "Or else this couldn't have happened",
       "subtitle_3": "You can"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1632,13 +1702,15 @@
       "subtitle_5": "a chicken… can also become a phoenix",
       "subtitle_6": "I want to be a phoenix, can I?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "A phoenix?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1663,7 +1735,8 @@
       "revised_16": "A good-looking and presentable man",
       "note_16": "Corrected 'good- looking' to 'good-looking' by removing the extra space."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1673,7 +1746,8 @@
       "subtitle_4": "and the sores will emerge again",
       "subtitle_5": "It'd be bad to scare people away"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1686,7 +1760,8 @@
       "subtitle_7": "she sometimes makes guest appearances",
       "subtitle_8": "Sir, follow me"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1699,7 +1774,8 @@
       "subtitle_7": "Anything wrong?",
       "subtitle_8": "You're an epicure"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1721,13 +1797,15 @@
       "revised_9": "That guy asked me here to…",
       "note_9": "Corrected 'asks' to 'asked' for consistent past tense."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Good! I'll fix you too"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1741,7 +1819,8 @@
       "revised_1": "With the possession of Shaolin Patriarch Dharma,\nin a lamp’s time,",
       "note_1": "Corrected 'Dhama' to 'Dharma'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1761,7 +1840,8 @@
       "revised_3": "Patriarch Dharma?",
       "note_3": "Corrected 'Dhama' to 'Dharma'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1771,25 +1851,29 @@
       "subtitle_4": "I'm tired",
       "subtitle_5": "Go…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "See where you can run to?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Damn it! Never listen"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "- Reconciled to defeat yet?\n- Reconciled to the hell of you"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1814,14 +1898,16 @@
       "subtitle_19": "Yeah…",
       "subtitle_20": "I've come for a whore"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "As matters stand, I have to fight\nviolence with violence",
       "subtitle_2": "Iron Head"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1829,13 +1915,15 @@
       "subtitle_2": "I only want you to be a monk, not go to hell",
       "subtitle_3": "Be good and come with me now"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "You're simply incorrigible"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1846,13 +1934,15 @@
       "revised_1": "OK… forget about being a monk",
       "note_1": "Corrected 'Ok' to the standard uppercase form 'OK'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Damn! Are you a human being or a beast?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1867,7 +1957,8 @@
       "revised_4": "This life, I have to marry that guy",
       "note_4": "Corrected 'I've' to 'I have' for proper grammar in this context."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1876,7 +1967,8 @@
       "subtitle_3": "and leave Siu Yuk alone tonight,",
       "subtitle_4": "we'll settle our score later"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1888,13 +1980,15 @@
       "revised_1": "If I hadn't changed to Patriarch Dharma,\nI'd have been killed by you",
       "note_1": "Corrected the typographical error 'Dhama' to 'Dharma'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Buddha is merciful! Good luck"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1921,7 +2015,8 @@
       "revised_4": "- Never mind it\n- OK",
       "note_4": "Corrected 'Ok' to 'OK'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1933,7 +2028,8 @@
       "subtitle_6": "I have money",
       "subtitle_7": "Shit! The gold changed…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1968,20 +2064,23 @@
       "revised_26": "Let her go, please, master",
       "note_26": "Added commas around 'please' for correct punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Siu Yuk…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Help",
       "subtitle_2": "Big head"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2000,26 +2099,30 @@
       "revised_9": "Things changed back to the original! Let's go",
       "note_9": "Added 'the' before 'original' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "What? Yun Ba Tin"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Go to hell, Beggar Dai Jung"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Don't call me Dai Jung",
       "subtitle_2": "Call me Chow Yat Cheung"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2035,7 +2138,8 @@
       "revised_2": "You've made us suffer a lot",
       "note_2": "Removed the incorrect space in \"You 've\" to form the correct contraction \"You've\"."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2047,13 +2151,15 @@
       "revised_1": "Kill you, son of a bitch",
       "note_1": "Corrected 'the' to 'a' in the fixed expression 'son of a bitch'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Open his eyes"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2062,7 +2168,8 @@
       "subtitle_3": "Frankly… it was fascinating",
       "subtitle_4": "Yes"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2102,7 +2209,8 @@
       "revised_23": "I'll go and get the golden body back now",
       "note_23": "Corrected word order to fix the typographical error in the phrase."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2120,7 +2228,8 @@
       "revised_8": "- No\n- OK, then a cross",
       "note_8": "Corrected 'Ok' to 'OK'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2132,7 +2241,8 @@
       "subtitle_6": "No",
       "subtitle_7": "Damn"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2143,7 +2253,8 @@
       "subtitle_5": "How dare you? Stop",
       "subtitle_6": "Stop"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2168,7 +2279,8 @@
       "subtitle_19": "Don't worry",
       "subtitle_20": "Put down your golden body"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2176,7 +2288,8 @@
       "subtitle_2": "Why have you taken his spirit?",
       "subtitle_3": "I'm a baddie"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2189,20 +2302,23 @@
       "subtitle_7": "Dai Jung…",
       "subtitle_8": "Dai Jung…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Dai Jung…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Lord, I'll do as you instruct me",
       "subtitle_2": "and help accomplish your mission"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2223,7 +2339,8 @@
       "revised_10": "They've all gone\nThese just returned to get their luggage.",
       "note_10": "Added a period at the end of the subtitle."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2235,7 +2352,8 @@
       "revised_3": "Oh no! You've caused big trouble",
       "note_3": "Removed the unnecessary article 'a' in the fixed expression 'cause big trouble'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2247,7 +2365,8 @@
       "revised_1": "Oh no! Even God of Earth is gone.",
       "note_1": "Corrected 'On no!' to 'Oh no!'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2263,7 +2382,8 @@
       "revised_7": "Thunder may split the temple",
       "note_7": "Removed the incorrect article 'A' before 'thunder'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2275,13 +2395,15 @@
       "revised_1": "- You blame me too?\n- Let's go… even the Goddess is down.",
       "note_1": "Corrected 'are' to 'is' to agree with the singular subject 'Goddess'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "You really leave me no way out?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2299,7 +2421,8 @@
       "subtitle_12": "Who says it's your turn?",
       "subtitle_13": "- Me first…\n- Me first…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2313,7 +2436,8 @@
       "subtitle_8": "Yes",
       "subtitle_9": "We'll marry then"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2322,7 +2446,8 @@
       "subtitle_3": "Whatever comes in this life\nor came in the past life,",
       "subtitle_4": "I'll not regret it"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2360,13 +2485,15 @@
       "revised_16": "Yeah…\nwhy are you not happy?",
       "note_16": "Moved 'Yeah…' to its own line to correct the subtitle split formatting."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Your foot"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2396,14 +2523,16 @@
       "revised_18": "You thought I didn't know?",
       "note_18": "Corrected 'don't' to 'didn't' to match the past tense in 'thought'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "A total loss this time",
       "subtitle_2": "I've nothing now. Really, nothing at all"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2411,26 +2540,30 @@
       "subtitle_2": "I don't want love ever again in this life",
       "subtitle_3": "Don't…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "I don't want love again in this life"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Help…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Killing you will just make enough blood",
       "subtitle_2": "from 77491 people"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2441,7 +2574,8 @@
       "revised_2": "Even if he finds here, his kung fu would be gone",
       "note_2": "Corrected 'find' to 'finds' for subject-verb agreement."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2449,20 +2583,23 @@
       "subtitle_2": "You're like a dead dog",
       "subtitle_3": "Gods appear"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Lo Han on top",
       "subtitle_2": "Heaven Soldiers reinforce"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Get that bastard for me"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2470,14 +2607,16 @@
       "subtitle_2": "You can't kill me",
       "subtitle_3": "Really?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "See which of us is tougher…",
       "subtitle_2": "I'll kill you…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2490,7 +2629,8 @@
       "subtitle_7": "Bastard, had I killed you",
       "subtitle_8": "many lives would have been spared"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2498,14 +2638,16 @@
       "subtitle_2": "Lord has given me an immortal heart",
       "subtitle_3": "you guys can't kill me"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Look clearly at your immortal heart",
       "subtitle_2": "What? A stone? How can this be?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2562,7 +2704,8 @@
       "revised_29": "Even if you take back this lousy piece of stone",
       "note_29": "Corrected 'Even you take back' to 'Even if you take back'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2572,7 +2715,8 @@
       "revised_1": "Don't let me be a man in the next life then…",
       "note_1": "Corrected 'a next life' to 'the next life' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2588,7 +2732,8 @@
       "subtitle_10": "Hey… can't wait anymore",
       "subtitle_11": "Dragon Fighter…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2599,19 +2744,22 @@
       "subtitle_5": "Come on",
       "subtitle_6": "Good"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Wow"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Damn"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2620,7 +2768,8 @@
       "subtitle_3": "- Mad Monk…\n- Master",
       "subtitle_4": "We meet again, let's get out of here quickly"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2630,7 +2779,8 @@
       "subtitle_4": "Because you're the one person I admire most",
       "subtitle_5": "Come again! Let's go quickly"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2646,7 +2796,8 @@
       "subtitle_10": "Can you?",
       "subtitle_11": "Of course not"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2659,7 +2810,8 @@
       "subtitle_7": "I didn't want to either.",
       "subtitle_8": "My stomach feels strange now"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2667,14 +2819,16 @@
       "subtitle_2": "to defecate the golden powder",
       "subtitle_3": "But I'm always constipated"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "I remember now",
       "subtitle_2": "I've still got two golden teeth"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2687,7 +2841,8 @@
       "revised_3": "I can't hang on any longer…\nplease do my last favour",
       "note_3": "Corrected 'favor' to 'favour' to match British English spelling."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2700,19 +2855,22 @@
       "subtitle_7": "What a funny laugh",
       "subtitle_8": "Mad Monk…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Mad Monk…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Amida Buddha…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2754,7 +2912,8 @@
       "revised_25": "- He doesn't have to be a beggar this life\n- Right...",
       "note_25": "Changed the ellipsis from a single-character ellipsis to three periods for consistency with subtitle 24."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2777,7 +2936,8 @@
       "revised_7": "He's now reincarnated",
       "note_7": "Corrected 're-incarnated' to 'reincarnated'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2787,14 +2947,16 @@
       "subtitle_4": "A promotion for a few grades only",
       "subtitle_5": "The coronation ceremony begins"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Congratulations",
       "subtitle_2": "Thank you"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2807,6 +2969,7 @@
       "revised_3": "I want to be an emissary of peace and be\nHeaven's envoy to spread love throughout the world",
       "note_3": "Corrected 'Heavens'' to 'Heaven's'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   }
 ]

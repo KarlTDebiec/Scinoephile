@@ -15,9 +15,24 @@ from test.helpers import assert_series_equal
     ("series_fixture", "expected_fixture"),
     [
         pytest.param(
+            "acopopb_eng_ocr_fuse_clean_validate_review",
+            "acopopb_eng_ocr_fuse_clean_validate_review_flatten",
+            id="acopopb-eng",
+        ),
+        pytest.param(
+            "acoptc_eng_ocr_fuse_clean_validate_review",
+            "acoptc_eng_ocr_fuse_clean_validate_review_flatten",
+            id="acoptc-eng",
+        ),
+        pytest.param(
             "kob_eng_ocr_fuse_clean_validate_review",
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
             id="kob-eng",
+        ),
+        pytest.param(
+            "kob_eng_timewarp_clean_review",
+            "kob_eng_timewarp_clean_review_flatten",
+            id="kob-eng-timewarp",
         ),
         pytest.param(
             "mlamd_eng_fuse_clean_validate_review",
@@ -33,6 +48,11 @@ from test.helpers import assert_series_equal
             "t_eng_fuse_clean_validate_review",
             "t_eng_fuse_clean_validate_review_flatten",
             id="t-eng",
+        ),
+        pytest.param(
+            "tmm_eng_ocr_fuse_clean_validate_review",
+            "tmm_eng_ocr_fuse_clean_validate_review_flatten",
+            id="tmm-eng",
         ),
     ],
 )

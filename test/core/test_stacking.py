@@ -136,6 +136,30 @@ def test_get_stacked_series_overlap_error_includes_event_context():
     ("one_fixture", "two_fixture", "expected_fixture"),
     [
         pytest.param(
+            "acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_eng_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_zho_hans_eng",
+            id="acopopb-zho-hans-eng",
+        ),
+        pytest.param(
+            "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_eng_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_yue_hans_eng",
+            id="acopopb-yue-hans-eng",
+        ),
+        pytest.param(
+            "acoptc_zho_hans_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_eng_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_zho_hans_eng",
+            id="acoptc-zho-hans-eng",
+        ),
+        pytest.param(
+            "acoptc_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_eng_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_yue_hans_eng",
+            id="acoptc-yue-hans-eng",
+        ),
+        pytest.param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hans_eng",
@@ -148,10 +172,28 @@ def test_get_stacked_series_overlap_error_includes_event_context():
             id="mlamd-zho-hans-eng",
         ),
         pytest.param(
+            "mnt_zho_hans_fuse_clean_validate_review_flatten",
+            "mnt_eng_fuse_clean_validate_review_flatten",
+            "mnt_zho_hans_eng",
+            id="mnt-zho-hans-eng",
+        ),
+        pytest.param(
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_eng_fuse_clean_validate_review_flatten",
             "t_zho_hans_eng",
             id="t-zho-hans-eng",
+        ),
+        pytest.param(
+            "tmm_zho_hans_ocr_fuse_clean_validate_review_flatten",
+            "tmm_eng_ocr_fuse_clean_validate_review_flatten",
+            "tmm_zho_hans_eng",
+            id="tmm-zho-hans-eng",
+        ),
+        pytest.param(
+            "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "tmm_eng_ocr_fuse_clean_validate_review_flatten",
+            "tmm_yue_hans_eng",
+            id="tmm-yue-hans-eng",
         ),
     ],
 )

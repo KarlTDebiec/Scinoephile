@@ -293,7 +293,7 @@ Don't cheat me! It is the Waterfall Cave
 
 60
 00:08:03,604 --> 00:08:04,958
-〝水帘洞〞呀！
+“水帘洞”呀！
 Don't cheat me! It is the Waterfall Cave
 
 61
@@ -1369,7 +1369,7 @@ It's me?
 
 277
 00:18:45,917 --> 00:18:49,250
-系呀！ ⋯⋯你点知㗎？就系你呀！
+系呀！⋯⋯你点知㗎？就系你呀！
 It's you. How do you know? It's you
 
 278
@@ -1557,7 +1557,7 @@ I know that
 
 315
 00:20:32,167 --> 00:20:33,875
-你〝抄〞吓佢吖喂　　嚟呀
+你“抄”吓佢吖喂　　嚟呀
 Let's go
 
 316
@@ -2390,7 +2390,7 @@ It's cold!
 
 484
 00:29:05,833 --> 00:29:07,125
-你有冇〝嬲〞多件衫？！
+你有冇“嬲”多件衫？！
 Have you worn more clothes
 
 485
@@ -2892,7 +2892,7 @@ You've got a wife?
 
 585
 00:36:05,333 --> 00:36:06,542
-离咗婚㗎啦！ ⋯
+离咗婚㗎啦！⋯
 We're divorced
 
 586
@@ -3843,7 +3843,7 @@ Wear the ring back
 
 777
 00:45:34,792 --> 00:45:41,125
-莫怕死，咪发〝t i〞藤
+莫怕死，咪发 "t i" 藤
 Don't scare to death
 
 778
@@ -3888,12 +3888,12 @@ You disregard my feelings
 
 786
 00:46:18,083 --> 00:46:20,667
-你唔好再烦我，我一嘢〝队〞死你
+你唔好再烦我，我一嘢“队”死你
 I'll kill you if you sing again
 
 787
 00:46:22,792 --> 00:46:26,042
-悟空，你即管〝队〞死我啦
+悟空，你即管“队”死我啦
 Monkey King, you kill you again
 
 788
@@ -5350,7 +5350,7 @@ the Box doesn't work properly.
 
 1081
 00:59:45,167 --> 00:59:47,000
-我〝卓〞一声返番嚟五百年之前
+我“卓”一声返番嚟五百年之前
 I go back to 500 years ago
 
 1082
@@ -5454,7 +5454,7 @@ No need to think!
 
 1102
 01:00:35,417 --> 01:00:36,583
-你〝抄〞下面！
+你“抄”下面！
 You search the bottom!
 
 1103
@@ -5474,7 +5474,7 @@ You've come back for a long time
 
 1106
 01:00:50,187 --> 01:00:52,354
-一日到黑〝裸〞住要月光宝盒
+一日到黑“裸”住要月光宝盒
 You just wanna get the Pandora's Box
 
 1107

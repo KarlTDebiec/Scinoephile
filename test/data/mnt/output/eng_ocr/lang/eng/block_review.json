@@ -2384,5 +2384,18 @@
     },
     "answer": {},
     "verified": true
+  },
+  {
+    "query": {
+      "subtitle_1": "(GIGGLING)",
+      "subtitle_2": "(IMITATESAIRPLANE)",
+      "subtitle_3": "- Who was at the door, Kanta?\n- Beats me."
+    },
+    "answer": {
+      "revised_2": "(IMITATES AIRPLANE)",
+      "note_2": "Regenerated from expected reviewed fixture."
+    },
+    "difficulty": 1,
+    "verified": true
   }
 ]

@@ -44,14 +44,54 @@ def test_get_eng_text_cleaned(
     ("series_fixture", "expected_fixture"),
     [
         pytest.param(
+            "acopopb_eng_ocr_fuse",
+            "acopopb_eng_ocr_fuse_clean",
+            id="acopopb-eng-fuse",
+        ),
+        pytest.param(
+            "acopopb_eng_ocr_lens",
+            "acopopb_eng_ocr_lens_clean",
+            id="acopopb-eng-lens",
+        ),
+        pytest.param(
+            "acopopb_eng_ocr_tesseract",
+            "acopopb_eng_ocr_tesseract_clean",
+            id="acopopb-eng-tesseract",
+        ),
+        pytest.param(
+            "acoptc_eng_ocr_fuse",
+            "acoptc_eng_ocr_fuse_clean",
+            id="acoptc-eng-fuse",
+        ),
+        pytest.param(
+            "acoptc_eng_ocr_lens",
+            "acoptc_eng_ocr_lens_clean",
+            id="acoptc-eng-lens",
+        ),
+        pytest.param(
+            "acoptc_eng_ocr_tesseract",
+            "acoptc_eng_ocr_tesseract_clean",
+            id="acoptc-eng-tesseract",
+        ),
+        pytest.param(
             "kob_eng_ocr_fuse",
             "kob_eng_ocr_fuse_clean",
             id="kob-eng-fuse",
         ),
         pytest.param(
-            "mlamd_eng_fuse",
-            "mlamd_eng_fuse_clean",
-            id="mlamd-eng-fuse",
+            "kob_eng_ocr_lens",
+            "kob_eng_ocr_lens_clean",
+            id="kob-eng-lens",
+        ),
+        pytest.param(
+            "kob_eng_ocr_tesseract",
+            "kob_eng_ocr_tesseract_clean",
+            id="kob-eng-tesseract",
+        ),
+        pytest.param(
+            "kob_eng_timewarp",
+            "kob_eng_timewarp_clean",
+            id="kob-eng-timewarp",
         ),
         pytest.param(
             "mnt_eng_fuse",
@@ -72,6 +112,46 @@ def test_get_eng_text_cleaned(
             "t_eng_ocr_tesseract",
             "t_eng_ocr_tesseract_clean",
             id="t-eng-tesseract",
+        ),
+        pytest.param(
+            "mlamd_eng_fuse",
+            "mlamd_eng_fuse_clean",
+            id="mlamd-eng-fuse",
+        ),
+        pytest.param(
+            "mlamd_eng_ocr_lens",
+            "mlamd_eng_ocr_lens_clean",
+            id="mlamd-eng-lens",
+        ),
+        pytest.param(
+            "mlamd_eng_ocr_tesseract",
+            "mlamd_eng_ocr_tesseract_clean",
+            id="mlamd-eng-tesseract",
+        ),
+        pytest.param(
+            "mnt_eng_ocr_lens",
+            "mnt_eng_ocr_lens_clean",
+            id="mnt-eng-lens",
+        ),
+        pytest.param(
+            "mnt_eng_ocr_tesseract",
+            "mnt_eng_ocr_tesseract_clean",
+            id="mnt-eng-tesseract",
+        ),
+        pytest.param(
+            "tmm_eng_ocr_fuse",
+            "tmm_eng_ocr_fuse_clean",
+            id="tmm-eng-fuse",
+        ),
+        pytest.param(
+            "tmm_eng_ocr_lens",
+            "tmm_eng_ocr_lens_clean",
+            id="tmm-eng-lens",
+        ),
+        pytest.param(
+            "tmm_eng_ocr_tesseract",
+            "tmm_eng_ocr_tesseract_clean",
+            id="tmm-eng-tesseract",
         ),
     ],
 )
