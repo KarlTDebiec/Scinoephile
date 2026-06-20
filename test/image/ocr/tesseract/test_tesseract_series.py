@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from PIL import Image
-from pytest import LogCaptureFixture, MonkeyPatch, mark, raises
+from pytest import LogCaptureFixture, MonkeyPatch, parametrize, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import (
@@ -159,7 +159,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
     assert recognizer.kwargs["tessdata_dir_path"] == tessdata_dir_path
 
 
-@mark.parametrize(
+@parametrize(
     "exception",
     [
         ImportError("missing tesseract dependency"),

@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from contextlib import AbstractContextManager, nullcontext
 
-from pytest import mark, raises
+from pytest import parametrize, raises
 
 from scinoephile.core import UnsupportedCharacterError
 from scinoephile.lang.yue.conversion import get_yue_converted
 
 
-@mark.parametrize(
+@parametrize(
     ("text", "expected", "expectation"),
     [
         ("舂暈\ue527", "舂暈鷄", nullcontext()),

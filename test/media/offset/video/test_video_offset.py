@@ -11,7 +11,7 @@ from typing import Any, TypedDict
 from unittest.mock import patch
 
 import numpy as np
-from pytest import approx, mark, raises
+from pytest import approx, parametrize, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.media.offset.video import (
@@ -403,7 +403,7 @@ def test_sample_video_frames_normalizes_brightness():
     assert samples[1].frame.std() == approx(1.0)
 
 
-@mark.parametrize(
+@parametrize(
     ("kwargs", "message"),
     [
         (

@@ -8,7 +8,7 @@ from pathlib import Path
 
 import requests
 from PIL import Image
-from pytest import MonkeyPatch, mark, raises
+from pytest import MonkeyPatch, parametrize, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import TesseractRecognizer
@@ -62,7 +62,7 @@ def test_tesseract_recognizer_caches_results_by_image(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 1
 
 
-@mark.parametrize(
+@parametrize(
     ("language", "expected_code"),
     [
         (Language.eng, "eng"),

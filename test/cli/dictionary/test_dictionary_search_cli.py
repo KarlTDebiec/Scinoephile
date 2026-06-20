@@ -13,7 +13,7 @@ from shlex import quote
 from subprocess import list2cmdline
 from unittest.mock import patch
 
-from pytest import CaptureFixture, fixture, mark, raises
+from pytest import CaptureFixture, fixture, parametrize, raises
 
 from scinoephile.cli.dictionary.dictionary_search_cli import DictionarySearchCli
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
@@ -121,7 +121,7 @@ def dictionary_database_dir_path() -> Generator[Path]:
         yield dir_path
 
 
-@mark.parametrize(
+@parametrize(
     ("query", "expected_output", "expectation"),
     [
         ("山坑", "山坑", nullcontext()),

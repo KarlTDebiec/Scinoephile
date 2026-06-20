@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock
 
-from pytest import FixtureRequest, mark, param
+from pytest import FixtureRequest, param, parametrize
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series, Subtitle
@@ -46,7 +46,7 @@ from test.data.tmm import (
 from test.helpers import assert_series_equal
 
 
-@mark.parametrize(
+@parametrize(
     ("lens_text", "paddle_text", "expected_text"),
     [
         param(
@@ -90,7 +90,7 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
     provider.chat_completion.assert_not_called()
 
 
-@mark.parametrize(
+@parametrize(
     (
         "lens_fixture",
         "paddle_fixture",

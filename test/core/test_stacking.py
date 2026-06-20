@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, mark, param, raises
+from pytest import FixtureRequest, param, parametrize, raises
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.stacking import (
@@ -38,7 +38,7 @@ def test_get_stacked_series_does_not_overlap_union_timing():
     assert output.events[1].start >= output.events[0].end
 
 
-@mark.parametrize(
+@parametrize(
     ("timing_mode", "expected_times"),
     [
         (StackTimingMode.TOP, [(1000, 2000), (2100, 3000)]),
@@ -87,7 +87,7 @@ def test_get_stacked_series_timing_mode_uses_available_timing_for_unpaired_subti
         assert [event.text for event in output.events] == ["A", "1"]
 
 
-@mark.parametrize(
+@parametrize(
     ("timing_mode", "expected_times"),
     [
         (StackTimingMode.TOP, [(1000, 1500), (1500, 2000)]),
@@ -132,7 +132,7 @@ def test_get_stacked_series_overlap_error_includes_event_context():
         get_stacked_series_from_groups(one, Series(), [([0], []), ([1], [])])
 
 
-@mark.parametrize(
+@parametrize(
     ("one_fixture", "two_fixture", "expected_fixture"),
     [
         param(

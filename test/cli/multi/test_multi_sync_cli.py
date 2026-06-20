@@ -8,7 +8,7 @@ from contextlib import redirect_stderr
 from io import StringIO
 from pathlib import Path
 
-from pytest import CaptureFixture, MonkeyPatch, mark, raises
+from pytest import CaptureFixture, MonkeyPatch, parametrize, raises
 
 from scinoephile.cli.multi.multi_sync_cli import MultiSyncCli
 from scinoephile.common.testing import run_cli_with_args
@@ -75,7 +75,7 @@ def test_multi_sync_cli_pipe(tmp_path: Path):
     assert_series_equal(output, expected)
 
 
-@mark.parametrize(
+@parametrize(
     ("args", "expected_error"),
     [
         ("--sync-cutoff -0.01", "-0.01 is less than minimum value of 0.0"),

@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any, ClassVar, cast
 from unittest.mock import patch
 
-from pytest import fixture, mark
+from pytest import fixture, parametrize
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.dictionaries import (
@@ -233,7 +233,7 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     assert "gzzj" in response["error"]
 
 
-@mark.parametrize(
+@parametrize(
     ("prompt_cls", "factory"),
     [
         (YueGappedTranslationVsZhoPromptYueHans, get_yue_vs_zho_gapped_translator),

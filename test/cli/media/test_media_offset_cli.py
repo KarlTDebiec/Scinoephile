@@ -8,7 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from pytest import CaptureFixture, mark, raises
+from pytest import CaptureFixture, parametrize, raises
 
 from scinoephile.cli.media.media_offset_cli import MediaOffsetCli
 from scinoephile.common.testing import run_cli_with_args
@@ -187,7 +187,7 @@ def test_media_offset_cli_rejects_start_time_argument(
     assert "unrecognized arguments: --start-time 600" in capsys.readouterr().err
 
 
-@mark.parametrize(
+@parametrize(
     "argument",
     [
         "--max-offset",

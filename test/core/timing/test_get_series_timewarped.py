@@ -4,14 +4,14 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, mark, param
+from pytest import FixtureRequest, param, parametrize
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 from test.helpers import assert_series_equal
 
 
-@mark.parametrize(
+@parametrize(
     (
         "source_one_fixture",
         "source_two_fixture",

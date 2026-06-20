@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import Action, ArgumentParser
 from pathlib import Path
 
-from pytest import mark, raises
+from pytest import parametrize, raises
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
@@ -49,7 +49,7 @@ LLM_CLIS: tuple[type[CommandLineInterface], ...] = (
 """CLI classes that expose shared LLM arguments."""
 
 
-@mark.parametrize("cli", LLM_CLIS)
+@parametrize("cli", LLM_CLIS)
 def test_llm_options_are_in_llm_argument_group(cli: type[CommandLineInterface]):
     """Test shared LLM options are grouped separately from operation options.
 
@@ -105,7 +105,7 @@ def test_add_llm_provider_args_bundles_standard_llm_options(tmp_path):
     assert default_namespace.llm_args == LlmArguments()
 
 
-@mark.parametrize("cli", (OcrProcessCli, OcrValidateCli))
+@parametrize("cli", (OcrProcessCli, OcrValidateCli))
 def test_ocr_web_options_are_in_web_argument_group(cli: type[CommandLineInterface]):
     """Test OCR web options are grouped separately from operation options.
 

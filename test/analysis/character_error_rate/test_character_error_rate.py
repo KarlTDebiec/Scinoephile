@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from math import inf
 
-from pytest import FixtureRequest, mark, param
+from pytest import FixtureRequest, param, parametrize
 
 from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
 from scinoephile.core.subtitles import Series, Subtitle
@@ -29,7 +29,7 @@ def _get_series(*texts: str) -> Series:
     )
 
 
-@mark.parametrize(
+@parametrize(
     ("reference", "candidate", "expected"),
     [
         (
@@ -164,7 +164,7 @@ def test_line_cer(
     assert result.reference_length == expected.reference_length
 
 
-@mark.parametrize(
+@parametrize(
     ("reference", "candidate"),
     [
         (_get_series("你", "好"), _get_series("你好")),
@@ -184,7 +184,7 @@ def test_series_cer_ignores_separator_only_line_wrapping(
     assert result.deletions == 0
 
 
-@mark.parametrize(
+@parametrize(
     (
         "reference_series_fixture_name",
         "candidate_series_fixture_name",

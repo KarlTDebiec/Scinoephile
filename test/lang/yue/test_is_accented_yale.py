@@ -4,13 +4,13 @@
 
 from __future__ import annotations
 
-from pytest import mark
+from pytest import parametrize
 
 from scinoephile.lang.yue.romanization import is_accented_yale
 from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
 
 
-@mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [(case.text, case.is_accented_yale) for case in LANGUAGE_ID_TEST_CASES],
 )

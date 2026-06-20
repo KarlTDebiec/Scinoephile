@@ -8,7 +8,7 @@ from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
-from pytest import fixture, mark, raises
+from pytest import fixture, parametrize, raises
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.dictionaries.gzzj import GzzjDictionaryService
@@ -52,7 +52,7 @@ def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryServic
     return service
 
 
-@mark.parametrize(
+@parametrize(
     ("query", "expected", "expectation"),
     [
         ("", [], nullcontext()),

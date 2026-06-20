@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, mark, param, raises
+from pytest import FixtureRequest, param, parametrize, raises
 
 from scinoephile.analysis.diff import LineDiffKind, SeriesDiff
 from scinoephile.core import ScinoephileError
@@ -95,7 +95,7 @@ def test_series_diff_reports_shift():
     assert messages[0].two_idxs == (0, 1)
 
 
-@mark.parametrize(
+@parametrize(
     (
         "one_texts",
         "two_texts",
@@ -155,7 +155,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
     assert messages[0].two_texts == ("Damn!",)
 
 
-@mark.parametrize(
+@parametrize(
     (
         "one_fixture_name",
         "two_fixture_name",
@@ -271,7 +271,7 @@ def test_series_diff_get_stacked_str_can_include_equal_lines():
     ]
 
 
-@mark.parametrize(
+@parametrize(
     ("one_texts", "two_texts", "expected_lines"),
     [
         (

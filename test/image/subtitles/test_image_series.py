@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from PIL import Image
-from pytest import FixtureRequest, mark, param, raises
+from pytest import FixtureRequest, param, parametrize, raises
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core import ScinoephileError
@@ -16,7 +16,7 @@ from scinoephile.image.bbox import Bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
-@mark.parametrize(
+@parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
         param(
@@ -54,7 +54,7 @@ def test_load_sup(
         assert event.img.size[1] > 0
 
 
-@mark.parametrize(
+@parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
         param(

@@ -13,7 +13,7 @@ from typing import Any, cast
 
 import numpy as np
 from PIL import Image
-from pytest import MonkeyPatch, mark, raises
+from pytest import MonkeyPatch, parametrize, raises
 
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
@@ -235,7 +235,7 @@ def test_paddle_recognizer_rejects_unsupported_languages():
         PaddleRecognizer(language=cast(Language, "korean"))
 
 
-@mark.parametrize(
+@parametrize(
     ("language", "expected_code"),
     [
         (Language.eng, "en"),

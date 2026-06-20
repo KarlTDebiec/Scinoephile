@@ -8,7 +8,7 @@ from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
-from pytest import fixture, mark, raises
+from pytest import fixture, parametrize, raises
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dictionaries import (
@@ -96,7 +96,7 @@ def service(
     return CuhkDictionaryService(database_path=database_path)
 
 
-@mark.parametrize(
+@parametrize(
     ("query", "expected", "expectation"),
     [
         ("", [], nullcontext()),

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, mark, param
+from pytest import FixtureRequest, param, parametrize
 
 from scinoephile.lang.yue.romanization import (
     get_yue_romanized,
@@ -13,7 +13,7 @@ from scinoephile.lang.yue.romanization import (
 from test.helpers import assert_series_equal
 
 
-@mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture"),
     [
         param(
@@ -72,7 +72,7 @@ def test_get_yue_romanized(
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
 
 
-@mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("广东话", "gwóng dūng wá"),

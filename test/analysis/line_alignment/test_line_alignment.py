@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import numpy as np
-from pytest import mark
+from pytest import parametrize
 
 from scinoephile.analysis.line_alignment import (
     LineAlignment,
@@ -13,7 +13,7 @@ from scinoephile.analysis.line_alignment import (
 )
 
 
-@mark.parametrize(
+@parametrize(
     ("one", "two", "expected_pairs"),
     [
         (

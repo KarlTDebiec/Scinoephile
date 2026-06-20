@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from logging import DEBUG, ERROR, INFO, WARNING, getLogger
 
-from pytest import mark
+from pytest import parametrize
 
 from scinoephile.common.logs import set_logging_verbosity
 
 
-@mark.parametrize(
+@parametrize(
     ("verbosity", "expected_level"),
     [
         (0, ERROR),

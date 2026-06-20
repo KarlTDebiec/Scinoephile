@@ -9,7 +9,7 @@ from io import StringIO
 from os import environ
 from unittest.mock import patch
 
-from pytest import mark, raises
+from pytest import parametrize, raises
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
@@ -28,7 +28,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 
 
-@mark.parametrize(
+@parametrize(
     "cli",
     [
         EngProcessCli,

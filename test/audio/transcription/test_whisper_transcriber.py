@@ -12,7 +12,7 @@ from pathlib import Path
 from textwrap import dedent
 from unittest.mock import Mock
 
-from pytest import MonkeyPatch, importorskip, mark, raises
+from pytest import MonkeyPatch, importorskip, parametrize, raises
 
 from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
@@ -32,7 +32,7 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
 _REPO_ROOT_PATH = Path(__file__).parents[3]
 
 
-@mark.parametrize(
+@parametrize(
     ("field_name", "first_value", "second_value"),
     [
         ("use_vad", True, False),
@@ -75,7 +75,7 @@ def test_get_cache_path_separates_configuration(
     assert first_cache_path != second_cache_path
 
 
-@mark.parametrize(
+@parametrize(
     ("model_name", "expected"),
     [
         ("khleeloo/whisper-large-v3-cantonese", True),

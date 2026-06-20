@@ -7,13 +7,13 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any, cast
 
-from pytest import mark, raises
+from pytest import parametrize, raises
 
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.common.validation import val_int
 
 
-@mark.parametrize(
+@parametrize(
     ("value", "expected"),
     [
         (5, 5),
@@ -27,7 +27,7 @@ def test_val_int_accepts_scalar_values(value: float | int | str, expected: int):
     assert val_int(value) == expected
 
 
-@mark.parametrize(
+@parametrize(
     ("constraint", "expected_error"),
     [
         ("min", "less than minimum"),
@@ -58,7 +58,7 @@ def test_val_int_rejects_invalid_values_and_conflicting_constraints():
         val_int(5, min_value=5, max_value=5)
 
 
-@mark.parametrize(
+@parametrize(
     ("value", "expected"),
     [
         ([1, 2, 3], [1, 2, 3]),

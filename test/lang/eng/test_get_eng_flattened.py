@@ -4,14 +4,14 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, fail, mark, param
+from pytest import FixtureRequest, fail, param, parametrize
 
 # noinspection PyProtectedMember
 from scinoephile.lang.eng.flattening import _get_eng_text_flattened, get_eng_flattened
 from test.helpers import assert_series_equal
 
 
-@mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture"),
     [
         param(
@@ -85,7 +85,7 @@ def test_get_eng_flattened(
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
 
 
-@mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("line 1\nline 2", "line 1 line 2"),

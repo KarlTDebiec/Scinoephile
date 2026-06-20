@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from pytest import mark
+from pytest import parametrize
 
 from scinoephile.common import package_root
 from scinoephile.core.llms import Manager, Prompt
@@ -77,7 +77,7 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
     return count
 
 
-@mark.parametrize(
+@parametrize(
     ("name", "manager_cls", "prompt_cls", "json_paths", "expected_paths"),
     [
         (

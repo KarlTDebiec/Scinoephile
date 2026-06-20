@@ -9,7 +9,7 @@ from io import StringIO
 from os import getenv
 from pathlib import Path
 
-from pytest import MonkeyPatch, mark, raises
+from pytest import MonkeyPatch, parametrize, raises, skipif
 
 from scinoephile.cli.ocr import (
     OcrLensCli,
@@ -376,7 +376,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
     assert "--detect-italics may only be used with --language eng" in stderr.getvalue()
 
 
-@mark.parametrize(
+@parametrize(
     (
         "cli",
         "load_target",
@@ -499,7 +499,7 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
 
 
 @skip_if_ci()
-@mark.skipif(
+@skipif       (
     not getenv("SCINOEPHILE_RUN_MLAMD_LENS_OCR"),
     reason=(
         "Set SCINOEPHILE_RUN_MLAMD_LENS_OCR=1 to run full MLAMD Google Lens OCR tests"
@@ -534,11 +534,11 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
 
 
 @skip_if_ci()
-@mark.skipif(
+@skipif       (
     not getenv("SCINOEPHILE_RUN_MLAMD_PADDLE_OCR"),
     reason="Set SCINOEPHILE_RUN_MLAMD_PADDLE_OCR=1 to run full MLAMD PaddleOCR tests",
 )
-@mark.parametrize(
+@parametrize(
     (
         "sup_path",
         "language",

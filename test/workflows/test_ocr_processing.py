@@ -9,7 +9,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
-from pytest import MonkeyPatch, mark, raises
+from pytest import MonkeyPatch, parametrize, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -416,7 +416,7 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
     ] == ["fused"]
 
 
-@mark.parametrize("process_ocr", [process_eng_ocr, process_zho_ocr])
+@parametrize("process_ocr", [process_eng_ocr, process_zho_ocr])
 def test_process_ocr_wraps_filesystem_errors(
     process_ocr: Callable[..., OcrProcessingResult],
     monkeypatch: MonkeyPatch,

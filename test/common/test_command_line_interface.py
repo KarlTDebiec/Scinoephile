@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import ClassVar
 from unittest.mock import patch
 
-from pytest import MonkeyPatch, mark, raises
+from pytest import MonkeyPatch, parametrize, raises
 
 from scinoephile.common.command_line_interface import (
     CommandLineInterface,
@@ -106,7 +106,7 @@ class ReportTool(CommandLineInterface):
         pass
 
 
-@mark.parametrize(
+@parametrize(
     ("cli_cls", "expected_name"),
     [
         (TestCli, "test"),

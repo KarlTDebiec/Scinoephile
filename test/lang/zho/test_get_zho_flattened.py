@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, fail, mark, param
+from pytest import FixtureRequest, fail, param, parametrize
 
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from test.helpers import assert_series_equal
@@ -12,7 +12,7 @@ from test.helpers import assert_series_equal
 # noinspection PyProtectedMember
 
 
-@mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture"),
     [
         param(

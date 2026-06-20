@@ -10,7 +10,7 @@ from os import environ
 from pathlib import Path
 from unittest.mock import patch
 
-from pytest import MonkeyPatch, mark, raises
+from pytest import MonkeyPatch, parametrize, raises
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
@@ -68,7 +68,7 @@ def test_all_cli_help_paths_do_not_create_default_cache_dir(
     assert not cache_dir_path.exists()
 
 
-@mark.parametrize(
+@parametrize(
     ("locale_name", "subcommand", "expected_fragment"),
     [
         (
@@ -195,7 +195,7 @@ def test_locale_precedence_uses_environment_variable():
     assert "Scinoephile 命令列介面" in output
 
 
-@mark.parametrize(
+@parametrize(
     ("locale_name", "expected_fragments"),
     [
         ("en", ("Command-line interface for Scinoephile", "subcommand")),
@@ -219,7 +219,7 @@ def test_scinoephile_help_localized(
         assert fragment in output
 
 
-@mark.parametrize(
+@parametrize(
     ("locale_name", "subcommand", "expected_fragment"),
     [
         ("en", "multi cer", "Calculate the Character Error Rate (CER)"),

@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-from pytest import CaptureFixture, mark, raises
+from pytest import CaptureFixture, parametrize, raises
 
 from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.common.testing import run_cli_with_args
@@ -64,7 +64,7 @@ def test_media_probe_cli_lists_all_streams(
     ]
 
 
-@mark.parametrize(
+@parametrize(
     ("script", "language"),
     [
         ("zho-Hant", "zho-Hant"),

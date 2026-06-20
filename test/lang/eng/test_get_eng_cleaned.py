@@ -4,13 +4,13 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, mark, param
+from pytest import FixtureRequest, param, parametrize
 
 from scinoephile.lang.eng.cleaning import get_eng_cleaned, get_eng_text_cleaned
 from test.helpers import assert_series_equal
 
 
-@mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("hello\\N-\\Nworld", "hello\\Nworld"),
@@ -40,7 +40,7 @@ def test_get_eng_text_cleaned(
     assert get_eng_text_cleaned(text) == expected
 
 
-@mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture"),
     [
         param(

@@ -7,7 +7,7 @@ from __future__ import annotations
 from io import StringIO
 from unittest.mock import patch
 
-from pytest import mark
+from pytest import parametrize
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.common.file import get_temp_file_path
@@ -16,7 +16,7 @@ from scinoephile.core.subtitles import Series
 from test.helpers import assert_series_equal, test_data_root
 
 
-@mark.parametrize(
+@parametrize(
     ("input_path", "args", "expected_path"),
     [
         (
@@ -52,7 +52,7 @@ def test_eng_process_cli(
     assert_series_equal(output, expected)
 
 
-@mark.parametrize(
+@parametrize(
     ("input_path", "args", "expected_path"),
     [
         (

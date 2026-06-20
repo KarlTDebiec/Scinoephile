@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock, patch
 
-from pytest import FixtureRequest, mark, param
+from pytest import FixtureRequest, param, parametrize
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.multilang.yue_zho.gapped_translation import (
@@ -19,7 +19,7 @@ from test.data.mlamd import get_mlamd_yue_vs_zho_gapped_translation_test_cases
 from test.helpers import assert_series_equal
 
 
-@mark.parametrize(
+@parametrize(
     (
         "yuewen_fixture",
         "zhongwen_fixture",

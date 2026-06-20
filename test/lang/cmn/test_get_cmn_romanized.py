@@ -4,13 +4,13 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, mark, param
+from pytest import FixtureRequest, param, parametrize
 
 from scinoephile.lang.cmn.romanization import get_cmn_romanized, get_cmn_text_romanized
 from test.helpers import assert_series_equal
 
 
-@mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture"),
     [
         param(
@@ -99,7 +99,7 @@ def test_get_cmn_romanized(
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
 
 
-@mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("你好世界", "nǐhǎo shìjiè"),

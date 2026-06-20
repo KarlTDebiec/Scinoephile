@@ -9,13 +9,13 @@ import sys
 from pathlib import Path
 from time import monotonic
 
-from pytest import mark, raises
+from pytest import parametrize, raises
 
 from scinoephile.common.subprocess import run_command
 from test.helpers.subprocess_cases import SUBPROCESS_SUCCESS_CASES
 
 
-@mark.parametrize(
+@parametrize(
     ("command", "expected_stdout_fragments"),
     [(command, fragments) for _, command, fragments in SUBPROCESS_SUCCESS_CASES],
     ids=[name for name, _, _ in SUBPROCESS_SUCCESS_CASES],

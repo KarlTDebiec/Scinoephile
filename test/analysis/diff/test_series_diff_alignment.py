@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from pytest import mark
+from pytest import parametrize
 
 from scinoephile.analysis.diff import LineDiffKind, SeriesDiff
 from scinoephile.core.subtitles import Series, Subtitle
@@ -206,7 +206,7 @@ def test_series_diff_pairs_one_sided_punctuation_with_context_line():
     assert messages[1].two_idxs == (1,)
 
 
-@mark.parametrize(
+@parametrize(
     (
         "one_texts",
         "two_texts",
