@@ -310,9 +310,7 @@ def test_lens_recognizer_raises_last_request_error_after_retries(
     assert not list(tmp_path.glob("*.json"))
 
 
-def test_lens_recognizer_retries_in_one_asyncio_run(
-    monkeypatch: MonkeyPatch,
-):
+def test_lens_recognizer_retries_in_one_asyncio_run(monkeypatch: MonkeyPatch):
     """Test Google Lens retries within one asyncio.run call.
 
     Arguments:
@@ -354,9 +352,7 @@ def test_lens_recognizer_retries_in_one_asyncio_run(
     assert recognizer.predict_count == 3
 
 
-def test_lens_recognizer_waits_between_transient_retries(
-    monkeypatch: MonkeyPatch,
-):
+def test_lens_recognizer_waits_between_transient_retries(monkeypatch: MonkeyPatch):
     """Test Google Lens waits before retrying transient failures.
 
     Arguments:
@@ -377,9 +373,7 @@ def test_lens_recognizer_waits_between_transient_retries(
     assert delays == [1.5, 1.5]
 
 
-def test_lens_recognizer_retries_lens_api_errors(
-    monkeypatch: MonkeyPatch,
-):
+def test_lens_recognizer_retries_lens_api_errors(monkeypatch: MonkeyPatch):
     """Test Google Lens retries transient chrome-lens-py API errors.
 
     Arguments:
@@ -414,9 +408,7 @@ def test_lens_recognizer_does_not_retry_nontransient_errors():
     assert recognizer.predict_count == 1
 
 
-def test_lens_recognizer_rejects_uncached_calls_in_async_loop(
-    tmp_path: Path,
-):
+def test_lens_recognizer_rejects_uncached_calls_in_async_loop(tmp_path: Path):
     """Test uncached synchronous recognition fails clearly in an async loop.
 
     Arguments:
@@ -432,9 +424,7 @@ def test_lens_recognizer_rejects_uncached_calls_in_async_loop(
     asyncio.run(recognize())
 
 
-def test_lens_recognizer_import_error_is_actionable(
-    monkeypatch: MonkeyPatch,
-):
+def test_lens_recognizer_import_error_is_actionable(monkeypatch: MonkeyPatch):
     """Test missing chrome-lens-py dependency produces an actionable error.
 
     Arguments:
@@ -489,9 +479,7 @@ def test_lens_recognizer_imports_chrome_lens_py_only_when_needed():
     assert exitcode == 0
 
 
-def test_lens_recognizer_reuses_lens_api_client_per_instance(
-    monkeypatch: MonkeyPatch,
-):
+def test_lens_recognizer_reuses_lens_api_client_per_instance(monkeypatch: MonkeyPatch):
     """Test each Google Lens recognizer reuses one LensAPI client.
 
     Arguments:

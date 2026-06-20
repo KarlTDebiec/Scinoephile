@@ -47,9 +47,7 @@ def test_deepseek_constructs_client_with_base_url_and_env_api_key(
     assert client.kwargs["api_key"] == "dummy"
 
 
-def test_deepseek_api_key_override_wins_over_env(
-    monkeypatch: MonkeyPatch,
-):
+def test_deepseek_api_key_override_wins_over_env(monkeypatch: MonkeyPatch):
     """Test explicit api_key overrides the environment variable."""
     monkeypatch.setenv("DEEPSEEK_API_KEY", "env")
 

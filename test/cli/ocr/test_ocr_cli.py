@@ -352,10 +352,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
     output_path = tmp_path / "unused.srt"
     stderr = StringIO()
 
-    def fail_ocr_image_series_with_tesseract(
-        *args: object,
-        **kwargs: object,
-    ) -> Series:
+    def fail_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
         """Fail if OCR is invoked before argument validation."""
         _ = args, kwargs
         raise AssertionError("unexpected OCR")

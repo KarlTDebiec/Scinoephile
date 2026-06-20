@@ -145,11 +145,7 @@ def _get_series(*texts: str) -> Series:
         ),
     ],
 )
-def test_line_cer(
-    reference: str,
-    candidate: str,
-    expected: SeriesCERResult,
-):
+def test_line_cer(reference: str, candidate: str, expected: SeriesCERResult):
     """Test line-level character error rate calculations.
 
     Arguments:

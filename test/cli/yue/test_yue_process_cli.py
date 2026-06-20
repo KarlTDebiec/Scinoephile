@@ -29,11 +29,7 @@ parametrize = _mark.parametrize
         ),
     ],
 )
-def test_yue_process_cli(
-    input_path: str,
-    args: str,
-    expected_path: str,
-):
+def test_yue_process_cli(input_path: str, args: str, expected_path: str):
     """Test written Cantonese processing CLI with file arguments.
 
     Arguments:

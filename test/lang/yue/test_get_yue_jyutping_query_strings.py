@@ -20,10 +20,7 @@ parametrize = _mark.parametrize
         ("séung", ["soeng2"]),
     ],
 )
-def test_get_yue_jyutping_query_strings(
-    text: str,
-    expected: list[str],
-):
+def test_get_yue_jyutping_query_strings(text: str, expected: list[str]):
     """Test get_yue_jyutping_query_strings.
 
     Arguments:

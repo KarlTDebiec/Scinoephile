@@ -313,9 +313,7 @@ class _PatchedZhoOcrPipeline:
         return _series_with_texts(self.paddle_texts)
 
 
-def test_ocr_processing_workflow_is_callable(
-    tmp_path: Path,
-):
+def test_ocr_processing_workflow_is_callable(tmp_path: Path):
     """Test OCR processing workflow exposes a callable class API.
 
     Arguments:

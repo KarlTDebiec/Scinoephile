@@ -28,11 +28,7 @@ parametrize = _mark.parametrize
         ),
     ],
 )
-def test_eng_process_cli(
-    input_path: str,
-    args: str,
-    expected_path: str,
-):
+def test_eng_process_cli(input_path: str, args: str, expected_path: str):
     """Test English processing CLI with file arguments.
 
     Arguments:

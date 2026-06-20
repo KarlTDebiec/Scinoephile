@@ -72,9 +72,7 @@ def test_media_extract_subs_cli_renders_grouped_outputs(
     ]
 
 
-def test_media_extract_subs_cli_maps_workflow_errors_to_parser_errors(
-    tmp_path: Path,
-):
+def test_media_extract_subs_cli_maps_workflow_errors_to_parser_errors(tmp_path: Path):
     """Test media extract-subs CLI maps workflow errors to parser errors.
 
     Arguments:

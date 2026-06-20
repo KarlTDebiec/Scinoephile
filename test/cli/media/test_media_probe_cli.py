@@ -18,10 +18,7 @@ from scinoephile.lang.zho.subtitles.analysis import ZhoSubtitleScriptAnalysis
 parametrize = _mark.parametrize
 
 
-def test_media_probe_cli_lists_all_streams(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
-):
+def test_media_probe_cli_lists_all_streams(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test media probe CLI lists all streams without packet counts.
 
     Arguments:

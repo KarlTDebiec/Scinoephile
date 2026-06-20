@@ -30,10 +30,7 @@ parametrize = _mark.parametrize
         ("ΟΚ, οκ.", "OK, ok."),
     ],
 )
-def test_get_eng_text_cleaned(
-    text: str,
-    expected: str,
-):
+def test_get_eng_text_cleaned(text: str, expected: str):
     """Test get_eng_text_cleaned.
 
     Arguments:

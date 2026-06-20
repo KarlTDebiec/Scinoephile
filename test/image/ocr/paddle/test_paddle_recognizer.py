@@ -108,9 +108,7 @@ def test_paddle_recognizer_uses_server_models_and_disables_mkldnn_on_windows(
     assert observed_kwargs["enable_mkldnn"] is False
 
 
-def test_paddle_recognizer_keeps_mkldnn_enabled_off_windows(
-    monkeypatch: MonkeyPatch,
-):
+def test_paddle_recognizer_keeps_mkldnn_enabled_off_windows(monkeypatch: MonkeyPatch):
     """Test PaddleOCR recognizer keeps MKL-DNN enabled off Windows.
 
     Arguments:
@@ -142,9 +140,7 @@ def test_paddle_recognizer_keeps_mkldnn_enabled_off_windows(
     assert observed_kwargs["enable_mkldnn"] is True
 
 
-def test_paddle_recognizer_preserves_root_logger_level(
-    monkeypatch: MonkeyPatch,
-):
+def test_paddle_recognizer_preserves_root_logger_level(monkeypatch: MonkeyPatch):
     """Test PaddleOCR construction does not change root logging level.
 
     Arguments:

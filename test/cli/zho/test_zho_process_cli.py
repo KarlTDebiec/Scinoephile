@@ -35,11 +35,7 @@ parametrize = _mark.parametrize
         ),
     ],
 )
-def test_zho_process_cli(
-    input_path: str,
-    args: str,
-    expected_path: str,
-):
+def test_zho_process_cli(input_path: str, args: str, expected_path: str):
     """Test standard Chinese processing CLI with file arguments.
 
     Arguments:
