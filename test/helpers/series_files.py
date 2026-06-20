@@ -9,22 +9,51 @@ from pathlib import Path
 from scinoephile.core.subtitles import Series, Subtitle
 
 __all__ = [
+    "get_ocr_text_series",
     "get_text_series",
     "write_srt_series",
 ]
 
 
-def get_text_series(*texts: str) -> Series:
-    """Build a compact subtitle series from text events.
+def get_ocr_text_series(*texts: str) -> Series:
+    """Build a text subtitle series matching OCR workflow test timings.
 
     Arguments:
         *texts: subtitle event texts
     Returns:
         subtitle series with one event per text
     """
+    return get_text_series(
+        *texts,
+        start_ms=1000,
+        duration_ms=1000,
+        step_ms=2000,
+    )
+
+
+def get_text_series(
+    *texts: str,
+    start_ms: int = 0,
+    duration_ms: int = 500,
+    step_ms: int = 1000,
+) -> Series:
+    """Build a compact subtitle series from text events.
+
+    Arguments:
+        *texts: subtitle event texts
+        start_ms: start time for the first subtitle, in milliseconds
+        duration_ms: duration for each subtitle, in milliseconds
+        step_ms: time between subtitle starts, in milliseconds
+    Returns:
+        subtitle series with one event per text
+    """
     return Series(
         events=[
-            Subtitle(start=idx * 1000, end=idx * 1000 + 500, text=text)
+            Subtitle(
+                start=start_ms + (idx * step_ms),
+                end=start_ms + (idx * step_ms) + duration_ms,
+                text=text,
+            )
             for idx, text in enumerate(texts)
         ]
     )

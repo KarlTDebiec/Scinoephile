@@ -4,13 +4,11 @@
 
 from __future__ import annotations
 
-from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
 from pytest import fixture, raises
 
-from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
@@ -19,13 +17,6 @@ from scinoephile.core.dictionaries import (
 )
 from scinoephile.dictionaries.cuhk import CuhkDictionaryService
 from test.helpers import parametrize
-
-
-@fixture
-def database_path() -> Generator[Path]:
-    """Provide a temporary SQLite database path."""
-    with get_temp_file_path(".db") as temp_path:
-        yield temp_path
 
 
 @fixture

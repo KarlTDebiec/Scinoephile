@@ -4,9 +4,13 @@
 
 from __future__ import annotations
 
+from collections.abc import Generator
+from pathlib import Path
+
 from PIL import Image
 from pytest import fixture
 
+from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 # ruff: noqa: F401 F403
@@ -17,6 +21,27 @@ from test.data.mlamd import *
 from test.data.mnt import *
 from test.data.t import *
 from test.data.tmm import *
+
+
+@fixture
+def database_path() -> Generator[Path]:
+    """Provide a temporary SQLite database path."""
+    with get_temp_file_path(".db") as temp_path:
+        yield temp_path
+
+
+@fixture
+def local_data_dir_path() -> Generator[Path]:
+    """Provide a temporary canonical local data directory."""
+    with get_temp_directory_path() as dir_path:
+        yield dir_path
+
+
+@fixture
+def runtime_data_dir_path() -> Generator[Path]:
+    """Provide a temporary runtime canonical data directory."""
+    with get_temp_directory_path() as dir_path:
+        yield dir_path
 
 
 @fixture

@@ -36,13 +36,6 @@ def source_json_path() -> Generator[Path]:
 
 
 @fixture
-def database_path() -> Generator[Path]:
-    """Provide a temporary SQLite database path."""
-    with get_temp_file_path(".db") as temp_path:
-        yield temp_path
-
-
-@fixture
 def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryService:
     """Provide a GZZJ service backed by deterministic JSON fixture data."""
     service = GzzjDictionaryService(

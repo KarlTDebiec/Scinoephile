@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import os
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -13,7 +12,7 @@ from pytest import MonkeyPatch, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.web.ocr_validation.html_index import load_html_entries
@@ -22,6 +21,8 @@ from scinoephile.workflows.ocr_processing import (
     OcrProcessingWorkflow,
 )
 from test.helpers import parametrize
+from test.helpers.files import set_mtime
+from test.helpers.series_files import get_ocr_text_series
 
 OLD_MTIME = 1_700_000_000
 """Older file modification time used by timestamp-sensitive tests."""
@@ -51,32 +52,6 @@ def _image_series_with_texts(
                 text=text,
             )
             for subtitle, text in zip(image_series.events, texts)
-        ]
-    )
-
-
-def _set_mtime(file_path: Path, mtime: int):
-    """Set a deterministic file modification time.
-
-    Arguments:
-        file_path: file path to update
-        mtime: modification time as seconds since epoch
-    """
-    os.utime(file_path, (mtime, mtime))
-
-
-def _series_with_texts(texts: list[str]) -> Series:
-    """Build a text series with one subtitle per provided text.
-
-    Arguments:
-        texts: subtitle texts
-    Returns:
-        text subtitle series
-    """
-    return Series(
-        events=[
-            Subtitle(start=(idx * 2000) + 1000, end=(idx * 2000) + 2000, text=text)
-            for idx, text in enumerate(texts)
         ]
     )
 
@@ -187,7 +162,7 @@ class _PatchedEngOcrPipeline:
         lens_texts = [subtitle.text for subtitle in lens]
         tesseract_texts = [subtitle.text for subtitle in tesseract]
         self.fusion_calls.append((lens_texts, tesseract_texts, processor))
-        return _series_with_texts(self.fused_texts)
+        return get_ocr_text_series(*self.fused_texts)
 
     def get_fuser(self, provider: object, additional_context: str | None) -> object:
         """Return a fixed fake fuser."""
@@ -208,7 +183,7 @@ class _PatchedEngOcrPipeline:
         """Fake Google Lens OCR."""
         assert image_series is self.image_series
         self.lens_calls.append(language)
-        return _series_with_texts(self.lens_texts)
+        return get_ocr_text_series(*self.lens_texts)
 
     def ocr_with_tesseract(
         self,
@@ -221,7 +196,7 @@ class _PatchedEngOcrPipeline:
         assert image_series is self.image_series
         self.tesseract_calls.append(language)
         self.tesseract_detect_italics_calls.append(detect_italics)
-        return _series_with_texts(self.tesseract_texts)
+        return get_ocr_text_series(*self.tesseract_texts)
 
 
 class _PatchedZhoOcrPipeline:
@@ -282,7 +257,7 @@ class _PatchedZhoOcrPipeline:
         lens_texts = [subtitle.text for subtitle in lens]
         paddle_texts = [subtitle.text for subtitle in paddle]
         self.fusion_calls.append((lens_texts, paddle_texts, processor))
-        return _series_with_texts(self.fused_texts)
+        return get_ocr_text_series(*self.fused_texts)
 
     def get_fuser(self, **kwargs: object) -> object:
         """Return a fixed fake fuser."""
@@ -298,7 +273,7 @@ class _PatchedZhoOcrPipeline:
         """Fake Google Lens OCR."""
         assert image_series is self.image_series
         self.lens_calls.append(language)
-        return _series_with_texts(self.lens_texts)
+        return get_ocr_text_series(*self.lens_texts)
 
     def ocr_with_paddle(
         self,
@@ -309,7 +284,7 @@ class _PatchedZhoOcrPipeline:
         """Fake PaddleOCR."""
         assert image_series is self.image_series
         self.paddle_calls.append(language)
-        return _series_with_texts(self.paddle_texts)
+        return get_ocr_text_series(*self.paddle_texts)
 
 
 def test_ocr_processing_workflow_is_callable(tmp_path: Path):
@@ -540,7 +515,7 @@ def test_process_eng_ocr_validates_fuse_clean_output(
         def validate(self, series: ImageSeries) -> Series:
             """Validate an image series."""
             validate_calls.append(([subtitle.text for subtitle in series], self))
-            return _series_with_texts(["validated 1", "validated 2"])
+            return get_ocr_text_series("validated 1", "validated 2")
 
     _PatchedEngOcrPipeline(
         monkeypatch,
@@ -610,8 +585,9 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
                 "port": port,
             }
         )
-        validated = _series_with_texts(
-            ["interactive validated 1", "interactive validated 2"]
+        validated = get_ocr_text_series(
+            "interactive validated 1",
+            "interactive validated 2",
         )
         validated.save(outfile_path)
         return validated
@@ -708,7 +684,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
             """Validate an image series."""
             validate_managers.append(self)
             validate_texts.append([subtitle.text for subtitle in series])
-            return _series_with_texts(["validated 1", "validated 2"])
+            return get_ocr_text_series("validated 1", "validated 2")
 
     _PatchedEngOcrPipeline(
         monkeypatch,
@@ -753,11 +729,11 @@ def test_ocr_validation_keeps_newer_image_index_text(
     image_dir_path = output_dir_path / "image"
     image_series = _image_series_with_texts(tiny_image_series, ["edited 1", "edited 2"])
     image_series.save(image_dir_path)
-    source_series = _series_with_texts(["fused 1", "fused 2"])
+    source_series = get_ocr_text_series("fused 1", "fused 2")
     source_path = output_dir_path / "fuse_clean.srt"
     source_series.save(source_path, format_="srt")
-    _set_mtime(source_path, OLD_MTIME)
-    _set_mtime(image_dir_path / "index.html", NEW_MTIME)
+    set_mtime(source_path, OLD_MTIME)
+    set_mtime(image_dir_path / "index.html", NEW_MTIME)
 
     def fake_validate_ocr(source: Path, outfile_path: Path, **kwargs: object):
         """Record text passed to validation."""
@@ -798,11 +774,11 @@ def test_ocr_validation_uses_newer_fuse_clean_text(
     image_dir_path = output_dir_path / "image"
     image_series = _image_series_with_texts(tiny_image_series, ["edited 1", "edited 2"])
     image_series.save(image_dir_path)
-    source_series = _series_with_texts(["fused 1", "fused 2"])
+    source_series = get_ocr_text_series("fused 1", "fused 2")
     source_path = output_dir_path / "fuse_clean.srt"
     source_series.save(source_path, format_="srt")
-    _set_mtime(image_dir_path / "index.html", OLD_MTIME)
-    _set_mtime(source_path, NEW_MTIME)
+    set_mtime(image_dir_path / "index.html", OLD_MTIME)
+    set_mtime(source_path, NEW_MTIME)
 
     def fake_validate_ocr(source: Path, outfile_path: Path, **kwargs: object):
         """Record text passed to validation."""
@@ -843,11 +819,11 @@ def test_ocr_validation_uses_fuse_clean_for_blank_image_index(
     image_dir_path = output_dir_path / "image"
     image_series = _image_series_with_texts(tiny_image_series, ["", ""])
     image_series.save(image_dir_path)
-    source_series = _series_with_texts(["fused 1", "fused 2"])
+    source_series = get_ocr_text_series("fused 1", "fused 2")
     source_path = output_dir_path / "fuse_clean.srt"
     source_series.save(source_path, format_="srt")
-    _set_mtime(source_path, OLD_MTIME)
-    _set_mtime(image_dir_path / "index.html", NEW_MTIME)
+    set_mtime(source_path, OLD_MTIME)
+    set_mtime(image_dir_path / "index.html", NEW_MTIME)
 
     def fake_validate_ocr(source: Path, outfile_path: Path, **kwargs: object):
         """Record text passed to validation."""

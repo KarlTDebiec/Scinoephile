@@ -5,26 +5,17 @@
 from __future__ import annotations
 
 import sqlite3
-from collections.abc import Generator
 from contextlib import closing
 from pathlib import Path
 
 from pytest import fixture
 
-from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,
     DictionarySqliteStore,
 )
-
-
-@fixture
-def database_path() -> Generator[Path]:
-    """Provide a temporary SQLite database path."""
-    with get_temp_file_path(".db") as temp_path:
-        yield temp_path
 
 
 @fixture
