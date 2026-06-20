@@ -15,7 +15,8 @@
       "xiugai_2": "担搁大家一会，很快就点着了",
       "beizhu_2": "将“点著”中的“著”改为简体“着”，统一为简体中文字幕用字规范。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -162,7 +163,8 @@
       "zimu_5": "是呀！",
       "zimu_6": "就像我的骡子一样，给你盖个章"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -180,7 +182,8 @@
       "zimu_1": "你没有变成孙悟空投世",
       "zimu_2": "是因为你还没遇见给你三颗痣的人"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -306,7 +309,8 @@
       "xiugai_8": "我赶着去救人",
       "beizhu_8": "将“赶著”中的“著”改为简体“着”，统一为简体中文用字规范。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -714,7 +718,8 @@
       "xiugai_9": "砸着花花草草也不好嘛",
       "beizhu_9": "将“砸著”中的“著”改为简体“着”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -798,7 +803,8 @@
       "xiugai_2": "我为甚么要杀牠了",
       "beizhu_2": "将“它”修正为“牠”，与下文所指动物一致。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -837,7 +843,8 @@
       "xiugai_5": "请你放过悟空，不要伤害他啦",
       "beizhu_5": "将“它”修正为指代人物的“他”，避免人称代词使用不当。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1015,7 +1022,8 @@
       "xiugai_4": "师傅能够见到你真好了",
       "beizhu_4": "将“师父”修正为更常见的称呼“师傅”，以符合字幕中的用字习惯。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1058,7 +1066,8 @@
       "zimu_20": "香香，贤弟",
       "zimu_21": "来⋯跟我来"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1203,7 +1212,8 @@
       "zimu_19": "鬼才相信你⋯",
       "zimu_20": "你们在这儿，你干甚么？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1358,7 +1368,8 @@
       "zimu_10": "叫螃蟹和蚌精无法吃我",
       "zimu_11": "你本领最大，就只你一个"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1370,7 +1381,8 @@
       "zimu_6": "喃呒阿弥陀佛"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1443,7 +1455,8 @@
       "xiugai_19": "我趁她睡着的时候捅了她几刀",
       "beizhu_19": "将“睡著”中的“著”改为简体“着”，统一为简体中文字幕用字规范。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1630,7 +1643,8 @@
       "xiugai_3": "闭嘴！",
       "beizhu_3": "将“咀”更正为“嘴”，属于错别字修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1894,7 +1908,8 @@
       "xiugai_32": "我的整只手就着火了",
       "beizhu_32": "将“著火”中的“著”改为简体“着”，统一为简体中文字幕用字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1915,7 +1930,8 @@
       "xiugai_11": "我「嗖」的一声回到五百年前",
       "beizhu_11": "将“超”更正为拟声词“嗖”，符合常见表述。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2135,7 +2151,8 @@
       "zimu_7": "你我都要相信这是天意",
       "zimu_8": "也许传说中的缘份"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2185,7 +2202,8 @@
       "zimu_3": "他们全是无辜的",
       "zimu_4": "我同意！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2214,7 +2232,8 @@
       "zimu_1": "莫名其妙",
       "zimu_2": "你负我"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2248,7 +2267,8 @@
       "zimu_2": "你走吧！",
       "zimu_3": "我这辈子就你这么一个姐姐"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2364,7 +2384,8 @@
       "xiugai_37": "因为还有事情等着我去做",
       "beizhu_37": "将“等著”中的“著”改为简体“着”，统一为简体中文字幕用字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2506,7 +2527,8 @@
       "zimu_3": "我的名字叫做齐天大⋯圣",
       "zimu_4": "不要再叫错了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2560,7 +2582,8 @@
       "zimu_1": "好！看我的厉害",
       "zimu_2": "无敌牛虻"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2798,7 +2821,8 @@
       "zimu_3": "一定要靠月光宝盒才能离开这里……",
       "zimu_4": "走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2827,7 +2851,8 @@
       "zimu_10": "师父说话一向简洁明了，走吧！",
       "zimu_11": "师父，别走那么快嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2862,7 +2887,8 @@
       "zimu_21": "多谢",
       "zimu_22": "真奇怪，为什么要给他三刀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {

@@ -86,7 +86,8 @@
       "xiugai_10": "现在大家明白为什么我要杀它啦",
       "beizhu_10": "将“甚么”改为简体常用写法“什么”，以统一简体字幕用字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -241,7 +242,8 @@
       "xiugai_44": "怕什么！万事有我！",
       "beizhu_44": "将“甚么”修正为简体常用写法“什么”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -276,7 +278,8 @@
       "xiugai_5": "你说什么？",
       "beizhu_5": "将“甚么”更正为“什么”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -444,7 +447,8 @@
       "xiugai_2": "蜘蛛用得着大惊小怪的？",
       "beizhu_2": "将「著」改为简体「着」，统一为简体中文字幕用字规范。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -628,7 +632,8 @@
       "xiugai_3": "打它⋯！",
       "beizhu_3": "将“牠”修正为“它”，符合简体字幕常用的人称代词用字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -761,7 +766,8 @@
       "zimu_3": "这一招叫做忍辱偷生",
       "zimu_4": "大腿挨一刀算得了甚么？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -797,7 +803,8 @@
       "zimu_5": "弄得我心扑通扑通乱跳",
       "zimu_6": "帮主请留步"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -852,7 +859,8 @@
       "zimu_27": "这个道理你都不懂？",
       "zimu_28": "想跟我争"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -891,7 +899,8 @@
       "xiugai_4": "那你蹲下来干什么？",
       "beizhu_4": "将“甚么”改为“什么”，统一为简体字用法。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -902,7 +911,8 @@
       "zimu_5": "把唐三藏这个消息报告给大王",
       "zimu_6": "一定重重有赏"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -975,7 +985,8 @@
       "zimu_3": "喜欢玩是吧？",
       "zimu_4": "我们就玩吧！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1115,7 +1126,8 @@
       "xiugai_33": "什么不好像，像个臭猴子",
       "beizhu_33": "将“甚么”改为“什么”，统一为简体字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1205,7 +1217,8 @@
       "zimu_3": "脚底板啊，老爷",
       "zimu_4": "我没有脚啊，怎么办啊？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1290,7 +1303,8 @@
       "xiugai_13": "说　你听我说",
       "beizhu_13": "删除字幕中的多余空格，保留原意。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1354,7 +1368,8 @@
       "zimu_58": "淫荡吗？",
       "zimu_59": "对啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1668,7 +1683,8 @@
       "xiugai_6": "我最有眼光就是跟着帮主",
       "beizhu_6": "将“跟著”中的“著”改为简体“着”，统一为简体中文字幕规范。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1818,7 +1834,8 @@
       "zimu_5": "看看你们还有甚么法宝？",
       "zimu_6": "死牛魔王 走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1929,7 +1946,8 @@
       "zimu_8": "不用客气",
       "zimu_9": "我要杀你！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1986,7 +2004,8 @@
       "zimu_12": "今天是十五月圆之夜",
       "zimu_13": "到时候她尸变，你死得难看"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2236,7 +2255,8 @@
       "zimu_2": "我春三十娘貌美如花",
       "zimu_3": "居然跟这么丑的男人有了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2378,7 +2398,8 @@
       "xiugai_11": "我什么都不知道",
       "beizhu_11": "将“甚么”修正为简体常用写法“什么”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2417,7 +2438,8 @@
       "zimu_5": "到时候吃唐僧肉少不了你的份",
       "zimu_6": "否则我要你死得比现在痛苦十倍"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2548,7 +2570,8 @@
       "xiugai_20": "你还没变成真正的孙悟空投世",
       "beizhu_20": "将“托世”更正为“投世”，修正明显错别字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2593,7 +2616,8 @@
       "xiugai_5": "把孩子带大",
       "beizhu_5": "将“把孩子大带大”中的重复字“**大**”删去，修正为“把孩子带大”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2758,7 +2782,8 @@
       "zimu_22": "老婆⋯！",
       "zimu_23": "我警告你别烦我！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2965,7 +2990,8 @@
       "zimu_1": "你没有变成孙悟空投世",
       "zimu_2": "是因为你还没碰见给你三颗痣的人"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
