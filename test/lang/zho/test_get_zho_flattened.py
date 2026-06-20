@@ -16,6 +16,26 @@ from test.helpers import assert_series_equal
     ("series_fixture", "expected_fixture"),
     [
         pytest.param(
+            "acopopb_zho_hans_ocr_fuse_clean_validate_review",
+            "acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten",
+            id="acopopb-zho-hans",
+        ),
+        pytest.param(
+            "acopopb_zho_hant_ocr_fuse_clean_validate_review",
+            "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten",
+            id="acopopb-zho-hant",
+        ),
+        pytest.param(
+            "acoptc_zho_hans_ocr_fuse_clean_validate_review",
+            "acoptc_zho_hans_ocr_fuse_clean_validate_review_flatten",
+            id="acoptc-zho-hans",
+        ),
+        pytest.param(
+            "acoptc_zho_hant_ocr_fuse_clean_validate_review",
+            "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten",
+            id="acoptc-zho-hant",
+        ),
+        pytest.param(
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
             id="kob-zho-hant",
@@ -24,6 +44,16 @@ from test.helpers import assert_series_equal
             "mlamd_zho_hans_fuse_clean_validate_review",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             id="mlamd-zho-hans",
+        ),
+        pytest.param(
+            "mlamd_zho_hant_fuse_clean_validate_review",
+            "mlamd_zho_hant_fuse_clean_validate_review_flatten",
+            id="mlamd-zho-hant",
+        ),
+        pytest.param(
+            "mnt_zho_hans_fuse_clean_validate_review",
+            "mnt_zho_hans_fuse_clean_validate_review_flatten",
+            id="mnt-zho-hans",
         ),
         pytest.param(
             "mnt_zho_hant_fuse_clean_validate_review",
@@ -39,6 +69,16 @@ from test.helpers import assert_series_equal
             "t_zho_hant_fuse_clean_validate_review",
             "t_zho_hant_fuse_clean_validate_review_flatten",
             id="t-zho-hant",
+        ),
+        pytest.param(
+            "tmm_zho_hans_ocr_fuse_clean_validate_review",
+            "tmm_zho_hans_ocr_fuse_clean_validate_review_flatten",
+            id="tmm-zho-hans",
+        ),
+        pytest.param(
+            "tmm_zho_hant_ocr_fuse_clean_validate_review",
+            "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten",
+            id="tmm-zho-hant",
         ),
     ],
 )
