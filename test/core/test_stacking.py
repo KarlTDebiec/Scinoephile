@@ -166,6 +166,12 @@ def test_get_stacked_series_overlap_error_includes_event_context():
             id="kob-zho-hans-eng",
         ),
         pytest.param(
+            "kob_yue_hans_timewarp_clean_flatten",
+            "kob_eng_timewarp_clean_review_flatten",
+            "kob_yue_hans_eng",
+            id="kob-yue-hans-eng",
+        ),
+        pytest.param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             "mlamd_eng_fuse_clean_validate_review_flatten",
             "mlamd_zho_hans_eng",

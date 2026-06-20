@@ -4,30 +4,73 @@
 
 from __future__ import annotations
 
+import pytest
+
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 from test.helpers import assert_series_equal
 
 
+@pytest.mark.parametrize(
+    (
+        "source_one_fixture",
+        "source_two_fixture",
+        "expected_fixture",
+        "one_end_idx",
+        "two_end_idx",
+    ),
+    [
+        pytest.param(
+            "kob_eng_ocr_fuse_clean_validate_review",
+            "kob_eng",
+            "kob_eng_timewarp",
+            1421,
+            None,
+            id="kob-eng",
+        ),
+        pytest.param(
+            "kob_zho_hant_ocr_fuse_clean_validate_review",
+            "kob_yue_hans",
+            "kob_yue_hans_timewarp",
+            1421,
+            1461,
+            id="kob-yue-hans",
+        ),
+        pytest.param(
+            "kob_zho_hant_ocr_fuse_clean_validate_review",
+            "kob_yue_hant",
+            "kob_yue_hant_timewarp",
+            1421,
+            1461,
+            id="kob-yue-hant",
+        ),
+    ],
+)
 def test_get_series_timewarped_kob(
-    kob_zho_hant_ocr_fuse_clean_validate_review: Series,
-    kob_yue_hant: Series,
-    kob_yue_hant_timewarp: Series,
+    request: pytest.FixtureRequest,
+    source_one_fixture: str,
+    source_two_fixture: str,
+    expected_fixture: str,
+    one_end_idx: int,
+    two_end_idx: int | None,
 ):
     """Test get_series_timewarped with KOB subtitles.
 
     Arguments:
-        kob_zho_hant_ocr_fuse_clean_validate_review: traditional standard Chinese
-          subtitle fixture
-        kob_yue_hant: traditional written Cantonese subtitle fixture
-        kob_yue_hant_timewarp: expected timewarp subtitle fixture
+        request: pytest request for fixture lookup
+        source_one_fixture: fixture name for anchor series
+        source_two_fixture: fixture name for series to timewarp
+        expected_fixture: fixture name for expected timewarped series
+        one_end_idx: 1-based end index for the anchor series
+        two_end_idx: optional 1-based end index for the timewarped series
     """
     output = get_series_timewarped(
-        kob_zho_hant_ocr_fuse_clean_validate_review,
-        kob_yue_hant,
+        request.getfixturevalue(source_one_fixture),
+        request.getfixturevalue(source_two_fixture),
         one_start_idx=1,
-        one_end_idx=1421,
+        one_end_idx=one_end_idx,
         two_start_idx=1,
-        two_end_idx=1461,
+        two_end_idx=two_end_idx,
     )
-    assert_series_equal(output, kob_yue_hant_timewarp)
+    expected: Series = request.getfixturevalue(expected_fixture)
+    assert_series_equal(output, expected)

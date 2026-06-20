@@ -554,7 +554,7 @@ I will hit that bastard's mouth for you
 She didn't use her mouth
 
 112
-00:07:09,552 --> 00:07:10,721
+00:07:09,552 --> 00:07:10,720
 系用对眼
 She used her eyes
 
@@ -674,12 +674,12 @@ if Miss Yushang sleeps with our young master tonight…
 You are not welcome
 
 136
-00:08:08,895 --> 00:08:11,774
+00:08:08,895 --> 00:08:11,773
 咁多位⋯唔好意思呀真系
 I am sorry, I am damn sorry
 
 137
-00:08:11,772 --> 00:08:12,900
+00:08:11,773 --> 00:08:12,900
 冇乜嘢意见啦嘛？
 Don't you have any objection?
 
@@ -704,12 +704,12 @@ more than 100,000 taels
 Yushang will sleep with them
 
 142
-00:08:21,072 --> 00:08:22,784
+00:08:21,072 --> 00:08:22,783
 千祈唔好伤咗和气呀！
 Don't quarrel because of such a small amount,
 
 143
-00:08:22,782 --> 00:08:24,369
+00:08:22,783 --> 00:08:24,369
 啱唔啱听呀？啱唔啱听？
 isn't it right?
 
@@ -914,17 +914,17 @@ Who dares bully my son, let me teach him a lesson
 Master
 
 184
-00:10:51,368 --> 00:10:52,914
+00:10:51,368 --> 00:10:52,912
 唔驶惊呀阿灿！边个恰你？
 Don't panic, Chan who bullied you?
 
 185
-00:10:52,911 --> 00:10:53,915
+00:10:52,912 --> 00:10:53,913
 系我恰紧人
 It's me who bullied others
 
 186
-00:10:53,912 --> 00:10:55,459
+00:10:53,913 --> 00:10:55,459
 吓？俾你恰？
 What? You bullied others?
 
@@ -1064,12 +1064,12 @@ What else? Go ahead
 Today is the birthday of the Ex-Empress Dowager
 
 214
-00:11:55,716 --> 00:11:57,972
+00:11:55,716 --> 00:11:57,969
 身为京官罪加一等
 So your crime is doubled
 
 215
-00:11:57,967 --> 00:11:59,139
+00:11:57,969 --> 00:11:59,139
 可以问斩喇佢！
 It may lead to capital punishment
 
@@ -1124,12 +1124,12 @@ General So, let's play happily together, so forget it
 I haven't played!
 
 226
-00:12:26,158 --> 00:12:26,997
+00:12:26,158 --> 00:12:26,994
 皇爷
 Your Majesty,
 
 227
-00:12:26,992 --> 00:12:29,291
+00:12:26,994 --> 00:12:29,291
 估唔到系呢度俾这些无赖打扰你嘅雅兴
 a rascal has ruined the atmosphere here,
 
@@ -1259,12 +1259,12 @@ Why do you come here? Where is Mister Chiu?
 The pearl of Mr. Chiu is broken
 
 253
-00:13:54,025 --> 00:13:56,074
+00:13:54,025 --> 00:13:56,071
 俾苏翁一打就变咗珍珠末
 by Mr So and became pearl powder
 
 254
-00:13:56,069 --> 00:13:57,408
+00:13:56,071 --> 00:13:57,408
 我冲水饮埋添啦
 I have drunk it
 
@@ -1519,12 +1519,12 @@ Don't you know it's not that easy to be my husband?
 How can I be your husband?
 
 305
-00:16:00,343 --> 00:16:02,184
+00:16:00,343 --> 00:16:02,181
 我要佢武功盖世，状元之才
 I want him to be the superior Kung-fu master
 
 306
-00:16:02,178 --> 00:16:03,477
+00:16:02,181 --> 00:16:03,477
 一人之下，万人之上
 Be the top of all
 
@@ -1544,12 +1544,12 @@ Let me think for one second
 I can do it
 
 310
-00:16:16,190 --> 00:16:17,197
+00:16:16,190 --> 00:16:17,194
 好！
 OK
 
 311
-00:16:17,191 --> 00:16:19,741
+00:16:17,194 --> 00:16:19,741
 咁等你做得到果阵先至番嚟揾我啦
 Do it first and then look for me
 
@@ -1869,12 +1869,12 @@ I will accompany you to Peking
 2, 3, 4, 5, 6
 
 375
-00:21:04,063 --> 00:21:06,448
+00:21:04,063 --> 00:21:06,444
 嚟喇，老爷
 I am coming
 
 376
-00:21:06,441 --> 00:21:08,951
+00:21:06,444 --> 00:21:08,951
 少爷上京赴考，我地冚家搬
 Young master is going for the examination, let's move to Peking too
 
@@ -2389,12 +2389,12 @@ Bravo…
 And So Cha Ha Yee Chan from Canton
 
 479
-00:31:26,850 --> 00:31:27,989
+00:31:26,850 --> 00:31:27,982
 最后三分钟
 Last call
 
 480
-00:31:27,976 --> 00:31:31,075
+00:31:27,982 --> 00:31:31,075
 苏察哈尔灿一赔十，博达尔多一赔一
 So, one to ten Po, one to one
 
@@ -2504,12 +2504,12 @@ He has been disappointing the audience
 But he has worked very hard
 
 502
-00:32:21,523 --> 00:32:23,037
+00:32:21,523 --> 00:32:23,030
 虾！乜虾呀？
 What?
 
 503
-00:32:23,023 --> 00:32:26,539
+00:32:23,030 --> 00:32:26,539
 洋文嚟嘅！Heart即系有斗心咁解
 He tried very hard
 
@@ -3019,22 +3019,22 @@ Kill him now
 No! No!
 
 605
-00:40:58,052 --> 00:40:59,485
+00:40:58,052 --> 00:40:59,477
 皇上，作弊那个系奴才！
 Your Majesty, I am the one who cheated
 
 606
-00:40:59,469 --> 00:41:00,403
+00:40:59,477 --> 00:41:00,403
 唔关我个仔事！
 It's none of his business
 
 607
-00:41:00,428 --> 00:41:01,487
+00:41:00,428 --> 00:41:01,479
 要斩就斩我啦！
 Just chop me to death
 
 608
-00:41:01,471 --> 00:41:02,780
+00:41:01,479 --> 00:41:02,780
 唔系！应该斩我！
 No, you should kill me
 
@@ -3664,12 +3664,12 @@ Begging? How dare you, you beggar, you are cheating me!
 Don't you think I am stupid? I am smart, you know?
 
 734
-00:46:10,612 --> 00:46:11,758
+00:46:10,612 --> 00:46:11,748
 喂！两日嘅啦！
 Hey, two days passed,
 
 735
-00:46:11,738 --> 00:46:13,675
+00:46:11,748 --> 00:46:13,675
 天又番风！两肚又空空
 It's cold and I am hungry now
 
@@ -3704,12 +3704,12 @@ Really?
 Yes, if you are willing to date her
 
 742
-00:46:27,126 --> 00:46:29,773
+00:46:27,126 --> 00:46:29,763
 我谂佢会帮我地嘅忙番落广州先
 I think she will help us to go back to Canton
 
 743
-00:46:29,754 --> 00:46:32,233
+00:46:29,763 --> 00:46:32,233
 但系就要你老人家牺牲呀！
 But, you have to sacrifice
 
@@ -5771,7 +5771,7 @@ Isn't this stance…
 1155
 01:13:58,081 --> 01:14:00,093
 新师叔嘅睡梦罗汉拳？
-Uncle Sun's “Sleeping Disciple's Fists”?
+Uncle Sun's "Sleeping Disciple's Fists"?
 
 1156
 01:14:01,084 --> 01:14:01,970

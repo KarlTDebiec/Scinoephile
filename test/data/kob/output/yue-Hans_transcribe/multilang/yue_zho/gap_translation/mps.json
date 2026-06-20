@@ -91,7 +91,8 @@
     "answer": {
       "yuewen_29": "你個王八蛋，點解嚟呢度乞食？",
       "yuewen_43": "嗰個臭小子張壽帖真係威風"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -159,7 +160,8 @@
       "yuewen_16": "可以，可以",
       "yuewen_18": "蘇⋯翁",
       "yuewen_21": "你好衰，有名你唔叫，叫我龜婆"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -213,7 +215,8 @@
     },
     "answer": {
       "yuewen_22": "失陪呀，趙大人"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -239,7 +242,8 @@
     "answer": {
       "yuewen_2": "蘇翁……",
       "yuewen_9": "呢件事同我無關"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -255,7 +259,8 @@
     },
     "answer": {
       "yuewen_1": "好⋯⋯好"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -295,7 +300,8 @@
     },
     "answer": {
       "yuewen_2": "行開⋯"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -337,7 +343,8 @@
       "yuewen_7": "好喇好喇，玩完喇",
       "yuewen_8": "蘇將軍，大家玩得咁開心就算喇",
       "yuewen_10": "王爺"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -373,7 +380,8 @@
       "yuewen_10": "我唔會還畀佢",
       "yuewen_12": "廢話少講，鴇母",
       "yuewen_13": "你先出去"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -411,7 +419,8 @@
     "answer": {
       "yuewen_2": "姑娘",
       "yuewen_3": "放手"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -551,7 +560,8 @@
       "yuewen_34": "真系全部都搬走？",
       "yuewen_42": "有边个肯除件衫落嚟畀我着下",
       "yuewen_43": "不堪入目"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -561,7 +571,8 @@
     },
     "answer": {
       "yuewen_1": "大驚小怪！退下"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -577,7 +588,8 @@
     "answer": {
       "yuewen_3": "企好啲！快啲",
       "yuewen_4": "咩事⋯咩事呀？"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -593,7 +605,8 @@
     },
     "answer": {
       "yuewen_1": "咩事呀？"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -673,7 +686,8 @@
       "yuewen_12": "好啦好啦，少爺聽朝要考試",
       "yuewen_24": "你睇",
       "yuewen_31": "至於臨場考弓箭、騎馬"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -777,7 +791,8 @@
       "yuewen_24": "但係呢個蘇察哈爾燦",
       "yuewen_39": "我第二次瞓身",
       "yuewen_45": ""
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -789,7 +804,8 @@
     "answer": {
       "yuewen_2": "你張飛撕咗未",
       "yuewen_3": "未"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -815,7 +831,8 @@
     "answer": {
       "yuewen_4": "飲茶！飲茶！",
       "yuewen_5": "祝你好運"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -843,7 +860,8 @@
     },
     "answer": {
       "yuewen_1": "你個短命嘅老鄭，竟敢呃我"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -865,7 +883,8 @@
     "answer": {
       "yuewen_5": "佢死咗，我個仔咪做狀元？",
       "yuewen_6": "噉我而家唔係發達咗囉？"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -893,7 +912,8 @@
     },
     "answer": {
       "yuewen_1": "萬歲！萬歲！萬萬歲"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -935,7 +955,8 @@
     },
     "answer": {
       "yuewen_11": "身如柳絮⋯"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -975,7 +996,8 @@
       "yuewen_7": "唔相干，唔相干",
       "yuewen_8": "係老爺辦事不力",
       "yuewen_12": "老爺，我哋走喇"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1043,7 +1065,8 @@
       "yuewen_29": "我边度似乞儿呀？",
       "yuewen_30": "唔似",
       "yuewen_31": "小乞儿老乞儿，攞去买嘢啦"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1107,7 +1130,8 @@
       "yuewen_8": "放手",
       "yuewen_11": "唔係搶！我哋係討飯",
       "yuewen_12": "原來你哋兩個衰嘢想呃我"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1129,7 +1153,8 @@
     "answer": {
       "yuewen_3": "唔使驚，我會好小心",
       "yuewen_4": "一定保你冇事"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1153,7 +1178,8 @@
     "answer": {
       "yuewen_1": "大人，我哋只係想搵啲錢",
       "yuewen_9": "係"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1183,7 +1209,8 @@
       "yuewen_1": "救命呀",
       "yuewen_4": "係",
       "yuewen_6": "唔得，都搬唔郁，等我嚟啦"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1205,7 +1232,8 @@
     },
     "answer": {
       "yuewen_2": "阿灿"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1263,7 +1291,8 @@
     "answer": {
       "yuewen_8": "呢个混蛋同我哋兩父子有過節咩",
       "yuewen_10": "唔好講住，先食啖煙"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1271,7 +1300,8 @@
     },
     "answer": {
       "yuewen_1": "燦！咩事？"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1313,7 +1343,8 @@
       "yuewen_16": "再唔去就乞唔到飯喇",
       "yuewen_17": "係呀⋯",
       "yuewen_18": "你以為自己仲係以前嗰個大將軍呀"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1345,7 +1376,8 @@
     },
     "answer": {
       "yuewen_6": "冇⋯冇"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1371,7 +1403,8 @@
     },
     "answer": {
       "yuewen_3": "快啲食"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1405,7 +1438,8 @@
     },
     "answer": {
       "yuewen_2": "阿燦！我啱啱餓到暈"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1425,7 +1459,8 @@
     },
     "answer": {
       "yuewen_7": "企好"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1449,7 +1484,8 @@
     },
     "answer": {
       "yuewen_1": "你哋兩個衰過狗，仲餓過狗呀！"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1481,7 +1517,8 @@
     },
     "answer": {
       "yuewen_4": "莫大叔，好唔好呀"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1575,7 +1612,8 @@
       "yuewen_35": "唔使擔心，唔使擔心",
       "yuewen_37": "我個仔點講都係個武狀元",
       "yuewen_38": "而家⋯"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1617,7 +1655,8 @@
     },
     "answer": {
       "yuewen_15": "少講廢話"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1635,7 +1674,8 @@
     },
     "answer": {
       "yuewen_4": "唔係⋯你话要瞓觉"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1647,7 +1687,8 @@
     },
     "answer": {
       "yuewen_3": "返去再講"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1661,7 +1702,8 @@
     },
     "answer": {
       "yuewen_1": "我哋追　　唔使追喇！"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1679,7 +1721,8 @@
     },
     "answer": {
       "yuewen_1": "莫大叔…"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1687,7 +1730,8 @@
     },
     "answer": {
       "yuewen_1": "到底派邊個上去呢？"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1697,7 +1741,8 @@
     },
     "answer": {
       "yuewen_1": "佢打斷咗打狗棒"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1769,7 +1814,8 @@
     },
     "answer": {
       "yuewen_31": "大家有飯食喇"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1795,7 +1841,8 @@
     },
     "answer": {
       "yuewen_1": "好嘢"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1847,7 +1894,8 @@
       "yuewen_21": "笑揖清風洗我狂",
       "yuewen_22": "來日醉臥逍遙",
       "yuewen_23": "寧願鏽蝕我纓槍"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1865,7 +1913,8 @@
       "yuewen_4": "放狼煙",
       "yuewen_5": "戒備",
       "yuewen_6": "係"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1891,7 +1940,8 @@
     },
     "answer": {
       "yuewen_5": "趙無忌陰謀造反"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1933,7 +1983,8 @@
       "yuewen_15": "年年都有今日⋯",
       "yuewen_16": "夠喇夠喇",
       "yuewen_17": "仲未唱完"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1941,7 +1992,8 @@
     },
     "answer": {
       "yuewen_1": "天理教嘅麒麟煙"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1953,7 +2005,8 @@
     },
     "answer": {
       "yuewen_1": "噉我應該點算呀？"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1983,7 +2036,8 @@
       "yuewen_7": "唔好呀，皇上，皇上⋯",
       "yuewen_9": "皇上，好危險㗎！唔好去",
       "yuewen_12": "唔好去"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1997,7 +2051,8 @@
     },
     "answer": {
       "yuewen_2": "係我呀！蘇乞兒"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2023,7 +2078,8 @@
       "yuewen_3": "神龍擺尾",
       "yuewen_6": "戰龍在田，伏虎降龍⋯",
       "yuewen_8": "龍嘅傳人，龍鳳呈祥⋯"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2043,7 +2099,8 @@
     },
     "answer": {
       "yuewen_5": "傻瓜！我冇事"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2065,7 +2122,8 @@
     },
     "answer": {
       "yuewen_1": "阿燦……你冇事吖嘛"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2087,7 +2145,8 @@
     },
     "answer": {
       "yuewen_8": "你行先！我陣間跟上"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2123,7 +2182,8 @@
       "yuewen_12": "又點呀？",
       "yuewen_13": "仲有一家大細㗎！畀多啲",
       "yuewen_15": "冇一千都畀八百啦"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2137,6 +2197,7 @@
       "yuewen_1": "仲唔快啲多謝人哋？",
       "yuewen_3": "快啲食啦",
       "yuewen_4": "跟住我……走啦……"
-    }
+    },
+    "verified": true
   }
 ]

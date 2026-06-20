@@ -27,8 +27,19 @@ from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
+from scinoephile.llms.dual_n_minus_m_to_n import (
+    DualNMinusMToNManager,
+    DualNMinusMToNPrompt,
+)
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
+from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNPrompt
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
+from scinoephile.multilang.yue_zho.block_review import (
+    YueBlockReviewVsZhoPromptYueHans,
+)
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
+)
 from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
     YueZhoLineReviewManager,
@@ -50,6 +61,8 @@ __all__ = [
     "get_kob_eng_ocr_fusion_test_cases",
     "get_kob_yue_deliniation_test_cases",
     "get_kob_yue_punctuation_test_cases",
+    "get_kob_yue_vs_zho_block_review_test_cases",
+    "get_kob_yue_vs_zho_gapped_translation_test_cases",
     "get_kob_yue_vs_zho_line_review_test_cases",
     "get_kob_zho_hant_block_review_test_cases",
     "get_kob_zho_hant_ocr_fusion_test_cases",
@@ -69,6 +82,7 @@ __all__ = [
     "kob_eng_timewarp_clean_review",
     "kob_eng_timewarp_clean_review_flatten",
     "kob_yue_hans_audio",
+    "kob_yue_hans_eng",
     "kob_yue_hans_timewarp",
     "kob_yue_hans_timewarp_clean",
     "kob_yue_hans_timewarp_clean_flatten",
@@ -218,6 +232,58 @@ def get_kob_yue_punctuation_test_cases(
     )
     return load_test_cases_from_json(
         path, YueZhoPunctuationManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_yue_vs_zho_block_review_test_cases(
+    prompt_cls: type[DualNToNPrompt] = YueBlockReviewVsZhoPromptYueHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB 简体粤文 vs 简体中文 block-review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        output_dir
+        / "yue-Hans_transcribe"
+        / "multilang"
+        / "yue_zho"
+        / "block_review"
+        / f"{get_torch_device()}.json"
+    )
+    return load_test_cases_from_json(
+        path, DualNToNManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_yue_vs_zho_gapped_translation_test_cases(
+    prompt_cls: type[DualNMinusMToNPrompt] = YueGappedTranslationVsZhoPromptYueHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB 简体粤文 vs 简体中文 gapped translation test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        output_dir
+        / "yue-Hans_transcribe"
+        / "multilang"
+        / "yue_zho"
+        / "gap_translation"
+        / f"{get_torch_device()}.json"
+    )
+    return load_test_cases_from_json(
+        path, DualNMinusMToNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -539,6 +605,12 @@ def kob_eng_timewarp_clean_review_flatten() -> Series:
 def kob_yue_hans_audio() -> AudioSeries:
     """KOB 简体粤文 audio subtitles."""
     return AudioSeries.load(output_dir / "yue-Hans_transcribe/audio")
+
+
+@pytest.fixture
+def kob_yue_hans_eng() -> Series:
+    """KOB bilingual 简体粤文 and English subtitles."""
+    return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 @pytest.fixture
