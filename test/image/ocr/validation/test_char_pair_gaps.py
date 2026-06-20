@@ -9,6 +9,7 @@ from pathlib import Path
 
 from pytest import raises
 
+from scinoephile.common import package_root
 from scinoephile.image.ocr.validation.char_pair_gaps import (
     get_default_char_pair_cutoffs,
     load_char_pair_gaps,
@@ -31,7 +32,7 @@ def test_load_char_pair_gaps_rejects_nonmonotonic_cutoffs(tmp_path: Path):
 
 def test_repo_char_pair_gaps_have_monotonic_cutoffs():
     """Test repository character pair gap data has ordered cutoffs."""
-    file_path = Path(__file__).parents[4] / "scinoephile/data/ocr/char_pair_gaps.csv"
+    file_path = package_root / "data/ocr/char_pair_gaps.csv"
 
     with file_path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.reader(handle)
@@ -46,7 +47,7 @@ def test_repo_char_pair_gaps_have_monotonic_cutoffs():
 
 def test_repo_char_pair_gaps_exclude_default_cutoffs():
     """Test repository character pair gap data stores only default overrides."""
-    file_path = Path(__file__).parents[4] / "scinoephile/data/ocr/char_pair_gaps.csv"
+    file_path = package_root / "data/ocr/char_pair_gaps.csv"
 
     with file_path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.reader(handle)

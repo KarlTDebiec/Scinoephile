@@ -9,7 +9,9 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-REPO_DIR_PATH = Path(__file__).resolve().parents[1]
+from scinoephile.common import package_root
+
+REPO_DIR_PATH = package_root.parent
 EXCLUDED_DIR_NAMES = {
     ".git",
     ".mypy_cache",

@@ -12,12 +12,13 @@ from pathlib import Path
 
 from pytest import fail
 
+from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
 
 
 def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     """Test installed wheels expose runtime data files under package_root."""
-    project_root_path = Path(__file__).resolve().parents[1]
+    project_root_path = package_root.parent
     build_source_dir_path = _copy_build_source(project_root_path, tmp_path / "source")
     source_data_dir_path = build_source_dir_path / "scinoephile/data"
     ignored_local_dump_path = (

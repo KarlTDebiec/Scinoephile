@@ -9,7 +9,9 @@ from collections import defaultdict
 from functools import cache
 from pathlib import Path
 
-REPO_DIR_PATH = Path(__file__).resolve().parents[1]
+from scinoephile.common import package_root
+
+REPO_DIR_PATH = package_root.parent
 PACKAGE_DIR_PATH = REPO_DIR_PATH / "scinoephile"
 
 
