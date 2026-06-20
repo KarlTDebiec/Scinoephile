@@ -6,9 +6,28 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 
-__all__ = ["write_srt_series"]
+__all__ = [
+    "get_text_series",
+    "write_srt_series",
+]
+
+
+def get_text_series(*texts: str) -> Series:
+    """Build a compact subtitle series from text events.
+
+    Arguments:
+        *texts: subtitle event texts
+    Returns:
+        subtitle series with one event per text
+    """
+    return Series(
+        events=[
+            Subtitle(start=idx * 1000, end=idx * 1000 + 500, text=text)
+            for idx, text in enumerate(texts)
+        ]
+    )
 
 
 def write_srt_series(path: Path, text: str) -> Series:

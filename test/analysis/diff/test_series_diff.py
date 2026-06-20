@@ -8,29 +8,14 @@ from pytest import FixtureRequest, param, raises
 
 from scinoephile.analysis.diff import LineDiffKind, SeriesDiff
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.subtitles import Series
 from test.helpers import parametrize
-
-
-def _get_series(*texts: str) -> Series:
-    """Build a compact subtitle series for diff tests.
-
-    Arguments:
-        *texts: subtitle event texts
-    Returns:
-        subtitle series with one event per text
-    """
-    return Series(
-        events=[
-            Subtitle(start=idx * 1000, end=idx * 1000 + 500, text=text)
-            for idx, text in enumerate(texts)
-        ]
-    )
+from test.helpers.series_files import get_text_series
 
 
 def test_series_diff_empty_for_identical_series():
     """Test no messages are emitted for identical series."""
-    diff = SeriesDiff(_get_series("alpha"), _get_series("alpha"))
+    diff = SeriesDiff(get_text_series("alpha"), get_text_series("alpha"))
     assert list(diff) == []
     assert str(diff) == "[]"
 
@@ -38,8 +23,8 @@ def test_series_diff_empty_for_identical_series():
 def test_series_diff_reports_aligned_edit():
     """Test a one-line edit from alignment-derived diffing."""
     diff = SeriesDiff(
-        _get_series("莫大叔！莲花落阵你都冇有把握"),
-        _get_series("莫大叔呀！莲花落阵你都冇把握"),
+        get_text_series("莫大叔！莲花落阵你都冇有把握"),
+        get_text_series("莫大叔呀！莲花落阵你都冇把握"),
         one_lbl="TRANSCRIBE",
         two_lbl="REFERENCE",
     )
@@ -54,7 +39,7 @@ def test_series_diff_reports_aligned_edit():
 
 def test_series_diff_reports_split():
     """Test an exact one-to-many split from alignment-derived diffing."""
-    diff = SeriesDiff(_get_series("alpha beta"), _get_series("alpha", "beta"))
+    diff = SeriesDiff(get_text_series("alpha beta"), get_text_series("alpha", "beta"))
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == LineDiffKind.SPLIT
@@ -64,7 +49,7 @@ def test_series_diff_reports_split():
 
 def test_series_diff_reports_split_edit():
     """Test one-to-many split with edited text."""
-    diff = SeriesDiff(_get_series("alpha beta"), _get_series("alpha", "betx"))
+    diff = SeriesDiff(get_text_series("alpha beta"), get_text_series("alpha", "betx"))
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == LineDiffKind.SPLIT_EDIT
@@ -74,7 +59,7 @@ def test_series_diff_reports_split_edit():
 
 def test_series_diff_reports_merge_edit():
     """Test many-to-one merge with edited text."""
-    diff = SeriesDiff(_get_series("alpha", "beta"), _get_series("alpha betx"))
+    diff = SeriesDiff(get_text_series("alpha", "beta"), get_text_series("alpha betx"))
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == LineDiffKind.MERGE_EDIT
@@ -85,8 +70,8 @@ def test_series_diff_reports_merge_edit():
 def test_series_diff_reports_shift():
     """Test many-to-many shifted text."""
     diff = SeriesDiff(
-        _get_series("alpha", "beta"),
-        _get_series("beta", "alpha"),
+        get_text_series("alpha", "beta"),
+        get_text_series("beta", "alpha"),
         similarity_cutoff=0.4,
     )
     messages = list(diff)
@@ -125,7 +110,7 @@ def test_series_diff_reports_separator_only_line_wrapping(
         expected_one_idxs: expected first-side line indices
         expected_two_idxs: expected second-side line indices
     """
-    diff = SeriesDiff(_get_series(*one_texts), _get_series(*two_texts))
+    diff = SeriesDiff(get_text_series(*one_texts), get_text_series(*two_texts))
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == expected_kind
@@ -136,8 +121,8 @@ def test_series_diff_reports_separator_only_line_wrapping(
 def test_series_diff_reports_covered_edited_continuation_split():
     """Test edited wrapped text includes the continuation line."""
     diff = SeriesDiff(
-        _get_series("我一定要喺第一招就出尽全力将佢打低"),
-        _get_series("我一定要系第一招", "就出尽全力将佢打低"),
+        get_text_series("我一定要喺第一招就出尽全力将佢打低"),
+        get_text_series("我一定要系第一招", "就出尽全力将佢打低"),
     )
     messages = list(diff)
     assert len(messages) == 1
@@ -148,7 +133,7 @@ def test_series_diff_reports_covered_edited_continuation_split():
 
 def test_series_diff_keeps_uncovered_insert_separate():
     """Test a standalone insert after an equal line is not reported as a split."""
-    diff = SeriesDiff(_get_series("Yes!"), _get_series("Yes!", "Damn!"))
+    diff = SeriesDiff(get_text_series("Yes!"), get_text_series("Yes!", "Damn!"))
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == LineDiffKind.INSERT
@@ -228,9 +213,9 @@ def test_series_diff_matches_expected_fixture(
 
 def test_series_diff_get_stacked_str_appends_third_series():
     """Test stacked diff output can include an unaligned third series."""
-    one = _get_series("alpha beta")
-    two = _get_series("alpha", "beta")
-    three = _get_series("source alpha beta")
+    one = get_text_series("alpha beta")
+    two = get_text_series("alpha", "beta")
+    three = get_text_series("source alpha beta")
 
     rendered = SeriesDiff(one, two).get_stacked_str(color=False, three=three)
 
@@ -244,9 +229,9 @@ def test_series_diff_get_stacked_str_appends_third_series():
 
 def test_series_diff_get_stacked_str_can_include_equal_lines():
     """Test stacked diff output can include unchanged aligned lines."""
-    one = _get_series("same", "before", "changed")
-    two = _get_series("same", "before", "edited")
-    three = _get_series("source same", "source before", "source changed")
+    one = get_text_series("same", "before", "changed")
+    two = get_text_series("same", "before", "edited")
+    three = get_text_series("source same", "source before", "source changed")
 
     rendered = SeriesDiff(one, two).get_stacked_str(
         color=False,
@@ -300,8 +285,8 @@ def test_series_diff_get_stacked_str_keeps_equal_lines_around_one_sided_changes(
         expected_lines: expected stacked output lines
     """
     rendered = SeriesDiff(
-        _get_series(*one_texts),
-        _get_series(*two_texts),
+        get_text_series(*one_texts),
+        get_text_series(*two_texts),
     ).get_stacked_str(color=False, include_equal=True)
 
     assert rendered.splitlines() == expected_lines
@@ -309,9 +294,9 @@ def test_series_diff_get_stacked_str_keeps_equal_lines_around_one_sided_changes(
 
 def test_series_diff_get_stacked_str_appends_blank_third_line_for_insert():
     """Test third-series output is blank for second-side-only inserts."""
-    one = _get_series()
-    two = _get_series("extra")
-    three = _get_series()
+    one = get_text_series()
+    two = get_text_series("extra")
+    three = get_text_series()
 
     rendered = SeriesDiff(one, two).get_stacked_str(color=False, three=three)
 
@@ -320,9 +305,9 @@ def test_series_diff_get_stacked_str_appends_blank_third_line_for_insert():
 
 def test_series_diff_get_stacked_str_rejects_non_one_to_one_third_series():
     """Test stacked diff output rejects a third series not matched with one."""
-    one = _get_series("alpha beta")
-    two = _get_series("alpha", "beta")
-    three = _get_series("source alpha beta", "extra")
+    one = get_text_series("alpha beta")
+    two = get_text_series("alpha", "beta")
+    three = get_text_series("source alpha beta", "extra")
 
     with raises(ScinoephileError, match="one-to-one matched"):
         SeriesDiff(one, two).get_stacked_str(color=False, three=three)
