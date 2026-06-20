@@ -4,14 +4,14 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, mark, param
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     (
         "source_one_fixture",
         "source_two_fixture",
@@ -20,7 +20,7 @@ from test.helpers import assert_series_equal
         "two_end_idx",
     ),
     [
-        pytest.param(
+        param(
             "kob_eng_ocr_fuse_clean_validate_review",
             "kob_eng",
             "kob_eng_timewarp",
@@ -28,7 +28,7 @@ from test.helpers import assert_series_equal
             None,
             id="kob-eng",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             "kob_yue_hans",
             "kob_yue_hans_timewarp",
@@ -36,7 +36,7 @@ from test.helpers import assert_series_equal
             1461,
             id="kob-yue-hans",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             "kob_yue_hant",
             "kob_yue_hant_timewarp",
@@ -47,7 +47,7 @@ from test.helpers import assert_series_equal
     ],
 )
 def test_get_series_timewarped(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     source_one_fixture: str,
     source_two_fixture: str,
     expected_fixture: str,
