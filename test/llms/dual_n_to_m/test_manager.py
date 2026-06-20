@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.llms.dual_n_to_m import (
@@ -62,11 +62,11 @@ def test_get_test_case_cls_from_data_detects_both_source_sizes():
 
 def test_get_query_cls_rejects_empty_source_one():
     """Test source one must contain at least one subtitle."""
-    with pytest.raises(ScinoephileError):
+    with raises(ScinoephileError):
         DualNToMManager.get_query_cls(0, 1, _Prompt)
 
 
 def test_get_query_cls_rejects_negative_source_two():
     """Test source two size may not be negative."""
-    with pytest.raises(ScinoephileError):
+    with raises(ScinoephileError):
         DualNToMManager.get_query_cls(1, -1, _Prompt)

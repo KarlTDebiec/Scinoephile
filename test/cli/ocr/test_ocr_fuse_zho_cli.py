@@ -8,7 +8,7 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.common.testing import run_cli_with_args
@@ -112,7 +112,7 @@ def test_ocr_fuse_zho_cli_rejects_bare_convert_flag(tmp_path: Path):
     write_srt_series(lens_path, "鏡頭")
     write_srt_series(paddle_path, "桨")
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             OcrFuseCli,
             f"--language zho --lens-infile {lens_path} "

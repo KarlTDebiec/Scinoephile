@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import Action, ArgumentParser
 from pathlib import Path
 
-import pytest
+from pytest import mark, raises
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
@@ -49,7 +49,7 @@ LLM_CLIS: tuple[type[CommandLineInterface], ...] = (
 """CLI classes that expose shared LLM arguments."""
 
 
-@pytest.mark.parametrize("cli", LLM_CLIS)
+@mark.parametrize("cli", LLM_CLIS)
 def test_llm_options_are_in_llm_argument_group(cli: type[CommandLineInterface]):
     """Test shared LLM options are grouped separately from operation options.
 
@@ -105,7 +105,7 @@ def test_add_llm_provider_args_bundles_standard_llm_options(tmp_path):
     assert default_namespace.llm_args == LlmArguments()
 
 
-@pytest.mark.parametrize("cli", (OcrProcessCli, OcrValidateCli))
+@mark.parametrize("cli", (OcrProcessCli, OcrValidateCli))
 def test_ocr_web_options_are_in_web_argument_group(cli: type[CommandLineInterface]):
     """Test OCR web options are grouped separately from operation options.
 
@@ -136,7 +136,7 @@ def test_add_web_server_args_bundles_standard_host_and_port():
     default_namespace = parser.parse_args([])
     assert default_namespace.web_args == WebServerArguments()
 
-    with pytest.raises(SystemExit):
+    with raises(SystemExit):
         parser.parse_args(["--port", "65536"])
 
 

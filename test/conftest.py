@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-import pytest
 from PIL import Image
+from pytest import fixture
 
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -19,7 +19,7 @@ from test.data.t import *
 from test.data.tmm import *
 
 
-@pytest.fixture
+@fixture
 def tiny_image_series() -> ImageSeries:
     """Small image subtitle series for tests that do not need full fixtures."""
     return ImageSeries(

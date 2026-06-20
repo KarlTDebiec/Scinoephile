@@ -11,7 +11,7 @@ from typing import Any, TypedDict
 from unittest.mock import patch
 
 import numpy as np
-import pytest
+from pytest import approx, mark, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.media.offset.video import (
@@ -96,7 +96,7 @@ def test_get_video_offset_uses_reference_frame_grid_for_fine_search():
             sample_windows=1,
         )
 
-    assert result.offset == pytest.approx(-20 * frame_duration)
+    assert result.offset == approx(-20 * frame_duration)
     assert result.offset_frames == -20
     assert result.best.offset_frames == -20
 
@@ -145,7 +145,7 @@ def test_get_video_offset_tolerates_brightness_shift():
         )
 
     assert result.offset == 1.0
-    assert result.best.score == pytest.approx(0.0)
+    assert result.best.score == approx(0.0)
 
 
 def test_get_video_offset_rejects_insufficient_matches():
@@ -153,7 +153,7 @@ def test_get_video_offset_rejects_insufficient_matches():
     reference_samples = _get_samples([0.0], [10])
     target_samples = _get_samples([1.0], [10])
 
-    with pytest.raises(ScinoephileError, match="Could not find enough"):
+    with raises(ScinoephileError, match="Could not find enough"):
         with (
             patch(
                 "scinoephile.media.offset.video.ffmpeg.probe",
@@ -180,7 +180,7 @@ def test_get_video_offset_rejects_missing_reference_frame_rate():
     reference_samples = _get_samples([0.0, 1.0, 2.0, 3.0], [10, 20, 30, 40])
     target_samples = _get_samples([1.0, 2.0, 3.0, 4.0], [10, 20, 30, 40])
 
-    with pytest.raises(ScinoephileError, match="reference video frame rate"):
+    with raises(ScinoephileError, match="reference video frame rate"):
         with (
             patch(
                 "scinoephile.media.offset.video.ffmpeg.probe",
@@ -249,7 +249,7 @@ def test_get_video_offset_samples_multiple_windows_and_aggregates_frames():
     assert [window.offset_frames for window in result.windows] == [-20, -20, -21]
     assert result.aggregate is not None
     assert result.offset_frames == -20
-    assert result.aggregate.mean_frames == pytest.approx(-20.333333)
+    assert result.aggregate.mean_frames == approx(-20.333333)
     assert result.aggregate.median_frames == -20
     assert result.aggregate.min_frames == -21
     assert result.aggregate.max_frames == -20
@@ -397,13 +397,13 @@ def test_sample_video_frames_normalizes_brightness():
             height=2,
         )
 
-    assert samples[0].frame.mean() == pytest.approx(0.0)
-    assert samples[0].frame.std() == pytest.approx(1.0)
-    assert samples[1].frame.mean() == pytest.approx(0.0)
-    assert samples[1].frame.std() == pytest.approx(1.0)
+    assert samples[0].frame.mean() == approx(0.0)
+    assert samples[0].frame.std() == approx(1.0)
+    assert samples[1].frame.mean() == approx(0.0)
+    assert samples[1].frame.std() == approx(1.0)
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("kwargs", "message"),
     [
         (
@@ -442,7 +442,7 @@ def test_get_video_offset_rejects_invalid_numeric_parameters(
         kwargs: invalid keyword arguments
         message: expected error message
     """
-    with pytest.raises(ValueError, match=message):
+    with raises(ValueError, match=message):
         get_video_offset(
             reference_infile_path=Path("reference.mkv"),
             target_infile_path=Path("target.mkv"),
@@ -462,7 +462,7 @@ def test_get_video_offset_propagates_sampling_failures():
             side_effect=ScinoephileError("Could not sample frames"),
         ),
     ):
-        with pytest.raises(ScinoephileError, match="Could not sample frames"):
+        with raises(ScinoephileError, match="Could not sample frames"):
             get_video_offset(
                 reference_infile_path=Path("reference.mkv"),
                 target_infile_path=Path("target.mkv"),

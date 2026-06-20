@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock, patch
 
-import pytest
+from pytest import FixtureRequest, mark, param
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.multilang.yue_zho.gapped_translation import (
@@ -19,7 +19,7 @@ from test.data.mlamd import get_mlamd_yue_vs_zho_gapped_translation_test_cases
 from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     (
         "yuewen_fixture",
         "zhongwen_fixture",
@@ -28,7 +28,7 @@ from test.helpers import assert_series_equal
         "device_patch_target",
     ),
     [
-        pytest.param(
+        param(
             "kob_yue_hans_transcribe_review",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "kob_yue_hans_transcribe_review_translate",
@@ -36,7 +36,7 @@ from test.helpers import assert_series_equal
             "test.data.kob.get_torch_device",
             id="kob",
         ),
-        pytest.param(
+        param(
             "mlamd_yue_hans_transcribe_review",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
             "mlamd_yue_hans_transcribe_review_translate",
@@ -47,7 +47,7 @@ from test.helpers import assert_series_equal
     ],
 )
 def test_get_yue_gapped_translated_vs_zho(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     yuewen_fixture: str,
     zhongwen_fixture: str,
     expected_fixture: str,

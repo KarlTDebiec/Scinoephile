@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import mark
 
 from scinoephile.lang.language_id import LanguageId
 
@@ -156,7 +156,7 @@ LANGUAGE_ID_TEST_CASES: list[LanguageId] = [
 ]
 
 
-@pytest.mark.parametrize("case", LANGUAGE_ID_TEST_CASES)
+@mark.parametrize("case", LANGUAGE_ID_TEST_CASES)
 def test_language_id_from_text(case: LanguageId):
     """Detect language ID features from text.
 

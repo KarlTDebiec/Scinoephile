@@ -7,7 +7,7 @@ from __future__ import annotations
 from io import StringIO
 from unittest.mock import patch
 
-import pytest
+from pytest import mark, raises
 
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.common.file import get_temp_file_path
@@ -17,7 +17,7 @@ from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 from test.helpers import assert_series_equal, test_data_root
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("input_path", "args", "expected_path"),
     [
         (
@@ -58,7 +58,7 @@ def test_zho_process_cli(
     assert_series_equal(output, expected)
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("input_path", "args", "expected_path"),
     [
         (
@@ -115,7 +115,7 @@ def test_zho_process_cli_rejects_bare_convert_flag():
         / "mnt/output/zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(ZhoProcessCli, f"--infile {full_input_path} --convert")
 
 

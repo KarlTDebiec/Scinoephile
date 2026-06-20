@@ -8,7 +8,7 @@ from contextlib import redirect_stderr
 from io import StringIO
 from pathlib import Path
 
-import pytest
+from pytest import mark, raises
 
 from scinoephile.cli.multi.multi_stack_cli import MultiStackCli
 from scinoephile.common.testing import run_cli_with_args
@@ -66,7 +66,7 @@ def test_multi_stack_cli_can_sync_bottom_to_top_anchor(tmp_path: Path):
     assert_series_equal(Series.load(output_path), expected)
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("args", "expected_error"),
     [
         ("--sync-cutoff -0.01", "-0.01 is less than minimum value of 0.0"),
@@ -97,7 +97,7 @@ def test_multi_stack_cli_rejects_invalid_tuning_options(
     bottom_path.write_text("1\n00:00:01,250 --> 00:00:02,250\nB\n", encoding="utf-8")
 
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stderr(stderr):
             run_cli_with_args(
                 MultiStackCli,

@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock, patch
 
-import pytest
+from pytest import FixtureRequest, mark, param
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.multilang.yue_zho.block_review import (
@@ -19,7 +19,7 @@ from test.data.mlamd import get_mlamd_yue_vs_zho_block_review_test_cases
 from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     (
         "yuewen_fixture",
         "zhongwen_fixture",
@@ -29,7 +29,7 @@ from test.helpers import assert_series_equal
         "device_name",
     ),
     [
-        pytest.param(
+        param(
             "kob_yue_hans_transcribe_review_translate",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "kob_yue_hans_transcribe_review_translate_block_review",
@@ -38,7 +38,7 @@ from test.helpers import assert_series_equal
             "mps",
             id="kob",
         ),
-        pytest.param(
+        param(
             "mlamd_yue_hans_transcribe_review_translate",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
             "mlamd_yue_hans_transcribe_review_translate_block_review",
@@ -50,7 +50,7 @@ from test.helpers import assert_series_equal
     ],
 )
 def test_get_yue_block_reviewed_vs_zho(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     yuewen_fixture: str,
     zhongwen_fixture: str,
     expected_fixture: str,

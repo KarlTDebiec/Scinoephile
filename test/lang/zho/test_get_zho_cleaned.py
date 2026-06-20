@@ -4,13 +4,13 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, mark, param
 
 from scinoephile.lang.zho.cleaning import get_zho_cleaned, get_zho_text_cleaned
 from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("text", "expected"),
     [
         ('<font face="Monospace">{\\an7}中文\xa0測試</font>', "中文 測試"),
@@ -32,200 +32,200 @@ def test_get_zho_text_cleaned(text: str, expected: str):
     assert get_zho_text_cleaned(text) == expected
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "acopopb_zho_hans_ocr_fuse",
             "acopopb_zho_hans_ocr_fuse_clean",
             id="acopopb-zho-hans-fuse",
         ),
-        pytest.param(
+        param(
             "acopopb_zho_hans_ocr_lens",
             "acopopb_zho_hans_ocr_lens_clean",
             id="acopopb-zho-hans-lens",
         ),
-        pytest.param(
+        param(
             "acopopb_zho_hans_ocr_paddle",
             "acopopb_zho_hans_ocr_paddle_clean",
             id="acopopb-zho-hans-paddle",
         ),
-        pytest.param(
+        param(
             "acopopb_zho_hant_ocr_fuse",
             "acopopb_zho_hant_ocr_fuse_clean",
             id="acopopb-zho-hant-fuse",
         ),
-        pytest.param(
+        param(
             "acopopb_zho_hant_ocr_lens",
             "acopopb_zho_hant_ocr_lens_clean",
             id="acopopb-zho-hant-lens",
         ),
-        pytest.param(
+        param(
             "acopopb_zho_hant_ocr_paddle",
             "acopopb_zho_hant_ocr_paddle_clean",
             id="acopopb-zho-hant-paddle",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hans_ocr_fuse",
             "acoptc_zho_hans_ocr_fuse_clean",
             id="acoptc-zho-hans-fuse",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hans_ocr_lens",
             "acoptc_zho_hans_ocr_lens_clean",
             id="acoptc-zho-hans-lens",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hans_ocr_paddle",
             "acoptc_zho_hans_ocr_paddle_clean",
             id="acoptc-zho-hans-paddle",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hant_ocr_fuse",
             "acoptc_zho_hant_ocr_fuse_clean",
             id="acoptc-zho-hant-fuse",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hant_ocr_lens",
             "acoptc_zho_hant_ocr_lens_clean",
             id="acoptc-zho-hant-lens",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hant_ocr_paddle",
             "acoptc_zho_hant_ocr_paddle_clean",
             id="acoptc-zho-hant-paddle",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse",
             "kob_zho_hant_ocr_fuse_clean",
             id="kob-zho-hant-fuse",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_lens",
             "kob_zho_hant_ocr_lens_clean",
             id="kob-zho-hant-lens",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_paddle",
             "kob_zho_hant_ocr_paddle_clean",
             id="kob-zho-hant-paddle",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_fuse",
             "mlamd_zho_hans_fuse_clean",
             id="mlamd-zho-hans-fuse",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_ocr_lens",
             "mlamd_zho_hans_ocr_lens_clean",
             id="mlamd-zho-hans-lens",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_ocr_paddle",
             "mlamd_zho_hans_ocr_paddle_clean",
             id="mlamd-zho-hans-paddle",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hant_fuse",
             "mlamd_zho_hant_fuse_clean",
             id="mlamd-zho-hant-fuse",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hant_ocr_lens",
             "mlamd_zho_hant_ocr_lens_clean",
             id="mlamd-zho-hant-lens",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hant_ocr_paddle",
             "mlamd_zho_hant_ocr_paddle_clean",
             id="mlamd-zho-hant-paddle",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_fuse",
             "mnt_zho_hans_fuse_clean",
             id="mnt-zho-hans-fuse",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_ocr_lens",
             "mnt_zho_hans_ocr_lens_clean",
             id="mnt-zho-hans-lens",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_ocr_paddle",
             "mnt_zho_hans_ocr_paddle_clean",
             id="mnt-zho-hans-paddle",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hant_fuse",
             "mnt_zho_hant_fuse_clean",
             id="mnt-zho-hant-fuse",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hant_ocr_lens",
             "mnt_zho_hant_ocr_lens_clean",
             id="mnt-zho-hant-lens",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hant_ocr_paddle",
             "mnt_zho_hant_ocr_paddle_clean",
             id="mnt-zho-hant-paddle",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse",
             "t_zho_hans_fuse_clean",
             id="t-zho-hans-fuse",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_ocr_lens",
             "t_zho_hans_ocr_lens_clean",
             id="t-zho-hans-lens",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_ocr_paddle",
             "t_zho_hans_ocr_paddle_clean",
             id="t-zho-hans-paddle",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse",
             "t_zho_hant_fuse_clean",
             id="t-zho-hant-fuse",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_ocr_lens",
             "t_zho_hant_ocr_lens_clean",
             id="t-zho-hant-lens",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_ocr_paddle",
             "t_zho_hant_ocr_paddle_clean",
             id="t-zho-hant-paddle",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hans_ocr_fuse",
             "tmm_zho_hans_ocr_fuse_clean",
             id="tmm-zho-hans-fuse",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hans_ocr_lens",
             "tmm_zho_hans_ocr_lens_clean",
             id="tmm-zho-hans-lens",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hans_ocr_paddle",
             "tmm_zho_hans_ocr_paddle_clean",
             id="tmm-zho-hans-paddle",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hant_ocr_fuse",
             "tmm_zho_hant_ocr_fuse_clean",
             id="tmm-zho-hant-fuse",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hant_ocr_lens",
             "tmm_zho_hant_ocr_lens_clean",
             id="tmm-zho-hant-lens",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hant_ocr_paddle",
             "tmm_zho_hant_ocr_paddle_clean",
             id="tmm-zho-hant-paddle",
@@ -233,7 +233,7 @@ def test_get_zho_text_cleaned(text: str, expected: str):
     ],
 )
 def test_get_zho_cleaned(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):

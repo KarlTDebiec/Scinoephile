@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, mark, param
 
 from scinoephile.lang.zho.script.conversion import (
     S2T_EXCLUSIONS,
@@ -17,7 +17,7 @@ from scinoephile.lang.zho.script.conversion import (
 from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("text", "config", "expected"),
     [
         ("台臺", OpenCCConfig.s2t, "台臺"),
@@ -57,7 +57,7 @@ def test_get_zho_text_converted_applies_exclusions(
     assert get_zho_text_converted(text, config) == expected
 
 
-@pytest.mark.parametrize("text", sorted(S2T_EXCLUSIONS))
+@mark.parametrize("text", sorted(S2T_EXCLUSIONS))
 def test_s2t_exclusions_are_raw_opencc_changes(text: str):
     """Test every simplified-to-traditional exclusion changes under raw OpenCC.
 
@@ -68,7 +68,7 @@ def test_s2t_exclusions_are_raw_opencc_changes(text: str):
     assert converted_text != text
 
 
-@pytest.mark.parametrize("text", sorted(T2S_EXCLUSIONS))
+@mark.parametrize("text", sorted(T2S_EXCLUSIONS))
 def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     """Test every traditional-to-simplified exclusion changes under raw OpenCC.
 
@@ -79,40 +79,40 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     assert converted_text != text
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             id="acopopb-zho-hant",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten",
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             id="acoptc-zho-hant",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             id="kob-zho-hant",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hant_fuse_clean_validate_review_flatten",
             "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify",
             id="mlamd-zho-hant",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hant_fuse_clean_validate_review_flatten",
             "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify",
             id="mnt-zho-hant",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse_clean_validate_review_flatten",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
             id="t-zho-hant",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten",
             "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             id="tmm-zho-hant",
@@ -120,7 +120,7 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     ],
 )
 def test_get_zho_converted(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):
@@ -144,7 +144,7 @@ def test_get_zho_converted(
     )
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("text", "config", "expected"),
     [
         ("繁體中文", OpenCCConfig.t2s, "繁体中文"),

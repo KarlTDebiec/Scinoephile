@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import mark
 
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("text", "expected"),
     [
         ("soeng6 bin6", ["soeng6 bin6"]),

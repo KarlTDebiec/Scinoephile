@@ -4,13 +4,13 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import mark
 
 from scinoephile.lang.cmn.romanization import is_numbered_pinyin
 from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("text", "expected"),
     [(case.text, case.is_numbered_pinyin) for case in LANGUAGE_ID_TEST_CASES],
 )

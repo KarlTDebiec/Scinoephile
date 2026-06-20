@@ -4,13 +4,13 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, mark, param
 
 from scinoephile.lang.eng.cleaning import get_eng_cleaned, get_eng_text_cleaned
 from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("text", "expected"),
     [
         ("hello\\N-\\Nworld", "hello\\Nworld"),
@@ -40,115 +40,115 @@ def test_get_eng_text_cleaned(
     assert get_eng_text_cleaned(text) == expected
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "acopopb_eng_ocr_fuse",
             "acopopb_eng_ocr_fuse_clean",
             id="acopopb-eng-fuse",
         ),
-        pytest.param(
+        param(
             "acopopb_eng_ocr_lens",
             "acopopb_eng_ocr_lens_clean",
             id="acopopb-eng-lens",
         ),
-        pytest.param(
+        param(
             "acopopb_eng_ocr_tesseract",
             "acopopb_eng_ocr_tesseract_clean",
             id="acopopb-eng-tesseract",
         ),
-        pytest.param(
+        param(
             "acoptc_eng_ocr_fuse",
             "acoptc_eng_ocr_fuse_clean",
             id="acoptc-eng-fuse",
         ),
-        pytest.param(
+        param(
             "acoptc_eng_ocr_lens",
             "acoptc_eng_ocr_lens_clean",
             id="acoptc-eng-lens",
         ),
-        pytest.param(
+        param(
             "acoptc_eng_ocr_tesseract",
             "acoptc_eng_ocr_tesseract_clean",
             id="acoptc-eng-tesseract",
         ),
-        pytest.param(
+        param(
             "kob_eng_ocr_fuse",
             "kob_eng_ocr_fuse_clean",
             id="kob-eng-fuse",
         ),
-        pytest.param(
+        param(
             "kob_eng_ocr_lens",
             "kob_eng_ocr_lens_clean",
             id="kob-eng-lens",
         ),
-        pytest.param(
+        param(
             "kob_eng_ocr_tesseract",
             "kob_eng_ocr_tesseract_clean",
             id="kob-eng-tesseract",
         ),
-        pytest.param(
+        param(
             "kob_eng_timewarp",
             "kob_eng_timewarp_clean",
             id="kob-eng-timewarp",
         ),
-        pytest.param(
+        param(
             "mnt_eng_fuse",
             "mnt_eng_fuse_clean",
             id="mnt-eng-fuse",
         ),
-        pytest.param(
+        param(
             "t_eng_fuse",
             "t_eng_fuse_clean",
             id="t-eng-fuse",
         ),
-        pytest.param(
+        param(
             "t_eng_ocr_lens",
             "t_eng_ocr_lens_clean",
             id="t-eng-lens",
         ),
-        pytest.param(
+        param(
             "t_eng_ocr_tesseract",
             "t_eng_ocr_tesseract_clean",
             id="t-eng-tesseract",
         ),
-        pytest.param(
+        param(
             "mlamd_eng_fuse",
             "mlamd_eng_fuse_clean",
             id="mlamd-eng-fuse",
         ),
-        pytest.param(
+        param(
             "mlamd_eng_ocr_lens",
             "mlamd_eng_ocr_lens_clean",
             id="mlamd-eng-lens",
         ),
-        pytest.param(
+        param(
             "mlamd_eng_ocr_tesseract",
             "mlamd_eng_ocr_tesseract_clean",
             id="mlamd-eng-tesseract",
         ),
-        pytest.param(
+        param(
             "mnt_eng_ocr_lens",
             "mnt_eng_ocr_lens_clean",
             id="mnt-eng-lens",
         ),
-        pytest.param(
+        param(
             "mnt_eng_ocr_tesseract",
             "mnt_eng_ocr_tesseract_clean",
             id="mnt-eng-tesseract",
         ),
-        pytest.param(
+        param(
             "tmm_eng_ocr_fuse",
             "tmm_eng_ocr_fuse_clean",
             id="tmm-eng-fuse",
         ),
-        pytest.param(
+        param(
             "tmm_eng_ocr_lens",
             "tmm_eng_ocr_lens_clean",
             id="tmm-eng-lens",
         ),
-        pytest.param(
+        param(
             "tmm_eng_ocr_tesseract",
             "tmm_eng_ocr_tesseract_clean",
             id="tmm-eng-tesseract",
@@ -156,7 +156,7 @@ def test_get_eng_text_cleaned(
     ],
 )
 def test_get_eng_cleaned(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):

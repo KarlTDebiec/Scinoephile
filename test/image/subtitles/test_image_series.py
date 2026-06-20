@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 from PIL import Image
+from pytest import FixtureRequest, mark, param, raises
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core import ScinoephileError
@@ -16,10 +16,10 @@ from scinoephile.image.bbox import Bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
-        pytest.param(
+        param(
             "mlamd_eng_ocr_sup_path",
             942,
             (953, 63),
@@ -31,7 +31,7 @@ def test_load_sup(
     input_path_fixture: str,
     expected_event_count: int,
     expected_first_size: tuple[int, int],
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
 ):
     """Test loading SUP image subtitles.
 
@@ -54,10 +54,10 @@ def test_load_sup(
         assert event.img.size[1] > 0
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
-        pytest.param(
+        param(
             "mlamd_eng_image_path",
             942,
             (953, 63),
@@ -69,7 +69,7 @@ def test_load_html(
     input_path_fixture: str,
     expected_event_count: int,
     expected_first_size: tuple[int, int],
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
 ):
     """Test loading HTML image subtitles.
 
@@ -100,7 +100,7 @@ def test_load_rejects_unsupported_input_file(tmp_path: Path):
     input_path = tmp_path / "subtitles.txt"
     input_path.write_text("not image subtitles", encoding="utf-8")
 
-    with pytest.raises(ScinoephileError, match="directory containing one index.html"):
+    with raises(ScinoephileError, match="directory containing one index.html"):
         ImageSeries.load(input_path)
 
 
@@ -112,7 +112,7 @@ def test_image_series_load_wraps_input_path_errors(tmp_path: Path):
     """
     input_path = tmp_path / "missing"
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to load ImageSeries from .*missing",
     ) as excinfo:
@@ -160,7 +160,7 @@ def test_copy_text_from_rejects_length_mismatch():
         ]
     )
 
-    with pytest.raises(ScinoephileError, match="Length mismatch: 2 vs 1"):
+    with raises(ScinoephileError, match="Length mismatch: 2 vs 1"):
         image_series.copy_text_from(text_series)
 
 
@@ -196,7 +196,7 @@ def test_image_series_save_wraps_output_path_errors(
     output_path = tmp_path / "image_output"
     output_path.touch()
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to save ImageSeries to .*image_output",
     ) as excinfo:

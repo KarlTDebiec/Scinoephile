@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 from PIL import Image
+from pytest import raises
 
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.web.ocr_validation.html_index import (
@@ -57,7 +57,7 @@ def test_update_html_entry_text_rejects_negative_index(tmp_path: Path):
     """Test updating OCR text rejects negative subtitle indexes."""
     html_dir_path = _make_html_dir(tmp_path, text="old")
 
-    with pytest.raises(IndexError, match="Subtitle index out of range: -1"):
+    with raises(IndexError, match="Subtitle index out of range: -1"):
         update_html_entry_text(html_dir_path, -1, "new")
 
 
@@ -65,7 +65,7 @@ def test_update_html_entry_text_rejects_out_of_range_index(tmp_path: Path):
     """Test updating OCR text rejects out-of-range subtitle indexes."""
     html_dir_path = _make_html_dir(tmp_path, text="old")
 
-    with pytest.raises(IndexError, match="Subtitle index out of range: 1"):
+    with raises(IndexError, match="Subtitle index out of range: 1"):
         update_html_entry_text(html_dir_path, 1, "new")
 
 

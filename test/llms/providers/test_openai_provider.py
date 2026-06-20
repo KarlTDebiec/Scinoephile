@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import cast
 
-import pytest
+from pytest import MonkeyPatch
 
 from scinoephile.core.llms import openai_provider_base
 from scinoephile.llms.providers.openai_provider import OpenAIProvider
@@ -14,7 +14,7 @@ from test.helpers.openai import DummyOpenAI
 
 
 def test_openai_constructs_client_with_explicit_api_key_and_base_url(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test OpenAIProvider forwards explicit client overrides to OpenAI."""
     monkeypatch.setattr(openai_provider_base, "OpenAI", DummyOpenAI)
@@ -31,7 +31,7 @@ def test_openai_constructs_client_with_explicit_api_key_and_base_url(
 
 
 def test_openai_constructs_client_without_overrides(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test OpenAIProvider uses SDK defaults when no overrides are supplied."""
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)

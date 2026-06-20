@@ -8,7 +8,7 @@ from functools import cache
 from typing import Any, Unpack
 from unittest.mock import Mock
 
-import pytest
+from pytest import raises
 
 from scinoephile.core.llms import (
     Answer,
@@ -143,7 +143,7 @@ def test_queryer_requires_injected_provider():
     """Test queryer no longer constructs concrete providers by default."""
     queryer_cls = Queryer.get_queryer_cls(_Prompt)
 
-    with pytest.raises(TypeError):
+    with raises(TypeError):
         queryer_cls()
 
 

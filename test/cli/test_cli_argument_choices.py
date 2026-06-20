@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import Action
 
-import pytest
+from pytest import mark
 
 from scinoephile.cli.multi.multi_stack_cli import MultiStackCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
@@ -27,7 +27,7 @@ from scinoephile.common import CommandLineInterface
 OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("cli", "option", "metavar"),
     [
         (OcrFuseCli, "--language", "{eng,zho}"),

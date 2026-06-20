@@ -12,8 +12,7 @@ from os import getenv
 from pathlib import Path
 from typing import Any
 
-import pytest
-from pytest import fixture, mark
+from pytest import fixture, mark, raises, skip
 
 from scinoephile.common import CommandLineInterface, package_root
 from scinoephile.common.testing import run_cli_with_args
@@ -50,7 +49,7 @@ def assert_cli_help(cli: tuple[type[CommandLineInterface], ...]):
     subcommands = build_subcommands(cli)
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(cli[0], f"{subcommands} -h".strip())
@@ -68,7 +67,7 @@ def assert_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
     subcommands = build_subcommands(cli)
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(cli[0], subcommands)
@@ -130,7 +129,7 @@ def create_symlink_or_skip(
         symlink_path.symlink_to(target_path, target_is_directory=target_is_directory)
     except OSError as exc:
         if getattr(exc, "winerror", None) == 1314:
-            pytest.skip("Windows symlink privilege is not available")
+            skip("Windows symlink privilege is not available")
         raise
 
 

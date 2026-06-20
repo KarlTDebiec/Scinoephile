@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 from PIL import Image
+from pytest import LogCaptureFixture, MonkeyPatch, mark, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.lens import ocr_image_series_with_lens
@@ -16,7 +16,7 @@ from test.helpers.ocr_recognizers import FailingOcrRecognizer, RecordingOcrRecog
 
 
 def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test Google Lens image series processing preserves timings and text.
 
@@ -54,8 +54,8 @@ def test_ocr_image_series_with_lens_preserves_timings_and_sets_text(
 
 
 def test_ocr_image_series_with_lens_logs_progress(
-    caplog: pytest.LogCaptureFixture,
-    monkeypatch: pytest.MonkeyPatch,
+    caplog: LogCaptureFixture,
+    monkeypatch: MonkeyPatch,
 ):
     """Test Google Lens image series processing logs OCR progress.
 
@@ -97,7 +97,7 @@ def test_ocr_image_series_with_lens_logs_progress(
 
 
 def test_ocr_image_series_with_lens_uses_runtime_cache(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test Google Lens image series processing uses runtime cache by default.
@@ -140,7 +140,7 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
     assert recognizer.kwargs["retries"] == 5
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     "exception",
     [
         ImportError("missing lens dependency"),
@@ -151,7 +151,7 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
     ],
 )
 def test_ocr_image_series_with_lens_wraps_processing_errors(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     exception: Exception,
 ):
     """Test Lens image series processing wraps implementation errors.
@@ -175,7 +175,7 @@ def test_ocr_image_series_with_lens_wraps_processing_errors(
         ]
     )
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to OCR image series with Google Lens",
     ) as excinfo:

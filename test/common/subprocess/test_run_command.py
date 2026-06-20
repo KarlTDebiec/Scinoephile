@@ -9,13 +9,13 @@ import sys
 from pathlib import Path
 from time import monotonic
 
-import pytest
+from pytest import mark, raises
 
 from scinoephile.common.subprocess import run_command
 from test.helpers.subprocess_cases import SUBPROCESS_SUCCESS_CASES
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("command", "expected_stdout_fragments"),
     [(command, fragments) for _, command, fragments in SUBPROCESS_SUCCESS_CASES],
     ids=[name for name, _, _ in SUBPROCESS_SUCCESS_CASES],
@@ -54,7 +54,7 @@ def test_run_command_with_stderr():
 
 def test_run_command_failure_default():
     """Test running a command that fails with default acceptable exitcodes."""
-    with pytest.raises(ValueError, match="failed with exit code"):
+    with raises(ValueError, match="failed with exit code"):
         run_command([sys.executable, "-c", "import sys; sys.exit(1)"])
 
 

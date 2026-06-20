@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, mark, param, raises
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.stacking import (
@@ -38,7 +38,7 @@ def test_get_stacked_series_does_not_overlap_union_timing():
     assert output.events[1].start >= output.events[0].end
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("timing_mode", "expected_times"),
     [
         (StackTimingMode.TOP, [(1000, 2000), (2100, 3000)]),
@@ -87,7 +87,7 @@ def test_get_stacked_series_timing_mode_uses_available_timing_for_unpaired_subti
         assert [event.text for event in output.events] == ["A", "1"]
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("timing_mode", "expected_times"),
     [
         (StackTimingMode.TOP, [(1000, 1500), (1500, 2000)]),
@@ -125,77 +125,77 @@ def test_get_stacked_series_overlap_error_includes_event_context():
         ]
     )
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match=("events 1 and 2.*previous=1000-3000.*current=1000-1001"),
     ):
         get_stacked_series_from_groups(one, Series(), [([0], []), ([1], [])])
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("one_fixture", "two_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten",
             "acopopb_eng_ocr_fuse_clean_validate_review_flatten",
             "acopopb_zho_hans_eng",
             id="acopopb-zho-hans-eng",
         ),
-        pytest.param(
+        param(
             "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten",
             "acopopb_eng_ocr_fuse_clean_validate_review_flatten",
             "acopopb_yue_hans_eng",
             id="acopopb-yue-hans-eng",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hans_ocr_fuse_clean_validate_review_flatten",
             "acoptc_eng_ocr_fuse_clean_validate_review_flatten",
             "acoptc_zho_hans_eng",
             id="acoptc-zho-hans-eng",
         ),
-        pytest.param(
+        param(
             "acoptc_yue_hans_ocr_fuse_clean_validate_review_flatten",
             "acoptc_eng_ocr_fuse_clean_validate_review_flatten",
             "acoptc_yue_hans_eng",
             id="acoptc-yue-hans-eng",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hans_eng",
             id="kob-zho-hans-eng",
         ),
-        pytest.param(
+        param(
             "kob_yue_hans_timewarp_clean_flatten",
             "kob_eng_timewarp_clean_review_flatten",
             "kob_yue_hans_eng",
             id="kob-yue-hans-eng",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             "mlamd_eng_fuse_clean_validate_review_flatten",
             "mlamd_zho_hans_eng",
             id="mlamd-zho-hans-eng",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_fuse_clean_validate_review_flatten",
             "mnt_eng_fuse_clean_validate_review_flatten",
             "mnt_zho_hans_eng",
             id="mnt-zho-hans-eng",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_eng_fuse_clean_validate_review_flatten",
             "t_zho_hans_eng",
             id="t-zho-hans-eng",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hans_ocr_fuse_clean_validate_review_flatten",
             "tmm_eng_ocr_fuse_clean_validate_review_flatten",
             "tmm_zho_hans_eng",
             id="tmm-zho-hans-eng",
         ),
-        pytest.param(
+        param(
             "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten",
             "tmm_eng_ocr_fuse_clean_validate_review_flatten",
             "tmm_yue_hans_eng",
@@ -204,7 +204,7 @@ def test_get_stacked_series_overlap_error_includes_event_context():
     ],
 )
 def test_get_stacked_series(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     one_fixture: str,
     two_fixture: str,
     expected_fixture: str,

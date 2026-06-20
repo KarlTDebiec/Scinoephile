@@ -10,7 +10,7 @@ import shutil
 import sys
 from pathlib import Path
 
-import pytest
+from pytest import fail
 
 from scinoephile.common.subprocess import run_command
 
@@ -154,7 +154,7 @@ def _get_single_wheel_path(wheel_dir_path: Path) -> Path:
     wheel_paths = sorted(wheel_dir_path.glob("scinoephile-*.whl"))
     if len(wheel_paths) != 1:
         found_file_names = sorted(path.name for path in wheel_dir_path.iterdir())
-        pytest.fail(
+        fail(
             "Expected exactly one scinoephile wheel in "
             f"{wheel_dir_path}, found {len(wheel_paths)}: {found_file_names}"
         )

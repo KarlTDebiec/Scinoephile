@@ -9,8 +9,8 @@ from collections.abc import Mapping, Sequence
 from unittest.mock import Mock, patch
 
 import numpy as np
-import pytest
 from pydub import AudioSegment
+from pytest import MonkeyPatch, importorskip, raises
 
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 
@@ -47,9 +47,7 @@ def test_get_audio_segment_restores_mono_output():
     assert audio.channels == 1
 
 
-def test_demucs_model_loader_requires_transcription_extra(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_demucs_model_loader_requires_transcription_extra(monkeypatch: MonkeyPatch):
     """Test Demucs import errors mention the transcription extra."""
     original_import = builtins.__import__
 
@@ -66,13 +64,13 @@ def test_demucs_model_loader_requires_transcription_extra(
 
     monkeypatch.setattr(builtins, "__import__", import_without_demucs)
 
-    with pytest.raises(ImportError, match="'transcription' extra"):
+    with raises(ImportError, match="'transcription' extra"):
         DemucsSeparator._get_model_loader()
 
 
 def test_separate_vocals_uses_default_demucs_shifts():
     """Test Demucs separation relies on library-default shift behavior."""
-    torch = pytest.importorskip("torch")
+    torch = importorskip("torch")
     separator = DemucsSeparator()
     separator._model = Mock(samplerate=16000, sources=["vocals"])
     separator._model.to.return_value = separator._model

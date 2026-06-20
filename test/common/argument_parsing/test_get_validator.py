@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentTypeError
 
-import pytest
+from pytest import raises
 
 from scinoephile.common.argument_parsing import get_validator
 
@@ -48,7 +48,7 @@ def test_get_validator_type_error():
 
     validator = get_validator(failing_func)
 
-    with pytest.raises(ArgumentTypeError):
+    with raises(ArgumentTypeError):
         validator("test")
 
 
@@ -69,5 +69,5 @@ def test_get_validator_os_error():
 
     validator = get_validator(failing_func)
 
-    with pytest.raises(ArgumentTypeError, match="Invalid path"):
+    with raises(ArgumentTypeError, match="Invalid path"):
         validator("test")

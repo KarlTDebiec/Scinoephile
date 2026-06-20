@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import mark
 
 from scinoephile.common.exceptions import (
     ArgumentConflictError,
@@ -19,7 +19,7 @@ from scinoephile.common.exceptions import (
 )
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("exception_cls", "base_cls"),
     [
         (ArgumentConflictError, Exception),

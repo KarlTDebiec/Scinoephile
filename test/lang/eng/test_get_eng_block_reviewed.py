@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock
 
-import pytest
+from pytest import FixtureRequest, mark, param
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.eng.block_review import (
@@ -24,52 +24,52 @@ from test.data.tmm import get_tmm_eng_block_review_test_cases
 from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("series_fixture", "expected_fixture", "test_case_loader"),
     [
-        pytest.param(
+        param(
             "acopopb_eng_ocr_fuse_clean_validate",
             "acopopb_eng_ocr_fuse_clean_validate_review",
             get_acopopb_eng_block_review_test_cases,
             id="acopopb-eng",
         ),
-        pytest.param(
+        param(
             "acoptc_eng_ocr_fuse_clean_validate",
             "acoptc_eng_ocr_fuse_clean_validate_review",
             get_acoptc_eng_block_review_test_cases,
             id="acoptc-eng",
         ),
-        pytest.param(
+        param(
             "kob_eng_ocr_fuse_clean_validate",
             "kob_eng_ocr_fuse_clean_validate_review",
             get_kob_eng_block_review_test_cases,
             id="kob-eng",
         ),
-        pytest.param(
+        param(
             "kob_eng_timewarp_clean",
             "kob_eng_timewarp_clean_review",
             get_kob_eng_block_review_test_cases,
             id="kob-eng-timewarp",
         ),
-        pytest.param(
+        param(
             "mlamd_eng_fuse_clean_validate",
             "mlamd_eng_fuse_clean_validate_review",
             get_mlamd_eng_block_review_test_cases,
             id="mlamd-eng",
         ),
-        pytest.param(
+        param(
             "mnt_eng_fuse_clean_validate",
             "mnt_eng_fuse_clean_validate_review",
             get_mnt_eng_block_review_test_cases,
             id="mnt-eng",
         ),
-        pytest.param(
+        param(
             "t_eng_fuse_clean_validate",
             "t_eng_fuse_clean_validate_review",
             get_t_eng_block_review_test_cases,
             id="t-eng",
         ),
-        pytest.param(
+        param(
             "tmm_eng_ocr_fuse_clean_validate",
             "tmm_eng_ocr_fuse_clean_validate_review",
             get_tmm_eng_block_review_test_cases,
@@ -78,7 +78,7 @@ from test.helpers import assert_series_equal
     ],
 )
 def test_get_eng_block_reviewed(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
     test_case_loader: Callable[[], list[TestCase]],

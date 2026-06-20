@@ -10,7 +10,7 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import mark, raises
 
 from scinoephile.cli.helpers.io import read_image_series, read_series, write_series
 from scinoephile.common.exceptions import NotAFileError
@@ -18,7 +18,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     "exception",
     [
         FileNotFoundError("missing image subtitles"),
@@ -42,7 +42,7 @@ def test_read_image_series_maps_file_errors_to_parser_error(
     stderr = StringIO()
 
     with patch("scinoephile.cli.helpers.io.ImageSeries.load", side_effect=exception):
-        with pytest.raises(SystemExit) as excinfo:
+        with raises(SystemExit) as excinfo:
             with redirect_stderr(stderr):
                 read_image_series(parser, infile_path)
 
@@ -50,7 +50,7 @@ def test_read_image_series_maps_file_errors_to_parser_error(
     assert str(exception) in stderr.getvalue()
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     "exception",
     [
         FileNotFoundError("missing subtitles"),
@@ -75,7 +75,7 @@ def test_read_series_maps_file_errors_to_parser_error(
     stderr = StringIO()
 
     with patch("scinoephile.cli.helpers.io.Series.load", side_effect=exception):
-        with pytest.raises(SystemExit) as excinfo:
+        with raises(SystemExit) as excinfo:
             with redirect_stderr(stderr):
                 read_series(parser, infile_path)
 
@@ -83,7 +83,7 @@ def test_read_series_maps_file_errors_to_parser_error(
     assert str(exception) in stderr.getvalue()
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     "exception",
     [
         ScinoephileError("invalid stdin subtitle series"),
@@ -103,7 +103,7 @@ def test_read_series_maps_stdin_errors_to_parser_error(exception: Exception):
         with patch(
             "scinoephile.cli.helpers.io.Series.from_string", side_effect=exception
         ):
-            with pytest.raises(SystemExit) as excinfo:
+            with raises(SystemExit) as excinfo:
                 with redirect_stderr(stderr):
                     read_series(parser, "-", allow_stdin=True)
 

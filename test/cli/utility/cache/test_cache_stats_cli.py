@@ -7,13 +7,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
+from pytest import CaptureFixture
 
 from scinoephile.cli.utility.cache.cache_stats_cli import CacheStatsCli
 from scinoephile.common.testing import run_cli_with_args
 
 
-def test_cache_stats_json(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+def test_cache_stats_json(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test JSON cache stats output.
 
     Arguments:
@@ -30,7 +30,7 @@ def test_cache_stats_json(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
     assert stats["total"]["entry_count"] == 1
 
 
-def test_cache_stats_namespace(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+def test_cache_stats_namespace(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test namespace-filtered cache stats output.
 
     Arguments:

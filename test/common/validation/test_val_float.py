@@ -7,13 +7,13 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any, cast
 
-import pytest
+from pytest import mark, raises
 
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.common.validation import val_float
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("value", "expected"),
     [
         (3.14, 3.14),
@@ -27,7 +27,7 @@ def test_val_float_accepts_scalar_values(value: float | int | str, expected: flo
     assert val_float(value) == expected
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("constraint", "value", "expected_error"),
     [
         ("min", -1.0, "less than minimum"),
@@ -38,7 +38,7 @@ def test_val_float_rejects_scalar_constraint_violations(
     constraint: str, value: float, expected_error: str
 ):
     """Test float validation rejects scalar constraint violations."""
-    with pytest.raises(ValueError, match=expected_error):
+    with raises(ValueError, match=expected_error):
         if constraint == "min":
             val_float(value, min_value=0.0)
         else:
@@ -47,15 +47,15 @@ def test_val_float_rejects_scalar_constraint_violations(
 
 def test_val_float_rejects_invalid_values_and_conflicting_constraints():
     """Test float validation rejects invalid values and conflicting constraints."""
-    with pytest.raises(TypeError):
+    with raises(TypeError):
         val_float(cast(Any, None))
-    with pytest.raises(TypeError):
+    with raises(TypeError):
         val_float("invalid")
-    with pytest.raises(ArgumentConflictError, match="min_value must be less than"):
+    with raises(ArgumentConflictError, match="min_value must be less than"):
         val_float(5.0, min_value=5.0, max_value=5.0)
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("value", "expected"),
     [
         ([1.0, 2.0, 3.0], [1.0, 2.0, 3.0]),
@@ -78,11 +78,11 @@ def test_val_float_applies_iterable_constraints():
     assert val_float([], n_values=0) == []
     assert val_float(x for x in [1.0, 2.0, 3.0]) == [1.0, 2.0, 3.0]
 
-    with pytest.raises(ValueError, match="is of length"):
+    with raises(ValueError, match="is of length"):
         val_float([1.0, 2.0], n_values=3)
-    with pytest.raises(ValueError, match="less than minimum"):
+    with raises(ValueError, match="less than minimum"):
         val_float([1.0, -1.0, 3.0], min_value=0.0)
-    with pytest.raises(ValueError, match="greater than maximum"):
+    with raises(ValueError, match="greater than maximum"):
         val_float([1.0, 11.0, 3.0], max_value=10.0)
-    with pytest.raises(TypeError):
+    with raises(TypeError):
         val_float([1.0, "invalid", 3.0])

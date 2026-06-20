@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import ClassVar
 from unittest.mock import patch
 
-import pytest
+from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.common.command_line_interface import (
     CommandLineInterface,
@@ -106,7 +106,7 @@ class ReportTool(CommandLineInterface):
         pass
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("cli_cls", "expected_name"),
     [
         (TestCli, "test"),
@@ -260,7 +260,7 @@ def test_run_cli_with_args_quoted_values():
 
 
 def test_assert_cli_usage_failure_reports_streams(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test CLI usage assertion failures include expected and actual streams.
 
@@ -273,7 +273,7 @@ def test_assert_cli_usage_failure_reports_streams(
         lambda cli: "usage: intentionally-wrong.py",
     )
 
-    with pytest.raises(AssertionError) as excinfo:
+    with raises(AssertionError) as excinfo:
         helpers.assert_cli_usage((RequiredArgCli,))
 
     message = str(excinfo.value)

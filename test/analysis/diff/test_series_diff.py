@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, mark, param, raises
 
 from scinoephile.analysis.diff import LineDiffKind, SeriesDiff
 from scinoephile.core import ScinoephileError
@@ -95,7 +95,7 @@ def test_series_diff_reports_shift():
     assert messages[0].two_idxs == (0, 1)
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     (
         "one_texts",
         "two_texts",
@@ -155,7 +155,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
     assert messages[0].two_texts == ("Damn!",)
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     (
         "one_fixture_name",
         "two_fixture_name",
@@ -164,7 +164,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
         "expected_fixture_name",
     ),
     [
-        pytest.param(
+        param(
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
             "kob_eng_timewarp_clean_review_flatten",
             "OCR",
@@ -172,7 +172,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
             "kob_eng_expected_series_diff",
             id="kob-eng-ocr-vs-srt",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             "SIMP",
@@ -180,7 +180,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
             "mlamd_zho_simplify_expected_series_diff",
             id="mlamd-zho-simplify",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_fuse_clean_validate_review_flatten",
             "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             "SIMP",
@@ -188,7 +188,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
             "mnt_zho_simplify_expected_series_diff",
             id="mnt-zho-simplify",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             "SIMP",
@@ -204,7 +204,7 @@ def test_series_diff_matches_expected_fixture(
     one_label: str,
     two_label: str,
     expected_fixture_name: str,
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
 ):
     """Test end-to-end series diffs against stored fixture expectations.
 
@@ -271,7 +271,7 @@ def test_series_diff_get_stacked_str_can_include_equal_lines():
     ]
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("one_texts", "two_texts", "expected_lines"),
     [
         (
@@ -323,5 +323,5 @@ def test_series_diff_get_stacked_str_rejects_non_one_to_one_third_series():
     two = _get_series("alpha", "beta")
     three = _get_series("source alpha beta", "extra")
 
-    with pytest.raises(ScinoephileError, match="one-to-one matched"):
+    with raises(ScinoephileError, match="one-to-one matched"):
         SeriesDiff(one, two).get_stacked_str(color=False, three=three)

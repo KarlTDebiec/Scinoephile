@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock
 
-import pytest
+from pytest import FixtureRequest, mark, param
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.zho.block_review import (
@@ -53,143 +53,143 @@ from test.data.tmm import (
 from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("series_fixture", "expected_fixture", "test_case_loader", "prompt_cls"),
     [
-        pytest.param(
+        param(
             "acopopb_zho_hans_ocr_fuse_clean_validate",
             "acopopb_zho_hans_ocr_fuse_clean_validate_review",
             get_acopopb_zho_hans_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="acopopb-zho-hans",
         ),
-        pytest.param(
+        param(
             "acopopb_zho_hant_ocr_fuse_clean_validate",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review",
             get_acopopb_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="acopopb-zho-hant",
         ),
-        pytest.param(
+        param(
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_acopopb_zho_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="acopopb-zho-hant-simplify",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hans_ocr_fuse_clean_validate",
             "acoptc_zho_hans_ocr_fuse_clean_validate_review",
             get_acoptc_zho_hans_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="acoptc-zho-hans",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hant_ocr_fuse_clean_validate",
             "acoptc_zho_hant_ocr_fuse_clean_validate_review",
             get_acoptc_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="acoptc-zho-hant",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_acoptc_zho_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="acoptc-zho-hant-simplify",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate",
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             get_kob_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="kob-zho-hant",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_kob_zho_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="kob-zho-hant-simplify",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_fuse_clean_validate",
             "mlamd_zho_hans_fuse_clean_validate_review",
             get_mlamd_zho_hans_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="mlamd-zho-hans",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hant_fuse_clean_validate",
             "mlamd_zho_hant_fuse_clean_validate_review",
             get_mlamd_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="mlamd-zho-hant",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify",
             "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             get_mlamd_zho_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="mlamd-zho-hant-simplify",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_fuse_clean_validate",
             "mnt_zho_hans_fuse_clean_validate_review",
             get_mnt_zho_hans_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="mnt-zho-hans",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hant_fuse_clean_validate",
             "mnt_zho_hant_fuse_clean_validate_review",
             get_mnt_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="mnt-zho-hant",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify",
             "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             get_mnt_zho_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="mnt-zho-hant-simplify",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse_clean_validate",
             "t_zho_hans_fuse_clean_validate_review",
             get_t_zho_hans_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="t-zho-hans",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse_clean_validate",
             "t_zho_hant_fuse_clean_validate_review",
             get_t_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="t-zho-hant",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             get_t_zho_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="t-zho-hant-simplify",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hans_ocr_fuse_clean_validate",
             "tmm_zho_hans_ocr_fuse_clean_validate_review",
             get_tmm_zho_hans_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="tmm-zho-hans",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hant_ocr_fuse_clean_validate",
             "tmm_zho_hant_ocr_fuse_clean_validate_review",
             get_tmm_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="tmm-zho-hant",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_tmm_zho_hant_simplify_block_review_test_cases,
@@ -199,7 +199,7 @@ from test.helpers import assert_series_equal
     ],
 )
 def test_get_zho_block_reviewed(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
     test_case_loader: Callable[[], list[TestCase]],

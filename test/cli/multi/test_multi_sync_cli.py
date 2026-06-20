@@ -8,7 +8,7 @@ from contextlib import redirect_stderr
 from io import StringIO
 from pathlib import Path
 
-import pytest
+from pytest import CaptureFixture, MonkeyPatch, mark, raises
 
 from scinoephile.cli.multi.multi_sync_cli import MultiSyncCli
 from scinoephile.common.testing import run_cli_with_args
@@ -18,7 +18,7 @@ from test.helpers import assert_series_equal
 
 def test_multi_sync_cli_shifts_mobile_to_anchor_and_writes_file(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test multi sync estimates offset, shifts mobile subtitles, and writes output.
 
@@ -60,7 +60,7 @@ def test_multi_sync_cli_pipe(tmp_path: Path):
     mobile_path.write_text("1\n00:00:01,250 --> 00:00:02,250\nB\n", encoding="utf-8")
 
     stdout_stream = StringIO()
-    with pytest.MonkeyPatch.context() as monkeypatch:
+    with MonkeyPatch.context() as monkeypatch:
         monkeypatch.setattr("scinoephile.cli.helpers.io.stdout", stdout_stream)
         run_cli_with_args(
             MultiSyncCli,
@@ -75,7 +75,7 @@ def test_multi_sync_cli_pipe(tmp_path: Path):
     assert_series_equal(output, expected)
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("args", "expected_error"),
     [
         ("--sync-cutoff -0.01", "-0.01 is less than minimum value of 0.0"),
@@ -101,7 +101,7 @@ def test_multi_sync_cli_rejects_invalid_tuning_options(
     mobile_path.write_text("1\n00:00:01,250 --> 00:00:02,250\nB\n", encoding="utf-8")
 
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stderr(stderr):
             run_cli_with_args(
                 MultiSyncCli,

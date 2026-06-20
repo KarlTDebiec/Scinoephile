@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentTypeError
 from pathlib import Path
 
-import pytest
+from pytest import raises
 
 from scinoephile.common.argument_parsing import (
     duration_arg,
@@ -28,7 +28,7 @@ def test_duration_arg():
 
     assert validator("12h").total_seconds() == 12 * 60 * 60
 
-    with pytest.raises(ArgumentTypeError, match="Invalid duration"):
+    with raises(ArgumentTypeError, match="Invalid duration"):
         validator("yesterday")
 
 
@@ -38,7 +38,7 @@ def test_float_arg():
 
     assert validator("5.5") == 5.5
 
-    with pytest.raises(ArgumentTypeError, match="less than minimum value"):
+    with raises(ArgumentTypeError, match="less than minimum value"):
         validator("-1.0")
 
 
@@ -48,7 +48,7 @@ def test_int_arg():
 
     assert validator("5") == 5
 
-    with pytest.raises(ArgumentTypeError, match="less than minimum value"):
+    with raises(ArgumentTypeError, match="less than minimum value"):
         validator("-1")
 
 
@@ -59,7 +59,7 @@ def test_str_arg():
     assert validator("option1") == "option1"
     assert validator("OPTION1") == "option1"
 
-    with pytest.raises(
+    with raises(
         ArgumentTypeError,
         match="'invalid' is not one of the supported values: option1, option2, option3",
     ):
@@ -77,7 +77,7 @@ def test_input_file_arg(tmp_path: Path):
     assert isinstance(result, Path)
     assert result.exists()
 
-    with pytest.raises(ArgumentTypeError, match="does not exist"):
+    with raises(ArgumentTypeError, match="does not exist"):
         validator(str(tmp_path / "nonexistent.txt"))
 
 
@@ -93,7 +93,7 @@ def test_input_file_or_dir_arg(tmp_path: Path):
     assert validator(str(test_file)) == test_file.resolve()
     assert validator(str(test_dir)) == test_dir.resolve()
 
-    with pytest.raises(ArgumentTypeError, match="does not exist"):
+    with raises(ArgumentTypeError, match="does not exist"):
         validator(str(tmp_path / "nonexistent"))
 
 
@@ -108,7 +108,7 @@ def test_input_dir_arg(tmp_path: Path):
     assert isinstance(result, Path)
     assert result.is_dir()
 
-    with pytest.raises(ArgumentTypeError, match="does not exist"):
+    with raises(ArgumentTypeError, match="does not exist"):
         validator(str(tmp_path / "nonexistent"))
 
 
@@ -130,7 +130,7 @@ def test_output_file_arg_rejects_existing_file_with_argparse_error(tmp_path: Pat
 
     validator = output_file_arg()
 
-    with pytest.raises(ArgumentTypeError, match="already exists"):
+    with raises(ArgumentTypeError, match="already exists"):
         validator(str(test_file))
 
 
@@ -167,5 +167,5 @@ def test_output_dir_arg_without_create_rejects_file_ancestor(tmp_path: Path):
 
     validator = output_dir_arg(create=False)
 
-    with pytest.raises(ArgumentTypeError, match="is not a directory"):
+    with raises(ArgumentTypeError, match="is not a directory"):
         validator(str(test_dir))

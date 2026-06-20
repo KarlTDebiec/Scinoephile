@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 import requests
 from PIL import Image
+from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import TesseractRecognizer
@@ -62,7 +62,7 @@ def test_tesseract_recognizer_caches_results_by_image(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 1
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("language", "expected_code"),
     [
         (Language.eng, "eng"),
@@ -285,7 +285,7 @@ def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
 
 def test_tesseract_detect_italics_rejects_non_english_language():
     """Test italic detection is only supported for English Tesseract OCR."""
-    with pytest.raises(ValueError, match="only supported with language eng"):
+    with raises(ValueError, match="only supported with language eng"):
         TesseractRecognizer(
             executable_path=Path("tesseract"),
             detect_italics=True,
@@ -295,7 +295,7 @@ def test_tesseract_detect_italics_rejects_non_english_language():
 
 
 def test_tesseract_detect_italics_downloads_missing_legacy_tessdata(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test italic detection downloads missing legacy traineddata lazily.
@@ -366,7 +366,7 @@ def test_tesseract_detect_italics_downloads_missing_legacy_tessdata(
 
 
 def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test italic detection reuses cached legacy traineddata.
@@ -551,7 +551,7 @@ def test_tesseract_detect_italics_raises_clear_legacy_error(tmp_path: Path):
         skip_executable_validation=True,
     )
 
-    with pytest.raises(ScinoephileError, match="legacy Tesseract data"):
+    with raises(ScinoephileError, match="legacy Tesseract data"):
         recognizer.recognize_image(Image.new("RGBA", (2, 2)))
 
     assert list(tmp_path.glob("*.json")) == []
@@ -585,7 +585,7 @@ def test_tesseract_raises_and_does_not_cache_when_output_is_missing(
         skip_executable_validation=True,
     )
 
-    with pytest.raises(ValueError, match="did not produce hOCR output"):
+    with raises(ValueError, match="did not produce hOCR output"):
         recognizer.recognize_image(Image.new("RGBA", (2, 2)))
 
     assert list(tmp_path.glob("*.json")) == []

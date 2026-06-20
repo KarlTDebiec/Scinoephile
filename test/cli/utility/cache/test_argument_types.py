@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.helpers.cache import add_cache_dir_arg
 
@@ -71,7 +71,7 @@ def test_add_cache_dir_arg_rejects_existing_file(tmp_path: Path):
     cache_file_path.write_text("cache", encoding="utf-8")
 
     add_cache_dir_arg(cache_arg_group)
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         parser.parse_args(["--cache-dir", str(cache_file_path)])
 
     assert excinfo.value.code == 2

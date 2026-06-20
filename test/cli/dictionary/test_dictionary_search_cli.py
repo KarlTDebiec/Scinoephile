@@ -13,7 +13,7 @@ from shlex import quote
 from subprocess import list2cmdline
 from unittest.mock import patch
 
-import pytest
+from pytest import CaptureFixture, fixture, mark, raises
 
 from scinoephile.cli.dictionary.dictionary_search_cli import DictionarySearchCli
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
@@ -26,7 +26,7 @@ from scinoephile.core.dictionaries import (
 )
 
 
-@pytest.fixture(scope="module")
+@fixture(scope="module")
 def dictionary_database_dir_path() -> Generator[Path]:
     """Build temporary databases for end-to-end search tests."""
     with get_temp_directory_path() as dir_path:
@@ -121,7 +121,7 @@ def dictionary_database_dir_path() -> Generator[Path]:
         yield dir_path
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("query", "expected_output", "expectation"),
     [
         ("山坑", "山坑", nullcontext()),
@@ -131,7 +131,7 @@ def dictionary_database_dir_path() -> Generator[Path]:
         (
             "gully",
             "Unsupported query 'gully'",
-            pytest.raises(SystemExit, match="1"),
+            raises(SystemExit, match="1"),
         ),
     ],
 )
@@ -220,7 +220,7 @@ def test_dictionary_search_cli_all_dictionaries_database_path_is_usage_error():
     with get_temp_directory_path() as temp_dir_path:
         database_path = temp_dir_path / "existing.db"
         database_path.touch()
-        with pytest.raises(SystemExit, match="2"):
+        with raises(SystemExit, match="2"):
             run_cli_with_args(
                 DictionarySearchCli,
                 f"--database-path {database_path} --dictionary-name all 共享",
@@ -229,7 +229,7 @@ def test_dictionary_search_cli_all_dictionaries_database_path_is_usage_error():
 
 def test_dictionary_search_cli_prints_no_matches(
     dictionary_database_dir_path: Path,
-    capsys: pytest.CaptureFixture,
+    capsys: CaptureFixture,
 ):
     """Test dictionary search reports no matches on stdout.
 

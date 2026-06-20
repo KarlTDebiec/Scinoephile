@@ -7,8 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
 from PIL import Image
+from pytest import LogCaptureFixture, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -342,7 +342,7 @@ def test_extract_subtitles_skips_sup_parsing_when_not_exporting_images(
 
 def test_extract_subtitles_warns_when_sup_image_export_fails(
     tmp_path: Path,
-    caplog: pytest.LogCaptureFixture,
+    caplog: LogCaptureFixture,
 ):
     """Test extraction keeps subtitle files when SUP image export fails.
 
@@ -489,7 +489,7 @@ def test_extract_subtitles_rejects_sup_file_without_subtitle_streams(tmp_path: P
             "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
             return_value=[],
         ),
-        pytest.raises(ScinoephileError, match="No subtitle streams found"),
+        raises(ScinoephileError, match="No subtitle streams found"),
     ):
         extract_subtitles(
             infile_path=infile_path,

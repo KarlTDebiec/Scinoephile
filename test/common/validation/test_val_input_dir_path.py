@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.common.exceptions import DirectoryNotFoundError
 from scinoephile.common.validation import val_input_dir_path
@@ -27,9 +27,9 @@ def test_val_input_dir_path_rejects_missing_and_file_paths(tmp_path: Path):
     file_path = tmp_path / "test.txt"
     file_path.write_text("test content", encoding="utf-8")
 
-    with pytest.raises(DirectoryNotFoundError):
+    with raises(DirectoryNotFoundError):
         val_input_dir_path(tmp_path / "missing")
-    with pytest.raises(NotADirectoryError):
+    with raises(NotADirectoryError):
         val_input_dir_path(file_path)
 
 
@@ -49,14 +49,14 @@ def test_val_input_dir_path_handles_iterables(tmp_path: Path):
     ]
     assert val_input_dir_path([]) == []
 
-    with pytest.raises(DirectoryNotFoundError):
+    with raises(DirectoryNotFoundError):
         val_input_dir_path([dir_paths[0], tmp_path / "missing"])
-    with pytest.raises(NotADirectoryError):
+    with raises(NotADirectoryError):
         val_input_dir_path([dir_paths[0], file_path])
 
 
 def test_val_input_dir_path_expands_and_resolves_paths(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test input directory validation expands variables and resolves symlinks."""
     dir_path = tmp_path / "testdir"

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common.file import get_temp_file_path
@@ -54,7 +54,7 @@ def test_zho_translate_from_yue_cli_rejects_gapped_and_guide_together():
         "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             ZhoTranslateFromYueCli,
             f"--yue-infile {yue_input_path} "

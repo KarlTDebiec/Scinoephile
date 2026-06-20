@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.validation import val_input_path
@@ -27,9 +27,9 @@ def test_val_input_path_rejects_missing_and_directory_paths(tmp_path: Path):
     dir_path = tmp_path / "testdir"
     dir_path.mkdir()
 
-    with pytest.raises(FileNotFoundError):
+    with raises(FileNotFoundError):
         val_input_path(tmp_path / "missing.txt")
-    with pytest.raises(NotAFileError):
+    with raises(NotAFileError):
         val_input_path(dir_path)
 
 
@@ -47,14 +47,14 @@ def test_val_input_path_handles_iterables(tmp_path: Path):
     ]
     assert val_input_path([]) == []
 
-    with pytest.raises(FileNotFoundError):
+    with raises(FileNotFoundError):
         val_input_path([file_paths[0], tmp_path / "missing.txt"])
-    with pytest.raises(NotAFileError):
+    with raises(NotAFileError):
         val_input_path([file_paths[0], tmp_path])
 
 
 def test_val_input_path_expands_and_resolves_paths(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test input file validation expands variables and resolves symlinks."""
     file_path = tmp_path / "test.txt"

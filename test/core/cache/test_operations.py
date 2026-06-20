@@ -9,7 +9,7 @@ from os import utime
 from pathlib import Path
 from time import time
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import (
@@ -68,7 +68,7 @@ def test_get_cache_entries_invalid_namespace(tmp_path: Path):
     """
     _write_cache_file(tmp_path / "llm/one.json")
 
-    with pytest.raises(ScinoephileError, match="was not found"):
+    with raises(ScinoephileError, match="was not found"):
         get_cache_entries(tmp_path, namespace="ocr")
 
 

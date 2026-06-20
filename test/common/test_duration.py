@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-import pytest
+from pytest import mark, raises
 
 from scinoephile.common.duration import parse_duration
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("value", "expected"),
     [
         ("30s", timedelta(seconds=30)),
@@ -33,5 +33,5 @@ def test_parse_duration(value: str, expected: timedelta):
 
 def test_parse_duration_invalid():
     """Test that invalid durations fail clearly."""
-    with pytest.raises(ValueError, match="Invalid duration"):
+    with raises(ValueError, match="Invalid duration"):
         parse_duration("yesterday")

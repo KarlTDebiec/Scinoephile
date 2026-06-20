@@ -4,52 +4,52 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, fail, mark, param
 
 # noinspection PyProtectedMember
 from scinoephile.lang.eng.flattening import _get_eng_text_flattened, get_eng_flattened
 from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "acopopb_eng_ocr_fuse_clean_validate_review",
             "acopopb_eng_ocr_fuse_clean_validate_review_flatten",
             id="acopopb-eng",
         ),
-        pytest.param(
+        param(
             "acoptc_eng_ocr_fuse_clean_validate_review",
             "acoptc_eng_ocr_fuse_clean_validate_review_flatten",
             id="acoptc-eng",
         ),
-        pytest.param(
+        param(
             "kob_eng_ocr_fuse_clean_validate_review",
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
             id="kob-eng",
         ),
-        pytest.param(
+        param(
             "kob_eng_timewarp_clean_review",
             "kob_eng_timewarp_clean_review_flatten",
             id="kob-eng-timewarp",
         ),
-        pytest.param(
+        param(
             "mlamd_eng_fuse_clean_validate_review",
             "mlamd_eng_fuse_clean_validate_review_flatten",
             id="mlamd-eng",
         ),
-        pytest.param(
+        param(
             "mnt_eng_fuse_clean_validate_review",
             "mnt_eng_fuse_clean_validate_review_flatten",
             id="mnt-eng",
         ),
-        pytest.param(
+        param(
             "t_eng_fuse_clean_validate_review",
             "t_eng_fuse_clean_validate_review_flatten",
             id="t-eng",
         ),
-        pytest.param(
+        param(
             "tmm_eng_ocr_fuse_clean_validate_review",
             "tmm_eng_ocr_fuse_clean_validate_review_flatten",
             id="tmm-eng",
@@ -57,7 +57,7 @@ from test.helpers import assert_series_equal
     ],
 )
 def test_get_eng_flattened(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):
@@ -81,11 +81,11 @@ def test_get_eng_flattened(
     if errors:
         for error in errors:
             print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
+        fail(f"Found {len(errors)} discrepancies")
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("text", "expected"),
     [
         ("line 1\nline 2", "line 1 line 2"),

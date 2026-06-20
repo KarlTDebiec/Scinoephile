@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, fail, mark, param
 
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from test.helpers import assert_series_equal
@@ -12,70 +12,70 @@ from test.helpers import assert_series_equal
 # noinspection PyProtectedMember
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "acopopb_zho_hans_ocr_fuse_clean_validate_review",
             "acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten",
             id="acopopb-zho-hans",
         ),
-        pytest.param(
+        param(
             "acopopb_zho_hant_ocr_fuse_clean_validate_review",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten",
             id="acopopb-zho-hant",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hans_ocr_fuse_clean_validate_review",
             "acoptc_zho_hans_ocr_fuse_clean_validate_review_flatten",
             id="acoptc-zho-hans",
         ),
-        pytest.param(
+        param(
             "acoptc_zho_hant_ocr_fuse_clean_validate_review",
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten",
             id="acoptc-zho-hant",
         ),
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
             id="kob-zho-hant",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_fuse_clean_validate_review",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             id="mlamd-zho-hans",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hant_fuse_clean_validate_review",
             "mlamd_zho_hant_fuse_clean_validate_review_flatten",
             id="mlamd-zho-hant",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_fuse_clean_validate_review",
             "mnt_zho_hans_fuse_clean_validate_review_flatten",
             id="mnt-zho-hans",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hant_fuse_clean_validate_review",
             "mnt_zho_hant_fuse_clean_validate_review_flatten",
             id="mnt-zho-hant",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse_clean_validate_review",
             "t_zho_hans_fuse_clean_validate_review_flatten",
             id="t-zho-hans",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse_clean_validate_review",
             "t_zho_hant_fuse_clean_validate_review_flatten",
             id="t-zho-hant",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hans_ocr_fuse_clean_validate_review",
             "tmm_zho_hans_ocr_fuse_clean_validate_review_flatten",
             id="tmm-zho-hans",
         ),
-        pytest.param(
+        param(
             "tmm_zho_hant_ocr_fuse_clean_validate_review",
             "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten",
             id="tmm-zho-hant",
@@ -83,7 +83,7 @@ from test.helpers import assert_series_equal
     ],
 )
 def test_get_zho_flattened(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):
@@ -106,5 +106,5 @@ def test_get_zho_flattened(
     if errors:
         for error in errors:
             print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
+        fail(f"Found {len(errors)} discrepancies")
     assert_series_equal(output, request.getfixturevalue(expected_fixture))

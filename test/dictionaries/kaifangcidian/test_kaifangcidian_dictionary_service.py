@@ -8,27 +8,27 @@ import csv
 from collections.abc import Generator
 from pathlib import Path
 
-import pytest
+from pytest import MonkeyPatch, fixture
 
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.dictionaries.kaifangcidian import KaifangcidianDictionaryService
 
 
-@pytest.fixture
+@fixture
 def local_data_dir_path() -> Generator[Path]:
     """Provide a temporary canonical local data directory."""
     with get_temp_directory_path() as dir_path:
         yield dir_path
 
 
-@pytest.fixture
+@fixture
 def runtime_data_dir_path() -> Generator[Path]:
     """Provide a temporary runtime canonical data directory."""
     with get_temp_directory_path() as dir_path:
         yield dir_path
 
 
-@pytest.fixture
+@fixture
 def database_path() -> Generator[Path]:
     """Provide a temporary SQLite database path."""
     with get_temp_file_path(".db") as temp_path:
@@ -113,7 +113,7 @@ def test_build_downloads_when_local_csv_missing(
     database_path: Path,
     local_data_dir_path: Path,
     runtime_data_dir_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Build Kaifangcidian DB by downloading when local CSV is missing.
 

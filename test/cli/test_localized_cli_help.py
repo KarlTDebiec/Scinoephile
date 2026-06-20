@@ -10,7 +10,7 @@ from os import environ
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import MonkeyPatch, mark, raises
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
@@ -51,7 +51,7 @@ def test_all_cli_help_text_has_chinese_localizations():
 
 
 def test_all_cli_help_paths_do_not_create_default_cache_dir(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test CLI help construction does not create default cache directories.
 
@@ -68,7 +68,7 @@ def test_all_cli_help_paths_do_not_create_default_cache_dir(
     assert not cache_dir_path.exists()
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("locale_name", "subcommand", "expected_fragment"),
     [
         (
@@ -195,7 +195,7 @@ def test_locale_precedence_uses_environment_variable():
     assert "Scinoephile 命令列介面" in output
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("locale_name", "expected_fragments"),
     [
         ("en", ("Command-line interface for Scinoephile", "subcommand")),
@@ -219,7 +219,7 @@ def test_scinoephile_help_localized(
         assert fragment in output
 
 
-@pytest.mark.parametrize(
+@mark.parametrize(
     ("locale_name", "subcommand", "expected_fragment"),
     [
         ("en", "multi cer", "Calculate the Character Error Rate (CER)"),
@@ -294,7 +294,7 @@ def _run_help(args: str) -> str:
     """
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(ScinoephileCli, args)
