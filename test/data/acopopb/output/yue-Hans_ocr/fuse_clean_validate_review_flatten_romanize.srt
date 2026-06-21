@@ -485,8 +485,8 @@ néih m̀hpa sungyèuhngyahpfúháumē?
 
 98
 00:08:20,000 --> 00:08:22,000
-边个系羊？　边个系虎？
-bīngo haihyèuhng?  bīngo haihfú?
+边个系羊？边个系虎？
+bīngo haihyèuhng? bīngo haihfú?
 
 99
 00:08:22,250 --> 00:08:24,375
@@ -2995,8 +2995,8 @@ néih góng
 
 600
 00:37:07,917 --> 00:37:10,458
-边个？　边个老母？⋯⋯
-bīngo?  bīngo lóuhmóu?……
+边个？边个老母？⋯⋯
+bīngo? bīngo lóuhmóu?……
 
 601
 00:37:10,667 --> 00:37:11,667
@@ -3065,8 +3065,8 @@ tòhng sāamchòhngjuhngyihn yàhngāan?
 
 614
 00:37:38,708 --> 00:37:42,375
-五百年前孙悟空俾观音大士所消灭
-nǵhbaak nìhnchìhnsyūnnghhūng béi gūnyām daaihsihsósīumiht
+五百年前孙悟空俾观音大使所消灭
+nǵhbaak nìhnchìhnsyūnnghhūng béi gūnyām daaihsi sósīumiht
 
 615
 00:37:42,708 --> 00:37:44,625
@@ -3475,8 +3475,8 @@ hēungháu dī jē! júnghóugwo móuh
 
 696
 00:43:31,833 --> 00:43:34,167
-明刀明枪同佢炼过！　现身啦！　兄弟
-mìhngdōumìhngchēungtùhng kéuih lihngwo!  yihnsānlā!  hīngdaih
+明刀明枪同佢练过！现身啦！兄弟
+mìhngdōumìhngchēungtùhng kéuih lihngwo! yihnsānlā! hīngdaih
 
 697
 00:43:34,333 --> 00:43:35,375
@@ -6687,3 +6687,4 @@ yānwaih néih meih yuh dou béi sāam lāpji néih ge yàhn
 01:24:56,208 --> 01:24:57,250
 芝麻关门
 jīmàhgwāanmùhn
+

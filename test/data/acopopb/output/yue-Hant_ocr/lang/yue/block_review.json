@@ -2728,7 +2728,11 @@
       "zimu_3": "你〝蝦〞我唔識字呀！",
       "zimu_4": "水濂洞呀！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_4": "水簾洞呀！",
+      "beizhu_4": "將「濂」更正為專名「簾」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
