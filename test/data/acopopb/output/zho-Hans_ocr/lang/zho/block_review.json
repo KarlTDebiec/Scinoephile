@@ -685,7 +685,8 @@
       "xiugai_4": "我只要点我曲池，急宫两个穴道",
       "beizhu_4": "将“疾宫”更正为“急宫”，属于明显错别字修正。"
     },
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -1043,7 +1044,8 @@
       "xiugai_2": "不知道要哪一年才长得出来",
       "beizhu_2": "将“那”更正为“哪”，属于错别字修正。"
     },
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -1067,8 +1069,14 @@
       "zimu_9": "你搞错啦，你听到没有？",
       "zimu_10": "以后不要再烦我啦，拜托！"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_1": "你又回水帘洞来啦？",
+      "beizhu_1": "将“水濂洞”更正为专名“水帘洞”。",
+      "xiugai_2": "什么？水帘洞？",
+      "beizhu_2": "将“水濂洞”更正为专名“水帘洞”。"
+    },
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -2638,7 +2646,8 @@
       "xiugai_5": "般若波罗蜜⋯",
       "beizhu_5": "将“密”更正为“蜜”，修正常见错别字。"
     },
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -2728,7 +2737,8 @@
       "xiugai_1": "般若波罗蜜⋯",
       "beizhu_1": "将“密”更正为“蜜”，修正常见错别字。"
     },
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
