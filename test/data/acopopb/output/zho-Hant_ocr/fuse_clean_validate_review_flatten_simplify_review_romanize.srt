@@ -3490,7 +3490,7 @@ nǐ bǎ fútiē zài shēnshàng, tāmen jiù kànbúdào nǐ le
 
 699
 00:38:48,292 --> 00:38:50,458
-趁她们不注意，你就套在她们头上
+趁她们不注意，你就套在他们头上
 chèn tāmen bù zhùyì, nǐ jiù tào zài tāmen tóushàng
 
 700

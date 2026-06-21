@@ -685,8 +685,8 @@
       "xiugai_4": "我只要点我曲池，急宫两个穴道",
       "beizhu_4": "将“疾宫”更正为“急宫”，属于明显错别字修正。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1044,8 +1044,8 @@
       "xiugai_2": "不知道要哪一年才长得出来",
       "beizhu_2": "将“那”更正为“哪”，属于错别字修正。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1073,10 +1073,12 @@
       "xiugai_1": "你又回水帘洞来啦？",
       "beizhu_1": "将“水濂洞”更正为专名“水帘洞”。",
       "xiugai_2": "什么？水帘洞？",
-      "beizhu_2": "将“水濂洞”更正为专名“水帘洞”。"
+      "beizhu_2": "将“水濂洞”更正为专名“水帘洞”。",
+      "xiugai_8": "我的家在五岳山第四边101号B1",
+      "beizhu_8": "修正数字间误空格，将“1 01”改为“101”。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1242,7 +1244,11 @@
       "xiugai_1": "哎菩提什么老母？",
       "beizhu_1": "补全“菩什么”中的缺字“提”，使“菩提”写法完整。",
       "xiugai_2": "菩提什么老母？",
-      "beizhu_2": "补全“菩什么”中的缺字“提”，使“菩提”写法完整。"
+      "beizhu_2": "补全“菩什么”中的缺字“提”，使“菩提”写法完整。",
+      "xiugai_15": "五百年前孙悟空被观音大士所消灭",
+      "beizhu_15": "将“观音大使”中的“使”更正为“士”。",
+      "xiugai_34": "在一片漆黑孤独的环境里头",
+      "beizhu_34": "将“一遍”更正为“一片”。"
     },
     "difficulty": 1,
     "verified": true
@@ -1358,7 +1364,7 @@
   },
   {
     "query": {
-      "zimu_1": "妈的！　现在该你还钱",
+      "zimu_1": "妈的！现在该你还钱",
       "zimu_2": "喂！你用得着那么凶吗？",
       "zimu_3": "不还钱我毁你容啊！",
       "zimu_4": "我上个月不是已经还你了吗？",
@@ -1373,10 +1379,9 @@
     },
     "answer": {
       "xiugai_10": "明刀明枪跟他们拼了",
-      "beizhu_10": "将“拚”修正为“拼”，统一为简体字常用写法。"
+      "beizhu_10": "将「拚」修正为常用规范字「拼」。"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2646,8 +2651,8 @@
       "xiugai_5": "般若波罗蜜⋯",
       "beizhu_5": "将“密”更正为“蜜”，修正常见错别字。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2737,8 +2742,8 @@
       "xiugai_1": "般若波罗蜜⋯",
       "beizhu_1": "将“密”更正为“蜜”，修正常见错别字。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
