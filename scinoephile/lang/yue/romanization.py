@@ -184,12 +184,12 @@ def get_yue_text_romanized(text: str) -> str:
 
 
 def _jyutping_to_yale(jyutping: str) -> str | None:
-    """Convert numbered Jyutping to space-delimited Yale romanization.
+    """Convert numbered Jyutping for one word to Yale romanization.
 
     Arguments:
-        jyutping: numbered Jyutping
+        jyutping: numbered Jyutping for one word
     Returns:
-        Yale romanization or None if conversion fails
+        Yale romanization with syllables joined, or None if conversion fails
     """
     normalized = _normalize_yue_romanization_query_text(jyutping)
     if not normalized:
@@ -202,7 +202,9 @@ def _jyutping_to_yale(jyutping: str) -> str | None:
         for syllable in parsed
     )
     try:
-        return " ".join(pycantonese.jyutping_to_yale(normalized_jyutping))
+        return "".join(pycantonese.jyutping_to_yale(normalized_jyutping)).replace(
+            " ", ""
+        )
     except ValueError:
         return None
 

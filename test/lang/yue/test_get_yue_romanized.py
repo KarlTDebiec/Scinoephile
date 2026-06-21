@@ -75,17 +75,17 @@ def test_get_yue_romanized(
 @parametrize(
     ("text", "expected"),
     [
-        ("广东话", "gwóng dūng wá"),
-        ("你好世界", "néih hóu sai gaai"),
-        ("你好,世界!", "néih hóu, sai gaai!"),
-        ("「你好」世界？", "「néih hóu」 sai gaai?"),
-        ("＂你好＂世界", '"néih hóu" sai gaai'),
-        ("＇你好＇世界", "'néih hóu' sai gaai"),
-        ("你好：世界；再见。", "néih hóu: sai gaai; joi gin."),
+        ("广东话", "gwóngdūngwá"),
+        ("你好世界", "néih hóu saigaai"),
+        ("你好,世界!", "néih hóu, saigaai!"),
+        ("「你好」世界？", "「néih hóu」 saigaai?"),
+        ("＂你好＂世界", '"néih hóu" saigaai'),
+        ("＇你好＇世界", "'néih hóu' saigaai"),
+        ("你好：世界；再见。", "néih hóu: saigaai; joigin."),
         ("don't你好", "don't néih hóu"),
         ('"t i"你好', '"t  i" néih hóu'),
-        ("原来少爷", "yùhn lòih siu yèh"),
-        ("龙飞凤舞，苏察哈尔灿", "lùhng fēi fuhng móuh, sōu chaat hā yíh chaan"),
+        ("原来少爷", "yùhnlòih siuyèh"),
+        ("龙飞凤舞，苏察哈尔灿", "lùhngfēifuhngmóuh, sōuchaathāyíhchaan"),
     ],
 )
 def test_get_yue_text_romanized(text: str, expected: str):
