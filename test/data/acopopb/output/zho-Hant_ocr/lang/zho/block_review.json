@@ -253,7 +253,6 @@
       "zimu_6": "我話你沒那麼長命等到你要見的人"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -389,7 +388,6 @@
       "zimu_2": "把那賤人幹掉了是嗎？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -688,8 +686,8 @@
       "zimu_5": "血馬上就停止"
     },
     "answer": {
-      "xiugai_4": "我只要點你曲池，疾宮兩個穴道",
-      "beizhu_4": "「點我曲池」疑為輸入錯誤，依語意修正為「點你曲池」，其餘不改動。"
+      "xiugai_4": "我只要點我曲池，急宮兩個穴道",
+      "beizhu_4": "將「疾宮」更正為「急宮」，屬於明顯錯別字修正。"
     },
     "difficulty": 1,
     "verified": true
@@ -701,7 +699,11 @@
       "zimu_3": "兩位住在這裡一定會愛上它",
       "zimu_4": "晚安！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_7": "等一下我一塊肉一塊肉地給你割下來",
+      "beizhu_7": "將「的」改為「地」，使其作狀語修飾後面的動作。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -714,7 +716,6 @@
       "zimu_6": "幫主請留步"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -771,7 +772,6 @@
       "zimu_28": "想跟我爭"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -947,7 +947,10 @@
       "zimu_9": "看著我",
       "zimu_10": "移魂大法"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_7": "等一下我一塊肉一塊肉地給你割下來",
+      "beizhu_7": "將「的」改為「地」，使其作狀語修飾後面的動作。"
+    },
     "verified": true
   },
   {
@@ -1021,7 +1024,6 @@
       "zimu_9": "他就無福消受了"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1171,7 +1173,6 @@
       "zimu_40": "你說啊⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1237,7 +1238,6 @@
       "zimu_59": "對啊"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1521,7 +1521,6 @@
       "zimu_6": "我最有眼光就是跟著幫主"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1657,7 +1656,6 @@
       "zimu_6": "死牛魔王　　走"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1666,7 +1664,6 @@
       "zimu_2": "起碼得練上一百八十年才能跟他們鬥"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2193,7 +2190,6 @@
       "zimu_12": "你自己走得慢還怪我？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2207,7 +2203,6 @@
       "zimu_7": "這一輩子都別指望出去"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2290,7 +2285,6 @@
       "zimu_5": "越走越濕呢！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2387,7 +2381,6 @@
       "zimu_7": "是！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2417,7 +2410,6 @@
       "zimu_16": "你說呀！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2495,7 +2487,6 @@
       "zimu_2": "〝元神出竅〞"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2676,7 +2667,6 @@
       "zimu_15": "你看"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2687,7 +2677,6 @@
       "zimu_4": "斷龍石關了便打不開快出去"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2810,7 +2799,6 @@
       "zimu_2": "是因為你還沒碰見給你三顆痣的人"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
