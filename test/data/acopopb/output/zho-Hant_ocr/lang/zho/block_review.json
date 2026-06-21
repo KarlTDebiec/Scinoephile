@@ -2417,8 +2417,12 @@
       "zimu_15": "奶媽，你告訴她吧！",
       "zimu_16": "你說呀！"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_5": "把孩子帶大",
+      "beizhu_5": "將「孩大」修正為「孩子」。"
+    },
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {

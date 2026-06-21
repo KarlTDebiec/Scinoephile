@@ -1381,7 +1381,8 @@
       "xiugai_10": "明刀明枪跟他们拼了",
       "beizhu_10": "将「拚」修正为常用规范字「拼」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1795,7 +1796,11 @@
       "zimu_1": "贱人，早知道你对臭猴子余情未了",
       "zimu_2": "废话少说，干丢你"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_2": "废话少说，干掉你",
+      "beizhu_2": "将“干丢”修正为“干掉”。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2226,11 +2231,7 @@
       "zimu_6": "你不说出来",
       "zimu_7": "这一辈子都别指望出去"
     },
-    "answer": {
-      "xiugai_2": "大王，我们发现白晶晶昏倒山崖下",
-      "beizhu_2": "补全“山崖”后的缺失字“下”，使语句完整。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -2256,8 +2257,12 @@
       "zimu_5": "到时候吃唐僧肉少不了你的份",
       "zimu_6": "否则我要你死得比现在痛苦十倍"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_2": "我把你的伤治好",
+      "beizhu_2": "补全漏字“的”。"
+    },
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -2437,8 +2442,12 @@
       "zimu_15": "奶妈，你告诉她吧！",
       "zimu_16": "你说呀！"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_5": "把孩子带大",
+      "beizhu_5": "将“孩大”修正为“孩子”。"
+    },
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
