@@ -551,7 +551,8 @@
       "zimu_7": "菩提大哥，你睇吓佢",
       "zimu_8": "系噃，睇过"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -696,7 +697,8 @@
       "zimu_9": "救命呀"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -821,7 +823,8 @@
       "zimu_3": "我咁样做，无非想感化劣徒",
       "zimu_4": "以配合我佛慈悲嘅大无畏精神啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -861,7 +864,8 @@
       "zimu_7": "咁好口，去嗰边啦",
       "zimu_8": "大吉大利老细！万寿无疆啊添噃老细"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1252,7 +1256,8 @@
       "zimu_37": "沙僧，跟我嚟",
       "zimu_38": "你返去"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1298,24 +1303,24 @@
       "xiugai_12": "只有你咁劲，就是 only you",
       "beizhu_12": "将英文单词中的空格调整为正确排版，统一为“only you”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "On l y you，莫怪师傅暗寻",
       "zimu_2": "戴翻个箍",
       "zimu_3": "莫怕死，咪发　〞t i〞　藤",
-      "zimu_4": "碰到钉咪惊，I under stand",
+      "zimu_4": "碰到钉咪惊，I understand",
       "zimu_5": "要全力地去do，要惊就两份惊",
       "zimu_6": "喃呒阿弥陀佛"
     },
     "answer": {
       "xiugai_1": "Only you，莫怪师傅暗寻",
-      "beizhu_1": "将英文被拆开的“On l y”合并并更正为“Only”，修正排版性输入错误。",
-      "xiugai_4": "碰到钉咪惊，I understand",
-      "beizhu_4": "将被拆开的英文“I under stand”合并为“I understand”，修正排版性输入错误。"
+      "beizhu_1": "将英文被拆开的字母恢复为完整的“Only”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1846,8 +1851,8 @@
       "zimu_7": "我嫁！"
     },
     "answer": {
-      "xiugai_2": "一日到黑〝裸〞住要月光宝盒",
-      "beizhu_2": "Corrected text while preserving cleaning-normalized punctuation."
+      "xiugai_2": "一日到黑〝攞〞住要月光宝盒",
+      "beizhu_2": "将错别字“螺”更正为粤语动词“攞”。"
     },
     "difficulty": 1,
     "verified": true
@@ -2104,10 +2109,7 @@
       "zimu_12": "我有个朋友话留低咗啲嘢喺我心里边",
       "zimu_13": "我好想睇吓系咩嚟嘅"
     },
-    "answer": {
-      "xiugai_6": "我听讲话如果把刀出得快、落同准",
-      "beizhu_6": "补充顿号“、”以分隔并列成分“快、落同准”。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2471,10 +2473,8 @@
       "zimu_2": "无敌牛蚤"
     },
     "answer": {
-      "xiugai_1": "蚁多搂死象",
-      "beizhu_1": "将“褛”修正为“搂”，符合常见成语写法。",
-      "xiugai_2": "无敌牛虻",
-      "beizhu_2": "将“蚤”修正为“虻”，符合常见词语写法。"
+      "xiugai_1": "蚁多咬死象",
+      "beizhu_1": "将错别字“褛”更正为“咬”。"
     },
     "difficulty": 1,
     "verified": true
