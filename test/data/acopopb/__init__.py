@@ -75,6 +75,7 @@ __all__ = [
     "acopopb_yue_hant_ocr_lens_clean",
     "acopopb_yue_hant_ocr_paddle",
     "acopopb_yue_hant_ocr_paddle_clean",
+    "acopopb_yue_simplify_expected_series_diff",
     "acopopb_zho_hans_eng",
     "acopopb_zho_hans_ocr_fuse",
     "acopopb_zho_hans_ocr_fuse_clean",
@@ -697,6 +698,15 @@ def acopopb_zho_hant_ocr_paddle() -> Series:
 def acopopb_zho_hant_ocr_paddle_clean() -> Series:
     """ACOPOPB 繁体中文 PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
+
+
+@fixture
+def acopopb_yue_simplify_expected_series_diff() -> list[str]:
+    """Expected differences for ACOPOPB simplified Cantonese subtitles."""
+    return [
+        "edit: SIMP[60] -> TRAD[60]: '悟空，你诸多藉口' -> '悟空，你诸多借口'",
+        "edit: SIMP[621] -> TRAD[621]: '希望藉此经书嚟感化世人' -> '希望借此经书嚟感化世人'",
+    ]
 
 
 @fixture

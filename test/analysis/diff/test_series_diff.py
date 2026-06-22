@@ -151,6 +151,14 @@ def test_series_diff_keeps_uncovered_insert_separate():
     ),
     [
         param(
+            "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
+            "SIMP",
+            "TRAD",
+            "acopopb_yue_simplify_expected_series_diff",
+            id="acopopb-yue-simplify",
+        ),
+        param(
             "acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "SIMP",
