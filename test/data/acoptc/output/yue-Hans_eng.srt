@@ -2872,7 +2872,7 @@ How can you get married here?
 
 581
 00:35:54,125 --> 00:35:55,458
-得卦？
+得呱？
 I can!
 
 582
@@ -2882,7 +2882,7 @@ How about your wife?
 
 583
 00:35:59,083 --> 00:36:01,833
-老婆？　乜你哋识㗎？
+老婆？乜你哋识㗎？
 My wife? Do you know her?
 
 584
@@ -5867,7 +5867,7 @@ Let me study it for you
 
 1185
 01:04:54,791 --> 01:04:57,708
-唔驶咁认真？　乜要嘅咩？
+唔驶咁认真？乜要嘅咩？
 Why are you so serious? Need we?
 
 1186
@@ -7165,7 +7165,7 @@ Let him kill
 
 1449
 01:21:54,583 --> 01:21:56,708
-齐天大圣孙悟空啊？
+齐天大圣孙悟空啊呵？
 Are you the Monkey King?
 
 1450
