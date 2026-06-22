@@ -32,8 +32,10 @@ def test_index_renders_subtitle_list(tmp_path: Path):
     assert b"https://unpkg.com/htmx.org" not in response.data
     assert b'src="/static/htmx.min.js"' in response.data
     assert b'class="subtitle"' in response.data
+    assert b'id="subtitle-number-1"' in response.data
+    assert b'href="#subtitle-number-1"' in response.data
     assert b"<figure" in response.data
-    assert b"#1:" in response.data
+    assert b"#1</a>:" in response.data
     _assert_index_filter_toggle(response.data)
     _assert_index_subtitle_figure(response.data)
     _assert_index_textarea(response.data)
@@ -133,14 +135,14 @@ def test_index_reload_reassesses_cached_subtitles(
     response = app.test_client().get("/")
 
     assert response.status_code == 200
-    assert b"#1:" in response.data
+    assert b'id="subtitle-number-1"' in response.data
 
     session.manager.char_dims_by_n[1]["A"] = {(10, 20)}
 
     response = app.test_client().get("/")
 
     assert response.status_code == 200
-    assert b"#1:" not in response.data
+    assert b'id="subtitle-number-1"' not in response.data
 
 
 def test_done_filter_route_toggles_ok_subtitles(
@@ -154,7 +156,7 @@ def test_done_filter_route_toggles_ok_subtitles(
     response = client.get("/")
 
     assert response.status_code == 200
-    assert b"#1:" not in response.data
+    assert b'id="subtitle-number-1"' not in response.data
     assert b'name="include_done_subtitles" value="1"' in response.data
     assert b'aria-pressed="false"' in response.data
     assert b"Show Validated</button>" in response.data
@@ -167,7 +169,7 @@ def test_done_filter_route_toggles_ok_subtitles(
 
     assert response.status_code == 200
     assert b"<!DOCTYPE html>" not in response.data
-    assert b"#1:" in response.data
+    assert b'id="subtitle-number-1"' in response.data
     assert b'name="include_done_subtitles" value="0"' in response.data
     assert b'aria-pressed="true"' in response.data
     assert b"Hide Validated</button>" in response.data
@@ -179,7 +181,7 @@ def test_done_filter_route_toggles_ok_subtitles(
     )
 
     assert response.status_code == 200
-    assert b"#1:" not in response.data
+    assert b'id="subtitle-number-1"' not in response.data
     assert b'name="include_done_subtitles" value="1"' in response.data
     assert b'aria-pressed="false"' in response.data
     assert b"Show Validated</button>" in response.data

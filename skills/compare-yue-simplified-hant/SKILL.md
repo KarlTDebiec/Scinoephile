@@ -82,11 +82,28 @@ Start with a short summary:
 - subtitle counts and whether timings changed
 - number of text differences
 - whether the expected diff test fixture should be updated
+- links to the two image indexes:
+  - yue-Hans: `test/data/<dataset>/output/yue-Hans_ocr/image/index.html`
+  - yue-Hant: `test/data/<dataset>/output/yue-Hant_ocr/image/index.html`
+
+Use normal local-file links to the two `image/index.html` files without
+fragments when the current surface supports them; otherwise show their absolute
+paths as text. For each subtitle row, include the exact anchor IDs as plain
+text, such as `Hans #subtitle-number-123 / Hant #subtitle-number-123`. Local
+HTML fragment links such as `C:/.../index.html#subtitle-number-123`,
+`/C:/.../index.html#subtitle-number-123`, and `file://...#subtitle-number-123`
+do not work reliably in Codex because the fragment may be resolved as part of
+the filename. Do not start a static server just to make these anchors clickable.
+If the current output surface explicitly supports local HTML fragments, then the
+anchor IDs may be made clickable there.
 
 Then output a Markdown table with these exact columns:
 
 | Subtitle | yue-Hans Text | simplified yue-Hant Text | Difference | Assessment / Next Action |
 |---:|---|---|---|---|
+
+In the `Subtitle` column, include both side-specific anchor IDs, for example:
+`123 (Hans #subtitle-number-123 / Hant #subtitle-number-123)`.
 
 Keep each assessment actionable. If all differences are accepted, regenerate the
 expected `SeriesDiff` fixture so `test_series_diff_matches_expected_fixture`

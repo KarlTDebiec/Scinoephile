@@ -522,7 +522,7 @@ You're in danger already
 
 107
 00:08:19,750 --> 00:08:21,896
-边个系羊？　边个系虎？
+边个系羊？边个系虎？
 I'm not sure who's in danger
 
 108
@@ -973,7 +973,7 @@ You're so good!
 
 198
 00:13:00,833 --> 00:13:03,000
-叫大家洗干净只脚板喺出便等我！
+叫大家洗干净只脚板喺出边等我！
 You all clean your soul and wait for me outside
 
 199
@@ -2265,7 +2265,7 @@ You can do nothing even if you see him
 
 462
 00:26:36,333 --> 00:26:39,125
-分别祗不过佢上次死喺观世音手上
+分别只不过佢上次死喺观世音手上
 The difference is that he died in Goddess's hands last time
 
 463
@@ -2763,7 +2763,7 @@ Me?
 
 562
 00:31:22,292 --> 00:31:25,083
-有错！自从见到姑娘之后
+冇错！自从见到姑娘之后
 yes, when I saw you
 
 563
@@ -2932,7 +2932,7 @@ Having the personality again
 
 596
 00:32:53,500 --> 00:32:55,208
-孙悟空，你同我躙出嚟！
+孙悟空，你同我𨅬出嚟！
 Monkey King, come out!
 
 597
@@ -3055,7 +3055,7 @@ Don't tease me!
 
 621
 00:34:33,229 --> 00:34:36,375
-我屋企在五岳山第四边第1 01号地下
+我屋企在五岳山第四边第101号地下
 My home is at Mt Wuyue
 
 622
@@ -3278,7 +3278,7 @@ I'm your grapes
 
 666
 00:36:19,875 --> 00:36:22,708
-点解唔系萍果？要系菩提子！
+点解唔系苹果？要系菩提子！
 Why aren't you an apple?
 
 667
@@ -3362,7 +3362,7 @@ What a pretty moon. Let’s…
 
 683
 00:36:54,292 --> 00:36:57,250
-月光，有呀
+月光，冇呀
 Moon? I can't see it
 
 684
@@ -3386,7 +3386,7 @@ Tell me…
 
 688
 00:37:07,833 --> 00:37:10,625
-边个？　边个老母？⋯⋯
+边个？边个老母？⋯⋯
 Who? Who the hell…!
 
 689
@@ -3456,7 +3456,7 @@ Longevity Monk?
 
 702
 00:37:38,708 --> 00:37:42,375
-五百年前孙悟空俾观音大士所消灭
+五百年前孙悟空俾观音大使所消灭
 500 years ago, Monkey King was destroyed by Goddess
 
 703
@@ -3921,12 +3921,12 @@ That's better zxa than nothing
 
 797
 00:43:31,937 --> 00:43:33,104
-明刀明枪同佢炼过！　现身啦！　兄弟
+明刀明枪同佢练过！现身啦！兄弟
 Fight with him! Bros!
 
 798
 00:43:33,104 --> 00:43:34,354
-明刀明枪同佢炼过！　现身啦！　兄弟
+明刀明枪同佢练过！现身啦！兄弟
 Bros, let's go!
 
 799
@@ -4106,7 +4106,7 @@ How dare you come here!
 
 835
 00:45:02,917 --> 00:45:04,917
-天堂有路你唔走，地狱无门　闯进来
+天堂有路你唔走，地狱无门闯进来
 How dare you come here!
 
 836
@@ -4395,7 +4395,7 @@ I'm blind…
 
 893
 00:47:45,104 --> 00:47:50,042
-就系跟住帮主你嘞！
+就系跟住帮主你喇！
 But I am right to be your follower!
 
 894
@@ -5697,7 +5697,7 @@ Go on
 
 1156
 01:03:45,125 --> 01:03:47,104
-天有眼啰
+天冇眼啰
 Damn!
 
 1157
@@ -6031,7 +6031,7 @@ The ground is not so hard
 
 1223
 01:07:49,458 --> 01:07:51,333
-今次无死喇
+今次冇死喇
 The ground is not so hard
 
 1224
@@ -6041,7 +6041,7 @@ Powerful devil, extraordinary energy!
 
 1225
 01:07:58,667 --> 01:08:00,042
-我而家医番好你嘅伤
+我而家医返好你嘅伤
 I will cure your wound but
 
 1226
@@ -6061,7 +6061,7 @@ You can also eat the flesh of the Longevity Monk
 
 1229
 01:08:06,291 --> 01:08:09,000
-如果唔系我就要你死得俾而家痛苦十倍
+如果唔系我就要你死得比而家痛苦十倍
 or you will die painfully
 
 1230
@@ -6658,12 +6658,12 @@ Tortoise Magic
 
 1351
 01:15:42,500 --> 01:15:43,708
-我片你啲内脏，问你点挡？
+我劈你啲内脏，问你点挡？
 Slash your liver, stomach
 
 1352
 01:15:43,708 --> 01:15:44,917
-我片你啲内脏，问你点挡？
+我劈你啲内脏，问你点挡？
 and internal organs!
 
 1353

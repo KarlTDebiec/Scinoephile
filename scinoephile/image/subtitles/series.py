@@ -442,7 +442,10 @@ class ImageSeries(Series):
             list of parsed event data
         """
         pattern = re.compile(
-            r"#(?P<index>\d+):(?P<start>[^-]+)->(?P<end>[^<]+)"
+            r"(?:<a id=['\"]subtitle-number-(?P<anchor_index>\d+)['\"] "
+            r"href=['\"]#subtitle-number-\d+['\"]>)?"
+            r"#(?P<index>\d+)(?:</a>)?:"
+            r"(?P<start>[^-]+)->(?P<end>[^<]+)"
             r"<div style=['\"]text-align:center['\"]>"
             r"<img src=['\"](?P<img>[^'\"]+)['\"] />"
             r"(?:<br /><div style=['\"]font-size:22px; "
@@ -452,13 +455,19 @@ class ImageSeries(Series):
         )
         events = []
         for match in pattern.finditer(html_text):
+            index = int(match.group("index"))
+            anchor_index = match.group("anchor_index")
+            if anchor_index is not None and int(anchor_index) != index:
+                raise ValueError(
+                    f"Subtitle anchor index {anchor_index} does not match {index}."
+                )
             image_name = match.group("img")
             image_path = dir_path / image_name
             raw_text = match.group("text") or ""
             text = unescape(raw_text.replace("<br />", "\n")).replace("\n", "\\N")
             events.append(
                 {
-                    "index": int(match.group("index")),
+                    "index": index,
                     "start": cls._parse_html_time(match.group("start")),
                     "end": cls._parse_html_time(match.group("end")),
                     "path": image_path,
@@ -493,8 +502,10 @@ class ImageSeries(Series):
         """
         start_text = ImageSeries._format_html_time(start)
         end_text = ImageSeries._format_html_time(end)
+        anchor_id = f"subtitle-number-{index}"
         line = (
-            f"#{index}:{start_text}->{end_text}"
+            f"<a id='{anchor_id}' href='#{anchor_id}'>#{index}</a>:"
+            f"{start_text}->{end_text}"
             "<div style='text-align:center'>"
             f"<img src='{escape(image_name, quote=True)}' />"
         )

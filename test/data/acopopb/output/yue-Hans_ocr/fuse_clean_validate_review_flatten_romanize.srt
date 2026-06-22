@@ -905,7 +905,7 @@ yùhjí hógaau!
 
 182
 00:13:00,833 --> 00:13:02,667
-叫大家洗干净只脚板喺出便等我！
+叫大家洗干净只脚板喺出边等我！
 giu daaihgā sái gōnjihng jígeukbáan hái chēutbihn dáng ngóh!
 
 183
@@ -1985,8 +1985,8 @@ ginfāan nē go gwáchìhngbohkhahng ge yàhn yauh dím àh!
 
 398
 00:26:36,417 --> 00:26:38,708
-分别祗不过佢上次死喺观世音手上
-fānbiht jī bātgwo kéuih seuhngchi séi hái gūnsaiyāmsáuseuhng
+分别只不过佢上次死喺观世音手上
+fānbiht jíbātgwo kéuih seuhngchi séi hái gūnsaiyāmsáuseuhng
 
 399
 00:26:39,667 --> 00:26:41,708
@@ -2445,8 +2445,8 @@ haih ngóh?
 
 490
 00:31:22,292 --> 00:31:25,083
-有错！自从见到姑娘之后
-yáuhcho! jihchùhng gindóu gūnèuhng jīhauh
+冇错！自从见到姑娘之后
+móuhcho! jihchùhng gindóu gūnèuhng jīhauh
 
 491
 00:31:25,375 --> 00:31:27,375
@@ -2600,8 +2600,8 @@ lyuhn jauh lyuhn dī, dōu júngsyun wùihfūk géifān fūngchói
 
 521
 00:32:53,500 --> 00:32:55,208
-孙悟空，你同我躙出嚟！
-syūnng̀hhūng, néih tùhng ngóh leuhnchēutlàih!
+孙悟空，你同我𨅬出嚟！
+syūnng̀hhūng, néih tùhng ngóh lāan chēutlàih!
 
 522
 00:32:55,917 --> 00:32:56,958
@@ -2700,8 +2700,8 @@ néih mī yauh haak ngóh!
 
 541
 00:34:33,167 --> 00:34:36,125
-我屋企在五岳山第四边第1 01号地下
-ngóh ūkkéi joihnǵhngohksāandaihseibīn daih 1  01 houh deihhah
+我屋企在五岳山第四边第101号地下
+ngóh ūkkéi joihnǵhngohksāandaihseibīn daih 101 houh deihhah
 
 542
 00:34:36,333 --> 00:34:38,167
@@ -2900,8 +2900,8 @@ ngóh mī jauh haih néih gójāupòuhtàihjí lō!
 
 581
 00:36:20,250 --> 00:36:22,708
-点解唔系萍果？要系菩提子！
-dímgáai m̀hhaihpìhnggwó? yiu haihpòuhtàihjí!
+点解唔系苹果？要系菩提子！
+dímgáai m̀hhaih pìhnggwó? yiu haihpòuhtàihjí!
 
 582
 00:36:24,208 --> 00:36:25,708
@@ -2975,8 +2975,8 @@ gāmyaht gogo yuhtgwōng gam leng, bātyùh
 
 596
 00:36:54,292 --> 00:36:55,917
-月光，有呀
-yuhtgwōng, yáuh àh
+月光，冇呀
+yuhtgwōng, móuh àh
 
 597
 00:36:56,250 --> 00:37:00,208
@@ -3640,8 +3640,8 @@ séi lóuhgwái
 
 729
 00:45:02,417 --> 00:45:04,917
-天堂有路你唔走，地狱无门　闯进来
-tīntòhng yáuhlouh néih m̀h jáu, deihyuhk mòuhmùhn  chóngjeun lòih
+天堂有路你唔走，地狱无门闯进来
+tīntòhng yáuhlouh néih m̀h jáu, deihyuhk mòuhmùhnchóngjeun lòih
 
 730
 00:45:05,625 --> 00:45:06,625
@@ -3920,7 +3920,7 @@ jeui yáuh ngáahngwōng……
 
 785
 00:47:45,042 --> 00:47:48,458
-就系跟住帮主你嘞！
+就系跟住帮主你喇！
 jauh haih gānjyuh bōngjyú néih la!
 
 786
@@ -5135,8 +5135,8 @@ gaijuhk wánlā
 
 1028
 01:03:45,125 --> 01:03:46,625
-天有眼啰
-tīnyáuhngáahnlō
+天冇眼啰
+tīnmóuhngáahnlō
 
 1029
 01:03:46,833 --> 01:03:48,833
@@ -5455,8 +5455,8 @@ yí, faaideih dōu m̀hhaih hóu ngaahng
 
 1092
 01:07:50,000 --> 01:07:51,083
-今次无死喇
-gāmchi mòuhséi la
+今次冇死喇
+gāmchi móuh séi la
 
 1093
 01:07:54,667 --> 01:07:56,792
@@ -5465,8 +5465,8 @@ goisaimōwòhng, sàhngūngwuhtái
 
 1094
 01:07:58,667 --> 01:08:00,042
-我而家医番好你嘅伤
-ngóh yìhgā yīfāan hóu néih ge sēung
+我而家医返好你嘅伤
+ngóh yìhgā yī fáan hóu néih ge sēung
 
 1095
 01:08:00,208 --> 01:08:02,542
@@ -5485,7 +5485,7 @@ dousìh sihk tòhngjāngyuhk m̀h síudāk néih gófahn
 
 1098
 01:08:06,250 --> 01:08:08,917
-如果唔系我就要你死得俾而家痛苦十倍
+如果唔系我就要你死得比而家痛苦十倍
 yùhgwó m̀hhaih ngóh jauh yiu néih séidāk béi yìhgā tungfúsahppúih
 
 1099
@@ -6035,8 +6035,8 @@ gwāisūkdaaihfaat
 
 1208
 01:15:43,083 --> 01:15:44,792
-我片你啲内脏，问你点挡？
-ngóhpin néih dī noihjohng, mahn néih dímdóng?
+我劈你啲内脏，问你点挡？
+ngóhpek néih dī noihjohng, mahn néih dímdóng?
 
 1209
 01:15:48,500 --> 01:15:49,542

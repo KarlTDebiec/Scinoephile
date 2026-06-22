@@ -96,11 +96,29 @@ Start with a short summary:
 - subtitle counts and whether timings changed
 - number of text changes
 - changed subtitle numbers
+- links to the original and revised image indexes. For direct OCR review stages
+  these usually both point to
+  `test/data/<dataset>/output/<series>/image/index.html`; if interactive
+  validation is running, use the corresponding web URL.
+
+Use normal local-file links to the `image/index.html` file without fragments
+when the current surface supports them; otherwise show its absolute path as
+text. For each subtitle row, include the exact anchor IDs as plain text, such
+as `original #subtitle-number-123 / revised #subtitle-number-123`. Local HTML
+fragment links such as `C:/.../index.html#subtitle-number-123`,
+`/C:/.../index.html#subtitle-number-123`, and `file://...#subtitle-number-123`
+do not work reliably in Codex because the fragment may be resolved as part of
+the filename. Do not start a static server just to make these anchors clickable.
+If the current output surface explicitly supports local HTML fragments, then the
+anchor IDs may be made clickable there.
 
 Then output a Markdown table with these exact columns:
 
 | Subtitle | Original Text | Revised Text | Review JSON Rationale | Assessment |
 |---:|---|---|---|---|
+
+In the `Subtitle` column, include both original and revised anchor IDs, for
+example: `123 (original #subtitle-number-123 / revised #subtitle-number-123)`.
 
 Include every changed subtitle, not only the bad ones. Keep assessments specific:
 `Correct`, `Incorrect`, `Questionable`, or `Needs source check`, followed by a
