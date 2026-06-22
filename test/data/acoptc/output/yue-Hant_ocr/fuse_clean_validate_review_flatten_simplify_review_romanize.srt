@@ -1410,8 +1410,8 @@ ngóh mìhnglā
 
 283
 00:20:32,167 --> 00:20:33,875
-你「锄」吓佢吖喂　　嚟呀
-néih 「chòh」 haak kéuih ā wai  làih àh
+你〝抄〞吓佢吖喂　　嚟呀
+néih “chāau” haak kéuih ā wai  làih àh
 
 284
 00:20:38,875 --> 00:20:40,042
@@ -1505,8 +1505,8 @@ báai néih seuhng sàhntòihdong gūnyām gambaai dōu làih m̀hchit lā
 
 302
 00:21:33,042 --> 00:21:34,167
-天黑了，我避开家姐呀
-tīnhāklíuh, ngóh beihhōi gājē àh
+天黑嘞，我避开家姐啊
+tīnhāk la, ngóh beihhōi gājē a
 
 303
 00:21:34,458 --> 00:21:35,458
@@ -1640,8 +1640,8 @@ nghhūng, néih yáih yáih la
 
 329
 00:23:15,083 --> 00:23:17,333
-我教你好多次唔好乱咁扔嘢
-ngóh gaau néih hóudō chi m̀hhóu lyuhn gam yìhngyéh
+我教你好多次唔好乱咁掟嘢
+ngóh gaau néih hóudō chi m̀hhóu lyuhn gam dengyéh
 
 330
 00:23:17,583 --> 00:23:18,958
@@ -1650,8 +1650,8 @@ néih yauh m̀h ting wah la
 
 331
 00:23:19,708 --> 00:23:21,708
-话口未完，连支棍都扔埋
-wahháu meih yùhn, lìhnjīgwan dōu yìhngmàaih
+话口未完，连支棍都揼埋
+wahháu meih yùhn, lìhnjīgwan dōu dāmmàaih
 
 332
 00:23:21,958 --> 00:23:22,958
@@ -1670,13 +1670,13 @@ wuih yíhmwū wàahngíng ga!
 
 335
 00:23:27,417 --> 00:23:29,000
-好容易扔亲啲小朋友
-hóu yùhngyih yìhngchāndī síupàhngyáuh
+好容易掟亲啲小朋友
+hóu yùhngyih dengchāndī síupàhngyáuh
 
 336
 00:23:29,167 --> 00:23:33,083
-就算冇小朋友，扔亲啲花花草草都唔好嘅
-jauhsyun móuh síupàhngyáuh, yìhngchāndī fāfāchóuchóu dōu m̀hhóu ge
+就算冇小朋友，掟亲啲花花草草都唔好嘅
+jauhsyun móuh síupàhngyáuh, dengchāndī fāfāchóuchóu dōu m̀hhóu ge
 
 337
 00:23:34,958 --> 00:23:35,833
@@ -2185,8 +2185,8 @@ yeh màhmá dung àh!
 
 438
 00:29:06,250 --> 00:29:07,125
-你有冇〝扭〞多件衫？！
-néih yáuhmóuh “náu” dō gihn sāam?!
+你有冇〝嬲〞多件衫？！
+néih yáuhmóuh “nāu” dō gihn sāam?!
 
 439
 00:29:07,292 --> 00:29:08,333
@@ -2255,8 +2255,8 @@ néih yihngdāk wàihsī máh?
 
 452
 00:30:17,542 --> 00:30:18,958
-系你条蠢契
-haih néih tìuhchéunkai
+系你条木契
+haih néih tìuh mūkkai
 
 453
 00:30:19,542 --> 00:30:20,667
@@ -2640,8 +2640,8 @@ māt néih hóyíh làuhdāi háidouh sìhngchānmē?
 
 529
 00:35:54,125 --> 00:35:55,250
-得卦？
-dākgwa?
+得呱？
+dākgwā?
 
 530
 00:35:56,708 --> 00:35:58,542
@@ -2650,8 +2650,8 @@ gam néih ūkkéi go lóuhpòh dím àh?
 
 531
 00:35:59,083 --> 00:36:01,542
-老婆？ 乜你哋识㗎？
-lóuhpòh?  māt néihdeih sīk ga?
+老婆？乜你哋识㗎？
+lóuhpòh? māt néihdeih sīk ga?
 
 532
 00:36:04,042 --> 00:36:05,167
@@ -2665,8 +2665,8 @@ lèihjó fān galā!…
 
 534
 00:36:06,708 --> 00:36:09,208
-点解我从来都有听你讲过嘅！
-dímgáai ngóh chùhnglòih dōu yáuh ting néih góng gwo ge!
+点解我从来都冇听你讲过嘅！
+dímgáai ngóh chùhnglòih dōu móuh ting néih góng gwo ge!
 
 535
 00:36:09,667 --> 00:36:14,167
@@ -2800,8 +2800,8 @@ móuh dī gam ge sih!
 
 561
 00:37:12,292 --> 00:37:14,708
-呢个祇不过系我同大家开嘅一个玩笑
-nē go kèih bātgwo haih ngóh tùhng daaihgā hōi ge yāt go wuhnsiu
+呢个只不过系我同大家开嘅一个玩笑
+nē go jíbātgwo haih ngóh tùhng daaihgā hōi ge yāt go wuhnsiu
 
 562
 00:37:15,083 --> 00:37:16,917
@@ -5410,8 +5410,8 @@ ngóh tùhng néih yìhngau haak jē
 
 1083
 01:04:54,708 --> 01:04:57,708
-唔驶咁认真？　乜要嘅咩？
-m̀hsái gam yihngjān?  mātyiu ge mē?
+唔驶咁认真？乜要嘅咩？
+m̀hsái gam yihngjān? mātyiu ge mē?
 
 1084
 01:05:40,125 --> 01:05:41,125
