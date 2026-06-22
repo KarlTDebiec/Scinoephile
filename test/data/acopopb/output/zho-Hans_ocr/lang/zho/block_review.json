@@ -2261,8 +2261,8 @@
       "xiugai_2": "我把你的伤治好",
       "beizhu_2": "补全漏字“的”。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2446,8 +2446,8 @@
       "xiugai_5": "把孩子带大",
       "beizhu_5": "将“孩大”修正为“孩子”。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {

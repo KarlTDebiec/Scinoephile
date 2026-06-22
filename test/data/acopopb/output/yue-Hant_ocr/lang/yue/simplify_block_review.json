@@ -634,14 +634,13 @@
   },
   {
     "query": {
-      "zimu_1": "起身！喺我面前唔好〝诈诈谛谛〞 ，我话你听",
+      "zimu_1": "起身！喺我面前唔好「诈诈谛谛」，我话你听",
       "zimu_2": "我仆你街",
       "zimu_3": "真系晕咗呀？",
       "zimu_4": "大牛、二虎",
       "zimu_5": "成班都系废柴，我自己嚟"
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -1171,6 +1170,7 @@
       "xiugai_29": "唔怪得一路以嚟我都发着同一个恶梦",
       "beizhu_29": "将表示持续状态的“著”改为简体用法“着”。"
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1343,7 +1343,7 @@
       "zimu_8": "放咗我",
       "zimu_9": "放咗我　　快啲",
       "zimu_10": "跪低",
-      "zimu_11": "你条〝沐契〞 ，今晚我就劏咗你当烧猪食",
+      "zimu_11": "你条〝沐契〞，今晚我就劏咗你当烧猪食",
       "zimu_12": "好！",
       "zimu_13": "咁又唔怪得佢嘅",
       "zimu_14": "佢不过系受咗嗰两个妖女嘅移魂大法啫",
@@ -1354,12 +1354,7 @@
       "zimu_19": "乜你咬住条绳好似咁面善咁嘅？",
       "zimu_20": "咪系我绑乾坤袋条绳嚟啰"
     },
-    "answer": {
-      "xiugai_11": "你条〝沐契〞，今晚我就劏咗你当烧猪食",
-      "beizhu_11": "Preserved cleaning-normalized punctuation in the block-review output."
-    },
-    "difficulty": 1,
-    "verified": true
+    "answer": {}
   },
   {
     "query": {

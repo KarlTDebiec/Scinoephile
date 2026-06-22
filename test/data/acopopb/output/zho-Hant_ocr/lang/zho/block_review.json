@@ -2421,8 +2421,8 @@
       "xiugai_5": "把孩子帶大",
       "beizhu_5": "將「孩大」修正為「孩子」。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
