@@ -2185,13 +2185,13 @@ yeh màhmá dung àh!
 
 438
 00:29:06,250 --> 00:29:07,125
-你有冇「嬲」多件衫？！
-néih yáuhmóuh 「nāu」 dō gihn sāam?!
+你有冇〝扭〞多件衫？！
+néih yáuhmóuh “náu” dō gihn sāam?!
 
 439
 00:29:07,292 --> 00:29:08,333
-小弟因为迷失咗路
-síudaih yānwàihmàihsāt jó louh
+小弟因为迷路咗
+síudaih yānwaih màihlouh jó
 
 440
 00:29:08,542 --> 00:29:10,333
@@ -2205,8 +2205,8 @@ gam hóuháu, heui góbīn lā
 
 442
 00:29:12,667 --> 00:29:15,417
-大吉大利老细！万寿无疆啊添噃老细
-daaihgātdaaihleih lóuhsai! maahnsauhmòuhgēung a tīmbo lóuhsai
+大吉大利老细！万寿无疆啊，添噃老细
+daaihgātdaaihleih lóuhsai! maahnsauhmòuhgēung a, tīmbo lóuhsai
 
 443
 00:29:20,875 --> 00:29:22,375
@@ -3245,13 +3245,13 @@ daaih sīhīng!
 
 650
 00:42:16,958 --> 00:42:19,792
-系咪呀，我都话大师兄实唔系敷衍我哋嘅
-haihmī àh, ngóh dōu wah daaih sīhīng saht m̀hhaihfūhín ngóhdeih ge
+系咪呀，我都话大师兄实唔系敷衍我哋㗎
+haihmī àh, ngóh dōu wah daaih sīhīng saht m̀hhaihfūhín ngóhdeih ga
 
 651
 00:42:20,083 --> 00:42:21,167
-佢一定救师父嘅
-kéuih yātdihng gausīfuh ge
+佢一定救师父㗎
+kéuih yātdihng gausīfuhga
 
 652
 00:42:21,375 --> 00:42:23,375
@@ -3265,8 +3265,8 @@ m̀hsái jaan, ngóh gōu néih síusíu ja ma, móuh mē daaihbātlíuh àh
 
 654
 00:42:30,583 --> 00:42:31,917
-又赞我啰　　唔好讲咁多，　去救师父呀
-yauh jaan ngóh lō  m̀hhóu góng gam dō,  heui gausīfuhàh
+又赞我啰　　唔好讲咁多，去救师父呀
+yauh jaan ngóh lō  m̀hhóu góng gam dō, heui gausīfuhàh
 
 655
 00:42:32,208 --> 00:42:32,917
@@ -3305,8 +3305,8 @@ haihàh……
 
 662
 00:42:42,083 --> 00:42:43,917
-除咗佢之外，冇人会咁攞命嘅
-chèuihjó kéuih jīngoih, móuh yàhn wuih gam lómehng ge
+除咗佢之外，冇人会咁攞命㗎
+chèuihjó kéuih jīngoih, móuh yàhn wuih gam lómehng ga
 
 663
 00:42:44,125 --> 00:42:45,500
@@ -3380,8 +3380,8 @@ ngóh hái nē go gāamchōng, tùhng hái ngoihbihn yáuh māt fānbiht nē?
 
 677
 00:43:18,625 --> 00:43:22,917
-外边对我嚟讲，祇不过系一个大啲嘅监仓
-ngoihbihn deui ngóhlàih góng, kèih bātgwo haihyāt go daaihdī ge gāamchōng
+外边对我嚟讲，只不过系一个大啲嘅监仓
+ngoihbihn deui ngóhlàih góng, jíbātgwo haihyāt go daaihdī ge gāamchōng
 
 678
 00:43:23,167 --> 00:43:27,250
@@ -3485,18 +3485,18 @@ dāngdāngdāng……, jauh haih……
 
 698
 00:44:28,750 --> 00:44:37,458
-Only you， can take me 取西经
-Only  you,  can  take  me  chéuisāigīng
+Only you，can take me 取西经
+Only  you, can  take  me  chéuisāigīng
 
 699
 00:44:39,500 --> 00:44:49,917
-Only you，能杀妖精鬼怪
-Only  you, nàhng saatyíujīnggwáigwaai
+Only you，　能杀妖精鬼怪
+Only  you,  nàhng saatyíujīnggwáigwaai
 
 700
 00:44:51,375 --> 00:44:57,083
-Only you，能保护我
-Only  you, nàhng bóuwuh ngóh
+Only you，　能保护我
+Only  you,  nàhng bóuwuh ngóh
 
 701
 00:44:57,667 --> 00:45:02,792
@@ -3520,8 +3520,8 @@ daai fāango kū
 
 705
 00:45:34,792 --> 00:45:40,208
-莫怕死，咪发〝t i〞藤
-mohkpaséi, mī faat “t  i” tàhng
+莫怕死，咪发〞t i〞藤
+mohkpaséi, mī faat” t  i” tàhng
 
 706
 00:45:41,542 --> 00:45:48,417
@@ -7552,3 +7552,4 @@ ngóh dōu gindóu
 01:36:29,958 --> 01:36:30,958
 好似只狗咁
 hóuchíh jígáu gam
+

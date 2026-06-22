@@ -687,15 +687,14 @@
       "zimu_1": "你見到啦",
       "zimu_2": "條友講嘢長篇大論，九唔搭八",
       "zimu_3": "依依哦哦",
-      "zimu_4": "就成日好似有一隻烏蠅嬲埋嚟， Eh⋯⋯哦",
+      "zimu_4": "就成日好似有一隻烏蠅嬲埋嚟，Eh⋯⋯哦",
       "zimu_5": "對唔住，唔係一隻",
-      "zimu_6": "係一咋烏蠅喺你耳仔邊， Eh⋯⋯哦⋯⋯",
+      "zimu_6": "係一咋烏蠅喺你耳仔邊，Eh⋯⋯哦⋯⋯",
       "zimu_7": "一路飛入你嘅腦裡面",
       "zimu_8": "救命呀⋯⋯",
       "zimu_9": "救命呀"
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -871,17 +870,18 @@
       "zimu_4": "你有冇〝嬲〞多件衫？！",
       "zimu_5": "小弟因為迷失咗路",
       "zimu_6": "唔知可唔可以俾我借宿一宵呢？",
-      "zimu_7": "咁好口，　去嗰邊啦",
+      "zimu_7": "咁好口，去嗰邊啦",
       "zimu_8": "大吉大利老細！萬壽無疆啊添噃老細"
     },
     "answer": {
-      "xiugai_4": "你有冇「嬲」多件衫？！",
-      "beizhu_4": "將異體引號〝〞修正為中文引號「」",
-      "xiugai_7": "咁好口，去嗰邊啦",
-      "beizhu_7": "刪除多餘空格"
+      "xiugai_4": "你有冇〝扭〞多件衫？！",
+      "beizhu_4": "「嬲」應為「扭」。",
+      "xiugai_5": "小弟因為迷路咗",
+      "beizhu_5": "「迷失咗路」修正為「迷路咗」。",
+      "xiugai_8": "大吉大利老細！萬壽無疆啊，添噃老細",
+      "beizhu_8": "補上標點「，」以符合排版。"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1239,7 +1239,7 @@
       "zimu_5": "佢一定救師父嘅",
       "zimu_6": "咁夜出嚟唔通痾尿咩！",
       "zimu_7": "唔使讚，我高你少少咋嘛，冇咩大不了呀",
-      "zimu_8": "又讚我囉　　唔好講咁多，　去救師父呀",
+      "zimu_8": "又讚我囉　　唔好講咁多，去救師父呀",
       "zimu_9": "行啦　　行囉",
       "zimu_10": "我真係出嚟痾尿",
       "zimu_11": "行啦，邊有人成日吟吟噚噚",
@@ -1271,8 +1271,17 @@
       "zimu_37": "沙僧，跟我嚟",
       "zimu_38": "你返去"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_4": "係咪呀，我都話大師兄實唔係敷衍我哋㗎",
+      "beizhu_4": "將「嘅」修正為「㗎」以符合語氣用字。",
+      "xiugai_5": "佢一定救師父㗎",
+      "beizhu_5": "將「嘅」修正為「㗎」以符合語氣用字。",
+      "xiugai_16": "除咗佢之外，冇人會咁攞命㗎",
+      "beizhu_16": "將句末「嘅」修正為「㗎」以符合語氣用字。",
+      "xiugai_31": "外邊對我嚟講，只不過係一個大啲嘅監倉",
+      "beizhu_31": "將「祇」修正為「只」。"
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -1301,44 +1310,42 @@
       "zimu_5": "你知唔知咩嘢係登登登⋯⋯",
       "zimu_6": "咩登登登？",
       "zimu_7": "登登登⋯⋯ ，就係⋯⋯",
-      "zimu_8": "On l y you， can take me 取西經",
+      "zimu_8": "On l y you，can take me 取西經",
       "zimu_9": "On l y you，　能殺妖精鬼怪",
       "zimu_10": "On l y you，　能保護我",
       "zimu_11": "唔駛俾啲蚌精蟹精dap我",
       "zimu_12": "只有你咁勁，就是on l y you"
     },
     "answer": {
-      "xiugai_8": "Only you， can take me 取西經",
-      "beizhu_8": "修正英文單字排版錯誤，將「On l y」合併為正確的「Only」。",
+      "xiugai_7": "登登登⋯⋯，就係⋯⋯",
+      "beizhu_7": "刪除標點前多餘空格。",
+      "xiugai_8": "Only you，can take me 取西經",
+      "beizhu_8": "修正英文單字排版空格：On l y you → Only you。",
       "xiugai_9": "Only you，　能殺妖精鬼怪",
-      "beizhu_9": "修正英文單字排版錯誤，將「On l y」合併為正確的「Only」。",
+      "beizhu_9": "修正英文單字排版空格：On l y you → Only you。",
       "xiugai_10": "Only you，　能保護我",
-      "beizhu_10": "修正英文單字排版錯誤，將「On l y」合併為正確的「Only」。",
+      "beizhu_10": "修正英文單字排版空格：On l y you → Only you。",
       "xiugai_12": "只有你咁勁，就是Only you",
-      "beizhu_12": "修正英文單字排版錯誤，將「on l y」合併為正確的「Only」。"
+      "beizhu_12": "修正英文單字排版空格：on l y you → Only you。"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
       "zimu_1": "On l y you，莫怪師傅暗尋",
       "zimu_2": "戴翻個箍",
-      "zimu_3": "莫怕死，咪發　〞 t i 〞　藤",
-      "zimu_4": "碰到釘咪驚， I under stand",
+      "zimu_3": "莫怕死，咪發　〞t i〞　藤",
+      "zimu_4": "碰到釘咪驚，I understand",
       "zimu_5": "要全力地去do，要驚就兩份驚",
       "zimu_6": "喃嘸阿彌陀佛"
     },
     "answer": {
       "xiugai_1": "Only you，莫怪師傅暗尋",
-      "beizhu_1": "修正英文單字排版錯誤，將「On l y you」改為「Only you」。",
-      "xiugai_3": "莫怕死，咪發〝 t i 〞藤",
-      "beizhu_3": "Preserved cleaning-normalized punctuation in the block-review output.",
-      "xiugai_4": "碰到釘咪驚，I understand",
-      "beizhu_4": "修正英文單字排版錯誤，將「I under stand」改為「I understand」。"
+      "beizhu_1": "修正英文與中文間的空格誤植，將「On l y」改為「Only」。",
+      "xiugai_3": "莫怕死，咪發〞t i〞藤",
+      "beizhu_3": "刪除多餘的全形空格，並修正常見排版符號間的空白。"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
