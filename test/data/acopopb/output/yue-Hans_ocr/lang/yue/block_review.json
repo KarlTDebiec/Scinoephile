@@ -652,7 +652,8 @@
       "zimu_4": "大牛、二虎",
       "zimu_5": "成班都系废柴，我自己嚟"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -927,10 +928,9 @@
     },
     "answer": {
       "xiugai_1": "Hi！",
-      "beizhu_1": "将字幕中的 “H i” 纠正为正常英文写法 “Hi”。",
-      "xiugai_3": "过去看吓",
-      "beizhu_3": "将“睇”改为简体常用字“看”。"
+      "beizhu_1": "将字幕中的 “H i” 纠正为正常英文写法 “Hi”。"
     },
+    "verified": true,
     "difficulty": 1
   },
   {
@@ -1322,15 +1322,12 @@
       "zimu_7": "算啦，头先又系我唔啱先嘅",
       "zimu_8": "切咗佢！都煨晒咯",
       "zimu_9": "香口啲啫！总好过冇",
-      "zimu_10": "明刀明枪同佢炼过！现身啦！　兄弟",
+      "zimu_10": "明刀明枪同佢炼过！现身啦！兄弟",
       "zimu_11": "系"
     },
-    "answer": {
-      "xiugai_10": "明刀明枪同佢练过！现身啦！兄弟",
-      "beizhu_10": "将“炼过”更正为“练过”，并去除“兄弟”前多余的全角空格。"
-    },
-    "difficulty": 1,
-    "verified": true
+    "answer": {},
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -1383,7 +1380,8 @@
       "zimu_19": "乜你咬住条绳好似咁面善咁嘅？",
       "zimu_20": "咪系我绑乾坤袋条绳嚟啰"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1413,7 +1411,8 @@
       "zimu_24": "我唔怕嘞！系咪呀！？",
       "zimu_25": "系噃！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
