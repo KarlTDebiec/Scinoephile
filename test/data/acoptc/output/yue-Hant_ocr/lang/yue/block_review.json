@@ -1308,20 +1308,20 @@
       "zimu_6": "咩登登登？",
       "zimu_7": "登登登⋯⋯，就係⋯⋯",
       "zimu_8": "On l y you，can take me 取西經",
-      "zimu_9": "On l y you，　能殺妖精鬼怪",
-      "zimu_10": "On l y you，　能保護我",
+      "zimu_9": "On l y you，能殺妖精鬼怪",
+      "zimu_10": "On l y you，能保護我",
       "zimu_11": "唔駛俾啲蚌精蟹精dap我",
       "zimu_12": "只有你咁勁，就是on l y you"
     },
     "answer": {
       "xiugai_8": "Only you，can take me 取西經",
-      "beizhu_8": "修正英文拼寫空格錯誤：On l y you → Only you。",
+      "beizhu_8": "修正英文歌詞空格排版錯誤，將「On l y」統一為「Only」。",
       "xiugai_9": "Only you，能殺妖精鬼怪",
-      "beizhu_9": "修正英文拼寫空格錯誤：On l y you → Only you。",
+      "beizhu_9": "修正英文歌詞空格排版錯誤，將「On l y」統一為「Only」。",
       "xiugai_10": "Only you，能保護我",
-      "beizhu_10": "修正英文拼寫空格錯誤：On l y you → Only you。",
+      "beizhu_10": "修正英文歌詞空格排版錯誤，將「On l y」統一為「Only」。",
       "xiugai_12": "只有你咁勁，就是Only you",
-      "beizhu_12": "修正英文拼寫空格錯誤：on l y you → Only you。"
+      "beizhu_12": "修正英文歌詞空格排版錯誤，將「on l y」統一為「Only」，並保留原句結構。"
     },
     "difficulty": 1
   },

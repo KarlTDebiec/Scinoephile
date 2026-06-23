@@ -1313,20 +1313,20 @@
       "zimu_6": "咩登登登？",
       "zimu_7": "登登登⋯⋯，就系⋯⋯",
       "zimu_8": "On l y you，can take me 取西经",
-      "zimu_9": "On l y you，　能杀妖精鬼怪",
-      "zimu_10": "On l y you，　能保护我",
+      "zimu_9": "On l y you，能杀妖精鬼怪",
+      "zimu_10": "On l y you，能保护我",
       "zimu_11": "唔驶俾啲蚌精蟹精dap我",
       "zimu_12": "只有你咁劲，就是on l y you"
     },
     "answer": {
       "xiugai_8": "Only you，can take me 取西经",
-      "beizhu_8": "将“On l y”中的空格错误修正为“Only”，统一英文拼写。",
+      "beizhu_8": "将英文拆分错误“On l y”修正为“Only”，保持原句其余内容不变。",
       "xiugai_9": "Only you，能杀妖精鬼怪",
-      "beizhu_9": "将“On l y”中的空格错误修正为“Only”，统一英文拼写。",
+      "beizhu_9": "将英文拆分错误“On l y”修正为“Only”，保持原句其余内容不变。",
       "xiugai_10": "Only you，能保护我",
-      "beizhu_10": "将“On l y”中的空格错误修正为“Only”，统一英文拼写。",
+      "beizhu_10": "将英文拆分错误“On l y”修正为“Only”，保持原句其余内容不变。",
       "xiugai_12": "只有你咁劲，就是Only you",
-      "beizhu_12": "将“on l y”中的空格错误修正为“Only”，统一英文拼写。"
+      "beizhu_12": "将英文拆分错误“on l y”修正为“Only”，保持原句其余内容不变。"
     },
     "difficulty": 1
   },
