@@ -19,7 +19,7 @@
     "query": {
       "zimu_1": "唔好意思⋯⋯對唔住",
       "zimu_2": "阿伯，你咁樣點燈點唔着㗎？",
-      "zimu_3": "淨係得啲油，都有燈芯",
+      "zimu_3": "淨係得啲油，都冇燈芯",
       "zimu_4": "我都知",
       "zimu_5": "但係唔見咗條燈芯，有乜辦法喎",
       "zimu_6": "買過條囉"
@@ -111,7 +111,10 @@
       "zimu_3": "你〝蝦〞我唔識字呀！",
       "zimu_4": "〝水濂洞〞呀！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_4": "〝水簾洞〞呀！",
+      "beizhu_4": "將專名「水濂洞」更正為「水簾洞」。"
+    },
     "difficulty": 1,
     "verified": true
   },
@@ -128,7 +131,11 @@
       "zimu_2": "好！我就住係呢一度",
       "zimu_3": "咪住！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_2": "好！我就住喺呢一度",
+      "beizhu_2": "將「係」修正為粵語處所介詞「喺」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -163,14 +170,10 @@
   },
   {
     "query": {
-      "zimu_1": "芝麻開門",
+      "zimu_1": "芝蔴開門",
       "zimu_2": "芝蔴閂門"
     },
-    "answer": {
-      "xiugai_2": "芝麻閂門",
-      "beizhu_2": "將「芝蔴」修正為常用正字「芝麻」，並統一用字；其餘保留不變。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -178,21 +181,21 @@
       "zimu_1": "我唔信我唔信⋯⋯",
       "zimu_2": "我唔做馬騮，我要返去救晶晶",
       "zimu_3": "俾番個寶盒我啊唔該",
-      "zimu_4": "芝麻開門"
+      "zimu_4": "芝蔴開門"
     },
     "answer": {},
     "verified": true
   },
   {
     "query": {
-      "zimu_1": "冇理由嘅，我明明聽到佢話芝麻開門"
+      "zimu_1": "冇理由嘅，我明明聽到佢話芝蔴開門"
     },
     "answer": {},
     "verified": true
   },
   {
     "query": {
-      "zimu_1": "芝麻開門"
+      "zimu_1": "芝蔴開門"
     },
     "answer": {},
     "verified": true
@@ -201,7 +204,11 @@
     "query": {
       "zimu_1": "喂⋯⋯茅唔茅啲呀？"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_1": "喂⋯⋯矛唔矛啲呀？",
+      "beizhu_1": "將「茅」更正為「矛」，修正明顯錯別字。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -214,7 +221,7 @@
   {
     "query": {
       "zimu_1": "嗰邊⋯⋯",
-      "zimu_2": "芝麻開門⋯⋯",
+      "zimu_2": "芝蔴開門⋯⋯",
       "zimu_3": "邊個⋯⋯邊個呀？"
     },
     "answer": {},
@@ -380,7 +387,11 @@
       "zimu_2": "係咩？",
       "zimu_3": "賤人，你飛唔出我手指隙嘅"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_3": "賤人，你飛唔出我手指罅嘅",
+      "beizhu_3": "將「隙」更正為「罅」，符合常見粵語寫法「手指罅」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -410,7 +421,7 @@
       "zimu_23": "你有啲咩嘢頸鏈手飾呀",
       "zimu_24": "金銀珠寶呀，月光寶盒呀",
       "zimu_25": "好呀，不過嗰啲無用㗎",
-      "zimu_26": "你擺我嗰把紫青寶劍俾佢睇",
+      "zimu_26": "你攞我嗰把紫青寶劍俾佢睇",
       "zimu_27": "佢一定會信到你十足十㗎",
       "zimu_28": "都好！"
     },
@@ -870,7 +881,11 @@
       "zimu_4": "忍多陣都唔得",
       "zimu_5": "痾尿都嘰拮"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_3": "一日最衰係你，屙咩嘢尿呢？",
+      "beizhu_3": "將「痾」更正為「屙」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1049,7 +1064,7 @@
       "zimu_21": "等我嚟！",
       "zimu_22": "講咩？⋯⋯",
       "zimu_23": "人哋家吓郎才女貌，天生一對",
-      "zimu_24": "幾時輪到你〝咋〞鴉鳥嚟反對啫？",
+      "zimu_24": "幾時輪到你〝咋〞鴉烏嚟反對啫？",
       "zimu_25": "紫霞仙子擇偶係有一個規矩嘅",
       "zimu_26": "如果大哥你能夠做得到，咁我哋就心服口服嘞！",
       "zimu_27": "規咩矩呀？有呀？",
@@ -1116,7 +1131,9 @@
     },
     "answer": {
       "xiugai_2": "當時把劍距離我喉嚨只有零點零一公分",
-      "beizhu_2": "「祇有」修正為「只有」；屬錯別字修正。"
+      "beizhu_2": "「祇有」修正為「只有」；屬錯別字修正。",
+      "xiugai_3": "但喺四分之一注香之後",
+      "beizhu_3": "將「四份之一」更正為「四分之一」，保留粵語用字「喺」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1208,7 +1225,11 @@
       "zimu_6": "等我攪掂我班兄弟先",
       "zimu_7": "今晚見"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_6": "等我搞掂我班兄弟先",
+      "beizhu_6": "將錯別字「攪掂」更正為「搞掂」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1285,7 +1306,7 @@
       "zimu_4": "你當放過我啦好嗎？",
       "zimu_5": "你知唔知咩嘢係登登登⋯⋯",
       "zimu_6": "咩登登登？",
-      "zimu_7": "登登登⋯⋯ ，就係⋯⋯",
+      "zimu_7": "登登登⋯⋯，就係⋯⋯",
       "zimu_8": "On l y you，can take me 取西經",
       "zimu_9": "On l y you，　能殺妖精鬼怪",
       "zimu_10": "On l y you，　能保護我",
@@ -1293,19 +1314,16 @@
       "zimu_12": "只有你咁勁，就是on l y you"
     },
     "answer": {
-      "xiugai_7": "登登登⋯⋯，就係⋯⋯",
-      "beizhu_7": "刪除標點前多餘空格。",
       "xiugai_8": "Only you，can take me 取西經",
-      "beizhu_8": "修正英文單字排版空格：On l y you → Only you。",
-      "xiugai_9": "Only you，　能殺妖精鬼怪",
-      "beizhu_9": "修正英文單字排版空格：On l y you → Only you。",
-      "xiugai_10": "Only you，　能保護我",
-      "beizhu_10": "修正英文單字排版空格：On l y you → Only you。",
+      "beizhu_8": "修正英文拼寫空格錯誤：On l y you → Only you。",
+      "xiugai_9": "Only you，能殺妖精鬼怪",
+      "beizhu_9": "修正英文拼寫空格錯誤：On l y you → Only you。",
+      "xiugai_10": "Only you，能保護我",
+      "beizhu_10": "修正英文拼寫空格錯誤：On l y you → Only you。",
       "xiugai_12": "只有你咁勁，就是Only you",
-      "beizhu_12": "修正英文單字排版空格：on l y you → Only you。"
+      "beizhu_12": "修正英文拼寫空格錯誤：on l y you → Only you。"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1841,7 +1859,11 @@
       "zimu_7": "多謝哂你呀椰青！",
       "zimu_8": "咁樣係咪即係佢最愛的人就係我？"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_7": "多謝晒你呀椰青！",
+      "beizhu_7": "將「哂」更正為「晒」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2775,7 +2797,11 @@
       "zimu_19": "多謝",
       "zimu_20": "條友叫我〝隊〞佢三嘢係咪前世欠咗我㗎"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_1": "相傳五百年前呢度就係水簾洞",
+      "beizhu_1": "將專名「水濂洞」更正為「水簾洞」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {

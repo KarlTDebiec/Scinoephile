@@ -2220,8 +2220,8 @@ dímgáai dahtyìhngāan nǵhgin jó yàhn?
 
 445
 00:29:24,500 --> 00:29:26,417
-一日最衰系你，痾咩嘢尿呢？
-yātyaht jeuisēui haih néih, ōmē yéh niuh nē?
+一日最衰系你，屙咩嘢尿呢？
+yātyaht jeuisēui haih néih, ō mē yéh niuh nē?
 
 446
 00:29:26,667 --> 00:29:27,583
@@ -2230,8 +2230,8 @@ yándōjahn dōu m̀h dāk
 
 447
 00:29:28,500 --> 00:29:29,708
-病尿都叽拮
-behng niuhdōu gīgāt
+痾尿都叽拮
+ō niuh dōu gīgāt
 
 448
 00:29:42,583 --> 00:29:43,625
@@ -2800,8 +2800,8 @@ móuh dī gam ge sih!
 
 561
 00:37:12,292 --> 00:37:14,708
-呢个祗不过系我同大家开嘅一个玩笑
-nē gojī bātgwo haih ngóh tùhng daaihgā hōi ge yāt go wuhnsiu
+呢个只不过系我同大家开嘅一个玩笑
+nē go jíbātgwo haih ngóh tùhng daaihgā hōi ge yāt go wuhnsiu
 
 562
 00:37:15,083 --> 00:37:16,917
@@ -2820,8 +2820,8 @@ gānbún móuh gwāanhaih
 
 565
 00:37:23,833 --> 00:37:26,333
-你班冚家铲喺我地头搅搅阵⋯
-néih bāan hahmgā cháan hái ngóh deihtàuhgáaugáaujahn…
+你班冚家铲喺我地头搅搅震⋯
+néih bāan hahmgā cháan hái ngóh deihtàuhgáaugáaujan…
 
 566
 00:37:26,792 --> 00:37:28,083
@@ -3380,8 +3380,8 @@ ngóh hái nē go gāamchōng, tùhng hái ngoihbihn yáuh māt fānbiht nē?
 
 677
 00:43:18,625 --> 00:43:22,917
-外边对我嚟讲，祇不过系一个大啲嘅监仓
-ngoihbihn deui ngóhlàih góng, kèih bātgwo haihyāt go daaihdī ge gāamchōng
+外边对我嚟讲，只不过系一个大啲嘅监仓
+ngoihbihn deui ngóhlàih góng, jíbātgwo haihyāt go daaihdī ge gāamchōng
 
 678
 00:43:23,167 --> 00:43:27,250
@@ -3480,8 +3480,8 @@ mē dāngdāngdāng?
 
 697
 00:44:22,042 --> 00:44:25,958
-登登登⋯⋯ ，就系⋯⋯
-dāngdāngdāng……  , jauh haih……
+登登登⋯⋯，就系⋯⋯
+dāngdāngdāng……, jauh haih……
 
 698
 00:44:28,750 --> 00:44:37,458
@@ -3505,8 +3505,8 @@ m̀hsái béi dī póhngjīngháaihjīng dap ngóh
 
 702
 00:45:04,458 --> 00:45:12,208
-只有你咁劲，就是 only you
-jíyáuh néih gam gihng, jauh sih  only  you
+只有你咁劲，就是Only you
+jíyáuh néih gam gihng, jauh sih Only  you
 
 703
 00:45:17,167 --> 00:45:28,417
@@ -3520,8 +3520,8 @@ daai fāango kū
 
 705
 00:45:34,792 --> 00:45:40,208
-莫怕死，咪发　〞t i〞　藤
-mohkpaséi, mī faat  ” t  i”  tàhng
+莫怕死，咪发〝ti〞藤
+mohkpaséi, mī faat “ti” tàhng
 
 706
 00:45:41,542 --> 00:45:48,417
@@ -4870,8 +4870,8 @@ daahnhaih faailohk wíhngyúhn haihdyúnjaahmdīk
 
 975
 00:59:24,458 --> 00:59:27,333
-换嚟祗系无穷无尽嘅痛苦同埋唏嘘！
-wuhnlàih jīhaihmòuhkùhngmòuhjeuhn ge tungfú tùhngmàaih hēihēui!
+换嚟只系无穷无尽嘅痛苦同埋唏嘘！
+wuhnlàih jíhaihmòuhkùhngmòuhjeuhn ge tungfú tùhngmàaih hēihēui!
 
 976
 00:59:27,792 --> 00:59:29,375
@@ -5095,8 +5095,8 @@ néih jānhaih kyutdihng ga béi kéuih mē?
 
 1020
 01:01:17,583 --> 01:01:18,625
-我骗他吗
-ngóh pintā máh
+我骗佢吗
+ngóhpin kéuih máh
 
 1021
 01:01:18,833 --> 01:01:20,875
@@ -7115,7 +7115,7 @@ m̀hgōi
 
 1424
 01:30:08,083 --> 01:30:09,833
-相传五百年前呢度就系水濂洞
+相传五百年前呢度就系水帘洞
 sēungchyùhn nǵhbaak nìhnchìhn nē douh jauh haih séuilìhmduhng
 
 1425

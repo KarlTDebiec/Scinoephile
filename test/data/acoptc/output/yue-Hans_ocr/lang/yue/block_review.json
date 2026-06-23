@@ -881,9 +881,12 @@
       "zimu_2": "点解突然间唔见咗人？",
       "zimu_3": "一日最衰系你，痾咩嘢尿呢？",
       "zimu_4": "忍多阵都唔得",
-      "zimu_5": "病尿都叽拮"
+      "zimu_5": "痾尿都叽拮"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_3": "一日最衰系你，屙咩嘢尿呢？",
+      "beizhu_3": "将「痾」更正为「屙」。"
+    },
     "difficulty": 1,
     "verified": true
   },
@@ -1080,7 +1083,9 @@
     },
     "answer": {
       "xiugai_2": "得呱？",
-      "beizhu_2": "将“卦”更正为常见口语用字“呱”。"
+      "beizhu_2": "将“卦”更正为常见口语用字“呱”。",
+      "xiugai_34": "呢个只不过系我同大家开嘅一个玩笑",
+      "beizhu_34": "将“祗”更正为“只”，修正错别字。"
     },
     "difficulty": 1,
     "verified": true
@@ -1090,7 +1095,11 @@
       "zimu_1": "你班冚家铲喺我地头搅搅阵⋯",
       "zimu_2": "边个阻我，边个死！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_1": "你班冚家铲喺我地头搅搅震⋯",
+      "beizhu_1": "将“搅搅阵”修正为常见用字“搅搅震”。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1268,7 +1277,11 @@
       "zimu_37": "沙僧，跟我嚟",
       "zimu_38": "你返去"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_31": "外边对我嚟讲，只不过系一个大啲嘅监仓",
+      "beizhu_31": "将“祇”更正为“只”，修正错别字。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1298,7 +1311,7 @@
       "zimu_4": "你当放过我啦好吗？",
       "zimu_5": "你知唔知咩嘢系登登登⋯⋯",
       "zimu_6": "咩登登登？",
-      "zimu_7": "登登登⋯⋯ ，就系⋯⋯",
+      "zimu_7": "登登登⋯⋯，就系⋯⋯",
       "zimu_8": "On l y you，can take me 取西经",
       "zimu_9": "On l y you，　能杀妖精鬼怪",
       "zimu_10": "On l y you，　能保护我",
@@ -1307,16 +1320,15 @@
     },
     "answer": {
       "xiugai_8": "Only you，can take me 取西经",
-      "beizhu_8": "将英文单词中的空格调整为正确排版，统一为“Only you”。",
+      "beizhu_8": "将“On l y”中的空格错误修正为“Only”，统一英文拼写。",
       "xiugai_9": "Only you，能杀妖精鬼怪",
-      "beizhu_9": "将英文单词中的空格调整为正确排版，统一为“Only you”。",
+      "beizhu_9": "将“On l y”中的空格错误修正为“Only”，统一英文拼写。",
       "xiugai_10": "Only you，能保护我",
-      "beizhu_10": "将英文单词中的空格调整为正确排版，统一为“Only you”。",
-      "xiugai_12": "只有你咁劲，就是 only you",
-      "beizhu_12": "将英文单词中的空格调整为正确排版，统一为“only you”。"
+      "beizhu_10": "将“On l y”中的空格错误修正为“Only”，统一英文拼写。",
+      "xiugai_12": "只有你咁劲，就是Only you",
+      "beizhu_12": "将“on l y”中的空格错误修正为“Only”，统一英文拼写。"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1329,7 +1341,9 @@
     },
     "answer": {
       "xiugai_1": "Only you，莫怪师傅暗寻",
-      "beizhu_1": "将英文被拆开的字母恢复为完整的“Only”。"
+      "beizhu_1": "将英文被拆开的字母恢复为完整的“Only”。",
+      "xiugai_3": "莫怕死，咪发〝ti〞藤",
+      "beizhu_3": "将引号内的 OCR 空格误植“〞t i〞”修正为“〝ti〞”。"
     },
     "difficulty": 1,
     "verified": true
@@ -1810,7 +1824,10 @@
       "zimu_12": "大哥！菩提大哥！",
       "zimu_13": "就系咁啦"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_2": "换嚟只系无穷无尽嘅痛苦同埋唏嘘！",
+      "beizhu_2": "将“祗”更正为“只”，修正错别字。"
+    },
     "difficulty": 1,
     "verified": true
   },
@@ -1895,7 +1912,11 @@
       "zimu_22": "认啦！黐线妹",
       "zimu_23": "不认！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_7": "我骗佢吗",
+      "beizhu_7": "将代词“他”更正为粤语口语用字“佢”。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2786,7 +2807,11 @@
       "zimu_19": "多谢",
       "zimu_20": "条友叫我〝队〞佢三嘢系咪前世欠咗我㗎"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_1": "相传五百年前呢度就系水帘洞",
+      "beizhu_1": "将专名“水濂洞”更正为“水帘洞”。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
