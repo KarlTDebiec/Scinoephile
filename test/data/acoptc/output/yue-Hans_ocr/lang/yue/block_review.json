@@ -752,6 +752,8 @@
       "zimu_32": "咪嘈⋯⋯"
     },
     "answer": {
+      "xiugai_3": "诸多借口",
+      "beizhu_3": "将“藉口”更正为“借口”。",
       "xiugai_15": "唐三藏，你烦我一早听讲过啦",
       "beizhu_15": "将句末语气词“嘞”更正为“啦”。"
     },
@@ -2188,7 +2190,11 @@
       "zimu_2": "你走啦",
       "zimu_3": "呢世女我得你一个姐姐架啫"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_3": "呢世女我得你一个姐姐㗎啫",
+      "beizhu_3": "将“架”更正为“㗎”。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2389,11 +2395,7 @@
     "query": {
       "zimu_1": "小心呀！佢想打乞嚏"
     },
-    "answer": {
-      "xiugai_1": "小心呀！佢想打喷嚏",
-      "beizhu_1": "将错别字“乞嚏”更正为“喷嚏”。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -2707,7 +2709,11 @@
       "zimu_1": "紫霞",
       "zimu_2": "我凄"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_2": "我妻",
+      "beizhu_2": "将“凄”更正为“妻”。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2831,7 +2837,11 @@
       "zimu_1": "菩提洞",
       "zimu_2": "俾两砖豆腐我呀"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_2": "畀两砖豆腐我呀",
+      "beizhu_2": "将“俾”更正为“畀”。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2945,7 +2955,7 @@
     },
     "answer": {
       "xiugai_6": "咁都只系得到我嘅肉体啫",
-      "beizhu_6": "将“祇系”中的“祇”改为“只”，并将“体”统一为繁体“體”。"
+      "beizhu_6": "将“祇系”中的“祇”改为“只”。"
     },
     "difficulty": 1,
     "verified": true

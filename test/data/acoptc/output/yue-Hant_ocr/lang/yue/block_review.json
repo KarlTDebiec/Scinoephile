@@ -1993,7 +1993,12 @@
       "zimu_27": "我同你研究吓啫",
       "zimu_28": "唔駛咁認真？乜要嘅咩？"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_3": "我只不過想研究一下",
+      "beizhu_3": "將「祇」更正為「只」。",
+      "xiugai_12": "紫霞只不過係一個我識得嘅人",
+      "beizhu_12": "將「祇」更正為「只」。"
+    },
     "difficulty": 1,
     "verified": true
   },
@@ -2379,11 +2384,7 @@
     "query": {
       "zimu_1": "小心呀！佢想打乞嚏"
     },
-    "answer": {
-      "xiugai_1": "小心呀！佢想打噴嚏",
-      "beizhu_1": "「乞嚏」應為「噴嚏」，屬錯別字修正。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -2550,7 +2551,11 @@
       "zimu_5": "我唔得囉，我真係唔係喎",
       "zimu_6": "過來，攬住我！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_2": "有個女人帶埋佢去",
+      "beizhu_2": "補回漏字「佢」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2936,7 +2941,11 @@
       "zimu_22": "後悔都唔錫㗎啦",
       "zimu_23": "祇能怪相逢恨晚，造物弄人啦"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_6": "咁都只係得到我嘅肉體啫",
+      "beizhu_6": "將「祇」更正為「只」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
