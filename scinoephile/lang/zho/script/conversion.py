@@ -130,7 +130,6 @@ S2T_EXCLUSIONS: set[str] = {
 T2S_EXCLUSIONS: set[str] = {
     "喎",  # keep Cantonese sentence particle 喎; avoid 㖞
     "嗰",  # keep Cantonese demonstrative 嗰; avoid 𠮶
-    "搵",  # keep Cantonese 搵 "look for"; avoid 揾
     "痾",  # keep Cantonese 痾 "defecate"; avoid 疴
     "劏",  # keep Cantonese 劏 "slaughter"; avoid 㓥
     "噚",  # keep Cantonese 噚; avoid 㖊
