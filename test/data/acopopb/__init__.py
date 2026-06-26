@@ -703,10 +703,7 @@ def acopopb_zho_hant_ocr_paddle_clean() -> Series:
 @fixture
 def acopopb_yue_simplify_expected_series_diff() -> list[str]:
     """Expected differences for ACOPOPB simplified Cantonese subtitles."""
-    return [
-        "edit: SIMP[60] -> TRAD[60]: '悟空，你诸多藉口' -> '悟空，你诸多借口'",
-        "edit: SIMP[621] -> TRAD[621]: '希望藉此经书嚟感化世人' -> '希望借此经书嚟感化世人'",
-    ]
+    return []
 
 
 @fixture

@@ -315,14 +315,14 @@ def _format_pair(one: str, two: str) -> str:
 
 
 def _format_subtitle_cell(number: int) -> str:
-    """Format subtitle number and anchor IDs.
+    """Format subtitle number.
 
     Arguments:
         number: subtitle number
     Returns:
         formatted subtitle cell
     """
-    return f"{number} (Hans #subtitle-number-{number} / Hant #subtitle-number-{number})"
+    return str(number)
 
 
 def _get_review_changes(

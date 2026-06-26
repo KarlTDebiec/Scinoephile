@@ -295,8 +295,8 @@ dímgáai ngóh yiu saat jó kéuih
 
 60
 00:03:29,250 --> 00:03:31,500
-悟空，你诸多藉口
-nghhūng, néih jyūdō jihkháu
+悟空，你诸多借口
+nghhūng, néih jyūdō jeháu
 
 61
 00:03:31,833 --> 00:03:33,792
@@ -3100,7 +3100,7 @@ bātpachīnsānmaahnfú heui chéuisāigīng
 
 621
 00:38:00,083 --> 00:38:02,458
-希望藉此经书嚟感化世人
+希望借此经书嚟感化世人
 hēimohng jihkchí gīngsyū làih gámfasaiyàhn
 
 622
