@@ -45,7 +45,7 @@ ocr-cuda = [
 ]
 transcription = [
     "demucs-infer>=4.1.2",
-    "huggingface-hub>=1.19.0",
+    "huggingface-hub>=1.21.0",
     "onnxruntime>=1.27.0",
     "torch>=2.10.0",
     "torchaudio>=2.10.0,<2.11.0",
