@@ -42,6 +42,11 @@ from test.helpers import assert_series_equal, parametrize
             id="kob-yue-hans",
         ),
         param(
+            "kob_yue_hant_timewarp_clean_flatten_simplify_review",
+            "kob_yue_hant_timewarp_clean_flatten_simplify_review_romanize",
+            id="kob-yue-hant",
+        ),
+        param(
             "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten",
             "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize",
             id="tmm-yue-hans",
@@ -83,7 +88,15 @@ def test_get_yue_romanized(
         ("＇你好＇世界", "'néih hóu' saigaai"),
         ("你好：世界；再见。", "néih hóu: saigaai; joigin."),
         ("don't你好", "don't néih hóu"),
-        ('"t i"你好', '"t  i" néih hóu'),
+        ('"t i"你好', '"t i" néih hóu'),
+        (
+            "乱讲，啫啫一 fling fling 吖嘛",
+            "lyuhn góng, jē jē yāt fling fling ā ma",
+        ),
+        (
+            "骑呢怪，做咩搞到咁乌 where ？",
+            "kèh nē gwaai, jouh mē gáau dou gam wū where ?",
+        ),
         ("原来少爷", "yùhnlòih siuyèh"),
         ("龙飞凤舞，苏察哈尔灿", "lùhngfēifuhngmóuh, sōuchaathāyíhchaan"),
     ],

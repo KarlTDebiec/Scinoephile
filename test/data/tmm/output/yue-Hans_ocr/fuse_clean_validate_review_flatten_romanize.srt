@@ -2105,8 +2105,8 @@ jē jē
 
 422
 00:19:31,500 --> 00:19:33,125
-乱讲，啫啫一f l i ng f l i ng吖嘛
-lyuhn góng, jē jē yāt f  l  i  ng  f  l  i  ng ā ma
+乱讲，啫啫一 fling fling 吖嘛
+lyuhn góng, jē jē yāt fling fling ā ma
 
 423
 00:19:33,125 --> 00:19:33,792
@@ -3005,8 +3005,8 @@ tung nē?
 
 602
 00:27:55,000 --> 00:27:57,292
-家吓你了解到，俾人欺负嘅痛苦呢？
-gā haak néih líuhgáai dou, béi yàhnhēifuh ge tungfú nē?
+家下你了解到，俾人欺负嘅痛苦呢？
+gāháh néih líuhgáai dou, béi yàhnhēifuh ge tungfú nē?
 
 603
 00:27:57,792 --> 00:28:00,125
@@ -3100,8 +3100,8 @@ hàahn ūk dímgáai wuih binsìhng gam ga?
 
 621
 00:28:58,000 --> 00:29:01,500
-修缘，你点会惹到袁霸天呢啲恶人㗎？
-sāuyùhn, néih dím wuih yéhdouyùhnbatīn nē dī okyàhn ga?
+修缘，你点会惹到袁霸天呢啲恶人呀？
+sāuyùhn, néih dím wuih yéhdouyùhnbatīn nē dī okyàhn àh?
 
 622
 00:29:01,500 --> 00:29:02,375
@@ -3220,8 +3220,8 @@ haihlō, yeuhkyìhn néih mòuhjouh cho sih
 
 645
 00:29:59,375 --> 00:30:01,375
-应该同佢一齐香枝香住㗎
-yīnggōi tùhng kéuih yātchàih hēungjīhēungjyuh ga
+应该同佢一齐香至啱㗎
+yīnggōi tùhng kéuih yātchàih hēungji ngāam ga
 
 646
 00:30:03,542 --> 00:30:05,500
@@ -3275,7 +3275,7 @@ gam gōuhing, gánghaihjáamjígāi fáanlàihhohyāthoh kéuih lā
 
 656
 00:30:21,542 --> 00:30:23,625
-仲有你，揾个忤作佬返嚟送佢哋一程
+仲有你，揾个仵作佬返嚟送佢哋一程
 juhngyáuh néih, wángo nǵhjoklóu fáan làihsung kéuihdeih yātchìhng
 
 657
@@ -3605,8 +3605,8 @@ haak? wai… ngóh m̀h gám giu, néih bōng ngóh giu àh
 
 722
 00:33:18,708 --> 00:33:20,333
-唏⋯你做人连些少自信都右
-hēi… néih jouh yàhn lìhn sēsíu jihseun dōu yauh
+唏⋯你做人连些少自信都冇
+hēi… néih jouh yàhn lìhn sēsíu jihseun dōu móuh
 
 723
 00:33:20,333 --> 00:33:21,750
@@ -3795,8 +3795,8 @@ kéuih dī gam ge yàhn, m̀h dásēi kéuih dōu m̀h dāk àh  jáulā
 
 760
 00:34:41,500 --> 00:34:43,000
-家吓啲人真系唔怕鬼㗎喎
-gā haak dī yàhn jānhaih m̀hpagwái ga wo
+家下啲人真系唔怕鬼㗎喎
+gāháh dī yàhn jānhaih m̀hpagwái ga wo
 
 761
 00:34:43,958 --> 00:34:44,875
@@ -3965,13 +3965,13 @@ ngóh béi néih haak dou laaihniuhàh
 
 794
 00:36:08,458 --> 00:36:10,708
-骑呢怪，做咩搞到咁乌whe re ？
-kèh nē gwaai, jouh mē gáau dou gam wū whe  re  ?
+骑呢怪，做咩搞到咁乌 where ？
+kèh nē gwaai, jouh mē gáau dou gam wū where ?
 
 795
 00:36:11,292 --> 00:36:13,417
-我扮到咁乌whe re都系为咗掩人耳目
-ngóh baahndou gam wū whe  re dōu haih wàih jó yímyàhnyíhmuhk
+我扮到咁乌 where 都系为咗掩人耳目
+ngóh baahndou gam wū where dōu haih wàih jó yímyàhnyíhmuhk
 
 796
 00:36:13,417 --> 00:36:14,875
@@ -4205,7 +4205,7 @@ néih gólāpjuhngdaaih àh
 
 842
 00:37:44,917 --> 00:37:45,917
-哎呀⋯币啦⋯
+哎呀⋯弊啦⋯
 āai àh… baihlā…
 
 843
@@ -4495,8 +4495,8 @@ jyunlā… jyun àh jyun…  hóu gīng àh…
 
 900
 00:40:30,458 --> 00:40:32,875
-哦⋯你奸茅
-òh… néih gāanmàauh
+哦⋯你奸猾
+òh… néihgāanwaaht
 
 901
 00:40:36,333 --> 00:40:37,500
@@ -7040,8 +7040,8 @@ dímgáai néih m̀h hōisām ge?
 
 1409
 01:11:00,458 --> 01:11:02,750
-喔⋯唔系⋯Yeah⋯
-āk… m̀hhaih… Yeah…
+喔⋯唔系⋯ Yeah ⋯
+āk… m̀hhaih… Yeah …
 
 1410
 01:11:02,750 --> 01:11:04,375

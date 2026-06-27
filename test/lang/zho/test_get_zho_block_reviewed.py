@@ -27,6 +27,9 @@ from test.data.acoptc import (
     get_acoptc_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.kob import (
+    get_kob_yue_hans_block_review_test_cases,
+    get_kob_yue_hant_block_review_test_cases,
+    get_kob_yue_hant_simplify_block_review_test_cases,
     get_kob_zho_hant_block_review_test_cases,
     get_kob_zho_hant_simplify_block_review_test_cases,
 )
@@ -111,6 +114,27 @@ from test.helpers import assert_series_equal, parametrize
             get_kob_zho_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="kob-zho-hant-simplify",
+        ),
+        param(
+            "kob_yue_hans",
+            "kob_yue_hans_review",
+            get_kob_yue_hans_block_review_test_cases,
+            BlockReviewPromptZhoHans,
+            id="kob-yue-hans",
+        ),
+        param(
+            "kob_yue_hant",
+            "kob_yue_hant_review",
+            get_kob_yue_hant_block_review_test_cases,
+            BlockReviewPromptZhoHant,
+            id="kob-yue-hant",
+        ),
+        param(
+            "kob_yue_hant_timewarp_clean_flatten_simplify",
+            "kob_yue_hant_timewarp_clean_flatten_simplify_review",
+            get_kob_yue_hant_simplify_block_review_test_cases,
+            BlockReviewPromptZhoHans,
+            id="kob-yue-hant-simplify",
         ),
         param(
             "mlamd_zho_hans_fuse_clean_validate",

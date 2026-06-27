@@ -30,7 +30,7 @@ from test.helpers import assert_series_equal, parametrize
         ),
         param(
             "kob_zho_hant_ocr_fuse_clean_validate_review",
-            "kob_yue_hans",
+            "kob_yue_hans_review",
             "kob_yue_hans_timewarp",
             1421,
             1461,
@@ -38,7 +38,7 @@ from test.helpers import assert_series_equal, parametrize
         ),
         param(
             "kob_zho_hant_ocr_fuse_clean_validate_review",
-            "kob_yue_hant",
+            "kob_yue_hant_review",
             "kob_yue_hant_timewarp",
             1421,
             1461,

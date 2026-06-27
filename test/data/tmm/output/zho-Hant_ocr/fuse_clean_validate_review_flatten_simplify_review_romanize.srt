@@ -1761,7 +1761,7 @@ wǒmen kuàidiǎn qù zhǔnbèi yīxià, bāngbāng tāmen ma
 353
 00:17:07,625 --> 00:17:10,333
 啊⋯哎⋯老婆 是男的还是女的
-a… āi… lǎopó  shì nán de háishì nǚ de
+a… āi… lǎopó shì nán de háishì nǚ de
 
 354
 00:17:11,792 --> 00:17:13,292
@@ -2336,7 +2336,7 @@ zěnme huìchà nàme yuǎn
 468
 00:22:15,000 --> 00:22:16,833
 在那一边 看准一点 再来
-zài nà yībiān  kànzhǔn yìdiǎn  zài lái
+zài nà yībiān kànzhǔn yìdiǎn zài lái
 
 469
 00:22:28,083 --> 00:22:32,042
@@ -2771,7 +2771,7 @@ zhēnde hǎokǔ a
 555
 00:26:30,083 --> 00:26:32,833
 啊 袁霸天 快躲
-a  yuánbàtiān  kuài duǒ
+a yuánbàtiān kuài duǒ
 
 556
 00:26:36,542 --> 00:26:39,208
@@ -2786,7 +2786,7 @@ tǔdìgōng
 558
 00:26:44,708 --> 00:26:48,042
 九世恶人 全都到齐了
-jiǔshì èrén  quándōu dào qí le
+jiǔshì èrén quándōu dào qí le
 
 559
 00:26:52,542 --> 00:26:53,542
@@ -2821,7 +2821,7 @@ nǐ dǎ wǒ de tóu hǎo le  búyào dǎ wǒ de bèi a
 565
 00:27:15,292 --> 00:27:17,667
 好 我把庙也烧了 看你能往哪儿跑
-hǎo  wǒ bǎ miào yě shāo le  kàn nǐ néng wǎng nǎér pǎo
+hǎo wǒ bǎ miào yě shāo le kàn nǐ néng wǎng nǎér pǎo
 
 566
 00:27:17,875 --> 00:27:19,042
@@ -2831,7 +2831,7 @@ lián nǐ zhège chòu héshàng yě shāodiào
 567
 00:27:23,833 --> 00:27:26,500
 我要烧你 你竟敢吹灭我的火
-wǒyào shāo nǐ  nǐ jìnggǎn chuīmiè wǒ de huǒ
+wǒyào shāo nǐ nǐ jìnggǎn chuīmiè wǒ de huǒ
 
 568
 00:27:47,333 --> 00:27:49,792
@@ -3336,7 +3336,7 @@ dà zhǒng, nǐ lǎobà lái zhǎo nǐ le
 668
 00:32:13,375 --> 00:32:16,208
 你妈才来找你呢 我老爸早死了
-nǐ mā cái lái zhǎo nǐ ne  wǒ lǎobà zǎosǐ le
+nǐ mā cái lái zhǎo nǐ ne wǒ lǎobà zǎosǐ le
 
 669
 00:32:16,583 --> 00:32:17,500
@@ -5146,7 +5146,7 @@ nǐ yǒu shénme fēnfù, jǐnguǎn shuō
 1030
 00:50:18,500 --> 00:50:19,792
 嫖妓 改天吧
-piáojì  gǎitiān ba
+piáojì gǎitiān ba
 
 1031
 00:50:22,083 --> 00:50:22,708
@@ -5156,7 +5156,7 @@ wǒ méikòng
 1032
 00:50:24,958 --> 00:50:26,625
 我推你是可以 你敢推我 你给我过来
-wǒ tuī nǐ shì kěyǐ  nǐ gǎn tuī wǒ  nǐ gěi wǒ guòlái
+wǒ tuī nǐ shì kěyǐ nǐ gǎn tuī wǒ nǐ gěi wǒ guòlái
 
 1033
 00:50:27,625 --> 00:50:28,333
@@ -5166,7 +5166,7 @@ búyào dǎ wǒ
 1034
 00:50:28,792 --> 00:50:30,292
 厕所上过了 你又不用洗澡
-cèsuǒ shàngguò le  nǐ yòu bùyòng xǐzǎo
+cèsuǒ shàngguò le nǐ yòu bùyòng xǐzǎo
 
 1035
 00:50:30,292 --> 00:50:31,250
@@ -5186,7 +5186,7 @@ xiǎoyù zhèngzài shàngmiàn děng tā de yìzhōngrén
 1038
 00:50:35,708 --> 00:50:36,917
 啊 是谁呀
-a  shì shuí ya
+a shì shuí ya
 
 1039
 00:50:37,750 --> 00:50:40,083
@@ -5196,7 +5196,7 @@ tā jiào zhūdàcháng
 1040
 00:50:40,083 --> 00:50:41,792
 啊 我
-a  wǒ
+a wǒ
 
 1041
 00:50:43,125 --> 00:50:45,292
@@ -5446,7 +5446,7 @@ dǎdào nǐ qù
 1090
 00:53:20,083 --> 00:53:21,625
 开我的玩笑 藤条
-kāi wǒ de wánxiào  téngtiáo
+kāi wǒ de wánxiào téngtiáo
 
 1091
 00:53:25,250 --> 00:53:26,000
@@ -5611,7 +5611,7 @@ zǒngzhī bùnéng shārén, xíngbùxíng
 1123
 00:56:16,500 --> 00:56:18,750
 他妈的 到底是人还是禽兽
-tāmāde  dàodǐ shì rén háishì qínshòu
+tāmāde dàodǐ shì rén háishì qínshòu
 
 1124
 00:56:26,292 --> 00:56:27,042
@@ -6036,7 +6036,7 @@ bǎ tā liǎn fǎnguòlái
 1208
 01:00:56,583 --> 01:01:01,625
 转过去⋯过去 再过去 看好
-zhuǎnguò qù… guòqù  zài guòqù  kànhǎo
+zhuǎnguò qù… guòqù zài guòqù kànhǎo
 
 1209
 01:01:09,542 --> 01:01:10,542
@@ -6191,17 +6191,17 @@ gànshénme
 1239
 01:02:37,833 --> 01:02:38,917
 哎呀 放手
-āiyā  fàngshǒu
+āiyā fàngshǒu
 
 1240
 01:02:39,208 --> 01:02:41,292
 师傅说 这个金身不能离开这间寺庙
-shīfù shuō  zhège jīn shēn bùnéng líkāi zhè jiān sìmiào
+shīfù shuō zhège jīn shēn bùnéng líkāi zhè jiān sìmiào
 
 1241
 01:02:41,375 --> 01:02:43,250
 哎呀 离开了又怎么样
-āiyā  líkāi le yòu zěnmeyàng
+āiyā líkāi le yòu zěnmeyàng
 
 1242
 01:02:43,250 --> 01:02:43,833
@@ -6216,7 +6216,7 @@ nà jiùshì méi shìqíng
 1244
 01:02:44,625 --> 01:02:46,250
 借来用用 最多付你利息
-jièlái yòng yòng  zuì duōfù nǐ lìxī
+jièlái yòng yòng zuì duōfù nǐ lìxī
 
 1245
 01:02:46,417 --> 01:02:46,917
@@ -6251,7 +6251,7 @@ nà jiù bǎ nǐ biàngè dàzì
 1251
 01:02:50,208 --> 01:02:51,542
 不行 啊 怎么变
-bùxíng  a  zěnme biàn
+bùxíng a zěnme biàn
 
 1252
 01:03:49,292 --> 01:03:51,542
@@ -6401,7 +6401,7 @@ wángbādàn  nǐ gè sǐ hēiguǐ  hǎo  huàn le
 1281
 01:05:14,333 --> 01:05:16,417
 大爷 我再怎么样也要带你回去
-dàyé  wǒ zài zěnmeyàng yě yào dài nǐ huíqù
+dàyé wǒ zài zěnmeyàng yě yào dài nǐ huíqù
 
 1282
 01:05:16,667 --> 01:05:17,500
@@ -6581,17 +6581,17 @@ zāo le, tǔdìgōng yě bújiàn le
 1317
 01:08:31,250 --> 01:08:33,208
 师傅 快走了 师傅 快走吧
-shīfù  kuài zǒu le  shīfù  kuài zǒu ba
+shīfù kuài zǒu le shīfù kuài zǒu ba
 
 1318
 01:08:38,750 --> 01:08:39,958
 师傅 你要到哪儿去
-shīfù  nǐ yào dào nǎér qù
+shīfù nǐ yào dào nǎér qù
 
 1319
 01:08:40,167 --> 01:08:41,708
 济癫 我早跟你说过
-jìdiān  wǒ zǎo gēn nǐ shuō guò
+jìdiān wǒ zǎo gēn nǐ shuō guò
 
 1320
 01:08:41,958 --> 01:08:44,042
@@ -6786,7 +6786,7 @@ dànshì wǒ yīshuāng yùbì qiānrén zhěn
 1358
 01:10:29,750 --> 01:10:32,292
 半点朱唇万客尝 你也⋯
-bàndiǎn zhūchún wànkè cháng  nǐ yě…
+bàndiǎn zhūchún wànkè cháng nǐ yě…
 
 1359
 01:10:32,292 --> 01:10:33,708
@@ -6861,7 +6861,7 @@ wǒ… yé…
 1373
 01:11:02,458 --> 01:11:03,833
 好棒啊 拜堂吧
-hǎo bàng a  bàitáng ba
+hǎo bàng a bàitáng ba
 
 1374
 01:11:04,167 --> 01:11:04,708
@@ -7391,12 +7391,12 @@ wǒmen bùnéng zǒu
 1479
 01:17:41,208 --> 01:17:43,375
 你疯了 现在不走就没有机会了
-nǐ fēng le  xiànzài bù zǒu jiù méiyǒu jīhuì le
+nǐ fēng le xiànzài bù zǒu jiù méiyǒu jīhuì le
 
 1480
 01:17:43,375 --> 01:17:45,625
 黑罗煞是罪魁祸首 我要摆平他
-hēiluóshā shì zuìkuíhuòshǒu  wǒyào bǎipíng tā
+hēiluóshā shì zuìkuíhuòshǒu wǒyào bǎipíng tā
 
 1481
 01:17:45,625 --> 01:17:46,333
@@ -7436,7 +7436,7 @@ jiāng wǒ shísān shì de xiūwèi quán fàngzài nǐ shēnshàng
 1488
 01:18:24,417 --> 01:18:25,625
 今晚全靠你 你知道吗
-jīnwǎn quánkào nǐ  nǐ zhīdào ma
+jīnwǎn quánkào nǐ nǐ zhīdào ma
 
 1489
 01:18:26,333 --> 01:18:27,000
@@ -7621,12 +7621,12 @@ jīn shēn háiyǒu liǎngkē jīnyá zài wǒ zuǐlǐ
 1525
 01:22:55,042 --> 01:22:56,542
 啊 好 偷东西
-a  hǎo  tōudōngxī
+a hǎo tōudōngxī
 
 1526
 01:22:56,542 --> 01:22:58,417
 嘘 我没牙 借用一下嘛
-xū  wǒ méiyá  jièyòng yīxià ma
+xū wǒ méiyá jièyòng yīxià ma
 
 1527
 01:23:00,083 --> 01:23:01,125
@@ -7636,7 +7636,7 @@ chēngbúzhù le
 1528
 01:23:01,125 --> 01:23:03,417
 师傅 帮我最后一个忙
-shīfù  bāng wǒ zuìhòu yígè máng
+shīfù bāng wǒ zuìhòu yígè máng
 
 1529
 01:23:03,417 --> 01:23:04,917

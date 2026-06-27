@@ -60,6 +60,9 @@ __all__ = [
     "get_kob_eng_block_review_test_cases",
     "get_kob_eng_ocr_fusion_test_cases",
     "get_kob_yue_deliniation_test_cases",
+    "get_kob_yue_hans_block_review_test_cases",
+    "get_kob_yue_hant_block_review_test_cases",
+    "get_kob_yue_hant_simplify_block_review_test_cases",
     "get_kob_yue_punctuation_test_cases",
     "get_kob_yue_vs_zho_block_review_test_cases",
     "get_kob_yue_vs_zho_gapped_translation_test_cases",
@@ -83,6 +86,7 @@ __all__ = [
     "kob_eng_timewarp_clean_review_flatten",
     "kob_yue_hans_audio",
     "kob_yue_hans_eng",
+    "kob_yue_hans_review",
     "kob_yue_hans_timewarp",
     "kob_yue_hans_timewarp_clean",
     "kob_yue_hans_timewarp_clean_flatten",
@@ -93,9 +97,13 @@ __all__ = [
     "kob_yue_hans_transcribe_review_translate",
     "kob_yue_hans_transcribe_review_translate_block_review",
     "kob_yue_hans_transcribe_review_translate_block_review_expected_cer",
+    "kob_yue_hant_review",
     "kob_yue_hant_timewarp",
     "kob_yue_hant_timewarp_clean",
     "kob_yue_hant_timewarp_clean_flatten",
+    "kob_yue_hant_timewarp_clean_flatten_simplify",
+    "kob_yue_hant_timewarp_clean_flatten_simplify_review",
+    "kob_yue_hant_timewarp_clean_flatten_simplify_review_romanize",
     "kob_zho_hans_eng",
     "kob_zho_hant_ocr_fuse",
     "kob_zho_hant_ocr_fuse_clean",
@@ -205,6 +213,63 @@ def get_kob_yue_deliniation_test_cases(
     )
     return load_test_cases_from_json(
         path, Dual2To2Manager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_yue_hans_block_review_test_cases(
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB 简体粤文 block review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "yue-Hans/lang/yue/block_review.json"
+    return load_test_cases_from_json(
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_yue_hant_block_review_test_cases(
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB 繁體粵文 block review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "yue-Hant/lang/yue/block_review.json"
+    return load_test_cases_from_json(
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_yue_hant_simplify_block_review_test_cases(
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB 繁體粵文 simplification block review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "yue-Hant/lang/yue/simplify_block_review.json"
+    return load_test_cases_from_json(
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -614,27 +679,35 @@ def kob_yue_hans_eng() -> Series:
 
 
 @fixture
+def kob_yue_hans_review() -> Series:
+    """KOB 简体粤文 reviewed source subtitles."""
+    return Series.load(output_dir / "yue-Hans/review.srt")
+
+
+@fixture
 def kob_yue_hans_timewarp() -> Series:
     """KOB 简体粤文 timewarp subtitles."""
-    return Series.load(output_dir / "yue-Hans/timewarp.srt")
+    return Series.load(output_dir / "yue-Hans/review_timewarp.srt")
 
 
 @fixture
 def kob_yue_hans_timewarp_clean() -> Series:
     """KOB 简体粤文 timewarp and cleaned subtitles."""
-    return Series.load(output_dir / "yue-Hans/timewarp_clean.srt")
+    return Series.load(output_dir / "yue-Hans/review_timewarp_clean.srt")
 
 
 @fixture
 def kob_yue_hans_timewarp_clean_flatten() -> Series:
     """KOB 简体粤文 timewarp, cleaned, and flattened subtitles."""
-    return Series.load(output_dir / "yue-Hans/timewarp_clean_flatten.srt")
+    return Series.load(output_dir / "yue-Hans/review_timewarp_clean_flatten.srt")
 
 
 @fixture
 def kob_yue_hans_timewarp_clean_flatten_romanize() -> Series:
     """KOB 简体粤文 timewarp/cleaned/flattened romanized subtitles."""
-    return Series.load(output_dir / "yue-Hans/timewarp_clean_flatten_romanize.srt")
+    return Series.load(
+        output_dir / "yue-Hans/review_timewarp_clean_flatten_romanize.srt"
+    )
 
 
 @fixture
@@ -696,21 +769,52 @@ def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
 
 
 @fixture
+def kob_yue_hant_review() -> Series:
+    """KOB 繁體粵文 reviewed source subtitles."""
+    return Series.load(output_dir / "yue-Hant/review.srt")
+
+
+@fixture
 def kob_yue_hant_timewarp() -> Series:
     """KOB 繁體粵文 timewarp subtitles."""
-    return Series.load(output_dir / "yue-Hant/timewarp.srt")
+    return Series.load(output_dir / "yue-Hant/review_timewarp.srt")
 
 
 @fixture
 def kob_yue_hant_timewarp_clean() -> Series:
     """KOB 繁體粵文 timewarp and cleaned subtitles."""
-    return Series.load(output_dir / "yue-Hant/timewarp_clean.srt")
+    return Series.load(output_dir / "yue-Hant/review_timewarp_clean.srt")
 
 
 @fixture
 def kob_yue_hant_timewarp_clean_flatten() -> Series:
     """KOB 繁體粵文 timewarp, cleaned, and flattened subtitles."""
-    return Series.load(output_dir / "yue-Hant/timewarp_clean_flatten.srt")
+    return Series.load(output_dir / "yue-Hant/review_timewarp_clean_flatten.srt")
+
+
+@fixture
+def kob_yue_hant_timewarp_clean_flatten_simplify() -> Series:
+    """KOB 繁體粵文 timewarp/cleaned/flattened simplified subtitles."""
+    return Series.load(
+        output_dir / "yue-Hant/review_timewarp_clean_flatten_simplify.srt"
+    )
+
+
+@fixture
+def kob_yue_hant_timewarp_clean_flatten_simplify_review() -> Series:
+    """KOB 繁體粵文 timewarp/cleaned/flattened/simplified/reviewed subtitles."""
+    return Series.load(
+        output_dir / "yue-Hant/review_timewarp_clean_flatten_simplify_review.srt"
+    )
+
+
+@fixture
+def kob_yue_hant_timewarp_clean_flatten_simplify_review_romanize() -> Series:
+    """KOB 繁體粵文 timewarp/cleaned/flattened/simplified/reviewed romanized subtitles."""
+    return Series.load(
+        output_dir
+        / "yue-Hant/review_timewarp_clean_flatten_simplify_review_romanize.srt"
+    )
 
 
 @fixture

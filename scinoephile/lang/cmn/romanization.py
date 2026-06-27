@@ -46,6 +46,7 @@ RE_CMN_PINYIN = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]?$")
 RE_CMN_PINYIN_ACCENTED = re.compile(rf"^{RE_CMN_PINYIN_BASE}$")
 RE_CMN_PINYIN_NUMBERED = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]$")
 RE_CMN_PROHIBITED_TOKEN = re.compile(r"^(gw|kw|ng)|h$", re.IGNORECASE)
+RE_CMN_WHITESPACE = re.compile(r"(\s+)")
 
 
 @cache
@@ -186,14 +187,29 @@ def get_cmn_text_romanized(text: str) -> str:
     """
     lines: list[str] = []
     for line in text.split("\n"):
-        sections: list[str] = []
+        line_output = ""
         open_symmetric_quotes: set[str] = set()
-        for section in line.split():
-            tokens: list[str] = []
-            for word in jieba.cut(section):
-                tokens.extend(_get_cmn_word_romanization_tokens(word))
-            sections.append(join_romanized_tokens(tokens, open_symmetric_quotes))
-        lines.append("  ".join(section for section in sections if section))
+        pending_separator = ""
+        for section in RE_CMN_WHITESPACE.split(line.strip()):
+            if not section:
+                continue
+            if section.isspace():
+                if line_output:
+                    if "\u3000" in section:
+                        pending_separator = "  "
+                    else:
+                        pending_separator = " "
+                continue
+
+            romanized_section = _get_cmn_section_romanized(
+                section, open_symmetric_quotes
+            )
+            if romanized_section:
+                if line_output and pending_separator:
+                    line_output = f"{line_output}{pending_separator}"
+                line_output = f"{line_output}{romanized_section}"
+                pending_separator = ""
+        lines.append(line_output)
     return "\n".join(lines).strip()
 
 
@@ -212,6 +228,24 @@ def _get_cmn_romanization_char_kind(
     if RE_HANZI.fullmatch(char) is not None:
         return "hanzi"
     return "raw"
+
+
+def _get_cmn_section_romanized(
+    section: str,
+    open_symmetric_quotes: set[str],
+) -> str:
+    """Get Mandarin pinyin romanization for a whitespace-delimited section.
+
+    Arguments:
+        section: text section to romanize
+        open_symmetric_quotes: straight quotes open before this section
+    Returns:
+        pinyin romanization for this section
+    """
+    tokens: list[str] = []
+    for word in jieba.cut(section):
+        tokens.extend(_get_cmn_word_romanization_tokens(word))
+    return join_romanized_tokens(tokens, open_symmetric_quotes)
 
 
 def _get_cmn_word_romanization_tokens(word: str) -> list[str]:

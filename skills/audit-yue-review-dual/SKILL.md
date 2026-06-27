@@ -1,14 +1,14 @@
 ---
 name: audit-yue-review-dual
-description: Use when auditing Cantonese OCR datasets across yue-Hans direct review, yue-Hant direct review, and final yue-Hans versus simplified yue-Hant outputs in one combined table.
+description: Use when auditing Cantonese datasets across yue-Hans direct review, yue-Hant direct review, and final yue-Hans versus simplified yue-Hant outputs in one combined table, including OCR and non-OCR pipelines.
 ---
 
 # Audit Yue Review Dual
 
-Use this workflow when a Yue OCR dataset needs one table that shows:
+Use this workflow when a Yue dataset needs one table that shows:
 
-- what direct `yue-Hans_ocr` block review changed
-- what direct `yue-Hant_ocr` block review changed
+- what direct yue-Hans block review changed
+- what direct yue-Hant block review changed
 - what still differs between final yue-Hans and final simplified yue-Hant
 
 This is useful when review decisions should be checked across both scripts at
@@ -24,6 +24,20 @@ For OCR datasets, use:
 - `test/data/<dataset>/output/yue-Hant_ocr/fuse_clean_validate.srt`
 - `test/data/<dataset>/output/yue-Hant_ocr/fuse_clean_validate_review.srt`
 - `test/data/<dataset>/output/yue-Hant_ocr/fuse_clean_validate_review_flatten_simplify_review.srt`
+
+For KOB and other non-OCR Yue datasets, the direct review happens before
+timewarping:
+
+- yue-Hans source: `test/data/<dataset>/input/yue-Hans.srt`
+- yue-Hans direct review: `test/data/<dataset>/output/yue-Hans/review.srt`
+- final yue-Hans: `test/data/<dataset>/output/yue-Hans/timewarp_clean_flatten.srt`
+- yue-Hant source: `test/data/<dataset>/input/yue-Hant.srt`
+- yue-Hant direct review: `test/data/<dataset>/output/yue-Hant/review.srt`
+- final simplified yue-Hant: `test/data/<dataset>/output/yue-Hant/timewarp_clean_flatten_simplify_review.srt`
+
+For non-OCR datasets, source/review timings should match within each script, and
+final yue-Hans/final simplified yue-Hant timings should match after timewarp.
+Do not require pre-timewarp source timings to match post-timewarp final timings.
 
 ## Run
 
@@ -43,6 +57,12 @@ Run the bundled script from the repository root:
 uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset acoptc
 ```
 
+For non-OCR KOB, run:
+
+```powershell
+uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset kob --layout non-ocr
+```
+
 The script prints Markdown. Redirect it to a temporary file when the table is
 large:
 
@@ -52,7 +72,9 @@ uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --da
 
 The script fails before printing the table if any of the yue-Hans input,
 yue-Hans reviewed, final yue-Hans, yue-Hant input, yue-Hant reviewed, or final
-simplified yue-Hant SRT files disagree on subtitle numbers or timing lines.
+simplified yue-Hant SRT files disagree on subtitle numbers. It also fails if
+timings differ within comparable timing groups: all files for OCR datasets,
+source/review pairs plus final/final pairs for non-OCR datasets.
 
 ## Interpret
 
@@ -74,14 +96,35 @@ the same underlying issue, the other script should usually make the same
 correction during direct review instead of leaving it to simplification review or
 final comparison.
 
-The script output is a draft table. Read that Python script output first, then
-add your own concise assessment to every `Notes` cell before printing or
-presenting the table. Use notes such as `correct`, `incorrect Mandarinization`,
-`apply same Hans review`, `apply same Hant review`, `asymmetric direct-review
-correction`, `remove punctuation change`, or `needs source check`. Do not leave
-the `Notes` column blank in user-facing output.
+The script output is a draft table. Read that Python script output first.
+
+You must provide a non-empty note for every row before printing or presenting
+the table. Default script notes are intentionally minimal; they may need to be
+reviewed and replaced with stronger editorial callouts.
+
+Use one of these actionable notes as defaults:
+
+- `both tracks corrected consistently in review (…); check once against image evidence`
+- `both tracks corrected identically in review, but final diff remains (…); likely a conversion/simplification issue`
+- `both tracks changed in review with different outcomes; reconcile direct-review values before trusting final result`
+- `single-track direct review (Hans only) (…); confirm if a Hant mirror is required`
+- `single-track direct review (Hant only) (…); confirm if a Hans mirror is required`
+- `final mismatch only (…); verify expected variant/simplification behavior before accepting`
+- `Hant direct-review changed only (…); decide whether Hans should mirror this`
+- `Hans direct-review changed only (…); decide whether Hant should mirror this`
+- `correct`
+
+Do not leave the `Notes` column blank in user-facing output. If a row is
+accepted without any issue, mark it explicitly as `correct`.
 
 ## Output
+
+When you run this skill, the script output must be returned directly in your response.
+Do not summarize or replace it.
+Include the full Markdown report text (summary + table) exactly as printed.
+
+Before presenting, ensure every row in the table has a non-empty `Notes` cell.
+If any note is missing in the raw script output, replace it with `correct`.
 
 Start with the script summary, including subtitle counts, the successful timing
 alignment check, changed counts, and image-index links. Then output the table

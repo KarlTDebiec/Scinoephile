@@ -36,6 +36,7 @@ logger = getLogger(__name__)
 
 RE_YALE_PROHIBITED_CHARACTERS = re.compile(r"[üÜ:]")
 RE_YALE_TONE_MARK = re.compile(r"[\u0300\u0301\u0304]")
+RE_YUE_WHITESPACE = re.compile(r"(\s+)")
 
 
 @cache
@@ -147,40 +148,70 @@ def get_yue_text_romanized(text: str) -> str:
     """
     lines: list[str] = []
     for line in text.split("\n"):
-        sections: list[str] = []
+        line_output = ""
         open_symmetric_quotes: set[str] = set()
-        for section in line.split():
-            tokens: list[str] = []
-            index = 0
-            while index < len(section):
-                char = section[index]
-                if is_romanized_punctuation(char):
-                    tokens.append(normalize_romanized_punctuation(char))
-                    index += 1
-                elif RE_WESTERN.match(char):
-                    end_index = index + 1
-                    while end_index < len(section) and RE_WESTERN.match(
-                        section[end_index]
-                    ):
-                        end_index += 1
-                    tokens.append(section[index:end_index])
-                    index = end_index
-                elif get_char_type(char) == "full":
-                    end_index = index + 1
-                    while (
-                        end_index < len(section)
-                        and get_char_type(section[end_index]) == "full"
-                    ):
-                        end_index += 1
-                    hanzi_run = section[index:end_index]
-                    hanzi_run_romanization = _romanize_yue_hanzi_run(hanzi_run)
-                    tokens.append(hanzi_run_romanization)
-                    index = end_index
-                else:
-                    index += 1
-            sections.append(join_romanized_tokens(tokens, open_symmetric_quotes))
-        lines.append("  ".join(section for section in sections if section))
+        pending_separator = ""
+        for section in RE_YUE_WHITESPACE.split(line.strip()):
+            if not section:
+                continue
+            if section.isspace():
+                if line_output:
+                    if "\u3000" in section:
+                        pending_separator = "  "
+                    else:
+                        pending_separator = " "
+                continue
+
+            romanized_section = _get_yue_section_romanized(
+                section, open_symmetric_quotes
+            )
+            if romanized_section:
+                if line_output and pending_separator:
+                    line_output = f"{line_output}{pending_separator}"
+                line_output = f"{line_output}{romanized_section}"
+                pending_separator = ""
+        lines.append(line_output)
     return "\n".join(lines).strip()
+
+
+def _get_yue_section_romanized(
+    section: str,
+    open_symmetric_quotes: set[str],
+) -> str:
+    """Get the Yale Cantonese romanization of a whitespace-delimited section.
+
+    Arguments:
+        section: text section to romanize
+        open_symmetric_quotes: straight quotes open before this section
+    Returns:
+        Yale Cantonese romanization for this section
+    """
+    tokens: list[str] = []
+    index = 0
+    while index < len(section):
+        char = section[index]
+        if is_romanized_punctuation(char):
+            tokens.append(normalize_romanized_punctuation(char))
+            index += 1
+        elif RE_WESTERN.match(char):
+            end_index = index + 1
+            while end_index < len(section) and RE_WESTERN.match(section[end_index]):
+                end_index += 1
+            tokens.append(section[index:end_index])
+            index = end_index
+        elif get_char_type(char) == "full":
+            end_index = index + 1
+            while (
+                end_index < len(section) and get_char_type(section[end_index]) == "full"
+            ):
+                end_index += 1
+            hanzi_run = section[index:end_index]
+            hanzi_run_romanization = _romanize_yue_hanzi_run(hanzi_run)
+            tokens.append(hanzi_run_romanization)
+            index = end_index
+        else:
+            index += 1
+    return join_romanized_tokens(tokens, open_symmetric_quotes)
 
 
 def _jyutping_to_yale(jyutping: str) -> str | None:

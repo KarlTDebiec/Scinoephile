@@ -20,9 +20,9 @@ from test.helpers import assert_series_equal, parametrize, test_data_root
     ("input_path", "args", "expected_path"),
     [
         (
-            "kob/output/yue-Hans/timewarp_clean_flatten.srt",
+            "kob/output/yue-Hans/review_timewarp_clean_flatten.srt",
             "--romanize",
-            "kob/output/yue-Hans/timewarp_clean_flatten_romanize.srt",
+            "kob/output/yue-Hans/review_timewarp_clean_flatten_romanize.srt",
         ),
     ],
 )
@@ -52,9 +52,9 @@ def test_yue_process_cli(input_path: str, args: str, expected_path: str):
     ("input_path", "args", "expected_path"),
     [
         (
-            "kob/output/yue-Hans/timewarp_clean_flatten.srt",
+            "kob/output/yue-Hans/review_timewarp_clean_flatten.srt",
             "--romanize",
-            "kob/output/yue-Hans/timewarp_clean_flatten_romanize.srt",
+            "kob/output/yue-Hans/review_timewarp_clean_flatten_romanize.srt",
         ),
     ],
 )
@@ -83,7 +83,9 @@ def test_yue_process_cli_pipe(input_path: str, args: str, expected_path: str):
 
 def test_yue_process_cli_offsets_timing():
     """Test written Cantonese processing CLI can offset subtitle timings."""
-    full_input_path = test_data_root / "kob/output/yue-Hans/timewarp_clean_flatten.srt"
+    full_input_path = (
+        test_data_root / "kob/output/yue-Hans/review_timewarp_clean_flatten.srt"
+    )
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
@@ -99,7 +101,9 @@ def test_yue_process_cli_offsets_timing():
 
 def test_yue_process_cli_rejects_bare_convert_flag():
     """Test written Cantonese processing CLI requires an explicit conversion config."""
-    full_input_path = test_data_root / "kob/output/yue-Hans/timewarp_clean_flatten.srt"
+    full_input_path = (
+        test_data_root / "kob/output/yue-Hans/review_timewarp_clean_flatten.srt"
+    )
 
     with raises(SystemExit, match="2"):
         run_cli_with_args(YueProcessCli, f"--infile {full_input_path} --convert")

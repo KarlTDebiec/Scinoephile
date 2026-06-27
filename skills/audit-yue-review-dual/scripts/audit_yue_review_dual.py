@@ -5,11 +5,13 @@
 from __future__ import annotations
 
 import argparse
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
 __all__ = [
+    "AuditPaths",
     "ReviewChange",
     "SrtEvent",
     "audit_dataset",
@@ -18,6 +20,58 @@ __all__ = [
     "parse_args",
     "parse_srt",
 ]
+
+
+@dataclass(frozen=True)
+class AuditPaths:
+    """Paths and validation rules for one Yue dual-review audit.
+
+    Attributes:
+        layout: input/output layout name
+        hans_dir_path: yue-Hans output directory
+        hant_dir_path: yue-Hant output directory
+        hans_original_path: yue-Hans direct-review input path
+        hans_review_path: yue-Hans direct-review output path
+        hans_final_path: final yue-Hans comparison path
+        hant_original_path: yue-Hant direct-review input path
+        hant_review_path: yue-Hant direct-review output path
+        hant_final_path: final simplified yue-Hant comparison path
+        timing_groups: labels to validate for matching timings
+        context_lines: extra summary context lines
+    """
+
+    layout: str
+    """Input/output layout name."""
+
+    hans_dir_path: Path
+    """Yue-Hans output directory."""
+
+    hant_dir_path: Path
+    """Yue-Hant output directory."""
+
+    hans_original_path: Path
+    """Yue-Hans direct-review input path."""
+
+    hans_review_path: Path
+    """Yue-Hans direct-review output path."""
+
+    hans_final_path: Path
+    """Final yue-Hans comparison path."""
+
+    hant_original_path: Path
+    """Yue-Hant direct-review input path."""
+
+    hant_review_path: Path
+    """Yue-Hant direct-review output path."""
+
+    hant_final_path: Path
+    """Final simplified yue-Hant comparison path."""
+
+    timing_groups: tuple[tuple[str, ...], ...]
+    """Labels to validate for matching timings."""
+
+    context_lines: tuple[str, ...]
+    """Extra summary context lines."""
 
 
 @dataclass(frozen=True)
@@ -56,38 +110,40 @@ class SrtEvent:
     """Raw subtitle text."""
 
 
-def audit_dataset(dataset_name: str, data_root_path: Path) -> str:
-    """Audit one OCR dataset and return a Markdown report.
+def audit_dataset(
+    dataset_name: str,
+    data_root_path: Path,
+    layout: str = "auto",
+) -> str:
+    """Audit one Yue dataset and return a Markdown report.
 
     Arguments:
         dataset_name: dataset name under `test/data`
         data_root_path: root path containing dataset directories
+        layout: dataset layout, either auto, ocr, or non-ocr
     Returns:
         Markdown report
     """
-    output_dir_path = data_root_path / dataset_name / "output"
-    hans_dir_path = output_dir_path / "yue-Hans_ocr"
-    hant_dir_path = output_dir_path / "yue-Hant_ocr"
+    paths = _get_audit_paths(dataset_name, data_root_path, layout)
 
-    hans_original = parse_srt(hans_dir_path / "fuse_clean_validate.srt")
-    hans_review = parse_srt(hans_dir_path / "fuse_clean_validate_review.srt")
-    hans_final = parse_srt(hans_dir_path / "fuse_clean_validate_review_flatten.srt")
+    hans_original = parse_srt(paths.hans_original_path)
+    hans_review = parse_srt(paths.hans_review_path)
+    hans_final = parse_srt(paths.hans_final_path)
 
-    hant_original = parse_srt(hant_dir_path / "fuse_clean_validate.srt")
-    hant_review = parse_srt(hant_dir_path / "fuse_clean_validate_review.srt")
-    hant_final = parse_srt(
-        hant_dir_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
-    )
+    hant_original = parse_srt(paths.hant_original_path)
+    hant_review = parse_srt(paths.hant_review_path)
+    hant_final = parse_srt(paths.hant_final_path)
 
     _validate_counts_and_timing(
         {
-            "yue-Hans fuse_clean_validate": hans_original,
-            "yue-Hans fuse_clean_validate_review": hans_review,
+            "yue-Hans source": hans_original,
+            "yue-Hans direct review": hans_review,
             "yue-Hans final": hans_final,
-            "yue-Hant fuse_clean_validate": hant_original,
-            "yue-Hant fuse_clean_validate_review": hant_review,
+            "yue-Hant source": hant_original,
+            "yue-Hant direct review": hant_review,
             "yue-Hant final simplified review": hant_final,
-        }
+        },
+        paths.timing_groups,
     )
 
     hans_changes = _get_review_changes(hans_original, hans_review)
@@ -96,8 +152,10 @@ def audit_dataset(dataset_name: str, data_root_path: Path) -> str:
 
     return format_markdown(
         dataset_name=dataset_name,
-        hans_dir_path=hans_dir_path,
-        hant_dir_path=hant_dir_path,
+        layout=paths.layout,
+        hans_dir_path=paths.hans_dir_path,
+        hant_dir_path=paths.hant_dir_path,
+        context_lines=paths.context_lines,
         hans_original=hans_original,
         hans_review=hans_review,
         hans_final=hans_final,
@@ -113,8 +171,10 @@ def audit_dataset(dataset_name: str, data_root_path: Path) -> str:
 def format_markdown(
     *,
     dataset_name: str,
+    layout: str,
     hans_dir_path: Path,
     hant_dir_path: Path,
+    context_lines: Sequence[str],
     hans_original: Mapping[int, SrtEvent],
     hans_review: Mapping[int, SrtEvent],
     hans_final: Mapping[int, SrtEvent],
@@ -129,8 +189,10 @@ def format_markdown(
 
     Arguments:
         dataset_name: dataset name
-        hans_dir_path: yue-Hans OCR output directory
-        hant_dir_path: yue-Hant OCR output directory
+        layout: input/output layout name
+        hans_dir_path: yue-Hans output directory
+        hant_dir_path: yue-Hant output directory
+        context_lines: extra summary context lines
         hans_original: yue-Hans original validated subtitles
         hans_review: yue-Hans reviewed subtitles
         hans_final: final yue-Hans subtitles
@@ -158,10 +220,11 @@ def format_markdown(
         f"- yue-Hans direct review changes: {len(hans_changes)}",
         f"- yue-Hant direct review changes: {len(hant_changes)}",
         f"- final text differences: {len(final_differences)}",
-        "- subtitle counts and timings: aligned across all audited SRT files",
+        f"- layout: {layout}",
+        "- subtitle counts: aligned across all audited SRT files",
+        "- timings: aligned within comparable source/review and final groups",
         f"- table rows: {len(changed_numbers)}",
-        f"- yue-Hans image index: {hans_dir_path / 'image' / 'index.html'}",
-        f"- yue-Hant image index: {hant_dir_path / 'image' / 'index.html'}",
+        *context_lines,
         "",
         "## Audit Table",
         "",
@@ -199,7 +262,14 @@ def format_markdown(
                         )
                     ),
                     _escape_cell(final_cell),
-                    "",
+                    _escape_cell(
+                        _get_notes(
+                            number=number,
+                            hans_change=hans_change,
+                            hant_change=hant_change,
+                            final_pair=final_pair,
+                        )
+                    ),
                 ]
             )
             + " |"
@@ -228,6 +298,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         default=Path("test/data"),
         type=Path,
         help="Path to test data root. Default: test/data",
+    )
+    parser.add_argument(
+        "--layout",
+        choices=("auto", "ocr", "non-ocr"),
+        default="auto",
+        help="Dataset layout. Default: auto",
     )
     return parser.parse_args(argv)
 
@@ -262,7 +338,7 @@ def main(argv: Sequence[str] | None = None):
     """
     args = parse_args(argv)
     try:
-        print(audit_dataset(args.dataset, args.data_root), end="")
+        print(audit_dataset(args.dataset, args.data_root, args.layout), end="")
     except ValueError as error:
         raise SystemExit(str(error)) from error
 
@@ -314,6 +390,135 @@ def _format_pair(one: str, two: str) -> str:
     return f"{one}\n{two}"
 
 
+def _get_notes(  # noqa: PLR0911
+    *,
+    number: int,
+    hans_change: ReviewChange | None,
+    hant_change: ReviewChange | None,
+    final_pair: tuple[str, str] | None,
+) -> str:
+    """Get the default Notes value for one table row.
+
+    The script is intentionally conservative; it does not infer review correctness
+    and always returns a non-empty default note to keep the output tabular.
+
+    Arguments:
+        number: subtitle number
+        hans_change: optional Hans direct-review change
+        hant_change: optional Hant direct-review change
+        final_pair: optional final Hans-vs-simplified-Hant difference
+    Returns:
+        non-empty default note
+    """
+    _ = number
+    if final_pair is not None:
+        hans_final, hant_final = final_pair
+        final_change = _describe_diff(hans_final, hant_final)
+        if hans_change is None and hant_change is None:
+            return (
+                f"final mismatch only ({final_change}); "
+                "verify expected variant/simplification behavior before accepting"
+            )
+        if hans_change is None:
+            hans_review_change = _describe_diff(
+                hant_change.original, hant_change.revised
+            )
+            return (
+                "Hant direct-review changed only "
+                f"({hans_review_change}); decide whether Hans should mirror"
+                f" this {hans_review_change} in direct review"
+            )
+        if hant_change is None:
+            hant_review_change = _describe_diff(
+                hans_change.original, hans_change.revised
+            )
+            return (
+                "Hans direct-review changed only "
+                f"({hant_review_change}); decide whether Hant should mirror"
+                f" this {hant_review_change} in direct review"
+            )
+        if hans_change.revised == hant_change.revised:
+            return (
+                "both tracks corrected identically in review, but final diff remains "
+                f"({final_change}); likely a conversion/simplification issue"
+            )
+        return (
+            "both tracks changed in review differently "
+            "and disagree; reconcile direct-review values before trusting final result"
+        )
+    if hans_change is not None and hant_change is not None:
+        if hans_change.revised == hant_change.revised:
+            review_change = _describe_diff(hans_change.original, hans_change.revised)
+            return (
+                "both tracks corrected consistently in review"
+                f" ({review_change}); check once against image evidence"
+            )
+        hans_review_change = _describe_diff(hans_change.original, hans_change.revised)
+        hant_review_change = _describe_diff(hant_change.original, hant_change.revised)
+        return (
+            "direct-review inconsistency"
+            f" (Hans: {hans_review_change} / Hant: {hant_review_change});"
+            " choose one consistent correction"
+        )
+    if hans_change is not None:
+        review_change = _describe_diff(hans_change.original, hans_change.revised)
+        return (
+            "single-track direct review (Hans only)"
+            f" ({review_change}); confirm if a Hant mirror is required"
+        )
+    if hant_change is not None:
+        review_change = _describe_diff(hant_change.original, hant_change.revised)
+        return (
+            "single-track direct review (Hant only)"
+            f" ({review_change}); confirm if a Hans mirror is required"
+        )
+    return "correct"
+
+
+def _describe_diff(one: str, two: str) -> str:
+    """Describe a pair of text values at a high level for notes.
+
+    Arguments:
+        one: first text
+        two: second text
+    Returns:
+        short change description
+    """
+    if one == two:
+        return "no change"
+    if _collapse_whitespace(one) == _collapse_whitespace(two):
+        return "spacing-only change"
+    if _strip_punctuation(_collapse_whitespace(one)) == _strip_punctuation(
+        _collapse_whitespace(two)
+    ):
+        if _contains_whitespace(one) and _contains_whitespace(two):
+            return "spacing + punctuation"
+        return "punctuation-only change"
+    if _strip_whitespace(one) == _strip_whitespace(two):
+        return "line-wrap/pacing difference"
+    return "character/word change"
+
+
+def _contains_whitespace(value: str) -> bool:
+    """Return whether text contains whitespace characters."""
+    return any(char.isspace() for char in value)
+
+
+def _collapse_whitespace(value: str) -> str:
+    """Collapse all whitespace to a canonical single space."""
+    return re.sub(r"\s+", " ", value)
+
+
+def _strip_punctuation(value: str) -> str:
+    """Remove punctuation-like characters for a lightweight diff signature."""
+    return re.sub(r"[.,!?;:，。？！；：、、“”『』《》「」()（）【】]", "", value)
+
+
+def _strip_whitespace(value: str) -> str:
+    """Remove whitespace for a lightweight diff signature."""
+    return re.sub(r"\s+", "", value)
+
+
 def _format_subtitle_cell(number: int) -> str:
     """Format subtitle number.
 
@@ -323,6 +528,92 @@ def _format_subtitle_cell(number: int) -> str:
         formatted subtitle cell
     """
     return str(number)
+
+
+def _get_audit_paths(
+    dataset_name: str,
+    data_root_path: Path,
+    layout: str,
+) -> AuditPaths:
+    """Get input/output paths for one audit layout.
+
+    Arguments:
+        dataset_name: dataset name under `test/data`
+        data_root_path: root path containing dataset directories
+        layout: dataset layout, either auto, ocr, or non-ocr
+    Returns:
+        audit paths and validation groups
+    Raises:
+        ValueError: if layout cannot be resolved
+    """
+    dataset_dir_path = data_root_path / dataset_name
+    input_dir_path = dataset_dir_path / "input"
+    output_dir_path = dataset_dir_path / "output"
+    if layout == "auto":
+        if (output_dir_path / "yue-Hans_ocr").is_dir():
+            layout = "ocr"
+        elif (output_dir_path / "yue-Hans").is_dir():
+            layout = "non-ocr"
+        else:
+            raise ValueError(f"Unable to infer Yue layout for dataset {dataset_name}")
+
+    if layout == "ocr":
+        hans_dir_path = output_dir_path / "yue-Hans_ocr"
+        hant_dir_path = output_dir_path / "yue-Hant_ocr"
+        labels = (
+            "yue-Hans source",
+            "yue-Hans direct review",
+            "yue-Hans final",
+            "yue-Hant source",
+            "yue-Hant direct review",
+            "yue-Hant final simplified review",
+        )
+        return AuditPaths(
+            layout="ocr",
+            hans_dir_path=hans_dir_path,
+            hant_dir_path=hant_dir_path,
+            hans_original_path=hans_dir_path / "fuse_clean_validate.srt",
+            hans_review_path=hans_dir_path / "fuse_clean_validate_review.srt",
+            hans_final_path=hans_dir_path / "fuse_clean_validate_review_flatten.srt",
+            hant_original_path=hant_dir_path / "fuse_clean_validate.srt",
+            hant_review_path=hant_dir_path / "fuse_clean_validate_review.srt",
+            hant_final_path=(
+                hant_dir_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
+            ),
+            timing_groups=(labels,),
+            context_lines=(
+                f"- yue-Hans image index: {hans_dir_path / 'image' / 'index.html'}",
+                f"- yue-Hant image index: {hant_dir_path / 'image' / 'index.html'}",
+            ),
+        )
+
+    if layout == "non-ocr":
+        hans_dir_path = output_dir_path / "yue-Hans"
+        hant_dir_path = output_dir_path / "yue-Hant"
+        return AuditPaths(
+            layout="non-ocr",
+            hans_dir_path=hans_dir_path,
+            hant_dir_path=hant_dir_path,
+            hans_original_path=input_dir_path / "yue-Hans.srt",
+            hans_review_path=hans_dir_path / "review.srt",
+            hans_final_path=hans_dir_path / "timewarp_clean_flatten.srt",
+            hant_original_path=input_dir_path / "yue-Hant.srt",
+            hant_review_path=hant_dir_path / "review.srt",
+            hant_final_path=hant_dir_path
+            / "timewarp_clean_flatten_simplify_review.srt",
+            timing_groups=(
+                ("yue-Hans source", "yue-Hans direct review"),
+                ("yue-Hant source", "yue-Hant direct review"),
+                ("yue-Hans final", "yue-Hant final simplified review"),
+            ),
+            context_lines=(
+                "- image indexes: not applicable; source subtitles are not OCR",
+                f"- yue-Hans output directory: {hans_dir_path}",
+                f"- yue-Hant output directory: {hant_dir_path}",
+            ),
+        )
+
+    raise ValueError(f"Unsupported layout: {layout}")
 
 
 def _get_review_changes(
@@ -370,11 +661,15 @@ def _get_text_differences(
     return differences
 
 
-def _validate_counts_and_timing(series_by_label: Mapping[str, Mapping[int, SrtEvent]]):
+def _validate_counts_and_timing(
+    series_by_label: Mapping[str, Mapping[int, SrtEvent]],
+    timing_groups: Sequence[Sequence[str]],
+):
     """Validate that all audited SRT files share subtitle numbers and timings.
 
     Arguments:
         series_by_label: event mappings keyed by display label
+        timing_groups: label groups within which timings must match
     Raises:
         ValueError: if subtitle numbers or timings differ
     """
@@ -398,16 +693,23 @@ def _validate_counts_and_timing(series_by_label: Mapping[str, Mapping[int, SrtEv
                 f"{label} has extra subtitles not present in {reference_label}: "
                 f"{_format_mismatch_numbers(extra_numbers)}"
             )
-        timing_mismatches = [
-            number
-            for number in sorted(reference_numbers & numbers)
-            if reference[number].timing != events[number].timing
-        ]
-        if timing_mismatches:
-            errors.append(
-                f"{label} timing differs from {reference_label}: "
-                f"{_format_mismatch_numbers(timing_mismatches)}"
-            )
+    for group in timing_groups:
+        group_labels = list(group)
+        group_reference_label = group_labels[0]
+        group_reference = series_by_label[group_reference_label]
+        group_reference_numbers = set(group_reference)
+        for label in group_labels[1:]:
+            events = series_by_label[label]
+            timing_mismatches = [
+                number
+                for number in sorted(group_reference_numbers & set(events))
+                if group_reference[number].timing != events[number].timing
+            ]
+            if timing_mismatches:
+                errors.append(
+                    f"{label} timing differs from {group_reference_label}: "
+                    f"{_format_mismatch_numbers(timing_mismatches)}"
+                )
     if errors:
         raise ValueError(
             "Subtitle count/timing validation failed:\n"
