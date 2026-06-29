@@ -180,14 +180,12 @@ HALF_TO_FULL_PUNC = {
     },
     "“": "〝",
     "”": "〞",
-    "·": "・",
+    "…": "⋯",
 }
 """Mapping from half-width to full-width punctuation characters."""
 
 FULL_TO_HALF_PUNC = {
     **{v: k for k, v in HALF_TO_FULL_PUNC.items()},
-    FULL_PUNC["KATAKANA MIDDLE DOT"]: HALF_PUNC["HALFWIDTH KATAKANA MIDDLE DOT"],
-    FULL_PUNC["MIDLINE HORIZONTAL ELLIPSIS"]: HALF_PUNC["HORIZONTAL ELLIPSIS"],
 }
 """Mapping from full-width to half-width punctuation characters."""
 

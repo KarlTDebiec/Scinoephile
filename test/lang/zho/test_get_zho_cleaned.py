@@ -20,7 +20,7 @@ from test.helpers import assert_series_equal, parametrize
             "０１２３４５６７８９",
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
         ),
-        ("｢你好､世界｡｣周·星馳･劉德華", "「你好、世界。」周・星馳・劉德華"),
+        ("｢你好､世界｡｣周·星馳･劉德華", "「你好、世界。」周·星馳・劉德華"),
     ],
 )
 def test_get_zho_text_cleaned(text: str, expected: str):

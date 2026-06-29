@@ -38,7 +38,7 @@ def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
         ("･", "・"),
         ("｢", "「"),
         ("｣", "」"),
-        ("·", "・"),
+        ("…", "⋯"),
     ],
 )
 def test_half_to_full_punc_includes_cjk_aliases(
