@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from argparse import Action, ArgumentParser
+from argparse import ArgumentParser
 from pathlib import Path
 
 from pytest import raises
@@ -31,6 +31,7 @@ from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCl
 from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
 from test.helpers import parametrize
+from test.helpers.cli import get_cli_action_group_title, get_parser_action
 
 LLM_CLIS: tuple[type[CommandLineInterface], ...] = (
     EngProcessCli,
@@ -57,12 +58,13 @@ def test_llm_options_are_in_llm_argument_group(cli: type[CommandLineInterface]):
     Arguments:
         cli: CLI class to inspect
     """
-    assert _get_action_group_title(cli, "--llm-provider") == "llm arguments"
-    assert _get_action_group_title(cli, "--llm-model") == "llm arguments"
+    assert get_cli_action_group_title(cli, "--llm-provider") == "llm arguments"
+    assert get_cli_action_group_title(cli, "--llm-model") == "llm arguments"
     assert (
-        _get_action_group_title(cli, "--llm-additional-content-file") == "llm arguments"
+        get_cli_action_group_title(cli, "--llm-additional-content-file")
+        == "llm arguments"
     )
-    assert _get_action_group_title(cli, "--list-llm-providers") == "additional help"
+    assert get_cli_action_group_title(cli, "--list-llm-providers") == "additional help"
 
 
 def test_add_llm_provider_args_bundles_standard_llm_options(tmp_path):
@@ -113,9 +115,9 @@ def test_ocr_web_options_are_in_web_argument_group(cli: type[CommandLineInterfac
     Arguments:
         cli: CLI class to inspect
     """
-    assert _get_action_group_title(cli, "--interactive") == "web arguments"
-    assert _get_action_group_title(cli, "--host") == "web arguments"
-    assert _get_action_group_title(cli, "--port") == "web arguments"
+    assert get_cli_action_group_title(cli, "--interactive") == "web arguments"
+    assert get_cli_action_group_title(cli, "--host") == "web arguments"
+    assert get_cli_action_group_title(cli, "--port") == "web arguments"
 
 
 def test_add_web_server_args_bundles_standard_host_and_port():
@@ -169,43 +171,5 @@ def test_add_cache_dir_arg_accepts_custom_help_text():
         help_text="custom cache directory help (default: %(default)s)",
     )
 
-    action = _get_action(parser, "--cache-dir")
+    action = get_parser_action(parser, "--cache-dir")
     assert action.help == "custom cache directory help (default: %(default)s)"
-
-
-def _get_action(parser: ArgumentParser, option: str) -> Action:
-    """Get a parser action by option string.
-
-    Arguments:
-        parser: parser to inspect
-        option: option string to inspect
-    Returns:
-        matching argparse action
-    Raises:
-        AssertionError: if the option is not present
-    """
-    for action in parser._actions:  # noqa: SLF001
-        if option in action.option_strings:
-            return action
-    raise AssertionError(f"{option} not found in {parser.prog}")
-
-
-def _get_action_group_title(cli: type[CommandLineInterface], option: str) -> str:
-    """Get the group title for a parser option.
-
-    Arguments:
-        cli: CLI class to inspect
-        option: option string to inspect
-    Returns:
-        title of the argument group containing the option
-    Raises:
-        AssertionError: if the option is not assigned to a group
-    """
-    parser = cli.argparser()
-    action = _get_action(parser, option)
-    for group in parser._action_groups:  # noqa: SLF001
-        if action in group._group_actions:  # noqa: SLF001
-            if group.title is not None:
-                return group.title
-            break
-    raise AssertionError(f"{option} is not assigned to an argument group")
