@@ -1,13 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Audit Yue direct reviews and final simplified-Hant comparison in one table."""
+"""Audit Yue reviews and final simplified-Hant comparison in one table."""
 
 from __future__ import annotations
 
 import argparse
 import re
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from pathlib import Path
 
 __all__ = [
@@ -16,29 +17,56 @@ __all__ = [
     "SrtEvent",
     "audit_dataset",
     "format_markdown",
-    "main",
-    "parse_args",
     "parse_srt",
 ]
+
+_OK_CANTONESE_REPLACEMENTS = (
+    ("忤怍", "仵作"),
+    ("蒙吖", "懵吓"),
+    ("矇吖", "懵吓"),
+    ("们", "哋"),
+    ("們", "哋"),
+    ("架", "㗎"),
+    ("罗", "啰"),
+    ("祇", "只"),
+    ("祗", "只"),
+    ("搵", "揾"),
+    ("哋", "地"),
+    ("来", "嚟"),
+    ("來", "嚟"),
+    ("呀", "吖"),
+    ("洗", "使"),
+    ("左", "咗"),
+    ("舖", "鋪"),
+    ("吓", "下"),
+    ("鼓", "旧"),
+    ("鼓", "舊"),
+    ("喱", "匿"),
+    ("逗", "豆"),
+    ("污", "侮"),
+    ("币", "弊"),
+    ("幣", "弊"),
+    ("茅", "猾"),
+    ("重", "仲"),
+)
+_OK_CANTONESE_REPLACEMENTS_BY_SOURCE_LENGTH = sorted(
+    _OK_CANTONESE_REPLACEMENTS,
+    key=lambda replacement: len(replacement[0]),
+    reverse=True,
+)
+_SERIES_LABELS = {
+    "hans_original": "yue-Hans source",
+    "hans_review": "yue-Hans review",
+    "hans_final": "yue-Hans final",
+    "hant_original": "yue-Hant source",
+    "hant_review": "yue-Hant review",
+    "hant_final": "yue-Hant final simplified review",
+}
 
 
 @dataclass(frozen=True)
 class AuditPaths:
-    """Paths and validation rules for one Yue dual-review audit.
-
-    Attributes:
-        layout: input/output layout name
-        hans_dir_path: yue-Hans output directory
-        hant_dir_path: yue-Hant output directory
-        hans_original_path: yue-Hans direct-review input path
-        hans_review_path: yue-Hans direct-review output path
-        hans_final_path: final yue-Hans comparison path
-        hant_original_path: yue-Hant direct-review input path
-        hant_review_path: yue-Hant direct-review output path
-        hant_final_path: final simplified yue-Hant comparison path
-        timing_groups: labels to validate for matching timings
-        context_lines: extra summary context lines
-    """
+    """Paths and validation rules for one Yue dual-review audit."""
 
     layout: str
     """Input/output layout name."""
@@ -50,19 +78,19 @@ class AuditPaths:
     """Yue-Hant output directory."""
 
     hans_original_path: Path
-    """Yue-Hans direct-review input path."""
+    """Yue-Hans review input path."""
 
     hans_review_path: Path
-    """Yue-Hans direct-review output path."""
+    """Yue-Hans review output path."""
 
     hans_final_path: Path
     """Final yue-Hans comparison path."""
 
     hant_original_path: Path
-    """Yue-Hant direct-review input path."""
+    """Yue-Hant review input path."""
 
     hant_review_path: Path
-    """Yue-Hant direct-review output path."""
+    """Yue-Hant review output path."""
 
     hant_final_path: Path
     """Final simplified yue-Hant comparison path."""
@@ -76,12 +104,7 @@ class AuditPaths:
 
 @dataclass(frozen=True)
 class ReviewChange:
-    """One direct block-review change.
-
-    Attributes:
-        original: original validated subtitle text
-        revised: reviewed subtitle text
-    """
+    """One review edit."""
 
     original: str
     """Original validated subtitle text."""
@@ -92,13 +115,7 @@ class ReviewChange:
 
 @dataclass(frozen=True)
 class SrtEvent:
-    """One SRT event parsed without normalizing text.
-
-    Attributes:
-        number: subtitle number
-        timing: raw timing line
-        text: raw subtitle text
-    """
+    """One SRT event parsed without normalizing text."""
 
     number: int
     """Subtitle number."""
@@ -114,6 +131,10 @@ def audit_dataset(
     dataset_name: str,
     data_root_path: Path,
     layout: str = "auto",
+    *,
+    first_index: int | None = None,
+    last_index: int | None = None,
+    omit_ok: bool = False,
 ) -> str:
     """Audit one Yue dataset and return a Markdown report.
 
@@ -121,50 +142,57 @@ def audit_dataset(
         dataset_name: dataset name under `test/data`
         data_root_path: root path containing dataset directories
         layout: dataset layout, either auto, ocr, or non-ocr
+        first_index: first 1-indexed subtitle number to include, inclusive
+        last_index: last 1-indexed subtitle number to include, inclusive
+        omit_ok: whether to omit rows whose generated note is OK
     Returns:
         Markdown report
     """
+    _validate_index_range(first_index, last_index)
     paths = _get_audit_paths(dataset_name, data_root_path, layout)
-
-    hans_original = parse_srt(paths.hans_original_path)
-    hans_review = parse_srt(paths.hans_review_path)
-    hans_final = parse_srt(paths.hans_final_path)
-
-    hant_original = parse_srt(paths.hant_original_path)
-    hant_review = parse_srt(paths.hant_review_path)
-    hant_final = parse_srt(paths.hant_final_path)
-
+    series_paths = {
+        "hans_original": paths.hans_original_path,
+        "hans_review": paths.hans_review_path,
+        "hans_final": paths.hans_final_path,
+        "hant_original": paths.hant_original_path,
+        "hant_review": paths.hant_review_path,
+        "hant_final": paths.hant_final_path,
+    }
+    series = {
+        name: {
+            number: event
+            for number, event in sorted(parse_srt(series_path).items())
+            if (first_index is None or number >= first_index)
+            and (last_index is None or number <= last_index)
+        }
+        for name, series_path in series_paths.items()
+    }
     _validate_counts_and_timing(
-        {
-            "yue-Hans source": hans_original,
-            "yue-Hans direct review": hans_review,
-            "yue-Hans final": hans_final,
-            "yue-Hant source": hant_original,
-            "yue-Hant direct review": hant_review,
-            "yue-Hant final simplified review": hant_final,
-        },
+        {label: series[name] for name, label in _SERIES_LABELS.items()},
         paths.timing_groups,
     )
-
-    hans_changes = _get_review_changes(hans_original, hans_review)
-    hant_changes = _get_review_changes(hant_original, hant_review)
-    final_differences = _get_text_differences(hans_final, hant_final)
 
     return format_markdown(
         dataset_name=dataset_name,
         layout=paths.layout,
-        hans_dir_path=paths.hans_dir_path,
-        hant_dir_path=paths.hant_dir_path,
-        context_lines=paths.context_lines,
-        hans_original=hans_original,
-        hans_review=hans_review,
-        hans_final=hans_final,
-        hant_original=hant_original,
-        hant_review=hant_review,
-        hant_final=hant_final,
-        hans_changes=hans_changes,
-        hant_changes=hant_changes,
-        final_differences=final_differences,
+        context_lines=(
+            *_get_index_range_context_lines(first_index, last_index),
+            *paths.context_lines,
+        ),
+        series=series,
+        hans_changes=_get_review_changes(
+            series["hans_original"],
+            series["hans_review"],
+        ),
+        hant_changes=_get_review_changes(
+            series["hant_original"],
+            series["hant_review"],
+        ),
+        final_differences=_get_text_differences(
+            series["hans_final"],
+            series["hant_final"],
+        ),
+        omit_ok=omit_ok,
     )
 
 
@@ -172,79 +200,58 @@ def format_markdown(
     *,
     dataset_name: str,
     layout: str,
-    hans_dir_path: Path,
-    hant_dir_path: Path,
     context_lines: Sequence[str],
-    hans_original: Mapping[int, SrtEvent],
-    hans_review: Mapping[int, SrtEvent],
-    hans_final: Mapping[int, SrtEvent],
-    hant_original: Mapping[int, SrtEvent],
-    hant_review: Mapping[int, SrtEvent],
-    hant_final: Mapping[int, SrtEvent],
+    series: Mapping[str, Mapping[int, SrtEvent]],
     hans_changes: Mapping[int, ReviewChange],
     hant_changes: Mapping[int, ReviewChange],
     final_differences: Mapping[int, tuple[str, str]],
+    omit_ok: bool = False,
 ) -> str:
     """Format an audit report as Markdown.
 
     Arguments:
         dataset_name: dataset name
         layout: input/output layout name
-        hans_dir_path: yue-Hans output directory
-        hant_dir_path: yue-Hant output directory
         context_lines: extra summary context lines
-        hans_original: yue-Hans original validated subtitles
-        hans_review: yue-Hans reviewed subtitles
-        hans_final: final yue-Hans subtitles
-        hant_original: yue-Hant original validated subtitles
-        hant_review: yue-Hant reviewed subtitles
-        hant_final: final simplified yue-Hant subtitles
-        hans_changes: yue-Hans direct review changes by subtitle number
-        hant_changes: yue-Hant direct review changes by subtitle number
+        series: parsed SRT events keyed by internal series name
+        hans_changes: yue-Hans review changes by subtitle number
+        hant_changes: yue-Hant review changes by subtitle number
         final_differences: final text differences by subtitle number
+        omit_ok: whether to omit rows whose generated note is OK
     Returns:
         Markdown report
     """
+    hans_original = series["hans_original"]
+    hans_review = series["hans_review"]
+    hans_final = series["hans_final"]
+    hant_original = series["hant_original"]
+    hant_review = series["hant_review"]
+    hant_final = series["hant_final"]
     changed_numbers = sorted(
         set(hans_changes) | set(hant_changes) | set(final_differences)
     )
-    lines = [
-        f"# {dataset_name} Yue Review Dual",
-        "",
-        "## Summary",
-        "",
-        f"- yue-Hans direct review count: {len(hans_original)} -> {len(hans_review)}",
-        f"- yue-Hant direct review count: {len(hant_original)} -> {len(hant_review)}",
-        f"- final yue-Hans / simplified yue-Hant count: "
-        f"{len(hans_final)} / {len(hant_final)}",
-        f"- yue-Hans direct review changes: {len(hans_changes)}",
-        f"- yue-Hant direct review changes: {len(hant_changes)}",
-        f"- final text differences: {len(final_differences)}",
-        f"- layout: {layout}",
-        "- subtitle counts: aligned across all audited SRT files",
-        "- timings: aligned within comparable source/review and final groups",
-        f"- table rows: {len(changed_numbers)}",
-        *context_lines,
-        "",
-        "## Audit Table",
-        "",
-        "| Subtitle | yue-Hans | yue-Hant | yue-Hans vs Hant->Hans | Notes |",
-        "|---:|---|---|---|---|",
-    ]
+    row_lines: list[str] = []
     for number in changed_numbers:
         hans_change = hans_changes.get(number)
         hant_change = hant_changes.get(number)
-        include_unchanged_review_text = bool(hans_change or hant_change)
         final_pair = final_differences.get(number)
-        if final_pair is None:
-            final_cell = ""
-        else:
-            final_cell = _format_pair(*final_pair)
-        lines.append(
+        note = _get_notes(
+            number=number,
+            hans_change=hans_change,
+            hant_change=hant_change,
+            final_pair=final_pair,
+            hans_review=hans_review,
+            hant_review=hant_review,
+        )
+        if omit_ok and note == "OK":
+            continue
+        include_unchanged_review_text = bool(hans_change or hant_change)
+        final_cell = "" if final_pair is None else f"{final_pair[0]}\n{final_pair[1]}"
+        row_lines.append(
             "| "
             + " | ".join(
                 [
-                    _escape_cell(_format_subtitle_cell(number)),
+                    _escape_cell(str(number)),
                     _escape_cell(
                         _format_review_cell(
                             number=number,
@@ -262,18 +269,39 @@ def format_markdown(
                         )
                     ),
                     _escape_cell(final_cell),
-                    _escape_cell(
-                        _get_notes(
-                            number=number,
-                            hans_change=hans_change,
-                            hant_change=hant_change,
-                            final_pair=final_pair,
-                        )
-                    ),
+                    _escape_cell(note),
                 ]
             )
             + " |"
         )
+
+    summary_context_lines = list(context_lines)
+    if omit_ok:
+        summary_context_lines.insert(0, "- omitted rows whose generated note is OK")
+    lines = [
+        f"# {dataset_name} Yue Review Dual",
+        "",
+        "## Summary",
+        "",
+        f"- yue-Hans source/review count: {len(hans_original)} -> {len(hans_review)}",
+        f"- yue-Hant source/review count: {len(hant_original)} -> {len(hant_review)}",
+        f"- final yue-Hans / simplified yue-Hant count: "
+        f"{len(hans_final)} / {len(hant_final)}",
+        f"- yue-Hans review edits: {len(hans_changes)}",
+        f"- yue-Hant review edits: {len(hant_changes)}",
+        f"- final text differences: {len(final_differences)}",
+        f"- layout: {layout}",
+        "- subtitle counts: aligned across all audited SRT files",
+        "- timings: aligned within comparable source/review and final groups",
+        f"- table rows: {len(row_lines)}",
+        *summary_context_lines,
+        "",
+        "## Audit Table",
+        "",
+        "| Subtitle | yue-Hans | yue-Hant | yue-Hans vs Hant->Hans | Notes |",
+        "|---:|---|---|---|---|",
+        *row_lines,
+    ]
     return "\n".join(lines) + "\n"
 
 
@@ -305,6 +333,21 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         default="auto",
         help="Dataset layout. Default: auto",
     )
+    parser.add_argument(
+        "--first-index",
+        type=int,
+        help="First 1-indexed subtitle number to include, inclusive",
+    )
+    parser.add_argument(
+        "--last-index",
+        type=int,
+        help="Last 1-indexed subtitle number to include, inclusive",
+    )
+    parser.add_argument(
+        "--omit-ok",
+        action="store_true",
+        help="Omit table rows whose generated note is OK",
+    )
     return parser.parse_args(argv)
 
 
@@ -330,7 +373,7 @@ def parse_srt(srt_file_path: Path) -> dict[int, SrtEvent]:
     return events
 
 
-def main(argv: Sequence[str] | None = None):
+def main(argv: Sequence[str] | None = None) -> None:
     """Run the Yue review dual audit.
 
     Arguments:
@@ -338,7 +381,17 @@ def main(argv: Sequence[str] | None = None):
     """
     args = parse_args(argv)
     try:
-        print(audit_dataset(args.dataset, args.data_root, args.layout), end="")
+        print(
+            audit_dataset(
+                args.dataset,
+                args.data_root,
+                args.layout,
+                first_index=args.first_index,
+                last_index=args.last_index,
+                omit_ok=args.omit_ok,
+            ),
+            end="",
+        )
     except ValueError as error:
         raise SystemExit(str(error)) from error
 
@@ -361,7 +414,7 @@ def _format_review_cell(
     reviewed: Mapping[int, SrtEvent],
     include_unchanged: bool,
 ) -> str:
-    """Format one direct review table cell.
+    """Format one review table cell.
 
     Arguments:
         number: subtitle number
@@ -369,33 +422,23 @@ def _format_review_cell(
         reviewed: reviewed events for this script
         include_unchanged: whether to include unchanged counterpart text
     Returns:
-        formatted direct review text
+        formatted review text
     """
     if change is not None:
-        return _format_pair(change.original, change.revised)
+        return f"{change.original}\n{change.revised}"
     if include_unchanged:
         return reviewed[number].text
     return ""
 
 
-def _format_pair(one: str, two: str) -> str:
-    """Format two pieces of text as a stacked table cell.
-
-    Arguments:
-        one: first text
-        two: second text
-    Returns:
-        stacked text
-    """
-    return f"{one}\n{two}"
-
-
-def _get_notes(  # noqa: PLR0911
+def _get_notes(
     *,
     number: int,
     hans_change: ReviewChange | None,
     hant_change: ReviewChange | None,
     final_pair: tuple[str, str] | None,
+    hans_review: Mapping[int, SrtEvent],
+    hant_review: Mapping[int, SrtEvent],
 ) -> str:
     """Get the default Notes value for one table row.
 
@@ -404,104 +447,201 @@ def _get_notes(  # noqa: PLR0911
 
     Arguments:
         number: subtitle number
-        hans_change: optional Hans direct-review change
-        hant_change: optional Hant direct-review change
+        hans_change: optional Hans review change
+        hant_change: optional Hant review change
         final_pair: optional final Hans-vs-simplified-Hant difference
+        hans_review: reviewed Hans events
+        hant_review: reviewed Hant events
     Returns:
         non-empty default note
     """
-    _ = number
     if final_pair is not None:
-        hans_final, hant_final = final_pair
-        final_change = _describe_diff(hans_final, hant_final)
+        final_change = (
+            f"{_format_note_text(final_pair[0])} vs {_format_note_text(final_pair[1])}"
+        )
         if hans_change is None and hant_change is None:
-            return (
-                f"final mismatch only ({final_change}); "
-                "verify expected variant/simplification behavior before accepting"
+            note = f"No review edits, but the finals still differ: {final_change}"
+        elif hans_change is None:
+            assert hant_change is not None
+            note = (
+                "Only Hant changed "
+                f"({_format_change_summary(hant_change)}); "
+                f"Hans stayed {_format_note_text(hans_review[number].text)}; "
+                f"finals still differ: {final_change}"
             )
-        if hans_change is None:
-            hans_review_change = _describe_diff(
-                hant_change.original, hant_change.revised
+        elif hant_change is None:
+            note = (
+                "Only Hans changed "
+                f"({_format_change_summary(hans_change)}); "
+                f"Hant stayed {_format_note_text(hant_review[number].text)}; "
+                f"finals still differ: {final_change}"
             )
-            return (
-                "Hant direct-review changed only "
-                f"({hans_review_change}); decide whether Hans should mirror"
-                f" this {hans_review_change} in direct review"
+        else:
+            note = (
+                "Both sides changed, but the finals still differ: "
+                f"Hans {_format_change_summary(hans_change)}; "
+                f"Hant {_format_change_summary(hant_change)}; "
+                f"finals {final_change}"
             )
-        if hant_change is None:
-            hant_review_change = _describe_diff(
-                hans_change.original, hans_change.revised
-            )
-            return (
-                "Hans direct-review changed only "
-                f"({hant_review_change}); decide whether Hant should mirror"
-                f" this {hant_review_change} in direct review"
-            )
-        if hans_change.revised == hant_change.revised:
-            return (
-                "both tracks corrected identically in review, but final diff remains "
-                f"({final_change}); likely a conversion/simplification issue"
-            )
-        return (
-            "both tracks changed in review differently "
-            "and disagree; reconcile direct-review values before trusting final result"
+    else:
+        changes = tuple(
+            change for change in (hans_change, hant_change) if change is not None
         )
-    if hans_change is not None and hant_change is not None:
-        if hans_change.revised == hant_change.revised:
-            review_change = _describe_diff(hans_change.original, hans_change.revised)
-            return (
-                "both tracks corrected consistently in review"
-                f" ({review_change}); check once against image evidence"
+        if not changes or all(_is_ok_cantonese_edit(change) for change in changes):
+            note = "OK"
+        elif hans_change is not None and hant_change is not None:
+            note = (
+                "Both sides made the matching edit: "
+                f"Hans {_format_change_summary(hans_change)}; "
+                f"Hant {_format_change_summary(hant_change)}; finals match"
             )
-        hans_review_change = _describe_diff(hans_change.original, hans_change.revised)
-        hant_review_change = _describe_diff(hant_change.original, hant_change.revised)
-        return (
-            "direct-review inconsistency"
-            f" (Hans: {hans_review_change} / Hant: {hant_review_change});"
-            " choose one consistent correction"
-        )
-    if hans_change is not None:
-        review_change = _describe_diff(hans_change.original, hans_change.revised)
-        return (
-            "single-track direct review (Hans only)"
-            f" ({review_change}); confirm if a Hant mirror is required"
-        )
-    if hant_change is not None:
-        review_change = _describe_diff(hant_change.original, hant_change.revised)
-        return (
-            "single-track direct review (Hant only)"
-            f" ({review_change}); confirm if a Hans mirror is required"
-        )
-    return "correct"
+        elif hans_change is not None:
+            note = (
+                f"Only Hans changed ({_format_change_summary(hans_change)}); "
+                f"Hant stayed {_format_note_text(hant_review[number].text)}; "
+                "finals match"
+            )
+        else:
+            assert hant_change is not None
+            note = (
+                f"Only Hant changed ({_format_change_summary(hant_change)}); "
+                f"Hans stayed {_format_note_text(hans_review[number].text)}; "
+                "finals match"
+            )
+    return note
 
 
-def _describe_diff(one: str, two: str) -> str:
-    """Describe a pair of text values at a high level for notes.
+def _is_ok_cantonese_edit(change: ReviewChange) -> bool:
+    """Return whether a review change is an accepted Cantonese edit.
 
     Arguments:
-        one: first text
-        two: second text
+        change: review change to inspect
     Returns:
-        short change description
+        whether the change can be explained by known-good Cantonese replacements
     """
-    if one == two:
-        return "no change"
-    if _collapse_whitespace(one) == _collapse_whitespace(two):
-        return "spacing-only change"
-    if _strip_punctuation(_collapse_whitespace(one)) == _strip_punctuation(
-        _collapse_whitespace(two)
-    ):
-        if _contains_whitespace(one) and _contains_whitespace(two):
-            return "spacing + punctuation"
-        return "punctuation-only change"
-    if _strip_whitespace(one) == _strip_whitespace(two):
-        return "line-wrap/pacing difference"
-    return "character/word change"
+    return _has_only_ok_replacement_edits(change) or _is_ok_spacing_cleanup(
+        change.original,
+        change.revised,
+    )
 
 
-def _contains_whitespace(value: str) -> bool:
-    """Return whether text contains whitespace characters."""
-    return any(char.isspace() for char in value)
+def _has_only_ok_replacement_edits(change: ReviewChange) -> bool:
+    """Return whether all changed spans are accepted replacement edits.
+
+    Arguments:
+        change: review change to inspect
+    Returns:
+        whether every changed span is an accepted replacement
+    """
+    edits = _get_text_edits(change.original, change.revised)
+    return bool(edits) and all(
+        tag == "replace" and _is_ok_replacement_span(original, revised)
+        for tag, original, revised in edits
+    )
+
+
+def _is_ok_replacement_span(original: str, revised: str) -> bool:
+    """Return whether one changed span contains only accepted replacements.
+
+    Arguments:
+        original: original changed span
+        revised: revised changed span
+    Returns:
+        whether the changed span contains only accepted replacements
+    """
+    original_idx = 0
+    revised_idx = 0
+    while original_idx < len(original) or revised_idx < len(revised):
+        matched_replacement = False
+        if (
+            original_idx < len(original)
+            and revised_idx < len(revised)
+            and original[original_idx] == revised[revised_idx]
+        ):
+            original_idx += 1
+            revised_idx += 1
+            continue
+        for source, target in _OK_CANTONESE_REPLACEMENTS_BY_SOURCE_LENGTH:
+            if original.startswith(source, original_idx) and revised.startswith(
+                target,
+                revised_idx,
+            ):
+                original_idx += len(source)
+                revised_idx += len(target)
+                matched_replacement = True
+                break
+        if not matched_replacement:
+            return False
+    return True
+
+
+def _is_ok_spacing_cleanup(original: str, revised: str) -> bool:
+    """Return whether a change is a clear OCR whitespace cleanup.
+
+    Arguments:
+        original: original text
+        revised: revised text
+    Returns:
+        whether the change only repairs whitespace in otherwise matching text
+    """
+    if _strip_whitespace(original) != _strip_whitespace(revised):
+        return False
+    return any(char.isascii() and char.isalpha() for char in original + revised)
+
+
+def _get_text_edits(original: str, revised: str) -> tuple[tuple[str, str, str], ...]:
+    """Get non-equal edit spans between two strings.
+
+    Arguments:
+        original: original text
+        revised: revised text
+    Returns:
+        non-equal edit spans
+    """
+    matcher = SequenceMatcher(None, original, revised, autojunk=False)
+    opcodes = matcher.get_opcodes()
+    return tuple(
+        (tag, original[original_start:original_end], revised[revised_start:revised_end])
+        for tag, original_start, original_end, revised_start, revised_end in opcodes
+        if tag != "equal"
+    )
+
+
+def _format_change_summary(change: ReviewChange) -> str:
+    """Format one text edit for a human-readable table note.
+
+    Arguments:
+        change: review change to summarize
+    Returns:
+        human-readable edit summary
+    """
+    edits = _get_text_edits(change.original, change.revised)
+    if len(edits) != 1:
+        original = _format_note_text(change.original)
+        revised = _format_note_text(change.revised)
+        return f"{original} -> {revised}"
+
+    tag, original, revised = edits[0]
+    if tag == "insert":
+        return f"inserted {_format_note_text(revised)}"
+    if tag == "delete":
+        return f"removed {_format_note_text(original)}"
+    return f"{_format_note_text(original)} -> {_format_note_text(revised)}"
+
+
+def _format_note_text(value: str, max_length: int = 32) -> str:
+    """Format one text value for a human-readable table note.
+
+    Arguments:
+        value: text value to format
+        max_length: maximum text length before truncation
+    Returns:
+        formatted text value
+    """
+    normalized = _collapse_whitespace(value).strip().replace("`", "'")
+    if len(normalized) > max_length:
+        normalized = f"{normalized[: max_length - 3]}..."
+    return f"`{normalized}`"
 
 
 def _collapse_whitespace(value: str) -> str:
@@ -509,25 +649,9 @@ def _collapse_whitespace(value: str) -> str:
     return re.sub(r"\s+", " ", value)
 
 
-def _strip_punctuation(value: str) -> str:
-    """Remove punctuation-like characters for a lightweight diff signature."""
-    return re.sub(r"[.,!?;:，。？！；：、、“”『』《》「」()（）【】]", "", value)
-
-
 def _strip_whitespace(value: str) -> str:
-    """Remove whitespace for a lightweight diff signature."""
+    """Remove all whitespace from text."""
     return re.sub(r"\s+", "", value)
-
-
-def _format_subtitle_cell(number: int) -> str:
-    """Format subtitle number.
-
-    Arguments:
-        number: subtitle number
-    Returns:
-        formatted subtitle cell
-    """
-    return str(number)
 
 
 def _get_audit_paths(
@@ -562,10 +686,10 @@ def _get_audit_paths(
         hant_dir_path = output_dir_path / "yue-Hant_ocr"
         labels = (
             "yue-Hans source",
-            "yue-Hans direct review",
+            "yue-Hans review",
             "yue-Hans final",
             "yue-Hant source",
-            "yue-Hant direct review",
+            "yue-Hant review",
             "yue-Hant final simplified review",
         )
         return AuditPaths(
@@ -602,8 +726,8 @@ def _get_audit_paths(
             hant_final_path=hant_dir_path
             / "timewarp_clean_flatten_simplify_review.srt",
             timing_groups=(
-                ("yue-Hans source", "yue-Hans direct review"),
-                ("yue-Hant source", "yue-Hant direct review"),
+                ("yue-Hans source", "yue-Hans review"),
+                ("yue-Hant source", "yue-Hant review"),
                 ("yue-Hans final", "yue-Hant final simplified review"),
             ),
             context_lines=(
@@ -616,11 +740,32 @@ def _get_audit_paths(
     raise ValueError(f"Unsupported layout: {layout}")
 
 
+def _get_index_range_context_lines(
+    first_index: int | None,
+    last_index: int | None,
+) -> tuple[str, ...]:
+    """Get summary context lines for an optional 1-indexed subtitle range.
+
+    Arguments:
+        first_index: first 1-indexed subtitle number to include, inclusive
+        last_index: last 1-indexed subtitle number to include, inclusive
+    Returns:
+        summary context lines
+    """
+    if first_index is None and last_index is None:
+        return ()
+    if first_index is None:
+        return (f"- subtitle range: 1-indexed numbers through {last_index}",)
+    if last_index is None:
+        return (f"- subtitle range: 1-indexed numbers from {first_index}",)
+    return (f"- subtitle range: 1-indexed numbers {first_index} through {last_index}",)
+
+
 def _get_review_changes(
     original: Mapping[int, SrtEvent],
     reviewed: Mapping[int, SrtEvent],
 ) -> dict[int, ReviewChange]:
-    """Get direct review changes.
+    """Get review changes.
 
     Arguments:
         original: original events
@@ -628,17 +773,14 @@ def _get_review_changes(
     Returns:
         review changes keyed by subtitle number
     """
-    changes: dict[int, ReviewChange] = {}
-    for number in sorted(set(original) & set(reviewed)):
-        original_text = original[number].text
-        reviewed_text = reviewed[number].text
-        if original_text == reviewed_text:
-            continue
-        changes[number] = ReviewChange(
+    return _get_text_changes(
+        original,
+        reviewed,
+        lambda original_text, revised_text: ReviewChange(
             original=original_text,
-            revised=reviewed_text,
-        )
-    return changes
+            revised=revised_text,
+        ),
+    )
 
 
 def _get_text_differences(
@@ -652,19 +794,36 @@ def _get_text_differences(
     Returns:
         text differences keyed by subtitle number
     """
-    differences: dict[int, tuple[str, str]] = {}
+    return _get_text_changes(one, two, lambda one_text, two_text: (one_text, two_text))
+
+
+def _get_text_changes[T](
+    one: Mapping[int, SrtEvent],
+    two: Mapping[int, SrtEvent],
+    factory: Callable[[str, str], T],
+) -> dict[int, T]:
+    """Get changed text values between two event mappings.
+
+    Arguments:
+        one: first event mapping
+        two: second event mapping
+        factory: function that builds one change value
+    Returns:
+        changed text values keyed by subtitle number
+    """
+    changes: dict[int, T] = {}
     for number in sorted(set(one) & set(two)):
         one_text = one[number].text
         two_text = two[number].text
         if one_text != two_text:
-            differences[number] = (one_text, two_text)
-    return differences
+            changes[number] = factory(one_text, two_text)
+    return changes
 
 
 def _validate_counts_and_timing(
     series_by_label: Mapping[str, Mapping[int, SrtEvent]],
     timing_groups: Sequence[Sequence[str]],
-):
+) -> None:
     """Validate that all audited SRT files share subtitle numbers and timings.
 
     Arguments:
@@ -715,6 +874,23 @@ def _validate_counts_and_timing(
             "Subtitle count/timing validation failed:\n"
             + "\n".join(f"- {error}" for error in errors)
         )
+
+
+def _validate_index_range(first_index: int | None, last_index: int | None) -> None:
+    """Validate inclusive 1-indexed subtitle range bounds.
+
+    Arguments:
+        first_index: first 1-indexed subtitle number to include, inclusive
+        last_index: last 1-indexed subtitle number to include, inclusive
+    Raises:
+        ValueError: if either bound is invalid
+    """
+    if first_index is not None and first_index < 1:
+        raise ValueError("--first-index must be a positive 1-indexed subtitle number")
+    if last_index is not None and last_index < 1:
+        raise ValueError("--last-index must be a positive 1-indexed subtitle number")
+    if first_index is not None and last_index is not None and first_index > last_index:
+        raise ValueError("--first-index must be less than or equal to --last-index")
 
 
 def _format_mismatch_numbers(numbers: Sequence[int]) -> str:
