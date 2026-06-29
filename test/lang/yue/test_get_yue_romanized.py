@@ -7,6 +7,7 @@ from __future__ import annotations
 from pytest import FixtureRequest, param
 
 from scinoephile.lang.yue.romanization import (
+    get_yue_char_romanized,
     get_yue_romanized,
     get_yue_text_romanized,
 )
@@ -81,8 +82,10 @@ def test_get_yue_romanized(
         ("「你好」世界？", "「néih hóu」 saigaai?"),
         ("＂你好＂世界", '"néih hóu" saigaai'),
         ("＇你好＇世界", "'néih hóu' saigaai"),
+        ("佢话＇你好＇", "kéuih wah 'néih hóu'"),
         ("你好：世界；再见。", "néih hóu: saigaai; joigin."),
         ("don't你好", "don't néih hóu"),
+        ("rock'n'roll你好", "rock'n'roll néih hóu"),
         ('"t i"你好', '"t i" néih hóu'),
         ("你好　世界", "néih hóu  saigaai"),
         (
@@ -105,3 +108,21 @@ def test_get_yue_text_romanized(text: str, expected: str):
         expected: Expected romanization
     """
     assert get_yue_text_romanized(text) == expected
+
+
+@parametrize(
+    ("text", "expected"),
+    [
+        ("你", "néih"),
+        ("，", ""),
+        ("？", ""),
+    ],
+)
+def test_get_yue_char_romanized(text: str, expected: str):
+    """Test get_yue_char_romanized.
+
+    Arguments:
+        text: Text to romanize
+        expected: Expected romanization
+    """
+    assert get_yue_char_romanized(text) == expected

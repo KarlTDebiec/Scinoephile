@@ -17,6 +17,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import RE_WESTERN, get_char_type
 from scinoephile.lang.romanization import (
+    RomanizedTokenKind,
     is_romanized_punctuation,
     join_romanized_tokens,
     normalize_romanized_punctuation,
@@ -48,6 +49,8 @@ def get_yue_char_romanized(text: str) -> str:
     Returns:
         Yale Cantonese romanization, or empty string for non-Hanzi text
     """
+    if is_romanized_punctuation(text):
+        return ""
     try:
         romanized = get_yue_text_romanized(text)
     except ScinoephileError:
@@ -187,17 +190,20 @@ def _get_yue_section_romanized(
         Yale Cantonese romanization for this section
     """
     tokens: list[str] = []
+    token_kinds: list[RomanizedTokenKind] = []
     index = 0
     while index < len(section):
         char = section[index]
         if is_romanized_punctuation(char):
             tokens.append(normalize_romanized_punctuation(char))
+            token_kinds.append("punctuation")
             index += 1
         elif RE_WESTERN.match(char):
             end_index = index + 1
             while end_index < len(section) and RE_WESTERN.match(section[end_index]):
                 end_index += 1
             tokens.append(section[index:end_index])
+            token_kinds.append("raw")
             index = end_index
         elif get_char_type(char) == "full":
             end_index = index + 1
@@ -208,10 +214,11 @@ def _get_yue_section_romanized(
             hanzi_run = section[index:end_index]
             hanzi_run_romanization = _romanize_yue_hanzi_run(hanzi_run)
             tokens.append(hanzi_run_romanization)
+            token_kinds.append("romanized")
             index = end_index
         else:
             index += 1
-    return join_romanized_tokens(tokens, open_symmetric_quotes)
+    return join_romanized_tokens(tokens, open_symmetric_quotes, token_kinds)
 
 
 def _jyutping_to_yale(jyutping: str) -> str | None:

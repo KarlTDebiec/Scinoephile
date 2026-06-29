@@ -11,10 +11,14 @@ from typing import Literal
 from scinoephile.core.text import FULL_PUNC_CHARS, FULL_TO_HALF_PUNC, HALF_PUNC_CHARS
 
 __all__ = [
+    "RomanizedTokenKind",
     "is_romanized_punctuation",
     "join_romanized_tokens",
     "normalize_romanized_punctuation",
 ]
+
+type RomanizedTokenKind = Literal["punctuation", "raw", "romanized"]
+"""Kind of token being joined into romanized text."""
 
 _ROMANIZED_CLOSING_PUNCTUATION = set(")]}>.,!?;:%”’」』》〉】＞…")
 _ROMANIZED_OPENING_PUNCTUATION = set("([{<“‘「『《〈【＜")
@@ -43,19 +47,34 @@ def is_romanized_punctuation(text: str) -> bool:
 def join_romanized_tokens(
     tokens: Iterable[str],
     open_symmetric_quotes: set[str] | None = None,
+    token_kinds: Iterable[RomanizedTokenKind] | None = None,
 ) -> str:
     """Join romanized text and punctuation tokens with readable spacing.
 
     Arguments:
         tokens: romanized text and punctuation tokens
         open_symmetric_quotes: straight quotes open before these tokens
+        token_kinds: source kinds for the tokens, used to distinguish contractions
+          from single-quoted romanized phrases
     Returns:
         formatted romanized text
     """
-    tokens = [token for token in tokens if token]
+    unfiltered_tokens = list(tokens)
     if open_symmetric_quotes is None:
         open_symmetric_quotes = set()
-    quote_roles = _get_symmetric_quote_roles(tokens, open_symmetric_quotes)
+    if token_kinds is None:
+        tokens = [token for token in unfiltered_tokens if token]
+        token_kind_list = None
+    else:
+        token_kind_list = []
+        tokens = []
+        for token, token_kind in zip(unfiltered_tokens, token_kinds, strict=True):
+            if token:
+                tokens.append(token)
+                token_kind_list.append(token_kind)
+    quote_roles = _get_symmetric_quote_roles(
+        tokens, open_symmetric_quotes, token_kind_list
+    )
     output = ""
     previous_quote_role: Literal["closing", "infix", "opening"] | None = None
     for token, quote_role in zip(tokens, quote_roles, strict=True):
@@ -83,12 +102,14 @@ def normalize_romanized_punctuation(text: str) -> str:
 def _get_symmetric_quote_roles(
     tokens: list[str],
     open_quotes: set[str],
+    token_kinds: list[RomanizedTokenKind] | None,
 ) -> list[Literal["closing", "infix", "opening"] | None]:
     """Get spacing roles for straight quote tokens.
 
     Arguments:
         tokens: romanized text and punctuation tokens
         open_quotes: straight quotes open before these tokens
+        token_kinds: source kinds for the tokens, when available
     Returns:
         spacing roles for straight quote tokens
     """
@@ -109,10 +130,8 @@ def _get_symmetric_quote_roles(
         if token in open_quotes:
             roles.append("closing")
             open_quotes.remove(token)
-        elif (
-            token == "'"
-            and _is_romanized_text_token(previous_token)
-            and _is_romanized_text_token(next_token)
+        elif token == "'" and _is_infix_quote_context(
+            index, previous_token, next_token, token_kinds
         ):
             roles.append("infix")
         elif _is_romanized_text_token(previous_token) and not next_token:
@@ -135,6 +154,34 @@ def _is_romanized_punctuation_char(char: str) -> bool:
         char in HALF_PUNC_CHARS
         or char in FULL_PUNC_CHARS
         or unicodedata.category(char).startswith("P")
+    )
+
+
+def _is_infix_quote_context(
+    index: int,
+    previous_token: str,
+    next_token: str,
+    token_kinds: list[RomanizedTokenKind] | None,
+) -> bool:
+    """Check whether a single quote joins raw text tokens.
+
+    Arguments:
+        index: token index of the quote
+        previous_token: preceding token
+        next_token: following token
+        token_kinds: source kinds for the tokens, when available
+    Returns:
+        whether the quote should be treated as infix punctuation
+    """
+    if token_kinds is not None:
+        return (
+            index > 0
+            and index + 1 < len(token_kinds)
+            and token_kinds[index - 1] == "raw"
+            and token_kinds[index + 1] == "raw"
+        )
+    return _is_romanized_text_token(previous_token) and _is_romanized_text_token(
+        next_token
     )
 
 
