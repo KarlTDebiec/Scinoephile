@@ -103,6 +103,16 @@ def test_get_cmn_romanized(
     ("text", "expected"),
     [
         ("你好世界", "nǐhǎo shìjiè"),
+        ("你好,世界!", "nǐhǎo, shìjiè!"),
+        ("「你好」世界？", "「nǐhǎo」 shìjiè?"),
+        ("＂你好＂世界", '"nǐhǎo" shìjiè'),
+        ("＇你好＇世界", "'nǐhǎo' shìjiè"),
+        ("你好：世界；再见。", "nǐhǎo: shìjiè; zàijiàn."),
+        ("don't你好", "don't nǐhǎo"),
+        ('"t i"你好', '"t i" nǐhǎo'),
+        ("你好 world 吗", "nǐhǎo world ma"),
+        ("你好 where ？", "nǐhǎo where ?"),
+        ("你好　世界", "nǐhǎo  shìjiè"),
     ],
 )
 def test_get_mandarin_text_romanization(text: str, expected: str):
