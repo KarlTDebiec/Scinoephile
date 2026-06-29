@@ -18,6 +18,7 @@ from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
+from scinoephile.common import package_root
 from scinoephile.common.subprocess import run_command
 from test.helpers import parametrize
 
@@ -30,7 +31,6 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
     "transformers",
     "whisper_timestamped",
 )
-_REPO_ROOT_PATH = Path(__file__).parents[3]
 
 
 @parametrize(
@@ -131,11 +131,11 @@ def test_transcription_imports_without_optional_runtime_dependencies():
     )
     env = os.environ.copy()
     env["PYTHONPATH"] = os.pathsep.join(
-        [str(_REPO_ROOT_PATH), env.get("PYTHONPATH", "")]
+        [str(package_root.parent), env.get("PYTHONPATH", "")]
     )
     exitcode, _, _ = run_command(
         [sys.executable, "-c", script],
-        cwd_path=_REPO_ROOT_PATH,
+        cwd_path=package_root.parent,
         env=env,
     )
 
