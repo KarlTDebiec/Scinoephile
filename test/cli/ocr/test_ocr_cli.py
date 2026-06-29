@@ -9,7 +9,6 @@ from io import StringIO
 from os import getenv
 from pathlib import Path
 
-import pytest
 from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.ocr import (
@@ -27,6 +26,7 @@ from test.helpers import (
     assert_series_equal,
     parametrize,
     skip_if_ci,
+    skipif,
     test_data_root,
 )
 
@@ -351,10 +351,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
     output_path = tmp_path / "unused.srt"
     stderr = StringIO()
 
-    def fail_ocr_image_series_with_tesseract(
-        *args: object,
-        **kwargs: object,
-    ) -> Series:
+    def fail_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
         """Fail if OCR is invoked before argument validation."""
         _ = args, kwargs
         raise AssertionError("unexpected OCR")
@@ -501,7 +498,7 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
 
 
 @skip_if_ci()
-@pytest.mark.skipif(
+@skipif(
     not getenv("SCINOEPHILE_RUN_MLAMD_LENS_OCR"),
     reason=(
         "Set SCINOEPHILE_RUN_MLAMD_LENS_OCR=1 to run full MLAMD Google Lens OCR tests"
@@ -536,7 +533,7 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
 
 
 @skip_if_ci()
-@pytest.mark.skipif(
+@skipif(
     not getenv("SCINOEPHILE_RUN_MLAMD_PADDLE_OCR"),
     reason="Set SCINOEPHILE_RUN_MLAMD_PADDLE_OCR=1 to run full MLAMD PaddleOCR tests",
 )
