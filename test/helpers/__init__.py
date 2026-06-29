@@ -20,6 +20,8 @@ from scinoephile.common.testing import run_cli_with_args
 from .series_assertions import assert_series_equal
 from .series_cer_result import SeriesCERResult
 
+parametrize = mark.parametrize
+skipif = mark.skipif
 __all__ = [
     "SeriesCERResult",
     "assert_cli_help",
@@ -34,11 +36,9 @@ __all__ = [
     "parametrized_fixture",
     "skip_if_ci",
     "skip_if_codex",
+    "skipif",
     "test_data_root",
 ]
-
-parametrize = mark.parametrize
-
 
 test_data_root = package_root.parent / "test/data"
 
@@ -191,7 +191,7 @@ def skip_if_ci() -> Any:
     Returns:
         pytest mark decorator
     """
-    return mark.skipif(
+    return skipif(
         bool(getenv("CI")),
         reason="Skip when running in CI",
     )
@@ -203,7 +203,7 @@ def skip_if_codex() -> Any:
     Returns:
         pytest mark decorator
     """
-    return mark.skipif(
+    return skipif(
         bool(getenv("CODEX_ENV_PYTHON_VERSION")),
         reason="Skip when running in Codex environment",
     )
