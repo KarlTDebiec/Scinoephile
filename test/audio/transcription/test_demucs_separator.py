@@ -47,9 +47,7 @@ def test_get_audio_segment_restores_mono_output():
     assert audio.channels == 1
 
 
-def test_demucs_model_loader_requires_transcription_extra(
-    monkeypatch: MonkeyPatch,
-):
+def test_demucs_model_loader_requires_transcription_extra(monkeypatch: MonkeyPatch):
     """Test Demucs import errors mention the transcription extra."""
     original_import = builtins.__import__
 

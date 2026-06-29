@@ -15,10 +15,7 @@ from scinoephile.common.testing import run_cli_with_args
 from test.helpers import parametrize
 
 
-def test_media_offset_cli_reports_offset(
-    tmp_path: Path,
-    capsys: CaptureFixture[str],
-):
+def test_media_offset_cli_reports_offset(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test media offset CLI reports a human-readable offset result.
 
     Arguments:

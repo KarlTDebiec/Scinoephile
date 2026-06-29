@@ -13,10 +13,7 @@ from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 
 
-def test_ocr_validate_cli(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
-):
+def test_ocr_validate_cli(monkeypatch: MonkeyPatch, tmp_path: Path):
     """Test OCR validate CLI forwards noninteractive workflow arguments.
 
     Arguments:
@@ -82,10 +79,7 @@ def test_ocr_validate_cli(
     assert outfile_path.read_text(encoding="utf-8") == "validated"
 
 
-def test_ocr_validate_cli_web(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
-):
+def test_ocr_validate_cli_web(monkeypatch: MonkeyPatch, tmp_path: Path):
     """Test OCR validate CLI launches web validation.
 
     Arguments:

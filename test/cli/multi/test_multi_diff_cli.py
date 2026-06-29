@@ -12,10 +12,7 @@ from scinoephile.cli.multi.multi_diff_cli import MultiDiffCli
 from scinoephile.common.testing import run_cli_with_args
 
 
-def test_multi_diff_cli(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
+def test_multi_diff_cli(tmp_path: Path, capsys: CaptureFixture):
     """Test multi diff CLI output.
 
     Arguments:
@@ -44,10 +41,7 @@ def test_multi_diff_cli(
     assert output == ("edit: REFERENCE[1] -> CANDIDATE[1]: '靠你了' -> '靠你喇！'\n")
 
 
-def test_multi_diff_cli_multiline_split_edit(
-    tmp_path: Path,
-    capsys: CaptureFixture,
-):
+def test_multi_diff_cli_multiline_split_edit(tmp_path: Path, capsys: CaptureFixture):
     """Test multi diff CLI output for multi-line alignment.
 
     Arguments:

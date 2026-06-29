@@ -30,9 +30,7 @@ def test_openai_constructs_client_with_explicit_api_key_and_base_url(
     assert client.kwargs["base_url"] == "https://example.invalid/v1"
 
 
-def test_openai_constructs_client_without_overrides(
-    monkeypatch: MonkeyPatch,
-):
+def test_openai_constructs_client_without_overrides(monkeypatch: MonkeyPatch):
     """Test OpenAIProvider uses SDK defaults when no overrides are supplied."""
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.setattr(openai_provider_base, "OpenAI", DummyOpenAI)

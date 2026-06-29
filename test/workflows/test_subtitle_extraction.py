@@ -287,9 +287,7 @@ def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
     assert (output_dir_path / "zho-3" / "index.html").exists()
 
 
-def test_extract_subtitles_skips_sup_parsing_when_not_exporting_images(
-    tmp_path: Path,
-):
+def test_extract_subtitles_skips_sup_parsing_when_not_exporting_images(tmp_path: Path):
     """Test extraction skips SUP image parsing when image export is disabled.
 
     Arguments:

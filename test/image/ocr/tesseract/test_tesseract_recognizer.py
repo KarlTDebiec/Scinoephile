@@ -558,9 +558,7 @@ def test_tesseract_detect_italics_raises_clear_legacy_error(tmp_path: Path):
     assert list(tmp_path.glob("*.json")) == []
 
 
-def test_tesseract_raises_and_does_not_cache_when_output_is_missing(
-    tmp_path: Path,
-):
+def test_tesseract_raises_and_does_not_cache_when_output_is_missing(tmp_path: Path):
     """Test successful Tesseract commands without hOCR output are not cached.
 
     Arguments:

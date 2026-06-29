@@ -72,12 +72,7 @@ def make_ocr_html_dir(
     return html_dir_path
 
 
-def make_two_image_ocr_html_dir(
-    tmp_path: Path,
-    *,
-    text_1: str,
-    text_2: str,
-) -> Path:
+def make_two_image_ocr_html_dir(tmp_path: Path, *, text_1: str, text_2: str) -> Path:
     """Create an OCR image HTML directory with two subtitle images.
 
     Arguments:
@@ -153,10 +148,7 @@ def prepared_gap_session(
     return session
 
 
-def _write_html_index(
-    html_dir_path: Path,
-    rows: list[tuple[int, str, str, str, str]],
-):
+def _write_html_index(html_dir_path: Path, rows: list[tuple[int, str, str, str, str]]):
     """Write an OCR image HTML index.
 
     Arguments:

@@ -20,10 +20,7 @@ def test_add_cache_dir_arg_resolves_runtime_cache_subpath():
     runtime_cache_parts: list[tuple[str, ...]] = []
     create_values: list[bool] = []
 
-    def get_runtime_cache_dir_path(
-        *parts: str,
-        create: bool,
-    ) -> Path:
+    def get_runtime_cache_dir_path(*parts: str, create: bool) -> Path:
         """Record runtime cache default arguments."""
         runtime_cache_parts.append(parts)
         create_values.append(create)
