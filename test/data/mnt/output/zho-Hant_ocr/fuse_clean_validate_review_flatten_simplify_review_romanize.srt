@@ -206,7 +206,7 @@ jiǎn dào le
 42
 00:06:52,245 --> 00:06:54,831
 别玩了　这样木门打不开
-biéwán le zhèyàng mùmén dǎbùkāi
+biéwán le  zhèyàng mùmén dǎbùkāi
 
 43
 00:06:55,498 --> 00:06:56,499
@@ -361,12 +361,12 @@ jīntiāntiānqì nàme hǎo bù kěnéng huì yǒuguǐ de
 73
 00:09:16,306 --> 00:09:18,641
 我们从光的地方　一下子进到暗的地方
-wǒmen cóngguāng de dìfāng yīxiàzi jìndào àn de dìfāng
+wǒmen cóngguāng de dìfāng  yīxiàzi jìndào àn de dìfāng
 
 74
 00:09:19,184 --> 00:09:21,770
 眼睛就会发昏　灰尘精灵就会跑出来
-yǎnjīng jiù huì fāhūn huīchén jīnglíng jiù huì pǎo chūlái
+yǎnjīng jiù huì fāhūn  huīchén jīnglíng jiù huì pǎo chūlái
 
 75
 00:09:22,103 --> 00:09:23,313
@@ -381,7 +381,7 @@ huīchén jīnglíng kuàidiǎn gǔnchūlái
 77
 00:09:27,192 --> 00:09:30,445
 你要躲着不出来　我就把你眼睛挖出来！
-nǐ yào duǒ zhe bù chūlái wǒ jiù bǎ nǐ yǎnjīng wāchūlái!
+nǐ yào duǒ zhe bù chūlái  wǒ jiù bǎ nǐ yǎnjīng wāchūlái!
 
 78
 00:09:35,992 --> 00:09:37,160
@@ -671,17 +671,17 @@ qíshí yě méishénme hǎopà de
 135
 00:15:03,861 --> 00:15:06,906
 只要对它们笑笑　它们就不会害人
-zhǐyào duì tāmen xiàoxiào tāmen jiù búhuì hàirén
+zhǐyào duì tāmen xiàoxiào  tāmen jiù búhuì hàirén
 
 136
 00:15:07,031 --> 00:15:10,034
 住上一阵子之后　它们自然就会不见
-zhù shàng yīzhènzi zhīhòu tāmen zìrán jiù huì bújiàn
+zhù shàng yīzhènzi zhīhòu  tāmen zìrán jiù huì bújiàn
 
 137
 00:15:10,785 --> 00:15:15,123
 说不定它们已经在天花板上　讨论该搬去哪里了
-shuōbùdìng tāmen yǐjīng zài tiānhuābǎn shàng tǎolùn gāi bān qù nǎlǐ le
+shuōbùdìng tāmen yǐjīng zài tiānhuābǎn shàng  tǎolùn gāi bān qù nǎlǐ le
 
 138
 00:15:20,878 --> 00:15:22,713
@@ -841,7 +841,7 @@ bàbà, wǒmen jiā pòpòlànlàn de huìfǒu dào xiàlái
 169
 00:19:21,661 --> 00:19:24,538
 要是才刚搬来就倒塌　那可怎么得了
-yàoshì cáigāng bānlái jiù dǎotā nà kě zěnmedéle
+yàoshì cáigāng bānlái jiù dǎotā  nà kě zěnmedéle
 
 170
 00:19:59,615 --> 00:20:00,991
@@ -1016,7 +1016,7 @@ dāngrán luō
 204
 00:23:18,355 --> 00:23:20,441
 妈妈真想快点出院　看看鬼长什么样子
-māmā zhēnxiǎng kuàidiǎn chūyuàn kànkàn guǐzhǎng shénme yàngzi
+māmā zhēnxiǎng kuàidiǎn chūyuàn  kànkàn guǐzhǎng shénme yàngzi
 
 205
 00:23:20,608 --> 00:23:22,067
@@ -1031,7 +1031,7 @@ wǒ hǎo dānxīn a
 207
 00:23:24,278 --> 00:23:26,614
 因为我好怕　妈妈会不喜欢那里
-yīnwèi wǒ hǎo pà māmā huì bù xǐhuān nàlǐ
+yīnwèi wǒ hǎo pà  māmā huì bù xǐhuān nàlǐ
 
 208
 00:23:26,780 --> 00:23:27,907
@@ -1116,7 +1116,7 @@ nà wǒ zhǎngdà yǐhòu
 224
 00:24:00,648 --> 00:24:03,317
 头发会不会　变得跟妈妈的一样呢？
-tóufà huì búhuì biàndé gēn māmā de yīyàng ne?
+tóufà huì búhuì  biàndé gēn māmā de yīyàng ne?
 
 225
 00:24:03,776 --> 00:24:05,027
@@ -1291,7 +1291,7 @@ zǎo
 259
 00:26:18,911 --> 00:26:21,121
 ﹣早，赶快走吧　　﹣好。
-﹣ zǎo, gǎnkuài zǒu ba ﹣ hǎo.
+﹣ zǎo, gǎnkuài zǒu ba  ﹣ hǎo.
 
 260
 00:26:33,342 --> 00:26:34,927
@@ -1536,7 +1536,7 @@ bàbà
 308
 00:37:32,792 --> 00:37:35,253
 小美说　她看到一只大龙猫
-xiǎoměishuō tā kàndào yīzhī dàlóng māo
+xiǎoměishuō  tā kàndào yīzhī dàlóng māo
 
 309
 00:37:35,378 --> 00:37:36,504
@@ -1841,7 +1841,7 @@ kāntài
 369
 00:41:45,461 --> 00:41:48,381
 ﹣再不快点就要迟到了　﹣嗯
-﹣ zài bù kuàidiǎn jiùyào chídào le ﹣ ń
+﹣ zài bù kuàidiǎn jiùyào chídào le  ﹣ ń
 
 370
 00:42:31,090 --> 00:42:32,216
@@ -1876,7 +1876,7 @@ duìbùqǐ
 376
 00:42:48,524 --> 00:42:51,444
 她一直吵着　要到姐姐那边去所以⋯
-tā yìzhí chǎo zhe yào dào jiějiě nàbiān qù suǒyǐ…
+tā yìzhí chǎo zhe  yào dào jiějiě nàbiān qù suǒyǐ…
 
 377
 00:42:51,944 --> 00:42:53,071
@@ -1891,7 +1891,7 @@ xiǎoměi
 379
 00:42:54,113 --> 00:42:56,365
 今天是爸爸　要到大学去教课的日子
-jīntiān shì bàbà yào dào dàxué qù jiàokè de rìzi
+jīntiān shì bàbà  yào dào dàxué qù jiàokè de rìzi
 
 380
 00:42:56,491 --> 00:42:58,117
@@ -1901,7 +1901,7 @@ wǒmen búshì shuōhǎo le
 381
 00:42:58,284 --> 00:43:00,536
 你要在婆婆家　乖乖等姐姐放学的吗？
-nǐ yào zài pópo jiā guāiguāi děng jiějiě fàngxué de ma?
+nǐ yào zài pópo jiā  guāiguāi děng jiějiě fàngxué de ma?
 
 382
 00:43:02,455 --> 00:43:04,457
@@ -2271,7 +2271,7 @@ bāshì lái le!
 455
 00:54:16,336 --> 00:54:19,965
 大龙猫　把爸爸的伞给带走了
-dàlóng māo bǎ bàbà de sǎn gěi dàizǒu le
+dàlóng māo  bǎ bàbà de sǎn gěi dàizǒu le
 
 456
 00:54:33,145 --> 00:54:34,521
@@ -2351,12 +2351,12 @@ wǒ xiànzài xīn hái zài bèngbèng luàn tiào ne
 471
 00:55:26,406 --> 00:55:30,369
 今天真是既吓人又惊奇　又开心的一天
-jīntiān zhēnshì jì xiàrén yòu jīngqí yòu kāixīn de yītiān
+jīntiān zhēnshì jì xiàrén yòu jīngqí  yòu kāixīn de yītiān
 
 472
 00:55:30,494 --> 00:55:33,622
 而且大龙猫送给我们的礼物　实在是妙极了
-érqiě dàlóng māo sònggěi wǒmen de lǐwù shízài shì miàojíle
+érqiě dàlóng māo sònggěi wǒmen de lǐwù  shízài shì miàojíle
 
 473
 00:55:33,872 --> 00:55:35,332
@@ -2366,7 +2366,7 @@ shì yígè yòng zhúyè bāo zhe
 474
 00:55:35,499 --> 00:55:38,210
 然后外面再用　龙须草绑着的小包包
-ránhòu wàimiàn zàiyòng lóngxūcǎo bǎng zhe de xiǎobāo bāo
+ránhòu wàimiàn zàiyòng  lóngxūcǎo bǎng zhe de xiǎobāo bāo
 
 475
 00:55:38,377 --> 00:55:40,879
@@ -2566,7 +2566,7 @@ kěyǐ
 514
 01:03:06,241 --> 01:03:09,452
 婆婆你的这块田　好像是一座宝山啊
-pópo nǐ de zhèkuài tián hǎoxiàng shì yīzuò bǎoshān a
+pópo nǐ de zhèkuài tián  hǎoxiàng shì yīzuò bǎoshān a
 
 515
 01:03:10,078 --> 01:03:12,497
@@ -2691,12 +2691,12 @@ gěi wǒmen de
 539
 01:04:29,783 --> 01:04:32,077
 婆婆　我爸爸不到傍晚不回来
-pópo wǒ bàbà búdào bàngwǎn bù huílái
+pópo  wǒ bàbà búdào bàngwǎn bù huílái
 
 540
 01:04:32,577 --> 01:04:35,080
 快打开看吧　要是急事耽搁就不好了
-kuài dǎkāi kànba yàoshì jíshì dāngē jiù bùhǎo le
+kuài dǎkāi kànba  yàoshì jíshì dāngē jiù bùhǎo le
 
 541
 01:04:39,084 --> 01:04:42,796
@@ -2746,7 +2746,7 @@ kěshì méiyǒu diànhuà kě dǎ ya
 550
 01:05:00,271 --> 01:05:04,484
 勘太　你带小月去打电话
-kāntài nǐ dài xiǎo yuè qù dǎdiànhuà
+kāntài  nǐ dài xiǎo yuè qù dǎdiànhuà
 
 551
 01:05:09,656 --> 01:05:12,700
@@ -3051,7 +3051,7 @@ zài nǐ bàbà huílái zhīqián
 611
 01:10:02,782 --> 01:10:06,202
 婆婆都会陪着妳的　好不好呀
-pópo dōu huì péi zhe nǐ de hǎobùhǎo ya
+pópo dōu huì péi zhe nǐ de  hǎobùhǎo ya
 
 612
 01:10:48,077 --> 01:10:51,247
@@ -3131,7 +3131,7 @@ xiǎoměi bújiàn le
 627
 01:11:45,384 --> 01:11:48,054
 小美真是笨蛋　不知道路又爱乱跑
-xiǎoměi zhēnshì bèndàn bùzhī dàolù yòu ài luànpǎo
+xiǎoměi zhēnshì bèndàn  bùzhī dàolù yòu ài luànpǎo
 
 628
 01:11:55,853 --> 01:11:58,231
@@ -3316,12 +3316,12 @@ yídìng shì
 664
 01:14:23,668 --> 01:14:26,504
 刚才有人在神池　发现一只小孩的凉鞋
-gāngcái yǒurén zài shénchí fāxiàn yīzhī xiǎohái de liángxié
+gāngcái yǒurén zài shénchí  fāxiàn yīzhī xiǎohái de liángxié
 
 665
 01:14:33,719 --> 01:14:36,639
 不过还不确定　那就是小美的鞋子
-bùguò hái bù quèdìng nà jiùshì xiǎo měide xiézi
+bùguò hái bù quèdìng  nà jiùshì xiǎo měide xiézi
 
 666
 01:14:53,698 --> 01:14:55,366

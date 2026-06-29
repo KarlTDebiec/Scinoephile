@@ -1196,7 +1196,7 @@ bōng jyú béi jījyūjēuiàh?
 240
 00:17:21,583 --> 00:17:22,458
 系咪呢边呀？　　唔系⋯⋯
-haihmī nē bīn àh? m̀hhaih……
+haihmī nē bīn àh?  m̀hhaih……
 
 241
 00:17:22,708 --> 00:17:25,458
@@ -1316,7 +1316,7 @@ màahngbíng
 264
 00:18:39,042 --> 00:18:40,125
 放火！　　系
-fongfó! haih
+fongfó!  haih
 
 265
 00:18:43,625 --> 00:18:44,458
@@ -1401,7 +1401,7 @@ dāk fāanléuhngjekjáau, dáng ngóh jūnggāan po néih chàaih
 281
 00:20:12,167 --> 00:20:15,208
 死啦！　　哎吔⋯⋯
-séilā! āiya……
+séilā!  āiya……
 
 282
 00:20:21,250 --> 00:20:22,292
@@ -1486,7 +1486,7 @@ gaufó! lóséuilàih àh……
 298
 00:21:09,375 --> 00:21:11,500
 救火！救火！　　唔得⋯⋯
-gaufó! gaufó! m̀hdāk……
+gaufó! gaufó!  m̀hdāk……
 
 299
 00:21:11,792 --> 00:21:12,958
@@ -2226,7 +2226,7 @@ jóutáu bōngjyú! hohnglā
 446
 00:28:59,792 --> 00:29:01,833
 去！　出去！
-heui! chēutheui!
+heui!  chēutheui!
 
 447
 00:29:04,875 --> 00:29:06,125
@@ -3576,7 +3576,7 @@ fong jó ngóh
 716
 00:44:27,625 --> 00:44:29,208
 放咗我　　快啲
-fong jó ngóh faai dī
+fong jó ngóh  faai dī
 
 717
 00:44:30,417 --> 00:44:31,292
@@ -3911,7 +3911,7 @@ néih m̀h wuih gwaai ngóh ā ma?
 783
 00:47:40,083 --> 00:47:43,292
 我呢一世人都盲累累做人　我知
-ngóh nē yātsaiyàhn dōu màahngleuihleuihjouh yàhn ngóh jī
+ngóh nē yātsaiyàhn dōu màahngleuihleuihjouh yàhn  ngóh jī
 
 784
 00:47:43,583 --> 00:47:44,875
@@ -4016,7 +4016,7 @@ jūngyū dōu lèuhngsām faatyihn lā néih
 804
 00:48:40,167 --> 00:48:42,500
 唔系呀！　出面嚟咗只猛嘢呀
-m̀hhaihàh! chēutmihn làih jó jí máahngyéh àh
+m̀hhaihàh!  chēutmihn làih jó jí máahngyéh àh
 
 805
 00:48:44,250 --> 00:48:45,167
@@ -4131,7 +4131,7 @@ hòhfōngyíunéuih! bouseuhngmìhng lòih
 827
 00:49:54,542 --> 00:49:57,125
 盘丝大仙座下大弟子白骨精　蜘蛛精
-pùhnsīdaaihsīnjohhah daaihdaihjí baahkgwātjīng jījyūjīng
+pùhnsīdaaihsīnjohhah daaihdaihjí baahkgwātjīng  jījyūjīng
 
 828
 00:49:57,458 --> 00:49:59,667
@@ -5606,7 +5606,7 @@ gwaai m̀h jī móuh tàuhfaat lā
 1122
 01:10:51,583 --> 01:10:52,667
 有人嚟紧　　有人嚟呀
-yáuh yàhnlàihgán yáuh yàhnlàih àh
+yáuh yàhnlàihgán  yáuh yàhnlàih àh
 
 1123
 01:10:52,917 --> 01:10:55,167
@@ -5776,7 +5776,7 @@ héiyáuhchíléih, jānhaih
 1156
 01:12:26,708 --> 01:12:28,083
 你冷静啲好吗　　唔得
-néih láahngjihng dī hóu máh m̀hdāk
+néih láahngjihng dī hóu máh  m̀hdāk
 
 1157
 01:12:28,292 --> 01:12:30,167
@@ -5786,7 +5786,7 @@ láahngjihng, daahmdihng
 1158
 01:12:30,500 --> 01:12:32,625
 冷静呀　　痛呀
-láahngjihng àh tung àh
+láahngjihng àh  tung àh
 
 1159
 01:12:33,292 --> 01:12:34,625
@@ -6001,7 +6001,7 @@ néih gam yuhkgán ngóh, ngóh yuhnyi wàih néih jīngjeuhnyàhnmòhng
 1201
 01:14:46,917 --> 01:14:48,375
 带我个仔走先　　唔走
-daai ngóh go jái jáu sīn m̀h jáu
+daai ngóh go jái jáu sīn  m̀h jáu
 
 1202
 01:14:49,083 --> 01:14:49,708
@@ -6231,7 +6231,7 @@ ngóh dōu meih góng yùhn, néih dímjī nē?
 1247
 01:18:03,125 --> 01:18:04,250
 真系出嚟喎　走呀
-jānhaih chēutlàih wo jáu àh
+jānhaih chēutlàih wo  jáu àh
 
 1248
 01:18:05,583 --> 01:18:08,167
@@ -6441,7 +6441,7 @@ juhngtùhng ngóh sījé sāngmàaih go jái!
 1289
 01:20:41,583 --> 01:20:43,542
 咁你误会晒嘞呢趟　　想死呀？
-gam néih nghwuih saai la nē tong séung séi àh?
+gam néih nghwuih saai la nē tong  séung séi àh?
 
 1290
 01:20:43,792 --> 01:20:46,583

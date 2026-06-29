@@ -1411,7 +1411,7 @@ ngóh mìhnglā
 283
 00:20:32,167 --> 00:20:33,875
 你「锄」吓佢吖喂　　嚟呀
-néih 「chòh」 haak kéuih ā wai làih àh
+néih 「chòh」 haak kéuih ā wai  làih àh
 
 284
 00:20:38,875 --> 00:20:40,042
@@ -2651,7 +2651,7 @@ gam néih ūkkéi go lóuhpòh dím àh?
 531
 00:35:59,083 --> 00:36:01,542
 老婆？　乜你哋识㗎？
-lóuhpòh? māt néihdeih sīk ga?
+lóuhpòh?  māt néihdeih sīk ga?
 
 532
 00:36:04,042 --> 00:36:05,167
@@ -3266,12 +3266,12 @@ m̀hsái jaan, ngóh gōu néih síusíu ja ma, móuh mē daaihbātlíuh àh
 654
 00:42:30,583 --> 00:42:31,917
 又赞我啰　　唔好讲咁多，　去救师父呀
-yauh jaan ngóh lō m̀hhóu góng gam dō, heui gausīfuhàh
+yauh jaan ngóh lō  m̀hhóu góng gam dō,  heui gausīfuhàh
 
 655
 00:42:32,208 --> 00:42:32,917
 行啦　　行啰
-hohnglā hohnglō
+hohnglā  hohnglō
 
 656
 00:42:33,208 --> 00:42:33,708
@@ -3291,7 +3291,7 @@ bīn yáuh yàhn gam dō yéh góng jē, jānhaih ā
 659
 00:42:37,833 --> 00:42:39,583
 攞命呀⋯⋯　　走啦⋯⋯
-lómehng àh…… jáulā……
+lómehng àh……  jáulā……
 
 660
 00:42:39,917 --> 00:42:41,083
@@ -3316,7 +3316,7 @@ néihdeih yahpheui sīn, ngóh hái hauhmihn……
 664
 00:42:45,708 --> 00:42:46,708
 你喺中间　　行啦！
-néih hái jūnggāan hohnglā!
+néih hái jūnggāan  hohnglā!
 
 665
 00:42:49,083 --> 00:42:49,958
@@ -3341,7 +3341,7 @@ sīfuhàh, sīfú
 669
 00:42:56,000 --> 00:42:57,375
 我同佢哋嚟救你㗎　　我哋嚟带你走㗎
-ngóh tùhng kéuihdeih làihgau néih ga ngóhdeih làihdaai néih jáu ga
+ngóh tùhng kéuihdeih làihgau néih ga  ngóhdeih làihdaai néih jáu ga
 
 670
 00:42:57,583 --> 00:42:59,000
@@ -3351,7 +3351,7 @@ ngóh m̀h wuih jáu ge
 671
 00:43:00,292 --> 00:43:01,583
 你唔走？　　点解呀？
-néih m̀h jáu? dímgáai àh?
+néih m̀h jáu?  dímgáai àh?
 
 672
 00:43:01,917 --> 00:43:06,167
@@ -3931,7 +3931,7 @@ sīdái
 787
 00:50:32,792 --> 00:50:33,708
 杀死你　　师弟
-saatséi néih sīdái
+saatséi néih  sīdái
 
 788
 00:50:34,708 --> 00:50:35,417
@@ -5411,7 +5411,7 @@ ngóh tùhng néih yìhngau haak jē
 1083
 01:04:54,708 --> 01:04:57,708
 唔驶咁认真？　乜要嘅咩？
-m̀hsái gam yihngjān? mātyiu ge mē?
+m̀hsái gam yihngjān?  mātyiu ge mē?
 
 1084
 01:05:40,125 --> 01:05:41,125
@@ -5891,7 +5891,7 @@ yìhwàhndaaihfaat
 1179
 01:12:21,375 --> 01:12:23,083
 香香　　我唔系你个妹
-hēunghēung ngóh m̀hhaih néih go muih
+hēunghēung  ngóh m̀hhaih néih go muih
 
 1180
 01:12:23,333 --> 01:12:24,458
@@ -7326,7 +7326,7 @@ sānfú léuhng waih mòhdauhfuh àh
 1466
 01:32:11,333 --> 01:32:13,250
 相公　相公
-seunggūng seunggūng
+seunggūng  seunggūng
 
 1467
 01:32:13,708 --> 01:32:16,375

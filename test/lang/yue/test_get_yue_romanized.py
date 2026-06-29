@@ -87,7 +87,7 @@ def test_get_yue_romanized(
         ("don't你好", "don't néih hóu"),
         ("rock'n'roll你好", "rock'n'roll néih hóu"),
         ('"t i"你好', '"t i" néih hóu'),
-        ("你好　世界", "néih hóu saigaai"),
+        ("你好　世界", "néih hóu  saigaai"),
         (
             "乱讲，啫啫一 fling fling 吖嘛",
             "lyuhn góng, jē jē yāt fling fling ā ma",

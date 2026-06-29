@@ -46,7 +46,7 @@ xièxiè
 10
 00:03:40,262 --> 00:03:44,307
 我姓草壁　新搬来的
-wǒxìng cǎobì xīn bān lái de
+wǒxìng cǎobì  xīn bān lái de
 
 11
 00:03:45,183 --> 00:03:47,352
@@ -206,7 +206,7 @@ jiǎn dào le
 42
 00:06:52,287 --> 00:06:55,373
 别玩了　这样木门打不开
-biéwán le zhèyàng mùmén dǎbùkāi
+biéwán le  zhèyàng mùmén dǎbùkāi
 
 43
 00:06:56,124 --> 00:06:57,167
@@ -236,7 +236,7 @@ sōngshǔ?
 48
 00:07:11,181 --> 00:07:14,225
 还是　吃橡果子的老鼠呢？
-háishì chī xiàng guǒzi de lǎoshǔ ne?
+háishì  chī xiàng guǒzi de lǎoshǔ ne?
 
 49
 00:07:14,267 --> 00:07:16,269
@@ -356,17 +356,17 @@ yǒu a
 72
 00:09:08,423 --> 00:09:11,342
 今天天气那么好　不可能会有鬼的
-jīntiāntiānqì nàme hǎo bù kěnéng huì yǒuguǐ de
+jīntiāntiānqì nàme hǎo  bù kěnéng huì yǒuguǐ de
 
 73
 00:09:16,347 --> 00:09:19,350
 我们从光的地方　一下子进到暗的地方
-wǒmen cóngguāng de dìfāng yīxiàzi jìndào àn de dìfāng
+wǒmen cóngguāng de dìfāng  yīxiàzi jìndào àn de dìfāng
 
 74
 00:09:19,434 --> 00:09:22,187
 眼睛就会发昏　灰尘精灵就会跑出来
-yǎnjīng jiù huì fāhūn huīchén jīnglíng jiù huì pǎo chūlái
+yǎnjīng jiù huì fāhūn  huīchén jīnglíng jiù huì pǎo chūlái
 
 75
 00:09:22,270 --> 00:09:24,189
@@ -381,7 +381,7 @@ huīchén jīnglíng kuàidiǎn gǔnchūlái
 77
 00:09:27,317 --> 00:09:31,362
 你要躲着不出来　我就把你眼睛挖出来！
-nǐ yào duǒ zhe bù chūlái wǒ jiù bǎ nǐ yǎnjīng wāchūlái!
+nǐ yào duǒ zhe bù chūlái  wǒ jiù bǎ nǐ yǎnjīng wāchūlái!
 
 78
 00:09:36,201 --> 00:09:37,285
@@ -391,7 +391,7 @@ hǎo le, qù zuòshì
 79
 00:09:37,368 --> 00:09:41,372
 上二楼的楼梯　到底在哪里呢？
-shàng èrlóu de lóutī dàodǐ zài nǎlǐ ne?
+shàng èrlóu de lóutī  dàodǐ zài nǎlǐ ne?
 
 80
 00:09:42,207 --> 00:09:43,541
@@ -501,7 +501,7 @@ nà zhēnshì tàibàngle
 101
 00:12:19,197 --> 00:12:23,201
 爸爸从小就梦想　能够住在鬼屋里面
-bàbà cóngxiǎo jiù mèngxiǎng nénggòu zhù zài guǐwū lǐmiàn
+bàbà cóngxiǎo jiù mèngxiǎng  nénggòu zhù zài guǐwū lǐmiàn
 
 102
 00:12:26,204 --> 00:12:27,330
@@ -671,17 +671,17 @@ qíshí yě méishénme hǎopà de
 135
 00:15:04,237 --> 00:15:07,281
 只要对它们笑笑　它们就不会害人
-zhǐyào duì tāmen xiàoxiào tāmen jiù búhuì hàirén
+zhǐyào duì tāmen xiàoxiào  tāmen jiù búhuì hàirén
 
 136
 00:15:07,323 --> 00:15:10,326
 住上一阵子之后　它们自然就会不见
-zhù shàng yīzhènzi zhīhòu tāmen zìrán jiù huì bújiàn
+zhù shàng yīzhènzi zhīhòu  tāmen zìrán jiù huì bújiàn
 
 137
 00:15:11,202 --> 00:15:15,373
 说不定它们已经在天花板上　讨论该搬去哪里了
-shuōbùdìng tāmen yǐjīng zài tiānhuābǎn shàng tǎolùn gāi bān qù nǎlǐ le
+shuōbùdìng tāmen yǐjīng zài tiānhuābǎn shàng  tǎolùn gāi bān qù nǎlǐ le
 
 138
 00:15:21,212 --> 00:15:23,214
@@ -696,7 +696,7 @@ bùhǎowán
 140
 00:15:24,298 --> 00:15:26,467
 可是要是来这么一大堆　该怎么办？
-kěshì yàoshì lái zhème yīdàduī gāi zěnmebàn?
+kěshì yàoshì lái zhème yīdàduī  gāi zěnmebàn?
 
 141
 00:15:27,218 --> 00:15:28,344
@@ -711,7 +711,7 @@ shì ma?
 143
 00:15:29,387 --> 00:15:32,473
 那以后晚上　姐姐就不陪妳上厕所
-nà yǐhòu wǎnshàng jiějiě jiù bù péi nǐ shàng cèsuǒ
+nà yǐhòu wǎnshàng  jiějiě jiù bù péi nǐ shàng cèsuǒ
 
 144
 00:15:34,392 --> 00:15:37,228
@@ -766,7 +766,7 @@ hǎo
 154
 00:17:01,437 --> 00:17:04,440
 你不是刚刚那个吗？　有事吗
-nǐ búshì gānggāng nàge ma? yǒushìma
+nǐ búshì gānggāng nàge ma?  yǒushìma
 
 155
 00:17:05,358 --> 00:17:08,444
@@ -811,7 +811,7 @@ nánshēng zuì tǎorényàn le
 163
 00:17:45,356 --> 00:17:49,277
 不过　婆婆这个糯米团很好吃
-bùguò pópo zhège nuòmǐ tuán hěn hǎochī
+bùguò  pópo zhège nuòmǐ tuán hěn hǎochī
 
 164
 00:17:49,318 --> 00:17:51,404
@@ -836,12 +836,12 @@ pópo zàijiàn
 168
 00:19:16,405 --> 00:19:20,284
 爸爸，我们家　破破烂烂的会否倒下来
-bàbà, wǒmen jiā pòpòlànlàn de huìfǒu dào xiàlái
+bàbà, wǒmen jiā  pòpòlànlàn de huìfǒu dào xiàlái
 
 169
 00:19:21,494 --> 00:19:25,373
 要是才刚搬来就倒塌　那可怎么得了
-yàoshì cáigāng bānlái jiù dǎotā nà kě zěnmedéle
+yàoshì cáigāng bānlái jiù dǎotā  nà kě zěnmedéle
 
 170
 00:19:59,490 --> 00:20:01,325
@@ -881,7 +881,7 @@ yònglì, jiābǎjìn
 177
 00:21:06,348 --> 00:21:09,435
 好了　衣服都洗好了
-hǎo le yīfú dōu xǐ hǎo le
+hǎo le  yīfú dōu xǐ hǎo le
 
 178
 00:21:18,402 --> 00:21:20,488
@@ -1016,7 +1016,7 @@ dāngrán luō
 204
 00:23:18,439 --> 00:23:20,524
 妈妈真想快点出院　看看鬼长什么样子
-māmā zhēnxiǎng kuàidiǎn chūyuàn kànkàn guǐzhǎng shénme yàngzi
+māmā zhēnxiǎng kuàidiǎn chūyuàn  kànkàn guǐzhǎng shénme yàngzi
 
 205
 00:23:20,691 --> 00:23:21,901
@@ -1031,7 +1031,7 @@ wǒ hǎo dānxīn a
 207
 00:23:24,445 --> 00:23:26,530
 因为我好怕　妈妈会不喜欢那里
-yīnwèi wǒ hǎo pà māmā huì bù xǐhuān nàlǐ
+yīnwèi wǒ hǎo pà  māmā huì bù xǐhuān nàlǐ
 
 208
 00:23:26,780 --> 00:23:27,823
@@ -1116,7 +1116,7 @@ nà wǒ zhǎngdà yǐhòu
 224
 00:24:00,856 --> 00:24:03,108
 头发会不会　变得跟妈妈的一样呢？
-tóufà huì búhuì biàndé gēn māmā de yīyàng ne?
+tóufà huì búhuì  biàndé gēn māmā de yīyàng ne?
 
 225
 00:24:03,859 --> 00:24:04,944
@@ -1141,7 +1141,7 @@ shì a
 229
 00:24:28,509 --> 00:24:31,512
 医生也说　再过不久就可以出院了
-yīshēng yě shuō zài guò bùjiǔ jiù kěyǐ chūyuàn le
+yīshēng yě shuō  zài guò bùjiǔ jiù kěyǐ chūyuàn le
 
 230
 00:24:31,762 --> 00:24:33,555
@@ -1166,7 +1166,7 @@ kěshì rénjiā hǎo xiǎngyào gēn māmā yìqǐ shuì
 234
 00:24:41,522 --> 00:24:45,526
 妳不是说妳已经长大　要自己一个人睡的吗？
-nǐ búshì shuō nǐ yǐjīng zhǎngdà yào zìjǐ yígè rén shuì de ma?
+nǐ búshì shuō nǐ yǐjīng zhǎngdà  yào zìjǐ yígè rén shuì de ma?
 
 235
 00:24:46,276 --> 00:24:48,320
@@ -1291,7 +1291,7 @@ zǎo
 259
 00:26:19,369 --> 00:26:21,497
 早，赶快走吧　好
-zǎo, gǎnkuài zǒu ba hǎo
+zǎo, gǎnkuài zǒu ba  hǎo
 
 260
 00:26:33,467 --> 00:26:34,885
@@ -1431,7 +1431,7 @@ xiǎoměi
 287
 00:36:17,634 --> 00:36:22,430
 爸爸！　小美的帽子掉在这里
-bàbà! xiǎo měide màozi diào zài zhèlǐ
+bàbà!  xiǎo měide màozi diào zài zhèlǐ
 
 288
 00:36:37,028 --> 00:36:39,239
@@ -1536,7 +1536,7 @@ bàbà
 308
 00:37:32,792 --> 00:37:35,503
 小美说　她看到一只大龙猫
-xiǎoměishuō tā kàndào yīzhī dàlóng māo
+xiǎoměishuō  tā kàndào yīzhī dàlóng māo
 
 309
 00:37:35,545 --> 00:37:36,296
@@ -1561,7 +1561,7 @@ shì zhèlǐ ma?
 313
 00:37:56,775 --> 00:37:59,068
 它刚才　睡在一棵很大的树里面
-tā gāngcái shuì zài yīkē hěndà de shù lǐmiàn
+tā gāngcái  shuì zài yīkē hěndà de shù lǐmiàn
 
 314
 00:37:59,486 --> 00:38:02,405
@@ -1616,7 +1616,7 @@ yě méiyǒu rènwéi nǐzài piànrén a
 324
 00:38:43,571 --> 00:38:47,367
 小美刚才一定是　遇到了森林的主人
-xiǎoměi gāngcái yídìng shì yùdào le sēnlín de zhǔrén
+xiǎoměi gāngcái yídìng shì  yùdào le sēnlín de zhǔrén
 
 325
 00:38:47,450 --> 00:38:49,619
@@ -1696,7 +1696,7 @@ suǒyǐ wǒ shuō la
 340
 00:39:57,103 --> 00:39:58,438
 那不是想看　随时就能看到的
-nà búshì xiǎng kàn suíshí jiù néng kàndào de
+nà búshì xiǎng kàn  suíshí jiù néng kàndào de
 
 341
 00:39:58,980 --> 00:40:00,023
@@ -1751,7 +1751,7 @@ cái huì zhème xǐhuān xiànzài zhège jiā de
 351
 00:40:24,923 --> 00:40:27,550
 而且知道　妈妈一定也会喜欢这里
-érqiě zhīdào māmā yídìng yě huì xǐhuān zhèlǐ
+érqiě zhīdào  māmā yídìng yě huì xǐhuān zhèlǐ
 
 352
 00:40:27,592 --> 00:40:29,469
@@ -1766,7 +1766,7 @@ gāi chīfàn le
 354
 00:40:31,012 --> 00:40:33,139
 对了　我跟小满约好要到她家去
-duì le wǒ gēn xiǎomǎn yuē hǎo yào dào tājiā qù
+duì le  wǒ gēn xiǎomǎn yuē hǎo yào dào tājiā qù
 
 355
 00:40:33,598 --> 00:40:35,099
@@ -1826,7 +1826,7 @@ māmā, jīntiān chū le yījiàn dà xīnwén
 366
 00:41:01,084 --> 00:41:04,212
 因为小美说她看到了　一只很大的龙猫精灵
-yīnwèi xiǎoměi shuō tā kàndào le yīzhī hěndà de lóng māo jīnglíng
+yīnwèi xiǎoměi shuō tā kàndào le  yīzhī hěndà de lóng māo jīnglíng
 
 367
 00:41:09,592 --> 00:41:13,763
@@ -1841,7 +1841,7 @@ kāntài
 369
 00:41:45,545 --> 00:41:48,506
 再不快点就要迟到了　嗯
-zài bù kuàidiǎn jiùyào chídào le ń
+zài bù kuàidiǎn jiùyào chídào le  ń
 
 370
 00:42:30,673 --> 00:42:32,592
@@ -1881,7 +1881,7 @@ duìbùqǐ
 377
 00:42:48,524 --> 00:42:51,611
 她一直吵着　要到姐姐那边去所以⋯
-tā yìzhí chǎo zhe yào dào jiějiě nàbiān qù suǒyǐ…
+tā yìzhí chǎo zhe  yào dào jiějiě nàbiān qù suǒyǐ…
 
 378
 00:42:51,652 --> 00:42:52,695
@@ -1896,7 +1896,7 @@ xiǎoměi
 380
 00:42:54,405 --> 00:42:56,491
 今天是爸爸　要到大学去教课的日子
-jīntiān shì bàbà yào dào dàxué qù jiàokè de rìzi
+jīntiān shì bàbà  yào dào dàxué qù jiàokè de rìzi
 
 381
 00:42:56,532 --> 00:42:58,493
@@ -1906,7 +1906,7 @@ wǒmen búshì shuōhǎo le
 382
 00:42:58,534 --> 00:42:59,786
 你要在婆婆家　乖乖等姊姊放学的吗？
-nǐ yào zài pópo jiā guāiguāi děng zǐzǐ fàngxué de ma?
+nǐ yào zài pópo jiā  guāiguāi děng zǐzǐ fàngxué de ma?
 
 383
 00:43:02,497 --> 00:43:04,540
@@ -2006,7 +2006,7 @@ xiàyǔ le
 402
 00:44:39,427 --> 00:44:42,597
 人家都没有哭，棒不棒？　嗯
-rénjiā dōu méiyǒu kū, bàng bù bàng? ń
+rénjiā dōu méiyǒu kū, bàng bù bàng?  ń
 
 403
 00:44:43,723 --> 00:44:47,435
@@ -2016,7 +2016,7 @@ kěshì zhēn shāngnǎojīn
 404
 00:44:48,603 --> 00:44:52,523
 土地公爷爷　请您让我们躲一下雨
-tǔdìgōng yéyé qǐng nín ràng wǒmen duǒ yī xiàyǔ
+tǔdìgōng yéyé  qǐng nín ràng wǒmen duǒ yī xiàyǔ
 
 405
 00:45:35,650 --> 00:45:38,653
@@ -2056,7 +2056,7 @@ míngmíng dōu yǐjīng xiàyǔ le
 412
 00:46:25,491 --> 00:46:27,618
 竟然还会傻得忘了带伞　你骗鬼啊！
-jìngrán háihuì shǎ dé wàng le dài sǎn nǐ piàn guǐ a!
+jìngrán háihuì shǎ dé wàng le dài sǎn  nǐ piàn guǐ a!
 
 413
 00:46:27,702 --> 00:46:29,537
@@ -2066,7 +2066,7 @@ hǎotòng a
 414
 00:46:29,578 --> 00:46:31,622
 我看啊　你八成是把伞子弄坏了
-wǒ kàn a nǐ bāchéng shì bǎ sǎnzi nònghuàile
+wǒ kàn a  nǐ bāchéng shì bǎ sǎnzi nònghuàile
 
 415
 00:46:31,664 --> 00:46:33,541
@@ -2101,7 +2101,7 @@ bùyòng kèqì
 421
 00:46:59,483 --> 00:47:02,486
 对了　这是勘太今天借我们的伞
-duì le zhèshì kāntài jīntiān jiè wǒmen de sǎn
+duì le  zhèshì kāntài jīntiān jiè wǒmen de sǎn
 
 422
 00:47:02,528 --> 00:47:04,530
@@ -2231,7 +2231,7 @@ yào búyào xiāndào pópo jiāqù shuì yīxià?
 447
 00:49:35,723 --> 00:49:38,684
 爸爸就快到了　撑着点啊
-bàbà jiù kuài dào le chēng zhe diǎn a
+bàbà jiù kuài dào le  chēng zhe diǎn a
 
 448
 00:49:44,481 --> 00:49:47,610
@@ -2261,7 +2261,7 @@ zhège jiè nǐ
 453
 00:51:40,556 --> 00:51:44,476
 快点啊　小美快要掉下来了啦
-kuàidiǎn a xiǎoměi kuàiyào diàoxiàlái le la
+kuàidiǎn a  xiǎoměi kuàiyào diàoxiàlái le la
 
 454
 00:51:48,689 --> 00:51:51,692
@@ -2276,7 +2276,7 @@ bāshì lái le!
 456
 00:54:16,587 --> 00:54:19,506
 大龙猫　把爸爸的伞给带走了
-dàlóng māo bǎ bàbà de sǎn gěi dàizǒu le
+dàlóng māo  bǎ bàbà de sǎn gěi dàizǒu le
 
 457
 00:54:32,769 --> 00:54:34,688
@@ -2306,7 +2306,7 @@ hài nǐmen dānxīn la
 462
 00:54:42,654 --> 00:54:44,698
 出现了，爸爸　真的出现了
-chūxiàn le, bàbà zhēnde chūxiàn le
+chūxiàn le, bàbà  zhēnde chūxiàn le
 
 463
 00:54:44,781 --> 00:54:47,618
@@ -2331,7 +2331,7 @@ xiàsǐrén le
 467
 00:54:55,542 --> 00:54:59,713
 看到了！　我看到大龙猫了！
-kàndào le! wǒ kàndào dàlóng māo le!
+kàndào le!  wǒ kàndào dàlóng māo le!
 
 468
 00:54:59,755 --> 00:55:00,797
@@ -2356,12 +2356,12 @@ wǒ xiànzài xīn hái zài bèngbèng luàn tiào ne
 472
 00:55:26,615 --> 00:55:30,577
 今天真是既吓人又惊奇　又开心的一天
-jīntiān zhēnshì jì xiàrén yòu jīngqí yòu kāixīn de yītiān
+jīntiān zhēnshì jì xiàrén yòu jīngqí  yòu kāixīn de yītiān
 
 473
 00:55:30,619 --> 00:55:33,705
 而且大龙猫送给我们的礼物　实在是太棒了
-érqiě dàlóng māo sònggěi wǒmen de lǐwù shízài shì tàibàngle
+érqiě dàlóng māo sònggěi wǒmen de lǐwù  shízài shì tàibàngle
 
 474
 00:55:33,747 --> 00:55:35,541
@@ -2371,7 +2371,7 @@ shì yígè yòng zhúyè bāo zhe
 475
 00:55:35,582 --> 00:55:38,544
 然后外面再用　龙须草绑着的小包包
-ránhòu wàimiàn zàiyòng lóngxūcǎo bǎng zhe de xiǎobāo bāo
+ránhòu wàimiàn zàiyòng  lóngxūcǎo bǎng zhe de xiǎobāo bāo
 
 476
 00:55:38,585 --> 00:55:40,712
@@ -2386,7 +2386,7 @@ fāxiàn lǐmiàn dōu shì xiàng guǒzi
 478
 00:55:47,803 --> 00:55:50,764
 我们想家里院子　变成森林的话一定很棒
-wǒmen xiǎng jiālǐ yuànzi biànchéng sēnlín dehuà yídìng hěnbàng
+wǒmen xiǎng jiālǐ yuànzi  biànchéng sēnlín dehuà yídìng hěnbàng
 
 479
 00:55:51,223 --> 00:55:53,392
@@ -2416,7 +2416,7 @@ hái méi fāyá, hái méi fāyá
 484
 00:56:01,775 --> 00:56:05,612
 就好像猴子螃蟹大战　里面那个螃蟹一样啊
-jiù hǎoxiàng hóuzi pángxiè dàzhàn lǐmiàn nàge pángxiè yīyàng a
+jiù hǎoxiàng hóuzi pángxiè dàzhàn  lǐmiàn nàge pángxiè yīyàng a
 
 485
 00:56:10,701 --> 00:56:12,619
@@ -2426,7 +2426,7 @@ xuéxiào hěnkuài jiùyào fàngshǔjià le
 486
 00:56:12,703 --> 00:56:15,747
 希望妈妈的病　能够快点好起来好吗？
-xīwàng māmā de bìng nénggòu kuàidiǎn hǎo qǐlái hǎo ma?
+xīwàng māmā de bìng  nénggòu kuàidiǎn hǎo qǐlái hǎo ma?
 
 487
 00:56:15,831 --> 00:56:17,708
@@ -2571,7 +2571,7 @@ kěyǐ
 515
 01:03:05,824 --> 01:03:09,744
 婆婆你的这块田　好像是一座宝山啊
-pópo nǐ de zhèkuài tián hǎoxiàng shì yīzuò bǎoshān a
+pópo nǐ de zhèkuài tián  hǎoxiàng shì yīzuò bǎoshān a
 
 516
 01:03:09,828 --> 01:03:12,831
@@ -2621,7 +2621,7 @@ dāngrán la
 525
 01:03:43,737 --> 01:03:45,739
 只要是　吃了婆婆田里种的东西
-zhǐyào shì chī le pópo tiánlǐ zhǒng de dōngxī
+zhǐyào shì  chī le pópo tiánlǐ zhǒng de dōngxī
 
 526
 01:03:45,780 --> 01:03:47,657
@@ -2631,7 +2631,7 @@ shēntǐ jiù huì hǎo la
 527
 01:03:47,741 --> 01:03:50,577
 这个星期六　我妈妈就会回来了
-zhège xīngqīliù wǒ māmā jiù huì huílái le
+zhège xīngqīliù  wǒ māmā jiù huì huílái le
 
 528
 01:03:50,660 --> 01:03:52,871
@@ -2641,7 +2641,7 @@ māmā yào gēn wǒ yìqǐ shuìjiào a
 529
 01:03:53,621 --> 01:03:56,708
 是吗？　马上就要出院了
-shì ma? mǎshàng jiùyào chūyuàn le
+shì ma?  mǎshàng jiùyào chūyuàn le
 
 530
 01:03:56,875 --> 01:03:58,793
@@ -2671,7 +2671,7 @@ nàkěyào duō chī diǎn dōngxī bǔyībǔ le
 535
 01:04:07,635 --> 01:04:10,805
 我要把我自己摘的　粟米给妈妈吃
-wǒyào bǎ wǒ zìjǐ zhāi de sùmǐ gěi māmā chī
+wǒyào bǎ wǒ zìjǐ zhāi de  sùmǐ gěi māmā chī
 
 536
 01:04:10,889 --> 01:04:13,683
@@ -2686,7 +2686,7 @@ diànbào
 538
 01:04:23,276 --> 01:04:24,652
 你们不在　所以邮差送去我家
-nǐmen bù zài suǒyǐ yóuchāi sòng qù wǒjiā
+nǐmen bù zài  suǒyǐ yóuchāi sòng qù wǒjiā
 
 539
 01:04:24,736 --> 01:04:25,862
@@ -2696,12 +2696,12 @@ gěi wǒmen de
 540
 01:04:29,699 --> 01:04:32,619
 婆婆　我爸爸不到傍晚不回来
-pópo wǒ bàbà búdào bàngwǎn bù huílái
+pópo  wǒ bàbà búdào bàngwǎn bù huílái
 
 541
 01:04:32,702 --> 01:04:35,663
 快打开看吧　要是急事耽搁就不好了
-kuài dǎkāi kànba yàoshì jíshì dāngē jiù bùhǎo le
+kuài dǎkāi kànba  yàoshì jíshì dāngē jiù bùhǎo le
 
 542
 01:04:38,792 --> 01:04:42,796
@@ -2746,7 +2746,7 @@ zhībùzhīdào bàbà shàngbān de dìfāng?
 550
 01:04:56,768 --> 01:04:58,686
 爸爸研究室的电话号码　我是知道
-bàbà yánjiūshì de diànhuàhàomǎ wǒ shì zhīdào
+bàbà yánjiūshì de diànhuàhàomǎ  wǒ shì zhīdào
 
 551
 01:04:58,728 --> 01:04:59,813
@@ -2756,7 +2756,7 @@ kěshì méiyǒu diànhuà kě dǎ ya
 552
 01:04:59,854 --> 01:05:04,859
 勘太　你带小月去打电话
-kāntài nǐ dài xiǎo yuè qù dǎdiànhuà
+kāntài  nǐ dài xiǎo yuè qù dǎdiànhuà
 
 553
 01:05:09,697 --> 01:05:12,742
@@ -2801,7 +2801,7 @@ qǐngwèn shì kǎogǔxué jiàoshì ma?
 561
 01:06:22,687 --> 01:06:25,732
 我爸爸⋯　麻烦请草壁先生听电话
-wǒ bàbà… máfán qǐng cǎobì xiānshēng tīng diànhuà
+wǒ bàbà…  máfán qǐng cǎobì xiānshēng tīng diànhuà
 
 562
 01:06:25,773 --> 01:06:27,859
@@ -2826,7 +2826,7 @@ yīyuàn lái diànbào? wǒ zhīdào le
 566
 01:06:40,830 --> 01:06:42,707
 爸爸现在就　打电话到医院去问
-bàbà xiànzài jiù dǎdiànhuà dào yīyuàn qù wèn
+bàbà xiànzài jiù  dǎdiànhuà dào yīyuàn qù wèn
 
 567
 01:06:42,790 --> 01:06:43,875
@@ -2846,7 +2846,7 @@ búhuì yǒushì de
 570
 01:06:46,836 --> 01:06:49,797
 爸爸给医院打过电话　就马上就回妳电话
-bàbà gěi yīyuàn dǎ guò diànhuà jiù mǎshàng jiù huí nǐ diànhuà
+bàbà gěi yīyuàn dǎ guò diànhuà  jiù mǎshàng jiù huí nǐ diànhuà
 
 571
 01:06:49,881 --> 01:06:52,717
@@ -2861,7 +2861,7 @@ dàihuìer jiù dǎ gěi nǐ
 573
 01:06:57,764 --> 01:06:59,807
 婆婆　我还可以在这里待一会吗？
-pópo wǒ hái kěyǐ zài zhèlǐ dài yīhuì ma?
+pópo  wǒ hái kěyǐ zài zhèlǐ dài yīhuì ma?
 
 574
 01:06:59,849 --> 01:07:01,726
@@ -2926,7 +2926,7 @@ nǐ búyào yě bùxíng a
 586
 01:07:56,739 --> 01:07:58,866
 妈妈要是勉强出院　反而更严重了那怎么办
-māmā yàoshì miǎnqiǎng chūyuàn fǎnér gèng yánzhòng le nà zěnmebàn
+māmā yàoshì miǎnqiǎng chūyuàn  fǎnér gèng yánzhòng le nà zěnmebàn
 
 587
 01:07:59,617 --> 01:08:00,827
@@ -2946,7 +2946,7 @@ wǒ búyào!
 590
 01:08:06,874 --> 01:08:09,711
 那妈妈死掉　也没有关系是不是
-nà māmā sǐ diào yě méiyǒu guānxì shìbúshì
+nà māmā sǐ diào  yě méiyǒu guānxì shìbúshì
 
 591
 01:08:09,794 --> 01:08:11,838
@@ -2996,7 +2996,7 @@ dǎqǐjīngshén
 600
 01:09:15,860 --> 01:09:19,906
 你爸爸说他今天　要留在医院过夜
-nǐ bàbà shuō tā jīntiān yào liúzài yīyuàn guòyè
+nǐ bàbà shuō tā jīntiān  yào liúzài yīyuàn guòyè
 
 601
 01:09:20,656 --> 01:09:23,659
@@ -3046,7 +3046,7 @@ nǐ fàngxīn, búyào luàn xiǎng
 610
 01:09:52,772 --> 01:09:57,652
 妳妈妈哪舍得下　妳们这些可爱的孩子
-nǐ māmā nǎ shěde xià nǐmen zhèxiē kěài de háizi
+nǐ māmā nǎ shěde xià  nǐmen zhèxiē kěài de háizi
 
 611
 01:09:57,735 --> 01:10:01,656
@@ -3061,7 +3061,7 @@ zài nǐ bàbà huílái zhīqián
 613
 01:10:03,658 --> 01:10:05,868
 婆婆都会陪着妳的　好不好呀
-pópo dōu huì péi zhe nǐ de hǎobùhǎo ya
+pópo dōu huì péi zhe nǐ de  hǎobùhǎo ya
 
 614
 01:10:47,827 --> 01:10:51,831
@@ -3111,7 +3111,7 @@ yīnwèi tā…
 623
 01:11:17,815 --> 01:11:20,735
 她会不会　跑去妈妈住的医院了
-tā huì búhuì pǎo qù māmā zhù de yīyuàn le
+tā huì búhuì  pǎo qù māmā zhù de yīyuàn le
 
 624
 01:11:20,818 --> 01:11:23,696
@@ -3121,7 +3121,7 @@ qīguóshān yīyuàn qù le ya
 625
 01:11:23,905 --> 01:11:26,741
 可是就连大人也得　走上三个钟头才会到
-kěshì jiù lián dàrén yě dé zǒushàng sāngè zhōngtóu cái huì dào
+kěshì jiù lián dàrén yě dé  zǒushàng sāngè zhōngtóu cái huì dào
 
 626
 01:11:26,824 --> 01:11:28,701
@@ -3131,7 +3131,7 @@ wǒ qù kànkàn
 627
 01:11:29,660 --> 01:11:33,748
 勘太　快点去叫你爸爸回来
-kāntài kuàidiǎn qù jiào nǐ bàbà huílái
+kāntài  kuàidiǎn qù jiào nǐ bàbà huílái
 
 628
 01:11:33,789 --> 01:11:36,834
@@ -3141,7 +3141,7 @@ xiǎoměi bújiàn le
 629
 01:11:44,967 --> 01:11:48,721
 小美真是笨蛋　不知道路又爱乱跑
-xiǎoměi zhēnshì bèndàn bùzhī dàolù yòu ài luànpǎo
+xiǎoměi zhēnshì bèndàn  bùzhī dàolù yòu ài luànpǎo
 
 630
 01:11:55,811 --> 01:11:58,856
@@ -3156,7 +3156,7 @@ dǎjiǎo le, bóbo, qǐngwèn…
 632
 01:12:08,783 --> 01:12:11,744
 您有没有看见束辫子的小女孩　从这条路经过
-nín yǒuméiyǒu kànjiàn shù biànzi de xiǎonǚhái cóng zhè tiáolù jīngguò
+nín yǒuméiyǒu kànjiàn shù biànzi de xiǎonǚhái  cóng zhè tiáolù jīngguò
 
 633
 01:12:11,786 --> 01:12:12,954
@@ -3236,12 +3236,12 @@ liángzi a, nǐ gāngcái yǒuméiyǒu kàndào
 648
 01:13:34,702 --> 01:13:36,746
 我们两个　就是从那个方向来的
-wǒmen liǎnggè jiù shìcóng nàge fāngxiàng lái de
+wǒmen liǎnggè  jiù shìcóng nàge fāngxiàng lái de
 
 649
 01:13:36,829 --> 01:13:39,707
 不过　好像没有看到那样的小孩
-bùguò hǎoxiàng méiyǒu kàndào nàyàng de xiǎohái
+bùguò  hǎoxiàng méiyǒu kàndào nàyàng de xiǎohái
 
 650
 01:13:39,790 --> 01:13:41,917
@@ -3326,12 +3326,12 @@ yídìng shì
 666
 01:14:23,709 --> 01:14:26,796
 刚才有人在神池　发现一只小孩的凉鞋
-gāngcái yǒurén zài shénchí fāxiàn yīzhī xiǎohái de liángxié
+gāngcái yǒurén zài shénchí  fāxiàn yīzhī xiǎohái de liángxié
 
 667
 01:14:33,719 --> 01:14:36,555
 不过还不确定　那就是小美的鞋子
-bùguò hái bù quèdìng nà jiùshì xiǎo měide xiézi
+bùguò hái bù quèdìng  nà jiùshì xiǎo měide xiézi
 
 668
 01:14:53,739 --> 01:14:54,949
@@ -3346,7 +3346,7 @@ nán wǔ ēmítuófó
 670
 01:15:30,943 --> 01:15:34,739
 池那边泥比较深一点　从那边开始啊
-chí nàbiān ní bǐjiào shēn yìdiǎn cóng nàbiān kāishǐ a
+chí nàbiān ní bǐjiào shēn yìdiǎn  cóng nàbiān kāishǐ a
 
 671
 01:15:34,780 --> 01:15:36,699
@@ -3356,7 +3356,7 @@ dìgēn zhúgān gěi wǒ!
 672
 01:15:44,707 --> 01:15:46,917
 喃呒阿弥陀佛　婆婆，小月来了
-nán wǔ ēmítuófó pópo, xiǎoyuè lái le
+nán wǔ ēmítuófó  pópo, xiǎoyuè lái le
 
 673
 01:15:51,756 --> 01:15:53,799
@@ -3381,7 +3381,7 @@ tàihǎole
 677
 01:16:19,784 --> 01:16:22,828
 我还以　这是小美的
-wǒ hái yǐ zhè shì xiǎo měide
+wǒ hái yǐ  zhè shì xiǎo měide
 
 678
 01:16:22,912 --> 01:16:25,790
@@ -3416,7 +3416,7 @@ bùhǎoyìsī a
 684
 01:16:34,799 --> 01:16:37,843
 大家辛苦你们　再回头去找找好了
-dàjiā xīnkǔ nǐmen zài huítóu qù zhǎo zhǎo hǎo le
+dàjiā xīnkǔ nǐmen  zài huítóu qù zhǎo zhǎo hǎo le
 
 685
 01:17:06,789 --> 01:17:07,957
@@ -3536,7 +3536,7 @@ duìbùqǐ
 708
 01:21:34,306 --> 01:21:37,768
 妳是不是想要把粟米　送去医院给妈妈？
-nǐ shìbúshì xiǎngyào bǎ sùmǐ sòng qù yīyuàn gěi māmā?
+nǐ shìbúshì xiǎngyào bǎ sùmǐ  sòng qù yīyuàn gěi māmā?
 
 709
 01:21:45,818 --> 01:21:47,986
@@ -3561,7 +3561,7 @@ duìbùqǐ, zhǐbùguò shì gǎnmào
 713
 01:22:07,047 --> 01:22:09,842
 医院就擅自决定　发电报给家里了
-yīyuàn jiù shànzìjuédìng fādiànbào gěi jiālǐ le
+yīyuàn jiù shànzìjuédìng  fādiànbào gěi jiālǐ le
 
 714
 01:22:09,883 --> 01:22:12,010
@@ -3596,12 +3596,12 @@ xiǎngfú zhīqián zǒngděi chīdiǎn kǔ a
 720
 01:22:23,856 --> 01:22:27,025
 她们表面好像没事　可是心里一定很难过
-tāmen biǎomiàn hǎoxiàng méishì kěshì xīnlǐ yídìng hěn nánguò
+tāmen biǎomiàn hǎoxiàng méishì  kěshì xīnlǐ yídìng hěn nánguò
 
 721
 01:22:27,776 --> 01:22:30,863
 小月越是懂事　就越教人于心不忍
-xiǎoyuè yuèshì dǒngshì jiù yuè jiàorén yúxīnbùrěn
+xiǎoyuè yuèshì dǒngshì  jiù yuè jiàorén yúxīnbùrěn
 
 722
 01:22:31,780 --> 01:22:33,031

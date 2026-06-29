@@ -196,7 +196,10 @@ def get_cmn_text_romanized(text: str) -> str:
                 continue
             if section.isspace():
                 if line_output:
-                    pending_separator = " "
+                    if "\u3000" in section:
+                        pending_separator = "  "
+                    else:
+                        pending_separator = " "
                 continue
 
             romanized_section = _get_cmn_section_romanized(
