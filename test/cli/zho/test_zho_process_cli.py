@@ -32,11 +32,7 @@ from test.helpers import assert_series_equal, parametrize, test_data_root
         ),
     ],
 )
-def test_zho_process_cli(
-    input_path: str,
-    args: str,
-    expected_path: str,
-):
+def test_zho_process_cli(input_path: str, args: str, expected_path: str):
     """Test standard Chinese processing CLI with file arguments.
 
     Arguments:

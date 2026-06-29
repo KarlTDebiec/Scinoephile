@@ -36,11 +36,7 @@ class ArgsCaptureCli(CommandLineInterface):
         parser.add_argument("--name", type=str, required=True)
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        name: str,
-    ):
+    def _main(cls, *, name: str):
         """Execute test CLI."""
         cls.captured["name"] = name
 
@@ -59,11 +55,7 @@ class RequiredArgCli(CommandLineInterface):
         parser.add_argument("--name", required=True)
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        name: str,
-    ):
+    def _main(cls, *, name: str):
         """Execute test CLI."""
 
 
@@ -260,9 +252,7 @@ def test_run_cli_with_args_quoted_values():
     assert ArgsCaptureCli.captured.get("name") == "value with spaces"
 
 
-def test_assert_cli_usage_failure_reports_streams(
-    monkeypatch: MonkeyPatch,
-):
+def test_assert_cli_usage_failure_reports_streams(monkeypatch: MonkeyPatch):
     """Test CLI usage assertion failures include expected and actual streams.
 
     Arguments:
