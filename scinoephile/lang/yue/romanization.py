@@ -159,10 +159,7 @@ def get_yue_text_romanized(text: str) -> str:
                 continue
             if section.isspace():
                 if line_output:
-                    if "\u3000" in section:
-                        pending_separator = "  "
-                    else:
-                        pending_separator = " "
+                    pending_separator = " "
                 continue
 
             romanized_section = _get_yue_section_romanized(

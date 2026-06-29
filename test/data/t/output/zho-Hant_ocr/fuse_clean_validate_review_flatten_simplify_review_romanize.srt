@@ -391,17 +391,17 @@ huò jīnglǐ!
 79
 00:08:42,458 --> 00:08:45,833
 恋一生　差一些　不可一起
-liàn yīshēng  chà yīxiē  bùkě yìqǐ
+liàn yīshēng chà yīxiē bùkě yìqǐ
 
 80
 00:08:45,833 --> 00:08:54,833
 只一心　等一天　日月如飞　却等不到你
-zhǐ yīxīn  děng yītiān  rìyuè rúfēi  què děng búdào nǐ
+zhǐ yīxīn děng yītiān rìyuè rúfēi què děng búdào nǐ
 
 81
 00:08:54,833 --> 00:09:04,167
 愿忘记　又想起你
-yuàn wàngjì  yòu xiǎngqǐ nǐ
+yuàn wàngjì yòu xiǎngqǐ nǐ
 
 82
 00:09:06,250 --> 00:09:07,958
@@ -1201,7 +1201,7 @@ wèi! nǐ gāng búshì qù cèsuǒ ma?
 241
 00:19:26,542 --> 00:19:28,375
 不要吐　　饭是冷的！
-búyào tǔ  fàn shì lěng de!
+búyào tǔ fàn shì lěng de!
 
 242
 00:19:28,375 --> 00:19:29,458
@@ -1211,17 +1211,17 @@ nǐ shāo děng wǒ yīxià
 243
 00:19:29,458 --> 00:19:30,958
 不好意思，饭是冷的吗？　　我要茶！
-bùhǎoyìsī, fàn shì lěng de ma?  wǒyào chá!
+bùhǎoyìsī, fàn shì lěng de ma? wǒyào chá!
 
 244
 00:19:30,958 --> 00:19:32,458
 快点　　小姐，麻烦你告诉我⋯
-kuàidiǎn  xiǎojiě, máfán nǐ gàosù wǒ…
+kuàidiǎn xiǎojiě, máfán nǐ gàosù wǒ…
 
 245
 00:19:32,458 --> 00:19:34,625
 我要茶！　　等我一下，我带你去
-wǒyào chá!  děng wǒ yīxià, wǒ dàinǐqù
+wǒyào chá! děng wǒ yīxià, wǒ dàinǐqù
 
 246
 00:19:34,625 --> 00:19:35,542
@@ -1631,7 +1631,7 @@ shénme shì?
 327
 00:24:57,417 --> 00:24:59,083
 有人找你　喂
-yǒurén zhǎo nǐ  wèi
+yǒurén zhǎo nǐ wèi
 
 328
 00:25:01,333 --> 00:25:02,625
@@ -1891,7 +1891,7 @@ kuàidiǎn!
 379
 00:27:36,000 --> 00:27:37,792
 我待会打你屁股　　真乖
-wǒdàihuì dǎ nǐ pìgǔ  zhēnguāi
+wǒdàihuì dǎ nǐ pìgǔ zhēnguāi
 
 380
 00:27:38,750 --> 00:27:40,625
@@ -2244,7 +2244,7 @@ fàngxīn, tāmen liǎ huì gǎodìng
 450
 00:31:26,667 --> 00:31:28,167
 快点　　甚么事？
-kuàidiǎn  shénme shì?
+kuàidiǎn shénme shì?
 
 451
 00:31:28,375 --> 00:31:30,167
@@ -2354,7 +2354,7 @@ nàtiān pǎo yèmǎ, huì yǒu hǎoduō rén, gǎodìng zhīhòu…
 472
 00:32:45,125 --> 00:32:47,375
 赚不了钱！　　记得要跟紧我
-zhuàn bùliǎo qián!  jìde yào gēn jǐn wǒ
+zhuàn bùliǎo qián! jìde yào gēn jǐn wǒ
 
 473
 00:32:48,875 --> 00:32:50,000
@@ -5909,7 +5909,7 @@ jīntiān zhēnde bǐjiàománg yìdiǎn
 1183
 01:32:10,083 --> 01:32:11,292
 喂　　这边请
-wèi  zhèbiān qǐng
+wèi zhèbiān qǐng
 
 1184
 01:32:11,292 --> 01:32:12,792
@@ -5924,7 +5924,7 @@ shāo děng wǒ yīxià
 1186
 01:32:14,125 --> 01:32:15,792
 不好意思，饭是冷的吗？　　我要茶！
-bùhǎoyìsī, fàn shì lěng de ma?  wǒyào chá!
+bùhǎoyìsī, fàn shì lěng de ma? wǒyào chá!
 
 1187
 01:32:15,792 --> 01:32:17,000
@@ -5934,12 +5934,12 @@ hǎo, děng wǒ yīxià, wǒ bāng nǐ huàn guò
 1188
 01:32:17,000 --> 01:32:18,458
 快！　　小姐，你告诉我，我自己去找吧
-kuài!  xiǎojiě, nǐ gàosù wǒ, wǒ zìjǐ qù zhǎo ba
+kuài! xiǎojiě, nǐ gàosù wǒ, wǒ zìjǐ qù zhǎo ba
 
 1189
 01:32:18,458 --> 01:32:20,708
 我要茶！　　我带你去，等我一下
-wǒyào chá!  wǒ dàinǐqù, děng wǒ yīxià
+wǒyào chá! wǒ dàinǐqù, děng wǒ yīxià
 
 1190
 01:32:20,708 --> 01:32:21,542
