@@ -12,8 +12,7 @@ from os import getenv
 from pathlib import Path
 from typing import Any
 
-from pytest import fixture, raises, skip
-from pytest import mark as _mark
+from pytest import fixture, mark, raises, skip
 
 from scinoephile.common import CommandLineInterface, package_root
 from scinoephile.common.testing import run_cli_with_args
@@ -21,8 +20,8 @@ from scinoephile.common.testing import run_cli_with_args
 from .series_assertions import assert_series_equal
 from .series_cer_result import SeriesCERResult
 
-parametrize = _mark.parametrize
-skipif = _mark.skipif
+parametrize = mark.parametrize
+skipif = mark.skipif
 __all__ = [
     "SeriesCERResult",
     "assert_cli_help",
