@@ -14,10 +14,10 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
-from test.helpers import assert_series_equal, test_data_root
+from test.helpers import assert_series_equal, parametrize, test_data_root
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("input_path", "args", "expected_path"),
     [
         (
@@ -58,7 +58,7 @@ def test_zho_process_cli(
     assert_series_equal(output, expected)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("input_path", "args", "expected_path"),
     [
         (

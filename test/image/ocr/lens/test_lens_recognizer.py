@@ -17,6 +17,7 @@ from PIL import Image
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
 from scinoephile.image.ocr.lens.lens_recognizer import LensRecognizer
+from test.helpers import parametrize
 
 
 class FakeLensApiError(RuntimeError):
@@ -155,7 +156,7 @@ def test_lens_recognizer_rejects_unsupported_languages():
         LensRecognizer(language=cast(Language, "korean"))
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("language", "expected_code"),
     [
         (Language.eng, "en"),

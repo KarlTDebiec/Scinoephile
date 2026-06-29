@@ -22,10 +22,10 @@ from test.data.kob import get_kob_zho_hant_ocr_fusion_test_cases
 from test.data.mlamd import get_mlamd_zho_hans_ocr_fusion_test_cases
 from test.data.mnt import get_mnt_zho_hans_ocr_fusion_test_cases
 from test.data.t import get_t_zho_hans_ocr_fusion_test_cases
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("lens_text", "paddle_text", "expected_text"),
     [
         pytest.param(
@@ -69,7 +69,7 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
     provider.chat_completion.assert_not_called()
 
 
-@pytest.mark.parametrize(
+@parametrize(
     (
         "lens_fixture",
         "paddle_fixture",

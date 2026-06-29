@@ -20,6 +20,7 @@ from scinoephile.core import Language
 from scinoephile.image.ocr.paddle import PaddleRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
 from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
+from test.helpers import parametrize
 
 
 class CountingPaddleRecognizer(PaddleRecognizer):
@@ -235,7 +236,7 @@ def test_paddle_recognizer_rejects_unsupported_languages():
         PaddleRecognizer(language=cast(Language, "korean"))
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("language", "expected_code"),
     [
         (Language.eng, "en"),

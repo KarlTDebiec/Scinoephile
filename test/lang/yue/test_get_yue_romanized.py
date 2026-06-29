@@ -10,10 +10,10 @@ from scinoephile.lang.yue.romanization import (
     get_yue_romanized,
     get_yue_text_romanized,
 )
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture"),
     [
         pytest.param(
@@ -42,7 +42,7 @@ def test_get_yue_romanized(
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("广东话", "gwóng dūng wá"),

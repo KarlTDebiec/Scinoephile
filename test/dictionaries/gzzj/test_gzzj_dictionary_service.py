@@ -12,6 +12,7 @@ import pytest
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.dictionaries.gzzj import GzzjDictionaryService
+from test.helpers import parametrize
 
 
 @pytest.fixture
@@ -52,7 +53,7 @@ def service(database_path: Path, source_json_path: Path) -> GzzjDictionaryServic
     return service
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("query", "expected", "expectation"),
     [
         ("", [], nullcontext()),

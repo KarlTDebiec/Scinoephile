@@ -16,6 +16,7 @@ from scinoephile.common.command_line_interface import (
 )
 from scinoephile.common.testing import run_cli_with_args
 from test import helpers
+from test.helpers import parametrize
 
 
 class ArgsCaptureCli(CommandLineInterface):
@@ -106,7 +107,7 @@ class ReportTool(CommandLineInterface):
         pass
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("cli_cls", "expected_name"),
     [
         (TestCli, "test"),

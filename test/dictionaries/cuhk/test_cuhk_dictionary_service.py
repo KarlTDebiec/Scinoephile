@@ -18,6 +18,7 @@ from scinoephile.core.dictionaries import (
     DictionarySqliteStore,
 )
 from scinoephile.dictionaries.cuhk import CuhkDictionaryService
+from test.helpers import parametrize
 
 
 @pytest.fixture
@@ -96,7 +97,7 @@ def service(
     return CuhkDictionaryService(database_path=database_path)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("query", "expected", "expectation"),
     [
         ("", [], nullcontext()),

@@ -24,6 +24,7 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
 from test.helpers import (
     assert_series_equal,
+    parametrize,
     skip_if_ci,
     test_data_root,
 )
@@ -376,7 +377,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
     assert "--detect-italics may only be used with --language eng" in stderr.getvalue()
 
 
-@pytest.mark.parametrize(
+@parametrize(
     (
         "cli",
         "load_target",
@@ -538,7 +539,7 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
     not getenv("SCINOEPHILE_RUN_MLAMD_PADDLE_OCR"),
     reason="Set SCINOEPHILE_RUN_MLAMD_PADDLE_OCR=1 to run full MLAMD PaddleOCR tests",
 )
-@pytest.mark.parametrize(
+@parametrize(
     (
         "sup_path",
         "language",

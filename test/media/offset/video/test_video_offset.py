@@ -19,6 +19,7 @@ from scinoephile.media.offset.video import (
     _sample_video_frames,
     get_video_offset,
 )
+from test.helpers import parametrize
 
 
 class _VideoOffsetKwargs(TypedDict, total=False):
@@ -403,7 +404,7 @@ def test_sample_video_frames_normalizes_brightness():
     assert samples[1].frame.std() == pytest.approx(1.0)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("kwargs", "message"),
     [
         (

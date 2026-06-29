@@ -15,10 +15,10 @@ from scinoephile.multilang.yue_zho.gapped_translation import (
     get_yue_vs_zho_gapped_translator,
 )
 from test.data.mlamd import get_mlamd_yue_vs_zho_gapped_translation_test_cases
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("yuewen_fixture", "zhongwen_fixture", "expected_fixture", "test_case_loader"),
     [
         pytest.param(

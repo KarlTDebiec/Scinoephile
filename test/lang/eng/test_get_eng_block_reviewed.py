@@ -16,10 +16,10 @@ from scinoephile.lang.eng.block_review import (
 )
 from test.data.kob import get_kob_eng_block_review_test_cases
 from test.data.t import get_t_eng_block_review_test_cases
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture", "test_case_loader"),
     [
         pytest.param(

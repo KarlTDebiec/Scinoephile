@@ -41,6 +41,7 @@ from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
     get_yue_vs_zho_line_reviewer,
 )
+from test.helpers import parametrize
 
 
 class StubDictionaryToolPrompt(DictionaryToolPrompt):
@@ -233,7 +234,7 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     assert "gzzj" in response["error"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("prompt_cls", "factory"),
     [
         (YueGappedTranslationVsZhoPromptYueHans, get_yue_vs_zho_gapped_translator),

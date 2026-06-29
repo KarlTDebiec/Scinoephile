@@ -22,10 +22,10 @@ from test.data.t import (
     get_t_zho_hant_block_review_test_cases,
     get_t_zho_hant_simplify_block_review_test_cases,
 )
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture", "test_case_loader", "prompt_cls"),
     [
         pytest.param(

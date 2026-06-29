@@ -26,9 +26,10 @@ from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCl
 from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "cli",
     [
         EngProcessCli,

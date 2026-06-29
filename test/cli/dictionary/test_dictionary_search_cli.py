@@ -24,6 +24,7 @@ from scinoephile.core.dictionaries import (
     DictionarySource,
     DictionarySqliteStore,
 )
+from test.helpers import parametrize
 
 
 @pytest.fixture(scope="module")
@@ -121,7 +122,7 @@ def dictionary_database_dir_path() -> Generator[Path]:
         yield dir_path
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("query", "expected_output", "expectation"),
     [
         ("山坑", "山坑", nullcontext()),

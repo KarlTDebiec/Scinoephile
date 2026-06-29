@@ -14,10 +14,10 @@ from scinoephile.lang.zho.script.conversion import (
     get_zho_converter,
     get_zho_text_converted,
 )
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "config", "expected"),
     [
         ("台臺", OpenCCConfig.s2t, "台臺"),
@@ -57,7 +57,7 @@ def test_get_zho_text_converted_applies_exclusions(
     assert get_zho_text_converted(text, config) == expected
 
 
-@pytest.mark.parametrize("text", sorted(S2T_EXCLUSIONS))
+@parametrize("text", sorted(S2T_EXCLUSIONS))
 def test_s2t_exclusions_are_raw_opencc_changes(text: str):
     """Test every simplified-to-traditional exclusion changes under raw OpenCC.
 
@@ -68,7 +68,7 @@ def test_s2t_exclusions_are_raw_opencc_changes(text: str):
     assert converted_text != text
 
 
-@pytest.mark.parametrize("text", sorted(T2S_EXCLUSIONS))
+@parametrize("text", sorted(T2S_EXCLUSIONS))
 def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     """Test every traditional-to-simplified exclusion changes under raw OpenCC.
 
@@ -79,7 +79,7 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     assert converted_text != text
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture"),
     [
         pytest.param(
@@ -119,7 +119,7 @@ def test_get_zho_converted(
     )
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "config", "expected"),
     [
         ("繁體中文", OpenCCConfig.t2s, "繁体中文"),

@@ -10,7 +10,7 @@ import pytest
 
 from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
 from scinoephile.core.subtitles import Series, Subtitle
-from test.helpers import SeriesCERResult
+from test.helpers import SeriesCERResult, parametrize
 
 
 def _get_series(*texts: str) -> Series:
@@ -29,7 +29,7 @@ def _get_series(*texts: str) -> Series:
     )
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("reference", "candidate", "expected"),
     [
         (
@@ -164,7 +164,7 @@ def test_line_cer(
     assert result.reference_length == expected.reference_length
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("reference", "candidate"),
     [
         (_get_series("你", "好"), _get_series("你好")),
@@ -184,7 +184,7 @@ def test_series_cer_ignores_separator_only_line_wrapping(
     assert result.deletions == 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     (
         "reference_series_fixture_name",
         "candidate_series_fixture_name",

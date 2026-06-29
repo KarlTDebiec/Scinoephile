@@ -14,9 +14,10 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
         pytest.param(
@@ -54,7 +55,7 @@ def test_load_sup(
         assert event.img.size[1] > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
         pytest.param(

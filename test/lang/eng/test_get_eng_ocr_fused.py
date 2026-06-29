@@ -16,10 +16,10 @@ from test.data.kob import get_kob_eng_ocr_fusion_test_cases
 from test.data.mlamd import get_mlamd_eng_ocr_fusion_test_cases
 from test.data.mnt import get_mnt_eng_ocr_fusion_test_cases
 from test.data.t import get_t_eng_ocr_fusion_test_cases
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("lens_fixture", "tesseract_fixture", "expected_fixture", "test_case_loader"),
     [
         pytest.param(
