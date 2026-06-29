@@ -9,14 +9,13 @@ from collections import defaultdict
 from functools import cache
 from pathlib import Path
 
-REPO_DIR_PATH = Path(__file__).resolve().parents[1]
-PACKAGE_DIR_PATH = REPO_DIR_PATH / "scinoephile"
+from scinoephile.common import package_root
 
 
 def test_module_hierarchy_docs_match_imports():
     """Test package hierarchy docs match the compact import hierarchy."""
     violations: list[str] = []
-    for init_path in sorted(PACKAGE_DIR_PATH.rglob("__init__.py")):
+    for init_path in sorted(package_root.rglob("__init__.py")):
         package_dir_path = init_path.parent
         child_names = get_child_names(package_dir_path)
         if len(child_names) < 2:
@@ -26,7 +25,7 @@ def test_module_hierarchy_docs_match_imports():
         documented_levels = get_documented_levels(init_path)
         if documented_levels is None:
             violations.append(
-                f"{init_path.relative_to(REPO_DIR_PATH)}: missing hierarchy block"
+                f"{init_path.relative_to(package_root.parent)}: missing hierarchy block"
             )
             continue
 
@@ -64,7 +63,8 @@ def test_module_hierarchy_docs_match_imports():
         expected_levels = get_compact_levels(edges)
         if documented_levels != expected_levels:
             violations.append(
-                f"{init_path.relative_to(REPO_DIR_PATH)}: hierarchy is not compact\n"
+                f"{init_path.relative_to(package_root.parent)}: "
+                "hierarchy is not compact\n"
                 f"  documented: {format_levels(documented_levels)}\n"
                 f"  expected:   {format_levels(expected_levels)}"
             )
@@ -78,7 +78,7 @@ def test_resolve_import_from_modules_includes_absolute_package_aliases():
     assert isinstance(node, ast.ImportFrom)
 
     imported_modules = resolve_import_from_modules(
-        file_path=REPO_DIR_PATH / "scinoephile/core/cache/operations.py",
+        file_path=package_root / "core/cache/operations.py",
         node=node,
         root_package_parts=["scinoephile", "core"],
     )
@@ -96,7 +96,7 @@ def test_resolve_import_from_modules_includes_relative_package_aliases():
     assert isinstance(node, ast.ImportFrom)
 
     imported_modules = resolve_import_from_modules(
-        file_path=REPO_DIR_PATH / "scinoephile/core/cache/cache_entry.py",
+        file_path=package_root / "core/cache/cache_entry.py",
         node=node,
         root_package_parts=["scinoephile", "core", "cache"],
     )
@@ -134,7 +134,7 @@ def get_package_dotted(package_dir_path: Path) -> str:
     Returns:
         dotted package name
     """
-    return ".".join(package_dir_path.relative_to(REPO_DIR_PATH).parts)
+    return ".".join(package_dir_path.relative_to(package_root.parent).parts)
 
 
 def get_documented_levels(init_path: Path) -> dict[int, list[str]] | None:
@@ -223,17 +223,20 @@ def get_documented_level_violations(
     violations: list[str] = []
     if duplicate_names:
         violations.append(
-            f"{init_path.relative_to(REPO_DIR_PATH)}: duplicated hierarchy entries: "
+            f"{init_path.relative_to(package_root.parent)}: "
+            "duplicated hierarchy entries: "
             f"{', '.join(duplicate_names)}"
         )
     if missing_names:
         violations.append(
-            f"{init_path.relative_to(REPO_DIR_PATH)}: missing hierarchy entries: "
+            f"{init_path.relative_to(package_root.parent)}: "
+            "missing hierarchy entries: "
             f"{', '.join(missing_names)}"
         )
     if extra_names:
         violations.append(
-            f"{init_path.relative_to(REPO_DIR_PATH)}: unknown hierarchy entries: "
+            f"{init_path.relative_to(package_root.parent)}: "
+            "unknown hierarchy entries: "
             f"{', '.join(extra_names)}"
         )
     return violations
@@ -351,7 +354,7 @@ def get_file_package_parts(file_path: Path) -> list[str]:
     Returns:
         package name parts
     """
-    relative_path = file_path.relative_to(REPO_DIR_PATH)
+    relative_path = file_path.relative_to(package_root.parent)
     if file_path.name == "__init__.py":
         return list(relative_path.parent.parts)
     return list(relative_path.parent.parts)
@@ -378,7 +381,7 @@ def get_import_order_violations(
             imported_level = documented_level_by_child[imported_name]
             if importer_level <= imported_level:
                 violations.append(
-                    f"{init_path.relative_to(REPO_DIR_PATH)}: "
+                    f"{init_path.relative_to(package_root.parent)}: "
                     f"{importer_name} imports {imported_name}, but "
                     f"{importer_name} is level {importer_level} and "
                     f"{imported_name} is level {imported_level}"
@@ -425,7 +428,8 @@ def get_cycle_violations(init_path: Path, edges: dict[str, set[str]]) -> list[st
             visit(child_name)
 
     return [
-        f"{init_path.relative_to(REPO_DIR_PATH)}: import cycle: {' -> '.join(cycle)}"
+        f"{init_path.relative_to(package_root.parent)}: "
+        f"import cycle: {' -> '.join(cycle)}"
         for cycle in sorted(cycles)
     ]
 
