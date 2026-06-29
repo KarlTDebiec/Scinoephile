@@ -88,9 +88,24 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
             id="kob-zho-hant",
         ),
         param(
+            "mlamd_zho_hant_fuse_clean_validate_review_flatten",
+            "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify",
+            id="mlamd-zho-hant",
+        ),
+        param(
+            "mnt_zho_hant_fuse_clean_validate_review_flatten",
+            "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify",
+            id="mnt-zho-hant",
+        ),
+        param(
             "t_zho_hant_fuse_clean_validate_review_flatten",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
             id="t-zho-hant",
+        ),
+        param(
+            "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten",
+            "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="tmm-zho-hant",
         ),
     ],
 )

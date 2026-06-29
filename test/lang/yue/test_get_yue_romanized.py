@@ -17,9 +17,39 @@ from test.helpers import assert_series_equal, parametrize
     ("series_fixture", "expected_fixture"),
     [
         param(
+            "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize",
+            id="acopopb-yue-hans",
+        ),
+        param(
+            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
+            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
+            id="acopopb-yue-hant",
+        ),
+        param(
+            "acoptc_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize",
+            id="acoptc-yue-hans",
+        ),
+        param(
+            "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
+            "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
+            id="acoptc-yue-hant",
+        ),
+        param(
             "kob_yue_hans_timewarp_clean_flatten",
             "kob_yue_hans_timewarp_clean_flatten_romanize",
             id="kob-yue-hans",
+        ),
+        param(
+            "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize",
+            id="tmm-yue-hans",
+        ),
+        param(
+            "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
+            "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
+            id="tmm-yue-hant",
         ),
     ],
 )

@@ -44,9 +44,44 @@ def test_get_eng_text_cleaned(
     ("series_fixture", "expected_fixture"),
     [
         param(
+            "acopopb_eng_ocr_tesseract",
+            "acopopb_eng_ocr_tesseract_clean",
+            id="acopopb-eng-tesseract",
+        ),
+        param(
+            "acoptc_eng_ocr_fuse",
+            "acoptc_eng_ocr_fuse_clean",
+            id="acoptc-eng-fuse",
+        ),
+        param(
+            "acoptc_eng_ocr_lens",
+            "acoptc_eng_ocr_lens_clean",
+            id="acoptc-eng-lens",
+        ),
+        param(
+            "acoptc_eng_ocr_tesseract",
+            "acoptc_eng_ocr_tesseract_clean",
+            id="acoptc-eng-tesseract",
+        ),
+        param(
             "kob_eng_ocr_fuse",
             "kob_eng_ocr_fuse_clean",
             id="kob-eng-fuse",
+        ),
+        param(
+            "kob_eng_ocr_lens",
+            "kob_eng_ocr_lens_clean",
+            id="kob-eng-lens",
+        ),
+        param(
+            "kob_eng_ocr_tesseract",
+            "kob_eng_ocr_tesseract_clean",
+            id="kob-eng-tesseract",
+        ),
+        param(
+            "kob_eng_timewarp",
+            "kob_eng_timewarp_clean",
+            id="kob-eng-timewarp",
         ),
         param(
             "mlamd_eng_fuse",
@@ -54,9 +89,24 @@ def test_get_eng_text_cleaned(
             id="mlamd-eng-fuse",
         ),
         param(
+            "mlamd_eng_ocr_lens",
+            "mlamd_eng_ocr_lens_clean",
+            id="mlamd-eng-lens",
+        ),
+        param(
             "mnt_eng_fuse",
             "mnt_eng_fuse_clean",
             id="mnt-eng-fuse",
+        ),
+        param(
+            "mnt_eng_ocr_lens",
+            "mnt_eng_ocr_lens_clean",
+            id="mnt-eng-lens",
+        ),
+        param(
+            "mnt_eng_ocr_tesseract",
+            "mnt_eng_ocr_tesseract_clean",
+            id="mnt-eng-tesseract",
         ),
         param(
             "t_eng_fuse",
@@ -72,6 +122,21 @@ def test_get_eng_text_cleaned(
             "t_eng_ocr_tesseract",
             "t_eng_ocr_tesseract_clean",
             id="t-eng-tesseract",
+        ),
+        param(
+            "tmm_eng_ocr_fuse",
+            "tmm_eng_ocr_fuse_clean",
+            id="tmm-eng-fuse",
+        ),
+        param(
+            "tmm_eng_ocr_lens",
+            "tmm_eng_ocr_lens_clean",
+            id="tmm-eng-lens",
+        ),
+        param(
+            "tmm_eng_ocr_tesseract",
+            "tmm_eng_ocr_tesseract_clean",
+            id="tmm-eng-tesseract",
         ),
     ],
 )
