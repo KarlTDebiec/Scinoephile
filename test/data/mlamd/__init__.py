@@ -575,8 +575,7 @@ def mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539(
 def mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
     """MLAMD 简体中文 fused/cleaned/validated/reviewed/flattened romanized subs."""
     return Series.load(
-        output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt",
-        keep_unknown_html_tags=True,
+        output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
 
 
@@ -674,8 +673,7 @@ def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize()
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
-        / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt",
-        keep_unknown_html_tags=True,
+        / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
     )
 
 

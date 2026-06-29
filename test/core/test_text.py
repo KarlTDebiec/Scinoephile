@@ -43,7 +43,7 @@ def test_full_to_half_punc_includes_cjk_aliases(
     full_punc: str,
     half_punc: str,
 ) -> None:
-    """CJK punctuation aliases are mapped to romanized punctuation forms."""
+    """CJK punctuation aliases are mapped to half-width forms."""
     assert FULL_TO_HALF_PUNC[full_punc] == half_punc
 
 
