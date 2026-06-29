@@ -7,9 +7,9 @@ from __future__ import annotations
 from io import BytesIO
 from pathlib import Path
 
-from pytest import MonkeyPatch
 from flask import Flask
 from PIL import Image
+from pytest import MonkeyPatch
 
 from scinoephile.image.bbox import Bbox
 from scinoephile.web.ocr_validation.app import create_app
@@ -598,4 +598,3 @@ def _session(
         make_ocr_html_dir(tmp_path, text=text),
         include_done_subtitles=include_done_subtitles,
     )
-

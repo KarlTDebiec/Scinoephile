@@ -206,4 +206,3 @@ def test_ocr_validate_cli_web_delegates_image_dir_validation(
 
     captured = capsys.readouterr()
     assert "session checked OCR image directory" in captured.err
-

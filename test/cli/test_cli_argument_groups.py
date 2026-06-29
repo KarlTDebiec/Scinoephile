@@ -209,4 +209,3 @@ def _get_action_group_title(cli: type[CommandLineInterface], option: str) -> str
                 return group.title
             break
     raise AssertionError(f"{option} is not assigned to an argument group")
-

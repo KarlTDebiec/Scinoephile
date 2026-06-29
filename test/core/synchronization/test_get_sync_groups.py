@@ -84,4 +84,3 @@ def test_get_sync_groups_sorts_unpaired_groups_by_timing():
         ([1], []),
         ([2], [2]),
     ]
-

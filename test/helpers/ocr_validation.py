@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import MonkeyPatch
 from PIL import Image
+from pytest import MonkeyPatch
 
 from scinoephile.image.bbox import Bbox
 from scinoephile.web.ocr_validation.session import OcrValidationSession
@@ -189,4 +189,3 @@ def _write_html_index(
         ),
         encoding="utf-8",
     )
-

@@ -8,8 +8,8 @@ import json
 from collections.abc import Generator
 from pathlib import Path
 
-from pytest import fixture, MonkeyPatch, raises
 import requests
+from pytest import MonkeyPatch, fixture, raises
 
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.dictionaries.wiktionary import WiktionaryDictionaryService
@@ -305,4 +305,3 @@ def test_build_raises_on_download_error(
 
     with raises(requests.RequestException, match="network down"):
         service.build(overwrite=True)
-

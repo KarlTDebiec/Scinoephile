@@ -59,4 +59,3 @@ def test_get_yue_text_romanized(text: str, expected: str):
         expected: Expected romanization
     """
     assert get_yue_text_romanized(text) == expected
-

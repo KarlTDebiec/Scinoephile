@@ -111,4 +111,3 @@ def test_subtitle_stream_rejects_unknown_codec():
 
     with raises(ScinoephileError, match="Unsupported subtitle codec unknown"):
         stream.extension
-

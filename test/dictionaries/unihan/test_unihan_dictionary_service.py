@@ -8,8 +8,8 @@ from collections.abc import Generator
 from pathlib import Path
 from types import TracebackType
 
-from pytest import fixture, MonkeyPatch, raises
 import requests
+from pytest import MonkeyPatch, fixture, raises
 
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.dictionaries.unihan import UnihanDictionaryService
@@ -271,4 +271,3 @@ def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
 
     with raises(FileNotFoundError, match="Unihan_Readings.txt"):
         service._download_and_extract_to_runtime()
-

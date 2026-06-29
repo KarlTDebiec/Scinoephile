@@ -189,4 +189,3 @@ def test_sqlite_store_collapses_duplicate_entries_and_definitions(
             definitions=[definition],
         )
     ]
-

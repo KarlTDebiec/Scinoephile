@@ -83,4 +83,3 @@ def test_get_eng_ocr_fused(
     assert len(lens) == len(output)
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
     provider.chat_completion.assert_not_called()
-

@@ -208,4 +208,3 @@ def test_get_sync_overlap_matrix_one_empty_series():
     # Empty series two should return empty matrix
     overlap = get_sync_overlap_matrix(one, two)
     assert overlap.shape == (1, 0)
-

@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from typing import cast
 
-from pytest import raises
 from pysubs2 import SSAFile
+from pytest import raises
 
 from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import assert_series_equal
@@ -65,4 +65,3 @@ def test_assert_series_equal_rejects_non_series_expected():
         assert_series_equal(actual, cast(SSAFile, expected))
 
     assert str(excinfo.value) == "expected is not a subtitle series: list"
-

@@ -53,4 +53,3 @@ def test_val_executable_returns_absolute_path():
     """Test that returned path is absolute."""
     result = val_executable("python3")
     assert result.is_absolute()
-

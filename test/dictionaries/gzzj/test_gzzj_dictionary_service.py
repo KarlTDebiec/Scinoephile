@@ -89,4 +89,3 @@ def test_build_normalizes_list_valued_headwords(service: GzzjDictionaryService):
     assert [entry.traditional for entry in entries] == ["仇", "仇"]
     assert [entry.simplified for entry in entries] == ["仇", "仇"]
     assert [entry.pinyin for entry in entries] == ["chou2", "chou2"]
-

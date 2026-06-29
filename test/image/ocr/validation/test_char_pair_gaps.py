@@ -92,4 +92,3 @@ def test_save_char_pair_gaps_rejects_nonmonotonic_cutoffs(tmp_path: Path):
         save_char_pair_gaps({("⋯", "〝"): (46, 24, 90, 200)}, file_path)
 
     assert not file_path.exists()
-

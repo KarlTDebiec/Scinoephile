@@ -59,4 +59,3 @@ def test_eng_translate_from_yue_cli_rejects_gapped_and_guide_together():
             f"--eng-gapped-infile {eng_input_path} "
             f"--eng-guide-infile {eng_input_path}",
         )
-

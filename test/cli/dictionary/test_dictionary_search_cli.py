@@ -266,4 +266,3 @@ def _quote_cli_arg(value: str) -> str:
     if system() == "Windows":
         return list2cmdline([value])
     return quote(value)
-

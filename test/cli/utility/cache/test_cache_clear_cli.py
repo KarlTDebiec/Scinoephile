@@ -114,4 +114,3 @@ def _write_cache_file(path: Path) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("{}", encoding="utf-8")
     return path
-

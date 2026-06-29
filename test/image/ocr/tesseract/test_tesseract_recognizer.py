@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import MonkeyPatch, raises
 import requests
 from PIL import Image
+from pytest import MonkeyPatch, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import TesseractRecognizer
@@ -590,4 +590,3 @@ def test_tesseract_raises_and_does_not_cache_when_output_is_missing(
         recognizer.recognize_image(Image.new("RGBA", (2, 2)))
 
     assert list(tmp_path.glob("*.json")) == []
-

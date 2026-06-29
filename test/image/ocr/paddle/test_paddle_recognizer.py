@@ -12,8 +12,8 @@ from types import ModuleType
 from typing import Any, cast
 
 import numpy as np
-from pytest import MonkeyPatch, raises
 from PIL import Image
+from pytest import MonkeyPatch, raises
 
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
@@ -342,4 +342,3 @@ def _result(text: str, left: float, top: float) -> PaddleOcrTextResult:
             bottom_left=(left, top + 20),
         ),
     )
-

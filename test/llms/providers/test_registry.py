@@ -166,4 +166,3 @@ class _LocalizedDummyProvider(_DummyProvider):
         "zh-hant": "本地化測試提供商。",
     }
     """Provider description translations keyed by locale."""
-

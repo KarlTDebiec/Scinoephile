@@ -9,8 +9,8 @@ from collections.abc import Mapping, Sequence
 from unittest.mock import Mock, patch
 
 import numpy as np
-from pytest import importorskip, MonkeyPatch, raises
 from pydub import AudioSegment
+from pytest import MonkeyPatch, importorskip, raises
 
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 
@@ -94,4 +94,3 @@ def test_separate_vocals_uses_default_demucs_shifts():
     assert output_audio.frame_rate == input_audio.frame_rate
     assert len(apply_model_kwargs) == 1
     assert "shifts" not in apply_model_kwargs[0]
-

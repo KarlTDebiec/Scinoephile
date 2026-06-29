@@ -42,4 +42,3 @@ def test_parse_csv_str_list_values():
 def test_parse_csv_str_list_whitespace():
     """Test parsing of whitespace-only string list."""
     assert parse_csv_str_list("   ") == []
-

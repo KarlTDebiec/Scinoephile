@@ -124,4 +124,3 @@ def test_multi_diff_cli_rejects_old_one_two_flags(tmp_path: Path):
             f"--one-infile {reference_infile_path} "
             f"--two-infile {candidate_infile_path}",
         )
-

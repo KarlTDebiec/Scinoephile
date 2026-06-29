@@ -730,4 +730,3 @@ def kob_zho_hant_ocr_paddle() -> Series:
 def kob_zho_hant_ocr_paddle_clean() -> Series:
     """KOB 繁体中文 PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
-

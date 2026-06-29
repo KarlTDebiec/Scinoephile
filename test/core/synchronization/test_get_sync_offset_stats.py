@@ -88,4 +88,3 @@ def test_get_sync_offset_stats_raises_when_no_paired_groups():
 
     with raises(ScinoephileError, match="No paired sync groups"):
         get_sync_offset_stats(anchor, mobile)
-

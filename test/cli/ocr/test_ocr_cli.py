@@ -9,6 +9,7 @@ from io import StringIO
 from os import getenv
 from pathlib import Path
 
+import pytest
 from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.ocr import (
@@ -590,4 +591,3 @@ def test_ocr_paddle_cli_matches_mlamd_sup_ocr_fixtures(
         expected = Series.load(full_expected_path)
 
     assert_series_equal(output, expected)
-

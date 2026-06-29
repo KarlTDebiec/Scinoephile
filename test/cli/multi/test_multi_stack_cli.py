@@ -106,4 +106,3 @@ def test_multi_stack_cli_rejects_invalid_tuning_options(
 
     assert excinfo.value.code == 2
     assert expected_error in stderr.getvalue()
-

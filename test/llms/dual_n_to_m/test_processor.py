@@ -81,4 +81,3 @@ def test_process_rejects_negative_stop_at_idx():
 
     with raises(ValueError, match="stop_at_idx"):
         processor.process(source_one, source_two, stop_at_idx=-1)
-

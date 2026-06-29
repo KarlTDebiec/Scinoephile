@@ -57,4 +57,3 @@ def test_zho_translate_from_eng_cli_rejects_gapped_and_guide_together():
             f"--zho-gapped-infile {zho_input_path} "
             f"--zho-guide-infile {zho_input_path}",
         )
-

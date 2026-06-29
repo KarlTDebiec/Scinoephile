@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import MonkeyPatch, skip
 import requests
+from pytest import MonkeyPatch, skip
 
 from scinoephile.cli.dictionary.build.dictionary_build_cuhk_cli import (
     DictionaryBuildCuhkCli,
@@ -110,4 +110,3 @@ def test_dictionary_build_cuhk_cli():
                 skip(f"CUHK build test requires network access: {exc}")
 
             assert database_path.exists()
-

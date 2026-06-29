@@ -169,4 +169,3 @@ def test_output_dir_arg_without_create_rejects_file_ancestor(tmp_path: Path):
 
     with raises(ArgumentTypeError, match="is not a directory"):
         validator(str(test_dir))
-

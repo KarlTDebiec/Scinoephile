@@ -174,4 +174,3 @@ def test_get_stacked_series(
         request.getfixturevalue(two_fixture),
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
-

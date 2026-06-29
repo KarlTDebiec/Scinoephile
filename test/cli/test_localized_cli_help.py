@@ -336,4 +336,3 @@ def _is_translatable_help_text(text: str) -> bool:
     return any(
         character.isascii() and character.isalpha() for character in text
     ) and not any("\u4e00" <= character <= "\u9fff" for character in text)
-

@@ -77,4 +77,3 @@ def test_get_media_subtitle_stream_wraps_probe_errors(tmp_path: Path):
         get_media_subtitle_stream(infile_path, 5)
 
     assert isinstance(excinfo.value.__cause__, RuntimeError)
-

@@ -70,4 +70,3 @@ def test_sanitize_text_replaces_control_chars(text: str, expected: str) -> None:
 def test_sanitize_text_preserves_text_whitespace(text: str, expected: str) -> None:
     """Line and tab whitespace are preserved."""
     assert sanitize_text(text) == expected
-

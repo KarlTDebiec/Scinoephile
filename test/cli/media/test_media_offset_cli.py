@@ -224,4 +224,3 @@ def test_media_offset_cli_rejects_zero_positive_arguments(
         )
 
     assert "is less than minimum value" in capsys.readouterr().err
-

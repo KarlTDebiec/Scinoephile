@@ -75,4 +75,3 @@ def test_add_cache_dir_arg_rejects_existing_file(tmp_path: Path):
         parser.parse_args(["--cache-dir", str(cache_file_path)])
 
     assert excinfo.value.code == 2
-

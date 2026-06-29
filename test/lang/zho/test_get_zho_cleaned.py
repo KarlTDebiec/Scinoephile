@@ -89,4 +89,3 @@ def test_get_zho_cleaned(
         remove_empty=False,
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
-

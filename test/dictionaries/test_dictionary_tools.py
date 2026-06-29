@@ -253,4 +253,3 @@ def test_processors_use_prompt_dictionary_tooling(
         prompt_cls.dictionary_tool_name
     ]
     assert processor.queryer.tool_box.handler_names == [prompt_cls.dictionary_tool_name]
-

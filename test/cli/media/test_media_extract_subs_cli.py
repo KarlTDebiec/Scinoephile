@@ -108,4 +108,3 @@ def test_media_extract_subs_cli_requires_output_dir(tmp_path: Path):
         run_cli_with_args(MediaExtractSubsCli, f"--infile {infile_path}")
 
     assert excinfo.value.code == 2
-

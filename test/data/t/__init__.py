@@ -508,4 +508,3 @@ def t_zho_simplify_expected_series_diff() -> list[str]:
         "edit: SIMP[1148] -> TRAD[1148]: '现在位置在投诉大厦楼下' -> '现在位置在投诉人大厦楼下'",
         "edit: SIMP[1149] -> TRAD[1149]: '这里水静鹅飞，什么人也没有，完毕' -> '这里鸦雀无声，甚么人也没有，完毕'",
     ]
-

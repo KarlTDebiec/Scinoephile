@@ -282,4 +282,3 @@ def test_assert_cli_usage_failure_reports_streams(
     assert "usage: intentionally-wrong.py" in message
     assert "Actual stderr:" in message
     assert "Actual stdout:" in message
-

@@ -36,4 +36,3 @@ def test_parse_duration_invalid():
     """Test that invalid durations fail clearly."""
     with raises(ValueError, match="Invalid duration"):
         parse_duration("yesterday")
-

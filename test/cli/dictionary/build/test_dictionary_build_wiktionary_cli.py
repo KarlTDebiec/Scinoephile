@@ -9,8 +9,8 @@ from io import StringIO
 from pathlib import Path
 from typing import Any
 
-from pytest import MonkeyPatch, raises
 import requests
+from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.dictionary.build.dictionary_build_wiktionary_cli import (
     DictionaryBuildWiktionaryCli,
@@ -83,4 +83,3 @@ def test_dictionary_build_wiktionary_exits_cleanly_on_download_error(
 
     assert excinfo.value.code == 1
     assert stdout.getvalue() == ""
-

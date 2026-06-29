@@ -326,4 +326,3 @@ def test_series_diff_get_stacked_str_rejects_non_one_to_one_third_series():
 
     with raises(ScinoephileError, match="one-to-one matched"):
         SeriesDiff(one, two).get_stacked_str(color=False, three=three)
-

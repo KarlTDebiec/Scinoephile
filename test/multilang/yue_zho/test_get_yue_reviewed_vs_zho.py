@@ -64,4 +64,3 @@ def test_get_yue_block_reviewed_vs_zho(
     )
     assert_series_equal(output, expected)
     provider.chat_completion.assert_not_called()
-

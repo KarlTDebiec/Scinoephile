@@ -48,4 +48,3 @@ def test_val_input_file_or_dir_path_resolves_symlink(tmp_path: Path):
     result = val_input_file_or_dir_path(symlink_path)
 
     assert result == file_path.resolve()
-

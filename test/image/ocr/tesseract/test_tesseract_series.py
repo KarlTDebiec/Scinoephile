@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import LogCaptureFixture, MonkeyPatch, raises
 from PIL import Image
+from pytest import LogCaptureFixture, MonkeyPatch, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import (
@@ -201,4 +201,3 @@ def test_ocr_image_series_with_tesseract_wraps_processing_errors(
         ocr_image_series_with_tesseract(image_series)
 
     assert excinfo.value.__cause__ is exception
-

@@ -87,4 +87,3 @@ def test_val_float_applies_iterable_constraints():
         val_float([1.0, 11.0, 3.0], max_value=10.0)
     with raises(TypeError):
         val_float([1.0, "invalid", 3.0])
-

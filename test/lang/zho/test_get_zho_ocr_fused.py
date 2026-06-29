@@ -151,4 +151,3 @@ def test_get_zho_ocr_fused(
     assert len(output) == len(expected)
     assert_series_equal(output, expected)
     provider.chat_completion.assert_not_called()
-

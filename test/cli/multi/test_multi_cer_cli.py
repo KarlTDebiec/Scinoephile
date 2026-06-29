@@ -43,4 +43,3 @@ def test_multi_cer_cli(tmp_path: Path, capsys: CaptureFixture[str]):
     assert "Insertions: 0" in output
     assert "Deletions: 0" in output
     assert "Reference length: 3" in output
-

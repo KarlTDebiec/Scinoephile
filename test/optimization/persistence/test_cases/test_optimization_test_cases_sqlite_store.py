@@ -257,4 +257,3 @@ def test_store_source_path_index(tmp_path: Path):
     store.upsert_table_test_cases(table_name, [tc1, tc2], source_path="s1.json")
     by_s1 = store.get_test_cases_by_source_path(table_name, "s1.json")
     assert {x.test_case_id for x in by_s1} == {"a", "b"}
-

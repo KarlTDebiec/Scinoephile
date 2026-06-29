@@ -98,4 +98,3 @@ def test_llm_provider_arg_rejects_unknown_provider():
     """Test LLM provider argument rejects unknown provider names."""
     with raises(SystemExit, match="2"):
         run_cli_with_args(ZhoProcessCli, "--llm-provider missing-provider")
-

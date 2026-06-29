@@ -74,4 +74,3 @@ def test_val_output_dir_path_expands_environment_variables(
 
     assert val_output_dir_path("$OUTPUT_DIR") == dir_path.resolve()
     assert dir_path.is_dir()
-

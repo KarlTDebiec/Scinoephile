@@ -92,4 +92,3 @@ def test_get_eng_cleaned(
         remove_empty=False,
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
-

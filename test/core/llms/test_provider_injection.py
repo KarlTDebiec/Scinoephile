@@ -234,4 +234,3 @@ def test_processor_passes_injected_provider_to_queryer():
     processor = _Processor(prompt_cls=_Prompt, provider=provider)
 
     assert processor.queryer.provider is provider
-

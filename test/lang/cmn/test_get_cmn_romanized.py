@@ -68,4 +68,3 @@ def test_get_mandarin_text_romanization(text: str, expected: str):
         expected: Expected romanization
     """
     assert get_cmn_text_romanized(text) == expected
-

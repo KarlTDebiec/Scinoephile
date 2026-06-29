@@ -12,7 +12,7 @@ from pathlib import Path
 from textwrap import dedent
 from unittest.mock import Mock
 
-from pytest import importorskip, MonkeyPatch, raises
+from pytest import MonkeyPatch, importorskip, raises
 
 from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
@@ -247,4 +247,3 @@ def test_get_segment_split_at_idx_includes_segment_details_in_error():
         "Cannot split segment without word timing data: "
         "id=9 start=156.4 end=161.29 text='照先生你就展示畀朕睇下係' text_len=12."
     )
-

@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-from pytest import MonkeyPatch
 import requests
+from pytest import MonkeyPatch
 
 from scinoephile.dictionaries.kaifangcidian.downloader import KaifangcidianDownloader
 
@@ -70,4 +70,3 @@ def test_parse_js_vars_supports_optional_semicolon():
         "ci": "ci payload",
         "jpzi": "jp payload",
     }
-

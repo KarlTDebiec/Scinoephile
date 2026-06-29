@@ -147,4 +147,3 @@ def test_read_sup_series_rejects_truncated_palette_entry():
 
     with raises(ValueError, match="palette segment is truncated"):
         read_sup_series(data)
-

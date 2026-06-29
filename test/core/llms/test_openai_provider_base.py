@@ -8,8 +8,8 @@ from collections.abc import Callable
 from types import SimpleNamespace
 from typing import Any, cast
 
-from pytest import raises
 from openai import OpenAI
+from pytest import raises
 
 from scinoephile.core.llms import OpenAIProviderBase
 from scinoephile.core.llms.tool import Tool
@@ -247,4 +247,3 @@ def test_tool_box_run_allows_handler_exceptions_to_propagate():
             tool_name="do",
             raw_arguments='{"x": 1}',
         )
-

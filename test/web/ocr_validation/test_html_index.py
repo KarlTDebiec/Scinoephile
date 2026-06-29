@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import raises
 from PIL import Image
+from pytest import raises
 
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.web.ocr_validation.html_index import (
@@ -103,4 +103,3 @@ def _make_html_dir(tmp_path: Path, *, text: str) -> Path:
         encoding="utf-8",
     )
     return html_dir_path
-

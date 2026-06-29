@@ -156,4 +156,3 @@ def test_zho_process_cli_passes_llm_options_to_reviewer(tmp_path):
                     f"--llm-additional-content-file {context_path} "
                     f"--outfile {output_path}",
                 )
-

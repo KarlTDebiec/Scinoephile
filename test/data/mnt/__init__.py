@@ -625,4 +625,3 @@ def mnt_zho_simplify_expected_series_diff() -> list[str]:
         "delete: SIMP[735] '谢谢观看' not present in TRAD",
         "insert: TRAD[736] '完' not present in SIMP",
     ]
-

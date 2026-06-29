@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from pytest import fail, FixtureRequest, param
+from pytest import FixtureRequest, fail, param
 
 # noinspection PyProtectedMember
 from scinoephile.lang.eng.flattening import _get_eng_text_flattened, get_eng_flattened
@@ -79,4 +79,3 @@ def test_get_eng_text_flattened(text: str, expected: str):
         expected: Expected flattened text
     """
     assert _get_eng_text_flattened(text) == expected
-

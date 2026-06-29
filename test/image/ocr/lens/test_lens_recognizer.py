@@ -11,8 +11,8 @@ from pathlib import Path
 from types import ModuleType, SimpleNamespace
 from typing import Any, cast
 
-from pytest import MonkeyPatch, raises
 from PIL import Image
+from pytest import MonkeyPatch, raises
 
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
@@ -528,4 +528,3 @@ def test_lens_recognizer_reuses_lens_api_client_per_instance(
     assert recognizer.recognize_image(Image.new("RGBA", (12, 9))) == "recognized"
 
     assert init_count == 1
-

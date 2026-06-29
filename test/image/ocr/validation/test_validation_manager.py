@@ -7,8 +7,8 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from pytest import LogCaptureFixture, MonkeyPatch
 from PIL import Image
+from pytest import LogCaptureFixture, MonkeyPatch
 
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.ocr.validation import MAX_CHAR_DIM_BBOXES, ValidationManager
@@ -148,4 +148,3 @@ def _warning_messages(caplog: LogCaptureFixture) -> list[str]:
         for record in caplog.records
         if record.levelno == logging.WARNING
     ]
-

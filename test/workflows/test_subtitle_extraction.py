@@ -7,8 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-from pytest import LogCaptureFixture, raises
 from PIL import Image
+from pytest import LogCaptureFixture, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -513,4 +513,3 @@ def _image_series() -> ImageSeries:
             )
         ]
     )
-

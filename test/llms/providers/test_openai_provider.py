@@ -43,4 +43,3 @@ def test_openai_constructs_client_without_overrides(
     assert isinstance(client, DummyOpenAI)
     assert client.kwargs["api_key"] is None
     assert client.kwargs["base_url"] is None
-

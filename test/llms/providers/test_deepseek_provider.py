@@ -79,4 +79,3 @@ def test_deepseek_beta_base_url_enables_strict_tools():
 
     function = cast(dict[str, object], tools[0]["function"])
     assert function["strict"] is True
-

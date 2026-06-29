@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import MonkeyPatch, raises
 from PIL import Image
+from pytest import MonkeyPatch, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox import Bbox
@@ -597,4 +597,3 @@ def test_tab_gap_choice_updates_index_text(
     assert row.concern is None
     assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 15)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
-

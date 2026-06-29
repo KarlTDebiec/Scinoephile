@@ -125,4 +125,3 @@ def test_scinoephile_all_commands_localized():
     assert "修改標準中文字幕" in output
     assert "香港中文大學現代標準漢語與粵語對照資料庫" not in output
     assert "由 2004 年第二版《廣州話正音字典》整理而成" not in output
-

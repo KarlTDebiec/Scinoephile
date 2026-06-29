@@ -134,4 +134,3 @@ def test_run_command_unicode_output():
 
     assert exitcode == 0
     assert "Hello" in stdout
-

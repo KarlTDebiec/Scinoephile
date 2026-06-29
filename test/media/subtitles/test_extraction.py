@@ -100,4 +100,3 @@ def test_extract_subtitle_stream_rejects_unknown_codec(tmp_path: Path):
             outfile_path=outfile_path,
             cache_dir_path=tmp_path / "cache",
         )
-

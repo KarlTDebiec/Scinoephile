@@ -8,7 +8,7 @@ import csv
 from collections.abc import Generator
 from pathlib import Path
 
-from pytest import fixture, MonkeyPatch
+from pytest import MonkeyPatch, fixture
 
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.dictionaries.kaifangcidian import KaifangcidianDictionaryService
@@ -176,4 +176,3 @@ def test_build_updates_local_data_from_existing_runtime_csv(
     assert local_csv_path.read_text(encoding="utf-8") == runtime_csv_path.read_text(
         encoding="utf-8"
     )
-

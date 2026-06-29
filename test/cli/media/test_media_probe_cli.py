@@ -298,4 +298,3 @@ def test_media_probe_cli_force_check_script_rejects_non_sup(
         )
 
     assert "--force-check-script requires a SUP infile" in capsys.readouterr().err
-

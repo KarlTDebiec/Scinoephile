@@ -645,4 +645,3 @@ def _get_shifted_sample_pair(
         values,
     )
     return reference_samples, target_samples
-

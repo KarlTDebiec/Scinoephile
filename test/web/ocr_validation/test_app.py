@@ -197,4 +197,3 @@ def test_web_package_imports_flask_only_when_needed():
     )
 
     assert exitcode == 0
-

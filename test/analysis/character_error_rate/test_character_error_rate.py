@@ -231,4 +231,3 @@ def test_series_cer(
     assert result.deletions == expected.deletions
     assert result.correct == expected.correct
     assert result.reference_length == expected.reference_length
-

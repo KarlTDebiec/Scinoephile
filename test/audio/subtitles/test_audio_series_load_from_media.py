@@ -8,9 +8,9 @@ from pathlib import Path
 from unittest.mock import patch
 
 import ffmpeg
-from pytest import raises
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
+from pytest import raises
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.file import get_temp_file_path
@@ -302,4 +302,3 @@ def _write_selected_audio(
         audio_output_path,
         format="wav",
     )
-

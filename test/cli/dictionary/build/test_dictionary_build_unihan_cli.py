@@ -49,4 +49,3 @@ def test_dictionary_build_unihan_exits_cleanly_on_missing_archive_member(
 
     assert excinfo.value.code == 1
     assert stdout.getvalue() == ""
-

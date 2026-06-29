@@ -27,4 +27,3 @@ def test_dictionary_usage_does_not_create_default_cache_dir(
     assert_cli_usage((DictionaryCli,))
 
     assert not cache_dir_path.exists()
-

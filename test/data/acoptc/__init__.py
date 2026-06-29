@@ -718,4 +718,3 @@ def acoptc_zho_hant_ocr_paddle() -> Series:
 def acoptc_zho_hant_ocr_paddle_clean() -> Series:
     """ACOPTC 繁体中文 PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
-

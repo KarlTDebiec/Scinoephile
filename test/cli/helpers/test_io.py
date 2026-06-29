@@ -127,4 +127,3 @@ def test_write_series_defaults_to_srt_format(tmp_path: Path):
     output_text = outfile_path.read_text(encoding="utf-8")
     assert output_text.startswith("1\n00:00:01,000 --> 00:00:02,000\n")
     assert "[Script Info]" not in output_text
-

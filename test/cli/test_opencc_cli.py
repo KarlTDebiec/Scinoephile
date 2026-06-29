@@ -68,4 +68,3 @@ def test_list_opencc_configs_uses_traditional_chinese_descriptions():
     assert "  hk2s  繁體中文（香港標準）轉簡體中文。\n" in listing
     assert "  s2hk  簡體中文轉繁體中文（香港標準）。\n" in listing
     assert "  t2s   繁體中文轉簡體中文。\n" in listing
-

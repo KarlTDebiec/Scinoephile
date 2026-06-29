@@ -129,4 +129,3 @@ def test_ocr_process_cli_reports_workflow_errors(tmp_path: Path):
 def test_ocr_cli_includes_process_subcommand():
     """Test top-level OCR CLI exposes OCR processing."""
     assert OcrCli.subcommands()["process"] is OcrProcessCli
-

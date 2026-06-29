@@ -71,4 +71,3 @@ def test_get_validator_os_error():
 
     with raises(ArgumentTypeError, match="Invalid path"):
         validator("test")
-

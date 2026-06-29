@@ -66,4 +66,3 @@ def test_val_input_dir_path_expands_and_resolves_paths(
     monkeypatch.setenv("TEST_DIR", str(symlink_path))
 
     assert val_input_dir_path("$TEST_DIR") == dir_path.resolve()
-

@@ -88,4 +88,3 @@ def test_val_int_applies_iterable_constraints():
         val_int([1, 5], acceptable_values=[1, 2, 3])
     with raises(TypeError):
         val_int([1, "invalid", 3])
-

@@ -207,4 +207,3 @@ def skip_if_codex() -> Any:
         bool(getenv("CODEX_ENV_PYTHON_VERSION")),
         reason="Skip when running in Codex environment",
     )
-

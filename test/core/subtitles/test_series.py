@@ -78,4 +78,3 @@ def test_series_to_string_wraps_serializer_errors():
         match="Unable to serialize Series to string",
     ):
         series.to_string(format_="unsupported")
-

@@ -118,4 +118,3 @@ def test_ocr_fuse_zho_cli_rejects_bare_convert_flag(tmp_path: Path):
             f"--language zho --lens-infile {lens_path} "
             f"--paddle-infile {paddle_path} --clean --convert",
         )
-

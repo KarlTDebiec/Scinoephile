@@ -136,4 +136,3 @@ def test_parse_readings_preserves_simplified_only_source_rows(source_dir_path: P
     assert entry.pinyin == "wan"
     assert entry.jyutping == "maan6"
     assert [definition.text for definition in entry.definitions] == ["ten thousand"]
-

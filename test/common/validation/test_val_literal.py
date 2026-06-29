@@ -40,4 +40,3 @@ def test_val_literal_type_alias_valid_int():
 def test_val_literal_type_alias_valid_str():
     """Test validation of a valid str against a type alias."""
     assert val_literal("red", Color) == "red"
-

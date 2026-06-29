@@ -45,4 +45,3 @@ def test_get_yue_converted(
     with expectation:
         output = get_yue_converted(text)
         assert output == expected
-

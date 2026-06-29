@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import FixtureRequest, param, raises
 from PIL import Image
+from pytest import FixtureRequest, param, raises
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core import ScinoephileError
@@ -307,4 +307,3 @@ def test_text_font_size_uses_ascender_height_for_latin_bboxes():
     )
 
     assert series.text_font_size == 39
-

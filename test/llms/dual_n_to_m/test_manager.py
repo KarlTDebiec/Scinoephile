@@ -70,4 +70,3 @@ def test_get_query_cls_rejects_negative_source_two():
     """Test source two size may not be negative."""
     with raises(ScinoephileError):
         DualNToMManager.get_query_cls(1, -1, _Prompt)
-

@@ -70,4 +70,3 @@ def test_val_str_invalid_option_type():
     """
     assert val_str("none", [None, "option2"]) == "None"
     assert val_str("NONE", [None, "option2"]) == "None"
-

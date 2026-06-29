@@ -81,4 +81,3 @@ def test_normalize_language_tag_normalizes_loose_tags():
     assert normalize_language_tag("ZHO-hant") == "zho-Hant"
     assert normalize_language_tag("ENG-US") == "eng-US"
     assert normalize_language_tag("zho-unknown") == "zho-Unknown"
-

@@ -66,4 +66,3 @@ def test_val_output_path_expands_environment_variables(
     monkeypatch.setenv("OUTPUT_FILE", str(file_path))
 
     assert val_output_path("$OUTPUT_FILE") == file_path.resolve()
-

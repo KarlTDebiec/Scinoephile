@@ -8,8 +8,8 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 import ffmpeg
-from pytest import raises
 from PIL import Image
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -269,4 +269,3 @@ class _RecordingMergedFfmpegStream:
         """
         _ = kwargs
         self.run_count += 1
-

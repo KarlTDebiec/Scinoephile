@@ -179,4 +179,3 @@ def test_parse_accepts_legacy_hyphenated_pronunciation_key(source_jsonl_path: Pa
     assert len(entries) == 1
     assert entries[0].pinyin == "hang2"
     assert entries[0].jyutping == "hang4"
-

@@ -122,4 +122,3 @@ def test_multi_timewarp_cli_rejects_old_one_two_index_flags(tmp_path: Path):
             f"--anchor-infile {anchor_path} --mobile-infile {mobile_path} "
             "--one-start-idx 1 --two-start-idx 1",
         )
-

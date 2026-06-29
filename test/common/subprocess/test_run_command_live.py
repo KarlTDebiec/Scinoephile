@@ -129,4 +129,3 @@ def test_run_command_live_non_utf8_output():
     assert exitcode == 0
     assert stdout == "ÿ"
     assert stderr == ""
-

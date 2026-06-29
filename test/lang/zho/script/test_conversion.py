@@ -135,4 +135,3 @@ def test_get_zho_converter(text: str, config: OpenCCConfig, expected: str):
         expected: Expected converted text
     """
     assert get_zho_converter(config).convert(text) == expected
-

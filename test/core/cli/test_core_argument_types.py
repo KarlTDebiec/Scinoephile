@@ -20,4 +20,3 @@ def test_language_arg_rejects_empty_tag():
     """Test language_arg rejects empty language tags."""
     with raises(ArgumentTypeError, match="language tag may not be empty"):
         language_arg("")
-

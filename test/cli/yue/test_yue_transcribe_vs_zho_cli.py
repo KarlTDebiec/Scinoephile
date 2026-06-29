@@ -358,4 +358,3 @@ def test_yue_transcribe_vs_zho_cli_rejects_old_zhongwen_infile_flag():
             f"--media-infile {media_infile_path} "
             f"--zhongwen-infile {zhongwen_infile_path}",
         )
-

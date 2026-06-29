@@ -7,9 +7,9 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-from pytest import raises
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
+from pytest import raises
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import ScinoephileError
@@ -75,4 +75,3 @@ def test_audio_series_save_wraps_output_path_errors(tmp_path: Path):
         series.save(output_path)
 
     assert isinstance(excinfo.value.__cause__, OSError)
-

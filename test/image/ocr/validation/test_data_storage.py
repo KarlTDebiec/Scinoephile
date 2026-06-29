@@ -286,4 +286,3 @@ def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeyp
         "A,10,20\n"
     )
     assert not (cache_dir_path / "char_dims_1.csv").exists()
-

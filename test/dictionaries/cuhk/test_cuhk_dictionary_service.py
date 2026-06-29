@@ -124,4 +124,3 @@ def test_lookup(
     with expectation:
         entries = service.lookup(query, limit=5)
         assert [entry.traditional for entry in entries] == expected
-

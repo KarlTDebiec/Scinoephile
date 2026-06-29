@@ -107,4 +107,3 @@ def test_yue_process_cli_rejects_bare_convert_flag():
 
     with raises(SystemExit, match="2"):
         run_cli_with_args(YueProcessCli, f"--infile {full_input_path} --convert")
-
