@@ -6,25 +6,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.workflows.ocr_validation import validate_ocr
-
-
-def _series_with_texts(texts: list[str]) -> Series:
-    """Build a text series with one subtitle per provided text.
-
-    Arguments:
-        texts: subtitle texts
-    Returns:
-        text subtitle series
-    """
-    return Series(
-        events=[
-            Subtitle(start=(idx * 2000) + 1000, end=(idx * 2000) + 2000, text=text)
-            for idx, text in enumerate(texts)
-        ]
-    )
+from test.helpers.series_files import get_ocr_text_series
 
 
 def test_validate_ocr_runs_noninteractive_validation(
@@ -58,7 +43,7 @@ def test_validate_ocr_runs_noninteractive_validation(
         def validate(self, series: ImageSeries) -> Series:
             """Validate an image series."""
             validate_calls.append((series, self))
-            return _series_with_texts(["validated"])
+            return get_ocr_text_series("validated")
 
     def fake_load(path: Path) -> ImageSeries:
         """Fake image subtitle loading."""
@@ -118,7 +103,7 @@ def test_validate_ocr_runs_interactive_validation(
     def fake_run_app(value: object, host: str, port: int):
         """Capture web app run arguments and write validation output."""
         run_calls.append(("run_app", value, host, port))
-        _series_with_texts(["interactive validated"]).save(outfile_path)
+        get_ocr_text_series("interactive validated").save(outfile_path)
 
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_validation.OcrValidationSession.from_dir_path",
