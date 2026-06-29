@@ -179,7 +179,12 @@ HALF_TO_FULL_PUNC = {
 }
 """Mapping from half-width to full-width punctuation characters."""
 
-FULL_TO_HALF_PUNC = {v: k for k, v in HALF_TO_FULL_PUNC.items()}
+FULL_TO_HALF_PUNC = {
+    **{v: k for k, v in HALF_TO_FULL_PUNC.items()},
+    FULL_PUNC["IDEOGRAPHIC COMMA"]: HALF_PUNC["COMMA"],
+    FULL_PUNC["IDEOGRAPHIC FULL STOP"]: HALF_PUNC["FULL STOP"],
+    FULL_PUNC["MIDLINE HORIZONTAL ELLIPSIS"]: HALF_PUNC["HORIZONTAL ELLIPSIS"],
+}
 """Mapping from full-width to half-width punctuation characters."""
 
 _FULLWIDTH_ALPHANUMERICS_TO_ASCII = str.maketrans(

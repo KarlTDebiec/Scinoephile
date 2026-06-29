@@ -22,14 +22,6 @@ type RomanizedTokenKind = Literal["punctuation", "raw", "romanized"]
 
 _ROMANIZED_CLOSING_PUNCTUATION = set(")]}>.,!?;:%”’」』》〉】＞…")
 _ROMANIZED_OPENING_PUNCTUATION = set("([{<“‘「『《〈【＜")
-_ROMANIZED_PUNCTUATION = {
-    **FULL_TO_HALF_PUNC,
-    "＜": "＜",
-    "＞": "＞",
-    "、": ",",
-    "。": ".",
-    "⋯": "…",
-}
 _ROMANIZED_SYMMETRIC_QUOTES = {'"', "'"}
 
 
@@ -96,7 +88,7 @@ def normalize_romanized_punctuation(text: str) -> str:
     Returns:
         punctuation suitable for romanized text
     """
-    return "".join(_ROMANIZED_PUNCTUATION.get(char, char) for char in text)
+    return "".join(FULL_TO_HALF_PUNC.get(char, char) for char in text)
 
 
 def _get_symmetric_quote_roles(

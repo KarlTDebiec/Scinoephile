@@ -7,6 +7,7 @@ from __future__ import annotations
 from pytest import FixtureRequest, param
 
 from scinoephile.lang.cmn.romanization import get_cmn_romanized, get_cmn_text_romanized
+from scinoephile.lang.romanization import normalize_romanized_punctuation
 from test.helpers import assert_series_equal, parametrize
 
 
@@ -125,3 +126,19 @@ def test_get_mandarin_text_romanization(text: str, expected: str):
         expected: Expected romanization
     """
     assert get_cmn_text_romanized(text) == expected
+
+
+@parametrize(
+    ("text", "expected"),
+    [
+        ("＜＞、。⋯", "<>,.…"),
+    ],
+)
+def test_normalize_romanized_punctuation(text: str, expected: str):
+    """Test normalize_romanized_punctuation.
+
+    Arguments:
+        text: Text to normalize
+        expected: Expected normalized punctuation
+    """
+    assert normalize_romanized_punctuation(text) == expected
