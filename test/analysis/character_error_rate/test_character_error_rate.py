@@ -9,24 +9,9 @@ from math import inf
 from pytest import FixtureRequest, param
 
 from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
-from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.subtitles import Series
 from test.helpers import SeriesCERResult, parametrize
-
-
-def _get_series(*texts: str) -> Series:
-    """Build a compact subtitle series for CER tests.
-
-    Arguments:
-        *texts: subtitle event texts
-    Returns:
-        subtitle series with one event per text
-    """
-    return Series(
-        events=[
-            Subtitle(start=idx * 1000, end=idx * 1000 + 500, text=text)
-            for idx, text in enumerate(texts)
-        ]
-    )
+from test.helpers.series_files import get_text_series
 
 
 @parametrize(
@@ -142,11 +127,7 @@ def _get_series(*texts: str) -> Series:
         ),
     ],
 )
-def test_line_cer(
-    reference: str,
-    candidate: str,
-    expected: SeriesCERResult,
-):
+def test_line_cer(reference: str, candidate: str, expected: SeriesCERResult):
     """Test line-level character error rate calculations.
 
     Arguments:
@@ -167,8 +148,8 @@ def test_line_cer(
 @parametrize(
     ("reference", "candidate"),
     [
-        (_get_series("你", "好"), _get_series("你好")),
-        (_get_series("ab"), _get_series("a", "b")),
+        (get_text_series("你", "好"), get_text_series("你好")),
+        (get_text_series("ab"), get_text_series("a", "b")),
     ],
 )
 def test_series_cer_ignores_separator_only_line_wrapping(
