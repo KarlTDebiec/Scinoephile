@@ -15,6 +15,7 @@ from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewer,
 )
 from test.data.kob import get_kob_eng_block_review_test_cases
+from test.data.mlamd import get_mlamd_eng_block_review_test_cases
 from test.data.t import get_t_eng_block_review_test_cases
 from test.helpers import assert_series_equal, parametrize
 
@@ -27,6 +28,18 @@ from test.helpers import assert_series_equal, parametrize
             "kob_eng_ocr_fuse_clean_validate_review",
             get_kob_eng_block_review_test_cases,
             id="kob-eng",
+        ),
+        param(
+            "kob_eng_timewarp_clean",
+            "kob_eng_timewarp_clean_review",
+            get_kob_eng_block_review_test_cases,
+            id="kob-eng-timewarp",
+        ),
+        param(
+            "mlamd_eng_fuse_clean_validate",
+            "mlamd_eng_fuse_clean_validate_review",
+            get_mlamd_eng_block_review_test_cases,
+            id="mlamd-eng",
         ),
         param(
             "t_eng_fuse_clean_validate",
