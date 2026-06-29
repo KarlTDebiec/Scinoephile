@@ -14,6 +14,30 @@ Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
 * This repository uses a virtual environment. To activate the venv in your shell: `source .venv/bin/activate`.
 * This repository uses `uv`. Use `UV_CACHE_DIR=/tmp/uv-cache uv run` when executing tools.
 
+### Windows / PowerShell
+
+* The examples above use Unix-style environment variable prefixes. In PowerShell,
+  set environment variables before running `uv`:
+  ```powershell
+  $env:UV_CACHE_DIR = "/tmp/uv-cache"
+  uv run pytest
+  ```
+* Before running commands that may print subtitles, CJK text, or other non-ASCII
+  output, configure PowerShell and Python for UTF-8:
+  ```powershell
+  [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+  $OutputEncoding = [System.Text.UTF8Encoding]::new()
+  $env:PYTHONUTF8 = "1"
+  $env:PYTHONIOENCODING = "utf-8"
+  ```
+* Combine those settings when running repository tools that may emit subtitle text:
+  ```powershell
+  $env:UV_CACHE_DIR = "/tmp/uv-cache"
+  $env:PYTHONUTF8 = "1"
+  $env:PYTHONIOENCODING = "utf-8"
+  uv run python ...
+  ```
+
 ### Version Control
 
 * Branches should be named in the format `feature/brief-description`.
