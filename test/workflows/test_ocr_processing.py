@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import os
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -22,6 +21,7 @@ from scinoephile.workflows.ocr_processing import (
     OcrProcessingWorkflow,
 )
 from test.helpers import parametrize
+from test.helpers.files import set_mtime
 
 OLD_MTIME = 1_700_000_000
 """Older file modification time used by timestamp-sensitive tests."""
@@ -53,16 +53,6 @@ def _image_series_with_texts(
             for subtitle, text in zip(image_series.events, texts)
         ]
     )
-
-
-def _set_mtime(file_path: Path, mtime: int):
-    """Set a deterministic file modification time.
-
-    Arguments:
-        file_path: file path to update
-        mtime: modification time as seconds since epoch
-    """
-    os.utime(file_path, (mtime, mtime))
 
 
 def _series_with_texts(texts: list[str]) -> Series:
@@ -758,8 +748,8 @@ def test_ocr_validation_keeps_newer_image_index_text(
     source_series = _series_with_texts(["fused 1", "fused 2"])
     source_path = output_dir_path / "fuse_clean.srt"
     source_series.save(source_path, format_="srt")
-    _set_mtime(source_path, OLD_MTIME)
-    _set_mtime(image_dir_path / "index.html", NEW_MTIME)
+    set_mtime(source_path, OLD_MTIME)
+    set_mtime(image_dir_path / "index.html", NEW_MTIME)
 
     def fake_validate_ocr(source: Path, outfile_path: Path, **kwargs: object):
         """Record text passed to validation."""
@@ -803,8 +793,8 @@ def test_ocr_validation_uses_newer_fuse_clean_text(
     source_series = _series_with_texts(["fused 1", "fused 2"])
     source_path = output_dir_path / "fuse_clean.srt"
     source_series.save(source_path, format_="srt")
-    _set_mtime(image_dir_path / "index.html", OLD_MTIME)
-    _set_mtime(source_path, NEW_MTIME)
+    set_mtime(image_dir_path / "index.html", OLD_MTIME)
+    set_mtime(source_path, NEW_MTIME)
 
     def fake_validate_ocr(source: Path, outfile_path: Path, **kwargs: object):
         """Record text passed to validation."""
@@ -848,8 +838,8 @@ def test_ocr_validation_uses_fuse_clean_for_blank_image_index(
     source_series = _series_with_texts(["fused 1", "fused 2"])
     source_path = output_dir_path / "fuse_clean.srt"
     source_series.save(source_path, format_="srt")
-    _set_mtime(source_path, OLD_MTIME)
-    _set_mtime(image_dir_path / "index.html", NEW_MTIME)
+    set_mtime(source_path, OLD_MTIME)
+    set_mtime(image_dir_path / "index.html", NEW_MTIME)
 
     def fake_validate_ocr(source: Path, outfile_path: Path, **kwargs: object):
         """Record text passed to validation."""
