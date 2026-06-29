@@ -95,11 +95,11 @@ __all__ = [
     "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
     "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
     "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
+    "acopopb_zho_simplify_expected_series_diff",
     "acopopb_zho_hant_ocr_lens",
     "acopopb_zho_hant_ocr_lens_clean",
     "acopopb_zho_hant_ocr_paddle",
     "acopopb_zho_hant_ocr_paddle_clean",
-    "acopopb_zho_simplify_expected_series_diff",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -702,13 +702,13 @@ def acopopb_zho_hant_ocr_paddle_clean() -> Series:
 
 @fixture
 def acopopb_yue_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for ACOPOPB simplified Cantonese subtitles."""
+    """Expected differences for ACOPOPB Yue Simplified vs Traditional subtitles."""
     return []
 
 
 @fixture
 def acopopb_zho_simplify_expected_series_diff() -> list[str]:
-    """Expected differences for ACOPOPB Simplified vs Traditional subtitles."""
+    """Expected differences for ACOPOPB Zho Simplified vs Traditional subtitles."""
     return [
         "edit: SIMP[64] -> TRAD[64]: '悟空，你诸多藉口' -> '悟空，你诸多借口'",
         "edit: SIMP[392] -> TRAD[392]: '大腿捱一刀算得了什么？' -> '大腿挨一刀算得了什么？'",
