@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from argparse import Action
-
 from scinoephile.cli.multi.multi_stack_cli import MultiStackCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_lens_cli import OcrLensCli
@@ -22,6 +20,7 @@ from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCl
 from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
 from test.helpers import parametrize
+from test.helpers.cli import get_cli_action
 
 OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
 
@@ -58,25 +57,7 @@ def test_custom_choice_validators_use_metavar_not_choices(
         option: option string to inspect
         metavar: expected metavar for help display
     """
-    action = _get_action(cli, option)
+    action = get_cli_action(cli, option)
 
     assert action.choices is None
     assert action.metavar == metavar
-
-
-def _get_action(cli: type[CommandLineInterface], option: str) -> Action:
-    """Get a parser action by option string.
-
-    Arguments:
-        cli: CLI class to inspect
-        option: option string to inspect
-    Returns:
-        matching argparse action
-    Raises:
-        AssertionError: if the option is not present
-    """
-    parser = cli.argparser()
-    for action in parser._actions:  # noqa: SLF001
-        if option in action.option_strings:
-            return action
-    raise AssertionError(f"{option} not found in {cli.__name__}")
