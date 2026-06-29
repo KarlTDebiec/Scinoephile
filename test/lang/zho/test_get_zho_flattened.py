@@ -7,12 +7,12 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.zho.flattening import get_zho_flattened
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 # noinspection PyProtectedMember
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture"),
     [
         pytest.param(

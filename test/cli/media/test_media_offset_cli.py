@@ -12,6 +12,7 @@ import pytest
 
 from scinoephile.cli.media.media_offset_cli import MediaOffsetCli
 from scinoephile.common.testing import run_cli_with_args
+from test.helpers import parametrize
 
 
 def test_media_offset_cli_reports_offset(
@@ -187,7 +188,7 @@ def test_media_offset_cli_rejects_start_time_argument(
     assert "unrecognized arguments: --start-time 600" in capsys.readouterr().err
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "argument",
     [
         "--max-offset",

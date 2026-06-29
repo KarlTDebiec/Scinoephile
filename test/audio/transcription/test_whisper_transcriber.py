@@ -19,6 +19,7 @@ from scinoephile.audio.transcription.transcribed_segment import TranscribedSegme
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.common.subprocess import run_command
+from test.helpers import parametrize
 
 _OPTIONAL_TRANSCRIPTION_MODULES = (
     "demucs_infer",
@@ -32,7 +33,7 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
 _REPO_ROOT_PATH = Path(__file__).parents[3]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("field_name", "first_value", "second_value"),
     [
         ("use_vad", True, False),
@@ -75,7 +76,7 @@ def test_get_cache_path_separates_configuration(
     assert first_cache_path != second_cache_path
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("model_name", "expected"),
     [
         ("khleeloo/whisper-large-v3-cantonese", True),

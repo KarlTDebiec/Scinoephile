@@ -31,11 +31,14 @@ __all__ = [
     "create_symlink_or_skip",
     "get_warning_messages",
     "get_usage_prefix",
+    "parametrize",
     "parametrized_fixture",
     "skip_if_ci",
     "skip_if_codex",
     "test_data_root",
 ]
+
+parametrize = mark.parametrize
 
 
 test_data_root = package_root.parent / "test/data"

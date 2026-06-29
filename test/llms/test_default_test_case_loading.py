@@ -7,8 +7,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
-
 from scinoephile.common import package_root
 from scinoephile.core.llms import Manager, Prompt
 from scinoephile.lang.eng.block_review import BlockReviewPromptEng
@@ -56,6 +54,7 @@ from scinoephile.multilang.yue_zho.guided_translation import (
 from scinoephile.multilang.yue_zho.line_review import YueLineReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
 from scinoephile.multilang.yue_zho.translation import YueTranslationVsZhoPromptYueHans
+from test.helpers import parametrize
 
 
 def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
@@ -77,7 +76,7 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
     return count
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("name", "manager_cls", "prompt_cls", "json_paths", "expected_paths"),
     [
         (

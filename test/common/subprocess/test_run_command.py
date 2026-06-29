@@ -12,10 +12,11 @@ from time import monotonic
 import pytest
 
 from scinoephile.common.subprocess import run_command
+from test.helpers import parametrize
 from test.helpers.subprocess_cases import SUBPROCESS_SUCCESS_CASES
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("command", "expected_stdout_fragments"),
     [(command, fragments) for _, command, fragments in SUBPROCESS_SUCCESS_CASES],
     ids=[name for name, _, _ in SUBPROCESS_SUCCESS_CASES],

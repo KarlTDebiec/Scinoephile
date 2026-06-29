@@ -10,9 +10,10 @@ import pytest
 
 from scinoephile.core import UnsupportedCharacterError
 from scinoephile.lang.yue.conversion import get_yue_converted
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected", "expectation"),
     [
         ("舂暈\ue527", "舂暈鷄", nullcontext()),

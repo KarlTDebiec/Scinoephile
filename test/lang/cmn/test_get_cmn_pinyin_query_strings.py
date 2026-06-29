@@ -4,12 +4,11 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("shàng biàn", ["shang4 bian4"]),

@@ -7,10 +7,10 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.zho.cleaning import get_zho_cleaned, get_zho_text_cleaned
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ('<font face="Monospace">{\\an7}中文\xa0測試</font>', "中文 測試"),
@@ -32,7 +32,7 @@ def test_get_zho_text_cleaned(text: str, expected: str):
     assert get_zho_text_cleaned(text) == expected
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("series_fixture", "expected_fixture"),
     [
         pytest.param(

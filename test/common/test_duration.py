@@ -9,9 +9,10 @@ from datetime import timedelta
 import pytest
 
 from scinoephile.common.duration import parse_duration
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("value", "expected"),
     [
         ("30s", timedelta(seconds=30)),

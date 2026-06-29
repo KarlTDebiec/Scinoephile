@@ -6,8 +6,6 @@ from __future__ import annotations
 
 from argparse import Action
 
-import pytest
-
 from scinoephile.cli.multi.multi_stack_cli import MultiStackCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_lens_cli import OcrLensCli
@@ -23,11 +21,12 @@ from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCli
 from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
+from test.helpers import parametrize
 
 OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("cli", "option", "metavar"),
     [
         (OcrFuseCli, "--language", "{eng,zho}"),

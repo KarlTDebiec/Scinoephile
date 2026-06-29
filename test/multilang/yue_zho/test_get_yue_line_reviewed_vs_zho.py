@@ -15,10 +15,10 @@ from scinoephile.multilang.yue_zho.line_review import (
     get_yue_vs_zho_line_reviewer,
 )
 from test.data.mlamd import get_mlamd_yue_vs_zho_line_review_test_cases
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("yuewen_fixture", "zhongwen_fixture", "expected_fixture", "test_case_loader"),
     [
         pytest.param(

@@ -13,7 +13,7 @@ import pytest
 from scinoephile.cli.multi.multi_stack_cli import MultiStackCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
 def test_multi_stack_cli_stacks_without_sync_by_default(tmp_path: Path):
@@ -66,7 +66,7 @@ def test_multi_stack_cli_can_sync_bottom_to_top_anchor(tmp_path: Path):
     assert_series_equal(Series.load(output_path), expected)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("args", "expected_error"),
     [
         ("--sync-cutoff -0.01", "-0.01 is less than minimum value of 0.0"),

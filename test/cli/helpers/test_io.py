@@ -16,9 +16,10 @@ from scinoephile.cli.helpers.io import read_image_series, read_series, write_ser
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "exception",
     [
         FileNotFoundError("missing image subtitles"),
@@ -50,7 +51,7 @@ def test_read_image_series_maps_file_errors_to_parser_error(
     assert str(exception) in stderr.getvalue()
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "exception",
     [
         FileNotFoundError("missing subtitles"),
@@ -83,7 +84,7 @@ def test_read_series_maps_file_errors_to_parser_error(
     assert str(exception) in stderr.getvalue()
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "exception",
     [
         ScinoephileError("invalid stdin subtitle series"),

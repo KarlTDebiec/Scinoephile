@@ -14,6 +14,7 @@ from scinoephile.image.ocr.tesseract import (
     ocr_image_series_with_tesseract,
 )
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
+from test.helpers import parametrize
 from test.helpers.ocr_recognizers import FailingOcrRecognizer, RecordingOcrRecognizer
 
 
@@ -159,7 +160,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
     assert recognizer.kwargs["tessdata_dir_path"] == tessdata_dir_path
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "exception",
     [
         ImportError("missing tesseract dependency"),

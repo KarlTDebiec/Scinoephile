@@ -12,6 +12,7 @@ from PIL import Image
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.image.ocr.tesseract import TesseractRecognizer
+from test.helpers import parametrize
 
 
 class CountingTesseractRecognizer(TesseractRecognizer):
@@ -62,7 +63,7 @@ def test_tesseract_recognizer_caches_results_by_image(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 1
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("language", "expected_code"),
     [
         (Language.eng, "eng"),

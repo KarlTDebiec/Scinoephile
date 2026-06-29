@@ -13,7 +13,7 @@ import pytest
 from scinoephile.cli.multi.multi_sync_cli import MultiSyncCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
 def test_multi_sync_cli_shifts_mobile_to_anchor_and_writes_file(
@@ -75,7 +75,7 @@ def test_multi_sync_cli_pipe(tmp_path: Path):
     assert_series_equal(output, expected)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("args", "expected_error"),
     [
         ("--sync-cutoff -0.01", "-0.01 is less than minimum value of 0.0"),

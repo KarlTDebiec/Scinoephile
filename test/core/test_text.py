@@ -13,6 +13,7 @@ from scinoephile.core.text import (
     normalize_ocr_confusables_to_ascii,
     sanitize_text,
 )
+from test.helpers import parametrize
 
 
 def test_get_char_type_handles_unnamed_control_char() -> None:
@@ -21,13 +22,13 @@ def test_get_char_type_handles_unnamed_control_char() -> None:
         get_char_type("\x00")
 
 
-@pytest.mark.parametrize("char", ["Ｋ", "Ａ", "１", "ｋ"])
+@parametrize("char", ["Ｋ", "Ａ", "１", "ｋ"])
 def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
     """Fullwidth Latin forms are classified as full-width characters."""
     assert get_char_type(char) == "full"
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("ＫＡＴＥ ｋａｔｅ １２３", "KATE kate 123"),
@@ -38,7 +39,7 @@ def test_normalize_fullwidth_alphanumerics(text: str, expected: str) -> None:
     assert normalize_fullwidth_alphanumerics(text) == expected
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("ΟΚ, οκ.", "OK, ok."),
@@ -49,7 +50,7 @@ def test_normalize_ocr_confusables_to_ascii(text: str, expected: str) -> None:
     assert normalize_ocr_confusables_to_ascii(text) == expected
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("好呀！\x00\x00你", "好呀！  你"),
@@ -60,7 +61,7 @@ def test_sanitize_text_replaces_control_chars(text: str, expected: str) -> None:
     assert sanitize_text(text) == expected
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [
         ("one\ntwo\tthree\r", "one\ntwo\tthree\r"),

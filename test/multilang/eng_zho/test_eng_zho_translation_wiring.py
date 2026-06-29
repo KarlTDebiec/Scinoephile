@@ -8,8 +8,6 @@ from collections.abc import Callable
 from typing import cast
 from unittest.mock import Mock
 
-import pytest
-
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.dual_n_minus_m_to_n import (
@@ -32,13 +30,14 @@ from scinoephile.multilang.eng_zho.translation import (
     get_eng_translated_from_zho,
     get_eng_zho_translator,
 )
+from test.helpers import parametrize
 
 _PromptCls = type[DualNToMPrompt] | type[DualNMinusMToNPrompt]
 _Processor = DualNToMProcessor | DualNMinusMToNProcessor
 _ProcessorFactory = Callable[..., _Processor]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("prompt_cls", "src_1", "src_2", "output"),
     [
         (EngTranslationVsZhoPrompt, "zho_1", "context_1", "eng_1"),
@@ -65,7 +64,7 @@ def test_eng_zho_prompt_field_names(
     assert prompt_cls.output(1) == output
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("factory", "processor_cls", "prompt_cls"),
     [
         (get_eng_zho_translator, DualNToMProcessor, EngTranslationVsZhoPrompt),
@@ -102,7 +101,7 @@ def test_eng_zho_translator_factory_wiring(
     assert processor.queryer.provider is provider
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("mode", "uses_empty_context"),
     [
         ("regular", True),

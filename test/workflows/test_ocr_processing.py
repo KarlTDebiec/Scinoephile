@@ -21,6 +21,7 @@ from scinoephile.workflows.ocr_processing import (
     OcrProcessingResult,
     OcrProcessingWorkflow,
 )
+from test.helpers import parametrize
 
 OLD_MTIME = 1_700_000_000
 """Older file modification time used by timestamp-sensitive tests."""
@@ -416,7 +417,7 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
     ] == ["fused"]
 
 
-@pytest.mark.parametrize("process_ocr", [process_eng_ocr, process_zho_ocr])
+@parametrize("process_ocr", [process_eng_ocr, process_zho_ocr])
 def test_process_ocr_wraps_filesystem_errors(
     process_ocr: Callable[..., OcrProcessingResult],
     monkeypatch: pytest.MonkeyPatch,

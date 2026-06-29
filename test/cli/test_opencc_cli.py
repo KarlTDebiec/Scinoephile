@@ -17,9 +17,10 @@ from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "cli",
     [
         ZhoProcessCli,

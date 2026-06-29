@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.common.exceptions import (
     ArgumentConflictError,
     DirectoryExistsError,
@@ -17,9 +15,10 @@ from scinoephile.common.exceptions import (
     NotAFileOrDirectoryError,
     UnsupportedPlatformError,
 )
+from test.helpers import parametrize
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("exception_cls", "base_cls"),
     [
         (ArgumentConflictError, Exception),

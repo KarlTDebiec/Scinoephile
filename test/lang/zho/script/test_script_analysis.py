@@ -4,17 +4,16 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.lang.zho.script.analysis import (
     get_zho_script_analysis,
     is_simplified,
     is_traditional,
 )
+from test.helpers import parametrize
 from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected_script"),
     [
         ("简体中文汉字", "zho-Hans"),
@@ -40,7 +39,7 @@ def test_get_zho_script_analysis(text: str, expected_script: str | None):
     assert analysis.script == expected_script
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [(case.text, case.is_simplified) for case in LANGUAGE_ID_TEST_CASES],
 )
@@ -54,7 +53,7 @@ def test_is_simplified(text: str, expected: bool):
     assert is_simplified(text) is expected
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("text", "expected"),
     [(case.text, case.is_traditional) for case in LANGUAGE_ID_TEST_CASES],
 )

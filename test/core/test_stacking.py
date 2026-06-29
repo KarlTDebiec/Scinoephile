@@ -13,7 +13,7 @@ from scinoephile.core.stacking import (
     get_stacked_series_from_groups,
 )
 from scinoephile.core.subtitles import Series, Subtitle
-from test.helpers import assert_series_equal
+from test.helpers import assert_series_equal, parametrize
 
 
 def test_get_stacked_series_does_not_overlap_union_timing():
@@ -38,7 +38,7 @@ def test_get_stacked_series_does_not_overlap_union_timing():
     assert output.events[1].start >= output.events[0].end
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("timing_mode", "expected_times"),
     [
         (StackTimingMode.TOP, [(1000, 2000), (2100, 3000)]),
@@ -87,7 +87,7 @@ def test_get_stacked_series_timing_mode_uses_available_timing_for_unpaired_subti
         assert [event.text for event in output.events] == ["A", "1"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("timing_mode", "expected_times"),
     [
         (StackTimingMode.TOP, [(1000, 1500), (1500, 2000)]),
@@ -132,7 +132,7 @@ def test_get_stacked_series_overlap_error_includes_event_context():
         get_stacked_series_from_groups(one, Series(), [([0], []), ([1], [])])
 
 
-@pytest.mark.parametrize(
+@parametrize(
     ("one_fixture", "two_fixture", "expected_fixture"),
     [
         pytest.param(
