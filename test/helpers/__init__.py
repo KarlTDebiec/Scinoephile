@@ -41,6 +41,8 @@ __all__ = [
     "test_data_root",
 ]
 
+parametrize = mark.parametrize
+
 
 test_data_root = package_root.parent / "test/data"
 

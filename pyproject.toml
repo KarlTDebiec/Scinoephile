@@ -17,7 +17,7 @@ dependencies = [
     "jieba>=0.42.1",
     "numba>=0.65.1",
     "numpy>=2.4.6",
-    "openai>=2.41.1",
+    "openai>=2.43.0",
     "opencc>=1.3.1",
     "pillow>=12.1.1",
     "pycantonese>=5.0.0",
@@ -27,7 +27,7 @@ dependencies = [
     "pysubs2>=1.8.1",
     "requests>=2.34.2",
     "setuptools>=82.0.1",
-    "sqlalchemy>=2.0.50",
+    "sqlalchemy>=2.0.51",
     "typing-extensions>=4.15.0",
 ]
 
@@ -45,11 +45,11 @@ ocr-cuda = [
 ]
 transcription = [
     "demucs-infer>=4.1.2",
-    "huggingface-hub>=1.19.0",
-    "onnxruntime>=1.26.0",
+    "huggingface-hub>=1.21.0",
+    "onnxruntime>=1.27.0",
     "torch>=2.10.0",
     "torchaudio>=2.10.0,<2.11.0",
-    "transformers>=5.12.0",
+    "transformers>=5.12.1",
     "whisper-timestamped>=1.15.9",
 ]
 web = [
@@ -68,12 +68,12 @@ ocr-cuda = [
 ]
 dev = [
     "flask>=3.1.3",
-    "pytest>=9.0.3",
+    "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
-    "pytest-github-actions-annotate-failures>=0.4.0",
+    "pytest-github-actions-annotate-failures>=0.4.2",
     "pytest-xdist>=3.8.0",
-    "ruff>=0.15.16",
-    "ty>=0.0.49",
+    "ruff>=0.15.20",
+    "ty>=0.0.55",
 ]
 
 [tool.pytest.ini_options]
