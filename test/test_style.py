@@ -11,7 +11,6 @@ from pathlib import Path
 
 from scinoephile.common import package_root
 
-REPO_DIR_PATH = package_root.parent
 EXCLUDED_DIR_NAMES = {
     ".git",
     ".mypy_cache",
@@ -53,7 +52,7 @@ class StringInterpolationViolation:
             formatted violation
         """
         return (
-            f"{self.file_path.relative_to(REPO_DIR_PATH)}:"
+            f"{self.file_path.relative_to(package_root.parent)}:"
             f"{self.line_number}: {self.message}"
         )
 
@@ -63,7 +62,7 @@ def test_percent_interpolation_arguments_are_detected():
     tree = ast.parse('logger.warning("hello %s", name)')
 
     violations = get_string_interpolation_violations(
-        file_path=REPO_DIR_PATH / "sample.py",
+        file_path=package_root.parent / "sample.py",
         tree=tree,
     )
 
@@ -75,7 +74,7 @@ def test_percent_interpolation_arguments_are_detected():
 def test_python_sources_do_not_use_percent_string_interpolation():
     """Test Python sources do not use percent-style string interpolation."""
     violations: list[StringInterpolationViolation] = []
-    for file_path in get_python_files(REPO_DIR_PATH):
+    for file_path in get_python_files(package_root.parent):
         tree = ast.parse(
             file_path.read_text(encoding="utf-8"), filename=file_path.as_posix()
         )
