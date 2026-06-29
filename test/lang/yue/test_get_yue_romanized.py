@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.lang.yue.romanization import (
     get_yue_romanized,
@@ -16,7 +16,7 @@ from test.helpers import assert_series_equal, parametrize
 @parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "kob_yue_hans_timewarp_clean_flatten",
             "kob_yue_hans_timewarp_clean_flatten_romanize",
             id="kob-yue-hans",
@@ -24,7 +24,7 @@ from test.helpers import assert_series_equal, parametrize
     ],
 )
 def test_get_yue_romanized(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):

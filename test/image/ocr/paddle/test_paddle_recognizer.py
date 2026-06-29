@@ -12,8 +12,8 @@ from types import ModuleType
 from typing import Any, cast
 
 import numpy as np
-import pytest
 from PIL import Image
+from pytest import MonkeyPatch, raises
 
 from scinoephile.common.subprocess import run_command
 from scinoephile.core import Language
@@ -70,7 +70,7 @@ def test_paddle_recognizer_caches_results_by_image(tmp_path: Path):
 
 
 def test_paddle_recognizer_uses_server_models_and_disables_mkldnn_on_windows(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test PaddleOCR recognizer hardcodes server models and Windows MKL-DNN.
 
@@ -107,7 +107,7 @@ def test_paddle_recognizer_uses_server_models_and_disables_mkldnn_on_windows(
 
 
 def test_paddle_recognizer_keeps_mkldnn_enabled_off_windows(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test PaddleOCR recognizer keeps MKL-DNN enabled off Windows.
 
@@ -141,7 +141,7 @@ def test_paddle_recognizer_keeps_mkldnn_enabled_off_windows(
 
 
 def test_paddle_recognizer_preserves_root_logger_level(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test PaddleOCR construction does not change root logging level.
 
@@ -196,7 +196,7 @@ def test_paddle_recognizer_imports_paddleocr_only_when_needed():
     assert exitcode == 0
 
 
-def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: pytest.MonkeyPatch):
+def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: MonkeyPatch):
     """Test PaddleOCR import errors mention the OCR extra."""
     real_import = __import__
 
@@ -226,13 +226,13 @@ def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: pytest.MonkeyPatch):
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with pytest.raises(ImportError, match="'ocr' extra"):
+    with raises(ImportError, match="'ocr' extra"):
         PaddleRecognizer._get_paddle_ocr_class()
 
 
 def test_paddle_recognizer_rejects_unsupported_languages():
     """Test PaddleOCR recognizer only supports English and Chinese."""
-    with pytest.raises(ValueError, match="not supported by PaddleOCR"):
+    with raises(ValueError, match="not supported by PaddleOCR"):
         PaddleRecognizer(language=cast(Language, "korean"))
 
 
@@ -247,7 +247,7 @@ def test_paddle_recognizer_rejects_unsupported_languages():
     ],
 )
 def test_paddle_recognizer_maps_supported_languages_to_engine_codes(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     language: Language,
     expected_code: str,
 ):

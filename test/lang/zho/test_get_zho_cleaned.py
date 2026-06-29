@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.lang.zho.cleaning import get_zho_cleaned, get_zho_text_cleaned
 from test.helpers import assert_series_equal, parametrize
@@ -35,37 +35,37 @@ def test_get_zho_text_cleaned(text: str, expected: str):
 @parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse",
             "kob_zho_hant_ocr_fuse_clean",
             id="kob-zho-hant-fuse",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_fuse",
             "mlamd_zho_hans_fuse_clean",
             id="mlamd-zho-hans-fuse",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_fuse",
             "mnt_zho_hans_fuse_clean",
             id="mnt-zho-hans-fuse",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse",
             "t_zho_hans_fuse_clean",
             id="t-zho-hans-fuse",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_ocr_paddle",
             "t_zho_hans_ocr_paddle_clean",
             id="t-zho-hans-paddle",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse",
             "t_zho_hant_fuse_clean",
             id="t-zho-hant-fuse",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_ocr_paddle",
             "t_zho_hant_ocr_paddle_clean",
             id="t-zho-hant-paddle",
@@ -73,7 +73,7 @@ def test_get_zho_text_cleaned(text: str, expected: str):
     ],
 )
 def test_get_zho_cleaned(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):

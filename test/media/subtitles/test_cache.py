@@ -8,8 +8,8 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 import ffmpeg
-import pytest
 from PIL import Image
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -99,7 +99,7 @@ def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
             "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs",
             return_value=merged_stream,
         ),
-        pytest.raises(ScinoephileError, match="Could not cache subtitle streams"),
+        raises(ScinoephileError, match="Could not cache subtitle streams"),
     ):
         cache_subtitles(
             infile_path,

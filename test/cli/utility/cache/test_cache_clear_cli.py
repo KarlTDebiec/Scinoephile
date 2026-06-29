@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import CaptureFixture, raises
 
 from scinoephile.cli.utility.cache.cache_clear_cli import CacheClearCli
 from scinoephile.common.testing import run_cli_with_args
 
 
-def test_cache_clear_dry_run(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+def test_cache_clear_dry_run(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test dry-run namespace clearing.
 
     Arguments:
@@ -30,7 +30,7 @@ def test_cache_clear_dry_run(tmp_path: Path, capsys: pytest.CaptureFixture[str])
 
 
 def test_cache_clear_all_dry_run_limits_output(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+    tmp_path: Path, capsys: CaptureFixture[str]
 ):
     """Test all-namespace dry-run output is bounded.
 
@@ -87,7 +87,7 @@ def test_cache_clear_requires_scope(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    with pytest.raises(SystemExit) as exc_info:
+    with raises(SystemExit) as exc_info:
         run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --dry-run")
     assert exc_info.value.code == 2
 
@@ -98,7 +98,7 @@ def test_cache_clear_requires_confirmation(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    with pytest.raises(SystemExit) as exc_info:
+    with raises(SystemExit) as exc_info:
         run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --namespace llm")
     assert exc_info.value.code == 2
 

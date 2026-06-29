@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import raises
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import ScinoephileError
@@ -34,7 +34,7 @@ def test_series_load_wraps_input_path_errors(tmp_path: Path):
     """
     path = tmp_path / "missing.srt"
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to load Series from .*missing.srt",
     ) as excinfo:
@@ -45,7 +45,7 @@ def test_series_load_wraps_input_path_errors(tmp_path: Path):
 
 def test_series_from_string_wraps_parser_errors():
     """Test subtitle parsing errors are user-facing."""
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to parse Series from string",
     ):
@@ -60,7 +60,7 @@ def test_series_save_wraps_output_path_errors(tmp_path: Path):
     """
     series = Series(events=[Subtitle(start=1000, end=2000, text="Text")])
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to save Series to ",
     ) as excinfo:
@@ -73,7 +73,7 @@ def test_series_to_string_wraps_serializer_errors():
     """Test subtitle string serialization errors are user-facing."""
     series = Series(events=[Subtitle(start=1000, end=2000, text="Text")])
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to serialize Series to string",
     ):

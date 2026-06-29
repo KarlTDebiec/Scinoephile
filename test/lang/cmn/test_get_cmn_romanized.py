@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.lang.cmn.romanization import get_cmn_romanized, get_cmn_text_romanized
 from test.helpers import assert_series_equal, parametrize
@@ -13,22 +13,22 @@ from test.helpers import assert_series_equal, parametrize
 @parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize",
             id="mlamd-zho-hans",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_fuse_clean_validate_review_flatten",
             "mnt_zho_hans_fuse_clean_validate_review_flatten_romanize",
             id="mnt-zho-hans",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_zho_hans_fuse_clean_validate_review_flatten_romanize",
             id="t-zho-hans",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize",
             id="t-zho-hant-simplify-review",
@@ -36,7 +36,7 @@ from test.helpers import assert_series_equal, parametrize
     ],
 )
 def test_get_cmn_romanized(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):

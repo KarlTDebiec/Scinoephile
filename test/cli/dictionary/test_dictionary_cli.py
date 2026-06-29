@@ -6,14 +6,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import MonkeyPatch
 
 from scinoephile.cli.dictionary.dictionary_cli import DictionaryCli
 from test.helpers import assert_cli_usage
 
 
 def test_dictionary_usage_does_not_create_default_cache_dir(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test dictionary usage output does not create default cache directories.
 

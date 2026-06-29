@@ -10,6 +10,7 @@ from os import getenv
 from pathlib import Path
 
 import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.ocr import (
     OcrLensCli,
@@ -33,7 +34,7 @@ OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
 
 
 def _patch_image_series_load(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     target: str,
     image_series: ImageSeries,
 ) -> list[Path]:
@@ -80,7 +81,7 @@ def test_ocr_lens_cli_help_lists_language_and_retry_options_only():
     """Test Google Lens CLI help lists supported operation options."""
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(OcrLensCli, "-h")
@@ -101,7 +102,7 @@ def test_ocr_lens_cli_help_lists_language_and_retry_options_only():
 
 
 def test_ocr_lens_cli_converts_image_subtitles_to_srt(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -156,7 +157,7 @@ def test_ocr_paddle_cli_help_lists_language_options():
     """Test PaddleOCR CLI help lists supported Scinoephile language options."""
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(OcrPaddleCli, "-h")
@@ -172,7 +173,7 @@ def test_ocr_tesseract_cli_help_lists_language_options():
     """Test Tesseract OCR CLI help lists supported Scinoephile language options."""
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(OcrTesseractCli, "-h")
@@ -186,7 +187,7 @@ def test_ocr_tesseract_cli_help_lists_language_options():
 
 
 def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -238,7 +239,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
 
 
 def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -290,7 +291,7 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
 
 
 def test_ocr_tesseract_cli_passes_italic_detection_options(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -342,7 +343,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
 
 
 def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test Tesseract OCR CLI rejects italic detection for non-English OCR."""
@@ -363,7 +364,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
         fail_ocr_image_series_with_tesseract,
     )
 
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stderr(stderr):
             run_cli_with_args(
                 OcrTesseractCli,
@@ -414,7 +415,7 @@ def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
     ],
 )
 def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
     cli: type[CommandLineInterface],
@@ -507,7 +508,7 @@ def test_ocr_engine_clis_delegate_subtitle_outputs_to_writer(
     ),
 )
 def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test Google Lens CLI against a full MLAMD SUP subtitle fixture.
@@ -559,7 +560,7 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
     ],
 )
 def test_ocr_paddle_cli_matches_mlamd_sup_ocr_fixtures(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     sup_path: str,
     language: str,
     expected_path: str,

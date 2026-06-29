@@ -9,7 +9,7 @@ from io import StringIO
 from os import environ
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
@@ -38,7 +38,7 @@ def test_list_opencc_configs(cli: type[CommandLineInterface]):
     stdout = StringIO()
     stderr = StringIO()
 
-    with pytest.raises(SystemExit, match="0"):
+    with raises(SystemExit, match="0"):
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(cli, "--list-opencc-configs")
@@ -57,7 +57,7 @@ def test_list_opencc_configs_uses_traditional_chinese_descriptions():
     stderr = StringIO()
 
     with patch.dict(environ, {"LC_ALL": "zh-hant"}, clear=False):
-        with pytest.raises(SystemExit, match="0"):
+        with raises(SystemExit, match="0"):
             with redirect_stdout(stdout):
                 with redirect_stderr(stderr):
                     run_cli_with_args(ZhoProcessCli, "--list-opencc-configs")

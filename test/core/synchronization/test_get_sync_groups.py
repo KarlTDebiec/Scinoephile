@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
@@ -31,7 +31,7 @@ def test_get_sync_groups_exceeds_max_cutoff():
     two.events.append(Subtitle(start=0, end=100, text="3"))
 
     # This should raise ScinoephileError due to max_cutoff being exceeded
-    with pytest.raises(ScinoephileError) as exc_info:
+    with raises(ScinoephileError) as exc_info:
         get_sync_groups(one, two)
 
     # Verify the error message contains expected information

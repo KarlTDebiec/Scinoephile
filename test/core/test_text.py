@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import (
@@ -18,7 +18,7 @@ from test.helpers import parametrize
 
 def test_get_char_type_handles_unnamed_control_char() -> None:
     """Unnamed control characters raise a ScinoephileError."""
-    with pytest.raises(ScinoephileError, match="<unnamed>"):
+    with raises(ScinoephileError, match="<unnamed>"):
         get_char_type("\x00")
 
 

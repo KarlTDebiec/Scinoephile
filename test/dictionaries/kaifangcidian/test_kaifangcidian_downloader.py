@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-import pytest
 import requests
+from pytest import MonkeyPatch
 
 from scinoephile.dictionaries.kaifangcidian.downloader import KaifangcidianDownloader
 
@@ -26,7 +26,7 @@ class _MockResponse:
 
 
 def test_download_payloads_only_fetch_required_sources(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Download only the payloads currently used for canonical rows.
 

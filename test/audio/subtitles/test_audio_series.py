@@ -7,9 +7,9 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
+from pytest import raises
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import ScinoephileError
@@ -23,7 +23,7 @@ def test_audio_series_load_wraps_input_path_errors(tmp_path: Path):
     """
     input_path = tmp_path / "missing"
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to load AudioSeries from .*missing",
     ) as excinfo:
@@ -49,7 +49,7 @@ def test_audio_series_load_wraps_decode_errors(tmp_path: Path):
         "scinoephile.audio.subtitles.series.AudioSegment.from_wav",
         side_effect=CouldntDecodeError("invalid audio"),
     ):
-        with pytest.raises(
+        with raises(
             ScinoephileError,
             match="Unable to load AudioSeries from .*input: invalid audio",
         ) as excinfo:
@@ -68,7 +68,7 @@ def test_audio_series_save_wraps_output_path_errors(tmp_path: Path):
     output_path.touch()
     series = AudioSeries(audio=AudioSegment.silent(duration=1000))
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to save AudioSeries to .*audio_output",
     ) as excinfo:

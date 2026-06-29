@@ -8,28 +8,28 @@ import json
 from collections.abc import Generator
 from pathlib import Path
 
-import pytest
 import requests
+from pytest import MonkeyPatch, fixture, raises
 
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.dictionaries.wiktionary import WiktionaryDictionaryService
 
 
-@pytest.fixture
+@fixture
 def local_data_dir_path() -> Generator[Path]:
     """Provide a temporary canonical local data directory."""
     with get_temp_directory_path() as dir_path:
         yield dir_path
 
 
-@pytest.fixture
+@fixture
 def runtime_data_dir_path() -> Generator[Path]:
     """Provide a temporary runtime canonical data directory."""
     with get_temp_directory_path() as dir_path:
         yield dir_path
 
 
-@pytest.fixture
+@fixture
 def database_path() -> Generator[Path]:
     """Provide a temporary SQLite database path."""
     with get_temp_file_path(".db") as temp_path:
@@ -194,7 +194,7 @@ def test_build_downloads_when_no_source_jsonl_available(
     database_path: Path,
     local_data_dir_path: Path,
     runtime_data_dir_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Build Wiktionary DB by downloading when no source JSONL is available.
 
@@ -275,7 +275,7 @@ def test_build_raises_on_download_error(
     database_path: Path,
     local_data_dir_path: Path,
     runtime_data_dir_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Raise RequestException when Kaikki download fails.
 
@@ -303,5 +303,5 @@ def test_build_raises_on_download_error(
         service, "_download_to_runtime_jsonl", _download_to_runtime_jsonl
     )
 
-    with pytest.raises(requests.RequestException, match="network down"):
+    with raises(requests.RequestException, match="network down"):
         service.build(overwrite=True)

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.lang.eng.cleaning import get_eng_cleaned, get_eng_text_cleaned
 from test.helpers import assert_series_equal, parametrize
@@ -43,32 +43,32 @@ def test_get_eng_text_cleaned(
 @parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "kob_eng_ocr_fuse",
             "kob_eng_ocr_fuse_clean",
             id="kob-eng-fuse",
         ),
-        pytest.param(
+        param(
             "mlamd_eng_fuse",
             "mlamd_eng_fuse_clean",
             id="mlamd-eng-fuse",
         ),
-        pytest.param(
+        param(
             "mnt_eng_fuse",
             "mnt_eng_fuse_clean",
             id="mnt-eng-fuse",
         ),
-        pytest.param(
+        param(
             "t_eng_fuse",
             "t_eng_fuse_clean",
             id="t-eng-fuse",
         ),
-        pytest.param(
+        param(
             "t_eng_ocr_lens",
             "t_eng_ocr_lens_clean",
             id="t-eng-lens",
         ),
-        pytest.param(
+        param(
             "t_eng_ocr_tesseract",
             "t_eng_ocr_tesseract_clean",
             id="t-eng-tesseract",
@@ -76,7 +76,7 @@ def test_get_eng_text_cleaned(
     ],
 )
 def test_get_eng_cleaned(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):

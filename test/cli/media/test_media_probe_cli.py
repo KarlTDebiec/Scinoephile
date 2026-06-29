@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import CaptureFixture, raises
 
 from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.common.testing import run_cli_with_args
@@ -18,7 +18,7 @@ from test.helpers import parametrize
 
 def test_media_probe_cli_lists_all_streams(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test media probe CLI lists all streams without packet counts.
 
@@ -74,7 +74,7 @@ def test_media_probe_cli_lists_all_streams(
 )
 def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
     script: str | None,
     language: str,
 ):
@@ -125,7 +125,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
 
 def test_media_probe_cli_details_preserves_non_subtitle_streams(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test media probe CLI detail mode still lists non-subtitle streams.
 
@@ -191,7 +191,7 @@ def test_media_probe_cli_details_preserves_non_subtitle_streams(
 
 def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test media probe CLI survives unreadable subtitle stats.
 
@@ -231,7 +231,7 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
 
 def test_media_probe_cli_force_check_script_checks_standalone_sup(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test forced script checking treats a standalone SUP file as Chinese.
 
@@ -280,7 +280,7 @@ def test_media_probe_cli_force_check_script_checks_standalone_sup(
 
 def test_media_probe_cli_force_check_script_rejects_non_sup(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test forced script checking rejects non-SUP inputs.
 
@@ -291,7 +291,7 @@ def test_media_probe_cli_force_check_script_rejects_non_sup(
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             MediaProbeCli,
             f"--infile {infile_path} --force-check-script",

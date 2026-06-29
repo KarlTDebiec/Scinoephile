@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.lang.zho.script.conversion import (
     S2T_EXCLUSIONS,
@@ -82,12 +82,12 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
 @parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             id="kob-zho-hant",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse_clean_validate_review_flatten",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
             id="t-zho-hant",
@@ -95,7 +95,7 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     ],
 )
 def test_get_zho_converted(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):

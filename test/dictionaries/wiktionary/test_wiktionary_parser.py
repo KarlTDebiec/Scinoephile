@@ -8,13 +8,13 @@ import json
 from collections.abc import Generator
 from pathlib import Path
 
-import pytest
+from pytest import fixture
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.dictionaries.wiktionary.parser import WiktionaryDictionaryParser
 
 
-@pytest.fixture
+@fixture
 def source_jsonl_path() -> Generator[Path]:
     """Provide a temporary Kaikki JSONL source path."""
     with get_temp_file_path(".jsonl") as temp_path:

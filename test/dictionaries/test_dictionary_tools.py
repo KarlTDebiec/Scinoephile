@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any, ClassVar, cast
 from unittest.mock import patch
 
-import pytest
+from pytest import fixture
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.dictionaries import (
@@ -57,7 +57,7 @@ class StubDictionaryToolPrompt(DictionaryToolPrompt):
     """Description of the dictionary lookup query parameter."""
 
 
-@pytest.fixture
+@fixture
 def dictionary_cache_dir_path() -> Generator[Path]:
     """Provide deterministic CUHK and GZZJ cache databases."""
     with get_temp_directory_path() as temp_dir_path:

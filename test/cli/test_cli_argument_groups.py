@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import Action, ArgumentParser
 from pathlib import Path
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
@@ -137,7 +137,7 @@ def test_add_web_server_args_bundles_standard_host_and_port():
     default_namespace = parser.parse_args([])
     assert default_namespace.web_args == WebServerArguments()
 
-    with pytest.raises(SystemExit):
+    with raises(SystemExit):
         parser.parse_args(["--port", "65536"])
 
 

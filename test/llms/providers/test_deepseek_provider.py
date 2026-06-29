@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import cast
 
-import pytest
+from pytest import MonkeyPatch
 
 from scinoephile.core.llms import openai_provider_base
 from scinoephile.core.llms.tool import Tool
@@ -32,7 +32,7 @@ def _get_tool_box() -> ToolBox:
 
 
 def test_deepseek_constructs_client_with_base_url_and_env_api_key(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test DeepSeekProvider uses base_url and DEEPSEEK_API_KEY by default."""
     monkeypatch.setenv("DEEPSEEK_API_KEY", "dummy")
@@ -48,7 +48,7 @@ def test_deepseek_constructs_client_with_base_url_and_env_api_key(
 
 
 def test_deepseek_api_key_override_wins_over_env(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test explicit api_key overrides the environment variable."""
     monkeypatch.setenv("DEEPSEEK_API_KEY", "env")

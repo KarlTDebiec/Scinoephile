@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any, cast
 
-import pytest
+from pytest import raises
 
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.common.validation import val_int
@@ -40,7 +40,7 @@ def test_val_int_rejects_scalar_constraint_violations(
     constraint: str, expected_error: str
 ):
     """Test int validation rejects scalar constraint violations."""
-    with pytest.raises(ValueError, match=expected_error):
+    with raises(ValueError, match=expected_error):
         if constraint == "min":
             val_int(-1, min_value=0)
         elif constraint == "max":
@@ -51,11 +51,11 @@ def test_val_int_rejects_scalar_constraint_violations(
 
 def test_val_int_rejects_invalid_values_and_conflicting_constraints():
     """Test int validation rejects invalid values and conflicting constraints."""
-    with pytest.raises(TypeError):
+    with raises(TypeError):
         val_int(cast(Any, None))
-    with pytest.raises(TypeError):
+    with raises(TypeError):
         val_int("invalid")
-    with pytest.raises(ArgumentConflictError, match="min_value must be less than"):
+    with raises(ArgumentConflictError, match="min_value must be less than"):
         val_int(5, min_value=5, max_value=5)
 
 
@@ -78,13 +78,13 @@ def test_val_int_applies_iterable_constraints():
     assert val_int([], n_values=0) == []
     assert val_int(x for x in [1, 2, 3]) == [1, 2, 3]
 
-    with pytest.raises(ValueError, match="is of length"):
+    with raises(ValueError, match="is of length"):
         val_int([1, 2], n_values=3)
-    with pytest.raises(ValueError, match="less than minimum"):
+    with raises(ValueError, match="less than minimum"):
         val_int([1, -1, 3], min_value=0)
-    with pytest.raises(ValueError, match="greater than maximum"):
+    with raises(ValueError, match="greater than maximum"):
         val_int([1, 11, 3], max_value=10)
-    with pytest.raises(ValueError, match="is not one of"):
+    with raises(ValueError, match="is not one of"):
         val_int([1, 5], acceptable_values=[1, 2, 3])
-    with pytest.raises(TypeError):
+    with raises(TypeError):
         val_int([1, "invalid", 3])

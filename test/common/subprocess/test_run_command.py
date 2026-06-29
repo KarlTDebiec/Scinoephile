@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from time import monotonic
 
-import pytest
+from pytest import raises
 
 from scinoephile.common.subprocess import run_command
 from test.helpers import parametrize
@@ -55,7 +55,7 @@ def test_run_command_with_stderr():
 
 def test_run_command_failure_default():
     """Test running a command that fails with default acceptable exitcodes."""
-    with pytest.raises(ValueError, match="failed with exit code"):
+    with raises(ValueError, match="failed with exit code"):
         run_command([sys.executable, "-c", "import sys; sys.exit(1)"])
 
 

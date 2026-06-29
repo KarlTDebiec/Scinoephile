@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 from PIL import Image
+from pytest import MonkeyPatch, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.image.bbox import Bbox
@@ -55,12 +55,12 @@ def test_session_requires_index_html_file(tmp_path: Path):
     html_dir_path.mkdir()
     (html_dir_path / "index.html").mkdir()
 
-    with pytest.raises(ScinoephileError, match="Expected .*index\\.html to be a file"):
+    with raises(ScinoephileError, match="Expected .*index\\.html to be a file"):
         OcrValidationSession.from_dir_path(html_dir_path)
 
 
 def test_session_wraps_image_series_load_errors(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test session construction wraps image series loading errors.
@@ -80,7 +80,7 @@ def test_session_wraps_image_series_load_errors(
         fake_load,
     )
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to initialize OCR validation session from .*could not be loaded",
     ) as excinfo:
@@ -96,7 +96,7 @@ def test_concern_kind_excludes_done_state():
 
 def test_session_uses_one_font_size_for_series(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test editable font size is detected once for the whole series."""
     html_dir_path = make_two_image_ocr_html_dir(tmp_path, text_1="A", text_2="B")
@@ -146,7 +146,7 @@ def test_session_uses_cjk_letter_spacing(tmp_path: Path):
 
 def test_session_rebuilds_raw_bboxes_for_validation_state(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test web validation state ignores stale pre-merged bboxes."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
@@ -173,7 +173,7 @@ def test_session_rebuilds_raw_bboxes_for_validation_state(
 
 def test_session_omits_done_rows_from_list_by_default(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test session row lists omit subtitles with no concerns by default."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
@@ -192,7 +192,7 @@ def test_session_omits_done_rows_from_list_by_default(
 
 def test_session_includes_done_rows_in_list_when_enabled(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test the internal toggle can include subtitles with no concerns."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
@@ -243,7 +243,7 @@ def test_session_does_not_write_outfile_on_init(tmp_path: Path):
 
 def test_session_reports_char_dims_concern(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test unknown character dimensions produce a bbox concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
@@ -265,7 +265,7 @@ def test_session_reports_char_dims_concern(
 
 def test_session_reports_error_status_when_validation_cannot_continue(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test unrecoverable validation concerns produce an error row status."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
@@ -284,7 +284,7 @@ def test_session_reports_error_status_when_validation_cannot_continue(
 
 def test_accept_char_dims_marks_single_char_done(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test accepting character dimensions resolves a single-character subtitle."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
@@ -306,7 +306,7 @@ def test_accept_char_dims_marks_single_char_done(
 
 def test_contract_char_dims_reduces_selection(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test contracting character dimensions reduces the selected bbox count."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
@@ -335,7 +335,7 @@ def test_contract_char_dims_reduces_selection(
 
 def test_session_reports_space_gap_concern(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test ambiguous adjacent-or-space gaps produce a space concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
@@ -359,7 +359,7 @@ def test_session_reports_space_gap_concern(
 
 def test_space_gap_choice_updates_index_text(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test resolving a space gap writes the expected space into index.html."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
@@ -380,7 +380,7 @@ def test_space_gap_choice_updates_index_text(
 
 def test_known_adjacent_gap_mismatch_updates_text_without_concern(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test known adjacent gaps with wrong text update without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="臭　　和")
@@ -408,7 +408,7 @@ def test_known_adjacent_gap_mismatch_updates_text_without_concern(
 
 def test_fullwidth_latin_gap_uses_default_cutoffs(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test fullwidth Latin characters use default full-width gap cutoffs."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="你Ｋ")
@@ -433,7 +433,7 @@ def test_fullwidth_latin_gap_uses_default_cutoffs(
 
 def test_adjacent_gap_choice_updates_cutoff(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test adjacent choice for an ambiguous gap updates the gap cutoffs."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="白了")
@@ -468,7 +468,7 @@ def test_adjacent_gap_choice_updates_cutoff(
 
 def test_matching_space_gap_updates_cutoff_without_concern(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test matching space text updates cutoffs without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A B")
@@ -489,7 +489,7 @@ def test_matching_space_gap_updates_cutoff_without_concern(
 
 def test_matching_tab_gap_updates_cutoff_without_concern(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test matching tab text updates cutoffs without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A    B")
@@ -510,7 +510,7 @@ def test_matching_tab_gap_updates_cutoff_without_concern(
 
 def test_known_space_gap_mismatch_updates_text_without_concern(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test known space gaps with wrong text update without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="呀 你")
@@ -538,7 +538,7 @@ def test_known_space_gap_mismatch_updates_text_without_concern(
 
 def test_known_tab_gap_mismatch_updates_text_without_concern(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test known tab gaps with wrong text update without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
@@ -559,7 +559,7 @@ def test_known_tab_gap_mismatch_updates_text_without_concern(
 
 def test_known_tab_gap_replaces_newline_without_concern(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test known tab gaps with newline text update without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A<br />B")
@@ -580,7 +580,7 @@ def test_known_tab_gap_replaces_newline_without_concern(
 
 def test_tab_gap_choice_updates_index_text(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test resolving a tab gap writes expected wide spacing into index.html."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")

@@ -9,7 +9,7 @@ from io import StringIO
 from os import environ
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
@@ -56,7 +56,7 @@ def test_list_llm_providers(cli: type[CommandLineInterface]):
     stdout = StringIO()
     stderr = StringIO()
 
-    with pytest.raises(SystemExit, match="0"):
+    with raises(SystemExit, match="0"):
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(cli, "--list-llm-providers")
@@ -78,7 +78,7 @@ def test_list_llm_providers_uses_simplified_chinese_descriptions():
     stderr = StringIO()
 
     with patch.dict(environ, {"LC_ALL": "zh-hans"}, clear=False):
-        with pytest.raises(SystemExit, match="0"):
+        with raises(SystemExit, match="0"):
             with redirect_stdout(stdout):
                 with redirect_stderr(stderr):
                     run_cli_with_args(ZhoProcessCli, "--list-llm-providers")
@@ -96,5 +96,5 @@ def test_list_llm_providers_uses_simplified_chinese_descriptions():
 
 def test_llm_provider_arg_rejects_unknown_provider():
     """Test LLM provider argument rejects unknown provider names."""
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(ZhoProcessCli, "--llm-provider missing-provider")

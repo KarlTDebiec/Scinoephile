@@ -12,7 +12,7 @@ from pathlib import Path
 from textwrap import dedent
 from unittest.mock import Mock
 
-import pytest
+from pytest import MonkeyPatch, importorskip, raises
 
 from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
@@ -91,7 +91,7 @@ def test_model_name_is_huggingface_repo_id_rejects_local_paths(
     expected: bool,
 ):
     """Test HuggingFace retry is skipped for local filesystem paths."""
-    pytest.importorskip("huggingface_hub")
+    importorskip("huggingface_hub")
     transcriber = WhisperTranscriber(model_name=model_name)
 
     assert transcriber._model_name_is_huggingface_repo_id() is expected
@@ -142,7 +142,7 @@ def test_transcription_imports_without_optional_runtime_dependencies():
     assert exitcode == 0
 
 
-def test_whisper_module_requires_transcription_extra(monkeypatch: pytest.MonkeyPatch):
+def test_whisper_module_requires_transcription_extra(monkeypatch: MonkeyPatch):
     """Test Whisper import errors mention the transcription extra."""
     original_import = builtins.__import__
 
@@ -159,7 +159,7 @@ def test_whisper_module_requires_transcription_extra(monkeypatch: pytest.MonkeyP
 
     monkeypatch.setattr(builtins, "__import__", import_without_whisper)
 
-    with pytest.raises(ImportError, match="'transcription' extra"):
+    with raises(ImportError, match="'transcription' extra"):
         WhisperTranscriber._get_whisper_module()
 
 
@@ -240,7 +240,7 @@ def test_get_segment_split_at_idx_includes_segment_details_in_error():
         words=None,
     )
 
-    with pytest.raises(ValueError) as exc_info:
+    with raises(ValueError) as exc_info:
         get_segment_split_at_idx(segment, 3)
 
     assert str(exc_info.value) == (

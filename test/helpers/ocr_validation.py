@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 from PIL import Image
+from pytest import MonkeyPatch
 
 from scinoephile.image.bbox import Bbox
 from scinoephile.web.ocr_validation.session import OcrValidationSession
@@ -102,7 +102,7 @@ def make_two_image_ocr_html_dir(
 
 
 def patch_ocr_validation_bboxes(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     bboxes: list[Bbox],
     *,
     target: str = "scinoephile.web.ocr_validation.session.get_bboxes",

@@ -8,9 +8,9 @@ from pathlib import Path
 from unittest.mock import patch
 
 import ffmpeg
-import pytest
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
+from pytest import raises
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.file import get_temp_file_path
@@ -102,7 +102,7 @@ def test_audio_series_extract_audio_track_wraps_ffmpeg_errors():
         "scinoephile.audio.subtitles.series.ffmpeg.input",
         return_value=fake_ffmpeg_input,
     ):
-        with pytest.raises(
+        with raises(
             ScinoephileError,
             match="Could not extract audio stream 12 from video.mkv",
         ) as excinfo:
@@ -189,7 +189,7 @@ def test_audio_series_load_from_media_wraps_input_path_errors(tmp_path: Path):
     Arguments:
         tmp_path: pytest temporary directory path
     """
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to load AudioSeries from media .*missing.mkv",
     ) as excinfo:
@@ -222,7 +222,7 @@ def test_audio_series_load_from_media_wraps_decode_errors():
                         "scinoephile.audio.subtitles.series.AudioSegment.from_wav",
                         side_effect=CouldntDecodeError("invalid audio"),
                     ):
-                        with pytest.raises(
+                        with raises(
                             ScinoephileError,
                             match="Unable to load AudioSeries from media",
                         ) as excinfo:
@@ -248,7 +248,7 @@ def test_audio_series_load_from_media_rejects_invalid_stream_index():
                     "streams": [{"index": 1, "codec_type": "audio", "channels": 2}]
                 },
             ):
-                with pytest.raises(ScinoephileError, match="No stream index 2"):
+                with raises(ScinoephileError, match="No stream index 2"):
                     AudioSeries.load_from_media(
                         media_path=media_path,
                         subtitle_path=subtitle_path,
@@ -273,7 +273,7 @@ def test_audio_series_load_from_media_rejects_non_audio_stream_index():
                     ]
                 },
             ):
-                with pytest.raises(
+                with raises(
                     ScinoephileError, match="Stream index 0 is not an audio stream"
                 ):
                     AudioSeries.load_from_media(
