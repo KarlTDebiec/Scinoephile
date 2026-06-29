@@ -10,7 +10,7 @@ from os import environ
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
@@ -18,7 +18,7 @@ from test.helpers import assert_cli_help
 
 
 def test_scinoephile_help_does_not_create_default_cache_dir(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test root help output does not create default cache directories.
 
@@ -38,7 +38,7 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
     """Test root CLI can list the complete subcommand hierarchy."""
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(ScinoephileCli, "--all-commands")
@@ -107,7 +107,7 @@ def test_scinoephile_all_commands_localized():
     with patch.dict(environ, {"LC_ALL": "zh-hant"}):
         stdout = StringIO()
         stderr = StringIO()
-        with pytest.raises(SystemExit) as excinfo:
+        with raises(SystemExit) as excinfo:
             with redirect_stdout(stdout):
                 with redirect_stderr(stderr):
                     run_cli_with_args(ScinoephileCli, "--all-commands")
@@ -125,3 +125,4 @@ def test_scinoephile_all_commands_localized():
     assert "修改標準中文字幕" in output
     assert "香港中文大學現代標準漢語與粵語對照資料庫" not in output
     assert "由 2004 年第二版《廣州話正音字典》整理而成" not in output
+

@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import Any, ClassVar, Unpack
 from unittest.mock import Mock
 
-import pytest
+from pytest import fixture, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, LLMProvider
@@ -25,7 +25,7 @@ from scinoephile.llms.providers.registry import (
 )
 
 
-@pytest.fixture(autouse=True)
+@fixture(autouse=True)
 def restore_provider_registry():
     """Restore registered LLM providers after each test."""
     provider_factories = provider_registry._PROVIDER_FACTORIES.copy()
@@ -125,13 +125,13 @@ def test_get_provider_names_returns_registered_provider_names():
 
 def test_get_provider_raises_for_unknown_provider():
     """Test provider lookup fails for unknown provider names."""
-    with pytest.raises(ScinoephileError):
+    with raises(ScinoephileError):
         get_provider("missing-provider")
 
 
 def test_get_provider_description_raises_for_unknown_provider():
     """Test provider description lookup fails for unknown provider names."""
-    with pytest.raises(ScinoephileError):
+    with raises(ScinoephileError):
         get_provider_description("missing-provider")
 
 
@@ -166,3 +166,4 @@ class _LocalizedDummyProvider(_DummyProvider):
         "zh-hant": "本地化測試提供商。",
     }
     """Provider description translations keyed by locale."""
+

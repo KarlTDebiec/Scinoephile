@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import CaptureFixture, raises
 
 from scinoephile.cli.media.media_extract_subs_cli import MediaExtractSubsCli
 from scinoephile.common.testing import run_cli_with_args
@@ -23,7 +23,7 @@ from scinoephile.workflows.subtitle_extraction import (
 
 def test_media_extract_subs_cli_renders_grouped_outputs(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test media extract-subs CLI renders workflow output groups.
 
@@ -88,7 +88,7 @@ def test_media_extract_subs_cli_maps_workflow_errors_to_parser_errors(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitles",
             side_effect=ScinoephileError("No subtitle streams found"),
         ),
-        pytest.raises(SystemExit) as excinfo,
+        raises(SystemExit) as excinfo,
     ):
         run_cli_with_args(MediaExtractSubsCli, f"--infile {infile_path} -o {tmp_path}")
 
@@ -104,7 +104,8 @@ def test_media_extract_subs_cli_requires_output_dir(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         run_cli_with_args(MediaExtractSubsCli, f"--infile {infile_path}")
 
     assert excinfo.value.code == 2
+

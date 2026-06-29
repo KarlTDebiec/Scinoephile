@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series, Subtitle
@@ -28,7 +28,7 @@ from test.helpers import assert_series_equal, parametrize
 @parametrize(
     ("lens_text", "paddle_text", "expected_text"),
     [
-        pytest.param(
+        param(
             "嗯达摩\n达摩祖师果然厉害",
             "嗯达摩\\N达摩祖师果然厉害",
             "嗯达摩\n达摩祖师果然厉害",
@@ -78,7 +78,7 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
         "test_case_loader",
     ),
     [
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_lens",
             "kob_zho_hant_ocr_paddle",
             "kob_zho_hant_ocr_fuse",
@@ -86,7 +86,7 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
             get_kob_zho_hant_ocr_fusion_test_cases,
             id="kob-zho-hant",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_ocr_lens",
             "mlamd_zho_hans_ocr_paddle",
             "mlamd_zho_hans_fuse",
@@ -94,7 +94,7 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
             get_mlamd_zho_hans_ocr_fusion_test_cases,
             id="mlamd-zho-hans",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hans_ocr_lens",
             "mnt_zho_hans_ocr_paddle",
             "mnt_zho_hans_fuse",
@@ -102,7 +102,7 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
             get_mnt_zho_hans_ocr_fusion_test_cases,
             id="mnt-zho-hans",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_ocr_lens",
             "t_zho_hans_ocr_paddle",
             "t_zho_hans_fuse",
@@ -113,7 +113,7 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
     ],
 )
 def test_get_zho_ocr_fused(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     lens_fixture: str,
     paddle_fixture: str,
     expected_fixture: str,
@@ -151,3 +151,4 @@ def test_get_zho_ocr_fused(
     assert len(output) == len(expected)
     assert_series_equal(output, expected)
     provider.chat_completion.assert_not_called()
+

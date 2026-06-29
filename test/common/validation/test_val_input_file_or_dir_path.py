@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import raises
 
 from scinoephile.common.validation import val_input_file_or_dir_path
 from test.helpers import create_symlink_or_skip
@@ -34,7 +34,7 @@ def test_val_input_file_or_dir_path_accepts_directory(tmp_path: Path):
 
 def test_val_input_file_or_dir_path_rejects_missing_path(tmp_path: Path):
     """Test input file-or-directory path validation rejects a missing path."""
-    with pytest.raises(FileNotFoundError):
+    with raises(FileNotFoundError):
         val_input_file_or_dir_path(tmp_path / "missing")
 
 
@@ -48,3 +48,4 @@ def test_val_input_file_or_dir_path_resolves_symlink(tmp_path: Path):
     result = val_input_file_or_dir_path(symlink_path)
 
     assert result == file_path.resolve()
+

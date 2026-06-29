@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-import pytest
+from pytest import raises
 
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.common.validation import val_literal
@@ -22,13 +22,13 @@ def test_val_literal_literal_type_valid():
 
 def test_val_literal_non_literal():
     """Test validation with non-Literal type."""
-    with pytest.raises(ArgumentConflictError, match="does not contain Literal options"):
+    with raises(ArgumentConflictError, match="does not contain Literal options"):
         val_literal("red", str)
 
 
 def test_val_literal_type_alias_invalid():
     """Test validation with invalid value against a type alias."""
-    with pytest.raises(ValueError, match="not one of options"):
+    with raises(ValueError, match="not one of options"):
         val_literal("yellow", Color)
 
 
@@ -40,3 +40,4 @@ def test_val_literal_type_alias_valid_int():
 def test_val_literal_type_alias_valid_str():
     """Test validation of a valid str against a type alias."""
     assert val_literal("red", Color) == "red"
+

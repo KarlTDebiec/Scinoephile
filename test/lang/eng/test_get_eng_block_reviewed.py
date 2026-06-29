@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.eng.block_review import (
@@ -22,13 +22,13 @@ from test.helpers import assert_series_equal, parametrize
 @parametrize(
     ("series_fixture", "expected_fixture", "test_case_loader"),
     [
-        pytest.param(
+        param(
             "kob_eng_ocr_fuse_clean_validate",
             "kob_eng_ocr_fuse_clean_validate_review",
             get_kob_eng_block_review_test_cases,
             id="kob-eng",
         ),
-        pytest.param(
+        param(
             "t_eng_fuse_clean_validate",
             "t_eng_fuse_clean_validate_review",
             get_t_eng_block_review_test_cases,
@@ -37,7 +37,7 @@ from test.helpers import assert_series_equal, parametrize
     ],
 )
 def test_get_eng_block_reviewed(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
     test_case_loader: Callable[[], list[TestCase]],
@@ -64,3 +64,4 @@ def test_get_eng_block_reviewed(
     assert len(output) == len(expected)
     assert_series_equal(output, expected)
     provider.chat_completion.assert_not_called()
+

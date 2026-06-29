@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import LogCaptureFixture, MonkeyPatch, raises
 from PIL import Image
 
 from scinoephile.core import Language, ScinoephileError
@@ -19,7 +19,7 @@ from test.helpers.ocr_recognizers import FailingOcrRecognizer, RecordingOcrRecog
 
 
 def test_ocr_image_series_with_tesseract_preserves_timings_and_sets_text(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test Tesseract image series processing preserves timings and text.
 
@@ -57,8 +57,8 @@ def test_ocr_image_series_with_tesseract_preserves_timings_and_sets_text(
 
 
 def test_ocr_image_series_with_tesseract_logs_progress(
-    caplog: pytest.LogCaptureFixture,
-    monkeypatch: pytest.MonkeyPatch,
+    caplog: LogCaptureFixture,
+    monkeypatch: MonkeyPatch,
 ):
     """Test Tesseract image series processing logs OCR progress.
 
@@ -100,7 +100,7 @@ def test_ocr_image_series_with_tesseract_logs_progress(
 
 
 def test_ocr_image_series_with_tesseract_uses_runtime_cache(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test Tesseract image series processing uses runtime cache by default.
@@ -170,7 +170,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
     ],
 )
 def test_ocr_image_series_with_tesseract_wraps_processing_errors(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     exception: Exception,
 ):
     """Test Tesseract image series processing wraps implementation errors.
@@ -194,10 +194,11 @@ def test_ocr_image_series_with_tesseract_wraps_processing_errors(
         ]
     )
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to OCR image series with Tesseract",
     ) as excinfo:
         ocr_image_series_with_tesseract(image_series)
 
     assert excinfo.value.__cause__ is exception
+

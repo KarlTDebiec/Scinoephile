@@ -7,7 +7,7 @@ from __future__ import annotations
 from io import StringIO
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.common.file import get_temp_file_path
@@ -105,5 +105,6 @@ def test_yue_process_cli_rejects_bare_convert_flag():
     """Test written Cantonese processing CLI requires an explicit conversion config."""
     full_input_path = test_data_root / "kob/output/yue-Hans/timewarp_clean_flatten.srt"
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(YueProcessCli, f"--infile {full_input_path} --convert")
+

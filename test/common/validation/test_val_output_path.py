@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.validation import val_output_path
@@ -27,7 +27,7 @@ def test_val_output_path_respects_create_and_exist_ok(tmp_path: Path):
     file_path.write_text("existing content", encoding="utf-8")
     nested_path = tmp_path / "missing" / "output.txt"
 
-    with pytest.raises(FileExistsError):
+    with raises(FileExistsError):
         val_output_path(file_path)
     assert val_output_path(file_path, exist_ok=True) == file_path.resolve()
     assert val_output_path(nested_path, create=False) == nested_path.resolve()
@@ -36,7 +36,7 @@ def test_val_output_path_respects_create_and_exist_ok(tmp_path: Path):
 
 def test_val_output_path_rejects_directories(tmp_path: Path):
     """Test output file validation rejects directory paths."""
-    with pytest.raises(NotAFileError):
+    with raises(NotAFileError):
         val_output_path(tmp_path, exist_ok=True)
 
 
@@ -54,15 +54,16 @@ def test_val_output_path_handles_iterables(tmp_path: Path):
     ]
     assert val_output_path([]) == []
 
-    with pytest.raises(FileExistsError):
+    with raises(FileExistsError):
         val_output_path([file_paths[0], existing_path])
 
 
 def test_val_output_path_expands_environment_variables(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test output file validation expands environment variables."""
     file_path = tmp_path / "output.txt"
     monkeypatch.setenv("OUTPUT_FILE", str(file_path))
 
     assert val_output_path("$OUTPUT_FILE") == file_path.resolve()
+

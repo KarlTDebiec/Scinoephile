@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import fail, FixtureRequest, param
 
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from test.helpers import assert_series_equal, parametrize
@@ -15,27 +15,27 @@ from test.helpers import assert_series_equal, parametrize
 @parametrize(
     ("series_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
             id="kob-zho-hant",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_fuse_clean_validate_review",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             id="mlamd-zho-hans",
         ),
-        pytest.param(
+        param(
             "mnt_zho_hant_fuse_clean_validate_review",
             "mnt_zho_hant_fuse_clean_validate_review_flatten",
             id="mnt-zho-hant",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse_clean_validate_review",
             "t_zho_hans_fuse_clean_validate_review_flatten",
             id="t-zho-hans",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse_clean_validate_review",
             "t_zho_hant_fuse_clean_validate_review_flatten",
             id="t-zho-hant",
@@ -43,7 +43,7 @@ from test.helpers import assert_series_equal, parametrize
     ],
 )
 def test_get_zho_flattened(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):
@@ -66,5 +66,6 @@ def test_get_zho_flattened(
     if errors:
         for error in errors:
             print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
+        fail(f"Found {len(errors)} discrepancies")
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
+

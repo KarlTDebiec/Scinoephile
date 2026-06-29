@@ -8,7 +8,7 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.multi.multi_timewarp_cli import MultiTimewarpCli
 from scinoephile.common.testing import run_cli_with_args
@@ -116,9 +116,10 @@ def test_multi_timewarp_cli_rejects_old_one_two_index_flags(tmp_path: Path):
     anchor_path.write_text("1\n00:00:00,000 --> 00:00:01,000\nA\n", encoding="utf-8")
     mobile_path.write_text("1\n00:00:02,000 --> 00:00:03,000\nB\n", encoding="utf-8")
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             MultiTimewarpCli,
             f"--anchor-infile {anchor_path} --mobile-infile {mobile_path} "
             "--one-start-idx 1 --two-start-idx 1",
         )
+

@@ -8,7 +8,7 @@ from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
-import pytest
+from pytest import fixture, raises
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dictionaries import (
@@ -21,14 +21,14 @@ from scinoephile.dictionaries.cuhk import CuhkDictionaryService
 from test.helpers import parametrize
 
 
-@pytest.fixture
+@fixture
 def database_path() -> Generator[Path]:
     """Provide a temporary SQLite database path."""
     with get_temp_file_path(".db") as temp_path:
         yield temp_path
 
 
-@pytest.fixture
+@fixture
 def sample_entries() -> list[DictionaryEntry]:
     """Provide deterministic dictionary entries for CUHK service tests."""
     return [
@@ -70,7 +70,7 @@ def sample_entries() -> list[DictionaryEntry]:
     ]
 
 
-@pytest.fixture
+@fixture
 def sample_source() -> DictionarySource:
     """Provide deterministic dictionary source metadata."""
     return DictionarySource(
@@ -85,7 +85,7 @@ def sample_source() -> DictionarySource:
     )
 
 
-@pytest.fixture
+@fixture
 def service(
     database_path: Path,
     sample_entries: list[DictionaryEntry],
@@ -107,7 +107,7 @@ def service(
         (
             "gully",
             None,
-            pytest.raises(
+            raises(
                 ValueError,
                 match="Could not infer a supported lookup format",
             ),
@@ -124,3 +124,4 @@ def test_lookup(
     with expectation:
         entries = service.lookup(query, limit=5)
         assert [entry.traditional for entry in entries] == expected
+

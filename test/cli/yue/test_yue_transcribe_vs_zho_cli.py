@@ -8,7 +8,7 @@ from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from unittest.mock import Mock, patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
@@ -35,7 +35,7 @@ def test_yue_transcribe_vs_zho_help_lists_transcription_options():
     stdout = StringIO()
     stderr = StringIO()
 
-    with pytest.raises(SystemExit, match="0"):
+    with raises(SystemExit, match="0"):
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(YueTranscribeVsZhoCli, "-h")
@@ -146,7 +146,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_bare_convert_flag():
     """Test written Cantonese CLI requires an explicit conversion config."""
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
@@ -210,7 +210,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
     """Test written Cantonese transcribe-vs-zho CLI rejects negative stream indexes."""
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
@@ -226,7 +226,7 @@ def test_yue_transcribe_vs_zho_cli_stream_errors_are_user_facing():
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
         side_effect=ScinoephileError("No stream index 7 found"),
     ):
-        with pytest.raises(SystemExit, match="2"):
+        with raises(SystemExit, match="2"):
             run_cli_with_args(
                 YueTranscribeVsZhoCli,
                 f"--media-infile {media_infile_path} "
@@ -239,7 +239,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_subtitle_infile():
     media_infile_path = "/tmp/test_media.mp4"
     zhongwen_infile_path = "/tmp/missing_subtitles.srt"
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} --zho-infile {zhongwen_infile_path}",
@@ -251,7 +251,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_media_infile():
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/missing_media.mp4"
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} --zho-infile {zhongwen_infile_path}",
@@ -327,7 +327,7 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
 
 def test_yue_transcribe_vs_zho_cli_rejects_two_stdin_infiles():
     """Test written Cantonese transcribe-vs-zho CLI rejects stdin for both inputs."""
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             "--media-infile - --zho-infile -",
@@ -339,7 +339,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_overwrite_without_outfile():
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
@@ -352,9 +352,10 @@ def test_yue_transcribe_vs_zho_cli_rejects_old_zhongwen_infile_flag():
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
             f"--zhongwen-infile {zhongwen_infile_path}",
         )
+

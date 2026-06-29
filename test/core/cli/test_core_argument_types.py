@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentTypeError
 
-import pytest
+from pytest import raises
 
 from scinoephile.core.cli.argument_types import language_arg
 
@@ -18,5 +18,6 @@ def test_language_arg_normalizes_language_tag():
 
 def test_language_arg_rejects_empty_tag():
     """Test language_arg rejects empty language tags."""
-    with pytest.raises(ArgumentTypeError, match="language tag may not be empty"):
+    with raises(ArgumentTypeError, match="language tag may not be empty"):
         language_arg("")
+

@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.cli.ocr.ocr_cli import OcrCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
@@ -116,7 +116,7 @@ def test_ocr_process_cli_reports_workflow_errors(tmp_path: Path):
             "scinoephile.cli.ocr.ocr_process_cli.OcrProcessingWorkflow",
             side_effect=ScinoephileError("No subtitle stream 3 found"),
         ),
-        pytest.raises(SystemExit) as excinfo,
+        raises(SystemExit) as excinfo,
     ):
         run_cli_with_args(
             OcrProcessCli,
@@ -129,3 +129,4 @@ def test_ocr_process_cli_reports_workflow_errors(tmp_path: Path):
 def test_ocr_cli_includes_process_subcommand():
     """Test top-level OCR CLI exposes OCR processing."""
     assert OcrCli.subcommands()["process"] is OcrProcessCli
+

@@ -8,7 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-import pytest
+from pytest import CaptureFixture, raises
 
 from scinoephile.cli.media.media_offset_cli import MediaOffsetCli
 from scinoephile.common.testing import run_cli_with_args
@@ -17,7 +17,7 @@ from test.helpers import parametrize
 
 def test_media_offset_cli_reports_offset(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test media offset CLI reports a human-readable offset result.
 
@@ -73,7 +73,7 @@ def test_media_offset_cli_reports_offset(
 
 def test_media_offset_cli_reports_window_aggregate(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test media offset CLI reports multi-window aggregate results.
 
@@ -164,7 +164,7 @@ def test_media_offset_cli_reports_window_aggregate(
 
 def test_media_offset_cli_rejects_start_time_argument(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test media offset CLI no longer accepts a start time argument.
 
@@ -177,7 +177,7 @@ def test_media_offset_cli_rejects_start_time_argument(
     reference_infile_path.touch()
     target_infile_path.touch()
 
-    with pytest.raises(SystemExit):
+    with raises(SystemExit):
         run_cli_with_args(
             MediaOffsetCli,
             f"--reference-infile {reference_infile_path} "
@@ -201,7 +201,7 @@ def test_media_offset_cli_rejects_start_time_argument(
 def test_media_offset_cli_rejects_zero_positive_arguments(
     argument: str,
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
 ):
     """Test media offset CLI rejects zero for positive arguments.
 
@@ -215,7 +215,7 @@ def test_media_offset_cli_rejects_zero_positive_arguments(
     reference_infile_path.touch()
     target_infile_path.touch()
 
-    with pytest.raises(SystemExit):
+    with raises(SystemExit):
         run_cli_with_args(
             MediaOffsetCli,
             f"--reference-infile {reference_infile_path} "
@@ -224,3 +224,4 @@ def test_media_offset_cli_rejects_zero_positive_arguments(
         )
 
     assert "is less than minimum value" in capsys.readouterr().err
+

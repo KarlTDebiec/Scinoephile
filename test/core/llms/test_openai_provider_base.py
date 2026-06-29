@@ -8,7 +8,7 @@ from collections.abc import Callable
 from types import SimpleNamespace
 from typing import Any, cast
 
-import pytest
+from pytest import raises
 from openai import OpenAI
 
 from scinoephile.core.llms import OpenAIProviderBase
@@ -242,8 +242,9 @@ def test_tool_box_run_allows_handler_exceptions_to_propagate():
         """
         raise RuntimeError(f"bad args: {args}")
 
-    with pytest.raises(RuntimeError, match=r"bad args: \{'x': 1\}"):
+    with raises(RuntimeError, match=r"bad args: \{'x': 1\}"):
         _get_tool_box(handler).run(
             tool_name="do",
             raw_arguments='{"x": 1}',
         )
+

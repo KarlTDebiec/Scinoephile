@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.image.ocr.validation import ValidationManager, validation_manager
@@ -261,7 +261,7 @@ def test_validation_manager_wraps_cache_path_errors(tmp_path):
     cache_dir_path = tmp_path / "cache-file"
     cache_dir_path.write_text("not a directory", encoding="utf-8")
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="Unable to initialize OCR validation data",
     ) as excinfo:
@@ -286,3 +286,4 @@ def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeyp
         "A,10,20\n"
     )
     assert not (cache_dir_path / "char_dims_1.csv").exists()
+

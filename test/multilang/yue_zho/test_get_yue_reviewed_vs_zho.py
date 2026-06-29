@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock, patch
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.multilang.yue_zho.block_review import (
@@ -21,7 +21,7 @@ from test.helpers import assert_series_equal, parametrize
 @parametrize(
     ("yuewen_fixture", "zhongwen_fixture", "expected_fixture", "test_case_loader"),
     [
-        pytest.param(
+        param(
             "mlamd_yue_hans_transcribe_review_translate",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
             "mlamd_yue_hans_transcribe_review_translate_block_review",
@@ -31,7 +31,7 @@ from test.helpers import assert_series_equal, parametrize
     ],
 )
 def test_get_yue_block_reviewed_vs_zho(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     yuewen_fixture: str,
     zhongwen_fixture: str,
     expected_fixture: str,
@@ -64,3 +64,4 @@ def test_get_yue_block_reviewed_vs_zho(
     )
     assert_series_equal(output, expected)
     provider.chat_completion.assert_not_called()
+

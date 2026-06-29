@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.common.validation import val_output_dir_path
 
@@ -32,7 +32,7 @@ def test_val_output_dir_path_respects_create_option(tmp_path: Path):
 
     assert val_output_dir_path(dir_path, create=False) == dir_path.resolve()
     assert not dir_path.exists()
-    with pytest.raises(NotADirectoryError):
+    with raises(NotADirectoryError):
         val_output_dir_path(file_path / "child", create=False)
 
 
@@ -41,7 +41,7 @@ def test_val_output_dir_path_rejects_file_paths(tmp_path: Path):
     file_path = tmp_path / "output.txt"
     file_path.write_text("test content", encoding="utf-8")
 
-    with pytest.raises(NotADirectoryError):
+    with raises(NotADirectoryError):
         val_output_dir_path(file_path)
 
 
@@ -61,12 +61,12 @@ def test_val_output_dir_path_handles_iterables(tmp_path: Path):
     assert new_dir_path.is_dir()
     assert val_output_dir_path(()) == []
 
-    with pytest.raises(NotADirectoryError):
+    with raises(NotADirectoryError):
         val_output_dir_path([existing_dir_path, file_path])
 
 
 def test_val_output_dir_path_expands_environment_variables(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test output directory validation expands environment variables."""
     dir_path = tmp_path / "outputdir"
@@ -74,3 +74,4 @@ def test_val_output_dir_path_expands_environment_variables(
 
     assert val_output_dir_path("$OUTPUT_DIR") == dir_path.resolve()
     assert dir_path.is_dir()
+

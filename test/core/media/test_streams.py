@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media.audio_stream import AudioStream
@@ -109,5 +109,6 @@ def test_subtitle_stream_rejects_unknown_codec():
     """Test subtitle stream output properties reject unknown codecs."""
     stream = SubtitleStream(index=2, language="eng", codec_name="unknown")
 
-    with pytest.raises(ScinoephileError, match="Unsupported subtitle codec unknown"):
+    with raises(ScinoephileError, match="Unsupported subtitle codec unknown"):
         stream.extension
+

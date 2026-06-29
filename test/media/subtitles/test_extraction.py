@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -93,10 +93,11 @@ def test_extract_subtitle_stream_rejects_unknown_codec(tmp_path: Path):
     outfile_path = tmp_path / "subtitles" / "eng-2.srt"
     outfile_path.parent.mkdir()
 
-    with pytest.raises(ScinoephileError, match="Unsupported subtitle codec unknown"):
+    with raises(ScinoephileError, match="Unsupported subtitle codec unknown"):
         extract_subtitle_stream(
             infile_path=infile_path,
             stream=SubtitleStream(index=2, language="eng", codec_name="unknown"),
             outfile_path=outfile_path,
             cache_dir_path=tmp_path / "cache",
         )
+

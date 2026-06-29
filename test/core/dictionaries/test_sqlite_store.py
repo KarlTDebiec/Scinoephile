@@ -9,7 +9,7 @@ from collections.abc import Generator
 from contextlib import closing
 from pathlib import Path
 
-import pytest
+from pytest import fixture
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.dictionaries import (
@@ -20,14 +20,14 @@ from scinoephile.core.dictionaries import (
 )
 
 
-@pytest.fixture
+@fixture
 def database_path() -> Generator[Path]:
     """Provide a temporary SQLite database path."""
     with get_temp_file_path(".db") as temp_path:
         yield temp_path
 
 
-@pytest.fixture
+@fixture
 def sample_entries() -> list[DictionaryEntry]:
     """Provide deterministic dictionary entries for SQLite tests."""
     return [
@@ -55,7 +55,7 @@ def sample_entries() -> list[DictionaryEntry]:
     ]
 
 
-@pytest.fixture
+@fixture
 def sample_source() -> DictionarySource:
     """Provide deterministic dictionary source metadata."""
     return DictionarySource(
@@ -189,3 +189,4 @@ def test_sqlite_store_collapses_duplicate_entries_and_definitions(
             definitions=[definition],
         )
     ]
+

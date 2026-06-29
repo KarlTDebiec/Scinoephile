@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from math import inf
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
 from scinoephile.core.subtitles import Series, Subtitle
@@ -191,13 +191,13 @@ def test_series_cer_ignores_separator_only_line_wrapping(
         "expected_fixture_name",
     ),
     [
-        pytest.param(
+        param(
             "kob_yue_hans_timewarp_clean_flatten",
             "kob_yue_hans_transcribe",
             "kob_yue_hans_transcribe_expected_cer",
             id="kob-yue-transcribe",
         ),
-        pytest.param(
+        param(
             "kob_yue_hans_timewarp_clean_flatten",
             "kob_yue_hans_transcribe_review_translate_block_review",
             "kob_yue_hans_transcribe_review_translate_block_review_expected_cer",
@@ -209,7 +209,7 @@ def test_series_cer(
     reference_series_fixture_name: str,
     candidate_series_fixture_name: str,
     expected_fixture_name: str,
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
 ):
     """Test series-level character error rate calculations.
 
@@ -231,3 +231,4 @@ def test_series_cer(
     assert result.deletions == expected.deletions
     assert result.correct == expected.correct
     assert result.reference_length == expected.reference_length
+

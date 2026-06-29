@@ -7,13 +7,13 @@ from __future__ import annotations
 from collections.abc import Generator
 from pathlib import Path
 
-import pytest
+from pytest import fixture
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.dictionaries.unihan.parser import UnihanDictionaryParser
 
 
-@pytest.fixture
+@fixture
 def source_dir_path() -> Generator[Path]:
     """Provide a temporary directory for Unihan source fixtures."""
     with get_temp_directory_path() as dir_path:
@@ -136,3 +136,4 @@ def test_parse_readings_preserves_simplified_only_source_rows(source_dir_path: P
     assert entry.pinyin == "wan"
     assert entry.jyutping == "maan6"
     assert [definition.text for definition in entry.definitions] == ["ten thousand"]
+

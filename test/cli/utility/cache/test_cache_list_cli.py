@@ -7,13 +7,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
+from pytest import CaptureFixture
 
 from scinoephile.cli.utility.cache.cache_list_cli import CacheListCli
 from scinoephile.common.testing import run_cli_with_args
 
 
-def test_cache_list_text(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+def test_cache_list_text(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test text cache list output.
 
     Arguments:
@@ -28,7 +28,7 @@ def test_cache_list_text(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
     assert "llm\tllm/one.json" in capsys.readouterr().out
 
 
-def test_cache_list_json(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+def test_cache_list_json(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test JSON cache list output.
 
     Arguments:
@@ -44,7 +44,7 @@ def test_cache_list_json(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
     assert entries[0]["path"] == "llm/one.json"
 
 
-def test_cache_list_missing_root(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+def test_cache_list_missing_root(tmp_path: Path, capsys: CaptureFixture[str]):
     """Test cache list output for a missing root.
 
     Arguments:
@@ -64,3 +64,4 @@ def _write_cache_file(path: Path):
     """
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("{}", encoding="utf-8")
+

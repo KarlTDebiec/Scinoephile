@@ -7,7 +7,7 @@ from __future__ import annotations
 from io import BytesIO
 from pathlib import Path
 
-import pytest
+from pytest import MonkeyPatch
 from flask import Flask
 from PIL import Image
 
@@ -52,7 +52,7 @@ def test_static_htmx_asset_is_served(tmp_path: Path):
 
 def test_index_renders_single_char_concern_image(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test character concerns render one focused image and table."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -72,7 +72,7 @@ def test_index_renders_single_char_concern_image(
 
 def test_index_renders_char_concern_romanizations(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test character concern tables render romanizations below Hanzi."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="霆")
@@ -96,7 +96,7 @@ def test_index_renders_char_concern_romanizations(
 
 def test_index_omits_romanizations_for_unrecognized_symbol(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test character concern tables skip romanization for non-Hanzi symbols."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="▼")
@@ -118,7 +118,7 @@ def test_index_omits_romanizations_for_unrecognized_symbol(
 
 def test_index_reload_reassesses_cached_subtitles(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test index reloads rebuild cached validation states."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
@@ -145,7 +145,7 @@ def test_index_reload_reassesses_cached_subtitles(
 
 def test_done_filter_route_toggles_ok_subtitles(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test the OK subtitle filter toggle updates the rendered list."""
     app = _done_app(tmp_path, monkeypatch)
@@ -220,7 +220,7 @@ def test_exit_route_saves_output_and_shuts_down_server(tmp_path: Path):
 
 def test_char_concern_image_url_changes_after_accept(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test accepting one character returns a fresh next concern image URL."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
@@ -253,7 +253,7 @@ def test_char_concern_image_url_changes_after_accept(
 
 def test_index_renders_space_gap_choice_table(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test adjacent-or-space concerns render both choice actions."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="霆所")
@@ -288,7 +288,7 @@ def test_index_renders_space_gap_choice_table(
 
 def test_validation_image_route_serves_bbox_png(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test validation row images are rendered with bbox overlays."""
     app = _done_app(tmp_path, monkeypatch)
@@ -304,7 +304,7 @@ def test_validation_image_route_serves_bbox_png(
 
 def test_validation_image_route_rejects_missing_subtitle(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test validation image route rejects an out-of-range subtitle index."""
     app = _done_app(tmp_path, monkeypatch)
@@ -346,7 +346,7 @@ def test_text_update_route_rejects_missing_subtitle(tmp_path: Path):
 
 def test_concern_image_route_serves_png(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test current concern images are rendered as PNG responses."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -359,7 +359,7 @@ def test_concern_image_route_serves_png(
 
 def test_concern_image_route_rejects_missing_subtitle(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test concern image route rejects an out-of-range subtitle index."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -371,7 +371,7 @@ def test_concern_image_route_rejects_missing_subtitle(
 
 def test_char_concern_route_resolves_row(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test resolving the final character concern omits the completed row."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -388,7 +388,7 @@ def test_char_concern_route_resolves_row(
 
 def test_char_concern_route_rejects_invalid_action(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test character concern route rejects invalid actions."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -404,7 +404,7 @@ def test_char_concern_route_rejects_invalid_action(
 
 def test_char_concern_route_rejects_missing_subtitle(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test character concern route rejects an out-of-range subtitle index."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -420,7 +420,7 @@ def test_char_concern_route_rejects_missing_subtitle(
 
 def test_gap_concern_route_resolves_row(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test resolving the final gap concern persists text and omits the row."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
@@ -444,7 +444,7 @@ def test_gap_concern_route_resolves_row(
 
 def test_gap_concern_route_rejects_invalid_action(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test gap concern route rejects invalid actions."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
@@ -466,7 +466,7 @@ def test_gap_concern_route_rejects_invalid_action(
 
 def test_gap_concern_route_rejects_missing_subtitle(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ):
     """Test gap concern route rejects an out-of-range subtitle index."""
     app = _char_concern_app(tmp_path, monkeypatch)
@@ -482,7 +482,7 @@ def test_gap_concern_route_rejects_missing_subtitle(
 
 def _char_concern_app(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
 ) -> Flask:
     """Create an app with one character dimension concern.
 
@@ -554,7 +554,7 @@ def _assert_index_textarea(html: bytes):
 
 def _done_app(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     *,
     include_done_subtitles: bool = False,
 ) -> Flask:
@@ -598,3 +598,4 @@ def _session(
         make_ocr_html_dir(tmp_path, text=text),
         include_done_subtitles=include_done_subtitles,
     )
+

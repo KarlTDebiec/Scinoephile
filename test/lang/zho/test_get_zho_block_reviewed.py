@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.zho.block_review import (
@@ -28,28 +28,28 @@ from test.helpers import assert_series_equal, parametrize
 @parametrize(
     ("series_fixture", "expected_fixture", "test_case_loader", "prompt_cls"),
     [
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate",
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             get_kob_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="kob-zho-hant",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse_clean_validate",
             "t_zho_hans_fuse_clean_validate_review",
             get_t_zho_hans_block_review_test_cases,
             BlockReviewPromptZhoHans,
             id="t-zho-hans",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse_clean_validate",
             "t_zho_hant_fuse_clean_validate_review",
             get_t_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="t-zho-hant",
         ),
-        pytest.param(
+        param(
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             get_t_zho_hant_simplify_block_review_test_cases,
@@ -59,7 +59,7 @@ from test.helpers import assert_series_equal, parametrize
     ],
 )
 def test_get_zho_block_reviewed(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
     test_case_loader: Callable[[], list[TestCase]],
@@ -89,3 +89,4 @@ def test_get_zho_block_reviewed(
     assert len(output) == len(expected)
     assert_series_equal(output, expected)
     provider.chat_completion.assert_not_called()
+

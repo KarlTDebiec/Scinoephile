@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import MonkeyPatch, skip
 import requests
 
 from scinoephile.cli.dictionary.build.dictionary_build_cuhk_cli import (
@@ -18,7 +18,7 @@ from test.helpers import skip_if_ci
 
 
 def test_dictionary_build_cuhk_cli_passes_cache_dir_to_service(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test CUHK CLI forwards parsed cache dirs without parser-time creation.
@@ -107,6 +107,7 @@ def test_dictionary_build_cuhk_cli():
                     "--request-timeout-seconds 10",
                 )
             except requests.RequestException as exc:
-                pytest.skip(f"CUHK build test requires network access: {exc}")
+                skip(f"CUHK build test requires network access: {exc}")
 
             assert database_path.exists()
+

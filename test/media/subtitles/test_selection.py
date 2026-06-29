@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -34,7 +34,7 @@ def test_get_media_subtitle_stream_requires_stream_index(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match="stream index is required for media OCR input",
     ):
@@ -51,7 +51,7 @@ def test_get_media_subtitle_stream_rejects_non_sup_stream(tmp_path: Path):
             "scinoephile.media.subtitles.selection.get_subtitle_streams",
             return_value=[SubtitleStream(index=5, codec_name="subrip")],
         ),
-        pytest.raises(
+        raises(
             ScinoephileError,
             match="Subtitle stream 5 is not an image-based SUP stream",
         ),
@@ -69,7 +69,7 @@ def test_get_media_subtitle_stream_wraps_probe_errors(tmp_path: Path):
             "scinoephile.media.subtitles.selection.get_subtitle_streams",
             side_effect=RuntimeError("ffprobe failed"),
         ),
-        pytest.raises(
+        raises(
             ScinoephileError,
             match="Unable to inspect subtitle streams in .*video.mkv.*ffprobe failed",
         ) as excinfo,
@@ -77,3 +77,4 @@ def test_get_media_subtitle_stream_wraps_probe_errors(tmp_path: Path):
         get_media_subtitle_stream(infile_path, 5)
 
     assert isinstance(excinfo.value.__cause__, RuntimeError)
+

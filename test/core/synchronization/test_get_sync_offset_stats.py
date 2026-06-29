@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import approx, raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
@@ -20,12 +20,12 @@ def test_get_sync_offset_stats_uses_paired_group_midpoints():
 
     assert stats.sample_count == 1
     assert stats.skipped_group_count == 0
-    assert stats.mean_ms == pytest.approx(250.0)
-    assert stats.median_ms == pytest.approx(250.0)
-    assert stats.stdev_ms == pytest.approx(0.0)
-    assert stats.min_ms == pytest.approx(250.0)
-    assert stats.max_ms == pytest.approx(250.0)
-    assert stats.samples[0].offset_ms == pytest.approx(250.0)
+    assert stats.mean_ms == approx(250.0)
+    assert stats.median_ms == approx(250.0)
+    assert stats.stdev_ms == approx(0.0)
+    assert stats.min_ms == approx(250.0)
+    assert stats.max_ms == approx(250.0)
+    assert stats.samples[0].offset_ms == approx(250.0)
 
 
 def test_get_sync_offset_stats_uses_group_span_midpoints_for_many_to_one():
@@ -41,7 +41,7 @@ def test_get_sync_offset_stats_uses_group_span_midpoints_for_many_to_one():
     stats = get_sync_offset_stats(anchor, mobile)
 
     assert stats.sample_count == 1
-    assert stats.mean_ms == pytest.approx(100.0)
+    assert stats.mean_ms == approx(100.0)
     assert stats.samples[0].anchor_indexes == (0, 1)
     assert stats.samples[0].mobile_indexes == (0,)
 
@@ -60,7 +60,7 @@ def test_get_sync_offset_stats_skips_unpaired_groups():
 
     assert stats.sample_count == 1
     assert stats.skipped_group_count == 1
-    assert stats.mean_ms == pytest.approx(250.0)
+    assert stats.mean_ms == approx(250.0)
 
 
 def test_get_sync_offset_stats_skips_mobile_only_blocks():
@@ -78,7 +78,7 @@ def test_get_sync_offset_stats_skips_mobile_only_blocks():
 
     assert stats.sample_count == 1
     assert stats.skipped_group_count == 2
-    assert stats.mean_ms == pytest.approx(250.0)
+    assert stats.mean_ms == approx(250.0)
 
 
 def test_get_sync_offset_stats_raises_when_no_paired_groups():
@@ -86,5 +86,6 @@ def test_get_sync_offset_stats_raises_when_no_paired_groups():
     anchor = Series(events=[Subtitle(start=1000, end=2000, text="A")])
     mobile = Series(events=[Subtitle(start=7000, end=8000, text="1")])
 
-    with pytest.raises(ScinoephileError, match="No paired sync groups"):
+    with raises(ScinoephileError, match="No paired sync groups"):
         get_sync_offset_stats(anchor, mobile)
+

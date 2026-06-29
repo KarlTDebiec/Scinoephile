@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from contextlib import AbstractContextManager, nullcontext
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import UnsupportedCharacterError
 from scinoephile.lang.yue.conversion import get_yue_converted
@@ -21,12 +21,12 @@ from test.helpers import parametrize
         (
             "過樹\uefbe",
             None,
-            pytest.raises(UnsupportedCharacterError),
+            raises(UnsupportedCharacterError),
         ),
         (
             "蝦\ueec9",
             None,
-            pytest.raises(UnsupportedCharacterError),
+            raises(UnsupportedCharacterError),
         ),
     ],
 )
@@ -45,3 +45,4 @@ def test_get_yue_converted(
     with expectation:
         output = get_yue_converted(text)
         assert output == expected
+

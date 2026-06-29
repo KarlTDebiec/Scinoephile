@@ -10,7 +10,7 @@ from os import environ
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
@@ -52,7 +52,7 @@ def test_all_cli_help_text_has_chinese_localizations():
 
 
 def test_all_cli_help_paths_do_not_create_default_cache_dir(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: MonkeyPatch
 ):
     """Test CLI help construction does not create default cache directories.
 
@@ -295,7 +295,7 @@ def _run_help(args: str) -> str:
     """
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
+    with raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 run_cli_with_args(ScinoephileCli, args)
@@ -336,3 +336,4 @@ def _is_translatable_help_text(text: str) -> bool:
     return any(
         character.isascii() and character.isalpha() for character in text
     ) and not any("\u4e00" <= character <= "\u9fff" for character in text)
+

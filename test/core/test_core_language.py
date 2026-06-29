@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import raises
 
 from scinoephile.core import Language
 from scinoephile.core.language import is_chinese_language_tag, normalize_language_tag
@@ -57,7 +57,7 @@ def test_language_enum_parses_tags():
 
 def test_language_rejects_unsupported_tag():
     """Test unsupported language tags are rejected."""
-    with pytest.raises(ValueError, match="is not a valid Language"):
+    with raises(ValueError, match="is not a valid Language"):
         Language("")
 
 
@@ -81,3 +81,4 @@ def test_normalize_language_tag_normalizes_loose_tags():
     assert normalize_language_tag("ZHO-hant") == "zho-Hant"
     assert normalize_language_tag("ENG-US") == "eng-US"
     assert normalize_language_tag("zho-unknown") == "zho-Unknown"
+

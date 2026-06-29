@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import pytest
+from pytest import FixtureRequest, param, raises
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.stacking import (
@@ -125,7 +125,7 @@ def test_get_stacked_series_overlap_error_includes_event_context():
         ]
     )
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match=("events 1 and 2.*previous=1000-3000.*current=1000-1001"),
     ):
@@ -135,19 +135,19 @@ def test_get_stacked_series_overlap_error_includes_event_context():
 @parametrize(
     ("one_fixture", "two_fixture", "expected_fixture"),
     [
-        pytest.param(
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hans_eng",
             id="kob-zho-hans-eng",
         ),
-        pytest.param(
+        param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             "mlamd_eng_fuse_clean_validate_review_flatten",
             "mlamd_zho_hans_eng",
             id="mlamd-zho-hans-eng",
         ),
-        pytest.param(
+        param(
             "t_zho_hans_fuse_clean_validate_review_flatten",
             "t_eng_fuse_clean_validate_review_flatten",
             "t_zho_hans_eng",
@@ -156,7 +156,7 @@ def test_get_stacked_series_overlap_error_includes_event_context():
     ],
 )
 def test_get_stacked_series(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     one_fixture: str,
     two_fixture: str,
     expected_fixture: str,
@@ -174,3 +174,4 @@ def test_get_stacked_series(
         request.getfixturevalue(two_fixture),
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
+

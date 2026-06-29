@@ -8,13 +8,13 @@ import json
 from collections.abc import Generator
 from pathlib import Path
 
-import pytest
+from pytest import fixture
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.dictionaries.wiktionary.parser import WiktionaryDictionaryParser
 
 
-@pytest.fixture
+@fixture
 def source_jsonl_path() -> Generator[Path]:
     """Provide a temporary Kaikki JSONL source path."""
     with get_temp_file_path(".jsonl") as temp_path:
@@ -179,3 +179,4 @@ def test_parse_accepts_legacy_hyphenated_pronunciation_key(source_jsonl_path: Pa
     assert len(entries) == 1
     assert entries[0].pinyin == "hang2"
     assert entries[0].jyutping == "hang4"
+

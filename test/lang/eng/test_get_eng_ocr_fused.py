@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from unittest.mock import Mock
 
-import pytest
+from pytest import FixtureRequest, param
 
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -22,28 +22,28 @@ from test.helpers import assert_series_equal, parametrize
 @parametrize(
     ("lens_fixture", "tesseract_fixture", "expected_fixture", "test_case_loader"),
     [
-        pytest.param(
+        param(
             "kob_eng_ocr_lens",
             "kob_eng_ocr_tesseract",
             "kob_eng_ocr_fuse",
             get_kob_eng_ocr_fusion_test_cases,
             id="kob-eng",
         ),
-        pytest.param(
+        param(
             "mlamd_eng_ocr_lens",
             "mlamd_eng_ocr_tesseract",
             "mlamd_eng_fuse",
             get_mlamd_eng_ocr_fusion_test_cases,
             id="mlamd-eng",
         ),
-        pytest.param(
+        param(
             "mnt_eng_ocr_lens",
             "mnt_eng_ocr_tesseract",
             "mnt_eng_fuse",
             get_mnt_eng_ocr_fusion_test_cases,
             id="mnt-eng",
         ),
-        pytest.param(
+        param(
             "t_eng_ocr_lens",
             "t_eng_ocr_tesseract",
             "t_eng_fuse",
@@ -53,7 +53,7 @@ from test.helpers import assert_series_equal, parametrize
     ],
 )
 def test_get_eng_ocr_fused(
-    request: pytest.FixtureRequest,
+    request: FixtureRequest,
     lens_fixture: str,
     tesseract_fixture: str,
     expected_fixture: str,
@@ -83,3 +83,4 @@ def test_get_eng_ocr_fused(
     assert len(lens) == len(output)
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
     provider.chat_completion.assert_not_called()
+

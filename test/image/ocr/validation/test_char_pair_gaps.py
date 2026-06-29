@@ -7,7 +7,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-import pytest
+from pytest import raises
 
 from scinoephile.image.ocr.validation.char_pair_gaps import (
     get_default_char_pair_cutoffs,
@@ -25,7 +25,7 @@ def test_load_char_pair_gaps_rejects_nonmonotonic_cutoffs(tmp_path: Path):
     file_path = tmp_path / "char_pair_gaps.csv"
     file_path.write_text("⋯,〝,46,24,90,200\n", encoding="utf-8")
 
-    with pytest.raises(ValueError, match="cutoffs must be monotonic"):
+    with raises(ValueError, match="cutoffs must be monotonic"):
         load_char_pair_gaps(file_path)
 
 
@@ -88,7 +88,8 @@ def test_save_char_pair_gaps_rejects_nonmonotonic_cutoffs(tmp_path: Path):
     """
     file_path = tmp_path / "char_pair_gaps.csv"
 
-    with pytest.raises(ValueError, match="cutoffs must be monotonic"):
+    with raises(ValueError, match="cutoffs must be monotonic"):
         save_char_pair_gaps({("⋯", "〝"): (46, 24, 90, 200)}, file_path)
 
     assert not file_path.exists()
+

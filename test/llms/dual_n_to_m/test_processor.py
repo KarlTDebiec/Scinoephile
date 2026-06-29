@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from unittest.mock import Mock
 
-import pytest
+from pytest import raises
 
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
@@ -79,5 +79,6 @@ def test_process_rejects_negative_stop_at_idx():
     source_one = Series([Subtitle(start=1000, end=2000, text="第一句")])
     source_two = Series([Subtitle(start=1000, end=2000, text="Reference")])
 
-    with pytest.raises(ValueError, match="stop_at_idx"):
+    with raises(ValueError, match="stop_at_idx"):
         processor.process(source_one, source_two, stop_at_idx=-1)
+

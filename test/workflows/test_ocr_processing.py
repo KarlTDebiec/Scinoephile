@@ -9,7 +9,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
-import pytest
+from pytest import MonkeyPatch, raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -133,7 +133,7 @@ class _PatchedEngOcrPipeline:
 
     def __init__(
         self,
-        monkeypatch: pytest.MonkeyPatch,
+        monkeypatch: MonkeyPatch,
         image_series: ImageSeries,
         *,
         lens_texts: list[str] | None = None,
@@ -229,7 +229,7 @@ class _PatchedZhoOcrPipeline:
 
     def __init__(
         self,
-        monkeypatch: pytest.MonkeyPatch,
+        monkeypatch: MonkeyPatch,
         image_series: ImageSeries,
         *,
         lens_texts: list[str] | None = None,
@@ -358,7 +358,7 @@ def test_ocr_processing_workflow_rejects_invalid_language_in_init(tmp_path: Path
     """
     invalid_language: Any = "spa"
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match=(
             "language must be eng, yue-Hans, yue-Hant, zho-Hans, or zho-Hant, not spa"
@@ -372,7 +372,7 @@ def test_ocr_processing_workflow_rejects_invalid_language_in_init(tmp_path: Path
 
 
 def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -420,7 +420,7 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
 @parametrize("process_ocr", [process_eng_ocr, process_zho_ocr])
 def test_process_ocr_wraps_filesystem_errors(
     process_ocr: Callable[..., OcrProcessingResult],
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test OCR processing maps filesystem errors to user-facing errors.
@@ -446,7 +446,7 @@ def test_process_ocr_wraps_filesystem_errors(
         fake_load,
     )
 
-    with pytest.raises(
+    with raises(
         ScinoephileError,
         match=(
             "Unable to load OCR image subtitles from .*source.sup.*source.sup missing"
@@ -458,7 +458,7 @@ def test_process_ocr_wraps_filesystem_errors(
 
 
 def test_process_eng_ocr_can_clean_provider_outputs_before_fusion(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -508,7 +508,7 @@ def test_process_eng_ocr_can_clean_provider_outputs_before_fusion(
 
 
 def test_process_eng_ocr_validates_fuse_clean_output(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -571,7 +571,7 @@ def test_process_eng_ocr_validates_fuse_clean_output(
 
 
 def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -661,7 +661,7 @@ def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
 
 
 def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -739,7 +739,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
 
 
 def test_ocr_validation_keeps_newer_image_index_text(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -784,7 +784,7 @@ def test_ocr_validation_keeps_newer_image_index_text(
 
 
 def test_ocr_validation_uses_newer_fuse_clean_text(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -829,7 +829,7 @@ def test_ocr_validation_uses_newer_fuse_clean_text(
 
 
 def test_ocr_validation_uses_fuse_clean_for_blank_image_index(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -873,7 +873,7 @@ def test_ocr_validation_uses_fuse_clean_for_blank_image_index(
 
 
 def test_process_zho_ocr_runs_lens_paddle_and_fusion(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -917,7 +917,7 @@ def test_process_zho_ocr_runs_lens_paddle_and_fusion(
 
 
 def test_process_zho_ocr_can_clean_provider_outputs_before_fusion(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -966,7 +966,7 @@ def test_process_zho_ocr_can_clean_provider_outputs_before_fusion(
 
 
 def test_process_zho_ocr_passes_zho_hant_languages_to_ocr_engines(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -1000,7 +1000,7 @@ def test_process_zho_ocr_passes_zho_hant_languages_to_ocr_engines(
 
 
 def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
@@ -1048,7 +1048,7 @@ def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
 
 
 def test_process_eng_ocr_media_input_requires_matching_stream_index(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test media OCR processing rejects missing subtitle stream indexes.
@@ -1064,10 +1064,11 @@ def test_process_eng_ocr_media_input_requires_matching_stream_index(
         lambda path: [SubtitleStream(index=5, codec_name="hdmv_pgs_subtitle")],
     )
 
-    with pytest.raises(ScinoephileError, match="No subtitle stream 7"):
+    with raises(ScinoephileError, match="No subtitle stream 7"):
         process_eng_ocr(
             source_path,
             tmp_path / "output",
             stream_index=7,
             validate=False,
         )
+

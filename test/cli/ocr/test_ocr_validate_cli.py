@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+from pytest import CaptureFixture, MonkeyPatch, raises
 
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
 from scinoephile.common.testing import run_cli_with_args
@@ -14,7 +14,7 @@ from scinoephile.core import ScinoephileError
 
 
 def test_ocr_validate_cli(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test OCR validate CLI forwards noninteractive workflow arguments.
@@ -83,7 +83,7 @@ def test_ocr_validate_cli(
 
 
 def test_ocr_validate_cli_web(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test OCR validate CLI launches web validation.
@@ -150,7 +150,7 @@ def test_ocr_validate_cli_web(
 
 
 def test_ocr_validate_cli_web_rejects_sup_input(
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
     tmp_path: Path,
 ):
     """Test OCR validate web mode requires a prepared OCR image directory.
@@ -163,7 +163,7 @@ def test_ocr_validate_cli_web_rejects_sup_input(
     infile_path.write_bytes(b"unused")
     outfile_path = tmp_path / "validated.srt"
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             OcrValidateCli,
             f"--infile {infile_path} --interactive --outfile {outfile_path}",
@@ -174,8 +174,8 @@ def test_ocr_validate_cli_web_rejects_sup_input(
 
 
 def test_ocr_validate_cli_web_delegates_image_dir_validation(
-    capsys: pytest.CaptureFixture[str],
-    monkeypatch: pytest.MonkeyPatch,
+    capsys: CaptureFixture[str],
+    monkeypatch: MonkeyPatch,
     tmp_path: Path,
 ):
     """Test web mode lets the session validate OCR image directory contents.
@@ -197,7 +197,7 @@ def test_ocr_validate_cli_web_delegates_image_dir_validation(
         fake_validate_ocr,
     )
 
-    with pytest.raises(SystemExit, match="2"):
+    with raises(SystemExit, match="2"):
         run_cli_with_args(
             OcrValidateCli,
             f"--infile {infile_path} --interactive "
@@ -206,3 +206,4 @@ def test_ocr_validate_cli_web_delegates_image_dir_validation(
 
     captured = capsys.readouterr()
     assert "session checked OCR image directory" in captured.err
+
