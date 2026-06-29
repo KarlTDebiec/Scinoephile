@@ -25,9 +25,7 @@ class _MockResponse:
         """Raise no error for a successful mock response."""
 
 
-def test_download_payloads_only_fetch_required_sources(
-    monkeypatch: MonkeyPatch,
-):
+def test_download_payloads_only_fetch_required_sources(monkeypatch: MonkeyPatch):
     """Download only the payloads currently used for canonical rows.
 
     Arguments:

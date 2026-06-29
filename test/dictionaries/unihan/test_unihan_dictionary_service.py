@@ -4,36 +4,13 @@
 
 from __future__ import annotations
 
-from collections.abc import Generator
 from pathlib import Path
 from types import TracebackType
 
 import requests
-from pytest import MonkeyPatch, fixture, raises
+from pytest import MonkeyPatch, raises
 
-from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.dictionaries.unihan import UnihanDictionaryService
-
-
-@fixture
-def local_data_dir_path() -> Generator[Path]:
-    """Provide a temporary canonical local data directory."""
-    with get_temp_directory_path() as dir_path:
-        yield dir_path
-
-
-@fixture
-def runtime_data_dir_path() -> Generator[Path]:
-    """Provide a temporary runtime canonical data directory."""
-    with get_temp_directory_path() as dir_path:
-        yield dir_path
-
-
-@fixture
-def database_path() -> Generator[Path]:
-    """Provide a temporary SQLite database path."""
-    with get_temp_file_path(".db") as temp_path:
-        yield temp_path
 
 
 def _write_fixture_sources(base_dir_path: Path):
