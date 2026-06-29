@@ -173,6 +173,11 @@ HALF_TO_FULL_PUNC = {
         for key in HALF_PUNC
         if f"FULLWIDTH {key}" in FULL_PUNC
     },
+    **{
+        HALF_PUNC[f"HALFWIDTH {key}"]: FULL_PUNC[key]
+        for key in FULL_PUNC
+        if f"HALFWIDTH {key}" in HALF_PUNC
+    },
     "“": "〝",
     "”": "〞",
     "·": "・",
@@ -181,8 +186,7 @@ HALF_TO_FULL_PUNC = {
 
 FULL_TO_HALF_PUNC = {
     **{v: k for k, v in HALF_TO_FULL_PUNC.items()},
-    FULL_PUNC["IDEOGRAPHIC COMMA"]: HALF_PUNC["COMMA"],
-    FULL_PUNC["IDEOGRAPHIC FULL STOP"]: HALF_PUNC["FULL STOP"],
+    FULL_PUNC["KATAKANA MIDDLE DOT"]: HALF_PUNC["HALFWIDTH KATAKANA MIDDLE DOT"],
     FULL_PUNC["MIDLINE HORIZONTAL ELLIPSIS"]: HALF_PUNC["HORIZONTAL ELLIPSIS"],
 }
 """Mapping from full-width to half-width punctuation characters."""

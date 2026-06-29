@@ -20,8 +20,8 @@ __all__ = [
 type RomanizedTokenKind = Literal["punctuation", "raw", "romanized"]
 """Kind of token being joined into romanized text."""
 
-_ROMANIZED_CLOSING_PUNCTUATION = set(")]}>.,!?;:%”’」』》〉】＞…")
-_ROMANIZED_OPENING_PUNCTUATION = set("([{<“‘「『《〈【＜")
+_ROMANIZED_CLOSING_PUNCTUATION = set(")]}>.,!?;:%”’」』》〉】＞…､｡｣･")
+_ROMANIZED_OPENING_PUNCTUATION = set("([{<“‘「『《〈【＜｢･")
 _ROMANIZED_RETAINED_FULLWIDTH_PUNCTUATION = {"＜", "＞"}
 _ROMANIZED_SYMMETRIC_QUOTES = {'"', "'"}
 

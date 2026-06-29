@@ -104,11 +104,11 @@ def test_get_cmn_romanized(
     [
         ("你好世界", "nǐhǎo shìjiè"),
         ("你好,世界!", "nǐhǎo, shìjiè!"),
-        ("「你好」世界？", "「nǐhǎo」 shìjiè?"),
+        ("「你好」世界？", "｢nǐhǎo｣ shìjiè?"),
         ("＂你好＂世界", '"nǐhǎo" shìjiè'),
         ("＇你好＇世界", "'nǐhǎo' shìjiè"),
         ("他说＇你好＇", "tā shuō 'nǐhǎo'"),
-        ("你好：世界；再见。", "nǐhǎo: shìjiè; zàijiàn."),
+        ("你好：世界；再见。", "nǐhǎo: shìjiè; zàijiàn｡"),
         ("don't你好", "don't nǐhǎo"),
         ("rock'n'roll你好", "rock'n'roll nǐhǎo"),
         ('"t i"你好', '"t i" nǐhǎo'),

@@ -281,12 +281,12 @@ gōngxǐ sūwēng shēngchén kuàilè
 57
 00:05:17,818 --> 00:05:20,153
 我家破人亡、贫病老弱
-wǒ jiāpòrénwáng, pínbìng lǎoruò
+wǒ jiāpòrénwáng､ pínbìng lǎoruò
 
 58
 00:05:20,195 --> 00:05:23,907
 无亲无故、妻离子散
-wúqīnwúgù, qīlízǐsàn
+wúqīnwúgù､ qīlízǐsàn
 
 59
 00:05:23,949 --> 00:05:25,575
@@ -456,7 +456,7 @@ jīnyú háishì mùyú?
 92
 00:06:38,148 --> 00:06:39,941
 少爷，甚么金鱼、木鱼？
-shàoyé, shénme jīnyú, mùyú?
+shàoyé, shénme jīnyú､ mùyú?
 
 93
 00:06:39,983 --> 00:06:41,776
@@ -926,7 +926,7 @@ lái… ná qù dǎ shǎnggěi zhèlǐ de gūniáng  lǎoyé
 186
 00:11:12,630 --> 00:11:15,425
 令牌上写着「铁帽子王僧格林参」
-lìngpái shàng xiě zhe 「tiě màozi wángsēng gélín cān」
+lìngpái shàng xiě zhe ｢tiě màozi wángsēng gélín cān｣
 
 187
 00:11:25,977 --> 00:11:27,520
@@ -2236,12 +2236,12 @@ kǎojuàn fāngmiàn shì méi wèntí le
 448
 00:27:09,002 --> 00:27:10,587
 至于临场考弓箭、骑马
-zhìyú línchǎng kǎo gōngjiàn, qímǎ
+zhìyú línchǎng kǎo gōngjiàn､ qímǎ
 
 449
 00:27:10,587 --> 00:27:12,172
 举石、搏击、兵器
-jǔshí, bójī, bīngqì
+jǔshí､ bójī､ bīngqì
 
 450
 00:27:12,339 --> 00:27:13,465
@@ -5956,7 +5956,7 @@ xiánglóngshíbāzhǎng shǒu shíqī zhǎng wǒ yǐjīng lǐnghuìdào
 1192
 01:19:28,806 --> 01:19:31,100
 但是第十八式「杀龙有悔」
-dànshì dìshíbā shì 「shālóng yǒuhuǐ」
+dànshì dìshíbā shì ｢shālóng yǒuhuǐ｣
 
 1193
 01:19:31,350 --> 01:19:32,559

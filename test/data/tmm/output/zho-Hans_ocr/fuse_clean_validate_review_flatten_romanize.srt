@@ -1426,7 +1426,7 @@ fūrén  yòngbùzhe zhème dānxīn
 286
 00:14:22,375 --> 00:14:23,750
 老爷、夫人　你们看
-lǎoyé, fūrén  nǐmen kàn
+lǎoyé､ fūrén  nǐmen kàn
 
 287
 00:14:26,292 --> 00:14:26,958
@@ -4041,7 +4041,7 @@ bùyòng pà  duōshēng jǐlì nǐ dōu búhuì sǐ
 809
 00:37:54,583 --> 00:37:58,750
 降龙、齐天大圣　至霸尊者驾到
-xiánglóng, qítiāndàshèng  zhìbà zūnzhě jiàdào
+xiánglóng､ qítiāndàshèng  zhìbà zūnzhě jiàdào
 
 810
 00:37:59,875 --> 00:38:01,042

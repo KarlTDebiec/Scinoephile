@@ -781,7 +781,7 @@ sāamjīuléuhngyaht
 157
 00:11:05,208 --> 00:11:06,792
 亦有可能系三、五、七年！
-yihkyáuh hónàhng haihsāam, nǵh, chātnìhn!
+yihkyáuh hónàhng haihsāam､ nǵh､ chātnìhn!
 
 158
 00:11:07,375 --> 00:11:10,417
@@ -1571,7 +1571,7 @@ gú dou haih néih ge la!
 315
 00:22:05,958 --> 00:22:08,125
 我一早睇穿你心、肝、脾、肺、肾！
-ngóh yātjóu tái chyūn néihsām, gōn, pèih, fai, sahn!
+ngóh yātjóu tái chyūn néihsām､ gōn､ pèih､ fai､ sahn!
 
 316
 00:22:08,500 --> 00:22:09,292
@@ -1716,7 +1716,7 @@ wā! yauh wah yímwuh ngóh, hohnggahn dī hóubo
 344
 00:23:18,958 --> 00:23:21,708
 定啲嚟吖，我哋呢度几廿把嘢「航」住㗎嘛
-dihngdī làih ā, ngóhdeih nē douh géiyah bá yéh 「hòhng」 jyuh ga ma
+dihngdī làih ā, ngóhdeih nē douh géiyah bá yéh ｢hòhng｣ jyuh ga ma
 
 345
 00:23:22,000 --> 00:23:23,958
@@ -1736,7 +1736,7 @@ sòh ge! jidō mī chúhngsēung, bīnyáuh séidāk gamyih!
 348
 00:23:38,125 --> 00:23:41,250
 起身！喺我面前唔好「诈诈谛谛」，我话你听
-héisān! hái ngóh mihnchìhn m̀hhóu 「jajadaidai」, ngóh wah néih ting
+héisān! hái ngóh mihnchìhn m̀hhóu ｢jajadaidai｣, ngóh wah néih ting
 
 349
 00:23:42,333 --> 00:23:43,500
@@ -1751,7 +1751,7 @@ jānhaih wàhn jó àh?
 351
 00:23:46,125 --> 00:23:47,125
 大牛、二虎
-daaihngàuh, yihfú
+daaihngàuh､ yihfú
 
 352
 00:23:48,708 --> 00:23:51,208
@@ -1786,7 +1786,7 @@ m̀hsái gīng!
 358
 00:24:23,208 --> 00:24:26,708
 只要我点曲池、疾宫两个穴位，即时冇血流
-jíyiu ngóh dímkūkchìh, jahtgūng léuhng go yuhtwaih, jīksìh móuh hyutlàuh
+jíyiu ngóh dímkūkchìh､ jahtgūng léuhng go yuhtwaih, jīksìh móuh hyutlàuh
 
 359
 00:24:43,625 --> 00:24:46,667
@@ -6046,7 +6046,7 @@ tùhng néih dáfāango gitàh
 1210
 01:15:50,917 --> 01:15:51,875
 「元神出窍」
-「yùhnsàhn chēuthiu」
+｢yùhnsàhn chēuthiu｣
 
 1211
 01:15:56,000 --> 01:15:57,500
@@ -6251,7 +6251,7 @@ wā, yauhsīngsīnlā!
 1251
 01:18:18,083 --> 01:18:19,583
 点解我讲「又」嘅？
-dímgáai ngóh góng 「yauh」 ge?
+dímgáai ngóh góng ｢yauh｣ ge?
 
 1252
 01:18:23,625 --> 01:18:26,875
@@ -6591,7 +6591,7 @@ pùhnsīduhng?
 1319
 01:23:17,375 --> 01:23:18,292
 你「吓」我唔识字呀！
-néih 「haak」 ngóh m̀h sīk jih àh!
+néih ｢haak｣ ngóh m̀h sīk jih àh!
 
 1320
 01:23:18,542 --> 01:23:20,167
@@ -6656,7 +6656,7 @@ néih yíhgīng haih ngóh ge yàhnlā
 1332
 01:24:10,083 --> 01:24:12,208
 如果有人「恰」你，你就「挞」我啦
-yùhgwó yáuh yàhn 「hāp」 néih, néih jauh 「tāat」 ngóh lā
+yùhgwó yáuh yàhn ｢hāp｣ néih, néih jauh ｢tāat｣ ngóh lā
 
 1333
 01:24:12,417 --> 01:24:14,792
