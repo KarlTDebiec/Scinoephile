@@ -13,7 +13,7 @@ __all__ = [
 ]
 
 
-def set_mtime(path: Path, timestamp: float):
+def set_mtime(path: Path, timestamp: float) -> None:
     """Set a path modification and access time.
 
     Arguments:
