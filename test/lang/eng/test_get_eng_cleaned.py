@@ -91,26 +91,6 @@ def test_get_eng_text_cleaned(text: str, expected: str):
             id="kob-eng-timewarp",
         ),
         param(
-            "mnt_eng_fuse",
-            "mnt_eng_fuse_clean",
-            id="mnt-eng-fuse",
-        ),
-        param(
-            "t_eng_fuse",
-            "t_eng_fuse_clean",
-            id="t-eng-fuse",
-        ),
-        param(
-            "t_eng_ocr_lens",
-            "t_eng_ocr_lens_clean",
-            id="t-eng-lens",
-        ),
-        param(
-            "t_eng_ocr_tesseract",
-            "t_eng_ocr_tesseract_clean",
-            id="t-eng-tesseract",
-        ),
-        param(
             "mlamd_eng_fuse",
             "mlamd_eng_fuse_clean",
             id="mlamd-eng-fuse",
@@ -126,6 +106,11 @@ def test_get_eng_text_cleaned(text: str, expected: str):
             id="mlamd-eng-tesseract",
         ),
         param(
+            "mnt_eng_fuse",
+            "mnt_eng_fuse_clean",
+            id="mnt-eng-fuse",
+        ),
+        param(
             "mnt_eng_ocr_lens",
             "mnt_eng_ocr_lens_clean",
             id="mnt-eng-lens",
@@ -134,6 +119,21 @@ def test_get_eng_text_cleaned(text: str, expected: str):
             "mnt_eng_ocr_tesseract",
             "mnt_eng_ocr_tesseract_clean",
             id="mnt-eng-tesseract",
+        ),
+        param(
+            "t_eng_fuse",
+            "t_eng_fuse_clean",
+            id="t-eng-fuse",
+        ),
+        param(
+            "t_eng_ocr_lens",
+            "t_eng_ocr_lens_clean",
+            id="t-eng-lens",
+        ),
+        param(
+            "t_eng_ocr_tesseract",
+            "t_eng_ocr_tesseract_clean",
+            id="t-eng-tesseract",
         ),
         param(
             "tmm_eng_ocr_fuse",
