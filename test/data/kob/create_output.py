@@ -11,16 +11,6 @@ from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.core.timing import get_series_timewarped
-from scinoephile.lang.eng.block_review import (
-    get_eng_block_reviewed,
-    get_eng_block_reviewer,
-)
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
-from scinoephile.lang.eng.flattening import get_eng_flattened
-from scinoephile.lang.yue.romanization import get_yue_romanized
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.block_review import (
     YueBlockReviewVsZhoPromptYueHans,
@@ -42,6 +32,10 @@ from scinoephile.multilang.yue_zho.transcription.deliniation import (
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
     YuePunctuationVsZhoPromptYueHant,
+)
+from scinoephile.workflows.srt_processing import (
+    EngSrtProcessingWorkflow,
+    YueSrtProcessingWorkflow,
 )
 from test.data.ocr import process_ocr
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
@@ -83,55 +77,44 @@ if "zho-Hans_eng" in actions:
     eng_srt_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(title_root, zho_hans_srt_path, eng_srt_path, overwrite=False)
 if "yue-Hant" in actions:
-    zho_hant = Series.load(zho_hant_ocr_path / "fuse_clean_validate_review.srt")
-    yue_hant = Series.load(input_path / "yue-Hant.srt")
-    yue_hant_timewarp = get_series_timewarped(
-        zho_hant, yue_hant, one_end_idx=1421, two_end_idx=1461
-    )
-    yue_hant_timewarp.save(yue_hant_path / "timewarp.srt")
-    clean = get_zho_cleaned(yue_hant_timewarp)
-    clean.save(yue_hant_path / "timewarp_clean.srt")
-    flatten = get_zho_flattened(clean)
-    flatten.save(yue_hant_path / "timewarp_clean_flatten.srt")
+    YueSrtProcessingWorkflow(
+        input_path / "yue-Hant.srt",
+        zho_hant_ocr_path / "fuse_clean_validate_review.srt",
+        yue_hant_path,
+        language=Language.yue_hant,
+        one_end_idx=1421,
+        two_end_idx=1461,
+        overwrite=False,
+    )()
 if "yue-Hans" in actions:
-    zho_hant = Series.load(zho_hant_ocr_path / "fuse_clean_validate_review.srt")
-    yue_hans = Series.load(input_path / "yue-Hans.srt")
-    yue_hans_timewarp = get_series_timewarped(
-        zho_hant, yue_hans, one_end_idx=1421, two_end_idx=1461
-    )
-    yue_hans_timewarp.save(yue_hans_path / "timewarp.srt")
-    yue_hans_clean = get_zho_cleaned(yue_hans_timewarp)
-    yue_hans_clean.save(yue_hans_path / "timewarp_clean.srt")
-    yue_hans_reference = get_zho_flattened(yue_hans_clean)
-    yue_hans_reference.save(yue_hans_path / "timewarp_clean_flatten.srt")
-    yue_hans_romanized = get_yue_romanized(yue_hans_reference, append=True)
-    yue_hans_romanized.save(yue_hans_path / "timewarp_clean_flatten_romanize.srt")
+    YueSrtProcessingWorkflow(
+        input_path / "yue-Hans.srt",
+        zho_hant_ocr_path / "fuse_clean_validate_review.srt",
+        yue_hans_path,
+        language=Language.yue_hans,
+        one_end_idx=1421,
+        two_end_idx=1461,
+        overwrite=False,
+    )()
 if "eng" in actions:
-    eng_ocr = Series.load(eng_ocr_path / "fuse_clean_validate_review.srt")
-    eng_srt = Series.load(input_path / "eng.srt")
-    eng_timewarp = get_series_timewarped(eng_ocr, eng_srt, one_end_idx=1421)
-    eng_timewarp.save(eng_path / "timewarp.srt")
-    eng_clean = get_eng_cleaned(eng_timewarp)
-    eng_clean.save(eng_path / "timewarp_clean.srt")
-    eng_proofreader = get_eng_block_reviewer(
-        test_case_path=eng_path / "lang/eng/block_review.json",
-        auto_verify=True,
-    )
-    eng_proofread = get_eng_block_reviewed(eng_clean, eng_proofreader)
-    eng_proofread.save(eng_path / "timewarp_clean_review.srt")
-    eng_flatten = get_eng_flattened(eng_proofread)
-    eng_flatten.save(eng_path / "timewarp_clean_review_flatten.srt")
+    EngSrtProcessingWorkflow(
+        input_path / "eng.srt",
+        eng_ocr_path / "fuse_clean_validate_review.srt",
+        eng_path,
+        one_end_idx=1421,
+        overwrite=False,
+    )()
 if "yue-Hans_eng" in actions:
-    yue_hans_srt_path = yue_hans_path / "timewarp_clean_flatten.srt"
-    eng_srt_path = eng_path / "timewarp_clean_review_flatten.srt"
+    yue_hans_srt_path = yue_hans_path / "review_timewarp_clean_flatten.srt"
+    eng_srt_path = eng_path / "review_timewarp_clean_flatten.srt"
     process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=False)
 if "yue-Hans_transcribe" in actions:
     zh_hant_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
     zho_hans_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
-    simplified_reference_path = yue_hans_path / "timewarp_clean_flatten.srt"
-    traditional_reference_path = yue_hant_path / "timewarp_clean_flatten.srt"
+    simplified_reference_path = yue_hans_path / "review_timewarp_clean_flatten.srt"
+    traditional_reference_path = yue_hant_path / "review_timewarp_clean_flatten.srt"
     audio_path = yue_hans_transcribe_path / "audio/yue-Hans_audio.wav"
 
     process_yue_hans_transcription(
