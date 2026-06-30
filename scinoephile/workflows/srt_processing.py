@@ -130,6 +130,7 @@ class SrtProcessingWorkflow:
         clean = self._clean(timewarp)
         flatten = self._flatten(clean)
 
+        # English is complete at this point
         if self.language is Language.eng:
             return SrtProcessingResult(
                 infile_path=self.infile_path,
@@ -137,6 +138,7 @@ class SrtProcessingWorkflow:
                 output_paths=self.output_paths,
             )
 
+        # Yue-Hans needs to be romanized
         if self.language is Language.yue_hans:
             self._romanize(flatten)
             return SrtProcessingResult(
@@ -145,6 +147,7 @@ class SrtProcessingWorkflow:
                 output_paths=self.output_paths,
             )
 
+        # Yue-Hant needs to be simplified, review, and then romanized
         simplify = self._simplify(flatten)
         simplify_review = self._review(
             simplify,
