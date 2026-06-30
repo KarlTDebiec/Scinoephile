@@ -17,14 +17,14 @@ with catch_warnings():
 from pypinyin import Style, lazy_pinyin, pinyin
 from pypinyin.contrib.tone_convert import tone_to_tone3
 
-from scinoephile.core.subtitles import Series
-from scinoephile.core.text import RE_HANZI
-from scinoephile.lang.romanization import (
+from scinoephile.core.romanization import (
     RomanizedTokenKind,
     is_romanized_punctuation,
     join_romanized_tokens,
     normalize_romanized_punctuation,
 )
+from scinoephile.core.subtitles import Series
+from scinoephile.core.text import RE_HANZI
 
 __all__ = [
     "get_cmn_char_romanized",

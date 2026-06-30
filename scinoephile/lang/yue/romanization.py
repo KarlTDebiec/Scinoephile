@@ -14,14 +14,14 @@ from typing import Any
 import pycantonese
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
-from scinoephile.core.text import RE_WESTERN, get_char_type
-from scinoephile.lang.romanization import (
+from scinoephile.core.romanization import (
     RomanizedTokenKind,
     is_romanized_punctuation,
     join_romanized_tokens,
     normalize_romanized_punctuation,
 )
+from scinoephile.core.subtitles import Series
+from scinoephile.core.text import RE_WESTERN, get_char_type
 from scinoephile.lang.zho.script.conversion import get_zho_converter
 
 __all__ = [

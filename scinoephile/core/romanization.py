@@ -8,7 +8,7 @@ import unicodedata
 from collections.abc import Iterable
 from typing import Literal
 
-from scinoephile.core.text import FULL_PUNC_CHARS, FULL_TO_HALF_PUNC, HALF_PUNC_CHARS
+from .text import FULL_PUNC_CHARS, FULL_TO_HALF_PUNC, HALF_PUNC_CHARS
 
 __all__ = [
     "RomanizedTokenKind",
@@ -150,7 +150,7 @@ def _is_infix_quote_context(
 
     Arguments:
         index: token index of the quote
-        token_kinds: source kinds for the tokens, when available
+        token_kinds: source kinds for the tokens
     Returns:
         whether the quote should be treated as infix punctuation
     """
