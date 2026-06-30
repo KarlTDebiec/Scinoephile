@@ -253,10 +253,7 @@ def test_char_concern_image_url_changes_after_accept(
     assert b'src="/subtitles/0/concern.png?v=char-dims-0-0-1"' not in response.data
 
 
-def test_index_renders_space_gap_choice_table(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_index_renders_space_gap_choice_table(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test adjacent-or-space concerns render both choice actions."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="霆所")
     patch_ocr_validation_bboxes(
@@ -346,10 +343,7 @@ def test_text_update_route_rejects_missing_subtitle(tmp_path: Path):
     assert response.status_code == 404
 
 
-def test_concern_image_route_serves_png(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_concern_image_route_serves_png(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test current concern images are rendered as PNG responses."""
     app = _char_concern_app(tmp_path, monkeypatch)
 
@@ -371,10 +365,7 @@ def test_concern_image_route_rejects_missing_subtitle(
     assert response.status_code == 404
 
 
-def test_char_concern_route_resolves_row(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_char_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test resolving the final character concern omits the completed row."""
     app = _char_concern_app(tmp_path, monkeypatch)
 
@@ -420,10 +411,7 @@ def test_char_concern_route_rejects_missing_subtitle(
     assert response.status_code == 404
 
 
-def test_gap_concern_route_resolves_row(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_gap_concern_route_resolves_row(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test resolving the final gap concern persists text and omits the row."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
     patch_ocr_validation_bboxes(
@@ -482,10 +470,7 @@ def test_gap_concern_route_rejects_missing_subtitle(
     assert response.status_code == 404
 
 
-def _char_concern_app(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-) -> Flask:
+def _char_concern_app(tmp_path: Path, monkeypatch: MonkeyPatch) -> Flask:
     """Create an app with one character dimension concern.
 
     Arguments:

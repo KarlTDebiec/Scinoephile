@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Shared helpers for inspecting CLI argument parser configuration."""
+"""Shared CLI inspection helpers for tests."""
 
 from __future__ import annotations
 
@@ -8,25 +8,27 @@ from argparse import Action, ArgumentParser
 
 from scinoephile.common import CommandLineInterface
 
-__all__ = ["get_cli_action", "get_cli_action_group_title", "get_parser_action"]
+__all__ = [
+    "get_cli_action",
+    "get_cli_action_group_title",
+    "get_parser_action",
+]
 
 
 def get_cli_action(cli: type[CommandLineInterface], option: str) -> Action:
-    """Get a parser action by option string for a CLI class.
+    """Get a CLI parser action by option string.
 
     Arguments:
         cli: CLI class to inspect
         option: option string to inspect
     Returns:
         matching argparse action
-    Raises:
-        AssertionError: if the option is not present
     """
     return get_parser_action(cli.argparser(), option)
 
 
 def get_cli_action_group_title(cli: type[CommandLineInterface], option: str) -> str:
-    """Get the group title for a parser option in a CLI parser.
+    """Get the group title for a CLI parser option.
 
     Arguments:
         cli: CLI class to inspect
@@ -34,7 +36,7 @@ def get_cli_action_group_title(cli: type[CommandLineInterface], option: str) -> 
     Returns:
         title of the argument group containing the option
     Raises:
-        AssertionError: if the option is not assigned to an argument group
+        AssertionError: if the option is not assigned to a group
     """
     parser = cli.argparser()
     action = get_parser_action(parser, option)
@@ -47,7 +49,7 @@ def get_cli_action_group_title(cli: type[CommandLineInterface], option: str) -> 
 
 
 def get_parser_action(parser: ArgumentParser, option: str) -> Action:
-    """Get a parser action by option string from an existing parser.
+    """Get a parser action by option string.
 
     Arguments:
         parser: parser to inspect
