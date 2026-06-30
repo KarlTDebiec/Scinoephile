@@ -33,14 +33,13 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
     YuePunctuationVsZhoPromptYueHant,
 )
-from scinoephile.workflows.srt_processing import SrtProcessingWorkflow
 from test.data.ocr import process_ocr
+from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_yue_hans_transcription
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
-input_path = title_root / "input"
 output_path = title_root / "output"
 set_logging_verbosity(2)
 
@@ -74,34 +73,31 @@ if "zho-Hans_eng" in actions:
     eng_srt_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(title_root, zho_hans_srt_path, eng_srt_path, overwrite=False)
 if "yue-Hant" in actions:
-    SrtProcessingWorkflow(
-        input_path / "yue-Hant.srt",
+    process_srt(
+        title_root,
+        Language.yue_hant,
         zho_hant_ocr_path / "fuse_clean_validate_review.srt",
-        yue_hant_path,
-        language=Language.yue_hant,
         one_end_idx=1421,
         two_end_idx=1461,
         overwrite=False,
-    )()
+    )
 if "yue-Hans" in actions:
-    SrtProcessingWorkflow(
-        input_path / "yue-Hans.srt",
+    process_srt(
+        title_root,
+        Language.yue_hans,
         zho_hant_ocr_path / "fuse_clean_validate_review.srt",
-        yue_hans_path,
-        language=Language.yue_hans,
         one_end_idx=1421,
         two_end_idx=1461,
         overwrite=False,
-    )()
+    )
 if "eng" in actions:
-    SrtProcessingWorkflow(
-        input_path / "eng.srt",
+    process_srt(
+        title_root,
+        Language.eng,
         eng_ocr_path / "fuse_clean_validate_review.srt",
-        eng_path,
-        language=Language.eng,
         one_end_idx=1421,
         overwrite=False,
-    )()
+    )
 if "yue-Hans_eng" in actions:
     yue_hans_srt_path = yue_hans_path / "review_timewarp_clean_flatten.srt"
     eng_srt_path = eng_path / "review_timewarp_clean_flatten.srt"
