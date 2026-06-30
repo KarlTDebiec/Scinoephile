@@ -68,6 +68,8 @@ def get_default_char_pair_cutoffs(  # noqa: PLR0911, PLR0912
         if char_1 in {"」", "』"}:
             return 61, 89, 90, 200
         return 8, 89, 90, 200
+    if char_1_type == "punc" or char_2_type == "punc":
+        return 8, 89, 90, 200
     return 8, 24, 90, 200
 
 
