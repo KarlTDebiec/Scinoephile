@@ -78,7 +78,7 @@ if "eng" in actions:
         Language.eng,
         eng_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
-        overwrite=False,
+        overwrite=True,
     )
 if "yue-Hans" in actions:
     process_srt(
@@ -87,7 +87,7 @@ if "yue-Hans" in actions:
         zho_hant_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
         two_end_idx=1461,
-        overwrite=False,
+        overwrite=True,
     )
 if "yue-Hant" in actions:
     process_srt(
@@ -96,12 +96,12 @@ if "yue-Hant" in actions:
         zho_hant_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
         two_end_idx=1461,
-        overwrite=False,
+        overwrite=True,
     )
 if "yue-Hans_eng" in actions:
     yue_hans_srt_path = yue_hans_path / "clean_review_flatten_timewarp.srt"
     eng_srt_path = eng_path / "clean_review_flatten_timewarp.srt"
-    process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=False)
+    process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=True)
 if "yue-Hans_transcribe" in actions:
     zh_hant_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
     zho_hans_path = (
