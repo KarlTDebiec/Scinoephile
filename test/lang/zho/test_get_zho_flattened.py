@@ -39,6 +39,16 @@ from test.helpers import assert_series_equal, parametrize
             id="kob-zho-hant",
         ),
         param(
+            "kob_yue_hans_clean_review",
+            "kob_yue_hans_clean_review_flatten",
+            id="kob-yue-hans-srt",
+        ),
+        param(
+            "kob_yue_hant_clean_review",
+            "kob_yue_hant_clean_review_flatten",
+            id="kob-yue-hant-srt",
+        ),
+        param(
             "mlamd_zho_hans_fuse_clean_validate_review",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
             id="mlamd-zho-hans",

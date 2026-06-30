@@ -10,7 +10,6 @@ from logging import getLogger
 from pathlib import Path
 from typing import Any
 
-from scinoephile.common.argument_parsing import enum_options_list_str
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
@@ -66,7 +65,7 @@ class OcrProcessingWorkflow:
         infile_path: Path,
         output_dir_path: Path,
         *,
-        language: Language | str,
+        language: Language,
         stream_index: int | None = None,
         cache_dir_path: Path | None = None,
         clean: bool = False,
@@ -99,13 +98,6 @@ class OcrProcessingWorkflow:
             host: OCR validation web UI host
             port: OCR validation web UI port
         """
-        try:
-            language = Language(language)
-        except ValueError as exc:
-            raise ScinoephileError(
-                f"language must be {enum_options_list_str(Language)}, not {language}"
-            ) from exc
-
         self.infile_path = infile_path
         self.output_dir_path = output_dir_path
         self.language = language

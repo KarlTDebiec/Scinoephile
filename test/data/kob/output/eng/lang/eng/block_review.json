@@ -2493,8 +2493,8 @@
       "subtitle_3": "Set the position!"
     },
     "answer": {
-      "revised_2": "Uncle Sun's “Sleeping Disciple's Fists”?",
-      "note_2": "Preserved cleaning-normalized punctuation in the block-review output."
+      "revised_2": "Uncle Sun's \"Sleeping Disciple's Fists\"?",
+      "note_2": "Corrected quotation marks."
     },
     "difficulty": 1,
     "verified": true

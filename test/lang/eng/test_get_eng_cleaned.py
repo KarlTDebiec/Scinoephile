@@ -86,9 +86,9 @@ def test_get_eng_text_cleaned(text: str, expected: str):
             id="kob-eng-tesseract",
         ),
         param(
-            "kob_eng_timewarp",
-            "kob_eng_timewarp_clean",
-            id="kob-eng-timewarp",
+            "kob_eng",
+            "kob_eng_clean",
+            id="kob-eng-srt",
         ),
         param(
             "mlamd_eng_fuse",

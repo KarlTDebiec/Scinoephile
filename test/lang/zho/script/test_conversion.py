@@ -98,6 +98,11 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
             id="kob-zho-hant",
         ),
         param(
+            "kob_yue_hant_clean_review_flatten_timewarp",
+            "kob_yue_hant_clean_review_flatten_timewarp_simplify",
+            id="kob-yue-hant-srt",
+        ),
+        param(
             "mlamd_zho_hant_fuse_clean_validate_review_flatten",
             "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify",
             id="mlamd-zho-hant",

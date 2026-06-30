@@ -18,12 +18,10 @@ from scinoephile.lang.zho.block_review import (
 )
 from test.data.acopopb import (
     get_acopopb_zho_hans_block_review_test_cases,
-    get_acopopb_zho_hant_block_review_test_cases,
     get_acopopb_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.acoptc import (
     get_acoptc_zho_hans_block_review_test_cases,
-    get_acoptc_zho_hant_block_review_test_cases,
     get_acoptc_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.kob import (
@@ -33,16 +31,7 @@ from test.data.kob import (
     get_kob_zho_hant_block_review_test_cases,
     get_kob_zho_hant_simplify_block_review_test_cases,
 )
-from test.data.mlamd import (
-    get_mlamd_zho_hans_block_review_test_cases,
-    get_mlamd_zho_hant_block_review_test_cases,
-    get_mlamd_zho_hant_simplify_block_review_test_cases,
-)
-from test.data.mnt import (
-    get_mnt_zho_hans_block_review_test_cases,
-    get_mnt_zho_hant_block_review_test_cases,
-    get_mnt_zho_hant_simplify_block_review_test_cases,
-)
+from test.data.mnt import get_mnt_zho_hant_block_review_test_cases
 from test.data.t import (
     get_t_zho_hans_block_review_test_cases,
     get_t_zho_hant_block_review_test_cases,
@@ -67,13 +56,6 @@ from test.helpers import assert_series_equal, parametrize
             id="acopopb-zho-hans",
         ),
         param(
-            "acopopb_zho_hant_ocr_fuse_clean_validate",
-            "acopopb_zho_hant_ocr_fuse_clean_validate_review",
-            get_acopopb_zho_hant_block_review_test_cases,
-            BlockReviewPromptZhoHant,
-            id="acopopb-zho-hant",
-        ),
-        param(
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_acopopb_zho_hant_simplify_block_review_test_cases,
@@ -88,13 +70,6 @@ from test.helpers import assert_series_equal, parametrize
             id="acoptc-zho-hans",
         ),
         param(
-            "acoptc_zho_hant_ocr_fuse_clean_validate",
-            "acoptc_zho_hant_ocr_fuse_clean_validate_review",
-            get_acoptc_zho_hant_block_review_test_cases,
-            BlockReviewPromptZhoHant,
-            id="acoptc-zho-hant",
-        ),
-        param(
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_acoptc_zho_hant_simplify_block_review_test_cases,
@@ -106,63 +81,35 @@ from test.helpers import assert_series_equal, parametrize
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             get_kob_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
-            id="kob-zho-hant",
+            id="kob-zho-hant-ocr",
         ),
         param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_kob_zho_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
-            id="kob-zho-hant-simplify",
+            id="kob-zho-hant-simplify-ocr",
         ),
         param(
-            "kob_yue_hans",
-            "kob_yue_hans_review",
+            "kob_yue_hans_clean",
+            "kob_yue_hans_clean_review",
             get_kob_yue_hans_block_review_test_cases,
             BlockReviewPromptZhoHans,
-            id="kob-yue-hans",
+            id="kob-yue-hans-srt",
         ),
         param(
-            "kob_yue_hant",
-            "kob_yue_hant_review",
+            "kob_yue_hant_clean",
+            "kob_yue_hant_clean_review",
             get_kob_yue_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
-            id="kob-yue-hant",
+            id="kob-yue-hant-srt",
         ),
         param(
-            "kob_yue_hant_timewarp_clean_flatten_simplify",
-            "kob_yue_hant_timewarp_clean_flatten_simplify_review",
+            "kob_yue_hant_clean_review_flatten_timewarp_simplify",
+            "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
             get_kob_yue_hant_simplify_block_review_test_cases,
             BlockReviewPromptZhoHans,
-            id="kob-yue-hant-simplify",
-        ),
-        param(
-            "mlamd_zho_hans_fuse_clean_validate",
-            "mlamd_zho_hans_fuse_clean_validate_review",
-            get_mlamd_zho_hans_block_review_test_cases,
-            BlockReviewPromptZhoHans,
-            id="mlamd-zho-hans",
-        ),
-        param(
-            "mlamd_zho_hant_fuse_clean_validate",
-            "mlamd_zho_hant_fuse_clean_validate_review",
-            get_mlamd_zho_hant_block_review_test_cases,
-            BlockReviewPromptZhoHant,
-            id="mlamd-zho-hant",
-        ),
-        param(
-            "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify",
-            "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
-            get_mlamd_zho_hant_simplify_block_review_test_cases,
-            BlockReviewPromptZhoHans,
-            id="mlamd-zho-hant-simplify",
-        ),
-        param(
-            "mnt_zho_hans_fuse_clean_validate",
-            "mnt_zho_hans_fuse_clean_validate_review",
-            get_mnt_zho_hans_block_review_test_cases,
-            BlockReviewPromptZhoHans,
-            id="mnt-zho-hans",
+            id="kob-yue-hant-srt-simplify",
         ),
         param(
             "mnt_zho_hant_fuse_clean_validate",
@@ -170,13 +117,6 @@ from test.helpers import assert_series_equal, parametrize
             get_mnt_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
             id="mnt-zho-hant",
-        ),
-        param(
-            "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify",
-            "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
-            get_mnt_zho_hant_simplify_block_review_test_cases,
-            BlockReviewPromptZhoHans,
-            id="mnt-zho-hant-simplify",
         ),
         param(
             "t_zho_hans_fuse_clean_validate",

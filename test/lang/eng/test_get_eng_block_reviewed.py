@@ -43,19 +43,19 @@ from test.helpers import assert_series_equal, parametrize
             "kob_eng_ocr_fuse_clean_validate",
             "kob_eng_ocr_fuse_clean_validate_review",
             get_kob_eng_block_review_test_cases,
-            id="kob-eng",
+            id="kob-eng-ocr",
         ),
         param(
-            "kob_eng_timewarp_clean",
-            "kob_eng_timewarp_clean_review",
+            "kob_eng_clean",
+            "kob_eng_clean_review",
             get_kob_eng_block_review_test_cases,
-            id="kob-eng-timewarp",
+            id="kob-eng-srt",
         ),
         param(
             "mlamd_eng_fuse_clean_validate",
             "mlamd_eng_fuse_clean_validate_review",
             get_mlamd_eng_block_review_test_cases,
-            id="mlamd-eng",
+            id="mlamd-eng-ocr",
         ),
         param(
             "mnt_eng_fuse_clean_validate",
@@ -67,7 +67,7 @@ from test.helpers import assert_series_equal, parametrize
             "t_eng_fuse_clean_validate",
             "t_eng_fuse_clean_validate_review",
             get_t_eng_block_review_test_cases,
-            id="t-eng",
+            id="t-eng-ocr",
         ),
         param(
             "tmm_eng_ocr_fuse_clean_validate",

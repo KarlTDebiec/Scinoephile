@@ -37,19 +37,93 @@ def process_ocr(
     title_root_path: Path,
     language: Language,
     sup_path: Path | None = None,
-    **kwargs: Any,
+    *,
+    fuser_kw: Any | None = None,
+    reviewer_kw: Any | None = None,
+    overwrite: bool = False,
+    overwrite_srt: bool = False,
+    overwrite_img: bool = False,
+    force_validation: bool = False,
+    interactive: bool = False,
+    host: str = "127.0.0.1",
+    port: int = 5000,
 ) -> Series:
-    """Process OCR subtitles into validated output.
+    """Process OCR subtitles through validation, review, and flattening.
 
     Arguments:
         title_root_path: title root directory
         language: OCR language
         sup_path: subtitle image input path
-        kwargs: keyword arguments for OCR processing
+        fuser_kw: keyword arguments for OCR fuser
+        reviewer_kw: keyword arguments for OCR block reviewer
+        overwrite: whether to overwrite existing outputs
+        overwrite_srt: legacy alias for overwriting subtitle outputs
+        overwrite_img: legacy alias for overwriting image outputs
+        force_validation: legacy alias for overwriting validation output
+        interactive: whether to launch the OCR validation web UI
+        host: OCR validation web UI host
+        port: OCR validation web UI port
     Returns:
         processed series
     """
-    return _process_ocr(title_root_path, language, sup_path=sup_path, **kwargs)
+    # Validate and configure
+    input_dir_path = title_root_path / "input" / f"{language.tag}_ocr"
+    output_dir_path = title_root_path / "output" / f"{language.tag}_ocr"
+    overwrite = overwrite or overwrite_srt or overwrite_img or force_validation
+
+    # Load, OCR, and validate series
+    validated = _ocr(
+        input_dir_path,
+        output_dir_path,
+        language,
+        sup_path=sup_path,
+        fuser_kw=fuser_kw,
+        interactive=interactive,
+        host=host,
+        port=port,
+        overwrite=overwrite,
+    )
+
+    # Review series
+    review_path = output_dir_path / "fuse_clean_validate_review.srt"
+    review = _review(review_path, language, validated, overwrite, reviewer_kw)
+
+    # Flatten series
+    flatten_path = output_dir_path / "fuse_clean_validate_review_flatten.srt"
+    flatten = _flatten(flatten_path, language, review, overwrite)
+
+    if language.script == "simplified":
+        romanize_path = (
+            output_dir_path / "fuse_clean_validate_review_flatten_romanize.srt"
+        )
+        _romanize(romanize_path, language, flatten, overwrite)
+    elif language.script == "traditional":
+        simplify_path = (
+            output_dir_path / "fuse_clean_validate_review_flatten_simplify.srt"
+        )
+        simplify = _simplify(simplify_path, flatten, overwrite)
+        review_path = (
+            output_dir_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
+        )
+        simplify_reviewer_kw = dict(reviewer_kw or {})
+        simplify_reviewer_kw["prompt_cls"] = BlockReviewPromptZhoHans
+        simplify_reviewer_kw["test_case_path"] = (
+            output_dir_path / "lang" / language.tag[:3] / "simplify_block_review.json"
+        )
+        simplify_review = _review(
+            review_path,
+            language,
+            simplify,
+            overwrite,
+            simplify_reviewer_kw,
+        )
+        romanize_path = (
+            output_dir_path
+            / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
+        )
+        _romanize(romanize_path, language, simplify_review, overwrite)
+
+    return flatten
 
 
 def _flatten(
@@ -149,99 +223,6 @@ def _ocr(
             image_series.copy_text_from(validated)
             image_series.save_html_index(image_dir_path, encoding="utf-8")
     return validated
-
-
-def _process_ocr(
-    title_root_path: Path,
-    language: Language,
-    *,
-    sup_path: Path | None = None,
-    fuser_kw: Any | None = None,
-    reviewer_kw: Any | None = None,
-    overwrite: bool = False,
-    overwrite_srt: bool = False,
-    overwrite_img: bool = False,
-    force_validation: bool = False,
-    interactive: bool = False,
-    host: str = "127.0.0.1",
-    port: int = 5000,
-) -> Series:
-    """Process OCR subtitles through validation, review, and flattening.
-
-    Arguments:
-        title_root_path: title root directory
-        language: OCR language
-        sup_path: subtitle image input path
-        fuser_kw: keyword arguments for OCR fuser
-        reviewer_kw: keyword arguments for OCR block reviewer
-        overwrite: whether to overwrite existing outputs
-        overwrite_srt: legacy alias for overwriting subtitle outputs
-        overwrite_img: legacy alias for overwriting image outputs
-        force_validation: legacy alias for overwriting validation output
-        interactive: whether to launch the OCR validation web UI
-        host: OCR validation web UI host
-        port: OCR validation web UI port
-    Returns:
-        flattened reviewed series
-    """
-    # Validate and configure
-    input_dir_path = title_root_path / "input" / f"{language.tag}_ocr"
-    output_dir_path = title_root_path / "output" / f"{language.tag}_ocr"
-    overwrite = overwrite or overwrite_srt or overwrite_img or force_validation
-
-    # Load, OCR, and validate series
-    validated = _ocr(
-        input_dir_path,
-        output_dir_path,
-        language,
-        sup_path=sup_path,
-        fuser_kw=fuser_kw,
-        interactive=interactive,
-        host=host,
-        port=port,
-        overwrite=overwrite,
-    )
-
-    # Review series
-    review_path = output_dir_path / "fuse_clean_validate_review.srt"
-    review = _review(review_path, language, validated, overwrite, reviewer_kw)
-
-    # Flatten series
-    flatten_path = output_dir_path / "fuse_clean_validate_review_flatten.srt"
-    flatten = _flatten(flatten_path, language, review, overwrite)
-
-    if language.script == "simplified":
-        romanize_path = (
-            output_dir_path / "fuse_clean_validate_review_flatten_romanize.srt"
-        )
-        _romanize(romanize_path, language, flatten, overwrite)
-    elif language.script == "traditional":
-        simplify_path = (
-            output_dir_path / "fuse_clean_validate_review_flatten_simplify.srt"
-        )
-        simplify = _simplify(simplify_path, flatten, overwrite)
-        review_path = (
-            output_dir_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
-        )
-        simplify_reviewer_kw = dict(reviewer_kw or {})
-        simplify_reviewer_kw["prompt_cls"] = BlockReviewPromptZhoHans
-        simplify_reviewer_kw["test_case_path"] = (
-            output_dir_path / "lang" / language.tag[:3] / "simplify_block_review.json"
-        )
-        simplify_review = _review(
-            review_path,
-            language,
-            simplify,
-            overwrite,
-            simplify_reviewer_kw,
-        )
-        romanize_path = (
-            output_dir_path
-            / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
-        )
-        _romanize(romanize_path, language, simplify_review, overwrite)
-
-    return flatten
 
 
 def _review(

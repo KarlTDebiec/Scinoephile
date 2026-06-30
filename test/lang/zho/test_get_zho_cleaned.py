@@ -112,6 +112,16 @@ def test_get_zho_text_cleaned(text: str, expected: str):
             id="kob-zho-hant-paddle",
         ),
         param(
+            "kob_yue_hans",
+            "kob_yue_hans_clean",
+            id="kob-yue-hans-srt",
+        ),
+        param(
+            "kob_yue_hant",
+            "kob_yue_hant_clean",
+            id="kob-yue-hant-srt",
+        ),
+        param(
             "mlamd_zho_hans_fuse",
             "mlamd_zho_hans_fuse_clean",
             id="mlamd-zho-hans-fuse",

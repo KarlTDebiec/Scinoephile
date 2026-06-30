@@ -13,64 +13,66 @@ from test.helpers import assert_series_equal, parametrize
 
 @parametrize(
     (
-        "source_one_fixture",
-        "source_two_fixture",
-        "expected_fixture",
+        "reference_fixture_name",
+        "series_fixture_name",
+        "expected_fixture_name",
         "one_end_idx",
         "two_end_idx",
     ),
     [
         param(
             "kob_eng_ocr_fuse_clean_validate_review",
-            "kob_eng",
-            "kob_eng_timewarp",
+            "kob_eng_clean_review_flatten",
+            "kob_eng_clean_review_flatten_timewarp",
             1421,
             None,
-            id="kob-eng",
+            id="kob-eng-srt",
         ),
         param(
             "kob_zho_hant_ocr_fuse_clean_validate_review",
-            "kob_yue_hans_review",
-            "kob_yue_hans_timewarp",
+            "kob_yue_hans_clean_review_flatten",
+            "kob_yue_hans_clean_review_flatten_timewarp",
             1421,
             1461,
-            id="kob-yue-hans",
+            id="kob-yue-hans-srt",
         ),
         param(
             "kob_zho_hant_ocr_fuse_clean_validate_review",
-            "kob_yue_hant_review",
-            "kob_yue_hant_timewarp",
+            "kob_yue_hant_clean_review_flatten",
+            "kob_yue_hant_clean_review_flatten_timewarp",
             1421,
             1461,
-            id="kob-yue-hant",
+            id="kob-yue-hant-srt",
         ),
     ],
 )
 def test_get_series_timewarped(
     request: FixtureRequest,
-    source_one_fixture: str,
-    source_two_fixture: str,
-    expected_fixture: str,
+    reference_fixture_name: str,
+    series_fixture_name: str,
+    expected_fixture_name: str,
     one_end_idx: int,
     two_end_idx: int | None,
 ):
     """Test get_series_timewarped with KOB subtitles.
 
     Arguments:
-        request: pytest request for fixture lookup
-        source_one_fixture: fixture name for anchor series
-        source_two_fixture: fixture name for series to timewarp
-        expected_fixture: fixture name for expected timewarped series
-        one_end_idx: 1-based end index for the anchor series
-        two_end_idx: optional 1-based end index for the timewarped series
+        request: pytest request object
+        reference_fixture_name: fixture name for anchor subtitles
+        series_fixture_name: fixture name for source subtitles
+        expected_fixture_name: fixture name for expected timewarped subtitles
+        one_end_idx: 1-based end index in the anchor series
+        two_end_idx: 1-based end index in the source series
     """
+    reference: Series = request.getfixturevalue(reference_fixture_name)
+    series: Series = request.getfixturevalue(series_fixture_name)
+    expected: Series = request.getfixturevalue(expected_fixture_name)
     output = get_series_timewarped(
-        request.getfixturevalue(source_one_fixture),
-        request.getfixturevalue(source_two_fixture),
+        reference,
+        series,
         one_start_idx=1,
         one_end_idx=one_end_idx,
         two_start_idx=1,
         two_end_idx=two_end_idx,
     )
-    expected: Series = request.getfixturevalue(expected_fixture)
     assert_series_equal(output, expected)
