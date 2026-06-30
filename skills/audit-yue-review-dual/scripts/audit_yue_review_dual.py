@@ -493,20 +493,18 @@ def _get_notes(
             note = (
                 "Both sides made the matching edit: "
                 f"Hans {_format_change_summary(hans_change)}; "
-                f"Hant {_format_change_summary(hant_change)}; finals match"
+                f"Hant {_format_change_summary(hant_change)}"
             )
         elif hans_change is not None:
             note = (
                 f"Only Hans changed ({_format_change_summary(hans_change)}); "
-                f"Hant stayed {_format_note_text(hant_review[number].text)}; "
-                "finals match"
+                f"Hant stayed {_format_note_text(hant_review[number].text)}"
             )
         else:
             assert hant_change is not None
             note = (
                 f"Only Hant changed ({_format_change_summary(hant_change)}); "
-                f"Hans stayed {_format_note_text(hans_review[number].text)}; "
-                "finals match"
+                f"Hans stayed {_format_note_text(hans_review[number].text)}"
             )
     return note
 
@@ -719,12 +717,12 @@ def _get_audit_paths(
             hans_dir_path=hans_dir_path,
             hant_dir_path=hant_dir_path,
             hans_original_path=input_dir_path / "yue-Hans.srt",
-            hans_review_path=hans_dir_path / "review.srt",
-            hans_final_path=hans_dir_path / "timewarp_clean_flatten.srt",
+            hans_review_path=hans_dir_path / "clean_review.srt",
+            hans_final_path=hans_dir_path / "clean_review_flatten_timewarp.srt",
             hant_original_path=input_dir_path / "yue-Hant.srt",
-            hant_review_path=hant_dir_path / "review.srt",
+            hant_review_path=hant_dir_path / "clean_review.srt",
             hant_final_path=hant_dir_path
-            / "timewarp_clean_flatten_simplify_review.srt",
+            / "clean_review_flatten_timewarp_simplify_review.srt",
             timing_groups=(
                 ("yue-Hans source", "yue-Hans review"),
                 ("yue-Hant source", "yue-Hant review"),

@@ -1,6 +1,6 @@
 ---
 name: audit-yue-review-dual
-description: Use when auditing Cantonese datasets across yue-Hans review, yue-Hant review, and final yue-Hans versus simplified yue-Hant outputs in one combined table, including OCR and non-OCR pipelines.
+description: Use when auditing Cantonese datasets across yue-Hans review, yue-Hant review, and final yue-Hans versus simplified yue-Hant outputs in one combined table, including OCR and SRT pipelines.
 ---
 
 # Audit Yue Review Dual
@@ -14,6 +14,12 @@ Use this workflow when a Yue dataset needs one table that shows:
 This is useful when review decisions should be checked across both scripts at
 the same subtitle number.
 
+Important:
+
+- Never edit files under `test/data/<dataset>/input/`.
+- Do not edit source `.srt` or reviewed `.srt` fixture files directly.
+- Only edit review JSON files and regenerate reviewed outputs from them.
+
 ## Inputs
 
 For OCR datasets, use:
@@ -25,17 +31,28 @@ For OCR datasets, use:
 - `test/data/<dataset>/output/yue-Hant_ocr/fuse_clean_validate_review.srt`
 - `test/data/<dataset>/output/yue-Hant_ocr/fuse_clean_validate_review_flatten_simplify_review.srt`
 
-For KOB and other non-OCR Yue datasets, the review step happens before
+For SRT datasets, the review step happens before
 timewarping:
 
 - yue-Hans source: `test/data/<dataset>/input/yue-Hans.srt`
-- yue-Hans review: `test/data/<dataset>/output/yue-Hans/review.srt`
-- final yue-Hans: `test/data/<dataset>/output/yue-Hans/timewarp_clean_flatten.srt`
+- yue-Hans review: `test/data/<dataset>/output/yue-Hans/clean_review.srt`
+- final yue-Hans: `test/data/<dataset>/output/yue-Hans/clean_review_flatten_timewarp.srt`
 - yue-Hant source: `test/data/<dataset>/input/yue-Hant.srt`
-- yue-Hant review: `test/data/<dataset>/output/yue-Hant/review.srt`
-- final simplified yue-Hant: `test/data/<dataset>/output/yue-Hant/timewarp_clean_flatten_simplify_review.srt`
+- yue-Hant review: `test/data/<dataset>/output/yue-Hant/clean_review.srt`
+- final simplified yue-Hant: `test/data/<dataset>/output/yue-Hant/clean_review_flatten_timewarp_simplify_review.srt`
 
-For non-OCR datasets, source/review timings should match within each script, and
+Edit these review JSON files (and only these) when applying corrections:
+
+- OCR datasets:
+  - `test/data/<dataset>/output/yue-Hans_ocr/lang/yue/block_review.json`
+  - `test/data/<dataset>/output/yue-Hant_ocr/lang/yue/block_review.json`
+  - `test/data/<dataset>/output/yue-Hant_ocr/lang/yue/simplify_block_review.json`
+- SRT datasets:
+  - `test/data/<dataset>/output/yue-Hans/lang/yue/block_review.json`
+  - `test/data/<dataset>/output/yue-Hant/lang/yue/block_review.json`
+  - `test/data/<dataset>/output/yue-Hant/lang/yue/simplify_block_review.json`
+
+For SRT datasets, source/review timings should match within each script, and
 final yue-Hans/final simplified yue-Hant timings should match after timewarp.
 Do not require pre-timewarp source timings to match post-timewarp final timings.
 
@@ -71,10 +88,10 @@ generated note is exactly `OK`:
 uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset tmm --first-index 1 --last-index 1000 --omit-ok
 ```
 
-For non-OCR KOB, run:
+For SRT datasets, run:
 
 ```powershell
-uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset kob --layout non-ocr
+uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset <dataset> --layout non-ocr
 ```
 
 The script prints Markdown. Redirect it to a temporary file when the table is
@@ -88,7 +105,7 @@ The script fails before printing the table if any of the yue-Hans input,
 yue-Hans reviewed, final yue-Hans, yue-Hant input, yue-Hant reviewed, or final
 simplified yue-Hant SRT files disagree on subtitle numbers. It also fails if
 timings differ within comparable timing groups: all files for OCR datasets,
-source/review pairs plus final/final pairs for non-OCR datasets.
+source/review pairs plus final/final pairs for SRT datasets.
 
 ## Interpret
 
@@ -118,10 +135,10 @@ reviewed and replaced with stronger editorial callouts.
 
 Use plain, specific notes that say what changed:
 
-- `OK` when the finals match and the review edits make sense as written
-  Cantonese, Cantonese-script normalization, or clear OCR/spacing cleanup
-- Only Hans changed (`罗` -> `啰`); Hant stayed `囉`; finals match
-- Only Hant changed (`...` -> `...`); Hans stayed `...`; finals match
+- `OK` when the review edits make sense as written Cantonese,
+  Cantonese-script normalization, or clear OCR/spacing cleanup
+- Only Hans changed (`罗` -> `啰`); Hant stayed `囉`
+- Only Hant changed (`...` -> `...`); Hans stayed `...`
 - No review edits, but the finals still differ: `...` vs `...`
 - Both sides changed, but the finals still differ: Hans `...` -> `...`; Hant `...` -> `...`; finals `...` vs `...`
 - `OK`
