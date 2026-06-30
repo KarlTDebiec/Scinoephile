@@ -8,7 +8,6 @@ import re
 import unicodedata
 from copy import deepcopy
 from functools import cache
-from typing import Literal
 from warnings import catch_warnings, simplefilter
 
 with catch_warnings():
@@ -214,23 +213,6 @@ def get_cmn_text_romanized(text: str) -> str:
     return "\n".join(lines).strip()
 
 
-def _get_cmn_romanization_char_kind(
-    char: str,
-) -> Literal["hanzi", "punctuation", "raw"]:
-    """Get the romanization token kind for a character.
-
-    Arguments:
-        char: character to classify
-    Returns:
-        romanization token kind
-    """
-    if is_romanized_punctuation(char):
-        return "punctuation"
-    if RE_HANZI.fullmatch(char) is not None:
-        return "hanzi"
-    return "raw"
-
-
 def _get_cmn_section_romanized(
     section: str,
     open_symmetric_quotes: set[str],
@@ -264,15 +246,21 @@ def _get_cmn_word_romanization_tokens(
     """
     tokens: list[tuple[str, RomanizedTokenKind]] = []
     current_chars: list[str] = []
-    current_kind: Literal["hanzi", "raw"] | None = None
+    current_kind: str | None = None
     for char in word:
-        char_kind = _get_cmn_romanization_char_kind(char)
+        if is_romanized_punctuation(char):
+            char_kind = "punctuation"
+        elif RE_HANZI.fullmatch(char) is not None:
+            char_kind = "hanzi"
+        else:
+            char_kind = "raw"
+
         if char_kind == "punctuation":
             if current_chars and current_kind is not None:
                 tokens.append(
                     (
                         _romanize_cmn_token(current_chars, current_kind),
-                        _get_cmn_token_kind(current_kind),
+                        "romanized" if current_kind == "hanzi" else "raw",
                     )
                 )
             current_chars = []
@@ -285,7 +273,7 @@ def _get_cmn_word_romanization_tokens(
                 tokens.append(
                     (
                         _romanize_cmn_token(current_chars, current_kind),
-                        _get_cmn_token_kind(current_kind),
+                        "romanized" if current_kind == "hanzi" else "raw",
                     )
                 )
             current_chars = []
@@ -296,30 +284,15 @@ def _get_cmn_word_romanization_tokens(
         tokens.append(
             (
                 _romanize_cmn_token(current_chars, current_kind),
-                _get_cmn_token_kind(current_kind),
+                "romanized" if current_kind == "hanzi" else "raw",
             )
         )
     return tokens
 
 
-def _get_cmn_token_kind(
-    char_kind: Literal["hanzi", "raw"],
-) -> Literal["raw", "romanized"]:
-    """Get the joined token kind for a Mandarin character kind.
-
-    Arguments:
-        char_kind: character kind for a token
-    Returns:
-        joined token kind
-    """
-    if char_kind == "raw":
-        return "raw"
-    return "romanized"
-
-
 def _romanize_cmn_token(
     chars: list[str],
-    token_kind: Literal["hanzi", "raw"],
+    token_kind: str,
 ) -> str:
     """Romanize a Mandarin token.
 
