@@ -242,11 +242,17 @@ def format_markdown(
             final_pair=final_pair,
             hans_review=hans_review,
             hant_review=hant_review,
+            hans_final=hans_final,
+            hant_final=hant_final,
         )
         if omit_ok and note == "OK":
             continue
         include_unchanged_review_text = bool(hans_change or hant_change)
-        final_cell = "" if final_pair is None else f"{final_pair[0]}\n{final_pair[1]}"
+        if final_pair is None:
+            final_series = hans_final.get(number) or hant_final.get(number)
+            final_cell = "" if final_series is None else final_series.text
+        else:
+            final_cell = f"{final_pair[0]}\n{final_pair[1]}"
         row_lines.append(
             "| "
             + " | ".join(
@@ -439,6 +445,8 @@ def _get_notes(
     final_pair: tuple[str, str] | None,
     hans_review: Mapping[int, SrtEvent],
     hant_review: Mapping[int, SrtEvent],
+    hans_final: Mapping[int, SrtEvent],
+    hant_final: Mapping[int, SrtEvent],
 ) -> str:
     """Get the default Notes value for one table row.
 
@@ -452,9 +460,36 @@ def _get_notes(
         final_pair: optional final Hans-vs-simplified-Hant difference
         hans_review: reviewed Hans events
         hant_review: reviewed Hant events
+        hans_final: final Hans events
+        hant_final: final Hant events
     Returns:
         non-empty default note
     """
+    hans_review_event = hans_review[number]
+    hant_review_event = hant_review[number]
+    hans_final_event = hans_final[number]
+    hant_final_event = hant_final[number]
+    hans_post_simplification_change = (
+        hans_review_event.text != hans_final_event.text
+        and (
+            ReviewChange(
+                original=hans_review_event.text,
+                revised=hans_final_event.text,
+            )
+        )
+        or None
+    )
+    hant_post_simplification_change = (
+        hant_review_event.text != hant_final_event.text
+        and (
+            ReviewChange(
+                original=hant_review_event.text,
+                revised=hant_final_event.text,
+            )
+        )
+        or None
+    )
+
     if final_pair is not None:
         final_change = (
             f"{_format_note_text(final_pair[0])} vs {_format_note_text(final_pair[1])}"
@@ -482,13 +517,36 @@ def _get_notes(
                 f"Hans {_format_change_summary(hans_change)}; "
                 f"Hant {_format_change_summary(hant_change)}; "
                 f"finals {final_change}"
-            )
+        )
     else:
         changes = tuple(
             change for change in (hans_change, hant_change) if change is not None
         )
+        post_simplification_changes = tuple(
+            change
+            for change in (
+                hans_post_simplification_change,
+                hant_post_simplification_change,
+            )
+            if change is not None
+        )
         if not changes or all(_is_ok_cantonese_edit(change) for change in changes):
-            note = "OK"
+            if not changes and not post_simplification_changes:
+                note = "OK"
+            elif not changes and len(post_simplification_changes) == 1:
+                post_change = post_simplification_changes[0]
+                if post_change is hans_post_simplification_change:
+                    note = (
+                        "Only Hans changed during post-simplification review "
+                        f"({hans_change_summary if False else _format_change_summary(hans_post_simplification_change)})"
+                    )
+                else:
+                    note = (
+                        "Only Hant changed during post-simplification review "
+                        f"({hant_change_summary if False else _format_change_summary(hant_post_simplification_change)})"
+                    )
+            else:
+                note = "OK"
         elif hans_change is not None and hant_change is not None:
             note = (
                 "Both sides made the matching edit: "
@@ -496,16 +554,32 @@ def _get_notes(
                 f"Hant {_format_change_summary(hant_change)}"
             )
         elif hans_change is not None:
-            note = (
-                f"Only Hans changed ({_format_change_summary(hans_change)}); "
-                f"Hant stayed {_format_note_text(hant_review[number].text)}"
-            )
+            if hant_post_simplification_change is not None:
+                note = (
+                    f"Only Hans changed during initial review "
+                    f"({_format_change_summary(hans_change)}); "
+                    "Hant changed during post-simplification review: "
+                    f"{_format_change_summary(hant_post_simplification_change)}"
+                )
+            else:
+                note = (
+                    f"Only Hans changed ({_format_change_summary(hans_change)}); "
+                    f"Hant stayed {_format_note_text(hant_review[number].text)}"
+                )
         else:
             assert hant_change is not None
-            note = (
-                f"Only Hant changed ({_format_change_summary(hant_change)}); "
-                f"Hans stayed {_format_note_text(hans_review[number].text)}"
-            )
+            if hans_post_simplification_change is not None:
+                note = (
+                    f"Only Hant changed during initial review "
+                    f"({_format_change_summary(hant_change)}); "
+                    "Hans changed during post-simplification review: "
+                    f"{_format_change_summary(hans_post_simplification_change)}"
+                )
+            else:
+                note = (
+                    f"Only Hant changed ({_format_change_summary(hant_change)}); "
+                    f"Hans stayed {_format_note_text(hans_review[number].text)}"
+                )
     return note
 
 

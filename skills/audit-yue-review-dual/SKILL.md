@@ -169,8 +169,9 @@ In the `yue-Hans` and `yue-Hant` columns, stack the before and after review text
 on separate lines when that script changed. When only one script changed at a
 subtitle number, include the unchanged counterpart text once in its own column
 so the two scripts can be compared in context. Do not stack unchanged text. In
-the `yue-Hans vs Hant->Hans` column, stack the final yue-Hans text and final
-simplified yue-Hant text on separate lines. Do not use arrows in these cells.
+the `yue-Hans vs Hant->Hans` column, show the final texts from both scripts on
+separate lines when they differ; otherwise show one instance of the shared final
+text. Do not use arrows in these cells.
 
 In the `Subtitle` column, output only the shared subtitle number, such as `123`.
 The yue-Hans and yue-Hant series must be 1:1, so do not include separate Hans
