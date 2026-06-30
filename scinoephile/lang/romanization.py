@@ -39,8 +39,8 @@ def is_romanized_punctuation(text: str) -> bool:
 
 def join_romanized_tokens(
     tokens: Iterable[str],
-    open_symmetric_quotes: set[str] | None = None,
-    token_kinds: Iterable[RomanizedTokenKind] | None = None,
+    open_symmetric_quotes: set[str],
+    token_kinds: Iterable[RomanizedTokenKind],
 ) -> str:
     """Join romanized text and punctuation tokens with readable spacing.
 
@@ -52,25 +52,18 @@ def join_romanized_tokens(
     Returns:
         formatted romanized text
     """
-    unfiltered_tokens = list(tokens)
-    if open_symmetric_quotes is None:
-        open_symmetric_quotes = set()
-    if token_kinds is None:
-        tokens = [token for token in unfiltered_tokens if token]
-        token_kind_list = None
-    else:
-        token_kind_list = []
-        tokens = []
-        for token, token_kind in zip(unfiltered_tokens, token_kinds, strict=True):
-            if token:
-                tokens.append(token)
-                token_kind_list.append(token_kind)
+    token_list: list[str] = []
+    token_kind_list: list[RomanizedTokenKind] = []
+    for token, token_kind in zip(tokens, token_kinds, strict=True):
+        if token:
+            token_list.append(token)
+            token_kind_list.append(token_kind)
     quote_roles = _get_symmetric_quote_roles(
-        tokens, open_symmetric_quotes, token_kind_list
+        token_list, open_symmetric_quotes, token_kind_list
     )
     output = ""
     previous_quote_role: Literal["closing", "infix", "opening"] | None = None
-    for token, quote_role in zip(tokens, quote_roles, strict=True):
+    for token, quote_role in zip(token_list, quote_roles, strict=True):
         if not output:
             output = token
         elif _requires_space(output, token, previous_quote_role, quote_role):
@@ -100,14 +93,14 @@ def normalize_romanized_punctuation(text: str) -> str:
 def _get_symmetric_quote_roles(
     tokens: list[str],
     open_quotes: set[str],
-    token_kinds: list[RomanizedTokenKind] | None,
+    token_kinds: list[RomanizedTokenKind],
 ) -> list[Literal["closing", "infix", "opening"] | None]:
     """Get spacing roles for straight quote tokens.
 
     Arguments:
         tokens: romanized text and punctuation tokens
         open_quotes: straight quotes open before these tokens
-        token_kinds: source kinds for the tokens, when available
+        token_kinds: source kinds for the tokens
     Returns:
         spacing roles for straight quote tokens
     """
@@ -117,22 +110,16 @@ def _get_symmetric_quote_roles(
             roles.append(None)
             continue
 
-        if index:
-            previous_token = tokens[index - 1]
-        else:
-            previous_token = ""
-        if index + 1 < len(tokens):
-            next_token = tokens[index + 1]
-        else:
-            next_token = ""
         if token in open_quotes:
             roles.append("closing")
             open_quotes.remove(token)
-        elif token == "'" and _is_infix_quote_context(
-            index, previous_token, next_token, token_kinds
-        ):
+        elif token == "'" and _is_infix_quote_context(index, token_kinds):
             roles.append("infix")
-        elif _is_romanized_text_token(previous_token) and not next_token:
+        elif (
+            index > 0
+            and index == len(tokens) - 1
+            and token_kinds[index - 1] in {"raw", "romanized"}
+        ):
             roles.append("closing")
         else:
             roles.append("opening")
@@ -157,41 +144,22 @@ def _is_romanized_punctuation_char(char: str) -> bool:
 
 def _is_infix_quote_context(
     index: int,
-    previous_token: str,
-    next_token: str,
-    token_kinds: list[RomanizedTokenKind] | None,
+    token_kinds: list[RomanizedTokenKind],
 ) -> bool:
     """Check whether a single quote joins raw text tokens.
 
     Arguments:
         index: token index of the quote
-        previous_token: preceding token
-        next_token: following token
         token_kinds: source kinds for the tokens, when available
     Returns:
         whether the quote should be treated as infix punctuation
     """
-    if token_kinds is not None:
-        return (
-            index > 0
-            and index + 1 < len(token_kinds)
-            and token_kinds[index - 1] == "raw"
-            and token_kinds[index + 1] == "raw"
-        )
-    return _is_romanized_text_token(previous_token) and _is_romanized_text_token(
-        next_token
+    return (
+        index > 0
+        and index + 1 < len(token_kinds)
+        and token_kinds[index - 1] == "raw"
+        and token_kinds[index + 1] == "raw"
     )
-
-
-def _is_romanized_text_token(token: str) -> bool:
-    """Check whether a token is romanized text.
-
-    Arguments:
-        token: token to check
-    Returns:
-        whether token is romanized text
-    """
-    return bool(token) and not is_romanized_punctuation(token)
 
 
 def _requires_space(

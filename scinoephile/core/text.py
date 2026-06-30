@@ -184,9 +184,7 @@ HALF_TO_FULL_PUNC = {
 }
 """Mapping from half-width to full-width punctuation characters."""
 
-FULL_TO_HALF_PUNC = {
-    **{v: k for k, v in HALF_TO_FULL_PUNC.items()},
-}
+FULL_TO_HALF_PUNC = {v: k for k, v in HALF_TO_FULL_PUNC.items()}
 """Mapping from full-width to half-width punctuation characters."""
 
 _FULLWIDTH_ALPHANUMERICS_TO_ASCII = str.maketrans(
