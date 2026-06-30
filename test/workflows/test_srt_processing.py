@@ -16,9 +16,8 @@ from scinoephile.lang.zho.block_review import (
 )
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.workflows.srt_processing import (
-    EngSrtProcessingWorkflow,
     SrtProcessingResult,
-    YueSrtProcessingWorkflow,
+    SrtProcessingWorkflow,
 )
 from test.helpers.series_files import get_text_series
 
@@ -383,7 +382,7 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
             f"scinoephile.workflows.srt_processing.{name}", _raise_if_called
         )
 
-    result = YueSrtProcessingWorkflow(
+    result = SrtProcessingWorkflow(
         source_path,
         reference_path,
         output_dir_path,
@@ -417,7 +416,7 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     _write_series(reference_path, "reference")
     pipeline = _PatchedYueSrtPipeline(monkeypatch)
 
-    result = YueSrtProcessingWorkflow(
+    result = SrtProcessingWorkflow(
         source_path,
         reference_path,
         output_dir_path,
@@ -480,7 +479,7 @@ def test_traditional_yue_srt_workflow_simplifies_reviews_and_romanizes(
     _write_series(reference_path, "reference")
     pipeline = _PatchedYueSrtPipeline(monkeypatch)
 
-    result = YueSrtProcessingWorkflow(
+    result = SrtProcessingWorkflow(
         source_path,
         reference_path,
         output_dir_path,
@@ -547,10 +546,11 @@ def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     _write_series(reference_path, "reference")
     pipeline = _PatchedEngSrtPipeline(monkeypatch)
 
-    result = EngSrtProcessingWorkflow(
+    result = SrtProcessingWorkflow(
         source_path,
         reference_path,
         output_dir_path,
+        language=Language.eng,
         one_end_idx=11,
     )()
 

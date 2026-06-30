@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Workflows for processing source text SRT subtitles end to end."""
+"""Workflow for processing source text SRT subtitles end to end."""
 
 from __future__ import annotations
 
@@ -32,9 +32,8 @@ from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 
 __all__ = [
-    "EngSrtProcessingWorkflow",
     "SrtProcessingResult",
-    "YueSrtProcessingWorkflow",
+    "SrtProcessingWorkflow",
 ]
 
 logger = getLogger(__name__)
@@ -52,8 +51,8 @@ class SrtProcessingResult:
     """Output paths keyed by output name."""
 
 
-class _BaseSrtProcessingWorkflow:
-    """Shared behavior for source text SRT processing workflows."""
+class SrtProcessingWorkflow:
+    """Workflow for processing source text SRT subtitles end to end."""
 
     def __init__(
         self,
@@ -61,6 +60,7 @@ class _BaseSrtProcessingWorkflow:
         reference: Series | Path,
         output_dir_path: Path,
         *,
+        language: Language,
         one_start_idx: int | None = None,
         one_end_idx: int | None = None,
         two_start_idx: int | None = None,
@@ -76,6 +76,7 @@ class _BaseSrtProcessingWorkflow:
             infile_path: source SRT input path
             reference: anchor subtitle series or SRT path for timewarping
             output_dir_path: directory where workflow outputs are written
+            language: SRT text language to process
             one_start_idx: 1-based start index in the anchor series
             one_end_idx: 1-based end index in the anchor series
             two_start_idx: 1-based start index in the source series
@@ -88,6 +89,7 @@ class _BaseSrtProcessingWorkflow:
         self.infile_path = infile_path
         self.reference = reference
         self.output_dir_path = output_dir_path
+        self.language = language
         self.one_start_idx = one_start_idx
         self.one_end_idx = one_end_idx
         self.two_start_idx = two_start_idx
@@ -100,6 +102,132 @@ class _BaseSrtProcessingWorkflow:
         else:
             self.reviewer_kw = dict(reviewer_kw)
         self.output_paths: dict[str, Path] = {}
+
+    def __call__(self) -> SrtProcessingResult:
+        """Run SRT processing workflow.
+
+        Returns:
+            SRT processing result
+        """
+        if self.language not in (
+            Language.eng,
+            Language.yue_hans,
+            Language.yue_hant,
+        ):
+            raise ScinoephileError(
+                "SRT processing only supports eng, yue-Hans, and yue-Hant"
+            )
+
+        # Load inputs
+        source = self._load_input()
+        reference = self._load_reference()
+
+        # Review, timewarp, clean, and flatten
+        review = self._review(source)
+        timewarp = self._timewarp(review, reference)
+        clean = self._clean(timewarp)
+        flatten = self._flatten(clean)
+
+        # Romanize written Cantonese outputs
+        if self._is_yue:
+            if self.language is Language.yue_hans:
+                self._romanize(
+                    flatten,
+                    output_name="review_timewarp_clean_flatten_romanize",
+                    log_label=(
+                        "Reviewed timewarped cleaned flattened romanized SRT output"
+                    ),
+                )
+            else:
+                simplify = self._simplify(flatten)
+                simplify_review = self._review(
+                    simplify,
+                    prompt_cls=BlockReviewPromptZhoHans,
+                    output_name="review_timewarp_clean_flatten_simplify_review",
+                    test_case_name="simplify_block_review.json",
+                    log_label=(
+                        "Reviewed timewarped cleaned flattened simplified "
+                        "reviewed SRT output"
+                    ),
+                )
+                self._romanize(
+                    simplify_review,
+                    output_name=(
+                        "review_timewarp_clean_flatten_simplify_review_romanize"
+                    ),
+                    log_label=(
+                        "Reviewed timewarped cleaned flattened simplified "
+                        "reviewed romanized SRT output"
+                    ),
+                )
+
+        return SrtProcessingResult(
+            infile_path=self.infile_path,
+            output_dir_path=self.output_dir_path,
+            output_paths=self.output_paths,
+        )
+
+    @property
+    def _is_yue(self) -> bool:
+        """Whether the workflow language is written Cantonese."""
+        return self.language in (Language.yue_hans, Language.yue_hant)
+
+    @property
+    def _yue_review_prompt_cls(self) -> type[BlockReviewPromptZhoHans]:
+        """Block review prompt class for the workflow's Yue language."""
+        if self.language is Language.yue_hant:
+            return BlockReviewPromptZhoHant
+        return BlockReviewPromptZhoHans
+
+    def _clean(self, series: Series) -> Series:
+        """Load or create reviewed, timewarped, cleaned output.
+
+        Arguments:
+            series: reviewed, timewarped subtitle series
+        Returns:
+            reviewed, timewarped, cleaned subtitle series
+        """
+
+        def create() -> Series:
+            """Create cleaned output.
+
+            Returns:
+                cleaned subtitle series
+            """
+            if self.language is Language.eng:
+                return get_eng_cleaned(series)
+            return get_zho_cleaned(series)
+
+        return self._load_or_create_series(
+            "review_timewarp_clean",
+            "Reviewed timewarped cleaned SRT output",
+            create,
+        )
+
+    def _flatten(self, series: Series) -> Series:
+        """Load or create reviewed, timewarped, cleaned, flattened output.
+
+        Arguments:
+            series: reviewed, timewarped, cleaned subtitle series
+        Returns:
+            reviewed, timewarped, cleaned, flattened subtitle series
+        """
+
+        def create() -> Series:
+            """Create flattened output.
+
+            Returns:
+                flattened subtitle series
+            """
+            if self.language is Language.eng:
+                return get_eng_flattened(series)
+            return get_zho_flattened(series)
+
+        return self._load_or_create_series(
+            "review_timewarp_clean_flatten",
+            "Reviewed timewarped cleaned flattened SRT output",
+            create,
+        )
 
     def _load_input(self) -> Series:
         """Load source SRT input.
@@ -144,275 +272,20 @@ class _BaseSrtProcessingWorkflow:
             return self.reference
         return Series.load(self.reference)
 
-    def _timewarp(self, series: Series, reference: Series) -> Series:
-        """Load or create reviewed, timewarped output.
-
-        Arguments:
-            series: reviewed source subtitle series
-            reference: anchor subtitle series
-        Returns:
-            reviewed, timewarped subtitle series
-        """
-        return self._load_or_create_series(
-            "review_timewarp",
-            "Reviewed timewarped SRT output",
-            lambda: get_series_timewarped(
-                reference,
-                series,
-                one_start_idx=self.one_start_idx,
-                one_end_idx=self.one_end_idx,
-                two_start_idx=self.two_start_idx,
-                two_end_idx=self.two_end_idx,
-            ),
-        )
-
-
-class EngSrtProcessingWorkflow(_BaseSrtProcessingWorkflow):
-    """Workflow for processing source English SRT subtitles end to end."""
-
-    def __call__(self) -> SrtProcessingResult:
-        """Run English SRT processing workflow.
-
-        Returns:
-            SRT processing result
-        """
-        # Load inputs
-        source = self._load_input()
-        reference = self._load_reference()
-
-        # Review, timewarp, clean, and flatten
-        review = self._review(source)
-        timewarp = self._timewarp(review, reference)
-        clean = self._clean(timewarp)
-        self._flatten(clean)
-
-        return SrtProcessingResult(
-            infile_path=self.infile_path,
-            output_dir_path=self.output_dir_path,
-            output_paths=self.output_paths,
-        )
-
-    def _clean(self, series: Series) -> Series:
-        """Load or create reviewed, timewarped, cleaned output.
-
-        Arguments:
-            series: reviewed, timewarped subtitle series
-        Returns:
-            reviewed, timewarped, cleaned subtitle series
-        """
-        return self._load_or_create_series(
-            "review_timewarp_clean",
-            "Reviewed timewarped cleaned English SRT output",
-            lambda: get_eng_cleaned(series),
-        )
-
-    def _flatten(self, series: Series) -> Series:
-        """Load or create reviewed, timewarped, cleaned, flattened output.
-
-        Arguments:
-            series: reviewed, timewarped, cleaned subtitle series
-        Returns:
-            reviewed, timewarped, cleaned, flattened subtitle series
-        """
-        return self._load_or_create_series(
-            "review_timewarp_clean_flatten",
-            "Reviewed timewarped cleaned flattened English SRT output",
-            lambda: get_eng_flattened(series),
-        )
-
-    def _review(self, series: Series) -> Series:
-        """Load or create reviewed English output.
-
-        Arguments:
-            series: source subtitle series
-        Returns:
-            reviewed subtitle series
-        """
-
-        def create() -> Series:
-            """Create reviewed English output.
-
-            Returns:
-                reviewed subtitle series
-            """
-            reviewer_kw = dict(self.reviewer_kw)
-            reviewer_kw["auto_verify"] = True
-            reviewer_kw.setdefault("additional_context", self.additional_context)
-            reviewer = get_eng_block_reviewer(
-                test_case_path=self.output_dir_path
-                / "lang"
-                / "eng"
-                / "block_review.json",
-                provider=self.provider,
-                **reviewer_kw,
-            )
-            return get_eng_block_reviewed(series, reviewer)
-
-        return self._load_or_create_series(
-            "review", "Reviewed English SRT output", create
-        )
-
-
-class YueSrtProcessingWorkflow(_BaseSrtProcessingWorkflow):
-    """Workflow for processing source written Cantonese SRT subtitles end to end."""
-
-    def __init__(
-        self,
-        infile_path: Path,
-        reference: Series | Path,
-        output_dir_path: Path,
-        *,
-        language: Language | str,
-        one_start_idx: int | None = None,
-        one_end_idx: int | None = None,
-        two_start_idx: int | None = None,
-        two_end_idx: int | None = None,
-        overwrite: bool = False,
-        provider: LLMProvider | None = None,
-        additional_context: str | None = None,
-        reviewer_kw: dict[str, Any] | None = None,
-    ):
-        """Initialize.
-
-        Arguments:
-            infile_path: source Yue SRT input path
-            reference: anchor subtitle series or SRT path for timewarping
-            output_dir_path: directory where workflow outputs are written
-            language: Yue language/script to process
-            one_start_idx: 1-based start index in the anchor series
-            one_end_idx: 1-based end index in the anchor series
-            two_start_idx: 1-based start index in the source series
-            two_end_idx: 1-based end index in the source series
-            overwrite: whether to overwrite existing workflow outputs
-            provider: provider to use for block review queries
-            additional_context: additional context to include in review prompts
-            reviewer_kw: keyword arguments for block reviewer construction
-        """
-        try:
-            language = Language(language)
-        except ValueError as exc:
-            raise ScinoephileError(
-                f"language must be yue-Hans or yue-Hant, not {language}"
-            ) from exc
-        if language not in (Language.yue_hans, Language.yue_hant):
-            raise ScinoephileError(
-                f"language must be yue-Hans or yue-Hant, not {language}"
-            )
-
-        super().__init__(
-            infile_path,
-            reference,
-            output_dir_path,
-            one_start_idx=one_start_idx,
-            one_end_idx=one_end_idx,
-            two_start_idx=two_start_idx,
-            two_end_idx=two_end_idx,
-            overwrite=overwrite,
-            provider=provider,
-            additional_context=additional_context,
-            reviewer_kw=reviewer_kw,
-        )
-        self.language = language
-
-    def __call__(self) -> SrtProcessingResult:
-        """Run Yue SRT processing workflow.
-
-        Returns:
-            SRT processing result
-        """
-        # Load inputs
-        source = self._load_input()
-        reference = self._load_reference()
-
-        # Review, timewarp, clean, flatten, and romanize
-        review = self._review(source, self.review_prompt_cls)
-        timewarp = self._timewarp(review, reference)
-        clean = self._clean(timewarp)
-        flatten = self._flatten(clean)
-        if self.language is Language.yue_hans:
-            self._romanize(
-                flatten,
-                output_name="review_timewarp_clean_flatten_romanize",
-                log_label=(
-                    "Reviewed timewarped cleaned flattened romanized Yue SRT output"
-                ),
-            )
-        else:
-            simplify = self._simplify(flatten)
-            simplify_review = self._review(
-                simplify,
-                BlockReviewPromptZhoHans,
-                output_name="review_timewarp_clean_flatten_simplify_review",
-                test_case_name="simplify_block_review.json",
-                log_label=(
-                    "Reviewed timewarped cleaned flattened simplified "
-                    "reviewed Yue SRT output"
-                ),
-            )
-            self._romanize(
-                simplify_review,
-                output_name=("review_timewarp_clean_flatten_simplify_review_romanize"),
-                log_label=(
-                    "Reviewed timewarped cleaned flattened simplified reviewed "
-                    "romanized Yue SRT output"
-                ),
-            )
-
-        return SrtProcessingResult(
-            infile_path=self.infile_path,
-            output_dir_path=self.output_dir_path,
-            output_paths=self.output_paths,
-        )
-
-    @property
-    def review_prompt_cls(self) -> type[BlockReviewPromptZhoHans]:
-        """Block review prompt class for the workflow language."""
-        if self.language is Language.yue_hant:
-            return BlockReviewPromptZhoHant
-        return BlockReviewPromptZhoHans
-
-    def _clean(self, series: Series) -> Series:
-        """Load or create reviewed, timewarped, cleaned output.
-
-        Arguments:
-            series: reviewed, timewarped subtitle series
-        Returns:
-            reviewed, timewarped, cleaned subtitle series
-        """
-        return self._load_or_create_series(
-            "review_timewarp_clean",
-            "Reviewed timewarped cleaned Yue SRT output",
-            lambda: get_zho_cleaned(series),
-        )
-
-    def _flatten(self, series: Series) -> Series:
-        """Load or create reviewed, timewarped, cleaned, flattened output.
-
-        Arguments:
-            series: reviewed, timewarped, cleaned subtitle series
-        Returns:
-            reviewed, timewarped, cleaned, flattened subtitle series
-        """
-        return self._load_or_create_series(
-            "review_timewarp_clean_flatten",
-            "Reviewed timewarped cleaned flattened Yue SRT output",
-            lambda: get_zho_flattened(series),
-        )
-
     def _review(
         self,
         series: Series,
-        prompt_cls: type[BlockReviewPromptZhoHans],
         *,
+        prompt_cls: type[BlockReviewPromptZhoHans] | None = None,
         output_name: str = "review",
         test_case_name: str = "block_review.json",
-        log_label: str = "Reviewed Yue SRT output",
+        log_label: str = "Reviewed SRT output",
     ) -> Series:
-        """Load or create reviewed Yue output.
+        """Load or create reviewed output.
 
         Arguments:
             series: source subtitle series
-            prompt_cls: review prompt class
+            prompt_cls: Yue review prompt class
             output_name: output filename stem and output_paths key
             test_case_name: review test case JSON filename
             log_label: human-readable output label for logging
@@ -421,7 +294,7 @@ class YueSrtProcessingWorkflow(_BaseSrtProcessingWorkflow):
         """
 
         def create() -> Series:
-            """Create reviewed Yue output.
+            """Create reviewed output.
 
             Returns:
                 reviewed subtitle series
@@ -429,8 +302,20 @@ class YueSrtProcessingWorkflow(_BaseSrtProcessingWorkflow):
             reviewer_kw = dict(self.reviewer_kw)
             reviewer_kw["auto_verify"] = True
             reviewer_kw.setdefault("additional_context", self.additional_context)
+            if self.language is Language.eng:
+                reviewer = get_eng_block_reviewer(
+                    test_case_path=self.output_dir_path
+                    / "lang"
+                    / "eng"
+                    / "block_review.json",
+                    provider=self.provider,
+                    **reviewer_kw,
+                )
+                return get_eng_block_reviewed(series, reviewer)
+
+            selected_prompt_cls = prompt_cls or self._yue_review_prompt_cls
             reviewer = get_zho_reviewer(
-                prompt_cls=prompt_cls,
+                prompt_cls=selected_prompt_cls,
                 test_case_path=self.output_dir_path / "lang" / "yue" / test_case_name,
                 provider=self.provider,
                 **reviewer_kw,
@@ -471,6 +356,28 @@ class YueSrtProcessingWorkflow(_BaseSrtProcessingWorkflow):
         """
         return self._load_or_create_series(
             "review_timewarp_clean_flatten_simplify",
-            "Reviewed timewarped cleaned flattened simplified Yue SRT output",
+            "Reviewed timewarped cleaned flattened simplified SRT output",
             lambda: get_zho_converted(series, OpenCCConfig.t2s),
+        )
+
+    def _timewarp(self, series: Series, reference: Series) -> Series:
+        """Load or create reviewed, timewarped output.
+
+        Arguments:
+            series: reviewed source subtitle series
+            reference: anchor subtitle series
+        Returns:
+            reviewed, timewarped subtitle series
+        """
+        return self._load_or_create_series(
+            "review_timewarp",
+            "Reviewed timewarped SRT output",
+            lambda: get_series_timewarped(
+                reference,
+                series,
+                one_start_idx=self.one_start_idx,
+                one_end_idx=self.one_end_idx,
+                two_start_idx=self.two_start_idx,
+                two_end_idx=self.two_end_idx,
+            ),
         )

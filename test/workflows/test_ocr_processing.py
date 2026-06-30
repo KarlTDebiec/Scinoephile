@@ -73,7 +73,7 @@ def process_eng_ocr(
     return OcrProcessingWorkflow(
         infile_path,
         output_dir_path,
-        language="eng",
+        language=Language.eng,
         **kwargs,
     )()
 
@@ -82,7 +82,7 @@ def process_zho_ocr(
     infile_path: Path,
     output_dir_path: Path,
     *,
-    language: str = "zho-Hans",
+    language: Language = Language.zho_hans,
     **kwargs: Any,
 ) -> OcrProcessingResult:
     """Run Chinese OCR processing workflow for tests.
@@ -299,7 +299,7 @@ def test_ocr_processing_workflow_is_callable(tmp_path: Path):
     workflow = OcrProcessingWorkflow(
         source_path,
         output_dir_path,
-        language="eng",
+        language=Language.eng,
         validate=False,
     )
 
@@ -307,8 +307,8 @@ def test_ocr_processing_workflow_is_callable(tmp_path: Path):
     assert workflow.language is Language.eng
 
 
-def test_ocr_processing_workflow_accepts_language_object(tmp_path: Path):
-    """Test OCR processing workflow accepts a core language object.
+def test_ocr_processing_workflow_stores_language(tmp_path: Path):
+    """Test OCR processing workflow stores a core language object.
 
     Arguments:
         tmp_path: pytest temporary path fixture
@@ -321,27 +321,6 @@ def test_ocr_processing_workflow_accepts_language_object(tmp_path: Path):
     )
 
     assert workflow.language is Language.zho_hans
-
-
-def test_ocr_processing_workflow_rejects_invalid_language_in_init(tmp_path: Path):
-    """Test OCR processing workflow rejects invalid languages during initialization.
-
-    Arguments:
-        tmp_path: pytest temporary path fixture
-    """
-    invalid_language: Any = "spa"
-
-    with raises(
-        ScinoephileError,
-        match=(
-            "language must be eng, yue-Hans, yue-Hant, zho-Hans, or zho-Hant, not spa"
-        ),
-    ):
-        OcrProcessingWorkflow(
-            tmp_path / "source.sup",
-            tmp_path / "output",
-            language=invalid_language,
-        )
 
 
 def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
@@ -959,7 +938,7 @@ def test_process_zho_ocr_passes_zho_hant_languages_to_ocr_engines(
     process_zho_ocr(
         source_path,
         output_dir_path,
-        language="zho-Hant",
+        language=Language.zho_hant,
         validate=False,
     )
     assert pipeline.lens_calls == [Language.zho_hant]
