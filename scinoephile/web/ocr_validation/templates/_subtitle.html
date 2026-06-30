@@ -1,5 +1,8 @@
 <div id="subtitle-{{ row.sub_idx }}" class="subtitle">
-   #{{ row.number }}:{{ row.start }}->{{ row.end }}
+   <a
+      id="subtitle-number-{{ row.number }}"
+      href="#subtitle-number-{{ row.number }}"
+   >#{{ row.number }}</a>:{{ row.start }}->{{ row.end }}
    <div>
       <figure style="--subtitle-image-width: {{ row.image_width }}px">
          {% if row.has_concern_image %}
