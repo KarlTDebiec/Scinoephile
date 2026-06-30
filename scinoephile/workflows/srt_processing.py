@@ -118,8 +118,11 @@ class SrtProcessingWorkflow:
             )
 
         # Load inputs
-        source = self._load_input()
-        reference = self._load_reference()
+        source = Series.load(self.infile_path)
+        if isinstance(self.reference, Series):
+            reference = self.reference
+        else:
+            reference = Series.load(self.reference)
 
         # Review, timewarp, clean, and flatten
         review = self._review(source)
@@ -201,24 +204,6 @@ class SrtProcessingWorkflow:
             flatten.save(flatten_path, format_="srt")
         self.output_paths["review_timewarp_clean_flatten"] = flatten_path
         return flatten
-
-    def _load_input(self) -> Series:
-        """Load source SRT input.
-
-        Returns:
-            source subtitle series
-        """
-        return Series.load(self.infile_path)
-
-    def _load_reference(self) -> Series:
-        """Load or return the anchor series for timewarping.
-
-        Returns:
-            anchor subtitle series
-        """
-        if isinstance(self.reference, Series):
-            return self.reference
-        return Series.load(self.reference)
 
     def _review(
         self,
