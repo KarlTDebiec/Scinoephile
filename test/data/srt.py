@@ -50,7 +50,7 @@ def process_srt(
         additional_context: additional context to include in review prompts
         reviewer_kw: keyword arguments for block reviewer construction
     Returns:
-        flattened reviewed series
+        processed series
     """
     if infile_path is None:
         infile_path = title_root_path / "input" / f"{language.tag}.srt"

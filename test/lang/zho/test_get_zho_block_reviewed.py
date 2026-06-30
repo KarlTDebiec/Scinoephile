@@ -29,6 +29,7 @@ from test.data.kob import (
     get_kob_yue_hant_block_review_test_cases,
     get_kob_yue_hant_simplify_block_review_test_cases,
     get_kob_zho_hant_block_review_test_cases,
+    get_kob_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.mnt import get_mnt_zho_hant_block_review_test_cases
 from test.data.t import (
@@ -80,7 +81,14 @@ from test.helpers import assert_series_equal, parametrize
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             get_kob_zho_hant_block_review_test_cases,
             BlockReviewPromptZhoHant,
-            id="kob-zho-hant",
+            id="kob-zho-hant-ocr",
+        ),
+        param(
+            "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
+            get_kob_zho_hant_simplify_block_review_test_cases,
+            BlockReviewPromptZhoHans,
+            id="kob-zho-hant-simplify-ocr",
         ),
         param(
             "kob_yue_hans_clean",

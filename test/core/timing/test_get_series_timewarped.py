@@ -46,7 +46,7 @@ from test.helpers import assert_series_equal, parametrize
         ),
     ],
 )
-def test_get_series_timewarped_kob(
+def test_get_series_timewarped(
     request: FixtureRequest,
     reference_fixture_name: str,
     series_fixture_name: str,

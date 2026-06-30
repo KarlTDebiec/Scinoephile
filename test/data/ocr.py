@@ -64,7 +64,7 @@ def process_ocr(
         host: OCR validation web UI host
         port: OCR validation web UI port
     Returns:
-        flattened reviewed series
+        processed series
     """
     # Validate and configure
     input_dir_path = title_root_path / "input" / f"{language.tag}_ocr"

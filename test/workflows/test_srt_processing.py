@@ -21,8 +21,45 @@ from scinoephile.workflows.srt_processing import (
 )
 from test.helpers.series_files import get_text_series
 
+SRT_PROCESSING_MODULE = "scinoephile.workflows.srt_processing"
+"""Module path patched by these workflow tests."""
 
-def _raise_if_called(*args: object, **kwargs: object) -> object:
+BASE_OUTPUT_NAMES = [
+    "clean",
+    "clean_review",
+    "clean_review_flatten",
+    "clean_review_flatten_timewarp",
+]
+"""Output stems common to every SRT processing workflow."""
+
+YUE_HANS_OUTPUT_NAMES = [
+    *BASE_OUTPUT_NAMES,
+    "clean_review_flatten_timewarp_romanize",
+]
+"""Output stems for simplified written Cantonese SRT processing."""
+
+YUE_HANT_OUTPUT_NAMES = [
+    *BASE_OUTPUT_NAMES,
+    "clean_review_flatten_timewarp_simplify",
+    "clean_review_flatten_timewarp_simplify_review",
+    "clean_review_flatten_timewarp_simplify_review_romanize",
+]
+"""Output stems for traditional written Cantonese SRT processing."""
+
+
+def _output_paths(output_dir_path: Path, output_names: list[str]) -> dict[str, Path]:
+    """Build expected workflow output paths.
+
+    Arguments:
+        output_dir_path: workflow output directory path
+        output_names: output filename stems
+    Returns:
+        output paths keyed by output filename stem
+    """
+    return {name: output_dir_path / f"{name}.srt" for name in output_names}
+
+
+def _raise_unexpected_call(*args: object, **kwargs: object) -> object:
     """Raise if a patched function is unexpectedly called.
 
     Arguments:
@@ -57,17 +94,20 @@ def _write_series(output_path: Path, *texts: str) -> Series:
     return series
 
 
-class _PatchedEngSrtPipeline:
-    """Recording fake for English SRT workflow dependencies."""
+class _PatchedSrtPipeline:
+    """Recording fake for SRT workflow dependencies."""
 
     def __init__(self, monkeypatch: MonkeyPatch):
-        """Initialize and patch English SRT workflow dependencies.
+        """Initialize and patch SRT workflow dependencies.
 
         Arguments:
             monkeypatch: pytest monkeypatch fixture
         """
         self.calls: list[str] = []
         self.reviewer = object()
+        self.review_prompt_calls: list[
+            type[BlockReviewPromptZhoHans] | type[BlockReviewPromptZhoHant]
+        ] = []
         self.review_test_case_path_calls: list[Path] = []
         self.review_auto_verify_calls: list[object] = []
         self.reviewed_text_calls: list[list[str]] = []
@@ -75,27 +115,25 @@ class _PatchedEngSrtPipeline:
         self.timewarp_kw_calls: list[dict[str, object]] = []
         self.cleaned_text_calls: list[list[str]] = []
         self.flattened_text_calls: list[list[str]] = []
+        self.converted_text_calls: list[list[str]] = []
+        self.convert_config_calls: list[OpenCCConfig] = []
+        self.romanized_text_calls: list[list[str]] = []
+        self.romanize_append_calls: list[bool] = []
 
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_eng_block_reviewer",
-            self.get_eng_block_reviewer,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_eng_block_reviewed",
-            self.get_eng_block_reviewed,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_series_timewarped",
-            self.get_series_timewarped,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_eng_cleaned",
-            self.get_eng_cleaned,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_eng_flattened",
-            self.get_eng_flattened,
-        )
+        for name in [
+            "get_eng_block_reviewed",
+            "get_eng_block_reviewer",
+            "get_eng_cleaned",
+            "get_eng_flattened",
+            "get_series_timewarped",
+            "get_yue_romanized",
+            "get_zho_block_reviewed",
+            "get_zho_cleaned",
+            "get_zho_converted",
+            "get_zho_flattened",
+            "get_zho_reviewer",
+        ]:
+            monkeypatch.setattr(f"{SRT_PROCESSING_MODULE}.{name}", getattr(self, name))
 
     def get_eng_block_reviewed(self, series: Series, processor: object) -> Series:
         """Fake English block review.
@@ -171,83 +209,12 @@ class _PatchedEngSrtPipeline:
         Returns:
             timewarped subtitle series
         """
+        texts = _series_texts(source_two)
         self.calls.append("timewarp")
-        self.timewarp_text_calls.append(_series_texts(source_two))
+        self.timewarp_text_calls.append(texts)
         self.timewarp_kw_calls.append(kwargs)
-        return get_text_series("eng timewarped")
-
-
-class _PatchedYueSrtPipeline:
-    """Recording fake for Yue SRT workflow dependencies."""
-
-    def __init__(self, monkeypatch: MonkeyPatch):
-        """Initialize and patch Yue SRT workflow dependencies.
-
-        Arguments:
-            monkeypatch: pytest monkeypatch fixture
-        """
-        self.calls: list[str] = []
-        self.reviewer = object()
-        self.review_prompt_calls: list[type[BlockReviewPromptZhoHans]] = []
-        self.review_test_case_path_calls: list[Path] = []
-        self.review_auto_verify_calls: list[object] = []
-        self.reviewed_text_calls: list[list[str]] = []
-        self.timewarp_text_calls: list[list[str]] = []
-        self.timewarp_kw_calls: list[dict[str, object]] = []
-        self.cleaned_text_calls: list[list[str]] = []
-        self.flattened_text_calls: list[list[str]] = []
-        self.converted_text_calls: list[list[str]] = []
-        self.convert_config_calls: list[OpenCCConfig] = []
-        self.romanized_text_calls: list[list[str]] = []
-        self.romanize_append_calls: list[bool] = []
-
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_zho_reviewer",
-            self.get_zho_reviewer,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_zho_block_reviewed",
-            self.get_zho_block_reviewed,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_series_timewarped",
-            self.get_series_timewarped,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_zho_cleaned",
-            self.get_zho_cleaned,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_zho_flattened",
-            self.get_zho_flattened,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_zho_converted",
-            self.get_zho_converted,
-        )
-        monkeypatch.setattr(
-            "scinoephile.workflows.srt_processing.get_yue_romanized",
-            self.get_yue_romanized,
-        )
-
-    def get_series_timewarped(
-        self,
-        source_one: Series,
-        source_two: Series,
-        **kwargs: object,
-    ) -> Series:
-        """Fake timewarping.
-
-        Arguments:
-            source_one: anchor subtitle series
-            source_two: source subtitle series
-            **kwargs: timewarp keyword arguments
-        Returns:
-            timewarped subtitle series
-        """
-        self.calls.append("timewarp")
-        self.timewarp_text_calls.append(_series_texts(source_two))
-        self.timewarp_kw_calls.append(kwargs)
+        if texts == ["eng flattened"]:
+            return get_text_series("eng timewarped")
         return get_text_series("yue timewarped")
 
     def get_yue_romanized(self, series: Series, append: bool = True) -> Series:
@@ -323,7 +290,7 @@ class _PatchedYueSrtPipeline:
     def get_zho_reviewer(
         self,
         *,
-        prompt_cls: type[BlockReviewPromptZhoHans],
+        prompt_cls: type[BlockReviewPromptZhoHans] | type[BlockReviewPromptZhoHant],
         test_case_path: Path,
         provider: object,
         **kwargs: object,
@@ -360,14 +327,7 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
     output_dir_path = tmp_path / "output"
     _write_series(source_path, "source")
     _write_series(reference_path, "reference")
-    output_names = [
-        "clean",
-        "clean_review",
-        "clean_review_flatten",
-        "clean_review_flatten_timewarp",
-        "clean_review_flatten_timewarp_romanize",
-    ]
-    for output_name in output_names:
+    for output_name in YUE_HANS_OUTPUT_NAMES:
         _write_series(output_dir_path / f"{output_name}.srt", f"existing {output_name}")
 
     for name in [
@@ -378,9 +338,7 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
         "get_zho_flattened",
         "get_yue_romanized",
     ]:
-        monkeypatch.setattr(
-            f"scinoephile.workflows.srt_processing.{name}", _raise_if_called
-        )
+        monkeypatch.setattr(f"{SRT_PROCESSING_MODULE}.{name}", _raise_unexpected_call)
 
     result = SrtProcessingWorkflow(
         source_path,
@@ -390,10 +348,7 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
     )()
 
     assert isinstance(result, SrtProcessingResult)
-    assert result.output_paths == {
-        output_name: output_dir_path / f"{output_name}.srt"
-        for output_name in output_names
-    }
+    assert result.output_paths == _output_paths(output_dir_path, YUE_HANS_OUTPUT_NAMES)
     assert _series_texts(
         Series.load(output_dir_path / "clean_review_flatten_timewarp_romanize.srt")
     ) == ["existing clean_review_flatten_timewarp_romanize"]
@@ -414,7 +369,7 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     output_dir_path = tmp_path / "output"
     _write_series(source_path, "source")
     _write_series(reference_path, "reference")
-    pipeline = _PatchedYueSrtPipeline(monkeypatch)
+    pipeline = _PatchedSrtPipeline(monkeypatch)
 
     result = SrtProcessingWorkflow(
         source_path,
@@ -452,17 +407,7 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     ]
     assert pipeline.romanized_text_calls == [["yue timewarped"]]
     assert pipeline.romanize_append_calls == [True]
-    assert result.output_paths == {
-        "clean": output_dir_path / "clean.srt",
-        "clean_review": output_dir_path / "clean_review.srt",
-        "clean_review_flatten": output_dir_path / "clean_review_flatten.srt",
-        "clean_review_flatten_timewarp": (
-            output_dir_path / "clean_review_flatten_timewarp.srt"
-        ),
-        "clean_review_flatten_timewarp_romanize": (
-            output_dir_path / "clean_review_flatten_timewarp_romanize.srt"
-        ),
-    }
+    assert result.output_paths == _output_paths(output_dir_path, YUE_HANS_OUTPUT_NAMES)
 
 
 def test_traditional_yue_srt_workflow_simplifies_reviews_and_romanizes(
@@ -480,7 +425,7 @@ def test_traditional_yue_srt_workflow_simplifies_reviews_and_romanizes(
     output_dir_path = tmp_path / "output"
     _write_series(source_path, "source")
     _write_series(reference_path, "reference")
-    pipeline = _PatchedYueSrtPipeline(monkeypatch)
+    pipeline = _PatchedSrtPipeline(monkeypatch)
 
     result = SrtProcessingWorkflow(
         source_path,
@@ -515,24 +460,7 @@ def test_traditional_yue_srt_workflow_simplifies_reviews_and_romanizes(
     assert pipeline.timewarp_text_calls == [["yue flattened"]]
     assert pipeline.converted_text_calls == [["yue timewarped"]]
     assert pipeline.romanized_text_calls == [["yue reviewed 2"]]
-    assert result.output_paths == {
-        "clean": output_dir_path / "clean.srt",
-        "clean_review": output_dir_path / "clean_review.srt",
-        "clean_review_flatten": output_dir_path / "clean_review_flatten.srt",
-        "clean_review_flatten_timewarp": (
-            output_dir_path / "clean_review_flatten_timewarp.srt"
-        ),
-        "clean_review_flatten_timewarp_simplify": (
-            output_dir_path / "clean_review_flatten_timewarp_simplify.srt"
-        ),
-        "clean_review_flatten_timewarp_simplify_review": (
-            output_dir_path / "clean_review_flatten_timewarp_simplify_review.srt"
-        ),
-        "clean_review_flatten_timewarp_simplify_review_romanize": (
-            output_dir_path
-            / "clean_review_flatten_timewarp_simplify_review_romanize.srt"
-        ),
-    }
+    assert result.output_paths == _output_paths(output_dir_path, YUE_HANT_OUTPUT_NAMES)
     assert "clean_review_flatten_timewarp_romanize" not in result.output_paths
 
 
@@ -551,7 +479,7 @@ def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     output_dir_path = tmp_path / "output"
     _write_series(source_path, "source")
     _write_series(reference_path, "reference")
-    pipeline = _PatchedEngSrtPipeline(monkeypatch)
+    pipeline = _PatchedSrtPipeline(monkeypatch)
 
     result = SrtProcessingWorkflow(
         source_path,
@@ -584,14 +512,7 @@ def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     assert pipeline.cleaned_text_calls == [["source"]]
     assert pipeline.reviewed_text_calls == [["eng cleaned"]]
     assert pipeline.flattened_text_calls == [["eng reviewed"]]
-    assert result.output_paths == {
-        "clean": output_dir_path / "clean.srt",
-        "clean_review": output_dir_path / "clean_review.srt",
-        "clean_review_flatten": output_dir_path / "clean_review_flatten.srt",
-        "clean_review_flatten_timewarp": (
-            output_dir_path / "clean_review_flatten_timewarp.srt"
-        ),
-    }
+    assert result.output_paths == _output_paths(output_dir_path, BASE_OUTPUT_NAMES)
     assert _series_texts(
         Series.load(output_dir_path / "clean_review_flatten_timewarp.srt")
     ) == ["eng timewarped"]

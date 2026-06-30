@@ -27,7 +27,7 @@ from test.helpers import assert_series_equal, parametrize
         param(
             "kob_eng_ocr_fuse_clean_validate_review",
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
-            id="kob-eng",
+            id="kob-eng-ocr",
         ),
         param(
             "kob_eng_clean_review",
