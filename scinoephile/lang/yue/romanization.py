@@ -14,8 +14,14 @@ from typing import Any
 import pycantonese
 
 from scinoephile.core import ScinoephileError
+from scinoephile.core.romanization import (
+    RomanizedTokenKind,
+    is_romanized_punctuation,
+    join_romanized_tokens,
+    normalize_romanized_punctuation,
+)
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import FULL_TO_HALF_PUNC, RE_WESTERN, get_char_type
+from scinoephile.core.text import RE_WESTERN, get_char_type
 from scinoephile.lang.zho.script.conversion import get_zho_converter
 
 __all__ = [
@@ -31,6 +37,7 @@ logger = getLogger(__name__)
 
 RE_YALE_PROHIBITED_CHARACTERS = re.compile(r"[üÜ:]")
 RE_YALE_TONE_MARK = re.compile(r"[\u0300\u0301\u0304]")
+RE_YUE_WHITESPACE = re.compile(r"(\s+)")
 
 
 @cache
@@ -42,6 +49,8 @@ def get_yue_char_romanized(text: str) -> str:
     Returns:
         Yale Cantonese romanization, or empty string for non-Hanzi text
     """
+    if is_romanized_punctuation(text):
+        return ""
     try:
         romanized = get_yue_text_romanized(text)
     except ScinoephileError:
@@ -140,50 +149,85 @@ def get_yue_text_romanized(text: str) -> str:
     Returns:
         Yale Cantonese romanization
     """
-    text_romanization = ""
+    lines: list[str] = []
     for line in text.split("\n"):
-        line_romanization = ""
-        for section in line.split():
-            section_romanization = ""
-            index = 0
-            while index < len(section):
-                char = section[index]
-                if char in FULL_TO_HALF_PUNC:
-                    if char in {"＜", "＞"}:
-                        section_romanization += char
+        line_output = ""
+        open_symmetric_quotes: set[str] = set()
+        pending_separator = ""
+        for section in RE_YUE_WHITESPACE.split(line.strip()):
+            if not section:
+                continue
+            if section.isspace():
+                if line_output:
+                    if "\u3000" in section:
+                        pending_separator = "  "
                     else:
-                        section_romanization += FULL_TO_HALF_PUNC[char]
-                    index += 1
-                elif RE_WESTERN.match(char):
-                    section_romanization += char
-                    index += 1
-                elif get_char_type(char) == "full":
-                    end_index = index + 1
-                    while (
-                        end_index < len(section)
-                        and get_char_type(section[end_index]) == "full"
-                    ):
-                        end_index += 1
-                    hanzi_run = section[index:end_index]
-                    hanzi_run_romanization = _romanize_yue_hanzi_run(hanzi_run)
-                    if hanzi_run_romanization[:1] != hanzi_run[:1]:
-                        section_romanization += " "
-                    section_romanization += hanzi_run_romanization
-                    index = end_index
-                else:
-                    index += 1
-            line_romanization += "  " + section_romanization.strip()
-        text_romanization += "\n" + line_romanization.strip()
-    return text_romanization.strip()
+                        pending_separator = " "
+                continue
+
+            romanized_section = _get_yue_section_romanized(
+                section, open_symmetric_quotes
+            )
+            if romanized_section:
+                if line_output and pending_separator:
+                    line_output = f"{line_output}{pending_separator}"
+                line_output = f"{line_output}{romanized_section}"
+                pending_separator = ""
+        lines.append(line_output)
+    return "\n".join(lines).strip()
+
+
+def _get_yue_section_romanized(
+    section: str,
+    open_symmetric_quotes: set[str],
+) -> str:
+    """Get the Yale Cantonese romanization of a whitespace-delimited section.
+
+    Arguments:
+        section: text section to romanize
+        open_symmetric_quotes: straight quotes open before this section
+    Returns:
+        Yale Cantonese romanization for this section
+    """
+    tokens: list[str] = []
+    token_kinds: list[RomanizedTokenKind] = []
+    index = 0
+    while index < len(section):
+        char = section[index]
+        if is_romanized_punctuation(char):
+            tokens.append(normalize_romanized_punctuation(char))
+            token_kinds.append("punctuation")
+            index += 1
+        elif RE_WESTERN.match(char):
+            end_index = index + 1
+            while end_index < len(section) and RE_WESTERN.match(section[end_index]):
+                end_index += 1
+            tokens.append(section[index:end_index])
+            token_kinds.append("raw")
+            index = end_index
+        elif get_char_type(char) == "full":
+            end_index = index + 1
+            while (
+                end_index < len(section) and get_char_type(section[end_index]) == "full"
+            ):
+                end_index += 1
+            hanzi_run = section[index:end_index]
+            hanzi_run_romanization = _romanize_yue_hanzi_run(hanzi_run)
+            tokens.append(hanzi_run_romanization)
+            token_kinds.append("romanized")
+            index = end_index
+        else:
+            index += 1
+    return join_romanized_tokens(tokens, open_symmetric_quotes, token_kinds)
 
 
 def _jyutping_to_yale(jyutping: str) -> str | None:
-    """Convert numbered Jyutping to space-delimited Yale romanization.
+    """Convert numbered Jyutping for one word to Yale romanization.
 
     Arguments:
-        jyutping: numbered Jyutping
+        jyutping: numbered Jyutping for one word
     Returns:
-        Yale romanization or None if conversion fails
+        Yale romanization with syllables joined, or None if conversion fails
     """
     normalized = _normalize_yue_romanization_query_text(jyutping)
     if not normalized:
@@ -196,7 +240,9 @@ def _jyutping_to_yale(jyutping: str) -> str | None:
         for syllable in parsed
     )
     try:
-        return " ".join(pycantonese.jyutping_to_yale(normalized_jyutping))
+        return "".join(pycantonese.jyutping_to_yale(normalized_jyutping)).replace(
+            " ", ""
+        )
     except ValueError:
         return None
 

@@ -173,9 +173,14 @@ HALF_TO_FULL_PUNC = {
         for key in HALF_PUNC
         if f"FULLWIDTH {key}" in FULL_PUNC
     },
+    **{
+        HALF_PUNC[f"HALFWIDTH {key}"]: FULL_PUNC[key]
+        for key in FULL_PUNC
+        if f"HALFWIDTH {key}" in HALF_PUNC
+    },
     "“": "〝",
     "”": "〞",
-    "·": "・",
+    "…": "⋯",
 }
 """Mapping from half-width to full-width punctuation characters."""
 
