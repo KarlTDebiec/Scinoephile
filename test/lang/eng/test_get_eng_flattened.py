@@ -30,9 +30,9 @@ from test.helpers import assert_series_equal, parametrize
             id="kob-eng",
         ),
         param(
-            "kob_eng_timewarp_clean_review",
-            "kob_eng_timewarp_clean_review_flatten",
-            id="kob-eng-timewarp",
+            "kob_eng_clean_review",
+            "kob_eng_clean_review_flatten",
+            id="kob-eng-srt",
         ),
         param(
             "mlamd_eng_fuse_clean_validate_review",

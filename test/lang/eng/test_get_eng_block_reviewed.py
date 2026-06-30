@@ -30,10 +30,10 @@ from test.helpers import assert_series_equal, parametrize
             id="kob-eng",
         ),
         param(
-            "kob_eng_timewarp_clean",
-            "kob_eng_timewarp_clean_review",
+            "kob_eng_clean",
+            "kob_eng_clean_review",
             get_kob_eng_block_review_test_cases,
-            id="kob-eng-timewarp",
+            id="kob-eng-srt",
         ),
         param(
             "mlamd_eng_fuse_clean_validate",
