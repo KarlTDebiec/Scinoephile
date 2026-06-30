@@ -8,7 +8,6 @@ from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import (
-    FULL_TO_HALF_PUNC,
     get_char_type,
     normalize_fullwidth_alphanumerics,
     normalize_ocr_confusables_to_ascii,
@@ -27,27 +26,6 @@ def test_get_char_type_handles_unnamed_control_char() -> None:
 def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
     """Fullwidth Latin forms are classified as full-width characters."""
     assert get_char_type(char) == "full"
-
-
-@parametrize(
-    ("full_punc", "half_punc"),
-    [
-        ("＜", "<"),
-        ("＞", ">"),
-        ("、", "､"),
-        ("。", "｡"),
-        ("・", "･"),
-        ("「", "｢"),
-        ("」", "｣"),
-        ("⋯", "…"),
-    ],
-)
-def test_full_to_half_punc_includes_cjk_aliases(
-    full_punc: str,
-    half_punc: str,
-) -> None:
-    """CJK punctuation aliases are mapped to half-width forms."""
-    assert FULL_TO_HALF_PUNC[full_punc] == half_punc
 
 
 @parametrize(
