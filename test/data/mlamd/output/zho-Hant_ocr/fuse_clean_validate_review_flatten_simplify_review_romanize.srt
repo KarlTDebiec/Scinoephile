@@ -166,7 +166,7 @@ dàn zǒngděi yào lè zǎi ya!
 34
 00:02:42,208 --> 00:02:44,542
 最后，胶兜「嘀督」一声落地
-zuìhòu, jiāodōu 「dídū」 yīshēng luòdì
+zuìhòu, jiāodōu ｢dídū｣ yīshēng luòdì
 
 35
 00:02:44,708 --> 00:02:49,458
@@ -621,7 +621,7 @@ qíshí wǒ zhèngzài sīkǎo yígè xuéshù wèntí:
 125
 00:08:33,833 --> 00:08:36,917
 橙，为什么会是「痾－烂－煮」呢？
-chéng, wèishénme huì shì 「ē - làn - zhǔ」 ne?
+chéng, wèishénme huì shì ｢ē - làn - zhǔ｣ ne?
 
 126
 00:08:37,542 --> 00:08:39,833
@@ -631,22 +631,22 @@ māmā shuō chī chéng kětōng dàbiàn
 127
 00:08:40,042 --> 00:08:44,542
 「痾」这个我明白，可是「烂－煮」呢？
-「ē」 zhège wǒ míngbái, kěshì 「làn - zhǔ」 ne?
+｢ē｣ zhège wǒ míngbái, kěshì ｢làn - zhǔ｣ ne?
 
 128
 00:08:44,708 --> 00:08:47,125
 还有这个「芭－娜－哪」香蕉
-háiyǒu zhège 「bā - nà - nǎ」 xiāngjiāo
+háiyǒu zhège ｢bā - nà - nǎ｣ xiāngjiāo
 
 129
 00:08:47,292 --> 00:08:50,375
 为什么雨伞又会是「暗－芭－娜－哪」呢？
-wèishénme yǔsǎn yòu huì shì 「àn - bā - nà - nǎ」 ne?
+wèishénme yǔsǎn yòu huì shì ｢àn - bā - nà - nǎ｣ ne?
 
 130
 00:08:50,542 --> 00:08:52,958
 我「暗」的「暗」掉一条蕉
-wǒ 「àn」 de 「àn」 diào yītiáo jiāo
+wǒ ｢àn｣ de ｢àn｣ diào yītiáo jiāo
 
 131
 00:08:53,250 --> 00:08:57,083
@@ -831,7 +831,7 @@ wǒ shícháng xiǎngzhe xuéxí
 167
 00:10:38,500 --> 00:10:41,667
 可每次我总唱成「痾」什么什么的⋯
-kě měicì wǒ zǒngchàngchéng 「ē」 shénme shénme de…
+kě měicì wǒ zǒngchàngchéng ｢ē｣ shénme shénme de…
 
 168
 00:10:41,792 --> 00:10:44,375
@@ -856,7 +856,7 @@ suǒyǒu nàxiē, dōu hǎo!
 172
 00:11:54,708 --> 00:11:56,500
 一、二、三、四、五、六、七⋯
-yī, èr, sān, sì, wǔ, liù, qī…
+yī､ èr､ sān､ sì､ wǔ､ liù､ qī…
 
 173
 00:11:56,625 --> 00:11:57,792
@@ -1026,7 +1026,7 @@ zài yīzhào zhè yàngzi yòng bāojīzhǐ bǎ tā bāoqǐ
 206
 00:14:59,875 --> 00:15:05,292
 一味「包鸡纸包鸡包纸包鸡」完成了！
-yīwèi 「bāojī zhǐbāo jībāo zhǐbāo jī」 wánchéng le!
+yīwèi ｢bāojī zhǐbāo jībāo zhǐbāo jī｣ wánchéng le!
 
 207
 00:15:05,458 --> 00:15:06,958
@@ -1166,7 +1166,7 @@ duì wǒ de qīwàng zhíjiē
 234
 00:16:45,417 --> 00:16:46,875
 对她，一、二、三、四、五、六、七
-duì tā, yī, èr, sān, sì, wǔ, liù, qī
+duì tā, yī､ èr､ sān､ sì､ wǔ､ liù､ qī
 
 235
 00:16:47,042 --> 00:16:48,500
@@ -2171,97 +2171,97 @@ gē, shì zhèyàng chàng de…
 435
 00:38:26,042 --> 00:38:27,542
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 436
 00:38:27,667 --> 00:38:29,417
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 437
 00:38:29,542 --> 00:38:33,250
 「大包，整多两笼唔怕滞」
-「dàbāo, zhěngduō liǎnglóng wú pà zhì」
+｢dàbāo, zhěngduō liǎnglóng wú pà zhì｣
 
 438
 00:38:33,375 --> 00:38:35,083
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 439
 00:38:35,208 --> 00:38:36,875
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 440
 00:38:37,042 --> 00:38:40,667
 「大包，整多两笼唔怕滞」
-「dàbāo, zhěngduō liǎnglóng wú pà zhì」
+｢dàbāo, zhěngduō liǎnglóng wú pà zhì｣
 
 441
 00:38:41,000 --> 00:38:42,583
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 442
 00:38:42,708 --> 00:38:44,500
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 443
 00:38:44,667 --> 00:38:48,875
 「大包，整多两笼唔怕滞」
-「dàbāo, zhěngduō liǎnglóng wú pà zhì」
+｢dàbāo, zhěngduō liǎnglóng wú pà zhì｣
 
 444
 00:38:49,167 --> 00:38:54,333
 「食晒个包，脚瓜大个」
-「shíshàigè bāo, jiǎoguā dà gè」
+｢shíshàigè bāo, jiǎoguā dà gè｣
 
 445
 00:38:54,500 --> 00:38:57,542
 「孝顺我阿妈」
-「xiàoshùn wǒ āmā」
+｢xiàoshùn wǒ āmā｣
 
 446
 00:38:58,375 --> 00:39:03,750
 「食晒个包，脚瓜硬朗」
-「shíshàigè bāo, jiǎoguā yìnglǎng」
+｢shíshàigè bāo, jiǎoguā yìnglǎng｣
 
 447
 00:39:03,917 --> 00:39:07,333
 「再奉献国家」
-「zài fèngxiàn guójiā」
+｢zài fèngxiàn guójiā｣
 
 448
 00:39:08,458 --> 00:39:10,000
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 449
 00:39:10,125 --> 00:39:11,875
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 450
 00:39:12,042 --> 00:39:15,500
 「大包，整多两笼唔怕滞」
-「dàbāo, zhěngduō liǎnglóng wú pà zhì」
+｢dàbāo, zhěngduō liǎnglóng wú pà zhì｣
 
 451
 00:39:15,708 --> 00:39:17,667
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 452
 00:39:17,792 --> 00:39:19,458
 「大包，整多两笼」
-「dàbāo, zhěngduō liǎnglóng」
+｢dàbāo, zhěngduō liǎnglóng｣
 
 453
 00:39:19,625 --> 00:39:24,792
 「大包，整多两笼唔怕滞」
-「dàbāo, zhěngduō liǎnglóng wú pà zhì」
+｢dàbāo, zhěngduō liǎnglóng wú pà zhì｣
 
 454
 00:39:28,583 --> 00:39:32,875
@@ -2506,7 +2506,7 @@ qiǎng bāoshān?
 502
 00:43:12,292 --> 00:43:15,542
 年轻观众可能不知「抢包山」何物
-niánqīng guānzhòng kěnéng bùzhī 「qiǎng bāoshān」 héwù
+niánqīng guānzhòng kěnéng bùzhī ｢qiǎng bāoshān｣ héwù
 
 503
 00:43:16,292 --> 00:43:19,833
@@ -2546,7 +2546,7 @@ bāoshān jiùshì yīzuò yóu hǎoduōhǎoduō bāoqì qǐ de shān!
 510
 00:43:38,750 --> 00:43:41,958
 一座包山，起码六、七层楼高⋯
-yīzuò bāoshān, qǐmǎ liù, qīcénglóu gāo…
+yīzuò bāoshān, qǐmǎ liù､ qīcénglóu gāo…
 
 511
 00:43:42,500 --> 00:43:46,208
@@ -2586,7 +2586,7 @@ zài 1978 nián liǎngzuò bāoshān hūrán dǎoxià, duōrén zhòngshāng
 518
 00:44:11,958 --> 00:44:14,417
 「抢包山」从此被禁！
-「qiǎng bāoshān」 cóngcǐ bèi jìn!
+｢qiǎng bāoshān｣ cóngcǐ bèi jìn!
 
 519
 00:44:14,583 --> 00:44:18,583
@@ -2691,7 +2691,7 @@ wǒ zhǐyǒu sǐsǐ qì zài pá shàng zǔhéguì
 539
 00:45:35,167 --> 00:45:39,458
 我咁大个仔，什么「头」也给骂过⋯
-wǒ gàn dàgè zǎi, shénme 「tóu」 yě gěi mà guò…
+wǒ gàn dàgè zǎi, shénme ｢tóu｣ yě gěi mà guò…
 
 540
 00:45:39,708 --> 00:45:40,708
@@ -2701,7 +2701,7 @@ bù zhīdào wèishénme
 541
 00:45:40,792 --> 00:45:43,833
 「珊你个头」却特别刺耳
-「shān nǐ gètóu」 què tèbié cìěr
+｢shān nǐ gètóu｣ què tèbié cìěr
 
 542
 00:45:43,958 --> 00:45:45,333
@@ -2926,77 +2926,77 @@ xìn, shì māmā xiěgěi àowěihuì zhǔxí de
 586
 00:49:04,667 --> 00:49:06,083
 「亲爱的主席：」
-「qīnài de zhǔxí:」
+｢qīnài de zhǔxí:｣
 
 587
 00:49:06,250 --> 00:49:08,500
 「你好吗？我很好！」
-「nǐhǎo ma? wǒ hěn hǎo!」
+｢nǐhǎo ma? wǒ hěn hǎo!｣
 
 588
 00:49:08,667 --> 00:49:10,917
 「你吃包吗？我吃包！」
-「nǐ chī bāo ma? wǒ chī bāo!」
+｢nǐ chī bāo ma? wǒ chī bāo!｣
 
 589
 00:49:11,083 --> 00:49:15,292
 「我们居住在香港这里的人，很爱吃包」
-「wǒmen jūzhù zài xiānggǎng zhèlǐ de rén, hěn ài chī bāo」
+｢wǒmen jūzhù zài xiānggǎng zhèlǐ de rén, hěn ài chī bāo｣
 
 590
 00:49:15,500 --> 00:49:19,917
 「小笼包，上海包，广东包，莲蓉包」
-「xiǎolóngbāo, shànghǎi bāo, guǎngdōng bāo, liánróng bāo」
+｢xiǎolóngbāo, shànghǎi bāo, guǎngdōng bāo, liánróng bāo｣
 
 591
 00:49:20,042 --> 00:49:22,125
 「好朋友，我认为
-「hǎo péngyǒu, wǒ rènwéi
+｢hǎo péngyǒu, wǒ rènwéi
 
 592
 00:49:22,250 --> 00:49:25,125
 抢劫那些包，十分重要」
-qiǎngjié nàxiē bāo, shífēn zhòngyào」
+qiǎngjié nàxiē bāo, shífēn zhòngyào｣
 
 593
 00:49:25,250 --> 00:49:27,708
 「也算是运动，就真！」
-「yě suànshì yùndòng, jiù zhēn!」
+｢yě suànshì yùndòng, jiù zhēn!｣
 
 594
 00:49:27,958 --> 00:49:32,500
 「要大力！大吃晚上的粥，和大节瓜！」
-「yào dàlì! dàchī wǎnshàng de zhōu, hé dà jiéguā!」
+｢yào dàlì! dàchī wǎnshàng de zhōu, hé dà jiéguā!｣
 
 595
 00:49:32,667 --> 00:49:34,708
 「按照我愚蠢的见解⋯」
-「ànzhào wǒ yúchǔn de jiànjiě…」
+｢ànzhào wǒ yúchǔn de jiànjiě…｣
 
 596
 00:49:35,000 --> 00:49:38,958
 「抢劫那些包，是奥运会比赛」
-「qiǎngjié nàxiē bāo, shì àoyùnhuì bǐsài」
+｢qiǎngjié nàxiē bāo, shì àoyùnhuì bǐsài｣
 
 597
 00:49:39,083 --> 00:49:41,958
 「让全世界的体育家，抢过！」
-「ràng quánshìjiè de tǐyù jiā, qiǎng guò!」
+｢ràng quánshìjiè de tǐyù jiā, qiǎng guò!｣
 
 598
 00:49:42,125 --> 00:49:43,833
 「世界便和平！」
-「shìjiè biàn hépíng!」
+｢shìjiè biàn hépíng!｣
 
 599
 00:49:44,167 --> 00:49:45,667
 「你有孩子吗？」
-「nǐ yǒu háizi ma?」
+｢nǐ yǒu háizi ma?｣
 
 600
 00:49:45,792 --> 00:49:48,417
 「我有一个孩子，麦兜」
-「wǒ yǒu yígè háizi, màidōu」
+｢wǒ yǒu yígè háizi, màidōu｣
 
 601
 00:49:48,750 --> 00:49:50,167
@@ -3006,67 +3006,67 @@ zhōngyú jiǎngdào wǒ le!
 602
 00:49:51,500 --> 00:49:54,125
 「他是一个好男孩」
-「tā shì yígè hǎo nánhái」
+｢tā shì yígè hǎo nánhái｣
 
 603
 00:49:54,292 --> 00:49:56,708
 「他非常懂得抢劫那些包」
-「tā fēicháng dǒngde qiǎngjié nàxiē bāo」
+｢tā fēicháng dǒngde qiǎngjié nàxiē bāo｣
 
 604
 00:49:57,000 --> 00:49:59,792
 「有一天，我看见他，抢劫包⋯」
-「yǒu yītiān, wǒ kànjiàn tā, qiǎngjié bāo…」
+｢yǒu yītiān, wǒ kànjiàn tā, qiǎngjié bāo…｣
 
 605
 00:50:00,083 --> 00:50:02,292
 「抢了一个奥运金牌」
-「qiǎng le yígè àoyùnjīnpái」
+｢qiǎng le yígè àoyùnjīnpái｣
 
 606
 00:50:02,583 --> 00:50:06,792
 「那便是一个母亲能够有的最大的安慰」
-「nà biànshì yígè mǔqīn nénggòu yǒu de zuìdà de ānwèi」
+｢nà biànshì yígè mǔqīn nénggòu yǒu de zuìdà de ānwèi｣
 
 607
 00:50:07,292 --> 00:50:11,167
 「孩子的才干，得到了世界人类的知道」
-「háizi de cáigàn, dédào le shìjiè rénlèi de zhīdào」
+｢háizi de cáigàn, dédào le shìjiè rénlèi de zhīdào｣
 
 608
 00:50:11,833 --> 00:50:15,167
 「父母愿意做什么的东西都得」
-「fùmǔ yuànyì zuò shénme de dōngxī dōu dé」
+｢fùmǔ yuànyì zuò shénme de dōngxī dōu dé｣
 
 609
 00:50:15,667 --> 00:50:19,333
 「于是我写了这忽然间的信给你」
-「yúshì wǒ xiě le zhè hūrán jiān de xìn gěi nǐ」
+｢yúshì wǒ xiě le zhè hūrán jiān de xìn gěi nǐ｣
 
 610
 00:50:19,542 --> 00:50:23,333
 「虽然你不知道我是什么微细的东西」
-「suīrán nǐ bù zhīdào wǒ shì shénme wēixì de dōngxī」
+｢suīrán nǐ bù zhīdào wǒ shì shénme wēixì de dōngxī｣
 
 611
 00:50:23,625 --> 00:50:26,500
 「但我的孩子很大，很大！」
-「dàn wǒ de háizi hěndà, hěndà!」
+｢dàn wǒ de háizi hěndà, hěndà!｣
 
 612
 00:50:26,667 --> 00:50:29,125
 「有一天，你都会知道」
-「yǒu yītiān, nǐ dōu huì zhīdào」
+｢yǒu yītiān, nǐ dōu huì zhīdào｣
 
 613
 00:50:29,875 --> 00:50:31,250
 「多谢合作！」
-「duōxiè hézuò!」
+｢duōxiè hézuò!｣
 
 614
 00:50:31,583 --> 00:50:34,917
 「你忠实的，麦太」
-「nǐ zhōngshí de, màitài」
+｢nǐ zhōngshí de, màitài｣
 
 615
 00:50:42,375 --> 00:50:43,833
@@ -3111,7 +3111,7 @@ shīfù shuō wǒ pānpá gōngfu yǐjīng bùcuò
 623
 00:51:09,458 --> 00:51:12,583
 可以开始教我「十二路抢包手」
-kěyǐ kāishǐ jiào wǒ 「shíèrlù qiǎng bāoshǒu」
+kěyǐ kāishǐ jiào wǒ ｢shíèrlù qiǎng bāoshǒu｣
 
 624
 00:51:13,000 --> 00:51:16,042
@@ -3121,7 +3121,7 @@ shīfù shuō dāngnián shīzǔ shuǎ chū zhètào
 625
 00:51:16,167 --> 00:51:17,958
 「十二路抢包手」⋯
-「shíèrlù qiǎng bāoshǒu」…
+｢shíèrlù qiǎng bāoshǒu｣…
 
 626
 00:51:18,125 --> 00:51:21,042
@@ -3186,7 +3186,7 @@ yībù yībù, yīzhǎo yīzhǎo…
 638
 00:51:55,167 --> 00:51:59,833
 我最后终于练成「十二路抢包手」
-wǒ zuìhòu zhōngyú liàn chéng 「shíèrlù qiǎng bāoshǒu」
+wǒ zuìhòu zhōngyú liàn chéng ｢shíèrlù qiǎng bāoshǒu｣
 
 639
 00:52:21,208 --> 00:52:23,750
@@ -3411,7 +3411,7 @@ hóngluóbo lì
 683
 00:54:35,708 --> 00:54:37,333
 我说：火鸡「痾烂煮」！
-wǒ shuō: huǒjī 「ē làn zhǔ」!
+wǒ shuō: huǒjī ｢ē làn zhǔ｣!
 
 684
 00:54:39,042 --> 00:54:41,333
@@ -3571,7 +3571,7 @@ wǒdàzhe dǎn gēn māmā shuō: bùrú qù yǐnchá yā
 715
 00:57:01,792 --> 00:57:03,583
 妈妈骂我「冇衣食」⋯
-māmā mà wǒ 「mǎo yīshí」…
+māmā mà wǒ ｢mǎo yīshí｣…
 
 716
 00:57:03,708 --> 00:57:05,708
@@ -3636,7 +3636,7 @@ niàng huǒjī xiàn chá miànbāo
 728
 00:57:40,625 --> 00:57:46,625
 唉，我好后悔讲过一句「火鸡痾烂煮」
-āi, wǒ hǎo hòuhuǐ jiǎngguò yījù 「huǒjī ē làn zhǔ」
+āi, wǒ hǎo hòuhuǐ jiǎngguò yījù ｢huǒjī ē làn zhǔ｣
 
 729
 00:57:46,917 --> 00:57:51,208
@@ -3841,7 +3841,7 @@ jīngyǐ fādòng suǒyǒu huìyuán…
 769
 01:00:58,625 --> 01:01:02,458
 争取「掷蛋挞」成为亚运比赛项目
-zhēngqǔ 「zhì dàntà」 chéngwéi yàyùn bǐsàixiàngmù
+zhēngqǔ ｢zhì dàntà｣ chéngwéi yàyùn bǐsàixiàngmù
 
 770
 01:01:02,917 --> 01:01:05,125
@@ -3856,7 +3856,7 @@ yì xiàng huò zhǔxí dāngmiàn tíchū…
 772
 01:01:07,667 --> 01:01:11,000
 「挂腊鸭」可以成为亚运比赛项目
-「guà làyā」 kěyǐ chéngwéi yàyùn bǐsàixiàngmù
+｢guà làyā｣ kěyǐ chéngwéi yàyùn bǐsàixiàngmù
 
 773
 01:01:12,042 --> 01:01:15,958
@@ -3876,7 +3876,7 @@ fùshǔxiǎoxué yībān xiǎopéngyǒu…
 776
 01:01:20,333 --> 01:01:22,333
 争取「抢包山」
-zhēngqǔ 「qiǎng bāoshān」
+zhēngqǔ ｢qiǎng bāoshān｣
 
 777
 01:01:22,708 --> 01:01:24,375
@@ -3901,7 +3901,7 @@ zuìhòu, yīqiè chéngyān
 781
 01:02:35,375 --> 01:02:38,875
 最后，他们选了「掷蛋挞」做推介项目
-zuìhòu, tāmen xuǎn le 「zhì dàntà」 zuò tuījiè xiàngmù
+zuìhòu, tāmen xuǎn le ｢zhì dàntà｣ zuò tuījiè xiàngmù
 
 782
 01:02:39,125 --> 01:02:41,458
@@ -3911,7 +3911,7 @@ zhìyú xiānggǎng zhēngqǔ shēnbàn yàyùn de kǒuhào…
 783
 01:02:41,625 --> 01:02:45,542
 亦顺理成章叫成「香港一蛋挞」
-yì shùnlǐchéngzhāng jiàochéng 「xiānggǎng yīdàntà」
+yì shùnlǐchéngzhāng jiàochéng ｢xiānggǎng yīdàntà｣
 
 784
 01:02:47,292 --> 01:02:49,625
@@ -4056,37 +4056,37 @@ shìbúshì zhāngbǎozǎi chī guò de ne?
 812
 01:04:46,958 --> 01:04:55,542
 「寻晚，食了六个餐包」
-「xúnwǎn, shí le liùgè cānbāo」
+｢xúnwǎn, shí le liùgè cānbāo｣
 
 813
 01:04:55,667 --> 01:05:04,500
 「可惜我依然系觉得仍未十分饱」
-「kěxī wǒ yīrán xì juéde réng wèi shífēn bǎo」
+｢kěxī wǒ yīrán xì juéde réng wèi shífēn bǎo｣
 
 814
 01:05:05,333 --> 01:05:13,250
 「寻晚，食了磅半方包」
-「xúnwǎn, shí le bàng bànfāng bāo」
+｢xúnwǎn, shí le bàng bànfāng bāo｣
 
 815
 01:05:13,417 --> 01:05:24,792
 「可叹是我依然觉饿，不够顶肚」
-「kětàn shì wǒ yīrán juéè, bùgòu dǐngdù」
+｢kětàn shì wǒ yīrán juéè, bùgòu dǐngdù｣
 
 816
 01:05:26,750 --> 01:05:35,042
 「年少，练了六套脚法。」
-「niánshào, liàn le liùtào jiǎofǎ.」
+｢niánshào, liàn le liùtào jiǎofǎ｡｣
 
 817
 01:05:35,208 --> 01:05:42,458
 「可惜我依然未觉够用。」
-「kěxī wǒ yīrán wèijué gòuyòng.」
+｢kěxī wǒ yīrán wèijué gòuyòng｡｣
 
 818
 01:05:44,042 --> 01:05:57,375
 「年晚，又培育了珊珊！可惜⋯」
-「nián wǎn, yòu péiyù le shān shān! kěxī…」
+｢nián wǎn, yòu péiyù le shān shān! kěxī…｣
 
 819
 01:05:57,917 --> 01:06:01,292
@@ -4176,7 +4176,7 @@ shìjiè de shíhòu, wǒhuì zěnmeyàng?
 836
 01:07:05,375 --> 01:07:16,417
 「⋯无力挽回！」
-「… wúlì wǎnhuí!」
+｢… wúlì wǎnhuí!｣
 
 837
 01:07:42,250 --> 01:07:44,542
@@ -4341,7 +4341,7 @@ fāngfǎ jiǎndān, rénrén kě xué
 869
 01:10:31,000 --> 01:10:32,000
 「烧鸡」
-「shāojī」
+｢shāojī｣
 
 870
 01:10:32,292 --> 01:10:34,375
@@ -4356,7 +4356,7 @@ fāngfǎ: bǎ jī shāo jǐshāo
 872
 01:10:38,833 --> 01:10:43,083
 就这样，一味「烧鸡」大功告成
-jiù zhèyàng, yīwèi 「shāojī」 dàgōnggàochéng
+jiù zhèyàng, yīwèi ｢shāojī｣ dàgōnggàochéng
 
 873
 01:10:44,417 --> 01:10:46,375

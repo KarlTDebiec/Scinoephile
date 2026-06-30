@@ -8,7 +8,6 @@ import re
 import unicodedata
 from copy import deepcopy
 from functools import cache
-from typing import Literal
 from warnings import catch_warnings, simplefilter
 
 with catch_warnings():
@@ -17,13 +16,14 @@ with catch_warnings():
 from pypinyin import Style, lazy_pinyin, pinyin
 from pypinyin.contrib.tone_convert import tone_to_tone3
 
-from scinoephile.core.subtitles import Series
-from scinoephile.core.text import RE_HANZI
-from scinoephile.lang.romanization import (
+from scinoephile.core.romanization import (
+    RomanizedTokenKind,
     is_romanized_punctuation,
     join_romanized_tokens,
     normalize_romanized_punctuation,
 )
+from scinoephile.core.subtitles import Series
+from scinoephile.core.text import RE_HANZI
 
 __all__ = [
     "get_cmn_char_romanized",
@@ -213,23 +213,6 @@ def get_cmn_text_romanized(text: str) -> str:
     return "\n".join(lines).strip()
 
 
-def _get_cmn_romanization_char_kind(
-    char: str,
-) -> Literal["hanzi", "punctuation", "raw"]:
-    """Get the romanization token kind for a character.
-
-    Arguments:
-        char: character to classify
-    Returns:
-        romanization token kind
-    """
-    if is_romanized_punctuation(char):
-        return "punctuation"
-    if RE_HANZI.fullmatch(char) is not None:
-        return "hanzi"
-    return "raw"
-
-
 def _get_cmn_section_romanized(
     section: str,
     open_symmetric_quotes: set[str],
@@ -243,12 +226,17 @@ def _get_cmn_section_romanized(
         pinyin romanization for this section
     """
     tokens: list[str] = []
+    token_kinds: list[RomanizedTokenKind] = []
     for word in jieba.cut(section):
-        tokens.extend(_get_cmn_word_romanization_tokens(word))
-    return join_romanized_tokens(tokens, open_symmetric_quotes)
+        for token, token_kind in _get_cmn_word_romanization_tokens(word):
+            tokens.append(token)
+            token_kinds.append(token_kind)
+    return join_romanized_tokens(tokens, open_symmetric_quotes, token_kinds)
 
 
-def _get_cmn_word_romanization_tokens(word: str) -> list[str]:
+def _get_cmn_word_romanization_tokens(
+    word: str,
+) -> list[tuple[str, RomanizedTokenKind]]:
     """Get romanization tokens for a Jieba word.
 
     Arguments:
@@ -256,34 +244,55 @@ def _get_cmn_word_romanization_tokens(word: str) -> list[str]:
     Returns:
         romanized text and punctuation tokens
     """
-    tokens: list[str] = []
+    tokens: list[tuple[str, RomanizedTokenKind]] = []
     current_chars: list[str] = []
-    current_kind: Literal["hanzi", "raw"] | None = None
+    current_kind: str | None = None
     for char in word:
-        char_kind = _get_cmn_romanization_char_kind(char)
+        if is_romanized_punctuation(char):
+            char_kind = "punctuation"
+        elif RE_HANZI.fullmatch(char) is not None:
+            char_kind = "hanzi"
+        else:
+            char_kind = "raw"
+
         if char_kind == "punctuation":
             if current_chars and current_kind is not None:
-                tokens.append(_romanize_cmn_token(current_chars, current_kind))
+                tokens.append(
+                    (
+                        _romanize_cmn_token(current_chars, current_kind),
+                        "romanized" if current_kind == "hanzi" else "raw",
+                    )
+                )
             current_chars = []
             current_kind = None
-            tokens.append(normalize_romanized_punctuation(char))
+            tokens.append((normalize_romanized_punctuation(char), "punctuation"))
             continue
 
         if char_kind != current_kind:
             if current_chars and current_kind is not None:
-                tokens.append(_romanize_cmn_token(current_chars, current_kind))
+                tokens.append(
+                    (
+                        _romanize_cmn_token(current_chars, current_kind),
+                        "romanized" if current_kind == "hanzi" else "raw",
+                    )
+                )
             current_chars = []
             current_kind = char_kind
         current_chars.append(char)
 
     if current_chars and current_kind is not None:
-        tokens.append(_romanize_cmn_token(current_chars, current_kind))
+        tokens.append(
+            (
+                _romanize_cmn_token(current_chars, current_kind),
+                "romanized" if current_kind == "hanzi" else "raw",
+            )
+        )
     return tokens
 
 
 def _romanize_cmn_token(
     chars: list[str],
-    token_kind: Literal["hanzi", "raw"],
+    token_kind: str,
 ) -> str:
     """Romanize a Mandarin token.
 

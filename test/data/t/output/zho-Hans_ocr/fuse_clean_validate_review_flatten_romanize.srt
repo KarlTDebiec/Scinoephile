@@ -131,7 +131,7 @@ jǐngfāng xiāngxìn, jīncìxiè jiéàn de zhǔmóu
 27
 00:03:53,583 --> 00:03:55,500
 是「头号通缉犯」叶国欢
-shì 「tóuhào tōngjīfàn」 yèguóhuān
+shì ｢tóuhào tōngjīfàn｣ yèguóhuān
 
 28
 00:03:58,167 --> 00:04:00,667
@@ -226,7 +226,7 @@ shàngcì nà yīpī, xiāole liǎngnián, zúzú liǎngnián!
 46
 00:04:49,208 --> 00:04:52,417
 炒股、炒楼、炒栗子更能赚钱！
-chǎogǔ, chǎolóu, chǎolìzi gèngnéng zhuànqián!
+chǎogǔ､ chǎolóu､ chǎolìzi gèngnéng zhuànqián!
 
 47
 00:04:55,125 --> 00:04:56,917
@@ -311,17 +311,17 @@ méishì méishì
 63
 00:07:29,500 --> 00:07:31,458
 是「易发」的船
-shì 「yìfā」 de chuán
+shì ｢yìfā｣ de chuán
 
 64
 00:07:31,958 --> 00:07:32,792
 什么「易发」？
-shénme 「yìfā」?
+shénme ｢yìfā｣?
 
 65
 00:07:32,792 --> 00:07:34,125
 番禺「易发」
-pānyú 「yìfā」
+pānyú ｢yìfā｣
 
 66
 00:07:34,125 --> 00:07:35,625
@@ -521,7 +521,7 @@ zuìduō zhuā wǒ huíqù dǎ
 105
 00:10:50,458 --> 00:10:53,208
 倒吊、灌水、烧阴囊，全都玩过
-dào diào, guànshuǐ, shāo yīnnáng, quándōu wánguò
+dào diào､ guànshuǐ､ shāo yīnnáng, quándōu wánguò
 
 106
 00:10:53,208 --> 00:10:55,458
@@ -861,7 +861,7 @@ wǒlái jièshào
 173
 00:16:34,792 --> 00:16:37,792
 这位就是接手「易发」铺位的张大宝
-zhèwèi jiùshì jiēshǒu 「yìfā」 pùwèi de zhāngdà bǎo
+zhèwèi jiùshì jiēshǒu ｢yìfā｣ pùwèi de zhāngdà bǎo
 
 174
 00:16:37,792 --> 00:16:38,917
@@ -1266,7 +1266,7 @@ bùrán zěnme jīngcǎi?
 254
 00:19:57,250 --> 00:20:01,875
 我们之前偷车、爆窃、打劫运钞车
-wǒmen zhīqián tōuchē, bàoqiè, dǎjié yùnchāochē
+wǒmen zhīqián tōuchē､ bàoqiè､ dǎjié yùnchāochē
 
 255
 00:20:01,875 --> 00:20:03,250
@@ -1306,7 +1306,7 @@ wǒ zhēngfú le yīzuò shān
 262
 00:20:43,583 --> 00:20:47,208
 当然得再找一座更高、更难爬的山
-dāngrán dé zài zhǎo yīzuò gènggāo, gèngnán pá de shān
+dāngrán dé zài zhǎo yīzuò gènggāo､ gèngnán pá de shān
 
 263
 00:20:48,125 --> 00:20:49,708
@@ -1436,7 +1436,7 @@ tā kàn shénme?
 288
 00:22:25,917 --> 00:22:29,417
 可是这个很聪明、很能干的
-kěshì zhège hěn cōngmíng, hěn nénggàn de
+kěshì zhège hěn cōngmíng､ hěn nénggàn de
 
 289
 00:22:31,917 --> 00:22:33,750
@@ -1471,7 +1471,7 @@ nǐ kànkàn kàn, tāmāde kàn shénme?
 295
 00:22:55,833 --> 00:22:58,375
 走了，向阳、老胡
-zǒu le, xiàngyáng, lǎohú
+zǒu le, xiàngyáng､ lǎohú
 
 296
 00:22:58,375 --> 00:23:01,708
@@ -1611,7 +1611,7 @@ ránhòu yòu bèngchū gè cháogē chūlái
 323
 00:24:26,417 --> 00:24:30,333
 「潮哥」，不就是个名字而已
-「cháogē」, bù jiùshì gè míngzì éryǐ
+｢cháogē｣, bù jiùshì gè míngzì éryǐ
 
 324
 00:24:51,917 --> 00:24:53,458
@@ -1916,12 +1916,12 @@ jiè le
 384
 00:27:46,500 --> 00:27:47,917
 「嫖赌饮荡吹⋯
-「piáodǔ yǐndàng chuī…
+｢piáodǔ yǐndàng chuī…
 
 385
 00:27:47,917 --> 00:27:49,583
 戒了不够帅」
-jiè le bùgòu shuài」
+jiè le bùgòu shuài｣
 
 386
 00:27:49,583 --> 00:27:51,125
@@ -2199,7 +2199,7 @@ bùyòng kèqì
 441
 00:31:04,708 --> 00:31:07,417
 阿贵、阿广，拿部三十三吋新画皇
-āguì, āguǎng, nábù sānshísān cùn xīnhuà huáng
+āguì､ āguǎng, nábù sānshísān cùn xīnhuà huáng
 
 442
 00:31:07,417 --> 00:31:08,958
@@ -2404,7 +2404,7 @@ huāngē, nǐ shìfǒu zhēnde chóngchūjiānghú
 482
 00:33:13,583 --> 00:33:16,125
 跟卓子强、季正雄
-gēn zhuózi qiáng, jì zhèngxióng
+gēn zhuózi qiáng､ jì zhèngxióng
 
 483
 00:33:16,125 --> 00:33:20,708
@@ -2459,7 +2459,7 @@ shénjīngbìng
 493
 00:33:45,792 --> 00:33:47,458
 一个「砰！砰！砰！」
-yígè 「pēng! pēng! pēng!」
+yígè ｢pēng! pēng! pēng!｣
 
 494
 00:33:47,458 --> 00:33:49,167
@@ -2579,7 +2579,7 @@ nǐmen juéde, rúguǒ sāndàzéi wáng hézuò
 517
 00:34:57,208 --> 00:34:59,042
 就算开「鱼蛋档」
-jiùsuàn kāi 「yúdàn dàng」
+jiùsuàn kāi ｢yúdàn dàng｣
 
 518
 00:34:59,042 --> 00:35:01,417
@@ -2714,7 +2714,7 @@ jiù bāqiān ba
 544
 00:37:04,250 --> 00:37:06,208
 给我找叶国欢、季正雄！
-gěi wǒ zhǎo yèguóhuān, jì zhèngxióng!
+gěi wǒ zhǎo yèguóhuān､ jì zhèngxióng!
 
 545
 00:37:09,583 --> 00:37:10,375
@@ -2784,7 +2784,7 @@ huī, nǐ péngyǒu yào zhù dào shénme shíhòu?
 558
 00:38:16,333 --> 00:38:18,125
 三、四晚吧
-sān, sìwǎn ba
+sān､ sìwǎn ba
 
 559
 00:38:18,458 --> 00:38:19,917
@@ -2844,7 +2844,7 @@ shōudào
 570
 00:38:55,208 --> 00:38:58,958
 阿贵、阿广，卸货，赶快！
-āguì, āguǎng, xièhuò, gǎnkuài!
+āguì､ āguǎng, xièhuò, gǎnkuài!
 
 571
 00:39:17,292 --> 00:39:18,500
@@ -3404,7 +3404,7 @@ nàme yèguóhuān qiántáo huídàlù, hái méi zhǎodào?
 682
 00:47:56,542 --> 00:47:59,125
 以前跟他混的那些手下、销赃那些呢？
-yǐqián gēn tā hùn de nàxiē shǒuxià, xiāozāng nàxiē ne?
+yǐqián gēn tā hùn de nàxiē shǒuxià､ xiāozāng nàxiē ne?
 
 683
 00:47:59,125 --> 00:48:02,667
@@ -3684,12 +3684,12 @@ dàoyì liǎnggè zì
 738
 00:51:23,167 --> 00:51:28,083
 我有一次，带大圈文、湖南鬼、潮州威
-wǒ yǒu yīcì, dàidàquānwén, húnán guǐ, cháozhōu wēi
+wǒ yǒu yīcì, dàidàquānwén､ húnán guǐ､ cháozhōu wēi
 
 739
 00:51:28,083 --> 00:51:32,083
 跟警察驳火的时候，「砰！砰！砰！」
-gēn jǐngchá bóhuǒ de shíhòu,「pēng! pēng! pēng!」
+gēn jǐngchá bóhuǒ de shíhòu,｢pēng! pēng! pēng!｣
 
 740
 00:51:32,083 --> 00:51:35,000
@@ -3869,7 +3869,7 @@ nǐ tì wǒ dǎtīngyīxià
 775
 00:54:05,542 --> 00:54:09,250
 我喝茶、吃饭、装修也全靠你了！
-wǒ hēchá, chīfàn, zhuāngxiū yě quán kàonǐle!
+wǒ hēchá､ chīfàn､ zhuāngxiū yě quán kàonǐle!
 
 776
 00:54:10,083 --> 00:54:14,208
@@ -4134,7 +4134,7 @@ xiǎozī!
 828
 00:57:45,500 --> 00:57:49,917
 一个唯利是图、走私逃税的小资
-yígè wéilìshìtú, zǒusī táoshuì de xiǎozī
+yígè wéilìshìtú､ zǒusī táoshuì de xiǎozī
 
 829
 00:57:50,750 --> 00:57:53,000
@@ -4484,7 +4484,7 @@ quánchéng hōngdòng!
 898
 01:02:03,958 --> 01:02:06,500
 一注独中的话，真是「肥过肥猪仔」
-yīzhù dúzhōng dehuà, zhēnshì 「féiguò féizhū zǎi」
+yīzhù dúzhōng dehuà, zhēnshì ｢féiguò féizhū zǎi｣
 
 899
 01:02:06,500 --> 01:02:08,000
@@ -4494,7 +4494,7 @@ nà jiù kàn yǒuméiyǒu rénnéng nádào le
 900
 01:02:08,000 --> 01:02:12,708
 投注都集中在大热门「追风神驹」身上
-tóuzhù dōu jízhōng zài dà rèmén 「zhuīfēng shénjū」 shēnshàng
+tóuzhù dōu jízhōng zài dà rèmén ｢zhuīfēng shénjū｣ shēnshàng
 
 901
 01:02:13,083 --> 01:02:14,292
@@ -4504,7 +4504,7 @@ lěngmén mǎyǒu hěnduō
 902
 01:02:14,292 --> 01:02:17,958
 最冷的是「好天气」，是九十九倍
-zuìlěng de shì 「hǎo tiānqì」, shì jiǔshíjiǔ bèi
+zuìlěng de shì ｢hǎo tiānqì｣, shì jiǔshíjiǔ bèi
 
 903
 01:02:18,833 --> 01:02:20,417
@@ -4514,7 +4514,7 @@ quánmǎi dúyíng jí wèizhì
 904
 01:02:23,958 --> 01:02:27,208
 他妈的，彩池升到三、四亿了！
-tāmāde, cǎichí shēngdào sān, sìyì le!
+tāmāde, cǎichí shēngdào sān､ sìyì le!
 
 905
 01:02:27,833 --> 01:02:30,667
@@ -4604,7 +4604,7 @@ kàn nǎpǐmǎ zuìkuài pǎo chūlái!
 922
 01:04:20,625 --> 01:04:22,833
 出闸最快的就是「追风神驹」
-chūzhá zuìkuài de jiùshì 「zhuīfēng shénjū」
+chūzhá zuìkuài de jiùshì ｢zhuīfēng shénjū｣
 
 923
 01:04:22,833 --> 01:04:24,625
@@ -4679,7 +4679,7 @@ cǎn le, zhècì qīngjiādàngchǎn rùhuò
 937
 01:07:39,208 --> 01:07:42,750
 金哥、忠哥，其实那些官
-jīngē, zhōnggē, qíshí nàxiē guān
+jīngē､ zhōnggē, qíshí nàxiē guān
 
 938
 01:07:42,750 --> 01:07:44,750
@@ -5014,7 +5014,7 @@ dàihuì dài nǐ chī diǎn hǎo de xǐchén
 1004
 01:15:16,958 --> 01:15:19,833
 我们这里的虾蛄、咸蟹很有特色
-wǒmen zhèlǐ de xiāgū, xiánxiè hěn yǒu tèsè
+wǒmen zhèlǐ de xiāgū､ xiánxiè hěn yǒu tèsè
 
 1005
 01:15:19,833 --> 01:15:23,125
@@ -5029,7 +5029,7 @@ lái, zhèbiān zhèbiān
 1007
 01:15:26,958 --> 01:15:30,583
 黑星、手榴弹、AK
-hēixīng, shǒuliúdàn, AK
+hēixīng､ shǒuliúdàn､ AK
 
 1008
 01:15:30,583 --> 01:15:32,292
@@ -5339,7 +5339,7 @@ biérén shuō nǐ jiù xìn
 1069
 01:18:32,583 --> 01:18:36,083
 94年珍宝表行、前年好运佳
-94 nián zhēnbǎo biǎoxíng, qiánnián hǎoyùn jiā
+94 nián zhēnbǎo biǎoxíng､ qiánnián hǎoyùn jiā
 
 1070
 01:18:36,083 --> 01:18:37,833
@@ -5384,7 +5384,7 @@ jiùshì nǐ, yèguóhuān!
 1078
 01:19:08,458 --> 01:19:11,625
 92年置地、94年珍宝、前年好运佳
-92 niánzhì dì, 94 nián zhēnbǎo, qiánnián hǎoyùn jiā
+92 niánzhì dì､ 94 nián zhēnbǎo､ qiánnián hǎoyùn jiā
 
 1079
 01:19:11,625 --> 01:19:12,458
@@ -5514,7 +5514,7 @@ zhuó lǎobǎn de xìngmìng
 1104
 01:21:46,167 --> 01:21:48,583
 怎么也值一个「红白蓝」吧！
-zěnme yě zhí yígè 「hóngbái lán」 ba!
+zěnme yě zhí yígè ｢hóngbái lán｣ ba!
 
 1105
 01:22:00,542 --> 01:22:01,542
@@ -5779,12 +5779,12 @@ dài huì chūqù dàjiē, zuò dīshì
 1157
 01:25:48,333 --> 01:25:49,167
 「打的」啊！
-「dǎ de」 a!
+｢dǎ de｣ a!
 
 1158
 01:25:53,875 --> 01:25:56,500
 「大陆喱」，懵头懵脑
-「dàlù lí」, měngtóu měngnǎo
+｢dàlù lí｣, měngtóu měngnǎo
 
 1159
 01:28:36,167 --> 01:28:37,292
@@ -5794,7 +5794,7 @@ kuài
 1160
 01:28:45,292 --> 01:28:46,875
 「大陆喱」？
-「dàlù lí」?
+｢dàlù lí｣?
 
 1161
 01:28:47,500 --> 01:28:49,333

@@ -61,6 +61,9 @@ def get_zho_text_cleaned(text: str) -> str | None:
         cleaned_line = re.sub(r"[^\S]*\.\.\.[^\S]*", "⋯", cleaned_line)
         cleaned_line = re.sub(r"[^\S]*…[^\S]*", "⋯", cleaned_line)
 
+        # Normalize ambiguous Middle Dot to wide Katakana Middle Dot
+        cleaned_line = re.sub(r"[^\S]*·[^\S]*", "・", cleaned_line)
+
         # Replace half-width punctuation with full-width punctuation
         for old_punc, new_punc in HALF_TO_FULL_PUNC.items():
             cleaned_line = re.sub(

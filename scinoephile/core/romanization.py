@@ -8,24 +8,21 @@ import unicodedata
 from collections.abc import Iterable
 from typing import Literal
 
-from scinoephile.core.text import FULL_PUNC_CHARS, FULL_TO_HALF_PUNC, HALF_PUNC_CHARS
+from .text import FULL_PUNC_CHARS, FULL_TO_HALF_PUNC, HALF_PUNC_CHARS
 
 __all__ = [
+    "RomanizedTokenKind",
     "is_romanized_punctuation",
     "join_romanized_tokens",
     "normalize_romanized_punctuation",
 ]
 
-_ROMANIZED_CLOSING_PUNCTUATION = set(")]}>.,!?;:%”’」』》〉】＞…")
-_ROMANIZED_OPENING_PUNCTUATION = set("([{<“‘「『《〈【＜")
-_ROMANIZED_PUNCTUATION = {
-    **FULL_TO_HALF_PUNC,
-    "＜": "＜",
-    "＞": "＞",
-    "、": ",",
-    "。": ".",
-    "⋯": "…",
-}
+type RomanizedTokenKind = Literal["punctuation", "raw", "romanized"]
+"""Kind of token being joined into romanized text."""
+
+_ROMANIZED_CLOSING_PUNCTUATION = set(")]}>.,!?;:%”’」』》〉】＞…､｡｣･")
+_ROMANIZED_OPENING_PUNCTUATION = set("([{<“‘「『《〈【＜｢･")
+_ROMANIZED_RETAINED_FULLWIDTH_PUNCTUATION = {"＜", "＞"}
 _ROMANIZED_SYMMETRIC_QUOTES = {'"', "'"}
 
 
@@ -42,23 +39,31 @@ def is_romanized_punctuation(text: str) -> bool:
 
 def join_romanized_tokens(
     tokens: Iterable[str],
-    open_symmetric_quotes: set[str] | None = None,
+    open_symmetric_quotes: set[str],
+    token_kinds: Iterable[RomanizedTokenKind],
 ) -> str:
     """Join romanized text and punctuation tokens with readable spacing.
 
     Arguments:
         tokens: romanized text and punctuation tokens
         open_symmetric_quotes: straight quotes open before these tokens
+        token_kinds: source kinds for the tokens, used to distinguish contractions
+          from single-quoted romanized phrases
     Returns:
         formatted romanized text
     """
-    tokens = [token for token in tokens if token]
-    if open_symmetric_quotes is None:
-        open_symmetric_quotes = set()
-    quote_roles = _get_symmetric_quote_roles(tokens, open_symmetric_quotes)
+    token_list: list[str] = []
+    token_kind_list: list[RomanizedTokenKind] = []
+    for token, token_kind in zip(tokens, token_kinds, strict=True):
+        if token:
+            token_list.append(token)
+            token_kind_list.append(token_kind)
+    quote_roles = _get_symmetric_quote_roles(
+        token_list, open_symmetric_quotes, token_kind_list
+    )
     output = ""
     previous_quote_role: Literal["closing", "infix", "opening"] | None = None
-    for token, quote_role in zip(tokens, quote_roles, strict=True):
+    for token, quote_role in zip(token_list, quote_roles, strict=True):
         if not output:
             output = token
         elif _requires_space(output, token, previous_quote_role, quote_role):
@@ -77,18 +82,25 @@ def normalize_romanized_punctuation(text: str) -> str:
     Returns:
         punctuation suitable for romanized text
     """
-    return "".join(_ROMANIZED_PUNCTUATION.get(char, char) for char in text)
+    return "".join(
+        char
+        if char in _ROMANIZED_RETAINED_FULLWIDTH_PUNCTUATION
+        else FULL_TO_HALF_PUNC.get(char, char)
+        for char in text
+    )
 
 
 def _get_symmetric_quote_roles(
     tokens: list[str],
     open_quotes: set[str],
+    token_kinds: list[RomanizedTokenKind],
 ) -> list[Literal["closing", "infix", "opening"] | None]:
     """Get spacing roles for straight quote tokens.
 
     Arguments:
         tokens: romanized text and punctuation tokens
         open_quotes: straight quotes open before these tokens
+        token_kinds: source kinds for the tokens
     Returns:
         spacing roles for straight quote tokens
     """
@@ -98,24 +110,16 @@ def _get_symmetric_quote_roles(
             roles.append(None)
             continue
 
-        if index:
-            previous_token = tokens[index - 1]
-        else:
-            previous_token = ""
-        if index + 1 < len(tokens):
-            next_token = tokens[index + 1]
-        else:
-            next_token = ""
         if token in open_quotes:
             roles.append("closing")
             open_quotes.remove(token)
-        elif (
-            token == "'"
-            and _is_romanized_text_token(previous_token)
-            and _is_romanized_text_token(next_token)
-        ):
+        elif token == "'" and _is_infix_quote_context(index, token_kinds):
             roles.append("infix")
-        elif _is_romanized_text_token(previous_token) and not next_token:
+        elif (
+            index > 0
+            and index == len(tokens) - 1
+            and token_kinds[index - 1] in {"raw", "romanized"}
+        ):
             roles.append("closing")
         else:
             roles.append("opening")
@@ -138,15 +142,24 @@ def _is_romanized_punctuation_char(char: str) -> bool:
     )
 
 
-def _is_romanized_text_token(token: str) -> bool:
-    """Check whether a token is romanized text.
+def _is_infix_quote_context(
+    index: int,
+    token_kinds: list[RomanizedTokenKind],
+) -> bool:
+    """Check whether a single quote joins raw text tokens.
 
     Arguments:
-        token: token to check
+        index: token index of the quote
+        token_kinds: source kinds for the tokens
     Returns:
-        whether token is romanized text
+        whether the quote should be treated as infix punctuation
     """
-    return bool(token) and not is_romanized_punctuation(token)
+    return (
+        index > 0
+        and index + 1 < len(token_kinds)
+        and token_kinds[index - 1] == "raw"
+        and token_kinds[index + 1] == "raw"
+    )
 
 
 def _requires_space(
