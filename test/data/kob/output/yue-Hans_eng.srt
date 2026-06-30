@@ -1,6 +1,6 @@
 1
 00:01:43,312 --> 00:01:44,313
-少爷！准备好喇
+少爷！准备好啦
 Young master, we are ready
 
 2
@@ -554,7 +554,7 @@ I will hit that bastard's mouth for you
 She didn't use her mouth
 
 112
-00:07:09,552 --> 00:07:10,721
+00:07:09,552 --> 00:07:10,720
 系用对眼
 She used her eyes
 
@@ -674,18 +674,18 @@ if Miss Yushang sleeps with our young master tonight…
 You are not welcome
 
 136
-00:08:08,895 --> 00:08:11,774
+00:08:08,895 --> 00:08:11,773
 咁多位⋯唔好意思呀真系
 I am sorry, I am damn sorry
 
 137
-00:08:11,772 --> 00:08:12,900
+00:08:11,773 --> 00:08:12,900
 冇乜嘢意见啦嘛？
 Don't you have any objection?
 
 138
 00:08:13,899 --> 00:08:16,487
-等我嚟⋯等我讲番句公道既说话
+等我嚟⋯等我讲番句公道的说话
 Let me say something fair
 
 139
@@ -704,12 +704,12 @@ more than 100,000 taels
 Yushang will sleep with them
 
 142
-00:08:21,072 --> 00:08:22,784
+00:08:21,072 --> 00:08:22,783
 千祈唔好伤咗和气呀！
 Don't quarrel because of such a small amount,
 
 143
-00:08:22,782 --> 00:08:24,369
+00:08:22,783 --> 00:08:24,369
 啱唔啱听呀？啱唔啱听？
 isn't it right?
 
@@ -914,17 +914,17 @@ Who dares bully my son, let me teach him a lesson
 Master
 
 184
-00:10:51,368 --> 00:10:52,914
+00:10:51,368 --> 00:10:52,912
 唔驶惊呀阿灿！边个恰你？
 Don't panic, Chan who bullied you?
 
 185
-00:10:52,911 --> 00:10:53,915
+00:10:52,912 --> 00:10:53,913
 系我恰紧人
 It's me who bullied others
 
 186
-00:10:53,912 --> 00:10:55,459
+00:10:53,913 --> 00:10:55,459
 吓？俾你恰？
 What? You bullied others?
 
@@ -965,7 +965,7 @@ Chan
 
 194
 00:11:09,092 --> 00:11:10,722
-人家送到咁厚礼就唔好再恰佢喇
+人家送到咁厚礼就唔好再恰他喇
 They send you such a valuable present, you'd stop bullying them
 
 195
@@ -980,7 +980,7 @@ Master
 
 197
 00:11:13,137 --> 00:11:15,476
-个令牌上面写住铁帽子王僧格林参
+个令牌上面写住铁帽子王僧格林沁
 King of Iron Hat, Seng-ko-lin-ch'in, is written on the medal
 
 198
@@ -1064,12 +1064,12 @@ What else? Go ahead
 Today is the birthday of the Ex-Empress Dowager
 
 214
-00:11:55,716 --> 00:11:57,972
+00:11:55,716 --> 00:11:57,969
 身为京官罪加一等
 So your crime is doubled
 
 215
-00:11:57,967 --> 00:11:59,139
+00:11:57,969 --> 00:11:59,139
 可以问斩喇佢！
 It may lead to capital punishment
 
@@ -1124,12 +1124,12 @@ General So, let's play happily together, so forget it
 I haven't played!
 
 226
-00:12:26,158 --> 00:12:26,997
+00:12:26,158 --> 00:12:26,994
 皇爷
 Your Majesty,
 
 227
-00:12:26,992 --> 00:12:29,291
+00:12:26,994 --> 00:12:29,291
 估唔到系呢度俾这些无赖打扰你嘅雅兴
 a rascal has ruined the atmosphere here,
 
@@ -1180,7 +1180,7 @@ Uncle Mok, the dishes are all poisoned
 
 237
 00:13:09,112 --> 00:13:13,162
-好！赵无极佢暗算我地帮主
+好！赵无极佢暗算我哋帮主
 Chiu assassinated our Master
 
 238
@@ -1190,7 +1190,7 @@ and some generals of The Taiping Reign
 
 239
 00:13:15,284 --> 00:13:16,873
-仲嫁祸俾我地丐帮
+仲嫁祸俾我哋丐帮
 And he framed us, the Beggars Association, to be the assassins
 
 240
@@ -1200,12 +1200,12 @@ Thus made us
 
 241
 00:13:19,371 --> 00:13:20,960
-个个都睇我地唔起
+个个都睇我哋唔起
 to be despised by the world
 
 242
 00:13:21,832 --> 00:13:23,254
-话我地投靠咗朝廷
+话我哋投靠咗朝廷
 Saying that we became the dogs of the government
 
 243
@@ -1220,12 +1220,12 @@ His initial power is harmful
 
 245
 00:13:29,171 --> 00:13:31,720
-你地一阵见佢未上当千祈唔好出手
+你哋一阵见佢未上当千祈唔好出手
 Don't take action until he is trapped
 
 246
 00:13:31,756 --> 00:13:34,180
-因为我地几个加埋都未必系佢对手
+因为我哋几个加埋都未必系佢对手
 Because we can't defeat him even if we group together
 
 247
@@ -1259,12 +1259,12 @@ Why do you come here? Where is Mister Chiu?
 The pearl of Mr. Chiu is broken
 
 253
-00:13:54,025 --> 00:13:56,074
+00:13:54,025 --> 00:13:56,071
 俾苏翁一打就变咗珍珠末
 by Mr So and became pearl powder
 
 254
-00:13:56,069 --> 00:13:57,408
+00:13:56,071 --> 00:13:57,408
 我冲水饮埋添啦
 I have drunk it
 
@@ -1519,12 +1519,12 @@ Don't you know it's not that easy to be my husband?
 How can I be your husband?
 
 305
-00:16:00,343 --> 00:16:02,184
+00:16:00,343 --> 00:16:02,181
 我要佢武功盖世，状元之才
 I want him to be the superior Kung-fu master
 
 306
-00:16:02,178 --> 00:16:03,477
+00:16:02,181 --> 00:16:03,477
 一人之下，万人之上
 Be the top of all
 
@@ -1544,12 +1544,12 @@ Let me think for one second
 I can do it
 
 310
-00:16:16,190 --> 00:16:17,197
+00:16:16,190 --> 00:16:17,194
 好！
 OK
 
 311
-00:16:17,191 --> 00:16:19,741
+00:16:17,194 --> 00:16:19,741
 咁等你做得到果阵先至番嚟揾我啦
 Do it first and then look for me
 
@@ -1585,7 +1585,7 @@ Crazy!
 
 318
 00:17:04,356 --> 00:17:07,073
-丐帮办事，冇关人等立即离开
+丐帮办事，闲杂人等立即离开
 We come for the Beggars Association, those unrelated persons leave at once
 
 319
@@ -1610,12 +1610,12 @@ Let's go!
 
 323
 00:18:29,221 --> 00:18:31,688
-弊！我地嚟迟咗
+弊！我们来迟了
 Shit, we are late
 
 324
 00:18:33,016 --> 00:18:34,650
-一日都系果个旗下仔累事！
+一日都系那个旗下仔累事！
 That Manchurian should be blamed
 
 325
@@ -1640,7 +1640,7 @@ Let's kill him
 
 329
 00:18:47,028 --> 00:18:49,412
-算啦！佢唔系有心阻我地嘅
+算啦！佢唔系有心阻我哋嘅
 Forget it, he doesn't mean to bother us
 
 330
@@ -1665,7 +1665,7 @@ I won't fall in love with anybody
 
 334
 00:19:07,713 --> 00:19:09,846
-我点都唔会谂这些嘢嘅喇
+我点都唔会谂这些嘢嘅啦
 until Chiu is killed
 
 335
@@ -1869,12 +1869,12 @@ I will accompany you to Peking
 2, 3, 4, 5, 6
 
 375
-00:21:04,063 --> 00:21:06,448
+00:21:04,063 --> 00:21:06,444
 嚟喇，老爷
 I am coming
 
 376
-00:21:06,441 --> 00:21:08,951
+00:21:06,444 --> 00:21:08,951
 少爷上京赴考，我地冚家搬
 Young master is going for the examination, let's move to Peking too
 
@@ -2389,12 +2389,12 @@ Bravo…
 And So Cha Ha Yee Chan from Canton
 
 479
-00:31:26,850 --> 00:31:27,989
+00:31:26,850 --> 00:31:27,982
 最后三分钟
 Last call
 
 480
-00:31:27,976 --> 00:31:31,075
+00:31:27,982 --> 00:31:31,075
 苏察哈尔灿一赔十，博达尔多一赔一
 So, one to ten Po, one to one
 
@@ -2504,12 +2504,12 @@ He has been disappointing the audience
 But he has worked very hard
 
 502
-00:32:21,523 --> 00:32:23,037
+00:32:21,523 --> 00:32:23,030
 虾！乜虾呀？
 What?
 
 503
-00:32:23,023 --> 00:32:26,539
+00:32:23,030 --> 00:32:26,539
 洋文嚟嘅！Heart即系有斗心咁解
 He tried very hard
 
@@ -2665,7 +2665,7 @@ So's arrow isn't on the target, Po won this section
 
 534
 00:34:25,838 --> 00:34:28,437
-有冇搅错呀！你老祖！做马咩而家？
+有冇搞错呀！你老祖！做乜啊而家？
 Kidding? Damn you! They are cheating
 
 535
@@ -2705,7 +2705,7 @@ Chan won this race
 
 542
 00:35:50,912 --> 00:35:52,010
-张飞未搣嘛！
+张飞未掰嘛！
 Did you tear the ticket?
 
 543
@@ -2715,7 +2715,7 @@ Not yet
 
 544
 00:36:06,592 --> 00:36:07,982
-有冇搅错？
+有冇搞错？
 Are you kidding?
 
 545
@@ -2870,7 +2870,7 @@ He was poisoned by his own dart
 
 575
 00:38:51,275 --> 00:38:53,918
-家阵佢死咗我个仔咪做梗状元？
+家阵佢死咗我个仔咪做硬状元？
 Well, my son will be the Scholar then
 
 576
@@ -2900,7 +2900,7 @@ Sir, His Majesty wants to appoint the title himself
 
 581
 00:39:21,468 --> 00:39:25,488
-武状元，我想问你几句作为朝庭记录
+武状元，我想问你几句作为朝廷记录
 I want to take some statements from you as record
 
 582
@@ -2960,7 +2960,7 @@ Go ahead
 
 593
 00:40:08,216 --> 00:40:10,235
-微臣查到苏察哈尔灿系唔识字嘅
+微臣查到苏察哈尔灿系不识字的
 I have found that So is illiterate
 
 594
@@ -3019,22 +3019,22 @@ Kill him now
 No! No!
 
 605
-00:40:58,052 --> 00:40:59,485
+00:40:58,052 --> 00:40:59,477
 皇上，作弊那个系奴才！
 Your Majesty, I am the one who cheated
 
 606
-00:40:59,469 --> 00:41:00,403
+00:40:59,477 --> 00:41:00,403
 唔关我个仔事！
 It's none of his business
 
 607
-00:41:00,428 --> 00:41:01,487
+00:41:00,428 --> 00:41:01,479
 要斩就斩我啦！
 Just chop me to death
 
 608
-00:41:01,471 --> 00:41:02,780
+00:41:01,479 --> 00:41:02,780
 唔系！应该斩我！
 No, you should kill me
 
@@ -3270,7 +3270,7 @@ I am sorry
 
 655
 00:43:25,136 --> 00:43:27,740
-我地同你一齐咁耐，蛋都冇生过只
+我地同你一齐咁耐，蛋都冇生过一只
 We haven't given birth to any baby of yours
 
 656
@@ -3664,12 +3664,12 @@ Begging? How dare you, you beggar, you are cheating me!
 Don't you think I am stupid? I am smart, you know?
 
 734
-00:46:10,612 --> 00:46:11,758
+00:46:10,612 --> 00:46:11,748
 喂！两日嘅啦！
 Hey, two days passed,
 
 735
-00:46:11,738 --> 00:46:13,675
+00:46:11,748 --> 00:46:13,675
 天又番风！两肚又空空
 It's cold and I am hungry now
 
@@ -3704,12 +3704,12 @@ Really?
 Yes, if you are willing to date her
 
 742
-00:46:27,126 --> 00:46:29,773
+00:46:27,126 --> 00:46:29,763
 我谂佢会帮我地嘅忙番落广州先
 I think she will help us to go back to Canton
 
 743
-00:46:29,754 --> 00:46:32,233
+00:46:29,763 --> 00:46:32,233
 但系就要你老人家牺牲呀！
 But, you have to sacrifice
 
@@ -4120,7 +4120,7 @@ Don't think so much!
 
 825
 00:51:09,120 --> 00:51:10,184
-虽然你抖咗两个月
+虽然你抖了两个月
 Although you have taken
 
 826
@@ -4130,7 +4130,7 @@ Although you have taken
 
 827
 00:51:12,665 --> 00:51:14,187
-但系未完全好得番晒嘅！
+但系未完全好得返晒嘅！
 your legs and hands have not been totally recovered.
 
 828
@@ -4140,12 +4140,12 @@ Coming
 
 829
 00:51:17,085 --> 00:51:19,816
-阿爹出去揾些嘢番嚟今晚大家食呀吓
+阿爹出去揾些嘢返嚟今晚大家食呀吓
 I am going to beg for food
 
 830
 00:51:20,213 --> 00:51:21,568
-顺便番嚟就煲埋最后呢剂药
+顺便返嚟就煲埋最后呢剂药
 I will make the last herbal tea
 
 831
@@ -4170,7 +4170,7 @@ You are the Scholar…
 
 835
 00:51:32,515 --> 00:51:35,830
-阿灿，原来做乞儿好了Lung嘅！
+阿灿，原来做乞儿好了Long嘅！
 Chan, to be a beggar,
 
 836
@@ -4300,7 +4300,7 @@ It's late
 
 861
 00:53:58,433 --> 00:53:59,956
-阿爹出去揾些嘢番嚟食呀吓
+阿爹出去找些嘢番嚟食呀吓
 I have to search for food
 
 862
@@ -4325,7 +4325,7 @@ Take a rest now
 
 866
 00:54:09,984 --> 00:54:11,508
-我揾到钱番嚟同你睇大夫
+我找到钱番嚟同你睇大夫
 I will take you to the doctor after getting some money
 
 867
@@ -4455,7 +4455,7 @@ I am sorry, I was mistaken
 
 892
 00:56:06,084 --> 00:56:07,651
-小翠，拎些馒头出嚟呀
+小翠，拎些馒头出来呀
 Tracy, take some dumplings out
 
 893
@@ -4710,7 +4710,7 @@ The Scholar is eating dog food
 
 943
 00:59:09,951 --> 00:59:11,143
-嚟啦！我地去食人饭
+嚟啦！我哋去食人饭
 Come on, let's go and eat the man's food
 
 944
@@ -4795,7 +4795,7 @@ Uncle Mok, happy new year!
 
 960
 01:00:03,272 --> 01:00:04,540
-这些礼物送俾你嘅！
+这些礼物送给你 的！
 This is for you
 
 961
@@ -4805,12 +4805,12 @@ Thank you
 
 962
 01:00:08,318 --> 01:00:09,611
-呢度两件衫，一件送俾你！
+呢度两件衫，一件送给你！
 One cloth is for you
 
 963
 01:00:09,669 --> 01:00:10,820
-一件送俾阿灿嘅！
+一件送给阿灿的！
 and the other is for Chan
 
 964
@@ -4870,7 +4870,7 @@ Thank you…
 
 975
 01:00:27,668 --> 01:00:28,685
-莫大叔，我地亲家两免喇！
+莫大叔，我们亲家两免了！
 Uncle Mok, we needn't give red packets to each other
 
 976
@@ -4880,22 +4880,22 @@ How about Chan
 
 977
 01:00:30,187 --> 01:00:34,633
-阿灿？佢由年三十晚训到年初一
+阿灿？他由年三十晚睡到年初一
 Chan?
 
 978
 01:00:34,716 --> 01:00:35,884
-都仲未训醒呀！
+都仲未睡醒呀！
 He is still sleeping
 
 979
 01:00:35,942 --> 01:00:38,093
-佢啱啱至训着咋！唔好嘈醒佢呀
+他刚刚才睡着咋！不要吵醒他呀
 Don't wake him up
 
 980
 01:00:38,886 --> 01:00:40,387
-我整些年糕大家食呀吓！
+我蒸些年糕大家食呀吓！
 I will cook you some new year cakes
 
 981
@@ -4905,12 +4905,12 @@ Let me help you
 
 982
 01:00:45,325 --> 01:00:47,101
-新正头仲训觉呀？
+新正头仲睡觉呀？
 How can he sleep on the 1st day of this year?
 
 983
 01:00:48,411 --> 01:00:50,271
-真系烂呢扶唔上壁！
+真系烂泥扶唔上壁！
 He is useless
 
 984
@@ -5060,7 +5060,7 @@ You have power!
 
 1013
 01:02:14,803 --> 01:02:15,777
-打捶过嚟
+打锤过嚟
 Come on, beat me
 
 1014
@@ -5080,7 +5080,7 @@ Forget it, don't waste time
 
 1017
 01:02:25,312 --> 01:02:26,871
-你不如俾我训吓觉仲好
+你不如俾我睡吓觉仲好
 Why don't you let me sleep?
 
 1018
@@ -5125,7 +5125,7 @@ you should give me a waddy first
 
 1026
 01:03:27,991 --> 01:03:29,634
-抱歉抱歉！蘍，接住喇吓
+抱歉抱歉！喂，接住喇吓
 I am sorry, catch it
 
 1027
@@ -5435,7 +5435,7 @@ I won't care who you are, I just want to stop the conversation.
 
 1088
 01:06:36,170 --> 01:06:38,198
-请你柄埋一二便，唔好阻住我训觉
+请你柄埋一二便，唔好阻住我睡觉
 Please step aside, don't stop me from sleeping.
 
 1089
@@ -5445,7 +5445,7 @@ Damn you!
 
 1090
 01:06:40,033 --> 01:06:42,259
-唔系⋯你话训觉，我想同你一齐之嘛
+唔系⋯你话睡觉，我想同你一齐之嘛
 No… I just want to sleep with you.
 
 1091
@@ -5605,7 +5605,7 @@ Let's chase them
 
 1122
 01:10:30,776 --> 01:10:34,000
-唔驶追喇！皇上就快要出发
+唔驶追喇！皇上就快要出发了
 Stop The Emperor is setting off soon
 
 1123
@@ -5615,7 +5615,7 @@ You killed a woman…
 
 1124
 01:10:36,989 --> 01:10:38,199
-⋯我要将你献俾皇上
+⋯我要将你献给皇上
 You should replace her as a gift to the Emperor!
 
 1125
@@ -5795,7 +5795,7 @@ I won.
 
 1160
 01:15:20,621 --> 01:15:21,831
-你打赢我地有乜嘢用呀？
+你打赢我们有什么用呀？
 What is the use for defeating us?
 
 1161
@@ -5810,7 +5810,7 @@ You are not qualified to be the leader of us.
 
 1163
 01:15:28,368 --> 01:15:29,796
-打狗棍啫！吓话！
+打狗棍者！吓话！
 “Dog Hitting Waddy”?
 
 1164
@@ -6239,7 +6239,7 @@ Sir, you look great!
 
 1251
 01:21:40,817 --> 01:21:42,701
-我谂你应该番回自己嘅岗位！
+我谂你应该返回自己嘅岗位！
 I think you should go back
 
 1252
@@ -6289,7 +6289,7 @@ This bastard wants to see the Emperor,
 
 1261
 01:22:41,412 --> 01:22:44,504
-再俾你见多几次我咪连官都冇得做
+再俾你见多几次，我咪连官都冇得做
 if I let him see His Majesty often, my post will be taken away
 
 1262
@@ -6409,7 +6409,7 @@ I will kill you if you step forward
 
 1285
 01:24:56,660 --> 01:24:59,121
-阿灿，对方咁多人马我地边够打呀？
+阿灿，对方咁多人马我们边够打呀？
 Chan, how can we fight with them?
 
 1286
@@ -6424,7 +6424,7 @@ Where are the rest of our men?
 
 1288
 01:25:02,242 --> 01:25:03,583
-其余嘅人马赶紧嚟嘅啦！
+其余嘅人马赶紧来嘅啦！
 They are coming
 
 1289
@@ -6534,7 +6534,7 @@ They should be killed
 
 1310
 01:26:55,591 --> 01:26:57,472
-射你唔死果个先至可恶呀！
+射你唔死嗰个先至可恶呀！
 The one who didn't kill you should be killed
 
 1311
@@ -6609,12 +6609,12 @@ How is the situation?
 
 1325
 01:28:25,632 --> 01:28:27,671
-托皇上鸿福，风向转咗
+托皇上鸿福，风向转了
 Thanks for Your Majesty's luck, the wind direction changed
 
 1326
 01:28:27,755 --> 01:28:29,219
-毒烟已经吹唔到过嚟
+毒烟已经吹不到过嚟
 The smoke is going in the other direction
 
 1327
@@ -6629,7 +6629,7 @@ They are all dead
 
 1329
 01:28:33,680 --> 01:28:34,556
-拎刀嚟
+拿刀来
 Bring me the sword
 
 1330
@@ -6654,7 +6654,7 @@ Get lost, don't you want to wait for death? Get lost
 
 1334
 01:28:43,726 --> 01:28:44,852
-我叫你地行开呀！
+我叫你们行开呀！
 You are ordered to get away
 
 1335
@@ -6709,7 +6709,7 @@ We stayed one hour for lunch
 
 1345
 01:30:07,966 --> 01:30:09,384
-我小咗个便
+我少咗个便
 I pissed once
 
 1346
@@ -6819,7 +6819,7 @@ Yes, it's all because of you
 
 1367
 01:31:48,303 --> 01:31:50,308
-你出尽力喇？我仲未出力㖞
+你出尽力喇？我仲未出力喔
 Did you generate all your force? I didn't
 
 1368
@@ -6999,7 +6999,7 @@ Master
 
 1403
 01:35:29,746 --> 01:35:31,582
-赵无极嘅人马都俾我地捉住喇
+赵无极嘅人马都俾我哋捉住喇
 Chiu's fellows are all caught by us
 
 1404
@@ -7014,7 +7014,7 @@ Yushang
 
 1406
 01:35:41,923 --> 01:35:43,634
-你记唔记得我地之间仲有个协议嘅！
+你记唔记得我地之间仲有个协议的！
 We have an agreement, do you remember?
 
 1407
@@ -7034,7 +7034,7 @@ But, I can't be the Scholar
 
 1410
 01:35:52,599 --> 01:35:55,520
-系咯！不过我都唔钟意状元嘅
+系咯！不过我都唔钟意状元的
 But I don't like Scholar at all.
 
 1411
