@@ -71,4 +71,4 @@ def process_srt(
         additional_context=additional_context,
         reviewer_kw=reviewer_kw,
     )()
-    return Series.load(result.output_paths["review_timewarp_clean_flatten"])
+    return Series.load(result.output_paths["clean_review_flatten_timewarp"])

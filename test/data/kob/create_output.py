@@ -79,7 +79,7 @@ if "eng" in actions:
         eng_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
         overwrite=False,
-        )
+    )
 if "yue-Hans" in actions:
     process_srt(
         title_root,
@@ -88,7 +88,7 @@ if "yue-Hans" in actions:
         one_end_idx=1421,
         two_end_idx=1461,
         overwrite=False,
-        )
+    )
 if "yue-Hant" in actions:
     process_srt(
         title_root,
@@ -99,16 +99,16 @@ if "yue-Hant" in actions:
         overwrite=False,
     )
 if "yue-Hans_eng" in actions:
-    yue_hans_srt_path = yue_hans_path / "review_timewarp_clean_flatten.srt"
-    eng_srt_path = eng_path / "review_timewarp_clean_flatten.srt"
+    yue_hans_srt_path = yue_hans_path / "clean_review_flatten_timewarp.srt"
+    eng_srt_path = eng_path / "clean_review_flatten_timewarp.srt"
     process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=False)
 if "yue-Hans_transcribe" in actions:
     zh_hant_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
     zho_hans_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
-    simplified_reference_path = yue_hans_path / "review_timewarp_clean_flatten.srt"
-    traditional_reference_path = yue_hant_path / "review_timewarp_clean_flatten.srt"
+    simplified_reference_path = yue_hans_path / "clean_review_flatten_timewarp.srt"
+    traditional_reference_path = yue_hant_path / "clean_review_flatten_timewarp.srt"
     audio_path = yue_hans_transcribe_path / "audio/yue-Hans_audio.wav"
 
     process_yue_hans_transcription(
@@ -161,7 +161,9 @@ if "yue-Hans_diff" in actions:
         / "test_simplified"
         / "transcribe_review_translate_block_review.srt"
     )
-    yue_hans_reference = Series.load(yue_hans_path / "timewarp_clean_flatten.srt")
+    yue_hans_reference = Series.load(
+        yue_hans_path / "clean_review_flatten_timewarp.srt"
+    )
     zho_hans_reference = Series.load(
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )

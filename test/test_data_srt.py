@@ -30,10 +30,10 @@ def test_process_srt_uses_standard_paths_and_returns_flatten(
         title_root_path / "output" / "zho-Hant_ocr" / "fuse_clean_validate_review.srt"
     )
     flatten_path = (
-        title_root_path / "output" / "yue-Hans" / "review_timewarp_clean_flatten.srt"
+        title_root_path / "output" / "yue-Hans" / "clean_review_flatten_timewarp.srt"
     )
     workflow_result = SimpleNamespace(
-        output_paths={"review_timewarp_clean_flatten": flatten_path}
+        output_paths={"clean_review_flatten_timewarp": flatten_path}
     )
     workflow = Mock(return_value=workflow_result)
     workflow_cls = Mock(return_value=workflow)

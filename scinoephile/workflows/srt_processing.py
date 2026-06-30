@@ -124,11 +124,11 @@ class SrtProcessingWorkflow:
         else:
             reference = Series.load(self.reference)
 
-        # Review, timewarp, clean, and flatten
-        review = self._review(source)
-        timewarp = self._timewarp(review, reference)
-        clean = self._clean(timewarp)
-        flatten = self._flatten(clean)
+        # Clean, review, flatten, and timewarp
+        source_clean = self._clean(source)
+        review = self._review(source_clean)
+        flatten = self._flatten(review)
+        timewarp = self._timewarp(flatten, reference)
 
         # English is complete at this point
         if self.language is Language.eng:
@@ -140,7 +140,7 @@ class SrtProcessingWorkflow:
 
         # Yue-Hans needs to be romanized
         if self.language is Language.yue_hans:
-            self._romanize(flatten)
+            self._romanize(timewarp)
             return SrtProcessingResult(
                 infile_path=self.infile_path,
                 output_dir_path=self.output_dir_path,
@@ -148,22 +148,22 @@ class SrtProcessingWorkflow:
             )
 
         # Yue-Hant needs to be simplified, review, and then romanized
-        simplify = self._simplify(flatten)
+        simplify = self._simplify(timewarp)
         simplify_review = self._review(
             simplify,
             prompt_cls=BlockReviewPromptZhoHans,
-            output_name="review_timewarp_clean_flatten_simplify_review",
+            output_name="clean_review_flatten_timewarp_simplify_review",
             test_case_name="simplify_block_review.json",
             log_label=(
-                "Reviewed timewarped cleaned flattened simplified reviewed SRT output"
+                "Cleaned reviewed flattened timewarped simplified reviewed SRT output"
             ),
         )
         self._romanize(
             simplify_review,
-            output_name="review_timewarp_clean_flatten_simplify_review_romanize",
+            output_name="clean_review_flatten_timewarp_simplify_review_romanize",
             log_label=(
-                "Reviewed timewarped cleaned flattened simplified reviewed romanized "
-                "SRT output"
+                "Cleaned reviewed flattened timewarped simplified reviewed "
+                "romanized SRT output"
             ),
         )
         return SrtProcessingResult(
@@ -172,17 +172,20 @@ class SrtProcessingWorkflow:
             output_paths=self.output_paths,
         )
 
-    def _clean(self, series: Series) -> Series:
-        """Load or create reviewed, timewarped, cleaned output.
+    def _clean(
+        self,
+        series: Series,
+    ) -> Series:
+        """Load or create cleaned output.
 
         Arguments:
-            series: reviewed, timewarped subtitle series
+            series: subtitle series to clean
         Returns:
-            reviewed, timewarped, cleaned subtitle series
+            cleaned subtitle series
         """
-        clean_path = self.output_dir_path / "review_timewarp_clean.srt"
+        clean_path = self.output_dir_path / "clean.srt"
         if clean_path.exists() and not self.overwrite:
-            logger.info(f"Reviewed timewarped cleaned SRT output exists: {clean_path}")
+            logger.info(f"Cleaned SRT output exists: {clean_path}")
             clean = Series.load(clean_path)
         else:
             if self.language is Language.eng:
@@ -190,23 +193,20 @@ class SrtProcessingWorkflow:
             else:
                 clean = get_zho_cleaned(series)
             clean.save(clean_path, format_="srt")
-        self.output_paths["review_timewarp_clean"] = clean_path
+        self.output_paths["clean"] = clean_path
         return clean
 
     def _flatten(self, series: Series) -> Series:
-        """Load or create reviewed, timewarped, cleaned, flattened output.
+        """Load or create cleaned, reviewed, flattened output.
 
         Arguments:
-            series: reviewed, timewarped, cleaned subtitle series
+            series: cleaned, reviewed subtitle series
         Returns:
-            reviewed, timewarped, cleaned, flattened subtitle series
+            cleaned, reviewed, flattened subtitle series
         """
-        flatten_path = self.output_dir_path / "review_timewarp_clean_flatten.srt"
+        flatten_path = self.output_dir_path / "clean_review_flatten.srt"
         if flatten_path.exists() and not self.overwrite:
-            logger.info(
-                f"Reviewed timewarped cleaned flattened SRT output exists: "
-                f"{flatten_path}"
-            )
+            logger.info(f"Cleaned reviewed flattened SRT output exists: {flatten_path}")
             flatten = Series.load(flatten_path)
         else:
             if self.language is Language.eng:
@@ -214,7 +214,7 @@ class SrtProcessingWorkflow:
             else:
                 flatten = get_zho_flattened(series)
             flatten.save(flatten_path, format_="srt")
-        self.output_paths["review_timewarp_clean_flatten"] = flatten_path
+        self.output_paths["clean_review_flatten"] = flatten_path
         return flatten
 
     def _review(
@@ -222,9 +222,9 @@ class SrtProcessingWorkflow:
         series: Series,
         *,
         prompt_cls: type[BlockReviewPromptZhoHans] | None = None,
-        output_name: str = "review",
+        output_name: str = "clean_review",
         test_case_name: str = "block_review.json",
-        log_label: str = "Reviewed SRT output",
+        log_label: str = "Cleaned reviewed SRT output",
     ) -> Series:
         """Load or create reviewed output.
 
@@ -279,8 +279,8 @@ class SrtProcessingWorkflow:
         self,
         series: Series,
         *,
-        output_name: str = "review_timewarp_clean_flatten_romanize",
-        log_label: str = "Reviewed timewarped cleaned flattened romanized SRT output",
+        output_name: str = "clean_review_flatten_timewarp_romanize",
+        log_label: str = ("Cleaned reviewed flattened timewarped romanized SRT output"),
     ) -> Series:
         """Load or create romanized output.
 
@@ -310,32 +310,35 @@ class SrtProcessingWorkflow:
             simplified subtitle series
         """
         simplify_path = (
-            self.output_dir_path / "review_timewarp_clean_flatten_simplify.srt"
+            self.output_dir_path / "clean_review_flatten_timewarp_simplify.srt"
         )
         if simplify_path.exists() and not self.overwrite:
             logger.info(
-                f"Reviewed timewarped cleaned flattened simplified SRT output exists: "
-                f"{simplify_path}"
+                f"Cleaned reviewed flattened timewarped simplified SRT "
+                f"output exists: {simplify_path}"
             )
             simplify = Series.load(simplify_path)
         else:
             simplify = get_zho_converted(series, OpenCCConfig.t2s)
             simplify.save(simplify_path, format_="srt")
-        self.output_paths["review_timewarp_clean_flatten_simplify"] = simplify_path
+        self.output_paths["clean_review_flatten_timewarp_simplify"] = simplify_path
         return simplify
 
     def _timewarp(self, series: Series, reference: Series) -> Series:
-        """Load or create reviewed, timewarped output.
+        """Load or create cleaned, reviewed, flattened, timewarped output.
 
         Arguments:
-            series: reviewed source subtitle series
+            series: cleaned, reviewed, flattened source subtitle series
             reference: anchor subtitle series
         Returns:
-            reviewed, timewarped subtitle series
+            cleaned, reviewed, flattened, timewarped subtitle series
         """
-        timewarp_path = self.output_dir_path / "review_timewarp.srt"
+        timewarp_path = self.output_dir_path / "clean_review_flatten_timewarp.srt"
         if timewarp_path.exists() and not self.overwrite:
-            logger.info(f"Reviewed timewarped SRT output exists: {timewarp_path}")
+            logger.info(
+                f"Cleaned reviewed flattened timewarped SRT output exists: "
+                f"{timewarp_path}"
+            )
             timewarp = Series.load(timewarp_path)
         else:
             timewarp = get_series_timewarped(
@@ -347,5 +350,5 @@ class SrtProcessingWorkflow:
                 two_end_idx=self.two_end_idx,
             )
             timewarp.save(timewarp_path, format_="srt")
-        self.output_paths["review_timewarp"] = timewarp_path
+        self.output_paths["clean_review_flatten_timewarp"] = timewarp_path
         return timewarp

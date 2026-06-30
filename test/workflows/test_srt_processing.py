@@ -361,11 +361,11 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
     _write_series(source_path, "source")
     _write_series(reference_path, "reference")
     output_names = [
-        "review",
-        "review_timewarp",
-        "review_timewarp_clean",
-        "review_timewarp_clean_flatten",
-        "review_timewarp_clean_flatten_romanize",
+        "clean",
+        "clean_review",
+        "clean_review_flatten",
+        "clean_review_flatten_timewarp",
+        "clean_review_flatten_timewarp_romanize",
     ]
     for output_name in output_names:
         _write_series(output_dir_path / f"{output_name}.srt", f"existing {output_name}")
@@ -395,8 +395,8 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
         for output_name in output_names
     }
     assert _series_texts(
-        Series.load(output_dir_path / "review_timewarp_clean_flatten_romanize.srt")
-    ) == ["existing review_timewarp_clean_flatten_romanize"]
+        Series.load(output_dir_path / "clean_review_flatten_timewarp_romanize.srt")
+    ) == ["existing clean_review_flatten_timewarp_romanize"]
 
 
 def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
@@ -426,11 +426,11 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     )()
 
     assert pipeline.calls == [
+        "clean",
         "get_reviewer",
         "review",
-        "timewarp",
-        "clean",
         "flatten",
+        "timewarp",
         "romanize",
     ]
     assert pipeline.review_prompt_calls == [BlockReviewPromptZhoHans]
@@ -438,7 +438,10 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
         output_dir_path / "lang" / "yue" / "block_review.json"
     ]
     assert pipeline.review_auto_verify_calls == [True]
-    assert pipeline.timewarp_text_calls == [["yue reviewed 1"]]
+    assert pipeline.cleaned_text_calls == [["source"]]
+    assert pipeline.reviewed_text_calls == [["yue cleaned"]]
+    assert pipeline.flattened_text_calls == [["yue reviewed 1"]]
+    assert pipeline.timewarp_text_calls == [["yue flattened"]]
     assert pipeline.timewarp_kw_calls == [
         {
             "one_start_idx": None,
@@ -447,17 +450,17 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
             "two_end_idx": 9,
         }
     ]
-    assert pipeline.romanized_text_calls == [["yue flattened"]]
+    assert pipeline.romanized_text_calls == [["yue timewarped"]]
     assert pipeline.romanize_append_calls == [True]
     assert result.output_paths == {
-        "review": output_dir_path / "review.srt",
-        "review_timewarp": output_dir_path / "review_timewarp.srt",
-        "review_timewarp_clean": output_dir_path / "review_timewarp_clean.srt",
-        "review_timewarp_clean_flatten": (
-            output_dir_path / "review_timewarp_clean_flatten.srt"
+        "clean": output_dir_path / "clean.srt",
+        "clean_review": output_dir_path / "clean_review.srt",
+        "clean_review_flatten": output_dir_path / "clean_review_flatten.srt",
+        "clean_review_flatten_timewarp": (
+            output_dir_path / "clean_review_flatten_timewarp.srt"
         ),
-        "review_timewarp_clean_flatten_romanize": (
-            output_dir_path / "review_timewarp_clean_flatten_romanize.srt"
+        "clean_review_flatten_timewarp_romanize": (
+            output_dir_path / "clean_review_flatten_timewarp_romanize.srt"
         ),
     }
 
@@ -487,11 +490,11 @@ def test_traditional_yue_srt_workflow_simplifies_reviews_and_romanizes(
     )()
 
     assert pipeline.calls == [
+        "clean",
         "get_reviewer",
         "review",
-        "timewarp",
-        "clean",
         "flatten",
+        "timewarp",
         "simplify",
         "get_reviewer",
         "review",
@@ -506,27 +509,31 @@ def test_traditional_yue_srt_workflow_simplifies_reviews_and_romanizes(
         output_dir_path / "lang" / "yue" / "simplify_block_review.json",
     ]
     assert pipeline.convert_config_calls == [OpenCCConfig.t2s]
-    assert pipeline.reviewed_text_calls == [["source"], ["yue simplified"]]
+    assert pipeline.cleaned_text_calls == [["source"]]
+    assert pipeline.reviewed_text_calls == [["yue cleaned"], ["yue simplified"]]
+    assert pipeline.flattened_text_calls == [["yue reviewed 1"]]
+    assert pipeline.timewarp_text_calls == [["yue flattened"]]
+    assert pipeline.converted_text_calls == [["yue timewarped"]]
     assert pipeline.romanized_text_calls == [["yue reviewed 2"]]
     assert result.output_paths == {
-        "review": output_dir_path / "review.srt",
-        "review_timewarp": output_dir_path / "review_timewarp.srt",
-        "review_timewarp_clean": output_dir_path / "review_timewarp_clean.srt",
-        "review_timewarp_clean_flatten": (
-            output_dir_path / "review_timewarp_clean_flatten.srt"
+        "clean": output_dir_path / "clean.srt",
+        "clean_review": output_dir_path / "clean_review.srt",
+        "clean_review_flatten": output_dir_path / "clean_review_flatten.srt",
+        "clean_review_flatten_timewarp": (
+            output_dir_path / "clean_review_flatten_timewarp.srt"
         ),
-        "review_timewarp_clean_flatten_simplify": (
-            output_dir_path / "review_timewarp_clean_flatten_simplify.srt"
+        "clean_review_flatten_timewarp_simplify": (
+            output_dir_path / "clean_review_flatten_timewarp_simplify.srt"
         ),
-        "review_timewarp_clean_flatten_simplify_review": (
-            output_dir_path / "review_timewarp_clean_flatten_simplify_review.srt"
+        "clean_review_flatten_timewarp_simplify_review": (
+            output_dir_path / "clean_review_flatten_timewarp_simplify_review.srt"
         ),
-        "review_timewarp_clean_flatten_simplify_review_romanize": (
+        "clean_review_flatten_timewarp_simplify_review_romanize": (
             output_dir_path
-            / "review_timewarp_clean_flatten_simplify_review_romanize.srt"
+            / "clean_review_flatten_timewarp_simplify_review_romanize.srt"
         ),
     }
-    assert "review_timewarp_clean_flatten_romanize" not in result.output_paths
+    assert "clean_review_flatten_timewarp_romanize" not in result.output_paths
 
 
 def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
@@ -555,17 +562,17 @@ def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     )()
 
     assert pipeline.calls == [
+        "clean",
         "get_reviewer",
         "review",
-        "timewarp",
-        "clean",
         "flatten",
+        "timewarp",
     ]
     assert pipeline.review_test_case_path_calls == [
         output_dir_path / "lang" / "eng" / "block_review.json"
     ]
     assert pipeline.review_auto_verify_calls == [True]
-    assert pipeline.timewarp_text_calls == [["eng reviewed"]]
+    assert pipeline.timewarp_text_calls == [["eng flattened"]]
     assert pipeline.timewarp_kw_calls == [
         {
             "one_start_idx": None,
@@ -574,16 +581,17 @@ def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
             "two_end_idx": None,
         }
     ]
-    assert pipeline.cleaned_text_calls == [["eng timewarped"]]
-    assert pipeline.flattened_text_calls == [["eng cleaned"]]
+    assert pipeline.cleaned_text_calls == [["source"]]
+    assert pipeline.reviewed_text_calls == [["eng cleaned"]]
+    assert pipeline.flattened_text_calls == [["eng reviewed"]]
     assert result.output_paths == {
-        "review": output_dir_path / "review.srt",
-        "review_timewarp": output_dir_path / "review_timewarp.srt",
-        "review_timewarp_clean": output_dir_path / "review_timewarp_clean.srt",
-        "review_timewarp_clean_flatten": (
-            output_dir_path / "review_timewarp_clean_flatten.srt"
+        "clean": output_dir_path / "clean.srt",
+        "clean_review": output_dir_path / "clean_review.srt",
+        "clean_review_flatten": output_dir_path / "clean_review_flatten.srt",
+        "clean_review_flatten_timewarp": (
+            output_dir_path / "clean_review_flatten_timewarp.srt"
         ),
     }
     assert _series_texts(
-        Series.load(output_dir_path / "review_timewarp_clean_flatten.srt")
-    ) == ["eng flattened"]
+        Series.load(output_dir_path / "clean_review_flatten_timewarp.srt")
+    ) == ["eng timewarped"]
