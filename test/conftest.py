@@ -7,8 +7,8 @@ from __future__ import annotations
 from collections.abc import Generator
 from pathlib import Path
 
-import pytest
 from PIL import Image
+from pytest import fixture
 
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -23,28 +23,28 @@ from test.data.t import *
 from test.data.tmm import *
 
 
-@pytest.fixture
+@fixture
 def database_path() -> Generator[Path]:
     """Provide a temporary SQLite database path."""
-    with get_temp_file_path(".db") as file_path:
-        yield file_path
+    with get_temp_file_path(".db") as temp_path:
+        yield temp_path
 
 
-@pytest.fixture
+@fixture
 def local_data_dir_path() -> Generator[Path]:
-    """Provide a temporary local data directory for tests."""
+    """Provide a temporary canonical local data directory."""
     with get_temp_directory_path() as dir_path:
         yield dir_path
 
 
-@pytest.fixture
+@fixture
 def runtime_data_dir_path() -> Generator[Path]:
-    """Provide a temporary runtime data directory for tests."""
+    """Provide a temporary runtime canonical data directory."""
     with get_temp_directory_path() as dir_path:
         yield dir_path
 
 
-@pytest.fixture
+@fixture
 def tiny_image_series() -> ImageSeries:
     """Small image subtitle series for tests that do not need full fixtures."""
     return ImageSeries(

@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PIL import Image
 from pytest import raises
 
 from scinoephile.image.subtitles import ImageSeries
@@ -14,11 +13,12 @@ from scinoephile.web.ocr_validation.html_index import (
     load_html_entries,
     update_html_entry_text,
 )
+from test.helpers.ocr_validation import make_ocr_html_dir
 
 
 def test_load_html_entries_reads_existing_export(tmp_path: Path):
     """Test loading subtitle entries from existing image subtitle HTML."""
-    html_dir_path = _make_html_dir(tmp_path, text="old<br />text")
+    html_dir_path = make_ocr_html_dir(tmp_path, text="old<br />text")
 
     entries = load_html_entries(html_dir_path)
 
@@ -32,7 +32,7 @@ def test_load_html_entries_reads_existing_export(tmp_path: Path):
 
 def test_update_html_entry_text_rewrites_index_compatibly(tmp_path: Path):
     """Test updating one subtitle text in an OCR image HTML index."""
-    html_dir_path = _make_html_dir(tmp_path, text="old")
+    html_dir_path = make_ocr_html_dir(tmp_path, text="old")
 
     update_html_entry_text(html_dir_path, 0, "new\\Nline")
 
@@ -45,7 +45,7 @@ def test_update_html_entry_text_rewrites_index_compatibly(tmp_path: Path):
 
 def test_update_html_entry_text_does_not_touch_png(tmp_path: Path):
     """Test updating OCR text does not rewrite subtitle image files."""
-    html_dir_path = _make_html_dir(tmp_path, text="old")
+    html_dir_path = make_ocr_html_dir(tmp_path, text="old")
     image_path = html_dir_path / "0001.png"
     original_image_bytes = image_path.read_bytes()
 
@@ -56,7 +56,7 @@ def test_update_html_entry_text_does_not_touch_png(tmp_path: Path):
 
 def test_update_html_entry_text_rejects_negative_index(tmp_path: Path):
     """Test updating OCR text rejects negative subtitle indexes."""
-    html_dir_path = _make_html_dir(tmp_path, text="old")
+    html_dir_path = make_ocr_html_dir(tmp_path, text="old")
 
     with raises(IndexError, match="Subtitle index out of range: -1"):
         update_html_entry_text(html_dir_path, -1, "new")
@@ -64,43 +64,7 @@ def test_update_html_entry_text_rejects_negative_index(tmp_path: Path):
 
 def test_update_html_entry_text_rejects_out_of_range_index(tmp_path: Path):
     """Test updating OCR text rejects out-of-range subtitle indexes."""
-    html_dir_path = _make_html_dir(tmp_path, text="old")
+    html_dir_path = make_ocr_html_dir(tmp_path, text="old")
 
     with raises(IndexError, match="Subtitle index out of range: 1"):
         update_html_entry_text(html_dir_path, 1, "new")
-
-
-def _make_html_dir(tmp_path: Path, *, text: str) -> Path:
-    """Create an OCR image HTML directory.
-
-    Arguments:
-        tmp_path: pytest temporary directory path
-        text: HTML subtitle text content
-    Returns:
-        OCR image HTML directory path
-    """
-    html_dir_path = tmp_path / "image"
-    html_dir_path.mkdir()
-    Image.new("LA", (2, 2), (255, 255)).save(html_dir_path / "0001.png")
-    (html_dir_path / "index.html").write_text(
-        "\n".join(
-            [
-                "<!DOCTYPE html>",
-                "<html>",
-                "<head>",
-                '   <meta charset="UTF-8" />',
-                "   <title>Subtitle images</title>",
-                "</head>",
-                "<body>",
-                "#1:1,000->2,000"
-                "<div style='text-align:center'>"
-                "<img src='0001.png' />"
-                "<br /><div style='font-size:22px; background-color:WhiteSmoke'>"
-                f"{text}</div></div><br /><hr />",
-                "</body>",
-                "</html>",
-            ]
-        ),
-        encoding="utf-8",
-    )
-    return html_dir_path

@@ -241,10 +241,7 @@ def test_session_does_not_write_outfile_on_init(tmp_path: Path):
     assert not outfile_path.exists()
 
 
-def test_session_reports_char_dims_concern(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_session_reports_char_dims_concern(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test unknown character dimensions produce a bbox concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20)])
@@ -304,10 +301,7 @@ def test_accept_char_dims_marks_single_char_done(
     ) == "A,10,20\n"
 
 
-def test_contract_char_dims_reduces_selection(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_contract_char_dims_reduces_selection(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test contracting character dimensions reduces the selected bbox count."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A")
     patch_ocr_validation_bboxes(
@@ -333,10 +327,7 @@ def test_contract_char_dims_reduces_selection(
     assert not row.concern.can_contract
 
 
-def test_session_reports_space_gap_concern(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_session_reports_space_gap_concern(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test ambiguous adjacent-or-space gaps produce a space concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
     patch_ocr_validation_bboxes(
@@ -357,10 +348,58 @@ def test_session_reports_space_gap_concern(
     assert row.concern.tab_prompt_display == "12-20"
 
 
-def test_space_gap_choice_updates_index_text(
+def test_existing_space_gap_does_not_update_cutoffs(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
 ):
+    """Test stale whitespace does not train ambiguous gap cutoffs."""
+    html_dir_path = make_ocr_html_dir(tmp_path, text="A B")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
+    )
+    session = prepared_gap_session(html_dir_path, tmp_path)
+
+    row = session.subtitle_row(0)
+
+    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert isinstance(row.concern, GapConcern)
+    assert row.concern.kind == ConcernKind.SPACE_GAP
+    assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
+
+
+def test_punctuation_ellipsis_gap_reports_existing_space_concern(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test punctuation before ellipsis keeps stale whitespace as a concern."""
+    html_dir_path = make_ocr_html_dir(tmp_path, text="！ ⋯")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(67, 77, 0, 20)],
+    )
+    session = OcrValidationSession.from_dir_path(
+        html_dir_path,
+        cache_dir_path=tmp_path / "cache",
+    )
+    clear_validation_data(session)
+    session.manager.char_dims_by_n[1]["！"] = {(10, 20)}
+    session.manager.char_dims_by_n[1]["⋯"] = {(10, 20)}
+
+    row = session.subtitle_row(0)
+
+    assert row.text == "！ ⋯"
+    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert isinstance(row.concern, GapConcern)
+    assert row.concern.kind == ConcernKind.SPACE_GAP
+    assert row.concern.char_1 == "！"
+    assert row.concern.char_2 == "⋯"
+    assert row.concern.gap == 57
+    assert session.manager.char_pair_gaps[("！", "⋯")] == (8, 89, 90, 200)
+    assert "！ ⋯" in (html_dir_path / "index.html").read_text(encoding="utf-8")
+
+
+def test_space_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test resolving a space gap writes the expected space into index.html."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
     patch_ocr_validation_bboxes(
@@ -482,10 +521,7 @@ def test_fullwidth_latin_gap_uses_default_cutoffs(
     assert session.manager.char_pair_gaps[("你", "Ｋ")] == (22, 89, 90, 200)
 
 
-def test_adjacent_gap_choice_updates_cutoff(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_adjacent_gap_choice_updates_cutoff(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test adjacent choice for an ambiguous gap updates the gap cutoffs."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="白了")
     patch_ocr_validation_bboxes(
@@ -521,9 +557,12 @@ def test_boundary_space_gap_updates_cutoff_without_concern(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
 ):
-    """Test matching space text updates cutoffs without a user concern."""
+    """Test boundary space text updates cutoffs without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A B")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(15, 25, 0, 20)])
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(15, 25, 0, 20)],
+    )
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -539,9 +578,12 @@ def test_boundary_tab_gap_updates_cutoff_without_concern(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
 ):
-    """Test matching tab text updates cutoffs without a user concern."""
+    """Test boundary tab text updates cutoffs without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A    B")
-    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(29, 39, 0, 20)])
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(29, 39, 0, 20)],
+    )
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -623,10 +665,7 @@ def test_known_tab_gap_replaces_newline_without_concern(
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
 
 
-def test_tab_gap_choice_updates_index_text(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-):
+def test_tab_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: MonkeyPatch):
     """Test resolving a tab gap writes expected wide spacing into index.html."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="AB")
     patch_ocr_validation_bboxes(

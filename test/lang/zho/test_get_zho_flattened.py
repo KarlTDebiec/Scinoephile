@@ -9,8 +9,6 @@ from pytest import FixtureRequest, fail, param
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from test.helpers import assert_series_equal, parametrize
 
-# noinspection PyProtectedMember
-
 
 @parametrize(
     ("series_fixture", "expected_fixture"),
