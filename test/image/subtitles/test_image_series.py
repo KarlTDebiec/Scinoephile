@@ -179,10 +179,29 @@ def test_save_html(tiny_image_series: ImageSeries):
         assert html_path.exists()
 
         html_text = html_path.read_text(encoding="utf-8")
+        assert (
+            "<a id='subtitle-number-1' href='#subtitle-number-1'>#1</a>:" in html_text
+        )
         assert "<img src='0001.png' />" in html_text
 
         png_files = sorted(output_path.glob("*.png"))
         assert len(png_files) == len(tiny_image_series)
+
+
+def test_load_html_accepts_subtitle_number_anchor(tiny_image_series: ImageSeries):
+    """Test loading HTML image subtitles with subtitle number anchors.
+
+    Arguments:
+        tiny_image_series: small image subtitle series
+    """
+    with get_temp_directory_path() as output_dir:
+        output_path = output_dir / "image_subtitles"
+        tiny_image_series.save(output_path)
+
+        output = ImageSeries.load(output_path)
+
+        assert len(output) == len(tiny_image_series)
+        assert output.events[0].text == tiny_image_series.events[0].text
 
 
 def test_image_series_save_wraps_output_path_errors(
