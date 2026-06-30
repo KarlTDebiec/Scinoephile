@@ -117,7 +117,7 @@ def test_get_cmn_romanized(
         ("你好　世界", "nǐhǎo  shìjiè"),
     ],
 )
-def test_get_mandarin_text_romanization(text: str, expected: str):
+def test_get_cmn_text_romanized(text: str, expected: str):
     """Test get_cmn_text_romanized.
 
     Arguments:
