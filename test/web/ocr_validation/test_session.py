@@ -417,6 +417,57 @@ def test_space_gap_choice_updates_index_text(tmp_path: Path, monkeypatch: Monkey
     assert "A B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
 
 
+def test_existing_space_gap_does_not_update_cutoffs(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test stale whitespace does not train ambiguous gap cutoffs."""
+    html_dir_path = make_ocr_html_dir(tmp_path, text="A B")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
+    )
+    session = prepared_gap_session(html_dir_path, tmp_path)
+
+    row = session.subtitle_row(0)
+
+    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert isinstance(row.concern, GapConcern)
+    assert row.concern.kind == ConcernKind.SPACE_GAP
+    assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
+
+
+def test_punctuation_ellipsis_gap_reports_existing_space_concern(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test punctuation before ellipsis keeps stale whitespace as a concern."""
+    html_dir_path = make_ocr_html_dir(tmp_path, text="！ ⋯")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(67, 77, 0, 20)],
+    )
+    session = OcrValidationSession.from_dir_path(
+        html_dir_path,
+        cache_dir_path=tmp_path / "cache",
+    )
+    clear_validation_data(session)
+    session.manager.char_dims_by_n[1]["！"] = {(10, 20)}
+    session.manager.char_dims_by_n[1]["⋯"] = {(10, 20)}
+
+    row = session.subtitle_row(0)
+
+    assert row.text == "！ ⋯"
+    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert isinstance(row.concern, GapConcern)
+    assert row.concern.kind == ConcernKind.SPACE_GAP
+    assert row.concern.char_1 == "！"
+    assert row.concern.char_2 == "⋯"
+    assert row.concern.gap == 57
+    assert session.manager.char_pair_gaps[("！", "⋯")] == (8, 89, 90, 200)
+    assert "！ ⋯" in (html_dir_path / "index.html").read_text(encoding="utf-8")
+
+
 def test_known_adjacent_gap_mismatch_updates_text_without_concern(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
