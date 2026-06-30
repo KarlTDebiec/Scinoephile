@@ -378,6 +378,57 @@ def test_space_gap_choice_updates_index_text(
     assert "A B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
 
 
+def test_existing_space_gap_does_not_update_cutoffs(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test stale whitespace does not train ambiguous gap cutoffs."""
+    html_dir_path = make_ocr_html_dir(tmp_path, text="A B")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
+    )
+    session = prepared_gap_session(html_dir_path, tmp_path)
+
+    row = session.subtitle_row(0)
+
+    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert isinstance(row.concern, GapConcern)
+    assert row.concern.kind == ConcernKind.SPACE_GAP
+    assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 20)
+
+
+def test_punctuation_ellipsis_gap_reports_existing_space_concern(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Test punctuation before ellipsis keeps stale whitespace as a concern."""
+    html_dir_path = make_ocr_html_dir(tmp_path, text="！ ⋯")
+    patch_ocr_validation_bboxes(
+        monkeypatch,
+        [Bbox(0, 10, 0, 20), Bbox(67, 77, 0, 20)],
+    )
+    session = OcrValidationSession.from_dir_path(
+        html_dir_path,
+        cache_dir_path=tmp_path / "cache",
+    )
+    clear_validation_data(session)
+    session.manager.char_dims_by_n[1]["！"] = {(10, 20)}
+    session.manager.char_dims_by_n[1]["⋯"] = {(10, 20)}
+
+    row = session.subtitle_row(0)
+
+    assert row.text == "！ ⋯"
+    assert row.status == ValidationStatus.NEEDS_ACTION
+    assert isinstance(row.concern, GapConcern)
+    assert row.concern.kind == ConcernKind.SPACE_GAP
+    assert row.concern.char_1 == "！"
+    assert row.concern.char_2 == "⋯"
+    assert row.concern.gap == 57
+    assert session.manager.char_pair_gaps[("！", "⋯")] == (8, 89, 90, 200)
+    assert "！ ⋯" in (html_dir_path / "index.html").read_text(encoding="utf-8")
+
+
 def test_known_adjacent_gap_mismatch_updates_text_without_concern(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
@@ -466,16 +517,13 @@ def test_adjacent_gap_choice_updates_cutoff(
     assert session.manager.char_pair_gaps[("白", "了")] == (4, 6, 12, 20)
 
 
-def test_matching_space_gap_updates_cutoff_without_concern(
+def test_boundary_space_gap_updates_cutoff_without_concern(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
 ):
     """Test matching space text updates cutoffs without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A B")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(14, 24, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(15, 25, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -483,20 +531,17 @@ def test_matching_space_gap_updates_cutoff_without_concern(
     assert row.text == "A B"
     assert row.status == ValidationStatus.DONE
     assert row.concern is None
-    assert session.manager.char_pair_gaps[("A", "B")] == (2, 4, 12, 20)
+    assert session.manager.char_pair_gaps[("A", "B")] == (2, 5, 12, 20)
     assert "A B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
 
 
-def test_matching_tab_gap_updates_cutoff_without_concern(
+def test_boundary_tab_gap_updates_cutoff_without_concern(
     tmp_path: Path,
     monkeypatch: MonkeyPatch,
 ):
     """Test matching tab text updates cutoffs without a user concern."""
     html_dir_path = make_ocr_html_dir(tmp_path, text="A    B")
-    patch_ocr_validation_bboxes(
-        monkeypatch,
-        [Bbox(0, 10, 0, 20), Bbox(25, 35, 0, 20)],
-    )
+    patch_ocr_validation_bboxes(monkeypatch, [Bbox(0, 10, 0, 20), Bbox(29, 39, 0, 20)])
     session = prepared_gap_session(html_dir_path, tmp_path)
 
     row = session.subtitle_row(0)
@@ -504,7 +549,7 @@ def test_matching_tab_gap_updates_cutoff_without_concern(
     assert row.text == "A    B"
     assert row.status == ValidationStatus.DONE
     assert row.concern is None
-    assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 15)
+    assert session.manager.char_pair_gaps[("A", "B")] == (2, 6, 12, 19)
     assert "A    B" in (html_dir_path / "index.html").read_text(encoding="utf-8")
 
 
