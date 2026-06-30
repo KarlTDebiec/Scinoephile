@@ -130,30 +130,39 @@ class SrtProcessingWorkflow:
         clean = self._clean(timewarp)
         flatten = self._flatten(clean)
 
-        # Romanize written Cantonese outputs
-        if self.language is Language.yue_hans:
-            self._romanize(flatten)
-        elif self.language is Language.yue_hant:
-            simplify = self._simplify(flatten)
-            simplify_review = self._review(
-                simplify,
-                prompt_cls=BlockReviewPromptZhoHans,
-                output_name="review_timewarp_clean_flatten_simplify_review",
-                test_case_name="simplify_block_review.json",
-                log_label=(
-                    "Reviewed timewarped cleaned flattened simplified reviewed "
-                    "SRT output"
-                ),
-            )
-            self._romanize(
-                simplify_review,
-                output_name="review_timewarp_clean_flatten_simplify_review_romanize",
-                log_label=(
-                    "Reviewed timewarped cleaned flattened simplified reviewed "
-                    "romanized SRT output"
-                ),
+        if self.language is Language.eng:
+            return SrtProcessingResult(
+                infile_path=self.infile_path,
+                output_dir_path=self.output_dir_path,
+                output_paths=self.output_paths,
             )
 
+        if self.language is Language.yue_hans:
+            self._romanize(flatten)
+            return SrtProcessingResult(
+                infile_path=self.infile_path,
+                output_dir_path=self.output_dir_path,
+                output_paths=self.output_paths,
+            )
+
+        simplify = self._simplify(flatten)
+        simplify_review = self._review(
+            simplify,
+            prompt_cls=BlockReviewPromptZhoHans,
+            output_name="review_timewarp_clean_flatten_simplify_review",
+            test_case_name="simplify_block_review.json",
+            log_label=(
+                "Reviewed timewarped cleaned flattened simplified reviewed SRT output"
+            ),
+        )
+        self._romanize(
+            simplify_review,
+            output_name="review_timewarp_clean_flatten_simplify_review_romanize",
+            log_label=(
+                "Reviewed timewarped cleaned flattened simplified reviewed romanized "
+                "SRT output"
+            ),
+        )
         return SrtProcessingResult(
             infile_path=self.infile_path,
             output_dir_path=self.output_dir_path,
