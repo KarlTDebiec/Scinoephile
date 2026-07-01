@@ -87,12 +87,11 @@ For SRT datasets, run:
 uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset <dataset> --layout non-ocr
 ```
 
-The script prints Markdown. Redirect it to a temporary file when the table is
-large:
-
-```powershell
-uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset acoptc > local/acoptc-yue-review-dual.md
-```
+The script prints Markdown directly to stdout for review in the console/conversation.
+Do not redirect to an intermediate `.md` file as part of normal runs; keep output
+in the immediate conversation or terminal output so it can be reviewed inline.
+When the table is extremely large, still run this in-console and capture only the
+range/summary as needed.
 
 The script fails before printing the table if any of the yue-Hans input,
 yue-Hans reviewed, final yue-Hans, yue-Hant input, yue-Hant reviewed, or final
@@ -125,7 +124,9 @@ The script output is a draft table. Read that Python script output first.
 Manual review rule:
 
 - The script intentionally leaves `Notes` blank; you **must** fill every row
-  manually using the three content columns in the same row.
+  manually using the three content columns in the same row. As the reviewing
+  agent, you are responsible for writing these notes; do not defer note-taking
+  to any other source.
 - Do not change subtitle numbers, text columns, or summary lines.
 - For each row, infer what happened by reading:
   - `yue-Hans` and `yue-Hant` review cells (initial review edits and asymmetry),
@@ -157,7 +158,8 @@ Output safety rule:
 
 - The script is a data extractor; `Notes` is a manual annotation layer.
 
-Do not leave the `Notes` column blank in user-facing output. See "Manual review rule" above.
+Do not leave the `Notes` column blank in user-facing output. If any note is blank in the raw script output, you must populate it before sending the response.
+If any row is missing a note, you must treat that as a hard stop condition: do not output or send the table until that note is filled.
 
 ## Output
 
@@ -165,9 +167,13 @@ When you run this skill, the script output must be returned directly in your res
 Do not summarize or replace it.
 Include the full Markdown report text (summary + table) exactly as printed, then
 immediately fill in the `Notes` cells in-place for every displayed row.
+`Notes` must never be blank, and you must not use placeholders such as `N/A`, `-`, or whitespace.
 
 Before presenting, ensure every row in the table has a non-empty `Notes` cell.
-If any note is missing in the raw script output, set it manually.
+If any note is missing in the raw script output, set it manually before continuing.
+
+Absolutely do not output any table (or any partial report) with a blank `Notes` cell.  
+If the table contains even one empty note, pause and populate it first; do not proceed to user-facing output.
 
 Start with the script summary, including subtitle counts, the successful timing
 alignment check, changed counts, and image-index links. Then output the table
