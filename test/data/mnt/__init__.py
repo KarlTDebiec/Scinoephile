@@ -95,7 +95,7 @@ def mnt_jpn_eng() -> Series:
 @fixture
 def mnt_yue_zho_hant() -> Series:
     """MNT yue audio track yue-Hant subtitles."""
-    Series.load(input_dir / "yue_zho-Hant.srt")
+    return Series.load(input_dir / "yue_zho-Hant.srt")
 
 
 @fixture
