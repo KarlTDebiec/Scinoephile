@@ -32,15 +32,6 @@ _SERIES_LABELS = {
 class AuditPaths:
     """Paths and validation rules for one Yue dual-review audit."""
 
-    layout: str
-    """Input/output layout name."""
-
-    hans_dir_path: Path
-    """Yue-Hans output directory."""
-
-    hant_dir_path: Path
-    """Yue-Hant output directory."""
-
     hans_original_path: Path
     """Yue-Hans review input path."""
 
@@ -61,9 +52,6 @@ class AuditPaths:
 
     timing_groups: tuple[tuple[str, ...], ...]
     """Labels to validate for matching timings."""
-
-    context_lines: tuple[str, ...]
-    """Extra summary context lines."""
 
 
 @dataclass(frozen=True)
@@ -136,11 +124,7 @@ def audit_dataset(
 
     return format_markdown(
         dataset_name=dataset_name,
-        layout=paths.layout,
-        context_lines=(
-            *_get_index_range_context_lines(first_index, last_index),
-            *paths.context_lines,
-        ),
+        context_lines=_get_index_range_context_lines(first_index, last_index),
         series=series,
         hans_changes=_get_review_changes(
             series["hans_original"],
@@ -160,7 +144,6 @@ def audit_dataset(
 def format_markdown(
     *,
     dataset_name: str,
-    layout: str,
     context_lines: Sequence[str],
     series: Mapping[str, Mapping[int, SrtEvent]],
     hans_changes: Mapping[int, ReviewChange],
@@ -171,7 +154,6 @@ def format_markdown(
 
     Arguments:
         dataset_name: dataset name
-        layout: input/output layout name
         context_lines: extra summary context lines
         series: parsed SRT events keyed by internal series name
         hans_changes: yue-Hans review changes by subtitle number
@@ -180,10 +162,8 @@ def format_markdown(
     Returns:
         Markdown report
     """
-    hans_original = series["hans_original"]
     hans_review = series["hans_review"]
     hans_final = series["hans_final"]
-    hant_original = series["hant_original"]
     hant_review = series["hant_review"]
     hant_final = series["hant_final"]
     changed_numbers = sorted(
@@ -234,16 +214,9 @@ def format_markdown(
         "",
         "## Summary",
         "",
-        f"- yue-Hans source/review count: {len(hans_original)} -> {len(hans_review)}",
-        f"- yue-Hant source/review count: {len(hant_original)} -> {len(hant_review)}",
-        f"- final yue-Hans / simplified yue-Hant count: "
-        f"{len(hans_final)} / {len(hant_final)}",
         f"- yue-Hans review edits: {len(hans_changes)}",
         f"- yue-Hant review edits: {len(hant_changes)}",
         f"- final text differences: {len(final_differences)}",
-        f"- layout: {layout}",
-        "- subtitle counts: aligned across all audited SRT files",
-        "- timings: aligned within comparable source/review and final groups",
         f"- table rows: {len(row_lines)}",
         *summary_context_lines,
         "",
@@ -415,9 +388,6 @@ def _get_audit_paths(
             "yue-Hant final simplified review",
         )
         return AuditPaths(
-            layout="ocr",
-            hans_dir_path=hans_dir_path,
-            hant_dir_path=hant_dir_path,
             hans_original_path=hans_dir_path / "fuse_clean_validate.srt",
             hans_review_path=hans_dir_path / "fuse_clean_validate_review.srt",
             hans_final_path=hans_dir_path / "fuse_clean_validate_review_flatten.srt",
@@ -427,19 +397,12 @@ def _get_audit_paths(
                 hant_dir_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
             ),
             timing_groups=(labels,),
-            context_lines=(
-                f"- yue-Hans image index: {hans_dir_path / 'image' / 'index.html'}",
-                f"- yue-Hant image index: {hant_dir_path / 'image' / 'index.html'}",
-            ),
         )
 
     if layout == "non-ocr":
         hans_dir_path = output_dir_path / "yue-Hans"
         hant_dir_path = output_dir_path / "yue-Hant"
         return AuditPaths(
-            layout="non-ocr",
-            hans_dir_path=hans_dir_path,
-            hant_dir_path=hant_dir_path,
             hans_original_path=input_dir_path / "yue-Hans.srt",
             hans_review_path=hans_dir_path / "clean_review.srt",
             hans_final_path=hans_dir_path / "clean_review_flatten_timewarp.srt",
@@ -451,11 +414,6 @@ def _get_audit_paths(
                 ("yue-Hans source", "yue-Hans review"),
                 ("yue-Hant source", "yue-Hant review"),
                 ("yue-Hans final", "yue-Hant final simplified review"),
-            ),
-            context_lines=(
-                "- image indexes: not applicable; source subtitles are not OCR",
-                f"- yue-Hans output directory: {hans_dir_path}",
-                f"- yue-Hant output directory: {hant_dir_path}",
             ),
         )
 

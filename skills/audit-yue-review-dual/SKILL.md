@@ -175,9 +175,9 @@ If any note is missing in the raw script output, set it manually before continui
 Absolutely do not output any table (or any partial report) with a blank `Notes` cell.  
 If the table contains even one empty note, pause and populate it first; do not proceed to user-facing output.
 
-Start with the script summary, including subtitle counts, the successful timing
-alignment check, changed counts, and image-index links. Then output the table
-with the `Notes` column filled in.
+Start with the script summary, including changed counts, table rows, and the
+subtitle range when present. Then output the table with the `Notes` column
+filled in.
 
 The table columns are:
 
