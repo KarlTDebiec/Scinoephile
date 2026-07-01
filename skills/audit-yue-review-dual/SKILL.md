@@ -130,13 +130,18 @@ Manual review rule:
 - For each row, infer what happened by reading:
   - `yue-Hans` and `yue-Hant` review cells (initial review edits and asymmetry),
   - `yue-Hans vs Hant->Hans` (post-review final alignment or mismatch).
-- Then write a plain, specific note describing that behavior.
-
-Write one short sentence per row that includes your judgement from the three content columns.
-
-Use a concise, judgment-first form and append a minimal change hint only if needed.
-Avoid repeating full subtitle text unless ambiguity requires it.
-
+- Then write a concise, specific note describing that behavior:
+  - write your judgment on the change; do not restate the change
+  - one sentence only
+  - do not repeat the subtitle text
+  - for clean, aligned rows, prefer ultra-short judgment notes
+  - If no change was made to `yue-Hant` other than simplification, do state so unless there is some concern.
+  - If final output is aligned, do not state so.
+  - be as concise as possible; the fewer words the better, here are some examples:
+    - `Both changed 喇 to 啦.`
+    - `Hans changed 㖞 to 喎`
+    - `Hant removed 係/是, creating a final inconsistency`
+    - `Hant innapropriately Mandarinized to 過來.`
 Important review-quality rule:
 
 - Never add or keep Mandarinization changes in any yue review path. In particular, do not replace Cantonese particles and short forms with Mandarin-style equivalents (e.g. `咗 -> 了`) in `simplify_block_review.json` or other review files. If such a change exists, remove that `xiugai_*` entry and keep the Cantonese wording so the Cantonese review and finalization stay dialect-consistent.
@@ -152,8 +157,7 @@ Output safety rule:
 
 - The script is a data extractor; `Notes` is a manual annotation layer.
 
-Do not leave the `Notes` column blank in user-facing output. If a displayed row
-looks clean and finals align, write `consistent`.
+Do not leave the `Notes` column blank in user-facing output. See "Manual review rule" above.
 
 ## Output
 
