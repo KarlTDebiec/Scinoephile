@@ -33,7 +33,7 @@ class GzzjDictionaryService:
 
         Arguments:
             database_path: SQLite database path
-            source_json_path: path to a manually downloaded `B01_資料.json` file
+            source_json_path: path to a manually downloaded `B01_data.json` file
             auto_build_missing: build GZZJ data automatically if missing
         """
         if database_path is None:

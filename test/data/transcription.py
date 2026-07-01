@@ -56,7 +56,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     translator_kw: dict[str, Any] | None = None,
     block_reviewer_kw: dict[str, Any] | None = None,
 ) -> Series:
-    """Process 简体粤文 transcription through review/translation stages.
+    """Process yue-Hans transcription through review/translation stages.
 
     Stages:
     - Audio staging from a Zho Hans reference series
