@@ -53,13 +53,13 @@ yue_hans_transcribe_path = output_path / "yue-Hans_transcribe"
 actions = {
     # "eng_ocr",
     # "zho-Hant_ocr",
-    "eng",
-    "yue-Hans",
-    "yue-Hant",
+    # "eng",
+    # "yue-Hans",
+    # "yue-Hant",
     # "zho-Hans_eng",
-    "yue-Hans_eng",
+    # "yue-Hans_eng",
     # "yue-Hans_transcribe",
-    # "yue-Hans_diff",
+    "yue-Hans_diff",
 }
 
 if "eng_ocr" in actions:

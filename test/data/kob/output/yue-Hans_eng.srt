@@ -935,7 +935,7 @@ How much does he have? Is he qualified to be bullied by you?
 
 188
 00:10:58,125 --> 00:10:59,128
-老爷！系佢地呀
+老爷！系佢哋呀
 Master, they are the ones
 
 189
@@ -1255,7 +1255,7 @@ Why do you come here? Where is Mister Chiu?
 
 252
 00:13:52,607 --> 00:13:53,989
-那个赵大爷粒定风珠
+嗰个赵大爷粒定风珠
 The pearl of Mr. Chiu is broken
 
 253
@@ -1570,7 +1570,7 @@ OK, but you'd give me some time to consider it.
 
 315
 00:16:31,120 --> 00:16:33,670
-无问题，我就系出面花园等你答覆
+无问题，我就系出面花园等你答复
 No problem, I will wait for your answer outside the garden
 
 316
@@ -1615,7 +1615,7 @@ Shit, we are late
 
 324
 00:18:33,016 --> 00:18:34,650
-一日都系那个旗下仔累事！
+一日都系嗰个旗下仔累事！
 That Manchurian should be blamed
 
 325
@@ -1925,7 +1925,7 @@ Sure
 
 386
 00:21:26,875 --> 00:21:28,592
-留番件衫着下好喎
+留番件衫著下好喎
 Please leave me a cloth
 
 387
@@ -2320,7 +2320,7 @@ My son is keen on martial arts.
 
 465
 00:27:16,969 --> 00:27:20,315
-那二百万两系咪可以着量减些呀？
+那二百万两系咪可以酌量减些呀？
 So, can I deduct some from the payment of 2 million taels?
 
 466
@@ -2425,7 +2425,7 @@ Look, Po entered the final race
 
 486
 00:31:47,743 --> 00:31:50,592
-全部满分进级嘅，咁又点同呢？
+全部满分晋级嘅，咁又点同呢？
 with full marks, it differs
 
 487
@@ -2435,7 +2435,7 @@ It's an examination of the Scholar of Martial Arts, not king of coolie
 
 488
 00:31:54,207 --> 00:31:55,804
-举重咁叻嚟托杉咩！
+举重咁叻嚟托衫咩！
 It's meaningless to be the champion of weight lifting
 
 489
@@ -2465,7 +2465,7 @@ I feel strange about the rate too
 
 494
 00:32:03,924 --> 00:32:07,815
-那个博达尔多外型俊朗！浑身有力
+嗰个博达尔多外型俊朗！浑身有力
 Po is smart and strong
 
 495
@@ -2585,7 +2585,7 @@ Why don't you bet?
 
 518
 00:32:53,592 --> 00:32:55,857
-我落注嚟做咩？那个我个仔嚟嘅嘛
+我落注嚟做咩？嗰个我个仔嚟嘅嘛
 Why should I bet? He is my son
 
 519
@@ -2620,7 +2620,7 @@ Please take a seat
 
 525
 00:33:19,239 --> 00:33:20,294
-僧格林参？
+僧格林沁？
 Seng-ko-lin-ch'in?!
 
 526
@@ -2705,7 +2705,7 @@ Chan won this race
 
 542
 00:35:50,912 --> 00:35:52,010
-张飞未掰嘛！
+张飞未搣嘛！
 Did you tear the ticket?
 
 543
@@ -2935,7 +2935,7 @@ Thank you
 
 588
 00:39:45,072 --> 00:39:47,840
-僧格林参，今科武状元系边个？
+僧格林沁，今科武状元系边个？
 Who is the new Scholar of Martial Arts?
 
 589
@@ -2960,7 +2960,7 @@ Go ahead
 
 593
 00:40:08,216 --> 00:40:10,235
-微臣查到苏察哈尔灿系不识字的
+微臣查到苏察哈尔灿系唔识字嘅
 I have found that So is illiterate
 
 594
@@ -3020,7 +3020,7 @@ No! No!
 
 605
 00:40:58,052 --> 00:40:59,477
-皇上，作弊那个系奴才！
+皇上，作弊嗰个系奴才！
 Your Majesty, I am the one who cheated
 
 606
@@ -3205,7 +3205,7 @@ I am wandering…
 
 642
 00:42:28,754 --> 00:42:31,148
-那个我阿爹神主牌嚟嘅喎，都要抄呀
+嗰个我阿爹神主牌嚟嘅喎，都要抄呀
 That's the spirit tablet of my dad, do you want to take it too?
 
 643
@@ -3270,7 +3270,7 @@ I am sorry
 
 655
 00:43:25,136 --> 00:43:27,740
-我哋同你一齐咁耐，蛋都冇生过一只
+我哋同你一齐咁耐，蛋都冇生过只
 We haven't given birth to any baby of yours
 
 656
@@ -3355,7 +3355,7 @@ How is it?
 
 672
 00:43:59,166 --> 00:44:00,769
-点解佢地俾人抄家都咁开心嘅？
+点解佢哋俾人抄家都咁开心嘅？
 Why are they so happy?
 
 673
@@ -3395,7 +3395,7 @@ Keep on laughing
 
 680
 00:44:16,097 --> 00:44:18,325
-阿仔，正话你有冇留番一张半张银票
+阿仔，头先你有冇留番一张半张银票
 Son
 
 681
@@ -3430,22 +3430,22 @@ please give money to us
 
 687
 00:44:36,531 --> 00:44:38,343
-阿仔！越睇那个嘢越似阿爹！
+阿仔！越睇嗰个嘢越似阿爹！
 Son, that guy is like dad
 
 688
 00:44:38,992 --> 00:44:40,095
-你指唱紧歌那个？
+你指唱紧歌嗰个？
 You mean the one who sings?
 
 689
 00:44:40,451 --> 00:44:42,388
-唔系，俾紧钱那个呀
+唔系，俾紧钱嗰个呀
 No, the one who pays
 
 690
 00:44:42,412 --> 00:44:44,890
-个款仲折堕过唱歌那个
+个款仲折堕过唱歌嗰个
 He is more disgusting than the one who sings
 
 691
@@ -3540,7 +3540,7 @@ Let me take a seat,
 
 709
 00:45:22,488 --> 00:45:23,966
-话唔定今晚这餐都有着落呢！
+话唔定今晚这餐都有著落呢！
 maybe we can have something to eat tonight
 
 710
@@ -3740,7 +3740,7 @@ I have arranged it
 
 749
 00:46:40,763 --> 00:46:43,284
-就系对面灯笼下面着红衫那个就系啦
+就系对面灯笼下面着红衫嗰个就系啦
 The one wearing the red dress who stands under the lantern, that's her
 
 750

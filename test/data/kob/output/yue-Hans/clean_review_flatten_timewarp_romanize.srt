@@ -935,7 +935,7 @@ kéuih yáuh géi ngàhnsāngā àh? kéuih gau m̀h gau jīgaak àh
 
 188
 00:10:58,170 --> 00:10:59,128
-老爷！系佢地呀
+老爷！系佢哋呀
 lóuhyèh! haih kéuihdeih àh
 
 189
@@ -1255,8 +1255,8 @@ dímwuih haih néih ge? jiuhdaaihyèh nē?
 
 252
 00:13:52,655 --> 00:13:53,989
-那个赵大爷粒定风珠
-náhgo jiuhdaaihyèhlāpdihngfūngjyū
+嗰个赵大爷粒定风珠
+gogo jiuhdaaihyèhlāpdihngfūngjyū
 
 253
 00:13:54,073 --> 00:13:56,074
@@ -1570,7 +1570,7 @@ hóu! gam dōu yīnggōi béi sē sìhgaan ngóh háauleuih haak
 
 315
 00:16:31,125 --> 00:16:33,670
-无问题，我就系出面花园等你答覆
+无问题，我就系出面花园等你答复
 mòuh mahntàih, ngóh jauh haih chēutmihn fāyùhn dáng néih daapfūk
 
 316
@@ -1615,8 +1615,8 @@ baih! ngóhdeih làih chìh jó
 
 324
 00:18:33,065 --> 00:18:34,650
-一日都系那个旗下仔累事！
-yātyaht dōu haih náhgo kèihhahjái leuihsih!
+一日都系嗰个旗下仔累事！
+yātyaht dōu haih gogo kèihhahjái leuihsih!
 
 325
 00:18:41,656 --> 00:18:43,491
@@ -1925,8 +1925,8 @@ gánghaihlā!
 
 386
 00:21:26,924 --> 00:21:28,592
-留番件衫着下好喎
-làuhfāangihn sāam jeuhkhah hóu wo
+留番件衫著下好喎
+làuhfāangihnsāamjyuhah hóu wo
 
 387
 00:21:28,676 --> 00:21:30,427
@@ -2320,8 +2320,8 @@ ngóh go jái sahpbaat būnmóuhngaih gihngihn gāaijīng
 
 465
 00:27:17,021 --> 00:27:20,315
-那二百万两系咪可以着量减些呀？
-náh yihbaak maahnléuhng haih mī hóyíh jeuhkleuhng gáamsē àh?
+那二百万两系咪可以酌量减些呀？
+náh yihbaak maahnléuhng haih mī hóyíh jeukléung gáamsē àh?
 
 466
 00:27:20,398 --> 00:27:22,859
@@ -2425,8 +2425,8 @@ néih tái haak, yàhndeih bok daahtyíhdō
 
 486
 00:31:47,797 --> 00:31:50,592
-全部满分进级嘅，咁又点同呢？
-chyùhnbouh múhnfān jeunkāp ge, gam yauh dím tùhng nē?
+全部满分晋级嘅，咁又点同呢？
+chyùhnbouh múhnfānjeunkāp ge, gam yauh dím tùhng nē?
 
 487
 00:31:50,675 --> 00:31:53,803
@@ -2435,8 +2435,8 @@ gāján háau johngyùhn wo! néih gú jouhgūlēiàh!
 
 488
 00:31:54,220 --> 00:31:55,804
-举重咁叻嚟托杉咩！
-géui juhng gam lēklàihtokchaammē!
+举重咁叻嚟托衫咩！
+géui juhng gam lēklàihtoksāam mē!
 
 489
 00:31:55,888 --> 00:31:57,347
@@ -2465,8 +2465,8 @@ dōu gokdāk go pùihsēutyáuhsē gúgwaai
 
 494
 00:32:03,978 --> 00:32:07,815
-那个博达尔多外型俊朗！浑身有力
-náhgo bokdaahtyíhdō ngoihyìhngjeunlóhng! wàhnsān yáuhlihk
+嗰个博达尔多外型俊朗！浑身有力
+gogo bokdaahtyíhdō ngoihyìhngjeunlóhng! wàhnsān yáuhlihk
 
 495
 00:32:07,899 --> 00:32:10,567
@@ -2585,8 +2585,8 @@ dímgáai néih m̀h lohk jyu?
 
 518
 00:32:53,647 --> 00:32:55,857
-我落注嚟做咩？那个我个仔嚟嘅嘛
-ngóh lohkjyulàih jouh mē? náhgo ngóh go jáilàih ge ma
+我落注嚟做咩？嗰个我个仔嚟嘅嘛
+ngóh lohkjyulàih jouh mē? gogo ngóh go jáilàih ge ma
 
 519
 00:32:57,399 --> 00:33:00,402
@@ -2620,8 +2620,8 @@ chíng chóh!
 
 525
 00:33:19,252 --> 00:33:20,294
-僧格林参？
-jānggaaklàhmchāam?
+僧格林沁？
+jānggaaklàhmsam?
 
 526
 00:33:20,837 --> 00:33:21,712
@@ -2705,8 +2705,8 @@ jēuifāanguhk! jēuifāanguhk!
 
 542
 00:35:50,968 --> 00:35:52,010
-张飞未掰嘛！
-jēung fēi meih maakma!
+张飞未搣嘛！
+jēung fēi meih mīt ma!
 
 543
 00:35:52,094 --> 00:35:53,386
@@ -2935,8 +2935,8 @@ jehwòhngseuhng
 
 588
 00:39:45,129 --> 00:39:47,840
-僧格林参，今科武状元系边个？
-jānggaaklàhmchāam, gāmfōmóuh johngyùhn haih bīngo?
+僧格林沁，今科武状元系边个？
+jānggaaklàhmsam, gāmfōmóuh johngyùhn haih bīngo?
 
 589
 00:39:50,092 --> 00:39:53,136
@@ -2960,8 +2960,8 @@ jéunjau!
 
 593
 00:40:08,233 --> 00:40:10,235
-微臣查到苏察哈尔灿系不识字的
-mèihsàhnchàhdou sōuchaathāyíhchaanhaihbātsīkjihdīk
+微臣查到苏察哈尔灿系唔识字嘅
+mèihsàhnchàhdou sōuchaathāyíhchaanhaih m̀h sīk jih ge
 
 594
 00:40:10,735 --> 00:40:12,278
@@ -3020,8 +3020,8 @@ m̀hhóu! m̀hhóu àh!
 
 605
 00:40:58,110 --> 00:40:59,485
-皇上，作弊那个系奴才！
-wòhngseuhng, jokbaih náhgo haihnòuhchòih!
+皇上，作弊嗰个系奴才！
+wòhngseuhng, jokbaih gogo haihnòuhchòih!
 
 606
 00:40:59,569 --> 00:41:00,403
@@ -3205,8 +3205,8 @@ sānyùh láuhséuih…
 
 642
 00:42:28,814 --> 00:42:31,148
-那个我阿爹神主牌嚟嘅喎，都要抄呀
-náhgo ngóh ōdēsàhnjyúpàaihlàih ge wo, dōu yiu chāau àh
+嗰个我阿爹神主牌嚟嘅喎，都要抄呀
+gogo ngóh ōdēsàhnjyúpàaihlàih ge wo, dōu yiu chāau àh
 
 643
 00:42:33,150 --> 00:42:35,069
@@ -3270,8 +3270,8 @@ deuim̀hjyuh àh lóuhyèh
 
 655
 00:43:25,195 --> 00:43:27,740
-我哋同你一齐咁耐，蛋都冇生过一只
-ngóhdeih tùhng néih yātchàih gam noih, dáan dōu móuh sānggwo yāt jek
+我哋同你一齐咁耐，蛋都冇生过只
+ngóhdeih tùhng néih yātchàih gam noih, dáan dōu móuh sānggwo jí
 
 656
 00:43:27,823 --> 00:43:29,116
@@ -3355,7 +3355,7 @@ dím àh?
 
 672
 00:43:59,184 --> 00:44:00,769
-点解佢地俾人抄家都咁开心嘅？
+点解佢哋俾人抄家都咁开心嘅？
 dímgáai kéuihdeih béi yàhn chāaugā dōu gam hōisām ge?
 
 673
@@ -3395,8 +3395,8 @@ gaijuhk siu!
 
 680
 00:44:16,157 --> 00:44:18,325
-阿仔，正话你有冇留番一张半张银票
-ajái, jingwah néih yáuhmóuh làuhfāanyātjēungbunjēung ngàhnpiu
+阿仔，头先你有冇留番一张半张银票
+ajái, tàuhsīn néih yáuhmóuh làuhfāanyātjēungbunjēung ngàhnpiu
 
 681
 00:44:18,408 --> 00:44:19,659
@@ -3430,23 +3430,23 @@ hólìhn haak ngóh nē go hātyìhjáilā…
 
 687
 00:44:36,591 --> 00:44:38,343
-阿仔！越睇那个嘢越似阿爹！
-ajái! yuht tái náhgo yéh yuhtchíh adē!
+阿仔！越睇嗰个嘢越似阿爹！
+ajái! yuht tái gogo yéh yuhtchíh adē!
 
 688
 00:44:39,010 --> 00:44:40,095
-你指唱紧歌那个？
-néih jícheunggángō náhgo?
+你指唱紧歌嗰个？
+néih jícheunggángō gogo?
 
 689
 00:44:40,512 --> 00:44:42,388
-唔系，俾紧钱那个呀
-m̀hhaih, béi gánchín náhgo àh
+唔系，俾紧钱嗰个呀
+m̀hhaih, béi gánchín gogo àh
 
 690
 00:44:42,471 --> 00:44:44,890
-个款仲折堕过唱歌那个
-go fúnjuhng jitdoh gwo cheunggō náhgo
+个款仲折堕过唱歌嗰个
+go fúnjuhng jitdoh gwo cheunggō gogo
 
 691
 00:44:44,973 --> 00:44:47,559
@@ -3540,8 +3540,8 @@ m̀h ngāam ōdēgwonáhbīn chóhhaak
 
 709
 00:45:22,506 --> 00:45:23,966
-话唔定今晚这餐都有着落呢！
-wah m̀hdihng gāmmáahn jéchāan dōu yáuh jeuhklohk nē!
+话唔定今晚这餐都有著落呢！
+wah m̀hdihng gāmmáahn jéchāan dōu yáuhjyu lohk nē!
 
 710
 00:45:24,049 --> 00:45:25,467
@@ -3740,8 +3740,8 @@ yātjóu tùhng néih ōnpàaih hóu la!
 
 749
 00:46:40,783 --> 00:46:43,284
-就系对面灯笼下面着红衫那个就系啦
-jauh haih deuimihn dānglùhnghahmihn jeuhkhùhngsāam náhgo jauh haih lā
+就系对面灯笼下面着红衫嗰个就系啦
+jauh haih deuimihn dānglùhnghahmihn jeuhkhùhngsāam gogo jauh haih lā
 
 750
 00:46:49,582 --> 00:46:50,583
