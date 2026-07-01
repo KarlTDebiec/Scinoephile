@@ -70,7 +70,7 @@ Good boy, but, don't be proud! Got me?
 
 15
 00:03:11,222 --> 00:03:13,849
-爹阿爹，我地苏察哈尔家
+爹阿爹，我哋苏察哈尔家
 Dad, since the first emperor of the Ching Dynasty,
 
 16
@@ -1145,7 +1145,7 @@ None of your business
 
 230
 00:12:32,372 --> 00:12:33,419
-我地走
+我哋走
 Let's go
 
 231
@@ -1245,7 +1245,7 @@ Get ready…
 
 250
 00:13:48,980 --> 00:13:50,486
-如霜姑娘我地又见面喇
+如霜姑娘我哋又见面喇
 Miss Yushang, we meet again
 
 251
@@ -1555,7 +1555,7 @@ Do it first and then look for me
 
 312
 00:16:20,569 --> 00:16:23,535
-既然系咁，我谂我地要先定婚期
+既然系咁，我谂我哋要先定婚期
 Well, I think we should fix a date for our wedding
 
 313
@@ -1610,7 +1610,7 @@ Let's go!
 
 323
 00:18:29,221 --> 00:18:31,688
-弊！我们来迟了
+弊！我哋嚟迟咗
 Shit, we are late
 
 324
@@ -1875,7 +1875,7 @@ I am coming
 
 376
 00:21:06,444 --> 00:21:08,951
-少爷上京赴考，我地冚家搬
+少爷上京赴考，我哋冚家搬
 Young master is going for the examination, let's move to Peking too
 
 377
@@ -3270,7 +3270,7 @@ I am sorry
 
 655
 00:43:25,136 --> 00:43:27,740
-我地同你一齐咁耐，蛋都冇生过一只
+我哋同你一齐咁耐，蛋都冇生过一只
 We haven't given birth to any baby of yours
 
 656
@@ -3310,12 +3310,12 @@ Why are you standing here? Go now
 
 663
 00:43:39,482 --> 00:43:41,025
-老爷，我地走喇
+老爷，我哋走喇
 Master, we are leaving
 
 664
 00:43:41,108 --> 00:43:42,169
-我地走喇，老爷
+我哋走喇，老爷
 We are leaving, master
 
 665
@@ -3475,12 +3475,12 @@ What's wrong with you?
 
 696
 00:44:54,547 --> 00:44:55,900
-皇帝叫我地做乞儿！
+皇帝叫我哋做乞儿！
 The emperor wants us to be beggars
 
 697
 00:44:55,923 --> 00:44:57,275
-我地真系做乞儿咩你估！
+我哋真系做乞儿咩你估！
 Do you think we'd be beggars?
 
 698
@@ -3515,7 +3515,7 @@ Buy something to eat, you beggars
 
 704
 00:45:09,059 --> 00:45:11,103
-你真系当正我地系乞儿呀？
+你真系当正我哋系乞儿呀？
 You treat us as beggars?
 
 705
@@ -3650,7 +3650,7 @@ Robbery…
 
 731
 00:46:01,730 --> 00:46:03,500
-唔系抢！我地乞啫！
+唔系抢！我哋乞啫！
 I am not robbing, I am begging
 
 732
@@ -3705,7 +3705,7 @@ Yes, if you are willing to date her
 
 742
 00:46:27,126 --> 00:46:29,763
-我谂佢会帮我地嘅忙番落广州先
+我谂佢会帮我哋嘅忙番落广州先
 I think she will help us to go back to Canton
 
 743
@@ -3730,7 +3730,7 @@ I know it's very hard for you
 
 747
 00:46:37,928 --> 00:46:39,114
-你唔好讲咁多啦！我地去见佢啦！
+你唔好讲咁多啦！我哋去见佢啦！
 Cut the crap, let's go and find her
 
 748
@@ -3800,7 +3800,7 @@ No show here
 
 761
 00:47:31,182 --> 00:47:33,120
-兄弟，我地净系想筹些水脚
+兄弟，我哋净系想筹些水脚
 We just want to earn some money
 
 762
@@ -3995,7 +3995,7 @@ He is Seng-ko-lin-ch'in, that bastard.
 
 800
 00:49:41,169 --> 00:49:44,275
-呢个契弟同我地两仔爷有恩怨嘅嘛！
+呢个契弟同我哋两仔爷有恩怨嘅嘛！
 He was the enemy of us!
 
 801
@@ -4025,7 +4025,7 @@ We let him go in
 
 806
 00:49:56,515 --> 00:49:58,454
-我地两仔爷放佢一马！
+我哋两仔爷放佢一马！
 the Yee Hung Brothel.
 
 807
@@ -4085,7 +4085,7 @@ Come back to me if you can do that
 
 818
 00:50:21,829 --> 00:50:23,685
-我谂我地要先定婚期
+我谂我哋要先定婚期
 I think we should fix our wedding date first
 
 819
@@ -4160,7 +4160,7 @@ Dad, you go begging again?
 
 833
 00:51:25,592 --> 00:51:27,657
-这些梗系我地几廿岁做嘅啦
+这些梗系我哋几廿岁做嘅啦
 This job should be left to me
 
 834
@@ -4575,7 +4575,7 @@ Are they going to treat me
 
 916
 00:57:22,757 --> 00:57:25,111
-唔知系咪想请我地饮埋烧酒先呢？
+唔知系咪想请我哋饮埋烧酒先呢？
 some food?
 
 917
@@ -4730,7 +4730,7 @@ My dad was the Master of the Beggars' Association
 
 947
 00:59:27,300 --> 00:59:29,534
-不如你地两位加入我地丐帮，好吗？
+不如你地两位加入我哋丐帮，好吗？
 Why don't you join our Beggars' Association
 
 948
@@ -4755,7 +4755,7 @@ Yes!
 
 952
 00:59:34,747 --> 00:59:36,641
-啱啦⋯而家我地做紧乞儿
+啱啦⋯而家我哋做紧乞儿
 That's right, we are being beggars
 
 953
@@ -4775,7 +4775,7 @@ Where is Chan?
 
 956
 00:59:42,521 --> 00:59:43,813
-好呀，我地两个报名呀，两个！
+好呀，我哋两个报名呀，两个！
 OK, we will join you!
 
 957
@@ -4870,7 +4870,7 @@ Thank you…
 
 975
 01:00:27,668 --> 01:00:28,685
-莫大叔，我们亲家两免了！
+莫大叔，我哋亲家两免喇！
 Uncle Mok, we needn't give red packets to each other
 
 976
@@ -4925,7 +4925,7 @@ To fight against Chiu, we need a union of the Beggars' Association
 
 986
 01:00:59,254 --> 01:01:01,697
-我地即刻选位新帮主出嚟主持大局！
+我哋即刻选位新帮主出嚟主持大局！
 So we must choose a new master to be in charge of the association
 
 987
@@ -5455,7 +5455,7 @@ Idiot!
 
 1092
 01:06:48,430 --> 01:06:51,085
-后生仔，我地系梦中相见喇！
+后生仔，我哋系梦中相见喇！
 Kid, see you in the dream
 
 1093
@@ -5590,7 +5590,7 @@ Senior!
 
 1119
 01:09:36,228 --> 01:09:36,908
-我地走！
+我哋走！
 Let's go!
 
 1120
@@ -5600,7 +5600,7 @@ Senior!
 
 1121
 01:10:29,983 --> 01:10:30,705
-我地追！
+我哋追！
 Let's chase them
 
 1122
@@ -5690,7 +5690,7 @@ Your sister is caught by Chiu
 
 1139
 01:11:35,624 --> 01:11:37,625
-我地要揾个人上去选帮主先得
+我哋要揾个人上去选帮主先得
 We'd find someone to compete for the leadership.
 
 1140
@@ -5795,7 +5795,7 @@ I won.
 
 1160
 01:15:20,621 --> 01:15:21,831
-你打赢我们有什么用呀？
+你打赢我哋有乜嘢用呀？
 What is the use for defeating us?
 
 1161
@@ -5840,7 +5840,7 @@ He broke the waddy!
 
 1169
 01:15:49,646 --> 01:15:51,930
-佢打断我地镇帮之宝！我地杀咗佢！
+佢打断我哋镇帮之宝！我哋杀咗佢！
 He broke the treasure of our Association, let's kill him!
 
 1170
@@ -5985,7 +5985,7 @@ Master Hung's soul talked to us,
 
 1198
 01:17:13,376 --> 01:17:15,261
-天有眼啰，我地有福啰
+天有眼啰，我哋有福啰
 we are blessed
 
 1199
@@ -6409,7 +6409,7 @@ I will kill you if you step forward
 
 1285
 01:24:56,660 --> 01:24:59,121
-阿灿，对方咁多人马我们边够打呀？
+阿灿，对方咁多人马我哋边够打呀？
 Chan, how can we fight with them?
 
 1286
@@ -6704,7 +6704,7 @@ this morning
 
 1344
 01:30:05,881 --> 01:30:07,887
-我地停低咗半个时辰食早饭
+我哋停低咗半个时辰食早饭
 We stayed one hour for lunch
 
 1345
@@ -6804,7 +6804,7 @@ Yes. Look at you, you are like a beggar too
 
 1364
 01:31:36,043 --> 01:31:37,548
-有冇兴趣加入我地丐帮呀？
+有冇兴趣加入我哋丐帮呀？
 Are you interested in joining us?
 
 1365
@@ -7014,7 +7014,7 @@ Yushang
 
 1406
 01:35:41,923 --> 01:35:43,634
-你记唔记得我地之间仲有个协议的！
+你记唔记得我哋之间仲有个协议的！
 We have an agreement, do you remember?
 
 1407
