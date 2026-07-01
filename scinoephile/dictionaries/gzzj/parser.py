@@ -43,7 +43,7 @@ class GzzjDictionaryParser:
         """Parse a manually downloaded GZZJ source file.
 
         Arguments:
-            source_json_path: path to `B01_data.json`
+            source_json_path: path to `B01_資料.json`
         Returns:
             source metadata and normalized dictionary entries
         """
@@ -90,7 +90,7 @@ class GzzjDictionaryParser:
         Arguments:
             explanation: optional raw explanation text
             variants: alternate headword forms
-            marker: reading marker such as `also`
+            marker: reading marker such as `又`
             note: optional editor note
         Returns:
             normalized definitions
