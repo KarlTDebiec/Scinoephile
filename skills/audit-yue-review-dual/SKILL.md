@@ -132,34 +132,10 @@ Manual review rule:
   - `yue-Hans vs Hant->Hans` (post-review final alignment or mismatch).
 - Then write a plain, specific note describing that behavior.
 
-Use this deterministic checklist for every row:
+Write one short sentence per row that includes your judgement from the three content columns.
 
-- `review_hans` = whether the `yue-Hans` cell contains two lines (review changed).
-- `review_hant` = whether the `yue-Hant` cell contains two lines (review changed).
-- `finals_differ` = whether the final column contains two lines (post-review finals differ).
-
-Always write exactly one concise sentence.
-
-- `finals_differ` false is the only case where `finals align`.
-Use `OK` for that state and do not write separate notes like “finals match” or “nothing wrong”.
-
-- If `review_hans` and `review_hant` are false and `finals_differ` is false: `OK`
-- If `review_hans` and `review_hant` are false and `finals_differ` is true:
-  `No review edits; finals still differ: <hans_final> vs <hant_final>`
-- If only `review_hans` is true:
-  `Only Hans changed (<hans_before> -> <hans_after>); Hant stayed <hant_review_or_stay_text>; [finals still differ: <hans_final> vs <hant_final>]`
-- If only `review_hant` is true:
-  `Only Hant changed (<hant_before> -> <hant_after>); Hans stayed <hans_review_or_stay_text>; [finals still differ: <hans_final> vs <hant_final>]`
-- If both are true and `finals_differ` is false:
-  `Both sides changed: Hans <hans_before> -> <hans_after>; Hant <hant_before> -> <hant_after>; finals align`
-- If both are true and `finals_differ` is true:
-  `Both sides changed, but finals still differ: Hans <hans_before> -> <hans_after>; Hant <hant_before> -> <hant_after>; finals <hans_final> vs <hant_final>`
-
-When a final text is needed in notes, use the exact final value shown in the
-`yue-Hans vs Hant->Hans` column.
-
-`<hant_review_or_stay_text>` is the unchanged `yue-Hant` value shown in that row
-when it is blank in the review stage.
+Use a concise, judgment-first form and append a minimal change hint only if needed.
+Avoid repeating full subtitle text unless ambiguity requires it.
 
 Important review-quality rule:
 
@@ -175,15 +151,6 @@ Output safety rule:
 - The first non-empty line must be the report title, e.g. `# kob Yue Review Dual`.
 
 - The script is a data extractor; `Notes` is a manual annotation layer.
-- The script is a data extractor; `Notes` is a manual annotation layer.
-
-Use concise, one-clause notes.
-
-- If both sides changed and finals align: `both changed <old> -> <new>; consistent`
-- If only Hans changed: `only Hans changed <old> -> <new>; consistent` or `only Hans changed <old> -> <new>; finals still differ` if finals differ
-- If only Hant changed: `only Hant changed <old> -> <new>; consistent` or `only Hant changed <old> -> <new>; finals still differ` if finals differ
-- If neither changed: `no review edits; finals still differ: <hans_final> vs <hant_final>`
-- If both changed and finals differ: `both changed, but finals differ: Hans <old> -> <new>; Hant <old> -> <new>; finals <hans_final> vs <hant_final>`
 
 Do not leave the `Notes` column blank in user-facing output. If a displayed row
 looks clean and finals align, write `consistent`.
