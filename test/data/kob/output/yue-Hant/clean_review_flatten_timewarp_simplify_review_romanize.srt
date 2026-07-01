@@ -3905,13 +3905,13 @@ nē go yàhn fēitùhngsíuhó
 
 782
 00:48:16,949 --> 00:48:17,908
-我一定要是第一招
-ngóh yātdihng yiusih daihyāt jīu
+我一定要系第一招
+ngóh yātdihng yiu haih daihyāt jīu
 
 783
 00:48:17,992 --> 00:48:19,452
-就出尽全力将佢打倒
-jauh chēutjeuhnchyùhnlihk jēung kéuih dádóu
+就出尽全力将佢打低
+jauh chēutjeuhnchyùhnlihk jēung kéuih dádāi
 
 784
 00:48:19,535 --> 00:48:21,537
@@ -4130,8 +4130,8 @@ sáugeuk dōu giujouh wātdāk haak!
 
 827
 00:51:12,685 --> 00:51:14,187
-但系未完全好得番晒嘅！
-daahnhaih meih yùhnchyùhn hóu dākfāansaai ge!
+但系未完全好得返晒嘅！
+daahnhaih meih yùhnchyùhn hóudāk fáansaai ge!
 
 828
 00:51:15,563 --> 00:51:16,731
@@ -4140,13 +4140,13 @@ làih…
 
 829
 00:51:17,148 --> 00:51:19,816
-阿爹出去揾些嘢番嚟，今晚大家食呀吓
-adē chēutheui wánsēyéh fāanlàih, gāmmáahn daaihgā sihk àh haak
+阿爹出去揾些嘢返嚟今晚大家食呀吓
+adē chēutheui wánsēyéh fāanlàih gāmmáahn daaihgā sihk àh haak
 
 830
 00:51:20,275 --> 00:51:21,568
-顺便番嚟就煲埋最后呢剂药，
-seuhnbihn fāanlàih jauh bōumàaih jeuihauh nējāiyeuhk,
+顺便返嚟就煲埋最后呢剂药
+seuhnbihn fāanlàih jauh bōumàaih jeuihauh nējāiyeuhk
 
 831
 00:51:21,652 --> 00:51:22,694
@@ -4300,7 +4300,7 @@ gam aan ge la?
 
 861
 00:53:58,497 --> 00:53:59,956
-阿爹出去揾些嘢返嚟食呀吓
+阿爹出去揾些嘢番嚟食呀吓
 adē chēutheui wánsēyéh fāanlàih sihk àh haak
 
 862
@@ -4325,8 +4325,8 @@ néih dáuhaaksīn lā
 
 866
 00:54:10,006 --> 00:54:11,508
-我揾到钱返嚟同你睇大夫
-ngóh wán dou chín fāanlàih tùhng néih tái daaihfū
+我揾到钱番嚟同你睇大夫
+ngóh wán dou chín fāan làih tùhng néih tái daaihfū
 
 867
 00:54:31,358 --> 00:54:32,776
@@ -4455,8 +4455,8 @@ deuim̀hjyuh, ngóh yihngcho yàhn!
 
 892
 00:56:06,107 --> 00:56:07,651
-小翠，拎些馒头出来呀
-síucheui, līngsēmaahntàuh chēutlòih àh
+小翠，拎些馒头出嚟呀
+síucheui, līngsēmaahntàuh chēutlàih àh
 
 893
 00:56:07,984 --> 00:56:09,985
@@ -4795,8 +4795,8 @@ mohkdaaihsūk! gūnghéifaatchòih!
 
 960
 01:00:03,272 --> 01:00:04,481
-这些礼物送给你嘅！
-jéhsē láihmaht sungkāp néih ge!
+这些礼物送俾你嘅！
+jéhsē láihmaht sung béi néih ge!
 
 961
 01:00:04,940 --> 01:00:06,233
@@ -4805,13 +4805,13 @@ dōjeh! dōjeh!
 
 962
 01:00:08,318 --> 01:00:09,611
-呢度两件衫，一件送给你！
-nīdouh léuhng gihn sāam, yātgihnsungkāp néih!
+呢度两件衫，一件送俾你！
+nīdouh léuhng gihn sāam, yātgihn sung béi néih!
 
 963
 01:00:09,694 --> 01:00:10,820
-一件送给阿灿嘅！
-yātgihnsungkāp ōchaange!
+一件送俾阿灿嘅！
+yātgihn sung béi ōchaange!
 
 964
 01:00:11,779 --> 01:00:13,239
@@ -4880,18 +4880,18 @@ achaan nē?
 
 977
 01:00:30,212 --> 01:00:34,633
-阿灿？佢由年三十晚瞓到年初一
-achaan? kéuih yàuhnìhn sāamsahp máahn fan dou nìhnchō yāt
+阿灿？佢由年三十晚训到年初一
+achaan? kéuih yàuhnìhn sāamsahp máahn fandou nìhnchō yāt
 
 978
 01:00:34,716 --> 01:00:35,884
-都仲未瞓醒呀！
-dōu juhng meih fanséng àh!
+都仲未训醒呀！
+dōu juhng meihfan síng àh!
 
 979
 01:00:35,967 --> 01:00:38,093
-佢啱啱至瞓着咋！唔好嘈醒佢呀
-kéuih ngāamngāam ji fan jeuhk ja! m̀hhóu chòuhséng kéuih àh
+佢啱啱至训著咋！唔好嘈醒佢呀
+kéuih ngāamngāam jifanjyu ja! m̀hhóu chòuhséng kéuih àh
 
 980
 01:00:38,886 --> 01:00:40,387
@@ -4905,8 +4905,8 @@ hóu àh! ngóh bōng néih sáu àh
 
 982
 01:00:45,351 --> 01:00:47,101
-新正头仲瞓觉呀？
-sānjingtàuhjuhng fangaau àh?
+新正头仲训觉呀？
+sānjingtàuhjuhng fangok àh?
 
 983
 01:00:48,436 --> 01:00:50,271

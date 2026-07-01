@@ -3670,7 +3670,7 @@ Hey, two days passed,
 
 735
 00:46:11,748 --> 00:46:13,675
-天又番风！两肚又空空
+天又翻风！两肚又空空
 It's cold and I am hungry now
 
 736
@@ -3705,7 +3705,7 @@ Yes, if you are willing to date her
 
 742
 00:46:27,126 --> 00:46:29,763
-我谂佢会帮我哋嘅忙番落广州先
+我谂佢会帮我哋嘅忙返落广州先
 I think she will help us to go back to Canton
 
 743
@@ -3795,7 +3795,7 @@ Get lost…
 
 760
 00:47:26,261 --> 00:47:27,490
-唔准系度卖武！
+唔准喺度卖武！
 No show here
 
 761
@@ -3985,7 +3985,7 @@ with my son,
 
 798
 00:49:36,248 --> 00:49:38,270
-你地估吓系边个？
+你哋估吓系边个？
 don't you know who was the examiner?
 
 799
@@ -4010,12 +4010,12 @@ Let me stop here first, I want a smoke.
 
 803
 00:49:49,301 --> 00:49:51,156
-整啖烟提神，好些嘅
+整啖烟提神，好啲嘅
 It's better to smoke now.
 
 804
 00:49:51,219 --> 00:49:53,075
-系呀，好些嘅
+系呀，好啲嘅
 Yes, it's better.
 
 805
@@ -4040,7 +4040,7 @@ He tricked my son
 
 809
 00:50:02,687 --> 00:50:05,043
-系些兵器处做晒手脚！
+系啲兵器处做晒手脚！
 during the examination.
 
 810
@@ -4080,7 +4080,7 @@ Well
 
 817
 00:50:17,700 --> 00:50:20,181
-咁等你做得到果阵，先至嚟揾我啦
+咁等你做得到嗰阵，先至嚟揾我啦
 Come back to me if you can do that
 
 818
@@ -4120,7 +4120,7 @@ Don't think so much!
 
 825
 00:51:09,120 --> 00:51:10,184
-虽然你抖了两个月
+虽然你抖咗两个月
 Although you have taken
 
 826
@@ -4170,7 +4170,7 @@ You are the Scholar…
 
 835
 00:51:32,515 --> 00:51:35,830
-阿灿，原来做乞儿好了Long嘅！
+阿灿，原来做乞儿好了 Lung 嘅！
 Chan, to be a beggar,
 
 836
@@ -4300,12 +4300,12 @@ It's late
 
 861
 00:53:58,433 --> 00:53:59,956
-阿爹出去找些嘢番嚟食呀吓
+阿爹出去揾些嘢番嚟食呀吓
 I have to search for food
 
 862
 00:54:01,893 --> 00:54:03,876
-你快些训番低先，今次等我去！
+你快些训返低先，今次等我去！
 Lie down, I will go this time
 
 863
@@ -4325,7 +4325,7 @@ Take a rest now
 
 866
 00:54:09,984 --> 00:54:11,508
-我找到钱番嚟同你睇大夫
+我揾到钱番嚟同你睇大夫
 I will take you to the doctor after getting some money
 
 867
@@ -4455,7 +4455,7 @@ I am sorry, I was mistaken
 
 892
 00:56:06,084 --> 00:56:07,651
-小翠，拎些馒头出来呀
+小翠，拎些馒头出嚟呀
 Tracy, take some dumplings out
 
 893
@@ -4520,7 +4520,7 @@ So I bit the dumpling of the kid.
 
 905
 00:56:56,401 --> 00:56:58,027
-我呢度有馒头！我还番俾你地！
+我呢度有馒头！我还番俾你哋！
 I have a dumpling, take it back
 
 906
@@ -4700,7 +4700,7 @@ It's very clever of you!
 
 941
 00:59:03,946 --> 00:59:05,806
-抵你地两个成世做乞儿嘅！
+抵你哋两个成世做乞儿嘅！
 You deserve to be beggars
 
 942
@@ -4730,7 +4730,7 @@ My dad was the Master of the Beggars' Association
 
 947
 00:59:27,300 --> 00:59:29,534
-不如你地两位加入我哋丐帮，好吗？
+不如你哋两位加入我哋丐帮，好吗？
 Why don't you join our Beggars' Association
 
 948
@@ -4760,7 +4760,7 @@ That's right, we are being beggars
 
 953
 00:59:36,708 --> 00:59:38,768
-加入你地丐帮有个照应都好呀！
+加入你哋丐帮有个照应都好呀！
 It's wise to join the Beggars' Association so as to be taken care of
 
 954
@@ -4795,7 +4795,7 @@ Uncle Mok, happy new year!
 
 960
 01:00:03,272 --> 01:00:04,540
-这些礼物送给你 的！
+这些礼物送俾你嘅！
 This is for you
 
 961
@@ -4805,12 +4805,12 @@ Thank you
 
 962
 01:00:08,318 --> 01:00:09,611
-呢度两件衫，一件送给你！
+呢度两件衫，一件送俾你！
 One cloth is for you
 
 963
 01:00:09,669 --> 01:00:10,820
-一件送给阿灿的！
+一件送俾阿灿嘅！
 and the other is for Chan
 
 964
@@ -4880,22 +4880,22 @@ How about Chan
 
 977
 01:00:30,187 --> 01:00:34,633
-阿灿？他由年三十晚睡到年初一
+阿灿？佢由年三十晚训到年初一
 Chan?
 
 978
 01:00:34,716 --> 01:00:35,884
-都仲未睡醒呀！
+都仲未训醒呀！
 He is still sleeping
 
 979
 01:00:35,942 --> 01:00:38,093
-他刚刚才睡着咋！不要吵醒他呀
+佢啱啱至训着咋！唔好嘈醒佢呀
 Don't wake him up
 
 980
 01:00:38,886 --> 01:00:40,387
-我蒸些年糕大家食呀吓！
+我整些年糕大家食呀吓！
 I will cook you some new year cakes
 
 981
@@ -4905,7 +4905,7 @@ Let me help you
 
 982
 01:00:45,325 --> 01:00:47,101
-新正头仲睡觉呀？
+新正头仲训觉呀？
 How can he sleep on the 1st day of this year?
 
 983

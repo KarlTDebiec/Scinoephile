@@ -657,11 +657,11 @@ def kob_yue_hans_transcribe() -> Series:
 def kob_yue_hans_transcribe_expected_cer() -> SeriesCERResult:
     """Expected CER for KOB transcribed subtitles against flattened reference."""
     return SeriesCERResult(
-        cer=0.5640957915125903,
-        substitutions=4864,
+        cer=0.5644479661912308,
+        substitutions=4868,
         insertions=664,
         deletions=879,
-        correct=5615,
+        correct=5611,
         reference_length=11358,
     )
 
@@ -696,11 +696,11 @@ def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
 ):
     """Expected CER for KOB reviewed subtitles against flattened reference."""
     return SeriesCERResult(
-        cer=0.45589012150026414,
-        substitutions=3791,
+        cer=0.45456946645536184,
+        substitutions=3776,
         insertions=620,
         deletions=767,
-        correct=6800,
+        correct=6815,
         reference_length=11358,
     )
 
