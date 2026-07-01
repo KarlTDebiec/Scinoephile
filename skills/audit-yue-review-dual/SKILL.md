@@ -81,13 +81,6 @@ To limit the audit to a subtitle-number range, pass `--first-index` and/or
 uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset tmm --first-index 1 --last-index 200
 ```
 
-To print only rows that need attention, add `--omit-ok`. This omits rows whose
-generated note is exactly `OK`:
-
-```powershell
-uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset tmm --first-index 1 --last-index 1000 --omit-ok
-```
-
 For SRT datasets, run:
 
 ```powershell
@@ -129,32 +122,81 @@ or final comparison.
 
 The script output is a draft table. Read that Python script output first.
 
-You must provide a non-empty note for every row before printing or presenting
-the table. Default script notes are intentionally minimal; they may need to be
-reviewed and replaced with stronger editorial callouts.
+Manual review rule:
 
-Use plain, specific notes that say what changed:
+- The script intentionally leaves `Notes` blank; you **must** fill every row
+  manually using the three content columns in the same row.
+- Do not change subtitle numbers, text columns, or summary lines.
+- For each row, infer what happened by reading:
+  - `yue-Hans` and `yue-Hant` review cells (initial review edits and asymmetry),
+  - `yue-Hans vs Hant->Hans` (post-review final alignment or mismatch).
+- Then write a plain, specific note describing that behavior.
 
-- `OK` when the review edits make sense as written Cantonese,
-  Cantonese-script normalization, or clear OCR/spacing cleanup
-- Only Hans changed (`罗` -> `啰`); Hant stayed `囉`
-- Only Hant changed (`...` -> `...`); Hans stayed `...`
-- No review edits, but the finals still differ: `...` vs `...`
-- Both sides changed, but the finals still differ: Hans `...` -> `...`; Hant `...` -> `...`; finals `...` vs `...`
-- `OK`
+Use this deterministic checklist for every row:
+
+- `review_hans` = whether the `yue-Hans` cell contains two lines (review changed).
+- `review_hant` = whether the `yue-Hant` cell contains two lines (review changed).
+- `finals_differ` = whether the final column contains two lines (post-review finals differ).
+
+Always write exactly one concise sentence.
+
+- `finals_differ` false is the only case where `finals align`.
+Use `OK` for that state and do not write separate notes like “finals match” or “nothing wrong”.
+
+- If `review_hans` and `review_hant` are false and `finals_differ` is false: `OK`
+- If `review_hans` and `review_hant` are false and `finals_differ` is true:
+  `No review edits; finals still differ: <hans_final> vs <hant_final>`
+- If only `review_hans` is true:
+  `Only Hans changed (<hans_before> -> <hans_after>); Hant stayed <hant_review_or_stay_text>; [finals still differ: <hans_final> vs <hant_final>]`
+- If only `review_hant` is true:
+  `Only Hant changed (<hant_before> -> <hant_after>); Hans stayed <hans_review_or_stay_text>; [finals still differ: <hans_final> vs <hant_final>]`
+- If both are true and `finals_differ` is false:
+  `Both sides changed: Hans <hans_before> -> <hans_after>; Hant <hant_before> -> <hant_after>; finals align`
+- If both are true and `finals_differ` is true:
+  `Both sides changed, but finals still differ: Hans <hans_before> -> <hans_after>; Hant <hant_before> -> <hant_after>; finals <hans_final> vs <hant_final>`
+
+When a final text is needed in notes, use the exact final value shown in the
+`yue-Hans vs Hant->Hans` column.
+
+`<hant_review_or_stay_text>` is the unchanged `yue-Hant` value shown in that row
+when it is blank in the review stage.
+
+Important review-quality rule:
+
+- Never add or keep Mandarinization changes in any yue review path. In particular, do not replace Cantonese particles and short forms with Mandarin-style equivalents (e.g. `咗 -> 了`) in `simplify_block_review.json` or other review files. If such a change exists, remove that `xiugai_*` entry and keep the Cantonese wording so the Cantonese review and finalization stay dialect-consistent.
+
+Output safety rule:
+
+- Do not wrap the output in code fences under any circumstances.
+- Do not wrap the report in Markdown fences or inline code ticks (no triple backticks).
+- Do not prepend or append explanatory prose outside the report.
+- Do not include a leading or trailing ``` block, markdown language tag (for example ```markdown), or any wrapper.
+- The final user-facing response must begin with the summary header and contain only raw markdown content.
+- The first non-empty line must be the report title, e.g. `# kob Yue Review Dual`.
+
+- The script is a data extractor; `Notes` is a manual annotation layer.
+- The script is a data extractor; `Notes` is a manual annotation layer.
+
+Use concise, one-clause notes.
+
+- If both sides changed and finals align: `both changed <old> -> <new>; consistent`
+- If only Hans changed: `only Hans changed <old> -> <new>; consistent` or `only Hans changed <old> -> <new>; finals still differ` if finals differ
+- If only Hant changed: `only Hant changed <old> -> <new>; consistent` or `only Hant changed <old> -> <new>; finals still differ` if finals differ
+- If neither changed: `no review edits; finals still differ: <hans_final> vs <hant_final>`
+- If both changed and finals differ: `both changed, but finals differ: Hans <old> -> <new>; Hant <old> -> <new>; finals <hans_final> vs <hant_final>`
 
 Do not leave the `Notes` column blank in user-facing output. If a displayed row
-is accepted without any issue, mark it explicitly as `OK`. When the user asks to
-omit accepted rows, use `--omit-ok` so the summary and table stay consistent.
+looks clean and finals align, write `consistent`.
 
 ## Output
 
 When you run this skill, the script output must be returned directly in your response.
 Do not summarize or replace it.
-Include the full Markdown report text (summary + table) exactly as printed.
+Include the full Markdown report text (summary + table) exactly as printed, then
+immediately fill in the `Notes` cells in-place for every displayed row.
 
 Before presenting, ensure every row in the table has a non-empty `Notes` cell.
-If any note is missing in the raw script output, replace it with `OK`.
+If any note is missing in the raw script output, set it manually.
 
 Start with the script summary, including subtitle counts, the successful timing
 alignment check, changed counts, and image-index links. Then output the table
@@ -165,11 +207,16 @@ The table columns are:
 | Subtitle | yue-Hans | yue-Hant | yue-Hans vs Hant->Hans | Notes |
 |---:|---|---|---|---|
 
-In the `yue-Hans` and `yue-Hant` columns, stack the before and after review text
-on separate lines when that script changed. When only one script changed at a
-subtitle number, include the unchanged counterpart text once in its own column
-so the two scripts can be compared in context. Do not stack unchanged text. In
-the `yue-Hans vs Hant->Hans` column, show the final texts from both scripts on
+In the `yue-Hans` and `yue-Hant` columns:
+
+- If a script has a review edit for that subtitle, show exactly two lines:
+  - first line = pre-review text
+  - second line = post-review text
+- If a script did not change that subtitle, show exactly one line: the unchanged text.
+- If both scripts changed, both columns must show two lines each.
+- Do not include any extra unchanged duplicate lines in any column.
+
+In the `yue-Hans vs Hant->Hans` column, show the final texts from both scripts on
 separate lines when they differ; otherwise show one instance of the shared final
 text. Do not use arrows in these cells.
 

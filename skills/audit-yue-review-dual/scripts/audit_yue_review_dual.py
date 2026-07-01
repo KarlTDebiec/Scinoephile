@@ -5,10 +5,8 @@
 from __future__ import annotations
 
 import argparse
-import re
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
-from difflib import SequenceMatcher
 from pathlib import Path
 
 __all__ = [
@@ -20,40 +18,6 @@ __all__ = [
     "parse_srt",
 ]
 
-_OK_CANTONESE_REPLACEMENTS = (
-    ("忤怍", "仵作"),
-    ("蒙吖", "懵吓"),
-    ("矇吖", "懵吓"),
-    ("们", "哋"),
-    ("們", "哋"),
-    ("架", "㗎"),
-    ("罗", "啰"),
-    ("祇", "只"),
-    ("祗", "只"),
-    ("搵", "揾"),
-    ("哋", "地"),
-    ("来", "嚟"),
-    ("來", "嚟"),
-    ("呀", "吖"),
-    ("洗", "使"),
-    ("左", "咗"),
-    ("舖", "鋪"),
-    ("吓", "下"),
-    ("鼓", "旧"),
-    ("鼓", "舊"),
-    ("喱", "匿"),
-    ("逗", "豆"),
-    ("污", "侮"),
-    ("币", "弊"),
-    ("幣", "弊"),
-    ("茅", "猾"),
-    ("重", "仲"),
-)
-_OK_CANTONESE_REPLACEMENTS_BY_SOURCE_LENGTH = sorted(
-    _OK_CANTONESE_REPLACEMENTS,
-    key=lambda replacement: len(replacement[0]),
-    reverse=True,
-)
 _SERIES_LABELS = {
     "hans_original": "yue-Hans source",
     "hans_review": "yue-Hans review",
@@ -134,7 +98,6 @@ def audit_dataset(
     *,
     first_index: int | None = None,
     last_index: int | None = None,
-    omit_ok: bool = False,
 ) -> str:
     """Audit one Yue dataset and return a Markdown report.
 
@@ -144,7 +107,6 @@ def audit_dataset(
         layout: dataset layout, either auto, ocr, or non-ocr
         first_index: first 1-indexed subtitle number to include, inclusive
         last_index: last 1-indexed subtitle number to include, inclusive
-        omit_ok: whether to omit rows whose generated note is OK
     Returns:
         Markdown report
     """
@@ -192,7 +154,6 @@ def audit_dataset(
             series["hans_final"],
             series["hant_final"],
         ),
-        omit_ok=omit_ok,
     )
 
 
@@ -205,7 +166,6 @@ def format_markdown(
     hans_changes: Mapping[int, ReviewChange],
     hant_changes: Mapping[int, ReviewChange],
     final_differences: Mapping[int, tuple[str, str]],
-    omit_ok: bool = False,
 ) -> str:
     """Format an audit report as Markdown.
 
@@ -217,7 +177,6 @@ def format_markdown(
         hans_changes: yue-Hans review changes by subtitle number
         hant_changes: yue-Hant review changes by subtitle number
         final_differences: final text differences by subtitle number
-        omit_ok: whether to omit rows whose generated note is OK
     Returns:
         Markdown report
     """
@@ -235,18 +194,6 @@ def format_markdown(
         hans_change = hans_changes.get(number)
         hant_change = hant_changes.get(number)
         final_pair = final_differences.get(number)
-        note = _get_notes(
-            number=number,
-            hans_change=hans_change,
-            hant_change=hant_change,
-            final_pair=final_pair,
-            hans_review=hans_review,
-            hant_review=hant_review,
-            hans_final=hans_final,
-            hant_final=hant_final,
-        )
-        if omit_ok and note == "OK":
-            continue
         include_unchanged_review_text = bool(hans_change or hant_change)
         if final_pair is None:
             final_series = hans_final.get(number) or hant_final.get(number)
@@ -275,15 +222,13 @@ def format_markdown(
                         )
                     ),
                     _escape_cell(final_cell),
-                    _escape_cell(note),
+                    "",
                 ]
             )
             + " |"
         )
 
     summary_context_lines = list(context_lines)
-    if omit_ok:
-        summary_context_lines.insert(0, "- omitted rows whose generated note is OK")
     lines = [
         f"# {dataset_name} Yue Review Dual",
         "",
@@ -349,11 +294,6 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         type=int,
         help="Last 1-indexed subtitle number to include, inclusive",
     )
-    parser.add_argument(
-        "--omit-ok",
-        action="store_true",
-        help="Omit table rows whose generated note is OK",
-    )
     return parser.parse_args(argv)
 
 
@@ -394,7 +334,6 @@ def main(argv: Sequence[str] | None = None) -> None:
                 args.layout,
                 first_index=args.first_index,
                 last_index=args.last_index,
-                omit_ok=args.omit_ok,
             ),
             end="",
         )
@@ -435,295 +374,6 @@ def _format_review_cell(
     if include_unchanged:
         return reviewed[number].text
     return ""
-
-
-def _get_notes(
-    *,
-    number: int,
-    hans_change: ReviewChange | None,
-    hant_change: ReviewChange | None,
-    final_pair: tuple[str, str] | None,
-    hans_review: Mapping[int, SrtEvent],
-    hant_review: Mapping[int, SrtEvent],
-    hans_final: Mapping[int, SrtEvent],
-    hant_final: Mapping[int, SrtEvent],
-) -> str:
-    """Get the default Notes value for one table row.
-
-    The script is intentionally conservative; it does not infer review correctness
-    and always returns a non-empty default note to keep the output tabular.
-
-    Arguments:
-        number: subtitle number
-        hans_change: optional Hans review change
-        hant_change: optional Hant review change
-        final_pair: optional final Hans-vs-simplified-Hant difference
-        hans_review: reviewed Hans events
-        hant_review: reviewed Hant events
-        hans_final: final Hans events
-        hant_final: final Hant events
-    Returns:
-        non-empty default note
-    """
-    hans_review_event = hans_review[number]
-    hant_review_event = hant_review[number]
-    hans_final_event = hans_final[number]
-    hant_final_event = hant_final[number]
-    hans_post_simplification_change = (
-        hans_review_event.text != hans_final_event.text
-        and (
-            ReviewChange(
-                original=hans_review_event.text,
-                revised=hans_final_event.text,
-            )
-        )
-        or None
-    )
-    hant_post_simplification_change = (
-        hant_review_event.text != hant_final_event.text
-        and (
-            ReviewChange(
-                original=hant_review_event.text,
-                revised=hant_final_event.text,
-            )
-        )
-        or None
-    )
-
-    if final_pair is not None:
-        final_change = (
-            f"{_format_note_text(final_pair[0])} vs {_format_note_text(final_pair[1])}"
-        )
-        if hans_change is None and hant_change is None:
-            note = f"No review edits, but the finals still differ: {final_change}"
-        elif hans_change is None:
-            assert hant_change is not None
-            note = (
-                "Only Hant changed "
-                f"({_format_change_summary(hant_change)}); "
-                f"Hans stayed {_format_note_text(hans_review[number].text)}; "
-                f"finals still differ: {final_change}"
-            )
-        elif hant_change is None:
-            note = (
-                "Only Hans changed "
-                f"({_format_change_summary(hans_change)}); "
-                f"Hant stayed {_format_note_text(hant_review[number].text)}; "
-                f"finals still differ: {final_change}"
-            )
-        else:
-            note = (
-                "Both sides changed, but the finals still differ: "
-                f"Hans {_format_change_summary(hans_change)}; "
-                f"Hant {_format_change_summary(hant_change)}; "
-                f"finals {final_change}"
-        )
-    else:
-        changes = tuple(
-            change for change in (hans_change, hant_change) if change is not None
-        )
-        post_simplification_changes = tuple(
-            change
-            for change in (
-                hans_post_simplification_change,
-                hant_post_simplification_change,
-            )
-            if change is not None
-        )
-        if not changes or all(_is_ok_cantonese_edit(change) for change in changes):
-            if not changes and not post_simplification_changes:
-                note = "OK"
-            elif not changes and len(post_simplification_changes) == 1:
-                post_change = post_simplification_changes[0]
-                if post_change is hans_post_simplification_change:
-                    note = (
-                        "Only Hans changed during post-simplification review "
-                        f"({hans_change_summary if False else _format_change_summary(hans_post_simplification_change)})"
-                    )
-                else:
-                    note = (
-                        "Only Hant changed during post-simplification review "
-                        f"({hant_change_summary if False else _format_change_summary(hant_post_simplification_change)})"
-                    )
-            else:
-                note = "OK"
-        elif hans_change is not None and hant_change is not None:
-            note = (
-                "Both sides made the matching edit: "
-                f"Hans {_format_change_summary(hans_change)}; "
-                f"Hant {_format_change_summary(hant_change)}"
-            )
-        elif hans_change is not None:
-            if hant_post_simplification_change is not None:
-                note = (
-                    f"Only Hans changed during initial review "
-                    f"({_format_change_summary(hans_change)}); "
-                    "Hant changed during post-simplification review: "
-                    f"{_format_change_summary(hant_post_simplification_change)}"
-                )
-            else:
-                note = (
-                    f"Only Hans changed ({_format_change_summary(hans_change)}); "
-                    f"Hant stayed {_format_note_text(hant_review[number].text)}"
-                )
-        else:
-            assert hant_change is not None
-            if hans_post_simplification_change is not None:
-                note = (
-                    f"Only Hant changed during initial review "
-                    f"({_format_change_summary(hant_change)}); "
-                    "Hans changed during post-simplification review: "
-                    f"{_format_change_summary(hans_post_simplification_change)}"
-                )
-            else:
-                note = (
-                    f"Only Hant changed ({_format_change_summary(hant_change)}); "
-                    f"Hans stayed {_format_note_text(hans_review[number].text)}"
-                )
-    return note
-
-
-def _is_ok_cantonese_edit(change: ReviewChange) -> bool:
-    """Return whether a review change is an accepted Cantonese edit.
-
-    Arguments:
-        change: review change to inspect
-    Returns:
-        whether the change can be explained by known-good Cantonese replacements
-    """
-    return _has_only_ok_replacement_edits(change) or _is_ok_spacing_cleanup(
-        change.original,
-        change.revised,
-    )
-
-
-def _has_only_ok_replacement_edits(change: ReviewChange) -> bool:
-    """Return whether all changed spans are accepted replacement edits.
-
-    Arguments:
-        change: review change to inspect
-    Returns:
-        whether every changed span is an accepted replacement
-    """
-    edits = _get_text_edits(change.original, change.revised)
-    return bool(edits) and all(
-        tag == "replace" and _is_ok_replacement_span(original, revised)
-        for tag, original, revised in edits
-    )
-
-
-def _is_ok_replacement_span(original: str, revised: str) -> bool:
-    """Return whether one changed span contains only accepted replacements.
-
-    Arguments:
-        original: original changed span
-        revised: revised changed span
-    Returns:
-        whether the changed span contains only accepted replacements
-    """
-    original_idx = 0
-    revised_idx = 0
-    while original_idx < len(original) or revised_idx < len(revised):
-        matched_replacement = False
-        if (
-            original_idx < len(original)
-            and revised_idx < len(revised)
-            and original[original_idx] == revised[revised_idx]
-        ):
-            original_idx += 1
-            revised_idx += 1
-            continue
-        for source, target in _OK_CANTONESE_REPLACEMENTS_BY_SOURCE_LENGTH:
-            if original.startswith(source, original_idx) and revised.startswith(
-                target,
-                revised_idx,
-            ):
-                original_idx += len(source)
-                revised_idx += len(target)
-                matched_replacement = True
-                break
-        if not matched_replacement:
-            return False
-    return True
-
-
-def _is_ok_spacing_cleanup(original: str, revised: str) -> bool:
-    """Return whether a change is a clear OCR whitespace cleanup.
-
-    Arguments:
-        original: original text
-        revised: revised text
-    Returns:
-        whether the change only repairs whitespace in otherwise matching text
-    """
-    if _strip_whitespace(original) != _strip_whitespace(revised):
-        return False
-    return any(char.isascii() and char.isalpha() for char in original + revised)
-
-
-def _get_text_edits(original: str, revised: str) -> tuple[tuple[str, str, str], ...]:
-    """Get non-equal edit spans between two strings.
-
-    Arguments:
-        original: original text
-        revised: revised text
-    Returns:
-        non-equal edit spans
-    """
-    matcher = SequenceMatcher(None, original, revised, autojunk=False)
-    opcodes = matcher.get_opcodes()
-    return tuple(
-        (tag, original[original_start:original_end], revised[revised_start:revised_end])
-        for tag, original_start, original_end, revised_start, revised_end in opcodes
-        if tag != "equal"
-    )
-
-
-def _format_change_summary(change: ReviewChange) -> str:
-    """Format one text edit for a human-readable table note.
-
-    Arguments:
-        change: review change to summarize
-    Returns:
-        human-readable edit summary
-    """
-    edits = _get_text_edits(change.original, change.revised)
-    if len(edits) != 1:
-        original = _format_note_text(change.original)
-        revised = _format_note_text(change.revised)
-        return f"{original} -> {revised}"
-
-    tag, original, revised = edits[0]
-    if tag == "insert":
-        return f"inserted {_format_note_text(revised)}"
-    if tag == "delete":
-        return f"removed {_format_note_text(original)}"
-    return f"{_format_note_text(original)} -> {_format_note_text(revised)}"
-
-
-def _format_note_text(value: str, max_length: int = 32) -> str:
-    """Format one text value for a human-readable table note.
-
-    Arguments:
-        value: text value to format
-        max_length: maximum text length before truncation
-    Returns:
-        formatted text value
-    """
-    normalized = _collapse_whitespace(value).strip().replace("`", "'")
-    if len(normalized) > max_length:
-        normalized = f"{normalized[: max_length - 3]}..."
-    return f"`{normalized}`"
-
-
-def _collapse_whitespace(value: str) -> str:
-    """Collapse all whitespace to a canonical single space."""
-    return re.sub(r"\s+", " ", value)
-
-
-def _strip_whitespace(value: str) -> str:
-    """Remove all whitespace from text."""
-    return re.sub(r"\s+", "", value)
 
 
 def _get_audit_paths(
