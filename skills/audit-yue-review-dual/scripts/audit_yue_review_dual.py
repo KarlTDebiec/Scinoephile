@@ -174,7 +174,7 @@ def format_markdown(
         hans_change = hans_changes.get(number)
         hant_change = hant_changes.get(number)
         final_pair = final_differences.get(number)
-        include_unchanged_review_text = bool(hans_change or hant_change)
+        include_unchanged_review_text = bool(hans_change or hant_change or final_pair)
         if final_pair is None:
             final_series = hans_final.get(number) or hant_final.get(number)
             final_cell = "" if final_series is None else final_series.text

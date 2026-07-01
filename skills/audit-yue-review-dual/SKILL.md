@@ -190,6 +190,8 @@ In the `yue-Hans` and `yue-Hant` columns:
   - first line = pre-review text
   - second line = post-review text
 - If a script did not change that subtitle, show exactly one line: the unchanged text.
+  This includes rows that appear only because final yue-Hans and simplified
+  yue-Hant differ.
 - If both scripts changed, both columns must show two lines each.
 - Do not include any extra unchanged duplicate lines in any column.
 
