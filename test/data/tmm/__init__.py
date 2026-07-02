@@ -704,13 +704,6 @@ def tmm_zho_hant_ocr_paddle_clean() -> Series:
 def tmm_yue_simplify_expected_series_diff() -> list[str]:
     """Expected differences for TMM Yue Simplified vs Traditional subtitles."""
     return [
-        "edit: SIMP[920] -> TRAD[920]: '你⋯你把扇真系要等天光先有法力呀？' -> '你⋯你把伞真系要等天光先有法力呀？'",
-        "edit: SIMP[924] -> TRAD[924]: '嗱我解释你听你就明㗎嘞' -> '嗱我解你听你就明㗎嘞'",
-        "edit: SIMP[942] -> TRAD[942]: '以后唔会再有瘟疫㗎喇' -> '以后唔会再有瘟疫㗎嘞'",
-        "edit: SIMP[949] -> TRAD[949]: '但之系咁喎，若然烧死佢都仲有瘟疫' -> '但只系咁喎，若然烧死佢都仲有瘟疫'",
-        "edit: SIMP[964] -> TRAD[964]: '放心啦，嗰啲人唔会再嚟烧你㗎嘞' -> '放心啦，嗰啲人唔会再嚟烧你㗎喇'",
-        "edit: SIMP[970] -> TRAD[970]: '但系段唔会对个马桶产生感情' -> '但系并唔会对个马桶产生感情'",
-        "edit: SIMP[976] -> TRAD[976]: '咪啦你，真是鸡性难改' -> '咪啦你，真系鸡性难改'",
         "edit: SIMP[1027] -> TRAD[1027]: '大种，跟我来' -> '大聪，跟我来'",
         "edit: SIMP[1078] -> TRAD[1078]: '若然唔系，黄金会变番狗屎' -> '若然唔系，黄金会变返狗屎'",
         "edit: SIMP[1079] -> TRAD[1079]: '大孖疮都会标番晒出嚟' -> '大疴疮都会标番晒出嚟'",

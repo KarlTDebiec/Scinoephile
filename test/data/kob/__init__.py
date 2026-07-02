@@ -90,6 +90,7 @@ __all__ = [
     "kob_yue_hant_clean_review_flatten_timewarp_simplify",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize",
+    "kob_yue_simplify_expected_series_diff",
     "kob_zho_hans_eng",
     "kob_zho_hant_ocr_fuse",
     "kob_zho_hant_ocr_fuse_clean",
@@ -753,6 +754,14 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Ser
         / "yue-Hant"
         / "clean_review_flatten_timewarp_simplify_review_romanize.srt"
     )
+
+
+@fixture
+def kob_yue_simplify_expected_series_diff() -> list[str]:
+    """Expected differences for KOB Yue Simplified vs Traditional subtitles."""
+    return [
+        "edit: SIMP[1229] -> TRAD[1229]: '但系第十八式〝杀龙有悔〞' -> '但系第十八式「杀龙有悔」'",
+    ]
 
 
 @fixture

@@ -1045,7 +1045,7 @@ I am the general of Canton,
 
 210
 00:11:46,749 --> 00:11:49,172
-梗系要嚟拉你这啲害群之马啦
+梗系要嚟拉你呢啲害群之马啦
 so I should arrest those bad people
 
 211
@@ -1130,7 +1130,7 @@ Your Majesty,
 
 227
 00:12:26,994 --> 00:12:29,291
-估唔到系呢度畀这啲无赖打扰你嘅雅兴
+估唔到系呢度畀呢啲无赖打扰你嘅雅兴
 a rascal has ruined the atmosphere here,
 
 228
@@ -1310,7 +1310,7 @@ Leave here first.
 
 263
 00:14:12,500 --> 00:14:13,547
-系嘅！系嘅！
+冇但系呀！嗰十万两我袋咗落袋嘅喇
 Yes, you are right.
 
 264
@@ -1665,7 +1665,7 @@ I won't fall in love with anybody
 
 334
 00:19:07,713 --> 00:19:09,846
-我点都唔会谂这啲嘢嘅啦
+我点都唔会谂呢啲嘢嘅啦
 until Chiu is killed
 
 335
@@ -1885,7 +1885,7 @@ Stop chasing,
 
 378
 00:21:12,612 --> 00:21:14,872
-这啲鸡唔带嘅喇，京城冇咩
+呢啲鸡唔带嘅喇，京城冇咩
 we won't take the hens with us
 
 379
@@ -1895,7 +1895,7 @@ Be careful!
 
 380
 00:21:18,534 --> 00:21:21,002
-你揩花我这啲嘢我打到你屁股开花嘅！
+你揩花我呢啲嘢我打到你屁股开花嘅！
 If you break my stuff, I will teach you a good lesson
 
 381
@@ -2020,12 +2020,12 @@ Push it over…
 
 405
 00:22:08,619 --> 00:22:11,755
-小心啲呀⋯睇住我这啲荔枝
+小心啲呀⋯睇住我呢啲荔枝
 Be careful
 
 406
 00:22:11,789 --> 00:22:14,465
-睇住我这啲荔枝呀，寿头！
+睇住我呢啲荔枝呀，寿头！
 Take care of my Lychee, you fathead!
 
 407
@@ -2275,7 +2275,7 @@ It depends on fate.
 
 456
 00:27:01,538 --> 00:27:03,593
-老郑，你畀我这啲试卷
+老郑，你畀我呢啲试卷
 Cheng, I've asked someone
 
 457
@@ -2320,7 +2320,7 @@ My son is keen on martial arts.
 
 465
 00:27:16,969 --> 00:27:20,315
-那二百万两系咪可以酌量减啲呀？
+嗰二百万两系咪可以酌量减啲呀？
 So, can I deduct some from the payment of 2 million taels?
 
 466
@@ -2400,7 +2400,7 @@ So, one to ten Po, one to one
 
 481
 00:31:31,897 --> 00:31:35,162
-有冇搅错呀？这啲赔率差咁远嘅？
+有冇搅错呀？呢啲赔率差咁远嘅？
 Are you kidding, how can the betting rates differ so much?
 
 482
@@ -3535,12 +3535,12 @@ Chan, since we have nothing to do
 
 708
 00:45:21,028 --> 00:45:22,423
-唔啱阿爹过那边坐吓
+唔啱阿爹过嗰边坐吓
 Let me take a seat,
 
 709
 00:45:22,488 --> 00:45:23,966
-话唔定今晚这餐都有著落呢！
+话唔定今晚呢餐都有著落呢！
 maybe we can have something to eat tonight
 
 710
@@ -3740,7 +3740,7 @@ I have arranged it
 
 749
 00:46:40,763 --> 00:46:43,284
-就系对面灯笼下面着红衫嗰个就系啦
+就喺对面灯笼下面著红衫嗰个就系啦
 The one wearing the red dress who stands under the lantern, that's her
 
 750
@@ -4020,7 +4020,7 @@ Yes, it's better.
 
 805
 00:49:53,096 --> 00:49:56,452
-呢个冚家铲当日系怡红院
+呢个冚家铲当日喺怡红院
 We let him go in
 
 806
@@ -4400,7 +4400,7 @@ My dad is dying!
 
 881
 00:55:35,517 --> 00:55:37,499
-乞儿仔，这啲碎碳你要唔要呀？
+乞儿仔，呢啲碎碳你要唔要呀？
 Beggar, do you want the broken carbon?
 
 882
@@ -6079,7 +6079,7 @@ Uncle Mok…
 
 1217
 01:18:51,211 --> 01:18:54,422
-带一身胆色与热肠
+嗰得失怎么去量
 
 1218
 01:18:55,590 --> 01:18:59,385
@@ -6869,7 +6869,7 @@ Dragon's descendant,
 
 1377
 01:32:38,556 --> 01:32:39,601
-龙的传人龙凤呈祥⋯
+龙嘅传人龙凤呈祥⋯
 dragon's wish…
 
 1378

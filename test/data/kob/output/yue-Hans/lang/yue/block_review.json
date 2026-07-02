@@ -1488,8 +1488,8 @@
     "answer": {
       "xiugai_3": "话唔定今晚呢餐都有著落呢！",
       "beizhu_3": "将“这”修正为“呢”。",
-      "xiugai_4": "唔啱阿爹过嗰边坐吓",
-      "beizhu_4": "将“那”修正为“嗰”。"
+      "xiugai_2": "唔啱阿爹过嗰边坐吓",
+      "beizhu_2": "将“那”修正为“嗰”。"
     },
     "difficulty": 1,
     "verified": true

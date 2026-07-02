@@ -13,134 +13,6 @@ from test.helpers import parametrize
 from test.helpers.series_files import get_text_series
 
 
-def test_series_diff_empty_for_identical_series():
-    """Test no messages are emitted for identical series."""
-    diff = SeriesDiff(get_text_series("alpha"), get_text_series("alpha"))
-    assert list(diff) == []
-    assert str(diff) == "[]"
-
-
-def test_series_diff_reports_aligned_edit():
-    """Test a one-line edit from alignment-derived diffing."""
-    diff = SeriesDiff(
-        get_text_series("莫大叔！莲花落阵你都冇有把握"),
-        get_text_series("莫大叔呀！莲花落阵你都冇把握"),
-        one_lbl="TRANSCRIBE",
-        two_lbl="REFERENCE",
-    )
-    messages = list(diff)
-    assert len(messages) == 1
-    assert messages[0].kind == LineDiffKind.EDIT
-    assert str(messages[0]) == (
-        "edit: TRANSCRIBE[1] -> REFERENCE[1]: "
-        "'莫大叔！莲花落阵你都冇有把握' -> '莫大叔呀！莲花落阵你都冇把握'"
-    )
-
-
-def test_series_diff_reports_split():
-    """Test an exact one-to-many split from alignment-derived diffing."""
-    diff = SeriesDiff(get_text_series("alpha beta"), get_text_series("alpha", "beta"))
-    messages = list(diff)
-    assert len(messages) == 1
-    assert messages[0].kind == LineDiffKind.SPLIT
-    assert messages[0].one_idxs == (0,)
-    assert messages[0].two_idxs == (0, 1)
-
-
-def test_series_diff_reports_split_edit():
-    """Test one-to-many split with edited text."""
-    diff = SeriesDiff(get_text_series("alpha beta"), get_text_series("alpha", "betx"))
-    messages = list(diff)
-    assert len(messages) == 1
-    assert messages[0].kind == LineDiffKind.SPLIT_EDIT
-    assert messages[0].one_idxs == (0,)
-    assert messages[0].two_idxs == (0, 1)
-
-
-def test_series_diff_reports_merge_edit():
-    """Test many-to-one merge with edited text."""
-    diff = SeriesDiff(get_text_series("alpha", "beta"), get_text_series("alpha betx"))
-    messages = list(diff)
-    assert len(messages) == 1
-    assert messages[0].kind == LineDiffKind.MERGE_EDIT
-    assert messages[0].one_idxs == (0, 1)
-    assert messages[0].two_idxs == (0,)
-
-
-def test_series_diff_reports_shift():
-    """Test many-to-many shifted text."""
-    diff = SeriesDiff(
-        get_text_series("alpha", "beta"),
-        get_text_series("beta", "alpha"),
-        similarity_cutoff=0.4,
-    )
-    messages = list(diff)
-    assert len(messages) == 1
-    assert messages[0].kind == LineDiffKind.SHIFT
-    assert messages[0].one_idxs == (0, 1)
-    assert messages[0].two_idxs == (0, 1)
-
-
-@parametrize(
-    (
-        "one_texts",
-        "two_texts",
-        "expected_kind",
-        "expected_one_idxs",
-        "expected_two_idxs",
-    ),
-    [
-        (("你", "好"), ("你好",), LineDiffKind.MERGE_EDIT, (0, 1), (0,)),
-        (("ab",), ("a", "b"), LineDiffKind.SPLIT_EDIT, (0,), (0, 1)),
-    ],
-)
-def test_series_diff_reports_separator_only_line_wrapping(
-    one_texts: tuple[str, ...],
-    two_texts: tuple[str, ...],
-    expected_kind: LineDiffKind,
-    expected_one_idxs: tuple[int, ...],
-    expected_two_idxs: tuple[int, ...],
-):
-    """Test separator-only line wrapping preserves both sides.
-
-    Arguments:
-        one_texts: first subtitle series texts
-        two_texts: second subtitle series texts
-        expected_kind: expected diff kind
-        expected_one_idxs: expected first-side line indices
-        expected_two_idxs: expected second-side line indices
-    """
-    diff = SeriesDiff(get_text_series(*one_texts), get_text_series(*two_texts))
-    messages = list(diff)
-    assert len(messages) == 1
-    assert messages[0].kind == expected_kind
-    assert messages[0].one_idxs == expected_one_idxs
-    assert messages[0].two_idxs == expected_two_idxs
-
-
-def test_series_diff_reports_covered_edited_continuation_split():
-    """Test edited wrapped text includes the continuation line."""
-    diff = SeriesDiff(
-        get_text_series("我一定要喺第一招就出尽全力将佢打低"),
-        get_text_series("我一定要系第一招", "就出尽全力将佢打低"),
-    )
-    messages = list(diff)
-    assert len(messages) == 1
-    assert messages[0].kind == LineDiffKind.SPLIT_EDIT
-    assert messages[0].one_idxs == (0,)
-    assert messages[0].two_idxs == (0, 1)
-
-
-def test_series_diff_keeps_uncovered_insert_separate():
-    """Test a standalone insert after an equal line is not reported as a split."""
-    diff = SeriesDiff(get_text_series("Yes!"), get_text_series("Yes!", "Damn!"))
-    messages = list(diff)
-    assert len(messages) == 1
-    assert messages[0].kind == LineDiffKind.INSERT
-    assert messages[0].two_idxs == (1,)
-    assert messages[0].two_texts == ("Damn!",)
-
-
 @parametrize(
     (
         "one_fixture_name",
@@ -150,38 +22,6 @@ def test_series_diff_keeps_uncovered_insert_separate():
         "expected_fixture_name",
     ),
     [
-        param(
-            "kob_eng_ocr_fuse_clean_validate_review_flatten",
-            "kob_eng_clean_review_flatten_timewarp",
-            "OCR",
-            "SRT",
-            "kob_eng_expected_series_diff",
-            id="kob-eng-ocr-vs-srt",
-        ),
-        param(
-            "mlamd_zho_hans_fuse_clean_validate_review_flatten",
-            "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
-            "SIMP",
-            "TRAD",
-            "mlamd_zho_simplify_expected_series_diff",
-            id="mlamd-zho-simplify",
-        ),
-        param(
-            "mnt_zho_hans_fuse_clean_validate_review_flatten",
-            "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
-            "SIMP",
-            "TRAD",
-            "mnt_zho_simplify_expected_series_diff",
-            id="mnt-zho-simplify",
-        ),
-        param(
-            "t_zho_hans_fuse_clean_validate_review_flatten",
-            "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
-            "SIMP",
-            "TRAD",
-            "t_zho_simplify_expected_series_diff",
-            id="t-zho-simplify",
-        ),
         param(
             "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten",
             "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
@@ -215,6 +55,46 @@ def test_series_diff_keeps_uncovered_insert_separate():
             id="acoptc-zho-simplify",
         ),
         param(
+            "kob_eng_ocr_fuse_clean_validate_review_flatten",
+            "kob_eng_clean_review_flatten_timewarp",
+            "OCR",
+            "SRT",
+            "kob_eng_expected_series_diff",
+            id="kob-eng-ocr-vs-srt",
+        ),
+        param(
+            "kob_yue_hans_clean_review_flatten_timewarp",
+            "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
+            "SIMP",
+            "TRAD",
+            "kob_yue_simplify_expected_series_diff",
+            id="kob-yue-simplify",
+        ),
+        param(
+            "mlamd_zho_hans_fuse_clean_validate_review_flatten",
+            "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
+            "SIMP",
+            "TRAD",
+            "mlamd_zho_simplify_expected_series_diff",
+            id="mlamd-zho-simplify",
+        ),
+        param(
+            "mnt_zho_hans_fuse_clean_validate_review_flatten",
+            "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
+            "SIMP",
+            "TRAD",
+            "mnt_zho_simplify_expected_series_diff",
+            id="mnt-zho-simplify",
+        ),
+        param(
+            "t_zho_hans_fuse_clean_validate_review_flatten",
+            "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
+            "SIMP",
+            "TRAD",
+            "t_zho_simplify_expected_series_diff",
+            id="t-zho-simplify",
+        ),
+        param(
             "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten",
             "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "SIMP",
@@ -232,7 +112,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
         ),
     ],
 )
-def test_series_diff_matches_expected_fixture(
+def test_series_diff(
     one_fixture_name: str,
     two_fixture_name: str,
     one_label: str,
@@ -257,6 +137,24 @@ def test_series_diff_matches_expected_fixture(
     diff = SeriesDiff(one, two, one_lbl=one_label, two_lbl=two_label)
 
     assert [str(message) for message in diff] == expected
+
+
+def test_series_diff_empty_for_identical_series():
+    """Test no messages are emitted for identical series."""
+    diff = SeriesDiff(get_text_series("alpha"), get_text_series("alpha"))
+    assert list(diff) == []
+    assert str(diff) == "[]"
+
+
+def test_series_diff_get_stacked_str_appends_blank_third_line_for_insert():
+    """Test third-series output is blank for second-side-only inserts."""
+    one = get_text_series()
+    two = get_text_series("extra")
+    three = get_text_series()
+
+    rendered = SeriesDiff(one, two).get_stacked_str(color=False, three=three)
+
+    assert rendered.splitlines() == ["| 1", "", "extra", ""]
 
 
 def test_series_diff_get_stacked_str_appends_third_series():
@@ -340,17 +238,6 @@ def test_series_diff_get_stacked_str_keeps_equal_lines_around_one_sided_changes(
     assert rendered.splitlines() == expected_lines
 
 
-def test_series_diff_get_stacked_str_appends_blank_third_line_for_insert():
-    """Test third-series output is blank for second-side-only inserts."""
-    one = get_text_series()
-    two = get_text_series("extra")
-    three = get_text_series()
-
-    rendered = SeriesDiff(one, two).get_stacked_str(color=False, three=three)
-
-    assert rendered.splitlines() == ["| 1", "", "extra", ""]
-
-
 def test_series_diff_get_stacked_str_rejects_non_one_to_one_third_series():
     """Test stacked diff output rejects a third series not matched with one."""
     one = get_text_series("alpha beta")
@@ -359,3 +246,124 @@ def test_series_diff_get_stacked_str_rejects_non_one_to_one_third_series():
 
     with raises(ScinoephileError, match="one-to-one matched"):
         SeriesDiff(one, two).get_stacked_str(color=False, three=three)
+
+
+def test_series_diff_keeps_uncovered_insert_separate():
+    """Test a standalone insert after an equal line is not reported as a split."""
+    diff = SeriesDiff(get_text_series("Yes!"), get_text_series("Yes!", "Damn!"))
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.INSERT
+    assert messages[0].two_idxs == (1,)
+    assert messages[0].two_texts == ("Damn!",)
+
+
+def test_series_diff_reports_aligned_edit():
+    """Test a one-line edit from alignment-derived diffing."""
+    diff = SeriesDiff(
+        get_text_series("莫大叔！莲花落阵你都冇有把握"),
+        get_text_series("莫大叔呀！莲花落阵你都冇把握"),
+        one_lbl="TRANSCRIBE",
+        two_lbl="REFERENCE",
+    )
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.EDIT
+    assert str(messages[0]) == (
+        "edit: TRANSCRIBE[1] -> REFERENCE[1]: "
+        "'莫大叔！莲花落阵你都冇有把握' -> '莫大叔呀！莲花落阵你都冇把握'"
+    )
+
+
+def test_series_diff_reports_covered_edited_continuation_split():
+    """Test edited wrapped text includes the continuation line."""
+    diff = SeriesDiff(
+        get_text_series("我一定要喺第一招就出尽全力将佢打低"),
+        get_text_series("我一定要系第一招", "就出尽全力将佢打低"),
+    )
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SPLIT_EDIT
+    assert messages[0].one_idxs == (0,)
+    assert messages[0].two_idxs == (0, 1)
+
+
+def test_series_diff_reports_merge_edit():
+    """Test many-to-one merge with edited text."""
+    diff = SeriesDiff(get_text_series("alpha", "beta"), get_text_series("alpha betx"))
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.MERGE_EDIT
+    assert messages[0].one_idxs == (0, 1)
+    assert messages[0].two_idxs == (0,)
+
+
+@parametrize(
+    (
+        "one_texts",
+        "two_texts",
+        "expected_kind",
+        "expected_one_idxs",
+        "expected_two_idxs",
+    ),
+    [
+        (("你", "好"), ("你好",), LineDiffKind.MERGE_EDIT, (0, 1), (0,)),
+        (("ab",), ("a", "b"), LineDiffKind.SPLIT_EDIT, (0,), (0, 1)),
+    ],
+)
+def test_series_diff_reports_separator_only_line_wrapping(
+    one_texts: tuple[str, ...],
+    two_texts: tuple[str, ...],
+    expected_kind: LineDiffKind,
+    expected_one_idxs: tuple[int, ...],
+    expected_two_idxs: tuple[int, ...],
+):
+    """Test separator-only line wrapping preserves both sides.
+
+    Arguments:
+        one_texts: first subtitle series texts
+        two_texts: second subtitle series texts
+        expected_kind: expected diff kind
+        expected_one_idxs: expected first-side line indices
+        expected_two_idxs: expected second-side line indices
+    """
+    diff = SeriesDiff(get_text_series(*one_texts), get_text_series(*two_texts))
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == expected_kind
+    assert messages[0].one_idxs == expected_one_idxs
+    assert messages[0].two_idxs == expected_two_idxs
+
+
+def test_series_diff_reports_shift():
+    """Test many-to-many shifted text."""
+    diff = SeriesDiff(
+        get_text_series("alpha", "beta"),
+        get_text_series("beta", "alpha"),
+        similarity_cutoff=0.4,
+    )
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SHIFT
+    assert messages[0].one_idxs == (0, 1)
+    assert messages[0].two_idxs == (0, 1)
+
+
+def test_series_diff_reports_split():
+    """Test an exact one-to-many split from alignment-derived diffing."""
+    diff = SeriesDiff(get_text_series("alpha beta"), get_text_series("alpha", "beta"))
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SPLIT
+    assert messages[0].one_idxs == (0,)
+    assert messages[0].two_idxs == (0, 1)
+
+
+def test_series_diff_reports_split_edit():
+    """Test one-to-many split with edited text."""
+    diff = SeriesDiff(get_text_series("alpha beta"), get_text_series("alpha", "betx"))
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SPLIT_EDIT
+    assert messages[0].one_idxs == (0,)
+    assert messages[0].two_idxs == (0, 1)
