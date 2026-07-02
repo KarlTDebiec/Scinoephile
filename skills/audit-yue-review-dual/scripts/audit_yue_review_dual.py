@@ -19,7 +19,16 @@ __all__ = [
     "parse_srt",
 ]
 
-_AUDIT_CHOICES = ("changes", "些")
+_AUDIT_TARGETS: dict[str, tuple[str, ...]] = {
+    "些": ("些",),
+    "番": ("番",),
+    "是": ("是",),
+    "着": ("着",),
+    "喇啦啰": ("喇", "啦", "啰", "囉"),
+    "这那": ("这", "這", "那"),
+}
+_AUDIT_CHANGE_TARGETS = frozenset({"喇啦啰"})
+_AUDIT_CHOICES = ("changes", *_AUDIT_TARGETS)
 _SERIES_LABELS = {
     "hans_original": "yue-Hans source",
     "hans_review": "yue-Hans review",
@@ -149,7 +158,8 @@ def audit_dataset(
             hant_changes=hant_changes,
             final_differences=final_differences,
         )
-    if audit == "些":
+    target_texts = _AUDIT_TARGETS.get(audit)
+    if target_texts is not None:
         return format_target_markdown(
             dataset_name=dataset_name,
             context_lines=context_lines,
@@ -157,7 +167,9 @@ def audit_dataset(
             hans_changes=hans_changes,
             hant_changes=hant_changes,
             final_differences=final_differences,
-            target_text="些",
+            target_text=audit,
+            target_texts=target_texts,
+            changed_only=audit in _AUDIT_CHANGE_TARGETS,
         )
     raise ValueError(f"Unsupported audit type: {audit}")
 
@@ -262,6 +274,8 @@ def format_target_markdown(
     hant_changes: Mapping[int, ReviewChange],
     final_differences: Mapping[int, tuple[str, str]],
     target_text: str,
+    target_texts: Sequence[str],
+    changed_only: bool = False,
 ) -> str:
     """Format a target text audit report as Markdown.
 
@@ -272,7 +286,9 @@ def format_target_markdown(
         hans_changes: yue-Hans review changes by subtitle number
         hant_changes: yue-Hant review changes by subtitle number
         final_differences: final text differences by subtitle number
-        target_text: text that causes a subtitle row to be included
+        target_text: label for text that causes a subtitle row to be included
+        target_texts: text values that cause a subtitle row to be included
+        changed_only: whether to include only changed rows containing target text
     Returns:
         Markdown report
     """
@@ -280,7 +296,15 @@ def format_target_markdown(
     hans_final = series["hans_final"]
     hant_review = series["hant_review"]
     hant_final = series["hant_final"]
-    target_numbers = _get_target_numbers(series, target_text)
+    if changed_only:
+        target_numbers = _get_target_change_numbers(
+            hans_changes=hans_changes,
+            hant_changes=hant_changes,
+            final_differences=final_differences,
+            target_texts=target_texts,
+        )
+    else:
+        target_numbers = _get_target_numbers(series, target_texts)
     row_lines: list[str] = []
     for number in target_numbers:
         hans_change = hans_changes.get(number)
@@ -323,6 +347,10 @@ def format_target_markdown(
         )
 
     summary_context_lines = list(context_lines)
+    if changed_only:
+        summary_context_lines.append(
+            "- target scope: review edits or final differences containing target text"
+        )
     lines = [
         f"# {dataset_name} Yue Review Dual {target_text} Audit",
         "",
@@ -623,21 +651,61 @@ def _get_text_changes[T](
 
 def _get_target_numbers(
     series: Mapping[str, Mapping[int, SrtEvent]],
-    target_text: str,
+    target_texts: Sequence[str],
 ) -> list[int]:
     """Get subtitle numbers whose audited text contains target text.
 
     Arguments:
         series: parsed SRT events keyed by internal series name
-        target_text: text to find
+        target_texts: text values to find
     Returns:
         subtitle numbers containing target text in any audited series
     """
     numbers: set[int] = set()
     for events in series.values():
         for number, event in events.items():
-            if target_text in event.text:
+            if any(target_text in event.text for target_text in target_texts):
                 numbers.add(number)
+    return sorted(numbers)
+
+
+def _get_target_change_numbers(
+    *,
+    hans_changes: Mapping[int, ReviewChange],
+    hant_changes: Mapping[int, ReviewChange],
+    final_differences: Mapping[int, tuple[str, str]],
+    target_texts: Sequence[str],
+) -> list[int]:
+    """Get changed subtitle numbers whose changed text contains target text.
+
+    Arguments:
+        hans_changes: yue-Hans review changes by subtitle number
+        hant_changes: yue-Hant review changes by subtitle number
+        final_differences: final text differences by subtitle number
+        target_texts: text values to find
+    Returns:
+        changed subtitle numbers containing target text
+    """
+    numbers: set[int] = set()
+    for number in sorted(
+        set(hans_changes) | set(hant_changes) | set(final_differences)
+    ):
+        candidate_texts: list[str] = []
+        hans_change = hans_changes.get(number)
+        if hans_change is not None:
+            candidate_texts.extend((hans_change.original, hans_change.revised))
+        hant_change = hant_changes.get(number)
+        if hant_change is not None:
+            candidate_texts.extend((hant_change.original, hant_change.revised))
+        final_pair = final_differences.get(number)
+        if final_pair is not None:
+            candidate_texts.extend(final_pair)
+        if any(
+            target_text in candidate_text
+            for target_text in target_texts
+            for candidate_text in candidate_texts
+        ):
+            numbers.add(number)
     return sorted(numbers)
 
 

@@ -82,6 +82,37 @@ differ. To audit subtitles containing `些`, pass `--audit 些`:
 uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset kob --layout non-ocr --audit 些
 ```
 
+To audit subtitles containing `番`, pass `--audit 番`:
+
+```powershell
+uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset kob --layout non-ocr --audit 番
+```
+
+To audit subtitles containing `是`, pass `--audit 是`:
+
+```powershell
+uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset kob --layout non-ocr --audit 是
+```
+
+To audit subtitles containing `着`, pass `--audit 着`:
+
+```powershell
+uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset kob --layout non-ocr --audit 着
+```
+
+To audit review changes or final differences containing `喇`, `啦`, `啰`, or
+`囉`, pass `--audit 喇啦啰`:
+
+```powershell
+uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset kob --layout non-ocr --audit 喇啦啰
+```
+
+To audit subtitles containing `这`, `這`, or `那`, pass `--audit 这那`:
+
+```powershell
+uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset kob --layout non-ocr --audit 这那
+```
+
 To limit the audit to a subtitle-number range, pass `--first-index` and/or
 `--last-index`. These bounds are 1-indexed subtitle numbers and are inclusive:
 
@@ -130,6 +161,54 @@ correction is already applied symmetrically. Keep notes short, for example:
 - `Already corrected to 啲 in both reviews.`
 - `Hans should also change 些 to 啲.`
 - `Keep 些 here.`
+
+For `--audit 番`, a row appears when any audited source, review, or final text
+contains `番`. Fill the `Notes` column with a judgment about whether each
+instance should be corrected during initial review. Common outcomes include
+`返` for colloquial back/again/return usage, `翻` where the meaning is
+turning/overturning, or keeping `番` where it is correct. Keep notes short, for
+example:
+
+- `Already corrected to 返 in both reviews.`
+- `Both should change 番 to 返.`
+- `Change 番 to 翻 here.`
+- `Keep 番 here.`
+
+For `--audit 是`, a row appears when any audited source, review, or final text
+contains `是`. Fill the `Notes` column with a judgment about whether each
+instance should be corrected during initial review. Common outcomes include
+`係` for the Cantonese copula/focus marker, or keeping `是` where it is part of
+a standard word, title, or fixed expression. Keep notes short, for example:
+
+- `Already corrected to 係 in both reviews.`
+- `Both should change 是 to 係.`
+- `Keep 是 here.`
+
+For `--audit 喇啦啰`, a row appears when a review edit or final text difference
+contains `喇`, `啦`, `啰`, or `囉`. This audit is intentionally scoped to changed
+rows because these particles are too common for a broad occurrence audit. Fill
+the `Notes` column with a judgment about whether the particle choice is
+appropriate and symmetrical. Common outcomes include `啦` for general
+imperative/exclamatory particle uses, `喇` where the source particle should be
+kept, `啰`/`囉` where the lo particle is intended, or removing inappropriate
+particle/punctuation changes. Keep notes short, for example:
+
+- `Both changed 喇 to 啦.`
+- `Keep 喇 here.`
+- `Hans should also change 喇 to 啦.`
+- `Remove final particle change.`
+
+For `--audit 这那`, a row appears when any audited source, review, or final text
+contains `这`, `這`, or `那`. Fill the `Notes` column with a judgment about
+whether each instance should be corrected during initial review. Common outcomes
+include `呢`/`呢啲` for proximal demonstratives, `嗰`/`嗰個` for distal
+demonstratives, or keeping the source text for fixed/formal language. Keep notes
+short, for example:
+
+- `Already corrected to 嗰個 in both reviews.`
+- `Both should change 這啲 to 呢啲.`
+- `Both should change 那 to 嗰.`
+- `Keep 那 here.`
 
 Flag asymmetric review corrections as discrepancies. If one script makes an
 approved lexical or OCR correction and the corresponding other-script line has

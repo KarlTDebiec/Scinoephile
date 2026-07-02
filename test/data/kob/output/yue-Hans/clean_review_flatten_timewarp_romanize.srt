@@ -65,8 +65,8 @@ chaanyíhhāchaatsōu
 
 14
 00:03:06,134 --> 00:03:08,970
-叻仔，但是唔好骄，知嘛？
-lēkjái, daahnsih m̀hhóu gīu, jīma?
+叻仔，但系唔好骄，知嘛？
+lēkjái, daahnhaih m̀hhóu gīu, jīma?
 
 15
 00:03:11,222 --> 00:03:13,849
@@ -240,8 +240,8 @@ hātyìhwuih gam yáuhchìhn? ngóh dōu séung jouh àh!
 
 49
 00:04:28,705 --> 00:04:29,956
-个寿头硬是真系⋯
-go sauhtàuhngaahngsih jānhaih…
+个寿头硬系真系⋯
+go sauhtàuhngaahng haihjānhaih…
 
 50
 00:04:30,040 --> 00:04:31,041
@@ -400,8 +400,8 @@ dím àh, gwāipó?
 
 81
 00:05:56,115 --> 00:05:58,200
-你好衰，冇名俾你叫咩？叫我龟婆
-néih hóu sēui, móuhmìhng béi néih giu mē? giu ngóh gwāipó
+你好衰，冇名畀你叫咩？叫我龟婆
+néih hóu sēui, móuh mìhngbéi néih giu mē? giu ngóh gwāipó
 
 82
 00:05:58,617 --> 00:05:59,951
@@ -535,8 +535,8 @@ sōuyūng, mātyéh sih àh?
 
 108
 00:07:04,925 --> 00:07:06,051
-我俾人挑咗一吓
-ngóh béi yàhn tīujó yāt haak
+我畀人挑咗一吓
+ngóh béiyàhntīujó yāt haak
 
 109
 00:07:06,093 --> 00:07:06,802
@@ -685,8 +685,8 @@ móuh mātyéh yigin lāma?
 
 138
 00:08:13,943 --> 00:08:16,487
-等我嚟⋯等我讲番句公道嘅说话
-dáng ngóh làih… dáng ngóh góng fāan geui gūngdouh ge syutwah
+等我嚟⋯等我讲返句公道嘅说话
+dáng ngóh làih… dáng ngóh góng fáan geui gūngdouh ge syutwah
 
 139
 00:08:16,571 --> 00:08:17,821
@@ -735,8 +735,8 @@ ngóh dōu haih jūngyi jānjyū dō dī
 
 148
 00:08:41,925 --> 00:08:44,595
-赵大人，我番房等你喇
-jiuh daaihyàhn, ngóh fāanfòhng dáng néih la
+赵大人，我返房等你喇
+jiuh daaihyàhn, ngóh fáanfòhng dáng néih la
 
 149
 00:08:45,429 --> 00:08:47,139
@@ -925,7 +925,7 @@ haih ngóh hāpgányàhn
 
 186
 00:10:53,999 --> 00:10:55,459
-吓？俾你恰？
+吓？畀你恰？
 haak? béi néih hāp?
 
 187
@@ -970,8 +970,8 @@ yàhngā sung dou gam háuhláih jauh m̀hhóu joihāp kéuih la
 
 195
 00:11:11,181 --> 00:11:12,307
-嚟⋯摆去打赏俾呢度啲姑娘
-làih… báaiheui dáséung béi nīdouh dī gūnèuhng
+嚟⋯摆去打赏畀呢度啲姑娘
+làih… báaiheui dáséungbéi nē douh dī gūnèuhng
 
 196
 00:11:12,390 --> 00:11:13,099
@@ -1045,8 +1045,8 @@ ngóh sānwàih gwóngjāu jēunggwān
 
 210
 00:11:46,795 --> 00:11:49,172
-梗系要嚟拉你这啲害群之马啦
-gánghaih yiu làihlāai néih jédī hoihkwàhnjīmáhlā
+梗系要嚟拉你呢啲害群之马啦
+gánghaih yiu làihlāai néih nē dī hoihkwàhnjīmáhlā
 
 211
 00:11:49,255 --> 00:11:50,256
@@ -1130,8 +1130,8 @@ wòhngyèh
 
 227
 00:12:27,080 --> 00:12:29,291
-估唔到系呢度俾这啲无赖打扰你嘅雅兴
-gú m̀h dou haih nē douh béi jédī mòuhlaaihdáyíu néih ge ngáhhīng
+估唔到系呢度畀呢啲无赖打扰你嘅雅兴
+gú m̀h dou haih nē douh béi nē dī mòuhlaaihdáyíu néih ge ngáhhīng
 
 228
 00:12:29,374 --> 00:12:30,333
@@ -1190,8 +1190,8 @@ tùhngmàaih taaipìhng tīngwok géigo jeunglíhng
 
 239
 00:13:15,331 --> 00:13:16,873
-仲嫁祸俾我哋丐帮
-juhnggawoh béi ngóhdeih koibōng
+仲嫁祸畀我哋丐帮
+juhnggawohbéi ngóhdeih koibōng
 
 240
 00:13:17,582 --> 00:13:19,334
@@ -1260,7 +1260,7 @@ gogo jiuhdaaihyèhlāpdihngfūngjyū
 
 253
 00:13:54,073 --> 00:13:56,074
-俾苏翁一打就变咗珍珠末
+畀苏翁一打就变咗珍珠末
 béisōuyūngyātdá jauh bin jó jānjyū muht
 
 254
@@ -1290,8 +1290,8 @@ móuh daahnhaih àh! náh sahpmaahn léuhng ngóh doih jó lohk doih ge la
 
 259
 00:14:06,041 --> 00:14:07,626
-想摆番出嚟就好难喇
-séung báaifāanchēutlàih jauh hóu nàahn la
+想摆返出嚟就好难喇
+séung báai fáan chēutlàih jauh hóu nàahn la
 
 260
 00:14:08,001 --> 00:14:09,836
@@ -1305,13 +1305,13 @@ faiwá hóyíh síudī góng la, gwāipó
 
 262
 00:14:11,629 --> 00:14:12,463
-你出番去先
-néih chēutfāanheui sīn
+你出返去先
+néih chēut fāanheui sīn
 
 263
 00:14:12,546 --> 00:14:13,547
-系嘅！系嘅！
-haih ge! haih ge!
+冇但系呀！嗰十万两我袋咗落袋嘅喇
+móuh daahnhaih àh! gó sahpmaahn léuhng ngóh doih jó lohk doih ge la
 
 264
 00:14:14,090 --> 00:14:14,632
@@ -1535,7 +1535,7 @@ gam néih jouh m̀h jouh dākdou?
 
 308
 00:16:05,645 --> 00:16:06,646
-俾我谂一谂
+畀我谂一谂
 béi ngóh nám yāt nám
 
 309
@@ -1550,8 +1550,8 @@ hóu!
 
 311
 00:16:17,280 --> 00:16:19,741
-咁等你做得到嗰阵先至番嚟揾我啦
-gam dáng néih jouh dākdou gójahn sīnji fāanlàihwán ngóh lā
+咁等你做得到嗰阵先至返嚟揾我啦
+gam dáng néih jouh dākdou gójahn sīnji fāanlàih wán ngóh lā
 
 312
 00:16:20,616 --> 00:16:23,535
@@ -1565,8 +1565,8 @@ yānwaih jouh johngyùhn deui ngóhlàih góng yihyùh fáanjéung
 
 314
 00:16:27,539 --> 00:16:31,042
-好！咁都应该俾啲时间我考虑吓
-hóu! gam dōu yīnggōi béi dī sìhgaan ngóh háauleuih haak
+好！咁都应该畀啲时间我考虑吓
+hóu! gam dōu yīnggōi béidī sìhgaan ngóh háauleuih haak
 
 315
 00:16:31,125 --> 00:16:33,670
@@ -1665,8 +1665,8 @@ jiuh mòuhgihkyātyaht meih séi
 
 334
 00:19:07,720 --> 00:19:09,846
-我点都唔会谂这啲嘢嘅啦
-ngóh dím dōu m̀h wuih nám jédī yéh ge lā
+我点都唔会谂呢啲嘢嘅啦
+ngóh dím dōu m̀h wuih nám nē dī yéh ge lā
 
 335
 00:19:09,972 --> 00:19:11,181
@@ -1885,8 +1885,8 @@ néih deih m̀hhóu jēuila
 
 378
 00:21:12,662 --> 00:21:14,872
-这啲鸡唔带嘅喇，京城冇咩
-jédī gāi m̀hdaai ge la, gīng sìhngmóuh mē
+呢啲鸡唔带嘅喇，京城冇咩
+nē dī gāi m̀hdaai ge la, gīng sìhngmóuh mē
 
 379
 00:21:14,997 --> 00:21:18,501
@@ -1895,8 +1895,8 @@ néih go sauhtàuh síusām dī àh
 
 380
 00:21:18,584 --> 00:21:21,002
-你揩花我这啲嘢我打到你屁股开花嘅！
-néih hāaifā ngóh jédī yéh ngóh dá dou néih peigú hōifā ge!
+你揩花我呢啲嘢我打到你屁股开花嘅！
+néih hāaifā ngóh nē dī yéh ngóh dá dou néih peigú hōifā ge!
 
 381
 00:21:21,628 --> 00:21:22,587
@@ -1925,8 +1925,8 @@ gánghaihlā!
 
 386
 00:21:26,924 --> 00:21:28,592
-留番件衫著下好喎
-làuhfāangihnsāamjyuhah hóu wo
+留返件衫著下好喎
+làuh fáan gihn sāam jyuhah hóu wo
 
 387
 00:21:28,676 --> 00:21:30,427
@@ -2020,13 +2020,13 @@ tēui gwoheui… tēui gwoheui
 
 405
 00:22:08,669 --> 00:22:11,755
-小心啲呀⋯睇住我这啲荔枝
-síusām dī àh… tái jyuh ngóh jédī laihjī
+小心啲呀⋯睇住我呢啲荔枝
+síusām dī àh… tái jyuh ngóh nē dī laihjī
 
 406
 00:22:11,839 --> 00:22:14,465
-睇住我这啲荔枝呀，寿头！
-tái jyuh ngóh jédī laihjī àh, sauhtàuh!
+睇住我呢啲荔枝呀，寿头！
+tái jyuh ngóh nē dī laihjī àh, sauhtàuh!
 
 407
 00:22:15,592 --> 00:22:17,677
@@ -2065,8 +2065,8 @@ wòhngseuhng, jiuh sīnsāang yātsān kèih geihyihseuht
 
 414
 00:22:40,697 --> 00:22:43,616
-不如请佢展示下，俾皇上开吓眼界！
-bātyùh chíng kéuih jínsih hah, béi wòhngseuhng hōihaakngáahngaai!
+不如请佢展示下，畀皇上开吓眼界！
+bātyùh chíng kéuih jínsih hah, béiwòhngseuhng hōihaakngáahngaai!
 
 415
 00:22:43,699 --> 00:22:44,909
@@ -2075,7 +2075,7 @@ yihseuht?
 
 416
 00:22:47,244 --> 00:22:49,997
-赵先生，你就展示俾朕睇吓
+赵先生，你就展示畀朕睇吓
 jiuh sīnsāang, néih jauh jínsih béi jahm tái haak
 
 417
@@ -2185,7 +2185,7 @@ néih haih adē
 
 438
 00:26:16,885 --> 00:26:20,096
-好衰嘅！咁都俾你估到
+好衰嘅！咁都畀你估到
 hóu sēui ge! gam dōu béi néih gú dou
 
 439
@@ -2210,8 +2210,8 @@ m̀h hóuwuhn gamdīn
 
 443
 00:26:30,438 --> 00:26:31,606
-出番去，出番去
-chēutfāanheui, chēutfāanheui
+出返去，出返去
+chēut fāanheui, chēut fāanheui
 
 444
 00:26:32,732 --> 00:26:34,775
@@ -2275,8 +2275,8 @@ tái kéuih jouhfa la
 
 456
 00:27:01,591 --> 00:27:03,593
-老郑，你俾我这啲试卷
-lóuh jehng, néih béi ngóh jédī síhgyún
+老郑，你畀我呢啲试卷
+lóuh jehng, néih béi ngóh nē dī síhgyún
 
 457
 00:27:03,967 --> 00:27:05,343
@@ -2320,8 +2320,8 @@ ngóh go jái sahpbaat būnmóuhngaih gihngihn gāaijīng
 
 465
 00:27:17,021 --> 00:27:20,315
-那二百万两系咪可以酌量减啲呀？
-náh yihbaak maahnléuhng haih mī hóyíh jeukléung gáamdī àh?
+嗰二百万两系咪可以酌量减啲呀？
+gó yihbaak maahnléuhng haih mī hóyíh jeukléung gáamdī àh?
 
 466
 00:27:20,398 --> 00:27:22,859
@@ -2400,8 +2400,8 @@ sōuchaathāyíhchaanyātpùihsahp, bokdaahtyíhdō yātpùih yāt
 
 481
 00:31:31,908 --> 00:31:35,162
-有冇搅错呀？这啲赔率差咁远嘅？
-yáuhmóuh gáaucho àh? jédī pùihsēutchā gam yúhn ge?
+有冇搅错呀？呢啲赔率差咁远嘅？
+yáuhmóuh gáaucho àh? nē dī pùihsēutchā gam yúhn ge?
 
 482
 00:31:35,620 --> 00:31:37,873
@@ -2515,7 +2515,7 @@ yèuhngmàhnlàih ge! Heart jīkhaih yáuhdausām gam gáai
 
 504
 00:32:26,623 --> 00:32:29,417
-所以我谂住训身！
+所以我谂住瞓身！
 sóyíh ngóh nám jyuh fansān!
 
 505
@@ -2545,7 +2545,7 @@ ngóh gin néih fānsīkdāk gam chīngchó!
 
 510
 00:32:39,843 --> 00:32:40,552
-俾你讲吓讲吓
+畀你讲吓讲吓
 béi néih gónghaak góng haak
 
 511
@@ -2560,8 +2560,8 @@ gwolàihgwolàih!
 
 513
 00:32:46,390 --> 00:32:47,308
-我训两次身
-ngóh fanléuhngchisān
+我瞓两次身
+ngóh fan léuhngchisān
 
 514
 00:32:47,391 --> 00:32:48,101
@@ -2700,8 +2700,8 @@ taaihākamlā! teuifēi m̀h dóudāk m̀h dāk àh?
 
 541
 00:35:49,091 --> 00:35:50,467
-追番局！追番局！
-jēuifāanguhk! jēuifāanguhk!
+追返局！追返局！
+jēui fáan guhk! jēui fáan guhk!
 
 542
 00:35:50,968 --> 00:35:52,010
@@ -2740,8 +2740,8 @@ gam ge “láhjá” jīunéih dōu séung yèhng?
 
 549
 00:37:33,515 --> 00:37:35,141
-训醒未呀靓仔你！
-fansíng meih àh lengjái néih!
+瞓醒未呀靓仔你！
+fanséng meih àh lengjái néih!
 
 550
 00:37:35,892 --> 00:37:37,477
@@ -2800,7 +2800,7 @@ bīu ngóh chùhngchàaih! fong ngóhjí yūn
 
 561
 00:37:59,579 --> 00:38:00,956
-你以后唔好俾我见到你！
+你以后唔好畀我见到你！
 néih yíhhauh m̀hhóu béi ngóh gindóu néih!
 
 562
@@ -3135,8 +3135,8 @@ néih yáuhmóuh jāpgwofaat àh?
 
 628
 00:41:43,608 --> 00:41:45,817
-冇呀！冇呀！我七年冇番过军营嘅啦
-móuh àh! móuh àh! ngóh chātnìhn móuh fāan gwogwānyìhng ge lā
+冇呀！冇呀！我七年冇返过军营嘅啦
+móuh àh! móuh àh! ngóh chātnìhn móuh fáan gwogwānyìhng ge lā
 
 629
 00:41:47,235 --> 00:41:49,738
@@ -3355,8 +3355,8 @@ dím àh?
 
 672
 00:43:59,184 --> 00:44:00,769
-点解佢哋俾人抄家都咁开心嘅？
-dímgáai kéuihdeih béi yàhn chāaugā dōu gam hōisām ge?
+点解佢哋畀人抄家都咁开心嘅？
+dímgáai kéuihdeih béiyàhnchāaugā dōu gam hōisām ge?
 
 673
 00:44:00,852 --> 00:44:01,936
@@ -3395,8 +3395,8 @@ gaijuhk siu!
 
 680
 00:44:16,157 --> 00:44:18,325
-阿仔，头先你有冇留番一张半张银票
-ajái, tàuhsīn néih yáuhmóuh làuhfāanyātjēungbunjēung ngàhnpiu
+阿仔，头先你有冇留返一张半张银票
+ajái, tàuhsīn néih yáuhmóuh làuh fáan yātjēungbunjēung ngàhnpiu
 
 681
 00:44:18,408 --> 00:44:19,659
@@ -3440,7 +3440,7 @@ néih jícheunggángō gogo?
 
 689
 00:44:40,512 --> 00:44:42,388
-唔系，俾紧钱嗰个呀
+唔系，畀紧钱嗰个呀
 m̀hhaih, béi gánchín gogo àh
 
 690
@@ -3490,8 +3490,8 @@ yíh ngóh gam ge yàhnchòih, gam ge móuhngaih
 
 699
 00:44:59,528 --> 00:45:01,279
-我要做乞儿个天都唔俾呀！
-ngóh yiu jouh hātyìhgotīn dōu m̀h béi àh!
+我要做乞儿个天都唔畀呀！
+ngóh yiu jouh hātyìhgotīn dōu m̀hbéi àh!
 
 700
 00:45:01,363 --> 00:45:02,322
@@ -3540,13 +3540,13 @@ m̀h ngāam ōdēgwonáhbīn chóhhaak
 
 709
 00:45:22,506 --> 00:45:23,966
-话唔定今晚这餐都有著落呢！
-wah m̀hdihng gāmmáahn jéchāan dōu yáuhjyu lohk nē!
+话唔定今晚呢餐都有著落呢！
+wah m̀hdihng gāmmáahn nē chāan dōu yáuhjyu lohk nē!
 
 710
 00:45:24,049 --> 00:45:25,467
-咁你即系当正自己系乞儿啫！
-gam néih jīkhaih dōngjeng jihgéi haihhātyìhjē!
+唔啱阿爹过嗰边坐吓
+m̀h ngāam ōdēgwo góbīn chóh haak
 
 711
 00:45:26,010 --> 00:45:27,051
@@ -3605,7 +3605,7 @@ dōjeh
 
 722
 00:45:44,150 --> 00:45:46,152
-咦喂，我做咩要俾钱你呀？
+咦喂，我做咩要畀钱你呀？
 yíwai, ngóh jouh mē yiu béichín néih àh?
 
 723
@@ -3620,8 +3620,8 @@ gam dōu yiu jī ge ma
 
 725
 00:45:49,405 --> 00:45:51,448
-你知又好唔知又好，都系要俾嘅喇
-néih jī yauh hóu m̀h jī yauh hóu, dōu haihyiu béi ge la
+你知又好唔知又好，都系要畀嘅喇
+néih jī yauh hóu m̀h jī yauh hóu, dōu haihyiubéi ge la
 
 726
 00:45:51,531 --> 00:45:53,575
@@ -3630,8 +3630,8 @@ m̀hdāk m̀h dāk, dōu haihgáau chīngchó hóu dī
 
 727
 00:45:55,994 --> 00:45:57,411
-俾你就俾啦！问咁多做乜嘢啫
-béi néih jauh béi lā! mahn gam dō jouh mātyéh jē
+畀你就畀啦！问咁多做乜嘢啫
+béi néih jauh béilā! mahn gam dō jouh mātyéh jē
 
 728
 00:45:57,494 --> 00:45:58,162
@@ -3740,8 +3740,8 @@ yātjóu tùhng néih ōnpàaih hóu la!
 
 749
 00:46:40,783 --> 00:46:43,284
-就系对面灯笼下面着红衫嗰个就系啦
-jauh haih deuimihn dānglùhnghahmihn jeuhkhùhngsāam gogo jauh haih lā
+就喺对面灯笼下面著红衫嗰个就系啦
+jauh hái deuimihn dānglùhnghah mihn jyuhùhngsāam gogo jauh haih lā
 
 750
 00:46:49,582 --> 00:46:50,583
@@ -3805,13 +3805,13 @@ hīngdaih, ngóhdeih jihnghaih séung chàuhdī séuigeuk
 
 762
 00:47:33,203 --> 00:47:34,204
-番落广州啫
-fāanlohk gwóngjāu jē
+返落广州啫
+fáanlohk gwóngjāu jē
 
 763
 00:47:34,705 --> 00:47:37,206
-俾条路行吓，无谓赶到咁绝呀！
-béi tìuhlouh hohng haak, mòuhwaih gón dou gam jyuht àh!
+畀条路行吓，无谓赶到咁绝呀！
+béitìuhlouh hohng haak, mòuhwaih gón dou gam jyuht àh!
 
 764
 00:47:39,333 --> 00:47:40,334
@@ -3915,7 +3915,7 @@ jauh chēutjeuhnchyùhnlihk jēung kéuih dádāi
 
 784
 00:48:19,535 --> 00:48:21,537
-唔可以俾佢有还手机会
+唔可以畀佢有还手机会
 m̀h hóyíh béi kéuih yáuhwàahnsáu gēiwuih
 
 785
@@ -3935,7 +3935,7 @@ néih sáugeukgwāthāau tùhngmàaih chyùhnsān gīngmahk
 
 788
 00:48:50,354 --> 00:48:51,480
-都俾我打断晒
+都畀我打断晒
 dōu béi ngóh dádyuhnsaai
 
 789
@@ -3955,7 +3955,7 @@ bātgwo, sān jek sáu chēutlàihhāthaakchín dōu juhng hóyíh ge
 
 792
 00:49:03,281 --> 00:49:04,407
-俾心机做乞儿啦
+畀心机做乞儿啦
 béi sāmgēi jouhhātyìhlā
 
 793
@@ -4020,8 +4020,8 @@ haihàh, hóudī ge
 
 805
 00:49:53,158 --> 00:49:56,452
-呢个冚家铲当日系怡红院
-nē go hahmgā cháan dōngyaht haihyìhhùhngyún
+呢个冚家铲当日喺怡红院
+nē go hahmgā cháan dōngyaht háiyìhhùhngyún
 
 806
 00:49:56,536 --> 00:49:58,454
@@ -4150,7 +4150,7 @@ seuhnbihn fāanlàih jauh bōumàaih jeuihauh nējāiyeuhk
 
 831
 00:51:21,652 --> 00:51:22,694
-俾你饮呀吓
+畀你饮呀吓
 béi néih yám àh haak
 
 832
@@ -4190,7 +4190,7 @@ héimáh yiu līng go butwo! gamyeuhng sīnji yáuh sānfahn!
 
 839
 00:51:43,712 --> 00:51:46,256
-乞儿都讲身份，箫都俾佢吹孪
+乞儿都讲身份，箫都畀佢吹孪
 hātyī dōu góng sānfahn, sīudōu béi kéuih chēuilyùhn
 
 840
@@ -4215,8 +4215,8 @@ haihàh…
 
 844
 00:52:14,906 --> 00:52:15,448
-俾个钱嚟
-béi go chín làih
+畀个钱嚟
+béigo chín làih
 
 845
 00:52:15,532 --> 00:52:16,741
@@ -4300,12 +4300,12 @@ gam aan ge la?
 
 861
 00:53:58,497 --> 00:53:59,956
-阿爹出去揾啲嘢番嚟食呀吓
+阿爹出去揾啲嘢返嚟食呀吓
 adē chēutheui wándī yéh fāanlàih sihk àh haak
 
 862
 00:54:01,916 --> 00:54:03,876
-你快啲训返低先，今次等我去！
+你快啲瞓返低先，今次等我去！
 néih faai dī fan fáandāi sīn, gāmchi dáng ngóh heui!
 
 863
@@ -4325,8 +4325,8 @@ néih dáuhaaksīn lā
 
 866
 00:54:10,006 --> 00:54:11,508
-我揾到钱番嚟同你睇大夫
-ngóh wán dou chín fāan làih tùhng néih tái daaihfū
+我揾到钱返嚟同你睇大夫
+ngóh wán dou chín fāanlàih tùhng néih tái daaihfū
 
 867
 00:54:31,358 --> 00:54:32,776
@@ -4355,8 +4355,8 @@ báau… báau dōu yiu sihk àh, faai dī sihkmàaih kéuih
 
 872
 00:54:43,995 --> 00:54:46,037
-唔食就算喇！番屋企啦
-m̀h sihk jauhsyun la! fāan ūkkéi lā
+唔食就算喇！返屋企啦
+m̀h sihk jauhsyun la! fáan ūkkéi lā
 
 873
 00:54:47,330 --> 00:54:50,583
@@ -4400,8 +4400,8 @@ ngóh adē jauh làih dung séi la!
 
 881
 00:55:35,581 --> 00:55:37,499
-乞儿仔，这啲碎碳你要唔要呀？
-hātyījái, jédī seuitaan néih yiu m̀h yiu àh?
+乞儿仔，呢啲碎碳你要唔要呀？
+hātyījái, nē dī seuitaan néih yiu m̀h yiu àh?
 
 882
 00:55:37,625 --> 00:55:38,751
@@ -4410,8 +4410,8 @@ dōjeh!
 
 883
 00:55:39,667 --> 00:55:41,377
-可唔可以俾多两个钱碎银过我？
-hó m̀h hóyíh béi dō léuhng go chín seui ngàhngwo ngóh?
+可唔可以畀多两个钱碎银过我？
+hó m̀h hóyíh béidō léuhng go chín seui ngàhngwo ngóh?
 
 884
 00:55:42,587 --> 00:55:44,339
@@ -4520,8 +4520,8 @@ gintìuh lengjái sihkgánmaahntàuh mī jelàihngáauh jódaahmjīma
 
 905
 00:56:56,401 --> 00:56:58,027
-我呢度有馒头！我还番俾你哋！
-ngóh nīdouh yáuh maahntàuh! ngóh wàahnfāan béi néihdeih!
+我呢度有馒头！我还返畀你哋！
+ngóh nīdouh yáuh maahntàuh! ngóh wàahn fáanbéi néihdeih!
 
 906
 00:56:58,111 --> 00:56:58,903
@@ -4530,8 +4530,8 @@ gam dōu dāk ge mē?
 
 907
 00:56:58,987 --> 00:57:01,072
-我斩咗你个头再还番俾你得唔得？
-ngóh jáam jó néih go tàuh joi wàahnfāan béi néih dāk m̀h dāk?
+我斩咗你个头再还返畀你得唔得？
+ngóh jáam jó néih go tàuh joi wàahn fáanbéi néih dāk m̀h dāk?
 
 908
 00:57:03,449 --> 00:57:04,825
@@ -4555,8 +4555,8 @@ jānhaih! johngyùhn yèhlàih ge!
 
 912
 00:57:13,291 --> 00:57:14,709
-状元爷一定要俾面呀！
-johngyùhn yèh yātdihng yiu béi mihn àh!
+状元爷一定要畀面呀！
+johngyùhn yèh yātdihng yiu béimín àh!
 
 913
 00:57:14,792 --> 00:57:16,627
@@ -4690,12 +4690,12 @@ nē wúnfaahntaai hóumeih lā
 
 939
 00:59:00,634 --> 00:59:02,636
-呢啖我想留番嚟做宵夜
-nēdaahm ngóh séung làuhfāan làih jouhsīuyeh
+呢啖我想留返嚟做宵夜
+nēdaahm ngóh séung làuh fāanlàih jouhsīuyeh
 
 940
 00:59:02,719 --> 00:59:03,720
-咁都俾你谂到呀？
+咁都畀你谂到呀？
 gam dōu béi néih nám dou àh?
 
 941
@@ -4795,8 +4795,8 @@ mohkdaaihsūk! gūnghéifaatchòih!
 
 960
 01:00:03,272 --> 01:00:04,481
-呢啲礼物送俾你嘅！
-nē dī láihmaht sung béi néih ge!
+呢啲礼物送畀你嘅！
+nē dī láihmaht sungbéi néih ge!
 
 961
 01:00:04,940 --> 01:00:06,233
@@ -4805,13 +4805,13 @@ dōjeh! dōjeh!
 
 962
 01:00:08,318 --> 01:00:09,611
-呢度两件衫，一件送俾你！
-nīdouh léuhng gihn sāam, yātgihn sung béi néih!
+呢度两件衫，一件送畀你！
+nīdouh léuhng gihn sāam, yātgihnsungbéi néih!
 
 963
 01:00:09,694 --> 01:00:10,820
-一件送俾阿灿嘅！
-yātgihn sung béi ōchaange!
+一件送畀阿灿嘅！
+yātgihnsungbéi ōchaange!
 
 964
 01:00:11,779 --> 01:00:13,239
@@ -4880,18 +4880,18 @@ achaan nē?
 
 977
 01:00:30,212 --> 01:00:34,633
-阿灿？佢由年三十晚训到年初一
-achaan? kéuih yàuhnìhn sāamsahp máahn fandou nìhnchō yāt
+阿灿？佢由年三十晚瞓到年初一
+achaan? kéuih yàuhnìhn sāamsahp máahn fan dou nìhnchō yāt
 
 978
 01:00:34,716 --> 01:00:35,884
-都仲未训醒呀！
-dōu juhng meihfan síng àh!
+都仲未瞓醒呀！
+dōu juhng meih fanséng àh!
 
 979
 01:00:35,967 --> 01:00:38,093
-佢啱啱至训着咋！唔好嘈醒佢呀
-kéuih ngāamngāam jifan jeuhk ja! m̀hhóu chòuhséng kéuih àh
+佢啱啱至瞓着咋！唔好嘈醒佢呀
+kéuih ngāamngāam ji fan jeuhk ja! m̀hhóu chòuhséng kéuih àh
 
 980
 01:00:38,886 --> 01:00:40,387
@@ -4905,8 +4905,8 @@ hóu àh! ngóh bōng néih sáu àh
 
 982
 01:00:45,351 --> 01:00:47,101
-新正头仲训觉呀？
-sānjingtàuhjuhng fangok àh?
+新正头仲瞓觉呀？
+sānjingtàuhjuhng fangaau àh?
 
 983
 01:00:48,436 --> 01:00:50,271
@@ -5000,7 +5000,7 @@ néih tái kéuih séi sèhlaahnsíhngam
 
 1001
 01:01:36,645 --> 01:01:38,647
-净系识得训，点打交呀？
+净系识得瞓，点打交呀？
 jihnghaih sīkdāk fan, dím dágāau àh?
 
 1002
@@ -5080,8 +5080,8 @@ syun la! m̀hhóu joi lohngfai sìhgaan la
 
 1017
 01:02:25,312 --> 01:02:26,855
-你不如俾我瞓吓觉仲好
-néih bātyùh béi ngóhfan haak gokjuhng hóu
+你不如畀我瞓吓觉仲好
+néih bātyùh béi ngóh fan haak gokjuhng hóu
 
 1018
 01:02:33,027 --> 01:02:33,819
@@ -5105,8 +5105,8 @@ ngóh géigīng sānfú sīnji gáau dou gam ge jahnyùhng
 
 1022
 01:02:53,921 --> 01:02:57,006
-你俾啲心机练好啲打狗棍法至好呀
-néih béi dī sāmgēi lihn hóu dī dágáugwanfaat ji hóu àh
+你畀啲心机练好啲打狗棍法至好呀
+néih béidī sāmgēi lihn hóu dī dágáugwanfaat ji hóu àh
 
 1023
 01:03:20,026 --> 01:03:21,110
@@ -5120,8 +5120,8 @@ jauhsyun jānhaihyiu ngóhlihn dágáugwan
 
 1025
 01:03:23,988 --> 01:03:26,324
-你都要留番枝棍俾我至得嘅
-néih dōu yiu làuhfāanjīgwan béi ngóh jidāk ge
+你都要留返枝棍畀我至得嘅
+néih dōu yiu làuh fáan jīgwanbéi ngóh jidāk ge
 
 1026
 01:03:27,991 --> 01:03:29,618
@@ -5210,7 +5210,7 @@ tùhnghòhng dōu tái néih m̀hhéi la
 
 1043
 01:04:32,923 --> 01:04:34,633
-我以前去到度度都俾人睇得起
+我以前去到度度都畀人睇得起
 ngóh yíhchìhn heuidou douhdouh dōu béi yàhn tái dāk héi
 
 1044
@@ -5225,8 +5225,8 @@ ngóh jauh ngāamngāam sēungfáan la
 
 1046
 01:04:38,428 --> 01:04:40,430
-我成世人都未俾人睇起过嘅
-ngóh sèhngsai yàhn dōu meih béi yàhn tái héigwo ge
+我成世人都未畀人睇起过嘅
+ngóh sèhngsai yàhn dōu meihbéi yàhn tái héigwo ge
 
 1047
 01:04:40,805 --> 01:04:43,891
@@ -5265,8 +5265,8 @@ wai, faai dī!
 
 1054
 01:05:01,907 --> 01:05:03,366
-还番啲钱过我顶住档先
-wàahnfāandī chín gwo ngóh díngjyuh dong sīn
+还返啲钱过我顶住档先
+wàahn fáan dī chín gwo ngóh díngjyuh dong sīn
 
 1055
 01:05:03,450 --> 01:05:04,451
@@ -5295,13 +5295,13 @@ dōjeh, sāmlíhngla!
 
 1060
 01:05:19,547 --> 01:05:20,924
-俾钱你都冇用啦
+畀钱你都冇用啦
 béichín néih dōu móuhyuhng lā
 
 1061
 01:05:21,216 --> 01:05:22,883
-你都买唔番你冇咗嘅嘢！
-néih dōu máaih m̀h fāan néih móuh jó ge yéh!
+你都买唔返你冇咗嘅嘢！
+néih dōu máaih m̀h fáan néih móuh jó ge yéh!
 
 1062
 01:05:24,510 --> 01:05:25,385
@@ -5340,7 +5340,7 @@ jouhhātyìhyáuh mātyéh m̀hhóu àh?
 
 1069
 01:05:42,943 --> 01:05:44,568
-想行就行，想训就训
+想行就行，想瞓就瞓
 séung hohng jauh hohng, séung fan jauh fan
 
 1070
@@ -5355,8 +5355,8 @@ néih góng àh, néih séung yiu mātyéh? ngóh sìhngchyùhn néih!
 
 1072
 01:05:49,198 --> 01:05:50,115
-我想做番个人！
-ngóh séung jouh fāango yàhn!
+我想做返个人！
+ngóh séung jouh fáan go yàhn!
 
 1073
 01:05:50,157 --> 01:05:51,909
@@ -5615,8 +5615,8 @@ néih saat jó ngóh go néuihyán…
 
 1124
 01:10:36,989 --> 01:10:38,199
-⋯我要将你献俾皇上
-… ngóh yiu jēung néihhin béi wòhngseuhng
+⋯我要将你献畀皇上
+… ngóh yiu jēung néihhinbéiwòhngseuhng
 
 1125
 01:10:44,579 --> 01:10:46,832
@@ -5625,13 +5625,13 @@ dím àh? móuh yàhn gámseuhnglàih jouh bōngjyúàh
 
 1126
 01:10:47,332 --> 01:10:49,543
-叫莫老三交番支打狗棍出嚟！
-giu mohklóuhsāamgāaufāanjīdágáugwan chēutlàih!
+叫莫老三交返支打狗棍出嚟！
+giu mohklóuhsāamgāau fáanjī dágáugwan chēutlàih!
 
 1127
 01:10:51,669 --> 01:10:55,631
-叫个老嘢交番支棍出嚟！
-giugo lóuhyéh gāaufāanjīgwanchēutlàih!
+叫个老嘢交返支棍出嚟！
+giugo lóuhyéh gāau fáanjī gwanchēutlàih!
 
 1128
 01:10:55,714 --> 01:10:58,842
@@ -5670,8 +5670,8 @@ mohkdaaihsūk…
 
 1135
 01:11:29,410 --> 01:11:30,327
-真系俾你吓我一惊
-jānhaih béi néih haak ngóh yāt gīng
+真系畀你吓我一惊
+jānhaihbéi néih haak ngóh yāt gīng
 
 1136
 01:11:30,411 --> 01:11:31,120
@@ -5685,8 +5685,8 @@ dím àh? gājē nē?
 
 1138
 01:11:33,455 --> 01:11:34,999
-你家姐俾赵无极捉咗
-néih gājē béi jiuh mòuhgihkjūk jó
+你家姐畀赵无极捉咗
+néih gājē béijiuh mòuhgihkjūk jó
 
 1139
 01:11:35,624 --> 01:11:37,625
@@ -5710,7 +5710,7 @@ mohkdaaihsūk
 
 1143
 01:12:01,480 --> 01:12:02,981
-不如俾我试吓
+不如畀我试吓
 bātyùh béi ngóh si haak
 
 1144
@@ -5720,8 +5720,8 @@ achaan
 
 1145
 01:12:43,517 --> 01:12:45,435
-你唔系九袋弟子，落番嚟！
-néih m̀hhaih gáudoihdaihjí, lohkfāanlàih!
+你唔系九袋弟子，落返嚟！
+néih m̀hhaih gáudoihdaihjí, lohk fāanlàih!
 
 1146
 01:12:47,019 --> 01:12:49,980
@@ -5735,8 +5735,8 @@ achaan, néih mī yíhwàihwáan
 
 1148
 01:12:52,733 --> 01:12:54,526
-你实冇命嘅！落番嚟
-néihsaht móuhmehng ge! lohkfāanlàih
+你实冇命嘅！落返嚟
+néihsaht móuhmehng ge! lohk fāanlàih
 
 1149
 01:12:54,901 --> 01:12:57,570
@@ -5760,8 +5760,8 @@ kéuih jouh mātyéh àh?
 
 1153
 01:13:40,107 --> 01:13:40,858
-训觉？
-fangok?
+瞓觉？
+fangaau?
 
 1154
 01:13:55,620 --> 01:13:57,038
@@ -5885,8 +5885,8 @@ ngóhhùhngmáuh dōngnìhn làuhdāi jīdágáugwan
 
 1178
 01:16:25,793 --> 01:16:28,086
-目的只系俾大家作为留念！
-muhkdīk jíhaih béi daaihgā jokwàih làuhnihm!
+目的只系畀大家作为留念！
+muhkdīk jíhaihbéi daaihgā jokwàih làuhnihm!
 
 1179
 01:16:28,545 --> 01:16:30,756
@@ -6035,8 +6035,8 @@ nē bún haih gonglùhng sahpbaat jéung
 
 1208
 01:17:52,118 --> 01:17:53,786
-仲有，大还丹都交俾你
-juhngyáuh, daaihwàahndāan dōu gāau béi néih
+仲有，大还丹都交畀你
+juhngyáuh, daaihwàahndāan dōu gāaubéi néih
 
 1209
 01:17:54,870 --> 01:17:56,831
@@ -6045,8 +6045,8 @@ hēimohng néih hóu hóu deih líhng douhkoibōng
 
 1210
 01:17:58,124 --> 01:17:59,999
-我只系想尽快救番如霜啫
-ngóh jíhaih séung jeuhnfaai gaufāan yùhsēungjē
+我只系想尽快救返如霜啫
+ngóh jíhaih séung jeuhnfaai gau fáan yùhsēungjē
 
 1211
 01:18:02,127 --> 01:18:03,920
@@ -6080,8 +6080,8 @@ jeuhnglouhmaahnmaahn buhn néih chóng
 
 1217
 01:18:51,211 --> 01:18:54,422
-带一身胆色与热肠
-daai yātsāndáamsīkyúh yihtchèuhng
+嗰得失怎么去量
+gódāk sātjámmōheui leuhng
 
 1218
 01:18:55,590 --> 01:18:59,385
@@ -6215,7 +6215,7 @@ ngóh jīdou wòhngseuhng héifūn méihnéuih
 
 1244
 01:21:21,383 --> 01:21:23,761
-所以我献上一美女俾佢！
+所以我献上一美女畀佢！
 sóyíh ngóhhinseuhngyāt méihnéuih béi kéuih!
 
 1245
@@ -6270,8 +6270,8 @@ káibánwòhngseuhng
 
 1255
 01:22:02,795 --> 01:22:04,797
-赵大人带咗个女人嚟献俾皇上
-jiuh daaihyàhn daai jó go néuihyán làihhin béi wòhngseuhng
+赵大人带咗个女人嚟献畀皇上
+jiuh daaihyàhn daai jó go néuihyán làihhinbéiwòhngseuhng
 
 1256
 01:22:05,755 --> 01:22:06,547
@@ -6300,7 +6300,7 @@ nē go wòhngbaatdáan yauh séung gin wòhngseuhng
 
 1261
 01:22:41,412 --> 01:22:44,497
-再俾你见多几次我咪连官都冇得做
+再畀你见多几次我咪连官都冇得做
 joi béi néih gin dō géichi ngóh mī lìhngūn dōu móuhdāk jouh
 
 1262
@@ -6600,7 +6600,7 @@ gam ngóh dím àh?
 
 1321
 01:28:05,151 --> 01:28:06,986
-唔怕！我笃尿大，分咁啲俾你
+唔怕！我笃尿大，分咁啲畀你
 m̀hpa! ngóh dūkniuhdaaih, fān gam dī béi néih
 
 1322
@@ -6775,8 +6775,8 @@ wòhngseuhng
 
 1356
 01:30:38,492 --> 01:30:40,161
-狗皇帝，将你个江山交俾我
-gáuwòhngdai, jēung néih go gōngsāan gāau béi ngóh
+狗皇帝，将你个江山交畀我
+gáuwòhngdai, jēung néih go gōngsāan gāaubéi ngóh
 
 1357
 01:30:40,328 --> 01:30:41,454
@@ -6800,7 +6800,7 @@ sōuhātyìh? néih m̀hhaih hātyìhdaudouh seuihgaau ge mē
 
 1361
 01:30:51,254 --> 01:30:53,422
-系喎！讲起都有啲眼训
+系喎！讲起都有啲眼瞓
 haih wo! gónghéi dōu yáuhdī ngáahnfan
 
 1362
@@ -6820,8 +6820,8 @@ yáuhmóuh hingcheui gāyahp ngóhdeih koibōng àh?
 
 1365
 01:31:39,462 --> 01:31:41,589
-估唔到你条死蛇烂鳝都会番生！
-gú m̀h dou néih tìuh séisèhlaahnsíhn dōu wuih fāansāng!
+估唔到你条死蛇烂鳝都会翻生！
+gú m̀h dou néih tìuh séisèhlaahnsíhn dōu wuih fāansāang!
 
 1366
 01:31:42,048 --> 01:31:43,758
@@ -6880,8 +6880,8 @@ lùhngfēifuhngmóuh, fuhkfú gonglùhng…
 
 1377
 01:32:38,556 --> 01:32:39,557
-龙的传人龙凤呈祥⋯
-lùhngdīkchyùhnyàhnlùhngfuhngchìhngchèuhng…
+龙嘅传人龙凤呈祥⋯
+lùhng ge chyùhnyàhnlùhngfuhngchìhngchèuhng…
 
 1378
 01:32:39,682 --> 01:32:40,932
@@ -7010,7 +7010,7 @@ bougou bōngjyú
 
 1403
 01:35:29,746 --> 01:35:31,581
-赵无极嘅人马都俾我哋捉住喇
+赵无极嘅人马都畀我哋捉住喇
 jiuh mòuhgihk ge yàhnmáh dōu béi ngóhdeih jūkjyuh la
 
 1404
@@ -7115,8 +7115,8 @@ sōu yīnghùhng! sōu yīnghùhng!
 
 1424
 01:36:50,316 --> 01:36:51,484
-摆番低
-báaifāandāi
+摆返低
+báai fáandāi
 
 1425
 01:36:51,859 --> 01:36:52,902
@@ -7200,8 +7200,8 @@ bātgwo gam wo
 
 1441
 01:37:31,102 --> 01:37:33,145
-你俾番啲面我好喎，等我好落台
-néih béi fāandī mihn ngóh hóu wo, dáng ngóh hóu lohktòih
+你畀返啲面我好喎，等我好落台
+néih béi fáan dī mihn ngóh hóu wo, dáng ngóh hóu lohktòih
 
 1442
 01:37:34,396 --> 01:37:35,230
@@ -7240,13 +7240,13 @@ haihlō! sīséhaaklā!
 
 1449
 01:37:52,037 --> 01:37:54,205
-都话咗乞儿唔俾啰！过主啦！
-dōu wah jó hātyī m̀h béi lō! gwojyúlā!
+都话咗乞儿唔畀啰！过主啦！
+dōu wah jó hātyī m̀hbéi lō! gwojyúlā!
 
 1450
 01:37:54,289 --> 01:37:55,289
-唔俾唔得喎！
-m̀h béi m̀h dāk wo!
+唔畀唔得喎！
+m̀hbéi m̀hdāk wo!
 
 1451
 01:37:55,789 --> 01:37:57,082
@@ -7290,7 +7290,7 @@ tīm géidō àh?
 
 1459
 01:38:10,844 --> 01:38:12,304
-冇一千都俾几百啦！
+冇一千都畀几百啦！
 móuh yātchīn dōu béi géibaak lā!
 
 1460
