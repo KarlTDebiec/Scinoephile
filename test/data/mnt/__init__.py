@@ -94,13 +94,13 @@ def mnt_jpn_eng() -> Series:
 
 @fixture
 def mnt_yue_zho_hant() -> Series:
-    """MNT 粤语 audio track 繁体粤文 subtitles."""
+    """MNT yue audio track zho-Hant subtitles."""
     return Series.load(input_dir / "yue_zho-Hant.srt")
 
 
 @fixture
 def mnt_zho_hant() -> Series:
-    """MNT 繁体中文 series."""
+    """MNT zho-Hant series."""
     return Series.load(input_dir / "zho-Hant.srt")
 
 
@@ -166,7 +166,7 @@ def get_mnt_zho_hans_block_review_test_cases(
     prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT 简体中文 block review test cases.
+    """Get MNT zho-Hans block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -185,7 +185,7 @@ def get_mnt_zho_hans_ocr_fusion_test_cases(
     prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT 简体中文 OCR fusion test cases.
+    """Get MNT zho-Hans OCR fusion test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -204,7 +204,7 @@ def get_mnt_zho_hant_block_review_test_cases(
     prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT 繁体中文 block review test cases.
+    """Get MNT zho-Hant block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -223,7 +223,7 @@ def get_mnt_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT 繁体中文 OCR fusion test cases.
+    """Get MNT zho-Hant OCR fusion test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -242,7 +242,7 @@ def get_mnt_zho_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT 繁体中文 simplification block review test cases.
+    """Get MNT zho-Hant simplification block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -312,49 +312,49 @@ def mnt_eng_ocr_tesseract_clean() -> Series:
 
 @fixture
 def mnt_yue_eng() -> Series:
-    """MNT English subtitles translated from 粤语 audio track subtitles."""
+    """MNT English subtitles translated from yue audio track subtitles."""
     return Series.load(output_dir / "yue_eng/eng.srt")
 
 
 @fixture
 def mnt_yue_zho_hans_eng() -> Series:
-    """MNT Bilingual 简体粤文 and English subtitles for the 粤语 audio track."""
+    """MNT Bilingual yue-Hans and English subtitles for the yue audio track."""
     return Series.load(output_dir / "yue_eng/zho-Hans_eng.srt")
 
 
 @fixture
 def mnt_zho_hans_eng() -> Series:
-    """MNT bilingual 简体中文 and English subtitles."""
+    """MNT bilingual zho-Hans and English subtitles."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse() -> Series:
-    """MNT 简体中文 fused subtitles."""
+    """MNT zho-Hans fused subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse_clean() -> Series:
-    """MNT 简体中文 fused and cleaned subtitles."""
+    """MNT zho-Hans fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse_clean_validate() -> Series:
-    """MNT 简体中文 fused, cleaned, and validated subtitles."""
+    """MNT zho-Hans fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse_clean_validate_review() -> Series:
-    """MNT 简体中文 fused, cleaned, validated, and reviewed subtitles."""
+    """MNT zho-Hans fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hans_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def mnt_zho_hans_fuse_clean_validate_review_flatten() -> Series:
-    """MNT 简体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """MNT zho-Hans fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -362,7 +362,7 @@ def mnt_zho_hans_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def mnt_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """MNT 简体中文 fused/cleaned/validated/reviewed/flattened romanized subtitles."""
+    """MNT zho-Hans fused/cleaned/validated/reviewed/flattened romanized subtitles."""
     return Series.load(
         output_dir / "zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt"
     )
@@ -370,55 +370,55 @@ def mnt_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
 
 @fixture
 def mnt_zho_hans_ocr_lens() -> Series:
-    """MNT 简体中文 subtitles OCRed using Google Lens."""
+    """MNT zho-Hans subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "zho-Hans_ocr/lens.srt")
 
 
 @fixture
 def mnt_zho_hans_ocr_lens_clean() -> Series:
-    """MNT 简体中文 Google Lens OCR subtitles, cleaned."""
+    """MNT zho-Hans Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/lens_clean.srt")
 
 
 @fixture
 def mnt_zho_hans_ocr_paddle() -> Series:
-    """MNT 简体中文 subtitles OCRed using PaddleOCR."""
+    """MNT zho-Hans subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle.srt")
 
 
 @fixture
 def mnt_zho_hans_ocr_paddle_clean() -> Series:
-    """MNT 简体中文 PaddleOCR subtitles, cleaned."""
+    """MNT zho-Hans PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse() -> Series:
-    """MNT 繁体中文 fused subtitles."""
+    """MNT zho-Hant fused subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse_clean() -> Series:
-    """MNT 繁体中文 fused and cleaned subtitles."""
+    """MNT zho-Hant fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate() -> Series:
-    """MNT 繁体中文 fused, cleaned, and validated subtitles."""
+    """MNT zho-Hant fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate_review() -> Series:
-    """MNT 繁体中文 fused, cleaned, validated, and reviewed subtitles."""
+    """MNT zho-Hant fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten() -> Series:
-    """MNT 繁体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """MNT zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -426,7 +426,7 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """MNT 繁体中文 fused/cleaned/validated/reviewed/flattened/simplified subtitles."""
+    """MNT zho-Hant fused/cleaned/validated/reviewed/flattened/simplified subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -434,7 +434,7 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """MNT 繁体中文 simplified/reviewed fused/cleaned subtitles."""
+    """MNT zho-Hant simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -446,7 +446,7 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -> (
     Series
 ):
-    """MNT 繁体中文 simplified/reviewed fused/cleaned romanized subtitles."""
+    """MNT zho-Hant simplified/reviewed fused/cleaned romanized subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -456,25 +456,25 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize() -
 
 @fixture
 def mnt_zho_hant_ocr_lens() -> Series:
-    """MNT 繁体中文 subtitles OCRed using Google Lens."""
+    """MNT zho-Hant subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
 
 
 @fixture
 def mnt_zho_hant_ocr_lens_clean() -> Series:
-    """MNT 繁体中文 Google Lens OCR subtitles, cleaned."""
+    """MNT zho-Hant Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def mnt_zho_hant_ocr_paddle() -> Series:
-    """MNT 繁体中文 subtitles OCRed using PaddleOCR."""
+    """MNT zho-Hant subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
 
 
 @fixture
 def mnt_zho_hant_ocr_paddle_clean() -> Series:
-    """MNT 繁体中文 PaddleOCR subtitles, cleaned."""
+    """MNT zho-Hant PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
 
 

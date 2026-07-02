@@ -25,11 +25,11 @@ def process_yue_hans_eng(
     eng_path: Path | None = None,
     overwrite: bool = False,
 ) -> Series:
-    """Process bilingual 简体粤文 and English subtitles into a stacked series.
+    """Process bilingual yue-Hans and English subtitles into a stacked series.
 
     Arguments:
         title_root_path: title root directory
-        yue_hans_path: optional 简体粤文 subtitle path
+        yue_hans_path: optional yue-Hans subtitle path
         eng_path: optional English subtitle path
         overwrite: whether to overwrite subtitle outputs
     Returns:
@@ -65,11 +65,11 @@ def process_zho_hans_eng(
     eng_path: Path | None = None,
     overwrite: bool = False,
 ) -> Series:
-    """Process bilingual 简体中文 and English subtitles into a stacked series.
+    """Process bilingual zho-Hans and English subtitles into a stacked series.
 
     Arguments:
         title_root_path: title root directory
-        zho_hans_path: optional 简体中文 subtitle path
+        zho_hans_path: optional zho-Hans subtitle path
         eng_path: optional English subtitle path
         overwrite: whether to overwrite subtitle outputs
     Returns:

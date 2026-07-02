@@ -122,13 +122,13 @@ def kob_eng() -> Series:
 
 @fixture
 def kob_yue_hans() -> Series:
-    """KOB 简体粤文 subtitles (input)."""
+    """KOB yue-Hans subtitles (input)."""
     return Series.load(input_dir / "yue-Hans.srt")
 
 
 @fixture
 def kob_yue_hant() -> Series:
-    """KOB 繁体粤文 subtitles."""
+    """KOB yue-Hant subtitles."""
     return Series.load(input_dir / "yue-Hant.srt")
 
 
@@ -180,7 +180,7 @@ def get_kob_yue_hans_block_review_test_cases(
     prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 简体粤文 block review test cases.
+    """Get KOB yue-Hans block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -202,7 +202,7 @@ def get_kob_yue_hant_block_review_test_cases(
     prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 繁体粤文 block review test cases.
+    """Get KOB yue-Hant block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -224,7 +224,7 @@ def get_kob_yue_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 繁体粤文 simplification block review test cases.
+    """Get KOB yue-Hant simplification block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -246,7 +246,7 @@ def get_kob_yue_deliniation_test_cases(
     prompt_cls: type[Dual2To2Prompt] = YueDeliniationVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 简体粤文 deliniation test cases.
+    """Get KOB yue-Hans deliniation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -273,7 +273,7 @@ def get_kob_yue_punctuation_test_cases(
     prompt_cls: type[DualNTo1Prompt] = YuePunctuationVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 简体粤文 punctuation test cases.
+    """Get KOB yue-Hans punctuation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -300,7 +300,7 @@ def get_kob_yue_vs_zho_line_review_test_cases(
     prompt_cls: type[Dual1To1Prompt] = YueLineReviewVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 简体粤文 vs 简体中文 line-review test cases.
+    """Get KOB yue-Hans vs zho-Hans line-review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -326,7 +326,7 @@ def get_kob_zho_hant_block_review_test_cases(
     prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 繁体中文 block review test cases.
+    """Get KOB zho-Hant block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -345,7 +345,7 @@ def get_kob_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 繁体中文 OCR fusion test cases.
+    """Get KOB zho-Hant OCR fusion test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -364,7 +364,7 @@ def get_kob_zho_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB 繁体中文 simplification block review test cases.
+    """Get KOB zho-Hant simplification block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -611,37 +611,37 @@ def kob_eng_clean_review_flatten_timewarp() -> Series:
 
 @fixture
 def kob_yue_hans_audio() -> AudioSeries:
-    """KOB 简体粤文 audio subtitles."""
+    """KOB yue-Hans audio subtitles."""
     return AudioSeries.load(output_dir / "yue-Hans_transcribe/audio")
 
 
 @fixture
 def kob_yue_hans_clean() -> Series:
-    """KOB 简体粤文 cleaned SRT subtitles."""
+    """KOB yue-Hans cleaned SRT subtitles."""
     return Series.load(output_dir / "yue-Hans/clean.srt")
 
 
 @fixture
 def kob_yue_hans_clean_review() -> Series:
-    """KOB 简体粤文 cleaned and reviewed SRT subtitles."""
+    """KOB yue-Hans cleaned and reviewed SRT subtitles."""
     return Series.load(output_dir / "yue-Hans/clean_review.srt")
 
 
 @fixture
 def kob_yue_hans_clean_review_flatten() -> Series:
-    """KOB 简体粤文 cleaned, reviewed, and flattened SRT subtitles."""
+    """KOB yue-Hans cleaned, reviewed, and flattened SRT subtitles."""
     return Series.load(output_dir / "yue-Hans/clean_review_flatten.srt")
 
 
 @fixture
 def kob_yue_hans_clean_review_flatten_timewarp() -> Series:
-    """KOB 简体粤文 cleaned, reviewed, flattened, and timewarped SRT subtitles."""
+    """KOB yue-Hans cleaned, reviewed, flattened, and timewarped SRT subtitles."""
     return Series.load(output_dir / "yue-Hans/clean_review_flatten_timewarp.srt")
 
 
 @fixture
 def kob_yue_hans_clean_review_flatten_timewarp_romanize() -> Series:
-    """KOB 简体粤文 cleaned, reviewed, flattened, timewarped, and romanized subtitles."""
+    """KOB yue-Hans cleaned, reviewed, flattened, timewarped, and romanized subtitles."""
     return Series.load(
         output_dir / "yue-Hans/clean_review_flatten_timewarp_romanize.srt"
     )
@@ -649,7 +649,7 @@ def kob_yue_hans_clean_review_flatten_timewarp_romanize() -> Series:
 
 @fixture
 def kob_yue_hans_transcribe() -> Series:
-    """KOB 简体粤文 transcribed subtitles."""
+    """KOB yue-Hans transcribed subtitles."""
     return Series.load(output_dir / "yue-Hans_transcribe/transcribe.srt")
 
 
@@ -668,13 +668,13 @@ def kob_yue_hans_transcribe_expected_cer() -> SeriesCERResult:
 
 @fixture
 def kob_yue_hans_transcribe_review() -> Series:
-    """KOB 简体粤文 transcribed and line reviewed subtitles."""
+    """KOB yue-Hans transcribed and line reviewed subtitles."""
     return Series.load(output_dir / "yue-Hans_transcribe/transcribe_review.srt")
 
 
 @fixture
 def kob_yue_hans_transcribe_review_translate() -> Series:
-    """KOB 简体粤文 transcribed/line-reviewed/translated subtitles."""
+    """KOB yue-Hans transcribed/line-reviewed/translated subtitles."""
     return Series.load(
         output_dir / "yue-Hans_transcribe/transcribe_review_translate.srt"
     )
@@ -682,7 +682,7 @@ def kob_yue_hans_transcribe_review_translate() -> Series:
 
 @fixture
 def kob_yue_hans_transcribe_review_translate_block_review() -> Series:
-    """KOB 简体粤文 transcribed/line-reviewed/translated/block-reviewed subtitles."""
+    """KOB yue-Hans transcribed/line-reviewed/translated/block-reviewed subtitles."""
     return Series.load(
         output_dir
         / "yue-Hans_transcribe"
@@ -707,31 +707,31 @@ def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
 
 @fixture
 def kob_yue_hant_clean() -> Series:
-    """KOB 繁體粵文 cleaned SRT subtitles."""
+    """KOB yue-Hant cleaned SRT subtitles."""
     return Series.load(output_dir / "yue-Hant/clean.srt")
 
 
 @fixture
 def kob_yue_hant_clean_review() -> Series:
-    """KOB 繁體粵文 cleaned and reviewed SRT subtitles."""
+    """KOB yue-Hant cleaned and reviewed SRT subtitles."""
     return Series.load(output_dir / "yue-Hant/clean_review.srt")
 
 
 @fixture
 def kob_yue_hant_clean_review_flatten() -> Series:
-    """KOB 繁體粵文 cleaned, reviewed, and flattened SRT subtitles."""
+    """KOB yue-Hant cleaned, reviewed, and flattened SRT subtitles."""
     return Series.load(output_dir / "yue-Hant/clean_review_flatten.srt")
 
 
 @fixture
 def kob_yue_hant_clean_review_flatten_timewarp() -> Series:
-    """KOB 繁體粵文 cleaned, reviewed, flattened, and timewarped SRT subtitles."""
+    """KOB yue-Hant cleaned, reviewed, flattened, and timewarped SRT subtitles."""
     return Series.load(output_dir / "yue-Hant/clean_review_flatten_timewarp.srt")
 
 
 @fixture
 def kob_yue_hant_clean_review_flatten_timewarp_simplify() -> Series:
-    """KOB 繁體粵文 simplified cleaned/reviewed/flattened/timewarped subtitles."""
+    """KOB yue-Hant simplified cleaned/reviewed/flattened/timewarped subtitles."""
     return Series.load(
         output_dir / "yue-Hant/clean_review_flatten_timewarp_simplify.srt"
     )
@@ -739,7 +739,7 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify() -> Series:
 
 @fixture
 def kob_yue_hant_clean_review_flatten_timewarp_simplify_review() -> Series:
-    """KOB 繁體粵文 simplified and reviewed SRT subtitles."""
+    """KOB yue-Hant simplified and reviewed SRT subtitles."""
     return Series.load(
         output_dir / "yue-Hant/clean_review_flatten_timewarp_simplify_review.srt"
     )
@@ -747,7 +747,7 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review() -> Series:
 
 @fixture
 def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Series:
-    """KOB 繁體粵文 simplified, reviewed, and romanized SRT subtitles."""
+    """KOB yue-Hant simplified, reviewed, and romanized SRT subtitles."""
     return Series.load(
         output_dir
         / "yue-Hant"
@@ -757,37 +757,37 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Ser
 
 @fixture
 def kob_zho_hans_eng() -> Series:
-    """KOB Bilingual 简体中文 and English subtitles."""
+    """KOB Bilingual zho-Hans and English subtitles."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse() -> Series:
-    """KOB 繁体中文 fused subtitles."""
+    """KOB zho-Hant fused subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean() -> Series:
-    """KOB 繁体中文 fused and cleaned subtitles."""
+    """KOB zho-Hant fused and cleaned subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate() -> Series:
-    """KOB 繁体中文 fused, cleaned, and validated subtitles."""
+    """KOB zho-Hant fused, cleaned, and validated subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review() -> Series:
-    """KOB 繁体中文 fused, cleaned, validated, and reviewed subtitles."""
+    """KOB zho-Hant fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hant_ocr/fuse_clean_validate_review.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
-    """KOB 繁体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
+    """KOB zho-Hant fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -795,7 +795,7 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """KOB 繁体中文 simplified fused/cleaned/validated/reviewed/flattened subtitles."""
+    """KOB zho-Hant simplified fused/cleaned/validated/reviewed/flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -803,7 +803,7 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """KOB 繁体中文 simplified/reviewed fused/cleaned subtitles."""
+    """KOB zho-Hant simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -814,7 +814,7 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Ser
 @fixture
 def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize(  # noqa: E501
 ) -> Series:
-    """KOB 简体中文 simplified/reviewed fused/cleaned romanized subtitles."""
+    """KOB zho-Hans simplified/reviewed fused/cleaned romanized subtitles."""
     return Series.load(
         output_dir
         / "zho-Hant_ocr"
@@ -824,23 +824,23 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize
 
 @fixture
 def kob_zho_hant_ocr_lens() -> Series:
-    """KOB 繁体中文 subtitles OCRed using Google Lens."""
+    """KOB zho-Hant subtitles OCRed using Google Lens."""
     return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_lens_clean() -> Series:
-    """KOB 繁体中文 Google Lens OCR subtitles, cleaned."""
+    """KOB zho-Hant Google Lens OCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_paddle() -> Series:
-    """KOB 繁体中文 subtitles OCRed using PaddleOCR."""
+    """KOB zho-Hant subtitles OCRed using PaddleOCR."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
 
 
 @fixture
 def kob_zho_hant_ocr_paddle_clean() -> Series:
-    """KOB 繁体中文 PaddleOCR subtitles, cleaned."""
+    """KOB zho-Hant PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
