@@ -420,7 +420,7 @@ zài nòng xiàqù  rén gēn zhū  zhāngláng pèiniú le
 
 85
 00:05:48,250 --> 00:05:49,750
-最惨的是蚂蚁跟大象啊
+最慘的是蚂蚁跟大象啊
 zuìcǎn de shì mǎyǐ gēn dàxiàng a
 
 86
@@ -2160,8 +2160,8 @@ búshì zhè bǎ
 
 433
 00:21:00,375 --> 00:21:02,000
-大夫　麻烦你帮我看看这家伙
-dàfū  máfán nǐ bāng wǒ kànkàn zhè jiāhuo
+大夫，麻烦你帮我看看这家伙
+dàfū, máfán nǐ bāng wǒ kànkàn zhè jiāhuo
 
 434
 00:21:02,000 --> 00:21:02,875
@@ -2185,8 +2185,8 @@ shīfù
 
 438
 00:21:08,208 --> 00:21:10,292
-黄大富在家出了事　他们都过来了
-huáng dàfù zàijiā chū le shì  tāmen dōu guòlái le
+黃大富在家出了事，他们都过来了
+huáng dàfù zàijiā chū le shì, tāmen dōu guòlái le
 
 439
 00:21:10,292 --> 00:21:11,625
@@ -2260,8 +2260,8 @@ zhème jījī wāiwāi de
 
 453
 00:21:37,750 --> 00:21:42,042
-你想怎么样啊你　有种上来呀　哎呀　累死了⋯下来休息一下吧
-nǐ xiǎng zěnmeyàng a nǐ  yǒuzhǒng shànglái ya  āiyā  lèisǐ le… xiàlái xiūxī yīxià ba
+你想怎么样啊你，有种上来呀　哎呀，累死了⋯下来休息一下吧
+nǐ xiǎng zěnmeyàng a nǐ, yǒuzhǒng shànglái ya  āiyā, lèisǐ le… xiàlái xiūxī yīxià ba
 
 454
 00:21:42,042 --> 00:21:45,250
@@ -7620,13 +7620,13 @@ jīn shēn háiyǒu liǎngkē jīnyá zài wǒ zuǐlǐ
 
 1525
 01:22:55,042 --> 01:22:56,542
-啊　好　偷东西
-a  hǎo  tōudōngxī
+啊 好 偷东西
+a hǎo tōudōngxī
 
 1526
 01:22:56,542 --> 01:22:58,417
-嘘　我没牙　借用一下嘛
-xū  wǒ méiyá  jièyòng yīxià ma
+噓 我没牙 借用一下嘛
+xū wǒ méiyá jièyòng yīxià ma
 
 1527
 01:23:00,083 --> 01:23:01,125
@@ -7635,8 +7635,8 @@ chēngbúzhù le
 
 1528
 01:23:01,125 --> 01:23:03,417
-师傅　帮我最后一个忙
-shīfù  bāng wǒ zuìhòu yígè máng
+师傅 帮我最后一个忙
+shīfù bāng wǒ zuìhòu yígè máng
 
 1529
 01:23:03,417 --> 01:23:04,917
@@ -7825,8 +7825,8 @@ xiànzài tā yǐjīng zhuǎnrù lúnhuí le
 
 1566
 01:25:49,375 --> 01:25:52,333
-今世做猪嘛　前途一片光明啊
-jīnshì zuò zhū ma  qiántú yīpiàn guāngmíng a
+今世做豬嘛　前途一片光明啊
+jīnshì zuòzhū ma  qiántú yīpiàn guāngmíng a
 
 1567
 01:25:53,375 --> 01:25:54,333
