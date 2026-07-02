@@ -22,13 +22,13 @@ zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 set_logging_verbosity(2)
 
 actions = {
-    "eng_ocr",
+    # "eng_ocr",
     "yue-Hans_ocr",
     "yue-Hant_ocr",
-    "zho-Hans_ocr",
-    "zho-Hant_ocr",
+    # "zho-Hans_ocr",
+    # "zho-Hant_ocr",
     "yue-Hans_eng",
-    "zho-Hans_eng",
+    # "zho-Hans_eng",
 }
 if "eng_ocr" in actions:
     process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
