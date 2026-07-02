@@ -240,23 +240,23 @@ nǐ zhème jiǎng yìqì  nándào nǐ yě yǒufèn
 
 49
 00:04:42,208 --> 00:04:44,042
-伏虎，你真是个管家婆
-fúhǔ, nǐ zhēnshì gè guǎnjiāpó
+伏虎　你真是个管家婆
+fúhǔ  nǐ zhēnshì gè guǎnjiāpó
 
 50
 00:04:44,042 --> 00:04:45,875
-不过你还挺讲义气，我心领了
-bùguò nǐ hái tǐng jiǎng yìqì, wǒxīn lǐngle
+不过你还挺讲义气　我心领了
+bùguò nǐ hái tǐng jiǎng yìqì  wǒxīn lǐngle
 
 51
 00:04:45,875 --> 00:04:47,125
-哎，谢谢⋯
-āi, xièxiè…
+哎　谢谢⋯
+āi  xièxiè…
 
 52
 00:04:47,292 --> 00:04:49,000
-哎，照目前情形看起来
-āi, zhào mùqián qíngxíng kànqǐlái
+哎　照目前情形看起来
+āi  zhào mùqián qíngxíng kànqǐlái
 
 53
 00:04:49,000 --> 00:04:50,875
@@ -270,13 +270,13 @@ suíbiàn rèncuò jiù xiǎng zǒu
 
 55
 00:04:52,167 --> 00:04:54,417
-我们俩兄弟聊天，几时轮到你插嘴
-wǒmen liǎ xiōngdì liáotiān, jǐshí lúndào nǐ chāzuǐ
+我们俩兄弟聊天　几时轮到你插嘴
+wǒmen liǎ xiōngdì liáotiān  jǐshí lúndào nǐ chāzuǐ
 
 56
 00:04:54,417 --> 00:04:55,542
-嘿呀，你这个灶君
-hēi ya, nǐ zhège zàojūn
+嘿呀　你这个灶君
+hēi ya  nǐ zhège zàojūn
 
 57
 00:04:55,542 --> 00:04:57,417
@@ -290,8 +290,8 @@ rénjiā bù gěi nǐ
 
 59
 00:04:58,250 --> 00:04:59,833
-你就到上面来说人家不是，插他
-nǐ jiù dào shàngmiàn láishuō rénjiā búshì, chā tā
+你就到上面来说人家不是　插他
+nǐ jiù dào shàngmiàn láishuō rénjiā búshì  chā tā
 
 60
 00:04:59,833 --> 00:05:00,500
@@ -300,23 +300,23 @@ chā tā
 
 61
 00:05:00,500 --> 00:05:02,792
-啊，刚才插完好痛，现在又要插
-a, gāngcái chā wánhǎo tòng, xiànzài yòu yào chā
+啊　刚才插完好痛　现在又要插
+a  gāngcái chā wánhǎo tòng  xiànzài yòu yào chā
 
 62
 00:05:02,792 --> 00:05:05,083
-小小一个罗汉，什么事情你都要管
-xiǎoxiǎo yígè luóhàn, shénme shìqíng nǐ dōu yào guǎn
+小小一个罗汉　什么事情你都要管
+xiǎoxiǎo yígè luóhàn  shénme shìqíng nǐ dōu yào guǎn
 
 63
 00:05:05,083 --> 00:05:07,583
-岂有此理，你偷吃我的蟠桃，赔来
-qǐyǒucǐlǐ, nǐ tōuchī wǒ de pántáo, péilái
+岂有此理　你偷吃我的蟠桃　赔来
+qǐyǒucǐlǐ  nǐ tōuchī wǒ de pántáo  péilái
 
 64
 00:05:07,917 --> 00:05:10,375
-王母，吃一点人家也没说什么
-wángmǔ, chī yìdiǎn rénjiā yě méi shuō shénme
+王母　吃一点人家也没说什么
+wángmǔ  chī yìdiǎn rénjiā yě méi shuō shénme
 
 65
 00:05:10,375 --> 00:05:11,042
@@ -345,8 +345,8 @@ a
 
 70
 00:05:16,583 --> 00:05:18,542
-干吗，不服气就冲我来
-gànmá, bùfúqì jiù chōng wǒ lái
+干吗　不服气就冲我来
+gànmá  bùfúqì jiù chōng wǒ lái
 
 71
 00:05:18,542 --> 00:05:19,750
@@ -360,18 +360,18 @@ biéyǐwéi huàn le yīzhī bāndiǎn wǒ jiù bùgǎn chī
 
 73
 00:05:21,375 --> 00:05:23,625
-我照吃不误，到哪一个了
-wǒzhào chī bùwù, dào nǎ yígè le
+我照吃不误　到哪一个了
+wǒzhào chī bùwù  dào nǎ yígè le
 
 74
 00:05:23,875 --> 00:05:25,333
-到哪一个了，就你好了
-dào nǎ yígè le, jiù nǐhǎo le
+到哪一个了　就你好了
+dào nǎ yígè le  jiù nǐhǎo le
 
 75
 00:05:27,375 --> 00:05:29,917
-你这个月老，仗着几根破烂红绳
-nǐ zhège yuè lǎo, zhàng zhe jǐgēn pòlàn hóngshéng
+你这个月老　仗着几根破烂红绳
+nǐ zhège yuè lǎo  zhàng zhe jǐgēn pòlàn hóngshéng
 
 76
 00:05:29,917 --> 00:05:31,042
@@ -400,8 +400,8 @@ tāmen nǎlǐ duìbùqǐ nǐ le
 
 81
 00:05:39,333 --> 00:05:42,375
-我说你老了，没事就退休吧
-wǒ shuō nǐlǎo le, méishì jiù tuìxiū ba
+我说你老了　没事就退休吧
+wǒ shuō nǐlǎo le  méishì jiù tuìxiū ba
 
 82
 00:05:42,375 --> 00:05:43,917
@@ -410,13 +410,13 @@ bùrán jiānglái qiāncuò le hóngshéng
 
 83
 00:05:43,917 --> 00:05:45,833
-弄得男跟男，女跟女
-nòng dé nán gēn nán, nǚ gēn nǚ
+弄得男跟男　女跟女
+nòng dé nán gēn nán  nǚ gēn nǚ
 
 84
 00:05:45,833 --> 00:05:48,250
-再弄下去，人跟猪，蟑螂配牛了
-zài nòng xiàqù, rén gēn zhū, zhāngláng pèiniú le
+再弄下去　人跟猪　蟑螂配牛了
+zài nòng xiàqù  rén gēn zhū  zhāngláng pèiniú le
 
 85
 00:05:48,250 --> 00:05:49,750
@@ -425,18 +425,18 @@ zuìcǎn de shì mǎyǐ gēn dàxiàng a
 
 86
 00:05:49,750 --> 00:05:50,833
-哎，插他
-āi, chā tā
+哎　插他
+āi  chā tā
 
 87
 00:05:50,833 --> 00:05:52,833
-哎，人家年纪不小了，不要欺负他
-āi, rénjiā niánjì bùxiǎo le, búyào qīfù tā
+哎　人家年纪不小了　不要欺负他
+āi  rénjiā niánjì bùxiǎo le  búyào qīfù tā
 
 88
 00:05:52,833 --> 00:05:54,250
-哎呀，你想管闲事吗，阎罗王
-āiyā, nǐ xiǎng guǎnxiánshì ma, yánluówáng
+哎呀　你想管闲事吗　阎罗王
+āiyā  nǐ xiǎng guǎnxiánshì ma  yánluówáng
 
 89
 00:05:54,250 --> 00:05:54,875
@@ -445,8 +445,8 @@ chā tā le
 
 90
 00:05:54,875 --> 00:05:57,917
-不要碰面就插，我们是讲道理的
-búyào pèngmiàn jiù chā, wǒmen shì jiǎngdàolǐ de
+不要碰面就插　我们是讲道理的
+búyào pèngmiàn jiù chā  wǒmen shì jiǎngdàolǐ de
 
 91
 00:05:58,083 --> 00:05:59,583
@@ -460,13 +460,13 @@ liánshēng le shíliùgè nǚér
 
 93
 00:06:00,792 --> 00:06:02,792
-就不肯给她一个儿子，为什么
-jiù bùkěn gěi tā yígè érzi, wèishénme
+就不肯给她一个儿子　为什么
+jiù bùkěn gěi tā yígè érzi  wèishénme
 
 94
 00:06:04,083 --> 00:06:07,750
-搞得那个女的终于想不开，跳海自尽
-gǎo dé nàge nǚ de zhōngyú xiǎngbùkāi, tiàohǎizìjìn
+搞得那个女的终于想不开　跳海自尽
+gǎo dé nàge nǚ de zhōngyú xiǎngbùkāi  tiàohǎizìjìn
 
 95
 00:06:07,750 --> 00:06:08,542
@@ -475,8 +475,8 @@ a
 
 96
 00:06:08,917 --> 00:06:13,250
-到了下面，他还说她是枉死的
-dào le xiàmiàn, tā hái shuō tā shì wǎngsǐ de
+到了下面　他还说她是枉死的
+dào le xiàmiàn  tā hái shuō tā shì wǎngsǐ de
 
 97
 00:06:13,750 --> 00:06:17,542
@@ -500,8 +500,8 @@ hūnguòqù yě méiyǒu yòng a
 
 101
 00:06:26,333 --> 00:06:29,792
-凡人的命运早已经成定数，并无不妥
-fánrén de mìngyùn zǎo yǐjīng chéng dìngshù, bìng wú bùtuǒ
+凡人的命运早已经成定数　并无不妥
+fánrén de mìngyùn zǎo yǐjīng chéng dìngshù  bìng wú bùtuǒ
 
 102
 00:06:29,792 --> 00:06:31,583
@@ -515,13 +515,13 @@ wǒ zhǐshì zhàolì zhíxíng
 
 104
 00:06:33,542 --> 00:06:34,417
-哎，我⋯
-āi, wǒ…
+哎　我⋯
+āi  wǒ…
 
 105
 00:06:34,417 --> 00:06:36,583
-谁说照例执行，谁订的令
-shuí shuō zhàolì zhíxíng, shuí dìng de lìng
+谁说照例执行　谁订的令
+shuí shuō zhàolì zhíxíng  shuí dìng de lìng
 
 106
 00:06:36,583 --> 00:06:37,792
@@ -535,8 +535,8 @@ chángyándào tiānwàiyǒutiān
 
 108
 00:06:39,750 --> 00:06:40,917
-玉帝，你定的例
-yùdì, nǐdìng de lì
+玉帝　你定的例
+yùdì  nǐdìng de lì
 
 109
 00:06:40,917 --> 00:06:43,083
@@ -555,8 +555,8 @@ tàiguòfèn le
 
 112
 00:06:46,750 --> 00:06:47,875
-玉帝，各位仙友
-yùdì, gèwèi xiānyǒu
+玉帝　各位仙友
+yùdì  gèwèi xiānyǒu
 
 113
 00:06:48,542 --> 00:06:50,917
@@ -1755,13 +1755,13 @@ a… āi… shēng le…
 
 352
 00:17:02,500 --> 00:17:04,542
-我们快点去准备一下，帮帮他们嘛
-wǒmen kuàidiǎn qù zhǔnbèi yīxià, bāngbāng tāmen ma
+我们快点去准备一下　帮帮他们嘛
+wǒmen kuàidiǎn qù zhǔnbèi yīxià  bāngbāng tāmen ma
 
 353
 00:17:07,625 --> 00:17:10,333
-啊⋯哎⋯老婆，是男的还是女的
-a… āi… lǎopó, shì nán de háishì nǚ de
+啊⋯哎⋯老婆　是男的还是女的
+a… āi… lǎopó  shì nán de háishì nǚ de
 
 354
 00:17:11,792 --> 00:17:13,292
@@ -1820,13 +1820,13 @@ yāoguài ya…
 
 365
 00:18:01,917 --> 00:18:03,750
-哎 这个人会不会是妖怪呀
-āi zhège rénhuì búhuì shì yāoguài ya
+哎　这个人会不会是妖怪呀
+āi  zhège rénhuì búhuì shì yāoguài ya
 
 366
 00:18:03,750 --> 00:18:05,167
-妖什么怪 他会变戏法
-yāo shénme guài tāhuì biànxìfǎ
+妖什么怪　他会变戏法
+yāo shénme guài  tāhuì biànxìfǎ
 
 367
 00:18:05,167 --> 00:18:06,500
@@ -1835,23 +1835,23 @@ nǐ huì búhuì biànxìfǎ
 
 368
 00:18:08,000 --> 00:18:08,958
-老爷 我去报官
-lǎoyé wǒ qù bàoguān
+老爷　我去报官
+lǎoyé  wǒ qù bàoguān
 
 369
 00:18:08,958 --> 00:18:10,250
-报什么官 我不就是官吗
-bào shénme guān wǒ bù jiùshì guān ma
+报什么官　我不就是官吗
+bào shénme guān  wǒ bù jiùshì guān ma
 
 370
 00:18:10,583 --> 00:18:12,667
-哎呀 还是把他留下来好了
-āiyā háishì bǎ tā liúxiàlái hǎo le
+哎呀　还是把他留下来好了
+āiyā  háishì bǎ tā liúxiàlái hǎo le
 
 371
 00:18:12,958 --> 00:18:14,500
-你看看他 长得多逗人呢
-nǐ kànkàn tā zhǎngdé duō dòurén ne
+你看看他　长得多逗人呢
+nǐ kànkàn tā  zhǎngdé duō dòurén ne
 
 372
 00:18:14,500 --> 00:18:15,542
@@ -1880,8 +1880,8 @@ dǎ…
 
 377
 00:18:25,500 --> 00:18:27,125
-你究竟是何方神圣 快说
-nǐ jiūjìng shì héfāngshénshèng kuài shuō
+你究竟是何方神圣　快说
+nǐ jiūjìng shì héfāngshénshèng  kuài shuō
 
 378
 00:18:27,750 --> 00:18:28,708
@@ -1910,8 +1910,8 @@ mōmō…
 
 383
 00:18:35,583 --> 00:18:38,625
-哎⋯〝摸摸〞在那个姐姐身上 快过去拿
-āi…“mōmō” zài nàge jiějiě shēnshàng kuài guòqù ná
+哎⋯〝摸摸〞在那个姐姐身上　快过去拿
+āi…“mōmō” zài nàge jiějiě shēnshàng  kuài guòqù ná
 
 384
 00:18:43,792 --> 00:18:47,000
@@ -2335,8 +2335,8 @@ zěnme huìchà nàme yuǎn
 
 468
 00:22:15,000 --> 00:22:16,833
-在那一边 看准一点 再来
-zài nà yībiān kànzhǔn yìdiǎn zài lái
+在那一边　看准一点　再来
+zài nà yībiān  kànzhǔn yìdiǎn  zài lái
 
 469
 00:22:28,083 --> 00:22:32,042
@@ -2415,13 +2415,13 @@ wǒhuì hěnkuài huílái zhǎo nǐ
 
 484
 00:23:16,917 --> 00:23:18,500
-哎 你叫什么名字
-āi nǐ jiào shénme míngzì
+哎　你叫什么名字
+āi  nǐ jiào shénme míngzì
 
 485
 00:23:18,750 --> 00:23:20,750
-姓名只是代号 怎么叫都一样
-xìngmíng zhǐshì dàihào zěnme jiào dōu yīyàng
+姓名只是代号　怎么叫都一样
+xìngmíng zhǐshì dàihào  zěnme jiào dōu yīyàng
 
 486
 00:23:20,958 --> 00:23:21,583
@@ -2435,8 +2435,8 @@ dà gēgē
 
 488
 00:23:24,292 --> 00:23:26,083
-人家在叫你 还不走
-rénjiā zài jiào nǐ hái bù zǒu
+人家在叫你　还不走
+rénjiā zài jiào nǐ  hái bù zǒu
 
 489
 00:23:26,500 --> 00:23:27,417
@@ -2770,8 +2770,8 @@ zhēnde hǎokǔ a
 
 555
 00:26:30,083 --> 00:26:32,833
-啊 袁霸天 快躲
-a yuánbàtiān kuài duǒ
+啊　袁霸天　快躲
+a  yuánbàtiān  kuài duǒ
 
 556
 00:26:36,542 --> 00:26:39,208
@@ -2785,8 +2785,8 @@ tǔdìgōng
 
 558
 00:26:44,708 --> 00:26:48,042
-九世恶人 全都到齐了
-jiǔshì èrén quándōu dào qí le
+九世恶人　全都到齐了
+jiǔshì èrén  quándōu dào qí le
 
 559
 00:26:52,542 --> 00:26:53,542
@@ -2830,8 +2830,8 @@ lián nǐ zhège chòu héshàng yě shāodiào
 
 567
 00:27:23,833 --> 00:27:26,500
-我要烧你 你竟敢吹灭我的火
-wǒyào shāo nǐ nǐ jìnggǎn chuīmiè wǒ de huǒ
+我要烧你　你竟敢吹灭我的火
+wǒyào shāo nǐ  nǐ jìnggǎn chuīmiè wǒ de huǒ
 
 568
 00:27:47,333 --> 00:27:49,792
@@ -2865,8 +2865,8 @@ chóngxīnzuòrén  guāiháizi
 
 574
 00:28:11,458 --> 00:28:14,875
-不可能 我的娘哎
-bù kěnéng wǒ de niáng āi
+不可能　我的娘哎
+bù kěnéng  wǒ de niáng āi
 
 575
 00:28:19,542 --> 00:28:20,750
@@ -3330,13 +3330,13 @@ yī kàndào wǒ jiù jiào wǒ shuìjiào
 
 667
 00:32:11,458 --> 00:32:13,000
-大种，你老爸来找你了
-dà zhǒng, nǐ lǎobà lái zhǎo nǐ le
+大种　你老爸来找你了
+dà zhǒng  nǐ lǎobà lái zhǎo nǐ le
 
 668
 00:32:13,375 --> 00:32:16,208
-你妈才来找你呢，我老爸早死了
-nǐ mā cái lái zhǎo nǐ ne, wǒ lǎobà zǎosǐ le
+你妈才来找你呢　我老爸早死了
+nǐ mā cái lái zhǎo nǐ ne  wǒ lǎobà zǎosǐ le
 
 669
 00:32:16,583 --> 00:32:17,500
@@ -5130,8 +5130,8 @@ fènghuáng
 
 1027
 00:50:04,333 --> 00:50:07,333
-主公 你真有先见之明
-zhǔgōng nǐ zhēn yǒu xiānjiànzhīmíng
+主公　你真有先见之明
+zhǔgōng  nǐ zhēn yǒu xiānjiànzhīmíng
 
 1028
 00:50:08,292 --> 00:50:11,042
@@ -5140,8 +5140,8 @@ nàge héshàng zuò de yīqiè zhèngrú nǐ suǒshuō de
 
 1029
 00:50:12,250 --> 00:50:14,500
-你有什么吩咐，尽管说
-nǐ yǒu shénme fēnfù, jǐnguǎn shuō
+你有什么吩咐　尽管说
+nǐ yǒu shénme fēnfù  jǐnguǎn shuō
 
 1030
 00:50:18,500 --> 00:50:19,792
@@ -5445,8 +5445,8 @@ dǎdào nǐ qù
 
 1090
 00:53:20,083 --> 00:53:21,625
-开我的玩笑 藤条
-kāi wǒ de wánxiào téngtiáo
+开我的玩笑　藤条
+kāi wǒ de wánxiào  téngtiáo
 
 1091
 00:53:25,250 --> 00:53:26,000
@@ -5455,8 +5455,8 @@ xiǎokàn wǒ
 
 1092
 00:53:27,875 --> 00:53:28,750
-妈的 好累呀
-mā de hǎolèi ya
+妈的　好累呀
+mā de  hǎolèi ya
 
 1093
 00:53:37,625 --> 00:53:38,250
@@ -5610,8 +5610,8 @@ zǒngzhī bùnéng shārén  xíngbùxíng
 
 1123
 00:56:16,500 --> 00:56:18,750
-他妈的 到底是人还是禽兽
-tāmāde dàodǐ shì rén háishì qínshòu
+他妈的　到底是人还是禽兽
+tāmāde  dàodǐ shì rén háishì qínshòu
 
 1124
 00:56:26,292 --> 00:56:27,042
@@ -5995,8 +5995,8 @@ dà zhǒng qǐgài  gǎnjǐn sǐ ba
 
 1200
 01:00:25,542 --> 01:00:29,292
-不要叫我大种 叫我朱大常
-búyào jiào wǒ dàzhǒng jiào wǒ zhūdàcháng
+不要叫我大种　叫我朱大常
+búyào jiào wǒ dàzhǒng  jiào wǒ zhūdàcháng
 
 1201
 01:00:36,000 --> 01:00:36,833
@@ -6035,8 +6035,8 @@ bǎ tā liǎn fǎnguòlái
 
 1208
 01:00:56,583 --> 01:01:01,625
-转过去⋯过去 再过去 看好
-zhuǎnguò qù… guòqù zài guòqù kànhǎo
+转过去⋯过去　再过去　看好
+zhuǎnguò qù… guòqù  zài guòqù  kànhǎo
 
 1209
 01:01:09,542 --> 01:01:10,542
@@ -6055,8 +6055,8 @@ tiānyé shuō fàng nǐ yīmǎ  nǐ yǐhòu dāngxīn diǎn
 
 1212
 01:01:20,542 --> 01:01:22,667
-刚才看得真爽，眼睛都不眨一下啊
-gāngcái kàndé zhēnshuǎng, yǎnjīng dōu bù zhǎ yīxià a
+刚才看得真爽　眼睛都不眨一下啊
+gāngcái kàndé zhēnshuǎng  yǎnjīng dōu bù zhǎ yīxià a
 
 1213
 01:01:22,917 --> 01:01:24,542
@@ -6190,18 +6190,18 @@ gànshénme
 
 1239
 01:02:37,833 --> 01:02:38,917
-哎呀 放手
-āiyā fàngshǒu
+哎呀　放手
+āiyā  fàngshǒu
 
 1240
 01:02:39,208 --> 01:02:41,292
-师傅说 这个金身不能离开这间寺庙
-shīfù shuō zhège jīn shēn bùnéng líkāi zhè jiān sìmiào
+师傅说　这个金身不能离开这间寺庙
+shīfù shuō  zhège jīn shēn bùnéng líkāi zhè jiān sìmiào
 
 1241
 01:02:41,375 --> 01:02:43,250
-哎呀 离开了又怎么样
-āiyā líkāi le yòu zěnmeyàng
+哎呀　离开了又怎么样
+āiyā  líkāi le yòu zěnmeyàng
 
 1242
 01:02:43,250 --> 01:02:43,833
@@ -6215,8 +6215,8 @@ nà jiùshì méi shìqíng
 
 1244
 01:02:44,625 --> 01:02:46,250
-借来用用 最多付你利息
-jièlái yòng yòng zuì duōfù nǐ lìxī
+借来用用　最多付你利息
+jièlái yòng yòng  zuì duōfù nǐ lìxī
 
 1245
 01:02:46,417 --> 01:02:46,917
@@ -6250,8 +6250,8 @@ nà jiù bǎ nǐ biàngè dàzì
 
 1251
 01:02:50,208 --> 01:02:51,542
-不行 啊 怎么变
-bùxíng a zěnme biàn
+不行　啊　怎么变
+bùxíng  a  zěnme biàn
 
 1252
 01:03:49,292 --> 01:03:51,542
@@ -6400,8 +6400,8 @@ wángbādàn  nǐ gè sǐ hēiguǐ  hǎo  huàn le
 
 1281
 01:05:14,333 --> 01:05:16,417
-大种，我再怎么样也要带你回去
-dà zhǒng, wǒ zài zěnmeyàng yě yào dài nǐ huíqù
+大种　我再怎么样也要带你回去
+dà zhǒng  wǒ zài zěnmeyàng yě yào dài nǐ huíqù
 
 1282
 01:05:16,667 --> 01:05:17,500
@@ -6470,8 +6470,8 @@ dà zhǒng
 
 1295
 01:07:03,708 --> 01:07:06,625
-主公，我一定照你的吩咐
-zhǔgōng, wǒ yídìng zhào nǐ de fēnfù
+主公　我一定照你的吩咐
+zhǔgōng  wǒ yídìng zhào nǐ de fēnfù
 
 1296
 01:07:07,375 --> 01:07:09,250
@@ -6580,18 +6580,18 @@ zāo le  tǔdìgōng yě bújiàn le
 
 1317
 01:08:31,250 --> 01:08:33,208
-师傅 快走了 师傅 快走吧
-shīfù kuài zǒu le shīfù kuài zǒu ba
+师傅　快走了　师傅　快走吧
+shīfù  kuài zǒu le  shīfù  kuài zǒu ba
 
 1318
 01:08:38,750 --> 01:08:39,958
-师傅 你要到哪儿去
-shīfù nǐ yào dào nǎér qù
+师傅　你要到哪儿去
+shīfù  nǐ yào dào nǎér qù
 
 1319
 01:08:40,167 --> 01:08:41,708
-济癫 我早跟你说过
-jìdiān wǒ zǎo gēn nǐ shuō guò
+济癫　我早跟你说过
+jìdiān  wǒ zǎo gēn nǐ shuō guò
 
 1320
 01:08:41,958 --> 01:08:44,042
@@ -6785,8 +6785,8 @@ dànshì wǒ yīshuāng yùbì qiānrén zhěn
 
 1358
 01:10:29,750 --> 01:10:32,292
-半点朱唇万客尝 你也⋯
-bàndiǎn zhūchún wànkè cháng nǐ yě…
+半点朱唇万客尝　你也⋯
+bàndiǎn zhūchún wànkè cháng  nǐ yě…
 
 1359
 01:10:32,292 --> 01:10:33,708
@@ -6860,8 +6860,8 @@ wǒ… yé…
 
 1373
 01:11:02,458 --> 01:11:03,833
-好棒啊 拜堂吧
-hǎo bàng a bàitáng ba
+好棒啊　拜堂吧
+hǎo bàng a  bàitáng ba
 
 1374
 01:11:04,167 --> 01:11:04,708
@@ -7145,8 +7145,8 @@ dǎsǐ nǐ…
 
 1430
 01:14:52,875 --> 01:14:56,042
-我打死你 打死你⋯
-wǒ dǎsǐ nǐ dǎsǐ nǐ…
+我打死你　打死你⋯
+wǒ dǎsǐ nǐ  dǎsǐ nǐ…
 
 1431
 01:15:05,125 --> 01:15:06,708
@@ -7390,13 +7390,13 @@ wǒmen bùnéng zǒu
 
 1479
 01:17:41,208 --> 01:17:43,375
-你疯了 现在不走就没有机会了
-nǐ fēng le xiànzài bù zǒu jiù méiyǒu jīhuì le
+你疯了　现在不走就没有机会了
+nǐ fēng le  xiànzài bù zǒu jiù méiyǒu jīhuì le
 
 1480
 01:17:43,375 --> 01:17:45,625
-黑罗煞是罪魁祸首 我要摆平他
-hēiluóshā shì zuìkuíhuòshǒu wǒyào bǎipíng tā
+黑罗煞是罪魁祸首　我要摆平他
+hēiluóshā shì zuìkuíhuòshǒu  wǒyào bǎipíng tā
 
 1481
 01:17:45,625 --> 01:17:46,333
@@ -7435,8 +7435,8 @@ jiāng wǒ shísān shì de xiūwèi quán fàngzài nǐ shēnshàng
 
 1488
 01:18:24,417 --> 01:18:25,625
-今晚全靠你 你知道吗
-jīnwǎn quánkào nǐ nǐ zhīdào ma
+今晚全靠你　你知道吗
+jīnwǎn quánkào nǐ  nǐ zhīdào ma
 
 1489
 01:18:26,333 --> 01:18:27,000
@@ -7450,8 +7450,8 @@ hǎo
 
 1491
 01:19:50,167 --> 01:19:51,708
-哎呀 糟了
-āiyā zāo le
+哎呀　糟了
+āiyā  zāo le
 
 1492
 01:21:13,875 --> 01:21:14,667
@@ -7475,13 +7475,13 @@ shīfù
 
 1496
 01:21:18,500 --> 01:21:20,708
-我们又见面了啊快走吧
-wǒmen yòu jiànmiàn le a kuài zǒu ba
+我们又见面了　啊　快走吧
+wǒmen yòu jiànmiàn le  a  kuài zǒu ba
 
 1497
 01:21:27,333 --> 01:21:28,625
-师傅，你干吗来这里呀
-shīfù, nǐ gànmá lái zhèlǐ ya
+师傅　你干吗来这里呀
+shīfù  nǐ gànmá lái zhèlǐ ya
 
 1498
 01:21:28,625 --> 01:21:29,958
@@ -7495,8 +7495,8 @@ bǎ nǐ yígè rén liúzài sìmiào lǐmiàn
 
 1500
 01:21:30,958 --> 01:21:32,708
-你知道我处境危险，你干吗回来找我
-nǐ zhīdào wǒ chǔjìng wēixiǎn, nǐ gànmá huílái zhǎo wǒ
+你知道我处境危险　你干吗回来找我
+nǐ zhīdào wǒ chǔjìng wēixiǎn  nǐ gànmá huílái zhǎo wǒ
 
 1501
 01:21:34,583 --> 01:21:36,667
@@ -7600,8 +7600,8 @@ tūn le zhèxiē jīnfěn  wǒ dǔzi juéde guàiguàide
 
 1521
 01:22:37,625 --> 01:22:40,500
-师傅 你快点想想办法 把金粉拉出来
-shīfù nǐ kuàidiǎn xiǎngxiǎng bànfǎ bǎ jīnfěn lā chūlái
+师傅　你快点想想办法　把金粉拉出来
+shīfù  nǐ kuàidiǎn xiǎngxiǎng bànfǎ  bǎ jīnfěn lā chūlái
 
 1522
 01:22:40,500 --> 01:22:41,917
@@ -7715,8 +7715,8 @@ xiànzài bùdàn sǐ le  línsǐ háishì gè qǐgài
 
 1544
 01:24:49,375 --> 01:24:52,167
-他害得那个〝野鸡〞刮破了脸，好可怜呢
-tāhài dé nàge “yějī” guāpò le liǎn, hǎo kělián ne
+他害得那个〝野鸡〞刮破了脸　好可怜呢
+tāhài dé nàge “yějī” guāpò le liǎn  hǎo kělián ne
 
 1545
 01:24:52,542 --> 01:24:54,458
@@ -7725,8 +7725,8 @@ háiyǒu yuánbàtiān nàjiànshì jiù gèngcǎn le
 
 1546
 01:24:54,458 --> 01:24:57,000
-临死之前呢，还多伤了几十条人命
-línsǐ zhīqián ne, hái duōshāng le jǐshítiáo rénmìng
+临死之前呢　还多伤了几十条人命
+línsǐ zhīqián ne  hái duōshāng le jǐshítiáo rénmìng
 
 1547
 01:24:57,000 --> 01:24:59,875
@@ -7755,8 +7755,8 @@ jiù búhuì ràng tā nòng dé yītuánzāo le
 
 1552
 01:25:06,292 --> 01:25:08,083
-你算了吧，整天都说单挑
-nǐ suànleba, zhěngtiān dōu shuō dāntiāo
+你算了吧　整天都说单挑
+nǐ suànleba  zhěngtiān dōu shuō dāntiāo
 
 1553
 01:25:08,583 --> 01:25:10,250

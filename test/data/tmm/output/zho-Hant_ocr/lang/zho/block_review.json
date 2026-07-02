@@ -208,34 +208,7 @@
       "zimu_55": "我就給你三天的時間",
       "zimu_56": "謝謝　不過兩天半就夠了"
     },
-    "answer": {
-      "xiugai_2": "玉帝，我們每一位成僊至今",
-      "beizhu_2": "刪除「玉帝」後多餘空格，並補上標點。",
-      "xiugai_4": "世情種種，凡間一切在我們來說",
-      "beizhu_4": "將全形空格改為標點。",
-      "xiugai_12": "啊，聽觀音大士說話真是好聽啊",
-      "beizhu_12": "將全形空格改為標點。",
-      "xiugai_13": "哎，舒服，舒服",
-      "beizhu_13": "將全形空格改為標點。",
-      "xiugai_17": "你不要亂說話，閻羅王",
-      "beizhu_17": "將全形空格改為標點。",
-      "xiugai_18": "慢點，大士自有分寸",
-      "beizhu_18": "將全形空格改為標點。",
-      "xiugai_19": "降龍，你做了這麼多的事情",
-      "beizhu_19": "將全形空格改為標點。",
-      "xiugai_26": "無論他們是多麼的笨，多麼的無知",
-      "beizhu_26": "將全形空格改為標點。",
-      "xiugai_27": "怎麼兇，怎麼該死也好",
-      "beizhu_27": "將全形空格改為標點。",
-      "xiugai_33": "是不是，降龍",
-      "beizhu_33": "將全形空格改為標點。",
-      "xiugai_38": "喲，我怕你啊，我正有此意",
-      "beizhu_38": "將全形空格改為標點。",
-      "xiugai_48": "好，你就用凡人的身份下去",
-      "beizhu_48": "將全形空格改為標點。",
-      "xiugai_52": "降龍，就用你的誠意去感化他們",
-      "beizhu_52": "將全形空格改為標點。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -457,10 +430,7 @@
       "zimu_1": "啊⋯哎⋯老婆　是男的還是女的",
       "zimu_2": "生把扇子"
     },
-    "answer": {
-      "xiugai_1": "啊⋯哎⋯老婆 是男的還是女的",
-      "beizhu_1": "將全形空格修正為半形空格。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -514,10 +484,7 @@
       "zimu_19": "摸摸⋯",
       "zimu_20": "哎⋯ 「摸摸」在那個姐姐身上　快過去拿"
     },
-    "answer": {
-      "xiugai_20": "哎⋯「摸摸」在那個姐姐身上　快過去拿",
-      "beizhu_20": "Preserved cleaning-normalized punctuation in the block-review output."
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -840,10 +807,7 @@
       "zimu_1": "好　我把廟也燒了　看你能往哪兒跑",
       "zimu_2": "連你這個臭和尚也燒掉"
     },
-    "answer": {
-      "xiugai_1": "好 我把廟也燒了 看你能往哪兒跑",
-      "beizhu_1": "將全形空白修正為半形空格。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -877,10 +841,7 @@
     "query": {
       "zimu_1": "不可能　我的娘哎"
     },
-    "answer": {
-      "xiugai_1": "不可能 我的娘哎",
-      "beizhu_1": "修正了全形空格為半形空格。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1022,10 +983,7 @@
       "zimu_2": "你媽才來找你呢　我老爸早死了",
       "zimu_3": "你看一看嘛"
     },
-    "answer": {
-      "xiugai_1": "大種，你老爸來找你了",
-      "beizhu_1": "修正排版標點，將空格分隔改為逗號。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1319,10 +1277,7 @@
       "zimu_2": "趕快想辦法救她",
       "zimu_3": "漂亮的才救　燒你就不用救了"
     },
-    "answer": {
-      "xiugai_1": "哇，好漂亮，燒死了多可惜",
-      "beizhu_1": "將全形空格修正為標點，屬排版修正。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1576,12 +1531,7 @@
       "zimu_2": "那個和尚做的一切正如你所說的",
       "zimu_3": "你有什麼吩咐　儘管說"
     },
-    "answer": {
-      "xiugai_1": "主公 你真有先見之明",
-      "beizhu_1": "將全形空白修正為半形空白。",
-      "xiugai_3": "你有什麼吩咐 儘管說",
-      "beizhu_3": "將全形空白修正為半形空白。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1600,18 +1550,7 @@
       "zimu_11": "啊　我",
       "zimu_12": "一個風度翩翩的美男子"
     },
-    "answer": {
-      "xiugai_1": "嫖妓 改天吧",
-      "beizhu_1": "刪除多餘空白",
-      "xiugai_3": "我推你是可以 你敢推我 你給我過來",
-      "beizhu_3": "刪除多餘空白",
-      "xiugai_5": "廁所上過了 你又不用洗澡",
-      "beizhu_5": "刪除多餘空白",
-      "xiugai_9": "啊 是誰呀",
-      "beizhu_9": "刪除多餘空白",
-      "xiugai_11": "啊 我",
-      "beizhu_11": "刪除多餘空白"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1624,8 +1563,8 @@
       "zimu_5": "嚇死別人就不好了"
     },
     "answer": {
-      "xiugai_1": "大爺，你要切記",
-      "beizhu_1": "「大種」應為錯別字，依語境修正為「大爺」。"
+      "xiugai_1": "大爺　你要切記",
+      "beizhu_1": "仅保留文字校正，不调整标点或空格。"
     },
     "difficulty": 1,
     "verified": true
@@ -1721,10 +1660,7 @@
       "zimu_1": "小看我",
       "zimu_2": "媽的　好累呀"
     },
-    "answer": {
-      "xiugai_2": "媽的 好累呀",
-      "beizhu_2": "將全形空格修正為一般空格。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1803,12 +1739,7 @@
       "zimu_1": "算了　不做和尚好了",
       "zimu_2": "總之不能殺人　行不行"
     },
-    "answer": {
-      "xiugai_1": "算了，不做和尚好了",
-      "beizhu_1": "將全形空格修正為標點，補正排版。",
-      "xiugai_2": "總之不能殺人，行不行",
-      "beizhu_2": "將全形空格修正為標點，補正排版。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1816,10 +1747,7 @@
     "query": {
       "zimu_1": "他媽的　到底是人還是禽獸"
     },
-    "answer": {
-      "xiugai_1": "他媽的 到底是人還是禽獸",
-      "beizhu_1": "將全形空白修正為半形空格。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1970,14 +1898,7 @@
       "zimu_3": "都變回乞丐了　快點走啊",
       "zimu_4": "走不動"
     },
-    "answer": {
-      "xiugai_1": "師傅，我⋯",
-      "beizhu_1": "將全形空格改為標點。",
-      "xiugai_2": "這麼久也不下來，找死",
-      "beizhu_2": "將全形空格改為標點。",
-      "xiugai_3": "都變回乞丐了，快點走啊",
-      "beizhu_3": "將全形空格改為標點。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1999,10 +1920,7 @@
     "query": {
       "zimu_1": "不要叫我大種　叫我朱大常"
     },
-    "answer": {
-      "xiugai_1": "不要叫我大種，叫我朱大常",
-      "beizhu_1": "將「大種」後的異常空格修正為標點「，」"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2195,10 +2113,7 @@
       "zimu_1": "主公　我一定照你的吩咐",
       "zimu_2": "幫你完成你的大業"
     },
-    "answer": {
-      "xiugai_1": "主公，我一定照你的吩咐",
-      "beizhu_1": "修正全形空白為標點，補上逗號。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2241,12 +2156,7 @@
       "zimu_1": "糟了　土地公也不見了",
       "zimu_2": "哎呀　這次禍闖大了"
     },
-    "answer": {
-      "xiugai_1": "糟了，土地公也不見了",
-      "beizhu_1": "修正排版，將全形空白改為標點逗號。",
-      "xiugai_2": "哎呀，這次禍闖大了",
-      "beizhu_2": "修正排版，將全形空白改為標點逗號。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2355,12 +2265,7 @@
       "zimu_6": "你愛他比愛我多一點",
       "zimu_7": "不⋯一樣"
     },
-    "answer": {
-      "xiugai_2": "哎，是啊",
-      "beizhu_2": "將全形空格改為標點，修正排版。",
-      "xiugai_5": "哦，我好怕",
-      "beizhu_5": "將全形空格改為標點，修正排版。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2502,10 +2407,7 @@
       "zimu_2": "打死你⋯",
       "zimu_3": "我打死你　打死你⋯"
     },
-    "answer": {
-      "xiugai_3": "我打死你 打死你⋯",
-      "beizhu_3": "修正全形空白為一般空格。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2632,10 +2534,7 @@
     "query": {
       "zimu_1": "哎呀　糟了"
     },
-    "answer": {
-      "xiugai_1": "哎呀 糟了",
-      "beizhu_1": "將全形空格修正為半形空格。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2706,10 +2605,7 @@
       "zimu_1": "師傅　你快點想想辦法　把金粉拉出來",
       "zimu_2": "我長期便秘"
     },
-    "answer": {
-      "xiugai_1": "師傅，你快點想想辦法，把金粉拉出來",
-      "beizhu_1": "將全形空格排版修正為標點符號。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2733,14 +2629,7 @@
       "zimu_4": "師傅　幫我最後一個忙",
       "zimu_5": "想辦法把他嘴巴張開"
     },
-    "answer": {
-      "xiugai_1": "啊 好 偷東西",
-      "beizhu_1": "刪除多餘空白，修正排版。",
-      "xiugai_2": "噓 我沒牙 借用一下嘛",
-      "beizhu_2": "刪除多餘空白，修正排版。",
-      "xiugai_4": "師傅 幫我最後一個忙",
-      "beizhu_4": "刪除多餘空白，修正排版。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
