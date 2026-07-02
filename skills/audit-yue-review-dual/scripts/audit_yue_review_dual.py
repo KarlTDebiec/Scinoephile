@@ -15,9 +15,11 @@ __all__ = [
     "SrtEvent",
     "audit_dataset",
     "format_markdown",
+    "format_target_markdown",
     "parse_srt",
 ]
 
+_AUDIT_CHOICES = ("changes", "些")
 _SERIES_LABELS = {
     "hans_original": "yue-Hans source",
     "hans_review": "yue-Hans review",
@@ -84,6 +86,7 @@ def audit_dataset(
     data_root_path: Path,
     layout: str = "auto",
     *,
+    audit: str = "changes",
     first_index: int | None = None,
     last_index: int | None = None,
 ) -> str:
@@ -93,6 +96,7 @@ def audit_dataset(
         dataset_name: dataset name under `test/data`
         data_root_path: root path containing dataset directories
         layout: dataset layout, either auto, ocr, or non-ocr
+        audit: audit type to run
         first_index: first 1-indexed subtitle number to include, inclusive
         last_index: last 1-indexed subtitle number to include, inclusive
     Returns:
@@ -122,23 +126,40 @@ def audit_dataset(
         paths.timing_groups,
     )
 
-    return format_markdown(
-        dataset_name=dataset_name,
-        context_lines=_get_index_range_context_lines(first_index, last_index),
-        series=series,
-        hans_changes=_get_review_changes(
-            series["hans_original"],
-            series["hans_review"],
-        ),
-        hant_changes=_get_review_changes(
-            series["hant_original"],
-            series["hant_review"],
-        ),
-        final_differences=_get_text_differences(
-            series["hans_final"],
-            series["hant_final"],
-        ),
+    context_lines = _get_index_range_context_lines(first_index, last_index)
+    hans_changes = _get_review_changes(
+        series["hans_original"],
+        series["hans_review"],
     )
+    hant_changes = _get_review_changes(
+        series["hant_original"],
+        series["hant_review"],
+    )
+    final_differences = _get_text_differences(
+        series["hans_final"],
+        series["hant_final"],
+    )
+
+    if audit == "changes":
+        return format_markdown(
+            dataset_name=dataset_name,
+            context_lines=context_lines,
+            series=series,
+            hans_changes=hans_changes,
+            hant_changes=hant_changes,
+            final_differences=final_differences,
+        )
+    if audit == "些":
+        return format_target_markdown(
+            dataset_name=dataset_name,
+            context_lines=context_lines,
+            series=series,
+            hans_changes=hans_changes,
+            hant_changes=hant_changes,
+            final_differences=final_differences,
+            target_text="些",
+        )
+    raise ValueError(f"Unsupported audit type: {audit}")
 
 
 def format_markdown(
@@ -177,7 +198,10 @@ def format_markdown(
         include_unchanged_review_text = bool(hans_change or hant_change or final_pair)
         if final_pair is None:
             final_series = hans_final.get(number) or hant_final.get(number)
-            final_cell = "" if final_series is None else final_series.text
+            if final_series is None:
+                final_cell = ""
+            else:
+                final_cell = final_series.text
         else:
             final_cell = f"{final_pair[0]}\n{final_pair[1]}"
         row_lines.append(
@@ -229,6 +253,97 @@ def format_markdown(
     return "\n".join(lines) + "\n"
 
 
+def format_target_markdown(
+    *,
+    dataset_name: str,
+    context_lines: Sequence[str],
+    series: Mapping[str, Mapping[int, SrtEvent]],
+    hans_changes: Mapping[int, ReviewChange],
+    hant_changes: Mapping[int, ReviewChange],
+    final_differences: Mapping[int, tuple[str, str]],
+    target_text: str,
+) -> str:
+    """Format a target text audit report as Markdown.
+
+    Arguments:
+        dataset_name: dataset name
+        context_lines: extra summary context lines
+        series: parsed SRT events keyed by internal series name
+        hans_changes: yue-Hans review changes by subtitle number
+        hant_changes: yue-Hant review changes by subtitle number
+        final_differences: final text differences by subtitle number
+        target_text: text that causes a subtitle row to be included
+    Returns:
+        Markdown report
+    """
+    hans_review = series["hans_review"]
+    hans_final = series["hans_final"]
+    hant_review = series["hant_review"]
+    hant_final = series["hant_final"]
+    target_numbers = _get_target_numbers(series, target_text)
+    row_lines: list[str] = []
+    for number in target_numbers:
+        hans_change = hans_changes.get(number)
+        hant_change = hant_changes.get(number)
+        final_pair = final_differences.get(number)
+        if final_pair is None:
+            final_series = hans_final.get(number) or hant_final.get(number)
+            if final_series is None:
+                final_cell = ""
+            else:
+                final_cell = final_series.text
+        else:
+            final_cell = f"{final_pair[0]}\n{final_pair[1]}"
+        row_lines.append(
+            "| "
+            + " | ".join(
+                [
+                    _escape_cell(str(number)),
+                    _escape_cell(
+                        _format_review_cell(
+                            number=number,
+                            change=hans_change,
+                            reviewed=hans_review,
+                            include_unchanged=True,
+                        )
+                    ),
+                    _escape_cell(
+                        _format_review_cell(
+                            number=number,
+                            change=hant_change,
+                            reviewed=hant_review,
+                            include_unchanged=True,
+                        )
+                    ),
+                    _escape_cell(final_cell),
+                    "",
+                ]
+            )
+            + " |"
+        )
+
+    summary_context_lines = list(context_lines)
+    lines = [
+        f"# {dataset_name} Yue Review Dual {target_text} Audit",
+        "",
+        "## Summary",
+        "",
+        f"- target text: {target_text}",
+        f"- yue-Hans review edits: {len(hans_changes)}",
+        f"- yue-Hant review edits: {len(hant_changes)}",
+        f"- final text differences: {len(final_differences)}",
+        f"- table rows: {len(row_lines)}",
+        *summary_context_lines,
+        "",
+        "## Audit Table",
+        "",
+        "| Subtitle | yue-Hans | yue-Hant | yue-Hans vs Hant->Hans | Notes |",
+        "|---:|---|---|---|---|",
+        *row_lines,
+    ]
+    return "\n".join(lines) + "\n"
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     """Parse command-line arguments.
 
@@ -256,6 +371,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         choices=("auto", "ocr", "non-ocr"),
         default="auto",
         help="Dataset layout. Default: auto",
+    )
+    parser.add_argument(
+        "--audit",
+        choices=_AUDIT_CHOICES,
+        default="changes",
+        help="Audit type. Default: changes",
     )
     parser.add_argument(
         "--first-index",
@@ -305,6 +426,7 @@ def main(argv: Sequence[str] | None = None) -> None:
                 args.dataset,
                 args.data_root,
                 args.layout,
+                audit=args.audit,
                 first_index=args.first_index,
                 last_index=args.last_index,
             ),
@@ -497,6 +619,26 @@ def _get_text_changes[T](
         if one_text != two_text:
             changes[number] = factory(one_text, two_text)
     return changes
+
+
+def _get_target_numbers(
+    series: Mapping[str, Mapping[int, SrtEvent]],
+    target_text: str,
+) -> list[int]:
+    """Get subtitle numbers whose audited text contains target text.
+
+    Arguments:
+        series: parsed SRT events keyed by internal series name
+        target_text: text to find
+    Returns:
+        subtitle numbers containing target text in any audited series
+    """
+    numbers: set[int] = set()
+    for events in series.values():
+        for number, event in events.items():
+            if target_text in event.text:
+                numbers.add(number)
+    return sorted(numbers)
 
 
 def _validate_counts_and_timing(

@@ -74,6 +74,14 @@ Run the bundled script from the repository root:
 uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset acoptc
 ```
 
+The default audit type is `changes`, which reports rows where either initial
+review changed text or the final yue-Hans and simplified yue-Hant outputs still
+differ. To audit subtitles containing `些`, pass `--audit 些`:
+
+```powershell
+uv run python skills/audit-yue-review-dual/scripts/audit_yue_review_dual.py --dataset kob --layout non-ocr --audit 些
+```
+
 To limit the audit to a subtitle-number range, pass `--first-index` and/or
 `--last-index`. These bounds are 1-indexed subtitle numbers and are inclusive:
 
@@ -112,6 +120,16 @@ Use the yue-Hans and yue-Hant columns to check whether both scripts made the
 same approved correction at the same subtitle number. Use the final-comparison
 columns to find remaining simplification, Mandarinization, punctuation, or
 whitespace issues.
+
+For `--audit 些`, a row appears when any audited source, review, or final text
+contains `些`. Fill the `Notes` column with a judgment about whether each
+instance should be corrected to `啲` during initial review, and whether that
+correction is already applied symmetrically. Keep notes short, for example:
+
+- `Both should change 些 to 啲.`
+- `Already corrected to 啲 in both reviews.`
+- `Hans should also change 些 to 啲.`
+- `Keep 些 here.`
 
 Flag asymmetric review corrections as discrepancies. If one script makes an
 approved lexical or OCR correction and the corresponding other-script line has
