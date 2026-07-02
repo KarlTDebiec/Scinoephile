@@ -1017,9 +1017,9 @@
     },
     "answer": {
       "revised_12": "“Dear friend,",
-      "note_12": "Changed quotation mark style of split line to match the rest of the letter.",
+      "note_12": "Changed the opening straight quote to a left double quote.",
       "revised_13": "it is important to snatch buns.”",
-      "note_13": "Changed quotation mark style of split line to match the rest of the letter."
+      "note_13": "Changed the closing straight quote to a right double quote."
     },
     "difficulty": 1,
     "prompt": true,

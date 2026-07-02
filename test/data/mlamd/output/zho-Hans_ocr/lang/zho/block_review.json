@@ -80,7 +80,8 @@
       "xiugai_11": "对！深水埗地铁站步行不用10分钟！",
       "beizhu_11": "将“1 0分钟”中的数字空格去除，修正为“10分钟”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {

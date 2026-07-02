@@ -18,13 +18,31 @@ from scinoephile.lang.zho.ocr_fusion import (
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
+from test.data.acopopb import (
+    get_acopopb_zho_hans_ocr_fusion_test_cases,
+    get_acopopb_zho_hant_ocr_fusion_test_cases,
+)
+from test.data.acoptc import (
+    get_acoptc_zho_hans_ocr_fusion_test_cases,
+    get_acoptc_zho_hant_ocr_fusion_test_cases,
+)
 from test.data.kob import get_kob_zho_hant_ocr_fusion_test_cases
-from test.data.mlamd import get_mlamd_zho_hans_ocr_fusion_test_cases
+from test.data.mlamd import (
+    get_mlamd_zho_hans_ocr_fusion_test_cases,
+    get_mlamd_zho_hant_ocr_fusion_test_cases,
+)
 from test.data.mnt import (
     get_mnt_zho_hans_ocr_fusion_test_cases,
     get_mnt_zho_hant_ocr_fusion_test_cases,
 )
-from test.data.t import get_t_zho_hans_ocr_fusion_test_cases
+from test.data.t import (
+    get_t_zho_hans_ocr_fusion_test_cases,
+    get_t_zho_hant_ocr_fusion_test_cases,
+)
+from test.data.tmm import (
+    get_tmm_zho_hans_ocr_fusion_test_cases,
+    get_tmm_zho_hant_ocr_fusion_test_cases,
+)
 from test.helpers import assert_series_equal, parametrize
 
 
@@ -82,6 +100,38 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
     ),
     [
         param(
+            "acopopb_zho_hans_ocr_lens",
+            "acopopb_zho_hans_ocr_paddle",
+            "acopopb_zho_hans_ocr_fuse",
+            OcrFusionPromptZhoHans,
+            get_acopopb_zho_hans_ocr_fusion_test_cases,
+            id="acopopb-zho-hans",
+        ),
+        param(
+            "acopopb_zho_hant_ocr_lens",
+            "acopopb_zho_hant_ocr_paddle",
+            "acopopb_zho_hant_ocr_fuse",
+            OcrFusionPromptZhoHant,
+            get_acopopb_zho_hant_ocr_fusion_test_cases,
+            id="acopopb-zho-hant",
+        ),
+        param(
+            "acoptc_zho_hans_ocr_lens",
+            "acoptc_zho_hans_ocr_paddle",
+            "acoptc_zho_hans_ocr_fuse",
+            OcrFusionPromptZhoHans,
+            get_acoptc_zho_hans_ocr_fusion_test_cases,
+            id="acoptc-zho-hans",
+        ),
+        param(
+            "acoptc_zho_hant_ocr_lens",
+            "acoptc_zho_hant_ocr_paddle",
+            "acoptc_zho_hant_ocr_fuse",
+            OcrFusionPromptZhoHant,
+            get_acoptc_zho_hant_ocr_fusion_test_cases,
+            id="acoptc-zho-hant",
+        ),
+        param(
             "kob_zho_hant_ocr_lens",
             "kob_zho_hant_ocr_paddle",
             "kob_zho_hant_ocr_fuse",
@@ -96,6 +146,14 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
             OcrFusionPromptZhoHans,
             get_mlamd_zho_hans_ocr_fusion_test_cases,
             id="mlamd-zho-hans",
+        ),
+        param(
+            "mlamd_zho_hant_ocr_lens",
+            "mlamd_zho_hant_ocr_paddle",
+            "mlamd_zho_hant_fuse",
+            OcrFusionPromptZhoHant,
+            get_mlamd_zho_hant_ocr_fusion_test_cases,
+            id="mlamd-zho-hant",
         ),
         param(
             "mnt_zho_hans_ocr_lens",
@@ -120,6 +178,30 @@ def test_get_zho_ocr_fused_treats_newline_forms_as_identical(
             OcrFusionPromptZhoHans,
             get_t_zho_hans_ocr_fusion_test_cases,
             id="t-zho-hans",
+        ),
+        param(
+            "t_zho_hant_ocr_lens",
+            "t_zho_hant_ocr_paddle",
+            "t_zho_hant_fuse",
+            OcrFusionPromptZhoHant,
+            get_t_zho_hant_ocr_fusion_test_cases,
+            id="t-zho-hant",
+        ),
+        param(
+            "tmm_zho_hans_ocr_lens",
+            "tmm_zho_hans_ocr_paddle",
+            "tmm_zho_hans_ocr_fuse",
+            OcrFusionPromptZhoHans,
+            get_tmm_zho_hans_ocr_fusion_test_cases,
+            id="tmm-zho-hans",
+        ),
+        param(
+            "tmm_zho_hant_ocr_lens",
+            "tmm_zho_hant_ocr_paddle",
+            "tmm_zho_hant_ocr_fuse",
+            OcrFusionPromptZhoHant,
+            get_tmm_zho_hant_ocr_fusion_test_cases,
+            id="tmm-zho-hant",
         ),
     ],
 )

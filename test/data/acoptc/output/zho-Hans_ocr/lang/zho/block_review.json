@@ -1349,8 +1349,6 @@
       "zimu_6": "喃呒阿弥陀佛"
     },
     "answer": {
-      "xiugai_2": "戴上“紧箍儿”",
-      "beizhu_2": "将异体/错误引号样式“〝 〞”统一为中文规范引号“ ”。",
       "xiugai_4": "背黑锅我来 送死你去",
       "beizhu_4": "将句中多余的全角空格整理为正常空格。"
     },
@@ -2738,8 +2736,8 @@
       "zimu_4": "走"
     },
     "answer": {
-      "xiugai_3": "一定要靠月光宝盒才能离开这里...",
-      "beizhu_3": "将异常的全角间隔点“． ．”统一修正为省略号“...”，使排版更规范。"
+      "xiugai_3": "一定要靠月光宝盒才能离开这里⋯",
+      "beizhu_3": "Preserved cleaning-normalized punctuation in the block-review output."
     },
     "difficulty": 1,
     "verified": true

@@ -402,12 +402,12 @@
   },
   {
     "query": {
-      "lens": "芝麻開門",
+      "lens": "芝蔴開門",
       "paddle": "芝蔴開門"
     },
     "answer": {
-      "ronghe": "芝麻開門",
-      "beizhu": "採用 Google Lens 中較可靠的漢字「芝麻」，取代 PaddleOCR 的「芝蔴」。"
+      "ronghe": "芝蔴開門",
+      "beizhu": "兩個 OCR 結果一致保留「芝蔴開門」。"
     },
     "difficulty": 1,
     "verified": true
@@ -438,11 +438,11 @@
   },
   {
     "query": {
-      "lens": "冇理由嘅，我明明聽到佢話芝麻開門",
+      "lens": "冇理由嘅，我明明聽到佢話芝蔴開門",
       "paddle": "有理由慨，手 我明明聽到但話芝蔴開門"
     },
     "answer": {
-      "ronghe": "冇理由嘅，我明明聽到佢話芝麻開門",
+      "ronghe": "冇理由嘅，我明明聽到佢話芝蔴開門",
       "beizhu": "採用 Google Lens 中較可靠的漢字與標點，修正了 PaddleOCR 中的「有理由慨，手」與「但話芝蔴開門」等誤識別內容。"
     },
     "difficulty": 1,
@@ -485,12 +485,12 @@
   },
   {
     "query": {
-      "lens": "芝麻開門⋯⋯",
+      "lens": "芝蔴開門⋯⋯",
       "paddle": "芝蔴開門⋯・"
     },
     "answer": {
-      "ronghe": "芝麻開門⋯⋯",
-      "beizhu": "採用 Google Lens 中較可靠的漢字「麻」而非 PaddleOCR 的「蔴」；採用 Google Lens 中較可靠的省略號「⋯⋯」而非 PaddleOCR 的「⋯・」。"
+      "ronghe": "芝蔴開門⋯⋯",
+      "beizhu": "保留兩者一致的「芝蔴開門」，採用 Google Lens 中較可靠的省略號「⋯⋯」而非 PaddleOCR 的「⋯・」。"
     },
     "difficulty": 1,
     "verified": true

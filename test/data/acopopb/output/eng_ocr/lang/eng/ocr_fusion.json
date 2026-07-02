@@ -8,7 +8,8 @@
       "output": "But the King Bull and you decided to\neat your master",
       "note": "Used 'master' from Lens instead of Tesseract's 'masier'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -31,7 +32,8 @@
       "output": "I didn't beat you up\nbecause you're a woman",
       "note": "Used Google Lens for the correct first word capitalization and ignored the mistaken leading bar from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -186,7 +188,8 @@
       "output": "Being master,\nI should take the responsibility",
       "note": "Used Lens text and corrected the mistaken '|' to 'I' from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -197,7 +200,8 @@
       "output": "I have to do so,\nI need to report to Heaven Emperor",
       "note": "Used Google Lens text; corrected Tesseract's '|' errors to 'I'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -280,7 +284,8 @@
       "output": "Why does Ma'am 30th come to\nMt Wuyue?",
       "note": "Used Google Lens wording for 'Ma'am' and kept the line break from the input."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -315,7 +320,8 @@
       "output": "Master, you're hit by Kunlun Sage's\n7 Ultimate Fists",
       "note": "Used '7' from Google Lens instead of '/'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -350,7 +356,8 @@
       "output": "I am\nOK!",
       "note": "Used Lens text and preserved the line break; corrected Tesseract's misread characters."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -361,7 +368,8 @@
       "output": "I only concentrate my eyesight\non a single point",
       "note": "Used Lens 'I' instead of Tesseract '|'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -480,7 +488,8 @@
       "output": "stupid! Do you think she will let you go?",
       "note": "Used lower-case 'stupid' from Tesseract and removed the extra space before '?'. "
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -575,7 +584,8 @@
       "output": "If the others know that,\nthey'll say we're perverts",
       "note": "Used 'If' from Lens instead of 'lf' from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -706,7 +716,8 @@
       "output": "This way? No…",
       "note": "Used space instead of newline and kept the ellipsis from Lens, reducing four dots to an ellipsis."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -813,7 +824,8 @@
       "output": "You can't put out the fire with straw.\nStay away!",
       "note": "Used Lens text for the second line, correcting Tesseract's OCR error 'otay' to 'Stay'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1184,7 +1196,8 @@
       "output": "sister, do you still think\nI'm speaking nonsense?",
       "note": "Used lower-case 'sister' from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1279,7 +1292,8 @@
       "output": "I don't wanna play…",
       "note": "Used the correct first word and kept the ellipsis from Lens, removing the extra dot."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1374,7 +1388,8 @@
       "output": "I made up my mind that\nI wouldn't be a robber",
       "note": "Used Google Lens text; ignored mistaken leading bars from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1469,7 +1484,8 @@
       "output": "You said you would marry me\nwhen I was 18",
       "note": "Used Lens text and corrected Tesseract's '|' to 'I'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1600,7 +1616,8 @@
       "output": "Say! Listen to me",
       "note": "Removed the extra space before the exclamation mark and used Tesseract's line break as a space."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1671,7 +1688,8 @@
       "output": "It's not dark yet,\nhow come is there a moon?",
       "note": "Used the correct text from Lens; Tesseract had 'ts' instead of 'is'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1730,7 +1748,8 @@
       "output": "500 years ago,\nMonkey King was destroyed by Goddess",
       "note": "Used '500' from Google Lens instead of '900'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1777,7 +1796,8 @@
       "output": "You're invisible\nif you stick one on your body",
       "note": "Used the apostrophe from Google Lens; kept Tesseract's line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1895,7 +1915,8 @@
       "output": "The Magic Bag is here.\nThey wanna frame you",
       "note": "Used lowercase 'is' from Lens; kept the line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1942,7 +1963,8 @@
       "output": "That guy is unwilling to do anything\neven if I beg him",
       "note": "Used Lens text for 'I' instead of Tesseract's '|' and kept the line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1977,7 +1999,8 @@
       "output": "Do you think I can't withstand\nyour Skeleton Fire?",
       "note": "Used Lens text for the missing 'I' and kept Tesseract's line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2012,7 +2035,8 @@
       "output": "sister will not be married just\nbecause of you",
       "note": "Used lower-case 'sister' from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2035,7 +2059,8 @@
       "output": "For my whole life I know",
       "note": "Used Tesseract line break as space instead of Lens newline."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2226,7 +2251,8 @@
       "output": "I was born in the Year of Monkey,\nbut I'm not the Monkey King",
       "note": "Used Lens capitalization for the first word and kept Lens text overall."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2249,7 +2275,8 @@
       "output": "why am I standing here\nfor you to bite my hand?",
       "note": "Used 'I' from Lens instead of '|' from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2368,7 +2395,8 @@
       "output": "sister, do you remember\nhow he treated you in the past?",
       "note": "Used lower-case 'sister' from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2379,7 +2407,8 @@
       "output": "You had a good marriage with\nChilian Immortal",
       "note": "Used Tesseract line break for the first line and Lens text for the words; merged the last two lines into one as in Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2534,7 +2563,8 @@
       "output": "Your last few days will be great\nif you're happy",
       "note": "Used apostrophe in \"you're\" from Lens; kept the line break from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2641,7 +2671,8 @@
       "output": "sorry, I don't mean it",
       "note": "Used lower-case 'sorry' from Tesseract and corrected the stray '|'. "
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2736,7 +2767,8 @@
       "output": "He don't know if a maiden is\na man or woman",
       "note": "Used the clearer Lens wording and kept the line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2759,7 +2791,8 @@
       "output": "I will tell you\nwhere the Longevity Monk is",
       "note": "Used Lens's correct initial word 'I' instead of Tesseract's '|'. Kept Tesseract's line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2794,7 +2827,8 @@
       "output": "sister can't take this anymore.\nYou go ahead!",
       "note": "Used lower-case 'sister' from Tesseract."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2817,7 +2851,8 @@
       "output": "she thought I left her alone",
       "note": "Used lower-case 'she' from Tesseract; corrected missing word 'I' from Lens instead of Tesseract's mistaken '|'. "
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2828,7 +2863,8 @@
       "output": "she's poisoned, must have died and\nfell down from the cliff",
       "note": "Used lower-case 'she's' from Tesseract; kept Lens text otherwise."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2851,7 +2887,8 @@
       "output": "I won't tell you\nwhere the Longevity Monk is",
       "note": "Used the correct first word capitalization and 'I' from Google Lens."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2898,7 +2935,8 @@
       "output": "I have to come out\neven if I have to dig a tunnel",
       "note": "Used Google Lens text for the correct capitalization and wording; kept Tesseract's line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2909,7 +2947,8 @@
       "output": "I can move freely in time and space\nwith the power of moon",
       "note": "Used 'I' from Google Lens instead of '|'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2932,7 +2971,8 @@
       "output": "The treasure left behind by\nSpider Web Devil?",
       "note": "Used 'Spider' from Google Lens instead of Tesseract's 'opider'; kept the line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3003,7 +3043,8 @@
       "output": "500 years ago,\nyour master Longevity Monk sacrificed",
       "note": "Used '500' from Google Lens instead of Tesseract's '900'; kept the line break from Lens."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3146,7 +3187,8 @@
       "output": "Why did you say “again”?",
       "note": "Used the quotation marks from Google Lens."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -3217,7 +3259,8 @@
       "output": "I left because I wanna get medication\nfor you from you sister",
       "note": "Used 'I' instead of '|' from Lens and kept Tesseract's line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3276,7 +3319,8 @@
       "output": "If someone bully you,\nyou tell them you know me",
       "note": "Used capital 'If' from Lens; kept Tesseract line break."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {

@@ -127,6 +127,11 @@ def test_get_zho_text_cleaned(text: str, expected: str):
             id="mlamd-zho-hans-fuse",
         ),
         param(
+            "mlamd_zho_hans_ocr_lens",
+            "mlamd_zho_hans_ocr_lens_clean",
+            id="mlamd-zho-hans-lens",
+        ),
+        param(
             "mlamd_zho_hans_ocr_paddle",
             "mlamd_zho_hans_ocr_paddle_clean",
             id="mlamd-zho-hans-paddle",
@@ -135,6 +140,11 @@ def test_get_zho_text_cleaned(text: str, expected: str):
             "mlamd_zho_hant_fuse",
             "mlamd_zho_hant_fuse_clean",
             id="mlamd-zho-hant-fuse",
+        ),
+        param(
+            "mlamd_zho_hant_ocr_lens",
+            "mlamd_zho_hant_ocr_lens_clean",
+            id="mlamd-zho-hant-lens",
         ),
         param(
             "mlamd_zho_hant_ocr_paddle",
@@ -177,6 +187,11 @@ def test_get_zho_text_cleaned(text: str, expected: str):
             id="t-zho-hans-fuse",
         ),
         param(
+            "t_zho_hans_ocr_lens",
+            "t_zho_hans_ocr_lens_clean",
+            id="t-zho-hans-lens",
+        ),
+        param(
             "t_zho_hans_ocr_paddle",
             "t_zho_hans_ocr_paddle_clean",
             id="t-zho-hans-paddle",
@@ -185,6 +200,11 @@ def test_get_zho_text_cleaned(text: str, expected: str):
             "t_zho_hant_fuse",
             "t_zho_hant_fuse_clean",
             id="t-zho-hant-fuse",
+        ),
+        param(
+            "t_zho_hant_ocr_lens",
+            "t_zho_hant_ocr_lens_clean",
+            id="t-zho-hant-lens",
         ),
         param(
             "t_zho_hant_ocr_paddle",
@@ -197,6 +217,11 @@ def test_get_zho_text_cleaned(text: str, expected: str):
             id="tmm-zho-hans-fuse",
         ),
         param(
+            "tmm_zho_hans_ocr_lens",
+            "tmm_zho_hans_ocr_lens_clean",
+            id="tmm-zho-hans-lens",
+        ),
+        param(
             "tmm_zho_hans_ocr_paddle",
             "tmm_zho_hans_ocr_paddle_clean",
             id="tmm-zho-hans-paddle",
@@ -205,6 +230,11 @@ def test_get_zho_text_cleaned(text: str, expected: str):
             "tmm_zho_hant_ocr_fuse",
             "tmm_zho_hant_ocr_fuse_clean",
             id="tmm-zho-hant-fuse",
+        ),
+        param(
+            "tmm_zho_hant_ocr_lens",
+            "tmm_zho_hant_ocr_lens_clean",
+            id="tmm-zho-hant-lens",
         ),
         param(
             "tmm_zho_hant_ocr_paddle",

@@ -11,7 +11,9 @@ Follow this workflow to keep test fixtures aligned with the files on disk.
 
 - List each test dataset under `test/data` (e.g., `kob`, `mlamd`, `mnt`, `t`).
 - For each dataset, list `test/data/<dataset>/input` contents.
-  - `.srt` and `.sup` files are of interest.
+  - `.srt` files are fixture candidates.
+  - `.sup` files should be noticed during scanning, but only MLAMD exposes SUP path
+    fixtures. Do not add SUP fixtures for other datasets.
 - For each dataset, list the contents of other directories under `test/data/<dataset>` recursively.
   - These contain data related to "actions" taken on inputs, such as proofreading.
   - Example directories of interest include `lang/` and `multilang/`.
@@ -41,6 +43,8 @@ rg -n "output_dir /" test/data/<dataset>/__init__.py
 ## Update Fixtures
 
 - Add/remove fixtures in `test/data/<dataset>/__init__.py` to match output files/dirs.
+- Add input fixtures for `.srt` files. Do not add input fixtures for `.sup` files,
+  except for the existing MLAMD `*_sup_path` fixtures.
 - Keep fixture names consistent with filenames (match the naming convention used in the repo).
 - Within `test/data/<dataset>/__init__.py`, group fixtures into:
     - Input fixtures (pointing to files in `input/`)

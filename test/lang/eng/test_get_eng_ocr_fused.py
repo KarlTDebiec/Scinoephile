@@ -12,16 +12,33 @@ from pytest import FixtureRequest, param
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
+from test.data.acopopb import get_acopopb_eng_ocr_fusion_test_cases
+from test.data.acoptc import get_acoptc_eng_ocr_fusion_test_cases
 from test.data.kob import get_kob_eng_ocr_fusion_test_cases
 from test.data.mlamd import get_mlamd_eng_ocr_fusion_test_cases
 from test.data.mnt import get_mnt_eng_ocr_fusion_test_cases
 from test.data.t import get_t_eng_ocr_fusion_test_cases
+from test.data.tmm import get_tmm_eng_ocr_fusion_test_cases
 from test.helpers import assert_series_equal, parametrize
 
 
 @parametrize(
     ("lens_fixture", "tesseract_fixture", "expected_fixture", "test_case_loader"),
     [
+        param(
+            "acopopb_eng_ocr_lens",
+            "acopopb_eng_ocr_tesseract",
+            "acopopb_eng_ocr_fuse",
+            get_acopopb_eng_ocr_fusion_test_cases,
+            id="acopopb-eng",
+        ),
+        param(
+            "acoptc_eng_ocr_lens",
+            "acoptc_eng_ocr_tesseract",
+            "acoptc_eng_ocr_fuse",
+            get_acoptc_eng_ocr_fusion_test_cases,
+            id="acoptc-eng",
+        ),
         param(
             "kob_eng_ocr_lens",
             "kob_eng_ocr_tesseract",
@@ -49,6 +66,13 @@ from test.helpers import assert_series_equal, parametrize
             "t_eng_fuse",
             get_t_eng_ocr_fusion_test_cases,
             id="t-eng",
+        ),
+        param(
+            "tmm_eng_ocr_lens",
+            "tmm_eng_ocr_tesseract",
+            "tmm_eng_ocr_fuse",
+            get_tmm_eng_ocr_fusion_test_cases,
+            id="tmm-eng",
         ),
     ],
 )

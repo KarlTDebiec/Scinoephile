@@ -83,6 +83,16 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     ("series_fixture", "expected_fixture"),
     [
         param(
+            "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="acopopb-zho-hant",
+        ),
+        param(
+            "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="acoptc-zho-hant",
+        ),
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             id="kob-zho-hant",

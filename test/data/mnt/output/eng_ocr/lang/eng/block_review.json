@@ -1357,10 +1357,14 @@
   {
     "query": {
       "subtitle_1": "(GIGGLING)",
-      "subtitle_2": "(IMITATES AIRPLANE)",
+      "subtitle_2": "(IMITATESAIRPLANE)",
       "subtitle_3": "- Who was at the door, Kanta?\n- Beats me."
     },
-    "answer": {},
+    "answer": {
+      "revised_2": "(IMITATES AIRPLANE)",
+      "note_2": "Regenerated from expected reviewed fixture."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1612,9 +1616,9 @@
     },
     "answer": {
       "revised_12": "“We wanted to grow a beautiful\nforest with the acorns,",
-      "note_12": "Changed the opening quotation mark from a straight double quote to a curly one to match the style used in subtitle 13.",
+      "note_12": "Changed the opening straight quote to a left double quote.",
       "revised_13": "so we planted them\nin your garden out back, but…”",
-      "note_13": "Changed the closing quotation mark from a straight double quote to a curly one to match the style used in subtitle 12."
+      "note_13": "Removed the extra opening quote on the continuation subtitle and kept the closing right double quote."
     },
     "difficulty": 1,
     "verified": true
