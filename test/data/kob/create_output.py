@@ -173,6 +173,6 @@ if "yue-Hans_diff" in actions:
         one_lbl="TRANSCRIBE",
         two_lbl="REFERENCE",
     )
-    print(diff)
+    # print(diff)
     print(diff.get_stacked_str(three=zho_hans_reference, include_equal=True))
     print(SeriesCER(yue_hans_reference, yue_hans_transcribe))

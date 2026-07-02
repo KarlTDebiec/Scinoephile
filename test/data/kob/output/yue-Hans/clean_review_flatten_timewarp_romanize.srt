@@ -5060,8 +5060,8 @@ dímwuih móuh saailihk jē?
 
 1013
 01:02:14,803 --> 01:02:15,762
-打锤过嚟
-dáchèuihgwo làih
+打捶过嚟
+dá chèuihgwo làih
 
 1014
 01:02:19,849 --> 01:02:21,100
@@ -5080,8 +5080,8 @@ syun la! m̀hhóu joi lohngfai sìhgaan la
 
 1017
 01:02:25,312 --> 01:02:26,855
-你不如俾我睡吓觉仲好
-néih bātyùh béi ngóhseuih haakgok juhng hóu
+你不如俾我瞓吓觉仲好
+néih bātyùh béi ngóhfan haak gokjuhng hóu
 
 1018
 01:02:33,027 --> 01:02:33,819
@@ -5090,7 +5090,7 @@ jouhmāt sójyuh douhmùhn àh?
 
 1019
 01:02:33,903 --> 01:02:35,029
-你慢慢训啦
+你慢慢瞓啦
 néih maahnmáan fanlā
 
 1020
@@ -5100,8 +5100,8 @@ jái a jái
 
 1021
 01:02:50,751 --> 01:02:53,462
-我几经辛苦先至搅到咁嘅阵容
-ngóh géigīng sānfú sīnji gáaudou gam ge jahnyùhng
+我几经辛苦先至搞到咁嘅阵容
+ngóh géigīng sānfú sīnji gáau dou gam ge jahnyùhng
 
 1022
 01:02:53,921 --> 01:02:57,006
@@ -5125,8 +5125,8 @@ néih dōu yiu làuhfāanjīgwan béi ngóh jidāk ge
 
 1026
 01:03:27,991 --> 01:03:29,618
-抱歉抱歉！喂，接住喇吓
-póuhhippóuhhip! wai, jipjyuh la haak
+抱歉抱歉！拿，接住喇吓
+póuhhippóuhhip! nàh, jipjyuh la haak
 
 1027
 01:03:38,417 --> 01:03:41,087
@@ -5435,8 +5435,8 @@ ngóh m̀hléih néih haih bīngo, ngóh m̀h séung joi tùhng néih góngyéh
 
 1088
 01:06:36,197 --> 01:06:38,198
-请你柄埋一二便，唔好阻住我睡觉
-chíng néih bengmàaih yātyihbihn, m̀hhóu jójyuh ngóh seuihgaau
+请你摆埋一二边，唔好阻住我瞓觉
+chíng néih báaimàaih yātyihbihn, m̀hhóu jójyuh ngóh fangaau
 
 1089
 01:06:38,907 --> 01:06:39,950
@@ -5445,8 +5445,8 @@ díng néih go fai àh gāján?
 
 1090
 01:06:40,033 --> 01:06:42,244
-唔系⋯你话睡觉，我想同你一齐之嘛
-m̀hhaih… néih wah seuihgaau, ngóh séung tùhng néih yātchàih jīma
+唔系⋯你话瞓觉，我想同你一齐之嘛
+m̀hhaih… néih wah fangaau, ngóh séung tùhng néih yātchàih jīma
 
 1091
 01:06:43,495 --> 01:06:44,329
@@ -5605,8 +5605,8 @@ ngóhdeih jēui!
 
 1122
 01:10:30,776 --> 01:10:33,987
-唔驶追喇！皇上就快要出发了
-m̀hsáijēuila! wòhngseuhng jauhfaai yiu chēutfaat líuh
+唔驶追喇！皇上就快要出发
+m̀hsáijēuila! wòhngseuhng jauhfaai yiu chēutfaat
 
 1123
 01:10:35,571 --> 01:10:36,697
@@ -5615,8 +5615,8 @@ néih saat jó ngóh go néuihyán…
 
 1124
 01:10:36,989 --> 01:10:38,199
-⋯我要将你献给皇上
-… ngóh yiu jēung néih hinkāpwòhngseuhng
+⋯我要将你献俾皇上
+… ngóh yiu jēung néihhin béi wòhngseuhng
 
 1125
 01:10:44,579 --> 01:10:46,832
@@ -5675,8 +5675,8 @@ jānhaih béi néih haak ngóh yāt gīng
 
 1136
 01:11:30,411 --> 01:11:31,120
-仲以为你唔番嚟添
-juhngyíhwàih néih m̀hfāanlàihtīm
+仲以为你唔返嚟添
+juhngyíhwàih néih m̀h fáanlàihtīm
 
 1137
 01:11:31,203 --> 01:11:32,329
@@ -5810,8 +5810,8 @@ néih m̀hpui jouh bōngjyú
 
 1163
 01:15:28,368 --> 01:15:29,786
-打狗棍者！吓话！
-dágáugwanjé! haak wah!
+打狗棍啫！吓话！
+dágáugwanjē! haak wah!
 
 1164
 01:15:34,289 --> 01:15:35,457
@@ -6300,8 +6300,8 @@ nē go wòhngbaatdáan yauh séung gin wòhngseuhng
 
 1261
 01:22:41,412 --> 01:22:44,497
-再俾你见多几次，我咪连官都冇得做
-joi béi néih gin dō géichi, ngóh mī lìhngūn dōu móuhdāk jouh
+再俾你见多几次我咪连官都冇得做
+joi béi néih gin dō géichi ngóh mī lìhngūn dōu móuhdāk jouh
 
 1262
 01:22:49,627 --> 01:22:50,503
@@ -6435,8 +6435,8 @@ kèihyùh ge yàhnmáh nē?
 
 1288
 01:25:02,242 --> 01:25:03,576
-其余嘅人马赶紧来嘅啦！
-kèihyùh ge yàhnmáhgóngánlòih ge lā!
+其余嘅人马赶紧嚟嘅啦！
+kèihyùh ge yàhnmáhgóngánlàih ge lā!
 
 1289
 01:25:05,412 --> 01:25:06,496
@@ -6445,8 +6445,8 @@ móuh sìhgaan joi dáng la!
 
 1290
 01:25:06,621 --> 01:25:08,164
-唯有你地留系度接应其他嘅兄弟
-wàihyáuh néihdeih làuh haihdouh jipying kèihtā ge hīngdaih
+唯有你哋留系度接应其他嘅兄弟
+wàihyáuh néihdeih làuhhaihdouh jipying kèihtā ge hīngdaih
 
 1291
 01:25:08,248 --> 01:25:08,997
@@ -6620,13 +6620,13 @@ yìhngsai yùhhòh?
 
 1325
 01:28:25,669 --> 01:28:27,671
-托皇上鸿福，风向转了
-tokwòhngseuhnghùhngfūk, fūngheungjyun líuh
+托皇上鸿福，风向转咗
+tokwòhngseuhnghùhngfūk, fūngheungjyun jó
 
 1326
 01:28:27,755 --> 01:28:29,172
-毒烟已经吹不到过嚟
-duhkyīn yíhgīng chēuibātdou gwo làih
+毒烟已经吹唔到过嚟
+duhkyīn yíhgīng chēuim̀h dou gwo làih
 
 1327
 01:28:29,297 --> 01:28:30,798
@@ -6640,8 +6640,8 @@ dōu chyùhngwānfūkmuhtla, wòhngseuhng
 
 1329
 01:28:33,718 --> 01:28:34,510
-拿刀来
-nàhdōulòih
+拎刀嚟
+līngdōu làih
 
 1330
 01:28:34,635 --> 01:28:35,677
@@ -6665,8 +6665,8 @@ m̀h heui! m̀htūng chóh haihdouh dángséi àh? hàahnghōi
 
 1334
 01:28:43,726 --> 01:28:44,852
-我叫你们行开呀！
-ngóh giu néihmùhn hàahnghōi àh!
+我叫你哋行开呀！
+ngóh giu néihdeih hàahnghōi àh!
 
 1335
 01:28:45,436 --> 01:28:47,855
@@ -7005,8 +7005,8 @@ fawàih yīnchàhn gam sāchàhn? tīu!
 
 1402
 01:35:28,329 --> 01:35:29,621
-帮告帮主
-bōng gou bōngjyú
+报告帮主
+bougou bōngjyú
 
 1403
 01:35:29,746 --> 01:35:31,581
@@ -7025,8 +7025,8 @@ yùhsēung!
 
 1406
 01:35:41,923 --> 01:35:43,634
-你记唔记得我哋之间仲有个协议的！
-néih gei m̀hgeidāk ngóhdeih jīgāan juhngyáuh go hipyíhdīk!
+你记唔记得我哋之间仲有个协议嘅！
+néih gei m̀hgeidāk ngóhdeih jīgāan juhngyáuh go hipyíh ge!
 
 1407
 01:35:44,967 --> 01:35:48,179
@@ -7045,8 +7045,8 @@ hósīk ngóh chíjūng dōu jouh m̀h dou johngyùhn!
 
 1410
 01:35:52,599 --> 01:35:55,518
-系咯！不过我都唔钟意状元的
-haihlohk! bātgwo ngóh dōu m̀h jūngyi johngyùhn dīk
+系咯！不过我都唔钟意状元嘅
+haihlohk! bātgwo ngóh dōu m̀h jūngyi johngyùhn ge
 
 1411
 01:35:55,852 --> 01:35:57,270
@@ -7260,7 +7260,7 @@ fuhngjí hātsihk? yáuhmóuh gáaucho?
 
 1453
 01:38:00,836 --> 01:38:03,004
-冇搅错！爽手啦！
+冇搞错！爽手啦！
 móuh gáaucho! sóngsáulā!
 
 1454

@@ -5060,7 +5060,7 @@ You have power!
 
 1013
 01:02:14,803 --> 01:02:15,777
-打锤过嚟
+打捶过嚟
 Come on, beat me
 
 1014
@@ -5080,7 +5080,7 @@ Forget it, don't waste time
 
 1017
 01:02:25,312 --> 01:02:26,871
-你不如俾我睡吓觉仲好
+你不如俾我瞓吓觉仲好
 Why don't you let me sleep?
 
 1018
@@ -5090,7 +5090,7 @@ Why did you lock the door?
 
 1019
 01:02:33,877 --> 01:02:35,029
-你慢慢训啦
+你慢慢瞓啦
 Enjoy sleeping
 
 1020
@@ -5100,7 +5100,7 @@ Son,
 
 1021
 01:02:50,751 --> 01:02:53,477
-我几经辛苦先至搅到咁嘅阵容
+我几经辛苦先至搞到咁嘅阵容
 I tried very hard to get this for you
 
 1022
@@ -5125,7 +5125,7 @@ you should give me a waddy first
 
 1026
 01:03:27,991 --> 01:03:29,634
-抱歉抱歉！喂，接住喇吓
+抱歉抱歉！拿，接住喇吓
 I am sorry, catch it
 
 1027
@@ -5435,7 +5435,7 @@ I won't care who you are, I just want to stop the conversation.
 
 1088
 01:06:36,170 --> 01:06:38,198
-请你柄埋一二便，唔好阻住我睡觉
+请你摆埋一二边，唔好阻住我瞓觉
 Please step aside, don't stop me from sleeping.
 
 1089
@@ -5445,7 +5445,7 @@ Damn you!
 
 1090
 01:06:40,033 --> 01:06:42,259
-唔系⋯你话睡觉，我想同你一齐之嘛
+唔系⋯你话瞓觉，我想同你一齐之嘛
 No… I just want to sleep with you.
 
 1091
@@ -5605,7 +5605,7 @@ Let's chase them
 
 1122
 01:10:30,776 --> 01:10:34,000
-唔驶追喇！皇上就快要出发了
+唔驶追喇！皇上就快要出发
 Stop The Emperor is setting off soon
 
 1123
@@ -5615,7 +5615,7 @@ You killed a woman…
 
 1124
 01:10:36,989 --> 01:10:38,199
-⋯我要将你献给皇上
+⋯我要将你献俾皇上
 You should replace her as a gift to the Emperor!
 
 1125
@@ -5675,7 +5675,7 @@ I am scared,
 
 1136
 01:11:30,381 --> 01:11:31,120
-仲以为你唔番嚟添
+仲以为你唔返嚟添
 I think you won't come back.
 
 1137
@@ -5810,7 +5810,7 @@ You are not qualified to be the leader of us.
 
 1163
 01:15:28,368 --> 01:15:29,796
-打狗棍者！吓话！
+打狗棍啫！吓话！
 “Dog Hitting Waddy”?
 
 1164
@@ -6289,7 +6289,7 @@ This bastard wants to see the Emperor,
 
 1261
 01:22:41,412 --> 01:22:44,504
-再俾你见多几次，我咪连官都冇得做
+再俾你见多几次我咪连官都冇得做
 if I let him see His Majesty often, my post will be taken away
 
 1262
@@ -6424,7 +6424,7 @@ Where are the rest of our men?
 
 1288
 01:25:02,242 --> 01:25:03,583
-其余嘅人马赶紧来嘅啦！
+其余嘅人马赶紧嚟嘅啦！
 They are coming
 
 1289
@@ -6434,7 +6434,7 @@ We have no time,
 
 1290
 01:25:06,621 --> 01:25:08,169
-唯有你地留系度接应其他嘅兄弟
+唯有你哋留系度接应其他嘅兄弟
 you stay here to wait for the others
 
 1291
@@ -6609,12 +6609,12 @@ How is the situation?
 
 1325
 01:28:25,632 --> 01:28:27,671
-托皇上鸿福，风向转了
+托皇上鸿福，风向转咗
 Thanks for Your Majesty's luck, the wind direction changed
 
 1326
 01:28:27,755 --> 01:28:29,219
-毒烟已经吹不到过嚟
+毒烟已经吹唔到过嚟
 The smoke is going in the other direction
 
 1327
@@ -6629,7 +6629,7 @@ They are all dead
 
 1329
 01:28:33,680 --> 01:28:34,556
-拿刀来
+拎刀嚟
 Bring me the sword
 
 1330
@@ -6654,7 +6654,7 @@ Get lost, don't you want to wait for death? Get lost
 
 1334
 01:28:43,726 --> 01:28:44,852
-我叫你们行开呀！
+我叫你哋行开呀！
 You are ordered to get away
 
 1335
@@ -6994,7 +6994,7 @@ Damn it!
 
 1402
 01:35:28,329 --> 01:35:29,664
-帮告帮主
+报告帮主
 Master
 
 1403
@@ -7014,7 +7014,7 @@ Yushang
 
 1406
 01:35:41,923 --> 01:35:43,634
-你记唔记得我哋之间仲有个协议的！
+你记唔记得我哋之间仲有个协议嘅！
 We have an agreement, do you remember?
 
 1407
@@ -7034,7 +7034,7 @@ But, I can't be the Scholar
 
 1410
 01:35:52,599 --> 01:35:55,520
-系咯！不过我都唔钟意状元的
+系咯！不过我都唔钟意状元嘅
 But I don't like Scholar at all.
 
 1411
@@ -7249,7 +7249,7 @@ A must? Kidding?
 
 1453
 01:38:00,836 --> 01:38:03,047
-冇搅错！爽手啦！
+冇搞错！爽手啦！
 It's true, be quick
 
 1454

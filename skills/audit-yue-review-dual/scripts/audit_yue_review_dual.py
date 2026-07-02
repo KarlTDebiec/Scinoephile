@@ -366,7 +366,6 @@ def _get_audit_paths(
         ValueError: if layout cannot be resolved
     """
     dataset_dir_path = data_root_path / dataset_name
-    input_dir_path = dataset_dir_path / "input"
     output_dir_path = dataset_dir_path / "output"
     if layout == "auto":
         if (output_dir_path / "yue-Hans_ocr").is_dir():
@@ -403,10 +402,10 @@ def _get_audit_paths(
         hans_dir_path = output_dir_path / "yue-Hans"
         hant_dir_path = output_dir_path / "yue-Hant"
         return AuditPaths(
-            hans_original_path=input_dir_path / "yue-Hans.srt",
+            hans_original_path=hans_dir_path / "clean.srt",
             hans_review_path=hans_dir_path / "clean_review.srt",
             hans_final_path=hans_dir_path / "clean_review_flatten_timewarp.srt",
-            hant_original_path=input_dir_path / "yue-Hant.srt",
+            hant_original_path=hant_dir_path / "clean.srt",
             hant_review_path=hant_dir_path / "clean_review.srt",
             hant_final_path=hant_dir_path
             / "clean_review_flatten_timewarp_simplify_review.srt",

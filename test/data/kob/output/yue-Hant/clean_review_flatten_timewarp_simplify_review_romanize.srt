@@ -4890,8 +4890,8 @@ dōu juhng meihfan síng àh!
 
 979
 01:00:35,967 --> 01:00:38,093
-佢啱啱至训著咋！唔好嘈醒佢呀
-kéuih ngāamngāam jifanjyu ja! m̀hhóu chòuhséng kéuih àh
+佢啱啱至训着咋！唔好嘈醒佢呀
+kéuih ngāamngāam jifan jeuhk ja! m̀hhóu chòuhséng kéuih àh
 
 980
 01:00:38,886 --> 01:00:40,387
@@ -5060,12 +5060,12 @@ dímwuih móuh saailihk jē?
 
 1013
 01:02:14,803 --> 01:02:15,762
-打锤过嚟
-dáchèuihgwo làih
+打捶过嚟
+dá chèuihgwo làih
 
 1014
 01:02:19,849 --> 01:02:21,100
-呢搥咪几咁有力！
+呢捶咪几咁有力！
 nē chèuih mī géi gam yáuhlihk!
 
 1015
@@ -5125,8 +5125,8 @@ néih dōu yiu làuhfāanjīgwan béi ngóh jidāk ge
 
 1026
 01:03:27,991 --> 01:03:29,618
-抱歉抱歉！兰，接住了吓
-póuhhippóuhhip! làahn, jipjyuh líuhhaak
+抱歉抱歉！拿，接住喇吓
+póuhhippóuhhip! nàh, jipjyuh la haak
 
 1027
 01:03:38,417 --> 01:03:41,087
@@ -5275,8 +5275,8 @@ yùhgwó ngóh yáuhchìhn àh
 
 1056
 01:05:04,618 --> 01:05:06,994
-我就唔驶系度挨馒头啦
-ngóh jauh m̀hsái haihdouh óimaahntàuhlā
+我就唔驶系度捱馒头啦
+ngóh jauh m̀hsái haihdouh ngàaih maahntàuhlā
 
 1057
 01:05:11,123 --> 01:05:13,667
@@ -5435,8 +5435,8 @@ ngóh m̀hléih néih haih bīngo, ngóh m̀h séung joi tùhng néih góngyéh
 
 1088
 01:06:36,197 --> 01:06:38,198
-请你摆埋一二边，唔好阻住我训觉
-chíng néih báaimàaih yātyihbihn, m̀hhóu jójyuh ngóh fangok
+请你摆埋一二边，唔好阻住我瞓觉
+chíng néih báaimàaih yātyihbihn, m̀hhóu jójyuh ngóh fangaau
 
 1089
 01:06:38,907 --> 01:06:39,950
@@ -5580,8 +5580,8 @@ jéunglóuh!
 
 1117
 01:09:02,366 --> 01:09:03,534
-返去先再讲
-fāanheui sīn joi góng
+返去先至讲
+fāanheui sīnji góng
 
 1118
 01:09:35,519 --> 01:09:36,145
@@ -5605,8 +5605,8 @@ ngóhdeih jēui!
 
 1122
 01:10:30,776 --> 01:10:33,987
-唔驶追喇！皇上就快要出发了
-m̀hsáijēuila! wòhngseuhng jauhfaai yiu chēutfaat líuh
+唔驶追喇！皇上就快要出发
+m̀hsáijēuila! wòhngseuhng jauhfaai yiu chēutfaat
 
 1123
 01:10:35,571 --> 01:10:36,697
@@ -5615,8 +5615,8 @@ néih saat jó ngóh go néuihyán…
 
 1124
 01:10:36,989 --> 01:10:38,199
-⋯我要将你献给皇上
-… ngóh yiu jēung néih hinkāpwòhngseuhng
+⋯我要将你献俾皇上
+… ngóh yiu jēung néihhin béi wòhngseuhng
 
 1125
 01:10:44,579 --> 01:10:46,832
@@ -5810,8 +5810,8 @@ néih m̀hpui jouh bōngjyú
 
 1163
 01:15:28,368 --> 01:15:29,786
-打狗棍者！下话！
-dágáugwanjé! hah wah!
+打狗棍啫！吓话！
+dágáugwanjē! haak wah!
 
 1164
 01:15:34,289 --> 01:15:35,457
@@ -6140,8 +6140,8 @@ gonglùhng sahpbaat jéung ge tàuh sahpchāt jéungngóh yíhgīng líhngwuih d
 
 1229
 01:19:28,619 --> 01:19:31,288
-但系第十八式「杀龙有悔」
-daahnhaih daihsahp baatsīk ｢saatlùhng yáuhfui｣
+但系第十八式〝杀龙有悔〞
+daahnhaih daihsahp baatsīk “saatlùhng yáuhfui”
 
 1230
 01:19:31,371 --> 01:19:32,830
@@ -6300,8 +6300,8 @@ nē go wòhngbaatdáan yauh séung gin wòhngseuhng
 
 1261
 01:22:41,412 --> 01:22:44,497
-再俾你见多几次，我咪连官都冇得做
-joi béi néih gin dō géichi, ngóh mī lìhngūn dōu móuhdāk jouh
+再俾你见多几次我咪连官都冇得做
+joi béi néih gin dō géichi ngóh mī lìhngūn dōu móuhdāk jouh
 
 1262
 01:22:49,627 --> 01:22:50,503
@@ -6620,13 +6620,13 @@ yìhngsai yùhhòh?
 
 1325
 01:28:25,669 --> 01:28:27,671
-托皇上鸿福，风向转了
-tokwòhngseuhnghùhngfūk, fūngheungjyun líuh
+托皇上鸿福，风向转咗
+tokwòhngseuhnghùhngfūk, fūngheungjyun jó
 
 1326
 01:28:27,755 --> 01:28:29,172
-毒烟已经吹不到过嚟
-duhkyīn yíhgīng chēuibātdou gwo làih
+毒烟已经吹唔到过嚟
+duhkyīn yíhgīng chēuim̀h dou gwo làih
 
 1327
 01:28:29,297 --> 01:28:30,798
@@ -6640,8 +6640,8 @@ dōu chyùhngwānfūkmuhtla, wòhngseuhng
 
 1329
 01:28:33,718 --> 01:28:34,510
-拿刀来
-nàhdōulòih
+拎刀嚟
+līngdōu làih
 
 1330
 01:28:34,635 --> 01:28:35,677
@@ -6720,8 +6720,8 @@ ngóhdeih tìhngdāi jó bun go sìhsàhn sihk jóufaahn
 
 1345
 01:30:07,966 --> 01:30:09,384
-我去咗个便
-ngóh heui jó gobihn
+我少咗个便
+ngóhsíu jó gobihn
 
 1346
 01:30:09,426 --> 01:30:10,176
@@ -7005,8 +7005,8 @@ fawàih yīnchàhn gam sāchàhn? tīu!
 
 1402
 01:35:28,329 --> 01:35:29,621
-禀告帮主
-bángou bōngjyú
+报告帮主
+bougou bōngjyú
 
 1403
 01:35:29,746 --> 01:35:31,581
@@ -7025,8 +7025,8 @@ yùhsēung!
 
 1406
 01:35:41,923 --> 01:35:43,634
-你记唔记得我哋之间仲有个协议的！
-néih gei m̀hgeidāk ngóhdeih jīgāan juhngyáuh go hipyíhdīk!
+你记唔记得我哋之间仲有个协议嘅！
+néih gei m̀hgeidāk ngóhdeih jīgāan juhngyáuh go hipyíh ge!
 
 1407
 01:35:44,967 --> 01:35:48,179
@@ -7045,8 +7045,8 @@ hósīk ngóh chíjūng dōu jouh m̀h dou johngyùhn!
 
 1410
 01:35:52,599 --> 01:35:55,518
-系咯！不过我都唔钟意状元的
-haihlohk! bātgwo ngóh dōu m̀h jūngyi johngyùhn dīk
+系咯！不过我都唔钟意状元嘅
+haihlohk! bātgwo ngóh dōu m̀h jūngyi johngyùhn ge
 
 1411
 01:35:55,852 --> 01:35:57,270
