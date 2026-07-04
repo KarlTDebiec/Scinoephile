@@ -407,11 +407,7 @@
       "zimu_28": "她一定会相信的",
       "zimu_29": "也好"
     },
-    "answer": {
-      "xiugai_8": "至尊宝？ 玉尊玉？ 想骗我啊？",
-      "beizhu_8": "在英文式停顿符号后补充空格，调整排版。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -507,13 +503,7 @@
       "zimu_18": "也好，自动送上门来",
       "zimu_19": "来啊！"
     },
-    "answer": {
-      "xiugai_9": "这段姻缘是上天安排的最大嘛！",
-      "beizhu_9": "在句末补上感叹号，使标点更完整。",
-      "xiugai_10": "喏！你现在呢，只要甩掉你哪个老婆",
-      "beizhu_10": "在“呢”后补充逗号，并去除多余空格以统一排版。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -677,7 +667,6 @@
       "zimu_21": "孙悟空"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -823,11 +812,7 @@
       "zimu_15": "我这样做，　无非是想感化劣徒",
       "zimu_16": "以配合我佛慈悲的大无畏精神啊"
     },
-    "answer": {
-      "xiugai_15": "我这样做，无非是想感化劣徒",
-      "beizhu_15": "删除“做，”后多余的全角空格，使排版正常。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -955,11 +940,7 @@
       "zimu_3": "你喜欢啊，拿去吧！",
       "zimu_4": "我徒弟叫我了bye bye"
     },
-    "answer": {
-      "xiugai_4": "我徒弟叫我了 bye bye",
-      "beizhu_4": "在中文和英文口语“bye bye”之间补充空格，使排版更规范。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -971,10 +952,6 @@
       "zimu_5": "那个盒子呢？盒子呢？"
     },
     "answer": {
-      "xiugai_2": "阿弥陀佛 goodbye",
-      "beizhu_2": "在英文单词 goodbye 前补充空格，使中英文分隔更清晰。",
-      "xiugai_3": "我又不认识你们，拜托不要跟着我们",
-      "beizhu_3": "补上逗号，使句子停顿更符合字幕排版。",
       "xiugai_4": "师傅能够见到你真好了",
       "beizhu_4": "将“师父”统一修正为常见简体写法“师傅”。"
     },
@@ -1292,11 +1269,7 @@
       "zimu_26": "沙僧，跟我来　　哦",
       "zimu_27": "你走开"
     },
-    "answer": {
-      "xiugai_12": "啊，是吗？为什么？　　不会走。",
-      "beizhu_12": "补上句末标点“。”，使句子形式完整。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1348,11 +1321,7 @@
       "zimu_5": "拼全力为众生，牺牲也值得",
       "zimu_6": "喃呒阿弥陀佛"
     },
-    "answer": {
-      "xiugai_4": "背黑锅我来 送死你去",
-      "beizhu_4": "将句中多余的全角空格整理为正常空格。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1375,11 +1344,7 @@
       "zimu_2": "你自然会回来跟我唱这首歌的",
       "zimu_3": "喃呒阿弥陀佛⋯"
     },
-    "answer": {
-      "xiugai_1": "等你明白了舍身取义",
-      "beizhu_1": "删除“明白”和“了”之间多余的空格。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1688,11 +1653,7 @@
       "zimu_7": "你们没有机会了",
       "zimu_8": "除非神仙来救你们"
     },
-    "answer": {
-      "xiugai_6": "像我这样当兵。",
-      "beizhu_6": "将句末的全角点号“．”修正为中文句号“。”。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1904,7 +1865,6 @@
       "zimu_16": "I do！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2044,13 +2004,7 @@
       "zimu_11": "他明白　了",
       "zimu_12": "你明白　了没有？"
     },
-    "answer": {
-      "xiugai_11": "他明白了",
-      "beizhu_11": "删除“明白”和“了”之间多余的空格。",
-      "xiugai_12": "你明白了没有？",
-      "beizhu_12": "删除“明白”和“了”之间多余的空格。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -2736,7 +2690,7 @@
       "zimu_4": "走"
     },
     "answer": {
-      "xiugai_3": "一定要靠月光宝盒才能离开这里⋯",
+      "xiugai_3": "一定要靠月光宝盒才能离开这里． ．⋯",
       "beizhu_3": "Preserved cleaning-normalized punctuation in the block-review output."
     },
     "difficulty": 1,
@@ -2878,11 +2832,7 @@
       "zimu_14": "走！",
       "zimu_15": "走啦！"
     },
-    "answer": {
-      "xiugai_6": "相公　娘子",
-      "beizhu_6": "将第 6 条中多余的空格删除，修正排版。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {

@@ -11,7 +11,10 @@
       "zimu_1": "各位客官",
       "zimu_2": "擔擱大家一會，很快就點著了"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_2": "耽擱大家一會，很快就點著了",
+      "beizhu_2": "將「擔擱」更正為「耽擱」，修正錯別字。"
+    },
     "difficulty": 1,
     "verified": true
   },
@@ -299,9 +302,7 @@
       "zimu_37": "喔⋯"
     },
     "answer": {
-      "xiugai_1": "這個月光寶盒呢⋯我的！",
-      "beizhu_1": "刪除多餘空格，修正排版。",
-      "xiugai_15": "還有這個寶盒呢⋯我的！",
+      "xiugai_15": "還有這個寶盒呢⋯我的",
       "beizhu_15": "合併斷開的字幕內容，刪除多餘空格，修正排版。"
     },
     "difficulty": 1,
@@ -338,11 +339,7 @@
       "zimu_3": "坐下",
       "zimu_4": "椅子"
     },
-    "answer": {
-      "xiugai_2": "你到那兒去？站住。",
-      "beizhu_2": "補上句末標點「。」"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -527,7 +524,6 @@
       "zimu_19": "來啊！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -964,11 +960,7 @@
       "zimu_3": "你喜歡啊，拿去吧！",
       "zimu_4": "我徒弟叫我了bye bye"
     },
-    "answer": {
-      "xiugai_4": "我徒弟叫我了 bye bye",
-      "beizhu_4": "補上「了」後的英文片語前空格，修正排版。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -979,13 +971,7 @@
       "zimu_4": "師父能夠見到你真好了",
       "zimu_5": "那個盒子呢？盒子呢？"
     },
-    "answer": {
-      "xiugai_2": "阿彌陀佛 goodbye",
-      "beizhu_2": "英文單字前補入空格，修正排版。",
-      "xiugai_3": "我又不認識你們 拜託不要跟著我們",
-      "beizhu_3": "補入缺少的空格，修正排版。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1171,11 +1157,7 @@
       "zimu_19": "鬼才相信你⋯",
       "zimu_20": "你們在這兒你幹甚麼？"
     },
-    "answer": {
-      "xiugai_20": "你們在這兒，你幹甚麼？",
-      "beizhu_20": "補上缺少的標點符號，將「你們在這兒你幹甚麼？」改為「你們在這兒，你幹甚麼？」"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1254,11 +1236,7 @@
       "zimu_8": "我高你一點之嘛沒甚麼大不了的",
       "zimu_9": "別那麼多廢話啦，快去救師父，走呀"
     },
-    "answer": {
-      "xiugai_8": "我高你一點之嘛，沒甚麼大不了的",
-      "beizhu_8": "補上標點符號「，」；「之嘛」前後加逗號以符合排版。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1304,7 +1282,6 @@
       "zimu_6": "高你的頭"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1328,15 +1305,7 @@
       "zimu_10": "叫螃蟹和蚌精無法吃我",
       "zimu_11": "你本領最大，就只你一個"
     },
-    "answer": {
-      "xiugai_7": "只有你能伴我取西經",
-      "beizhu_7": "刪除多餘空白字元。",
-      "xiugai_8": "只有你能殺妖和除魔",
-      "beizhu_8": "刪除多餘空白字元。",
-      "xiugai_9": "只有你能保護我",
-      "beizhu_9": "刪除多餘空白字元。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1348,13 +1317,7 @@
       "zimu_5": "拼全力為眾生，犧牲也值得",
       "zimu_6": "喃嘸阿彌陀佛"
     },
-    "answer": {
-      "xiugai_2": "戴上「緊箍兒」",
-      "beizhu_2": "將非標準引號〝〞修正為中文書名號式引號「」",
-      "xiugai_4": "背黑鍋我來　送死你去",
-      "beizhu_4": "刪除多餘空格，修正排版"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1381,11 +1344,7 @@
       "zimu_2": "你自然會回來跟我唱這首歌的",
       "zimu_3": "喃嘸阿彌陀佛⋯"
     },
-    "answer": {
-      "xiugai_1": "等你明白了捨身取義",
-      "beizhu_1": "刪除多餘空格"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1623,7 +1582,6 @@
       "zimu_12": "我是女人，玩真的，我跟你拼了"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1695,11 +1653,7 @@
       "zimu_7": "你們沒有機會了",
       "zimu_8": "除非神仙來救你們"
     },
-    "answer": {
-      "xiugai_6": "像我這樣當兵。",
-      "beizhu_6": "將全形句號誤作半形點號，修正為標點符號「。」"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1864,11 +1818,7 @@
       "zimu_11": "我〝超〞的一聲回到五百年前",
       "zimu_12": "就這樣"
     },
-    "answer": {
-      "xiugai_11": "我「超」的一聲回到五百年前",
-      "beizhu_11": "將異體引號「〝〞」修正為標準引號「「」」。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1909,7 +1859,6 @@
       "zimu_16": "I do！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2049,13 +1998,7 @@
       "zimu_11": "他明白　了",
       "zimu_12": "你明白　了沒有？"
     },
-    "answer": {
-      "xiugai_11": "他明白了",
-      "beizhu_11": "刪除多餘空格，修正為「明白了」。",
-      "xiugai_12": "你明白了沒有？",
-      "beizhu_12": "刪除多餘空格，修正為「明白了」。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -2139,11 +2082,7 @@
       "zimu_3": "他們全是無辜的",
       "zimu_4": "我同意！"
     },
-    "answer": {
-      "xiugai_2": "他們不認識你師妹的。",
-      "beizhu_2": "句末補上標點符號。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -2739,7 +2678,7 @@
       "zimu_4": "走"
     },
     "answer": {
-      "xiugai_3": "一定要靠月光寶盒才能離開這裡⋯⋯",
+      "xiugai_3": "一定要靠月光寶盒才能離開這裡． ．⋯⋯",
       "beizhu_3": "Preserved cleaning-normalized punctuation in the block-review output."
     },
     "difficulty": 1,
@@ -2756,7 +2695,6 @@
       "zimu_7": "你保重吧！"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {

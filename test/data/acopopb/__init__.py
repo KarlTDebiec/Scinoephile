@@ -709,8 +709,4 @@ def acopopb_yue_simplify_expected_series_diff() -> list[str]:
 @fixture
 def acopopb_zho_simplify_expected_series_diff() -> list[str]:
     """Expected differences for ACOPOPB Zho Simplified vs Traditional subtitles."""
-    return [
-        "edit: SIMP[64] -> TRAD[64]: '悟空，你诸多藉口' -> '悟空，你诸多借口'",
-        "edit: SIMP[392] -> TRAD[392]: '大腿捱一刀算得了什么？' -> '大腿挨一刀算得了什么？'",
-        "edit: SIMP[679] -> TRAD[679]: '希望藉此经书来感化世人' -> '希望借此经书来感化世人'",
-    ]
+    return []
