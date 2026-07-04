@@ -485,7 +485,8 @@
       "zimu_20": "哎⋯「摸摸」在那個姐姐身上　快過去拿"
     },
     "answer": {},
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -537,10 +538,7 @@
       "zimu_10": "是誰在那邊窮嚷嚷",
       "zimu_11": "害得我尿尿斷斷續續的"
     },
-    "answer": {
-      "xiugai_4": "我沒什麼時間呢　你聽著　你是神仙",
-      "beizhu_4": "將「神僊」修正為「神仙」。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -866,7 +864,11 @@
       "zimu_10": "霍　我換了髮型　不錯吧",
       "zimu_11": "啊　房子怎麼也變了樣了"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_10": "嚯　我換了髮型　不錯吧",
+      "beizhu_10": "將語氣詞「霍」更正為「嚯」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -956,10 +958,7 @@
       "zimu_28": "我現在想吃你們",
       "zimu_29": "哪個願意的　可以跟我走　哼"
     },
-    "answer": {
-      "xiugai_18": "一定是它媽媽勾引那隻九官鳥",
-      "beizhu_18": "「只」修正為「隻」，屬量詞用字錯誤。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1082,12 +1081,7 @@
       "zimu_32": "生個叉燒都比生你好　臭小子",
       "zimu_33": "叉燒"
     },
-    "answer": {
-      "xiugai_12": "你真的是神仙",
-      "beizhu_12": "「神僊」修正為常用正字「神仙」。",
-      "xiugai_20": "我要做一個神仙乞丐",
-      "beizhu_20": "「神僊」修正為常用正字「神仙」。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1238,7 +1232,11 @@
       "zimu_22": "駝子躺下",
       "zimu_23": "哎　好"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_12": "哎　天爺　你很為難　嚯",
+      "beizhu_12": "將語氣詞「霍」更正為「嚯」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1434,10 +1432,7 @@
       "zimu_15": "還好意思說照我的吩咐做",
       "zimu_16": "沒錯　我是在賣豆腐"
     },
-    "answer": {
-      "xiugai_7": "快點　你玩了　換我了啦",
-      "beizhu_7": "修正錯別字「歡玩」為「玩」。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -1562,8 +1557,8 @@
       "zimu_5": "嚇死別人就不好了"
     },
     "answer": {
-      "xiugai_1": "大爺　你要切記",
-      "beizhu_1": "仅保留文字校正，不调整标点或空格。"
+      "xiugai_4": "所有的大疱都會冒出來",
+      "beizhu_4": "將「瘡」更正為「疱」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1798,10 +1793,7 @@
       "zimu_2": "有人賣大粽子",
       "zimu_3": "每天都有人來賣粽子　別理他"
     },
-    "answer": {
-      "xiugai_1": "啊　醜了　大鐘　時辰到了",
-      "beizhu_1": "修正錯別字：「丑」改為「醜」，「種」改為「鐘」。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2071,10 +2063,7 @@
       "zimu_2": "放心好了",
       "zimu_3": "把你金身留下來"
     },
-    "answer": {
-      "xiugai_1": "大爺　我再怎麼樣也要帶你回去",
-      "beizhu_1": "修正「大種」為「大爺」以符合常見字幕用字與明顯錯別字。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2134,10 +2123,7 @@
       "zimu_14": "對不起啊　為了我的終身俸",
       "zimu_15": "只好跟著大家走了　看著辦吧　啊"
     },
-    "answer": {
-      "xiugai_9": "裏面那票神仙說",
-      "beizhu_9": "將「神僊」修正為「神仙」錯別字。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2285,10 +2271,7 @@
       "zimu_13": "不許你說這種話",
       "zimu_14": "啊⋯你的腳⋯"
     },
-    "answer": {
-      "xiugai_10": "如果我們神仙跟凡人結合的話",
-      "beizhu_10": "「神僊」修正為「神仙」，屬錯別字。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2421,10 +2404,7 @@
       "zimu_7": "王八蛋　我早該殺了你",
       "zimu_8": "要不然也不會死這麼多人"
     },
-    "answer": {
-      "xiugai_3": "你就可以再做神仙呢",
-      "beizhu_3": "修正錯別字「神僊」為「神仙」。"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -2469,9 +2449,7 @@
     },
     "answer": {
       "xiugai_2": "他不但讓你死心　而且還對他死心塌地的",
-      "beizhu_2": "「塌地」應為「死心塌地」的遺漏字，補正錯別字/漏字。",
-      "xiugai_13": "搞到所有神仙全跑光了",
-      "beizhu_13": "「神僊」應為「神仙」，修正錯別字。"
+      "beizhu_2": "「塌地」應為「死心塌地」的遺漏字，補正錯別字/漏字。"
     },
     "difficulty": 1,
     "verified": true
@@ -2647,10 +2625,7 @@
       "zimu_1": "笑得好過癮嘛",
       "zimu_2": "濟癲"
     },
-    "answer": {
-      "xiugai_2": "濟顛",
-      "beizhu_2": "「癲」應為慣用寫法「顛」"
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },

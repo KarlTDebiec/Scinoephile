@@ -2925,7 +2925,7 @@ háizi  nǐ zěnmenòng chéng zhège yàngzi  bàbà
 
 586
 00:28:49,750 --> 00:28:52,208
-霍　我换了发型　不错吧
+嚯　我换了发型　不错吧
 huò  wǒhuàn le fàxíng  bùcuò ba
 
 587
@@ -4255,8 +4255,8 @@ jiào tā qù ya
 
 852
 00:39:39,042 --> 00:39:40,750
-哎　天爷　你很为难　呵
-āi  tiānyé  nǐ hěn wéinán  hē
+哎　天爷　你很为难　嚯
+āi  tiānyé  nǐ hěn wéinán  huò
 
 853
 00:39:40,750 --> 00:39:42,792
@@ -4520,8 +4520,8 @@ a… bújiàn le… hǎolíng a… shì a…
 
 905
 00:42:35,125 --> 00:42:37,167
-你们看他的脸　比神僊还要灵验
-nǐmen kàn tā de liǎn  bǐ shén xiān háiyào língyàn
+你们看他的脸　比神仙还要灵验
+nǐmen kàn tā de liǎn  bǐ shénxiān háiyào língyàn
 
 906
 00:42:37,167 --> 00:42:39,750
@@ -4875,8 +4875,8 @@ ná le…
 
 976
 00:46:44,500 --> 00:46:46,208
-快点　你玩了　换我了啦
-kuàidiǎn  nǐ wán le  huàn wǒ le la
+快点　你欢玩了　换我了啦
+kuàidiǎn  nǐhuān wán le  huàn wǒ le la
 
 977
 00:46:46,208 --> 00:46:47,083
@@ -5205,8 +5205,8 @@ yígè fēngdùpiānpiān de měinánzǐ
 
 1042
 00:51:03,500 --> 00:51:05,208
-大爷　你要切记
-dàyé  nǐ yào qièjì
+大种　你要切记
+dà zhǒng  nǐ yào qièjì
 
 1043
 00:51:05,500 --> 00:51:07,000
@@ -5220,8 +5220,8 @@ yàobùrán huángjīn biàn gǒushǐ
 
 1045
 00:51:09,208 --> 00:51:10,708
-所有的大疮都会冒出来
-suǒyǒu de dàchuāng dōu huì màochūlái
+所有的大疱都会冒出来
+suǒyǒu de dàpào dōu huì màochūlái
 
 1046
 00:51:10,917 --> 00:51:12,167
@@ -5675,8 +5675,8 @@ wǒfú cíbēi  dàjídàlì
 
 1136
 00:57:26,542 --> 00:57:30,417
-啊　丑了　大钟　时辰到了
-a  chǒu le  dàzhōng  shíchén dào le
+啊　丑了　大种　时辰到了
+a  chǒu le  dà zhǒng  shíchén dào le
 
 1137
 00:57:32,125 --> 00:57:33,042
@@ -6060,7 +6060,7 @@ gāngcái kàndé zhēnshuǎng  yǎnjīng dōu bù zhǎ yīxià a
 
 1213
 01:01:22,917 --> 01:01:24,542
-不过刚才真的精彩呀
+不过刚才真的精采呀
 bùguò gāngcái zhēnde jīngcǎi ya
 
 1214
@@ -6400,8 +6400,8 @@ wángbādàn  nǐ gè sǐ hēiguǐ  hǎo  huàn le
 
 1281
 01:05:14,333 --> 01:05:16,417
-大爷　我再怎么样也要带你回去
-dàyé  wǒ zài zěnmeyàng yě yào dài nǐ huíqù
+大种　我再怎么样也要带你回去
+dà zhǒng  wǒ zài zěnmeyàng yě yào dài nǐ huíqù
 
 1282
 01:05:16,667 --> 01:05:17,500
@@ -7290,8 +7290,8 @@ mùdì jiùshì yào guóqīngsì méiyǒu shénlì de bìhù
 
 1459
 01:16:28,167 --> 01:16:31,458
-他就趁著今天晚上月蚀至阴的时候
-tā jiù chèn zhù jīntiān wǎnshàng yuèshí zhìyīn de shíhòu
+他就趁着今天晚上月蚀至阴的时候
+tā jiù chènzhe jīntiān wǎnshàng yuèshí zhìyīn de shíhòu
 
 1460
 01:16:32,833 --> 01:16:34,667
@@ -7670,7 +7670,7 @@ xiào dé hǎo guòyǐn ma
 
 1535
 01:23:27,125 --> 01:23:28,167
-济颠
+济癫
 jìdiān
 
 1536
