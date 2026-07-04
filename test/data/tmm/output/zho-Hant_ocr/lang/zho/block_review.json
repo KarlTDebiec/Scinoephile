@@ -655,7 +655,11 @@
       "zimu_14": "爸爸⋯",
       "zimu_15": "摸摸⋯"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_10": "走嘞",
+      "beizhu_10": "將語氣詞「勒」更正為「嘞」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
