@@ -8,9 +8,11 @@ from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import (
+    RE_LATIN_WORD,
     get_char_type,
     normalize_fullwidth_alphanumerics,
     normalize_ocr_confusables_to_ascii,
+    normalize_subtitle_text,
     sanitize_text,
 )
 from test.helpers import parametrize
@@ -48,6 +50,28 @@ def test_normalize_fullwidth_alphanumerics(text: str, expected: str) -> None:
 def test_normalize_ocr_confusables_to_ascii(text: str, expected: str) -> None:
     """OCR-confusable characters are converted to regular ASCII."""
     assert normalize_ocr_confusables_to_ascii(text) == expected
+
+
+@parametrize(
+    ("text", "expected"),
+    [
+        ("Don't stop 佢", ["Don't", "stop"]),
+    ],
+)
+def test_re_latin_word(text: str, expected: list[str]) -> None:
+    """Latin word regex matches word-like tokens."""
+    assert RE_LATIN_WORD.findall(text) == expected
+
+
+@parametrize(
+    ("text", "expected"),
+    [
+        ("{\\i1}ＫＡＴＥ\\N\x00go", "KATE go"),
+    ],
+)
+def test_normalize_subtitle_text(text: str, expected: str) -> None:
+    """Subtitle text normalization removes markup and compacts text."""
+    assert normalize_subtitle_text(text) == expected
 
 
 @parametrize(

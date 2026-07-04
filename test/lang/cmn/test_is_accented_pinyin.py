@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from scinoephile.lang.cmn.romanization import is_accented_pinyin
 from test.helpers import parametrize
-from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
+from test.lang.id.test_language_id import LANGUAGE_ID_TEST_CASES
 
 
 @parametrize(

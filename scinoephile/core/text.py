@@ -23,9 +23,12 @@ __all__ = [
     "WHITESPACE_CHARS",
     "HALF_TO_FULL_PUNC",
     "FULL_TO_HALF_PUNC",
+    "RE_ASS_OVERRIDE_BLOCK",
     "RE_HANZI",
+    "RE_LATIN_WORD",
     "RE_PRIVATE_USE_AREA_BMP",
     "RE_WESTERN",
+    "RE_WHITESPACE",
     "AnsiColor",
     "colorize",
     "dedent_and_compact",
@@ -33,6 +36,7 @@ __all__ = [
     "is_full_width_char",
     "normalize_fullwidth_alphanumerics",
     "normalize_ocr_confusables_to_ascii",
+    "normalize_subtitle_text",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
     "sanitize_text",
@@ -233,11 +237,20 @@ Includes the following Unicode blocks:
   - CJK Unified Ideographs Extension H (U+31350–U+323AF)
 """
 
+RE_ASS_OVERRIDE_BLOCK = re.compile(r"\{[^{}]*\}")
+"""Regular expression for ASS override blocks."""
+
+RE_LATIN_WORD = re.compile(r"[A-Za-z][A-Za-z']*")
+"""Regular expression for Latin words."""
+
 RE_PRIVATE_USE_AREA_BMP = re.compile(r"[\ue000-\uf8ff]")
 """Regular expression for BMP private-use area code points."""
 
 RE_WESTERN = re.compile(r"[a-zA-Z0-9]")
 """Regular expression for Western characters."""
+
+RE_WHITESPACE = re.compile(r"\s+")
+"""Regular expression for runs of whitespace."""
 
 
 def dedent_and_compact(text: str) -> str:
@@ -353,6 +366,21 @@ def normalize_ocr_confusables_to_ascii(text: str) -> str:
         text with OCR-confusable characters normalized
     """
     return text.translate(_OCR_CONFUSABLES_TO_ASCII)
+
+
+def normalize_subtitle_text(text: str) -> str:
+    """Normalize subtitle text for plain-text analysis.
+
+    Arguments:
+        text: subtitle text to normalize
+    Returns:
+        normalized subtitle text
+    """
+    normalized = sanitize_text(text)
+    normalized = normalize_fullwidth_alphanumerics(normalized)
+    normalized = normalized.replace("\\N", " ")
+    normalized = RE_ASS_OVERRIDE_BLOCK.sub(" ", normalized)
+    return RE_WHITESPACE.sub(" ", normalized).strip()
 
 
 def remove_non_punc_and_whitespace(text: str) -> str:
