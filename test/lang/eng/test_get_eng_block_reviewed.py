@@ -14,15 +14,31 @@ from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewed,
     get_eng_block_reviewer,
 )
+from test.data.acopopb import get_acopopb_eng_block_review_test_cases
+from test.data.acoptc import get_acoptc_eng_block_review_test_cases
 from test.data.kob import get_kob_eng_block_review_test_cases
 from test.data.mlamd import get_mlamd_eng_block_review_test_cases
+from test.data.mnt import get_mnt_eng_block_review_test_cases
 from test.data.t import get_t_eng_block_review_test_cases
+from test.data.tmm import get_tmm_eng_block_review_test_cases
 from test.helpers import assert_series_equal, parametrize
 
 
 @parametrize(
     ("series_fixture", "expected_fixture", "test_case_loader"),
     [
+        param(
+            "acopopb_eng_ocr_fuse_clean_validate",
+            "acopopb_eng_ocr_fuse_clean_validate_review",
+            get_acopopb_eng_block_review_test_cases,
+            id="acopopb-eng",
+        ),
+        param(
+            "acoptc_eng_ocr_fuse_clean_validate",
+            "acoptc_eng_ocr_fuse_clean_validate_review",
+            get_acoptc_eng_block_review_test_cases,
+            id="acoptc-eng",
+        ),
         param(
             "kob_eng_ocr_fuse_clean_validate",
             "kob_eng_ocr_fuse_clean_validate_review",
@@ -42,10 +58,22 @@ from test.helpers import assert_series_equal, parametrize
             id="mlamd-eng-ocr",
         ),
         param(
+            "mnt_eng_fuse_clean_validate",
+            "mnt_eng_fuse_clean_validate_review",
+            get_mnt_eng_block_review_test_cases,
+            id="mnt-eng",
+        ),
+        param(
             "t_eng_fuse_clean_validate",
             "t_eng_fuse_clean_validate_review",
             get_t_eng_block_review_test_cases,
             id="t-eng-ocr",
+        ),
+        param(
+            "tmm_eng_ocr_fuse_clean_validate",
+            "tmm_eng_ocr_fuse_clean_validate_review",
+            get_tmm_eng_block_review_test_cases,
+            id="tmm-eng",
         ),
     ],
 )

@@ -22,24 +22,24 @@ zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 set_logging_verbosity(2)
 
 actions = {
-    "eng_ocr",
-    "yue-Hans_ocr",
-    "yue-Hant_ocr",
+    # "eng_ocr",
+    # "yue-Hans_ocr",
+    # "yue-Hant_ocr",
     "zho-Hans_ocr",
     "zho-Hant_ocr",
-    "yue-Hans_eng",
+    # "yue-Hans_eng",
     "zho-Hans_eng",
 }
 if "eng_ocr" in actions:
-    process_ocr(title_root, Language.eng, overwrite=False, interactive=False)
+    process_ocr(title_root, Language.eng, overwrite=False, interactive=True)
 if "yue-Hans_ocr" in actions:
     process_ocr(title_root, Language.yue_hans, overwrite=False, interactive=True)
 if "yue-Hant_ocr" in actions:
-    process_ocr(title_root, Language.yue_hant, overwrite=False, interactive=False)
+    process_ocr(title_root, Language.yue_hant, overwrite=False, interactive=True)
 if "zho-Hans_ocr" in actions:
-    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=False)
+    process_ocr(title_root, Language.zho_hans, overwrite=False, interactive=True)
 if "zho-Hant_ocr" in actions:
-    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=False)
+    process_ocr(title_root, Language.zho_hant, overwrite=False, interactive=True)
 if "yue-Hans_eng" in actions:
     yue_hans_path = yue_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
     eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"

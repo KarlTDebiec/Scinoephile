@@ -259,27 +259,27 @@ Ai! Aiya…
 
 53
 00:04:41,750 --> 00:04:43,792
-伏虎，你真是个管家婆
+伏虎　你真是个管家婆
 Tiger Fighter, you really are interfering,
 
 54
 00:04:43,792 --> 00:04:44,708
-不过你还挺讲义气，我心领了
+不过你还挺讲义气　我心领了
 yet you're a loyal friend.
 
 55
 00:04:44,708 --> 00:04:45,833
-不过你还挺讲义气，我心领了
+不过你还挺讲义气　我心领了
 I appreciate it
 
 56
 00:04:45,833 --> 00:04:46,896
-哎，谢谢⋯
+哎　谢谢⋯
 Thanks…
 
 57
 00:04:46,896 --> 00:04:48,604
-哎，照目前情形看起来
+哎　照目前情形看起来
 Hey, as things stand,
 
 58
@@ -294,12 +294,12 @@ Do you think you can leave just by saying sorry?
 
 60
 00:04:51,875 --> 00:04:54,187
-我们俩兄弟聊天，几时轮到你插嘴
+我们俩兄弟聊天　几时轮到你插嘴
 Who are you to interrupt our conversation?
 
 61
 00:04:54,187 --> 00:04:56,021
-嘿呀，你这个灶君
+嘿呀　你这个灶君
 God of Hearth, each year-end… …you seek advantage in the mortal world,
 
 62
@@ -313,7 +313,7 @@ and speak ill of those families who gave you less
 
 64
 00:04:58,666 --> 00:04:59,375
-你就到上面来说人家不是，插他
+你就到上面来说人家不是　插他
 - Poke him    - Poke him
 
 65
@@ -323,7 +323,7 @@ and speak ill of those families who gave you less
 
 66
 00:05:00,437 --> 00:05:02,625
-啊，刚才插完好痛，现在又要插
+啊　刚才插完好痛　现在又要插
 Hey! You just did and it still hurts, don't poke again
 
 67
@@ -332,12 +332,12 @@ You, a petty Lo Han,
 
 68
 00:05:03,229 --> 00:05:05,041
-小小一个罗汉，什么事情你都要管
+小小一个罗汉　什么事情你都要管
 poke your nose in everybody's business
 
 69
 00:05:05,041 --> 00:05:07,145
-岂有此理，你偷吃我的蟠桃，赔来
+岂有此理　你偷吃我的蟠桃　赔来
 Outrageous! You better compensate me
 
 70
@@ -346,7 +346,7 @@ for the stolen peaches
 
 71
 00:05:07,583 --> 00:05:10,125
-王母，吃一点人家也没说什么
+王母　吃一点人家也没说什么
 Queen Mother, what's the big deal to share some to others?
 
 72
@@ -380,7 +380,7 @@ What?
 
 78
 00:05:16,916 --> 00:05:18,437
-干吗，不服气就冲我来
+干吗　不服气就冲我来
 Tell me frankly if you're still angry
 
 79
@@ -395,17 +395,17 @@ Don't think just because he has spots
 
 81
 00:05:21,125 --> 00:05:22,562
-我照吃不误，到哪一个了
+我照吃不误　到哪一个了
 I can sock all the same, I'm telling you
 
 82
 00:05:22,562 --> 00:05:24,062
-我照吃不误，到哪一个了
+我照吃不误　到哪一个了
 Who's next?
 
 83
 00:05:24,062 --> 00:05:25,500
-到哪一个了，就你好了
+到哪一个了　就你好了
 You will do
 
 84
@@ -414,7 +414,7 @@ You Moon Match-maker,
 
 85
 00:05:27,729 --> 00:05:30,396
-你这个月老，仗着几根破烂红绳
+你这个月老　仗着几根破烂红绳
 you fool humans with several red strings
 
 86
@@ -443,7 +443,7 @@ what have they done to you to deserve this?
 
 91
 00:05:39,083 --> 00:05:41,729
-我说你老了，没事就退休吧
+我说你老了　没事就退休吧
 You're old, you should retire…
 
 92
@@ -456,12 +456,12 @@ You're old, you should retire…
 
 94
 00:05:43,458 --> 00:05:45,791
-弄得男跟男，女跟女
+弄得男跟男　女跟女
 …say like a man with a man, a woman with a woman,
 
 95
 00:05:45,791 --> 00:05:48,021
-再弄下去，人跟猪，蟑螂配牛了
+再弄下去　人跟猪　蟑螂配牛了
 or even a man with a pig, a roach with a cow
 
 96
@@ -471,17 +471,17 @@ or even a man with a pig, a roach with a cow
 
 97
 00:05:49,604 --> 00:05:50,854
-哎，插他
+哎　插他
 Poke him
 
 98
 00:05:50,854 --> 00:05:52,708
-哎，人家年纪不小了，不要欺负他
+哎　人家年纪不小了　不要欺负他
 He's old, spare him
 
 99
 00:05:52,708 --> 00:05:54,083
-哎呀，你想管闲事吗，阎罗王
+哎呀　你想管闲事吗　阎罗王
 King of Hades, are you standing up for him?
 
 100
@@ -491,7 +491,7 @@ Poke him
 
 101
 00:05:54,875 --> 00:05:57,687
-不要碰面就插，我们是讲道理的
+不要碰面就插　我们是讲道理的
 Don't keep saying poke, we should be reasonable
 
 102
@@ -510,12 +510,12 @@ Why there's a woman in the mortal world who bore 16 daughters…
 
 105
 00:06:00,771 --> 00:06:03,042
-就不肯给她一个儿子，为什么
+就不肯给她一个儿子　为什么
 …and was denied a boy? Why?
 
 106
 00:06:03,958 --> 00:06:07,750
-搞得那个女的终于想不开，跳海自尽
+搞得那个女的终于想不开　跳海自尽
 Consequently she jumped into the sea to kill herself
 
 107
@@ -524,7 +524,7 @@ Consequently she jumped into the sea to kill herself
 
 108
 00:06:08,708 --> 00:06:13,417
-到了下面，他还说她是枉死的
+到了下面　他还说她是枉死的
 Even in hell, he accused her of innocent death,
 
 109
@@ -553,12 +553,12 @@ Fainting is no use.
 
 114
 00:06:25,875 --> 00:06:27,708
-凡人的命运早已经成定数，并无不妥
+凡人的命运早已经成定数　并无不妥
 People's fate is predestined
 
 115
 00:06:27,708 --> 00:06:29,667
-凡人的命运早已经成定数，并无不妥
+凡人的命运早已经成定数　并无不妥
 There's nothing wrong about it
 
 116
@@ -573,7 +573,7 @@ So you shouldn't make trouble here
 
 118
 00:06:33,833 --> 00:06:34,271
-哎，我⋯
+哎　我⋯
 
 119
 00:06:34,271 --> 00:06:34,771
@@ -581,7 +581,7 @@ Carrying out orders?
 
 120
 00:06:34,771 --> 00:06:36,354
-谁说照例执行，谁订的令
+谁说照例执行　谁订的令
 Who set them?
 
 121
@@ -596,7 +596,7 @@ A saying goes, ‘There are other heavens’
 
 123
 00:06:39,812 --> 00:06:40,958
-玉帝，你定的例
+玉帝　你定的例
 Your highness, if your rules…
 
 124
@@ -616,7 +616,7 @@ This is out of line
 
 127
 00:06:46,187 --> 00:06:48,250
-玉帝，各位仙友
+玉帝　各位仙友
 Your highness, fairies,
 
 128
@@ -1934,12 +1934,12 @@ So she's giving birth
 
 394
 00:17:02,437 --> 00:17:04,542
-我们快点去准备一下，帮帮他们嘛
+我们快点去准备一下　帮帮他们嘛
 Let's get prepared and help them
 
 395
 00:17:07,625 --> 00:17:10,333
-啊⋯哎⋯老婆，是男的还是女的
+啊⋯哎⋯老婆　是男的还是女的
 Darling, a son or a daughter?
 
 396
@@ -2011,12 +2011,12 @@ Demon, run quickly…
 
 410
 00:18:01,542 --> 00:18:03,708
-哎 这个人会不会是妖怪呀
+哎　这个人会不会是妖怪呀
 Is this some demon or what?
 
 411
 00:18:03,708 --> 00:18:05,229
-妖什么怪 他会变戏法
+妖什么怪　他会变戏法
 Nonsense! He's just playing magic tricks
 
 412
@@ -2026,22 +2026,22 @@ Do you know how to perform magic?
 
 413
 00:18:07,750 --> 00:18:08,916
-老爷 我去报官
+老爷　我去报官
 Master, how about reporting it to the magistracy?
 
 414
 00:18:08,916 --> 00:18:10,187
-报什么官 我不就是官吗
+报什么官　我不就是官吗
 What for? I'm a magistrate
 
 415
 00:18:10,187 --> 00:18:12,708
-哎呀 还是把他留下来好了
+哎呀　还是把他留下来好了
 Let him stay. Look how cute he is
 
 416
 00:18:12,708 --> 00:18:14,145
-你看看他 长得多逗人呢
+你看看他　长得多逗人呢
 He should be a nice baby to take care of
 
 417
@@ -2071,12 +2071,12 @@ Beat…
 
 422
 00:18:25,291 --> 00:18:27,125
-你究竟是何方神圣 快说
+你究竟是何方神圣　快说
 Who are you? Speak up
 
 423
 00:18:27,292 --> 00:18:29,208
-我没有“摸摸”嘛
+我没有〝摸摸〞嘛
 You must know some magic Come on, teach me
 
 424
@@ -2099,12 +2099,12 @@ You must know some magic Come on, teach me
 
 428
 00:18:35,583 --> 00:18:37,208
-哎⋯“摸摸”在那个姐姐身上 快过去拿
+哎⋯〝摸摸〞在那个姐姐身上　快过去拿
 Go and get milk from that lady.
 
 429
 00:18:37,208 --> 00:18:38,833
-哎⋯“摸摸”在那个姐姐身上 快过去拿
+哎⋯〝摸摸〞在那个姐姐身上　快过去拿
 Go over
 
 430
@@ -2583,7 +2583,7 @@ Missed by a mile. Over there
 
 526
 00:22:15,375 --> 00:22:16,291
-在那一边 看准一点 再来
+在那一边　看准一点　再来
 Missed by a mile. Over there
 
 527
@@ -2691,12 +2691,12 @@ I'll come back to you very soon
 
 549
 00:23:16,917 --> 00:23:18,667
-哎 你叫什么名字
+哎　你叫什么名字
 Hey, what's your name?
 
 550
 00:23:18,667 --> 00:23:20,833
-姓名只是代号 怎么叫都一样
+姓名只是代号　怎么叫都一样
 A name is just a label, so makes no difference
 
 551
@@ -2711,7 +2711,7 @@ Big brother
 
 553
 00:23:24,292 --> 00:23:26,541
-人家在叫你 还不走
+人家在叫你　还不走
 She's calling you. Let's go
 
 554
@@ -3072,12 +3072,12 @@ Horrible! Really horrible
 
 626
 00:26:30,083 --> 00:26:31,708
-啊 袁霸天 快躲
+啊　袁霸天　快躲
 What? Yun Ba Tin
 
 627
 00:26:31,708 --> 00:26:33,333
-啊 袁霸天 快躲
+啊　袁霸天　快躲
 Hide quickly
 
 628
@@ -3097,12 +3097,12 @@ Hey, God of Earth
 
 631
 00:26:44,667 --> 00:26:46,354
-九世恶人 全都到齐了
+九世恶人　全都到齐了
 A villain of 9 lives?
 
 632
 00:26:46,354 --> 00:26:48,042
-九世恶人 全都到齐了
+九世恶人　全都到齐了
 Save my time
 
 633
@@ -3156,7 +3156,7 @@ I'll burn you, stinky monk, too
 
 643
 00:27:23,833 --> 00:27:26,667
-我要烧你 你竟敢吹灭我的火
+我要烧你　你竟敢吹灭我的火
 I want to burn you, how dare you blow out my fire?
 
 644
@@ -3196,7 +3196,7 @@ Good boy
 
 651
 00:28:11,417 --> 00:28:15,333
-不可能 我的娘哎
+不可能　我的娘哎
 Impossible…
 
 652
@@ -3685,12 +3685,12 @@ Master, I am like a pig. I only sleep in daylight
 
 750
 00:32:11,292 --> 00:32:13,125
-大种，你老爸来找你了
+大种　你老爸来找你了
 Dai Jung, your dad is here for you
 
 751
 00:32:13,250 --> 00:32:16,417
-你妈才来找你呢，我老爸早死了
+你妈才来找你呢　我老爸早死了
 Your mom found you. My dad died a long time ago
 
 752
@@ -4835,7 +4835,7 @@ No! No… Not me…
 
 985
 00:40:56,583 --> 00:40:58,604
-怎么祭祀
+怎么祭
 Hey, how should the sacrifice be offered?
 
 986
@@ -5391,7 +5391,7 @@ Get it
 
 1098
 00:46:44,458 --> 00:46:46,229
-快点　你玩了　换我了啦
+快点　你欢玩了　换我了啦
 Why took so long? It's my turn.
 
 1099
@@ -5657,7 +5657,7 @@ A phoenix?
 
 1152
 00:50:04,333 --> 00:50:07,583
-主公 你真有先见之明
+主公　你真有先见之明
 Lord, you have good foresight
 
 1153
@@ -5667,7 +5667,7 @@ That monk has done all that you anticipated
 
 1154
 00:50:12,250 --> 00:50:14,500
-你有什么吩咐，尽管说
+你有什么吩咐　尽管说
 If you need anything, just tell me
 
 1155
@@ -6011,7 +6011,7 @@ I'll beat you till you come with me
 
 1225
 00:53:20,083 --> 00:53:22,167
-开我的玩笑 藤条
+开我的玩笑　藤条
 Joking… A rattan cane
 
 1226
@@ -6025,7 +6025,7 @@ Scared now?
 
 1228
 00:53:27,417 --> 00:53:28,833
-妈的 好累呀
+妈的　好累呀
 I'm tired
 
 1229
@@ -6197,7 +6197,7 @@ Just refrain from killing people, okay?
 
 1263
 00:56:16,125 --> 00:56:18,958
-他妈的 到底是人还是禽兽
+他妈的　到底是人还是禽兽
 Damn! Are you a human being or a beast?
 
 1264
@@ -6630,12 +6630,12 @@ Go to hell, Beggar Dai Jung
 
 1352
 01:00:25,542 --> 01:00:27,458
-不要叫我大种 叫我朱大常
+不要叫我大种　叫我朱大常
 Don't call me Dai Jung
 
 1353
 01:00:27,458 --> 01:00:29,375
-不要叫我大种 叫我朱大常
+不要叫我大种　叫我朱大常
 Call me Chow Yat Cheung
 
 1354
@@ -6688,7 +6688,7 @@ Kill you, son of a bitch
 
 1364
 01:00:58,562 --> 01:01:00,937
-转过去⋯过去 再过去 看好
+转过去⋯过去　再过去　看好
 - Turn his face over    - Turn his face
 
 1365
@@ -6712,17 +6712,17 @@ Master Tin said to let you go, but be careful in future
 
 1369
 01:01:20,792 --> 01:01:22,750
-刚才看得真爽，眼睛都不眨一下啊
+刚才看得真爽　眼睛都不眨一下啊
 What a show it was just now You didn't even blink
 
 1370
 01:01:22,833 --> 01:01:23,958
-不过刚才真的精彩呀
+不过刚才真的精采呀
 Frankly… it was fascinating
 
 1371
 01:01:23,958 --> 01:01:25,083
-不过刚才真的精彩呀
+不过刚才真的精采呀
 Yes
 
 1372
@@ -6861,17 +6861,17 @@ I must do what's necessary
 
 1399
 01:02:37,833 --> 01:02:39,083
-哎呀 放手
+哎呀　放手
 What're you doing? Let go
 
 1400
 01:02:39,083 --> 01:02:41,146
-师傅说 这个金身不能离开这间寺庙
+师傅说　这个金身不能离开这间寺庙
 Master said this golden body cannot leave the temple
 
 1401
 01:02:41,146 --> 01:02:43,291
-哎呀 离开了又怎么样
+哎呀　离开了又怎么样
 What if it does?
 
 1402
@@ -6886,7 +6886,7 @@ What if it does?
 
 1404
 01:02:44,521 --> 01:02:46,250
-借来用用 最多付你利息
+借来用用　最多付你利息
 Let me borrow it, I'll pay you lots of interest
 
 1405
@@ -6921,7 +6921,7 @@ Let me borrow it, I'll pay you lots of interest
 
 1411
 01:02:50,187 --> 01:02:51,667
-不行 啊 怎么变
+不行　啊　怎么变
 What cross?
 
 1412
@@ -7093,7 +7093,7 @@ Okay, exchange
 
 1446
 01:05:14,125 --> 01:05:16,417
-大种，我再怎么样也要带你回去
+大种　我再怎么样也要带你回去
 Dai Jung, I must bring you back by any means
 
 1447
@@ -7173,7 +7173,7 @@ Dai Jung…
 
 1462
 01:07:03,708 --> 01:07:07,000
-主公，我一定照你的吩咐
+主公　我一定照你的吩咐
 Lord, I'll do as you instruct me
 
 1463
@@ -7294,16 +7294,16 @@ Oh no…
 
 1487
 01:08:31,250 --> 01:08:33,208
-师傅 快走了 师傅 快走吧
+师傅　快走了　师傅　快走吧
 
 1488
 01:08:38,750 --> 01:08:40,208
-师傅 你要到哪儿去
+师傅　你要到哪儿去
 Master, where are you going?
 
 1489
 01:08:40,208 --> 01:08:42,187
-济癫 我早跟你说过
+济癫　我早跟你说过
 Mad Monk, as I told you,
 
 1490
@@ -7521,7 +7521,7 @@ Even I've been pillowed
 
 1534
 01:10:29,958 --> 01:10:32,187
-半点朱唇万客尝 你也⋯
+半点朱唇万客尝　你也⋯
 and kissed by thousands of people,
 
 1535
@@ -7608,7 +7608,7 @@ No… Yeah…
 
 1552
 01:11:02,604 --> 01:11:03,583
-好棒啊 拜堂吧
+好棒啊　拜堂吧
 Great… Let's worship the ancestors
 
 1553
@@ -7908,7 +7908,7 @@ See which of us is tougher…
 
 1613
 01:14:52,208 --> 01:14:57,208
-我打死你 打死你⋯
+我打死你　打死你⋯
 I'll kill you…
 
 1614
@@ -8167,22 +8167,22 @@ Not yet
 
 1665
 01:17:41,354 --> 01:17:42,354
-你疯了 现在不走就没有机会了
+你疯了　现在不走就没有机会了
 Are you crazy?
 
 1666
 01:17:42,354 --> 01:17:43,437
-你疯了 现在不走就没有机会了
+你疯了　现在不走就没有机会了
 Go now or never
 
 1667
 01:17:43,437 --> 01:17:44,583
-黑罗煞是罪魁祸首 我要摆平他
+黑罗煞是罪魁祸首　我要摆平他
 Hak Lo Sat's the ringleader.
 
 1668
 01:17:44,583 --> 01:17:45,708
-黑罗煞是罪魁祸首 我要摆平他
+黑罗煞是罪魁祸首　我要摆平他
 I must finish him off
 
 1669
@@ -8226,7 +8226,7 @@ from my thirteen life cycles’ training
 
 1677
 01:18:24,292 --> 01:18:25,917
-今晚全靠你 你知道吗
+今晚全靠你　你知道吗
 Everything depends on you today, understand?
 
 1678
@@ -8241,7 +8241,7 @@ Good
 
 1680
 01:19:50,125 --> 01:19:51,708
-哎呀 糟了
+哎呀　糟了
 Damn
 
 1681
@@ -8270,12 +8270,12 @@ Wow
 
 1686
 01:21:18,437 --> 01:21:20,833
-我们又见面了啊快走吧
+我们又见面了　啊　快走吧
 We meet again, let's get out of here quickly
 
 1687
 01:21:27,167 --> 01:21:28,625
-师傅，你干吗来这里呀
+师傅　你干吗来这里呀
 Master, why are you here?
 
 1688
@@ -8290,7 +8290,7 @@ At such a critical moment, I shouldn't have left you on your own
 
 1690
 01:21:30,750 --> 01:21:32,708
-你知道我处境危险，你干吗回来找我
+你知道我处境危险　你干吗回来找我
 Why care to come back for me if you know the danger?
 
 1691
@@ -8400,12 +8400,12 @@ My stomach feels strange now
 
 1712
 01:22:37,625 --> 01:22:39,104
-师傅 你快点想想办法 把金粉拉出来
+师傅　你快点想想办法　把金粉拉出来
 Master, think of a quick way
 
 1713
 01:22:39,104 --> 01:22:40,541
-师傅 你快点想想办法 把金粉拉出来
+师傅　你快点想想办法　把金粉拉出来
 to defecate the golden powder
 
 1714
@@ -8483,7 +8483,7 @@ What a funny laugh
 
 1729
 01:23:27,125 --> 01:23:28,458
-济颠
+济癫
 Mad Monk…
 
 1730
@@ -8538,7 +8538,7 @@ Now he's not only dead, he died as a beggar
 
 1740
 01:24:49,458 --> 01:24:52,292
-他害得那个“野鸡”刮破了脸，好可怜呢
+他害得那个〝野鸡〞刮破了脸　好可怜呢
 Also, that whore was disfigured. What a pity
 
 1741
@@ -8548,7 +8548,7 @@ The case of Yun Ba Tin is worse still
 
 1742
 01:24:54,520 --> 01:24:56,958
-临死之前呢，还多伤了几十条人命
+临死之前呢　还多伤了几十条人命
 Tens of lives were lost before he died
 
 1743
@@ -8588,12 +8588,12 @@ things wouldn't have been such a mess
 
 1750
 01:25:06,062 --> 01:25:07,062
-你算了吧，整天都说单挑
+你算了吧　整天都说单挑
 Nonsense…
 
 1751
 01:25:07,062 --> 01:25:08,292
-你算了吧，整天都说单挑
+你算了吧　整天都说单挑
 Stop mentioning the duel
 
 1752
@@ -8624,7 +8624,7 @@ It means he got back his pride
 1757
 01:25:19,625 --> 01:25:21,833
 这一辈子他不用再做乞丐
-- He doesn't have to be a beggar this life    - Right...
+- He doesn't have to be a beggar this life    - Right…
 
 1758
 01:25:29,292 --> 01:25:30,833
@@ -8632,7 +8632,7 @@ It means he got back his pride
 
 1759
 01:25:31,292 --> 01:25:32,937
-但是她再也不做“野鸡”
+但是她再也不做〝野鸡〞
 
 1760
 01:25:32,937 --> 01:25:35,583
