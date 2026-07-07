@@ -17,7 +17,7 @@ from test.helpers import parametrize
         param(
             "acopopb_eng",
             Language.eng,
-            id="acopopb-eng-input",
+            id="acopopb-eng",
         ),
         param(
             "acopopb_eng_ocr_fuse_clean_validate",
@@ -37,7 +37,7 @@ from test.helpers import parametrize
         param(
             "acopopb_zho_hans",
             Language.zho_hans,
-            id="acopopb-zho-hans-input",
+            id="acopopb-zho-hans",
         ),
         param(
             "acopopb_zho_hans_ocr_fuse_clean_validate",
@@ -47,7 +47,7 @@ from test.helpers import parametrize
         param(
             "acopopb_zho_hant",
             Language.zho_hant,
-            id="acopopb-zho-hant-input",
+            id="acopopb-zho-hant",
         ),
         param(
             "acopopb_zho_hant_ocr_fuse_clean_validate",
@@ -57,7 +57,7 @@ from test.helpers import parametrize
         param(
             "acoptc_eng",
             Language.eng,
-            id="acoptc-eng-input",
+            id="acoptc-eng",
         ),
         param(
             "acoptc_eng_ocr_fuse_clean_validate",
@@ -77,7 +77,7 @@ from test.helpers import parametrize
         param(
             "acoptc_zho_hans",
             Language.zho_hans,
-            id="acoptc-zho-hans-input",
+            id="acoptc-zho-hans",
         ),
         param(
             "acoptc_zho_hans_ocr_fuse_clean_validate",
@@ -87,7 +87,7 @@ from test.helpers import parametrize
         param(
             "acoptc_zho_hant",
             Language.zho_hant,
-            id="acoptc-zho-hant-input",
+            id="acoptc-zho-hant",
         ),
         param(
             "acoptc_zho_hant_ocr_fuse_clean_validate",
@@ -97,7 +97,7 @@ from test.helpers import parametrize
         param(
             "kob_eng",
             Language.eng,
-            id="kob-eng-input",
+            id="kob-eng",
         ),
         param(
             "kob_eng_ocr_fuse_clean_validate",
@@ -107,7 +107,7 @@ from test.helpers import parametrize
         param(
             "kob_yue_hans",
             Language.yue_hans,
-            id="kob-yue-hans-input",
+            id="kob-yue-hans",
         ),
         param(
             "kob_yue_hant",
@@ -142,12 +142,12 @@ from test.helpers import parametrize
         param(
             "mnt_jpn_eng",
             Language.eng,
-            id="mnt-jpn-eng-input",
+            id="mnt-jpn-eng",
         ),
         param(
             "mnt_yue_zho_hant",
             Language.zho_hant,
-            id="mnt-yue-zho-hant-input",
+            id="mnt-yue-zho-hant",
         ),
         param(
             "mnt_zho_hans_fuse_clean_validate",
@@ -157,7 +157,7 @@ from test.helpers import parametrize
         param(
             "mnt_zho_hant",
             Language.zho_hant,
-            id="mnt-zho-hant-input",
+            id="mnt-zho-hant",
         ),
         param(
             "mnt_zho_hant_fuse_clean_validate",
@@ -167,7 +167,7 @@ from test.helpers import parametrize
         param(
             "t_eng",
             Language.eng,
-            id="t-eng-input",
+            id="t-eng",
         ),
         param(
             "t_eng_fuse_clean_validate",
@@ -177,7 +177,7 @@ from test.helpers import parametrize
         param(
             "t_zho_hans",
             Language.zho_hans,
-            id="t-zho-hans-input",
+            id="t-zho-hans",
         ),
         param(
             "t_zho_hans_fuse_clean_validate",
@@ -187,7 +187,7 @@ from test.helpers import parametrize
         param(
             "t_zho_hant",
             Language.zho_hant,
-            id="t-zho-hant-input",
+            id="t-zho-hant",
         ),
         param(
             "t_zho_hant_fuse_clean_validate",
