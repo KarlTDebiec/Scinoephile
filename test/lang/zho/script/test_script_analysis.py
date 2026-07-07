@@ -10,7 +10,6 @@ from scinoephile.lang.zho.script.analysis import (
     is_traditional,
 )
 from test.helpers import parametrize
-from test.lang.id.test_language_id import LANGUAGE_ID_TEST_CASES
 
 
 @parametrize(
@@ -41,7 +40,24 @@ def test_get_zho_script_analysis(text: str, expected_script: str | None):
 
 @parametrize(
     ("text", "expected"),
-    [(case.text, case.is_simplified) for case in LANGUAGE_ID_TEST_CASES],
+    [
+        ("nǐ hǎo", False),
+        ("lüè", False),
+        ("ni3 hao3", False),
+        ("lu:e4", False),
+        ("lv4", False),
+        ("ni hao", False),
+        ("néih hóu", False),
+        ("gwóngdūngwá", False),
+        ("nei5 hou2", False),
+        ("gwong2 dung1 waa2", False),
+        ("简体中文", True),
+        ("汉字", True),
+        ("繁體中文", False),
+        ("漢字", False),
+        ("中文", True),
+        ("", False),
+    ],
 )
 def test_is_simplified(text: str, expected: bool):
     """Detect simplified Chinese text.
@@ -55,7 +71,24 @@ def test_is_simplified(text: str, expected: bool):
 
 @parametrize(
     ("text", "expected"),
-    [(case.text, case.is_traditional) for case in LANGUAGE_ID_TEST_CASES],
+    [
+        ("nǐ hǎo", False),
+        ("lüè", False),
+        ("ni3 hao3", False),
+        ("lu:e4", False),
+        ("lv4", False),
+        ("ni hao", False),
+        ("néih hóu", False),
+        ("gwóngdūngwá", False),
+        ("nei5 hou2", False),
+        ("gwong2 dung1 waa2", False),
+        ("简体中文", False),
+        ("汉字", False),
+        ("繁體中文", True),
+        ("漢字", True),
+        ("中文", True),
+        ("", False),
+    ],
 )
 def test_is_traditional(text: str, expected: bool):
     """Detect traditional Chinese text.
