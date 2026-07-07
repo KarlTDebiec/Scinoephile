@@ -4,7 +4,6 @@
 
 Package hierarchy (modules may import from any above):
 * yue_process_cli / yue_review_vs_zho_cli / yue_transcribe_vs_zho_cli
-  / yue_translate_from_eng_cli / yue_translate_from_zho_cli
 * yue_cli
 """
 
@@ -14,14 +13,10 @@ from .yue_cli import YueCli
 from .yue_process_cli import YueProcessCli
 from .yue_review_vs_zho_cli import YueReviewVsZhoCli
 from .yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from .yue_translate_from_eng_cli import YueTranslateFromEngCli
-from .yue_translate_from_zho_cli import YueTranslateFromZhoCli
 
 __all__ = [
     "YueCli",
     "YueProcessCli",
     "YueReviewVsZhoCli",
     "YueTranscribeVsZhoCli",
-    "YueTranslateFromEngCli",
-    "YueTranslateFromZhoCli",
 ]

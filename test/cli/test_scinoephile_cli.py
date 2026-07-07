@@ -14,6 +14,7 @@ from pytest import MonkeyPatch, raises
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
+from scinoephile.core.cli import ScinoephileCliBase
 from test.helpers import assert_cli_help
 
 
@@ -36,16 +37,8 @@ def test_scinoephile_help_does_not_create_default_cache_dir(
 
 def test_scinoephile_all_commands_lists_complete_hierarchy():
     """Test root CLI can list the complete subcommand hierarchy."""
-    stdout = StringIO()
-    stderr = StringIO()
-    with raises(SystemExit) as excinfo:
-        with redirect_stdout(stdout):
-            with redirect_stderr(stderr):
-                run_cli_with_args(ScinoephileCli, "--all-commands")
+    output = _run_all_commands()
 
-    output = stdout.getvalue()
-    assert excinfo.value.code == 0
-    assert stderr.getvalue() == ""
     assert output.startswith("Available subcommands:\n\n")
     lines = output.splitlines()
     assert not any(line.startswith("analysis") for line in lines)
@@ -64,37 +57,25 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
     assert "\n        wiktionary" in output
     assert "\neng" in output
     eng_section = output.split("\neng", maxsplit=1)[1].split("\nmedia", maxsplit=1)[0]
-    assert all(
-        command in eng_section
-        for command in (
-            "\n    process",
-            "\n    translate-from-yue",
-            "\n    translate-from-zho",
-        )
-    )
+    assert "\n    process" in eng_section
+    assert "translate-from" not in eng_section
     assert "\nocr" in output
     assert "\n    fuse" in output
     assert "\n    validate" in output
+    assert "\ntranslate" in output
+    assert "translate subtitles between supported languages" in output
     assert "\nutility" in output
     assert "\n    cache" in output
     assert "\n        clear" in output
     assert "\n    optimization" in output
     assert "\n        sync-test-cases" in output
     yue_section = output.split("\nyue", maxsplit=1)[1].split("\nzho", maxsplit=1)[0]
-    assert all(
-        command in yue_section
-        for command in ("\n    translate-from-eng", "\n    translate-from-zho")
-    )
+    assert "\n    process" in yue_section
+    assert "translate-from" not in yue_section
     assert "\nzho" in output
     zho_section = output.split("\nzho", maxsplit=1)[1]
-    assert all(
-        command in zho_section
-        for command in (
-            "\n    process",
-            "\n    translate-from-eng",
-            "\n    translate-from-yue",
-        )
-    )
+    assert "\n    process" in zho_section
+    assert "translate-from" not in zho_section
     assert all(len(line) <= 80 for line in output.splitlines())
     assert "    transcribe-vs-zho" in output
     assert "transcribe subtitles from audio and revise using" in output
@@ -105,16 +86,8 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
 def test_scinoephile_all_commands_localized():
     """Test all-commands output localizes command descriptions."""
     with patch.dict(environ, {"LC_ALL": "zh-hant"}):
-        stdout = StringIO()
-        stderr = StringIO()
-        with raises(SystemExit) as excinfo:
-            with redirect_stdout(stdout):
-                with redirect_stderr(stderr):
-                    run_cli_with_args(ScinoephileCli, "--all-commands")
+        output = _run_all_commands()
 
-    output = stdout.getvalue()
-    assert excinfo.value.code == 0
-    assert stderr.getvalue() == ""
     assert "可用子命令：" in output
     assert "子命令" in output
     assert "\nzho" in output
@@ -125,3 +98,25 @@ def test_scinoephile_all_commands_localized():
     assert "修改標準中文字幕" in output
     assert "香港中文大學現代標準漢語與粵語對照資料庫" not in output
     assert "由 2004 年第二版《廣州話正音字典》整理而成" not in output
+
+
+def _run_all_commands() -> str:
+    """Run `--all-commands` and return stdout text.
+
+    Returns:
+        all-commands output
+    """
+    locale_name = ScinoephileCliBase.locale_name
+    stdout = StringIO()
+    stderr = StringIO()
+    try:
+        with raises(SystemExit) as excinfo:
+            with redirect_stdout(stdout):
+                with redirect_stderr(stderr):
+                    run_cli_with_args(ScinoephileCli, "--all-commands")
+    finally:
+        ScinoephileCliBase.locale_name = locale_name
+
+    assert excinfo.value.code == 0
+    assert stderr.getvalue() == ""
+    return stdout.getvalue()

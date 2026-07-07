@@ -10,8 +10,6 @@ from pathlib import Path
 from pytest import raises
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
-from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
-from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
 from scinoephile.cli.helpers.cache import add_cache_dir_arg
 from scinoephile.cli.helpers.llms import LlmArguments, add_llm_provider_args
 from scinoephile.cli.helpers.web import (
@@ -21,32 +19,24 @@ from scinoephile.cli.helpers.web import (
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
+from scinoephile.cli.translate_cli import TranslateCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from scinoephile.cli.yue.yue_translate_from_eng_cli import YueTranslateFromEngCli
-from scinoephile.cli.yue.yue_translate_from_zho_cli import YueTranslateFromZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
-from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCli
-from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
 from test.helpers import parametrize
 from test.helpers.cli import get_cli_action_group_title, get_parser_action
 
 LLM_CLIS: tuple[type[CommandLineInterface], ...] = (
     EngProcessCli,
-    EngTranslateFromYueCli,
-    EngTranslateFromZhoCli,
     OcrFuseCli,
     OcrProcessCli,
+    TranslateCli,
     YueProcessCli,
     YueReviewVsZhoCli,
     YueTranscribeVsZhoCli,
-    YueTranslateFromEngCli,
-    YueTranslateFromZhoCli,
     ZhoProcessCli,
-    ZhoTranslateFromEngCli,
-    ZhoTranslateFromYueCli,
 )
 """CLI classes that expose shared LLM arguments."""
 

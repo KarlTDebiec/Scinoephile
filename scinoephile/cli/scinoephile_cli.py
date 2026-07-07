@@ -17,6 +17,7 @@ from .eng import EngCli
 from .media import MediaCli
 from .multi import MultiCli
 from .ocr import OcrCli
+from .translate_cli import TranslateCli
 from .utility import UtilityCli
 from .yue import YueCli
 from .zho import ZhoCli
@@ -51,6 +52,9 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "stack two series into top and bottom subtitle lines": (
             "将两个序列堆叠为上下行字幕"
         ),
+        "translate subtitles between supported languages": (
+            "在受支持的语言之间翻译字幕"
+        ),
         "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
     },
     "zh-hant": {
@@ -80,6 +84,7 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "stack two series into top and bottom subtitle lines": (
             "將兩個序列堆疊為上下行字幕"
         ),
+        "translate subtitles between supported languages": ("在支援的語言之間翻譯字幕"),
         "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
     },
 }
@@ -141,6 +146,7 @@ class ScinoephileCli(ScinoephileCliBase):
             MediaCli.name(): MediaCli,
             MultiCli.name(): MultiCli,
             OcrCli.name(): OcrCli,
+            TranslateCli.name(): TranslateCli,
             UtilityCli.name(): UtilityCli,
             YueCli.name(): YueCli,
             ZhoCli.name(): ZhoCli,

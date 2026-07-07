@@ -87,8 +87,6 @@ surface (commands and subcommands) is:
     - `search`: search one or more configured dictionaries
   - `eng`
     - `process`: process English subtitles (clean/flatten/proofread)
-    - `translate-from-yue`: translate English subtitles from written Cantonese subtitles
-    - `translate-from-zho`: translate English subtitles from standard Chinese subtitles
   - `media`
     - `extract-subs`: extract matching subtitle streams from a video file
     - `offset`: estimate visual offset between two media files
@@ -114,16 +112,13 @@ surface (commands and subcommands) is:
       - `stats`: inspect cache size and entry counts
     - `optimization`
       - `sync-test-cases`: synchronize persisted prompt-optimization test cases
+  - `translate`: translate subtitles between supported languages
   - `yue`
     - `process`: process written Cantonese subtitles (clean/convert/flatten/proofread/romanize)
     - `review-vs-zho`: review written Cantonese against standard Chinese
     - `transcribe-vs-zho`: transcribe from media audio using standard Chinese as reference
-    - `translate-from-eng`: translate written Cantonese subtitles from English subtitles
-    - `translate-from-zho`: translate written Cantonese subtitles from standard Chinese subtitles
   - `zho`
     - `process`: process standard Chinese subtitles (clean/convert/flatten/proofread/romanize)
-    - `translate-from-eng`: translate standard Chinese subtitles from English subtitles
-    - `translate-from-yue`: translate standard Chinese subtitles from written Cantonese subtitles
 
 Each subcommand lives under `scinoephile/cli/` and is responsible for:
 

@@ -11,8 +11,6 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .zho_process_cli import ZhoProcessCli
-from .zho_translate_from_eng_cli import ZhoTranslateFromEngCli
-from .zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 
 __all__ = ["ZhoCli"]
 
@@ -22,24 +20,12 @@ ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "标准中文字幕操作命令行界面"
         ),
         "modify standard Chinese subtitles": "修改标准中文字幕",
-        "translate standard Chinese subtitles from English subtitles": (
-            "根据英文字幕翻译标准中文字幕"
-        ),
-        "translate standard Chinese subtitles from written Cantonese subtitles": (
-            "根据书面粤语字幕翻译标准中文字幕"
-        ),
     },
     "zh-hant": {
         "command-line interface for standard Chinese subtitle operations": (
             "標準中文字幕操作命令列介面"
         ),
         "modify standard Chinese subtitles": "修改標準中文字幕",
-        "translate standard Chinese subtitles from English subtitles": (
-            "根據英文字幕翻譯標準中文字幕"
-        ),
-        "translate standard Chinese subtitles from written Cantonese subtitles": (
-            "根據書面粵語字幕翻譯標準中文字幕"
-        ),
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -79,8 +65,6 @@ class ZhoCli(ScinoephileCliBase):
         """
         return {
             ZhoProcessCli.name(): ZhoProcessCli,
-            ZhoTranslateFromEngCli.name(): ZhoTranslateFromEngCli,
-            ZhoTranslateFromYueCli.name(): ZhoTranslateFromYueCli,
         }
 
     @classmethod

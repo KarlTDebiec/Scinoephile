@@ -12,18 +12,13 @@ from unittest.mock import patch
 from pytest import raises
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
-from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
-from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
+from scinoephile.cli.translate_cli import TranslateCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from scinoephile.cli.yue.yue_translate_from_eng_cli import YueTranslateFromEngCli
-from scinoephile.cli.yue.yue_translate_from_zho_cli import YueTranslateFromZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
-from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCli
-from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from test.helpers import parametrize
@@ -33,18 +28,13 @@ from test.helpers import parametrize
     "cli",
     [
         EngProcessCli,
-        EngTranslateFromYueCli,
-        EngTranslateFromZhoCli,
         OcrFuseCli,
         OcrProcessCli,
+        TranslateCli,
         YueProcessCli,
         YueReviewVsZhoCli,
         YueTranscribeVsZhoCli,
-        YueTranslateFromEngCli,
-        YueTranslateFromZhoCli,
         ZhoProcessCli,
-        ZhoTranslateFromEngCli,
-        ZhoTranslateFromYueCli,
     ],
 )
 def test_list_llm_providers(cli: type[CommandLineInterface]):

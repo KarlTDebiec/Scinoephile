@@ -7,18 +7,13 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
-from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
-from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
 from scinoephile.cli.multi.multi_timewarp_cli import MultiTimewarpCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
+from scinoephile.cli.translate_cli import TranslateCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from scinoephile.cli.yue.yue_translate_from_eng_cli import YueTranslateFromEngCli
-from scinoephile.cli.yue.yue_translate_from_zho_cli import YueTranslateFromZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
-from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCli
-from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
 from test.helpers import parametrize
 
@@ -60,20 +55,15 @@ from test.helpers import parametrize
             ],
         ),
         (
-            EngTranslateFromYueCli,
-            ["--yue-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
-        ),
-        (
-            EngTranslateFromZhoCli,
-            ["--zho-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
-        ),
-        (
-            YueTranslateFromEngCli,
-            ["--eng-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
-        ),
-        (
-            YueTranslateFromZhoCli,
-            ["--zho-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
+            TranslateCli,
+            [
+                "{infile}",
+                "--target-language",
+                "eng",
+                "--outfile",
+                "{outfile}",
+                "--overwrite",
+            ],
         ),
         (
             YueReviewVsZhoCli,
@@ -98,14 +88,6 @@ from test.helpers import parametrize
                 "{outfile}",
                 "--overwrite",
             ],
-        ),
-        (
-            ZhoTranslateFromEngCli,
-            ["--eng-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
-        ),
-        (
-            ZhoTranslateFromYueCli,
-            ["--yue-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
         ),
         (
             MultiTimewarpCli,
@@ -138,14 +120,9 @@ from test.helpers import parametrize
         "eng-process",
         "zho-process",
         "yue-process",
-        "eng-translate-from-yue",
-        "eng-translate-from-zho",
-        "yue-translate-from-eng",
-        "yue-translate-from-zho",
+        "translate",
         "yue-review-vs-zho",
         "yue-transcribe-vs-zho",
-        "zho-translate-from-eng",
-        "zho-translate-from-yue",
         "multi-timewarp",
         "ocr-fuse",
     ],

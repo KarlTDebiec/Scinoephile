@@ -10,29 +10,28 @@ from scinoephile.cli.ocr.ocr_lens_cli import OcrLensCli
 from scinoephile.cli.ocr.ocr_paddle_cli import OcrPaddleCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.ocr.ocr_tesseract_cli import OcrTesseractCli
+from scinoephile.cli.translate_cli import TranslateCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from scinoephile.cli.yue.yue_translate_from_eng_cli import YueTranslateFromEngCli
-from scinoephile.cli.yue.yue_translate_from_zho_cli import YueTranslateFromZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
-from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCli
-from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
 from test.helpers import parametrize
 from test.helpers.cli import get_cli_action
 
-OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
+LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
 
 
 @parametrize(
     ("cli", "option", "metavar"),
     [
         (OcrFuseCli, "--language", "{eng,zho}"),
-        (OcrLensCli, "--language", OCR_LANGUAGE_METAVAR),
-        (OcrPaddleCli, "--language", OCR_LANGUAGE_METAVAR),
-        (OcrProcessCli, "--language", OCR_LANGUAGE_METAVAR),
-        (OcrTesseractCli, "--language", OCR_LANGUAGE_METAVAR),
+        (OcrLensCli, "--language", LANGUAGE_METAVAR),
+        (OcrPaddleCli, "--language", LANGUAGE_METAVAR),
+        (OcrProcessCli, "--language", LANGUAGE_METAVAR),
+        (OcrTesseractCli, "--language", LANGUAGE_METAVAR),
+        (TranslateCli, "--source-language", LANGUAGE_METAVAR),
+        (TranslateCli, "--target-language", LANGUAGE_METAVAR),
         (MultiStackCli, "--sync", "{anchor-top,anchor-bottom,off}"),
         (YueProcessCli, "--proofread", "{simplified,traditional}"),
         (YueReviewVsZhoCli, "--mode", "{block,line}"),
@@ -40,11 +39,7 @@ OCR_LANGUAGE_METAVAR = "{eng,yue-Hans,yue-Hant,zho-Hans,zho-Hant}"
         (YueTranscribeVsZhoCli, "--demucs", "{on,off}"),
         (YueTranscribeVsZhoCli, "--vad", "{auto,on,off}"),
         (YueTranscribeVsZhoCli, "--script", "{simplified,traditional}"),
-        (YueTranslateFromEngCli, "--script", "{simplified,traditional}"),
-        (YueTranslateFromZhoCli, "--script", "{simplified,traditional}"),
         (ZhoProcessCli, "--proofread", "{simplified,traditional}"),
-        (ZhoTranslateFromEngCli, "--script", "{simplified,traditional}"),
-        (ZhoTranslateFromYueCli, "--script", "{simplified,traditional}"),
     ],
 )
 def test_custom_choice_validators_use_metavar_not_choices(
