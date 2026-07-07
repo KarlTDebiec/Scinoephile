@@ -46,11 +46,12 @@ TRANSLATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'source subtitle infile or "-" for stdin': (
             '源字幕输入文件，或使用 "-" 表示标准输入'
         ),
-        'target-language subtitle infile with gaps to fill, or "-" for stdin': (
-            '含缺口、需补全的目标语言字幕输入文件，或使用 "-" 表示标准输入'
+        "target-language subtitle infile with gaps to fill": (
+            "含缺口、需补全的目标语言字幕输入文件"
         ),
-        'target-language subtitle infile with which to guide translation, or "-" '
-        "for stdin": ('用于指导翻译的目标语言字幕输入文件，或使用 "-" 表示标准输入'),
+        "target-language subtitle infile with which to guide translation": (
+            "用于指导翻译的目标语言字幕输入文件"
+        ),
         "source language tag (detected from infile if omitted)": (
             "源语言标签（省略时从输入文件检测）"
         ),
@@ -72,11 +73,12 @@ TRANSLATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'source subtitle infile or "-" for stdin': (
             '來源字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
-        'target-language subtitle infile with gaps to fill, or "-" for stdin': (
-            '含缺口、需補全的目標語言字幕輸入檔，或使用 "-" 代表標準輸入'
+        "target-language subtitle infile with gaps to fill": (
+            "含缺口、需補全的目標語言字幕輸入檔"
         ),
-        'target-language subtitle infile with which to guide translation, or "-" '
-        "for stdin": ('用於指導翻譯的目標語言字幕輸入檔，或使用 "-" 代表標準輸入'),
+        "target-language subtitle infile with which to guide translation": (
+            "用於指導翻譯的目標語言字幕輸入檔"
+        ),
         "source language tag (detected from infile if omitted)": (
             "來源語言標籤（省略時從輸入檔偵測）"
         ),
@@ -131,18 +133,15 @@ class TranslateCli(ScinoephileCliBase):
             "--gapped-infile",
             dest="gapped_infile_path",
             default=None,
-            type=input_file_arg(allow_stdin=True),
-            help='target-language subtitle infile with gaps to fill, or "-" for stdin',
+            type=input_file_arg(),
+            help="target-language subtitle infile with gaps to fill",
         )
         target_input_group.add_argument(
             "--guide-infile",
             dest="guide_infile_path",
             default=None,
-            type=input_file_arg(allow_stdin=True),
-            help=(
-                "target-language subtitle infile with which to guide translation, "
-                'or "-" for stdin'
-            ),
+            type=input_file_arg(),
+            help="target-language subtitle infile with which to guide translation",
         )
 
         # Operation arguments
@@ -206,17 +205,12 @@ class TranslateCli(ScinoephileCliBase):
             gapped_infile_path=gapped_infile_path,
             guide_infile_path=guide_infile_path,
         )
-        cls._validate_stdin_inputs(
-            parser,
-            infile_path=infile_path,
-            target_infile_path=target_infile_path,
-        )
 
         # Read inputs and resolve languages
         source = read_series(parser, infile_path, allow_stdin=True)
         target = None
         if target_infile_path is not None:
-            target = read_series(parser, target_infile_path, allow_stdin=True)
+            target = read_series(parser, target_infile_path)
         source_language = cls._resolve_language(
             parser=parser,
             series=source,
@@ -342,23 +336,6 @@ class TranslateCli(ScinoephileCliBase):
                 "--gapped-infile can determine target language"
             )
         return explicit_language
-
-    @staticmethod
-    def _validate_stdin_inputs(
-        parser: ArgumentParser,
-        *,
-        infile_path: Path | str,
-        target_infile_path: Path | str | None,
-    ):
-        """Validate stdin is used for at most one input stream.
-
-        Arguments:
-            parser: parser used for user-facing error output
-            infile_path: source subtitle path
-            target_infile_path: target-language subtitle path, if provided
-        """
-        if str(infile_path) == "-" and str(target_infile_path) == "-":
-            parser.error("source and target-language inputs may not both be '-'")
 
 
 if __name__ == "__main__":
