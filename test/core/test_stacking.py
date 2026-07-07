@@ -166,10 +166,16 @@ def test_get_stacked_series_overlap_error_includes_event_context():
             id="kob-zho-hans-eng",
         ),
         param(
-            "kob_yue_hans_timewarp_clean_flatten",
-            "kob_eng_timewarp_clean_review_flatten",
+            "kob_yue_hans_clean_review_flatten_timewarp",
+            "kob_eng_clean_review_flatten_timewarp",
             "kob_yue_hans_eng",
             id="kob-yue-hans-eng",
+        ),
+        param(
+            "mlamd_yue_hans_transcribe_review_translate_block_review",
+            "mlamd_eng_fuse_clean_validate_review_flatten",
+            "mlamd_yue_hans_eng",
+            id="mlamd-yue-hans-eng",
         ),
         param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
