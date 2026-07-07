@@ -145,7 +145,7 @@ class LanguageId:
             is_numbered_jyutping=is_numbered_jyutping,
             is_simplified=is_simplified,
             is_traditional=is_traditional,
-            language=_get_language(
+            language=cls._get_language(
                 normalized_text,
                 is_accented_pinyin=is_accented_pinyin,
                 is_numbered_pinyin=is_numbered_pinyin,
@@ -156,96 +156,96 @@ class LanguageId:
             ),
         )
 
+    @staticmethod
+    def _get_chinese_language(
+        text: str,
+        *,
+        is_simplified: bool,
+        is_traditional: bool,
+    ) -> Language | None:
+        """Get the Chinese language represented by text.
 
-def _get_chinese_language(
-    text: str,
-    *,
-    is_simplified: bool,
-    is_traditional: bool,
-) -> Language | None:
-    """Get the Chinese language represented by text.
+        Arguments:
+            text: normalized text to classify
+            is_simplified: whether the text appears to be simplified Chinese
+            is_traditional: whether the text appears to be traditional Chinese
+        Returns:
+            detected Chinese language, if conclusive
+        """
+        if is_simplified and not is_traditional:
+            standard_language = Language.zho_hans
+            cantonese_language = Language.yue_hans
+        elif is_traditional and not is_simplified:
+            standard_language = Language.zho_hant
+            cantonese_language = Language.yue_hant
+        else:
+            return None
 
-    Arguments:
-        text: normalized text to classify
-        is_simplified: whether the text appears to be simplified Chinese
-        is_traditional: whether the text appears to be traditional Chinese
-    Returns:
-        detected Chinese language, if conclusive
-    """
-    if is_simplified and not is_traditional:
-        standard_language = Language.zho_hans
-        cantonese_language = Language.yue_hans
-    elif is_traditional and not is_simplified:
-        standard_language = Language.zho_hant
-        cantonese_language = Language.yue_hant
-    else:
-        return None
+        cantonese_count = sum(text.count(marker) for marker in CANTONESE_MARKERS)
+        standard_count = sum(text.count(marker) for marker in STANDARD_CHINESE_MARKERS)
+        if cantonese_count > standard_count:
+            return cantonese_language
 
-    cantonese_count = sum(text.count(marker) for marker in CANTONESE_MARKERS)
-    standard_count = sum(text.count(marker) for marker in STANDARD_CHINESE_MARKERS)
-    if cantonese_count > standard_count:
-        return cantonese_language
+        if standard_count > cantonese_count:
+            return standard_language
 
-    if standard_count > cantonese_count:
+        if cantonese_count > 0:
+            return None
+
+        analysis = get_zho_script_analysis(text)
+        script_count = analysis.simplified_count
+        if standard_language is Language.zho_hant:
+            script_count = analysis.traditional_count
+        if script_count < MIN_SCRIPT_ONLY_CHINESE_CHARACTERS:
+            return None
         return standard_language
 
-    if cantonese_count > 0:
-        return None
+    @staticmethod
+    def _get_language(
+        text: str,
+        *,
+        is_accented_pinyin: bool,
+        is_numbered_pinyin: bool,
+        is_accented_yale: bool,
+        is_numbered_jyutping: bool,
+        is_simplified: bool,
+        is_traditional: bool,
+    ) -> Language | None:
+        """Get the language represented by text.
 
-    analysis = get_zho_script_analysis(text)
-    script_count = analysis.simplified_count
-    if standard_language is Language.zho_hant:
-        script_count = analysis.traditional_count
-    if script_count < MIN_SCRIPT_ONLY_CHINESE_CHARACTERS:
-        return None
-    return standard_language
+        Arguments:
+            text: normalized text to classify
+            is_accented_pinyin: whether text is accented pinyin
+            is_numbered_pinyin: whether text is numbered pinyin
+            is_accented_yale: whether text is accented Yale romanization
+            is_numbered_jyutping: whether text is numbered Jyutping
+            is_simplified: whether text appears to be simplified Chinese
+            is_traditional: whether text appears to be traditional Chinese
+        Returns:
+            detected language, if conclusive
+        """
+        if not text:
+            return None
 
+        has_romanization = (
+            is_accented_pinyin
+            or is_numbered_pinyin
+            or is_accented_yale
+            or is_numbered_jyutping
+        )
+        if has_romanization:
+            return None
 
-def _get_language(
-    text: str,
-    *,
-    is_accented_pinyin: bool,
-    is_numbered_pinyin: bool,
-    is_accented_yale: bool,
-    is_numbered_jyutping: bool,
-    is_simplified: bool,
-    is_traditional: bool,
-) -> Language | None:
-    """Get the language represented by text.
+        if RE_HANZI.search(text) is None:
+            words = RE_LATIN_WORD.findall(text)
+            if len(words) >= MIN_ENGLISH_WORDS and any(
+                len(word) >= MIN_ENGLISH_WORD_LENGTH for word in words
+            ):
+                return Language.eng
+            return None
 
-    Arguments:
-        text: normalized text to classify
-        is_accented_pinyin: whether text is accented pinyin
-        is_numbered_pinyin: whether text is numbered pinyin
-        is_accented_yale: whether text is accented Yale romanization
-        is_numbered_jyutping: whether text is numbered Jyutping
-        is_simplified: whether text appears to be simplified Chinese
-        is_traditional: whether text appears to be traditional Chinese
-    Returns:
-        detected language, if conclusive
-    """
-    if not text:
-        return None
-
-    has_romanization = (
-        is_accented_pinyin
-        or is_numbered_pinyin
-        or is_accented_yale
-        or is_numbered_jyutping
-    )
-    if has_romanization:
-        return None
-
-    if RE_HANZI.search(text) is None:
-        words = RE_LATIN_WORD.findall(text)
-        if len(words) >= MIN_ENGLISH_WORDS and any(
-            len(word) >= MIN_ENGLISH_WORD_LENGTH for word in words
-        ):
-            return Language.eng
-        return None
-
-    return _get_chinese_language(
-        text,
-        is_simplified=is_simplified,
-        is_traditional=is_traditional,
-    )
+        return LanguageId._get_chinese_language(
+            text,
+            is_simplified=is_simplified,
+            is_traditional=is_traditional,
+        )
