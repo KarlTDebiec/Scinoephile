@@ -380,7 +380,8 @@
       "ronghe": "你個灶君，逢年尾喺下面著數",
       "beizhu": "採用 Google Lens 識別更可靠的字詞「喺下面」修正了 PaddleOCR 的「喉下面」；其餘標點與文字沿用 Google Lens。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -403,7 +404,8 @@
       "ronghe": "插佢　　插佢",
       "beizhu": "採用 Google Lens 中的漢字「佢」；将 Google Lens 中的换行符与 PaddleOCR 中对应的空格间隙替換為两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -450,7 +452,8 @@
       "ronghe": "你好賠囉喎",
       "beizhu": "採用 Google Lens 較可靠的漢字識別結果，將 PaddleOCR 中的「咼」更正為「喎」；刪除了 Google Lens 中多出的「幡」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -593,7 +596,8 @@
       "ronghe": "最慘就係蓮藕同石頭　　係呀",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -700,7 +704,8 @@
       "ronghe": "我哋只係照例執行啫　　玉帝⋯",
       "beizhu": "保留了 Google Lens 中的「我哋」以及省略号「⋯」；将 Google Lens 中的换行符与 PaddleOCR 中对应的空格间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -782,7 +787,8 @@
       "ronghe": "我要同佢隻揪　　打死人咩",
       "beizhu": "採用 Google Lens 識別的「佢隻揪」以修正 PaddleOCR 中的錯字「但售揪」；將 Google Lens 中的換行符與 PaddleOCR 中對應的空格間隙替換為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1153,7 +1159,8 @@
       "ronghe": "乜說話呀　　降龍",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1548,7 +1555,8 @@
       "ronghe": "大師，頭先啲嘢你講過啦　　啊，再見⋯",
       "beizhu": "包括了 Google Lens 中更可靠的「啲嘢」與省略号「⋯」；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1726,7 +1734,8 @@
       "ronghe": "仔嚟架，恭喜呀老爺　　恭喜呀老爺⋯",
       "beizhu": "採納了 Google Lens 中的「仔嚟架，」以修正 PaddleOCR 的「仔架，」；保留了 Google Lens 中的省略號「⋯」；並將 Google Lens 中的換行與 PaddleOCR 中對應的空格位置合併為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1821,7 +1830,8 @@
       "ronghe": "⋯唏⋯頂　　頂",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的前置省略号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1867,7 +1877,8 @@
       "ronghe": "咁冇風度架　　咁就走咗去",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；并采用了 Google Lens 中的「走咗去」而非 PaddleOCR 中的「走去」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1902,7 +1913,8 @@
       "ronghe": "唔好講咁多，攞番把扇先嘞，⋯",
       "beizhu": "採用 Google Lens 中的「攞」；保留 Google Lens 中的標點與省略號位置，並省略了 PaddleOCR 中缺失的「攞」與多餘的逗號位置差異。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1913,7 +1925,8 @@
       "ronghe": "快啲攞嚟啦　　喂⋯龍⋯",
       "beizhu": "保留了 Google Lens 中较可靠的汉字“快啲攞嚟啦”；将 Google Lens 中显示为换行符、PaddleOCR 中显示为空格的间隙替换为两个表意空格；保留了 Google Lens 中的省略号“⋯”，并补回了末尾的“⋯”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1936,7 +1949,8 @@
       "ronghe": "唏呀，揀兩隻至好打吖嘛　　懶叻吖",
       "beizhu": "修正為 Google Lens 較可靠的漢字「兩」「懶」；將 Google Lens 中的換行符與 PaddleOCR 中的空格對應處理為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2163,7 +2177,8 @@
       "ronghe": "嗚⋯生咗把扇呀　　吓？",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号；将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2234,7 +2249,8 @@
       "ronghe": "整多濟　　吓？",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2521,7 +2537,8 @@
       "ronghe": "亂講，啫啫一　　fling fling吖嘛",
       "beizhu": "將 Google Lens 中顯示為換行符而 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格；保留了 Google Lens 中的標點「，」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2688,7 +2705,8 @@
       "ronghe": "哎呀成日玩把爛扇，真係⋯　　扇扇",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2733,7 +2751,8 @@
       "ronghe": "我多口問句啫，唔好意思　　蒙蒙⋯",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号；将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2816,7 +2835,8 @@
       "ronghe": "肉騰騰咁走出街　　點呀點呀？",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2839,7 +2859,8 @@
       "ronghe": "睇下幾時輪到你吖　　吓？",
       "beizhu": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2850,7 +2871,8 @@
       "ronghe": "我係咒你呀，痴線　　講吓得",
       "beizhu": "保留了 Google Lens 中的標點符號「，」；將 Google Lens 中的换行符與 PaddleOCR 中對應的空格間隙替換為两个表意空格；省略了 PaddleOCR 中多出的「嗤」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2897,7 +2919,8 @@
       "ronghe": "係就慘啦　　嗰個男人真係唔好彩",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的『嗰』；將了 Google Lens OCR 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3076,7 +3099,8 @@
       "ronghe": "蒙蒙　　攞條女去浸豬籠",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3122,7 +3146,8 @@
       "ronghe": "一於拉佢去浸豬籠啦　　唔好呀",
       "beizhu": "將了 Google Lens 中的「佢」修正 PaddleOCR 誤識為「但」；將 Google Lens 顯示為換行符、PaddleOCR 顯示為空格的間隙替換為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3217,7 +3242,8 @@
       "ronghe": "行呀　　蒙蒙",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3240,7 +3266,8 @@
       "ronghe": "唔怪得你，你嘅神通都仲未返",
       "beizhu": "採用 Google Lens 中較可靠的「嘅」來修正 PaddleOCR 的漏字；其餘內容以兩者較一致者為準。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3491,7 +3518,8 @@
       "ronghe": "攞件衫嚟　　唔",
       "beizhu": "保留了 Google Lens 中的「攞件衫嚟」；將 Google Lens 的换行與 PaddleOCR 的空格對應間隙合併為两个表意空格；保留了兩者共有的「唔」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3538,7 +3566,8 @@
       "ronghe": "後面嗰鼓啦",
       "beizhu": "採用了 Google Lens 中更可靠的漢字「嗰」；將 PaddleOCR 中的誤識字「咽」更正為「嗰」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4016,7 +4045,8 @@
       "ronghe": "你未走得　　吓？",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4087,7 +4117,8 @@
       "ronghe": "哎呀　　豈有此理",
       "beizhu": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4146,7 +4177,8 @@
       "ronghe": "梗係佢阿媽勾引隻了哥但先識講嘢",
       "beizhu": "採用了 PaddleOCR 中的「但」，因為此處與 Google Lens 的「佢」相比，PaddleOCR 更符合上下文；其餘文字按兩者一致部分融合。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4517,7 +4549,8 @@
       "ronghe": "正嘢　　唏呀，真係激死",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4576,7 +4609,8 @@
       "ronghe": "唔好打呀　　唔好攔住我呀",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4587,7 +4621,8 @@
       "ronghe": "去死呀　　唔好咁衝動",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4598,7 +4633,8 @@
       "ronghe": "走啦　　唔好咁勞氣啦",
       "beizhu": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4609,7 +4645,8 @@
       "ronghe": "佢啲咁嘅人，唔打死佢都唔得呀　　走啦",
       "beizhu": "採用 Google Lens 中較可靠的漢字「佢啲…佢都…」及逗號；將 Google Lens 中的换行符與 PaddleOCR 中的空格對應位置融合為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4979,7 +5016,8 @@
       "ronghe": "會計部出糧嘅啫　　係囉",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5014,7 +5052,8 @@
       "ronghe": "唉，唔好理佢　　同福利部呢⋯",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「佢」；将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5025,7 +5064,8 @@
       "ronghe": "我家吓返上去吖　　又話大家俾面",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5036,7 +5076,8 @@
       "ronghe": "你自己保重喇　　另外呢出版部⋯",
       "beizhu": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格；包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略號。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5071,7 +5112,8 @@
       "ronghe": "小心啦吓　　衛生部啦⋯⋯唉",
       "beizhu": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格；保留了 Google Lens 與 PaddleOCR 共同顯示的省略號並採用較完整的「⋯⋯」形式。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5082,7 +5124,8 @@
       "ronghe": "行啦，陰部　　總之大家衰埋一堆啦⋯",
       "beizhu": "保留了 Google Lens 中存在但 PaddleOCR 中不存在的省略號；将 Google Lens 中显示为换行符而 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5093,7 +5136,8 @@
       "ronghe": "嘩　　咩呀？",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5260,7 +5304,8 @@
       "ronghe": "一日三劑　　如果要救你哋架呢",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；保留了 Google Lens 中的「哋」以修正 PaddleOCR 的缺漏。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5271,7 +5316,8 @@
       "ronghe": "算你好彩　　有一個方法",
       "beizhu": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5508,7 +5554,8 @@
       "ronghe": "出嚟圍個圈，圍個圈　　好衰架⋯",
       "beizhu": "採用了 Google Lens 中的「嚟」與省略號「⋯」，並保留了 Google Lens 的逗號；將 Google Lens 中的換行符與 PaddleOCR 中對應的空格間隙替換為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5591,7 +5638,8 @@
       "ronghe": "行呀　　拉佢",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；并以 Google Lens 的「拉佢」修正 PaddleOCR 的「拉佰」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5638,7 +5686,8 @@
       "ronghe": "咁就有排啦　　唔係我呀⋯",
       "beizhu": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格；包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略號。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5769,7 +5818,8 @@
       "ronghe": "話燒⋯你老母　　唔係吖話⋯",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；补回了 Google Lens 中的结尾省略号。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6164,7 +6214,8 @@
       "ronghe": "家吓我食但係超渡緊佢咋",
       "beizhu": "採用了 PaddleOCR 中的「但係」以修正 Google Lens 的「佢係」誤識；保留了 Google Lens 中的「佢咋」以補足 PaddleOCR 遺漏的字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6679,7 +6730,8 @@
       "ronghe": "乞兒　　哦？",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6966,7 +7018,8 @@
       "ronghe": "哎呀⋯我嚟叫雞架",
       "beizhu": "採用 Google Lens 中較可靠的「嚟」來修正 PaddleOCR 的漏識；採用 PaddleOCR 中較完整的句末內容，省略了 Google Lens 中多出的「幡」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7013,7 +7066,8 @@
       "ronghe": "一人行一步吖嚀",
       "beizhu": "採用 Google Lens 中較可靠的漢字識別結果，省略了 PaddleOCR 中將末字識別為「嗲」的結果。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7048,7 +7102,8 @@
       "ronghe": "唔洗理佢架　　哦",
       "beizhu": "保留了 Google Lens 中的「佢」；将 Google Lens 中显示为换行符、PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7263,7 +7318,8 @@
       "ronghe": "我忍你好耐嘞　　去死啦",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7406,7 +7462,8 @@
       "ronghe": "你都害得我慘啦",
       "beizhu": "採用了 Google Lens 中更可靠的漢字「慘」，替換了 PaddleOCR 中的「惨」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7441,7 +7498,8 @@
       "ronghe": "擰佢塊面過　　擰番塊面呀",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「擰佢」；将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7680,7 +7738,8 @@
       "ronghe": "唔知　　咁即係冇事啦",
       "beizhu": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7691,7 +7750,8 @@
       "ronghe": "唔得　一晚咁多呢",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7702,7 +7762,8 @@
       "ronghe": "唔得　一個時辰呢",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7713,7 +7774,8 @@
       "ronghe": "唔得　　咁就大字形架啦喎",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；补入了 Google Lens 中存在但 PaddleOCR 中不存在的「喎」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7724,7 +7786,8 @@
       "ronghe": "唔得　　咩大字型？",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7891,7 +7954,8 @@
       "ronghe": "一係⋯我幫你修修啲腳甲仨呀咁長",
       "beizhu": "採用 Google Lens 中的「一係⋯」與「啲」；採用 PaddleOCR 中的「仨」；保留 Google Lens 的省略號。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9161,7 +9225,8 @@
       "ronghe": "濟癲　　師父",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9460,7 +9525,8 @@
       "ronghe": "我都話佢輸梗架啦　　輸梗架啦",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「佢」；将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9627,7 +9693,8 @@
       "ronghe": "你哋睇吓　　有嘢睇喎⋯",
       "beizhu": "保留了 Google Lens 中的「哋」和省略号「⋯」；将 Google Lens 中显示为换行符、PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9638,7 +9705,8 @@
       "ronghe": "佢今世唔洗再做乞兒喇　　係喎⋯",
       "beizhu": "保留了 Google Lens 中的「佢」與「乞兒」；將 Google Lens 中的換行與 PaddleOCR 中對應的空格合併為兩個表意空格；保留了 Google Lens 中的省略號，並忽略了 PaddleOCR 中誤識別的標點「．」與文字「係嘔」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9757,7 +9825,8 @@
       "ronghe": "嘩⋯仲做埋尊者添吖但都可以做尊者？",
       "beizhu": "採用 Google Lens 較可靠的漢字與標點，將 PaddleOCR 中多出的「但」視為誤識別並省略；同時保留了 Google Lens 中的省略號「⋯」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9779,6 +9848,1506 @@
     "answer": {
       "ronghe": "等佢哋明解只要有愛心，邊度都係天堂",
       "beizhu": "採用了 Google Lens 中的「佢哋」來修正 PaddleOCR 的「但」。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "皇母，\n你講先",
+      "paddle": "皇母，你講先"
+    },
+    "answer": {
+      "ronghe": "皇母，你講先",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "瞓緊晏覺架嘛，\n大佬",
+      "paddle": "緊晏覺架嘛，大佬"
+    },
+    "answer": {
+      "ronghe": "瞓緊晏覺架嘛，大佬",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "咩呀⋯\n⋯",
+      "paddle": "咩呀"
+    },
+    "answer": {
+      "ronghe": "咩呀⋯⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "超，\n神仙大晒咩？",
+      "paddle": "超，神仙大晒咩？"
+    },
+    "answer": {
+      "ronghe": "超，神仙大晒咩？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "咩呀\n？",
+      "paddle": "咩呀？"
+    },
+    "answer": {
+      "ronghe": "咩呀？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "你老啦，\n你好退休啦",
+      "paddle": "你老啦，你好退休啦"
+    },
+    "answer": {
+      "ronghe": "你老啦，你好退休啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "玉帝，\n各位仙友",
+      "paddle": "玉帝，各位仙友"
+    },
+    "answer": {
+      "ronghe": "玉帝，各位仙友",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哈哈⋯⋯\n收嗲\n你收嗲啦",
+      "paddle": "哈哈 收嗲 你收嗲啦"
+    },
+    "answer": {
+      "ronghe": "哈哈⋯⋯收嗲　　你收嗲啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "咪住，\n唔好亂嚟⋯",
+      "paddle": "咪住，唔好亂"
+    },
+    "answer": {
+      "ronghe": "咪住，唔好亂嚟⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "係，\n就係呢樣",
+      "paddle": "係，就係呢樣"
+    },
+    "answer": {
+      "ronghe": "係，就係呢樣",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "怕你呀，\n我正有此意",
+      "paddle": "怕你呀，我正有此意"
+    },
+    "answer": {
+      "ronghe": "怕你呀，我正有此意",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唔淒涼，\n好過冇呀",
+      "paddle": "唔淒涼，好過冇呀"
+    },
+    "answer": {
+      "ronghe": "唔淒涼，好過冇呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "呢把扇，\n不能改變生死",
+      "paddle": "呢把扇，不能改變生死"
+    },
+    "answer": {
+      "ronghe": "呢把扇，不能改變生死",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "⋯呀⋯\n落去呀",
+      "paddle": "呀 落去呀"
+    },
+    "answer": {
+      "ronghe": "⋯呀⋯落去呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唏，\n犯咩天條呀",
+      "paddle": "唏，犯咩天條呀"
+    },
+    "answer": {
+      "ronghe": "唏，犯咩天條呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "（\n國清寺）",
+      "paddle": "（國清寺）"
+    },
+    "answer": {
+      "ronghe": "（國清寺）",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "老爺\n，夫人，\n你睇吓",
+      "paddle": "老爺，夫人，你睇吓"
+    },
+    "answer": {
+      "ronghe": "老爺，夫人，你睇吓",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "喺邊度摘架？\n呢⋯嗰度囉",
+      "paddle": "邊度摘架？ 呢⋯個度囉"
+    },
+    "answer": {
+      "ronghe": "喺邊度摘架？　　呢⋯嗰度囉",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "老爺呀，點解會咁架？\n老爺，夫人",
+      "paddle": "老爺呀，點解會咁架？ 老爺，夫人"
+    },
+    "answer": {
+      "ronghe": "老爺呀，點解會咁架？老爺，夫人",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "夫人，\n呢個仔⋯",
+      "paddle": "夫人，呢個仔"
+    },
+    "answer": {
+      "ronghe": "夫人，呢個仔⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "冚家富貴，\n嗰間死人舖頭",
+      "paddle": "家富貴，個間死人舖頭"
+    },
+    "answer": {
+      "ronghe": "冚家富貴，嗰間死人舖頭",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "十萬火急⋯\n係呀⋯",
+      "paddle": "十萬火急 係呀"
+    },
+    "answer": {
+      "ronghe": "十萬火急⋯　　係呀⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "吓？\n哦⋯嚟啦",
+      "paddle": "吓？ 哦⋯啦"
+    },
+    "answer": {
+      "ronghe": "吓？哦⋯嚟啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "弊，\n唔記得帶把扇添",
+      "paddle": "弊，唔記得帶把扇添"
+    },
+    "answer": {
+      "ronghe": "弊，唔記得帶把扇添",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "生啦\n⋯⋯",
+      "paddle": "生啦"
+    },
+    "answer": {
+      "ronghe": "生啦⋯⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "老婆，\n生仔定女呀？",
+      "paddle": "老婆，生仔定女呀？"
+    },
+    "answer": {
+      "ronghe": "老婆，生仔定女呀？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "吓？\n生咗⋯生咗喎⋯",
+      "paddle": "吓？ 生_⋯生嘔"
+    },
+    "answer": {
+      "ronghe": "吓？生咗⋯生咗喎⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "吓？\n呢個係咪妖怪嚟架？",
+      "paddle": "吓？呢個係咪妖怪喲架？"
+    },
+    "answer": {
+      "ronghe": "吓？呢個係咪妖怪嚟架？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "老爺，\n不如報官囉？",
+      "paddle": "老爺，不如報官囉？"
+    },
+    "answer": {
+      "ronghe": "老爺，不如報官囉？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "⋯蒙蒙⋯\n你仲扮低能呀嘛",
+      "paddle": "蒙蒙 你仲扮低能呀嘛"
+    },
+    "answer": {
+      "ronghe": "⋯蒙蒙⋯你仲扮低能呀嘛",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "撇呀⋯\n哥哥⋯",
+      "paddle": "撇呀 哥哥"
+    },
+    "answer": {
+      "ronghe": "撇呀⋯哥哥⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "好嘢\n⋯⋯",
+      "paddle": "好嘢"
+    },
+    "answer": {
+      "ronghe": "好嘢⋯⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "仲有冇得醫呀？⋯\n蒙蒙⋯",
+      "paddle": "仲有有得醫呀？ 蒙蒙"
+    },
+    "answer": {
+      "ronghe": "仲有冇得醫呀？⋯　　蒙蒙⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "無得醫呀⋯\n蒙蒙⋯",
+      "paddle": "無得醫呀 蒙蒙"
+    },
+    "answer": {
+      "ronghe": "無得醫呀⋯　　蒙蒙",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "仲有呀大夫呀⋯\n蒙蒙⋯",
+      "paddle": "仲有呀大夫呀 蒙蒙"
+    },
+    "answer": {
+      "ronghe": "仲有呀大夫呀⋯蒙蒙⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哎呀！\n撞鬼你囉",
+      "paddle": "哎呀！ 撞鬼你囉"
+    },
+    "answer": {
+      "ronghe": "哎呀！撞鬼你囉",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哎喲，\n邊個呀？",
+      "paddle": "哎喲，邊個呀？"
+    },
+    "answer": {
+      "ronghe": "哎喲，邊個呀？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "你冇事嘛⋯\n有冇事吖⋯",
+      "paddle": "你有事嘛⋯有有事吖．"
+    },
+    "answer": {
+      "ronghe": "你冇事嘛⋯有冇事吖⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "蒙蒙\n⋯",
+      "paddle": "蒙蒙"
+    },
+    "answer": {
+      "ronghe": "蒙蒙⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唔好呀⋯\n唔着衫通街走",
+      "paddle": "唔好呀 唔着衫通街走"
+    },
+    "answer": {
+      "ronghe": "唔好呀⋯唔着衫通街走",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "九世雞？\n敗類呀，真係賤格呀",
+      "paddle": "九世雞？ 敗類呀，真係賤格呀"
+    },
+    "answer": {
+      "ronghe": "九世雞？　　敗類呀，真係賤格呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "師父呀，\n佢癲架喎",
+      "paddle": "師父呀，但癲架噁"
+    },
+    "answer": {
+      "ronghe": "師父呀，佢癲架喎",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "喂，\n土地",
+      "paddle": "喂，土地"
+    },
+    "answer": {
+      "ronghe": "喂，土地",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "放下屠刀，\n立地成佛",
+      "paddle": "放下屠刀，立地成佛"
+    },
+    "answer": {
+      "ronghe": "放下屠刀，立地成佛",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唔好\n嬲\n，\n錫番",
+      "paddle": "唔好， ，錫番"
+    },
+    "answer": {
+      "ronghe": "唔好，錫番",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "聽我講，\n重新做人",
+      "paddle": "聽我講，重新做人"
+    },
+    "answer": {
+      "ronghe": "聽我講，重新做人",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "阿仔，你做乜搞成咁呀？\n伯伯",
+      "paddle": "阿仔，你做乜搞成咁呀？ 伯伯"
+    },
+    "answer": {
+      "ronghe": "阿仔，你做乜搞成咁呀？伯伯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "係囉，\n若然你無做錯事",
+      "paddle": "係囉，若然你無做錯事"
+    },
+    "answer": {
+      "ronghe": "係囉，若然你無做錯事",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "夜啦，\n你瞓陣先啦",
+      "paddle": "夜啦，你陣先啦"
+    },
+    "answer": {
+      "ronghe": "夜啦，你瞓陣先啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "大種，\n你老逗搵你呀",
+      "paddle": "大種，你老逗你呀"
+    },
+    "answer": {
+      "ronghe": "大種，你老逗搵你呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "老逗，\n你好嗎？",
+      "paddle": "老逗，你好嗎？"
+    },
+    "answer": {
+      "ronghe": "老逗，你好嗎？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哼，\n激死呀",
+      "paddle": "哼，激死呀"
+    },
+    "answer": {
+      "ronghe": "哼，激死呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "嘩，\n咁多金嘅",
+      "paddle": "嘩，咁多金嘅"
+    },
+    "answer": {
+      "ronghe": "嘩，咁多金嘅",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唔係屎\n，\n係翅",
+      "paddle": "唔係屎，係翅"
+    },
+    "answer": {
+      "ronghe": "唔係屎，係翅",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "嚀，\n鬼係咁架嘛",
+      "paddle": "，鬼係咁架嘛"
+    },
+    "answer": {
+      "ronghe": "嚀，鬼係咁架嘛",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "去死啦你，\n去死呀",
+      "paddle": "去死啦你，去死呀"
+    },
+    "answer": {
+      "ronghe": "去死啦你，去死呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "嘩，\n你咁好諗頭",
+      "paddle": "嘩，你咁好念頭"
+    },
+    "answer": {
+      "ronghe": "嘩，你咁好諗頭",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哎呀，\n激死我啦⋯",
+      "paddle": "哎呀，激死我啦"
+    },
+    "answer": {
+      "ronghe": "哎呀，激死我啦⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "快啲，\n全部執晒入去",
+      "paddle": "快响，全部執晒入去"
+    },
+    "answer": {
+      "ronghe": "快啲，全部執晒入去",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哥哥⋯，\n蒙蒙⋯",
+      "paddle": "哥哥⋯， 蒙蒙"
+    },
+    "answer": {
+      "ronghe": "哥哥⋯，蒙蒙",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "我扮到咁烏where都係為咗掩人耳目",
+      "paddle": "我扮到咁烏where都係為掩人耳目"
+    },
+    "answer": {
+      "ronghe": "我扮到咁烏where都係為咗掩人耳目",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "又醒番啦，\n伏虎",
+      "paddle": "又醒番啦，伏虎"
+    },
+    "answer": {
+      "ronghe": "又醒番啦，伏虎",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "喂，\n上頭咩嘢人呀？",
+      "paddle": "喂，上頭咩嘢人呀？"
+    },
+    "answer": {
+      "ronghe": "喂，上頭咩嘢人呀？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "喂，\n阿龍",
+      "paddle": "喂，阿龍"
+    },
+    "answer": {
+      "ronghe": "喂，阿龍",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哎呀，\n又多撻嘢呀",
+      "paddle": "哎呀，又多撻嘢呀"
+    },
+    "answer": {
+      "ronghe": "哎呀，又多撻嘢呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "班衰佬咁早嚟嘅？\n係啦⋯",
+      "paddle": "班衰佬咁早慨？ 係啦"
+    },
+    "answer": {
+      "ronghe": "班衰佬咁早嚟嘅？係啦⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "若然佢哋唔肯交人咁點呀？\n入去喇⋯",
+      "paddle": "若然但唔肯交人咁點呀？ 入去喇⋯"
+    },
+    "answer": {
+      "ronghe": "若然佢哋唔肯交人咁點呀？　　入去喇⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "乜嘢事？⋯\n走喇⋯",
+      "paddle": "乜嘢事？ 走喇"
+    },
+    "answer": {
+      "ronghe": "乜嘢事？⋯　　走喇⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "係呀\n⋯⋯",
+      "paddle": "係呀"
+    },
+    "answer": {
+      "ronghe": "係呀⋯⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "快啲⋯爽手啲啦，埋嚟⋯\n激死人⋯",
+      "paddle": "快哟⋯爽手哟啦，埋・激死人"
+    },
+    "answer": {
+      "ronghe": "快啲⋯爽手啲啦，埋嚟⋯激死人⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "駝背佬，\n瞓低",
+      "paddle": "駝背佬，低"
+    },
+    "answer": {
+      "ronghe": "駝背佬，瞓低",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "轉啦⋯轉呀轉⋯\n好驚呀⋯",
+      "paddle": "轉啦⋯轉呀轉⋯好驚呀"
+    },
+    "answer": {
+      "ronghe": "轉啦⋯轉呀轉⋯好驚呀⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "咪住，\n借問聲",
+      "paddle": "咪住，借問聲"
+    },
+    "answer": {
+      "ronghe": "咪住，借問聲",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "因為玉帝托夢話我知嘅\n．．\n哦⋯",
+      "paddle": "因為玉帝托夢話我知 哦"
+    },
+    "answer": {
+      "ronghe": "因為玉帝托夢話我知嘅．．哦⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "你癡線嘅，\n躙開",
+      "paddle": "你癡線，開"
+    },
+    "answer": {
+      "ronghe": "你癡線嘅，躙開",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "啱時候嘞，\n鬧佢",
+      "paddle": "喘時候嘞，鬧仨"
+    },
+    "answer": {
+      "ronghe": "啱時候嘞，鬧佢",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "契弟，\n契弟，\n正契弟",
+      "paddle": "契弟，契弟，正契弟"
+    },
+    "answer": {
+      "ronghe": "契弟，契弟，正契弟",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "錯嘞，\n我賣緊豆腐架⋯",
+      "paddle": "錯嘞，我賣緊豆腐架"
+    },
+    "answer": {
+      "ronghe": "錯嘞，我賣緊豆腐架⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唔做吖？\n攞番錢嚟囉⋯",
+      "paddle": "唔做吖？瘫番钱嗦囉・"
+    },
+    "answer": {
+      "ronghe": "唔做吖？攞番錢嚟囉⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "大種，\n跟我來",
+      "paddle": "大種，跟我來"
+    },
+    "answer": {
+      "ronghe": "大種，跟我來",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "曳呀你，\n裝人沖涼",
+      "paddle": "曳呀你，裝人沖涼"
+    },
+    "answer": {
+      "ronghe": "曳呀你，裝人沖涼",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "公子，\n跟我嚟啦",
+      "paddle": "公子，跟我啦"
+    },
+    "answer": {
+      "ronghe": "公子，跟我嚟啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "啱晒，\n順便攪掂埋你",
+      "paddle": "喘晒，顺便攪掂埋你"
+    },
+    "answer": {
+      "ronghe": "啱晒，順便攪掂埋你",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "呀⋯，\n走呀⋯",
+      "paddle": "呀⋯，走呀"
+    },
+    "answer": {
+      "ronghe": "呀⋯，走呀⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "服未？\n服你老味",
+      "paddle": "服未？ 服你老味"
+    },
+    "answer": {
+      "ronghe": "服未？服你老味",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "冇傷肝，\n我鍾意嘅⋯",
+      "paddle": "冇傷肝，我鍾意⋯"
+    },
+    "answer": {
+      "ronghe": "冇傷肝，我鍾意嘅⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "不過，\n下世先啦",
+      "paddle": "不過，下世先啦"
+    },
+    "answer": {
+      "ronghe": "不過，下世先啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "仆街嘞，\n時辰到",
+      "paddle": "仆街嘞，時辰到"
+    },
+    "answer": {
+      "ronghe": "仆街嘞，時辰到",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哎呀咩啫，\n你係乞兒嚟架嘛",
+      "paddle": "哎呀咩啫，你係乞兒架嘛"
+    },
+    "answer": {
+      "ronghe": "哎呀咩啫，你係乞兒嚟架嘛",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "喂，\n我哋係好朋友呵？",
+      "paddle": "喂，我係好朋友呵？"
+    },
+    "answer": {
+      "ronghe": "喂，我哋係好朋友呵？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "靚仔，\n好熟面口喎",
+      "paddle": "靓仔，好熟面口"
+    },
+    "answer": {
+      "ronghe": "靚仔，好熟面口喎",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "死嘞，\n黃金變⋯",
+      "paddle": "死嘞，黃金變．"
+    },
+    "answer": {
+      "ronghe": "死嘞，黃金變⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "咁賤？\n生瘡你都要？",
+      "paddle": "咁賤？生瘡你都要？"
+    },
+    "answer": {
+      "ronghe": "咁賤？生瘡你都要？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "師父，\n我走唔到呀",
+      "paddle": "師父，我走唔到呀"
+    },
+    "answer": {
+      "ronghe": "師父，我走唔到呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "去死啦，\n大種乞兒",
+      "paddle": "去死啦，大種乞兒"
+    },
+    "answer": {
+      "ronghe": "去死啦，大種乞兒",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "不過，\n佢就有偈傾",
+      "paddle": "不過，但就有偈傾"
+    },
+    "answer": {
+      "ronghe": "不過，佢就有偈傾",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哼\n，你係如來佛祖呀？",
+      "paddle": "哼，你係如來佛祖呀？"
+    },
+    "answer": {
+      "ronghe": "哼，你係如來佛祖呀？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "大種，\n點都帶你返去",
+      "paddle": "大種，點都帶你返去"
+    },
+    "answer": {
+      "ronghe": "大種，點都帶你返去",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "濟癲，\n個金身呢？",
+      "paddle": "濟癲，個金身呢？"
+    },
+    "answer": {
+      "ronghe": "濟癲，個金身呢？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哎呀，\n慘喇⋯",
+      "paddle": "哎呀，慘喇・"
+    },
+    "answer": {
+      "ronghe": "哎呀，慘喇⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "師父，\n你去邊呀？",
+      "paddle": "師父，你去邊呀？"
+    },
+    "answer": {
+      "ronghe": "師父，你去邊呀？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "濟癲，\n我都話咗架啦",
+      "paddle": "濟癲，我都話架啦"
+    },
+    "answer": {
+      "ronghe": "濟癲，我都話咗架啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "師父，\n快啲走啦",
+      "paddle": "師父，快喲走啦"
+    },
+    "answer": {
+      "ronghe": "師父，快啲走啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "連你都怪我？\n走啦⋯連觀音都冧咗啦",
+      "paddle": "連你都怪我？ 走啦⋯連觀音都啦"
+    },
+    "answer": {
+      "ronghe": "連你都怪我？走啦⋯連觀音都冧咗啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "濟，喂，\n咁即刻嚟囉",
+      "paddle": "濟，喂，咁即刻囉"
+    },
+    "answer": {
+      "ronghe": "濟，喂，咁即刻嚟囉",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "我先呀⋯\n我先架喎⋯",
+      "paddle": "我先呀 我先架"
+    },
+    "answer": {
+      "ronghe": "我先呀⋯我先架喎⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "我先架⋯⋯\n我先⋯",
+      "paddle": "我先架 我先"
+    },
+    "answer": {
+      "ronghe": "我先架⋯⋯　　我先⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "你都\n⋯⋯",
+      "paddle": "你都"
+    },
+    "answer": {
+      "ronghe": "你都⋯⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唔緊要，\n頂得住",
+      "paddle": "唔緊要，頂得住"
+    },
+    "answer": {
+      "ronghe": "唔緊要，頂得住",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "好呀，\n拜堂呀",
+      "paddle": "好呀，拜堂呀"
+    },
+    "answer": {
+      "ronghe": "好呀，拜堂呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "要快啲⋯\n然後生埋仔",
+      "paddle": "要快⋯然後生埋仔"
+    },
+    "answer": {
+      "ronghe": "要快啲⋯然後生埋仔",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "係呀，\n我係煽你吖",
+      "paddle": "係呀，我係煽你吖"
+    },
+    "answer": {
+      "ronghe": "係呀，我係煽你吖",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "咩都冇，\n真係咩都冇",
+      "paddle": "咩都有，真係咩都"
+    },
+    "answer": {
+      "ronghe": "咩都冇，真係咩都冇",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "殺埋你，\n就啱啱好儲夠",
+      "paddle": "殺埋你，就喘喘好儲夠"
+    },
+    "answer": {
+      "ronghe": "殺埋你，就啱啱好儲夠",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "吓？石頭？\n點解會咁樣架？",
+      "paddle": "吓？石頭？點解會咁樣架？"
+    },
+    "answer": {
+      "ronghe": "吓？石頭？點解會咁樣架？",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唔好呀⋯好，\n我講",
+      "paddle": "唔好呀⋯好，我講"
+    },
+    "answer": {
+      "ronghe": "唔好呀⋯好，我講",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "攪掂晒啦，\n走啦",
+      "paddle": "攪掂晒啦，走啦"
+    },
+    "answer": {
+      "ronghe": "攪掂晒啦，走啦",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "降龍，\n走嘞",
+      "paddle": "降龍，走嘞"
+    },
+    "answer": {
+      "ronghe": "降龍，走嘞",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "哎呀，\n大鑊",
+      "paddle": "哎呀，大鑊"
+    },
+    "answer": {
+      "ronghe": "哎呀，大鑊",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "師父，\n點解你會喺度嘅",
+      "paddle": "師父，點解你會度嘅"
+    },
+    "answer": {
+      "ronghe": "師父，點解你會喺度嘅",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "又嚟啦，\n走呀",
+      "paddle": "又啦，走呀"
+    },
+    "answer": {
+      "ronghe": "又嚟啦，走呀",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "係呀，\n冚嗪呤吞晒",
+      "paddle": "係呀，唪呤吞晒"
+    },
+    "answer": {
+      "ronghe": "係呀，冚嗪呤吞晒",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "咩呀？\n諗辦法插大佢個口",
+      "paddle": "咩呀？ 念辦法猛大但個口"
+    },
+    "answer": {
+      "ronghe": "咩呀？諗辦法插大佢個口",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唏，\n冇得講架嘞⋯",
+      "paddle": "唏，冇得講架嘞⋯"
+    },
+    "answer": {
+      "ronghe": "唏，冇得講架嘞⋯",
+      "beizhu": "按已審定融合字幕。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "至於小玉，\n塊面雖然係花咗",
+      "paddle": "至於小玉，塊面雖然係花"
+    },
+    "answer": {
+      "ronghe": "至於小玉，塊面雖然係花咗",
+      "beizhu": "按已審定融合字幕。"
     },
     "difficulty": 1,
     "verified": true

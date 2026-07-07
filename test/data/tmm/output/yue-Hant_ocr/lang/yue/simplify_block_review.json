@@ -36,7 +36,6 @@
       "zimu_33": "系"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -156,8 +155,8 @@
       "xiugai_9": "你个灶君，逢年尾喺下面揾着数",
       "beizhu_9": "按审核策略保留粤语用字。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -342,7 +341,6 @@
       "zimu_17": "你自己同佢讲啦，佢而家出紧嚟啦"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -352,7 +350,6 @@
       "zimu_3": "仔嚟㗎，恭喜呀老爷　　恭喜呀老爷⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -428,7 +425,6 @@
       "zimu_3": "我哋快啲准备啲嘢，帮下人啦"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -516,7 +512,6 @@
       "zimu_28": "洗白白"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -548,8 +543,8 @@
       "xiugai_7": "你记着，行雷嗰阵呢，伸个头出去",
       "beizhu_7": "按审核策略保留粤语用字。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -563,7 +558,6 @@
       "zimu_8": "扇扇⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -611,7 +605,6 @@
       "zimu_41": "天有眼呀，劈佢啦"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -685,7 +678,6 @@
       "zimu_9": "你系土地，定陀地呀？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -744,7 +736,6 @@
       "zimu_24": "攞件衫嚟　　唔"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -770,7 +761,6 @@
       "zimu_19": "喂，土地"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -907,7 +897,6 @@
       "zimu_48": "扇扇⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -950,7 +939,6 @@
       "zimu_5": "吓，师父，我同猪一样日头至瞓㗎喎"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1067,7 +1055,6 @@
       "zimu_3": "我好臭㗎，唔好食呀"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1083,7 +1070,6 @@
       "zimu_2": "我俾你吓到濑尿呀"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1196,8 +1182,8 @@
       "xiugai_16": "又系啲妖言惑众，阻着瞓觉",
       "beizhu_16": "按简化后语义将进行体“著”规范为“着”。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -1268,7 +1254,6 @@
       "zimu_4": "咁烧你就唔驶救啦系嘛？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1286,7 +1271,6 @@
       "zimu_11": "因为玉帝托梦话我知嘅　　哦⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1325,7 +1309,6 @@
       "zimu_19": "哦⋯明白"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1369,7 +1352,6 @@
       "zimu_20": "你除咗晓瞓低收钱之外仲晓做啲咩呀？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1398,7 +1380,6 @@
       "zimu_11": "狗肉穿肠过，徒弟好肚饿呀⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1470,7 +1451,6 @@
       "zimu_17": "上面你班友听住，呢镬我赢硬呀"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1600,7 +1580,6 @@
       "zimu_11": "咦⋯好衰㗎"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1692,7 +1671,6 @@
       "zimu_20": "哎呀⋯我嚟叫鸡㗎幡"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1732,7 +1710,6 @@
       "zimu_1": "仆你个街吖，究竟系人定系野兽？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1745,7 +1722,6 @@
       "zimu_6": "先发觉自己有自尊"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1809,7 +1785,6 @@
       "zimu_7": "死嘞，黄金变⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1873,7 +1848,6 @@
       "zimu_10": "师父，我走唔到呀"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1918,7 +1892,6 @@
       "zimu_3": "睇呀"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1982,7 +1955,6 @@
       "zimu_9": "唔得　咩大字型？"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2041,8 +2013,8 @@
       "xiugai_16": "哗⋯冚家铲，你咁抵死嘅你",
       "beizhu_16": "按审核策略保留粤语用字。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -2072,7 +2044,6 @@
       "zimu_1": "大种⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2099,7 +2070,6 @@
       "zimu_12": "焗住跟大队啦⋯系咁先啦"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2134,8 +2104,8 @@
       "xiugai_4": "而家搞到神憎鬼厌",
       "beizhu_4": "按审核策略保留粤语用字。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -2170,7 +2140,6 @@
       "zimu_13": "我先㗎⋯　　我先⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2289,6 +2258,20 @@
   },
   {
     "query": {
+      "zimu_1": "我以后都唔要爱情"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "zimu_1": "救命呀⋯"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
       "zimu_1": "救命呀⋯"
     },
     "answer": {},
@@ -2349,7 +2332,6 @@
       "zimu_2": "打谢你⋯呀⋯"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2479,7 +2461,6 @@
       "zimu_4": "我哋又见返啦，走啦"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2508,7 +2489,6 @@
       "zimu_11": "梗系唔济啦"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2540,7 +2520,6 @@
       "zimu_2": "金身仲有两只金牙，喺我度㗎"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2551,7 +2530,6 @@
       "zimu_4": "咩呀？　　谂办法掹大佢个口"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -2642,7 +2620,6 @@
       "zimu_5": "加冕仪式开始"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
