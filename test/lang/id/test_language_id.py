@@ -13,6 +13,16 @@ from test.helpers import parametrize
     "case",
     [
         LanguageId(
+            text="English subtitles are ready",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=False,
+            is_traditional=False,
+            language=Language.eng,
+        ),
+        LanguageId(
             text="nǐ hǎo",
             is_accented_pinyin=True,
             is_numbered_pinyin=False,
@@ -113,6 +123,26 @@ from test.helpers import parametrize
             language=Language.zho_hans,
         ),
         LanguageId(
+            text="他在这里了",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=True,
+            is_traditional=False,
+            language=Language.zho_hans,
+        ),
+        LanguageId(
+            text="是吗",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=True,
+            is_traditional=False,
+            language=Language.zho_hans,
+        ),
+        LanguageId(
             text="汉字",
             is_accented_pinyin=False,
             is_numbered_pinyin=False,
@@ -122,6 +152,75 @@ from test.helpers import parametrize
             is_traditional=False,
         ),
         LanguageId(
+            text="系统",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=True,
+            is_traditional=False,
+        ),
+        LanguageId(
+            text="佢唔该咗",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=True,
+            is_traditional=False,
+            language=Language.yue_hans,
+        ),
+        LanguageId(
+            text="系咪该",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=True,
+            is_traditional=False,
+            language=Language.yue_hans,
+        ),
+        LanguageId(
+            text="哋该",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=True,
+            is_traditional=False,
+            language=Language.yue_hans,
+        ),
+        LanguageId(
+            text="她在這裡了",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=False,
+            is_traditional=True,
+            language=Language.zho_hant,
+        ),
+        LanguageId(
+            text="是嗎",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=False,
+            is_traditional=True,
+            language=Language.zho_hant,
+        ),
+        LanguageId(
+            text="關係",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=False,
+            is_traditional=True,
+            language=Language.zho_hant,
+        ),
+        LanguageId(
             text="繁體中文",
             is_accented_pinyin=False,
             is_numbered_pinyin=False,
@@ -129,6 +228,36 @@ from test.helpers import parametrize
             is_numbered_jyutping=False,
             is_simplified=False,
             is_traditional=True,
+        ),
+        LanguageId(
+            text="佢唔該咗",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=False,
+            is_traditional=True,
+            language=Language.yue_hant,
+        ),
+        LanguageId(
+            text="係咪該",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=False,
+            is_traditional=True,
+            language=Language.yue_hant,
+        ),
+        LanguageId(
+            text="哋該",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=False,
+            is_traditional=True,
+            language=Language.yue_hant,
         ),
         LanguageId(
             text="漢字",
@@ -159,50 +288,10 @@ from test.helpers import parametrize
         ),
     ],
 )
-def test_language_id_from_text(case: LanguageId):
+def test_language_id(case: LanguageId):
     """Detect language ID features from text.
 
     Arguments:
         case: expected language ID result
     """
-    result = LanguageId.from_text(case.text)
-
-    assert result.is_accented_pinyin is case.is_accented_pinyin
-    assert result.is_numbered_pinyin is case.is_numbered_pinyin
-    assert result.is_accented_yale is case.is_accented_yale
-    assert result.is_numbered_jyutping is case.is_numbered_jyutping
-    assert result.is_simplified is case.is_simplified
-    assert result.is_traditional is case.is_traditional
-    assert result.language is case.language
-
-
-@parametrize(
-    ("text", "expected"),
-    [
-        ("English subtitles are ready", Language.eng),
-        ("他在这里了", Language.zho_hans),
-        ("她在這裡了", Language.zho_hant),
-        ("是吗", Language.zho_hans),
-        ("是嗎", Language.zho_hant),
-        ("關係", Language.zho_hant),
-        ("佢唔该咗", Language.yue_hans),
-        ("佢唔該咗", Language.yue_hant),
-        ("系咪该", Language.yue_hans),
-        ("係咪該", Language.yue_hant),
-        ("哋该", Language.yue_hans),
-        ("哋該", Language.yue_hant),
-        ("", None),
-        ("nǐ hǎo", None),
-        ("nei5 hou2", None),
-        ("中文", None),
-        ("系统", None),
-    ],
-)
-def test_language_id_detects_language(text: str, expected: Language | None):
-    """Detect language from one text input.
-
-    Arguments:
-        text: text to classify
-        expected: expected language, if conclusive
-    """
-    assert LanguageId.from_text(text).language is expected
+    assert LanguageId.from_text(case.text) == case
