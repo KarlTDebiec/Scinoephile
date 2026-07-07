@@ -4,7 +4,8 @@
       "yuewen_1": "少爺！準備好喇",
       "zhongwen_1": "少爷！准备好了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -13,7 +14,8 @@
       "yuewen_2": "抹汗啦，少爺！",
       "zhongwen_2": "少爷！擦个汗吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -31,7 +33,8 @@
       "beizhu_3": "Changed 靚 to 叻 to match the meaning of 'great/smart' rather than 'pretty'.",
       "xiugai_yuewen_4": "係呀",
       "beizhu_4": "Changed 要 to 係呀 to match the response '对呀' and the dialogue context."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -151,7 +154,8 @@
       "beizhu_40": "Corrected '系' to the proper character '係'.",
       "xiugai_yuewen_44": "但係老爺擺大壽呢，要俾佢細佬，你老…",
       "beizhu_44": "Adjusted the word order to a more coherent reading: 'let him be even more impressive / outdo others'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -165,7 +169,8 @@
     "answer": {
       "xiugai_yuewen_2": "地方戲曲，當然比唔上京戲",
       "beizhu_2": "Corrected the character 畀 to 比 in the comparison phrase 比唔上."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -255,7 +260,8 @@
       "beizhu_25": "Adjusted to the likely spoken insult/question form in context; the original was too reduced and lost the intended address.",
       "xiugai_yuewen_26": "咁樣講嘢大家先開心嘛",
       "beizhu_26": "Normalized obvious written-form mismatch: '讲话' to '講嘢', and fixed character form for consistency."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -297,7 +303,8 @@
       "beizhu_13": "Changed '什麼' to '乜嘢' for accurate Cantonese transcription.",
       "xiugai_yuewen_15": "有乜嘢特別",
       "beizhu_15": "Changed '什麼' to '乜嘢' for accurate Cantonese transcription."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -357,7 +364,8 @@
       "beizhu_18": "Standardized the Cantonese copula from simplified/variant \"系\" to \"係\" for consistency.",
       "xiugai_yuewen_19": "殺爹嗰個就係佢",
       "beizhu_19": "Standardized characters from \"个/系\" to the usual Cantonese written form \"個/係\" for consistency."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -395,7 +403,8 @@
       "beizhu_2": "Changed 那 to 噉 to match the intended Cantonese meaning in context ('then/as for tonight').",
       "xiugai_yuewen_5": "冇空，",
       "beizhu_5": "Corrected 唔有空 to the proper Cantonese form 冇空."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -410,7 +419,8 @@
       "yuewen_5": "我一樣鍾意銀兩，不過唔鍾意你啫嘛",
       "zhongwen_5": "我也喜欢银两，只是不喜欢你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -446,7 +456,8 @@
       "beizhu_9": "Changed to the more accurate Cantonese phrasing matching the reference meaning: \"冇關\" instead of \"無關\".",
       "xiugai_yuewen_10": "放肆！",
       "beizhu_10": "Removed the stray trailing \"係\", which appears to be an obvious transcription error."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -455,7 +466,8 @@
       "yuewen_2": "奏乐",
       "zhongwen_2": "奏乐"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -471,7 +483,8 @@
       "beizhu_1": "Completed the subtitle to match the clearly truncated spoken content indicated by the Chinese reference.",
       "xiugai_yuewen_3": "虎爪",
       "beizhu_3": "Corrected an obvious mistranscription: the term should be '虎爪', not '扑掣'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -482,7 +495,8 @@
       "yuewen_3": "噉你就試下我隻螳螂吖",
       "zhongwen_3": "那你试试看我的螳螂"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -497,7 +511,8 @@
       "yuewen_5": "唔怪得你咁差",
       "zhongwen_5": "难怪比较差"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -508,7 +523,8 @@
       "yuewen_3": "後生仔，唔知天高地厚",
       "zhongwen_3": "年青人，不知天高地厚"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -564,7 +580,8 @@
       "beizhu_16": "Removed the duplicated 「啲」 in 「呢度啲姑娘」.",
       "xiugai_yuewen_17": "個令牌上面寫住「鐵帽子王僧格林沁」呀",
       "beizhu_17": "Corrected the final particle from 「吖」 to the more likely spoken subtitle form 「呀」."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -610,7 +627,8 @@
     "answer": {
       "xiugai_yuewen_7": "你呢？",
       "beizhu_7": "Changed Mandarin-style '那你呢' to the more likely Cantonese line '你呢'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -662,14 +680,16 @@
       "beizhu_16": "Corrected the line to match the intended meaning and likely spoken Cantonese question.",
       "xiugai_yuewen_18": "少爺，你頂帽",
       "beizhu_18": "Corrected 你的帽子 to 你頂帽, which is the natural Cantonese phrasing for 'your hat.'"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "高手嚟㗎",
       "zhongwen_1": "真是高手"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -707,7 +727,8 @@
       "beizhu_10": "Corrected colloquial written forms: '一阵' to '一陣' and '千万' to '千祈'.",
       "xiugai_yuewen_13": "長老，有人嚟呀",
       "beizhu_13": "Corrected an obvious mistranscription: changed '係呀' to '有人嚟呀' based on the reference and scene context."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -747,7 +768,8 @@
       "beizhu_2": "Changed the name from 天余 to 天瑜 to fix the apparent name transcription error.",
       "xiugai_yuewen_4": "畀蘇翁一笪就變珍珠粉末",
       "beizhu_4": "Changed 苏翁 to 蘇翁 for name consistency with nearby subtitles."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -783,7 +805,8 @@
     "answer": {
       "xiugai_yuewen_12": "我果然冇揀錯人",
       "beizhu_12": "Corrected the typo from simplified/miswritten '错' to traditional '錯' for consistency with the Cantonese subtitle style."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -820,7 +843,8 @@
       "yuewen_16": "原來有人躲埋喺度咩",
       "zhongwen_16": "原来有人藏在这里"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -851,7 +875,8 @@
       "yuewen_13": "畀我諗諗",
       "zhongwen_13": "让我想一想"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -872,21 +897,24 @@
       "yuewen_8": "不见不散",
       "zhongwen_8": "不见不散"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "變態",
       "zhongwen_1": "变态"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "丐帮办事，無關人等立即離開",
       "zhongwen_1": "丐帮办事，闲杂人等立即离开"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -899,7 +927,8 @@
       "yuewen_4": "起轿！",
       "zhongwen_4": "起轿！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -908,7 +937,8 @@
       "yuewen_2": "一日都係嗰個人礙事！",
       "zhongwen_2": "都是那个人碍事！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -928,7 +958,8 @@
     "answer": {
       "xiugai_yuewen_5": "算啦！佢唔係有心阻我哋嘅",
       "beizhu_5": "Corrected the character variant from '系' to the standard written form '係'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -954,7 +985,8 @@
     "answer": {
       "xiugai_yuewen_6": "趙無極好好打嘅喎",
       "beizhu_6": "Standardized the character name from 赵无极 to 趙無極 to match surrounding subtitles."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -984,7 +1016,8 @@
     "answer": {
       "xiugai_yuewen_8": "以後未化妝唔好周圍行呀，知未？",
       "beizhu_8": "Corrected obvious wording/character issues: changed 「四圍行」 to the more standard 「周圍行」 and 「知咪」 to 「知未」."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1140,7 +1173,8 @@
       "beizhu_55": "Standardized the character form from \"声\" to the traditional \"聲\" for consistency with the surrounding subtitles.",
       "xiugai_yuewen_56": "睇住我啲荔枝呀，瘦頭瘦頭",
       "beizhu_56": "Standardized the character form from \"头\" to the traditional \"頭\" for consistency with the surrounding subtitles."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1149,7 +1183,8 @@
       "yuewen_2": "去呀，去",
       "zhongwen_2": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1164,7 +1199,8 @@
       "yuewen_5": "入去⋯入去呀",
       "zhongwen_5": "来⋯进去"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1179,7 +1215,8 @@
       "yuewen_5": "全部企定唔好郁喇",
       "zhongwen_5": "全部站好别再动"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1277,7 +1314,8 @@
       "beizhu_33": "Corrected '杀' to '靠', an obvious character error in this context.",
       "xiugai_yuewen_37": "哎，人情還人情，均真啲講",
       "beizhu_37": "Changed the last word from '好' to '講', which better matches the common phrase and intended meaning."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1286,21 +1324,24 @@
       "yuewen_2": "弓隊側翼，槍隊殿後",
       "zhongwen_2": "弓队侧翼，枪队殿后"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "武状元初赛，考生进场",
       "zhongwen_1": "武状元初赛，考生进场"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "举唔嚟",
       "zhongwen_1": "举不起来"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1312,7 +1353,8 @@
     "answer": {
       "xiugai_yuewen_2": "冇恥呀？恥你老母",
       "beizhu_2": "Changed the apparent mistranscription '恥你好冇' to the idiomatic insult '恥你老母' to match the intended spoken Cantonese."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1322,7 +1364,8 @@
     "answer": {
       "xiugai_yuewen_1": "十分喎！",
       "beizhu_1": "Changed the likely misheard final particle from '噢' to the Cantonese particle '喎'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1458,7 +1501,8 @@
       "beizhu_48": "Corrected the likely mistranscribed word '主角' to '主考'.",
       "xiugai_yuewen_49": "咪唔係老鄭主考咩？",
       "beizhu_49": "Corrected the surname character to the standard form '鄭'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1473,14 +1517,16 @@
       "yuewen_5": "開始啊",
       "zhongwen_5": "开始"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "開始",
       "zhongwen_1": "开始"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1494,14 +1540,16 @@
     "answer": {
       "xiugai_yuewen_3": "苏灿靶上冇箭！博达得胜",
       "beizhu_3": "Changed the result phrase from \"多胜\" to the correct expression \"得胜\"."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "老祖，而家做乜嘢啊？",
       "zhongwen_1": "有没有搞错！你老祖！要把戏？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1513,7 +1561,8 @@
     "answer": {
       "xiugai_yuewen_2": "趙先生",
       "beizhu_2": "Standardized the surname character from simplified to traditional to match the Cantonese subtitle script style."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1522,7 +1571,8 @@
       "yuewen_2": "第二回合開始",
       "zhongwen_2": "第二回合开始"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1534,7 +1584,8 @@
     "answer": {
       "xiugai_yuewen_2": "太黑暗啦！退票唔賭都唔得呀？",
       "beizhu_2": "Corrected likely misheard/wrong characters: changed \"退飛\" to \"退票\" and \"唔到\" to \"唔賭\" to match the intended meaning."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1545,21 +1596,24 @@
       "yuewen_3": "未",
       "zhongwen_3": "没有"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "有冇搞错？",
       "zhongwen_1": "有没有搅错？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "仲未认输呀？再嚟",
       "zhongwen_1": "还不认输？再来"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1568,7 +1622,8 @@
       "yuewen_2": "費事話我蝦你呀，哈哈哈哈",
       "zhongwen_2": "免你说我欺负你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1598,7 +1653,8 @@
       "beizhu_7": "Removed the duplicated 係 to fix an obvious transcription error.",
       "xiugai_yuewen_9": "例上冇說明唔准用暗器",
       "beizhu_9": "Changed 说明 to 說明 for more accurate Cantonese subtitle wording."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1634,7 +1690,8 @@
       "beizhu_10": "Corrected '搏打' to '博打', which is the proper wording here.",
       "xiugai_yuewen_11": "係我係我！抗議！",
       "beizhu_11": "Added the missing final exclamation mark to reflect the shouted delivery."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1660,7 +1717,8 @@
       "beizhu_2": "Changed the measure word from \"支\" to the more consistent \"枝\" to match the following subtitle.",
       "xiugai_yuewen_7": "咁呢次我個仔，係呀係呀⋯",
       "beizhu_7": "Corrected \"我個法\" to \"我個仔\", which fits the surrounding context about her son becoming the top scholar."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1674,14 +1732,16 @@
     "answer": {
       "xiugai_yuewen_3": "晶哥大人，皇上話要親自欽點",
       "beizhu_3": "Changed the title from \"精武大人\" to \"晶哥大人\", which appears to be a clear name/title transcription error."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "哦",
       "zhongwen_1": "好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1699,7 +1759,8 @@
       "beizhu_1": "Added a missing comma after \"几句\" to reflect the intended pause; wording otherwise kept unchanged.",
       "xiugai_yuewen_4": "如霜姑娘！會唔會係佢阿妈呢？",
       "beizhu_4": "Changed \"阿媽\" to the more standard subtitle form \"阿妈\"; no other content changed."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1729,7 +1790,8 @@
     "answer": {
       "xiugai_yuewen_10": "點可以答到考戰略嘅題目呢?",
       "beizhu_10": "Changed Mandarin-style wording to the Cantonese line likely spoken: '怎可以' -> '點可以', and added the Cantonese particle '嘅' in '考戰略嘅題目'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1738,7 +1800,8 @@
       "yuewen_2": "係",
       "zhongwen_2": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1752,7 +1815,8 @@
     "answer": {
       "xiugai_yuewen_3": "淨係寫個名啫！寫名佢得，寫名佢得",
       "beizhu_3": "Standardized the repeated verb from simplified/mixed form '写' to traditional Cantonese subtitle form '寫' for consistency within the line."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1800,7 +1864,8 @@
       "beizhu_13": "Added a comma for clarity; no wording change.",
       "xiugai_yuewen_14": "斬我呢，斬我呢　　皇上！我好斬啲呀",
       "beizhu_14": "Corrected the last phrase from \"嘢\" to \"呀\", which fits the spoken line better."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1826,7 +1891,8 @@
     "answer": {
       "xiugai_yuewen_3": "吓，我係功臣之後，可免一死",
       "beizhu_3": "Changed 后 to 之後 to correctly match the intended phrase 'descendant of a meritorious official'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1880,14 +1946,16 @@
       "beizhu_13": "Corrected the classifier character to \"個\" and fixed the colloquial phrasing to \"嚟㗎喎\".",
       "xiugai_yuewen_15": "宜结都不得宜解，苦相思⋯",
       "beizhu_15": "Corrected the last phrase from \"苦相\" to \"苦相思\" to match the known line."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "苦相思，能买都唔得卖⋯",
       "zhongwen_1": "苦相思，能买不能卖⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1937,7 +2005,8 @@
       "beizhu_13": "Standardized the pronoun with the surrounding lines: changed \"我們\" to \"我哋\", and matched the more natural/corresponding line ending \"走喇\".",
       "xiugai_yuewen_15": "安樂了",
       "beizhu_15": "Corrected the mistranscription from \"落成了\" to \"安樂了\" according to the reference meaning."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2004,7 +2073,8 @@
       "yuewen_31": "小乞儿老乞儿，攞去买嘢啦",
       "zhongwen_31": "小乞丐老乞丐，拿去买东西吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2018,7 +2088,8 @@
     "answer": {
       "xiugai_yuewen_2": "混你個帳呀！簡直欺人太甚喎⋯",
       "beizhu_2": "Corrected likely misheard/wrong characters: changed \"瘟\" to \"混\" and restored the phrase to the coherent Cantonese line \"欺人太甚\"."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2054,7 +2125,8 @@
       "beizhu_6": "Changed 黑 to 乞; the original character is a likely wrong character in the context of begging.",
       "xiugai_yuewen_11": "有　　攞嚟使下先",
       "beizhu_11": "Changed 住 to 下 for the more accurate meaning 'use it for a bit first' in this context."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2142,14 +2214,16 @@
       "beizhu_25": "Replaced Mandarin wording with Cantonese equivalents: 為了 → 為咗, 你說怎樣就怎樣 → 你話點就點.",
       "xiugai_yuewen_29": "就喺對面燈籠下面着紅衫嗰個",
       "beizhu_29": "Replaced Mandarin-style wording with Cantonese forms: 在 → 喺, 穿 → 着; removed the extra 係 at the end."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "鬼",
       "zhongwen_1": "鬼"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2163,7 +2237,8 @@
       "beizhu_1": "Changed '整蠱' to '問題' to match the intended meaning 'no problem / is it okay' from the reference.",
       "xiugai_yuewen_2": "冇問題呀！不過你先，我後補，喂",
       "beizhu_2": "Changed '整蠱' to '問題' for accuracy, and adjusted punctuation/wording to '你先，我後補' to match the intended line."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2189,7 +2264,8 @@
       "beizhu_5": "Standardized the character form from 「個」 to 「个」 for consistency with the rest of the subtitle set; no wording change.",
       "xiugai_yuewen_8": "唔准喺度賣武藝",
       "beizhu_8": "Changed 「賣武」 to 「賣武藝」 to match the meaning of street performance / martial arts show in the reference."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2217,7 +2293,8 @@
       "beizhu_7": "Changed likely mis-transcribed 「奉本子」 to 「奉旨」 and standardized 「人來」 to the usual Cantonese subtitle form 「人嚟」.",
       "xiugai_yuewen_8": "有！　　將所有嘢搬走",
       "beizhu_8": "Corrected 「有求」 to the command response 「有」 and added the exclamation mark; standardized 「将」 to 「將」."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2257,7 +2334,8 @@
       "beizhu_8": "Corrected \"走得喇\" to \"走得甩\", which is the proper expression for escaping successfully.",
       "xiugai_yuewen_11": "我一定要喺第一招就出盡全力將佢打低",
       "beizhu_11": "Standardized the character form from \"尽\" to the Cantonese/traditional form \"盡\" for consistency."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2278,7 +2356,8 @@
       "yuewen_8": "走呀⋯走呀",
       "zhongwen_8": "走⋯没事⋯走开"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2358,7 +2437,8 @@
       "beizhu_22": "Restored the negation 唔 and added the question mark to match the intended question.",
       "xiugai_yuewen_23": "做得到，好！",
       "beizhu_23": "Added the exclamation mark to reflect the emphatic response."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2367,14 +2447,16 @@
       "yuewen_2": "我唔識寫",
       "zhongwen_2": "我不会写"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "燦！咩事？",
       "zhongwen_1": "灿！怎么？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2383,7 +2465,8 @@
       "yuewen_2": "冇諗咁多啦",
       "zhongwen_2": "别想这么多"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2427,7 +2510,8 @@
     "answer": {
       "xiugai_yuewen_13": "乞衣都讲身份喇，收档啦你",
       "beizhu_13": "Replaced the implausible phrase \"烧到佢脆裂\" with \"收档啦你\", fixing an obvious transcription error in context."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2443,21 +2527,24 @@
     "answer": {
       "xiugai_yuewen_3": "走呀，過主呀⋯擋住我做生意",
       "beizhu_3": "Changed 「擋住晒做生意」 to 「擋住我做生意」 to match the Chinese reference and make the object of obstruction explicit."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "多謝，多謝，多謝，真係可憐⋯",
       "zhongwen_1": "谢谢⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "多謝⋯多謝",
       "zhongwen_1": "谢谢⋯谢谢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2475,7 +2562,8 @@
       "beizhu_2": "Changed the first part from \"要話\" to \"要我\" to fix an obvious transcription error.",
       "xiugai_yuewen_3": "係，我見你下班咁順便借嚟用用啫",
       "beizhu_3": "Standardized the character \"顺\" to the traditional form \"順\"; no wording change."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2515,7 +2603,8 @@
       "beizhu_5": "Added the aspect marker to match the meaning 'are you sick/ill'.",
       "xiugai_yuewen_12": "你休息下先",
       "beizhu_12": "Removed the trailing comma punctuation."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2551,7 +2640,8 @@
       "beizhu_7": "Unified repeated verb and imperative into Cantonese: '吃' -> '食', '快點' -> '快啲', '吃吧' -> '食啦'.",
       "xiugai_yuewen_10": "可唔可以⋯　　唔可以",
       "beizhu_10": "Corrected the call-and-response phrasing from incomplete '可以… 不可以' to '可唔可以… 唔可以'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2583,14 +2673,16 @@
       "beizhu_6": "Replaced the sentence-final particle from \"囉\" to \"呀\", which fits the pleading tone and avoids an obvious mismatch.",
       "xiugai_yuewen_9": "姐！係佢呀",
       "beizhu_9": "Changed the final particle from \"啊\" to \"呀\" for a more natural and consistent Cantonese transcription in this context."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "等陣呀",
       "zhongwen_1": "等一下"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2616,7 +2708,8 @@
     "answer": {
       "xiugai_yuewen_6": "日後冇嘢食，你就嚟我屋企攞饅頭啦",
       "beizhu_6": "Changed 日日 to 日後 to match the meaning of 'from now on / in the future' rather than 'every day'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2627,7 +2720,8 @@
       "yuewen_3": "如果唔係因為你，佢都唔會搞成噉喎",
       "zhongwen_3": "要不是为了你，他也不会变成这样"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2665,7 +2759,8 @@
       "beizhu_3": "Changed 揼緊 to 揸緊, which fits the context of holding a bun rather than dropping it.",
       "xiugai_yuewen_7": "喂，你唔係狀元嚟？",
       "beizhu_7": "Changed 狀元爺 to 狀元嚟 to match the later lines where others start calling him 狀元爺 after recognizing him."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2677,7 +2772,8 @@
     "answer": {
       "xiugai_yuewen_1": "狗飯到",
       "beizhu_1": "Corrected the miswritten character 饭 to 飯 for consistency in the Cantonese subtitle."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2686,7 +2782,8 @@
       "yuewen_2": "食囉",
       "zhongwen_2": "吃吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2710,7 +2807,8 @@
       "beizhu_3": "Changed 「好閒」 to 「好閒」? No—corrected the likely missing classifier by changing 「幾十歲」 to 「幾十歲人」 for natural and accurate Cantonese meaning ('already a grown man').",
       "xiugai_yuewen_5": "你打吓，喂，你想點呀？",
       "beizhu_5": "Corrected the likely typo/listening error from 「打下」 to 「打吓」."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2724,14 +2822,16 @@
     "answer": {
       "xiugai_yuewen_2": "爹，几惹味喎",
       "beizhu_2": "Standardized the typo-like character 「幾」 to the colloquial written form 「几」 in this Cantonese subtitle."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "好食喎，係咪？",
       "zhongwen_1": "好吃，是吗？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2745,7 +2845,8 @@
     "answer": {
       "xiugai_yuewen_2": "喂，有條肉絲喺度添呢",
       "beizhu_2": "Changed the incorrect simplified character \"丝\" to the traditional form \"絲\" for consistency in Cantonese subtitles."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2768,14 +2869,16 @@
       "yuewen_9": "嚟！我哋去食人饭，係啦，係啦，食人饭",
       "zhongwen_9": "来！我们去吃人的饭吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "蘇老伯蘇老伯",
       "zhongwen_1": "苏老伯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2809,7 +2912,8 @@
     "answer": {
       "xiugai_yuewen_11": "個衰頭呢個阿燦呢，喺邊度呀？",
       "beizhu_11": "Corrected the likely mistranscribed word \"兽头\" to \"衰頭\"."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2911,7 +3015,8 @@
       "beizhu_29": "Removed the extra \"有\" in \"冇有把握\".",
       "xiugai_yuewen_33": "不行！這顆大還丹是醫你內傷的",
       "beizhu_33": "Changed \"醫理內傷\" to \"醫你內傷\", which fits the intended meaning."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2939,7 +3044,8 @@
       "beizhu_6": "Corrected the typo in \"作為\".",
       "xiugai_yuewen_9": "打搥過嚟打吖",
       "beizhu_9": "Corrected likely miswritten characters: changed \"槌过嚟打呀\" to the more accurate Cantonese wording \"搥過嚟打吖\"."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2955,7 +3061,8 @@
     "answer": {
       "xiugai_yuewen_3": "算啦！唔好再浪費時間",
       "beizhu_3": "Changed 「點算啦」 to the more accurate/common line 「算啦」 based on the Chinese reference and likely mishearing."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2964,7 +3071,8 @@
       "yuewen_2": "你慢慢睡啦",
       "zhongwen_2": "你慢慢睡吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2976,7 +3084,8 @@
     "answer": {
       "xiugai_yuewen_2": "你畀啲心機練好啲打狗棍法至得㗎",
       "beizhu_2": "Changed the ending from '最好啊' to '至得㗎' to match the intended meaning of '才行' in the Chinese reference."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -2989,7 +3098,8 @@
       "yuewen_4": "吓，抱歉抱歉！拿，接住啦。嘿，嘿",
       "zhongwen_4": "抱歉抱歉！你接好了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2998,7 +3108,8 @@
       "yuewen_2": "必先勞其筋骨，餓其體膚，苦其心志",
       "zhongwen_2": "必先劳其筋骨，饿其体肤，苦其心智"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3019,7 +3130,8 @@
       "yuewen_8": "好彩我有嘅",
       "zhongwen_8": "正好我有"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3063,7 +3175,8 @@
     "answer": {
       "xiugai_yuewen_16": "嗰嗰聲，還返啲錢畀我頂住當先",
       "beizhu_16": "Changed 個我 to 畀我 to fix an obvious transcription error."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3125,7 +3238,8 @@
       "beizhu_22": "Corrected character forms: '细乞儿' to '細乞兒'.",
       "xiugai_yuewen_24": "即係話閣下注定乞食乞咗一世啊",
       "beizhu_24": "Corrected '阁下' to '閣下' for consistent character form."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3145,7 +3259,8 @@
     "answer": {
       "xiugai_yuewen_2": "冇走住！行行出狀元",
       "beizhu_2": "Changed 「行住」 to 「走住」 because the line means 'don't leave yet'; 「行住」 is likely a mistranscription."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3162,14 +3277,16 @@
       "yuewen_6": "神经病",
       "zhongwen_6": "神经病"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "後生仔，我哋夢中相見吓",
       "zhongwen_1": "年轻人，我们梦中相见"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3178,7 +3295,8 @@
       "yuewen_2": "降龙，伏虎",
       "zhongwen_2": "降龙，伏虎"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3200,21 +3318,24 @@
     "answer": {
       "xiugai_yuewen_6": "再以醉回夢生法，傳授你睡夢羅漢拳",
       "beizhu_6": "Changed '回夢心法' to '醉回夢生法' to match the reference and correct the likely mis-transcription of the technique name."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "前輩⋯",
       "zhongwen_1": "前辈⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "苦盡甘來？",
       "zhongwen_1": "苦尽甘来？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3227,7 +3348,8 @@
       "yuewen_4": "超渡眾生",
       "zhongwen_4": "超渡众生"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3249,7 +3371,8 @@
     "answer": {
       "xiugai_yuewen_6": "天下就喺我手上",
       "beizhu_6": "Added \"上\" to complete the fixed expression \"喺我手上\"; the original line sounded incomplete."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3260,7 +3383,8 @@
       "yuewen_3": "返去再講",
       "zhongwen_3": "回去再说"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3269,14 +3393,16 @@
       "yuewen_2": "我哋走",
       "zhongwen_2": "我们走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "长老",
       "zhongwen_1": "长老"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3289,7 +3415,8 @@
       "yuewen_4": "⋯我要將你獻畀皇上",
       "zhongwen_4": "⋯我要把你献给皇上"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3298,7 +3425,8 @@
       "yuewen_2": "叫莫老三交返支打狗棍出嚟。",
       "zhongwen_2": "叫莫老三把打狗棒交出来"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3313,14 +3441,16 @@
       "yuewen_5": "難道佢兩隻嘢有路？嘻",
       "zhongwen_5": "难道他俩有暧昧关系？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "而家開始選幫主",
       "zhongwen_1": "现在开始选帮主"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3346,14 +3476,16 @@
       "beizhu_4": "Replaced Mandarin-style \"怎麼樣\" with the accurate Cantonese subtitle wording \"点样\" and standardized punctuation.",
       "xiugai_yuewen_6": "我哋要搵个人上台选帮主先行",
       "beizhu_6": "Corrected written Mandarin forms to Cantonese subtitle forms: \"我們\" → \"我哋\", \"找個人\" → \"搵个人\"."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "到底派邊個上去呢？",
       "zhongwen_1": "到底派谁上去呢？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3364,7 +3496,8 @@
       "yuewen_3": "不如畀我試下",
       "zhongwen_3": "不如让我试试"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3388,14 +3521,16 @@
       "beizhu_2": "Changed 下来 to 落嚟 to match Cantonese subtitle usage.",
       "xiugai_yuewen_3": "既然你冇好嘢，我可以將就一下你！",
       "beizhu_3": "Corrected 将 to 將."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "雅君，既然係噉，我就成全你",
       "zhongwen_1": "既然如此，我就成全你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3404,7 +3539,8 @@
       "yuewen_2": "佢做咩呀？瞓覺",
       "zhongwen_2": "睡觉？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3415,14 +3551,16 @@
       "yuewen_3": "布阵",
       "zhongwen_3": "布阵"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "天亮未呀",
       "zhongwen_1": "天亮了没有"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3440,7 +3578,8 @@
     "answer": {
       "xiugai_yuewen_3": "你打赢我哋有咩用呀？",
       "beizhu_3": "Added '我哋' to match the Chinese reference and fix the missing object in the line."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3450,7 +3589,8 @@
     "answer": {
       "xiugai_yuewen_1": "打狗棍啫係嘛！係？",
       "beizhu_1": "Changed 「咋」 to 「啫」 because 「啫係嘛」 matches the intended Cantonese phrase here; the rest is fine."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3466,7 +3606,8 @@
     "answer": {
       "xiugai_yuewen_2": "吓，真係話我唔會打狗棍？",
       "beizhu_2": "Changed the interjection from '呀' to '吓' to better match the intended surprised tone."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3475,7 +3616,8 @@
       "yuewen_2": "打斷我哋嘅鎮幫之寶，我哋殺咗佢！",
       "zhongwen_2": "他打断我们镇帮之宝！我们杀了他！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3561,7 +3703,8 @@
       "beizhu_25": "Fixed the obvious mistranscription 已经隆 to 興隆 and converted to traditional characters.",
       "xiugai_yuewen_33": "參見幫主",
       "beizhu_33": "Corrected the line to traditional characters."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3589,7 +3732,8 @@
     "answer": {
       "xiugai_yuewen_2": "莫大叔！我個仔幾叻呀？",
       "beizhu_2": "Changed 我兒子 to the more natural and likely spoken Cantonese 我個仔."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3600,7 +3744,8 @@
       "yuewen_3": "莫大叔⋯",
       "zhongwen_3": "莫大叔⋯莫大叔"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3664,7 +3809,8 @@
       "beizhu_14": "Corrected 殺龍有悔 to 亢龍有悔, the established name of the move.",
       "xiugai_yuewen_17": "最壞莫大叔已經唔喺度，咁點算啊",
       "beizhu_17": "Corrected script consistency: changed 已经 to 已經 and 点 to 點."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3673,7 +3819,8 @@
       "yuewen_2": "係",
       "zhongwen_2": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3699,7 +3846,8 @@
     "answer": {
       "xiugai_yuewen_4": "所以我獻上一個美女畀佢",
       "beizhu_4": "Changed 「給」 to the Cantonese character 「畀」 for consistency with the Yue transcription."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3712,7 +3860,8 @@
       "yuewen_4": "係",
       "zhongwen_4": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3729,7 +3878,8 @@
       "yuewen_6": "是",
       "zhongwen_6": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3738,7 +3888,8 @@
       "yuewen_2": "再畀你見多幾次，我咪連官都冇得做",
       "zhongwen_2": "再让你多见几次，不是连官都没得当"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3749,7 +3900,8 @@
       "yuewen_3": "睇下發生咩事　　係",
       "zhongwen_3": "看看发生什么事　　是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3766,7 +3918,8 @@
       "yuewen_6": "係",
       "zhongwen_6": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3775,14 +3928,16 @@
       "yuewen_2": "係",
       "zhongwen_2": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "死乞儿？",
       "zhongwen_1": "臭乞丐？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3814,7 +3969,8 @@
       "beizhu_3": "Corrected the typo '岂' to '豈' and adjusted the final particle from '啊' to the more likely spoken '呀'.",
       "xiugai_yuewen_7": "你仲喺度懵豬豬！",
       "beizhu_7": "Corrected '懵闭闭' to the common Cantonese expression '懵豬豬'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3868,7 +4024,8 @@
       "beizhu_15": "Completed the well-known birthday lyric that was clearly cut off/incomplete here.",
       "xiugai_yuewen_18": "未唱完㗎喎，等我走咗先唱，好啊",
       "beizhu_18": "Removed the extra 「你」 so the sentence reads naturally and matches the intended meaning: sing it after I leave."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3879,7 +4036,8 @@
       "yuewen_3": "我們攻入大營",
       "zhongwen_3": "攻入大营"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3899,7 +4057,8 @@
       "beizhu_3": "Removed the unnecessary classifier '个' after 嗰, making the phrasing consistent and natural for 'the one who failed to shoot you dead'.",
       "xiugai_yuewen_4": "弊！毒煙吹向皇上大營",
       "beizhu_4": "Changed 閉 to 弊, which matches the intended exclamation meaning 'this is bad/oh no'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3910,21 +4069,24 @@
       "yuewen_3": "丐帮再不撤退，格杀勿论",
       "zhongwen_3": "丐帮再不撤退，格杀勿论"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "你哋睇下",
       "zhongwen_1": "你们看这边"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "天理教嘅麒麟煙",
       "zhongwen_1": "天理教的麒麟烟"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3933,7 +4095,8 @@
       "yuewen_2": "喂，屙尿呢，屙尿呢⋯",
       "zhongwen_2": "撒尿⋯撒尿⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3947,7 +4110,8 @@
     "answer": {
       "xiugai_yuewen_2": "我啲尿多，分噉啲畀你",
       "beizhu_2": "Removed \"媽媽，\" because it is not supported by the source Yue text; the rest is kept unchanged."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3957,7 +4121,8 @@
     "answer": {
       "xiugai_yuewen_1": "嘩！",
       "beizhu_1": "Reduced the repeated exclamation to a single natural cry, as the current subtitle is clearly excessive and inconsistent with the brief utterance."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -3991,14 +4156,16 @@
       "beizhu_2": "Changed the Mandarin possessive 个 to the Cantonese form 嘅.",
       "xiugai_yuewen_5": "都全軍覆沒喇，皇上",
       "beizhu_5": "Corrected 到 to 都 and added 喇 to match the intended line meaning more naturally."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "护驾",
       "zhongwen_1": "护驾"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4042,7 +4209,8 @@
       "beizhu_5": "Corrected '留夜' to '連夜', which is the proper expression meaning 'set out overnight'.",
       "xiugai_yuewen_9": "我少咗個便？",
       "beizhu_9": "Added a question mark because the line reads as an incomplete or surprised utterance; no clear lexical correction is certain from context."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -4051,14 +4219,16 @@
       "yuewen_2": "捉住佢",
       "zhongwen_2": "捉住他"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "皇上",
       "zhongwen_1": "皇上"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4072,7 +4242,8 @@
       "beizhu_1": "Corrected obvious mishearing: changed \"救我哋\" to \"狗皇帝\" and normalized the classifier to \"個\".",
       "xiugai_yuewen_2": "講咩啊？",
       "beizhu_2": "Corrected the line from an unnatural/transcription-like \"講嘢啊？\" to the intended \"講咩啊?\" based on the reference meaning."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -4088,7 +4259,8 @@
     "answer": {
       "xiugai_yuewen_3": "蘇乞兒呀？蘇乞兒，你唔係乞衣竇度瞓覺㗎咩？",
       "beizhu_3": "Standardized the character name from simplified to traditional for consistency with the Cantonese subtitle line."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -4106,14 +4278,16 @@
     "answer": {
       "xiugai_yuewen_4": "哼，估唔到你條死蛇爛鱔都識翻生",
       "beizhu_4": "Corrected the typo in the animal term from 烂鳝 to 爛鱔, keeping the rest unchanged."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "你出盡力呀？我仲未出力喎",
       "zhongwen_1": "你已出全力？我还没出力"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4122,7 +4296,8 @@
       "yuewen_2": "咩武功我都唔放在眼內",
       "zhongwen_2": "甚么武功我都不放在眼内"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4152,7 +4327,8 @@
       "beizhu_4": "Replaced the inconsistent phrase with the standard sequence to match the Chinese reference: changed '神龍反氣，黑龍偷心' to '神龍擺尾，烏龍偷心'.",
       "xiugai_yuewen_7": "龍飛鳳舞，縮龍成寸，龍蛇混雜",
       "beizhu_7": "Corrected the garbled middle segment by removing the erroneous '鳳凰龍' and restoring the intended phrase sequence."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -4168,14 +4344,16 @@
     "answer": {
       "xiugai_yuewen_1": "行得十七掌咋咩？嘥咗啊",
       "beizhu_1": "Changed \"行不得\" to \"行得\" to match the intended meaning \"only reached/seventeen palms\"; the original had an obvious wrong character."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "阿燦！",
       "zhongwen_1": "阿灿！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4186,7 +4364,8 @@
       "yuewen_3": "我實在太聰明喇",
       "zhongwen_3": "我实在太聪明了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4196,7 +4375,8 @@
     "answer": {
       "xiugai_yuewen_1": "第十八掌－降龍有悔啊",
       "beizhu_1": "Changed 「殺龍」 to 「降龍」, correcting the likely misheard phrase from the martial-arts move name."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -4218,7 +4398,8 @@
     "answer": {
       "xiugai_yuewen_2": "你睇我姿勢，你話我有冇事？",
       "beizhu_2": "Changed Mandarin-like wording and punctuation to natural Cantonese equivalents: \"看\"→\"睇\", \"說\"→\"話\", and standardized punctuation."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -4239,14 +4420,16 @@
       "yuewen_8": "赵无极的人马都畀我哋抓住咗",
       "zhongwen_8": "赵无极的人马都给我们捉住了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "yuewen_1": "辛苦晒各位兄弟",
       "zhongwen_1": "辛苦了各位兄弟"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4267,7 +4450,8 @@
       "yuewen_8": "你行先！我陣間跟上",
       "zhongwen_8": "你先！我稍后跟上"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4297,7 +4481,8 @@
       "beizhu_6": "Corrected '报我多啦' to the common Cantonese phrase '報我朵啦' ('say my name').",
       "xiugai_yuewen_9": "你真係冇嘢同我講？",
       "beizhu_9": "Standardized the character form from simplified '讲' to traditional '講' for consistency with the rest of the subtitles."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -4359,7 +4544,8 @@
       "beizhu_18": "Replaced '執生啊' with '好自為之啊' to match the intended meaning and avoid a likely mistranscription.",
       "xiugai_yuewen_19": "咦，不過啊",
       "beizhu_19": "Added '啊' to reflect the likely spoken pause/filler before continuing the sentence."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -4401,7 +4587,8 @@
       "beizhu_11": "Corrected the ending from '咪行啫' to '咪行住', which better matches the Chinese reference '先别走'.",
       "xiugai_yuewen_14": "有千都畀几百？",
       "beizhu_14": "Corrected likely misheard '又千' to '有千'; standardized '幾' to '几'."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -4417,6 +4604,7 @@
     "answer": {
       "xiugai_yuewen_4": "跟住我……走喇……",
       "beizhu_4": "Changed the final particle from '啦' to '喇' for a more accurate Cantonese subtitle rendering in this context."
-    }
+    },
+    "verified": true
   }
 ]

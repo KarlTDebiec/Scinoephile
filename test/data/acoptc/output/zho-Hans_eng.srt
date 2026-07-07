@@ -300,7 +300,7 @@ Listen to me
 
 61
 00:08:38,458 --> 00:08:40,375
-这个山头所有东西都属于我的
+这个山头所有东西都属于我
 all things here belong to me!
 
 62
@@ -350,7 +350,7 @@ Spider Web Immortal?
 
 71
 00:09:10,917 --> 00:09:13,000
-你没有变成孙悟空托生
+你没有变成孙悟空托世
 You haven't turned back into the Monkey King because
 
 72
@@ -925,7 +925,7 @@ I'm his twin brother Broker
 
 186
 00:15:43,250 --> 00:15:45,708
-至尊宝？ 玉尊玉？ 想骗我啊？
+至尊宝？　至尊玉？　想骗我啊？
 Joker? Broker? You tell lies
 
 187
@@ -1130,7 +1130,7 @@ I've got a burden, it's you
 
 227
 00:17:29,792 --> 00:17:31,833
-这个猪头切不半给我，谢谢
+这个猪头切一半给我，谢谢
 Give me half of this pig head, thanks
 
 228
@@ -1310,12 +1310,12 @@ I know, but I can do nothing about it
 
 263
 00:18:59,833 --> 00:19:02,500
-这段姻缘是上天安排的最大嘛！
+这段姻缘是上天安排的最大嘛
 This is fate. You have to accept this
 
 264
 00:19:02,708 --> 00:19:05,625
-喏！你现在呢，只要甩掉你哪个老婆
+喏！你现在呢只要甩掉你哪个老婆
 You just need to leave your wife
 
 265
@@ -1690,7 +1690,7 @@ The Box is a treasure
 
 339
 00:23:25,042 --> 00:23:26,708
-乱扔会染污环境！
+乱扔会污染环境！
 You'll pollute the environment!
 
 340
@@ -2070,7 +2070,7 @@ Goddess
 
 415
 00:26:59,250 --> 00:27:02,083
-请你放过悟空，不要伤害牠啦
+请你放过悟空，不要伤害它啦
 Please let the Monkey King go, don't hurt him
 
 416
@@ -2494,7 +2494,7 @@ You like it, take it
 
 500
 00:33:31,125 --> 00:33:32,250
-我徒弟叫我了 bye bye
+我徒弟叫我了bye bye
 My disciple is calling me, bye bye
 
 501
@@ -2504,17 +2504,17 @@ Don't play with fire again
 
 502
 00:33:41,000 --> 00:33:42,583
-阿弥陀佛 goodbye
+阿弥陀佛goodbye
 bye
 
 503
 00:33:44,292 --> 00:33:46,583
-我又不认识你们，拜托不要跟着我们
+我又不认识你们拜托不要跟着我们
 Please don't follow us. I don't know you
 
 504
 00:33:47,333 --> 00:33:49,708
-师傅能够见到你真好了
+师父能够见到你真好了
 It's great to see you
 
 505
@@ -2749,7 +2749,7 @@ I wanna show my sincerity
 
 551
 00:36:29,667 --> 00:36:31,917
-我当着这么多兄弟的面前向你求婚
+我当着这么多兄弟面前向你求婚
 Thus I'm gonna request you to marry me in front of my bros
 
 552
@@ -2854,7 +2854,7 @@ What joke?
 
 572
 00:37:17,083 --> 00:37:19,167
-这把剑谁拔得出，谁拔不出都
+这把剑谁拔得出，谁拔不出
 It's not important
 
 573
@@ -3339,7 +3339,7 @@ No need to praise me
 
 669
 00:42:27,083 --> 00:42:29,208
-我高你一点罢了没什么大不了的
+我高你一点之嘛没什么大不了的
 I'm just better than you a little bit
 
 670
@@ -3404,7 +3404,7 @@ I won't go
 
 682
 00:42:59,458 --> 00:43:01,167
-啊，是吗？为什么？　　不会走。
+啊，是吗？为什么？　　不会走
 Really? Why? No
 
 683
@@ -3494,7 +3494,7 @@ You've dropped your thing
 
 700
 00:43:53,167 --> 00:43:54,375
-师弟呀，收拾它一下
+师弟呀，收起它一下
 Bro, keep it
 
 701
@@ -3579,7 +3579,7 @@ Only you… don't blame the master so talkative
 
 717
 00:45:29,708 --> 00:45:34,792
-戴上“紧箍儿”
+戴上〝紧箍儿〞
 Wear the ring back
 
 718
@@ -3589,7 +3589,7 @@ Don't scare to death
 
 719
 00:45:41,375 --> 00:45:48,542
-背黑锅我来 送死你去
+背黑锅我来　　送死你去
 Don't scare the shit
 
 720
@@ -3644,7 +3644,7 @@ Life and death are minor
 
 730
 00:46:34,125 --> 00:46:36,208
-等你明白了舍身取义
+等你明白　了舍身取义
 You'll sing this song with me
 
 731
@@ -3664,7 +3664,7 @@ Zixia
 
 734
 00:46:55,292 --> 00:46:56,917
-师兄，你么带个女人走呀？
+师兄，你怎么带个女人走呀？
 Bro, why are you taking a woman with you?
 
 735
@@ -4539,7 +4539,7 @@ Yes, sure
 
 909
 00:55:37,500 --> 00:55:38,458
-像我这样当兵。
+像我这样当兵．
 Like me, being a soldier
 
 910
@@ -4789,7 +4789,7 @@ you will give up this affair because of me
 
 959
 00:58:11,333 --> 00:58:12,875
-我千辛万苦回来和做的所有事情
+我千辛万苦回这里所做的所有事情
 What I did is totally
 
 960
@@ -5019,7 +5019,7 @@ the Box doesn't work properly.
 
 1005
 00:59:45,250 --> 00:59:47,208
-我〝啪〞的一声回到五百年前
+我〝超〞的一声回到五百年前
 I go back to 500 years ago
 
 1006
@@ -5589,12 +5589,12 @@ we are not a devil, we are a hybrid
 
 1119
 01:06:38,667 --> 01:06:39,917
-他明白了
+他明白　了
 He understand?
 
 1120
 01:06:40,500 --> 01:06:41,500
-你明白了没有？
+你明白　了没有？
 do you understand?
 
 1121
@@ -5649,7 +5649,7 @@ This is God's order
 
 1131
 01:07:26,917 --> 01:07:29,000
-亦传说中的缘份
+也是传说中的缘份
 It is also called fate
 
 1132
@@ -5869,7 +5869,7 @@ I want to know what's that.
 
 1175
 01:09:57,625 --> 01:09:59,125
-莫名奇妙
+莫名其妙
 It's strange
 
 1176
@@ -5948,7 +5948,7 @@ I won't break my promise
 
 1191
 01:11:13,167 --> 01:11:14,333
-我不想再逗了
+我不想再斗了
 I don't want to fight anymore
 
 1192
@@ -5958,7 +5958,7 @@ You go!
 
 1193
 01:11:16,792 --> 01:11:18,250
-我这一辈子就你这么一个姐姐
+我这辈子就你这么一个姐姐
 I just have one sister in my life
 
 1194
@@ -6643,7 +6643,7 @@ Let me tell you again
 
 1330
 01:19:15,292 --> 01:19:22,458
-我的名字叫做齐天大圣
+我的名字叫做齐天大⋯圣
 I'm the Monkey…King
 
 1331
@@ -7133,7 +7133,7 @@ It'll explode
 
 1428
 01:28:43,208 --> 01:28:44,917
-一定要靠月光宝盒才能离开这里...
+一定要靠月光宝盒才能离开这里． ．
 We have to get the help of Pandora's Box
 
 1429
@@ -7448,7 +7448,7 @@ Honey
 
 1491
 01:31:51,917 --> 01:31:54,333
-相公　娘子
+相公　　娘子
 Honey Honey
 
 1492

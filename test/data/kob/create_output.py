@@ -53,13 +53,13 @@ yue_hans_transcribe_path = output_path / "yue-Hans_transcribe"
 actions = {
     # "eng_ocr",
     # "zho-Hant_ocr",
-    "eng",
-    "yue-Hans",
-    "yue-Hant",
+    # "eng",
+    # "yue-Hans",
+    # "yue-Hant",
     # "zho-Hans_eng",
-    "yue-Hans_eng",
+    # "yue-Hans_eng",
     # "yue-Hans_transcribe",
-    # "yue-Hans_diff",
+    "yue-Hans_diff",
 }
 
 if "eng_ocr" in actions:
@@ -78,7 +78,7 @@ if "eng" in actions:
         Language.eng,
         eng_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
-        overwrite=False,
+        overwrite=True,
     )
 if "yue-Hans" in actions:
     process_srt(
@@ -87,7 +87,7 @@ if "yue-Hans" in actions:
         zho_hant_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
         two_end_idx=1461,
-        overwrite=False,
+        overwrite=True,
     )
 if "yue-Hant" in actions:
     process_srt(
@@ -96,12 +96,12 @@ if "yue-Hant" in actions:
         zho_hant_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
         two_end_idx=1461,
-        overwrite=False,
+        overwrite=True,
     )
 if "yue-Hans_eng" in actions:
     yue_hans_srt_path = yue_hans_path / "clean_review_flatten_timewarp.srt"
     eng_srt_path = eng_path / "clean_review_flatten_timewarp.srt"
-    process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=False)
+    process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=True)
 if "yue-Hans_transcribe" in actions:
     zh_hant_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
     zho_hans_path = (
@@ -173,6 +173,11 @@ if "yue-Hans_diff" in actions:
         one_lbl="TRANSCRIBE",
         two_lbl="REFERENCE",
     )
-    print(diff)
-    print(diff.get_stacked_str(three=zho_hans_reference, include_equal=True))
+    # print(diff)
+    print(
+        diff.get_stacked_str(
+            # three=zho_hans_reference,
+            include_equal=True,
+        )
+    )
     print(SeriesCER(yue_hans_reference, yue_hans_transcribe))

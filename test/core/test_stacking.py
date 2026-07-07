@@ -142,16 +142,40 @@ def test_get_stacked_series_overlap_error_includes_event_context():
             id="acopopb-zho-hans-eng",
         ),
         param(
+            "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_eng_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_yue_hans_eng",
+            id="acopopb-yue-hans-eng",
+        ),
+        param(
             "acoptc_zho_hans_ocr_fuse_clean_validate_review_flatten",
             "acoptc_eng_ocr_fuse_clean_validate_review_flatten",
             "acoptc_zho_hans_eng",
             id="acoptc-zho-hans-eng",
         ),
         param(
+            "acoptc_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_eng_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_yue_hans_eng",
+            id="acoptc-yue-hans-eng",
+        ),
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "kob_eng_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hans_eng",
             id="kob-zho-hans-eng",
+        ),
+        param(
+            "kob_yue_hans_clean_review_flatten_timewarp",
+            "kob_eng_clean_review_flatten_timewarp",
+            "kob_yue_hans_eng",
+            id="kob-yue-hans-eng",
+        ),
+        param(
+            "mlamd_yue_hans_transcribe_review_translate_block_review",
+            "mlamd_eng_fuse_clean_validate_review_flatten",
+            "mlamd_yue_hans_eng",
+            id="mlamd-yue-hans-eng",
         ),
         param(
             "mlamd_zho_hans_fuse_clean_validate_review_flatten",
@@ -176,6 +200,12 @@ def test_get_stacked_series_overlap_error_includes_event_context():
             "tmm_eng_ocr_fuse_clean_validate_review_flatten",
             "tmm_zho_hans_eng",
             id="tmm-zho-hans-eng",
+        ),
+        param(
+            "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            "tmm_eng_ocr_fuse_clean_validate_review_flatten",
+            "tmm_yue_hans_eng",
+            id="tmm-yue-hans-eng",
         ),
     ],
 )

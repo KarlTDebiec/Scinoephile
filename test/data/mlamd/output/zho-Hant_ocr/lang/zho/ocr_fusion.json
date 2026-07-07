@@ -236,7 +236,8 @@
       "ronghe": "那樣子⋯來碗魚蛋河粉吧　　魚蛋買光了",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略號；將 Google Lens OCR 中顯示為無分隔而 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -247,7 +248,8 @@
       "ronghe": "那麼⋯金錢肚粗麵好了　　粗麵買光了",
       "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略號；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替換為两个表意空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -737,7 +739,8 @@
       "ronghe": "可以開始教我 十二路搶包手",
       "beizhu": "採用了 Google Lens 中較可靠的漢字「搶」，並省略了 PaddleOCR 中多餘的字元「L」；保留了 PaddleOCR 所顯示的空格作為詞間分隔。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -904,7 +907,8 @@
       "ronghe": "最靚最靚，最犀利，而且最溫柔",
       "beizhu": "採用 Google Lens 的漢字「靚靚」與「溫柔」；省略了 PaddleOCR 中與 Google Lens 不一致的「靓」與「温」用字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -963,7 +967,8 @@
       "ronghe": "栗子　　火雞絲煲",
       "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；并采用了 Google Lens 中的“保”更正为 PaddleOCR 中更可靠的“煲”。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1213,6 +1218,786 @@
     "answer": {
       "ronghe": "常餐？常餐有什麼吃？",
       "beizhu": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "更正：\n左邊額角上⋯",
+      "paddle": "更正：左邊額角上⋯"
+    },
+    "answer": {
+      "ronghe": "更正：左邊額角上⋯",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "趕忙趁膠兜落地前另許一個願望\n：",
+      "paddle": "趕忙趁膠兜落地前另許一個願望："
+    },
+    "answer": {
+      "ronghe": "趕忙趁膠兜落地前另許一個願望：",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "麥太，\n沒見面一陣",
+      "paddle": "麥太，沒見面一陣"
+    },
+    "answer": {
+      "ronghe": "麥太，沒見面一陣",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "蛋撻！\n蛋撻！",
+      "paddle": "蛋撻！ 蛋撻！"
+    },
+    "answer": {
+      "ronghe": "蛋撻！蛋撻！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "荔芋火鴨札！\n荔芋火鴨札！",
+      "paddle": "荔芋火鴨札！ 荔芋火鴨札！"
+    },
+    "answer": {
+      "ronghe": "荔芋火鴨札！荔芋火鴨札！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "忘記校訓九十七⋯\n忘記校訓九十七⋯",
+      "paddle": "忘記校訓九十七⋯忘記校訓九十七⋯"
+    },
+    "answer": {
+      "ronghe": "忘記校訓九十七⋯忘記校訓九十七⋯",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "太好了！\n大家去上堂吧",
+      "paddle": "太好了！大家去上堂吧"
+    },
+    "answer": {
+      "ronghe": "太好了！大家去上堂吧",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "麥嘜同學！\n到！",
+      "paddle": "麥嘜同學！ 到！"
+    },
+    "answer": {
+      "ronghe": "麥嘜同學！到！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "亞輝同學！\n到！",
+      "paddle": "亞輝同學！ 到！"
+    },
+    "answer": {
+      "ronghe": "亞輝同學！到！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "菇時同學！\n到！",
+      "paddle": "菇時同學！ 到！"
+    },
+    "answer": {
+      "ronghe": "菇時同學！到！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "得巴同學！\n到！",
+      "paddle": "得巴同學！ 到！"
+    },
+    "answer": {
+      "ronghe": "得巴同學！到！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "阿May同學！\n到！",
+      "paddle": "阿May同學！ 到！"
+    },
+    "answer": {
+      "ronghe": "阿May同學！到！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "阿June同學！\n到！",
+      "paddle": "阿June 同學！ 到！"
+    },
+    "answer": {
+      "ronghe": "阿June同學！到！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Miss Chan，\n我點過兩次了！",
+      "paddle": "Miss Chan，我點過兩次了！"
+    },
+    "answer": {
+      "ronghe": "Miss Chan，我點過兩次了！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "還有這個「芭－娜－哪」\n香蕉",
+      "paddle": "還有這個「芭－娜－哪」香蕉"
+    },
+    "answer": {
+      "ronghe": "還有這個「芭－娜－哪」香蕉",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "那麼淨要粗麵呢？\n粗麵買光了",
+      "paddle": "那麼淨要粗麵呢？ 粗麵買光了"
+    },
+    "answer": {
+      "ronghe": "那麼淨要粗麵呢？　　粗麵買光了",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "麥兜，\n射呀！",
+      "paddle": "麥兜，射呀！"
+    },
+    "answer": {
+      "ronghe": "麥兜，射呀！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "是的，\n一切都好！",
+      "paddle": "是的，一切都好！"
+    },
+    "answer": {
+      "ronghe": "是的，一切都好！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "www．\n麥太世界．com",
+      "paddle": "WWw．麥太世界．．com"
+    },
+    "answer": {
+      "ronghe": "www．麥太世界．com",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "媽媽，\n我想睡覺",
+      "paddle": "媽媽，我想睡覺"
+    },
+    "answer": {
+      "ronghe": "媽媽，我想睡覺",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "對她，一・\n三、四、五、六、七",
+      "paddle": "對她，一、二、三、四、五、六、七"
+    },
+    "answer": {
+      "ronghe": "對她，一、二、三、四、五、六、七",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "衰仔，\n快點起床上學",
+      "paddle": "衰仔，快點起床上學"
+    },
+    "answer": {
+      "ronghe": "衰仔，快點起床上學",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "不用！\n給他打口針吧！",
+      "paddle": "不用！給他打口針吧！"
+    },
+    "answer": {
+      "ronghe": "不用！給他打口針吧！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "怎麼？\n得打針？",
+      "paddle": "怎麼？得打針？"
+    },
+    "answer": {
+      "ronghe": "怎麼？得打針？",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "沒事吧？\n快點先把藥水喝掉！",
+      "paddle": "沒事吧？快點先把藥水喝掉！"
+    },
+    "answer": {
+      "ronghe": "沒事吧？快點先把藥水喝掉！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "好呀，\n馬爾代夫！",
+      "paddle": "好呀，馬爾代夫！"
+    },
+    "answer": {
+      "ronghe": "好呀，馬爾代夫！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "媽媽，\n你看！",
+      "paddle": "媽媽，你看！"
+    },
+    "answer": {
+      "ronghe": "媽媽，你看！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "好了，\n別哭了",
+      "paddle": "好了，别哭了"
+    },
+    "answer": {
+      "ronghe": "好了，別哭了",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "真的嗎？\n對",
+      "paddle": "真的嗎？ 對"
+    },
+    "answer": {
+      "ronghe": "真的嗎？對",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "好了好了\n，\n發財了",
+      "paddle": "好了好了，發財了"
+    },
+    "answer": {
+      "ronghe": "好了好了，發財了",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "麥嘜，\n我是麥兜呀",
+      "paddle": "麥嘜，我是麥兜呀"
+    },
+    "answer": {
+      "ronghe": "麥嘜，我是麥兜呀",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "對\n⋯是嗎？",
+      "paddle": "對⋯是嗎？"
+    },
+    "answer": {
+      "ronghe": "對⋯是嗎？",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "太好了\n！\n嚇得我！",
+      "paddle": "太好了！嚇得我！"
+    },
+    "answer": {
+      "ronghe": "太好了！嚇得我！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "長洲！\n長洲！",
+      "paddle": "長洲！長洲！"
+    },
+    "answer": {
+      "ronghe": "長洲！長洲！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "歌\n，是這樣唱的⋯",
+      "paddle": "歌，是這樣唱的⋯"
+    },
+    "answer": {
+      "ronghe": "歌，是這樣唱的⋯",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "師傅！\n你收我做徒弟吧！",
+      "paddle": "師傅！你收我做徒弟吧！"
+    },
+    "answer": {
+      "ronghe": "師傅！你收我做徒弟吧！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "多謝各位賞面\n！\n多謝各位！",
+      "paddle": "多謝各位賞面！多謝各位！"
+    },
+    "answer": {
+      "ronghe": "多謝各位賞面！多謝各位！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "碰！\n三番！",
+      "paddle": "碰！三番！"
+    },
+    "answer": {
+      "ronghe": "碰！三番！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "別躲懶！\n繼續練！",
+      "paddle": "別躲懶！繼續練！"
+    },
+    "answer": {
+      "ronghe": "別躲懶！繼續練！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "珊珊！\n我的師姐珊珊！",
+      "paddle": "珊珊！我的師姐珊珊！"
+    },
+    "answer": {
+      "ronghe": "珊珊！我的師姐珊珊！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "珊你個頭\n！\n繼續練習！",
+      "paddle": "珊你個頭！繼續練習！"
+    },
+    "answer": {
+      "ronghe": "珊你個頭！繼續練習！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "雞尾包！\n新鮮出爐！",
+      "paddle": "雞尾包！新鮮出爐！"
+    },
+    "answer": {
+      "ronghe": "雞尾包！新鮮出爐！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "因為\n，\n我愛我媽媽",
+      "paddle": "因為，我愛我媽媽"
+    },
+    "answer": {
+      "ronghe": "因為，我愛我媽媽",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "喂，\n我是麥兜",
+      "paddle": "喂，我是麥兜"
+    },
+    "answer": {
+      "ronghe": "喂，我是麥兜",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "我說：火雞\n「痾爛煮」\n！",
+      "paddle": "我說：火雞「痫爛煮 L —"
+    },
+    "answer": {
+      "ronghe": "我說：火雞「痾爛煮」！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "媽媽罵我\n「冇衣食」⋯",
+      "paddle": "媽媽罵我「布衣食"
+    },
+    "answer": {
+      "ronghe": "媽媽罵我「冇衣食」⋯",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "爭取\n「搶包山」",
+      "paddle": "爭取「搶包山」"
+    },
+    "answer": {
+      "ronghe": "爭取「搶包山」",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "最後，\n一切成煙",
+      "paddle": "最後，一切成煙"
+    },
+    "answer": {
+      "ronghe": "最後，一切成煙",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "唔得，\n就是唔得",
+      "paddle": "唔得，就是唔得"
+    },
+    "answer": {
+      "ronghe": "唔得，就是唔得",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "肥，\n都不一定好笑",
+      "paddle": "肥，都不一定好笑"
+    },
+    "answer": {
+      "ronghe": "肥，都不一定好笑",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "大力，\n亦不一定得",
+      "paddle": "大力，亦不一定得"
+    },
+    "answer": {
+      "ronghe": "大力，亦不一定得",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "肥，\n算大力",
+      "paddle": "肥，算大力"
+    },
+    "answer": {
+      "ronghe": "肥，算大力",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "是的，\n故事講完了",
+      "paddle": "是的，故事講完了"
+    },
+    "answer": {
+      "ronghe": "是的，故事講完了",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "方法：\n把雞燒幾燒",
+      "paddle": "方法：把雞燒幾燒"
+    },
+    "answer": {
+      "ronghe": "方法：把雞燒幾燒",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "常餐\n？\n常餐有什麼吃？",
+      "paddle": "常餐？ 常餐有什麼吃？"
+    },
+    "answer": {
+      "ronghe": "常餐？常餐有什麼吃？",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "那麼，\n兩客常餐吧",
+      "paddle": "那麼，兩客常餐吧"
+    },
+    "answer": {
+      "ronghe": "那麼，兩客常餐吧",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "對不起，\n常餐賣光了",
+      "paddle": "對不起，常餐賣光了"
+    },
+    "answer": {
+      "ronghe": "對不起，常餐賣光了",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "對不起，\n特餐賣光了",
+      "paddle": "對不起，特餐賣光了"
+    },
+    "answer": {
+      "ronghe": "對不起，特餐賣光了",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "媽媽，\n改快餐吧",
+      "paddle": "媽媽，改快餐吧"
+    },
+    "answer": {
+      "ronghe": "媽媽，改快餐吧",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "對不起，\n沒快餐了",
+      "paddle": "對不起，沒快餐了"
+    },
+    "answer": {
+      "ronghe": "對不起，沒快餐了",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "午餐吧，\n午餐精采呀",
+      "paddle": "午餐吧，午餐精采呀"
+    },
+    "answer": {
+      "ronghe": "午餐吧，午餐精采呀",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "好吧好吧！\n兩份午餐好了",
+      "paddle": "好吧好吧！兩份午餐好了"
+    },
+    "answer": {
+      "ronghe": "好吧好吧！兩份午餐好了",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "對不起，\n午餐賣光了",
+      "paddle": "對不起，午餐賣光了"
+    },
+    "answer": {
+      "ronghe": "對不起，午餐賣光了",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "好吧好吧，\n拜託！\n兩份晚餐\n！\n快！",
+      "paddle": "好吧好吧，拜託！兩份晚餐！快！"
+    },
+    "answer": {
+      "ronghe": "好吧好吧，拜託！兩份晚餐！快！",
+      "beizhu": "按預期融合 OCR 文本。"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "要快嗎？\n那得吃快餐了！",
+      "paddle": "要快嗎？那得吃快餐了！"
+    },
+    "answer": {
+      "ronghe": "要快嗎？那得吃快餐了！",
+      "beizhu": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true

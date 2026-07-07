@@ -27,8 +27,17 @@ from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
+from scinoephile.llms.dual_n_minus_m_to_n import (
+    DualNMinusMToNManager,
+    DualNMinusMToNPrompt,
+)
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
+from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNPrompt
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
+from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
+)
 from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
     YueZhoLineReviewManager,
@@ -53,6 +62,8 @@ __all__ = [
     "get_kob_yue_hant_block_review_test_cases",
     "get_kob_yue_hant_simplify_block_review_test_cases",
     "get_kob_yue_punctuation_test_cases",
+    "get_kob_yue_vs_zho_block_review_test_cases",
+    "get_kob_yue_vs_zho_gapped_translation_test_cases",
     "get_kob_yue_vs_zho_line_review_test_cases",
     "get_kob_zho_hant_block_review_test_cases",
     "get_kob_zho_hant_ocr_fusion_test_cases",
@@ -76,6 +87,7 @@ __all__ = [
     "kob_yue_hans_clean_review_flatten",
     "kob_yue_hans_clean_review_flatten_timewarp",
     "kob_yue_hans_clean_review_flatten_timewarp_romanize",
+    "kob_yue_hans_eng",
     "kob_yue_hans_audio",
     "kob_yue_hans_transcribe",
     "kob_yue_hans_transcribe_expected_cer",
@@ -90,6 +102,7 @@ __all__ = [
     "kob_yue_hant_clean_review_flatten_timewarp_simplify",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize",
+    "kob_yue_simplify_expected_series_diff",
     "kob_zho_hans_eng",
     "kob_zho_hant_ocr_fuse",
     "kob_zho_hant_ocr_fuse_clean",
@@ -269,6 +282,32 @@ def get_kob_yue_deliniation_test_cases(
 
 
 @cache
+def get_kob_yue_vs_zho_gapped_translation_test_cases(
+    prompt_cls: type[DualNMinusMToNPrompt] = YueGappedTranslationVsZhoPromptYueHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB yue-Hans vs zho-Hans gapped translation test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        output_dir
+        / "yue-Hans_transcribe"
+        / "multilang"
+        / "yue_zho"
+        / "gap_translation"
+        / f"{get_torch_device()}.json"
+    )
+    return load_test_cases_from_json(
+        path, DualNMinusMToNManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
 def get_kob_yue_punctuation_test_cases(
     prompt_cls: type[DualNTo1Prompt] = YuePunctuationVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
@@ -292,6 +331,32 @@ def get_kob_yue_punctuation_test_cases(
     )
     return load_test_cases_from_json(
         path, YueZhoPunctuationManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_yue_vs_zho_block_review_test_cases(
+    prompt_cls: type[DualNToNPrompt] = YueBlockReviewVsZhoPromptYueHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB yue-Hans vs zho-Hans block review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        output_dir
+        / "yue-Hans_transcribe"
+        / "multilang"
+        / "yue_zho"
+        / "block_review"
+        / f"{get_torch_device()}.json"
+    )
+    return load_test_cases_from_json(
+        path, DualNToNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -648,6 +713,12 @@ def kob_yue_hans_clean_review_flatten_timewarp_romanize() -> Series:
 
 
 @fixture
+def kob_yue_hans_eng() -> Series:
+    """KOB bilingual yue-Hans and English subtitles."""
+    return Series.load(output_dir / "yue-Hans_eng.srt")
+
+
+@fixture
 def kob_yue_hans_transcribe() -> Series:
     """KOB yue-Hans transcribed subtitles."""
     return Series.load(output_dir / "yue-Hans_transcribe/transcribe.srt")
@@ -657,12 +728,12 @@ def kob_yue_hans_transcribe() -> Series:
 def kob_yue_hans_transcribe_expected_cer() -> SeriesCERResult:
     """Expected CER for KOB transcribed subtitles against flattened reference."""
     return SeriesCERResult(
-        cer=0.5681838189981513,
-        substitutions=4916,
-        insertions=661,
-        deletions=877,
-        correct=5566,
-        reference_length=11359,
+        cer=0.5569631389108823,
+        substitutions=4778,
+        insertions=667,
+        deletions=886,
+        correct=5703,
+        reference_length=11367,
     )
 
 
@@ -696,12 +767,12 @@ def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
 ):
     """Expected CER for KOB reviewed subtitles against flattened reference."""
     return SeriesCERResult(
-        cer=0.462012501100449,
-        substitutions=3866,
-        insertions=617,
-        deletions=765,
-        correct=6728,
-        reference_length=11359,
+        cer=0.4476115069939298,
+        substitutions=3657,
+        insertions=634,
+        deletions=797,
+        correct=6913,
+        reference_length=11367,
     )
 
 
@@ -753,6 +824,14 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Ser
         / "yue-Hant"
         / "clean_review_flatten_timewarp_simplify_review_romanize.srt"
     )
+
+
+@fixture
+def kob_yue_simplify_expected_series_diff() -> list[str]:
+    """Expected differences for KOB Yue Simplified vs Traditional subtitles."""
+    return [
+        "edit: SIMP[1229] -> TRAD[1229]: '但系第十八式〝杀龙有悔〞' -> '但系第十八式「杀龙有悔」'",
+    ]
 
 
 @fixture

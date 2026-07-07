@@ -25,7 +25,7 @@ from test.helpers import assert_series_equal, parametrize
         ("你吃吓晒啦", OpenCCConfig.s2t, "你吃吓晒啦"),
         ("一群牛虱", OpenCCConfig.s2t, "一群牛虱"),
         ("这家伙", OpenCCConfig.s2t, "這家伙"),
-        ("呢個嗰度喎", OpenCCConfig.t2s, "呢个嗰度喎"),
+        ("呢個嗰度喎", OpenCCConfig.t2s, "呢个嗰度㖞"),
         ("希望藉此答覆", OpenCCConfig.t2s, "希望借此答复"),
         ("丑大了", OpenCCConfig.s2t, "丑大了"),
         ("移形換影", OpenCCConfig.t2s, "移形换影"),
@@ -83,6 +83,26 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     ("series_fixture", "expected_fixture"),
     [
         param(
+            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="acopopb-yue-hant",
+        ),
+        param(
+            "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="acopopb-zho-hant",
+        ),
+        param(
+            "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="acoptc-yue-hant",
+        ),
+        param(
+            "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="acoptc-zho-hant",
+        ),
+        param(
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             id="kob-zho-hant",
@@ -106,6 +126,11 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
             "t_zho_hant_fuse_clean_validate_review_flatten",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
             id="t-zho-hant",
+        ),
+        param(
+            "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten",
+            "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="tmm-yue-hant",
         ),
         param(
             "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten",

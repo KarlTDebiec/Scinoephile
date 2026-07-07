@@ -27,10 +27,7 @@ from test.helpers import assert_series_equal, parametrize
         ("ΟΚ, οκ.", "OK, ok."),
     ],
 )
-def test_get_eng_text_cleaned(
-    text: str,
-    expected: str,
-):
+def test_get_eng_text_cleaned(text: str, expected: str):
     """Test get_eng_text_cleaned.
 
     Arguments:
@@ -43,6 +40,16 @@ def test_get_eng_text_cleaned(
 @parametrize(
     ("series_fixture", "expected_fixture"),
     [
+        param(
+            "acopopb_eng_ocr_fuse",
+            "acopopb_eng_ocr_fuse_clean",
+            id="acopopb-eng-fuse",
+        ),
+        param(
+            "acopopb_eng_ocr_lens",
+            "acopopb_eng_ocr_lens_clean",
+            id="acopopb-eng-lens",
+        ),
         param(
             "acopopb_eng_ocr_tesseract",
             "acopopb_eng_ocr_tesseract_clean",
@@ -92,6 +99,11 @@ def test_get_eng_text_cleaned(
             "mlamd_eng_ocr_lens",
             "mlamd_eng_ocr_lens_clean",
             id="mlamd-eng-lens",
+        ),
+        param(
+            "mlamd_eng_ocr_tesseract",
+            "mlamd_eng_ocr_tesseract_clean",
+            id="mlamd-eng-tesseract",
         ),
         param(
             "mnt_eng_fuse",
