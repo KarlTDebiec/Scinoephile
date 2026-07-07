@@ -54,7 +54,6 @@ S2T_EXCLUSIONS: set[str] = {
     "才行",  # modern adverbial 才; avoid older 纔
     "才要",  # modern adverbial 才; avoid older 纔
     "才有",  # modern adverbial 才; avoid older 纔
-    "才能夠",  # modern adverbial 才; avoid older 纔
     "合卺",  # fixed wedding term; avoid rare variant 巹
     "呢云",  # Cantonese OCR phrase; avoid weather/cloud 雲
     "克制",  # 克 is "restrain"; avoid 剋 "overcome/defeat"
