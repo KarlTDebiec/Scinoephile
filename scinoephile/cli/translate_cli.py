@@ -31,7 +31,7 @@ from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.multilang.translation import TranslationMode, translate_series
+from scinoephile.workflows.translation import TranslationMode, translate_series
 
 __all__ = ["TranslateCli"]
 

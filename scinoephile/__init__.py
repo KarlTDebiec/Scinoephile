@@ -9,7 +9,7 @@ Module hierarchy (modules may import from any above):
 * media
 * lang
 * audio / dictionaries / web
-* multilang / workflows
-* optimization
+* multilang
+* optimization / workflows
 * cli
 """

@@ -18,10 +18,9 @@ Modules may import from packages listed above them in that hierarchy:
   the packages above
 - `audio`, `dictionaries`, and `web`: audio, dictionary, and web UI packages that
   may import from the packages above
-- `multilang` and `workflows`: cross-language operations and reusable workflow
-  orchestration that may import from the packages above
-- `scinoephile.optimization`: prompt optimization tooling that may import from the
-  packages above
+- `multilang`: cross-language operations that may import from the packages above
+- `scinoephile.optimization` and `workflows`: prompt optimization tooling and
+  reusable workflow orchestration that may import from the packages above
 - `scinoephile.cli`: user-facing command-line wrappers that may import from any
   package listed above it
 
@@ -44,8 +43,9 @@ to keep dependencies flowing toward earlier layers:
   written Cantonese, etc.).
 - **`audio`, `dictionaries`, and `web`**: audio representation and transcription
   tooling, dictionary lookup/build logic, and web interfaces.
-- **`multilang` and `workflows`**: cross-language pipelines and reusable
-  end-to-end orchestration that coordinate multiple domain packages.
+- **`multilang`**: pair-specific cross-language operations.
+- **`workflows`**: reusable end-to-end orchestration that coordinates multiple
+  domain packages, including `multilang`.
 - **`optimization`**: prompt optimization operations and persisted test-case
   synchronization.
 - **`cli`**: thin wrappers around lower layers; argument parsing, validation, and
