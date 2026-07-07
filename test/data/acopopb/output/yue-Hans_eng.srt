@@ -477,12 +477,12 @@ The world's gone mad
 
 98
 00:07:53,375 --> 00:07:54,896
-一个弱质女子，想搵个地方歇一歇脚
+一个弱质女子，想揾个地方歇一歇脚
 A weary lady
 
 99
 00:07:54,896 --> 00:07:56,417
-一个弱质女子，想搵个地方歇一歇脚
+一个弱质女子，想揾个地方歇一歇脚
 looking for a shelter
 
 100
@@ -1227,17 +1227,17 @@ Master!
 
 249
 00:15:33,750 --> 00:15:36,812
-你搵到三粒痣未？
+你揾到三粒痣未？
 Have you found the three birthmarks?
 
 250
 00:15:36,812 --> 00:15:39,000
-做乜个个都叫我搵三粒痣嘅？
+做乜个个都叫我揾三粒痣嘅？
 Why does everyone tell me to find the three birthmarks?
 
 251
 00:15:39,000 --> 00:15:41,625
-搵到你就可救番佢
+揾到你就可救番佢
 You can save him when you find them
 
 252
@@ -1482,7 +1482,7 @@ Burn it!
 
 301
 00:18:48,375 --> 00:18:50,291
-搵到个靓位，要抖抖先得啦
+揾到个靓位，要抖抖先得啦
 Have a rest first
 
 302
@@ -2245,7 +2245,7 @@ and he has three birthmarks on his sole
 
 458
 00:26:24,625 --> 00:26:27,125
-祇要搵到佢就可以搵到唐三藏
+祇要揾到佢就可以揾到唐三藏
 you can find the Monk if you know where Monkey King is.
 
 459
@@ -2505,7 +2505,7 @@ I will order someone to search for
 
 510
 00:28:51,750 --> 00:28:53,875
-彻底搜查你哋要搵嘅人
+彻底搜查你哋要揾嘅人
 the guy you wanna see
 
 511
@@ -2982,7 +2982,7 @@ He can't enjoy it
 
 606
 00:33:23,292 --> 00:33:26,333
-卒之搵到唐三藏嘅踪迹啦
+卒之揾到唐三藏嘅踪迹啦
 We've found the Longevity Monk at last
 
 607
@@ -3230,7 +3230,7 @@ If you don't believe me
 
 656
 00:36:06,708 --> 00:36:09,312
-搵我个照妖镜一照呢你就明白哂！
+揾我个照妖镜一照呢你就明白哂！
 you can use my Magic Mirror!
 
 657
@@ -3709,7 +3709,7 @@ Asst. Master
 
 753
 00:39:49,083 --> 00:39:51,062
-通知其他人，帮主搵我哋呀
+通知其他人，帮主揾我哋呀
 Tell the others, Master is looking for us
 
 754
@@ -4121,7 +4121,7 @@ I'll kill you, reincarnated Monkey King
 
 838
 00:45:08,875 --> 00:45:10,958
-你就永远都搵唔到唐三藏㗎嘞
+你就永远都揾唔到唐三藏㗎嘞
 Then you won't find the Longevity Monk
 
 839
@@ -4420,7 +4420,7 @@ You still help him
 
 898
 00:48:02,667 --> 00:48:03,875
-仲要靠佢搵唐僧
+仲要靠佢揾唐僧
 You want to rely on him to find the Longevity Monk
 
 899
@@ -4818,7 +4818,7 @@ Go!
 
 978
 00:52:51,708 --> 00:52:52,792
-你搵次醒啲吖
+你揾次醒啲吖
 Get smart just for once
 
 979
@@ -5046,7 +5046,7 @@ Kill him
 
 1024
 00:54:21,708 --> 00:54:23,500
-咁你唔想搵唐三藏？
+咁你唔想揾唐三藏？
 Don't you want to find the Longevity Monk?
 
 1025
@@ -5244,7 +5244,7 @@ Yes…
 
 1064
 00:56:25,979 --> 00:56:29,708
-多！多得我身上嘅牛虱，同我搵！
+多！多得我身上嘅牛虱，同我揾！
 More than the bugs in my body. Search!
 
 1065
@@ -5682,17 +5682,17 @@ I'll be with you
 
 1153
 01:03:19,125 --> 01:03:20,146
-搵唔搵到呀？
+揾唔揾到呀？
 Can you get him?
 
 1154
 01:03:20,146 --> 01:03:20,896
-继续搵啦
+继续揾啦
 No
 
 1155
 01:03:20,896 --> 01:03:21,750
-继续搵啦
+继续揾啦
 Go on
 
 1156
@@ -5786,7 +5786,7 @@ That's right
 
 1174
 01:04:28,125 --> 01:04:30,542
-我搵到个好似你嘅人嘞
+我揾到个好似你嘅人嘞
 I've found a guy just like you
 
 1175
@@ -5926,7 +5926,7 @@ She thought I left her alone
 
 1202
 01:06:59,583 --> 01:07:00,750
-仲要搵几耐呀？
+仲要揾几耐呀？
 How long will you search?
 
 1203
@@ -6046,12 +6046,12 @@ I will cure your wound but
 
 1226
 01:08:00,167 --> 01:08:02,667
-但系你要带我入盘丝洞搵只马骝精托世
+但系你要带我入盘丝洞揾只马骝精托世
 you must take me to the Cave to get the incarnated monkey
 
 1227
 01:08:02,792 --> 01:08:04,083
-咁迟早搵到唐三藏
+咁迟早揾到唐三藏
 We'll find the Longevity Monk sooner or later
 
 1228
@@ -6436,7 +6436,7 @@ Ok, do it…Ok! It's coming
 
 1306
 01:12:55,875 --> 01:12:57,417
-唐三藏出咗世啦，快啲搵
+唐三藏出咗世啦，快啲揾
 The Longevity Monk was born, go to get him!
 
 1307
@@ -7095,12 +7095,12 @@ I left because I wanna get medication for you from your sister
 
 1440
 01:20:46,708 --> 01:20:48,125
-点知迟咗一步，返去已经搵你唔到啦
+点知迟咗一步，返去已经揾你唔到啦
 But I was late
 
 1441
 01:20:48,125 --> 01:20:49,542
-点知迟咗一步，返去已经搵你唔到啦
+点知迟咗一步，返去已经揾你唔到啦
 I couldn't find you
 
 1442
