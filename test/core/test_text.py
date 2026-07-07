@@ -8,10 +8,10 @@ from pytest import raises
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import (
+    RE_LATIN_WORD,
     get_char_type,
-    normalize_fullwidth_alphanumerics,
-    normalize_ocr_confusables_to_ascii,
-    sanitize_text,
+    normalize_text,
+    replace_control_characters,
 )
 from test.helpers import parametrize
 
@@ -32,33 +32,25 @@ def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
     ("text", "expected"),
     [
         ("ＫＡＴＥ ｋａｔｅ １２３", "KATE kate 123"),
-    ],
-)
-def test_normalize_fullwidth_alphanumerics(text: str, expected: str) -> None:
-    """Fullwidth letters and digits are converted to regular ASCII."""
-    assert normalize_fullwidth_alphanumerics(text) == expected
-
-
-@parametrize(
-    ("text", "expected"),
-    [
         ("ΟΚ, οκ.", "OK, ok."),
-    ],
-)
-def test_normalize_ocr_confusables_to_ascii(text: str, expected: str) -> None:
-    """OCR-confusable characters are converted to regular ASCII."""
-    assert normalize_ocr_confusables_to_ascii(text) == expected
-
-
-@parametrize(
-    ("text", "expected"),
-    [
+        (" \xa0ＫＡＴＥ\x00ΟΚ ", "KATE OK"),
         ("好呀！\x00\x00你", "好呀！  你"),
     ],
 )
-def test_sanitize_text_replaces_control_chars(text: str, expected: str) -> None:
-    """Control characters that are not text whitespace are replaced."""
-    assert sanitize_text(text) == expected
+def test_normalize_text(text: str, expected: str) -> None:
+    """Text normalization applies shared mechanical cleanup."""
+    assert normalize_text(text) == expected
+
+
+@parametrize(
+    ("text", "expected"),
+    [
+        ("Don't stop 佢", ["Don't", "stop"]),
+    ],
+)
+def test_re_latin_word(text: str, expected: list[str]) -> None:
+    """Latin word regex matches word-like tokens."""
+    assert RE_LATIN_WORD.findall(text) == expected
 
 
 @parametrize(
@@ -67,6 +59,8 @@ def test_sanitize_text_replaces_control_chars(text: str, expected: str) -> None:
         ("one\ntwo\tthree\r", "one\ntwo\tthree\r"),
     ],
 )
-def test_sanitize_text_preserves_text_whitespace(text: str, expected: str) -> None:
+def test_replace_control_characters_preserves_text_whitespace(
+    text: str, expected: str
+) -> None:
     """Line and tab whitespace are preserved."""
-    assert sanitize_text(text) == expected
+    assert replace_control_characters(text) == expected

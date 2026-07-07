@@ -23,19 +23,23 @@ __all__ = [
     "WHITESPACE_CHARS",
     "HALF_TO_FULL_PUNC",
     "FULL_TO_HALF_PUNC",
+    "RE_ASS_OVERRIDE_BLOCK",
     "RE_HANZI",
+    "RE_LATIN_WORD",
     "RE_PRIVATE_USE_AREA_BMP",
     "RE_WESTERN",
+    "RE_WHITESPACE",
     "AnsiColor",
     "colorize",
     "dedent_and_compact",
     "get_char_type",
     "is_full_width_char",
     "normalize_fullwidth_alphanumerics",
-    "normalize_ocr_confusables_to_ascii",
+    "normalize_ocr_confusables",
+    "normalize_text",
+    "replace_control_characters",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
-    "sanitize_text",
 ]
 
 
@@ -233,11 +237,20 @@ Includes the following Unicode blocks:
   - CJK Unified Ideographs Extension H (U+31350–U+323AF)
 """
 
+RE_ASS_OVERRIDE_BLOCK = re.compile(r"\{[^{}]*\}")
+"""Regular expression for ASS override blocks."""
+
+RE_LATIN_WORD = re.compile(r"[A-Za-z][A-Za-z']*")
+"""Regular expression for Latin words."""
+
 RE_PRIVATE_USE_AREA_BMP = re.compile(r"[\ue000-\uf8ff]")
 """Regular expression for BMP private-use area code points."""
 
 RE_WESTERN = re.compile(r"[a-zA-Z0-9]")
 """Regular expression for Western characters."""
+
+RE_WHITESPACE = re.compile(r"\s+")
+"""Regular expression for runs of whitespace."""
 
 
 def dedent_and_compact(text: str) -> str:
@@ -344,7 +357,7 @@ def normalize_fullwidth_alphanumerics(text: str) -> str:
     return text.translate(_FULLWIDTH_ALPHANUMERICS_TO_ASCII)
 
 
-def normalize_ocr_confusables_to_ascii(text: str) -> str:
+def normalize_ocr_confusables(text: str) -> str:
     """Convert OCR-confusable characters to regular ASCII.
 
     Arguments:
@@ -353,6 +366,20 @@ def normalize_ocr_confusables_to_ascii(text: str) -> str:
         text with OCR-confusable characters normalized
     """
     return text.translate(_OCR_CONFUSABLES_TO_ASCII)
+
+
+def normalize_text(text: str) -> str:
+    """Normalize text using non-language-specific cleanup.
+
+    Arguments:
+        text: text to normalize
+    Returns:
+        normalized text
+    """
+    normalized = replace_control_characters(text)
+    normalized = normalized.replace("\xa0", " ").strip()
+    normalized = normalize_fullwidth_alphanumerics(normalized)
+    return normalize_ocr_confusables(normalized)
 
 
 def remove_non_punc_and_whitespace(text: str) -> str:
@@ -381,11 +408,11 @@ def remove_punc_and_whitespace(text: str) -> str:
     )
 
 
-def sanitize_text(text: str) -> str:
-    """Replace invalid control characters in generated text.
+def replace_control_characters(text: str) -> str:
+    """Replace invalid control characters in text.
 
     Arguments:
-        text: text to sanitize
+        text: text to process
     Returns:
         text with unsupported control characters replaced by spaces
     """

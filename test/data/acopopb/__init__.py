@@ -43,6 +43,7 @@ __all__ = [
     "get_acopopb_zho_hant_block_review_test_cases",
     "get_acopopb_zho_hant_ocr_fusion_test_cases",
     "get_acopopb_zho_hant_simplify_block_review_test_cases",
+    "acopopb_eng",
     "acopopb_eng_ocr_fuse",
     "acopopb_eng_ocr_fuse_clean",
     "acopopb_eng_ocr_fuse_clean_validate",
@@ -76,6 +77,7 @@ __all__ = [
     "acopopb_yue_hant_ocr_paddle",
     "acopopb_yue_hant_ocr_paddle_clean",
     "acopopb_yue_simplify_expected_series_diff",
+    "acopopb_zho_hans",
     "acopopb_zho_hans_eng",
     "acopopb_zho_hans_ocr_fuse",
     "acopopb_zho_hans_ocr_fuse_clean",
@@ -87,6 +89,7 @@ __all__ = [
     "acopopb_zho_hans_ocr_lens_clean",
     "acopopb_zho_hans_ocr_paddle",
     "acopopb_zho_hans_ocr_paddle_clean",
+    "acopopb_zho_hant",
     "acopopb_zho_hant_ocr_fuse",
     "acopopb_zho_hant_ocr_fuse_clean",
     "acopopb_zho_hant_ocr_fuse_clean_validate",
@@ -103,6 +106,7 @@ __all__ = [
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
+input_dir = title_root / "input"
 output_dir = title_root / "output"
 
 
@@ -335,6 +339,12 @@ def get_acopopb_zho_hant_simplify_block_review_test_cases(
 
 
 @fixture
+def acopopb_eng() -> Series:
+    """ACOPOPB English subtitles."""
+    return Series.load(input_dir / "eng.srt")
+
+
+@fixture
 def acopopb_eng_ocr_fuse() -> Series:
     """ACOPOPB English fused subtitles."""
     return Series.load(output_dir / "eng_ocr/fuse.srt")
@@ -545,6 +555,12 @@ def acopopb_yue_hant_ocr_paddle_clean() -> Series:
 
 
 @fixture
+def acopopb_zho_hans() -> Series:
+    """ACOPOPB zho-Hans subtitles."""
+    return Series.load(input_dir / "zho-Hans.srt")
+
+
+@fixture
 def acopopb_zho_hans_eng() -> Series:
     """ACOPOPB bilingual zho-Hans and English subtitles."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
@@ -612,6 +628,12 @@ def acopopb_zho_hans_ocr_paddle() -> Series:
 def acopopb_zho_hans_ocr_paddle_clean() -> Series:
     """ACOPOPB zho-Hans PaddleOCR subtitles, cleaned."""
     return Series.load(output_dir / "zho-Hans_ocr/paddle_clean.srt")
+
+
+@fixture
+def acopopb_zho_hant() -> Series:
+    """ACOPOPB zho-Hant subtitles."""
+    return Series.load(input_dir / "zho-Hant.srt")
 
 
 @fixture
