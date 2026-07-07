@@ -83,9 +83,19 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
     ("series_fixture", "expected_fixture"),
     [
         param(
+            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten",
+            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="acopopb-yue-hant",
+        ),
+        param(
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             id="acopopb-zho-hant",
+        ),
+        param(
+            "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten",
+            "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="acoptc-yue-hant",
         ),
         param(
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten",
@@ -116,6 +126,11 @@ def test_t2s_exclusions_are_raw_opencc_changes(text: str):
             "t_zho_hant_fuse_clean_validate_review_flatten",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
             id="t-zho-hant",
+        ),
+        param(
+            "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten",
+            "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+            id="tmm-yue-hant",
         ),
         param(
             "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten",

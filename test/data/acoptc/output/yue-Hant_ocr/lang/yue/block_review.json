@@ -1323,7 +1323,8 @@
       "xiugai_12": "只有你咁勁，就是Only you",
       "beizhu_12": "修正英文歌詞空格排版錯誤，將「on l y」統一為「Only」，並保留原句結構。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {

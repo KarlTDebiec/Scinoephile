@@ -333,7 +333,7 @@
       "zimu_19": "斩佢⋯斩佢！"
     },
     "answer": {},
-    "difficulty": 1
+    "verified": true
   },
   {
     "query": {
@@ -356,7 +356,8 @@
       "zimu_17": "大事化小，小事化无！",
       "zimu_18": "少爷，你顶帽呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -404,7 +405,8 @@
       "zimu_15": "七姑娘⋯",
       "zimu_16": "将就吓啦！将就吓啦！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -537,7 +539,8 @@
       "zimu_8": "咁我咪唔驶嫁？",
       "zimu_9": "行啦！发姣喇你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -557,8 +560,8 @@
       "xiugai_8": "以后未化妆唔好四围行呀，知嘛？",
       "beizhu_8": "将“化粧”中的“粧”修正为常用简体字“妆”。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -630,7 +633,8 @@
       "zimu_66": "赵先生，你就展示畀朕睇吓",
       "zimu_67": "系！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -696,7 +700,8 @@
       "zimu_36": "嗰二百万两系咪可以酌量减啲呀？",
       "zimu_37": "人情还人情，均真啲好！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -787,7 +792,8 @@
       "zimu_43": "血统呀！",
       "zimu_44": "主考到！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -913,7 +919,7 @@
       "zimu_11": "你先跌落地，呢个回合判博达尔多胜"
     },
     "answer": {},
-    "difficulty": 1
+    "verified": true
   },
   {
     "query": {
@@ -1164,7 +1170,8 @@
       "zimu_13": "拎嚟洗住先呀！",
       "zimu_14": "好呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1199,7 +1206,7 @@
       "zimu_29": "就喺对面灯笼下面著红衫嗰个就系啦"
     },
     "answer": {},
-    "difficulty": 1
+    "verified": true
   },
   {
     "query": {
@@ -1310,7 +1317,8 @@
       "zimu_25": "我谂我哋要先定婚期",
       "zimu_26": "因为做状元对我嚟讲易如反掌！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1378,7 +1386,8 @@
       "zimu_2": "冇呀冇呀，走啦",
       "zimu_3": "走呀，过主啦⋯阻住晒做生意"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1427,7 +1436,8 @@
       "zimu_12": "你抖吓先啦",
       "zimu_13": "我揾到钱返嚟同你睇大夫"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1472,7 +1482,8 @@
       "zimu_10": "唔系佢！唔系佢！",
       "zimu_11": "家姐⋯家姐！苏灿呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1653,7 +1664,9 @@
     "answer": {
       "xiugai_22": "佢啱啱至瞓着咋！唔好嘈醒佢呀",
       "beizhu_22": "将结果补语“瞓著”改为“瞓着”。"
-    }
+    },
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -1679,7 +1692,8 @@
       "zimu_20": "你唔好咁坦白得唔得呀？",
       "zimu_21": "你唔好咁大声得唔得呀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1697,8 +1711,8 @@
       "xiugai_9": "打捶过嚟",
       "beizhu_9": "将“搥”简化为“捶”。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -1711,8 +1725,8 @@
       "xiugai_1": "呢捶咪几咁有力！",
       "beizhu_1": "将“搥”简化为“捶”。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -1739,7 +1753,6 @@
       "zimu_4": "抱歉抱歉！拿，接住喇吓"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1791,8 +1804,8 @@
       "xiugai_19": "我就唔驶系度捱馒头啦",
       "beizhu_19": "将“挨”修正回粤语用字“捱”。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -1827,7 +1840,8 @@
       "zimu_29": "乞儿中嘅霸主？即系咩呀？",
       "zimu_30": "即系乞儿啰！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1838,7 +1852,6 @@
       "zimu_5": "黐孖筋"
     },
     "answer": {},
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1853,7 +1866,8 @@
       "zimu_1": "佛前金座，罗汉归位！",
       "zimu_2": "降龙，伏虎"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2013,7 +2027,8 @@
       "zimu_1": "佢做乜嘢呀？",
       "zimu_2": "瞓觉？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2158,7 +2173,7 @@
       "zimu_23": "宁愿锈蚀我缨枪！"
     },
     "answer": {},
-    "difficulty": 1
+    "verified": true
   },
   {
     "query": {
@@ -2184,7 +2199,8 @@
       "zimu_12": "唔好再擅离职守！",
       "zimu_13": "系！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2430,7 +2446,7 @@
       "zimu_4": "系喎！讲起都有啲眼瞓"
     },
     "answer": {},
-    "difficulty": 1
+    "verified": true
   },
   {
     "query": {
@@ -2471,7 +2487,8 @@
       "zimu_9": "⋯龙马精神，望夫成龙⋯",
       "zimu_10": "打完收工！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2480,7 +2497,8 @@
       "zimu_3": "就一定可以打赢我",
       "zimu_4": "不过你冇呢个机会喇"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {

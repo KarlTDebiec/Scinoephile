@@ -14,6 +14,16 @@ from test.helpers import assert_series_equal, parametrize
     ("series_fixture", "expected_fixture"),
     [
         param(
+            "acopopb_yue_hans_ocr_fuse_clean_validate_review",
+            "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            id="acopopb-yue-hans",
+        ),
+        param(
+            "acopopb_yue_hant_ocr_fuse_clean_validate_review",
+            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten",
+            id="acopopb-yue-hant",
+        ),
+        param(
             "acopopb_zho_hans_ocr_fuse_clean_validate_review",
             "acopopb_zho_hans_ocr_fuse_clean_validate_review_flatten",
             id="acopopb-zho-hans",
@@ -22,6 +32,16 @@ from test.helpers import assert_series_equal, parametrize
             "acopopb_zho_hant_ocr_fuse_clean_validate_review",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten",
             id="acopopb-zho-hant",
+        ),
+        param(
+            "acoptc_yue_hans_ocr_fuse_clean_validate_review",
+            "acoptc_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            id="acoptc-yue-hans",
+        ),
+        param(
+            "acoptc_yue_hant_ocr_fuse_clean_validate_review",
+            "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten",
+            id="acoptc-yue-hant",
         ),
         param(
             "acoptc_zho_hans_ocr_fuse_clean_validate_review",
@@ -77,6 +97,16 @@ from test.helpers import assert_series_equal, parametrize
             "t_zho_hant_fuse_clean_validate_review",
             "t_zho_hant_fuse_clean_validate_review_flatten",
             id="t-zho-hant",
+        ),
+        param(
+            "tmm_yue_hans_ocr_fuse_clean_validate_review",
+            "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten",
+            id="tmm-yue-hans",
+        ),
+        param(
+            "tmm_yue_hant_ocr_fuse_clean_validate_review",
+            "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten",
+            id="tmm-yue-hant",
         ),
         param(
             "tmm_zho_hans_ocr_fuse_clean_validate_review",
