@@ -517,7 +517,8 @@
       "zimu_19": "摸摸⋯",
       "zimu_20": "哎⋯「摸摸」在那个姐姐身上　快过去拿"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -699,7 +700,8 @@
       "xiugai_4": "你看着办吧",
       "beizhu_4": "将“看著”中的“著”改为简体字“着”，以符合简体中文字幕规范。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
