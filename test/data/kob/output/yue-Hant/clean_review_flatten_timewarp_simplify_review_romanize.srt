@@ -1470,8 +1470,8 @@ m̀hhaihàh ma?
 
 295
 00:15:34,118 --> 00:15:35,535
-乜原来有人匿埋系度咩？
-māt yùhnlòih yáuh yàhn nēimàaih haihdouh mē?
+乜原来有人匿埋喺度咩？
+māt yùhnlòih yáuh yàhn nēimàaih háidouh mē?
 
 296
 00:15:39,164 --> 00:15:41,041
@@ -1630,8 +1630,8 @@ mātyéh sih àh?
 
 327
 00:18:44,450 --> 00:18:45,618
-个黐线佬仲系度㖞
-go chīsin lóu juhnghaihdouh wo
+个黐线佬仲喺度㖞
+go chīsin lóu juhng háidouh wo
 
 328
 00:18:46,117 --> 00:18:46,952
@@ -1880,8 +1880,8 @@ síuyèhseuhnggīngfuhháau, ngóhdeih hahmgā būn
 
 377
 00:21:11,286 --> 00:21:12,578
-你地唔好追喇
-néih deih m̀hhóu jēuila
+你哋唔好追喇
+néihdeih m̀hhóu jēuila
 
 378
 00:21:12,662 --> 00:21:14,872
@@ -1965,8 +1965,8 @@ móuhngáahn tái haak
 
 394
 00:21:42,187 --> 00:21:44,940
-你地企晒喺度做乜嘢呀？仲唔搬佢走
-néih deihkéih saai háidouh jouh mātyéh àh? juhng m̀h būn kéuih jáu
+你哋企晒喺度做乜嘢呀？仲唔搬佢走
+néihdeih kéihsaai háidouh jouh mātyéh àh? juhng m̀h būn kéuih jáu
 
 395
 00:21:46,358 --> 00:21:47,985
@@ -3100,8 +3100,8 @@ leihbouhseuhngsyū, faai dī chēutlàih! chēutlàih!
 
 621
 00:41:21,963 --> 00:41:23,882
-我系度！系度！
-ngóh haih douh! haihdouh!
+我喺度！喺度！
+ngóh háidouh! háidouh!
 
 622
 00:41:28,011 --> 00:41:29,137
@@ -3385,8 +3385,8 @@ chāaugā àh, ajái! ngóh séung haam àh! jái!
 
 678
 00:44:11,277 --> 00:44:13,363
-顶住呀！千祈咪系度失礼人
-díngjyuh àh! chīnkèih mī haihdouh sātláih yàhn
+顶住呀！千祈咪喺度失礼人
+díngjyuh àh! chīnkèih mī háidouh sātláih yàhn
 
 679
 00:44:13,446 --> 00:44:14,447
@@ -3870,8 +3870,8 @@ haih!
 
 775
 00:48:03,187 --> 00:48:03,938
-想点呀你地？
-séung dím àh néih deih?
+想点呀你哋？
+séung dím àh néihdeih?
 
 776
 00:48:04,063 --> 00:48:05,064
@@ -4660,8 +4660,8 @@ adē, néih tái haak!
 
 933
 00:58:36,029 --> 00:58:37,322
-有条肉丝系度添呀！
-yáuh tìuhyuhksīhaihdouh tīm àh!
+有条肉丝喺度添呀！
+yáuh tìuhyuhksī háidouh tīm àh!
 
 934
 00:58:37,405 --> 00:58:39,324
@@ -5275,8 +5275,8 @@ yùhgwó ngóh yáuhchìhn àh
 
 1056
 01:05:04,618 --> 01:05:06,994
-我就唔驶系度捱馒头啦
-ngóh jauh m̀hsái haihdouh ngàaih maahntàuhlā
+我就唔驶喺度捱馒头啦
+ngóh jauh m̀hsái háidouh ngàaihmaahntàuhlā
 
 1057
 01:05:11,123 --> 01:05:13,667
@@ -5565,8 +5565,8 @@ tīnhah jauh haih ngóh sáu
 
 1114
 01:08:49,771 --> 01:08:52,274
-荣华富贵绝对唔会少咗你地嘅
-wìhngwàhfugwai jyuhtdeui m̀h wuih síu jó néih deih ge
+荣华富贵绝对唔会少咗你哋嘅
+wìhngwàhfugwai jyuhtdeui m̀h wuih síu jó néihdeih ge
 
 1115
 01:08:57,319 --> 01:09:00,781
@@ -5865,8 +5865,8 @@ dōu yáuh jīgaak jouh bōngjyú
 
 1174
 01:16:16,577 --> 01:16:18,120
-你地系唔系唔记得咗？
-néih deihhaih m̀h haih m̀hgeidāk jó?
+你哋系唔系唔记得咗？
+néihdeih haihm̀hhaih m̀hgeidāk jó?
 
 1175
 01:16:18,745 --> 01:16:21,038
@@ -5945,13 +5945,13 @@ bīngo m̀htóh kéuih jīkhaih m̀htóh ngóh!
 
 1190
 01:16:52,566 --> 01:16:53,692
-你地唔单止要选佢做帮住
-néih deih m̀hdāanjí yiu syún kéuih jouh bōngjyuh
+你哋唔单止要选佢做帮住
+néihdeih m̀hdāanjí yiu syún kéuih jouh bōngjyuh
 
 1191
 01:16:53,734 --> 01:16:55,027
-仲要交出你地嘅爱心！
-juhngyiu gāauchēut néih deih ge oisām!
+仲要交出你哋嘅爱心！
+juhngyiu gāauchēut néihdeih ge oisām!
 
 1192
 01:16:55,110 --> 01:16:58,654
@@ -6155,8 +6155,8 @@ ngóh tái gihk dōu juhng meih mìhng
 
 1232
 01:19:34,874 --> 01:19:37,877
-最弊莫大叔已经唔系度，咁点算呀？
-jeuibaih mohkdaaihsūk yíhgīng m̀h haihdouh, gam dímsyun àh?
+最弊莫大叔已经唔喺度，咁点算呀？
+jeuibaih mohkdaaihsūk yíhgīng m̀h háidouh, gam dímsyun àh?
 
 1233
 01:19:38,377 --> 01:19:39,377
@@ -6190,8 +6190,8 @@ nìhngyuhn sausihk ngóhyīngchēung!
 
 1239
 01:20:53,443 --> 01:20:55,069
-你地去大营睇吓准备好未？
-néih deihheui daaihyìhng tái haak jéunbeih hóu meih?
+你哋去大营睇吓准备好未？
+néihdeih heui daaihyìhng tái haak jéunbeih hóu meih?
 
 1240
 01:20:55,153 --> 01:20:56,111
@@ -6400,8 +6400,8 @@ yìhgā daaigányàhn heui saatwòhngdai
 
 1281
 01:24:43,059 --> 01:24:44,268
-你仲系度懵闭闭！
-néih juhnghaihdouh múngbaibai!
+你仲喺度懵闭闭！
+néih juhng háidouh múngbaibai!
 
 1282
 01:24:45,520 --> 01:24:46,853
@@ -6445,8 +6445,8 @@ móuh sìhgaan joi dáng la!
 
 1290
 01:25:06,621 --> 01:25:08,164
-唯有你哋留系度接应其他嘅兄弟
-wàihyáuh néihdeih làuhhaihdouh jipying kèihtā ge hīngdaih
+唯有你哋留喺度接应其他嘅兄弟
+wàihyáuh néihdeih làuh háidouh jipying kèihtā ge hīngdaih
 
 1291
 01:25:08,248 --> 01:25:08,997
@@ -6575,8 +6575,8 @@ koibōng joi m̀h chitteui, gaaksaatmahtleuhn!
 
 1316
 01:27:35,834 --> 01:27:36,835
-你地睇吓！
-néih deih tái haak!
+你哋睇吓！
+néihdeih tái haak!
 
 1317
 01:27:41,214 --> 01:27:42,297
@@ -6660,8 +6660,8 @@ wòhngseuhng, hóu ngàihhím ge! m̀hhóu jáu àh!
 
 1333
 01:28:39,431 --> 01:28:42,351
-唔去！唔通坐系度等死呀？行开
-m̀h heui! m̀htūng chóh haihdouh dángséi àh? hàahnghōi
+唔去！唔通坐喺度等死呀？行开
+m̀h heui! m̀htūng chóh háidouh dángséi àh? hàahnghōi
 
 1334
 01:28:43,726 --> 01:28:44,852
@@ -7130,8 +7130,8 @@ néih deui ngóh bātging, ngóh yātyeuhng hóyíh saat jó néih!
 
 1427
 01:36:56,363 --> 01:36:58,573
-你要杀我就唔驶痞系度同我讲啦
-néih yiu saat ngóh jauh m̀hsáipéihaihdouh tùhng ngóh góng lā
+你要杀我就唔驶痞喺度同我讲啦
+néih yiu saat ngóh jauh m̀hsáipéi háidouh tùhng ngóh góng lā
 
 1428
 01:36:59,366 --> 01:37:01,993

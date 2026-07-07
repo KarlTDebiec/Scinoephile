@@ -1470,7 +1470,7 @@ Kidding?
 
 295
 00:15:34,071 --> 00:15:35,535
-乜原来有人匿埋系度咩？
+乜原来有人匿埋喺度咩？
 Is there anyone hiding here?
 
 296
@@ -1630,7 +1630,7 @@ What's the matter?
 
 327
 00:18:44,401 --> 00:18:45,618
-个黐线佬仲系度㖞
+个黐线佬仲喺度㖞
 The idiot is still there
 
 328
@@ -1880,7 +1880,7 @@ Young master is going for the examination, let's move to Peking too
 
 377
 00:21:11,236 --> 00:21:12,578
-你地唔好追喇
+你哋唔好追喇
 Stop chasing,
 
 378
@@ -1965,7 +1965,7 @@ I don't want to see it
 
 394
 00:21:42,138 --> 00:21:44,940
-你地企晒喺度做乜嘢呀？仲唔搬佢走
+你哋企晒喺度做乜嘢呀？仲唔搬佢走
 Why are you standing here for? Why don't you remove it?
 
 395
@@ -3100,7 +3100,7 @@ Come out! Hurry up
 
 621
 00:41:21,947 --> 00:41:23,882
-我系度！系度！
+我喺度！喺度！
 I am here!
 
 622
@@ -3385,7 +3385,7 @@ Damn sequestration, I wanna cry, my son
 
 678
 00:44:11,218 --> 00:44:13,363
-顶住呀！千祈咪系度失礼人
+顶住呀！千祈咪喺度失礼人
 Hold it, don't lose our face
 
 679
@@ -3870,7 +3870,7 @@ Yes
 
 775
 00:48:03,126 --> 00:48:03,960
-想点呀你地？
+想点呀你哋？
 What do you want?
 
 776
@@ -4660,7 +4660,7 @@ Dad, look!
 
 933
 00:58:36,029 --> 00:58:37,322
-有条肉丝系度添呀！
+有条肉丝喺度添呀！
 There is a slice of meat here
 
 934
@@ -5275,7 +5275,7 @@ If I had money,
 
 1056
 01:05:04,618 --> 01:05:07,009
-我就唔驶系度捱馒头啦
+我就唔驶喺度捱馒头啦
 I wouldn't be a beggar!
 
 1057
@@ -5565,7 +5565,7 @@ I can take over his reign
 
 1114
 01:08:49,771 --> 01:08:52,287
-荣华富贵绝对唔会少咗你地嘅
+荣华富贵绝对唔会少咗你哋嘅
 I will give you a share of wealth!
 
 1115
@@ -5865,7 +5865,7 @@ could be the leader
 
 1174
 01:16:16,577 --> 01:16:18,129
-你地系唔系唔记得咗？
+你哋系唔系唔记得咗？
 Have you all forgotten?
 
 1175
@@ -5945,12 +5945,12 @@ Who doesn't respect him is going against me too
 
 1190
 01:16:52,566 --> 01:16:53,692
-你地唔单止要选佢做帮住
+你哋唔单止要选佢做帮住
 You should respect him,
 
 1191
 01:16:53,734 --> 01:16:55,036
-仲要交出你地嘅爱心！
+仲要交出你哋嘅爱心！
 your new leader, and you'd love him,
 
 1192
@@ -6148,7 +6148,7 @@ I can't understand it at all
 
 1232
 01:19:34,840 --> 01:19:37,877
-最弊莫大叔已经唔系度，咁点算呀？
+最弊莫大叔已经唔喺度，咁点算呀？
 But Uncle Mok is dead, what'll we do now?
 
 1233
@@ -6179,7 +6179,7 @@ No matter how, I have to save Yushang first
 
 1239
 01:20:53,443 --> 01:20:55,077
-你地去大营睇吓准备好未？
+你哋去大营睇吓准备好未？
 Check whether the camp is ready or not?
 
 1240
@@ -6389,7 +6389,7 @@ he is going to assassinate the king
 
 1281
 01:24:43,059 --> 01:24:44,275
-你仲系度懵闭闭！
+你仲喺度懵闭闭！
 You fat-headed
 
 1282
@@ -6434,7 +6434,7 @@ We have no time,
 
 1290
 01:25:06,621 --> 01:25:08,169
-唯有你哋留系度接应其他嘅兄弟
+唯有你哋留喺度接应其他嘅兄弟
 you stay here to wait for the others
 
 1291
@@ -6564,7 +6564,7 @@ If the beggars don't retreat now, we will kill with no mercy
 
 1316
 01:27:35,834 --> 01:27:36,840
-你地睇吓！
+你哋睇吓！
 Have a look
 
 1317
@@ -6649,7 +6649,7 @@ Your Majesty, it's dangerous, don't go!
 
 1333
 01:28:39,431 --> 01:28:42,351
-唔去！唔通坐系度等死呀？行开
+唔去！唔通坐喺度等死呀？行开
 Get lost, don't you want to wait for death? Get lost
 
 1334
@@ -7119,7 +7119,7 @@ if you don't respect me, I will kill you
 
 1427
 01:36:56,363 --> 01:36:58,574
-你要杀我就唔驶痞系度同我讲啦
+你要杀我就唔驶痞喺度同我讲啦
 If so, you needn't squat and talk to me
 
 1428
