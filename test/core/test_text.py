@@ -10,8 +10,6 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.text import (
     RE_LATIN_WORD,
     get_char_type,
-    normalize_fullwidth_alphanumerics,
-    normalize_ocr_confusables,
     normalize_text,
     replace_control_characters,
 )
@@ -34,28 +32,9 @@ def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
     ("text", "expected"),
     [
         ("ＫＡＴＥ ｋａｔｅ １２３", "KATE kate 123"),
-    ],
-)
-def test_normalize_fullwidth_alphanumerics(text: str, expected: str) -> None:
-    """Fullwidth letters and digits are converted to regular ASCII."""
-    assert normalize_fullwidth_alphanumerics(text) == expected
-
-
-@parametrize(
-    ("text", "expected"),
-    [
         ("ΟΚ, οκ.", "OK, ok."),
-    ],
-)
-def test_normalize_ocr_confusables(text: str, expected: str) -> None:
-    """OCR-confusable characters are converted to regular ASCII."""
-    assert normalize_ocr_confusables(text) == expected
-
-
-@parametrize(
-    ("text", "expected"),
-    [
         (" \xa0ＫＡＴＥ\x00ΟΚ ", "KATE OK"),
+        ("好呀！\x00\x00你", "好呀！  你"),
     ],
 )
 def test_normalize_text(text: str, expected: str) -> None:
@@ -72,19 +51,6 @@ def test_normalize_text(text: str, expected: str) -> None:
 def test_re_latin_word(text: str, expected: list[str]) -> None:
     """Latin word regex matches word-like tokens."""
     assert RE_LATIN_WORD.findall(text) == expected
-
-
-@parametrize(
-    ("text", "expected"),
-    [
-        ("好呀！\x00\x00你", "好呀！  你"),
-    ],
-)
-def test_replace_control_characters_replaces_control_chars(
-    text: str, expected: str
-) -> None:
-    """Control characters that are not text whitespace are replaced."""
-    assert replace_control_characters(text) == expected
 
 
 @parametrize(
