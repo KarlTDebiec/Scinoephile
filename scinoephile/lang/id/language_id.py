@@ -7,7 +7,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from scinoephile.core import Language
-from scinoephile.core.text import RE_HANZI, RE_LATIN_WORD, normalize_subtitle_text
+from scinoephile.core.text import (
+    RE_ASS_OVERRIDE_BLOCK,
+    RE_HANZI,
+    RE_LATIN_WORD,
+    RE_WHITESPACE,
+    normalize_text,
+)
 from scinoephile.lang.cmn.romanization import (
     is_accented_pinyin as is_accented_pinyin_fn,
 )
@@ -120,7 +126,10 @@ class LanguageId:
         Returns:
             language identification results
         """
-        normalized_text = normalize_subtitle_text(text)
+        normalized_text = normalize_text(text)
+        normalized_text = normalized_text.replace("\\N", " ")
+        normalized_text = RE_ASS_OVERRIDE_BLOCK.sub(" ", normalized_text)
+        normalized_text = RE_WHITESPACE.sub(" ", normalized_text).strip()
         is_accented_pinyin = is_accented_pinyin_fn(normalized_text)
         is_numbered_pinyin = is_numbered_pinyin_fn(normalized_text)
         is_accented_yale = is_accented_yale_fn(normalized_text)

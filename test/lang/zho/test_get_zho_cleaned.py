@@ -14,6 +14,7 @@ from test.helpers import assert_series_equal, parametrize
     ("text", "expected"),
     [
         ('<font face="Monospace">{\\an7}中文\xa0測試</font>', "中文 測試"),
+        ("ΟΚ\x00中文", "OK 中文"),
         (
             "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
             "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "

@@ -18,6 +18,7 @@ from test.helpers import assert_series_equal, parametrize
             '<font face="Monospace">{\\an7}WOODY:\xa0Look out!</font>',
             "WOODY: Look out!",
         ),
+        ("hello\x00world", "hello world"),
         (
             "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
             "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "

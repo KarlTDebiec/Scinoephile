@@ -35,11 +35,11 @@ __all__ = [
     "get_char_type",
     "is_full_width_char",
     "normalize_fullwidth_alphanumerics",
-    "normalize_ocr_confusables_to_ascii",
-    "normalize_subtitle_text",
+    "normalize_ocr_confusables",
+    "normalize_text",
+    "replace_control_characters",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
-    "sanitize_text",
 ]
 
 
@@ -357,7 +357,7 @@ def normalize_fullwidth_alphanumerics(text: str) -> str:
     return text.translate(_FULLWIDTH_ALPHANUMERICS_TO_ASCII)
 
 
-def normalize_ocr_confusables_to_ascii(text: str) -> str:
+def normalize_ocr_confusables(text: str) -> str:
     """Convert OCR-confusable characters to regular ASCII.
 
     Arguments:
@@ -368,19 +368,18 @@ def normalize_ocr_confusables_to_ascii(text: str) -> str:
     return text.translate(_OCR_CONFUSABLES_TO_ASCII)
 
 
-def normalize_subtitle_text(text: str) -> str:
-    """Normalize subtitle text for plain-text analysis.
+def normalize_text(text: str) -> str:
+    """Normalize text using non-language-specific cleanup.
 
     Arguments:
-        text: subtitle text to normalize
+        text: text to normalize
     Returns:
-        normalized subtitle text
+        normalized text
     """
-    normalized = sanitize_text(text)
+    normalized = replace_control_characters(text)
+    normalized = normalized.replace("\xa0", " ").strip()
     normalized = normalize_fullwidth_alphanumerics(normalized)
-    normalized = normalized.replace("\\N", " ")
-    normalized = RE_ASS_OVERRIDE_BLOCK.sub(" ", normalized)
-    return RE_WHITESPACE.sub(" ", normalized).strip()
+    return normalize_ocr_confusables(normalized)
 
 
 def remove_non_punc_and_whitespace(text: str) -> str:
@@ -409,11 +408,11 @@ def remove_punc_and_whitespace(text: str) -> str:
     )
 
 
-def sanitize_text(text: str) -> str:
-    """Replace invalid control characters in generated text.
+def replace_control_characters(text: str) -> str:
+    """Replace invalid control characters in text.
 
     Arguments:
-        text: text to sanitize
+        text: text to process
     Returns:
         text with unsupported control characters replaced by spaces
     """

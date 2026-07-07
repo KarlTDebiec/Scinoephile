@@ -23,6 +23,16 @@ from test.helpers import parametrize
             language=Language.eng,
         ),
         LanguageId(
+            text="{\\i1}Ｆａｓｔ\\NΟΚ\x00now",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=False,
+            is_traditional=False,
+            language=Language.eng,
+        ),
+        LanguageId(
             text="nǐ hǎo",
             is_accented_pinyin=True,
             is_numbered_pinyin=False,

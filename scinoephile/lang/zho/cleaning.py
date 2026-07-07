@@ -8,7 +8,7 @@ import re
 from copy import deepcopy
 
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import HALF_TO_FULL_PUNC, normalize_fullwidth_alphanumerics
+from scinoephile.core.text import HALF_TO_FULL_PUNC, normalize_text
 
 __all__ = [
     "get_zho_cleaned",
@@ -46,8 +46,7 @@ def get_zho_text_cleaned(text: str) -> str | None:
         cleaned text
     """
     line_sep = r"\N"
-    cleaned = text.replace("\xa0", " ").strip()
-    cleaned = normalize_fullwidth_alphanumerics(cleaned)
+    cleaned = normalize_text(text)
 
     # Remove extraction markup before punctuation normalization
     cleaned = re.sub(r"</?font\b[^>]*>", "", cleaned, flags=re.IGNORECASE)
