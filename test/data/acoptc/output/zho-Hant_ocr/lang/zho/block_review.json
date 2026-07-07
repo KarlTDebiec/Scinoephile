@@ -145,7 +145,7 @@
     },
     "answer": {
       "xiugai_2": "這個山頭所有東西都屬於我",
-      "beizhu_2": "刪除句末多餘的「的」字。"
+      "beizhu_2": "刪除句末「的」，與語義和對應字幕保持一致。"
     },
     "difficulty": 1,
     "verified": true
@@ -166,11 +166,7 @@
       "zimu_1": "你沒有變成孫悟空托世",
       "zimu_2": "是因為你還沒遇見給你三顆痣的人"
     },
-    "answer": {
-      "xiugai_1": "你沒有變成孫悟空投世",
-      "beizhu_1": "「托世」應為「投世」，屬錯別字修正。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -189,11 +185,7 @@
       "zimu_4": "拜托你把寶盒還給我",
       "zimu_5": "芝麻開門"
     },
-    "answer": {
-      "xiugai_4": "拜託你把寶盒還給我",
-      "beizhu_4": "「拜托」修正為正確寫法「拜託」。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -301,11 +293,7 @@
       "zimu_36": "用心點",
       "zimu_37": "喔⋯"
     },
-    "answer": {
-      "xiugai_15": "還有這個寶盒呢⋯我的",
-      "beizhu_15": "合併斷開的字幕內容，刪除多餘空格，修正排版。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -421,7 +409,7 @@
     },
     "answer": {
       "xiugai_8": "至尊寶？　至尊玉？　想騙我啊？",
-      "beizhu_8": "修正「玉尊玉」為「至尊玉」，屬輸入/排版錯誤。"
+      "beizhu_8": "修正「玉尊玉」為「至尊玉」。"
     },
     "difficulty": 1,
     "verified": true
@@ -464,7 +452,7 @@
     },
     "answer": {
       "xiugai_18": "這個豬頭切一半給我，謝謝",
-      "beizhu_18": "修正「切不半」為「切一半」，屬輸入/錯別字修正。"
+      "beizhu_18": "修正「切不半」為「切一半」。"
     },
     "difficulty": 1,
     "verified": true
@@ -688,7 +676,7 @@
     },
     "answer": {
       "xiugai_6": "亂扔會污染環境！",
-      "beizhu_6": "將「染污」修正為常用錯別字「污染」。"
+      "beizhu_6": "修正「染污」為「污染」。"
     },
     "difficulty": 1,
     "verified": true
@@ -763,7 +751,11 @@
       "zimu_34": "閉嘴！",
       "zimu_35": "閉嘴！"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_21": "那個金剛圈尺寸太差",
+      "beizhu_21": "修正「尺吋」為「尺寸」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -799,11 +791,7 @@
       "zimu_4": "觀音姐姐",
       "zimu_5": "請你放過悟空，不要傷害牠啦"
     },
-    "answer": {
-      "xiugai_5": "請你放過悟空，不要傷害它啦",
-      "beizhu_5": "將「牠」修正為「它」，符合指代悟空的用字與字幕排版性錯字修正。"
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1090,8 +1078,8 @@
       "zimu_2": "誰敢阻止我誰就死"
     },
     "answer": {
-      "xiugai_1": "你們這些混蛋在我地盤瞎搞甚麼？",
-      "beizhu_1": "將「和」修正為「甚麼」，修正錯別字/輸入錯誤。"
+      "xiugai_1": "你們這些混蛋在我地盤瞎搞啥？",
+      "beizhu_1": "將句末錯字「和」修正為「啥」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1157,7 +1145,11 @@
       "zimu_19": "鬼才相信你⋯",
       "zimu_20": "你們在這兒你幹甚麼？"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_20": "你們在這兒幹甚麼？",
+      "beizhu_20": "刪除多餘的「你」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1555,7 +1547,11 @@
       "zimu_15": "好！你要我的！我要我的！",
       "zimu_16": "快點救紫霞，肉身你也有份的"
     },
-    "answer": {},
+    "answer": {
+      "xiugai_2": "好有男子氣概！",
+      "beizhu_2": "將「氣慨」更正為「氣概」。"
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1797,6 +1793,8 @@
       "zimu_48": "還立下永不分離誓言"
     },
     "answer": {
+      "xiugai_13": "我千辛萬苦回這裡所做的所有事情",
+      "beizhu_13": "將「和做」更正為「所做」。",
       "xiugai_31": "我才一轉過身你就突如其來向我一指",
       "beizhu_31": "修正「奇來」為「其來」，屬錯別字。"
     },
@@ -2028,8 +2026,8 @@
       "zimu_8": "也傳說中的緣份"
     },
     "answer": {
-      "xiugai_8": "也許傳說中的緣份",
-      "beizhu_8": "第 8 條將「也」修正為「也許」，補正明顯漏字。"
+      "xiugai_8": "也是傳說中的緣份",
+      "beizhu_8": "補入「是」，修正句意。"
     },
     "difficulty": 1,
     "verified": true
@@ -2677,11 +2675,7 @@
       "zimu_3": "一定要靠月光寶盒才能離開這裡． ．",
       "zimu_4": "走"
     },
-    "answer": {
-      "xiugai_3": "一定要靠月光寶盒才能離開這裡． ．⋯⋯",
-      "beizhu_3": "Preserved cleaning-normalized punctuation in the block-review output."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
