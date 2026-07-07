@@ -1140,11 +1140,11 @@
   {
     "query": {
       "yuewen": "点解橙叫「Orange」呢？",
-      "zhongwen": "橙，为什么会是「疴－烂－煮」呢？"
+      "zhongwen": "橙，为什么会是「屙－烂－煮」呢？"
     },
     "answer": {
-      "xiugai": "点解橙叫「疴－烂－煮」呢？",
-      "beizhu": "Corrected 'Orange' to '疴－烂－煮' as '疴－烂－煮' appears to be an indentional transliteration of 'orange' into Chinese characters, matching the styling in the 中文."
+      "xiugai": "点解橙叫「屙－烂－煮」呢？",
+      "beizhu": "Corrected 'Orange' to '屙－烂－煮' as '屙－烂－煮' appears to be an indentional transliteration of 'orange' into Chinese characters, matching the styling in the 中文."
     },
     "difficulty": 1,
     "prompt": true,
@@ -1165,11 +1165,11 @@
   {
     "query": {
       "yuewen": "「噢」呢个我明白，但系「橙」呢？",
-      "zhongwen": "「疴」这个我明白，可是「烂－煮」呢？"
+      "zhongwen": "「屙」这个我明白，可是「烂－煮」呢？"
     },
     "answer": {
-      "xiugai": "「疴」呢个我明白，但系「烂－煮」呢？",
-      "beizhu": "Corrected '噢' to '疴' and '橙' to '烂－煮' as these are likely mishearings of the intended words in the context of the question."
+      "xiugai": "「屙」呢个我明白，但系「烂－煮」呢？",
+      "beizhu": "Corrected '噢' to '屙' and '橙' to '烂－煮' as these are likely mishearings of the intended words in the context of the question."
     },
     "difficulty": 1,
     "verified": true
@@ -1213,11 +1213,11 @@
   {
     "query": {
       "yuewen": "至多会Orange啫，点解会搞到落雨呢？",
-      "zhongwen": "至多是疴烂煮，怎么会下起雨来呢？"
+      "zhongwen": "至多是屙烂煮，怎么会下起雨来呢？"
     },
     "answer": {
-      "xiugai": "至多会疴烂煮啫，点解会搞到落雨呢？",
-      "beizhu": "Corrected 'Orange' to '疴烂煮' as '疴烂煮' is a transliteration of 'orange' matching the style and meaning in the 中文."
+      "xiugai": "至多会屙烂煮啫，点解会搞到落雨呢？",
+      "beizhu": "Corrected 'Orange' to '屙烂煮' as '屙烂煮' is a transliteration of 'orange' matching the style and meaning in the 中文."
     },
     "difficulty": 1,
     "verified": true
@@ -1555,11 +1555,11 @@
   {
     "query": {
       "yuewen": "睇住自己日日柯能处⋯",
-      "zhongwen": "看著自己每天疴烂煮⋯"
+      "zhongwen": "看著自己每天屙烂煮⋯"
     },
     "answer": {
-      "xiugai": "睇住自己日日疴烂煮⋯",
-      "beizhu": "Corrected '柯能处' to '疴烂煮' as '疴烂煮' is a phonetic match and matches the meaning of the 中文, while '柯能处' is a mishearing."
+      "xiugai": "睇住自己日日屙烂煮⋯",
+      "beizhu": "Corrected '柯能处' to '屙烂煮' as '屙烂煮' is a phonetic match and matches the meaning of the 中文, while '柯能处' is a mishearing."
     },
     "difficulty": 1,
     "verified": true
@@ -1613,11 +1613,11 @@
   {
     "query": {
       "yuewen": "但系唱嚟唱去都系「阿伦厨」咁「Ballana」噉⋯",
-      "zhongwen": "可每次我总唱成「疴」什么什么的⋯"
+      "zhongwen": "可每次我总唱成「屙」什么什么的⋯"
     },
     "answer": {
-      "xiugai": "但系唱嚟唱去都系「疴﹣兰﹣煮」咁「芭﹣娜﹣娜」噉⋯",
-      "beizhu": "Corrected '阿伦厨' to '疴兰煮' as it is a likely mishearing and matches the intended pun on 'orange' ('疴﹣兰﹣煮') in the context; Also corrected 'Ballana' to '芭﹣娜﹣娜' as it is a mishearing of 'Banana', and is meant to be styled in the same phonetic manner as '疴﹣兰﹣煮'."
+      "xiugai": "但系唱嚟唱去都系「屙﹣兰﹣煮」咁「芭﹣娜﹣娜」噉⋯",
+      "beizhu": "Corrected '阿伦厨' to '屙兰煮' as it is a likely mishearing and matches the intended pun on 'orange' ('屙﹣兰﹣煮') in the context; Also corrected 'Ballana' to '芭﹣娜﹣娜' as it is a mishearing of 'Banana', and is meant to be styled in the same phonetic manner as '屙﹣兰﹣煮'."
     },
     "difficulty": 3,
     "prompt": true,
@@ -6653,11 +6653,11 @@
   {
     "query": {
       "yuewen": "我话：火鸡「我能住」呀！",
-      "zhongwen": "我说：火鸡「疴烂煮」！"
+      "zhongwen": "我说：火鸡「屙烂煮」！"
     },
     "answer": {
-      "xiugai": "我话：火鸡「疴烂煮」呀！",
-      "beizhu": "Corrected '我能住' to '疴烂煮' as it is a mishearing and '疴烂煮' is a phonetic play on 'orange', matching the style and pun in the 中文."
+      "xiugai": "我话：火鸡「屙烂煮」呀！",
+      "beizhu": "Corrected '我能住' to '屙烂煮' as it is a mishearing and '屙烂煮' is a phonetic play on 'orange', matching the style and pun in the 中文."
     },
     "difficulty": 1,
     "verified": true
@@ -7111,11 +7111,11 @@
   {
     "query": {
       "yuewen": "唉，我后悔讲过「火鸡阿宁处」呢句嘢",
-      "zhongwen": "唉，我好后悔讲过一句「火鸡疴烂煮」"
+      "zhongwen": "唉，我好后悔讲过一句「火鸡屙烂煮」"
     },
     "answer": {
-      "xiugai": "唉，我后悔讲过「火鸡疴烂煮」呢句嘢",
-      "beizhu": "Corrected '阿宁处' to '疴烂煮' as it is a mishearing and '疴烂煮' matches the pun intended in the 中文."
+      "xiugai": "唉，我后悔讲过「火鸡屙烂煮」呢句嘢",
+      "beizhu": "Corrected '阿宁处' to '屙烂煮' as it is a mishearing and '屙烂煮' matches the pun intended in the 中文."
     },
     "difficulty": 1,
     "verified": true
