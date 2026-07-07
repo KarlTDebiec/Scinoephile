@@ -4616,7 +4616,7 @@ Isn't this stance…
 
 1155
 01:14:32,347 --> 01:14:34,349
-Uncle Sun's "Sleeping Disciple's Fists"?
+Uncle Sun's “Sleeping Disciple's Fists”?
 
 1156
 01:14:35,350 --> 01:14:36,226
@@ -5797,4 +5797,3 @@ Say thank you now
 1450
 01:38:52,975 --> 01:38:55,811
 Thank you, uncle
-

@@ -166,7 +166,8 @@
       "zimu_54": "那时候⋯",
       "zimu_55": "我买所房子给妈妈！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -205,7 +206,8 @@
       "xiugai_1": "看着自己每天痾烂煮⋯",
       "beizhu_1": "原文无明显排版或错别字错误，保持不变。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -221,7 +223,8 @@
       "xiugai_2": "我时常想着学习",
       "beizhu_2": "将「想著」中的「著」修正为简体字「着」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -239,7 +242,8 @@
       "xiugai_7": "一个女人背起整个世界！",
       "beizhu_7": "将“揹”修正为“背”，统一为简体用字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -971,7 +975,8 @@
       "zimu_34": "「多谢合作！」",
       "zimu_35": "「你忠实的，麦太」"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1056,7 +1061,8 @@
       "zimu_49": "焗炉戚戚恻恻，戚戚恻恻⋯",
       "zimu_50": "有如天使预早送来的福音"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1146,7 +1152,8 @@
       "xiugai_31": "发现咸蛋旁边是一件火鸡背脊的时候⋯",
       "beizhu_31": "“火鸡背”应为“火鸡背脊”，补全缺失字词。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {

@@ -395,7 +395,7 @@ Roll call now.
 
 96
 00:07:22,917 --> 00:07:24,375
-- Fai! 〈i〉-〈/i〉 Present!
+- Fai!<i>-</i>Present!
 
 97
 00:07:24,500 --> 00:07:26,667
@@ -403,11 +403,11 @@ Roll call now.
 
 98
 00:07:26,833 --> 00:07:28,750
-- Darby! 〈i〉-〈/i〉 Present!
+- Darby!<i>-</i>Present!
 
 99
 00:07:28,917 --> 00:07:31,708
-- May! 〈i〉-〈/i〉 Present!
+- May!<i>-</i>Present!
 
 100
 00:07:31,875 --> 00:07:33,750
@@ -419,7 +419,7 @@ Roll call now.
 
 102
 00:07:36,958 --> 00:07:40,000
-- McMug! 〈i〉-〈/i〉 Present!
+- McMug!<i>-</i>Present!
 
 103
 00:07:40,167 --> 00:07:41,292
@@ -447,23 +447,23 @@ Back to roll call.
 
 109
 00:07:55,792 --> 00:07:57,583
-- Fai! 〈i〉-〈/i〉 Present!
+- Fai!<i>-</i>Present!
 
 110
 00:07:57,792 --> 00:07:58,958
-- Fai! 〈i〉-〈/i〉 Present!
+- Fai!<i>-</i>Present!
 
 111
 00:07:59,167 --> 00:08:01,333
-- Darby! 〈i〉-〈/i〉 Present!
+- Darby!<i>-</i>Present!
 
 112
 00:08:02,125 --> 00:08:03,250
-- May! 〈i〉-〈/i〉 Present!
+- May!<i>-</i>Present!
 
 113
 00:08:03,500 --> 00:08:05,500
-- McMug! 〈i〉-〈/i〉 Present!
+- McMug!<i>-</i>Present!
 
 114
 00:08:05,750 --> 00:08:07,875
@@ -1426,7 +1426,7 @@ Hey, I'm leaving tomorrow.
 
 346
 00:27:06,458 --> 00:27:08,667
-- Yes… 〈i〉-〈/i〉 Is that right?
+- Yes…<i>-</i>Is that right?
 
 347
 00:27:08,833 --> 00:27:10,292
@@ -1545,7 +1545,7 @@ If only for one small piece.
 
 375
 00:33:06,042 --> 00:33:08,250
-- Goodnight, mother! 〈i〉-〈/i〉 Goodnight!
+- Goodnight, mother!<i>-</i>Goodnight!
 
 376
 00:33:46,542 --> 00:33:48,000

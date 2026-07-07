@@ -80,7 +80,8 @@
       "xiugai_11": "對！深水埗地鐵站步行不用10分鐘！",
       "beizhu_11": "修正數字間多餘空格：`1 0` 改為 `10`。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -231,7 +232,8 @@
       "zimu_6": "我媽媽真的很勁",
       "zimu_7": "一個女人揹起整個世界！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -304,7 +306,8 @@
       "zimu_19": "他扭了腳骸！",
       "zimu_20": "媽媽，我想睡覺"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -702,7 +705,8 @@
       "zimu_25": "「大包，整多兩籠」",
       "zimu_26": "「大包，整多兩籠唔怕滯」"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -805,7 +809,8 @@
       "xiugai_17": "在1978年兩座包山忽然倒下，多人重傷",
       "beizhu_17": "修正年份中的多餘空格「1 978」為「1978」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1049,7 +1054,8 @@
       "xiugai_47": "12月24日",
       "beizhu_47": "「1 2月24日」修正為「12月24日」，去除多餘空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1137,7 +1143,8 @@
       "xiugai_10": "上面淋了老抽生粉芡",
       "beizhu_10": "「獻」應為「芡」，修正錯別字。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1322,7 +1329,8 @@
       "zimu_13": "秘訣是：拜託，把雞燒好一點⋯",
       "zimu_14": "多謝合作！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
