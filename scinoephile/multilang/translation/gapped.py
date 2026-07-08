@@ -4,22 +4,18 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Unpack, cast
 
-from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.dictionaries import DictionaryToolPrompt
-from scinoephile.core.llms import OperationSpec, ProcessorKwargs
-from scinoephile.core.subtitles import Series
-from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
-from scinoephile.llms.default_test_cases import (
-    ENG_YUE_GAPPED_TRANSLATION_JSON_PATHS,
-    ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-    YUE_ENG_GAPPED_TRANSLATION_JSON_PATHS,
-    YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-    ZHO_ENG_GAPPED_TRANSLATION_JSON_PATHS,
-    ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
-    load_default_test_cases,
+from scinoephile.core import Language
+from scinoephile.core.llms import (
+    LLMProvider,
+    OperationSpec,
+    ProcessorKwargs,
+    TestCase,
 )
+from scinoephile.core.subtitles import Series
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_n_minus_m_to_n import (
     DualNMinusMToNManager,
     DualNMinusMToNProcessor,
@@ -45,10 +41,7 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueGappedTranslationPromptZhoHant,
 )
 
-from .shared import (
-    DualNMinusMToNTranslationProcessorKwargs,
-    TranslationRoute,
-)
+from .shared import DualNMinusMToNTranslationProcessorKwargs
 
 __all__ = [
     "GAPPED_TRANSLATION_OPERATION_SPEC",
@@ -66,73 +59,58 @@ GAPPED_TRANSLATION_OPERATION_SPEC = OperationSpec(
 )
 """Operation specification for gapped translation."""
 
-_GAPPED_TRANSLATION_ROUTES: dict[tuple[Language, Language], TranslationRoute] = {
-    (Language.yue_hans, Language.eng): (
-        ENG_YUE_GAPPED_TRANSLATION_JSON_PATHS,
-        EngYueGappedTranslationPrompt,
+_ENG_YUE_GAPPED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_YUE_ENG_GAPPED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS = (
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cuda.json"
     ),
-    (Language.yue_hant, Language.eng): (
-        ENG_YUE_GAPPED_TRANSLATION_JSON_PATHS,
-        EngYueGappedTranslationPrompt,
-    ),
-    (Language.zho_hans, Language.eng): (
-        ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-        EngZhoGappedTranslationPrompt,
-    ),
-    (Language.zho_hant, Language.eng): (
-        ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-        EngZhoGappedTranslationPrompt,
-    ),
-    (Language.eng, Language.yue_hans): (
-        YUE_ENG_GAPPED_TRANSLATION_JSON_PATHS,
-        YueEngGappedTranslationPromptYueHans,
-    ),
-    (Language.eng, Language.yue_hant): (
-        YUE_ENG_GAPPED_TRANSLATION_JSON_PATHS,
-        YueEngGappedTranslationPromptYueHant,
-    ),
-    (Language.zho_hans, Language.yue_hans): (
-        YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-        YueZhoGappedTranslationPromptYueHans,
-    ),
-    (Language.zho_hant, Language.yue_hans): (
-        YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-        YueZhoGappedTranslationPromptYueHans,
-    ),
-    (Language.zho_hans, Language.yue_hant): (
-        YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-        YueZhoGappedTranslationPromptYueHant,
-    ),
-    (Language.zho_hant, Language.yue_hant): (
-        YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-        YueZhoGappedTranslationPromptYueHant,
-    ),
-    (Language.eng, Language.zho_hans): (
-        ZHO_ENG_GAPPED_TRANSLATION_JSON_PATHS,
-        ZhoEngGappedTranslationPromptZhoHans,
-    ),
-    (Language.eng, Language.zho_hant): (
-        ZHO_ENG_GAPPED_TRANSLATION_JSON_PATHS,
-        ZhoEngGappedTranslationPromptZhoHant,
-    ),
-    (Language.yue_hans, Language.zho_hans): (
-        ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
-        ZhoYueGappedTranslationPromptZhoHans,
-    ),
-    (Language.yue_hant, Language.zho_hans): (
-        ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
-        ZhoYueGappedTranslationPromptZhoHans,
-    ),
-    (Language.yue_hans, Language.zho_hant): (
-        ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
-        ZhoYueGappedTranslationPromptZhoHant,
-    ),
-    (Language.yue_hant, Language.zho_hant): (
-        ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
-        ZhoYueGappedTranslationPromptZhoHant,
-    ),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/mps.json"),
+)
+_ZHO_ENG_GAPPED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+
+_JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
+    (Language.yue_hans, Language.eng): _ENG_YUE_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hant, Language.eng): _ENG_YUE_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hans, Language.eng): _ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hant, Language.eng): _ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.yue_hans): _YUE_ENG_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.yue_hant): _YUE_ENG_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hans, Language.yue_hans): _YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hant, Language.yue_hans): _YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hans, Language.yue_hant): _YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hant, Language.yue_hant): _YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.zho_hans): _ZHO_ENG_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.zho_hant): _ZHO_ENG_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hans, Language.zho_hans): _ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hant, Language.zho_hans): _ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hans, Language.zho_hant): _ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hant, Language.zho_hant): _ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
 }
-"""Gapped translation routes keyed by exact source and target languages."""
+"""Gapped translation JSON paths keyed by exact source and target languages."""
+
+_PROMPTS: dict[tuple[Language, Language], type[DualNMinusMToNPrompt]] = {
+    (Language.yue_hans, Language.eng): EngYueGappedTranslationPrompt,
+    (Language.yue_hant, Language.eng): EngYueGappedTranslationPrompt,
+    (Language.zho_hans, Language.eng): EngZhoGappedTranslationPrompt,
+    (Language.zho_hant, Language.eng): EngZhoGappedTranslationPrompt,
+    (Language.eng, Language.yue_hans): YueEngGappedTranslationPromptYueHans,
+    (Language.eng, Language.yue_hant): YueEngGappedTranslationPromptYueHant,
+    (Language.zho_hans, Language.yue_hans): YueZhoGappedTranslationPromptYueHans,
+    (Language.zho_hant, Language.yue_hans): YueZhoGappedTranslationPromptYueHans,
+    (Language.zho_hans, Language.yue_hant): YueZhoGappedTranslationPromptYueHant,
+    (Language.zho_hant, Language.yue_hant): YueZhoGappedTranslationPromptYueHant,
+    (Language.eng, Language.zho_hans): ZhoEngGappedTranslationPromptZhoHans,
+    (Language.eng, Language.zho_hant): ZhoEngGappedTranslationPromptZhoHant,
+    (Language.yue_hans, Language.zho_hans): ZhoYueGappedTranslationPromptZhoHans,
+    (Language.yue_hant, Language.zho_hans): ZhoYueGappedTranslationPromptZhoHans,
+    (Language.yue_hans, Language.zho_hant): ZhoYueGappedTranslationPromptZhoHant,
+    (Language.yue_hant, Language.zho_hant): ZhoYueGappedTranslationPromptZhoHant,
+}
+"""Gapped translation prompts keyed by exact source and target languages."""
 
 
 class GappedTranslationProcessorKwargs(
@@ -185,61 +163,31 @@ def get_gap_translated(
 def get_gap_translator(
     source_language: Language,
     target_language: Language,
-    **kwargs: Unpack[GappedTranslationProcessorKwargs],
+    prompt_cls: type[DualNMinusMToNPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
+    provider: LLMProvider | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> DualNMinusMToNProcessor:
     """Get a gap translation processor for a supported language pair.
 
     Arguments:
         source_language: source language
         target_language: target language
+        prompt_cls: prompt class override
+        test_cases: test cases
+        provider: provider to use for queries
         **kwargs: processor initialization keyword arguments
     Returns:
         configured gapped translation processor
     """
-    route = _GAPPED_TRANSLATION_ROUTES.get((source_language, target_language))
-    if route is None:
-        raise ScinoephileError(
-            f"Unsupported translation pair: {source_language.tag} to "
-            f"{target_language.tag}"
-        )
-
-    json_paths, route_prompt_cls = route
-    selected_prompt_cls = kwargs.pop("prompt_cls", None) or cast(
-        type[DualNMinusMToNPrompt], route_prompt_cls
-    )
-
-    test_cases = kwargs.pop("test_cases", None)
+    if prompt_cls is None:
+        prompt_cls = _PROMPTS[source_language, target_language]
     if test_cases is None:
+        json_paths = _JSON_PATHS[source_language, target_language]
         test_cases = list(
-            load_default_test_cases(
-                GAPPED_TRANSLATION_OPERATION_SPEC.manager_cls,
-                selected_prompt_cls,
-                json_paths,
-            )
+            load_default_test_cases(DualNMinusMToNManager, prompt_cls, json_paths)
         )
-
-    provider = kwargs.pop("provider", None)
     if provider is None:
         provider = get_provider()
 
-    tool_box = kwargs.pop("tool_box", None)
-    use_dictionary_tool = kwargs.pop("use_dictionary_tool", True)
-    if (
-        tool_box is None
-        and use_dictionary_tool
-        and hasattr(selected_prompt_cls, "dictionary_tool_name")
-        and hasattr(selected_prompt_cls, "dictionary_tool_description")
-        and hasattr(selected_prompt_cls, "dictionary_tool_query_description")
-    ):
-        tool_box = get_dictionary_tools(
-            cast(type[DictionaryToolPrompt], selected_prompt_cls)
-        )
-
-    processor_kwargs = cast(ProcessorKwargs, kwargs)
-    processor_kwargs["tool_box"] = tool_box
-    return DualNMinusMToNProcessor(
-        prompt_cls=selected_prompt_cls,
-        test_cases=test_cases,
-        provider=provider,
-        **processor_kwargs,
-    )
+    return DualNMinusMToNProcessor(prompt_cls, test_cases, provider=provider, **kwargs)

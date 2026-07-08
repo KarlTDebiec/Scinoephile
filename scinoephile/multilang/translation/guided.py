@@ -4,22 +4,18 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Unpack, cast
 
-from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.dictionaries import DictionaryToolPrompt
-from scinoephile.core.llms import OperationSpec, ProcessorKwargs
-from scinoephile.core.subtitles import Series
-from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
-from scinoephile.llms.default_test_cases import (
-    ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS,
-    ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
-    YUE_ENG_GUIDED_TRANSLATION_JSON_PATHS,
-    YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
-    ZHO_ENG_GUIDED_TRANSLATION_JSON_PATHS,
-    ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS,
-    load_default_test_cases,
+from scinoephile.core import Language
+from scinoephile.core.llms import (
+    LLMProvider,
+    OperationSpec,
+    ProcessorKwargs,
+    TestCase,
 )
+from scinoephile.core.subtitles import Series
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_n_to_m import (
     DualNToMManager,
     DualNToMProcessor,
@@ -45,10 +41,7 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueGuidedTranslationPromptZhoHant,
 )
 
-from .shared import (
-    DualNToMTranslationProcessorKwargs,
-    TranslationRoute,
-)
+from .shared import DualNToMTranslationProcessorKwargs
 
 __all__ = [
     "GUIDED_TRANSLATION_OPERATION_SPEC",
@@ -66,73 +59,52 @@ GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
 )
 """Operation specification for guided translation."""
 
-_GUIDED_TRANSLATION_ROUTES: dict[tuple[Language, Language], TranslationRoute] = {
-    (Language.yue_hans, Language.eng): (
-        ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS,
-        EngYueGuidedTranslationPrompt,
-    ),
-    (Language.yue_hant, Language.eng): (
-        ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS,
-        EngYueGuidedTranslationPrompt,
-    ),
-    (Language.zho_hans, Language.eng): (
-        ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
-        EngZhoGuidedTranslationPrompt,
-    ),
-    (Language.zho_hant, Language.eng): (
-        ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
-        EngZhoGuidedTranslationPrompt,
-    ),
-    (Language.eng, Language.yue_hans): (
-        YUE_ENG_GUIDED_TRANSLATION_JSON_PATHS,
-        YueEngGuidedTranslationPromptYueHans,
-    ),
-    (Language.eng, Language.yue_hant): (
-        YUE_ENG_GUIDED_TRANSLATION_JSON_PATHS,
-        YueEngGuidedTranslationPromptYueHant,
-    ),
-    (Language.zho_hans, Language.yue_hans): (
-        YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
-        YueZhoGuidedTranslationPromptYueHans,
-    ),
-    (Language.zho_hant, Language.yue_hans): (
-        YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
-        YueZhoGuidedTranslationPromptYueHans,
-    ),
-    (Language.zho_hans, Language.yue_hant): (
-        YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
-        YueZhoGuidedTranslationPromptYueHant,
-    ),
-    (Language.zho_hant, Language.yue_hant): (
-        YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
-        YueZhoGuidedTranslationPromptYueHant,
-    ),
-    (Language.eng, Language.zho_hans): (
-        ZHO_ENG_GUIDED_TRANSLATION_JSON_PATHS,
-        ZhoEngGuidedTranslationPromptZhoHans,
-    ),
-    (Language.eng, Language.zho_hant): (
-        ZHO_ENG_GUIDED_TRANSLATION_JSON_PATHS,
-        ZhoEngGuidedTranslationPromptZhoHant,
-    ),
-    (Language.yue_hans, Language.zho_hans): (
-        ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS,
-        ZhoYueGuidedTranslationPromptZhoHans,
-    ),
-    (Language.yue_hant, Language.zho_hans): (
-        ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS,
-        ZhoYueGuidedTranslationPromptZhoHans,
-    ),
-    (Language.yue_hans, Language.zho_hant): (
-        ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS,
-        ZhoYueGuidedTranslationPromptZhoHant,
-    ),
-    (Language.yue_hant, Language.zho_hant): (
-        ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS,
-        ZhoYueGuidedTranslationPromptZhoHant,
-    ),
+_ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_YUE_ENG_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_ZHO_ENG_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+
+_JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
+    (Language.yue_hans, Language.eng): _ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hant, Language.eng): _ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hans, Language.eng): _ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hant, Language.eng): _ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.yue_hans): _YUE_ENG_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.yue_hant): _YUE_ENG_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hans, Language.yue_hans): _YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hant, Language.yue_hans): _YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hans, Language.yue_hant): _YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.zho_hant, Language.yue_hant): _YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.zho_hans): _ZHO_ENG_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.zho_hant): _ZHO_ENG_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hans, Language.zho_hans): _ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hant, Language.zho_hans): _ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hans, Language.zho_hant): _ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS,
+    (Language.yue_hant, Language.zho_hant): _ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS,
 }
-"""Guided translation routes keyed by exact source and target languages."""
+"""Guided translation JSON paths keyed by exact source and target languages."""
+
+_PROMPTS: dict[tuple[Language, Language], type[DualNToMPrompt]] = {
+    (Language.yue_hans, Language.eng): EngYueGuidedTranslationPrompt,
+    (Language.yue_hant, Language.eng): EngYueGuidedTranslationPrompt,
+    (Language.zho_hans, Language.eng): EngZhoGuidedTranslationPrompt,
+    (Language.zho_hant, Language.eng): EngZhoGuidedTranslationPrompt,
+    (Language.eng, Language.yue_hans): YueEngGuidedTranslationPromptYueHans,
+    (Language.eng, Language.yue_hant): YueEngGuidedTranslationPromptYueHant,
+    (Language.zho_hans, Language.yue_hans): YueZhoGuidedTranslationPromptYueHans,
+    (Language.zho_hant, Language.yue_hans): YueZhoGuidedTranslationPromptYueHans,
+    (Language.zho_hans, Language.yue_hant): YueZhoGuidedTranslationPromptYueHant,
+    (Language.zho_hant, Language.yue_hant): YueZhoGuidedTranslationPromptYueHant,
+    (Language.eng, Language.zho_hans): ZhoEngGuidedTranslationPromptZhoHans,
+    (Language.eng, Language.zho_hant): ZhoEngGuidedTranslationPromptZhoHant,
+    (Language.yue_hans, Language.zho_hans): ZhoYueGuidedTranslationPromptZhoHans,
+    (Language.yue_hant, Language.zho_hans): ZhoYueGuidedTranslationPromptZhoHans,
+    (Language.yue_hans, Language.zho_hant): ZhoYueGuidedTranslationPromptZhoHant,
+    (Language.yue_hant, Language.zho_hant): ZhoYueGuidedTranslationPromptZhoHant,
+}
+"""Guided translation prompts keyed by exact source and target languages."""
 
 
 class GuidedTranslationProcessorKwargs(
@@ -185,61 +157,31 @@ def get_guided_translated(
 def get_guided_translator(
     source_language: Language,
     target_language: Language,
-    **kwargs: Unpack[GuidedTranslationProcessorKwargs],
+    prompt_cls: type[DualNToMPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
+    provider: LLMProvider | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> DualNToMProcessor:
     """Get a guided translation processor for a supported language pair.
 
     Arguments:
         source_language: source language
         target_language: target language
+        prompt_cls: prompt class override
+        test_cases: test cases
+        provider: provider to use for queries
         **kwargs: processor initialization keyword arguments
     Returns:
         configured guided translation processor
     """
-    route = _GUIDED_TRANSLATION_ROUTES.get((source_language, target_language))
-    if route is None:
-        raise ScinoephileError(
-            f"Unsupported translation pair: {source_language.tag} to "
-            f"{target_language.tag}"
-        )
-
-    json_paths, route_prompt_cls = route
-    selected_prompt_cls = kwargs.pop("prompt_cls", None) or cast(
-        type[DualNToMPrompt], route_prompt_cls
-    )
-
-    test_cases = kwargs.pop("test_cases", None)
+    if prompt_cls is None:
+        prompt_cls = _PROMPTS[source_language, target_language]
     if test_cases is None:
+        json_paths = _JSON_PATHS[source_language, target_language]
         test_cases = list(
-            load_default_test_cases(
-                GUIDED_TRANSLATION_OPERATION_SPEC.manager_cls,
-                selected_prompt_cls,
-                json_paths,
-            )
+            load_default_test_cases(DualNToMManager, prompt_cls, json_paths)
         )
-
-    provider = kwargs.pop("provider", None)
     if provider is None:
         provider = get_provider()
 
-    tool_box = kwargs.pop("tool_box", None)
-    use_dictionary_tool = kwargs.pop("use_dictionary_tool", True)
-    if (
-        tool_box is None
-        and use_dictionary_tool
-        and hasattr(selected_prompt_cls, "dictionary_tool_name")
-        and hasattr(selected_prompt_cls, "dictionary_tool_description")
-        and hasattr(selected_prompt_cls, "dictionary_tool_query_description")
-    ):
-        tool_box = get_dictionary_tools(
-            cast(type[DictionaryToolPrompt], selected_prompt_cls)
-        )
-
-    processor_kwargs = cast(ProcessorKwargs, kwargs)
-    processor_kwargs["tool_box"] = tool_box
-    return DualNToMProcessor(
-        prompt_cls=selected_prompt_cls,
-        test_cases=test_cases,
-        provider=provider,
-        **processor_kwargs,
-    )
+    return DualNToMProcessor(prompt_cls, test_cases, provider=provider, **kwargs)

@@ -4,20 +4,16 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
-from scinoephile.core.llms import LLMProvider, ProcessorKwargs, Prompt, TestCase
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNPrompt
 from scinoephile.llms.dual_n_to_m import DualNToMPrompt
+from scinoephile.llms.mono_n import MonoNPrompt
 
 __all__ = [
     "DualNMinusMToNTranslationProcessorKwargs",
     "DualNToMTranslationProcessorKwargs",
-    "TranslationRoute",
+    "MonoNTranslationProcessorKwargs",
 ]
-
-type TranslationRoute = tuple[tuple[Path, ...], type[Prompt]]
-"""Route metadata for a supported translation pair."""
 
 
 class DualNMinusMToNTranslationProcessorKwargs(
@@ -32,8 +28,18 @@ class DualNMinusMToNTranslationProcessorKwargs(
     test_cases: list[TestCase] | None
     """Test cases."""
 
-    use_dictionary_tool: bool
-    """Whether to wire dictionary tools for compatible prompts."""
+    provider: LLMProvider | None
+    """Provider to use for queries."""
+
+
+class MonoNTranslationProcessorKwargs(ProcessorKwargs, total=False):
+    """Keyword arguments for MonoN translation processors."""
+
+    prompt_cls: type[MonoNPrompt] | None
+    """Prompt class override."""
+
+    test_cases: list[TestCase] | None
+    """Test cases."""
 
     provider: LLMProvider | None
     """Provider to use for queries."""
@@ -47,9 +53,6 @@ class DualNToMTranslationProcessorKwargs(ProcessorKwargs, total=False):
 
     test_cases: list[TestCase] | None
     """Test cases."""
-
-    use_dictionary_tool: bool
-    """Whether to wire dictionary tools for compatible prompts."""
 
     provider: LLMProvider | None
     """Provider to use for queries."""
