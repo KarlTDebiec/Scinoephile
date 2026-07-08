@@ -10,10 +10,9 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import OperationSpec, TestCase
+from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
@@ -37,7 +36,6 @@ __all__ = [
     "YueZhoLineReviewManager",
     "YueZhoLineReviewProcessKwargs",
     "YueZhoLineReviewProcessor",
-    "YueZhoLineReviewProcessorKwargs",
     "get_yue_line_reviewed_vs_zho",
     "get_yue_vs_zho_line_reviewer",
 ]
@@ -56,17 +54,6 @@ class YueZhoLineReviewProcessKwargs(TypedDict, total=False):
 
     stop_at_idx: int | None
     """block index at which to stop processing, inclusive."""
-
-
-class YueZhoLineReviewProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for YueZhoLineReviewProcessor initialization."""
-
-    test_case_path: Path | None
-    """path where review test cases are persisted."""
-    additional_context: str | None
-    """additional context to include in the system prompt."""
-    auto_verify: bool
-    """whether to automatically verify updated test cases."""
 
 
 def get_yue_line_reviewed_vs_zho(
@@ -95,7 +82,7 @@ def get_yue_vs_zho_line_reviewer(
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[YueZhoLineReviewProcessorKwargs],
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> YueZhoLineReviewProcessor:
     """Get YueZhoLineReviewProcessor with provided configuration.
 
@@ -116,15 +103,16 @@ def get_yue_vs_zho_line_reviewer(
                 YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             )
         )
-    tool_box = None
-    if use_dictionary_tool:
+    tool_box = kwargs.pop("tool_box", None)
+    if tool_box is None and use_dictionary_tool:
         tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
         provider = get_provider()
+    processor_kwargs = kwargs
+    processor_kwargs["tool_box"] = tool_box
     return YueZhoLineReviewProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,
-        tool_box=tool_box,
-        **kwargs,
+        **processor_kwargs,
     )

@@ -4,10 +4,9 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import OperationSpec, TestCase
+from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
@@ -22,7 +21,6 @@ from .prompts import BlockReviewPromptEng
 __all__ = [
     "ENG_BLOCK_REVIEW_OPERATION_SPEC",
     "EngBlockReviewProcessKwargs",
-    "EngBlockReviewProcessorKwargs",
     "BlockReviewPromptEng",
     "get_eng_block_reviewed",
     "get_eng_block_reviewer",
@@ -42,17 +40,6 @@ class EngBlockReviewProcessKwargs(TypedDict, total=False):
 
     stop_at_idx: int | None
     """subtitle index at which to stop processing, inclusive."""
-
-
-class EngBlockReviewProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for MonoNProcessor initialization."""
-
-    test_case_path: Path | None
-    """path where encountered or verified test cases are persisted."""
-    additional_context: str | None
-    """additional context to include in the system prompt."""
-    auto_verify: bool
-    """whether to automatically verify model outputs against expected cases."""
 
 
 def get_eng_block_reviewed(
@@ -78,7 +65,7 @@ def get_eng_block_reviewer(
     prompt_cls: type[BlockReviewPromptEng] = BlockReviewPromptEng,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[EngBlockReviewProcessorKwargs],
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> MonoNProcessor:
     """Get MonoNProcessor with provided configuration.
 

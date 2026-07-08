@@ -4,10 +4,9 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import OperationSpec, TestCase
+from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
@@ -23,7 +22,6 @@ from .prompts import BlockReviewPromptZhoHans, BlockReviewPromptZhoHant
 __all__ = [
     "ZHO_BLOCK_REVIEW_OPERATION_SPEC",
     "ZhoBlockReviewProcessKwargs",
-    "ZhoBlockReviewProcessorKwargs",
     "BlockReviewPromptZhoHans",
     "BlockReviewPromptZhoHant",
     "get_zho_block_reviewed",
@@ -44,17 +42,6 @@ class ZhoBlockReviewProcessKwargs(TypedDict, total=False):
 
     stop_at_idx: int | None
     """Subtitle index at which to stop processing, inclusive."""
-
-
-class ZhoBlockReviewProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for MonoNProcessor initialization."""
-
-    test_case_path: Path | None
-    """Path where encountered test cases are persisted."""
-    additional_context: str | None
-    """Additional context to include in the system prompt."""
-    auto_verify: bool
-    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_zho_block_reviewed(
@@ -80,7 +67,7 @@ def get_zho_reviewer(
     prompt_cls: type[BlockReviewPromptZhoHans] = BlockReviewPromptZhoHans,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[ZhoBlockReviewProcessorKwargs],
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> MonoNProcessor:
     """Get MonoNProcessor with provided configuration.
 

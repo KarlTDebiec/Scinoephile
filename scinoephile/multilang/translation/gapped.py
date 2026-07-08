@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import Unpack, cast
 
-from scinoephile.core import Language
-from scinoephile.core.llms import LLMProvider, OperationSpec, TestCase
+from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.dictionaries import DictionaryToolPrompt
+from scinoephile.core.llms import OperationSpec, ProcessorKwargs
 from scinoephile.core.subtitles import Series
+from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
 from scinoephile.llms.default_test_cases import (
     ENG_YUE_GAPPED_TRANSLATION_JSON_PATHS,
     ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
@@ -16,12 +18,14 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
     ZHO_ENG_GAPPED_TRANSLATION_JSON_PATHS,
     ZHO_YUE_GAPPED_TRANSLATION_JSON_PATHS,
+    load_default_test_cases,
 )
 from scinoephile.llms.dual_n_minus_m_to_n import (
     DualNMinusMToNManager,
     DualNMinusMToNProcessor,
     DualNMinusMToNPrompt,
 )
+from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.eng_yue.translation import EngYueGappedTranslationPrompt
 from scinoephile.multilang.eng_zho.translation import EngZhoGappedTranslationPrompt
 from scinoephile.multilang.yue_eng.translation import (
@@ -42,13 +46,14 @@ from scinoephile.multilang.zho_yue.translation import (
 )
 
 from .shared import (
+    DualNMinusMToNTranslationProcessorKwargs,
     TranslationRoute,
-    get_dual_n_minus_m_to_n_processor,
-    get_route,
 )
 
 __all__ = [
     "GAPPED_TRANSLATION_OPERATION_SPEC",
+    "GappedTranslationProcessKwargs",
+    "GappedTranslationProcessorKwargs",
     "get_gap_translated",
     "get_gap_translator",
 ]
@@ -130,21 +135,27 @@ _GAPPED_TRANSLATION_ROUTES: dict[tuple[Language, Language], TranslationRoute] = 
 """Gapped translation routes keyed by exact source and target languages."""
 
 
+class GappedTranslationProcessorKwargs(
+    DualNMinusMToNTranslationProcessorKwargs,
+    total=False,
+):
+    """Keyword arguments for gapped translation processor initialization."""
+
+
+class GappedTranslationProcessKwargs(GappedTranslationProcessorKwargs, total=False):
+    """Keyword arguments for gapped translation processing."""
+
+    stop_at_idx: int | None
+    """Exclusive block index at which to stop processing."""
+
+
 def get_gap_translated(
     source: Series,
     target: Series,
     source_language: Language,
     target_language: Language,
     translator: DualNMinusMToNProcessor | None = None,
-    *,
-    prompt_cls: type[DualNMinusMToNPrompt] | None = None,
-    test_cases: list[TestCase] | None = None,
-    use_dictionary_tool: bool = True,
-    provider: LLMProvider | None = None,
-    test_case_path: Path | None = None,
-    additional_context: str | None = None,
-    auto_verify: bool = False,
-    stop_at_idx: int | None = None,
+    **kwargs: Unpack[GappedTranslationProcessKwargs],
 ) -> Series:
     """Translate target-language subtitle gaps from source-language subtitles.
 
@@ -154,28 +165,17 @@ def get_gap_translated(
         source_language: source language
         target_language: target language
         translator: processor to use, or None to construct one
-        prompt_cls: prompt class override
-        test_cases: test cases
-        use_dictionary_tool: whether to wire dictionary tools for compatible prompts
-        provider: provider to use for queries
-        test_case_path: path where encountered test cases are persisted
-        additional_context: additional context to include in the system prompt
-        auto_verify: whether generated test cases should be marked verified
-        stop_at_idx: exclusive block index at which to stop processing
+        **kwargs: translation processor and process keyword arguments
     Returns:
         target-language subtitles with gaps translated
     """
+    stop_at_idx = kwargs.pop("stop_at_idx", None)
     if translator is None:
+        translator_kwargs = cast(GappedTranslationProcessorKwargs, kwargs)
         translator = get_gap_translator(
             source_language,
             target_language,
-            prompt_cls=prompt_cls,
-            test_cases=test_cases,
-            use_dictionary_tool=use_dictionary_tool,
-            provider=provider,
-            test_case_path=test_case_path,
-            additional_context=additional_context,
-            auto_verify=auto_verify,
+            **translator_kwargs,
         )
     if stop_at_idx is None:
         return translator.process(target, source)
@@ -185,39 +185,61 @@ def get_gap_translated(
 def get_gap_translator(
     source_language: Language,
     target_language: Language,
-    *,
-    prompt_cls: type[DualNMinusMToNPrompt] | None = None,
-    test_cases: list[TestCase] | None = None,
-    use_dictionary_tool: bool = True,
-    provider: LLMProvider | None = None,
-    test_case_path: Path | None = None,
-    additional_context: str | None = None,
-    auto_verify: bool = False,
+    **kwargs: Unpack[GappedTranslationProcessorKwargs],
 ) -> DualNMinusMToNProcessor:
     """Get a gap translation processor for a supported language pair.
 
     Arguments:
         source_language: source language
         target_language: target language
-        prompt_cls: prompt class override
-        test_cases: test cases
-        use_dictionary_tool: whether to wire dictionary tools for compatible prompts
-        provider: provider to use for queries
-        test_case_path: path where encountered test cases are persisted
-        additional_context: additional context to include in the system prompt
-        auto_verify: whether generated test cases should be marked verified
+        **kwargs: processor initialization keyword arguments
     Returns:
         configured gapped translation processor
     """
-    route = get_route(_GAPPED_TRANSLATION_ROUTES, source_language, target_language)
-    return get_dual_n_minus_m_to_n_processor(
-        GAPPED_TRANSLATION_OPERATION_SPEC,
-        route,
-        prompt_cls=prompt_cls,
+    route = _GAPPED_TRANSLATION_ROUTES.get((source_language, target_language))
+    if route is None:
+        raise ScinoephileError(
+            f"Unsupported translation pair: {source_language.tag} to "
+            f"{target_language.tag}"
+        )
+
+    json_paths, route_prompt_cls = route
+    selected_prompt_cls = kwargs.pop("prompt_cls", None) or cast(
+        type[DualNMinusMToNPrompt], route_prompt_cls
+    )
+
+    test_cases = kwargs.pop("test_cases", None)
+    if test_cases is None:
+        test_cases = list(
+            load_default_test_cases(
+                GAPPED_TRANSLATION_OPERATION_SPEC.manager_cls,
+                selected_prompt_cls,
+                json_paths,
+            )
+        )
+
+    provider = kwargs.pop("provider", None)
+    if provider is None:
+        provider = get_provider()
+
+    tool_box = kwargs.pop("tool_box", None)
+    use_dictionary_tool = kwargs.pop("use_dictionary_tool", True)
+    if (
+        tool_box is None
+        and use_dictionary_tool
+        and hasattr(selected_prompt_cls, "dictionary_tool_name")
+        and hasattr(selected_prompt_cls, "dictionary_tool_description")
+        and hasattr(selected_prompt_cls, "dictionary_tool_query_description")
+    ):
+        tool_box = get_dictionary_tools(
+            cast(type[DictionaryToolPrompt], selected_prompt_cls)
+        )
+
+    processor_kwargs = cast(ProcessorKwargs, kwargs)
+    processor_kwargs["tool_box"] = tool_box
+    return DualNMinusMToNProcessor(
+        prompt_cls=selected_prompt_cls,
         test_cases=test_cases,
-        use_dictionary_tool=use_dictionary_tool,
         provider=provider,
-        test_case_path=test_case_path,
-        additional_context=additional_context,
-        auto_verify=auto_verify,
+        **processor_kwargs,
     )

@@ -18,7 +18,7 @@ from .llm_provider import ChatCompletionKwargs, LLMProvider
 from .manager import Manager, TestCaseClsKwargs
 from .openai_provider_base import OpenAIProviderBase
 from .operation_spec import OperationSpec
-from .processor import Processor
+from .processor import Processor, ProcessorKwargs
 from .prompt import Prompt
 from .query import Query
 from .queryer import Queryer
@@ -34,6 +34,7 @@ __all__ = [
     "OpenAIProviderBase",
     "OperationSpec",
     "Processor",
+    "ProcessorKwargs",
     "Prompt",
     "Query",
     "Queryer",

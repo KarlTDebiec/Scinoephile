@@ -4,10 +4,9 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import OperationSpec, TestCase
+from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
@@ -28,7 +27,6 @@ __all__ = [
     "OcrFusionPromptZhoHans",
     "OcrFusionPromptZhoHant",
     "ZhoOcrFusionProcessKwargs",
-    "ZhoOcrFusionProcessorKwargs",
     "get_zho_ocr_fuser",
     "get_zho_ocr_fused",
 ]
@@ -47,17 +45,6 @@ class ZhoOcrFusionProcessKwargs(TypedDict, total=False):
 
     stop_at_idx: int | None
     """Subtitle index at which to stop processing, inclusive."""
-
-
-class ZhoOcrFusionProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for OcrFusionProcessor initialization."""
-
-    test_case_path: Path | None
-    """Path where encountered test cases are persisted."""
-    additional_context: str | None
-    """Additional context to include in the system prompt."""
-    auto_verify: bool
-    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_zho_ocr_fused(
@@ -85,7 +72,7 @@ def get_zho_ocr_fuser(
     prompt_cls: type[OcrFusionPromptZhoHans] = OcrFusionPromptZhoHans,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[ZhoOcrFusionProcessorKwargs],
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> OcrFusionProcessor:
     """Get an OcrFusionProcessor with provided configuration.
 
