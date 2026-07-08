@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes mono n LLM queries."""
+"""Processes block review LLM queries."""
 
 from __future__ import annotations
 
@@ -11,26 +11,26 @@ from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.text import replace_control_characters
 
-from .manager import MonoNManager
-from .prompt import MonoNPrompt
+from .manager import BlockReviewManager
+from .prompt import BlockReviewPrompt
 
-__all__ = ["MonoNProcessor"]
+__all__ = ["BlockReviewProcessor"]
 
 
 logger = getLogger(__name__)
 
 
-class MonoNProcessor(Processor):
-    """Processes mono n LLM queries."""
+class BlockReviewProcessor(Processor):
+    """Processes block review LLM queries."""
 
-    prompt_cls: type[MonoNPrompt]
+    prompt_cls: type[BlockReviewPrompt]
     """Text for LLM correspondence."""
 
-    manager_cls = MonoNManager
+    manager_cls = BlockReviewManager
     """Manager class used to construct test case models."""
 
     def process(self, series: Series, stop_at_idx: int | None = None) -> Series:
-        """Process mono n LLM queries.
+        """Process block review LLM queries.
 
         Arguments:
             series: subtitles
@@ -38,7 +38,6 @@ class MonoNProcessor(Processor):
         Returns:
             processed subtitles
         """
-        # Process subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
         stop_at_idx = stop_at_idx or len(series.blocks)
 
@@ -49,7 +48,10 @@ class MonoNProcessor(Processor):
                 break
 
             # Query LLM
-            test_case_cls = MonoNManager.get_test_case_cls(len(block), self.prompt_cls)
+            test_case_cls = BlockReviewManager.get_test_case_cls(
+                len(block),
+                self.prompt_cls,
+            )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for idx, subtitle in enumerate(block.events):
@@ -64,7 +66,8 @@ class MonoNProcessor(Processor):
                 key = self.prompt_cls.output(sub_idx + 1)
                 output_text = getattr(test_case.answer, key)
                 output_subtitle = type(subtitle)(**subtitle.as_dict())
-                output_subtitle.text = replace_control_characters(output_text)
+                if output_text:
+                    output_subtitle.text = replace_control_characters(output_text)
                 output_series.append(output_subtitle)
 
             start_idx = current_idx
@@ -76,13 +79,11 @@ class MonoNProcessor(Processor):
             )
             output_series_to_concatenate[block_idx] = output_series
 
-        # Log test cases
         if self.test_case_path is not None:
             save_test_cases_to_json(
                 self.test_case_path, self.queryer.encountered_test_cases.values()
             )
 
-        # Organize and return
         output_series_blocks = [
             series for series in output_series_to_concatenate if series is not None
         ]

@@ -11,6 +11,7 @@ from scinoephile.lang.zho.prompts import PromptZhoHans
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNPrompt
 from scinoephile.llms.dual_n_to_m import DualNToMPrompt
+from scinoephile.llms.mono_n import MonoNPrompt
 
 __all__ = [
     "ZhoEngTranslationPromptZhoHans",
@@ -22,7 +23,7 @@ __all__ = [
 ]
 
 
-class ZhoEngTranslationPromptZhoHans(DualNToMPrompt, PromptZhoHans):
+class ZhoEngTranslationPromptZhoHans(MonoNPrompt, PromptZhoHans):
     """Text for simplified standard Chinese translation from English."""
 
     # Prompt
@@ -40,17 +41,11 @@ class ZhoEngTranslationPromptZhoHans(DualNToMPrompt, PromptZhoHans):
     """Base system prompt."""
 
     # Query fields
-    src_1_pfx: ClassVar[str] = "eng_"
+    input_pfx: ClassVar[str] = "eng_"
     """Prefix for English source fields in query."""
 
-    src_1_desc_tpl: ClassVar[str] = "要翻译成标准中文的英文字幕 {idx}"
+    input_desc_tpl: ClassVar[str] = "要翻译成标准中文的英文字幕 {idx}"
     """Description template for English source fields in query."""
-
-    src_2_pfx: ClassVar[str] = "context_"
-    """Prefix for optional context fields in query."""
-
-    src_2_desc_tpl: ClassVar[str] = "额外上下文字幕 {idx}"
-    """Description template for optional context fields in query."""
 
     # Answer fields
     output_pfx: ClassVar[str] = "zhongwen_"

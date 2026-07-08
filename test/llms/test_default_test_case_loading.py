@@ -20,6 +20,7 @@ from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
 )
 from scinoephile.llms import load_default_test_cases
+from scinoephile.llms.block_review.manager import BlockReviewManager
 from scinoephile.llms.dual_1_to_1.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.dual_n_minus_m_to_n.manager import DualNMinusMToNManager
 from scinoephile.llms.dual_n_to_m.manager import DualNToMManager
@@ -64,7 +65,7 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
     [
         (
             "eng_block_review",
-            MonoNManager,
+            BlockReviewManager,
             BlockReviewPromptEng,
             (
                 Path("kob/output/eng_ocr/lang/eng/block_review.json"),
@@ -87,7 +88,7 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
         ),
         (
             "eng_zho_translation",
-            DualNToMManager,
+            MonoNManager,
             EngZhoTranslationPrompt,
             (),
         ),
@@ -99,7 +100,7 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
         ),
         (
             "zho_hans_block_review",
-            MonoNManager,
+            BlockReviewManager,
             BlockReviewPromptZhoHans,
             (
                 Path("mlamd/output/zho-Hans_ocr/lang/zho/block_review.json"),
@@ -109,7 +110,7 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
         ),
         (
             "zho_hant_block_review",
-            MonoNManager,
+            BlockReviewManager,
             BlockReviewPromptZhoHant,
             (
                 Path("kob/output/zho-Hant_ocr/lang/zho/block_review.json"),

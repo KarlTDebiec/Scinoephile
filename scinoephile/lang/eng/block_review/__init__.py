@@ -11,7 +11,7 @@ from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.mono_n import MonoNManager, MonoNProcessor
+from scinoephile.llms.block_review import BlockReviewManager, BlockReviewProcessor
 from scinoephile.llms.providers.registry import get_provider
 
 from .prompts import BlockReviewPromptEng
@@ -35,30 +35,30 @@ _ENG_BLOCK_REVIEW_JSON_PATHS = (
 ENG_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="eng-block-review",
     test_case_table_name="test_cases__eng__block_review",
-    manager_cls=MonoNManager,
+    manager_cls=BlockReviewManager,
     prompt_cls=BlockReviewPromptEng,
 )
 """Operation specification for English block review."""
 
 
 class EngBlockReviewProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for MonoNProcessor.process."""
+    """Keyword arguments for BlockReviewProcessor.process."""
 
     stop_at_idx: int | None
-    """subtitle index at which to stop processing, inclusive."""
+    """Exclusive block index at which to stop processing."""
 
 
 def get_eng_block_reviewed(
     series: Series,
-    processor: MonoNProcessor | None = None,
+    processor: BlockReviewProcessor | None = None,
     **kwargs: Unpack[EngBlockReviewProcessKwargs],
 ) -> Series:
     """Get English series block reviewed.
 
     Arguments:
         series: Series to block review
-        processor: MonoNProcessor to use
-        **kwargs: additional keyword arguments for MonoNProcessor.process
+        processor: BlockReviewProcessor to use
+        **kwargs: additional keyword arguments for BlockReviewProcessor.process
     Returns:
         block-reviewed Series
     """
@@ -72,28 +72,28 @@ def get_eng_block_reviewer(
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
-) -> MonoNProcessor:
-    """Get MonoNProcessor with provided configuration.
+) -> BlockReviewProcessor:
+    """Get BlockReviewProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
-        **kwargs: additional keyword arguments for MonoNProcessor
+        **kwargs: additional keyword arguments for BlockReviewProcessor
     Returns:
-        MonoNProcessor with provided configuration
+        BlockReviewProcessor with provided configuration
     """
     if test_cases is None:
         test_cases = list(
             load_default_test_cases(
-                MonoNManager,
+                BlockReviewManager,
                 prompt_cls,
                 _ENG_BLOCK_REVIEW_JSON_PATHS,
             )
         )
     if provider is None:
         provider = get_provider()
-    return MonoNProcessor(
+    return BlockReviewProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,

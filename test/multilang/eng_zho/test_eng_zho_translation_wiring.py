@@ -16,6 +16,7 @@ from scinoephile.llms.dual_n_minus_m_to_n import (
     DualNMinusMToNPrompt,
 )
 from scinoephile.llms.dual_n_to_m import DualNToMProcessor, DualNToMPrompt
+from scinoephile.llms.mono_n import MonoNProcessor, MonoNPrompt
 from scinoephile.multilang.eng_zho.translation import (
     EngZhoGappedTranslationPrompt,
     EngZhoGuidedTranslationPrompt,
@@ -35,26 +36,47 @@ from scinoephile.multilang.translation.standard import (
 )
 from test.helpers import parametrize
 
-_PromptCls = type[DualNToMPrompt] | type[DualNMinusMToNPrompt]
-_Processor = DualNToMProcessor | DualNMinusMToNProcessor
+_PromptCls = type[MonoNPrompt] | type[DualNToMPrompt] | type[DualNMinusMToNPrompt]
+_Processor = MonoNProcessor | DualNToMProcessor | DualNMinusMToNProcessor
 _ProcessorFactory = Callable[..., _Processor]
+
+
+@parametrize(
+    ("prompt_cls", "input_", "output"),
+    [
+        (EngZhoTranslationPrompt, "zho_1", "eng_1"),
+    ],
+)
+def test_eng_zho_regular_prompt_field_names(
+    prompt_cls: type[MonoNPrompt],
+    input_: str,
+    output: str,
+):
+    """Test regular English/Chinese prompt field names.
+
+    Arguments:
+        prompt_cls: prompt class under test
+        input_: expected input field name
+        output: expected output field name
+    """
+    assert prompt_cls.input(1) == input_
+    assert prompt_cls.output(1) == output
 
 
 @parametrize(
     ("prompt_cls", "src_1", "src_2", "output"),
     [
-        (EngZhoTranslationPrompt, "zho_1", "context_1", "eng_1"),
         (EngZhoGuidedTranslationPrompt, "zho_1", "eng_reference_1", "eng_1"),
         (EngZhoGappedTranslationPrompt, "eng_1", "zho_1", "eng_1"),
     ],
 )
-def test_eng_zho_prompt_field_names(
-    prompt_cls: _PromptCls,
+def test_eng_zho_dual_prompt_field_names(
+    prompt_cls: type[DualNToMPrompt] | type[DualNMinusMToNPrompt],
     src_1: str,
     src_2: str,
     output: str,
 ):
-    """Test English/Chinese prompt field names.
+    """Test dual English/Chinese prompt field names.
 
     Arguments:
         prompt_cls: prompt class under test
@@ -72,7 +94,7 @@ def test_eng_zho_prompt_field_names(
     [
         (
             get_translator,
-            DualNToMProcessor,
+            MonoNProcessor,
             EngZhoTranslationPrompt,
             Language.zho_hans,
             Language.eng,
@@ -121,22 +143,20 @@ def test_eng_zho_translator_factory_wiring(
 
 
 @parametrize(
-    ("mode", "uses_empty_context"),
+    "mode",
     [
-        ("regular", True),
-        ("guided", False),
-        ("gapped", False),
+        "regular",
+        "guided",
+        "gapped",
     ],
 )
 def test_eng_zho_translation_wrappers_delegate_to_processor(
     mode: str,
-    uses_empty_context: bool,
 ):
     """Test English/Chinese translation wrappers delegate to provided processors.
 
     Arguments:
         mode: wrapper variant under test
-        uses_empty_context: whether the wrapper creates an empty second source
     """
     source_one = Series(
         [
@@ -151,16 +171,18 @@ def test_eng_zho_translation_wrappers_delegate_to_processor(
             Subtitle(start=2100, end=3000, text="Second translated"),
         ]
     )
-    processor = _RecordingProcessor(expected)
-
     if mode == "regular":
+        processor = _RecordingMonoProcessor(expected)
         output = get_translated(
             source_one,
             Language.zho_hans,
             Language.eng,
-            translator=cast(DualNToMProcessor, processor),
+            translator=cast(MonoNProcessor, processor),
         )
+        assert output == expected
+        assert processor.source is source_one
     elif mode == "guided":
+        processor = _RecordingDualProcessor(expected)
         output = get_guided_translated(
             source_one,
             source_two,
@@ -168,7 +190,11 @@ def test_eng_zho_translation_wrappers_delegate_to_processor(
             Language.eng,
             translator=cast(DualNToMProcessor, processor),
         )
+        assert output == expected
+        assert processor.source_one is source_one
+        assert processor.source_two is source_two
     else:
+        processor = _RecordingDualProcessor(expected)
         output = get_gap_translated(
             source_one,
             source_two,
@@ -176,22 +202,37 @@ def test_eng_zho_translation_wrappers_delegate_to_processor(
             Language.eng,
             translator=cast(DualNMinusMToNProcessor, processor),
         )
-
-    assert output == expected
-    if mode == "gapped":
+        assert output == expected
         assert processor.source_one is source_two
         assert processor.source_two is source_one
-    else:
-        assert processor.source_one is source_one
-        if uses_empty_context:
-            assert isinstance(processor.source_two, Series)
-            assert len(processor.source_two.events) == 0
-        else:
-            assert processor.source_two is source_two
 
 
-class _RecordingProcessor:
-    """Processor test double that records process inputs."""
+class _RecordingMonoProcessor:
+    """Mono processor test double that records process inputs."""
+
+    def __init__(self, output: Series):
+        """Initialize.
+
+        Arguments:
+            output: series to return
+        """
+        self.output = output
+        self.source: Series | None = None
+
+    def process(self, source: Series) -> Series:
+        """Record input and return configured output.
+
+        Arguments:
+            source: source series
+        Returns:
+            configured output series
+        """
+        self.source = source
+        return self.output
+
+
+class _RecordingDualProcessor:
+    """Dual processor test double that records process inputs."""
 
     def __init__(self, output: Series):
         """Initialize.

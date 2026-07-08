@@ -77,10 +77,7 @@ class MonoNManager(Manager):
         for idx in range(size):
             key = prompt_cls.output(idx + 1)
             desc = prompt_cls.output_desc(idx + 1)
-            fields[key] = (str, Field("", description=desc))
-            key = prompt_cls.note(idx + 1)
-            desc = prompt_cls.note_desc(idx + 1)
-            fields[key] = (str, Field("", description=desc, max_length=1000))
+            fields[key] = (str, Field(..., description=desc))
 
         model = create_model(
             name,
@@ -148,63 +145,3 @@ class MonoNManager(Manager):
         pattern = re.compile(rf"^{re.escape(prompt_cls.input_pfx)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)
-
-    @staticmethod
-    def get_min_difficulty(model: TestCase) -> int:
-        """Get minimum difficulty based on the test case properties.
-
-        Arguments:
-            model: test case to inspect
-        Returns:
-            minimum difficulty
-        """
-        prompt_cls: type[MonoNPrompt] = getattr(model, "prompt_cls")
-        size: int = getattr(model, "size")
-        min_difficulty = 0
-        if model.answer is None:
-            return min_difficulty
-
-        if any(
-            getattr(model.answer, prompt_cls.output(idx)) != ""
-            for idx in range(1, size + 1)
-        ):
-            min_difficulty = max(min_difficulty, 1)
-        return min_difficulty
-
-    @staticmethod
-    def validate_test_case(model: TestCase) -> TestCase:
-        """Ensure query and answer together are valid.
-
-        Arguments:
-            model: test case to validate
-        Returns:
-            validated test case
-        """
-        prompt_cls: type[MonoNPrompt] = getattr(model, "prompt_cls")
-        size: int = getattr(model, "size")
-        if model.answer is None:
-            return model
-
-        for idx in range(size):
-            input_text = getattr(
-                model.query,
-                prompt_cls.input(idx + 1),
-            )
-            output_text = getattr(
-                model.answer,
-                prompt_cls.output(idx + 1),
-            )
-            note = getattr(
-                model.answer,
-                prompt_cls.note(idx + 1),
-            )
-            if output_text != "":
-                if input_text == output_text:
-                    setattr(model.answer, prompt_cls.output(idx + 1), "")
-                    setattr(model.answer, prompt_cls.note(idx + 1), "")
-                    continue
-                if note == "":
-                    raise ValueError(prompt_cls.note_missing_err(idx + 1))
-            elif note != "":
-                raise ValueError(prompt_cls.output_missing_err(idx + 1))
-        return model

@@ -12,6 +12,7 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.dual_n_to_m import DualNToMProcessor, DualNToMPrompt
+from scinoephile.llms.mono_n import MonoNProcessor, MonoNPrompt
 from scinoephile.multilang.translation.guided import (
     get_guided_translated,
     get_guided_translator,
@@ -26,13 +27,34 @@ from scinoephile.multilang.yue_zho.translation import (
 )
 from test.helpers import parametrize
 
-_ProcessorFactory = Callable[..., DualNToMProcessor]
+_ProcessorFactory = Callable[..., MonoNProcessor | DualNToMProcessor]
+
+
+@parametrize(
+    ("prompt_cls", "input_", "output"),
+    [
+        (YueZhoTranslationPromptYueHans, "zhongwen_1", "yuewen_1"),
+    ],
+)
+def test_yue_zho_regular_prompt_field_names(
+    prompt_cls: type[MonoNPrompt],
+    input_: str,
+    output: str,
+):
+    """Test regular written Cantonese/Chinese prompt field names.
+
+    Arguments:
+        prompt_cls: prompt class under test
+        input_: expected input field name
+        output: expected output field name
+    """
+    assert prompt_cls.input(1) == input_
+    assert prompt_cls.output(1) == output
 
 
 @parametrize(
     ("prompt_cls", "src_1", "src_2", "output"),
     [
-        (YueZhoTranslationPromptYueHans, "zhongwen_1", "context_1", "yuewen_1"),
         (
             YueZhoGuidedTranslationPromptYueHans,
             "zhongwen_1",
@@ -41,13 +63,13 @@ _ProcessorFactory = Callable[..., DualNToMProcessor]
         ),
     ],
 )
-def test_yue_zho_prompt_field_names(
+def test_yue_zho_dual_prompt_field_names(
     prompt_cls: type[DualNToMPrompt],
     src_1: str,
     src_2: str,
     output: str,
 ):
-    """Test written Cantonese/Chinese prompt field names.
+    """Test dual written Cantonese/Chinese prompt field names.
 
     Arguments:
         prompt_cls: prompt class under test
@@ -69,7 +91,7 @@ def test_yue_zho_prompt_field_names(
 )
 def test_yue_zho_translator_factory_wiring(
     factory: _ProcessorFactory,
-    prompt_cls: type[DualNToMPrompt],
+    prompt_cls: type[MonoNPrompt] | type[DualNToMPrompt],
 ):
     """Test written Cantonese/Chinese translator factory wiring.
 
@@ -83,31 +105,31 @@ def test_yue_zho_translator_factory_wiring(
         Language.zho_hans,
         Language.yue_hans,
         test_cases=[],
-        use_dictionary_tool=False,
         provider=provider,
     )
 
-    assert isinstance(processor, DualNToMProcessor)
+    if factory is get_translator:
+        assert isinstance(processor, MonoNProcessor)
+    else:
+        assert isinstance(processor, DualNToMProcessor)
     assert processor.prompt_cls is prompt_cls
     assert processor.queryer.provider is provider
 
 
 @parametrize(
-    ("mode", "uses_empty_context"),
+    "mode",
     [
-        ("regular", True),
-        ("guided", False),
+        "regular",
+        "guided",
     ],
 )
 def test_yue_zho_translation_wrappers_delegate_to_processor(
     mode: str,
-    uses_empty_context: bool,
 ):
     """Test written Cantonese/Chinese wrappers delegate to provided processors.
 
     Arguments:
         mode: wrapper variant under test
-        uses_empty_context: whether the wrapper creates an empty second source
     """
     zhongwen = Series(
         [
@@ -122,16 +144,18 @@ def test_yue_zho_translation_wrappers_delegate_to_processor(
             Subtitle(start=2100, end=3000, text="第二句粤文"),
         ]
     )
-    processor = _RecordingProcessor(expected)
-
     if mode == "regular":
+        processor = _RecordingMonoProcessor(expected)
         output = get_translated(
             zhongwen,
             Language.zho_hans,
             Language.yue_hans,
-            translator=cast(DualNToMProcessor, processor),
+            translator=cast(MonoNProcessor, processor),
         )
+        assert output == expected
+        assert processor.source is zhongwen
     else:
+        processor = _RecordingDualProcessor(expected)
         output = get_guided_translated(
             zhongwen,
             yuewen,
@@ -139,18 +163,37 @@ def test_yue_zho_translation_wrappers_delegate_to_processor(
             Language.yue_hans,
             translator=cast(DualNToMProcessor, processor),
         )
-
-    assert output == expected
-    assert processor.source_one is zhongwen
-    if uses_empty_context:
-        assert isinstance(processor.source_two, Series)
-        assert len(processor.source_two.events) == 0
-    else:
+        assert output == expected
+        assert processor.source_one is zhongwen
         assert processor.source_two is yuewen
 
 
-class _RecordingProcessor:
-    """Processor test double that records process inputs."""
+class _RecordingMonoProcessor:
+    """Mono processor test double that records process inputs."""
+
+    def __init__(self, output: Series):
+        """Initialize.
+
+        Arguments:
+            output: series to return
+        """
+        self.output = output
+        self.source: Series | None = None
+
+    def process(self, source: Series) -> Series:
+        """Record input and return configured output.
+
+        Arguments:
+            source: source series
+        Returns:
+            configured output series
+        """
+        self.source = source
+        return self.output
+
+
+class _RecordingDualProcessor:
+    """Dual processor test double that records process inputs."""
 
     def __init__(self, output: Series):
         """Initialize.

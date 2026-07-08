@@ -10,6 +10,7 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNPrompt
 from scinoephile.llms.dual_n_to_m import DualNToMPrompt
+from scinoephile.llms.mono_n import MonoNPrompt
 
 __all__ = [
     "EngYueTranslationPrompt",
@@ -18,7 +19,7 @@ __all__ = [
 ]
 
 
-class EngYueTranslationPrompt(DualNToMPrompt, PromptEng):
+class EngYueTranslationPrompt(MonoNPrompt, PromptEng):
     """Text for English translation from written Cantonese."""
 
     # Prompt
@@ -39,17 +40,11 @@ class EngYueTranslationPrompt(DualNToMPrompt, PromptEng):
     """Base system prompt."""
 
     # Query fields
-    src_1_pfx: ClassVar[str] = "yuewen_"
+    input_pfx: ClassVar[str] = "yuewen_"
     """Prefix for written Cantonese source fields in query."""
 
-    src_1_desc_tpl: ClassVar[str] = "Written Cantonese subtitle {idx} to translate"
+    input_desc_tpl: ClassVar[str] = "Written Cantonese subtitle {idx} to translate"
     """Description template for written Cantonese source fields in query."""
-
-    src_2_pfx: ClassVar[str] = "context_"
-    """Prefix for optional context fields in query."""
-
-    src_2_desc_tpl: ClassVar[str] = "Additional context subtitle {idx}"
-    """Description template for optional context fields in query."""
 
     # Answer fields
     output_pfx: ClassVar[str] = "eng_"

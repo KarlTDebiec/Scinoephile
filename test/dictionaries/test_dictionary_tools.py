@@ -13,7 +13,6 @@ from unittest.mock import patch
 from pytest import fixture
 
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.core import Language
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
@@ -30,7 +29,6 @@ from scinoephile.dictionaries.dictionary_tools import (
     get_dictionary_tools,
     lookup_dictionary,
 )
-from scinoephile.multilang.translation.gapped import get_gap_translator
 from scinoephile.multilang.yue_zho.block_review import (
     YueBlockReviewVsZhoPromptYueHans,
     get_yue_vs_zho_block_reviewer,
@@ -38,9 +36,6 @@ from scinoephile.multilang.yue_zho.block_review import (
 from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
     get_yue_vs_zho_line_reviewer,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    YueZhoGappedTranslationPromptYueHans,
 )
 from test.helpers import parametrize
 
@@ -235,15 +230,9 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     assert "gzzj" in response["error"]
 
 
-def _build_yue_zho_gapped_processor(**kwargs: Any) -> Processor:
-    """Get a Yue/Zho gapped translator for dictionary-tool tests."""
-    return get_gap_translator(Language.zho_hans, Language.yue_hans, **kwargs)
-
-
 @parametrize(
     ("prompt_cls", "factory"),
     [
-        (YueZhoGappedTranslationPromptYueHans, _build_yue_zho_gapped_processor),
         (YueBlockReviewVsZhoPromptYueHans, get_yue_vs_zho_block_reviewer),
         (YueLineReviewVsZhoPromptYueHans, get_yue_vs_zho_line_reviewer),
     ],

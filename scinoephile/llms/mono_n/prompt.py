@@ -26,37 +26,8 @@ class MonoNPrompt(Prompt, ABC):
     output_pfx: ClassVar[str] = "output_"
     """Prefix for output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = (
-        "Output {idx}, or an empty string if no change is necessary."
-    )
+    output_desc_tpl: ClassVar[str] = "Output {idx}"
     """Description template for output fields in answer."""
-
-    note_pfx: ClassVar[str] = "note_"
-    """Prefix for note fields in answer."""
-
-    note_desc_tpl: ClassVar[str] = (
-        "Note concerning output {idx}, or an empty string if no change is necessary."
-    )
-    """Description template for note fields in answer."""
-
-    # Test case errors
-    output_unmodified_err_tpl: ClassVar[str] = (
-        "Answer's output {idx} is unmodified relative to query's input {idx}, "
-        "if no change is needed an empty string must be provided."
-    )
-    """Error template when output is present but unmodified."""
-
-    note_missing_err_tpl: ClassVar[str] = (
-        "Answer's output {idx} is modified relative to query's input {idx}, but no "
-        "note is provided, if a change is needed a note must be provided."
-    )
-    """Error template when note is missing for a change."""
-
-    output_missing_err_tpl: ClassVar[str] = (
-        "Answer's output {idx} is not provided relative to query's input {idx}, but a "
-        "note is provided, if no change is needed an empty string must be provided."
-    )
-    """Error template when output is missing for a note."""
 
     # Query fields
     @classmethod
@@ -79,47 +50,3 @@ class MonoNPrompt(Prompt, ABC):
     def output_desc(cls, idx: int) -> str:
         """Description of output field in answer."""
         return cls.output_desc_tpl.format(idx=idx)
-
-    @classmethod
-    def note(cls, idx: int) -> str:
-        """Name of note field in answer."""
-        return f"{cls.note_pfx}{idx}"
-
-    @classmethod
-    def note_desc(cls, idx: int) -> str:
-        """Description of note field in answer."""
-        return cls.note_desc_tpl.format(idx=idx)
-
-    # Test case errors
-    @classmethod
-    def output_unmodified_err(cls, idx: int) -> str:
-        """Error when output is present but unmodified.
-
-        Arguments:
-            idx: index of item
-        Returns:
-            error message
-        """
-        return cls.output_unmodified_err_tpl.format(idx=idx)
-
-    @classmethod
-    def note_missing_err(cls, idx: int) -> str:
-        """Error when note is missing for a change.
-
-        Arguments:
-            idx: index of item
-        Returns:
-            error message
-        """
-        return cls.note_missing_err_tpl.format(idx=idx)
-
-    @classmethod
-    def output_missing_err(cls, idx: int) -> str:
-        """Error when output is missing for a note.
-
-        Arguments:
-            idx: index of item
-        Returns:
-            error message
-        """
-        return cls.output_missing_err_tpl.format(idx=idx)

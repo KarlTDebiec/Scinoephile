@@ -25,9 +25,9 @@ from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
+from scinoephile.llms.block_review import BlockReviewManager, BlockReviewPrompt
 from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
-from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from test.helpers import test_data_root
 
 __all__ = [
@@ -108,7 +108,7 @@ output_dir = title_root / "output"
 
 @cache
 def get_tmm_eng_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptEng,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get TMM English block review test cases.
@@ -121,7 +121,7 @@ def get_tmm_eng_block_review_test_cases(
     """
     path = output_dir / "eng_ocr/lang/eng/block_review.json"
     return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -146,7 +146,7 @@ def get_tmm_eng_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_yue_hans_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get TMM yue-Hans block review test cases.
@@ -159,7 +159,7 @@ def get_tmm_yue_hans_block_review_test_cases(
     """
     path = output_dir / "yue-Hans_ocr/lang/yue/block_review.json"
     return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -184,7 +184,7 @@ def get_tmm_yue_hans_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_yue_hant_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get TMM yue-Hant block review test cases.
@@ -197,7 +197,7 @@ def get_tmm_yue_hant_block_review_test_cases(
     """
     path = output_dir / "yue-Hant_ocr/lang/yue/block_review.json"
     return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -222,7 +222,7 @@ def get_tmm_yue_hant_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_yue_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get TMM yue-Hant simplification block review test cases.
@@ -235,13 +235,13 @@ def get_tmm_yue_hant_simplify_block_review_test_cases(
     """
     path = output_dir / "yue-Hant_ocr/lang/yue/simplify_block_review.json"
     return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_tmm_zho_hans_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get TMM zho-Hans block review test cases.
@@ -254,7 +254,7 @@ def get_tmm_zho_hans_block_review_test_cases(
     """
     path = output_dir / "zho-Hans_ocr/lang/zho/block_review.json"
     return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -279,7 +279,7 @@ def get_tmm_zho_hans_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get TMM zho-Hant block review test cases.
@@ -292,7 +292,7 @@ def get_tmm_zho_hant_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
     return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -317,7 +317,7 @@ def get_tmm_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get TMM zho-Hant simplification block review test cases.
@@ -330,7 +330,7 @@ def get_tmm_zho_hant_simplify_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
     return load_test_cases_from_json(
-        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
+        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

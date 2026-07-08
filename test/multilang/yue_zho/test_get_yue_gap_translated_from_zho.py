@@ -75,7 +75,6 @@ def test_get_gap_translated_zho_to_yue(
         Language.zho_hans,
         Language.yue_hans,
         test_cases=test_cases,
-        use_dictionary_tool=False,
         provider=provider,
     )
     output = get_gap_translated(

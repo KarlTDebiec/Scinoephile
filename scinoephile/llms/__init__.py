@@ -5,13 +5,14 @@
 This module may import from: common, core
 
 Hierarchy within module, where lower entries may import from higher entries:
-* dual_1_to_1 / dual_2_to_2 / dual_n_minus_m_to_n / dual_n_to_1
-  / dual_n_to_m / dual_n_to_n / mono_n / providers
+* block_review / dual_1_to_1 / dual_2_to_2 / dual_n_minus_m_to_n
+  / dual_n_to_1 / dual_n_to_m / dual_n_to_n / mono_n / providers
 
 LLM shapes:
 
 | Tracks | T1    | T2   | Name                  | Prefix         | Description        |
 | ------ | ----- | ---- | --------------------- | -------------- | ------------------ |
+| 1      | n     | note | block_review          | BlockReview    | Patch review.      |
 | 1      | n     | none | mono_n                | MonoN          | One track.         |
 | 2      | 1     | 1    | dual_1_to_1           | Dual1To1       | Paired subs.       |
 | 2      | n     | 1    | dual_n_to_1           | DualNTo1       | n to one.          |

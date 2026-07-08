@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.prompts import PromptZhoHans
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.mono_n import MonoNPrompt
+from scinoephile.llms.block_review import BlockReviewPrompt
 
 __all__ = [
     "BlockReviewPromptZhoHans",
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-class BlockReviewPromptZhoHans(MonoNPrompt, PromptZhoHans):
+class BlockReviewPromptZhoHans(BlockReviewPrompt, PromptZhoHans):
     """LLM correspondence text for simplified standard Chinese block review."""
 
     # Prompt

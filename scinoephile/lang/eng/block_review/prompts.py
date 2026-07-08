@@ -8,12 +8,12 @@ from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
-from scinoephile.llms.mono_n import MonoNPrompt
+from scinoephile.llms.block_review import BlockReviewPrompt
 
 __all__ = ["BlockReviewPromptEng"]
 
 
-class BlockReviewPromptEng(MonoNPrompt, PromptEng):
+class BlockReviewPromptEng(BlockReviewPrompt, PromptEng):
     """LLM correspondence text for English block review."""
 
     # Prompt
