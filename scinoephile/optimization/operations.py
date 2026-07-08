@@ -13,11 +13,9 @@ from scinoephile.lang.zho.block_review import (
     ZHO_BLOCK_REVIEW_OPERATION_SPEC,
 )
 from scinoephile.lang.zho.ocr_fusion import ZHO_OCR_FUSION_OPERATION_SPEC
-from scinoephile.multilang.translation import (
-    GAPPED_TRANSLATION_OPERATION_SPEC,
-    GUIDED_TRANSLATION_OPERATION_SPEC,
-    TRANSLATION_OPERATION_SPEC,
-)
+from scinoephile.multilang.translation.gapped import GAPPED_TRANSLATION_OPERATION_SPEC
+from scinoephile.multilang.translation.guided import GUIDED_TRANSLATION_OPERATION_SPEC
+from scinoephile.multilang.translation.standard import TRANSLATION_OPERATION_SPEC
 from scinoephile.multilang.yue_zho.block_review import (
     YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC,
 )

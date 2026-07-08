@@ -10,11 +10,9 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
-from scinoephile.multilang.translation import (
-    get_gap_translated,
-    get_guided_translated,
-    get_translated,
-)
+from scinoephile.multilang.translation.gapped import get_gap_translated
+from scinoephile.multilang.translation.guided import get_guided_translated
+from scinoephile.multilang.translation.standard import get_translated
 
 __all__ = [
     "translate_series",
