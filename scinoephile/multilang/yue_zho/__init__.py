@@ -3,6 +3,5 @@
 """Code related to written Cantonese/standard Chinese text.
 
 Package hierarchy (modules may import from any above):
-* block_review / gapped_translation / guided_translation / line_review / transcription
-  / translation
+* block_review / line_review / transcription / translation
 """
