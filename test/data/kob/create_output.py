@@ -16,10 +16,6 @@ from scinoephile.multilang.yue_zho.block_review import (
     YueBlockReviewVsZhoPromptYueHans,
     YueBlockReviewVsZhoPromptYueHant,
 )
-from scinoephile.multilang.yue_zho.gapped_translation import (
-    YueGappedTranslationVsZhoPromptYueHans,
-    YueGappedTranslationVsZhoPromptYueHant,
-)
 from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
     YueLineReviewVsZhoPromptYueHant,
@@ -32,6 +28,10 @@ from scinoephile.multilang.yue_zho.transcription.deliniation import (
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
     YuePunctuationVsZhoPromptYueHant,
+)
+from scinoephile.multilang.yue_zho.translation import (
+    YueZhoGappedTranslationPromptYueHans,
+    YueZhoGappedTranslationPromptYueHant,
 )
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
@@ -127,7 +127,7 @@ if "yue-Hans_transcribe" in actions:
             "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHans,
         },
         line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHans},
-        translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHans},
+        translator_kw={"prompt_cls": YueZhoGappedTranslationPromptYueHans},
         block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHans},
         overwrite_srt=False,
     )
@@ -148,7 +148,7 @@ if "yue-Hans_transcribe" in actions:
             "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHant,
         },
         line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHant},
-        translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHant},
+        translator_kw={"prompt_cls": YueZhoGappedTranslationPromptYueHant},
         block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHant},
         overwrite_srt=False,
     )

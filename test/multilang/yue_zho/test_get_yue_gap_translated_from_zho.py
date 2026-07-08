@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.multilang.yue_zho.gapped_translation."""
+"""Tests of scinoephile.multilang.yue_zho.translation."""
 
 from __future__ import annotations
 
@@ -9,13 +9,14 @@ from unittest.mock import Mock, patch
 
 from pytest import FixtureRequest, param
 
+from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
-from scinoephile.multilang.yue_zho.gapped_translation import (
-    get_yue_gapped_translated_vs_zho,
-    get_yue_vs_zho_gapped_translator,
+from scinoephile.multilang.translation import (
+    get_gap_translated,
+    get_gapped_translator,
 )
-from test.data.kob import get_kob_yue_vs_zho_gapped_translation_test_cases
-from test.data.mlamd import get_mlamd_yue_vs_zho_gapped_translation_test_cases
+from test.data.kob import get_kob_yue_from_zho_gapped_translation_test_cases
+from test.data.mlamd import get_mlamd_yue_from_zho_gapped_translation_test_cases
 from test.helpers import assert_series_equal, parametrize
 
 
@@ -32,7 +33,7 @@ from test.helpers import assert_series_equal, parametrize
             "kob_yue_hans_transcribe_review",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "kob_yue_hans_transcribe_review_translate",
-            get_kob_yue_vs_zho_gapped_translation_test_cases,
+            get_kob_yue_from_zho_gapped_translation_test_cases,
             "test.data.kob.get_torch_device",
             id="kob",
         ),
@@ -40,13 +41,13 @@ from test.helpers import assert_series_equal, parametrize
             "mlamd_yue_hans_transcribe_review",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
             "mlamd_yue_hans_transcribe_review_translate",
-            get_mlamd_yue_vs_zho_gapped_translation_test_cases,
+            get_mlamd_yue_from_zho_gapped_translation_test_cases,
             "test.data.mlamd.get_torch_device",
             id="mlamd",
         ),
     ],
 )
-def test_get_yue_gapped_translated_vs_zho(
+def test_get_gap_translated_zho_to_yue(
     request: FixtureRequest,
     yuewen_fixture: str,
     zhongwen_fixture: str,
@@ -54,7 +55,7 @@ def test_get_yue_gapped_translated_vs_zho(
     test_case_loader: Callable[[], list[TestCase]],
     device_patch_target: str,
 ):
-    """Test get_yue_gapped_translated_vs_zho.
+    """Test shared gapped translation from Chinese to written Cantonese.
 
     Arguments:
         request: pytest request for fixture lookup
@@ -70,14 +71,18 @@ def test_get_yue_gapped_translated_vs_zho(
     provider = Mock(spec=LLMProvider)
     with patch(device_patch_target, return_value="cuda"):
         test_cases = test_case_loader()
-    translator = get_yue_vs_zho_gapped_translator(
+    translator = get_gapped_translator(
+        Language.zho_hans,
+        Language.yue_hans,
         test_cases=test_cases,
         use_dictionary_tool=False,
         provider=provider,
     )
-    output = get_yue_gapped_translated_vs_zho(
-        yuewen,
+    output = get_gap_translated(
         zhongwen,
+        yuewen,
+        Language.zho_hans,
+        Language.yue_hans,
         translator=translator,
     )
     assert_series_equal(output, expected)

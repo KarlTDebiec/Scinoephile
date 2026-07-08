@@ -7,14 +7,14 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.multilang.eng_zho.guided_translation import (
-    EngGuidedTranslationVsZhoPrompt,
+from scinoephile.multilang.eng_zho.translation import (
+    EngZhoGuidedTranslationPrompt,
 )
 
-__all__ = ["EngGuidedTranslationVsZhoOfYuePrompt"]
+__all__ = ["EngZhoOfYueGuidedTranslationPrompt"]
 
 
-class EngGuidedTranslationVsZhoOfYuePrompt(EngGuidedTranslationVsZhoPrompt):
+class EngZhoOfYueGuidedTranslationPrompt(EngZhoGuidedTranslationPrompt):
     """Text for guided English translation from Chinese subtitles of Yue source."""
 
     # Prompt

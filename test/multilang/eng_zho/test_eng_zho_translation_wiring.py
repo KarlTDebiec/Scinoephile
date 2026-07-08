@@ -8,6 +8,7 @@ from collections.abc import Callable
 from typing import cast
 from unittest.mock import Mock
 
+from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.dual_n_minus_m_to_n import (
@@ -15,20 +16,18 @@ from scinoephile.llms.dual_n_minus_m_to_n import (
     DualNMinusMToNPrompt,
 )
 from scinoephile.llms.dual_n_to_m import DualNToMProcessor, DualNToMPrompt
-from scinoephile.multilang.eng_zho.gapped_translation import (
-    EngGappedTranslationVsZhoPrompt,
-    get_eng_gapped_translated_vs_zho,
-    get_eng_vs_zho_gapped_translator,
-)
-from scinoephile.multilang.eng_zho.guided_translation import (
-    EngGuidedTranslationVsZhoPrompt,
-    get_eng_translated_from_zho_with_eng_guidance,
-    get_eng_zho_guided_translator,
-)
 from scinoephile.multilang.eng_zho.translation import (
-    EngTranslationVsZhoPrompt,
-    get_eng_translated_from_zho,
-    get_eng_zho_translator,
+    EngZhoGappedTranslationPrompt,
+    EngZhoGuidedTranslationPrompt,
+    EngZhoTranslationPrompt,
+)
+from scinoephile.multilang.translation import (
+    get_gap_translated,
+    get_gapped_translator,
+    get_guided_translated,
+    get_guided_translator,
+    get_translated,
+    get_translator,
 )
 from test.helpers import parametrize
 
@@ -40,9 +39,9 @@ _ProcessorFactory = Callable[..., _Processor]
 @parametrize(
     ("prompt_cls", "src_1", "src_2", "output"),
     [
-        (EngTranslationVsZhoPrompt, "zho_1", "context_1", "eng_1"),
-        (EngGuidedTranslationVsZhoPrompt, "zho_1", "eng_reference_1", "eng_1"),
-        (EngGappedTranslationVsZhoPrompt, "eng_1", "zho_1", "eng_1"),
+        (EngZhoTranslationPrompt, "zho_1", "context_1", "eng_1"),
+        (EngZhoGuidedTranslationPrompt, "zho_1", "eng_reference_1", "eng_1"),
+        (EngZhoGappedTranslationPrompt, "eng_1", "zho_1", "eng_1"),
     ],
 )
 def test_eng_zho_prompt_field_names(
@@ -65,18 +64,28 @@ def test_eng_zho_prompt_field_names(
 
 
 @parametrize(
-    ("factory", "processor_cls", "prompt_cls"),
+    ("factory", "processor_cls", "prompt_cls", "source_language", "target_language"),
     [
-        (get_eng_zho_translator, DualNToMProcessor, EngTranslationVsZhoPrompt),
         (
-            get_eng_zho_guided_translator,
+            get_translator,
             DualNToMProcessor,
-            EngGuidedTranslationVsZhoPrompt,
+            EngZhoTranslationPrompt,
+            Language.zho_hans,
+            Language.eng,
         ),
         (
-            get_eng_vs_zho_gapped_translator,
+            get_guided_translator,
+            DualNToMProcessor,
+            EngZhoGuidedTranslationPrompt,
+            Language.zho_hans,
+            Language.eng,
+        ),
+        (
+            get_gapped_translator,
             DualNMinusMToNProcessor,
-            EngGappedTranslationVsZhoPrompt,
+            EngZhoGappedTranslationPrompt,
+            Language.zho_hans,
+            Language.eng,
         ),
     ],
 )
@@ -84,6 +93,8 @@ def test_eng_zho_translator_factory_wiring(
     factory: _ProcessorFactory,
     processor_cls: type[_Processor],
     prompt_cls: _PromptCls,
+    source_language: Language,
+    target_language: Language,
 ):
     """Test English/Chinese translator factory wiring.
 
@@ -91,10 +102,14 @@ def test_eng_zho_translator_factory_wiring(
         factory: translator factory under test
         processor_cls: expected processor class
         prompt_cls: expected prompt class
+        source_language: source language
+        target_language: target language
     """
     provider = Mock(spec=LLMProvider)
 
-    processor = factory(test_cases=[], provider=provider)
+    processor = factory(
+        source_language, target_language, test_cases=[], provider=provider
+    )
 
     assert isinstance(processor, processor_cls)
     assert processor.prompt_cls is prompt_cls
@@ -135,30 +150,40 @@ def test_eng_zho_translation_wrappers_delegate_to_processor(
     processor = _RecordingProcessor(expected)
 
     if mode == "regular":
-        output = get_eng_translated_from_zho(
+        output = get_translated(
             source_one,
+            Language.zho_hans,
+            Language.eng,
             translator=cast(DualNToMProcessor, processor),
         )
     elif mode == "guided":
-        output = get_eng_translated_from_zho_with_eng_guidance(
+        output = get_guided_translated(
             source_one,
             source_two,
+            Language.zho_hans,
+            Language.eng,
             translator=cast(DualNToMProcessor, processor),
         )
     else:
-        output = get_eng_gapped_translated_vs_zho(
+        output = get_gap_translated(
             source_one,
             source_two,
+            Language.zho_hans,
+            Language.eng,
             translator=cast(DualNMinusMToNProcessor, processor),
         )
 
     assert output == expected
-    assert processor.source_one is source_one
-    if uses_empty_context:
-        assert isinstance(processor.source_two, Series)
-        assert len(processor.source_two.events) == 0
+    if mode == "gapped":
+        assert processor.source_one is source_two
+        assert processor.source_two is source_one
     else:
-        assert processor.source_two is source_two
+        assert processor.source_one is source_one
+        if uses_empty_context:
+            assert isinstance(processor.source_two, Series)
+            assert len(processor.source_two.events) == 0
+        else:
+            assert processor.source_two is source_two
 
 
 class _RecordingProcessor:

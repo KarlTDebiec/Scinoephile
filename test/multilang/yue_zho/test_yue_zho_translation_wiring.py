@@ -8,18 +8,19 @@ from collections.abc import Callable
 from typing import cast
 from unittest.mock import Mock
 
+from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.dual_n_to_m import DualNToMProcessor, DualNToMPrompt
-from scinoephile.multilang.yue_zho.guided_translation import (
-    YueGuidedTranslationVsZhoPromptYueHans,
-    get_yue_translated_from_zho_with_yue_guidance,
-    get_yue_zho_guided_translator,
+from scinoephile.multilang.translation import (
+    get_guided_translated,
+    get_guided_translator,
+    get_translated,
+    get_translator,
 )
 from scinoephile.multilang.yue_zho.translation import (
-    YueTranslationVsZhoPromptYueHans,
-    get_yue_translated_from_zho,
-    get_yue_zho_translator,
+    YueZhoGuidedTranslationPromptYueHans,
+    YueZhoTranslationPromptYueHans,
 )
 from test.helpers import parametrize
 
@@ -29,9 +30,9 @@ _ProcessorFactory = Callable[..., DualNToMProcessor]
 @parametrize(
     ("prompt_cls", "src_1", "src_2", "output"),
     [
-        (YueTranslationVsZhoPromptYueHans, "zhongwen_1", "context_1", "yuewen_1"),
+        (YueZhoTranslationPromptYueHans, "zhongwen_1", "context_1", "yuewen_1"),
         (
-            YueGuidedTranslationVsZhoPromptYueHans,
+            YueZhoGuidedTranslationPromptYueHans,
             "zhongwen_1",
             "yuewen_reference_1",
             "yuewen_1",
@@ -60,8 +61,8 @@ def test_yue_zho_prompt_field_names(
 @parametrize(
     ("factory", "prompt_cls"),
     [
-        (get_yue_zho_translator, YueTranslationVsZhoPromptYueHans),
-        (get_yue_zho_guided_translator, YueGuidedTranslationVsZhoPromptYueHans),
+        (get_translator, YueZhoTranslationPromptYueHans),
+        (get_guided_translator, YueZhoGuidedTranslationPromptYueHans),
     ],
 )
 def test_yue_zho_translator_factory_wiring(
@@ -77,6 +78,8 @@ def test_yue_zho_translator_factory_wiring(
     provider = Mock(spec=LLMProvider)
 
     processor = factory(
+        Language.zho_hans,
+        Language.yue_hans,
         test_cases=[],
         use_dictionary_tool=False,
         provider=provider,
@@ -120,14 +123,18 @@ def test_yue_zho_translation_wrappers_delegate_to_processor(
     processor = _RecordingProcessor(expected)
 
     if mode == "regular":
-        output = get_yue_translated_from_zho(
+        output = get_translated(
             zhongwen,
+            Language.zho_hans,
+            Language.yue_hans,
             translator=cast(DualNToMProcessor, processor),
         )
     else:
-        output = get_yue_translated_from_zho_with_yue_guidance(
+        output = get_guided_translated(
             zhongwen,
             yuewen,
+            Language.zho_hans,
+            Language.yue_hans,
             translator=cast(DualNToMProcessor, processor),
         )
 

@@ -35,9 +35,6 @@ from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNPrompt
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
-from scinoephile.multilang.yue_zho.gapped_translation import (
-    YueGappedTranslationVsZhoPromptYueHans,
-)
 from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
     YueZhoLineReviewManager,
@@ -48,6 +45,9 @@ from scinoephile.multilang.yue_zho.transcription.deliniation import (
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
     YueZhoPunctuationManager,
+)
+from scinoephile.multilang.yue_zho.translation import (
+    YueZhoGappedTranslationPromptYueHans,
 )
 from test.helpers import SeriesCERResult, test_data_root
 
@@ -63,7 +63,7 @@ __all__ = [
     "get_kob_yue_hant_simplify_block_review_test_cases",
     "get_kob_yue_punctuation_test_cases",
     "get_kob_yue_vs_zho_block_review_test_cases",
-    "get_kob_yue_vs_zho_gapped_translation_test_cases",
+    "get_kob_yue_from_zho_gapped_translation_test_cases",
     "get_kob_yue_vs_zho_line_review_test_cases",
     "get_kob_zho_hant_block_review_test_cases",
     "get_kob_zho_hant_ocr_fusion_test_cases",
@@ -282,11 +282,11 @@ def get_kob_yue_deliniation_test_cases(
 
 
 @cache
-def get_kob_yue_vs_zho_gapped_translation_test_cases(
-    prompt_cls: type[DualNMinusMToNPrompt] = YueGappedTranslationVsZhoPromptYueHans,
+def get_kob_yue_from_zho_gapped_translation_test_cases(
+    prompt_cls: type[DualNMinusMToNPrompt] = YueZhoGappedTranslationPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB yue-Hans vs zho-Hans gapped translation test cases.
+    """Get KOB yue-Hans from zho-Hans gapped translation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence

@@ -40,20 +40,18 @@ from scinoephile.llms.dual_n_minus_m_to_n.manager import DualNMinusMToNManager
 from scinoephile.llms.dual_n_to_m.manager import DualNToMManager
 from scinoephile.llms.dual_n_to_n.manager import DualNToNManager
 from scinoephile.llms.mono_n.manager import MonoNManager
-from scinoephile.multilang.eng_zho.gapped_translation import (
-    EngGappedTranslationVsZhoPrompt,
+from scinoephile.multilang.eng_zho.translation import (
+    EngZhoGappedTranslationPrompt,
+    EngZhoTranslationPrompt,
 )
-from scinoephile.multilang.eng_zho.translation import EngTranslationVsZhoPrompt
 from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
-from scinoephile.multilang.yue_zho.gapped_translation import (
-    YueGappedTranslationVsZhoPromptYueHans,
-)
-from scinoephile.multilang.yue_zho.guided_translation import (
-    YueGuidedTranslationVsZhoPromptYueHans,
-)
 from scinoephile.multilang.yue_zho.line_review import YueLineReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
-from scinoephile.multilang.yue_zho.translation import YueTranslationVsZhoPromptYueHans
+from scinoephile.multilang.yue_zho.translation import (
+    YueZhoGappedTranslationPromptYueHans,
+    YueZhoGuidedTranslationPromptYueHans,
+    YueZhoTranslationPromptYueHans,
+)
 from test.helpers import parametrize
 
 
@@ -107,14 +105,14 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
         (
             "eng_zho_translation",
             DualNToMManager,
-            EngTranslationVsZhoPrompt,
+            EngZhoTranslationPrompt,
             ENG_ZHO_TRANSLATION_JSON_PATHS,
             (),
         ),
         (
             "eng_zho_gapped_translation",
             DualNMinusMToNManager,
-            EngGappedTranslationVsZhoPrompt,
+            EngZhoGappedTranslationPrompt,
             ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
             (),
         ),
@@ -205,9 +203,9 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             ),
         ),
         (
-            "yue_vs_zho_gapped_translation",
+            "yue_from_zho_gapped_translation",
             DualNMinusMToNManager,
-            YueGappedTranslationVsZhoPromptYueHans,
+            YueZhoGappedTranslationPromptYueHans,
             YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
             (
                 Path(
@@ -227,14 +225,14 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
         (
             "yue_zho_translation",
             DualNToMManager,
-            YueTranslationVsZhoPromptYueHans,
+            YueZhoTranslationPromptYueHans,
             YUE_ZHO_TRANSLATION_JSON_PATHS,
             (),
         ),
         (
             "yue_zho_guided_translation",
             DualNToMManager,
-            YueGuidedTranslationVsZhoPromptYueHans,
+            YueZhoGuidedTranslationPromptYueHans,
             YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
             (),
         ),
