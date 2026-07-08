@@ -30,7 +30,7 @@ from scinoephile.dictionaries.dictionary_tools import (
     get_dictionary_tools,
     lookup_dictionary,
 )
-from scinoephile.multilang.translation import get_gapped_translator
+from scinoephile.multilang.translation.gapped import get_gap_translator
 from scinoephile.multilang.yue_zho.block_review import (
     YueBlockReviewVsZhoPromptYueHans,
     get_yue_vs_zho_block_reviewer,
@@ -237,7 +237,7 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
 
 def _build_yue_zho_gapped_processor(**kwargs: Any) -> Processor:
     """Get a Yue/Zho gapped translator for dictionary-tool tests."""
-    return get_gapped_translator(Language.zho_hans, Language.yue_hans, **kwargs)
+    return get_gap_translator(Language.zho_hans, Language.yue_hans, **kwargs)
 
 
 @parametrize(

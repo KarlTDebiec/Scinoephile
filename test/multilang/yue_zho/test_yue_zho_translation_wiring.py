@@ -12,9 +12,11 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.dual_n_to_m import DualNToMProcessor, DualNToMPrompt
-from scinoephile.multilang.translation import (
+from scinoephile.multilang.translation.guided import (
     get_guided_translated,
     get_guided_translator,
+)
+from scinoephile.multilang.translation.standard import (
     get_translated,
     get_translator,
 )

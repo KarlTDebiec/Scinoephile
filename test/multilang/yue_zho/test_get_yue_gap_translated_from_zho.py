@@ -11,9 +11,9 @@ from pytest import FixtureRequest, param
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
-from scinoephile.multilang.translation import (
+from scinoephile.multilang.translation.gapped import (
     get_gap_translated,
-    get_gapped_translator,
+    get_gap_translator,
 )
 from test.data.kob import get_kob_yue_from_zho_gapped_translation_test_cases
 from test.data.mlamd import get_mlamd_yue_from_zho_gapped_translation_test_cases
@@ -71,7 +71,7 @@ def test_get_gap_translated_zho_to_yue(
     provider = Mock(spec=LLMProvider)
     with patch(device_patch_target, return_value="cuda"):
         test_cases = test_case_loader()
-    translator = get_gapped_translator(
+    translator = get_gap_translator(
         Language.zho_hans,
         Language.yue_hans,
         test_cases=test_cases,

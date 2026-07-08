@@ -21,11 +21,15 @@ from scinoephile.multilang.eng_zho.translation import (
     EngZhoGuidedTranslationPrompt,
     EngZhoTranslationPrompt,
 )
-from scinoephile.multilang.translation import (
+from scinoephile.multilang.translation.gapped import (
     get_gap_translated,
-    get_gapped_translator,
+    get_gap_translator,
+)
+from scinoephile.multilang.translation.guided import (
     get_guided_translated,
     get_guided_translator,
+)
+from scinoephile.multilang.translation.standard import (
     get_translated,
     get_translator,
 )
@@ -81,7 +85,7 @@ def test_eng_zho_prompt_field_names(
             Language.eng,
         ),
         (
-            get_gapped_translator,
+            get_gap_translator,
             DualNMinusMToNProcessor,
             EngZhoGappedTranslationPrompt,
             Language.zho_hans,
