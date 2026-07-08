@@ -49,7 +49,15 @@
 * Where possible, classes should implement `__repr__` methods such that they may be reconstructed from its `repr` output.
 * Avoid ternary expressions; prefer explicit `if`/`else` statements for readability.
 * Do not create public methods that only delegate to private methods with the same behavior. If the behavior belongs in the public API, put the implementation in the public method directly.
-* Keep straightforward, single-use logic inline. Do not split a function into private helpers solely for organization until the function is roughly 50 lines; extract earlier only when the helper is reused elsewhere.
+* Keep straightforward, single-use logic inline. Do not split logic into a helper
+  solely to name a short expression, hide a few lines, or make a function look
+  more organized.
+  * Before a function is roughly 50 lines, extract a helper only when it is reused,
+    isolates a genuinely separate operation, or materially improves testability.
+  * Do not add one-line wrappers or predicates for logic that is clearer at the
+    call site.
+  * Prefer local variables and direct conditionals over private helpers for
+    simple type narrowing, option selection, and guard checks.
 * Use one-line block comments above continuous blocks of code when they help separate the steps of nontrivial logic; do not end these comments with periods.
 
 ## Type Annotations

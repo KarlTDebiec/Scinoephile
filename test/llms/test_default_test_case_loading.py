@@ -19,22 +19,7 @@ from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.default_test_cases import (
-    ENG_BLOCK_REVIEW_JSON_PATHS,
-    ENG_OCR_FUSION_JSON_PATHS,
-    ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-    ENG_ZHO_TRANSLATION_JSON_PATHS,
-    YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
-    YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
-    YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
-    YUE_ZHO_LINE_REVIEW_JSON_PATHS,
-    YUE_ZHO_TRANSLATION_JSON_PATHS,
-    ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
-    ZHO_HANS_OCR_FUSION_JSON_PATHS,
-    ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
-    ZHO_HANT_OCR_FUSION_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_1_to_1.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.dual_n_minus_m_to_n.manager import DualNMinusMToNManager
 from scinoephile.llms.dual_n_to_m.manager import DualNToMManager
@@ -75,13 +60,12 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
 
 
 @parametrize(
-    ("name", "manager_cls", "prompt_cls", "json_paths", "expected_paths"),
+    ("name", "manager_cls", "prompt_cls", "json_paths"),
     [
         (
             "eng_block_review",
             MonoNManager,
             BlockReviewPromptEng,
-            ENG_BLOCK_REVIEW_JSON_PATHS,
             (
                 Path("kob/output/eng_ocr/lang/eng/block_review.json"),
                 Path("kob/output/eng/lang/eng/block_review.json"),
@@ -94,7 +78,6 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             "eng_ocr_fusion",
             OcrFusionManager,
             OcrFusionPromptEng,
-            ENG_OCR_FUSION_JSON_PATHS,
             (
                 Path("kob/output/eng_ocr/lang/eng/ocr_fusion.json"),
                 Path("mlamd/output/eng_ocr/lang/eng/ocr_fusion.json"),
@@ -106,21 +89,18 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             "eng_zho_translation",
             DualNToMManager,
             EngZhoTranslationPrompt,
-            ENG_ZHO_TRANSLATION_JSON_PATHS,
             (),
         ),
         (
             "eng_zho_gapped_translation",
             DualNMinusMToNManager,
             EngZhoGappedTranslationPrompt,
-            ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
             (),
         ),
         (
             "zho_hans_block_review",
             MonoNManager,
             BlockReviewPromptZhoHans,
-            ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
             (
                 Path("mlamd/output/zho-Hans_ocr/lang/zho/block_review.json"),
                 Path("mnt/output/zho-Hans_ocr/lang/zho/block_review.json"),
@@ -131,7 +111,6 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             "zho_hant_block_review",
             MonoNManager,
             BlockReviewPromptZhoHant,
-            ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
             (
                 Path("kob/output/zho-Hant_ocr/lang/zho/block_review.json"),
                 Path("mlamd/output/zho-Hant_ocr/lang/zho/block_review.json"),
@@ -143,7 +122,6 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             "zho_hans_ocr_fusion",
             OcrFusionManager,
             OcrFusionPromptZhoHans,
-            ZHO_HANS_OCR_FUSION_JSON_PATHS,
             (
                 Path("mlamd/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
                 Path("mnt/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
@@ -154,7 +132,6 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             "zho_hant_ocr_fusion",
             OcrFusionManager,
             OcrFusionPromptZhoHant,
-            ZHO_HANT_OCR_FUSION_JSON_PATHS,
             (
                 Path("kob/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
                 Path("mlamd/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
@@ -166,7 +143,6 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             "yue_zho_line_review",
             YueZhoLineReviewManager,
             YueLineReviewVsZhoPromptYueHans,
-            YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             (
                 Path(
                     "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/"
@@ -186,7 +162,6 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             "yue_zho_block_review",
             DualNToNManager,
             YueBlockReviewVsZhoPromptYueHans,
-            YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             (
                 Path(
                     "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/"
@@ -206,7 +181,6 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             "yue_from_zho_gapped_translation",
             DualNMinusMToNManager,
             YueZhoGappedTranslationPromptYueHans,
-            YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
             (
                 Path(
                     "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/"
@@ -226,14 +200,12 @@ def _get_expected_case_count(relative_paths: tuple[Path, ...]) -> int:
             "yue_zho_translation",
             DualNToMManager,
             YueZhoTranslationPromptYueHans,
-            YUE_ZHO_TRANSLATION_JSON_PATHS,
             (),
         ),
         (
             "yue_zho_guided_translation",
             DualNToMManager,
             YueZhoGuidedTranslationPromptYueHans,
-            YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
             (),
         ),
     ],
@@ -243,7 +215,6 @@ def test_default_loader_coverage(
     manager_cls: type[Manager],
     prompt_cls: type[Prompt],
     json_paths: tuple[Path, ...],
-    expected_paths: tuple[Path, ...],
 ):
     """Test that each default loader includes all configured repository cases.
 
@@ -252,9 +223,8 @@ def test_default_loader_coverage(
         manager_cls: manager class used to load default test cases
         prompt_cls: prompt class used to load default test cases
         json_paths: configured JSON paths for this loader
-        expected_paths: expected JSON paths for this loader
     """
-    expected_count = _get_expected_case_count(expected_paths)
+    expected_count = _get_expected_case_count(json_paths)
     loaded_count = len(load_default_test_cases(manager_cls, prompt_cls, json_paths))
     assert loaded_count == expected_count, (
         f"{name} loaded {loaded_count} cases, expected {expected_count}"

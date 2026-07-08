@@ -10,16 +10,14 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
-from scinoephile.llms.default_test_cases import (
-    YUE_ZHO_LINE_REVIEW_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.providers.registry import get_provider
 
 from .manager import YueZhoLineReviewManager
@@ -39,6 +37,12 @@ __all__ = [
     "get_yue_line_reviewed_vs_zho",
     "get_yue_vs_zho_line_reviewer",
 ]
+
+_YUE_ZHO_LINE_REVIEW_JSON_PATHS = (
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/line_review/cuda.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/line_review/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/line_review/mps.json"),
+)
 
 YUE_ZHO_LINE_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-line-review",
@@ -100,7 +104,7 @@ def get_yue_vs_zho_line_reviewer(
             load_default_test_cases(
                 YueZhoLineReviewManager,
                 prompt_cls,
-                YUE_ZHO_LINE_REVIEW_JSON_PATHS,
+                _YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             )
         )
     tool_box = kwargs.pop("tool_box", None)

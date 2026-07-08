@@ -4,16 +4,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.default_test_cases import (
-    ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
-    ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.mono_n import MonoNManager, MonoNProcessor
 from scinoephile.llms.providers.registry import get_provider
 
@@ -27,6 +24,19 @@ __all__ = [
     "get_zho_block_reviewed",
     "get_zho_reviewer",
 ]
+
+_ZHO_HANS_BLOCK_REVIEW_JSON_PATHS = (
+    Path("mlamd/output/zho-Hans_ocr/lang/zho/block_review.json"),
+    Path("mnt/output/zho-Hans_ocr/lang/zho/block_review.json"),
+    Path("t/output/zho-Hans_ocr/lang/zho/block_review.json"),
+)
+
+_ZHO_HANT_BLOCK_REVIEW_JSON_PATHS = (
+    Path("kob/output/zho-Hant_ocr/lang/zho/block_review.json"),
+    Path("mlamd/output/zho-Hant_ocr/lang/zho/block_review.json"),
+    Path("mnt/output/zho-Hant_ocr/lang/zho/block_review.json"),
+    Path("t/output/zho-Hant_ocr/lang/zho/block_review.json"),
+)
 
 ZHO_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="zho-block-review",
@@ -85,7 +95,7 @@ def get_zho_reviewer(
                 load_default_test_cases(
                     MonoNManager,
                     prompt_cls,
-                    ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
+                    _ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
                 )
             )
         else:
@@ -93,7 +103,7 @@ def get_zho_reviewer(
                 load_default_test_cases(
                     MonoNManager,
                     prompt_cls,
-                    ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
+                    _ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
                 )
             )
     if provider is None:

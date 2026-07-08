@@ -4,16 +4,14 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
-from scinoephile.llms.default_test_cases import (
-    YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNProcessor
 from scinoephile.llms.providers.registry import get_provider
 
@@ -30,6 +28,12 @@ __all__ = [
     "get_yue_block_reviewed_vs_zho",
     "get_yue_vs_zho_block_reviewer",
 ]
+
+_YUE_ZHO_BLOCK_REVIEW_JSON_PATHS = (
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/cuda.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/mps.json"),
+)
 
 YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-block-review",
@@ -93,7 +97,7 @@ def get_yue_vs_zho_block_reviewer(
             load_default_test_cases(
                 DualNToNManager,
                 prompt_cls,
-                YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
+                _YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             )
         )
     tool_box = kwargs.pop("tool_box", None)

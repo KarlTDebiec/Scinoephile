@@ -4,11 +4,12 @@
 
 from __future__ import annotations
 
-from typing import ClassVar, Protocol
+from typing import ClassVar, Protocol, runtime_checkable
 
 __all__ = ["DictionaryToolPrompt"]
 
 
+@runtime_checkable
 class DictionaryToolPrompt(Protocol):
     """Prompt text required to build dictionary tool specifications."""
 

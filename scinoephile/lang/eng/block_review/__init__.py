@@ -4,15 +4,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.default_test_cases import (
-    ENG_BLOCK_REVIEW_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.mono_n import MonoNManager, MonoNProcessor
 from scinoephile.llms.providers.registry import get_provider
 
@@ -25,6 +23,14 @@ __all__ = [
     "get_eng_block_reviewed",
     "get_eng_block_reviewer",
 ]
+
+_ENG_BLOCK_REVIEW_JSON_PATHS = (
+    Path("kob/output/eng_ocr/lang/eng/block_review.json"),
+    Path("kob/output/eng/lang/eng/block_review.json"),
+    Path("mlamd/output/eng_ocr/lang/eng/block_review.json"),
+    Path("mnt/output/eng_ocr/lang/eng/block_review.json"),
+    Path("t/output/eng_ocr/lang/eng/block_review.json"),
+)
 
 ENG_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="eng-block-review",
@@ -82,7 +88,7 @@ def get_eng_block_reviewer(
             load_default_test_cases(
                 MonoNManager,
                 prompt_cls,
-                ENG_BLOCK_REVIEW_JSON_PATHS,
+                _ENG_BLOCK_REVIEW_JSON_PATHS,
             )
         )
     if provider is None:

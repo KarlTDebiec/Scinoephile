@@ -4,15 +4,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.default_test_cases import (
-    ENG_OCR_FUSION_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager, OcrFusionProcessor
 from scinoephile.llms.providers.registry import get_provider
 
@@ -25,6 +23,13 @@ __all__ = [
     "get_eng_ocr_fuser",
     "get_eng_ocr_fused",
 ]
+
+_ENG_OCR_FUSION_JSON_PATHS = (
+    Path("kob/output/eng_ocr/lang/eng/ocr_fusion.json"),
+    Path("mlamd/output/eng_ocr/lang/eng/ocr_fusion.json"),
+    Path("mnt/output/eng_ocr/lang/eng/ocr_fusion.json"),
+    Path("t/output/eng_ocr/lang/eng/ocr_fusion.json"),
+)
 
 ENG_OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="eng-ocr-fusion",
@@ -84,7 +89,7 @@ def get_eng_ocr_fuser(
             load_default_test_cases(
                 OcrFusionManager,
                 prompt_cls,
-                ENG_OCR_FUSION_JSON_PATHS,
+                _ENG_OCR_FUSION_JSON_PATHS,
             )
         )
     if provider is None:

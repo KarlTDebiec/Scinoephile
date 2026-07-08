@@ -4,16 +4,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.default_test_cases import (
-    ZHO_HANS_OCR_FUSION_JSON_PATHS,
-    ZHO_HANT_OCR_FUSION_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_1_to_1.ocr_fusion import (
     OcrFusionManager,
     OcrFusionProcessor,
@@ -30,6 +27,19 @@ __all__ = [
     "get_zho_ocr_fuser",
     "get_zho_ocr_fused",
 ]
+
+_ZHO_HANS_OCR_FUSION_JSON_PATHS = (
+    Path("mlamd/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
+    Path("mnt/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
+    Path("t/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
+)
+
+_ZHO_HANT_OCR_FUSION_JSON_PATHS = (
+    Path("kob/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+    Path("mlamd/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+    Path("mnt/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+    Path("t/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+)
 
 ZHO_OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="zho-ocr-fusion",
@@ -90,7 +100,7 @@ def get_zho_ocr_fuser(
                 load_default_test_cases(
                     OcrFusionManager,
                     prompt_cls,
-                    ZHO_HANT_OCR_FUSION_JSON_PATHS,
+                    _ZHO_HANT_OCR_FUSION_JSON_PATHS,
                 )
             )
         else:
@@ -98,7 +108,7 @@ def get_zho_ocr_fuser(
                 load_default_test_cases(
                     OcrFusionManager,
                     prompt_cls,
-                    ZHO_HANS_OCR_FUSION_JSON_PATHS,
+                    _ZHO_HANS_OCR_FUSION_JSON_PATHS,
                 )
             )
     if provider is None:
