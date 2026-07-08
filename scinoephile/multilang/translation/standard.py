@@ -5,13 +5,18 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import Unpack
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.mono_n import MonoNManager, MonoNProcessor, MonoNPrompt
+from scinoephile.llms.mono_n import (
+    MonoNManager,
+    MonoNProcessor,
+    MonoNProcessorProcessKwargs,
+    MonoNPrompt,
+)
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.eng_yue.translation import EngYueTranslationPrompt
 from scinoephile.multilang.eng_zho.translation import EngZhoTranslationPrompt
@@ -32,12 +37,8 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueTranslationPromptZhoHant,
 )
 
-from .shared import MonoNTranslationProcessorKwargs
-
 __all__ = [
     "TRANSLATION_OPERATION_SPEC",
-    "TranslationProcessKwargs",
-    "TranslationProcessorKwargs",
     "get_translated",
     "get_translator",
 ]
@@ -98,23 +99,12 @@ _PROMPTS: dict[tuple[Language, Language], type[MonoNPrompt]] = {
 """Regular translation prompts keyed by exact source and target languages."""
 
 
-class TranslationProcessorKwargs(MonoNTranslationProcessorKwargs, total=False):
-    """Keyword arguments for regular translation processor initialization."""
-
-
-class TranslationProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for regular translation processing."""
-
-    stop_at_idx: int | None
-    """Exclusive block index at which to stop processing."""
-
-
 def get_translated(
     source: Series,
     source_language: Language,
     target_language: Language,
     translator: MonoNProcessor | None = None,
-    **kwargs: Unpack[TranslationProcessKwargs],
+    **kwargs: Unpack[MonoNProcessorProcessKwargs],
 ) -> Series:
     """Translate subtitles between a supported language pair.
 

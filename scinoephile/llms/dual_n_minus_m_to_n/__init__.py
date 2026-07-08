@@ -16,11 +16,15 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import DualNMinusMToNManager
-from .processor import DualNMinusMToNProcessor
+from .processor import (
+    DualNMinusMToNProcessor,
+    DualNMinusMToNProcessorProcessKwargs,
+)
 from .prompt import DualNMinusMToNPrompt
 
 __all__ = [
     "DualNMinusMToNManager",
     "DualNMinusMToNProcessor",
+    "DualNMinusMToNProcessorProcessKwargs",
     "DualNMinusMToNPrompt",
 ]

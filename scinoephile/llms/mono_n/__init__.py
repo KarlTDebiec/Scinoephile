@@ -11,11 +11,12 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import MonoNManager
-from .processor import MonoNProcessor
+from .processor import MonoNProcessor, MonoNProcessorProcessKwargs
 from .prompt import MonoNPrompt
 
 __all__ = [
     "MonoNManager",
     "MonoNPrompt",
     "MonoNProcessor",
+    "MonoNProcessorProcessKwargs",
 ]

@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import Unpack
 
 from scinoephile.core import Language
 from scinoephile.core.llms import (
@@ -19,6 +19,7 @@ from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_n_minus_m_to_n import (
     DualNMinusMToNManager,
     DualNMinusMToNProcessor,
+    DualNMinusMToNProcessorProcessKwargs,
     DualNMinusMToNPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
@@ -41,12 +42,8 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueGappedTranslationPromptZhoHant,
 )
 
-from .shared import DualNMinusMToNTranslationProcessorKwargs
-
 __all__ = [
     "GAPPED_TRANSLATION_OPERATION_SPEC",
-    "GappedTranslationProcessKwargs",
-    "GappedTranslationProcessorKwargs",
     "get_gap_translated",
     "get_gap_translator",
 ]
@@ -113,27 +110,13 @@ _PROMPTS: dict[tuple[Language, Language], type[DualNMinusMToNPrompt]] = {
 """Gapped translation prompts keyed by exact source and target languages."""
 
 
-class GappedTranslationProcessorKwargs(
-    DualNMinusMToNTranslationProcessorKwargs,
-    total=False,
-):
-    """Keyword arguments for gapped translation processor initialization."""
-
-
-class GappedTranslationProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for gapped translation processing."""
-
-    stop_at_idx: int | None
-    """Exclusive block index at which to stop processing."""
-
-
 def get_gap_translated(
     source: Series,
     target: Series,
     source_language: Language,
     target_language: Language,
     translator: DualNMinusMToNProcessor | None = None,
-    **kwargs: Unpack[GappedTranslationProcessKwargs],
+    **kwargs: Unpack[DualNMinusMToNProcessorProcessKwargs],
 ) -> Series:
     """Translate target-language subtitle gaps from source-language subtitles.
 

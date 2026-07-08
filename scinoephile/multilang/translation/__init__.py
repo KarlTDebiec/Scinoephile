@@ -3,6 +3,5 @@
 """Code for translating between supported language pairs.
 
 Package hierarchy (modules may import from any above):
-* shared
 * gapped / guided / standard
 """

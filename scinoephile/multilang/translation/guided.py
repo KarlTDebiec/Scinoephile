@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import Unpack
 
 from scinoephile.core import Language
 from scinoephile.core.llms import (
@@ -19,6 +19,7 @@ from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_n_to_m import (
     DualNToMManager,
     DualNToMProcessor,
+    DualNToMProcessorProcessKwargs,
     DualNToMPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
@@ -41,12 +42,8 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueGuidedTranslationPromptZhoHant,
 )
 
-from .shared import DualNToMTranslationProcessorKwargs
-
 __all__ = [
     "GUIDED_TRANSLATION_OPERATION_SPEC",
-    "GuidedTranslationProcessKwargs",
-    "GuidedTranslationProcessorKwargs",
     "get_guided_translated",
     "get_guided_translator",
 ]
@@ -107,27 +104,13 @@ _PROMPTS: dict[tuple[Language, Language], type[DualNToMPrompt]] = {
 """Guided translation prompts keyed by exact source and target languages."""
 
 
-class GuidedTranslationProcessorKwargs(
-    DualNToMTranslationProcessorKwargs,
-    total=False,
-):
-    """Keyword arguments for guided translation processor initialization."""
-
-
-class GuidedTranslationProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for guided translation processing."""
-
-    stop_at_idx: int | None
-    """Exclusive block index at which to stop processing."""
-
-
 def get_guided_translated(
     source: Series,
     target: Series,
     source_language: Language,
     target_language: Language,
     translator: DualNToMProcessor | None = None,
-    **kwargs: Unpack[GuidedTranslationProcessKwargs],
+    **kwargs: Unpack[DualNToMProcessorProcessKwargs],
 ) -> Series:
     """Translate subtitles using target-language guidance.
 

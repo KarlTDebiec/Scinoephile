@@ -11,11 +11,12 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import DualNToMManager
-from .processor import DualNToMProcessor
+from .processor import DualNToMProcessor, DualNToMProcessorProcessKwargs
 from .prompt import DualNToMPrompt
 
 __all__ = [
     "DualNToMManager",
     "DualNToMProcessor",
+    "DualNToMProcessorProcessKwargs",
     "DualNToMPrompt",
 ]

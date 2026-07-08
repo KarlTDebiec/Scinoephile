@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import TypedDict
 
 from scinoephile.core.llms import Processor
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -14,10 +15,20 @@ from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from .manager import DualNToMManager
 from .prompt import DualNToMPrompt
 
-__all__ = ["DualNToMProcessor"]
+__all__ = [
+    "DualNToMProcessor",
+    "DualNToMProcessorProcessKwargs",
+]
 
 
 logger = getLogger(__name__)
+
+
+class DualNToMProcessorProcessKwargs(TypedDict, total=False):
+    """Keyword arguments for dual n to m processor processing."""
+
+    stop_at_idx: int | None
+    """Exclusive block index at which to stop processing."""
 
 
 class DualNToMProcessor(Processor):
