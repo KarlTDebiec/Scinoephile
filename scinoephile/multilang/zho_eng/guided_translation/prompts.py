@@ -12,12 +12,12 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_n_to_m import DualNToMPrompt
 
 __all__ = [
-    "ZhoGuidedTranslationVsEngPromptZhoHans",
-    "ZhoGuidedTranslationVsEngPromptZhoHant",
+    "ZhoEngGuidedTranslationPromptZhoHans",
+    "ZhoEngGuidedTranslationPromptZhoHant",
 ]
 
 
-class ZhoGuidedTranslationVsEngPromptZhoHans(DualNToMPrompt, PromptZhoHans):
+class ZhoEngGuidedTranslationPromptZhoHans(DualNToMPrompt, PromptZhoHans):
     """Text for simplified guided standard Chinese translation from English."""
 
     # Prompt
@@ -57,7 +57,7 @@ class ZhoGuidedTranslationVsEngPromptZhoHans(DualNToMPrompt, PromptZhoHans):
     """Description template for generated standard Chinese output fields."""
 
 
-class ZhoGuidedTranslationVsEngPromptZhoHant(ZhoGuidedTranslationVsEngPromptZhoHans):
+class ZhoEngGuidedTranslationPromptZhoHant(ZhoEngGuidedTranslationPromptZhoHans):
     """Text for traditional guided standard Chinese translation from English."""
 
     opencc_config = OpenCCConfig.s2t

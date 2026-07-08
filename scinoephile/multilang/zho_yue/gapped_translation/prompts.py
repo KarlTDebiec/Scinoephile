@@ -12,12 +12,12 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNPrompt
 
 __all__ = [
-    "ZhoGappedTranslationVsYuePromptZhoHans",
-    "ZhoGappedTranslationVsYuePromptZhoHant",
+    "ZhoYueGappedTranslationPromptZhoHans",
+    "ZhoYueGappedTranslationPromptZhoHant",
 ]
 
 
-class ZhoGappedTranslationVsYuePromptZhoHans(DualNMinusMToNPrompt, PromptZhoHans):
+class ZhoYueGappedTranslationPromptZhoHans(DualNMinusMToNPrompt, PromptZhoHans):
     """Text for simplified standard Chinese gapped translation using Cantonese."""
 
     # Prompt
@@ -73,7 +73,7 @@ class ZhoGappedTranslationVsYuePromptZhoHans(DualNMinusMToNPrompt, PromptZhoHans
         return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
-class ZhoGappedTranslationVsYuePromptZhoHant(ZhoGappedTranslationVsYuePromptZhoHans):
+class ZhoYueGappedTranslationPromptZhoHant(ZhoYueGappedTranslationPromptZhoHans):
     """Text for traditional standard Chinese gapped translation using Cantonese."""
 
     opencc_config = OpenCCConfig.s2t

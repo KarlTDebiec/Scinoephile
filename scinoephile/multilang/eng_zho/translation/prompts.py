@@ -10,10 +10,10 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.dual_n_to_m import DualNToMPrompt
 
-__all__ = ["EngTranslationVsZhoPrompt"]
+__all__ = ["EngZhoTranslationPrompt"]
 
 
-class EngTranslationVsZhoPrompt(DualNToMPrompt, PromptEng):
+class EngZhoTranslationPrompt(DualNToMPrompt, PromptEng):
     """Text for English translation from Chinese."""
 
     # Prompt

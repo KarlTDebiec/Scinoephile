@@ -10,10 +10,10 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.dual_n_to_m import DualNToMPrompt
 
-__all__ = ["EngGuidedTranslationVsYuePrompt"]
+__all__ = ["EngYueGuidedTranslationPrompt"]
 
 
-class EngGuidedTranslationVsYuePrompt(DualNToMPrompt, PromptEng):
+class EngYueGuidedTranslationPrompt(DualNToMPrompt, PromptEng):
     """Text for guided translation of English from written Cantonese."""
 
     # Prompt

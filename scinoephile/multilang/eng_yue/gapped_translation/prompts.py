@@ -10,10 +10,10 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNPrompt
 
-__all__ = ["EngGappedTranslationVsYuePrompt"]
+__all__ = ["EngYueGappedTranslationPrompt"]
 
 
-class EngGappedTranslationVsYuePrompt(DualNMinusMToNPrompt, PromptEng):
+class EngYueGappedTranslationPrompt(DualNMinusMToNPrompt, PromptEng):
     """Text for English gapped translation using written Cantonese."""
 
     # Prompt
