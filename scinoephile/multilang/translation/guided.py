@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Unpack, cast
+from typing import TypedDict, Unpack
 
 from scinoephile.core import Language
 from scinoephile.core.llms import (
@@ -114,7 +114,7 @@ class GuidedTranslationProcessorKwargs(
     """Keyword arguments for guided translation processor initialization."""
 
 
-class GuidedTranslationProcessKwargs(GuidedTranslationProcessorKwargs, total=False):
+class GuidedTranslationProcessKwargs(TypedDict, total=False):
     """Keyword arguments for guided translation processing."""
 
     stop_at_idx: int | None
@@ -137,21 +137,13 @@ def get_guided_translated(
         source_language: source language
         target_language: target language
         translator: processor to use, or None to construct one
-        **kwargs: translation processor and process keyword arguments
+        **kwargs: translation process keyword arguments
     Returns:
         guided-translated subtitles
     """
-    stop_at_idx = kwargs.pop("stop_at_idx", None)
     if translator is None:
-        translator_kwargs = cast(GuidedTranslationProcessorKwargs, kwargs)
-        translator = get_guided_translator(
-            source_language,
-            target_language,
-            **translator_kwargs,
-        )
-    if stop_at_idx is None:
-        return translator.process(source, target)
-    return translator.process(source, target, stop_at_idx=stop_at_idx)
+        translator = get_guided_translator(source_language, target_language)
+    return translator.process(source, target, **kwargs)
 
 
 def get_guided_translator(

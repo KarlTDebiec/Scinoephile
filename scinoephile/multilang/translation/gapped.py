@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Unpack, cast
+from typing import TypedDict, Unpack
 
 from scinoephile.core import Language
 from scinoephile.core.llms import (
@@ -120,7 +120,7 @@ class GappedTranslationProcessorKwargs(
     """Keyword arguments for gapped translation processor initialization."""
 
 
-class GappedTranslationProcessKwargs(GappedTranslationProcessorKwargs, total=False):
+class GappedTranslationProcessKwargs(TypedDict, total=False):
     """Keyword arguments for gapped translation processing."""
 
     stop_at_idx: int | None
@@ -143,21 +143,13 @@ def get_gap_translated(
         source_language: source language
         target_language: target language
         translator: processor to use, or None to construct one
-        **kwargs: translation processor and process keyword arguments
+        **kwargs: translation process keyword arguments
     Returns:
         target-language subtitles with gaps translated
     """
-    stop_at_idx = kwargs.pop("stop_at_idx", None)
     if translator is None:
-        translator_kwargs = cast(GappedTranslationProcessorKwargs, kwargs)
-        translator = get_gap_translator(
-            source_language,
-            target_language,
-            **translator_kwargs,
-        )
-    if stop_at_idx is None:
-        return translator.process(target, source)
-    return translator.process(target, source, stop_at_idx=stop_at_idx)
+        translator = get_gap_translator(source_language, target_language)
+    return translator.process(target, source, **kwargs)
 
 
 def get_gap_translator(

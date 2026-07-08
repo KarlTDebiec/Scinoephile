@@ -10,9 +10,15 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
-from scinoephile.multilang.translation.gapped import get_gap_translated
-from scinoephile.multilang.translation.guided import get_guided_translated
-from scinoephile.multilang.translation.standard import get_translated
+from scinoephile.multilang.translation.gapped import (
+    get_gap_translated,
+    get_gap_translator,
+)
+from scinoephile.multilang.translation.guided import (
+    get_guided_translated,
+    get_guided_translator,
+)
+from scinoephile.multilang.translation.standard import get_translated, get_translator
 
 __all__ = [
     "translate_series",
@@ -48,12 +54,17 @@ def translate_series(
     if target_language is None:
         raise ScinoephileError("--target-language is required")
 
-    return get_translated(
-        source,
+    translator = get_translator(
         resolved_source_language,
         target_language,
         provider=provider,
         additional_context=additional_context,
+    )
+    return get_translated(
+        source,
+        resolved_source_language,
+        target_language,
+        translator=translator,
     )
 
 
@@ -83,13 +94,18 @@ def translate_series_gapped(
     resolved_source_language = _resolve_language(source, source_language)
     resolved_target_language = _resolve_language(target, target_language)
 
+    translator = get_gap_translator(
+        resolved_source_language,
+        resolved_target_language,
+        provider=provider,
+        additional_context=additional_context,
+    )
     return get_gap_translated(
         source,
         target,
         resolved_source_language,
         resolved_target_language,
-        provider=provider,
-        additional_context=additional_context,
+        translator=translator,
     )
 
 
@@ -119,13 +135,18 @@ def translate_series_guided(
     resolved_source_language = _resolve_language(source, source_language)
     resolved_target_language = _resolve_language(target, target_language)
 
+    translator = get_guided_translator(
+        resolved_source_language,
+        resolved_target_language,
+        provider=provider,
+        additional_context=additional_context,
+    )
     return get_guided_translated(
         source,
         target,
         resolved_source_language,
         resolved_target_language,
-        provider=provider,
-        additional_context=additional_context,
+        translator=translator,
     )
 
 
