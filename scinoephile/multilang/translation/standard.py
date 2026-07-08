@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Unpack, cast
 
-from scinoephile.core import Language, ScinoephileError
+from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.llms import load_default_test_cases
@@ -160,16 +160,10 @@ def get_translator(
     Returns:
         configured translation processor
     """
-    pair = (source_language, target_language)
-    if pair not in _PROMPTS:
-        raise ScinoephileError(
-            f"Unsupported translation pair: {source_language.tag} to "
-            f"{target_language.tag}"
-        )
     if prompt_cls is None:
-        prompt_cls = _PROMPTS[pair]
+        prompt_cls = _PROMPTS[source_language, target_language]
     if test_cases is None:
-        json_paths = _JSON_PATHS[pair]
+        json_paths = _JSON_PATHS[source_language, target_language]
         test_cases = list(load_default_test_cases(MonoNManager, prompt_cls, json_paths))
     if provider is None:
         provider = get_provider()
