@@ -8,7 +8,6 @@ Translate subtitles between supported languages.
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from logging import getLogger
 from pathlib import Path
 
 from scinoephile.cli.helpers.io import read_series, write_series
@@ -28,14 +27,14 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.core.subtitles import Series
-from scinoephile.lang.id import get_series_language
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.workflows.translation import TranslationMode, translate_series
+from scinoephile.workflows.translation import (
+    translate_series,
+    translate_series_gapped,
+    translate_series_guided,
+)
 
 __all__ = ["TranslateCli"]
-
-logger = getLogger(__name__)
 
 TRANSLATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
@@ -201,44 +200,28 @@ class TranslateCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
-        target_infile_path, mode = cls._get_target_infile_and_mode(
-            gapped_infile_path=gapped_infile_path,
-            guide_infile_path=guide_infile_path,
-        )
 
-        # Read inputs and resolve languages
+        # Read inputs
         source = read_series(parser, infile_path, allow_stdin=True)
-        target = None
-        if target_infile_path is not None:
-            target = read_series(parser, target_infile_path)
-        source_language = cls._resolve_language(
-            parser=parser,
-            series=source,
-            explicit_language=source_language,
-            role_name="source",
-            option_name="--source-language",
-        )
-        target_language = cls._resolve_target_language(
-            parser=parser,
-            target=target,
-            explicit_language=target_language,
-        )
-        additional_context = read_llm_additional_context(
-            parser, llm_args.additional_context_file_path
-        )
-        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
+        kwargs = {
+            "source_language": source_language,
+            "target_language": target_language,
+            "provider": get_provider(llm_args.provider_name, model=llm_args.model_name),
+            "additional_context": read_llm_additional_context(
+                parser, llm_args.additional_context_file_path
+            ),
+        }
 
         # Perform operation
         try:
-            output = translate_series(
-                source=source,
-                source_language=source_language,
-                target_language=target_language,
-                mode=mode,
-                target=target,
-                provider=provider,
-                additional_context=additional_context,
-            )
+            if gapped_infile_path is not None:
+                target = read_series(parser, gapped_infile_path)
+                output = translate_series_gapped(source, target, **kwargs)
+            elif guide_infile_path is not None:
+                target = read_series(parser, guide_infile_path)
+                output = translate_series_guided(source, target, **kwargs)
+            else:
+                output = translate_series(source, **kwargs)
         except ScinoephileError as exc:
             parser.error(str(exc))
 
@@ -246,96 +229,6 @@ class TranslateCli(ScinoephileCliBase):
         write_series(
             parser, output, outfile_path if outfile_path is not None else "-", overwrite
         )
-
-    @staticmethod
-    def _get_target_infile_and_mode(
-        *,
-        gapped_infile_path: Path | str | None,
-        guide_infile_path: Path | str | None,
-    ) -> tuple[Path | str | None, TranslationMode]:
-        """Get target-language input path and translation mode.
-
-        Arguments:
-            gapped_infile_path: target-language gapped subtitle path
-            guide_infile_path: target-language guide subtitle path
-        Returns:
-            target-language input path and translation mode
-        """
-        if gapped_infile_path is not None:
-            return gapped_infile_path, "gapped"
-        if guide_infile_path is not None:
-            return guide_infile_path, "guided"
-        return None, "regular"
-
-    @staticmethod
-    def _resolve_language(
-        *,
-        parser: ArgumentParser,
-        series: Series,
-        explicit_language: Language | None,
-        role_name: str,
-        option_name: str,
-    ) -> Language:
-        """Resolve a detected or explicit language for a series.
-
-        Arguments:
-            parser: parser used for user-facing error output
-            series: subtitle series to classify
-            explicit_language: explicit language argument, if provided
-            role_name: user-facing role name
-            option_name: option to recommend when detection fails
-        Returns:
-            resolved language
-        """
-        detected_language = get_series_language(series)
-        if explicit_language is not None:
-            if (
-                detected_language is not None
-                and detected_language is not explicit_language
-            ):
-                logger.warning(
-                    f"Explicit {role_name} language {explicit_language.tag} does not "
-                    f"match detected {role_name} language {detected_language.tag}; "
-                    f"using {explicit_language.tag}"
-                )
-            return explicit_language
-        if detected_language is None:
-            parser.error(
-                f"Unable to determine {role_name} language; pass {option_name}"
-            )
-        return detected_language
-
-    @classmethod
-    def _resolve_target_language(
-        cls,
-        *,
-        parser: ArgumentParser,
-        target: Series | None,
-        explicit_language: Language | None,
-    ) -> Language:
-        """Resolve target language from an argument or target-language input.
-
-        Arguments:
-            parser: parser used for user-facing error output
-            target: target-language guide or gapped subtitle series
-            explicit_language: explicit target language argument, if provided
-        Returns:
-            resolved target language
-        """
-        if target is not None:
-            return cls._resolve_language(
-                parser=parser,
-                series=target,
-                explicit_language=explicit_language,
-                role_name="target",
-                option_name="--target-language",
-            )
-        if explicit_language is None:
-            parser.error(
-                "--target-language is required unless --guide-infile or "
-                "--gapped-infile can determine target language"
-            )
-        return explicit_language
 
 
 if __name__ == "__main__":
