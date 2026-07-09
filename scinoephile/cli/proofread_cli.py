@@ -28,7 +28,7 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.workflows.block_review import review_series_blocks
+from scinoephile.workflows.block_review import block_review_series
 
 __all__ = ["ProofreadCli"]
 
@@ -144,7 +144,7 @@ class ProofreadCli(ScinoephileCliBase):
 
         # Perform operation
         try:
-            output = review_series_blocks(
+            output = block_review_series(
                 series,
                 language=language,
                 provider=get_provider(

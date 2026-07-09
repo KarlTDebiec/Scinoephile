@@ -24,7 +24,7 @@ from scinoephile.lang.zho.block_review import (
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.workflows.block_review import review_series_blocks
+from scinoephile.workflows.block_review import block_review_series
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
 
 __all__ = [
@@ -262,7 +262,7 @@ def _review(
         reviewer_kw.setdefault("prompt_cls", BlockReviewPromptYueHant)
     elif language is Language.zho_hant:
         reviewer_kw.setdefault("prompt_cls", BlockReviewPromptZhoHant)
-    review = review_series_blocks(series, language=language, **reviewer_kw)
+    review = block_review_series(series, language=language, **reviewer_kw)
     review.save(path)
     return review
 

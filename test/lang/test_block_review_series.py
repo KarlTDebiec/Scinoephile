@@ -22,7 +22,7 @@ from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHant,
 )
 from scinoephile.llms.block_review import BlockReviewPrompt
-from scinoephile.workflows.block_review import review_series_blocks
+from scinoephile.workflows.block_review import block_review_series
 from test.data.acopopb import (
     get_acopopb_eng_block_review_test_cases,
     get_acopopb_yue_hans_block_review_test_cases,
@@ -410,7 +410,7 @@ from test.helpers import assert_series_equal, parametrize
         ),
     ],
 )
-def test_review_series_blocks(
+def test_block_review_series(
     request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
@@ -436,7 +436,7 @@ def test_review_series_blocks(
         provider=provider,
     )
     expected = request.getfixturevalue(expected_fixture)
-    output = review_series_blocks(
+    output = block_review_series(
         request.getfixturevalue(series_fixture),
         language=language,
         reviewer=reviewer,

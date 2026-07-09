@@ -127,11 +127,11 @@ class _PatchedSrtPipeline:
             "get_zho_cleaned",
             "get_zho_converted",
             "get_zho_flattened",
-            "review_series_blocks",
+            "block_review_series",
         ]:
             monkeypatch.setattr(f"{SRT_PROCESSING_MODULE}.{name}", getattr(self, name))
 
-    def review_series_blocks(
+    def block_review_series(
         self,
         series: Series,
         *,
@@ -282,7 +282,7 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
         _write_series(output_dir_path / f"{output_name}.srt", f"existing {output_name}")
 
     for name in [
-        "review_series_blocks",
+        "block_review_series",
         "get_series_timewarped",
         "get_zho_cleaned",
         "get_zho_flattened",

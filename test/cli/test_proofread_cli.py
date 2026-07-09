@@ -29,7 +29,7 @@ def test_proofread_cli_passes_llm_options_to_reviewer(tmp_path):
     context_path = tmp_path / "context.txt"
     context_path.write_text("Use glossary terms.\n", encoding="utf-8")
 
-    def review_series_blocks(
+    def block_review_series(
         series: Series,
         *,
         language: Language,
@@ -45,8 +45,8 @@ def test_proofread_cli_passes_llm_options_to_reviewer(tmp_path):
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.proofread_cli.review_series_blocks",
-            side_effect=review_series_blocks,
+            "scinoephile.cli.proofread_cli.block_review_series",
+            side_effect=block_review_series,
         ):
             run_cli_with_args(
                 ProofreadCli,
@@ -69,7 +69,7 @@ def test_proofread_cli_pipe_detects_language_in_workflow():
     )
     input_text = full_input_path.read_text(encoding="utf-8")
 
-    def review_series_blocks(
+    def block_review_series(
         series: Series,
         *,
         language: Language | None,
@@ -88,8 +88,8 @@ def test_proofread_cli_pipe_detects_language_in_workflow():
     with patch("scinoephile.cli.helpers.io.stdin", stdin_stream):
         with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
             with patch(
-                "scinoephile.cli.proofread_cli.review_series_blocks",
-                side_effect=review_series_blocks,
+                "scinoephile.cli.proofread_cli.block_review_series",
+                side_effect=block_review_series,
             ):
                 run_cli_with_args(ProofreadCli, "-")
 

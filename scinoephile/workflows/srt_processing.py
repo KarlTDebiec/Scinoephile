@@ -24,7 +24,7 @@ from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.llms.block_review import BlockReviewPrompt
-from scinoephile.workflows.block_review import review_series_blocks
+from scinoephile.workflows.block_review import block_review_series
 
 __all__ = [
     "SrtProcessingResult",
@@ -255,7 +255,7 @@ class SrtProcessingWorkflow:
                         prompt_cls = BlockReviewPromptYueHans
                 test_case_language_dir_name = "yue"
 
-            review = review_series_blocks(
+            review = block_review_series(
                 series,
                 language=review_language,
                 prompt_cls=prompt_cls,
