@@ -130,9 +130,4 @@ def get_block_reviewer(
         )
     if provider is None:
         provider = get_provider()
-    return BlockReviewProcessor(
-        prompt_cls=prompt_cls,
-        test_cases=test_cases,
-        provider=provider,
-        **kwargs,
-    )
+    return BlockReviewProcessor(prompt_cls, test_cases, provider=provider, **kwargs)
