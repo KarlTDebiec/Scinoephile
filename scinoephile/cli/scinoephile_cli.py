@@ -13,15 +13,14 @@ from scinoephile.common.cli import ListAllCommandsAction
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .dictionary import DictionaryCli
-from .eng import EngCli
 from .media import MediaCli
 from .multi import MultiCli
 from .ocr import OcrCli
+from .process_cli import ProcessCli
 from .proofread_cli import ProofreadCli
 from .translate_cli import TranslateCli
 from .utility import UtilityCli
 from .yue import YueCli
-from .zho import ZhoCli
 
 __all__ = ["ScinoephileCli"]
 
@@ -37,12 +36,11 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "fuse OCR output for a selected language": "融合所选语言的 OCR 输出",
         "inspect and extract media streams": "检查并提取媒体流",
         "list all subcommands and exit": "列出所有子命令并退出",
-        "modify English subtitles": "修改英文字幕",
-        "modify standard Chinese subtitles": "修改标准中文字幕",
-        "modify written Cantonese subtitles": "修改书面粤语字幕",
         "operate on multiple subtitle series": "处理多个字幕序列",
+        "process subtitles": "处理字幕",
         "proofread subtitles using an LLM": "使用大语言模型校对字幕",
         "recognize text from image-based subtitles": "识别图像字幕中的文本",
+        "run written Cantonese subtitle workflows": "运行书面粤语字幕工作流",
         "run utility commands": "运行实用工具命令",
         (
             "Scinoephile is an application for working with Chinese, English, "
@@ -70,12 +68,11 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "fuse OCR output for a selected language": "融合所選語言的 OCR 輸出",
         "inspect and extract media streams": "檢查並提取媒體流",
         "list all subcommands and exit": "列出所有子命令並結束",
-        "modify English subtitles": "修改英文字幕",
-        "modify standard Chinese subtitles": "修改標準中文字幕",
-        "modify written Cantonese subtitles": "修改書面粵語字幕",
         "operate on multiple subtitle series": "處理多個字幕序列",
+        "process subtitles": "處理字幕",
         "proofread subtitles using an LLM": "使用大型語言模型校對字幕",
         "recognize text from image-based subtitles": "識別影像字幕中的文字",
+        "run written Cantonese subtitle workflows": "執行書面粵語字幕工作流程",
         "run utility commands": "執行實用工具命令",
         (
             "Scinoephile is an application for working with Chinese, English, "
@@ -145,15 +142,14 @@ class ScinoephileCli(ScinoephileCliBase):
         """
         return {
             DictionaryCli.name(): DictionaryCli,
-            EngCli.name(): EngCli,
             MediaCli.name(): MediaCli,
             MultiCli.name(): MultiCli,
             OcrCli.name(): OcrCli,
+            ProcessCli.name(): ProcessCli,
             ProofreadCli.name(): ProofreadCli,
             TranslateCli.name(): TranslateCli,
             UtilityCli.name(): UtilityCli,
             YueCli.name(): YueCli,
-            ZhoCli.name(): ZhoCli,
         }
 
     @classmethod

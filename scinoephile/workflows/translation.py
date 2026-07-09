@@ -22,7 +22,7 @@ from scinoephile.multilang.translation.gap import get_gap_translator
 from scinoephile.multilang.translation.guided import get_guided_translator
 from scinoephile.multilang.translation.standard import get_translator
 
-from .helpers import resolve_series_language
+from .helpers import resolve_language
 
 __all__ = [
     "translate_series",
@@ -60,7 +60,7 @@ def translate_series(
     Raises:
         ScinoephileError: if a language cannot be resolved or the pair is unsupported
     """
-    resolved_source_language = resolve_series_language(source, source_language)
+    resolved_source_language = resolve_language(source, source_language)
 
     if translator is None:
         translator = get_translator(
@@ -105,8 +105,8 @@ def translate_series_gaps(
     Raises:
         ScinoephileError: if a language cannot be resolved or the pair is unsupported
     """
-    resolved_source_language = resolve_series_language(source, source_language)
-    resolved_target_language = resolve_series_language(target, target_language)
+    resolved_source_language = resolve_language(source, source_language)
+    resolved_target_language = resolve_language(target, target_language)
 
     if translator is None:
         translator = get_gap_translator(
@@ -151,8 +151,8 @@ def translate_series_guided(
     Raises:
         ScinoephileError: if a language cannot be resolved or the pair is unsupported
     """
-    resolved_source_language = resolve_series_language(source, source_language)
-    resolved_target_language = resolve_series_language(guide, target_language)
+    resolved_source_language = resolve_language(source, source_language)
+    resolved_target_language = resolve_language(guide, target_language)
 
     if translator is None:
         translator = get_guided_translator(

@@ -74,8 +74,13 @@ class Language(DescribedEnum):
     """Traditional Chinese."""
 
     @property
+    def is_cantonese(self) -> bool:
+        """Whether this language is Cantonese."""
+        return self in (Language.yue_hans, Language.yue_hant)
+
+    @property
     def is_chinese(self) -> bool:
-        """Whether this language represents Chinese text."""
+        """Whether this language is Chinese."""
         return self in (
             Language.yue_hans,
             Language.yue_hant,

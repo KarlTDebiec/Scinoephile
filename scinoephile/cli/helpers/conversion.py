@@ -20,6 +20,7 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig
 __all__ = [
     "CONVERSION_LOCALIZATIONS",
     "add_opencc_convert_argument",
+    "add_opencc_convert_auto_argument",
     "opencc_config_arg",
 ]
 
@@ -32,6 +33,13 @@ CONVERSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "使用 OpenCC 代码转换中文字符，例如 s2t、t2s 或 s2hk。使用 "
             "--list-opencc-configs 查看所有代码。"
         ),
+        "convert Chinese characters with an OpenCC code such as s2t, t2s, or "
+        "s2hk, or omit the code to choose s2t or t2s from the input language. "
+        "Use --list-opencc-configs to show all codes.": (
+            "使用 OpenCC 代码转换中文字符，例如 s2t、t2s 或 s2hk；也可省略"
+            "代码，由输入语言选择 s2t 或 t2s。使用 --list-opencc-configs 查看"
+            "所有代码。"
+        ),
         "list available OpenCC configurations and exit": "列出可用 OpenCC 配置并退出",
     },
     "zh-hant": {
@@ -41,6 +49,13 @@ CONVERSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "s2hk. Use --list-opencc-configs to show all codes.": (
             "使用 OpenCC 代碼轉換中文字符，例如 s2t、t2s 或 s2hk。使用 "
             "--list-opencc-configs 查看所有代碼。"
+        ),
+        "convert Chinese characters with an OpenCC code such as s2t, t2s, or "
+        "s2hk, or omit the code to choose s2t or t2s from the input language. "
+        "Use --list-opencc-configs to show all codes.": (
+            "使用 OpenCC 代碼轉換中文字符，例如 s2t、t2s 或 s2hk；也可省略"
+            "代碼，由輸入語言選擇 s2t 或 t2s。使用 --list-opencc-configs 查看"
+            "所有代碼。"
         ),
         "list available OpenCC configurations and exit": "列出可用 OpenCC 設定並結束",
     },
@@ -84,20 +99,6 @@ OPENCC_CONFIG_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized OpenCC configuration descriptions keyed by locale and config code."""
 
 
-def get_opencc_config_description(config: OpenCCConfig, locale_name: str = "en") -> str:
-    """Get localized description for an OpenCC configuration.
-
-    Arguments:
-        config: OpenCC configuration
-        locale_name: locale name to use for description lookup
-    Returns:
-        localized description when available, otherwise English description
-    """
-    return OPENCC_CONFIG_LOCALIZATIONS.get(locale_name, {}).get(
-        config.code, config.description
-    )
-
-
 def add_opencc_convert_argument(
     operation_arg_group: _ArgumentGroup,
     additional_help_arg_group: _ArgumentGroup,
@@ -114,6 +115,35 @@ def add_opencc_convert_argument(
         help=(
             "convert Chinese characters with an OpenCC code such as s2t, t2s, or "
             "s2hk. Use --list-opencc-configs to show all codes."
+        ),
+    )
+    additional_help_arg_group.add_argument(
+        "--list-opencc-configs",
+        action=_ListOpenCCConfigsAction,
+        default=SUPPRESS,
+        help="list available OpenCC configurations and exit",
+    )
+
+
+def add_opencc_convert_auto_argument(
+    operation_arg_group: _ArgumentGroup,
+    additional_help_arg_group: _ArgumentGroup,
+):
+    """Add OpenCC conversion arguments allowing automatic config selection.
+
+    Arguments:
+        operation_arg_group: group to which to add `--convert`
+        additional_help_arg_group: group to which to add help-only OpenCC arguments
+    """
+    operation_arg_group.add_argument(
+        "--convert",
+        nargs="?",
+        const=True,
+        type=opencc_config_arg,
+        help=(
+            "convert Chinese characters with an OpenCC code such as s2t, t2s, "
+            "or s2hk, or omit the code to choose s2t or t2s from the input "
+            "language. Use --list-opencc-configs to show all codes."
         ),
     )
     additional_help_arg_group.add_argument(
@@ -169,9 +199,11 @@ class _ListOpenCCConfigsAction(Action):
             "Available OpenCC configurations:",
             "Available OpenCC configurations:",
         )
+        config_localizations = OPENCC_CONFIG_LOCALIZATIONS.get(locale_name, {})
         lines = [heading]
         lines.extend(
-            f"  {config.value:<5} {get_opencc_config_description(config, locale_name)}"
+            f"  {config.value:<5} "
+            f"{config_localizations.get(config.code, config.description)}"
             for config in OpenCCConfig
         )
         parser._print_message("\n".join(lines) + "\n", sys.stdout)  # noqa: SLF001

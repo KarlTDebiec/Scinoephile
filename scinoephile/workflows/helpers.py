@@ -10,15 +10,12 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
 
-__all__ = ["resolve_series_language"]
+__all__ = ["resolve_language"]
 
 logger = getLogger(__name__)
 
 
-def resolve_series_language(
-    series: Series,
-    explicit_language: Language | None,
-) -> Language:
+def resolve_language(series: Series, explicit_language: Language | None) -> Language:
     """Resolve a detected or explicit language for a subtitle series.
 
     Arguments:

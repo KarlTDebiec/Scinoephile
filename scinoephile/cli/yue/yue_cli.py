@@ -10,7 +10,6 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
-from .yue_process_cli import YueProcessCli
 from .yue_review_vs_zho_cli import YueReviewVsZhoCli
 from .yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
 
@@ -21,20 +20,20 @@ YUE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for written Cantonese subtitle operations": (
             "书面粤语字幕操作命令行界面"
         ),
-        "modify written Cantonese subtitles": "修改书面粤语字幕",
+        "run written Cantonese subtitle workflows": "运行书面粤语字幕工作流",
     },
     "zh-hant": {
         "command-line interface for written Cantonese subtitle operations": (
             "書面粵語字幕操作命令列介面"
         ),
-        "modify written Cantonese subtitles": "修改書面粵語字幕",
+        "run written Cantonese subtitle workflows": "執行書面粵語字幕工作流程",
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
 class YueCli(ScinoephileCliBase):
-    """Modify written Cantonese subtitles."""
+    """Run written Cantonese subtitle workflows."""
 
     localizations = YUE_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
@@ -66,7 +65,6 @@ class YueCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
-            YueProcessCli.name(): YueProcessCli,
             YueReviewVsZhoCli.name(): YueReviewVsZhoCli,
             YueTranscribeVsZhoCli.name(): YueTranscribeVsZhoCli,
         }
