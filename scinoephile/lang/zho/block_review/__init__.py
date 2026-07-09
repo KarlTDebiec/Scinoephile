@@ -74,7 +74,7 @@ def get_zho_block_reviewed(
 
 
 def get_zho_reviewer(
-    prompt_cls: type[BlockReviewPromptZhoHans] = BlockReviewPromptZhoHans,
+    prompt_cls: type[BlockReviewPromptZhoHant] = BlockReviewPromptZhoHans,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],

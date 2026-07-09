@@ -82,7 +82,7 @@ def get_yue_line_reviewed_vs_zho(
 
 
 def get_yue_vs_zho_line_reviewer(
-    prompt_cls: type[YueLineReviewVsZhoPromptYueHans] = YueLineReviewVsZhoPromptYueHans,
+    prompt_cls: type[YueLineReviewVsZhoPromptYueHant] = YueLineReviewVsZhoPromptYueHans,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
