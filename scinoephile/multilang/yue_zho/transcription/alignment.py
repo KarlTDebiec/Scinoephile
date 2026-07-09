@@ -21,8 +21,13 @@ from scinoephile.core.synchronization import (
 )
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager
 
-from .deliniation import YueDeliniationVsZhoPromptYueHans
-from .punctuation import YuePunctuationVsZhoPromptYueHans, YueZhoPunctuationManager
+from .deliniation import (
+    YueDeliniationVsZhoPromptYueHans,
+)
+from .punctuation import (
+    YuePunctuationVsZhoPromptYueHans,
+    YueZhoPunctuationManager,
+)
 
 __all__ = ["Alignment"]
 

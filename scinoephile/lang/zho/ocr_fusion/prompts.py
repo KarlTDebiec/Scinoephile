@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.zho.prompts import PromptZhoHans
+from scinoephile.lang.zho.prompts import PromptZhoHans, PromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionPrompt
 
@@ -17,16 +17,16 @@ __all__ = [
 ]
 
 
-class OcrFusionPromptZhoHans(OcrFusionPrompt, PromptZhoHans):
-    """Text for LLM correspondence for simplified standard Chinese OCR fusion."""
+class OcrFusionPromptZhoHant(OcrFusionPrompt, PromptZhoHant):
+    """Text for LLM correspondence for traditional standard Chinese OCR fusion."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
-        你负责将来自两个不同来源的中文字幕 OCR 结果进行融合：Google Lens 和 PaddleOCR。
-        请遵循以下原则：
-        * Google Lens 在识别汉字方面更可靠。
-        * Google Lens 在标点符号方面更可靠。
-        * PaddleOCR 在换行格式方面更可靠。""")
+        你負責將來自兩個不同來源的中文字幕 OCR 結果進行融合：Google Lens 和 PaddleOCR。
+        請遵循以下原則：
+        * Google Lens 在識別漢字方面更可靠。
+        * Google Lens 在標點符號方面更可靠。
+        * PaddleOCR 在換行格式方面更可靠。""")
     """Base system prompt."""
 
     # Query fields
@@ -50,7 +50,7 @@ class OcrFusionPromptZhoHans(OcrFusionPrompt, PromptZhoHans):
     """Error when source two field is missing from query."""
 
     src_1_src_2_equal_err: ClassVar[str] = (
-        "Google Lens 与 PaddleOCR 的字幕文本不能完全相同。"
+        "Google Lens 與 PaddleOCR 的字幕文本不能完全相同。"
     )
     """Error when source one and two fields are equal in query."""
 
@@ -58,25 +58,25 @@ class OcrFusionPromptZhoHans(OcrFusionPrompt, PromptZhoHans):
     output: ClassVar[str] = "ronghe"
     """Name of output field in answer."""
 
-    output_desc: ClassVar[str] = "融合后的字幕文本"
+    output_desc: ClassVar[str] = "融合後的字幕文本"
     """Description of output field in answer."""
 
     note: ClassVar[str] = "beizhu"
     """Name of note field in answer."""
 
-    note_desc: ClassVar[str] = "对所做更正的说明"
+    note_desc: ClassVar[str] = "對所做更正的說明"
     """Description of note field in answer."""
 
     # Answer validation errors
-    output_missing_err: ClassVar[str] = "融合后的字幕文本不能为空。"
+    output_missing_err: ClassVar[str] = "融合後的字幕文本不能爲空。"
     """Error when output field is missing from answer."""
 
-    note_missing_err: ClassVar[str] = "更正说明不能为空。"
+    note_missing_err: ClassVar[str] = "更正說明不能爲空。"
     """Error when note field is missing from answer."""
 
 
-class OcrFusionPromptZhoHant(OcrFusionPromptZhoHans):
-    """Text for LLM correspondence for traditional standard Chinese OCR fusion."""
+class OcrFusionPromptZhoHans(OcrFusionPromptZhoHant, PromptZhoHans):
+    """Text for LLM correspondence for simplified standard Chinese OCR fusion."""
 
-    opencc_config = OpenCCConfig.s2t
-    """Config for converting simplified Chinese characters from the parent class."""
+    opencc_config = OpenCCConfig.t2s
+    """Config for converting traditional Chinese characters from the parent class."""

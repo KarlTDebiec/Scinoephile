@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.zho.prompts import PromptZhoHans
+from scinoephile.lang.zho.prompts import PromptZhoHans, PromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.block_review import BlockReviewPrompt
 
@@ -17,59 +17,59 @@ __all__ = [
 ]
 
 
-class BlockReviewPromptZhoHans(BlockReviewPrompt, PromptZhoHans):
-    """LLM correspondence text for simplified standard Chinese block review."""
+class BlockReviewPromptZhoHant(BlockReviewPrompt, PromptZhoHant):
+    """LLM correspondence text for traditional standard Chinese block review."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
-        你负责校对中文字幕。
-        仅修正排版与错别字等排版性/输入性错误。
-        不要润色、改写、改动语气或用词，也不要根据上下文改剧情。
-        如果没有明显的错别字或排版错误，请保持原文不变。
-        对每条字幕，只有在需要修改时才提供修订后的字幕。
-        若需要修改，请返回完整的修订后字幕，并给出说明修改内容的备注。
-        若不需要修改，修订后字幕与备注均返回空字符串。""")
+        你負責校對中文字幕。
+        僅修正排版與錯別字等排版性/輸入性錯誤。
+        不要潤色、改寫、改動語氣或用詞，也不要根據上下文改劇情。
+        如果沒有明顯的錯別字或排版錯誤，請保持原文不變。
+        對每條字幕，只有在需要修改時才提供修訂後的字幕。
+        若需要修改，請返回完整的修訂後字幕，並給出說明修改內容的備註。
+        若不需要修改，修訂後字幕與備註均返回空字符串。""")
     """Base system prompt."""
 
     # Query fields
     input_pfx: ClassVar[str] = "zimu_"
     """Prefix for input fields in query."""
 
-    input_desc_tpl: ClassVar[str] = "第 {idx} 条字幕"
+    input_desc_tpl: ClassVar[str] = "第 {idx} 條字幕"
     """Description template for input fields in query."""
 
     # Answer fields
     output_pfx: ClassVar[str] = "xiugai_"
     """Prefix for output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = "第 {idx} 条修改后的字幕"
+    output_desc_tpl: ClassVar[str] = "第 {idx} 條修改後的字幕"
     """Description template for output fields in answer."""
 
     note_pfx: ClassVar[str] = "beizhu_"
     """Prefix for note fields in answer."""
 
-    note_desc_tpl: ClassVar[str] = "关于第 {idx} 条字幕修改的备注说明"
+    note_desc_tpl: ClassVar[str] = "關於第 {idx} 條字幕修改的備註說明"
     """Description template for note fields in answer."""
 
     # Test case errors
     output_unmodified_err_tpl: ClassVar[str] = (
-        "第 {idx} 条答案的修改文本与查询文本相同。如果不需要修改，应提供空字符串。"
+        "第 {idx} 條答案的修改文本與查詢文本相同。如果不需要修改，應提供空字符串。"
     )
     """Error template when output is present but unmodified."""
 
     note_missing_err_tpl: ClassVar[str] = (
-        "第 {idx} 条答案的文本已被修改，但未提供备注。如需修改，必须附带备注说明。"
+        "第 {idx} 條答案的文本已被修改，但未提供備註。如需修改，必須附帶備註說明。"
     )
     """Error template when note is missing for a change."""
 
     output_missing_err_tpl: ClassVar[str] = (
-        "第 {idx} 条答案的文本未修改，但提供了备注。如果不需要修改，应提供空字符串。"
+        "第 {idx} 條答案的文本未修改，但提供了備註。如果不需要修改，應提供空字符串。"
     )
     """Error template when output is missing for a note."""
 
 
-class BlockReviewPromptZhoHant(BlockReviewPromptZhoHans):
-    """LLM correspondence text for traditional standard Chinese block review."""
+class BlockReviewPromptZhoHans(BlockReviewPromptZhoHant, PromptZhoHans):
+    """LLM correspondence text for simplified standard Chinese block review."""
 
-    opencc_config = OpenCCConfig.s2t
-    """Config for converting simplified Chinese characters from the parent class."""
+    opencc_config = OpenCCConfig.t2s
+    """Config for converting traditional Chinese characters from the parent class."""

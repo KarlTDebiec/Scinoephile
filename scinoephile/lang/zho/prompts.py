@@ -6,59 +6,63 @@ from __future__ import annotations
 
 from abc import ABC
 from inspect import isroutine
-from typing import Any, ClassVar
+from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
 from .script.conversion import OpenCCConfig, get_zho_text_converted
 
-__all__ = ["PromptZhoHans"]
+__all__ = [
+    "PromptZhoHans",
+    "PromptZhoHant",
+]
 
 
-class PromptZhoHans(Prompt, ABC):
-    """LLM correspondence text for simplified standard Chinese."""
+class PromptZhoHant(Prompt, ABC):
+    """LLM correspondence text for traditional standard Chinese."""
 
     opencc_config: ClassVar[OpenCCConfig | None] = None
-    """Config for converting simplified Chinese characters from the parent class."""
+    """Config for converting Chinese characters from the parent class."""
 
     # Prompt
-    schema_intro: ClassVar[str] = "你的回复必须是一个具有以下结构的 JSON 对象："
+    schema_intro: ClassVar[str] = "你的回覆必須是一個具有以下結構的 JSON 對象："
     """Text preceding schema description."""
 
-    few_shot_intro: ClassVar[str] = "下面是一些查询及其预期答案的示例："
+    few_shot_intro: ClassVar[str] = "下面是一些查詢及其預期答案的示例："
     """Text preceding few-shot examples."""
 
-    few_shot_query_intro: ClassVar[str] = "示例查询："
+    few_shot_query_intro: ClassVar[str] = "示例查詢："
     """Text preceding each few-shot example query."""
 
-    few_shot_answer_intro: ClassVar[str] = "预期答案："
+    few_shot_answer_intro: ClassVar[str] = "預期答案："
     """Text preceding each few-shot expected answer."""
 
     # Answer validation errors
     answer_invalid_pre: ClassVar[str] = (
-        "你之前的回复不是有效的 JSON，或未符合预期的模式要求。错误详情："
+        "你之前的回覆不是有效的 JSON，或未符合預期的模式要求。錯誤詳情："
     )
     """Text preceding answer validation errors."""
 
     answer_invalid_post: ClassVar[str] = (
-        "请重新尝试，并仅返回一个符合该模式要求的有效 JSON 对象。"
+        "請重新嘗試，並僅返回一個符合該模式要求的有效 JSON 對象。"
     )
     """Text following answer validation errors."""
 
     # Test case validation errors
     test_case_invalid_pre: ClassVar[str] = (
-        "你之前的回复是符合答案模式的有效 JSON，但不适用于当前的特定查询。错误详情："
+        "你之前的回覆是符合答案模式的有效 JSON，但不適用於當前的特定查詢。錯誤詳情："
     )
     """Text preceding test case validation errors."""
 
-    test_case_invalid_post: ClassVar[str] = "请根据错误信息对你的回复进行相应修改。"
+    test_case_invalid_post: ClassVar[str] = "請根據錯誤信息對你的回覆進行相應修改。"
     """Text following test case validation errors."""
 
-    def __init_subclass__(cls, **kwargs: Any):
+    def __init_subclass__(cls, **kwargs: object):
         """Automatically convert class attributes using OpenCC configuration.
 
-        This metaclass hook automatically converts class attributes from simplified
-        to traditional Chinese (or vice versa) when a subclass sets `opencc_config`.
+        This metaclass hook automatically converts class attributes from the
+        parent Chinese script to the target script when a subclass explicitly sets
+        `opencc_config`.
         It walks through the method resolution order (MRO) and converts string values
         as well as strings within tuples, lists, and dictionaries inherited from
         parent classes that have not been explicitly overridden in the subclass.
@@ -68,7 +72,8 @@ class PromptZhoHans(Prompt, ABC):
         """
         super().__init_subclass__(**kwargs)
 
-        if cls.opencc_config is None:
+        config = cls.__dict__.get("opencc_config")
+        if not isinstance(config, OpenCCConfig):
             return
 
         for base in cls.__mro__[1:]:
@@ -86,12 +91,12 @@ class PromptZhoHans(Prompt, ABC):
                 if isinstance(value, (classmethod, staticmethod, property)):
                     continue
 
-                new_value = cls._convert_value(value, cls.opencc_config)
+                new_value = cls._convert_value(value, config)
                 if new_value is not value:
                     setattr(cls, name, new_value)
 
     @classmethod
-    def _convert_value(cls, value: Any, config: OpenCCConfig) -> Any:
+    def _convert_value(cls, value: object, config: OpenCCConfig) -> object:
         """Convert value to target Chinese script using OpenCC configuration.
 
         Arguments:
@@ -109,3 +114,10 @@ class PromptZhoHans(Prompt, ABC):
         if isinstance(value, dict):
             return {k: cls._convert_value(val, config) for k, val in value.items()}
         return value
+
+
+class PromptZhoHans(PromptZhoHant, ABC):
+    """LLM correspondence text for simplified standard Chinese."""
+
+    opencc_config = OpenCCConfig.t2s
+    """Config for converting traditional Chinese characters from the parent class."""

@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.zho.prompts import PromptZhoHans
+from scinoephile.lang.zho.prompts import PromptZhoHans, PromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.gap_translation import GapTranslationPrompt
 from scinoephile.llms.guided_translation import GuidedTranslationPrompt
@@ -23,20 +23,20 @@ __all__ = [
 ]
 
 
-class ZhoEngTranslationPromptZhoHans(TranslationPrompt, PromptZhoHans):
-    """Text for simplified standard Chinese translation from English."""
+class ZhoEngTranslationPromptZhoHant(TranslationPrompt, PromptZhoHant):
+    """Text for traditional standard Chinese translation from English."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
-        你负责根据英文字幕，创作对应的标准中文字幕。
+        你負責根據英文字幕，創作對應的標準中文字幕。
 
-        每条英文字幕都要输出一条标准中文字幕。译文要自然、通顺，准确表达英文字幕
-        的意思、语气、戏剧意图和说话人意图。不要逐字硬译；可以调整措辞，使其
-        更像自然的中文字幕。专名、固定称呼、重复术语和字幕标记要在适合时保留
-        或按中文习惯处理。
+        每條英文字幕都要輸出一條標準中文字幕。譯文要自然、通順，準確表達英文字幕
+        的意思、語氣、戲劇意圖和說話人意圖。不要逐字硬譯；可以調整措辭，使其
+        更像自然的中文字幕。專名、固定稱呼、重複術語和字幕標記要在適合時保留
+        或按中文習慣處理。
 
-        输出内容只能是生成的中文字幕正文。不要附加备注、解释、标签、替代译文、
-        方括号内容、括号内容，或任何字幕以外的说明。
+        輸出內容只能是生成的中文字幕正文。不要附加備註、解釋、標籤、替代譯文、
+        方括號內容、括號內容，或任何字幕以外的說明。
         """)
     """Base system prompt."""
 
@@ -44,37 +44,37 @@ class ZhoEngTranslationPromptZhoHans(TranslationPrompt, PromptZhoHans):
     input_pfx: ClassVar[str] = "eng_"
     """Prefix for English source fields in query."""
 
-    input_desc_tpl: ClassVar[str] = "要翻译成标准中文的英文字幕 {idx}"
+    input_desc_tpl: ClassVar[str] = "要翻譯成標準中文的英文字幕 {idx}"
     """Description template for English source fields in query."""
 
     # Answer fields
     output_pfx: ClassVar[str] = "zhongwen_"
     """Prefix for generated standard Chinese output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = "字幕 {idx} 对应的标准中文译文"
+    output_desc_tpl: ClassVar[str] = "字幕 {idx} 對應的標準中文譯文"
     """Description template for generated standard Chinese output fields."""
 
 
-class ZhoEngTranslationPromptZhoHant(ZhoEngTranslationPromptZhoHans):
-    """Text for traditional standard Chinese translation from English."""
+class ZhoEngTranslationPromptZhoHans(ZhoEngTranslationPromptZhoHant, PromptZhoHans):
+    """Text for simplified standard Chinese translation from English."""
 
-    opencc_config = OpenCCConfig.s2t
-    """Config for converting simplified Chinese characters from the parent class."""
+    opencc_config = OpenCCConfig.t2s
+    """Config for converting traditional Chinese characters from the parent class."""
 
 
-class ZhoEngGapTranslationPromptZhoHans(GapTranslationPrompt, PromptZhoHans):
-    """Text for simplified standard Chinese gap translation using English."""
+class ZhoEngGapTranslationPromptZhoHant(GapTranslationPrompt, PromptZhoHant):
+    """Text for traditional standard Chinese gap translation using English."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
-        你负责根据对应的英文字幕，补翻译缺失的标准中文字幕。
-        只有当某行现有中文字幕为空字符串时，才需要提供译文。
-        如果某行已经有中文内容，不要修改，该行请输出空字符串。
-        译文要自然、通顺，语气和用词要尽量贴近附近已有的中文字幕。
-        英文字幕是意思来源；译文不需要逐字对应，但要准确表达该行意思。
-        输出内容只能是字幕正文本身，不要附加英文、备注、解释、标签、
-        方括号内容、括号内容，或任何译文以外的说明。
-        如果不需要翻译，就输出空字符串。
+        你負責根據對應的英文字幕，補翻譯缺失的標準中文字幕。
+        只有當某行現有中文字幕爲空字符串時，才需要提供譯文。
+        如果某行已經有中文內容，不要修改，該行請輸出空字符串。
+        譯文要自然、通順，語氣和用詞要儘量貼近附近已有的中文字幕。
+        英文字幕是意思來源；譯文不需要逐字對應，但要準確表達該行意思。
+        輸出內容只能是字幕正文本身，不要附加英文、備註、解釋、標籤、
+        方括號內容、括號內容，或任何譯文以外的說明。
+        如果不需要翻譯，就輸出空字符串。
         """)
     """Base system prompt."""
 
@@ -82,13 +82,13 @@ class ZhoEngGapTranslationPromptZhoHans(GapTranslationPrompt, PromptZhoHans):
     src_1_pfx: ClassVar[str] = "zhongwen_"
     """Prefix for source one fields in query."""
 
-    src_1_desc_tpl: ClassVar[str] = "字幕 {idx} 现有的中文内容；如果为空就代表要翻译"
+    src_1_desc_tpl: ClassVar[str] = "字幕 {idx} 現有的中文內容；如果爲空就代表要翻譯"
     """Description template for source one fields in query."""
 
     src_2_pfx: ClassVar[str] = "eng_"
     """Prefix for source two fields in query."""
 
-    src_2_desc_tpl: ClassVar[str] = "字幕 {idx} 对应的英文字幕"
+    src_2_desc_tpl: ClassVar[str] = "字幕 {idx} 對應的英文字幕"
     """Description template for source two fields in query."""
 
     # Answer fields
@@ -96,19 +96,19 @@ class ZhoEngGapTranslationPromptZhoHans(GapTranslationPrompt, PromptZhoHans):
     """Prefix for output fields in answer."""
 
     output_desc_tpl: ClassVar[str] = (
-        '字幕 {idx} 译好后的标准中文正文；如果不需要翻译请输出 ""。'
-        "不要包含英文、备注、解释、标签或者括号说明。"
+        '字幕 {idx} 譯好後的標準中文正文；如果不需要翻譯請輸出 ""。'
+        "不要包含英文、備註、解釋、標籤或者括號說明。"
     )
     """Description template for output fields in answer."""
 
     # Test case validation errors
     output_unmodified_err_tpl: ClassVar[str] = (
-        "字幕 {idx} 已经有中文内容，该行输出必须为空字符串。"
+        "字幕 {idx} 已經有中文內容，該行輸出必須爲空字符串。"
     )
     """Error template when output is present but unmodified relative to source one."""
 
     output_contains_note_err_tpl: ClassVar[str] = (
-        "字幕 {idx} 包含英文或者备注说明；只可以输出中文字幕正文。"
+        "字幕 {idx} 包含英文或者備註說明；只可以輸出中文字幕正文。"
     )
     """Error template when output includes leaked note text."""
 
@@ -118,29 +118,31 @@ class ZhoEngGapTranslationPromptZhoHans(GapTranslationPrompt, PromptZhoHans):
         return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
-class ZhoEngGapTranslationPromptZhoHant(ZhoEngGapTranslationPromptZhoHans):
-    """Text for traditional standard Chinese gap translation using English."""
+class ZhoEngGapTranslationPromptZhoHans(
+    ZhoEngGapTranslationPromptZhoHant, PromptZhoHans
+):
+    """Text for simplified standard Chinese gap translation using English."""
 
-    opencc_config = OpenCCConfig.s2t
-    """Config for converting simplified Chinese characters from the parent class."""
+    opencc_config = OpenCCConfig.t2s
+    """Config for converting traditional Chinese characters from the parent class."""
 
 
-class ZhoEngGuidedTranslationPromptZhoHans(GuidedTranslationPrompt, PromptZhoHans):
-    """Text for simplified guided standard Chinese translation from English."""
+class ZhoEngGuidedTranslationPromptZhoHant(GuidedTranslationPrompt, PromptZhoHant):
+    """Text for traditional guided standard Chinese translation from English."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
-        你负责根据英文字幕，创作对应的标准中文字幕。你也会收到同一段场景的
-        既有中文字幕，作为参考材料。
+        你負責根據英文字幕，創作對應的標準中文字幕。你也會收到同一段場景的
+        既有中文字幕，作爲參考材料。
 
-        每条英文字幕都要输出一条标准中文字幕。译文要准确表达英文字幕的意思、
-        语气、戏剧意图和说话人意图。既有中文字幕是角色名、专名、重复术语、
-        语域和固定说法的参考；当它和英文字幕意思兼容时，尽量沿用。
-        如果英文字幕和既有中文字幕有差异，要优先按英文意思翻译，同时保留
-        已经建立好的名词和称呼。
+        每條英文字幕都要輸出一條標準中文字幕。譯文要準確表達英文字幕的意思、
+        語氣、戲劇意圖和說話人意圖。既有中文字幕是角色名、專名、重複術語、
+        語域和固定說法的參考；當它和英文字幕意思兼容時，儘量沿用。
+        如果英文字幕和既有中文字幕有差異，要優先按英文意思翻譯，同時保留
+        已經建立好的名詞和稱呼。
 
-        输出内容只能是生成的中文字幕正文。不要附加英文、备注、解释、标签、
-        替代译文、方括号内容、括号内容，或任何字幕以外的说明。
+        輸出內容只能是生成的中文字幕正文。不要附加英文、備註、解釋、標籤、
+        替代譯文、方括號內容、括號內容，或任何字幕以外的說明。
         """)
     """Base system prompt."""
 
@@ -148,25 +150,27 @@ class ZhoEngGuidedTranslationPromptZhoHans(GuidedTranslationPrompt, PromptZhoHan
     src_1_pfx: ClassVar[str] = "eng_"
     """Prefix for English source fields in query."""
 
-    src_1_desc_tpl: ClassVar[str] = "要翻译成标准中文的英文字幕 {idx}"
+    src_1_desc_tpl: ClassVar[str] = "要翻譯成標準中文的英文字幕 {idx}"
     """Description template for English source fields in query."""
 
     src_2_pfx: ClassVar[str] = "zhongwen_reference_"
     """Prefix for standard Chinese reference fields in query."""
 
-    src_2_desc_tpl: ClassVar[str] = "同一段场景的既有标准中文参考字幕 {idx}"
+    src_2_desc_tpl: ClassVar[str] = "同一段場景的既有標準中文參考字幕 {idx}"
     """Description template for standard Chinese reference fields in query."""
 
     # Answer fields
     output_pfx: ClassVar[str] = "zhongwen_"
     """Prefix for generated standard Chinese output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = "字幕 {idx} 对应的标准中文译文"
+    output_desc_tpl: ClassVar[str] = "字幕 {idx} 對應的標準中文譯文"
     """Description template for generated standard Chinese output fields."""
 
 
-class ZhoEngGuidedTranslationPromptZhoHant(ZhoEngGuidedTranslationPromptZhoHans):
-    """Text for traditional guided standard Chinese translation from English."""
+class ZhoEngGuidedTranslationPromptZhoHans(
+    ZhoEngGuidedTranslationPromptZhoHant, PromptZhoHans
+):
+    """Text for simplified guided standard Chinese translation from English."""
 
-    opencc_config = OpenCCConfig.s2t
-    """Config for converting simplified Chinese characters from the parent class."""
+    opencc_config = OpenCCConfig.t2s
+    """Config for converting traditional Chinese characters from the parent class."""

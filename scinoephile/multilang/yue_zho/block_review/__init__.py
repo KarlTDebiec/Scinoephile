@@ -73,7 +73,7 @@ def get_yue_block_reviewed_vs_zho(
 
 
 def get_yue_vs_zho_block_reviewer(
-    prompt_cls: type[YueBlockReviewVsZhoPromptYueHans] = (
+    prompt_cls: type[YueBlockReviewVsZhoPromptYueHant] = (
         YueBlockReviewVsZhoPromptYueHans
     ),
     test_cases: list[TestCase] | None = None,

@@ -8,7 +8,7 @@ from typing import ClassVar
 
 from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.yue.prompts import PromptYueHans
+from scinoephile.lang.yue.prompts import PromptYueHans, PromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_n_to_n import DualNToNPrompt
 
@@ -18,36 +18,36 @@ __all__ = [
 ]
 
 
-class YueBlockReviewVsZhoPromptYueHans(
-    DictionaryToolPrompt, DualNToNPrompt, PromptYueHans
+class YueBlockReviewVsZhoPromptYueHant(
+    DictionaryToolPrompt, DualNToNPrompt, PromptYueHant
 ):
-    """Text for simplified written Cantonese block review against standard Chinese."""
+    """Text for traditional written Cantonese block review against standard Chinese."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
     """Name of the dictionary lookup tool."""
 
     dictionary_tool_description: ClassVar[str] = (
-        "查本地词典入面嘅粤语同普通话词条。工具会自动判断查询系汉字、拼音定粤拼。"
+        "查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。"
     )
     """Description of the dictionary lookup tool."""
 
     dictionary_tool_query_description: ClassVar[str] = (
-        "要查嘅普通话或者粤语词语，可以系汉字、拼音或者粤拼。"
+        "要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。"
     )
     """Description of the dictionary lookup query parameter."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
-        你负责为广东话语音嘅粤文字幕做最后审核。
-        呢一轮唔系重写字幕，而系做最后一层把关，只处理仍然明显有问题嘅粤文转写。
-        请专注检查转写是否准确，尤其系听错字、写错字、人物称呼前后唔一致，或者同整套字幕其他地方明显冲突嘅情况。
-        唔好评审文风、文法、语气或者措辞；如果原句本身已经系合理嘅粤语讲法，就唔好改。
-        中文字幕只系参考，唔需要同粤文逐字对应。
-        对于每一条粤文字幕，只有当你认为确实需要修改时，先回传修订后嘅完整粤文字幕。
-        如果某条粤文字幕唔需要修改，请为该字幕回传空字串。
-        如果有修改，请同时用英文附上一段简短备注，说明你改咗乜嘢。
-        如果冇需要修改，备注栏同样回传空字串。
+        你負責為廣東話語音嘅粵文字幕做最後審核。
+        呢一輪唔係重寫字幕，而係做最後一層把關，只處理仍然明顯有問題嘅粵文轉寫。
+        請專注檢查轉寫是否準確，尤其係聽錯字、寫錯字、人物稱呼前後唔一致，或者同整套字幕其他地方明顯衝突嘅情況。
+        唔好評審文風、文法、語氣或者措辭；如果原句本身已經係合理嘅粵語講法，就唔好改。
+        中文字幕只係參考，唔需要同粵文逐字對應。
+        對於每一條粵文字幕，只有當你認為確實需要修改時，先回傳修訂後嘅完整粵文字幕。
+        如果某條粵文字幕唔需要修改，請為該字幕回傳空字串。
+        如果有修改，請同時用英文附上一段簡短備註，説明你改咗乜嘢。
+        如果冇需要修改，備註欄同樣回傳空字串。
     """)
     """Base system prompt."""
 
@@ -55,7 +55,7 @@ class YueBlockReviewVsZhoPromptYueHans(
     src_1_pfx: ClassVar[str] = "yuewen_"
     """Prefix for source one fields in query."""
 
-    src_1_desc_tpl: ClassVar[str] = "字幕 {idx} 嘅粤文转写"
+    src_1_desc_tpl: ClassVar[str] = "字幕 {idx} 嘅粵文轉寫"
     """Description template for source one fields in query."""
 
     src_2_pfx: ClassVar[str] = "zhongwen_"
@@ -69,7 +69,7 @@ class YueBlockReviewVsZhoPromptYueHans(
     """Prefix for output fields in answer."""
 
     output_desc_tpl: ClassVar[str] = (
-        '字幕 {idx} 修订后嘅粤文；如果冇任何修改，请回传 ""。'
+        '字幕 {idx} 修訂後嘅粵文；如果冇任何修改，請回傳 ""。'
     )
     """Description template for output fields in answer."""
 
@@ -77,32 +77,32 @@ class YueBlockReviewVsZhoPromptYueHans(
     """Prefix for note fields in answer."""
 
     note_desc_tpl: ClassVar[str] = (
-        '字幕 {idx} 嘅备注（英文）；如果冇任何修改，请回传 ""。'
+        '字幕 {idx} 嘅備註（英文）；如果冇任何修改，請回傳 ""。'
     )
     """Description template for note fields in answer."""
 
     # Test case validation errors
     output_unmodified_err_tpl: ClassVar[str] = (
-        "答案入面嘅输出 {idx} 同查询入面嘅来源一 {idx} 完全一样；"
-        '如果冇修改，必须回传 ""。'
+        "答案入面嘅輸出 {idx} 同查詢入面嘅來源一 {idx} 完全一樣；"
+        '如果冇修改，必須回傳 ""。'
     )
     """Error template when output is present but unmodified relative to source one."""
 
     output_missing_note_present_err_tpl: ClassVar[str] = (
-        "答案入面嘅输出 {idx} 同查询入面嘅来源一 {idx} 完全一样，"
-        '但却提供咗备注；如果输出系 ""，就唔可以有任何备注。'
+        "答案入面嘅輸出 {idx} 同查詢入面嘅來源一 {idx} 完全一樣，"
+        '但卻提供咗備註；如果輸出係 ""，就唔可以有任何備註。'
     )
     """Error template when output is missing but note is present."""
 
     output_present_note_missing_err_tpl: ClassVar[str] = (
-        "答案入面嘅输出 {idx} 相对于查询入面嘅来源一 {idx} 有所修改，"
-        "但冇提供任何备注；如果有输出，就必须同时提供备注。"
+        "答案入面嘅輸出 {idx} 相對於查詢入面嘅來源一 {idx} 有所修改，"
+        "但冇提供任何備註；如果有輸出，就必須同時提供備註。"
     )
     """Error template when output is present but note is missing."""
 
 
-class YueBlockReviewVsZhoPromptYueHant(YueBlockReviewVsZhoPromptYueHans):
-    """Text for traditional written Cantonese block review against standard Chinese."""
+class YueBlockReviewVsZhoPromptYueHans(YueBlockReviewVsZhoPromptYueHant, PromptYueHans):
+    """Text for simplified written Cantonese block review against standard Chinese."""
 
-    opencc_config = OpenCCConfig.s2hk
-    """Config for converting simplified Chinese characters from the parent class."""
+    opencc_config = OpenCCConfig.hk2s
+    """Config for converting traditional Chinese characters from the parent class."""

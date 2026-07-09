@@ -26,8 +26,12 @@ from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
 from .alignment import Alignment
-from .deliniation import YueDeliniationVsZhoPromptYueHans
-from .punctuation import YuePunctuationVsZhoPromptYueHans
+from .deliniation import (
+    YueDeliniationVsZhoPromptYueHant,
+)
+from .punctuation import (
+    YuePunctuationVsZhoPromptYueHant,
+)
 
 __all__ = ["Aligner"]
 
@@ -124,7 +128,7 @@ class Aligner:
                 message = "Delineation query returned no answer."
                 logger.error(message)
                 raise ScinoephileError(message)
-            prompt_cls: type[YueDeliniationVsZhoPromptYueHans] = getattr(
+            prompt_cls: type[YueDeliniationVsZhoPromptYueHant] = getattr(
                 test_case, "prompt_cls"
             )
             yuewen_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, None)
@@ -170,7 +174,7 @@ class Aligner:
         sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get written Cantonese
-        prompt_cls: type[YueDeliniationVsZhoPromptYueHans] = getattr(
+        prompt_cls: type[YueDeliniationVsZhoPromptYueHant] = getattr(
             query, "prompt_cls"
         )
         yw_1_idxs = sg_1[1]
@@ -325,7 +329,7 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            prompt_cls: type[YuePunctuationVsZhoPromptYueHans] = getattr(
+            prompt_cls: type[YuePunctuationVsZhoPromptYueHant] = getattr(
                 test_case, "prompt_cls"
             )
             yuewen_punctuated = getattr(test_case.answer, prompt_cls.output, None)
