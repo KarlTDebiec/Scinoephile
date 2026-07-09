@@ -14,12 +14,10 @@ from scinoephile.core.llms import (
     ProcessorKwargs,
     TestCase,
 )
-from scinoephile.core.subtitles import Series
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_n_to_m import (
     DualNToMManager,
     DualNToMProcessor,
-    DualNToMProcessorProcessKwargs,
     DualNToMPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
@@ -44,7 +42,6 @@ from scinoephile.multilang.zho_yue.translation import (
 
 __all__ = [
     "GUIDED_TRANSLATION_OPERATION_SPEC",
-    "get_guided_translated",
     "get_guided_translator",
 ]
 
@@ -102,31 +99,6 @@ _PROMPTS: dict[tuple[Language, Language], type[DualNToMPrompt]] = {
     (Language.yue_hant, Language.zho_hant): ZhoYueGuidedTranslationPromptZhoHant,
 }
 """Guided translation prompts keyed by exact source and target languages."""
-
-
-def get_guided_translated(
-    source: Series,
-    target: Series,
-    source_language: Language,
-    target_language: Language,
-    translator: DualNToMProcessor | None = None,
-    **kwargs: Unpack[DualNToMProcessorProcessKwargs],
-) -> Series:
-    """Translate subtitles using target-language guidance.
-
-    Arguments:
-        source: source-language subtitles to translate
-        target: target-language guide subtitles
-        source_language: source language
-        target_language: target language
-        translator: processor to use, or None to construct one
-        **kwargs: translation process keyword arguments
-    Returns:
-        guided-translated subtitles
-    """
-    if translator is None:
-        translator = get_guided_translator(source_language, target_language)
-    return translator.process(source, target, **kwargs)
 
 
 def get_guided_translator(

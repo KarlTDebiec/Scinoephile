@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TypedDict
 
 import numpy as np
 
@@ -18,20 +17,10 @@ from scinoephile.core.synchronization import get_sync_overlap_matrix
 from .manager import DualNMinusMToNManager
 from .prompt import DualNMinusMToNPrompt
 
-__all__ = [
-    "DualNMinusMToNProcessor",
-    "DualNMinusMToNProcessorProcessKwargs",
-]
+__all__ = ["DualNMinusMToNProcessor"]
 
 
 logger = getLogger(__name__)
-
-
-class DualNMinusMToNProcessorProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for dual n minus m to n processor processing."""
-
-    stop_at_idx: int | None
-    """Exclusive block index at which to stop processing."""
 
 
 class DualNMinusMToNProcessor(Processor):

@@ -15,10 +15,8 @@ from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.multilang.translation.guided import (
-    get_guided_translated,
-    get_guided_translator,
-)
+from scinoephile.multilang.translation.guided import get_guided_translator
+from scinoephile.workflows.translation import translate_series_guided
 from test.data.ocr import process_ocr
 from test.data.prompts import EngZhoOfYueGuidedTranslationPrompt
 from test.data.stacking import process_zho_hans_eng
@@ -88,11 +86,11 @@ if "yue_eng" in actions:
         additional_context=additional_context,
         auto_verify=True,
     )
-    yue_eng = get_guided_translated(
+    yue_eng = translate_series_guided(
         yue_zho_hant,
         jpn_eng,
-        Language.zho_hant,
-        Language.eng,
+        source_language=Language.zho_hant,
+        target_language=Language.eng,
         translator=translator,
     )
     yue_eng.save(output_path / "yue_eng/eng.srt")

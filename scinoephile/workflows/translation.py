@@ -10,15 +10,12 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
-from scinoephile.multilang.translation.gapped import (
-    get_gap_translated,
-    get_gap_translator,
-)
-from scinoephile.multilang.translation.guided import (
-    get_guided_translated,
-    get_guided_translator,
-)
-from scinoephile.multilang.translation.standard import get_translated, get_translator
+from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNProcessor
+from scinoephile.llms.dual_n_to_m import DualNToMProcessor
+from scinoephile.llms.mono_n import MonoNProcessor
+from scinoephile.multilang.translation.gapped import get_gap_translator
+from scinoephile.multilang.translation.guided import get_guided_translator
+from scinoephile.multilang.translation.standard import get_translator
 
 __all__ = [
     "translate_series",
@@ -32,10 +29,11 @@ logger = getLogger(__name__)
 def translate_series(
     source: Series,
     *,
+    target_language: Language,
     source_language: Language | None = None,
-    target_language: Language | None = None,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    translator: MonoNProcessor | None = None,
 ) -> Series:
     """Translate a subtitle series between supported languages.
 
@@ -45,27 +43,22 @@ def translate_series(
         target_language: target language
         provider: LLM provider to use
         additional_context: additional context to include in prompts
+        translator: translator to use, or None to construct one
     Returns:
         translated subtitle series
     Raises:
         ScinoephileError: if a language cannot be resolved or the pair is unsupported
     """
     resolved_source_language = _resolve_language(source, source_language)
-    if target_language is None:
-        raise ScinoephileError("--target-language is required")
 
-    translator = get_translator(
-        resolved_source_language,
-        target_language,
-        provider=provider,
-        additional_context=additional_context,
-    )
-    return get_translated(
-        source,
-        resolved_source_language,
-        target_language,
-        translator=translator,
-    )
+    if translator is None:
+        translator = get_translator(
+            resolved_source_language,
+            target_language,
+            provider=provider,
+            additional_context=additional_context,
+        )
+    return translator.process(source)
 
 
 def translate_series_gapped(
@@ -76,6 +69,7 @@ def translate_series_gapped(
     target_language: Language | None = None,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    translator: DualNMinusMToNProcessor | None = None,
 ) -> Series:
     """Translate a subtitle series using target-language gaps.
 
@@ -86,6 +80,7 @@ def translate_series_gapped(
         target_language: explicit target language, or None to detect it
         provider: LLM provider to use
         additional_context: additional context to include in prompts
+        translator: translator to use, or None to construct one
     Returns:
         translated subtitle series
     Raises:
@@ -94,60 +89,52 @@ def translate_series_gapped(
     resolved_source_language = _resolve_language(source, source_language)
     resolved_target_language = _resolve_language(target, target_language)
 
-    translator = get_gap_translator(
-        resolved_source_language,
-        resolved_target_language,
-        provider=provider,
-        additional_context=additional_context,
-    )
-    return get_gap_translated(
-        source,
-        target,
-        resolved_source_language,
-        resolved_target_language,
-        translator=translator,
-    )
+    if translator is None:
+        translator = get_gap_translator(
+            resolved_source_language,
+            resolved_target_language,
+            provider=provider,
+            additional_context=additional_context,
+        )
+    return translator.process(target, source)
 
 
 def translate_series_guided(
     source: Series,
-    target: Series,
+    guide: Series,
     *,
     source_language: Language | None = None,
     target_language: Language | None = None,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    translator: DualNToMProcessor | None = None,
 ) -> Series:
     """Translate a subtitle series using target-language guidance.
 
     Arguments:
         source: source-language subtitle series
-        target: target-language guide subtitle series
+        guide: target-language guide subtitle series
         source_language: explicit source language, or None to detect it
         target_language: explicit target language, or None to detect it
         provider: LLM provider to use
         additional_context: additional context to include in prompts
+        translator: translator to use, or None to construct one
     Returns:
         translated subtitle series
     Raises:
         ScinoephileError: if a language cannot be resolved or the pair is unsupported
     """
     resolved_source_language = _resolve_language(source, source_language)
-    resolved_target_language = _resolve_language(target, target_language)
+    resolved_target_language = _resolve_language(guide, target_language)
 
-    translator = get_guided_translator(
-        resolved_source_language,
-        resolved_target_language,
-        provider=provider,
-        additional_context=additional_context,
-    )
-    return get_guided_translated(
-        source,
-        target,
-        resolved_source_language,
-        resolved_target_language,
-        translator=translator,
-    )
+    if translator is None:
+        translator = get_guided_translator(
+            resolved_source_language,
+            resolved_target_language,
+            provider=provider,
+            additional_context=additional_context,
+        )
+    return translator.process(source, guide)
 
 
 def _resolve_language(

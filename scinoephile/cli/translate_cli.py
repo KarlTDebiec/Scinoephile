@@ -218,9 +218,12 @@ class TranslateCli(ScinoephileCliBase):
                 target = read_series(parser, gapped_infile_path)
                 output = translate_series_gapped(source, target, **kwargs)
             elif guide_infile_path is not None:
-                target = read_series(parser, guide_infile_path)
-                output = translate_series_guided(source, target, **kwargs)
+                guide = read_series(parser, guide_infile_path)
+                output = translate_series_guided(source, guide, **kwargs)
             else:
+                if target_language is None:
+                    parser.error("--target-language is required")
+                kwargs["target_language"] = target_language
                 output = translate_series(source, **kwargs)
         except ScinoephileError as exc:
             parser.error(str(exc))

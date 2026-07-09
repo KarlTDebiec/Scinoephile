@@ -14,12 +14,10 @@ from scinoephile.core.llms import (
     ProcessorKwargs,
     TestCase,
 )
-from scinoephile.core.subtitles import Series
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_n_minus_m_to_n import (
     DualNMinusMToNManager,
     DualNMinusMToNProcessor,
-    DualNMinusMToNProcessorProcessKwargs,
     DualNMinusMToNPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
@@ -44,7 +42,6 @@ from scinoephile.multilang.zho_yue.translation import (
 
 __all__ = [
     "GAPPED_TRANSLATION_OPERATION_SPEC",
-    "get_gap_translated",
     "get_gap_translator",
 ]
 
@@ -108,31 +105,6 @@ _PROMPTS: dict[tuple[Language, Language], type[DualNMinusMToNPrompt]] = {
     (Language.yue_hant, Language.zho_hant): ZhoYueGappedTranslationPromptZhoHant,
 }
 """Gapped translation prompts keyed by exact source and target languages."""
-
-
-def get_gap_translated(
-    source: Series,
-    target: Series,
-    source_language: Language,
-    target_language: Language,
-    translator: DualNMinusMToNProcessor | None = None,
-    **kwargs: Unpack[DualNMinusMToNProcessorProcessKwargs],
-) -> Series:
-    """Translate target-language subtitle gaps from source-language subtitles.
-
-    Arguments:
-        source: source-language reference subtitles
-        target: target-language subtitles that may contain gaps
-        source_language: source language
-        target_language: target language
-        translator: processor to use, or None to construct one
-        **kwargs: translation process keyword arguments
-    Returns:
-        target-language subtitles with gaps translated
-    """
-    if translator is None:
-        translator = get_gap_translator(source_language, target_language)
-    return translator.process(target, source, **kwargs)
 
 
 def get_gap_translator(

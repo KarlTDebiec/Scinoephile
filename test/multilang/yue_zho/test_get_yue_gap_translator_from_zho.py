@@ -11,10 +11,7 @@ from pytest import FixtureRequest, param
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
-from scinoephile.multilang.translation.gapped import (
-    get_gap_translated,
-    get_gap_translator,
-)
+from scinoephile.multilang.translation.gapped import get_gap_translator
 from test.data.kob import get_kob_yue_from_zho_gapped_translation_test_cases
 from test.data.mlamd import get_mlamd_yue_from_zho_gapped_translation_test_cases
 from test.helpers import assert_series_equal, parametrize
@@ -47,7 +44,7 @@ from test.helpers import assert_series_equal, parametrize
         ),
     ],
 )
-def test_get_gap_translated_zho_to_yue(
+def test_gap_translator_zho_to_yue(
     request: FixtureRequest,
     yuewen_fixture: str,
     zhongwen_fixture: str,
@@ -55,7 +52,7 @@ def test_get_gap_translated_zho_to_yue(
     test_case_loader: Callable[[], list[TestCase]],
     device_patch_target: str,
 ):
-    """Test shared gapped translation from Chinese to written Cantonese.
+    """Test shared gapped translation processor from Chinese to written Cantonese.
 
     Arguments:
         request: pytest request for fixture lookup
@@ -77,12 +74,6 @@ def test_get_gap_translated_zho_to_yue(
         test_cases=test_cases,
         provider=provider,
     )
-    output = get_gap_translated(
-        zhongwen,
-        yuewen,
-        Language.zho_hans,
-        Language.yue_hans,
-        translator=translator,
-    )
+    output = translator.process(yuewen, zhongwen)
     assert_series_equal(output, expected)
     provider.chat_completion.assert_not_called()

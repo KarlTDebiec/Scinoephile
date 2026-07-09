@@ -13,10 +13,7 @@ from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.multilang.translation.gapped import (
-    get_gap_translated,
-    get_gap_translator,
-)
+from scinoephile.multilang.translation.gapped import get_gap_translator
 from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
@@ -30,6 +27,7 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
+from scinoephile.workflows.translation import translate_series_gapped
 from test.data.mlamd import (
     get_mlamd_yue_deliniation_test_cases,
     get_mlamd_yue_punctuation_test_cases,
@@ -126,11 +124,11 @@ if "yue-Hans_transcribe" in actions:
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_review_translate = get_gap_translated(
+    yue_hans_review_translate = translate_series_gapped(
         zho_hans,
         yue_hans_line_reviewed,
-        Language.zho_hans,
-        Language.yue_hans,
+        source_language=Language.zho_hans,
+        target_language=Language.yue_hans,
         translator=translator,
     )
     outfile_path = (

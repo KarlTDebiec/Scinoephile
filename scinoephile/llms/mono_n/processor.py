@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TypedDict
 
 from scinoephile.core.llms import Processor
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -15,20 +14,10 @@ from scinoephile.core.text import replace_control_characters
 from .manager import MonoNManager
 from .prompt import MonoNPrompt
 
-__all__ = [
-    "MonoNProcessor",
-    "MonoNProcessorProcessKwargs",
-]
+__all__ = ["MonoNProcessor"]
 
 
 logger = getLogger(__name__)
-
-
-class MonoNProcessorProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for mono n processor processing."""
-
-    stop_at_idx: int | None
-    """Exclusive block index at which to stop processing."""
 
 
 class MonoNProcessor(Processor):

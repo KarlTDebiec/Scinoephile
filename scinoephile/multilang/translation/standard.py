@@ -9,12 +9,10 @@ from typing import Unpack
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
-from scinoephile.core.subtitles import Series
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.mono_n import (
     MonoNManager,
     MonoNProcessor,
-    MonoNProcessorProcessKwargs,
     MonoNPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
@@ -39,7 +37,6 @@ from scinoephile.multilang.zho_yue.translation import (
 
 __all__ = [
     "TRANSLATION_OPERATION_SPEC",
-    "get_translated",
     "get_translator",
 ]
 
@@ -97,29 +94,6 @@ _PROMPTS: dict[tuple[Language, Language], type[MonoNPrompt]] = {
     (Language.yue_hant, Language.zho_hant): ZhoYueTranslationPromptZhoHant,
 }
 """Regular translation prompts keyed by exact source and target languages."""
-
-
-def get_translated(
-    source: Series,
-    source_language: Language,
-    target_language: Language,
-    translator: MonoNProcessor | None = None,
-    **kwargs: Unpack[MonoNProcessorProcessKwargs],
-) -> Series:
-    """Translate subtitles between a supported language pair.
-
-    Arguments:
-        source: source-language subtitles to translate
-        source_language: language of source subtitles
-        target_language: target language to generate
-        translator: processor to use, or None to construct one
-        **kwargs: translation process keyword arguments
-    Returns:
-        translated subtitles
-    """
-    if translator is None:
-        translator = get_translator(source_language, target_language)
-    return translator.process(source, **kwargs)
 
 
 def get_translator(
