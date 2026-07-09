@@ -11,10 +11,10 @@ from scinoephile.multilang.eng_zho.translation import (
     EngZhoGuidedTranslationPrompt,
 )
 
-__all__ = ["EngZhoOfYueGuidedTranslationPrompt"]
+__all__ = ["EngZhoYueGuidedTranslationPrompt"]
 
 
-class EngZhoOfYueGuidedTranslationPrompt(EngZhoGuidedTranslationPrompt):
+class EngZhoYueGuidedTranslationPrompt(EngZhoGuidedTranslationPrompt):
     """Text for guided English translation from Chinese subtitles of Yue source."""
 
     # Prompt

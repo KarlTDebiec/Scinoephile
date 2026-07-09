@@ -18,7 +18,7 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_convert
 from scinoephile.multilang.translation.guided import get_guided_translator
 from scinoephile.workflows.translation import translate_series_guided
 from test.data.ocr import process_ocr
-from test.data.prompts import EngZhoOfYueGuidedTranslationPrompt
+from test.data.prompts import EngZhoYueGuidedTranslationPrompt
 from test.data.stacking import process_zho_hans_eng
 from test.helpers import test_data_root
 
@@ -79,7 +79,7 @@ if "yue_eng" in actions:
     translator = get_guided_translator(
         Language.zho_hant,
         Language.eng,
-        prompt_cls=EngZhoOfYueGuidedTranslationPrompt,
+        prompt_cls=EngZhoYueGuidedTranslationPrompt,
         test_case_path=(
             output_path / "yue_eng/multilang/eng_zho/guided_translation.json"
         ),

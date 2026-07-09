@@ -79,8 +79,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         overwrite_srt: whether to overwrite subtitle outputs
         transcriber_kw: additional keyword arguments for get_yue_vs_zho_transcriber
         line_reviewer_kw: additional keyword arguments for get_yue_vs_zho_line_reviewer
-        translator_kw: additional keyword arguments for
-          get_gap_translator
+        translator_kw: additional keyword arguments for get_gap_translator
         block_reviewer_kw: additional keyword arguments for
           get_yue_vs_zho_block_reviewer
     Returns:
