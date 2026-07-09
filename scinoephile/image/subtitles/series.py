@@ -441,15 +441,22 @@ class ImageSeries(Series):
         Returns:
             list of parsed event data
         """
+        image_div_attributes = (
+            r"(?: (?:style=['\"]text-align:center['\"]|"
+            r"class=['\"]subtitle-image['\"]))?"
+        )
+        text_div_attributes = (
+            r"(?: (?:style=['\"]font-size:22px; background-color:WhiteSmoke['\"]|"
+            r"class=['\"]subtitle-text['\"]))?"
+        )
         pattern = re.compile(
-            r"(?:<a id=['\"]subtitle-number-(?P<anchor_index>\d+)['\"] "
-            r"href=['\"]#subtitle-number-\d+['\"]>)?"
+            r"(?:<a id=['\"](?:sub|subtitle-number)-(?P<anchor_index>\d+)['\"] "
+            r"href=['\"]#(?:sub|subtitle-number)-\d+['\"]>)?"
             r"#(?P<index>\d+)(?:</a>)?:"
             r"(?P<start>[^-]+)->(?P<end>[^<]+)"
-            r"<div style=['\"]text-align:center['\"]>"
+            rf"<div{image_div_attributes}>"
             r"<img src=['\"](?P<img>[^'\"]+)['\"] />"
-            r"(?:<br /><div style=['\"]font-size:22px; "
-            r"background-color:WhiteSmoke['\"]>(?P<text>.*?)</div>)?"
+            rf"(?:<br /><div{text_div_attributes}>(?P<text>.*?)</div>)?"
             r"</div><br /><hr />",
             re.DOTALL,
         )
@@ -502,21 +509,17 @@ class ImageSeries(Series):
         """
         start_text = ImageSeries._format_html_time(start)
         end_text = ImageSeries._format_html_time(end)
-        anchor_id = f"subtitle-number-{index}"
+        anchor_id = f"sub-{index}"
         line = (
             f"<a id='{anchor_id}' href='#{anchor_id}'>#{index}</a>:"
             f"{start_text}->{end_text}"
-            "<div style='text-align:center'>"
+            "<div>"
             f"<img src='{escape(image_name, quote=True)}' />"
         )
         text_with_newline = text.replace("\\N", "\n")
         if text_with_newline.strip():
             html_text = escape(text_with_newline).replace("\n", "<br />")
-            line += (
-                "<br />"
-                "<div style='font-size:22px; background-color:WhiteSmoke'>"
-                f"{html_text}</div>"
-            )
+            line += f"<br /><div>{html_text}</div>"
         line += "</div><br /><hr />"
         return line
 
@@ -588,14 +591,22 @@ class ImageSeries(Series):
         """
         return [
             "<!DOCTYPE html>",
-            "<html>",
+            '<html lang="">',
             "<head>",
             '   <meta charset="UTF-8" />',
             "   <title>Subtitle images</title>",
             "   <style>",
-            "      img {",
-            "         image-rendering: pixelated;",
-            "         image-rendering: crisp-edges;",
+            "      body > div {",
+            "         text-align: center;",
+            "",
+            "         img {",
+            "            image-rendering: pixelated;",
+            "         }",
+            "",
+            "         > div {",
+            "            background-color: WhiteSmoke;",
+            "            font-size: 22px;",
+            "         }",
             "      }",
             "   </style>",
             "</head>",

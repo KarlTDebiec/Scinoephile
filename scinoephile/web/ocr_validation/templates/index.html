@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
    <meta charset="UTF-8" />
    <title>OCR validation</title>
    <script src="{{ url_for('static', filename='htmx.min.js') }}"></script>
    <style>
+      {% for row in style_rows %}
+      #subtitle-{{ row.sub_idx }} {
+         --subtitle-image-width: {{ row.image_width }}px;
+         --subtitle-text-color: {{ row.text_color_css }};
+         --subtitle-shadow-color: {{ row.text_shadow_color_css }};
+         --subtitle-font-size: {{ row.text_font_size_css }};
+         --subtitle-font-size-cqw: {{ row.text_font_size_cqw_css }};
+         --subtitle-letter-spacing: {{ row.text_letter_spacing_css }};
+         --subtitle-letter-spacing-cqw: {{ row.text_letter_spacing_cqw_css }};
+      }
+
+      {% endfor %}
       .subtitle {
          margin-bottom: 1em;
       }
@@ -29,7 +41,6 @@
          display: block;
          height: auto;
          image-rendering: pixelated;
-         image-rendering: crisp-edges;
          width: 100%;
       }
 

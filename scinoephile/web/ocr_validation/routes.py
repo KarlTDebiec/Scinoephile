@@ -253,20 +253,32 @@ def _render_index(session: OcrValidationSession) -> str:
     Returns:
         rendered subtitle list
     """
-    return render_template("index.html", index_body=_render_index_body(session))
+    rows = session.all_subtitle_rows()
+    visible_rows = [row for row in rows if session.subtitle_row_is_visible(row)]
+    return render_template(
+        "index.html",
+        index_body=_render_index_body(session, rows=visible_rows),
+        style_rows=rows,
+    )
 
 
-def _render_index_body(session: OcrValidationSession) -> str:
+def _render_index_body(
+    session: OcrValidationSession,
+    rows: list[SubtitleRowView] | None = None,
+) -> str:
     """Render the body content of the subtitle list.
 
     Arguments:
         session: OCR validation session
+        rows: optional row view models to render
     Returns:
         rendered subtitle list body
     """
+    if rows is None:
+        rows = session.subtitle_rows()
     return render_template(
         "_index_body.html",
-        rows=session.subtitle_rows(),
+        rows=rows,
         include_done_subtitles=session.include_done_subtitles,
     )
 

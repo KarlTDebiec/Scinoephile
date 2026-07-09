@@ -179,9 +179,16 @@ def test_save_html(tiny_image_series: ImageSeries):
         assert html_path.exists()
 
         html_text = html_path.read_text(encoding="utf-8")
-        assert (
-            "<a id='subtitle-number-1' href='#subtitle-number-1'>#1</a>:" in html_text
-        )
+        assert '<html lang="">' in html_text
+        assert "<a id='sub-1' href='#sub-1'>#1</a>:" in html_text
+        assert "subtitle-number-1" not in html_text
+        assert "style=" not in html_text
+        assert "class=" not in html_text
+        assert "image-rendering: pixelated;" in html_text
+        assert "image-rendering: crisp-edges;" not in html_text
+        assert "body > div {" in html_text
+        assert "<div><img src='0001.png' />" in html_text
+        assert "<br /><div>recognized</div>" in html_text
         assert "<img src='0001.png' />" in html_text
 
         png_files = sorted(output_path.glob("*.png"))

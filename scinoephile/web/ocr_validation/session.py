@@ -145,6 +145,14 @@ class OcrValidationSession:
                 f"Unable to initialize OCR validation session from {dir_path}: {exc}"
             ) from exc
 
+    def all_subtitle_rows(self) -> list[SubtitleRowView]:
+        """Return row view models for all subtitles regardless of filtering.
+
+        Returns:
+            subtitle row view models
+        """
+        return [self.subtitle_row(sub_idx) for sub_idx in range(len(self.entries))]
+
     def finish(self):
         """Persist current validation output before closing the web UI."""
         self._save_outfile()
@@ -183,12 +191,9 @@ class OcrValidationSession:
         Returns:
             subtitle row view models
         """
-        rows = []
-        for sub_idx in range(len(self.entries)):
-            row = self.subtitle_row(sub_idx)
-            if self.subtitle_row_is_visible(row):
-                rows.append(row)
-        return rows
+        return [
+            row for row in self.all_subtitle_rows() if self.subtitle_row_is_visible(row)
+        ]
 
     def subtitle_row_is_visible(self, row: SubtitleRowView) -> bool:
         """Return whether a subtitle row should be rendered in the list.

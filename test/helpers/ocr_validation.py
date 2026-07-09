@@ -159,9 +159,9 @@ def _write_html_index(html_dir_path: Path, rows: list[tuple[int, str, str, str, 
     for number, start, end, image_name, text in rows:
         body_rows.append(
             f"#{number}:{start}->{end}"
-            "<div style='text-align:center'>"
+            "<div>"
             f"<img src='{image_name}' />"
-            "<br /><div style='font-size:22px; background-color:WhiteSmoke'>"
+            "<br /><div>"
             f"{text}</div></div><br /><hr />"
         )
     (html_dir_path / "index.html").write_text(
