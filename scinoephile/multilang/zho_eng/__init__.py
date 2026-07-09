@@ -3,5 +3,5 @@
 """Code related to standard Chinese/English text.
 
 Package hierarchy (modules may import from any above):
-* gapped_translation / guided_translation / translation
+* translation
 """

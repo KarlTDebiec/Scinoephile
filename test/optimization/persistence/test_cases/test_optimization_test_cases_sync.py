@@ -8,8 +8,8 @@ import json
 from pathlib import Path
 
 from scinoephile.core.llms import OperationSpec
-from scinoephile.llms.mono_n.manager import MonoNManager
-from scinoephile.llms.mono_n.prompt import MonoNPrompt
+from scinoephile.llms.translation.manager import TranslationManager
+from scinoephile.llms.translation.prompt import TranslationPrompt
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
     YueZhoPunctuationManager,
@@ -27,10 +27,10 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
 
     db_path = Path("test_cases.sqlite")
     operation_spec = OperationSpec(
-        operation="unit-mono-n",
-        test_case_table_name="test_cases__unit__mono_n",
-        manager_cls=MonoNManager,
-        prompt_cls=MonoNPrompt,
+        operation="unit-translation",
+        test_case_table_name="test_cases__unit__translation",
+        manager_cls=TranslationManager,
+        prompt_cls=TranslationPrompt,
     )
 
     src1 = Path("src1.json")
@@ -58,7 +58,9 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
     )
     assert len(report1.insert_ids) == 2
     assert report1.delete_ids == ()
-    test_case_cls = MonoNManager.get_test_case_cls(size=1, prompt_cls=MonoNPrompt)
+    test_case_cls = TranslationManager.get_test_case_cls(
+        size=1, prompt_cls=TranslationPrompt
+    )
     deleted_test_case = test_case_cls.model_validate(data1_v1[1])
     assert deleted_test_case.answer is not None
     expected_delete_id = get_test_case_id(
@@ -93,10 +95,10 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
 
     db_path = Path("test_cases.sqlite")
     operation_spec = OperationSpec(
-        operation="unit-mono-n",
-        test_case_table_name="test_cases__unit__mono_n",
-        manager_cls=MonoNManager,
-        prompt_cls=MonoNPrompt,
+        operation="unit-translation",
+        test_case_table_name="test_cases__unit__translation",
+        manager_cls=TranslationManager,
+        prompt_cls=TranslationPrompt,
     )
 
     src1 = Path("src1.json")
@@ -134,10 +136,10 @@ def test_sync_dry_run_reports_metadata_updates(tmp_path: Path, monkeypatch):
 
     db_path = Path("test_cases.sqlite")
     operation_spec = OperationSpec(
-        operation="unit-mono-n",
-        test_case_table_name="test_cases__unit__mono_n",
-        manager_cls=MonoNManager,
-        prompt_cls=MonoNPrompt,
+        operation="unit-translation",
+        test_case_table_name="test_cases__unit__translation",
+        manager_cls=TranslationManager,
+        prompt_cls=TranslationPrompt,
     )
 
     src1 = Path("src1.json")

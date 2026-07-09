@@ -19,11 +19,7 @@ from scinoephile.core.llms import LLMProvider, OperationSpec, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.default_test_cases import (
-    YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
-    YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager
 from scinoephile.llms.providers.registry import get_provider
 
@@ -48,6 +44,28 @@ __all__ = [
     "YueZhoTranscriberKwargs",
     "YueZhoTranscriptionKwargs",
 ]
+
+_YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS = (
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
+        "deliniation/cuda.json"
+    ),
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
+        "deliniation/mps.json"
+    ),
+)
+
+_YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
+        "punctuation/cuda.json"
+    ),
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
+        "punctuation/mps.json"
+    ),
+)
 
 YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-transcription-deliniation",
@@ -165,7 +183,7 @@ def get_yue_vs_zho_transcriber(
             load_default_test_cases(
                 Dual2To2Manager,
                 deliniation_prompt_cls,
-                YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
+                _YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
             )
         )
     if punctuation_test_cases is None:
@@ -173,7 +191,7 @@ def get_yue_vs_zho_transcriber(
             load_default_test_cases(
                 YueZhoPunctuationManager,
                 punctuation_prompt_cls,
-                YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
+                _YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
             )
         )
     return YueTranscriber(

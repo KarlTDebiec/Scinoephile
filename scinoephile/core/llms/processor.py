@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from pathlib import Path
+from typing import TypedDict
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
@@ -18,7 +19,26 @@ from .test_case import TestCase
 from .tool_box import ToolBox
 from .utils import load_test_cases_from_json
 
-__all__ = ["Processor"]
+__all__ = [
+    "Processor",
+    "ProcessorKwargs",
+]
+
+
+class ProcessorKwargs(TypedDict, total=False):
+    """Keyword arguments commonly forwarded to Processor initialization."""
+
+    additional_context: str | None
+    """Additional context to include in the system prompt."""
+
+    auto_verify: bool
+    """Whether generated test cases should be marked verified."""
+
+    test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
+
+    tool_box: ToolBox | None
+    """Available tools and handlers."""
 
 
 class Processor(ABC):

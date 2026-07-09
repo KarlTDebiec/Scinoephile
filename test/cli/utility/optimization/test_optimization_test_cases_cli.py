@@ -18,27 +18,12 @@ from scinoephile.optimization.operations import OPERATIONS
 from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
 
 
-def test_optimization_operations_include_translation_variants():
-    """Test optimization registry includes all translation operation variants."""
+def test_optimization_operations_include_translation_modes():
+    """Test optimization registry includes generic translation operations."""
     expected_operations = {
-        "eng-yue-gapped-translation",
-        "eng-yue-guided-translation",
-        "eng-yue-translation",
-        "eng-zho-gapped-translation",
-        "eng-zho-guided-translation",
-        "eng-zho-translation",
-        "yue-eng-gapped-translation",
-        "yue-eng-guided-translation",
-        "yue-eng-translation",
-        "yue-zho-gapped-translation",
-        "yue-zho-guided-translation",
-        "yue-zho-translation",
-        "zho-eng-gapped-translation",
-        "zho-eng-guided-translation",
-        "zho-eng-translation",
-        "zho-yue-gapped-translation",
-        "zho-yue-guided-translation",
-        "zho-yue-translation",
+        "gap-translation",
+        "guided-translation",
+        "translation",
     }
 
     assert expected_operations <= set(OPERATIONS)

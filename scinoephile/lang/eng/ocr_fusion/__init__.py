@@ -7,13 +7,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import OperationSpec, TestCase
+from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.default_test_cases import (
-    ENG_OCR_FUSION_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager, OcrFusionProcessor
 from scinoephile.llms.providers.registry import get_provider
 
@@ -23,10 +20,16 @@ __all__ = [
     "ENG_OCR_FUSION_OPERATION_SPEC",
     "OcrFusionPromptEng",
     "EngOcrFusionProcessKwargs",
-    "EngOcrFusionProcessorKwargs",
     "get_eng_ocr_fuser",
     "get_eng_ocr_fused",
 ]
+
+_ENG_OCR_FUSION_JSON_PATHS = (
+    Path("kob/output/eng_ocr/lang/eng/ocr_fusion.json"),
+    Path("mlamd/output/eng_ocr/lang/eng/ocr_fusion.json"),
+    Path("mnt/output/eng_ocr/lang/eng/ocr_fusion.json"),
+    Path("t/output/eng_ocr/lang/eng/ocr_fusion.json"),
+)
 
 ENG_OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="eng-ocr-fusion",
@@ -42,17 +45,6 @@ class EngOcrFusionProcessKwargs(TypedDict, total=False):
 
     stop_at_idx: int | None
     """Subtitle index at which to stop processing, inclusive."""
-
-
-class EngOcrFusionProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for OcrFusionProcessor initialization."""
-
-    test_case_path: Path | None
-    """Path where encountered test cases are persisted."""
-    additional_context: str | None
-    """Additional context to include in the system prompt."""
-    auto_verify: bool
-    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_eng_ocr_fused(
@@ -80,7 +72,7 @@ def get_eng_ocr_fuser(
     prompt_cls: type[OcrFusionPromptEng] = OcrFusionPromptEng,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[EngOcrFusionProcessorKwargs],
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> OcrFusionProcessor:
     """Get OcrFusionProcessor with provided configuration.
 
@@ -97,7 +89,7 @@ def get_eng_ocr_fuser(
             load_default_test_cases(
                 OcrFusionManager,
                 prompt_cls,
-                ENG_OCR_FUSION_JSON_PATHS,
+                _ENG_OCR_FUSION_JSON_PATHS,
             )
         )
     if provider is None:

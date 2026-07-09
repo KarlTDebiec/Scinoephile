@@ -7,14 +7,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import OperationSpec, TestCase
+from scinoephile.core.llms import OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.default_test_cases import (
-    ZHO_HANS_OCR_FUSION_JSON_PATHS,
-    ZHO_HANT_OCR_FUSION_JSON_PATHS,
-    load_default_test_cases,
-)
+from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.dual_1_to_1.ocr_fusion import (
     OcrFusionManager,
     OcrFusionProcessor,
@@ -28,10 +24,22 @@ __all__ = [
     "OcrFusionPromptZhoHans",
     "OcrFusionPromptZhoHant",
     "ZhoOcrFusionProcessKwargs",
-    "ZhoOcrFusionProcessorKwargs",
     "get_zho_ocr_fuser",
     "get_zho_ocr_fused",
 ]
+
+_ZHO_HANS_OCR_FUSION_JSON_PATHS = (
+    Path("mlamd/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
+    Path("mnt/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
+    Path("t/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
+)
+
+_ZHO_HANT_OCR_FUSION_JSON_PATHS = (
+    Path("kob/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+    Path("mlamd/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+    Path("mnt/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+    Path("t/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+)
 
 ZHO_OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="zho-ocr-fusion",
@@ -47,17 +55,6 @@ class ZhoOcrFusionProcessKwargs(TypedDict, total=False):
 
     stop_at_idx: int | None
     """Subtitle index at which to stop processing, inclusive."""
-
-
-class ZhoOcrFusionProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for OcrFusionProcessor initialization."""
-
-    test_case_path: Path | None
-    """Path where encountered test cases are persisted."""
-    additional_context: str | None
-    """Additional context to include in the system prompt."""
-    auto_verify: bool
-    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_zho_ocr_fused(
@@ -85,7 +82,7 @@ def get_zho_ocr_fuser(
     prompt_cls: type[OcrFusionPromptZhoHans] = OcrFusionPromptZhoHans,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[ZhoOcrFusionProcessorKwargs],
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> OcrFusionProcessor:
     """Get an OcrFusionProcessor with provided configuration.
 
@@ -103,7 +100,7 @@ def get_zho_ocr_fuser(
                 load_default_test_cases(
                     OcrFusionManager,
                     prompt_cls,
-                    ZHO_HANT_OCR_FUSION_JSON_PATHS,
+                    _ZHO_HANT_OCR_FUSION_JSON_PATHS,
                 )
             )
         else:
@@ -111,7 +108,7 @@ def get_zho_ocr_fuser(
                 load_default_test_cases(
                     OcrFusionManager,
                     prompt_cls,
-                    ZHO_HANS_OCR_FUSION_JSON_PATHS,
+                    _ZHO_HANS_OCR_FUSION_JSON_PATHS,
                 )
             )
     if provider is None:

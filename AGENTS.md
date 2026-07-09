@@ -6,18 +6,20 @@ Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
 
 * Review [docs/ARCHITECTURE.md](/docs/ARCHITECTURE.md) for package boundaries,
   dependency direction, and how the CLI maps onto `core` and domain modules.
-* Review [docs/STYLE.md](/docs/STYLE.md) for code style and documentation conventions
-  (docstrings, typing, `__all__`, etc.).
+* Review [docs/STYLE.md](/docs/STYLE.md) for code style and documentation
+  conventions (docstrings, typing, `__all__`, etc.).
 
 ## Tools
 
-* This repository uses a virtual environment. To activate the venv in your shell: `source .venv/bin/activate`.
-* This repository uses `uv`. Use `UV_CACHE_DIR=/tmp/uv-cache uv run` when executing tools.
+* This repository uses a virtual environment. To activate the venv in your
+  shell, run `source .venv/bin/activate`.
+* This repository uses `uv`. Use `UV_CACHE_DIR=/tmp/uv-cache uv run` when
+  executing tools.
 
 ### Windows / PowerShell
 
-* The examples above use Unix-style environment variable prefixes. In PowerShell,
-  set environment variables before running `uv`:
+* The examples above use Unix-style environment variable prefixes. In
+  PowerShell, set environment variables before running `uv`:
   ```powershell
   $env:UV_CACHE_DIR = "/tmp/uv-cache"
   uv run pytest
@@ -30,7 +32,8 @@ Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
   $env:PYTHONUTF8 = "1"
   $env:PYTHONIOENCODING = "utf-8"
   ```
-* Combine those settings when running repository tools that may emit subtitle text:
+* Combine those settings when running repository tools that may emit subtitle
+  text:
   ```powershell
   $env:UV_CACHE_DIR = "/tmp/uv-cache"
   $env:PYTHONUTF8 = "1"
@@ -45,12 +48,15 @@ Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
 
 ### Linting
 
-* Before running `ruff` or `ty`, check changed files for compliance with [docs/STYLE.md](/docs/STYLE.md).
-* Run the following checks on **only the Python files you have changed or been asked to**:
+* Before running `ruff` or `ty`, reread [docs/STYLE.md](/docs/STYLE.md) and
+  check changed files for compliance.
+* Run the following checks on **only the Python files you have changed or been
+  asked to**:
   1. `uv run ruff format`
   2. `uv run ruff check --fix`
   3. `uv run ty check`
-* If `ruff` or `ty` suggest changes that would require major refactoring, confirm with the user before proceeding.
+* If `ruff` or `ty` suggest changes that would require major refactoring,
+  confirm with the user before proceeding.
 
 ### Testing
 

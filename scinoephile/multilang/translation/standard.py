@@ -1,0 +1,129 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Standard translation helpers."""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Unpack
+
+from scinoephile.core import Language
+from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
+from scinoephile.llms import load_default_test_cases
+from scinoephile.llms.providers.registry import get_provider
+from scinoephile.llms.translation import (
+    TranslationManager,
+    TranslationProcessor,
+    TranslationPrompt,
+)
+from scinoephile.multilang.eng_yue.translation import EngYueTranslationPrompt
+from scinoephile.multilang.eng_zho.translation import EngZhoTranslationPrompt
+from scinoephile.multilang.yue_eng.translation import (
+    YueEngTranslationPromptYueHans,
+    YueEngTranslationPromptYueHant,
+)
+from scinoephile.multilang.yue_zho.translation import (
+    YueZhoTranslationPromptYueHans,
+    YueZhoTranslationPromptYueHant,
+)
+from scinoephile.multilang.zho_eng.translation import (
+    ZhoEngTranslationPromptZhoHans,
+    ZhoEngTranslationPromptZhoHant,
+)
+from scinoephile.multilang.zho_yue.translation import (
+    ZhoYueTranslationPromptZhoHans,
+    ZhoYueTranslationPromptZhoHant,
+)
+
+__all__ = [
+    "TRANSLATION_OPERATION_SPEC",
+    "get_translator",
+]
+
+TRANSLATION_OPERATION_SPEC = OperationSpec(
+    operation="translation",
+    test_case_table_name="test_cases__translation",
+    manager_cls=TranslationManager,
+    prompt_cls=TranslationPrompt,
+)
+"""Operation specification for regular translation."""
+
+_ENG_YUE_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_ENG_ZHO_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_YUE_ENG_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_YUE_ZHO_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_ZHO_ENG_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+_ZHO_YUE_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+
+_JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
+    (Language.yue_hans, Language.eng): _ENG_YUE_TRANSLATION_JSON_PATHS,
+    (Language.yue_hant, Language.eng): _ENG_YUE_TRANSLATION_JSON_PATHS,
+    (Language.zho_hans, Language.eng): _ENG_ZHO_TRANSLATION_JSON_PATHS,
+    (Language.zho_hant, Language.eng): _ENG_ZHO_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.yue_hans): _YUE_ENG_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.yue_hant): _YUE_ENG_TRANSLATION_JSON_PATHS,
+    (Language.zho_hans, Language.yue_hans): _YUE_ZHO_TRANSLATION_JSON_PATHS,
+    (Language.zho_hant, Language.yue_hans): _YUE_ZHO_TRANSLATION_JSON_PATHS,
+    (Language.zho_hans, Language.yue_hant): _YUE_ZHO_TRANSLATION_JSON_PATHS,
+    (Language.zho_hant, Language.yue_hant): _YUE_ZHO_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.zho_hans): _ZHO_ENG_TRANSLATION_JSON_PATHS,
+    (Language.eng, Language.zho_hant): _ZHO_ENG_TRANSLATION_JSON_PATHS,
+    (Language.yue_hans, Language.zho_hans): _ZHO_YUE_TRANSLATION_JSON_PATHS,
+    (Language.yue_hant, Language.zho_hans): _ZHO_YUE_TRANSLATION_JSON_PATHS,
+    (Language.yue_hans, Language.zho_hant): _ZHO_YUE_TRANSLATION_JSON_PATHS,
+    (Language.yue_hant, Language.zho_hant): _ZHO_YUE_TRANSLATION_JSON_PATHS,
+}
+"""Regular translation JSON paths keyed by exact source and target languages."""
+
+_PROMPTS: dict[tuple[Language, Language], type[TranslationPrompt]] = {
+    (Language.yue_hans, Language.eng): EngYueTranslationPrompt,
+    (Language.yue_hant, Language.eng): EngYueTranslationPrompt,
+    (Language.zho_hans, Language.eng): EngZhoTranslationPrompt,
+    (Language.zho_hant, Language.eng): EngZhoTranslationPrompt,
+    (Language.eng, Language.yue_hans): YueEngTranslationPromptYueHans,
+    (Language.eng, Language.yue_hant): YueEngTranslationPromptYueHant,
+    (Language.zho_hans, Language.yue_hans): YueZhoTranslationPromptYueHans,
+    (Language.zho_hant, Language.yue_hans): YueZhoTranslationPromptYueHans,
+    (Language.zho_hans, Language.yue_hant): YueZhoTranslationPromptYueHant,
+    (Language.zho_hant, Language.yue_hant): YueZhoTranslationPromptYueHant,
+    (Language.eng, Language.zho_hans): ZhoEngTranslationPromptZhoHans,
+    (Language.eng, Language.zho_hant): ZhoEngTranslationPromptZhoHant,
+    (Language.yue_hans, Language.zho_hans): ZhoYueTranslationPromptZhoHans,
+    (Language.yue_hant, Language.zho_hans): ZhoYueTranslationPromptZhoHans,
+    (Language.yue_hans, Language.zho_hant): ZhoYueTranslationPromptZhoHant,
+    (Language.yue_hant, Language.zho_hant): ZhoYueTranslationPromptZhoHant,
+}
+"""Regular translation prompts keyed by exact source and target languages."""
+
+
+def get_translator(
+    source_language: Language,
+    target_language: Language,
+    prompt_cls: type[TranslationPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
+    provider: LLMProvider | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
+) -> TranslationProcessor:
+    """Get a regular translation processor for a supported language pair.
+
+    Arguments:
+        source_language: source language
+        target_language: target language
+        prompt_cls: prompt class override
+        test_cases: test cases
+        provider: provider to use for queries
+        **kwargs: processor initialization keyword arguments
+    Returns:
+        configured translation processor
+    """
+    if prompt_cls is None:
+        prompt_cls = _PROMPTS[source_language, target_language]
+    if test_cases is None:
+        json_paths = _JSON_PATHS[source_language, target_language]
+        test_cases = list(
+            load_default_test_cases(TranslationManager, prompt_cls, json_paths)
+        )
+    if provider is None:
+        provider = get_provider()
+
+    return TranslationProcessor(prompt_cls, test_cases, provider=provider, **kwargs)

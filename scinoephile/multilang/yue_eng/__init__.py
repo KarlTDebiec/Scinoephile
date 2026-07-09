@@ -3,5 +3,5 @@
 """Code related to written Cantonese/English text.
 
 Package hierarchy (modules may import from any above):
-* gapped_translation / guided_translation / translation
+* translation
 """

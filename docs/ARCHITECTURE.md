@@ -1,66 +1,69 @@
 # Architecture
 
-This document describes Scinoephile’s package boundaries, dependency direction, and
-how the command-line interface maps onto the core implementation.
+This document describes Scinoephile’s package boundaries, dependency direction,
+and how the command-line interface maps onto the core implementation.
 
 ## Package layering (dependency direction)
 
-Scinoephile documents the intended package hierarchy in `scinoephile/__init__.py`.
-Modules may import from packages listed above them in that hierarchy:
+Scinoephile documents the intended package hierarchy in
+`scinoephile/__init__.py`. Modules may import from packages listed above them in
+that hierarchy:
 
-- `scinoephile.common`: general-purpose utilities; may not import from other Scinoephile packages
+- `scinoephile.common`: general-purpose utilities; may not import from other
+  Scinoephile packages
 - `scinoephile.core`: core subtitle-domain logic; may import from `common`
 - `analysis`, `image`, and `llms`: domain packages that may import from `common`
   and `core`
-- `scinoephile.media`: media probing, extraction, subtitle cache, and offset logic
-  built on the lower layers
+- `scinoephile.media`: media probing, extraction, subtitle cache, and offset
+  logic built on the lower layers
 - `scinoephile.lang`: language-specific subtitle operations that may import from
   the packages above
-- `audio`, `dictionaries`, and `web`: audio, dictionary, and web UI packages that
-  may import from the packages above
-- `multilang` and `workflows`: cross-language operations and reusable workflow
-  orchestration that may import from the packages above
-- `scinoephile.optimization`: prompt optimization tooling that may import from the
-  packages above
+- `audio`, `dictionaries`, and `web`: audio, dictionary, and web UI packages
+  that may import from the packages above
+- `multilang`: cross-language operations that may import from the packages above
+- `scinoephile.optimization` and `workflows`: prompt optimization tooling and
+  reusable workflow orchestration that may import from the packages above
 - `scinoephile.cli`: user-facing command-line wrappers that may import from any
   package listed above it
 
-This layering is enforced socially (by convention and code review) and is intended
-to keep dependencies flowing toward earlier layers:
+This layering is enforced socially (by convention and code review) and is
+intended to keep dependencies flowing toward earlier layers:
 
-- **`common`**: utilities shared everywhere; should remain dependency-free within the
-  `scinoephile` package.
+- **`common`**: utilities shared everywhere; should remain dependency-free
+  within the `scinoephile` package.
 - **`core`**: stable, domain-oriented primitives (series loading/saving, timing,
-  synchronization, shared CLI helpers); may import `common` but should avoid importing
-  mid-layer domain packages.
+  synchronization, shared CLI helpers); may import `common` but should avoid
+  importing mid-layer domain packages.
 - **`analysis`, `image`, and `llms`**: specialized functionality that builds on
   `core`:
   - **`analysis`**: metrics and comparisons (for example CER and diffing).
   - **`image`**: image/OCR representations and helpers.
-  - **`llms`**: prompt definitions, providers, and model-facing processing utilities.
+  - **`llms`**: prompt definitions, providers, and model-facing processing
+    utilities.
 - **`media`**: media-file probing, subtitle extraction helpers, subtitle cache
   analysis, and visual offset estimation.
 - **`lang`**: language-specific subtitle operations (English, standard Chinese,
   written Cantonese, etc.).
 - **`audio`, `dictionaries`, and `web`**: audio representation and transcription
   tooling, dictionary lookup/build logic, and web interfaces.
-- **`multilang` and `workflows`**: cross-language pipelines and reusable
-  end-to-end orchestration that coordinate multiple domain packages.
+- **`multilang`**: pair-specific cross-language operations.
+- **`workflows`**: reusable end-to-end orchestration that coordinates multiple
+  domain packages, including `multilang`.
 - **`optimization`**: prompt optimization operations and persisted test-case
   synchronization.
-- **`cli`**: thin wrappers around lower layers; argument parsing, validation, and
-  user-facing orchestration.
+- **`cli`**: thin wrappers around lower layers; argument parsing, validation,
+  and user-facing orchestration.
 
 ### `__init__.py` files document local hierarchy
 
-In addition to the top-level hierarchy in `scinoephile/__init__.py`, each package’s
-`__init__.py` documents its **internal hierarchy** using the same rule of thumb:
-modules may import from modules listed “above” them in that package’s hierarchy
-comment. This serves two purposes:
+In addition to the top-level hierarchy in `scinoephile/__init__.py`, each
+package’s `__init__.py` documents its **internal hierarchy** using the same rule
+of thumb: modules may import from modules listed “above” them in that package’s
+hierarchy comment. This serves two purposes:
 
 - **Documentation**: a fast, local reference for where new code should live.
-- **Dependency hygiene**: a place to notice and resolve sibling dependency cycles
-  (cycles should be called out explicitly and grouped together).
+- **Dependency hygiene**: a place to notice and resolve sibling dependency
+  cycles (cycles should be called out explicitly and grouped together).
 
 ## Command Line Interface
 
@@ -87,23 +90,24 @@ surface (commands and subcommands) is:
     - `search`: search one or more configured dictionaries
   - `eng`
     - `process`: process English subtitles (clean/flatten/proofread)
-    - `translate-from-yue`: translate English subtitles from written Cantonese subtitles
-    - `translate-from-zho`: translate English subtitles from standard Chinese subtitles
   - `media`
     - `extract-subs`: extract matching subtitle streams from a video file
     - `offset`: estimate visual offset between two media files
     - `probe`: list media streams in a media file
   - `multi`
-    - `cer`: calculate character error rate (CER) for one series relative to another
+    - `cer`: calculate character error rate (CER) for one series relative to
+      another
     - `diff`: calculate the diff between two series
     - `stack`: stack two series into top and bottom subtitle lines
-    - `sync`: estimate subtitle offset and shift a mobile series to an anchor series
+    - `sync`: estimate subtitle offset and shift a mobile series to an anchor
+      series
     - `timewarp`: shift/stretch timings of one series to match another
   - `ocr`
     - `fuse`: fuse OCR output for a selected language
     - `lens`: recognize image subtitles with Google Lens
     - `paddle`: recognize image subtitles with PaddleOCR
-    - `process`: process image subtitle OCR and fuse output for a selected language
+    - `process`: process image subtitle OCR and fuse output for a selected
+      language
     - `tesseract`: recognize image subtitles with Tesseract OCR
     - `validate`: validate OCR text against subtitle images
   - `utility`
@@ -114,19 +118,20 @@ surface (commands and subcommands) is:
       - `stats`: inspect cache size and entry counts
     - `optimization`
       - `sync-test-cases`: synchronize persisted prompt-optimization test cases
+  - `translate`: translate subtitles between supported languages
   - `yue`
-    - `process`: process written Cantonese subtitles (clean/convert/flatten/proofread/romanize)
+    - `process`: process written Cantonese subtitles
+      (clean/convert/flatten/proofread/romanize)
     - `review-vs-zho`: review written Cantonese against standard Chinese
-    - `transcribe-vs-zho`: transcribe from media audio using standard Chinese as reference
-    - `translate-from-eng`: translate written Cantonese subtitles from English subtitles
-    - `translate-from-zho`: translate written Cantonese subtitles from standard Chinese subtitles
+    - `transcribe-vs-zho`: transcribe from media audio using standard Chinese
+      as reference
   - `zho`
-    - `process`: process standard Chinese subtitles (clean/convert/flatten/proofread/romanize)
-    - `translate-from-eng`: translate standard Chinese subtitles from English subtitles
-    - `translate-from-yue`: translate standard Chinese subtitles from written Cantonese subtitles
+    - `process`: process standard Chinese subtitles
+      (clean/convert/flatten/proofread/romanize)
 
 Each subcommand lives under `scinoephile/cli/` and is responsible for:
 
 - Defining its argument parser
 - Validating inputs and outputs
-- Calling into the appropriate `core` and domain-layer modules to do the real work
+- Calling into the appropriate `core` and domain-layer modules to do the real
+  work
