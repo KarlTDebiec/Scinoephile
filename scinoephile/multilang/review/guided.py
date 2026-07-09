@@ -42,7 +42,6 @@ __all__ = [
 
 GUIDED_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="guided-review",
-    test_case_table_name="test_cases__guided_review",
     manager_cls=GuidedReviewManager,
     prompt_cls=GuidedReviewPrompt,
 )

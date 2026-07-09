@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from .manager import Manager
 from .prompt import Prompt
@@ -18,11 +18,7 @@ class OperationSpec:
 
     operation: str
     """Operation name exposed through CLIs and registries."""
-    test_case_table_name: str
-    """SQLite table name used to persist test cases for this operation."""
     manager_cls: type[Manager]
     """Manager class used to load and validate cases for this operation."""
     prompt_cls: type[Prompt]
     """Prompt class used to load and validate cases for this operation."""
-    list_fields: dict[str, int] = field(default_factory=dict)
-    """Payload fields to store as fixed-width scalar SQLite columns."""

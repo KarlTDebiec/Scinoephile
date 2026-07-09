@@ -47,7 +47,6 @@ __all__ = [
 
 GAP_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="gap-translation",
-    test_case_table_name="test_cases__gap_translation",
     manager_cls=GapTranslationManager,
     prompt_cls=GapTranslationPrompt,
 )

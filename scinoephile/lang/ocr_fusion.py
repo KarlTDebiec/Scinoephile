@@ -70,7 +70,6 @@ _ZHO_HANT_OCR_FUSION_JSON_PATHS = (
 
 OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="ocr-fusion",
-    test_case_table_name="test_cases__ocr_fusion",
     manager_cls=OcrFusionManager,
     prompt_cls=OcrFusionPrompt,
 )

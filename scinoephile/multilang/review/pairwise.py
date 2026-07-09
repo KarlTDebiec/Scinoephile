@@ -42,7 +42,6 @@ __all__ = [
 
 PAIRWISE_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="pairwise-review",
-    test_case_table_name="test_cases__pairwise_review",
     manager_cls=PairwiseReviewManager,
     prompt_cls=PairwiseReviewPrompt,
 )

@@ -1,19 +1,16 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for JSON → SQLite sync helpers."""
+"""Tests for JSON to normalized SQLite synchronization."""
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
-from scinoephile.core.llms import OperationSpec
-from scinoephile.llms.translation.manager import TranslationManager
-from scinoephile.llms.translation.prompt import TranslationPrompt
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
-    YueZhoPunctuationManager,
-)
+from pytest import raises
+
+from scinoephile import common
+from scinoephile.core import ScinoephileError
 from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 from scinoephile.optimization.persistence.test_cases.sync import (
@@ -24,176 +21,127 @@ from scinoephile.optimization.persistence.test_cases.sync import (
 def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
     """Sync should insert new IDs and delete obsolete IDs per source JSON."""
     monkeypatch.chdir(tmp_path)
-
-    db_path = Path("test_cases.sqlite")
-    operation_spec = OperationSpec(
-        operation="unit-translation",
-        test_case_table_name="test_cases__unit__translation",
-        manager_cls=TranslationManager,
-        prompt_cls=TranslationPrompt,
-    )
-
-    src1 = Path("src1.json")
-    data1_v1 = [
+    database_path = Path("test_cases.sqlite")
+    source_path = Path("source.json")
+    first_data = [
         {
             "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
+            "answer": {"output_1": "b"},
             "verified": True,
         },
         {
             "query": {"input_1": "c"},
-            "answer": {"output_1": "d", "note_1": "changed"},
-            "verified": False,
+            "answer": {"output_1": "d"},
         },
     ]
-    src1.write_text(
-        json.dumps(data1_v1, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    source_path.write_text(json.dumps(first_data), encoding="utf-8")
 
-    report1 = sync_test_cases_from_json_paths(
-        database_path=db_path,
-        operation_spec=operation_spec,
-        input_paths=[src1],
+    first_report = sync_test_cases_from_json_paths(
+        database_path=database_path,
+        operation="translation",
+        variant="unit",
+        input_paths=[source_path],
         dry_run=False,
     )
-    assert len(report1.insert_ids) == 2
-    assert report1.delete_ids == ()
-    test_case_cls = TranslationManager.get_test_case_cls(
-        size=1, prompt_cls=TranslationPrompt
-    )
-    deleted_test_case = test_case_cls.model_validate(data1_v1[1])
-    assert deleted_test_case.answer is not None
-    expected_delete_id = get_test_case_id(
-        deleted_test_case.query,
-        deleted_test_case.answer,
+    assert len(first_report.insert_ids) == 2
+    deleted_id = get_test_case_id(
+        first_data[1]["query"],
+        first_data[1]["answer"],
+        operation="translation",
+        variant="unit",
     )
 
-    # Now remove one test case from src1; sync should delete that ID for this source.
-    data1_v2 = [
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
-            "verified": True,
-        }
-    ]
-    src1.write_text(
-        json.dumps(data1_v2, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-
-    report2 = sync_test_cases_from_json_paths(
-        database_path=db_path,
-        operation_spec=operation_spec,
-        input_paths=[src1],
+    source_path.write_text(json.dumps(first_data[:1]), encoding="utf-8")
+    second_report = sync_test_cases_from_json_paths(
+        database_path=database_path,
+        operation="translation",
+        variant="unit",
+        input_paths=[source_path],
         dry_run=False,
     )
-    assert report2.delete_ids == (expected_delete_id,)
+
+    assert second_report.delete_ids == (deleted_id,)
+    assert TestCaseSqliteStore(database_path).get_test_case(deleted_id) is None
 
 
 def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     """Sync should treat relative and absolute paths as the same source."""
     monkeypatch.chdir(tmp_path)
-
-    db_path = Path("test_cases.sqlite")
-    operation_spec = OperationSpec(
-        operation="unit-translation",
-        test_case_table_name="test_cases__unit__translation",
-        manager_cls=TranslationManager,
-        prompt_cls=TranslationPrompt,
+    database_path = Path("test_cases.sqlite")
+    source_path = Path("source.json")
+    source_path.write_text(
+        json.dumps([{"query": {"q": "a"}, "answer": {"a": "b"}}]),
+        encoding="utf-8",
     )
-
-    src1 = Path("src1.json")
-    data1_v1 = [
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
-            "verified": True,
-        }
-    ]
-    src1.write_text(
-        json.dumps(data1_v1, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    report1 = sync_test_cases_from_json_paths(
-        database_path=db_path,
-        operation_spec=operation_spec,
-        input_paths=[src1],
+    first_report = sync_test_cases_from_json_paths(
+        database_path=database_path,
+        operation="unit",
+        variant="basic",
+        input_paths=[source_path],
         dry_run=False,
     )
-    assert len(report1.insert_ids) == 1
 
-    src1.write_text("[]\n", encoding="utf-8")
-    report2 = sync_test_cases_from_json_paths(
-        database_path=db_path,
-        operation_spec=operation_spec,
-        input_paths=[src1.resolve()],
+    source_path.write_text("[]\n", encoding="utf-8")
+    second_report = sync_test_cases_from_json_paths(
+        database_path=database_path,
+        operation="unit",
+        variant="basic",
+        input_paths=[source_path.resolve()],
         dry_run=False,
     )
-    assert report2.delete_ids == report1.insert_ids
+
+    assert second_report.delete_ids == first_report.insert_ids
 
 
-def test_sync_dry_run_reports_metadata_updates(tmp_path: Path, monkeypatch):
-    """Dry-run sync should report metadata-only updates."""
-    monkeypatch.chdir(tmp_path)
-
-    db_path = Path("test_cases.sqlite")
-    operation_spec = OperationSpec(
-        operation="unit-translation",
-        test_case_table_name="test_cases__unit__translation",
-        manager_cls=TranslationManager,
-        prompt_cls=TranslationPrompt,
-    )
-
-    src1 = Path("src1.json")
-    data1_v1 = [
+def test_sync_dry_run_reports_source_metadata_updates(tmp_path: Path):
+    """Dry-run sync should report source-specific metadata updates."""
+    database_path = tmp_path / "test_cases.sqlite"
+    source_path = tmp_path / "source.json"
+    data = [
         {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
+            "query": {"q": "a"},
+            "answer": {"a": "b"},
             "difficulty": 1,
-            "prompt": False,
-            "verified": False,
         }
     ]
-    src1.write_text(
-        json.dumps(data1_v1, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    report1 = sync_test_cases_from_json_paths(
-        database_path=db_path,
-        operation_spec=operation_spec,
-        input_paths=[src1],
+    source_path.write_text(json.dumps(data), encoding="utf-8")
+    first_report = sync_test_cases_from_json_paths(
+        database_path=database_path,
+        operation="unit",
+        variant="basic",
+        input_paths=[source_path],
         dry_run=False,
     )
-    assert len(report1.insert_ids) == 1
 
-    data1_v2 = [
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
-            "difficulty": 2,
-            "prompt": True,
-            "verified": True,
-        }
-    ]
-    src1.write_text(
-        json.dumps(data1_v2, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    data[0]["difficulty"] = 2
+    data[0]["prompt"] = True
+    data[0]["verified"] = True
+    source_path.write_text(json.dumps(data), encoding="utf-8")
     dry_run_report = sync_test_cases_from_json_paths(
-        database_path=db_path,
-        operation_spec=operation_spec,
-        input_paths=[src1],
+        database_path=database_path,
+        operation="unit",
+        variant="basic",
+        input_paths=[source_path],
         dry_run=True,
     )
+
     assert dry_run_report.insert_ids == ()
-    assert dry_run_report.update_ids == report1.insert_ids
-    assert dry_run_report.delete_ids == ()
+    assert dry_run_report.update_ids == first_report.insert_ids
+    loaded_before_write = TestCaseSqliteStore(database_path).get_test_case(
+        first_report.insert_ids[0]
+    )
+    assert loaded_before_write is not None
+    assert loaded_before_write.difficulty == 1
 
     sync_test_cases_from_json_paths(
-        database_path=db_path,
-        operation_spec=operation_spec,
-        input_paths=[src1],
+        database_path=database_path,
+        operation="unit",
+        variant="basic",
+        input_paths=[source_path],
         dry_run=False,
     )
-    store = TestCaseSqliteStore(db_path)
-    loaded = store.get_test_case(
-        operation_spec.test_case_table_name, report1.insert_ids[0]
+    loaded = TestCaseSqliteStore(database_path).get_test_case(
+        first_report.insert_ids[0]
     )
     assert loaded is not None
     assert loaded.difficulty == 2
@@ -201,43 +149,104 @@ def test_sync_dry_run_reports_metadata_updates(tmp_path: Path, monkeypatch):
     assert loaded.verified
 
 
-def test_sync_uses_operation_list_fields(tmp_path: Path, monkeypatch):
-    """Sync should split list fields configured on the operation spec."""
-    monkeypatch.chdir(tmp_path)
-
-    db_path = Path("test_cases.sqlite")
-    operation_spec = OperationSpec(
-        operation="unit-punctuation",
-        test_case_table_name="test_cases__unit__punctuation",
-        manager_cls=YueZhoPunctuationManager,
-        prompt_cls=YuePunctuationVsZhoPromptYueHans,
-        list_fields={"query.yuewen_to_punctuate": 10},
+def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
+    """An invalid later source should prevent all database writes."""
+    database_path = tmp_path / "test_cases.sqlite"
+    valid_path = tmp_path / "valid.json"
+    invalid_path = tmp_path / "invalid.json"
+    valid_path.write_text(
+        json.dumps([{"query": {"q": "a"}, "answer": {"a": "b"}}]),
+        encoding="utf-8",
+    )
+    invalid_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"q": "c"},
+                    "answer": {"a": "d"},
+                    "difficulty": "hard",
+                }
+            ]
+        ),
+        encoding="utf-8",
     )
 
-    src1 = Path("src1.json")
-    data = [
-        {
-            "query": {
-                "yuewen_to_punctuate": ["噉我哋", "而家开始"],
-                "zhongwen": "那我们现在开始。",
-            },
-            "answer": {"yuewen_punctuated": "噉我哋，而家开始。"},
-            "verified": True,
-        }
-    ]
-    src1.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    with raises(ScinoephileError, match="difficulty must be an integer"):
+        sync_test_cases_from_json_paths(
+            database_path=database_path,
+            operation="unit",
+            variant="basic",
+            input_paths=[valid_path, invalid_path],
+            dry_run=False,
+        )
 
-    report = sync_test_cases_from_json_paths(
-        database_path=db_path,
-        operation_spec=operation_spec,
-        input_paths=[src1],
+    assert not database_path.exists()
+
+
+def test_sync_round_trips_localized_repository_data(tmp_path: Path):
+    """Localized fields should survive SQL persistence without prompt parsing."""
+    source_path = (
+        common.package_root.parent
+        / "test/data/kob/output/zho-Hant_ocr/lang/zho/review.json"
+    )
+    raw_data = json.loads(source_path.read_text(encoding="utf-8"))
+    database_path = tmp_path / "test_cases.sqlite"
+
+    sync_test_cases_from_json_paths(
+        database_path=database_path,
+        operation="review",
+        variant="zho-hant",
+        input_paths=[source_path],
         dry_run=False,
     )
-    store = TestCaseSqliteStore(db_path, operation_spec=operation_spec)
-    loaded = store.get_test_case(
-        operation_spec.test_case_table_name,
-        report.insert_ids[0],
+    loaded = TestCaseSqliteStore(database_path).get_test_cases_by_source_path(
+        str(source_path.resolve()),
+        operation="review",
+        variant="zho-hant",
     )
 
-    assert loaded is not None
-    assert loaded.query["yuewen_to_punctuate"] == ["噉我哋", "而家开始"]
+    raw_payloads = {
+        json.dumps(
+            {"query": item["query"], "answer": item["answer"]},
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        for item in raw_data
+    }
+    loaded_payloads = {
+        json.dumps(
+            {"query": test_case.query, "answer": test_case.answer},
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        for test_case in loaded
+    }
+    assert loaded_payloads == raw_payloads
+
+
+def test_sync_round_trips_unbounded_lists(tmp_path: Path):
+    """JSON list payloads should not have a persistence width limit."""
+    source_path = (
+        common.package_root.parent
+        / "test/data/kob/output/yue-Hans_transcribe/test_simplified/"
+        "multilang/yue_zho/transcription/punctuation/mps.json"
+    )
+    database_path = tmp_path / "test_cases.sqlite"
+
+    sync_test_cases_from_json_paths(
+        database_path=database_path,
+        operation="yue-zho-transcription-punctuation",
+        variant="yue-hans",
+        input_paths=[source_path],
+        dry_run=False,
+    )
+    loaded = TestCaseSqliteStore(database_path).get_test_cases_by_source_path(
+        str(source_path.resolve())
+    )
+
+    list_lengths: list[int] = []
+    for test_case in loaded:
+        value = test_case.query.get("yuewen_to_punctuate")
+        if isinstance(value, list):
+            list_lengths.append(len(value))
+    assert max(list_lengths) >= 36

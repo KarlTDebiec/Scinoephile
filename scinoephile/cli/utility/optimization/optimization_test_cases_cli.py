@@ -14,7 +14,6 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.llms import OperationSpec
-from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
@@ -32,6 +31,9 @@ OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "列出将插入、更新或删除的行而不写入"
         ),
         "one or more input JSON paths": "一个或多个输入 JSON 路径",
+        "stable schema variant name for these test cases": (
+            "这些测试用例的稳定架构变体名称"
+        ),
         "synchronize persisted LLM test cases from JSON into SQLite": (
             "将 JSON 测试用例同步到 SQLite"
         ),
@@ -44,6 +46,9 @@ OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "列出將插入、更新或刪除的列而不寫入"
         ),
         "one or more input JSON paths": "一個或多個輸入 JSON 路徑",
+        "stable schema variant name for these test cases": (
+            "這些測試用例的穩定架構變體名稱"
+        ),
         "synchronize persisted LLM test cases from JSON into SQLite": (
             "將 JSON 測試用例同步到 SQLite"
         ),
@@ -101,6 +106,11 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
                 "list rows that would be inserted, updated, or deleted without writing"
             ),
         )
+        arg_groups["operation arguments"].add_argument(
+            "--variant",
+            required=True,
+            help="stable schema variant name for these test cases",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -126,43 +136,35 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         infile_paths: list[Path],
         operation: OperationSpec,
         dry_run: bool,
+        variant: str,
         outfile: Path,
     ):
         """Execute with provided keyword arguments."""
         # Perform operations
         report = sync_test_cases_from_json_paths(
             database_path=outfile,
-            operation_spec=operation,
+            operation=operation.operation,
+            variant=variant,
             input_paths=infile_paths,
             dry_run=dry_run,
         )
 
         # Write outputs
         if dry_run:
-            store = None
-            if outfile.exists():
-                store = TestCaseSqliteStore(outfile, operation_spec=operation)
             for test_case_id in report.insert_ids:
-                tc = None
-                if store is not None:
-                    tc = store.get_test_case(
-                        operation.test_case_table_name, test_case_id
-                    )
-                if tc is None:
-                    print({"action": "insert", "test_case_id": test_case_id})
-                else:
-                    print(
-                        {
-                            "action": "insert",
-                            "test_case_id": tc.test_case_id,
-                            "difficulty": tc.difficulty,
-                            "prompt": tc.prompt,
-                            "verified": tc.verified,
-                            "query": tc.query,
-                            "answer": tc.answer,
-                        }
-                    )
+                print({"action": "insert", "test_case_id": test_case_id})
             for test_case_id in report.update_ids:
                 print({"action": "update", "test_case_id": test_case_id})
             for test_case_id in report.delete_ids:
                 print({"action": "delete", "test_case_id": test_case_id})
+        else:
+            print(
+                {
+                    "operation": report.operation,
+                    "variant": report.variant,
+                    "sources": len(report.input_paths),
+                    "inserted": len(report.insert_ids),
+                    "updated": len(report.update_ids),
+                    "deleted": len(report.delete_ids),
+                }
+            )

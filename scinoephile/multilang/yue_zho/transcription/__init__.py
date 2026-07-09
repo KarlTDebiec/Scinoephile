@@ -78,7 +78,6 @@ _YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (
 
 YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-transcription-deliniation",
-    test_case_table_name="test_cases__yue_zho__transcription_deliniation",
     manager_cls=Dual2To2Manager,
     prompt_cls=YueDeliniationVsZhoPromptYueHans,
 )
@@ -86,10 +85,8 @@ YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC = OperationSpec(
 
 YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-transcription-punctuation",
-    test_case_table_name="test_cases__yue_zho__transcription_punctuation",
     manager_cls=YueZhoPunctuationManager,
     prompt_cls=YuePunctuationVsZhoPromptYueHans,
-    list_fields={"query.yuewen_to_punctuate": 10},
 )
 """Operation specification for written Cantonese transcription punctuation."""
 

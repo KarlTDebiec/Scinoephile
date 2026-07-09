@@ -42,7 +42,6 @@ __all__ = [
 
 TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="translation",
-    test_case_table_name="test_cases__translation",
     manager_cls=TranslationManager,
     prompt_cls=TranslationPrompt,
 )

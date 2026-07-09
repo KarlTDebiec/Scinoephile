@@ -14,13 +14,15 @@ __all__ = ["SyncReport"]
 class SyncReport:
     """Summary of a sync operation."""
 
-    table_name: str
-    """SQLite table name that was synchronized."""
+    operation: str
+    """Operation that was synchronized."""
+    variant: str
+    """Stable schema variant that was synchronized."""
     input_paths: tuple[Path, ...]
     """Input JSON paths included in the sync run."""
     insert_ids: tuple[str, ...]
-    """Test case identifiers whose row or source link would be inserted."""
+    """Test case identifiers whose source association would be inserted."""
     update_ids: tuple[str, ...]
-    """Test case identifiers whose row metadata or payload would be updated."""
+    """Test case identifiers whose source metadata would be updated."""
     delete_ids: tuple[str, ...]
-    """Test case identifiers whose link to an input path would be removed."""
+    """Test case identifiers whose source association would be removed."""

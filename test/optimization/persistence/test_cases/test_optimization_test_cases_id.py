@@ -28,8 +28,16 @@ def test_get_test_case_id_stable_for_same_payload():
     )
     assert tc1.answer is not None
     assert tc2.answer is not None
-    assert get_test_case_id(tc1.query, tc1.answer) == get_test_case_id(
-        tc2.query, tc2.answer
+    assert get_test_case_id(
+        tc1.query,
+        tc1.answer,
+        operation="translation",
+        variant="unit",
+    ) == get_test_case_id(
+        tc2.query,
+        tc2.answer,
+        operation="translation",
+        variant="unit",
     )
 
 
@@ -52,6 +60,39 @@ def test_get_test_case_id_changes_with_answer():
     )
     assert tc1.answer is not None
     assert tc2.answer is not None
-    assert get_test_case_id(tc1.query, tc1.answer) != get_test_case_id(
-        tc2.query, tc2.answer
+    assert get_test_case_id(
+        tc1.query,
+        tc1.answer,
+        operation="translation",
+        variant="unit",
+    ) != get_test_case_id(
+        tc2.query,
+        tc2.answer,
+        operation="translation",
+        variant="unit",
+    )
+
+
+def test_get_test_case_id_changes_with_operation_or_variant():
+    """Catalog scope should contribute to the content-addressed ID."""
+    query = {"input_1": "a"}
+    answer = {"output_1": "b"}
+    first = get_test_case_id(
+        query,
+        answer,
+        operation="translation",
+        variant="eng-zho",
+    )
+
+    assert first != get_test_case_id(
+        query,
+        answer,
+        operation="review",
+        variant="eng-zho",
+    )
+    assert first != get_test_case_id(
+        query,
+        answer,
+        operation="translation",
+        variant="zho-eng",
     )

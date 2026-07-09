@@ -63,7 +63,6 @@ _ZHO_HANT_REVIEW_JSON_PATHS = (
 
 REVIEW_OPERATION_SPEC = OperationSpec(
     operation="review",
-    test_case_table_name="test_cases__review",
     manager_cls=ReviewManager,
     prompt_cls=ReviewPrompt,
 )

@@ -47,7 +47,6 @@ __all__ = [
 
 GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="guided-translation",
-    test_case_table_name="test_cases__guided_translation",
     manager_cls=GuidedTranslationManager,
     prompt_cls=GuidedTranslationPrompt,
 )
