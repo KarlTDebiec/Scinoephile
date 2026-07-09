@@ -35,13 +35,13 @@ __all__ = [
     "mnt_jpn_eng",
     "mnt_yue_zho_hant",
     "mnt_zho_hant",
-    "get_mnt_eng_review_test_cases",
     "get_mnt_eng_ocr_fusion_test_cases",
+    "get_mnt_eng_review_test_cases",
     "get_mnt_eng_zho_guided_translation_test_cases",
-    "get_mnt_zho_hans_review_test_cases",
     "get_mnt_zho_hans_ocr_fusion_test_cases",
-    "get_mnt_zho_hant_review_test_cases",
+    "get_mnt_zho_hans_review_test_cases",
     "get_mnt_zho_hant_ocr_fusion_test_cases",
+    "get_mnt_zho_hant_review_test_cases",
     "get_mnt_zho_hant_simplify_review_test_cases",
     "mnt_eng_fuse",
     "mnt_eng_fuse_clean",
@@ -104,24 +104,6 @@ def mnt_zho_hant() -> Series:
 
 
 @cache
-def get_mnt_eng_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptEng, **kwargs: Any
-) -> list[TestCase]:
-    """Get MNT English review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = output_dir / "eng_ocr/lang/eng/review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
 def get_mnt_eng_ocr_fusion_test_cases(
     prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptEng,
     **kwargs: Any,
@@ -137,6 +119,24 @@ def get_mnt_eng_ocr_fusion_test_cases(
     path = output_dir / "eng_ocr/lang/eng/ocr_fusion.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_mnt_eng_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptEng, **kwargs: Any
+) -> list[TestCase]:
+    """Get MNT English review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "eng_ocr/lang/eng/review.json"
+    return load_test_cases_from_json(
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -160,24 +160,6 @@ def get_mnt_eng_zho_guided_translation_test_cases(
 
 
 @cache
-def get_mnt_zho_hans_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
-) -> list[TestCase]:
-    """Get MNT zho-Hans review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = output_dir / "zho-Hans_ocr/lang/zho/review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
 def get_mnt_zho_hans_ocr_fusion_test_cases(
     prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptZhoHans,
     **kwargs: Any,
@@ -197,10 +179,10 @@ def get_mnt_zho_hans_ocr_fusion_test_cases(
 
 
 @cache
-def get_mnt_zho_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant, **kwargs: Any
+def get_mnt_zho_hans_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
-    """Get MNT zho-Hant review test cases.
+    """Get MNT zho-Hans review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -208,7 +190,7 @@ def get_mnt_zho_hant_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
+    path = output_dir / "zho-Hans_ocr/lang/zho/review.json"
     return load_test_cases_from_json(
         path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -230,6 +212,24 @@ def get_mnt_zho_hant_ocr_fusion_test_cases(
     path = output_dir / "zho-Hant_ocr/lang/zho/ocr_fusion.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_mnt_zho_hant_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant, **kwargs: Any
+) -> list[TestCase]:
+    """Get MNT zho-Hant review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
+    return load_test_cases_from_json(
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

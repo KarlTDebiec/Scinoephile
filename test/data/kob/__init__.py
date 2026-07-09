@@ -55,18 +55,18 @@ __all__ = [
     "kob_eng",
     "kob_yue_hans",
     "kob_yue_hant",
-    "get_kob_eng_review_test_cases",
     "get_kob_eng_ocr_fusion_test_cases",
+    "get_kob_eng_review_test_cases",
     "get_kob_yue_deliniation_test_cases",
+    "get_kob_yue_from_zho_gap_translation_test_cases",
     "get_kob_yue_hans_review_test_cases",
     "get_kob_yue_hant_review_test_cases",
     "get_kob_yue_hant_simplify_review_test_cases",
     "get_kob_yue_punctuation_test_cases",
     "get_kob_yue_vs_zho_guided_review_test_cases",
-    "get_kob_yue_from_zho_gap_translation_test_cases",
     "get_kob_yue_vs_zho_pairwise_review_test_cases",
-    "get_kob_zho_hant_review_test_cases",
     "get_kob_zho_hant_ocr_fusion_test_cases",
+    "get_kob_zho_hant_review_test_cases",
     "get_kob_zho_hant_simplify_review_test_cases",
     "kob_eng_clean",
     "kob_eng_clean_review",
@@ -146,6 +146,25 @@ def kob_yue_hant() -> Series:
 
 
 @cache
+def get_kob_eng_ocr_fusion_test_cases(
+    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptEng,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB English OCR fusion test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "eng_ocr/lang/eng/ocr_fusion.json"
+    return load_test_cases_from_json(
+        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
 def get_kob_eng_review_test_cases(
     prompt_cls: type[ReviewPrompt] = ReviewPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
@@ -170,11 +189,11 @@ def get_kob_eng_review_test_cases(
 
 
 @cache
-def get_kob_eng_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptEng,
+def get_kob_yue_deliniation_test_cases(
+    prompt_cls: type[Dual2To2Prompt] = YueDeliniationVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB English OCR fusion test cases.
+    """Get KOB yue-Hans deliniation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -182,9 +201,43 @@ def get_kob_eng_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "eng_ocr/lang/eng/ocr_fusion.json"
+    path = (
+        output_dir
+        / "yue-Hans_transcribe"
+        / "multilang"
+        / "yue_zho"
+        / "transcription"
+        / "deliniation"
+        / f"{get_torch_device()}.json"
+    )
     return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
+        path, Dual2To2Manager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_yue_from_zho_gap_translation_test_cases(
+    prompt_cls: type[GapTranslationPrompt] = YueZhoGapTranslationPromptYueHans,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB yue-Hans from zho-Hans gap translation test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        output_dir
+        / "yue-Hans_transcribe"
+        / "multilang"
+        / "yue_zho"
+        / "gap_translation"
+        / f"{get_torch_device()}.json"
+    )
+    return load_test_cases_from_json(
+        path, GapTranslationManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -252,59 +305,6 @@ def get_kob_yue_hant_simplify_review_test_cases(
     for test_case in test_cases:
         test_case.verified = True
     return test_cases
-
-
-@cache
-def get_kob_yue_deliniation_test_cases(
-    prompt_cls: type[Dual2To2Prompt] = YueDeliniationVsZhoPromptYueHans,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB yue-Hans deliniation test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hans_transcribe"
-        / "multilang"
-        / "yue_zho"
-        / "transcription"
-        / "deliniation"
-        / f"{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(
-        path, Dual2To2Manager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_kob_yue_from_zho_gap_translation_test_cases(
-    prompt_cls: type[GapTranslationPrompt] = YueZhoGapTranslationPromptYueHans,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB yue-Hans from zho-Hans gap translation test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hans_transcribe"
-        / "multilang"
-        / "yue_zho"
-        / "gap_translation"
-        / f"{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(
-        path, GapTranslationManager, prompt_cls=prompt_cls, **kwargs
-    )
 
 
 @cache
@@ -387,25 +387,6 @@ def get_kob_yue_vs_zho_pairwise_review_test_cases(
 
 
 @cache
-def get_kob_zho_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB zho-Hant review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
@@ -421,6 +402,25 @@ def get_kob_zho_hant_ocr_fusion_test_cases(
     path = output_dir / "zho-Hant_ocr/lang/zho/ocr_fusion.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_zho_hant_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
+    **kwargs: Unpack[_KobTestCaseKwargs],
+) -> list[TestCase]:
+    """Get KOB zho-Hant review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
+    return load_test_cases_from_json(
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

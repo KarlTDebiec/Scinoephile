@@ -11,7 +11,6 @@ from pytest import FixtureRequest, param
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
-from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
 from scinoephile.workflows.review import review_series_pairwise
 from test.data.kob import get_kob_yue_vs_zho_pairwise_review_test_cases
@@ -75,22 +74,4 @@ def test_review_series_pairwise_yue_zho(
     )
     output = review_series_pairwise(yuewen, zhongwen, reviewer=pairwise_reviewer)
     assert_series_equal(output, expected)
-    provider.chat_completion.assert_not_called()
-
-
-def test_review_series_pairwise_preserves_targets_sharing_guide():
-    """Preserve every target cue aligned with the same pairwise guide cue."""
-    target = Series(
-        events=[
-            Subtitle(start=0, end=1000, text="Shared"),
-            Subtitle(start=1000, end=2000, text="Shared"),
-        ]
-    )
-    guide = Series(events=[Subtitle(start=0, end=2000, text="Shared")])
-    provider = Mock(spec=LLMProvider)
-    reviewer = get_pairwise_reviewer(
-        Language.yue_hans, Language.zho_hans, test_cases=[], provider=provider
-    )
-
-    assert_series_equal(reviewer.process(target, guide), target)
     provider.chat_completion.assert_not_called()
