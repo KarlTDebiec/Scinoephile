@@ -12,7 +12,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.block_review import get_block_reviewer
 from scinoephile.llms.block_review import BlockReviewProcessor, BlockReviewPrompt
 
-from .language import resolve_series_language
+from .helpers import resolve_series_language
 
 __all__ = ["review_series_blocks"]
 

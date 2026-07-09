@@ -62,6 +62,7 @@ _YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS = (
         "deliniation/mps.json"
     ),
 )
+"""Default written Cantonese transcription deliniation JSON paths."""
 
 _YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (
     Path(
@@ -73,6 +74,7 @@ _YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (
         "punctuation/mps.json"
     ),
 )
+"""Default written Cantonese transcription punctuation JSON paths."""
 
 YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-transcription-deliniation",

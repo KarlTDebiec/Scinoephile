@@ -30,6 +30,7 @@ _ENG_OCR_FUSION_JSON_PATHS = (
     Path("mnt/output/eng_ocr/lang/eng/ocr_fusion.json"),
     Path("t/output/eng_ocr/lang/eng/ocr_fusion.json"),
 )
+"""Default English OCR fusion JSON paths."""
 
 ENG_OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="eng-ocr-fusion",

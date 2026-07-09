@@ -34,6 +34,7 @@ _YUE_ZHO_BLOCK_REVIEW_JSON_PATHS = (
     Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/cpu.json"),
     Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/mps.json"),
 )
+"""Default written Cantonese vs. standard Chinese block review JSON paths."""
 
 YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-block-review",

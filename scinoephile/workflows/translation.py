@@ -14,7 +14,7 @@ from scinoephile.multilang.translation.gap import get_gap_translator
 from scinoephile.multilang.translation.guided import get_guided_translator
 from scinoephile.multilang.translation.standard import get_translator
 
-from .language import resolve_series_language
+from .helpers import resolve_series_language
 
 __all__ = [
     "translate_series",
