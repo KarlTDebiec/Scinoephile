@@ -221,7 +221,7 @@ class SrtProcessingWorkflow:
         self,
         series: Series,
         *,
-        prompt_cls: type[BlockReviewPromptZhoHans] | None = None,
+        prompt_cls: type[BlockReviewPromptZhoHant] | None = None,
         output_name: str = "clean_review",
         test_case_name: str = "block_review.json",
         log_label: str = "Cleaned reviewed SRT output",

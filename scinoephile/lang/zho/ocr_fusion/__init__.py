@@ -79,7 +79,7 @@ def get_zho_ocr_fused(
 
 
 def get_zho_ocr_fuser(
-    prompt_cls: type[OcrFusionPromptZhoHans] = OcrFusionPromptZhoHans,
+    prompt_cls: type[OcrFusionPromptZhoHant] = OcrFusionPromptZhoHans,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],

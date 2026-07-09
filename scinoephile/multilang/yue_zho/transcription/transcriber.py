@@ -29,8 +29,12 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_provider
 
 from .aligner import Aligner
-from .deliniation import YueDeliniationVsZhoPromptYueHans
-from .punctuation import YuePunctuationVsZhoPromptYueHans
+from .deliniation import (
+    YueDeliniationVsZhoPromptYueHant,
+)
+from .punctuation import (
+    YuePunctuationVsZhoPromptYueHant,
+)
 
 __all__ = [
     "DEFAULT_YUE_WHISPER_MODEL_NAME",
@@ -77,8 +81,8 @@ class YueTranscriber:
         provider: LLMProvider | None = None,
         convert: OpenCCConfig | None = None,
         additional_context: str | None = None,
-        deliniation_prompt_cls: type[YueDeliniationVsZhoPromptYueHans],
-        punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHans],
+        deliniation_prompt_cls: type[YueDeliniationVsZhoPromptYueHant],
+        punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHant],
         test_case_directory_path: Path,
         deliniation_test_cases: list[TestCase],
         punctuation_test_cases: list[TestCase],

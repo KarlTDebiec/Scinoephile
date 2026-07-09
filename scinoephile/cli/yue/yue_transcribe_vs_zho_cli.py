@@ -247,7 +247,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
     def _get_transcription_prompt_classes(
         cls, script: str
     ) -> tuple[
-        type[YueDeliniationVsZhoPromptYueHans], type[YuePunctuationVsZhoPromptYueHans]
+        type[YueDeliniationVsZhoPromptYueHant], type[YuePunctuationVsZhoPromptYueHant]
     ]:
         """Get transcription prompt classes for the selected script.
 
