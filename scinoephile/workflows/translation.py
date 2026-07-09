@@ -4,12 +4,20 @@
 
 from __future__ import annotations
 
+from typing import Unpack
+
 from scinoephile.core import Language
-from scinoephile.core.llms import LLMProvider
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.gap_translation import GapTranslationProcessor
-from scinoephile.llms.guided_translation import GuidedTranslationProcessor
-from scinoephile.llms.translation import TranslationProcessor
+from scinoephile.llms.gap_translation import (
+    GapTranslationProcessor,
+    GapTranslationPrompt,
+)
+from scinoephile.llms.guided_translation import (
+    GuidedTranslationProcessor,
+    GuidedTranslationPrompt,
+)
+from scinoephile.llms.translation import TranslationProcessor, TranslationPrompt
 from scinoephile.multilang.translation.gap import get_gap_translator
 from scinoephile.multilang.translation.guided import get_guided_translator
 from scinoephile.multilang.translation.standard import get_translator
@@ -28,9 +36,12 @@ def translate_series(
     *,
     target_language: Language,
     source_language: Language | None = None,
+    prompt_cls: type[TranslationPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    additional_context: str | None = None,
     translator: TranslationProcessor | None = None,
+    stop_at_idx: int | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
     """Translate a subtitle series between supported languages.
 
@@ -38,9 +49,12 @@ def translate_series(
         source: source-language subtitle series
         source_language: explicit source language, or None to detect it
         target_language: target language
+        prompt_cls: prompt class override
+        test_cases: test cases
         provider: LLM provider to use
-        additional_context: additional context to include in prompts
         translator: translator to use, or None to construct one
+        stop_at_idx: exclusive block index at which to stop processing
+        **kwargs: additional keyword arguments for TranslationProcessor
     Returns:
         translated subtitle series
     Raises:
@@ -52,10 +66,12 @@ def translate_series(
         translator = get_translator(
             resolved_source_language,
             target_language,
-            provider=provider,
-            additional_context=additional_context,
+            prompt_cls,
+            test_cases,
+            provider,
+            **kwargs,
         )
-    return translator.process(source)
+    return translator.process(source, stop_at_idx=stop_at_idx)
 
 
 def translate_series_gaps(
@@ -64,9 +80,12 @@ def translate_series_gaps(
     *,
     source_language: Language | None = None,
     target_language: Language | None = None,
+    prompt_cls: type[GapTranslationPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    additional_context: str | None = None,
     translator: GapTranslationProcessor | None = None,
+    stop_at_idx: int | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
     """Translate a subtitle series using target-language gaps.
 
@@ -75,9 +94,12 @@ def translate_series_gaps(
         target: target-language gapped subtitle series
         source_language: explicit source language, or None to detect it
         target_language: explicit target language, or None to detect it
+        prompt_cls: prompt class override
+        test_cases: test cases
         provider: LLM provider to use
-        additional_context: additional context to include in prompts
         translator: translator to use, or None to construct one
+        stop_at_idx: exclusive block index at which to stop processing
+        **kwargs: additional keyword arguments for GapTranslationProcessor
     Returns:
         translated subtitle series
     Raises:
@@ -90,10 +112,12 @@ def translate_series_gaps(
         translator = get_gap_translator(
             resolved_source_language,
             resolved_target_language,
-            provider=provider,
-            additional_context=additional_context,
+            prompt_cls,
+            test_cases,
+            provider,
+            **kwargs,
         )
-    return translator.process(target, source)
+    return translator.process(target, source, stop_at_idx=stop_at_idx)
 
 
 def translate_series_guided(
@@ -102,9 +126,12 @@ def translate_series_guided(
     *,
     source_language: Language | None = None,
     target_language: Language | None = None,
+    prompt_cls: type[GuidedTranslationPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    additional_context: str | None = None,
     translator: GuidedTranslationProcessor | None = None,
+    stop_at_idx: int | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
     """Translate a subtitle series using target-language guidance.
 
@@ -113,9 +140,12 @@ def translate_series_guided(
         guide: target-language guide subtitle series
         source_language: explicit source language, or None to detect it
         target_language: explicit target language, or None to detect it
+        prompt_cls: prompt class override
+        test_cases: test cases
         provider: LLM provider to use
-        additional_context: additional context to include in prompts
         translator: translator to use, or None to construct one
+        stop_at_idx: exclusive block index at which to stop processing
+        **kwargs: additional keyword arguments for GuidedTranslationProcessor
     Returns:
         translated subtitle series
     Raises:
@@ -128,7 +158,9 @@ def translate_series_guided(
         translator = get_guided_translator(
             resolved_source_language,
             resolved_target_language,
-            provider=provider,
-            additional_context=additional_context,
+            prompt_cls,
+            test_cases,
+            provider,
+            **kwargs,
         )
-    return translator.process(source, guide)
+    return translator.process(source, guide, stop_at_idx=stop_at_idx)
