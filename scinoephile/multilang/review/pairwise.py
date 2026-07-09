@@ -5,12 +5,10 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Unpack, cast
+from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
-from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.pairwise_review import (
     PairwiseReviewManager,
@@ -80,13 +78,22 @@ _PROMPTS: dict[tuple[Language, Language], type[PairwiseReviewPrompt]] = {
 """Pairwise review prompts keyed by reviewed and reference languages."""
 
 _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
-    key: (
-        _YUE_ZHO_JSON_PATHS
-        if key[0] in (Language.yue_hans, Language.yue_hant)
-        and key[1] in (Language.zho_hans, Language.zho_hant)
-        else ()
-    )
-    for key in _PROMPTS
+    (Language.eng, Language.yue_hans): (),
+    (Language.eng, Language.yue_hant): (),
+    (Language.eng, Language.zho_hans): (),
+    (Language.eng, Language.zho_hant): (),
+    (Language.yue_hans, Language.eng): (),
+    (Language.yue_hans, Language.zho_hans): _YUE_ZHO_JSON_PATHS,
+    (Language.yue_hans, Language.zho_hant): _YUE_ZHO_JSON_PATHS,
+    (Language.yue_hant, Language.eng): (),
+    (Language.yue_hant, Language.zho_hans): _YUE_ZHO_JSON_PATHS,
+    (Language.yue_hant, Language.zho_hant): _YUE_ZHO_JSON_PATHS,
+    (Language.zho_hans, Language.eng): (),
+    (Language.zho_hans, Language.yue_hans): (),
+    (Language.zho_hans, Language.yue_hant): (),
+    (Language.zho_hant, Language.eng): (),
+    (Language.zho_hant, Language.yue_hans): (),
+    (Language.zho_hant, Language.yue_hant): (),
 }
 """Pairwise review JSON paths keyed by reviewed and reference languages."""
 
@@ -96,7 +103,6 @@ def get_pairwise_reviewer(
     reference_language: Language,
     prompt_cls: type[PairwiseReviewPrompt] | None = None,
     test_cases: list[TestCase] | None = None,
-    use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> PairwiseReviewProcessor:
@@ -107,7 +113,6 @@ def get_pairwise_reviewer(
         reference_language: language of reference subtitles
         prompt_cls: text for LLM correspondence
         test_cases: test cases
-        use_dictionary_tool: whether to wire the dictionary lookup tool
         provider: provider to use for queries
         **kwargs: additional processor keyword arguments
     Returns:
@@ -131,16 +136,6 @@ def get_pairwise_reviewer(
                 _JSON_PATHS[key],
             )
         )
-    tool_box = kwargs.pop("tool_box", None)
-    if tool_box is None and use_dictionary_tool:
-        dictionary_prompt_cls = cast(type[DictionaryToolPrompt], prompt_cls)
-        tool_box = get_dictionary_tools(dictionary_prompt_cls)
     if provider is None:
         provider = get_provider()
-    kwargs["tool_box"] = tool_box
-    return PairwiseReviewProcessor(
-        prompt_cls,
-        test_cases,
-        provider=provider,
-        **kwargs,
-    )
+    return PairwiseReviewProcessor(prompt_cls, test_cases, provider=provider, **kwargs)

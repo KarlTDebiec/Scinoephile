@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.prompts import PromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
@@ -24,23 +23,8 @@ __all__ = [
 ]
 
 
-class GuidedReviewPromptZhoHant(
-    DictionaryToolPrompt, GuidedReviewPrompt, PromptZhoHant
-):
+class GuidedReviewPromptZhoHant(GuidedReviewPrompt, PromptZhoHant):
     """LLM correspondence text for guided review of traditional Chinese."""
-
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "查詢本地詞典中的粵語與普通話詞條；工具會自動判斷漢字、拼音或粵拼。"
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "要查詢的普通話或粵語詞語，可以是漢字、拼音或粵拼。"
-    )
-    """Description of the dictionary lookup query parameter."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你負責對中文字幕進行最後審核。
@@ -74,23 +58,8 @@ class GuidedReviewPromptZhoHans(GuidedReviewPromptZhoHant):
     """Config for converting traditional Chinese characters from the parent class."""
 
 
-class PairwiseReviewPromptZhoHant(
-    DictionaryToolPrompt, PairwiseReviewPrompt, PromptZhoHant
-):
+class PairwiseReviewPromptZhoHant(PairwiseReviewPrompt, PromptZhoHant):
     """LLM correspondence text for pairwise review of traditional Chinese."""
-
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "查詢本地詞典中的粵語與普通話詞條；工具會自動判斷漢字、拼音或粵拼。"
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "要查詢的普通話或粵語詞語，可以是漢字、拼音或粵拼。"
-    )
-    """Description of the dictionary lookup query parameter."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
         將一條中文字幕與一條對應的參考字幕逐條比較校對；參考字幕可以使用另一種語言。

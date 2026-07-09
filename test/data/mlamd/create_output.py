@@ -21,10 +21,7 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
-from scinoephile.workflows.review import (
-    review_series_guided,
-    review_series_pairwise,
-)
+from scinoephile.workflows.review import review_series_guided, review_series_pairwise
 from scinoephile.workflows.translation import translate_series_gaps
 from test.data.mlamd import (
     get_mlamd_yue_deliniation_test_cases,

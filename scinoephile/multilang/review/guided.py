@@ -5,12 +5,10 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Unpack, cast
+from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
-from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.guided_review import (
     GuidedReviewManager,
@@ -94,7 +92,6 @@ def get_guided_reviewer(
     guide_language: Language,
     prompt_cls: type[GuidedReviewPrompt] | None = None,
     test_cases: list[TestCase] | None = None,
-    use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> GuidedReviewProcessor:
@@ -105,7 +102,6 @@ def get_guided_reviewer(
         guide_language: language of guide subtitles
         prompt_cls: text for LLM correspondence
         test_cases: test cases
-        use_dictionary_tool: whether to wire the dictionary lookup tool
         provider: provider to use for queries
         **kwargs: additional processor keyword arguments
     Returns:
@@ -129,16 +125,6 @@ def get_guided_reviewer(
                 _JSON_PATHS[key],
             )
         )
-    tool_box = kwargs.pop("tool_box", None)
-    if tool_box is None and use_dictionary_tool:
-        dictionary_prompt_cls = cast(type[DictionaryToolPrompt], prompt_cls)
-        tool_box = get_dictionary_tools(dictionary_prompt_cls)
     if provider is None:
         provider = get_provider()
-    kwargs["tool_box"] = tool_box
-    return GuidedReviewProcessor(
-        prompt_cls,
-        test_cases,
-        provider=provider,
-        **kwargs,
-    )
+    return GuidedReviewProcessor(prompt_cls, test_cases, provider=provider, **kwargs)

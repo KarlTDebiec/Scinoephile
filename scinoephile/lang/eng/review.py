@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.guided_review import GuidedReviewPrompt
@@ -20,22 +19,8 @@ __all__ = [
 ]
 
 
-class GuidedReviewPromptEng(DictionaryToolPrompt, GuidedReviewPrompt, PromptEng):
+class GuidedReviewPromptEng(GuidedReviewPrompt, PromptEng):
     """LLM correspondence text for guided review of English subtitles."""
-
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "Look up written Cantonese or standard Chinese terms in local dictionaries."
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "A written Cantonese or standard Chinese term in characters, Jyutping, or "
-        "Pinyin."
-    )
-    """Description of the dictionary lookup query parameter."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
         You are responsible for the final review of English subtitles.
@@ -64,22 +49,8 @@ class GuidedReviewPromptEng(DictionaryToolPrompt, GuidedReviewPrompt, PromptEng)
     """Prefix for output fields in answer."""
 
 
-class PairwiseReviewPromptEng(DictionaryToolPrompt, PairwiseReviewPrompt, PromptEng):
+class PairwiseReviewPromptEng(PairwiseReviewPrompt, PromptEng):
     """LLM correspondence text for pairwise review of English subtitles."""
-
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "Look up written Cantonese or standard Chinese terms in local dictionaries."
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "A written Cantonese or standard Chinese term in characters, Jyutping, or "
-        "Pinyin."
-    )
-    """Description of the dictionary lookup query parameter."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
         Review one English subtitle against one corresponding reference subtitle,

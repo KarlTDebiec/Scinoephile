@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
@@ -24,23 +23,8 @@ __all__ = [
 ]
 
 
-class GuidedReviewPromptYueHant(
-    DictionaryToolPrompt, GuidedReviewPrompt, PromptYueHant
-):
+class GuidedReviewPromptYueHant(GuidedReviewPrompt, PromptYueHant):
     """LLM correspondence text for guided review of traditional Cantonese."""
-
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。"
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。"
-    )
-    """Description of the dictionary lookup query parameter."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你負責為粵文字幕做最後審核。
@@ -74,23 +58,8 @@ class GuidedReviewPromptYueHans(GuidedReviewPromptYueHant):
     """Config for converting traditional Cantonese characters from the parent class."""
 
 
-class PairwiseReviewPromptYueHant(
-    DictionaryToolPrompt, PairwiseReviewPrompt, PromptYueHant
-):
+class PairwiseReviewPromptYueHant(PairwiseReviewPrompt, PromptYueHant):
     """LLM correspondence text for pairwise review of traditional Cantonese."""
-
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。"
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。"
-    )
-    """Description of the dictionary lookup query parameter."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
         將一條粵文字幕同一條對應嘅參考字幕作比較校對；參考字幕可以係另一種語言。

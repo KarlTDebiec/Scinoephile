@@ -19,15 +19,9 @@ from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.eng.review import ReviewPromptEng
-from scinoephile.lang.yue.review import (
-    ReviewPromptYueHans,
-    ReviewPromptYueHant,
-)
+from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
-from scinoephile.lang.zho.review import (
-    ReviewPromptZhoHans,
-    ReviewPromptZhoHant,
-)
+from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.gap_translation import (

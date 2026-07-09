@@ -21,18 +21,12 @@ from scinoephile.lang.yue.ocr_fusion import (
     OcrFusionPromptYueHans,
     OcrFusionPromptYueHant,
 )
-from scinoephile.lang.yue.review import (
-    ReviewPromptYueHans,
-    ReviewPromptYueHant,
-)
+from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.lang.zho.review import (
-    ReviewPromptZhoHans,
-    ReviewPromptZhoHant,
-)
+from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from test.helpers import test_data_root
@@ -115,8 +109,7 @@ output_dir = title_root / "output"
 
 @cache
 def get_tmm_eng_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptEng,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptEng, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM English review test cases.
 
@@ -153,8 +146,7 @@ def get_tmm_eng_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_yue_hans_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM yue-Hans review test cases.
 
@@ -191,8 +183,7 @@ def get_tmm_yue_hans_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_yue_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHant,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM yue-Hant review test cases.
 
@@ -229,8 +220,7 @@ def get_tmm_yue_hant_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_yue_hant_simplify_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM yue-Hant simplification review test cases.
 
@@ -248,8 +238,7 @@ def get_tmm_yue_hant_simplify_review_test_cases(
 
 @cache
 def get_tmm_zho_hans_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM zho-Hans review test cases.
 
@@ -286,8 +275,7 @@ def get_tmm_zho_hans_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_zho_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM zho-Hant review test cases.
 
@@ -324,8 +312,7 @@ def get_tmm_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_tmm_zho_hant_simplify_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get TMM zho-Hant simplification review test cases.
 

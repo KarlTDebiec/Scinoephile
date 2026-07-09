@@ -21,18 +21,12 @@ from scinoephile.lang.yue.ocr_fusion import (
     OcrFusionPromptYueHans,
     OcrFusionPromptYueHant,
 )
-from scinoephile.lang.yue.review import (
-    ReviewPromptYueHans,
-    ReviewPromptYueHant,
-)
+from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.lang.zho.review import (
-    ReviewPromptZhoHans,
-    ReviewPromptZhoHant,
-)
+from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from test.helpers import test_data_root
@@ -119,8 +113,7 @@ output_dir = title_root / "output"
 
 @cache
 def get_acopopb_eng_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptEng,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptEng, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB English review test cases.
 
@@ -157,8 +150,7 @@ def get_acopopb_eng_ocr_fusion_test_cases(
 
 @cache
 def get_acopopb_yue_hans_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hans review test cases.
 
@@ -195,8 +187,7 @@ def get_acopopb_yue_hans_ocr_fusion_test_cases(
 
 @cache
 def get_acopopb_yue_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHant,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hant review test cases.
 
@@ -233,8 +224,7 @@ def get_acopopb_yue_hant_ocr_fusion_test_cases(
 
 @cache
 def get_acopopb_yue_hant_simplify_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hant simplification review test cases.
 
@@ -252,8 +242,7 @@ def get_acopopb_yue_hant_simplify_review_test_cases(
 
 @cache
 def get_acopopb_zho_hans_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB zho-Hans review test cases.
 
@@ -290,8 +279,7 @@ def get_acopopb_zho_hans_ocr_fusion_test_cases(
 
 @cache
 def get_acopopb_zho_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB zho-Hant review test cases.
 
@@ -328,8 +316,7 @@ def get_acopopb_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_acopopb_zho_hant_simplify_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB zho-Hant simplification review test cases.
 

@@ -10,10 +10,7 @@ from pytest import MonkeyPatch
 
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.yue.review import (
-    ReviewPromptYueHans,
-    ReviewPromptYueHant,
-)
+from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.review import ReviewPrompt
 from scinoephile.workflows.srt_processing import (

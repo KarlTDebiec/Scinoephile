@@ -41,9 +41,9 @@ class PairwiseReviewProcessor(Processor):
     ) -> Series:
         """Review target subtitles one at a time against aligned references.
 
-        Target subtitles are grouped by the reference subtitle with which they have
-        the greatest overlap. The first target in each group is reviewed, preserving
-        the tolerant alignment behavior of the original pairwise-review workflow.
+        Each target subtitle is reviewed against the reference subtitle with which it
+        has the greatest overlap. Every target cue is preserved unless the review
+        explicitly removes it.
 
         Arguments:
             target: subtitles to review
@@ -73,15 +73,9 @@ class PairwiseReviewProcessor(Processor):
                 continue
 
             overlap = get_sync_overlap_matrix(target_block, reference_block)
-            target_groups = [list() for _ in reference_block]
             for target_idx in range(len(target_block)):
                 reference_idx = int(np.argmax(overlap[target_idx, :]))
-                target_groups[reference_idx].append(target_idx)
-
-            for reference_idx, target_group in enumerate(target_groups):
-                if not target_group:
-                    continue
-                target_subtitle = target_block.events[target_group[0]]
+                target_subtitle = target_block.events[target_idx]
                 reference_subtitle = reference_block.events[reference_idx]
                 target_text = target_subtitle.text_with_newline.strip()
                 reference_text = reference_subtitle.text_with_newline.strip()

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Generator
+from collections.abc import Generator
 from os import environ
 from pathlib import Path
 from typing import Any, ClassVar, cast
@@ -13,7 +13,6 @@ from unittest.mock import patch
 from pytest import fixture
 
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.core import Language
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
@@ -25,18 +24,10 @@ from scinoephile.core.dictionaries.serialization import (
     dictionary_entry_to_dict,
 )
 from scinoephile.core.dictionaries.sqlite_store import DictionarySqliteStore
-from scinoephile.core.llms import Processor
 from scinoephile.dictionaries.dictionary_tools import (
     get_dictionary_tools,
     lookup_dictionary,
 )
-from scinoephile.multilang.review.guided import get_guided_reviewer
-from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
-from scinoephile.multilang.yue_zho.review import (
-    YueZhoGuidedReviewPromptYueHans,
-    YueZhoPairwiseReviewPromptYueHans,
-)
-from test.helpers import parametrize
 
 
 class StubDictionaryToolPrompt(DictionaryToolPrompt):
@@ -227,28 +218,3 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     assert "No searchable dictionary databases were found." in response["error"]
     assert "cuhk" in response["error"]
     assert "gzzj" in response["error"]
-
-
-@parametrize(
-    ("prompt_cls", "factory"),
-    [
-        (YueZhoGuidedReviewPromptYueHans, get_guided_reviewer),
-        (YueZhoPairwiseReviewPromptYueHans, get_pairwise_reviewer),
-    ],
-)
-def test_processors_use_prompt_dictionary_tooling(
-    prompt_cls: type[DictionaryToolPrompt],
-    factory: Callable[..., Processor],
-):
-    """Wire dictionary tooling from the selected prompt class."""
-    processor = factory(
-        Language.yue_hans,
-        Language.zho_hans,
-        prompt_cls=prompt_cls,
-        test_cases=[],
-    )
-
-    assert [tool["name"] for tool in processor.queryer.tool_box.specs] == [
-        prompt_cls.dictionary_tool_name
-    ]
-    assert processor.queryer.tool_box.handler_names == [prompt_cls.dictionary_tool_name]

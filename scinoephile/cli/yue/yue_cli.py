@@ -63,17 +63,10 @@ class YueCli(ScinoephileCliBase):
         Returns:
             mapping of subcommand names to CLI classes
         """
-        return {
-            YueTranscribeVsZhoCli.name(): YueTranscribeVsZhoCli,
-        }
+        return {YueTranscribeVsZhoCli.name(): YueTranscribeVsZhoCli}
 
     @classmethod
-    def _main(
-        cls,
-        *,
-        yue_subcommand_name: str,
-        **kwargs: Any,
-    ):
+    def _main(cls, *, yue_subcommand_name: str, **kwargs: Any):
         """Execute with provided keyword arguments."""
         cls.subcommands()[yue_subcommand_name]._main(**kwargs)
 

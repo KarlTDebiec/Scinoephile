@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
@@ -21,23 +20,8 @@ __all__ = [
 ]
 
 
-class YueZhoGuidedReviewPromptYueHant(
-    DictionaryToolPrompt, GuidedReviewPrompt, PromptYueHant
-):
+class YueZhoGuidedReviewPromptYueHant(GuidedReviewPrompt, PromptYueHant):
     """Prompt for guided review of traditional written Cantonese using Chinese."""
-
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。"
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。"
-    )
-    """Description of the dictionary lookup query parameter."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你負責為廣東話語音嘅粵文字幕做最後審核。
@@ -99,23 +83,8 @@ class YueZhoGuidedReviewPromptYueHans(YueZhoGuidedReviewPromptYueHant):
     """Config for converting traditional Chinese characters from the parent class."""
 
 
-class YueZhoPairwiseReviewPromptYueHant(
-    DictionaryToolPrompt, PairwiseReviewPrompt, PromptYueHant
-):
+class YueZhoPairwiseReviewPromptYueHant(PairwiseReviewPrompt, PromptYueHant):
     """Prompt for pairwise review of traditional written Cantonese using Chinese."""
-
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。"
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。"
-    )
-    """Description of the dictionary lookup query parameter."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你負責為廣東話語音嘅粵文字幕做校對。

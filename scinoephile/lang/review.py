@@ -10,21 +10,11 @@ from typing import Unpack
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.lang.eng.review import ReviewPromptEng
-from scinoephile.lang.yue.review import (
-    ReviewPromptYueHans,
-    ReviewPromptYueHant,
-)
-from scinoephile.lang.zho.review import (
-    ReviewPromptZhoHans,
-    ReviewPromptZhoHant,
-)
+from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
+from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.llms.review import (
-    ReviewManager,
-    ReviewProcessor,
-    ReviewPrompt,
-)
+from scinoephile.llms.review import ReviewManager, ReviewProcessor, ReviewPrompt
 
 __all__ = [
     "REVIEW_OPERATION_SPEC",

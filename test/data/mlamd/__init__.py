@@ -24,10 +24,7 @@ from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.lang.zho.review import (
-    ReviewPromptZhoHans,
-    ReviewPromptZhoHant,
-)
+from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.gap_translation import (
@@ -147,8 +144,7 @@ def mlamd_zho_hant_ocr_sup_path() -> Path:
 
 @cache
 def get_mlamd_eng_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptEng,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptEng, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD English review test cases.
 
@@ -317,8 +313,7 @@ def get_mlamd_yue_vs_zho_pairwise_review_test_cases(
 
 @cache
 def get_mlamd_zho_hans_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD zho-Hans review test cases.
 
@@ -355,8 +350,7 @@ def get_mlamd_zho_hans_ocr_fusion_test_cases(
 
 @cache
 def get_mlamd_zho_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD zho-Hant review test cases.
 
@@ -393,8 +387,7 @@ def get_mlamd_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_mlamd_zho_hant_simplify_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
-    **kwargs: Any,
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get MLAMD zho-Hant simplification review test cases.
 
