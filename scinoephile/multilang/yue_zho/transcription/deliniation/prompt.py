@@ -8,7 +8,7 @@ from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
-from scinoephile.lang.yue.prompts import PromptYueHans, PromptYueHant
+from scinoephile.lang.yue.prompts import PromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_2_to_2 import Dual2To2Prompt
 
@@ -108,7 +108,7 @@ class YueDeliniationVsZhoPromptYueHant(Dual2To2Prompt, PromptEng, PromptYueHant)
         )
 
 
-class YueDeliniationVsZhoPromptYueHans(YueDeliniationVsZhoPromptYueHant, PromptYueHans):
+class YueDeliniationVsZhoPromptYueHans(YueDeliniationVsZhoPromptYueHant):
     """Text for LLM correspondence for simplified written Cantonese deliniation."""
 
     opencc_config = OpenCCConfig.hk2s

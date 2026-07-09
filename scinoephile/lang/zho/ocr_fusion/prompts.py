@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.zho.prompts import PromptZhoHans, PromptZhoHant
+from scinoephile.lang.zho.prompts import PromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionPrompt
 
@@ -75,7 +75,7 @@ class OcrFusionPromptZhoHant(OcrFusionPrompt, PromptZhoHant):
     """Error when note field is missing from answer."""
 
 
-class OcrFusionPromptZhoHans(OcrFusionPromptZhoHant, PromptZhoHans):
+class OcrFusionPromptZhoHans(OcrFusionPromptZhoHant):
     """Text for LLM correspondence for simplified standard Chinese OCR fusion."""
 
     opencc_config = OpenCCConfig.t2s

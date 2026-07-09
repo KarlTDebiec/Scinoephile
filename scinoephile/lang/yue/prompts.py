@@ -7,13 +7,9 @@ from __future__ import annotations
 from abc import ABC
 from typing import ClassVar
 
-from scinoephile.lang.zho.prompts import PromptZhoHans, PromptZhoHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.lang.zho.prompts import PromptZhoHant
 
-__all__ = [
-    "PromptYueHans",
-    "PromptYueHant",
-]
+__all__ = ["PromptYueHant"]
 
 
 class PromptYueHant(PromptZhoHant, ABC):
@@ -51,10 +47,3 @@ class PromptYueHant(PromptZhoHant, ABC):
 
     test_case_invalid_post: ClassVar[str] = "請你根據錯誤信息對你嘅回覆作相應修改。"
     """Text following test case validation errors."""
-
-
-class PromptYueHans(PromptYueHant, PromptZhoHans, ABC):
-    """LLM correspondence text for simplified written Cantonese."""
-
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Chinese characters from the parent class."""

@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.yue.prompts import PromptYueHans, PromptYueHant
+from scinoephile.lang.yue.prompts import PromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 
@@ -88,7 +88,7 @@ class YuePunctuationVsZhoPromptYueHant(DualNTo1Prompt, PromptYueHant):
         )
 
 
-class YuePunctuationVsZhoPromptYueHans(YuePunctuationVsZhoPromptYueHant, PromptYueHans):
+class YuePunctuationVsZhoPromptYueHans(YuePunctuationVsZhoPromptYueHant):
     """Text for simplified written Cantonese/standard Chinese punctuation."""
 
     opencc_config = OpenCCConfig.hk2s

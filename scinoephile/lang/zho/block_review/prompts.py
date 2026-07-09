@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.zho.prompts import PromptZhoHans, PromptZhoHant
+from scinoephile.lang.zho.prompts import PromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.block_review import BlockReviewPrompt
 
@@ -68,7 +68,7 @@ class BlockReviewPromptZhoHant(BlockReviewPrompt, PromptZhoHant):
     """Error template when output is missing for a note."""
 
 
-class BlockReviewPromptZhoHans(BlockReviewPromptZhoHant, PromptZhoHans):
+class BlockReviewPromptZhoHans(BlockReviewPromptZhoHant):
     """LLM correspondence text for simplified standard Chinese block review."""
 
     opencc_config = OpenCCConfig.t2s

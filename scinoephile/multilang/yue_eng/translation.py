@@ -8,7 +8,7 @@ from typing import ClassVar
 
 from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.yue.prompts import PromptYueHans, PromptYueHant
+from scinoephile.lang.yue.prompts import PromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.gap_translation import GapTranslationPrompt
 from scinoephile.llms.guided_translation import GuidedTranslationPrompt
@@ -72,7 +72,7 @@ class YueEngTranslationPromptYueHant(
     """Description template for generated written Cantonese output fields."""
 
 
-class YueEngTranslationPromptYueHans(YueEngTranslationPromptYueHant, PromptYueHans):
+class YueEngTranslationPromptYueHans(YueEngTranslationPromptYueHant):
     """Text for simplified written Cantonese translation from English."""
 
     opencc_config = OpenCCConfig.hk2s
@@ -151,9 +151,7 @@ class YueEngGapTranslationPromptYueHant(
         return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
-class YueEngGapTranslationPromptYueHans(
-    YueEngGapTranslationPromptYueHant, PromptYueHans
-):
+class YueEngGapTranslationPromptYueHans(YueEngGapTranslationPromptYueHant):
     """Text for simplified written Cantonese gap translation using English."""
 
     opencc_config = OpenCCConfig.hk2s
@@ -216,9 +214,7 @@ class YueEngGuidedTranslationPromptYueHant(
     """Description template for generated written Cantonese output fields."""
 
 
-class YueEngGuidedTranslationPromptYueHans(
-    YueEngGuidedTranslationPromptYueHant, PromptYueHans
-):
+class YueEngGuidedTranslationPromptYueHans(YueEngGuidedTranslationPromptYueHant):
     """Text for simplified guided written Cantonese translation from English."""
 
     opencc_config = OpenCCConfig.hk2s

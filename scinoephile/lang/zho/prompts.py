@@ -12,10 +12,7 @@ from scinoephile.core.llms import Prompt
 
 from .script.conversion import OpenCCConfig, get_zho_text_converted
 
-__all__ = [
-    "PromptZhoHans",
-    "PromptZhoHant",
-]
+__all__ = ["PromptZhoHant"]
 
 
 class PromptZhoHant(Prompt, ABC):
@@ -114,10 +111,3 @@ class PromptZhoHant(Prompt, ABC):
         if isinstance(value, dict):
             return {k: cls._convert_value(val, config) for k, val in value.items()}
         return value
-
-
-class PromptZhoHans(PromptZhoHant, ABC):
-    """LLM correspondence text for simplified standard Chinese."""
-
-    opencc_config = OpenCCConfig.t2s
-    """Config for converting traditional Chinese characters from the parent class."""
