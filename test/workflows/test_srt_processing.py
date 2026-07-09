@@ -10,12 +10,12 @@ from pytest import MonkeyPatch
 
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.yue.block_review import (
-    BlockReviewPromptYueHans,
-    BlockReviewPromptYueHant,
+from scinoephile.lang.yue.review import (
+    ReviewPromptYueHans,
+    ReviewPromptYueHant,
 )
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.block_review import BlockReviewPrompt
+from scinoephile.llms.review import ReviewPrompt
 from scinoephile.workflows.srt_processing import (
     SrtProcessingResult,
     SrtProcessingWorkflow,
@@ -106,7 +106,7 @@ class _PatchedSrtPipeline:
         """
         self.calls: list[str] = []
         self.review_language_calls: list[Language] = []
-        self.review_prompt_calls: list[type[BlockReviewPrompt] | None] = []
+        self.review_prompt_calls: list[type[ReviewPrompt] | None] = []
         self.review_test_case_path_calls: list[Path] = []
         self.review_auto_verify_calls: list[object] = []
         self.reviewed_text_calls: list[list[str]] = []
@@ -127,21 +127,21 @@ class _PatchedSrtPipeline:
             "get_zho_cleaned",
             "get_zho_converted",
             "get_zho_flattened",
-            "block_review_series",
+            "review_series",
         ]:
             monkeypatch.setattr(f"{SRT_PROCESSING_MODULE}.{name}", getattr(self, name))
 
-    def block_review_series(
+    def review_series(
         self,
         series: Series,
         *,
         language: Language,
-        prompt_cls: type[BlockReviewPrompt] | None,
+        prompt_cls: type[ReviewPrompt] | None,
         test_case_path: Path,
         provider: object,
         **kwargs: object,
     ) -> Series:
-        """Fake block review.
+        """Fake review.
 
         Arguments:
             series: subtitle series to review
@@ -282,7 +282,7 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
         _write_series(output_dir_path / f"{output_name}.srt", f"existing {output_name}")
 
     for name in [
-        "block_review_series",
+        "review_series",
         "get_series_timewarped",
         "get_zho_cleaned",
         "get_zho_flattened",
@@ -338,9 +338,9 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
         "romanize",
     ]
     assert pipeline.review_language_calls == [Language.yue_hans]
-    assert pipeline.review_prompt_calls == [BlockReviewPromptYueHans]
+    assert pipeline.review_prompt_calls == [ReviewPromptYueHans]
     assert pipeline.review_test_case_path_calls == [
-        output_dir_path / "lang" / "yue" / "block_review.json"
+        output_dir_path / "lang" / "yue" / "review.json"
     ]
     assert pipeline.review_auto_verify_calls == [True]
     assert pipeline.cleaned_text_calls == [["source"]]
@@ -398,12 +398,12 @@ def test_traditional_yue_srt_workflow_simplifies_reviews_and_romanizes(
         Language.yue_hans,
     ]
     assert pipeline.review_prompt_calls == [
-        BlockReviewPromptYueHant,
-        BlockReviewPromptYueHans,
+        ReviewPromptYueHant,
+        ReviewPromptYueHans,
     ]
     assert pipeline.review_test_case_path_calls == [
-        output_dir_path / "lang" / "yue" / "block_review.json",
-        output_dir_path / "lang" / "yue" / "simplify_block_review.json",
+        output_dir_path / "lang" / "yue" / "review.json",
+        output_dir_path / "lang" / "yue" / "simplify_review.json",
     ]
     assert pipeline.convert_config_calls == [OpenCCConfig.t2s]
     assert pipeline.cleaned_text_calls == [["source"]]
@@ -450,7 +450,7 @@ def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     assert pipeline.review_language_calls == [Language.eng]
     assert pipeline.review_prompt_calls == [None]
     assert pipeline.review_test_case_path_calls == [
-        output_dir_path / "lang" / "eng" / "block_review.json"
+        output_dir_path / "lang" / "eng" / "review.json"
     ]
     assert pipeline.review_auto_verify_calls == [True]
     assert pipeline.timewarp_text_calls == [["eng flattened"]]

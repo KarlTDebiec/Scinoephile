@@ -18,30 +18,32 @@ from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
-from scinoephile.lang.zho.block_review import (
-    BlockReviewPromptZhoHans,
-    BlockReviewPromptZhoHant,
-)
+from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.block_review import BlockReviewManager, BlockReviewPrompt
-from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
+from scinoephile.lang.zho.review import (
+    ReviewPromptZhoHans,
+    ReviewPromptZhoHant,
+)
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
-from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNPrompt
 from scinoephile.llms.gap_translation import (
     GapTranslationManager,
     GapTranslationPrompt,
 )
+from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
-from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
-from scinoephile.multilang.yue_zho.line_review import (
-    YueLineReviewVsZhoPromptYueHans,
-    YueZhoLineReviewManager,
+from scinoephile.llms.pairwise_review import (
+    PairwiseReviewManager,
+    PairwiseReviewPrompt,
+)
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
+from scinoephile.multilang.yue_zho.review import (
+    YueZhoGuidedReviewPromptYueHans,
+    YueZhoPairwiseReviewPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueDeliniationVsZhoPromptYueHans,
@@ -59,18 +61,18 @@ __all__ = [
     "mlamd_eng_ocr_sup_path",
     "mlamd_zho_hans_ocr_sup_path",
     "mlamd_zho_hant_ocr_sup_path",
-    "get_mlamd_eng_block_review_test_cases",
+    "get_mlamd_eng_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_deliniation_test_cases",
     "get_mlamd_yue_from_zho_gap_translation_test_cases",
     "get_mlamd_yue_punctuation_test_cases",
-    "get_mlamd_yue_vs_zho_block_review_test_cases",
-    "get_mlamd_yue_vs_zho_line_review_test_cases",
-    "get_mlamd_zho_hans_block_review_test_cases",
+    "get_mlamd_yue_vs_zho_guided_review_test_cases",
+    "get_mlamd_yue_vs_zho_pairwise_review_test_cases",
+    "get_mlamd_zho_hans_review_test_cases",
     "get_mlamd_zho_hans_ocr_fusion_test_cases",
-    "get_mlamd_zho_hant_block_review_test_cases",
+    "get_mlamd_zho_hant_review_test_cases",
     "get_mlamd_zho_hant_ocr_fusion_test_cases",
-    "get_mlamd_zho_hant_simplify_block_review_test_cases",
+    "get_mlamd_zho_hant_simplify_review_test_cases",
     "mlamd_eng_fuse",
     "mlamd_eng_fuse_clean",
     "mlamd_eng_fuse_clean_validate",
@@ -88,7 +90,7 @@ __all__ = [
     "mlamd_yue_hans_transcribe",
     "mlamd_yue_hans_transcribe_review",
     "mlamd_yue_hans_transcribe_review_translate",
-    "mlamd_yue_hans_transcribe_review_translate_block_review",
+    "mlamd_yue_hans_transcribe_review_translate_guided_review",
     "mlamd_zho_hans_eng",
     "mlamd_zho_hans_fuse",
     "mlamd_zho_hans_fuse_clean",
@@ -144,11 +146,11 @@ def mlamd_zho_hant_ocr_sup_path() -> Path:
 
 
 @cache
-def get_mlamd_eng_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptEng,
+def get_mlamd_eng_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD English block review test cases.
+    """Get MLAMD English review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -156,9 +158,9 @@ def get_mlamd_eng_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "eng_ocr/lang/eng/block_review.json"
+    path = output_dir / "eng_ocr/lang/eng/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -262,11 +264,11 @@ def get_mlamd_yue_punctuation_test_cases(
 
 
 @cache
-def get_mlamd_yue_vs_zho_block_review_test_cases(
-    prompt_cls: type[DualNToNPrompt] = YueBlockReviewVsZhoPromptYueHans,
+def get_mlamd_yue_vs_zho_guided_review_test_cases(
+    prompt_cls: type[GuidedReviewPrompt] = YueZhoGuidedReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD yue-Hans vs zho-Hans review test cases.
+    """Get MLAMD yue-Hans vs zho-Hans guided review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -279,20 +281,20 @@ def get_mlamd_yue_vs_zho_block_review_test_cases(
         / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
-        / "block_review"
+        / "guided_review"
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, DualNToNManager, prompt_cls=prompt_cls, **kwargs
+        path, GuidedReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_mlamd_yue_vs_zho_line_review_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = YueLineReviewVsZhoPromptYueHans,
+def get_mlamd_yue_vs_zho_pairwise_review_test_cases(
+    prompt_cls: type[PairwiseReviewPrompt] = YueZhoPairwiseReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD yue-Hans vs zho-Hans line-review test cases.
+    """Get MLAMD yue-Hans vs zho-Hans pairwise review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -305,20 +307,20 @@ def get_mlamd_yue_vs_zho_line_review_test_cases(
         / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
-        / "line_review"
+        / "pairwise_review"
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, YueZhoLineReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, PairwiseReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_mlamd_zho_hans_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+def get_mlamd_zho_hans_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD zho-Hans block review test cases.
+    """Get MLAMD zho-Hans review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -326,9 +328,9 @@ def get_mlamd_zho_hans_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hans_ocr/lang/zho/block_review.json"
+    path = output_dir / "zho-Hans_ocr/lang/zho/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -352,11 +354,11 @@ def get_mlamd_zho_hans_ocr_fusion_test_cases(
 
 
 @cache
-def get_mlamd_zho_hant_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHant,
+def get_mlamd_zho_hant_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD zho-Hant block review test cases.
+    """Get MLAMD zho-Hant review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -364,9 +366,9 @@ def get_mlamd_zho_hant_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
+    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -390,11 +392,11 @@ def get_mlamd_zho_hant_ocr_fusion_test_cases(
 
 
 @cache
-def get_mlamd_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+def get_mlamd_zho_hant_simplify_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD zho-Hant simplification block review test cases.
+    """Get MLAMD zho-Hant simplification review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -402,9 +404,9 @@ def get_mlamd_zho_hant_simplify_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
+    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -500,25 +502,25 @@ def mlamd_yue_hans_transcribe() -> Series:
 
 @fixture
 def mlamd_yue_hans_transcribe_review() -> Series:
-    """MLAMD yue-Hans transcribed and line reviewed subtitles."""
+    """MLAMD yue-Hans transcribed and pairwise reviewed subtitles."""
     return Series.load(output_dir / "yue-Hans_transcribe/transcribe_review.srt")
 
 
 @fixture
 def mlamd_yue_hans_transcribe_review_translate() -> Series:
-    """MLAMD yue-Hans transcribed, line reviewed, and translated subtitles."""
+    """MLAMD yue-Hans transcribed, pairwise reviewed, and translated subtitles."""
     return Series.load(
         output_dir / "yue-Hans_transcribe/transcribe_review_translate.srt"
     )
 
 
 @fixture
-def mlamd_yue_hans_transcribe_review_translate_block_review() -> Series:
-    """MLAMD yue-Hans transcribed, line reviewed, translated, and block reviewed subtitles."""
+def mlamd_yue_hans_transcribe_review_translate_guided_review() -> Series:
+    """MLAMD yue-Hans transcribed, pairwise reviewed, translated, and guided reviewed subtitles."""
     return Series.load(
         output_dir
         / "yue-Hans_transcribe"
-        / "transcribe_review_translate_block_review.srt"
+        / "transcribe_review_translate_guided_review.srt"
     )
 
 

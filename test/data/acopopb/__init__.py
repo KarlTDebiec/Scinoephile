@@ -15,41 +15,41 @@ from pytest import fixture
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
-from scinoephile.lang.yue.block_review import (
-    BlockReviewPromptYueHans,
-    BlockReviewPromptYueHant,
-)
+from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.yue.ocr_fusion import (
     OcrFusionPromptYueHans,
     OcrFusionPromptYueHant,
 )
-from scinoephile.lang.zho.block_review import (
-    BlockReviewPromptZhoHans,
-    BlockReviewPromptZhoHant,
+from scinoephile.lang.yue.review import (
+    ReviewPromptYueHans,
+    ReviewPromptYueHant,
 )
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.block_review import BlockReviewManager, BlockReviewPrompt
+from scinoephile.lang.zho.review import (
+    ReviewPromptZhoHans,
+    ReviewPromptZhoHant,
+)
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from test.helpers import test_data_root
 
 __all__ = [
-    "get_acopopb_eng_block_review_test_cases",
+    "get_acopopb_eng_review_test_cases",
     "get_acopopb_eng_ocr_fusion_test_cases",
-    "get_acopopb_yue_hans_block_review_test_cases",
+    "get_acopopb_yue_hans_review_test_cases",
     "get_acopopb_yue_hans_ocr_fusion_test_cases",
-    "get_acopopb_yue_hant_block_review_test_cases",
+    "get_acopopb_yue_hant_review_test_cases",
     "get_acopopb_yue_hant_ocr_fusion_test_cases",
-    "get_acopopb_yue_hant_simplify_block_review_test_cases",
-    "get_acopopb_zho_hans_block_review_test_cases",
+    "get_acopopb_yue_hant_simplify_review_test_cases",
+    "get_acopopb_zho_hans_review_test_cases",
     "get_acopopb_zho_hans_ocr_fusion_test_cases",
-    "get_acopopb_zho_hant_block_review_test_cases",
+    "get_acopopb_zho_hant_review_test_cases",
     "get_acopopb_zho_hant_ocr_fusion_test_cases",
-    "get_acopopb_zho_hant_simplify_block_review_test_cases",
+    "get_acopopb_zho_hant_simplify_review_test_cases",
     "acopopb_eng",
     "acopopb_eng_ocr_fuse",
     "acopopb_eng_ocr_fuse_clean",
@@ -118,11 +118,11 @@ output_dir = title_root / "output"
 
 
 @cache
-def get_acopopb_eng_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptEng,
+def get_acopopb_eng_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get ACOPOPB English block review test cases.
+    """Get ACOPOPB English review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -130,9 +130,9 @@ def get_acopopb_eng_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "eng_ocr/lang/eng/block_review.json"
+    path = output_dir / "eng_ocr/lang/eng/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -156,11 +156,11 @@ def get_acopopb_eng_ocr_fusion_test_cases(
 
 
 @cache
-def get_acopopb_yue_hans_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHans,
+def get_acopopb_yue_hans_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get ACOPOPB yue-Hans block review test cases.
+    """Get ACOPOPB yue-Hans review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -168,9 +168,9 @@ def get_acopopb_yue_hans_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "yue-Hans_ocr/lang/yue/block_review.json"
+    path = output_dir / "yue-Hans_ocr/lang/yue/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -194,11 +194,11 @@ def get_acopopb_yue_hans_ocr_fusion_test_cases(
 
 
 @cache
-def get_acopopb_yue_hant_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHant,
+def get_acopopb_yue_hant_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHant,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get ACOPOPB yue-Hant block review test cases.
+    """Get ACOPOPB yue-Hant review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -206,9 +206,9 @@ def get_acopopb_yue_hant_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "yue-Hant_ocr/lang/yue/block_review.json"
+    path = output_dir / "yue-Hant_ocr/lang/yue/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -232,11 +232,11 @@ def get_acopopb_yue_hant_ocr_fusion_test_cases(
 
 
 @cache
-def get_acopopb_yue_hant_simplify_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHans,
+def get_acopopb_yue_hant_simplify_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get ACOPOPB yue-Hant simplification block review test cases.
+    """Get ACOPOPB yue-Hant simplification review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -244,18 +244,18 @@ def get_acopopb_yue_hant_simplify_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "yue-Hant_ocr/lang/yue/simplify_block_review.json"
+    path = output_dir / "yue-Hant_ocr/lang/yue/simplify_review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_acopopb_zho_hans_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+def get_acopopb_zho_hans_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get ACOPOPB zho-Hans block review test cases.
+    """Get ACOPOPB zho-Hans review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -263,9 +263,9 @@ def get_acopopb_zho_hans_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hans_ocr/lang/zho/block_review.json"
+    path = output_dir / "zho-Hans_ocr/lang/zho/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -289,11 +289,11 @@ def get_acopopb_zho_hans_ocr_fusion_test_cases(
 
 
 @cache
-def get_acopopb_zho_hant_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHant,
+def get_acopopb_zho_hant_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get ACOPOPB zho-Hant block review test cases.
+    """Get ACOPOPB zho-Hant review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -301,9 +301,9 @@ def get_acopopb_zho_hant_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
+    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -327,11 +327,11 @@ def get_acopopb_zho_hant_ocr_fusion_test_cases(
 
 
 @cache
-def get_acopopb_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+def get_acopopb_zho_hant_simplify_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get ACOPOPB zho-Hant simplification block review test cases.
+    """Get ACOPOPB zho-Hant simplification review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -339,9 +339,9 @@ def get_acopopb_zho_hant_simplify_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
+    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

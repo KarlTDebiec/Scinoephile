@@ -15,22 +15,22 @@ from pytest import fixture
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
-from scinoephile.lang.zho.block_review import (
-    BlockReviewPromptZhoHans,
-    BlockReviewPromptZhoHant,
-)
+from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.block_review import BlockReviewManager, BlockReviewPrompt
+from scinoephile.lang.zho.review import (
+    ReviewPromptZhoHans,
+    ReviewPromptZhoHant,
+)
 from scinoephile.llms.guided_translation import (
     GuidedTranslationManager,
     GuidedTranslationPrompt,
 )
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from test.data.prompts import EngZhoYueGuidedTranslationPrompt
 from test.helpers import test_data_root
 
@@ -38,14 +38,14 @@ __all__ = [
     "mnt_jpn_eng",
     "mnt_yue_zho_hant",
     "mnt_zho_hant",
-    "get_mnt_eng_block_review_test_cases",
+    "get_mnt_eng_review_test_cases",
     "get_mnt_eng_ocr_fusion_test_cases",
     "get_mnt_eng_zho_guided_translation_test_cases",
-    "get_mnt_zho_hans_block_review_test_cases",
+    "get_mnt_zho_hans_review_test_cases",
     "get_mnt_zho_hans_ocr_fusion_test_cases",
-    "get_mnt_zho_hant_block_review_test_cases",
+    "get_mnt_zho_hant_review_test_cases",
     "get_mnt_zho_hant_ocr_fusion_test_cases",
-    "get_mnt_zho_hant_simplify_block_review_test_cases",
+    "get_mnt_zho_hant_simplify_review_test_cases",
     "mnt_eng_fuse",
     "mnt_eng_fuse_clean",
     "mnt_eng_fuse_clean_validate",
@@ -107,11 +107,11 @@ def mnt_zho_hant() -> Series:
 
 
 @cache
-def get_mnt_eng_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptEng,
+def get_mnt_eng_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT English block review test cases.
+    """Get MNT English review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -119,9 +119,9 @@ def get_mnt_eng_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "eng_ocr/lang/eng/block_review.json"
+    path = output_dir / "eng_ocr/lang/eng/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -164,11 +164,11 @@ def get_mnt_eng_zho_guided_translation_test_cases(
 
 
 @cache
-def get_mnt_zho_hans_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+def get_mnt_zho_hans_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT zho-Hans block review test cases.
+    """Get MNT zho-Hans review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -176,9 +176,9 @@ def get_mnt_zho_hans_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hans_ocr/lang/zho/block_review.json"
+    path = output_dir / "zho-Hans_ocr/lang/zho/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -202,11 +202,11 @@ def get_mnt_zho_hans_ocr_fusion_test_cases(
 
 
 @cache
-def get_mnt_zho_hant_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHant,
+def get_mnt_zho_hant_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT zho-Hant block review test cases.
+    """Get MNT zho-Hant review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -214,9 +214,9 @@ def get_mnt_zho_hant_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
+    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -240,11 +240,11 @@ def get_mnt_zho_hant_ocr_fusion_test_cases(
 
 
 @cache
-def get_mnt_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+def get_mnt_zho_hant_simplify_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MNT zho-Hant simplification block review test cases.
+    """Get MNT zho-Hant simplification review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -252,9 +252,9 @@ def get_mnt_zho_hant_simplify_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
+    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

@@ -13,6 +13,7 @@ from unittest.mock import patch
 from pytest import fixture
 
 from scinoephile.common.file import get_temp_directory_path
+from scinoephile.core import Language
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
@@ -29,13 +30,11 @@ from scinoephile.dictionaries.dictionary_tools import (
     get_dictionary_tools,
     lookup_dictionary,
 )
-from scinoephile.multilang.yue_zho.block_review import (
-    YueBlockReviewVsZhoPromptYueHans,
-    get_yue_vs_zho_block_reviewer,
-)
-from scinoephile.multilang.yue_zho.line_review import (
-    YueLineReviewVsZhoPromptYueHans,
-    get_yue_vs_zho_line_reviewer,
+from scinoephile.multilang.review.guided import get_guided_reviewer
+from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
+from scinoephile.multilang.yue_zho.review import (
+    YueZhoGuidedReviewPromptYueHans,
+    YueZhoPairwiseReviewPromptYueHans,
 )
 from test.helpers import parametrize
 
@@ -233,8 +232,8 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
 @parametrize(
     ("prompt_cls", "factory"),
     [
-        (YueBlockReviewVsZhoPromptYueHans, get_yue_vs_zho_block_reviewer),
-        (YueLineReviewVsZhoPromptYueHans, get_yue_vs_zho_line_reviewer),
+        (YueZhoGuidedReviewPromptYueHans, get_guided_reviewer),
+        (YueZhoPairwiseReviewPromptYueHans, get_pairwise_reviewer),
     ],
 )
 def test_processors_use_prompt_dictionary_tooling(
@@ -242,7 +241,12 @@ def test_processors_use_prompt_dictionary_tooling(
     factory: Callable[..., Processor],
 ):
     """Wire dictionary tooling from the selected prompt class."""
-    processor = factory(prompt_cls=prompt_cls, test_cases=[])
+    processor = factory(
+        Language.yue_hans,
+        Language.zho_hans,
+        prompt_cls=prompt_cls,
+        test_cases=[],
+    )
 
     assert [tool["name"] for tool in processor.queryer.tool_box.specs] == [
         prompt_cls.dictionary_tool_name

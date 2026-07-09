@@ -28,7 +28,11 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.workflows.block_review import block_review_series
+from scinoephile.workflows.review import (
+    review_series,
+    review_series_guided,
+    review_series_pairwise,
+)
 
 __all__ = ["ProofreadCli"]
 
@@ -36,8 +40,15 @@ PROOFREAD_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "command-line interface for subtitle proofreading": "字幕校对命令行界面",
         'subtitle infile or "-" for stdin': '字幕输入文件，或使用 "-" 表示标准输入',
+        "reference subtitle infile for pairwise review": (
+            "用于逐对校对的参考字幕输入文件"
+        ),
+        "guide subtitle infile for guided review": "用于引导校对的字幕输入文件",
         "subtitle language tag (detected from infile if omitted)": (
             "字幕语言标签（省略时从输入文件检测）"
+        ),
+        "reference or guide language tag (detected from its infile if omitted)": (
+            "参考或引导字幕语言标签（省略时从相应输入文件检测）"
         ),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
@@ -48,8 +59,13 @@ PROOFREAD_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hant": {
         "command-line interface for subtitle proofreading": "字幕校對命令列介面",
         'subtitle infile or "-" for stdin': '字幕輸入檔，或使用 "-" 代表標準輸入',
+        "reference subtitle infile for pairwise review": "用於逐對校對的參考字幕輸入檔",
+        "guide subtitle infile for guided review": "用於引導校對的字幕輸入檔",
         "subtitle language tag (detected from infile if omitted)": (
             "字幕語言標籤（省略時從輸入檔偵測）"
+        ),
+        "reference or guide language tag (detected from its infile if omitted)": (
+            "參考或引導字幕語言標籤（省略時從相應輸入檔偵測）"
         ),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
         "proofread subtitles using an LLM": "使用大型語言模型校對字幕",
@@ -93,6 +109,23 @@ class ProofreadCli(ScinoephileCliBase):
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile or "-" for stdin',
         )
+        reference_input_group = arg_groups[
+            "input arguments"
+        ].add_mutually_exclusive_group()
+        reference_input_group.add_argument(
+            "--reference-infile",
+            dest="reference_infile_path",
+            default=None,
+            type=input_file_arg(),
+            help="reference subtitle infile for pairwise review",
+        )
+        reference_input_group.add_argument(
+            "--guide-infile",
+            dest="guide_infile_path",
+            default=None,
+            type=input_file_arg(),
+            help="guide subtitle infile for guided review",
+        )
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
@@ -101,6 +134,15 @@ class ProofreadCli(ScinoephileCliBase):
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
             help="subtitle language tag (detected from infile if omitted)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--reference-language",
+            default=None,
+            metavar=enum_metavar(Language),
+            type=enum_arg(Language),
+            help=(
+                "reference or guide language tag (detected from its infile if omitted)"
+            ),
         )
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
@@ -128,7 +170,10 @@ class ProofreadCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_path: Path | str,
+        reference_infile_path: Path | None,
+        guide_infile_path: Path | None,
         language: Language | None,
+        reference_language: Language | None,
         llm_args: LlmArguments,
         outfile_path: Path | None,
         overwrite: bool,
@@ -138,22 +183,51 @@ class ProofreadCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
+        if (
+            reference_language is not None
+            and reference_infile_path is None
+            and guide_infile_path is None
+        ):
+            parser.error(
+                "--reference-language requires --reference-infile or --guide-infile"
+            )
 
         # Read input
         series = read_series(parser, infile_path, allow_stdin=True)
+        provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
+        additional_context = read_llm_additional_context(
+            parser, llm_args.additional_context_file_path
+        )
 
         # Perform operation
         try:
-            output = block_review_series(
-                series,
-                language=language,
-                provider=get_provider(
-                    llm_args.provider_name, model=llm_args.model_name
-                ),
-                additional_context=read_llm_additional_context(
-                    parser, llm_args.additional_context_file_path
-                ),
-            )
+            if reference_infile_path is not None:
+                reference = read_series(parser, reference_infile_path)
+                output = review_series_pairwise(
+                    series,
+                    reference,
+                    language=language,
+                    reference_language=reference_language,
+                    provider=provider,
+                    additional_context=additional_context,
+                )
+            elif guide_infile_path is not None:
+                guide = read_series(parser, guide_infile_path)
+                output = review_series_guided(
+                    series,
+                    guide,
+                    language=language,
+                    guide_language=reference_language,
+                    provider=provider,
+                    additional_context=additional_context,
+                )
+            else:
+                output = review_series(
+                    series,
+                    language=language,
+                    provider=provider,
+                    additional_context=additional_context,
+                )
         except ScinoephileError as exc:
             parser.error(str(exc))
 

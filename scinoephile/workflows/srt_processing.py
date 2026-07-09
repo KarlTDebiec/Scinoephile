@@ -15,16 +15,16 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
-from scinoephile.lang.yue.block_review import (
-    BlockReviewPromptYueHans,
-    BlockReviewPromptYueHant,
+from scinoephile.lang.yue.review import (
+    ReviewPromptYueHans,
+    ReviewPromptYueHant,
 )
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.llms.block_review import BlockReviewPrompt
-from scinoephile.workflows.block_review import block_review_series
+from scinoephile.llms.review import ReviewPrompt
+from scinoephile.workflows.review import review_series
 
 __all__ = [
     "SrtProcessingResult",
@@ -77,9 +77,9 @@ class SrtProcessingWorkflow:
             two_start_idx: 1-based start index in the source series
             two_end_idx: 1-based end index in the source series
             overwrite: whether to overwrite existing workflow outputs
-            provider: provider to use for block review queries
+            provider: provider to use for review queries
             additional_context: additional context to include in review prompts
-            reviewer_kw: keyword arguments for block reviewer construction
+            reviewer_kw: keyword arguments for reviewer construction
         """
         self.infile_path = infile_path
         self.reference = reference
@@ -148,9 +148,9 @@ class SrtProcessingWorkflow:
         simplify_review = self._review(
             simplify,
             language=Language.yue_hans,
-            prompt_cls=BlockReviewPromptYueHans,
+            prompt_cls=ReviewPromptYueHans,
             output_name="clean_review_flatten_timewarp_simplify_review",
-            test_case_name="simplify_block_review.json",
+            test_case_name="simplify_review.json",
             log_label=(
                 "Cleaned reviewed flattened timewarped simplified reviewed SRT output"
             ),
@@ -219,16 +219,16 @@ class SrtProcessingWorkflow:
         series: Series,
         *,
         language: Language | None = None,
-        prompt_cls: type[BlockReviewPrompt] | None = None,
+        prompt_cls: type[ReviewPrompt] | None = None,
         output_name: str = "clean_review",
-        test_case_name: str = "block_review.json",
+        test_case_name: str = "review.json",
         log_label: str = "Cleaned reviewed SRT output",
     ) -> Series:
         """Load or create reviewed output.
 
         Arguments:
             series: source subtitle series
-            language: language to use for block review
+            language: language to use for review
             prompt_cls: review prompt class
             output_name: output filename stem and output_paths key
             test_case_name: review test case JSON filename
@@ -250,12 +250,12 @@ class SrtProcessingWorkflow:
             else:
                 if prompt_cls is None:
                     if review_language is Language.yue_hant:
-                        prompt_cls = BlockReviewPromptYueHant
+                        prompt_cls = ReviewPromptYueHant
                     else:
-                        prompt_cls = BlockReviewPromptYueHans
+                        prompt_cls = ReviewPromptYueHans
                 test_case_language_dir_name = "yue"
 
-            review = block_review_series(
+            review = review_series(
                 series,
                 language=review_language,
                 prompt_cls=prompt_cls,

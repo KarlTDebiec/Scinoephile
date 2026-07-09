@@ -12,19 +12,19 @@ from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.eng.flattening import get_eng_flattened
-from scinoephile.lang.yue.block_review import (
-    BlockReviewPromptYueHans,
-    BlockReviewPromptYueHant,
+from scinoephile.lang.yue.review import (
+    ReviewPromptYueHans,
+    ReviewPromptYueHant,
 )
 from scinoephile.lang.yue.romanization import get_yue_romanized
-from scinoephile.lang.zho.block_review import (
-    BlockReviewPromptZhoHans,
-    BlockReviewPromptZhoHant,
-)
 from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.lang.zho.review import (
+    ReviewPromptZhoHans,
+    ReviewPromptZhoHant,
+)
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.workflows.block_review import block_review_series
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
+from scinoephile.workflows.review import review_series
 
 __all__ = [
     "process_ocr",
@@ -53,7 +53,7 @@ def process_ocr(
         language: OCR language
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
-        reviewer_kw: keyword arguments for OCR block reviewer
+        reviewer_kw: keyword arguments for OCR reviewer
         overwrite: whether to overwrite existing outputs
         overwrite_srt: legacy alias for overwriting subtitle outputs
         overwrite_img: legacy alias for overwriting image outputs
@@ -105,11 +105,11 @@ def process_ocr(
         )
         simplify_reviewer_kw = dict(reviewer_kw or {})
         if language is Language.yue_hant:
-            simplify_reviewer_kw["prompt_cls"] = BlockReviewPromptYueHans
+            simplify_reviewer_kw["prompt_cls"] = ReviewPromptYueHans
         else:
-            simplify_reviewer_kw["prompt_cls"] = BlockReviewPromptZhoHans
+            simplify_reviewer_kw["prompt_cls"] = ReviewPromptZhoHans
         simplify_reviewer_kw["test_case_path"] = (
-            output_dir_path / "lang" / language.tag[:3] / "simplify_block_review.json"
+            output_dir_path / "lang" / language.tag[:3] / "simplify_review.json"
         )
         simplify_review = _review(
             review_path,
@@ -231,7 +231,7 @@ def _review(
     overwrite: bool,
     reviewer_kw: Any | None,
 ) -> Series:
-    """Load or create block-reviewed OCR subtitles.
+    """Load or create guided-reviewed OCR subtitles.
 
     Arguments:
         path: reviewed subtitle output path
@@ -250,16 +250,16 @@ def _review(
     reviewer_kw = dict(reviewer_kw or {})
     reviewer_kw.setdefault(
         "test_case_path",
-        path.parent / "lang" / language.tag[:3] / "block_review.json",
+        path.parent / "lang" / language.tag[:3] / "review.json",
     )
     reviewer_kw.setdefault("auto_verify", True)
 
     # Run and save
     if language is Language.yue_hant:
-        reviewer_kw.setdefault("prompt_cls", BlockReviewPromptYueHant)
+        reviewer_kw.setdefault("prompt_cls", ReviewPromptYueHant)
     elif language is Language.zho_hant:
-        reviewer_kw.setdefault("prompt_cls", BlockReviewPromptZhoHant)
-    review = block_review_series(series, language=language, **reviewer_kw)
+        reviewer_kw.setdefault("prompt_cls", ReviewPromptZhoHant)
+    review = review_series(series, language=language, **reviewer_kw)
     review.save(path)
     return review
 

@@ -15,41 +15,41 @@ from pytest import fixture
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
-from scinoephile.lang.yue.block_review import (
-    BlockReviewPromptYueHans,
-    BlockReviewPromptYueHant,
-)
+from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.yue.ocr_fusion import (
     OcrFusionPromptYueHans,
     OcrFusionPromptYueHant,
 )
-from scinoephile.lang.zho.block_review import (
-    BlockReviewPromptZhoHans,
-    BlockReviewPromptZhoHant,
+from scinoephile.lang.yue.review import (
+    ReviewPromptYueHans,
+    ReviewPromptYueHant,
 )
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.block_review import BlockReviewManager, BlockReviewPrompt
+from scinoephile.lang.zho.review import (
+    ReviewPromptZhoHans,
+    ReviewPromptZhoHant,
+)
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from test.helpers import test_data_root
 
 __all__ = [
-    "get_tmm_eng_block_review_test_cases",
+    "get_tmm_eng_review_test_cases",
     "get_tmm_eng_ocr_fusion_test_cases",
-    "get_tmm_yue_hans_block_review_test_cases",
+    "get_tmm_yue_hans_review_test_cases",
     "get_tmm_yue_hans_ocr_fusion_test_cases",
-    "get_tmm_yue_hant_block_review_test_cases",
+    "get_tmm_yue_hant_review_test_cases",
     "get_tmm_yue_hant_ocr_fusion_test_cases",
-    "get_tmm_yue_hant_simplify_block_review_test_cases",
-    "get_tmm_zho_hans_block_review_test_cases",
+    "get_tmm_yue_hant_simplify_review_test_cases",
+    "get_tmm_zho_hans_review_test_cases",
     "get_tmm_zho_hans_ocr_fusion_test_cases",
-    "get_tmm_zho_hant_block_review_test_cases",
+    "get_tmm_zho_hant_review_test_cases",
     "get_tmm_zho_hant_ocr_fusion_test_cases",
-    "get_tmm_zho_hant_simplify_block_review_test_cases",
+    "get_tmm_zho_hant_simplify_review_test_cases",
     "tmm_eng_ocr_fuse",
     "tmm_eng_ocr_fuse_clean",
     "tmm_eng_ocr_fuse_clean_validate",
@@ -114,11 +114,11 @@ output_dir = title_root / "output"
 
 
 @cache
-def get_tmm_eng_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptEng,
+def get_tmm_eng_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get TMM English block review test cases.
+    """Get TMM English review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -126,9 +126,9 @@ def get_tmm_eng_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "eng_ocr/lang/eng/block_review.json"
+    path = output_dir / "eng_ocr/lang/eng/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -152,11 +152,11 @@ def get_tmm_eng_ocr_fusion_test_cases(
 
 
 @cache
-def get_tmm_yue_hans_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHans,
+def get_tmm_yue_hans_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get TMM yue-Hans block review test cases.
+    """Get TMM yue-Hans review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -164,9 +164,9 @@ def get_tmm_yue_hans_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "yue-Hans_ocr/lang/yue/block_review.json"
+    path = output_dir / "yue-Hans_ocr/lang/yue/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -190,11 +190,11 @@ def get_tmm_yue_hans_ocr_fusion_test_cases(
 
 
 @cache
-def get_tmm_yue_hant_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHant,
+def get_tmm_yue_hant_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHant,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get TMM yue-Hant block review test cases.
+    """Get TMM yue-Hant review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -202,9 +202,9 @@ def get_tmm_yue_hant_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "yue-Hant_ocr/lang/yue/block_review.json"
+    path = output_dir / "yue-Hant_ocr/lang/yue/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -228,11 +228,11 @@ def get_tmm_yue_hant_ocr_fusion_test_cases(
 
 
 @cache
-def get_tmm_yue_hant_simplify_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHans,
+def get_tmm_yue_hant_simplify_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get TMM yue-Hant simplification block review test cases.
+    """Get TMM yue-Hant simplification review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -240,18 +240,18 @@ def get_tmm_yue_hant_simplify_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "yue-Hant_ocr/lang/yue/simplify_block_review.json"
+    path = output_dir / "yue-Hant_ocr/lang/yue/simplify_review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_tmm_zho_hans_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+def get_tmm_zho_hans_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get TMM zho-Hans block review test cases.
+    """Get TMM zho-Hans review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -259,9 +259,9 @@ def get_tmm_zho_hans_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hans_ocr/lang/zho/block_review.json"
+    path = output_dir / "zho-Hans_ocr/lang/zho/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -285,11 +285,11 @@ def get_tmm_zho_hans_ocr_fusion_test_cases(
 
 
 @cache
-def get_tmm_zho_hant_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHant,
+def get_tmm_zho_hant_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get TMM zho-Hant block review test cases.
+    """Get TMM zho-Hant review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -297,9 +297,9 @@ def get_tmm_zho_hant_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
+    path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -323,11 +323,11 @@ def get_tmm_zho_hant_ocr_fusion_test_cases(
 
 
 @cache
-def get_tmm_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+def get_tmm_zho_hant_simplify_review_test_cases(
+    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get TMM zho-Hant simplification block review test cases.
+    """Get TMM zho-Hant simplification review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -335,9 +335,9 @@ def get_tmm_zho_hant_simplify_block_review_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
+    path = output_dir / "zho-Hant_ocr/lang/zho/simplify_review.json"
     return load_test_cases_from_json(
-        path, BlockReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

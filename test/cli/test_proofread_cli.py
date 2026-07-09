@@ -78,3 +78,54 @@ def test_proofread_cli_pipe(input_path: str, args: str, expected_path: str):
     expected = Series.load(full_expected_path)
 
     assert_series_equal(output, expected)
+
+
+@parametrize(
+    ("input_option", "workflow_name", "language_kw"),
+    [
+        (
+            "--reference-infile",
+            "review_series_pairwise",
+            "reference_language",
+        ),
+        ("--guide-infile", "review_series_guided", "guide_language"),
+    ],
+)
+def test_proofread_cli_reference_modes(
+    input_option: str,
+    workflow_name: str,
+    language_kw: str,
+):
+    """Dispatch pairwise and guided inputs through their generic workflows.
+
+    Arguments:
+        input_option: CLI option selecting the reference mode
+        workflow_name: workflow function expected to be called
+        language_kw: keyword used for the second series language
+    """
+    target_path = (
+        test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
+    )
+    reference_path = (
+        test_data_root
+        / "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
+    )
+    expected = Series.load(target_path)
+    patch_target = f"scinoephile.cli.proofread_cli.{workflow_name}"
+
+    with get_temp_file_path(".srt") as output_path:
+        with patch(patch_target, return_value=expected) as workflow:
+            run_cli_with_args(
+                ProofreadCli,
+                f"{target_path} {input_option} {reference_path} "
+                f"--language yue-Hans --reference-language zho-Hans "
+                f"--outfile {output_path}",
+            )
+        output = Series.load(output_path)
+
+    target, reference = workflow.call_args.args
+    assert_series_equal(target, Series.load(target_path))
+    assert_series_equal(reference, Series.load(reference_path))
+    assert workflow.call_args.kwargs["language"].tag == "yue-Hans"
+    assert workflow.call_args.kwargs[language_kw].tag == "zho-Hans"
+    assert_series_equal(output, expected)

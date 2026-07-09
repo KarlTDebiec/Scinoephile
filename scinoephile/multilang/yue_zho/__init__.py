@@ -3,5 +3,5 @@
 """Code related to written Cantonese/standard Chinese text.
 
 Package hierarchy (modules may import from any above):
-* block_review / line_review / transcription / translation
+* review / transcription / translation
 """

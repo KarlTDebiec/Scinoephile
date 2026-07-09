@@ -6,5 +6,5 @@ This module may import from: common, core, dictionaries, lang, audio, llms
 
 Hierarchy within module (lower may import from higher)::
 * eng_yue / eng_zho / yue_eng / yue_zho / zho_eng / zho_yue
-* translation
+* review / translation
 """

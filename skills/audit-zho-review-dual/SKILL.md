@@ -7,8 +7,8 @@ description: Use when auditing standard Chinese OCR datasets across zho-Hans rev
 
 Use this workflow when a Zho OCR dataset needs one table that shows:
 
-- what zho-Hans block review changed
-- what zho-Hant block review changed
+- what zho-Hans review changed
+- what zho-Hant review changed
 - what still differs between final zho-Hans and final simplified zho-Hant
 
 This is useful when review decisions should be checked across both scripts at
@@ -37,9 +37,9 @@ The audit uses these OCR files:
 
 Edit these review JSON files when applying review corrections:
 
-- `test/data/<dataset>/output/zho-Hans_ocr/lang/zho/block_review.json`
-- `test/data/<dataset>/output/zho-Hant_ocr/lang/zho/block_review.json`
-- `test/data/<dataset>/output/zho-Hant_ocr/lang/zho/simplify_block_review.json`
+- `test/data/<dataset>/output/zho-Hans_ocr/lang/zho/review.json`
+- `test/data/<dataset>/output/zho-Hant_ocr/lang/zho/review.json`
+- `test/data/<dataset>/output/zho-Hant_ocr/lang/zho/simplify_review.json`
 
 All audited Zho OCR SRT files should share subtitle numbers and timings.
 
