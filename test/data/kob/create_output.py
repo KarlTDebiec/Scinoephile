@@ -12,13 +12,11 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho.block_review import (
-    YueBlockReviewVsZhoPromptYueHans,
-    YueBlockReviewVsZhoPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.line_review import (
-    YueLineReviewVsZhoPromptYueHans,
-    YueLineReviewVsZhoPromptYueHant,
+from scinoephile.multilang.yue_zho.review import (
+    YueZhoGuidedReviewPromptYueHans,
+    YueZhoGuidedReviewPromptYueHant,
+    YueZhoPairwiseReviewPromptYueHans,
+    YueZhoPairwiseReviewPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
@@ -126,9 +124,9 @@ if "yue-Hans_transcribe" in actions:
             "deliniation_prompt_cls": YueDeliniationVsZhoPromptYueHans,
             "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHans,
         },
-        line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHans},
+        pairwise_reviewer_kw={"prompt_cls": YueZhoPairwiseReviewPromptYueHans},
         translator_kw={"prompt_cls": YueZhoGapTranslationPromptYueHans},
-        block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHans},
+        guided_reviewer_kw={"prompt_cls": YueZhoGuidedReviewPromptYueHans},
         overwrite_srt=False,
     )
 
@@ -147,9 +145,9 @@ if "yue-Hans_transcribe" in actions:
             "deliniation_prompt_cls": YueDeliniationVsZhoPromptYueHant,
             "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHant,
         },
-        line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHant},
+        pairwise_reviewer_kw={"prompt_cls": YueZhoPairwiseReviewPromptYueHant},
         translator_kw={"prompt_cls": YueZhoGapTranslationPromptYueHant},
-        block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHant},
+        guided_reviewer_kw={"prompt_cls": YueZhoGuidedReviewPromptYueHant},
         overwrite_srt=False,
     )
 if "yue-Hans_diff" in actions:
@@ -159,7 +157,7 @@ if "yue-Hans_diff" in actions:
     yue_hans_transcribe = Series.load(
         yue_hans_transcribe_path
         / "test_simplified"
-        / "transcribe_review_translate_block_review.srt"
+        / "transcribe_review_translate_guided_review.srt"
     )
     yue_hans_reference = Series.load(
         yue_hans_path / "clean_review_flatten_timewarp.srt"

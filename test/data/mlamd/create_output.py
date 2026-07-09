@@ -13,20 +13,15 @@ from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.multilang.review.guided import get_guided_reviewer
+from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
 from scinoephile.multilang.translation.gap import get_gap_translator
-from scinoephile.multilang.yue_zho.block_review import (
-    get_yue_block_reviewed_vs_zho,
-    get_yue_vs_zho_block_reviewer,
-)
-from scinoephile.multilang.yue_zho.line_review import (
-    get_yue_line_reviewed_vs_zho,
-    get_yue_vs_zho_line_reviewer,
-)
 from scinoephile.multilang.yue_zho.transcription import (
     VADMode,
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
+from scinoephile.workflows.review import review_series_guided, review_series_pairwise
 from scinoephile.workflows.translation import translate_series_gaps
 from test.data.mlamd import (
     get_mlamd_yue_deliniation_test_cases,
@@ -95,22 +90,26 @@ if "yue-Hans_transcribe" in actions:
     outfile_path = output_path / "yue-Hans_transcribe" / "transcribe.srt"
     yue_hans.save(outfile_path)
 
-    # Review (line-by-line)
+    # Pairwise review
     yue_hans = Series.load(outfile_path)
-    line_reviewer = get_yue_vs_zho_line_reviewer(
+    pairwise_reviewer = get_pairwise_reviewer(
+        Language.yue_hans,
+        Language.zho_hans,
         test_case_path=output_path
         / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
-        / "line_review"
+        / "pairwise_review"
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_line_reviewed = get_yue_line_reviewed_vs_zho(
-        yue_hans, zho_hans, line_reviewer=line_reviewer
+    yue_hans_pairwise_reviewed = review_series_pairwise(
+        yue_hans,
+        zho_hans,
+        reviewer=pairwise_reviewer,
     )
     outfile_path = output_path / "yue-Hans_transcribe" / "transcribe_review.srt"
-    yue_hans_line_reviewed.save(outfile_path)
+    yue_hans_pairwise_reviewed.save(outfile_path)
 
     # Translate
     translator = get_gap_translator(
@@ -126,7 +125,7 @@ if "yue-Hans_transcribe" in actions:
     )
     yue_hans_review_translate = translate_series_gaps(
         zho_hans,
-        yue_hans_line_reviewed,
+        yue_hans_pairwise_reviewed,
         source_language=Language.zho_hans,
         target_language=Language.yue_hans,
         translator=translator,
@@ -136,30 +135,34 @@ if "yue-Hans_transcribe" in actions:
     )
     yue_hans_review_translate.save(outfile_path)
 
-    # Review (block-by-block)
-    reviewer = get_yue_vs_zho_block_reviewer(
+    # Guided review
+    reviewer = get_guided_reviewer(
+        Language.yue_hans,
+        Language.zho_hans,
         test_case_path=output_path
         / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
-        / "block_review"
+        / "guided_review"
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_review_translate_block_review = get_yue_block_reviewed_vs_zho(
-        yue_hans_review_translate, zho_hans, reviewer=reviewer
+    yue_hans_review_translate_guided_review = review_series_guided(
+        yue_hans_review_translate,
+        zho_hans,
+        reviewer=reviewer,
     )
     outfile_path = (
         output_path
         / "yue-Hans_transcribe"
-        / "transcribe_review_translate_block_review.srt"
+        / "transcribe_review_translate_guided_review.srt"
     )
-    yue_hans_review_translate_block_review.save(outfile_path)
+    yue_hans_review_translate_guided_review.save(outfile_path)
 if "yue-Hans_eng" in actions:
     yue_hans_path = (
         output_path
         / "yue-Hans_transcribe"
-        / "transcribe_review_translate_block_review.srt"
+        / "transcribe_review_translate_guided_review.srt"
     )
     eng_path = output_path / "eng_ocr" / "fuse_clean_validate_review_flatten.srt"
     process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)

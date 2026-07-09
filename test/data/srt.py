@@ -46,9 +46,9 @@ def process_srt(
         two_start_idx: 1-based start index in the source series
         two_end_idx: 1-based end index in the source series
         overwrite: whether to overwrite existing outputs
-        provider: provider to use for block review queries
+        provider: provider to use for review queries
         additional_context: additional context to include in review prompts
-        reviewer_kw: keyword arguments for block reviewer construction
+        reviewer_kw: keyword arguments for reviewer construction
     Returns:
         processed series
     """

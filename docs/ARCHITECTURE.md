@@ -109,7 +109,8 @@ surface (commands and subcommands) is:
     - `tesseract`: recognize image subtitles with Tesseract OCR
     - `validate`: validate OCR text against subtitle images
   - `process`: process subtitles (clean/convert/flatten/romanize/offset)
-  - `proofread`: proofread subtitles using an LLM
+  - `proofread`: review one subtitle series, review it pairwise against a
+    reference series, or review it in blocks using a guide series
   - `utility`
     - `cache`
       - `clear`: remove cached files
@@ -120,7 +121,6 @@ surface (commands and subcommands) is:
       - `sync-test-cases`: synchronize persisted prompt-optimization test cases
   - `translate`: translate subtitles between supported languages
   - `yue`
-    - `review-vs-zho`: review written Cantonese against standard Chinese
     - `transcribe-vs-zho`: transcribe from media audio using standard Chinese
       as reference
 

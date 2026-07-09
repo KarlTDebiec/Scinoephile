@@ -1,0 +1,141 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Pairwise review helpers."""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Unpack
+
+from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
+from scinoephile.llms import load_default_test_cases
+from scinoephile.llms.pairwise_review import (
+    PairwiseReviewManager,
+    PairwiseReviewProcessor,
+    PairwiseReviewPrompt,
+)
+from scinoephile.llms.providers.registry import get_provider
+from scinoephile.multilang.eng_yue.review import EngYuePairwiseReviewPrompt
+from scinoephile.multilang.eng_zho.review import EngZhoPairwiseReviewPrompt
+from scinoephile.multilang.yue_eng.review import (
+    YueEngPairwiseReviewPromptYueHans,
+    YueEngPairwiseReviewPromptYueHant,
+)
+from scinoephile.multilang.yue_zho.review import (
+    YueZhoPairwiseReviewPromptYueHans,
+    YueZhoPairwiseReviewPromptYueHant,
+)
+from scinoephile.multilang.zho_eng.review import (
+    ZhoEngPairwiseReviewPromptZhoHans,
+    ZhoEngPairwiseReviewPromptZhoHant,
+)
+from scinoephile.multilang.zho_yue.review import (
+    ZhoYuePairwiseReviewPromptZhoHans,
+    ZhoYuePairwiseReviewPromptZhoHant,
+)
+
+__all__ = [
+    "PAIRWISE_REVIEW_OPERATION_SPEC",
+    "get_pairwise_reviewer",
+]
+
+PAIRWISE_REVIEW_OPERATION_SPEC = OperationSpec(
+    operation="pairwise-review",
+    test_case_table_name="test_cases__pairwise_review",
+    manager_cls=PairwiseReviewManager,
+    prompt_cls=PairwiseReviewPrompt,
+)
+"""Operation specification for pairwise review."""
+
+_YUE_ZHO_JSON_PATHS = (
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/cuda.json"
+    ),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/mps.json"),
+)
+"""Default written Cantonese/Chinese pairwise-review JSON paths."""
+
+_PROMPTS: dict[tuple[Language, Language], type[PairwiseReviewPrompt]] = {
+    (Language.eng, Language.yue_hans): EngYuePairwiseReviewPrompt,
+    (Language.eng, Language.yue_hant): EngYuePairwiseReviewPrompt,
+    (Language.eng, Language.zho_hans): EngZhoPairwiseReviewPrompt,
+    (Language.eng, Language.zho_hant): EngZhoPairwiseReviewPrompt,
+    (Language.yue_hans, Language.eng): YueEngPairwiseReviewPromptYueHans,
+    (Language.yue_hans, Language.zho_hans): YueZhoPairwiseReviewPromptYueHans,
+    (Language.yue_hans, Language.zho_hant): YueZhoPairwiseReviewPromptYueHans,
+    (Language.yue_hant, Language.eng): YueEngPairwiseReviewPromptYueHant,
+    (Language.yue_hant, Language.zho_hans): YueZhoPairwiseReviewPromptYueHant,
+    (Language.yue_hant, Language.zho_hant): YueZhoPairwiseReviewPromptYueHant,
+    (Language.zho_hans, Language.eng): ZhoEngPairwiseReviewPromptZhoHans,
+    (Language.zho_hans, Language.yue_hans): ZhoYuePairwiseReviewPromptZhoHans,
+    (Language.zho_hans, Language.yue_hant): ZhoYuePairwiseReviewPromptZhoHans,
+    (Language.zho_hant, Language.eng): ZhoEngPairwiseReviewPromptZhoHant,
+    (Language.zho_hant, Language.yue_hans): ZhoYuePairwiseReviewPromptZhoHant,
+    (Language.zho_hant, Language.yue_hant): ZhoYuePairwiseReviewPromptZhoHant,
+}
+"""Pairwise review prompts keyed by reviewed and reference languages."""
+
+_JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
+    (Language.eng, Language.yue_hans): (),
+    (Language.eng, Language.yue_hant): (),
+    (Language.eng, Language.zho_hans): (),
+    (Language.eng, Language.zho_hant): (),
+    (Language.yue_hans, Language.eng): (),
+    (Language.yue_hans, Language.zho_hans): _YUE_ZHO_JSON_PATHS,
+    (Language.yue_hans, Language.zho_hant): _YUE_ZHO_JSON_PATHS,
+    (Language.yue_hant, Language.eng): (),
+    (Language.yue_hant, Language.zho_hans): _YUE_ZHO_JSON_PATHS,
+    (Language.yue_hant, Language.zho_hant): _YUE_ZHO_JSON_PATHS,
+    (Language.zho_hans, Language.eng): (),
+    (Language.zho_hans, Language.yue_hans): (),
+    (Language.zho_hans, Language.yue_hant): (),
+    (Language.zho_hant, Language.eng): (),
+    (Language.zho_hant, Language.yue_hans): (),
+    (Language.zho_hant, Language.yue_hant): (),
+}
+"""Pairwise review JSON paths keyed by reviewed and reference languages."""
+
+
+def get_pairwise_reviewer(
+    language: Language,
+    reference_language: Language,
+    prompt_cls: type[PairwiseReviewPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
+    provider: LLMProvider | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
+) -> PairwiseReviewProcessor:
+    """Get a pairwise reviewer for a supported language pair.
+
+    Arguments:
+        language: language of subtitles to review
+        reference_language: language of reference subtitles
+        prompt_cls: text for LLM correspondence
+        test_cases: test cases
+        provider: provider to use for queries
+        **kwargs: additional processor keyword arguments
+    Returns:
+        configured pairwise review processor
+    Raises:
+        ScinoephileError: if pairwise review does not support the language pair
+    """
+    key = (language, reference_language)
+    if key not in _PROMPTS:
+        raise ScinoephileError(
+            "Pairwise review does not support language pair "
+            f"{language.tag} <- {reference_language.tag}"
+        )
+    if prompt_cls is None:
+        prompt_cls = _PROMPTS[key]
+    if test_cases is None:
+        test_cases = list(
+            load_default_test_cases(
+                PairwiseReviewManager,
+                prompt_cls,
+                _JSON_PATHS[key],
+            )
+        )
+    if provider is None:
+        provider = get_provider()
+    return PairwiseReviewProcessor(prompt_cls, test_cases, provider=provider, **kwargs)

@@ -7,8 +7,8 @@ description: Use when auditing Cantonese datasets across yue-Hans review, yue-Ha
 
 Use this workflow when a Yue dataset needs one table that shows:
 
-- what yue-Hans block review changed
-- what yue-Hant block review changed
+- what yue-Hans review changed
+- what yue-Hant review changed
 - what still differs between final yue-Hans and final simplified yue-Hant
 
 This is useful when review decisions should be checked across both scripts at
@@ -44,13 +44,13 @@ timewarping:
 Edit these review JSON files (and only these) when applying corrections:
 
 - OCR datasets:
-  - `test/data/<dataset>/output/yue-Hans_ocr/lang/yue/block_review.json`
-  - `test/data/<dataset>/output/yue-Hant_ocr/lang/yue/block_review.json`
-  - `test/data/<dataset>/output/yue-Hant_ocr/lang/yue/simplify_block_review.json`
+  - `test/data/<dataset>/output/yue-Hans_ocr/lang/yue/review.json`
+  - `test/data/<dataset>/output/yue-Hant_ocr/lang/yue/review.json`
+  - `test/data/<dataset>/output/yue-Hant_ocr/lang/yue/simplify_review.json`
 - SRT datasets:
-  - `test/data/<dataset>/output/yue-Hans/lang/yue/block_review.json`
-  - `test/data/<dataset>/output/yue-Hant/lang/yue/block_review.json`
-  - `test/data/<dataset>/output/yue-Hant/lang/yue/simplify_block_review.json`
+  - `test/data/<dataset>/output/yue-Hans/lang/yue/review.json`
+  - `test/data/<dataset>/output/yue-Hant/lang/yue/review.json`
+  - `test/data/<dataset>/output/yue-Hant/lang/yue/simplify_review.json`
 
 For SRT datasets, source/review timings should match within each script, and
 final yue-Hans/final simplified yue-Hant timings should match after timewarp.
@@ -242,7 +242,7 @@ Manual review rule:
     - `Hant innapropriately Mandarinized to 過來.`
 Important review-quality rule:
 
-- Never add or keep Mandarinization changes in any yue review path. In particular, do not replace Cantonese particles and short forms with Mandarin-style equivalents (e.g. `咗 -> 了`) in `simplify_block_review.json` or other review files. If such a change exists, remove that `xiugai_*` entry and keep the Cantonese wording so the Cantonese review and finalization stay dialect-consistent.
+- Never add or keep Mandarinization changes in any yue review path. In particular, do not replace Cantonese particles and short forms with Mandarin-style equivalents (e.g. `咗 -> 了`) in `simplify_review.json` or other review files. If such a change exists, remove that `xiugai_*` entry and keep the Cantonese wording so the Cantonese review and finalization stay dialect-consistent.
 
 Output safety rule:
 

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Generator
+from collections.abc import Generator
 from os import environ
 from pathlib import Path
 from typing import Any, ClassVar, cast
@@ -24,20 +24,10 @@ from scinoephile.core.dictionaries.serialization import (
     dictionary_entry_to_dict,
 )
 from scinoephile.core.dictionaries.sqlite_store import DictionarySqliteStore
-from scinoephile.core.llms import Processor
 from scinoephile.dictionaries.dictionary_tools import (
     get_dictionary_tools,
     lookup_dictionary,
 )
-from scinoephile.multilang.yue_zho.block_review import (
-    YueBlockReviewVsZhoPromptYueHans,
-    get_yue_vs_zho_block_reviewer,
-)
-from scinoephile.multilang.yue_zho.line_review import (
-    YueLineReviewVsZhoPromptYueHans,
-    get_yue_vs_zho_line_reviewer,
-)
-from test.helpers import parametrize
 
 
 class StubDictionaryToolPrompt(DictionaryToolPrompt):
@@ -228,23 +218,3 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     assert "No searchable dictionary databases were found." in response["error"]
     assert "cuhk" in response["error"]
     assert "gzzj" in response["error"]
-
-
-@parametrize(
-    ("prompt_cls", "factory"),
-    [
-        (YueBlockReviewVsZhoPromptYueHans, get_yue_vs_zho_block_reviewer),
-        (YueLineReviewVsZhoPromptYueHans, get_yue_vs_zho_line_reviewer),
-    ],
-)
-def test_processors_use_prompt_dictionary_tooling(
-    prompt_cls: type[DictionaryToolPrompt],
-    factory: Callable[..., Processor],
-):
-    """Wire dictionary tooling from the selected prompt class."""
-    processor = factory(prompt_cls=prompt_cls, test_cases=[])
-
-    assert [tool["name"] for tool in processor.queryer.tool_box.specs] == [
-        prompt_cls.dictionary_tool_name
-    ]
-    assert processor.queryer.tool_box.handler_names == [prompt_cls.dictionary_tool_name]
