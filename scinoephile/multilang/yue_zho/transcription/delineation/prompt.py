@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for simplified written Cantonese deliniation."""
+"""Text for LLM correspondence for simplified written Cantonese delineation."""
 
 from __future__ import annotations
 
@@ -10,16 +10,16 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.lang.yue.prompts import PromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.dual_2_to_2 import Dual2To2Prompt
+from scinoephile.llms.delineation import DelineationPrompt
 
 __all__ = [
-    "YueDeliniationVsZhoPromptYueHans",
-    "YueDeliniationVsZhoPromptYueHant",
+    "YueDelineationVsZhoPromptYueHans",
+    "YueDelineationVsZhoPromptYueHant",
 ]
 
 
-class YueDeliniationVsZhoPromptYueHant(Dual2To2Prompt, PromptEng, PromptYueHant):
-    """Text for LLM correspondence for traditional written Cantonese deliniation."""
+class YueDelineationVsZhoPromptYueHant(DelineationPrompt, PromptEng, PromptYueHant):
+    """Text for LLM correspondence for traditional written Cantonese delineation."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -108,8 +108,8 @@ class YueDeliniationVsZhoPromptYueHant(Dual2To2Prompt, PromptEng, PromptYueHant)
         )
 
 
-class YueDeliniationVsZhoPromptYueHans(YueDeliniationVsZhoPromptYueHant):
-    """Text for LLM correspondence for simplified written Cantonese deliniation."""
+class YueDelineationVsZhoPromptYueHans(YueDelineationVsZhoPromptYueHant):
+    """Text for LLM correspondence for simplified written Cantonese delineation."""
 
     opencc_config = OpenCCConfig.hk2s
     """Config for converting traditional Chinese characters from the parent class."""

@@ -13,7 +13,7 @@ from scinoephile.multilang.translation.gap import GAP_TRANSLATION_OPERATION_SPEC
 from scinoephile.multilang.translation.guided import GUIDED_TRANSLATION_OPERATION_SPEC
 from scinoephile.multilang.translation.standard import TRANSLATION_OPERATION_SPEC
 from scinoephile.multilang.yue_zho.transcription import (
-    YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC,
+    YUE_ZHO_TRANSCRIPTION_DELINEATION_OPERATION_SPEC,
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
 )
 
@@ -31,7 +31,7 @@ OPERATIONS: dict[str, OperationSpec] = {
             PAIRWISE_REVIEW_OPERATION_SPEC,
             REVIEW_OPERATION_SPEC,
             TRANSLATION_OPERATION_SPEC,
-            YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC,
+            YUE_ZHO_TRANSCRIPTION_DELINEATION_OPERATION_SPEC,
             YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
         ),
         key=lambda operation_spec: operation_spec.operation,
