@@ -22,7 +22,6 @@ from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHant,
 )
 from scinoephile.lang.zho.flattening import get_zho_flattened
-from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.workflows.block_review import block_review_series
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
@@ -197,8 +196,6 @@ def _ocr(
         "test_case_path",
         output_dir_path / "lang" / language.tag[:3] / "ocr_fusion.json",
     )
-    if language.script == "traditional":
-        fuser_kw.setdefault("prompt_cls", OcrFusionPromptZhoHant)
     fuser_kw.setdefault("auto_verify", True)
     workflow_kw: dict[str, Any] = {
         "infile_path": infile_path,

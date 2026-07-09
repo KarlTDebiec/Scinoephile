@@ -4,5 +4,5 @@
 
 Package hierarchy (modules may import from any above):
 * conversion / prompts / romanization
-* block_review
+* block_review / ocr_fusion
 """

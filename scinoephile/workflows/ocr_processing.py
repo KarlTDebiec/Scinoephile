@@ -22,19 +22,14 @@ from scinoephile.image.ocr.tesseract import (
 )
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
-from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.ocr_fusion import (
-    OcrFusionPromptZhoHant,
-    get_zho_ocr_fused,
-    get_zho_ocr_fuser,
-)
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
     get_subtitle_cache_path,
 )
 from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
+from .ocr_fusion import fuse_ocr_series
 from .ocr_validation import validate_ocr
 
 __all__ = [
@@ -114,8 +109,6 @@ class OcrProcessingWorkflow:
         else:
             self.fuser_kw = dict(fuser_kw)
         self.fuser_kw.setdefault("additional_context", additional_context)
-        if language.script == "traditional":
-            self.fuser_kw.setdefault("prompt_cls", OcrFusionPromptZhoHant)
         self.host = host
         self.port = port
         self.output_paths: dict[str, Path] = {}
@@ -188,12 +181,13 @@ class OcrProcessingWorkflow:
             logger.info(f"Fuse OCR output exists: {fuse_path}")
             fuse = Series.load(fuse_path)
         else:
-            if self.language is Language.eng:
-                fuser = get_eng_ocr_fuser(provider=self.provider, **self.fuser_kw)
-                fuse = get_eng_ocr_fused(lens, secondary, fuser)
-            else:
-                fuser = get_zho_ocr_fuser(provider=self.provider, **self.fuser_kw)
-                fuse = get_zho_ocr_fused(lens, secondary, fuser)
+            fuse = fuse_ocr_series(
+                lens,
+                secondary,
+                language=self.language,
+                provider=self.provider,
+                **self.fuser_kw,
+            )
             fuse.save(fuse_path, format_="srt")
         self.output_paths["fuse"] = fuse_path
 
