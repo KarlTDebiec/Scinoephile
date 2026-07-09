@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for dual n minus m to n matters."""
+"""Text for LLM correspondence for gap translation matters."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
-__all__ = ["DualNMinusMToNPrompt"]
+__all__ = ["GapTranslationPrompt"]
 
 
-class DualNMinusMToNPrompt(Prompt, ABC):
-    """Text for LLM correspondence for dual n minus m to n matters."""
+class GapTranslationPrompt(Prompt, ABC):
+    """Text for LLM correspondence for gap translation matters."""
 
     # Query fields
     src_1_pfx: ClassVar[str] = "one_"

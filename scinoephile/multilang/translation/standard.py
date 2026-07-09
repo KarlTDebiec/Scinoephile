@@ -10,12 +10,12 @@ from typing import Unpack
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.mono_n import (
-    MonoNManager,
-    MonoNProcessor,
-    MonoNPrompt,
-)
 from scinoephile.llms.providers.registry import get_provider
+from scinoephile.llms.translation import (
+    TranslationManager,
+    TranslationProcessor,
+    TranslationPrompt,
+)
 from scinoephile.multilang.eng_yue.translation import EngYueTranslationPrompt
 from scinoephile.multilang.eng_zho.translation import EngZhoTranslationPrompt
 from scinoephile.multilang.yue_eng.translation import (
@@ -43,8 +43,8 @@ __all__ = [
 TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="translation",
     test_case_table_name="test_cases__translation",
-    manager_cls=MonoNManager,
-    prompt_cls=MonoNPrompt,
+    manager_cls=TranslationManager,
+    prompt_cls=TranslationPrompt,
 )
 """Operation specification for regular translation."""
 
@@ -75,7 +75,7 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
 }
 """Regular translation JSON paths keyed by exact source and target languages."""
 
-_PROMPTS: dict[tuple[Language, Language], type[MonoNPrompt]] = {
+_PROMPTS: dict[tuple[Language, Language], type[TranslationPrompt]] = {
     (Language.yue_hans, Language.eng): EngYueTranslationPrompt,
     (Language.yue_hant, Language.eng): EngYueTranslationPrompt,
     (Language.zho_hans, Language.eng): EngZhoTranslationPrompt,
@@ -99,11 +99,11 @@ _PROMPTS: dict[tuple[Language, Language], type[MonoNPrompt]] = {
 def get_translator(
     source_language: Language,
     target_language: Language,
-    prompt_cls: type[MonoNPrompt] | None = None,
+    prompt_cls: type[TranslationPrompt] | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
-) -> MonoNProcessor:
+) -> TranslationProcessor:
     """Get a regular translation processor for a supported language pair.
 
     Arguments:
@@ -120,8 +120,10 @@ def get_translator(
         prompt_cls = _PROMPTS[source_language, target_language]
     if test_cases is None:
         json_paths = _JSON_PATHS[source_language, target_language]
-        test_cases = list(load_default_test_cases(MonoNManager, prompt_cls, json_paths))
+        test_cases = list(
+            load_default_test_cases(TranslationManager, prompt_cls, json_paths)
+        )
     if provider is None:
         provider = get_provider()
 
-    return MonoNProcessor(prompt_cls, test_cases, provider=provider, **kwargs)
+    return TranslationProcessor(prompt_cls, test_cases, provider=provider, **kwargs)

@@ -10,16 +10,16 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
-from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNProcessor
 from scinoephile.llms.dual_n_to_m import DualNToMProcessor
-from scinoephile.llms.mono_n import MonoNProcessor
-from scinoephile.multilang.translation.gapped import get_gap_translator
+from scinoephile.llms.gap_translation import GapTranslationProcessor
+from scinoephile.llms.translation import TranslationProcessor
+from scinoephile.multilang.translation.gap import get_gap_translator
 from scinoephile.multilang.translation.guided import get_guided_translator
 from scinoephile.multilang.translation.standard import get_translator
 
 __all__ = [
     "translate_series",
-    "translate_series_gapped",
+    "translate_series_gap",
     "translate_series_guided",
 ]
 
@@ -33,7 +33,7 @@ def translate_series(
     source_language: Language | None = None,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
-    translator: MonoNProcessor | None = None,
+    translator: TranslationProcessor | None = None,
 ) -> Series:
     """Translate a subtitle series between supported languages.
 
@@ -61,7 +61,7 @@ def translate_series(
     return translator.process(source)
 
 
-def translate_series_gapped(
+def translate_series_gap(
     source: Series,
     target: Series,
     *,
@@ -69,7 +69,7 @@ def translate_series_gapped(
     target_language: Language | None = None,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
-    translator: DualNMinusMToNProcessor | None = None,
+    translator: GapTranslationProcessor | None = None,
 ) -> Series:
     """Translate a subtitle series using target-language gaps.
 

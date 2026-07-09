@@ -8,18 +8,18 @@ from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
-from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNPrompt
 from scinoephile.llms.dual_n_to_m import DualNToMPrompt
-from scinoephile.llms.mono_n import MonoNPrompt
+from scinoephile.llms.gap_translation import GapTranslationPrompt
+from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
     "EngYueTranslationPrompt",
-    "EngYueGappedTranslationPrompt",
+    "EngYueGapTranslationPrompt",
     "EngYueGuidedTranslationPrompt",
 ]
 
 
-class EngYueTranslationPrompt(MonoNPrompt, PromptEng):
+class EngYueTranslationPrompt(TranslationPrompt, PromptEng):
     """Text for English translation from written Cantonese."""
 
     # Prompt
@@ -57,8 +57,8 @@ class EngYueTranslationPrompt(MonoNPrompt, PromptEng):
     """Description template for generated English output fields in answer."""
 
 
-class EngYueGappedTranslationPrompt(DualNMinusMToNPrompt, PromptEng):
-    """Text for English gapped translation using written Cantonese."""
+class EngYueGapTranslationPrompt(GapTranslationPrompt, PromptEng):
+    """Text for English gap translation using written Cantonese."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""

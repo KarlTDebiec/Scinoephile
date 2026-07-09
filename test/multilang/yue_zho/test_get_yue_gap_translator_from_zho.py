@@ -11,9 +11,9 @@ from pytest import FixtureRequest, param
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
-from scinoephile.multilang.translation.gapped import get_gap_translator
-from test.data.kob import get_kob_yue_from_zho_gapped_translation_test_cases
-from test.data.mlamd import get_mlamd_yue_from_zho_gapped_translation_test_cases
+from scinoephile.multilang.translation.gap import get_gap_translator
+from test.data.kob import get_kob_yue_from_zho_gap_translation_test_cases
+from test.data.mlamd import get_mlamd_yue_from_zho_gap_translation_test_cases
 from test.helpers import assert_series_equal, parametrize
 
 
@@ -30,7 +30,7 @@ from test.helpers import assert_series_equal, parametrize
             "kob_yue_hans_transcribe_review",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             "kob_yue_hans_transcribe_review_translate",
-            get_kob_yue_from_zho_gapped_translation_test_cases,
+            get_kob_yue_from_zho_gap_translation_test_cases,
             "test.data.kob.get_torch_device",
             id="kob",
         ),
@@ -38,7 +38,7 @@ from test.helpers import assert_series_equal, parametrize
             "mlamd_yue_hans_transcribe_review",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
             "mlamd_yue_hans_transcribe_review_translate",
-            get_mlamd_yue_from_zho_gapped_translation_test_cases,
+            get_mlamd_yue_from_zho_gap_translation_test_cases,
             "test.data.mlamd.get_torch_device",
             id="mlamd",
         ),
@@ -52,7 +52,7 @@ def test_gap_translator_zho_to_yue(
     test_case_loader: Callable[[], list[TestCase]],
     device_patch_target: str,
 ):
-    """Test shared gapped translation processor from Chinese to written Cantonese.
+    """Test shared gap translation processor from Chinese to written Cantonese.
 
     Arguments:
         request: pytest request for fixture lookup

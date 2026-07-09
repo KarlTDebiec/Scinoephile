@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes mono n LLM queries."""
+"""Processes translation LLM queries."""
 
 from __future__ import annotations
 
@@ -11,26 +11,26 @@ from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.text import replace_control_characters
 
-from .manager import MonoNManager
-from .prompt import MonoNPrompt
+from .manager import TranslationManager
+from .prompt import TranslationPrompt
 
-__all__ = ["MonoNProcessor"]
+__all__ = ["TranslationProcessor"]
 
 
 logger = getLogger(__name__)
 
 
-class MonoNProcessor(Processor):
-    """Processes mono n LLM queries."""
+class TranslationProcessor(Processor):
+    """Processes translation LLM queries."""
 
-    prompt_cls: type[MonoNPrompt]
+    prompt_cls: type[TranslationPrompt]
     """Text for LLM correspondence."""
 
-    manager_cls = MonoNManager
+    manager_cls = TranslationManager
     """Manager class used to construct test case models."""
 
     def process(self, series: Series, stop_at_idx: int | None = None) -> Series:
-        """Process mono n LLM queries.
+        """Process translation LLM queries.
 
         Arguments:
             series: subtitles
@@ -49,7 +49,9 @@ class MonoNProcessor(Processor):
                 break
 
             # Query LLM
-            test_case_cls = MonoNManager.get_test_case_cls(len(block), self.prompt_cls)
+            test_case_cls = TranslationManager.get_test_case_cls(
+                len(block), self.prompt_cls
+            )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for idx, subtitle in enumerate(block.events):

@@ -10,21 +10,23 @@ from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHans
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNPrompt
 from scinoephile.llms.dual_n_to_m import DualNToMPrompt
-from scinoephile.llms.mono_n import MonoNPrompt
+from scinoephile.llms.gap_translation import GapTranslationPrompt
+from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
     "YueEngTranslationPromptYueHans",
     "YueEngTranslationPromptYueHant",
-    "YueEngGappedTranslationPromptYueHans",
-    "YueEngGappedTranslationPromptYueHant",
+    "YueEngGapTranslationPromptYueHans",
+    "YueEngGapTranslationPromptYueHant",
     "YueEngGuidedTranslationPromptYueHans",
     "YueEngGuidedTranslationPromptYueHant",
 ]
 
 
-class YueEngTranslationPromptYueHans(DictionaryToolPrompt, MonoNPrompt, PromptYueHans):
+class YueEngTranslationPromptYueHans(
+    DictionaryToolPrompt, TranslationPrompt, PromptYueHans
+):
     """Text for simplified written Cantonese translation from English."""
 
     # Dictionary tool
@@ -77,10 +79,10 @@ class YueEngTranslationPromptYueHant(YueEngTranslationPromptYueHans):
     """Config for converting simplified Chinese characters from the parent class."""
 
 
-class YueEngGappedTranslationPromptYueHans(
-    DictionaryToolPrompt, DualNMinusMToNPrompt, PromptYueHans
+class YueEngGapTranslationPromptYueHans(
+    DictionaryToolPrompt, GapTranslationPrompt, PromptYueHans
 ):
-    """Text for simplified written Cantonese gapped translation using English."""
+    """Text for simplified written Cantonese gap translation using English."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
@@ -149,8 +151,8 @@ class YueEngGappedTranslationPromptYueHans(
         return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
-class YueEngGappedTranslationPromptYueHant(YueEngGappedTranslationPromptYueHans):
-    """Text for traditional written Cantonese gapped translation using English."""
+class YueEngGapTranslationPromptYueHant(YueEngGapTranslationPromptYueHans):
+    """Text for traditional written Cantonese gap translation using English."""
 
     opencc_config = OpenCCConfig.s2hk
     """Config for converting simplified Chinese characters from the parent class."""

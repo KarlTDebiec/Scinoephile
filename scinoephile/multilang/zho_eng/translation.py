@@ -9,21 +9,21 @@ from typing import ClassVar
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.prompts import PromptZhoHans
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNPrompt
 from scinoephile.llms.dual_n_to_m import DualNToMPrompt
-from scinoephile.llms.mono_n import MonoNPrompt
+from scinoephile.llms.gap_translation import GapTranslationPrompt
+from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
     "ZhoEngTranslationPromptZhoHans",
     "ZhoEngTranslationPromptZhoHant",
-    "ZhoEngGappedTranslationPromptZhoHans",
-    "ZhoEngGappedTranslationPromptZhoHant",
+    "ZhoEngGapTranslationPromptZhoHans",
+    "ZhoEngGapTranslationPromptZhoHant",
     "ZhoEngGuidedTranslationPromptZhoHans",
     "ZhoEngGuidedTranslationPromptZhoHant",
 ]
 
 
-class ZhoEngTranslationPromptZhoHans(MonoNPrompt, PromptZhoHans):
+class ZhoEngTranslationPromptZhoHans(TranslationPrompt, PromptZhoHans):
     """Text for simplified standard Chinese translation from English."""
 
     # Prompt
@@ -62,8 +62,8 @@ class ZhoEngTranslationPromptZhoHant(ZhoEngTranslationPromptZhoHans):
     """Config for converting simplified Chinese characters from the parent class."""
 
 
-class ZhoEngGappedTranslationPromptZhoHans(DualNMinusMToNPrompt, PromptZhoHans):
-    """Text for simplified standard Chinese gapped translation using English."""
+class ZhoEngGapTranslationPromptZhoHans(GapTranslationPrompt, PromptZhoHans):
+    """Text for simplified standard Chinese gap translation using English."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -118,8 +118,8 @@ class ZhoEngGappedTranslationPromptZhoHans(DualNMinusMToNPrompt, PromptZhoHans):
         return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
-class ZhoEngGappedTranslationPromptZhoHant(ZhoEngGappedTranslationPromptZhoHans):
-    """Text for traditional standard Chinese gapped translation using English."""
+class ZhoEngGapTranslationPromptZhoHant(ZhoEngGapTranslationPromptZhoHans):
+    """Text for traditional standard Chinese gap translation using English."""
 
     opencc_config = OpenCCConfig.s2t
     """Config for converting simplified Chinese characters from the parent class."""

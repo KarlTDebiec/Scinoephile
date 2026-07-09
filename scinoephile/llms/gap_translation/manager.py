@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for dual n minus m to n LLM classes."""
+"""Factories for gap translation LLM classes."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import DualNMinusMToNPrompt
+from .prompt import GapTranslationPrompt
 
-__all__ = ["DualNMinusMToNManager"]
+__all__ = ["GapTranslationManager"]
 
 
-class DualNMinusMToNManager(Manager):
-    """Factories for dual n minus m to n LLM classes."""
+class GapTranslationManager(Manager):
+    """Factories for gap translation LLM classes."""
 
-    prompt_cls: ClassVar[type[DualNMinusMToNPrompt]] = DualNMinusMToNPrompt
+    prompt_cls: ClassVar[type[GapTranslationPrompt]] = GapTranslationPrompt
     """Default prompt class."""
 
     @classmethod
@@ -30,7 +30,7 @@ class DualNMinusMToNManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt_cls: type[DualNMinusMToNPrompt] = DualNMinusMToNPrompt,
+        prompt_cls: type[GapTranslationPrompt] = GapTranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -47,7 +47,7 @@ class DualNMinusMToNManager(Manager):
             )
 
         name = get_model_name(
-            "DualNMinusMToNQuery",
+            "GapTranslationQuery",
             f"{size}_"
             f"{'-'.join(map(str, [gap + 1 for gap in gaps]))}_"
             f"{prompt_cls.__name__}",
@@ -79,7 +79,7 @@ class DualNMinusMToNManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt_cls: type[DualNMinusMToNPrompt] = DualNMinusMToNPrompt,
+        prompt_cls: type[GapTranslationPrompt] = GapTranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -96,7 +96,7 @@ class DualNMinusMToNManager(Manager):
             )
 
         name = get_model_name(
-            "DualNMinusMToNAnswer",
+            "GapTranslationAnswer",
             f"{size}_"
             f"{'-'.join(map(str, [gap + 1 for gap in gaps]))}_"
             f"{prompt_cls.__name__}",
@@ -124,7 +124,7 @@ class DualNMinusMToNManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt_cls: type[DualNMinusMToNPrompt] = DualNMinusMToNPrompt,
+        prompt_cls: type[GapTranslationPrompt] = GapTranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -141,7 +141,7 @@ class DualNMinusMToNManager(Manager):
             )
 
         name = get_model_name(
-            "DualNMinusMToNTestCase",
+            "GapTranslationTestCase",
             f"{size}_"
             f"{'-'.join(map(str, [gap + 1 for gap in gaps]))}_"
             f"{prompt_cls.__name__}",
@@ -183,7 +183,7 @@ class DualNMinusMToNManager(Manager):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[DualNMinusMToNPrompt], prompt_cls)
+        prompt_cls = cast(type[GapTranslationPrompt], prompt_cls)
         size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_2_pfx))
         source_one_idxs = [
             int(key.removeprefix(prompt_cls.src_1_pfx)) - 1

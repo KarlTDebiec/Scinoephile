@@ -21,7 +21,7 @@ from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
 def test_optimization_operations_include_translation_modes():
     """Test optimization registry includes generic translation operations."""
     expected_operations = {
-        "gapped-translation",
+        "gap-translation",
         "guided-translation",
         "translation",
     }

@@ -18,7 +18,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.translation.gapped import get_gap_translator
+from scinoephile.multilang.translation.gap import get_gap_translator
 from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
@@ -31,7 +31,7 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
-from scinoephile.workflows.translation import translate_series_gapped
+from scinoephile.workflows.translation import translate_series_gap
 
 __all__ = ["process_yue_hans_transcription"]
 
@@ -204,7 +204,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         translator = get_gap_translator(
             Language.zho_hans, Language.yue_hans, **translator_kw
         )
-        translate = translate_series_gapped(
+        translate = translate_series_gap(
             zho,
             line_review,
             source_language=Language.zho_hans,

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual n minus m to n matters."""
+"""Processes gap translation matters."""
 
 from __future__ import annotations
 
@@ -14,22 +14,22 @@ from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 
-from .manager import DualNMinusMToNManager
-from .prompt import DualNMinusMToNPrompt
+from .manager import GapTranslationManager
+from .prompt import GapTranslationPrompt
 
-__all__ = ["DualNMinusMToNProcessor"]
+__all__ = ["GapTranslationProcessor"]
 
 
 logger = getLogger(__name__)
 
 
-class DualNMinusMToNProcessor(Processor):
-    """Processes dual n minus m to n matters."""
+class GapTranslationProcessor(Processor):
+    """Processes gap translation matters."""
 
-    prompt_cls: type[DualNMinusMToNPrompt]
+    prompt_cls: type[GapTranslationPrompt]
     """Text for LLM correspondence."""
 
-    manager_cls = DualNMinusMToNManager
+    manager_cls = GapTranslationManager
     """Manager class used to construct test case models."""
 
     def process(
@@ -67,7 +67,7 @@ class DualNMinusMToNProcessor(Processor):
                 continue
 
             # Query LLM
-            test_case_cls = DualNMinusMToNManager.get_test_case_cls(
+            test_case_cls = GapTranslationManager.get_test_case_cls(
                 size, gaps, self.prompt_cls
             )
             query_cls = test_case_cls.query_cls

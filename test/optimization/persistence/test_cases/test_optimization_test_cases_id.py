@@ -4,14 +4,16 @@
 
 from __future__ import annotations
 
-from scinoephile.llms.mono_n.manager import MonoNManager
-from scinoephile.llms.mono_n.prompt import MonoNPrompt
+from scinoephile.llms.translation.manager import TranslationManager
+from scinoephile.llms.translation.prompt import TranslationPrompt
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 
 def test_get_test_case_id_stable_for_same_payload():
     """Computing an ID twice for identical data should match."""
-    test_case_cls = MonoNManager.get_test_case_cls(size=1, prompt_cls=MonoNPrompt)
+    test_case_cls = TranslationManager.get_test_case_cls(
+        size=1, prompt_cls=TranslationPrompt
+    )
     tc1 = test_case_cls.model_validate(
         {
             "query": {"input_1": "a"},
@@ -33,7 +35,9 @@ def test_get_test_case_id_stable_for_same_payload():
 
 def test_get_test_case_id_changes_with_answer():
     """Changing answer content should change computed ID."""
-    test_case_cls = MonoNManager.get_test_case_cls(size=1, prompt_cls=MonoNPrompt)
+    test_case_cls = TranslationManager.get_test_case_cls(
+        size=1, prompt_cls=TranslationPrompt
+    )
     tc1 = test_case_cls.model_validate(
         {
             "query": {"input_1": "a"},

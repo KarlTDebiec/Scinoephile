@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
+from typing import Any
 
 from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.cli.helpers.llms import (
@@ -30,7 +31,7 @@ from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.translation import (
     translate_series,
-    translate_series_gapped,
+    translate_series_gap,
     translate_series_guided,
 )
 
@@ -203,7 +204,7 @@ class TranslateCli(ScinoephileCliBase):
 
         # Read inputs
         source = read_series(parser, infile_path, allow_stdin=True)
-        kwargs = {
+        kwargs: dict[str, Any] = {
             "source_language": source_language,
             "target_language": target_language,
             "provider": get_provider(llm_args.provider_name, model=llm_args.model_name),
@@ -216,7 +217,7 @@ class TranslateCli(ScinoephileCliBase):
         try:
             if gapped_infile_path is not None:
                 target = read_series(parser, gapped_infile_path)
-                output = translate_series_gapped(source, target, **kwargs)
+                output = translate_series_gap(source, target, **kwargs)
             elif guide_infile_path is not None:
                 guide = read_series(parser, guide_infile_path)
                 output = translate_series_guided(source, guide, **kwargs)

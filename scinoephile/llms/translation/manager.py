@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for mono n LLM classes."""
+"""Factories for translation LLM classes."""
 
 from __future__ import annotations
 
@@ -14,15 +14,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import MonoNPrompt
+from .prompt import TranslationPrompt
 
-__all__ = ["MonoNManager"]
+__all__ = ["TranslationManager"]
 
 
-class MonoNManager(Manager):
-    """Factories for mono n LLM classes."""
+class TranslationManager(Manager):
+    """Factories for translation LLM classes."""
 
-    prompt_cls: ClassVar[type[MonoNPrompt]] = MonoNPrompt
+    prompt_cls: ClassVar[type[TranslationPrompt]] = TranslationPrompt
     """Default prompt class."""
 
     @classmethod
@@ -30,7 +30,7 @@ class MonoNManager(Manager):
     def get_query_cls(
         cls,
         size: int,
-        prompt_cls: type[MonoNPrompt] = MonoNPrompt,
+        prompt_cls: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -40,7 +40,7 @@ class MonoNManager(Manager):
         Returns:
             query model class
         """
-        name = get_model_name("MonoNQuery", f"{size}_{prompt_cls.__name__}")
+        name = get_model_name("TranslationQuery", f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
             key = prompt_cls.input(idx + 1)
@@ -62,7 +62,7 @@ class MonoNManager(Manager):
     def get_answer_cls(
         cls,
         size: int,
-        prompt_cls: type[MonoNPrompt] = MonoNPrompt,
+        prompt_cls: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -72,7 +72,7 @@ class MonoNManager(Manager):
         Returns:
             answer model class
         """
-        name = get_model_name("MonoNAnswer", f"{size}_{prompt_cls.__name__}")
+        name = get_model_name("TranslationAnswer", f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
             key = prompt_cls.output(idx + 1)
@@ -94,7 +94,7 @@ class MonoNManager(Manager):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt_cls: type[MonoNPrompt] = MonoNPrompt,
+        prompt_cls: type[TranslationPrompt] = TranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -104,7 +104,7 @@ class MonoNManager(Manager):
         Returns:
             test case model class
         """
-        name = get_model_name("MonoNTestCase", f"{size}_{prompt_cls.__name__}")
+        name = get_model_name("TranslationTestCase", f"{size}_{prompt_cls.__name__}")
         query_cls = cls.get_query_cls(size, prompt_cls)
         answer_cls = cls.get_answer_cls(size, prompt_cls)
         fields = cls.get_test_case_fields(query_cls, answer_cls, prompt_cls)
@@ -141,7 +141,7 @@ class MonoNManager(Manager):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[MonoNPrompt], prompt_cls)
+        prompt_cls = cast(type[TranslationPrompt], prompt_cls)
         pattern = re.compile(rf"^{re.escape(prompt_cls.input_pfx)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)
