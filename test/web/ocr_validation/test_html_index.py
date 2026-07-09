@@ -37,7 +37,9 @@ def test_update_html_entry_text_rewrites_index_compatibly(tmp_path: Path):
     update_html_entry_text(html_dir_path, 0, "new\\Nline")
 
     html_text = (html_dir_path / "index.html").read_text(encoding="utf-8")
-    assert "<a id='subtitle-number-1' href='#subtitle-number-1'>#1</a>:" in html_text
+    assert "<a id='sub-1' href='#sub-1'>#1</a>:" in html_text
+    assert "subtitle-number-1" not in html_text
+    assert "style=" not in html_text
     assert "new<br />line" in html_text
     output = ImageSeries.load(html_dir_path)
     assert output.events[0].text == "new\\Nline"
