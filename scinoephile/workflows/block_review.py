@@ -12,7 +12,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.block_review import get_block_reviewer
 from scinoephile.llms.block_review import BlockReviewProcessor, BlockReviewPrompt
 
-from .helpers import resolve_series_language
+from .helpers import resolve_language
 
 __all__ = ["block_review_series"]
 
@@ -44,7 +44,7 @@ def block_review_series(
     Raises:
         ScinoephileError: if a language cannot be resolved or is unsupported
     """
-    resolved_language = resolve_series_language(series, language)
+    resolved_language = resolve_language(series, language)
 
     if reviewer is None:
         reviewer = get_block_reviewer(
