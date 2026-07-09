@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.core import Language
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.providers.registry import get_provider
@@ -49,11 +49,22 @@ TRANSLATION_OPERATION_SPEC = OperationSpec(
 """Operation specification for regular translation."""
 
 _ENG_YUE_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default written Cantonese-to-English regular translation JSON paths."""
+
 _ENG_ZHO_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default standard Chinese-to-English regular translation JSON paths."""
+
 _YUE_ENG_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default English-to-written Cantonese regular translation JSON paths."""
+
 _YUE_ZHO_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default standard Chinese-to-written Cantonese regular translation JSON paths."""
+
 _ZHO_ENG_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default English-to-standard Chinese regular translation JSON paths."""
+
 _ZHO_YUE_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default written Cantonese-to-standard Chinese regular translation JSON paths."""
 
 _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
     (Language.yue_hans, Language.eng): _ENG_YUE_TRANSLATION_JSON_PATHS,
@@ -104,7 +115,7 @@ def get_translator(
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> TranslationProcessor:
-    """Get a regular translation processor for a supported language pair.
+    """Get a translation processor for a supported language pair.
 
     Arguments:
         source_language: source language
@@ -115,11 +126,20 @@ def get_translator(
         **kwargs: processor initialization keyword arguments
     Returns:
         configured translation processor
+    Raises:
+        ScinoephileError: if translation does not support the language pair
     """
+    key = (source_language, target_language)
+    if key not in _PROMPTS:
+        raise ScinoephileError(
+            "Translation does not support language pair "
+            f"{source_language.tag} -> {target_language.tag}"
+        )
+
     if prompt_cls is None:
-        prompt_cls = _PROMPTS[source_language, target_language]
+        prompt_cls = _PROMPTS[key]
     if test_cases is None:
-        json_paths = _JSON_PATHS[source_language, target_language]
+        json_paths = _JSON_PATHS[key]
         test_cases = list(
             load_default_test_cases(TranslationManager, prompt_cls, json_paths)
         )

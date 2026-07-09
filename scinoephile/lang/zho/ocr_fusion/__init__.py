@@ -33,6 +33,7 @@ _ZHO_HANS_OCR_FUSION_JSON_PATHS = (
     Path("mnt/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
     Path("t/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
 )
+"""Default simplified standard Chinese OCR fusion JSON paths."""
 
 _ZHO_HANT_OCR_FUSION_JSON_PATHS = (
     Path("kob/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
@@ -40,6 +41,7 @@ _ZHO_HANT_OCR_FUSION_JSON_PATHS = (
     Path("mnt/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
     Path("t/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
 )
+"""Default traditional standard Chinese OCR fusion JSON paths."""
 
 ZHO_OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="zho-ocr-fusion",

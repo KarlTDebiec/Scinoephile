@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.core import Language
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import (
     LLMProvider,
     OperationSpec,
@@ -54,11 +54,22 @@ GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
 """Operation specification for guided translation."""
 
 _ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default written Cantonese-to-English guided translation JSON paths."""
+
 _ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default standard Chinese-to-English guided translation JSON paths."""
+
 _YUE_ENG_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default English-to-written Cantonese guided translation JSON paths."""
+
 _YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default standard Chinese-to-written Cantonese guided translation JSON paths."""
+
 _ZHO_ENG_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default English-to-standard Chinese guided translation JSON paths."""
+
 _ZHO_YUE_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+"""Default written Cantonese-to-standard Chinese guided translation JSON paths."""
 
 _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
     (Language.yue_hans, Language.eng): _ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS,
@@ -120,11 +131,20 @@ def get_guided_translator(
         **kwargs: processor initialization keyword arguments
     Returns:
         configured guided translation processor
+    Raises:
+        ScinoephileError: if guided translation does not support the language pair
     """
+    key = (source_language, target_language)
+    if key not in _PROMPTS:
+        raise ScinoephileError(
+            "Guided translation does not support language pair "
+            f"{source_language.tag} -> {target_language.tag}"
+        )
+
     if prompt_cls is None:
-        prompt_cls = _PROMPTS[source_language, target_language]
+        prompt_cls = _PROMPTS[key]
     if test_cases is None:
-        json_paths = _JSON_PATHS[source_language, target_language]
+        json_paths = _JSON_PATHS[key]
         test_cases = list(
             load_default_test_cases(GuidedTranslationManager, prompt_cls, json_paths)
         )

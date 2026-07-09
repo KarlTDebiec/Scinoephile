@@ -5,13 +5,8 @@
 from __future__ import annotations
 
 from scinoephile.core.llms import OperationSpec
-from scinoephile.lang.eng.block_review import (
-    ENG_BLOCK_REVIEW_OPERATION_SPEC,
-)
+from scinoephile.lang.block_review import BLOCK_REVIEW_OPERATION_SPEC
 from scinoephile.lang.eng.ocr_fusion import ENG_OCR_FUSION_OPERATION_SPEC
-from scinoephile.lang.zho.block_review import (
-    ZHO_BLOCK_REVIEW_OPERATION_SPEC,
-)
 from scinoephile.lang.zho.ocr_fusion import ZHO_OCR_FUSION_OPERATION_SPEC
 from scinoephile.multilang.translation.gap import GAP_TRANSLATION_OPERATION_SPEC
 from scinoephile.multilang.translation.guided import GUIDED_TRANSLATION_OPERATION_SPEC
@@ -34,12 +29,11 @@ OPERATIONS: dict[str, OperationSpec] = {
     spec.operation: spec
     for spec in sorted(
         (
-            ENG_BLOCK_REVIEW_OPERATION_SPEC,
+            BLOCK_REVIEW_OPERATION_SPEC,
             ENG_OCR_FUSION_OPERATION_SPEC,
             GAP_TRANSLATION_OPERATION_SPEC,
             GUIDED_TRANSLATION_OPERATION_SPEC,
             TRANSLATION_OPERATION_SPEC,
-            ZHO_BLOCK_REVIEW_OPERATION_SPEC,
             ZHO_OCR_FUSION_OPERATION_SPEC,
             YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC,
             YUE_ZHO_LINE_REVIEW_OPERATION_SPEC,

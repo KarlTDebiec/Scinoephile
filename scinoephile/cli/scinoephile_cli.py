@@ -17,6 +17,7 @@ from .eng import EngCli
 from .media import MediaCli
 from .multi import MultiCli
 from .ocr import OcrCli
+from .proofread_cli import ProofreadCli
 from .translate_cli import TranslateCli
 from .utility import UtilityCli
 from .yue import YueCli
@@ -40,6 +41,7 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "modify standard Chinese subtitles": "修改标准中文字幕",
         "modify written Cantonese subtitles": "修改书面粤语字幕",
         "operate on multiple subtitle series": "处理多个字幕序列",
+        "proofread subtitles using an LLM": "使用大语言模型校对字幕",
         "recognize text from image-based subtitles": "识别图像字幕中的文本",
         "run utility commands": "运行实用工具命令",
         (
@@ -72,6 +74,7 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "modify standard Chinese subtitles": "修改標準中文字幕",
         "modify written Cantonese subtitles": "修改書面粵語字幕",
         "operate on multiple subtitle series": "處理多個字幕序列",
+        "proofread subtitles using an LLM": "使用大型語言模型校對字幕",
         "recognize text from image-based subtitles": "識別影像字幕中的文字",
         "run utility commands": "執行實用工具命令",
         (
@@ -146,6 +149,7 @@ class ScinoephileCli(ScinoephileCliBase):
             MediaCli.name(): MediaCli,
             MultiCli.name(): MultiCli,
             OcrCli.name(): OcrCli,
+            ProofreadCli.name(): ProofreadCli,
             TranslateCli.name(): TranslateCli,
             UtilityCli.name(): UtilityCli,
             YueCli.name(): YueCli,

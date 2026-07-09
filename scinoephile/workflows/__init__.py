@@ -3,6 +3,7 @@
 """Reusable workflows that coordinate operations across package domains.
 
 Package hierarchy (modules may import from any above):
-* ocr_validation / srt_processing / subtitle_extraction / translation
-* ocr_processing
+* helpers / ocr_validation / subtitle_extraction
+* block_review / ocr_processing / translation
+* srt_processing
 """

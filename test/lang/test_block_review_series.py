@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.lang.zho.get_zho_block_reviewed."""
+"""Tests of block review workflow."""
 
 from __future__ import annotations
 
@@ -9,14 +9,22 @@ from unittest.mock import Mock
 
 from pytest import FixtureRequest, param
 
+from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
+from scinoephile.lang.block_review import get_block_reviewer
+from scinoephile.lang.eng.block_review import BlockReviewPromptEng
+from scinoephile.lang.yue.block_review import (
+    BlockReviewPromptYueHans,
+    BlockReviewPromptYueHant,
+)
 from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHans,
     BlockReviewPromptZhoHant,
-    get_zho_block_reviewed,
-    get_zho_reviewer,
 )
+from scinoephile.llms.block_review import BlockReviewPrompt
+from scinoephile.workflows.block_review import block_review_series
 from test.data.acopopb import (
+    get_acopopb_eng_block_review_test_cases,
     get_acopopb_yue_hans_block_review_test_cases,
     get_acopopb_yue_hant_block_review_test_cases,
     get_acopopb_yue_hant_simplify_block_review_test_cases,
@@ -25,6 +33,7 @@ from test.data.acopopb import (
     get_acopopb_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.acoptc import (
+    get_acoptc_eng_block_review_test_cases,
     get_acoptc_yue_hans_block_review_test_cases,
     get_acoptc_yue_hant_block_review_test_cases,
     get_acoptc_yue_hant_simplify_block_review_test_cases,
@@ -33,6 +42,7 @@ from test.data.acoptc import (
     get_acoptc_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.kob import (
+    get_kob_eng_block_review_test_cases,
     get_kob_yue_hans_block_review_test_cases,
     get_kob_yue_hant_block_review_test_cases,
     get_kob_yue_hant_simplify_block_review_test_cases,
@@ -40,21 +50,25 @@ from test.data.kob import (
     get_kob_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.mlamd import (
+    get_mlamd_eng_block_review_test_cases,
     get_mlamd_zho_hans_block_review_test_cases,
     get_mlamd_zho_hant_block_review_test_cases,
     get_mlamd_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.mnt import (
+    get_mnt_eng_block_review_test_cases,
     get_mnt_zho_hans_block_review_test_cases,
     get_mnt_zho_hant_block_review_test_cases,
     get_mnt_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.t import (
+    get_t_eng_block_review_test_cases,
     get_t_zho_hans_block_review_test_cases,
     get_t_zho_hant_block_review_test_cases,
     get_t_zho_hant_simplify_block_review_test_cases,
 )
 from test.data.tmm import (
+    get_tmm_eng_block_review_test_cases,
     get_tmm_yue_hans_block_review_test_cases,
     get_tmm_yue_hant_block_review_test_cases,
     get_tmm_yue_hant_simplify_block_review_test_cases,
@@ -66,33 +80,51 @@ from test.helpers import assert_series_equal, parametrize
 
 
 @parametrize(
-    ("series_fixture", "expected_fixture", "test_case_loader", "prompt_cls"),
+    (
+        "series_fixture",
+        "expected_fixture",
+        "test_case_loader",
+        "language",
+        "prompt_cls",
+    ),
     [
+        param(
+            "acopopb_eng_ocr_fuse_clean_validate",
+            "acopopb_eng_ocr_fuse_clean_validate_review",
+            get_acopopb_eng_block_review_test_cases,
+            Language.eng,
+            BlockReviewPromptEng,
+            id="acopopb-eng",
+        ),
         param(
             "acopopb_yue_hans_ocr_fuse_clean_validate",
             "acopopb_yue_hans_ocr_fuse_clean_validate_review",
             get_acopopb_yue_hans_block_review_test_cases,
-            BlockReviewPromptZhoHans,
+            Language.yue_hans,
+            BlockReviewPromptYueHans,
             id="acopopb-yue-hans",
         ),
         param(
             "acopopb_yue_hant_ocr_fuse_clean_validate",
             "acopopb_yue_hant_ocr_fuse_clean_validate_review",
             get_acopopb_yue_hant_block_review_test_cases,
-            BlockReviewPromptZhoHant,
+            Language.yue_hant,
+            BlockReviewPromptYueHant,
             id="acopopb-yue-hant",
         ),
         param(
             "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_acopopb_yue_hant_simplify_block_review_test_cases,
-            BlockReviewPromptZhoHans,
+            Language.yue_hans,
+            BlockReviewPromptYueHans,
             id="acopopb-yue-hant-simplify",
         ),
         param(
             "acopopb_zho_hans_ocr_fuse_clean_validate",
             "acopopb_zho_hans_ocr_fuse_clean_validate_review",
             get_acopopb_zho_hans_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="acopopb-zho-hans",
         ),
@@ -100,6 +132,7 @@ from test.helpers import assert_series_equal, parametrize
             "acopopb_zho_hant_ocr_fuse_clean_validate",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review",
             get_acopopb_zho_hant_block_review_test_cases,
+            Language.zho_hant,
             BlockReviewPromptZhoHant,
             id="acopopb-zho-hant",
         ),
@@ -107,34 +140,47 @@ from test.helpers import assert_series_equal, parametrize
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "acopopb_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_acopopb_zho_hant_simplify_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="acopopb-zho-hant-simplify",
+        ),
+        param(
+            "acoptc_eng_ocr_fuse_clean_validate",
+            "acoptc_eng_ocr_fuse_clean_validate_review",
+            get_acoptc_eng_block_review_test_cases,
+            Language.eng,
+            BlockReviewPromptEng,
+            id="acoptc-eng",
         ),
         param(
             "acoptc_yue_hans_ocr_fuse_clean_validate",
             "acoptc_yue_hans_ocr_fuse_clean_validate_review",
             get_acoptc_yue_hans_block_review_test_cases,
-            BlockReviewPromptZhoHans,
+            Language.yue_hans,
+            BlockReviewPromptYueHans,
             id="acoptc-yue-hans",
         ),
         param(
             "acoptc_yue_hant_ocr_fuse_clean_validate",
             "acoptc_yue_hant_ocr_fuse_clean_validate_review",
             get_acoptc_yue_hant_block_review_test_cases,
-            BlockReviewPromptZhoHant,
+            Language.yue_hant,
+            BlockReviewPromptYueHant,
             id="acoptc-yue-hant",
         ),
         param(
             "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_acoptc_yue_hant_simplify_block_review_test_cases,
-            BlockReviewPromptZhoHans,
+            Language.yue_hans,
+            BlockReviewPromptYueHans,
             id="acoptc-yue-hant-simplify",
         ),
         param(
             "acoptc_zho_hans_ocr_fuse_clean_validate",
             "acoptc_zho_hans_ocr_fuse_clean_validate_review",
             get_acoptc_zho_hans_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="acoptc-zho-hans",
         ),
@@ -142,6 +188,7 @@ from test.helpers import assert_series_equal, parametrize
             "acoptc_zho_hant_ocr_fuse_clean_validate",
             "acoptc_zho_hant_ocr_fuse_clean_validate_review",
             get_acoptc_zho_hant_block_review_test_cases,
+            Language.zho_hant,
             BlockReviewPromptZhoHant,
             id="acoptc-zho-hant",
         ),
@@ -149,13 +196,31 @@ from test.helpers import assert_series_equal, parametrize
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "acoptc_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_acoptc_zho_hant_simplify_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="acoptc-zho-hant-simplify",
+        ),
+        param(
+            "kob_eng_ocr_fuse_clean_validate",
+            "kob_eng_ocr_fuse_clean_validate_review",
+            get_kob_eng_block_review_test_cases,
+            Language.eng,
+            BlockReviewPromptEng,
+            id="kob-eng-ocr",
+        ),
+        param(
+            "kob_eng_clean",
+            "kob_eng_clean_review",
+            get_kob_eng_block_review_test_cases,
+            Language.eng,
+            BlockReviewPromptEng,
+            id="kob-eng-srt",
         ),
         param(
             "kob_zho_hant_ocr_fuse_clean_validate",
             "kob_zho_hant_ocr_fuse_clean_validate_review",
             get_kob_zho_hant_block_review_test_cases,
+            Language.zho_hant,
             BlockReviewPromptZhoHant,
             id="kob-zho-hant-ocr",
         ),
@@ -163,6 +228,7 @@ from test.helpers import assert_series_equal, parametrize
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_kob_zho_hant_simplify_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="kob-zho-hant-simplify-ocr",
         ),
@@ -170,27 +236,39 @@ from test.helpers import assert_series_equal, parametrize
             "kob_yue_hans_clean",
             "kob_yue_hans_clean_review",
             get_kob_yue_hans_block_review_test_cases,
-            BlockReviewPromptZhoHans,
+            Language.yue_hans,
+            BlockReviewPromptYueHans,
             id="kob-yue-hans-srt",
         ),
         param(
             "kob_yue_hant_clean",
             "kob_yue_hant_clean_review",
             get_kob_yue_hant_block_review_test_cases,
-            BlockReviewPromptZhoHant,
+            Language.yue_hant,
+            BlockReviewPromptYueHant,
             id="kob-yue-hant-srt",
         ),
         param(
             "kob_yue_hant_clean_review_flatten_timewarp_simplify",
             "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
             get_kob_yue_hant_simplify_block_review_test_cases,
-            BlockReviewPromptZhoHans,
+            Language.yue_hans,
+            BlockReviewPromptYueHans,
             id="kob-yue-hant-srt-simplify",
+        ),
+        param(
+            "mlamd_eng_fuse_clean_validate",
+            "mlamd_eng_fuse_clean_validate_review",
+            get_mlamd_eng_block_review_test_cases,
+            Language.eng,
+            BlockReviewPromptEng,
+            id="mlamd-eng-ocr",
         ),
         param(
             "mlamd_zho_hans_fuse_clean_validate",
             "mlamd_zho_hans_fuse_clean_validate_review",
             get_mlamd_zho_hans_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="mlamd-zho-hans",
         ),
@@ -198,6 +276,7 @@ from test.helpers import assert_series_equal, parametrize
             "mlamd_zho_hant_fuse_clean_validate",
             "mlamd_zho_hant_fuse_clean_validate_review",
             get_mlamd_zho_hant_block_review_test_cases,
+            Language.zho_hant,
             BlockReviewPromptZhoHant,
             id="mlamd-zho-hant",
         ),
@@ -205,13 +284,23 @@ from test.helpers import assert_series_equal, parametrize
             "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify",
             "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             get_mlamd_zho_hant_simplify_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="mlamd-zho-hant-simplify",
+        ),
+        param(
+            "mnt_eng_fuse_clean_validate",
+            "mnt_eng_fuse_clean_validate_review",
+            get_mnt_eng_block_review_test_cases,
+            Language.eng,
+            BlockReviewPromptEng,
+            id="mnt-eng",
         ),
         param(
             "mnt_zho_hans_fuse_clean_validate",
             "mnt_zho_hans_fuse_clean_validate_review",
             get_mnt_zho_hans_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="mnt-zho-hans",
         ),
@@ -219,6 +308,7 @@ from test.helpers import assert_series_equal, parametrize
             "mnt_zho_hant_fuse_clean_validate",
             "mnt_zho_hant_fuse_clean_validate_review",
             get_mnt_zho_hant_block_review_test_cases,
+            Language.zho_hant,
             BlockReviewPromptZhoHant,
             id="mnt-zho-hant",
         ),
@@ -226,13 +316,23 @@ from test.helpers import assert_series_equal, parametrize
             "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify",
             "mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             get_mnt_zho_hant_simplify_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="mnt-zho-hant-simplify",
+        ),
+        param(
+            "t_eng_fuse_clean_validate",
+            "t_eng_fuse_clean_validate_review",
+            get_t_eng_block_review_test_cases,
+            Language.eng,
+            BlockReviewPromptEng,
+            id="t-eng-ocr",
         ),
         param(
             "t_zho_hans_fuse_clean_validate",
             "t_zho_hans_fuse_clean_validate_review",
             get_t_zho_hans_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="t-zho-hans",
         ),
@@ -240,6 +340,7 @@ from test.helpers import assert_series_equal, parametrize
             "t_zho_hant_fuse_clean_validate",
             "t_zho_hant_fuse_clean_validate_review",
             get_t_zho_hant_block_review_test_cases,
+            Language.zho_hant,
             BlockReviewPromptZhoHant,
             id="t-zho-hant",
         ),
@@ -247,34 +348,47 @@ from test.helpers import assert_series_equal, parametrize
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify",
             "t_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
             get_t_zho_hant_simplify_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="t-zho-hant-simplify",
+        ),
+        param(
+            "tmm_eng_ocr_fuse_clean_validate",
+            "tmm_eng_ocr_fuse_clean_validate_review",
+            get_tmm_eng_block_review_test_cases,
+            Language.eng,
+            BlockReviewPromptEng,
+            id="tmm-eng",
         ),
         param(
             "tmm_yue_hans_ocr_fuse_clean_validate",
             "tmm_yue_hans_ocr_fuse_clean_validate_review",
             get_tmm_yue_hans_block_review_test_cases,
-            BlockReviewPromptZhoHans,
+            Language.yue_hans,
+            BlockReviewPromptYueHans,
             id="tmm-yue-hans",
         ),
         param(
             "tmm_yue_hant_ocr_fuse_clean_validate",
             "tmm_yue_hant_ocr_fuse_clean_validate_review",
             get_tmm_yue_hant_block_review_test_cases,
-            BlockReviewPromptZhoHant,
+            Language.yue_hant,
+            BlockReviewPromptYueHant,
             id="tmm-yue-hant",
         ),
         param(
             "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_tmm_yue_hant_simplify_block_review_test_cases,
-            BlockReviewPromptZhoHans,
+            Language.yue_hans,
+            BlockReviewPromptYueHans,
             id="tmm-yue-hant-simplify",
         ),
         param(
             "tmm_zho_hans_ocr_fuse_clean_validate",
             "tmm_zho_hans_ocr_fuse_clean_validate_review",
             get_tmm_zho_hans_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="tmm-zho-hans",
         ),
@@ -282,6 +396,7 @@ from test.helpers import assert_series_equal, parametrize
             "tmm_zho_hant_ocr_fuse_clean_validate",
             "tmm_zho_hant_ocr_fuse_clean_validate_review",
             get_tmm_zho_hant_block_review_test_cases,
+            Language.zho_hant,
             BlockReviewPromptZhoHant,
             id="tmm-zho-hant",
         ),
@@ -289,37 +404,42 @@ from test.helpers import assert_series_equal, parametrize
             "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
             "tmm_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
             get_tmm_zho_hant_simplify_block_review_test_cases,
+            Language.zho_hans,
             BlockReviewPromptZhoHans,
             id="tmm-zho-hant-simplify",
         ),
     ],
 )
-def test_get_zho_block_reviewed(
+def test_block_review_series(
     request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
     test_case_loader: Callable[[], list[TestCase]],
-    prompt_cls: type[BlockReviewPromptZhoHans],
+    language: Language,
+    prompt_cls: type[BlockReviewPrompt],
 ):
-    """Test get_zho_block_reviewed against expected block-reviewed outputs.
+    """Test block review against expected outputs.
 
     Arguments:
         request: pytest request for fixture lookup
         series_fixture: fixture name for input series
         expected_fixture: fixture name for expected output series
         test_case_loader: test case loader for the review path
+        language: language to review
         prompt_cls: prompt class for the review path
     """
     provider = Mock(spec=LLMProvider)
-    processor = get_zho_reviewer(
+    reviewer = get_block_reviewer(
+        language,
         prompt_cls=prompt_cls,
         test_cases=test_case_loader(),
         provider=provider,
     )
     expected = request.getfixturevalue(expected_fixture)
-    output = get_zho_block_reviewed(
+    output = block_review_series(
         request.getfixturevalue(series_fixture),
-        processor=processor,
+        language=language,
+        reviewer=reviewer,
     )
 
     assert len(output) == len(expected)

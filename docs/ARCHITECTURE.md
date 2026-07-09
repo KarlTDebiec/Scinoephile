@@ -89,7 +89,7 @@ surface (commands and subcommands) is:
       - `wiktionary`: build Wiktionary dictionary cache
     - `search`: search one or more configured dictionaries
   - `eng`
-    - `process`: process English subtitles (clean/flatten/proofread)
+    - `process`: process English subtitles (clean/flatten)
   - `media`
     - `extract-subs`: extract matching subtitle streams from a video file
     - `offset`: estimate visual offset between two media files
@@ -110,6 +110,7 @@ surface (commands and subcommands) is:
       language
     - `tesseract`: recognize image subtitles with Tesseract OCR
     - `validate`: validate OCR text against subtitle images
+  - `proofread`: proofread subtitles using an LLM
   - `utility`
     - `cache`
       - `clear`: remove cached files
@@ -121,13 +122,13 @@ surface (commands and subcommands) is:
   - `translate`: translate subtitles between supported languages
   - `yue`
     - `process`: process written Cantonese subtitles
-      (clean/convert/flatten/proofread/romanize)
+      (clean/convert/flatten/romanize)
     - `review-vs-zho`: review written Cantonese against standard Chinese
     - `transcribe-vs-zho`: transcribe from media audio using standard Chinese
       as reference
   - `zho`
     - `process`: process standard Chinese subtitles
-      (clean/convert/flatten/proofread/romanize)
+      (clean/convert/flatten/romanize)
 
 Each subcommand lives under `scinoephile/cli/` and is responsible for:
 

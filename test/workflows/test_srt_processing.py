@@ -10,11 +10,12 @@ from pytest import MonkeyPatch
 
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.block_review import (
-    BlockReviewPromptZhoHans,
-    BlockReviewPromptZhoHant,
+from scinoephile.lang.yue.block_review import (
+    BlockReviewPromptYueHans,
+    BlockReviewPromptYueHant,
 )
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.llms.block_review import BlockReviewPrompt
 from scinoephile.workflows.srt_processing import (
     SrtProcessingResult,
     SrtProcessingWorkflow,
@@ -104,10 +105,8 @@ class _PatchedSrtPipeline:
             monkeypatch: pytest monkeypatch fixture
         """
         self.calls: list[str] = []
-        self.reviewer = object()
-        self.review_prompt_calls: list[
-            type[BlockReviewPromptZhoHans] | type[BlockReviewPromptZhoHant]
-        ] = []
+        self.review_language_calls: list[Language] = []
+        self.review_prompt_calls: list[type[BlockReviewPrompt] | None] = []
         self.review_test_case_path_calls: list[Path] = []
         self.review_auto_verify_calls: list[object] = []
         self.reviewed_text_calls: list[list[str]] = []
@@ -121,54 +120,48 @@ class _PatchedSrtPipeline:
         self.romanize_append_calls: list[bool] = []
 
         for name in [
-            "get_eng_block_reviewed",
-            "get_eng_block_reviewer",
             "get_eng_cleaned",
             "get_eng_flattened",
             "get_series_timewarped",
             "get_yue_romanized",
-            "get_zho_block_reviewed",
             "get_zho_cleaned",
             "get_zho_converted",
             "get_zho_flattened",
-            "get_zho_reviewer",
+            "block_review_series",
         ]:
             monkeypatch.setattr(f"{SRT_PROCESSING_MODULE}.{name}", getattr(self, name))
 
-    def get_eng_block_reviewed(self, series: Series, processor: object) -> Series:
-        """Fake English block review.
-
-        Arguments:
-            series: subtitle series to review
-            processor: fake reviewer
-        Returns:
-            reviewed subtitle series
-        """
-        assert processor is self.reviewer
-        self.calls.append("review")
-        self.reviewed_text_calls.append(_series_texts(series))
-        return get_text_series("eng reviewed")
-
-    def get_eng_block_reviewer(
+    def block_review_series(
         self,
+        series: Series,
         *,
+        language: Language,
+        prompt_cls: type[BlockReviewPrompt] | None,
         test_case_path: Path,
         provider: object,
         **kwargs: object,
-    ) -> object:
-        """Return a fixed fake English reviewer.
+    ) -> Series:
+        """Fake block review.
 
         Arguments:
+            series: subtitle series to review
+            language: language selected by the workflow
+            prompt_cls: prompt class selected by the workflow
             test_case_path: path where test cases should be written
             provider: provider passed through by workflow
             **kwargs: reviewer keyword arguments
         Returns:
-            fake reviewer
+            reviewed subtitle series
         """
-        self.calls.append("get_reviewer")
+        self.calls.append("review")
+        self.review_language_calls.append(language)
+        self.review_prompt_calls.append(prompt_cls)
         self.review_test_case_path_calls.append(test_case_path)
         self.review_auto_verify_calls.append(kwargs["auto_verify"])
-        return self.reviewer
+        self.reviewed_text_calls.append(_series_texts(series))
+        if language is Language.eng:
+            return get_text_series("eng reviewed")
+        return get_text_series(f"yue reviewed {len(self.reviewed_text_calls)}")
 
     def get_eng_cleaned(self, series: Series) -> Series:
         """Fake English cleaning.
@@ -231,24 +224,6 @@ class _PatchedSrtPipeline:
         self.romanize_append_calls.append(append)
         return get_text_series("yue romanized")
 
-    def get_zho_block_reviewed(
-        self,
-        series: Series,
-        processor: object,
-    ) -> Series:
-        """Fake Chinese block review.
-
-        Arguments:
-            series: subtitle series to review
-            processor: fake reviewer
-        Returns:
-            reviewed subtitle series
-        """
-        assert processor is self.reviewer
-        self.calls.append("review")
-        self.reviewed_text_calls.append(_series_texts(series))
-        return get_text_series(f"yue reviewed {len(self.reviewed_text_calls)}")
-
     def get_zho_cleaned(self, series: Series) -> Series:
         """Fake Chinese cleaning.
 
@@ -287,30 +262,6 @@ class _PatchedSrtPipeline:
         self.flattened_text_calls.append(_series_texts(series))
         return get_text_series("yue flattened")
 
-    def get_zho_reviewer(
-        self,
-        *,
-        prompt_cls: type[BlockReviewPromptZhoHans] | type[BlockReviewPromptZhoHant],
-        test_case_path: Path,
-        provider: object,
-        **kwargs: object,
-    ) -> object:
-        """Return a fixed fake Chinese reviewer.
-
-        Arguments:
-            prompt_cls: prompt class selected by the workflow
-            test_case_path: path where test cases should be written
-            provider: provider passed through by workflow
-            **kwargs: reviewer keyword arguments
-        Returns:
-            fake reviewer
-        """
-        self.calls.append("get_reviewer")
-        self.review_prompt_calls.append(prompt_cls)
-        self.review_test_case_path_calls.append(test_case_path)
-        self.review_auto_verify_calls.append(kwargs["auto_verify"])
-        return self.reviewer
-
 
 def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
     monkeypatch: MonkeyPatch,
@@ -331,8 +282,7 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
         _write_series(output_dir_path / f"{output_name}.srt", f"existing {output_name}")
 
     for name in [
-        "get_zho_reviewer",
-        "get_zho_block_reviewed",
+        "block_review_series",
         "get_series_timewarped",
         "get_zho_cleaned",
         "get_zho_flattened",
@@ -382,13 +332,13 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
 
     assert pipeline.calls == [
         "clean",
-        "get_reviewer",
         "review",
         "flatten",
         "timewarp",
         "romanize",
     ]
-    assert pipeline.review_prompt_calls == [BlockReviewPromptZhoHans]
+    assert pipeline.review_language_calls == [Language.yue_hans]
+    assert pipeline.review_prompt_calls == [BlockReviewPromptYueHans]
     assert pipeline.review_test_case_path_calls == [
         output_dir_path / "lang" / "yue" / "block_review.json"
     ]
@@ -436,18 +386,20 @@ def test_traditional_yue_srt_workflow_simplifies_reviews_and_romanizes(
 
     assert pipeline.calls == [
         "clean",
-        "get_reviewer",
         "review",
         "flatten",
         "timewarp",
         "simplify",
-        "get_reviewer",
         "review",
         "romanize",
     ]
+    assert pipeline.review_language_calls == [
+        Language.yue_hant,
+        Language.yue_hans,
+    ]
     assert pipeline.review_prompt_calls == [
-        BlockReviewPromptZhoHant,
-        BlockReviewPromptZhoHans,
+        BlockReviewPromptYueHant,
+        BlockReviewPromptYueHans,
     ]
     assert pipeline.review_test_case_path_calls == [
         output_dir_path / "lang" / "yue" / "block_review.json",
@@ -491,11 +443,12 @@ def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
 
     assert pipeline.calls == [
         "clean",
-        "get_reviewer",
         "review",
         "flatten",
         "timewarp",
     ]
+    assert pipeline.review_language_calls == [Language.eng]
+    assert pipeline.review_prompt_calls == [None]
     assert pipeline.review_test_case_path_calls == [
         output_dir_path / "lang" / "eng" / "block_review.json"
     ]

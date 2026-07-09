@@ -19,8 +19,9 @@ from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
 
 
 def test_optimization_operations_include_translation_modes():
-    """Test optimization registry includes generic translation operations."""
+    """Test optimization registry includes generic LLM operations."""
     expected_operations = {
+        "block-review",
         "gap-translation",
         "guided-translation",
         "translation",
@@ -35,7 +36,7 @@ def test_optimization_sync_test_cases_cli_dry_run_and_apply(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory for input and output files
     """
-    operation = "eng-block-review"
+    operation = "block-review"
     spec = OPERATIONS[operation]
 
     infile_path = tmp_path / "test_cases.json"
@@ -43,8 +44,8 @@ def test_optimization_sync_test_cases_cli_dry_run_and_apply(tmp_path: Path):
 
     data = [
         {
-            "query": {"subtitle_1": "Hello."},
-            "answer": {"revised_1": "", "note_1": ""},
+            "query": {"input_1": "Hello."},
+            "answer": {"output_1": "", "note_1": ""},
             "verified": False,
         }
     ]
@@ -78,8 +79,8 @@ def test_optimization_sync_test_cases_cli_dry_run_and_apply(tmp_path: Path):
     store = TestCaseSqliteStore(db_path)
     loaded = store.get_test_case(spec.test_case_table_name, row["test_case_id"])
     assert loaded is not None
-    assert loaded.query == {"subtitle_1": "Hello."}
-    assert loaded.answer == {"revised_1": "", "note_1": ""}
+    assert loaded.query == {"input_1": "Hello."}
+    assert loaded.answer == {"output_1": "", "note_1": ""}
 
     data[0]["verified"] = True
     infile_path.write_text(

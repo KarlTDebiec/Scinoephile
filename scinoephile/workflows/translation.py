@@ -4,18 +4,25 @@
 
 from __future__ import annotations
 
-from logging import getLogger
+from typing import Unpack
 
-from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider
+from scinoephile.core import Language
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.id import get_series_language
-from scinoephile.llms.gap_translation import GapTranslationProcessor
-from scinoephile.llms.guided_translation import GuidedTranslationProcessor
-from scinoephile.llms.translation import TranslationProcessor
+from scinoephile.llms.gap_translation import (
+    GapTranslationProcessor,
+    GapTranslationPrompt,
+)
+from scinoephile.llms.guided_translation import (
+    GuidedTranslationProcessor,
+    GuidedTranslationPrompt,
+)
+from scinoephile.llms.translation import TranslationProcessor, TranslationPrompt
 from scinoephile.multilang.translation.gap import get_gap_translator
 from scinoephile.multilang.translation.guided import get_guided_translator
 from scinoephile.multilang.translation.standard import get_translator
+
+from .helpers import resolve_series_language
 
 __all__ = [
     "translate_series",
@@ -23,17 +30,18 @@ __all__ = [
     "translate_series_guided",
 ]
 
-logger = getLogger(__name__)
-
 
 def translate_series(
     source: Series,
     *,
     target_language: Language,
     source_language: Language | None = None,
+    prompt_cls: type[TranslationPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    additional_context: str | None = None,
     translator: TranslationProcessor | None = None,
+    stop_at_idx: int | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
     """Translate a subtitle series between supported languages.
 
@@ -41,24 +49,29 @@ def translate_series(
         source: source-language subtitle series
         source_language: explicit source language, or None to detect it
         target_language: target language
+        prompt_cls: prompt class override
+        test_cases: test cases
         provider: LLM provider to use
-        additional_context: additional context to include in prompts
         translator: translator to use, or None to construct one
+        stop_at_idx: exclusive block index at which to stop processing
+        **kwargs: additional keyword arguments for TranslationProcessor
     Returns:
         translated subtitle series
     Raises:
         ScinoephileError: if a language cannot be resolved or the pair is unsupported
     """
-    resolved_source_language = _resolve_language(source, source_language)
+    resolved_source_language = resolve_series_language(source, source_language)
 
     if translator is None:
         translator = get_translator(
             resolved_source_language,
             target_language,
-            provider=provider,
-            additional_context=additional_context,
+            prompt_cls,
+            test_cases,
+            provider,
+            **kwargs,
         )
-    return translator.process(source)
+    return translator.process(source, stop_at_idx=stop_at_idx)
 
 
 def translate_series_gaps(
@@ -67,9 +80,12 @@ def translate_series_gaps(
     *,
     source_language: Language | None = None,
     target_language: Language | None = None,
+    prompt_cls: type[GapTranslationPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    additional_context: str | None = None,
     translator: GapTranslationProcessor | None = None,
+    stop_at_idx: int | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
     """Translate a subtitle series using target-language gaps.
 
@@ -78,25 +94,30 @@ def translate_series_gaps(
         target: target-language gapped subtitle series
         source_language: explicit source language, or None to detect it
         target_language: explicit target language, or None to detect it
+        prompt_cls: prompt class override
+        test_cases: test cases
         provider: LLM provider to use
-        additional_context: additional context to include in prompts
         translator: translator to use, or None to construct one
+        stop_at_idx: exclusive block index at which to stop processing
+        **kwargs: additional keyword arguments for GapTranslationProcessor
     Returns:
         translated subtitle series
     Raises:
         ScinoephileError: if a language cannot be resolved or the pair is unsupported
     """
-    resolved_source_language = _resolve_language(source, source_language)
-    resolved_target_language = _resolve_language(target, target_language)
+    resolved_source_language = resolve_series_language(source, source_language)
+    resolved_target_language = resolve_series_language(target, target_language)
 
     if translator is None:
         translator = get_gap_translator(
             resolved_source_language,
             resolved_target_language,
-            provider=provider,
-            additional_context=additional_context,
+            prompt_cls,
+            test_cases,
+            provider,
+            **kwargs,
         )
-    return translator.process(target, source)
+    return translator.process(target, source, stop_at_idx=stop_at_idx)
 
 
 def translate_series_guided(
@@ -105,9 +126,12 @@ def translate_series_guided(
     *,
     source_language: Language | None = None,
     target_language: Language | None = None,
+    prompt_cls: type[GuidedTranslationPrompt] | None = None,
+    test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    additional_context: str | None = None,
     translator: GuidedTranslationProcessor | None = None,
+    stop_at_idx: int | None = None,
+    **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
     """Translate a subtitle series using target-language guidance.
 
@@ -116,50 +140,27 @@ def translate_series_guided(
         guide: target-language guide subtitle series
         source_language: explicit source language, or None to detect it
         target_language: explicit target language, or None to detect it
+        prompt_cls: prompt class override
+        test_cases: test cases
         provider: LLM provider to use
-        additional_context: additional context to include in prompts
         translator: translator to use, or None to construct one
+        stop_at_idx: exclusive block index at which to stop processing
+        **kwargs: additional keyword arguments for GuidedTranslationProcessor
     Returns:
         translated subtitle series
     Raises:
         ScinoephileError: if a language cannot be resolved or the pair is unsupported
     """
-    resolved_source_language = _resolve_language(source, source_language)
-    resolved_target_language = _resolve_language(guide, target_language)
+    resolved_source_language = resolve_series_language(source, source_language)
+    resolved_target_language = resolve_series_language(guide, target_language)
 
     if translator is None:
         translator = get_guided_translator(
             resolved_source_language,
             resolved_target_language,
-            provider=provider,
-            additional_context=additional_context,
+            prompt_cls,
+            test_cases,
+            provider,
+            **kwargs,
         )
-    return translator.process(source, guide)
-
-
-def _resolve_language(
-    series: Series,
-    explicit_language: Language | None,
-) -> Language:
-    """Resolve a detected or explicit language for a subtitle series.
-
-    Arguments:
-        series: subtitle series to classify
-        explicit_language: explicit language argument, if provided
-    Returns:
-        resolved language
-    Raises:
-        ScinoephileError: if language detection fails and no explicit language exists
-    """
-    detected_language = get_series_language(series)
-    if explicit_language is not None:
-        if detected_language is not None and detected_language is not explicit_language:
-            logger.warning(
-                f"Explicit language {explicit_language.tag} does not "
-                f"match detected language {detected_language.tag}; "
-                f"using {explicit_language.tag}"
-            )
-        return explicit_language
-    if detected_language is None:
-        raise ScinoephileError("Unable to determine language")
-    return detected_language
+    return translator.process(source, guide, stop_at_idx=stop_at_idx)

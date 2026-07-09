@@ -17,6 +17,10 @@ from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
+from scinoephile.lang.yue.block_review import (
+    BlockReviewPromptYueHans,
+    BlockReviewPromptYueHant,
+)
 from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHans,
     BlockReviewPromptZhoHant,
@@ -150,7 +154,7 @@ def get_acopopb_eng_ocr_fusion_test_cases(
 
 @cache
 def get_acopopb_yue_hans_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hans block review test cases.
@@ -188,7 +192,7 @@ def get_acopopb_yue_hans_ocr_fusion_test_cases(
 
 @cache
 def get_acopopb_yue_hant_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHant,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hant block review test cases.
@@ -226,7 +230,7 @@ def get_acopopb_yue_hant_ocr_fusion_test_cases(
 
 @cache
 def get_acopopb_yue_hant_simplify_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hant simplification block review test cases.
