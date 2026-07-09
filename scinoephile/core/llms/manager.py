@@ -121,6 +121,22 @@ class Manager(ABC):
         return manager_cls.get_test_case_cls(prompt_cls=prompt_cls)
 
     @classmethod
+    def get_test_case_cls_with_prompt[TTestCase: TestCase](
+        cls,
+        test_case_cls: type[TestCase],
+        prompt_cls: type[Prompt],
+    ) -> type[TTestCase]:
+        """Get an equivalently shaped test-case class for another prompt.
+
+        Arguments:
+            test_case_cls: test-case class whose shape should be preserved
+            prompt_cls: prompt class whose correspondence fields should be used
+        Returns:
+            equivalently shaped test-case class
+        """
+        return cls.get_test_case_cls(prompt_cls=prompt_cls)
+
+    @classmethod
     def get_test_case_fields(
         cls,
         query_cls: type[Query],

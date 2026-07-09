@@ -19,11 +19,9 @@ class PersistedTestCase:
     """A persisted test case row loaded from SQLite."""
 
     test_case_id: str
-    """Deterministic identifier derived from operation, variant, and payload."""
+    """Deterministic identifier derived from operation and normalized payload."""
     operation: str
     """Operation to which this test case belongs."""
-    variant: str
-    """Stable schema variant within the operation."""
     difficulty: int
     """Difficulty level for filtering and prioritization."""
     prompt: bool
@@ -43,14 +41,12 @@ class PersistedTestCase:
         data: object,
         *,
         operation: str,
-        variant: str,
     ) -> PersistedTestCase:
         """Validate raw JSON test-case data and prepare it for persistence.
 
         Arguments:
             data: raw JSON test-case object
             operation: operation to which the test case belongs
-            variant: stable schema variant within the operation
         Returns:
             persisted test case
         Raises:
@@ -62,9 +58,6 @@ class PersistedTestCase:
             raise ScinoephileError(
                 "Optimization test case operation must not be empty."
             )
-        if not variant.strip():
-            raise ScinoephileError("Optimization test case variant must not be empty.")
-
         allowed_fields = {"answer", "difficulty", "prompt", "query", "verified"}
         unexpected_fields = sorted(set(data) - allowed_fields)
         if unexpected_fields:
@@ -117,10 +110,8 @@ class PersistedTestCase:
                 query_payload,
                 answer_payload,
                 operation=operation,
-                variant=variant,
             ),
             operation=operation,
-            variant=variant,
             difficulty=difficulty,
             prompt=prompt,
             verified=verified,
@@ -134,31 +125,39 @@ class PersistedTestCase:
         test_case: TestCase,
         *,
         operation: str,
-        variant: str,
+        base_test_case_cls: type[TestCase],
     ) -> PersistedTestCase:
         """Convert a loaded test case to its persisted representation.
 
         Arguments:
             test_case: loaded test case
             operation: operation to which the test case belongs
-            variant: stable schema variant within the operation
+            base_test_case_cls: equivalent class using base-prompt field names
         Returns:
             persisted test case
         """
-        query_dict = test_case.query.model_dump(mode="json")
         if test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")
-        answer_dict = test_case.answer.model_dump(mode="json")
+        query_dict = PersistedTestCase._normalize_payload(
+            test_case.query.model_dump(mode="json"),
+            tuple(type(test_case.query).model_fields),
+            tuple(base_test_case_cls.query_cls.model_fields),
+            "query",
+        )
+        answer_dict = PersistedTestCase._normalize_payload(
+            test_case.answer.model_dump(mode="json"),
+            tuple(type(test_case.answer).model_fields),
+            tuple(base_test_case_cls.answer_cls.model_fields),
+            "answer",
+        )
         test_case_id = get_test_case_id(
-            test_case.query,
-            test_case.answer,
+            query_dict,
+            answer_dict,
             operation=operation,
-            variant=variant,
         )
         return PersistedTestCase(
             test_case_id=test_case_id,
             operation=operation,
-            variant=variant,
             difficulty=int(test_case.difficulty),
             prompt=bool(test_case.prompt),
             verified=bool(test_case.verified),
@@ -166,3 +165,36 @@ class PersistedTestCase:
             answer=answer_dict,
             source_paths=[],
         )
+
+    @staticmethod
+    def _normalize_payload(
+        payload: dict[str, object],
+        concrete_fields: tuple[str, ...],
+        base_fields: tuple[str, ...],
+        payload_name: str,
+    ) -> dict[str, object]:
+        """Rename concrete prompt fields to equivalent base-prompt fields.
+
+        Arguments:
+            payload: concrete prompt payload
+            concrete_fields: concrete prompt fields in semantic order
+            base_fields: base prompt fields in semantic order
+            payload_name: payload name used in validation errors
+        Returns:
+            payload using base-prompt field names
+        Raises:
+            ScinoephileError: if concrete and base schemas have different shapes
+        """
+        if len(concrete_fields) != len(base_fields):
+            raise ScinoephileError(
+                f"Concrete and base prompt {payload_name} schemas have different "
+                "shapes."
+            )
+        return {
+            base_field: payload[concrete_field]
+            for concrete_field, base_field in zip(
+                concrete_fields,
+                base_fields,
+                strict=True,
+            )
+        }

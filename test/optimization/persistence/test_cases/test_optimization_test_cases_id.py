@@ -32,12 +32,10 @@ def test_get_test_case_id_stable_for_same_payload():
         tc1.query,
         tc1.answer,
         operation="translation",
-        variant="unit",
     ) == get_test_case_id(
         tc2.query,
         tc2.answer,
         operation="translation",
-        variant="unit",
     )
 
 
@@ -64,16 +62,14 @@ def test_get_test_case_id_changes_with_answer():
         tc1.query,
         tc1.answer,
         operation="translation",
-        variant="unit",
     ) != get_test_case_id(
         tc2.query,
         tc2.answer,
         operation="translation",
-        variant="unit",
     )
 
 
-def test_get_test_case_id_changes_with_operation_or_variant():
+def test_get_test_case_id_changes_with_operation():
     """Catalog scope should contribute to the content-addressed ID."""
     query = {"input_1": "a"}
     answer = {"output_1": "b"}
@@ -81,18 +77,10 @@ def test_get_test_case_id_changes_with_operation_or_variant():
         query,
         answer,
         operation="translation",
-        variant="eng-zho",
     )
 
     assert first != get_test_case_id(
         query,
         answer,
         operation="review",
-        variant="eng-zho",
-    )
-    assert first != get_test_case_id(
-        query,
-        answer,
-        operation="translation",
-        variant="zho-eng",
     )

@@ -70,14 +70,13 @@ class TestCaseSqliteStore:
         _metadata,
         Column("test_case_id", Text, primary_key=True),
         Column("operation", Text, nullable=False),
-        Column("variant", Text, nullable=False),
         Column("query_json", Text, nullable=False),
         Column("answer_json", Text, nullable=False),
         CheckConstraint("json_valid(query_json)", name="test_cases_query_json_valid"),
         CheckConstraint("json_valid(answer_json)", name="test_cases_answer_json_valid"),
-        Index("test_cases_operation_variant", "operation", "variant"),
+        Index("test_cases_operation", "operation"),
     )
-    """Content-addressed test cases shared by all operations and variants."""
+    """Content-addressed test cases shared by all operations."""
 
     _test_case_sources = Table(
         "test_case_sources",
@@ -164,14 +163,12 @@ class TestCaseSqliteStore:
         source_path: str,
         *,
         operation: str | None = None,
-        variant: str | None = None,
     ) -> list[PersistedTestCase]:
         """Fetch test cases associated with a source path.
 
         Arguments:
             source_path: original JSON path recorded during import
             operation: optional operation filter
-            variant: optional variant filter
         Returns:
             persisted test cases
         """
@@ -189,8 +186,6 @@ class TestCaseSqliteStore:
             )
             if operation is not None:
                 statement = statement.where(self._test_cases.c.operation == operation)
-            if variant is not None:
-                statement = statement.where(self._test_cases.c.variant == variant)
             rows = (
                 connection.execute(statement.order_by(self._test_cases.c.test_case_id))
                 .mappings()
@@ -202,13 +197,11 @@ class TestCaseSqliteStore:
         self,
         *,
         operation: str | None = None,
-        variant: str | None = None,
     ) -> list[str]:
-        """List source paths, optionally filtered by operation and variant.
+        """List source paths, optionally filtered by operation.
 
         Arguments:
             operation: optional operation filter
-            variant: optional variant filter
         Returns:
             ordered source paths
         """
@@ -220,12 +213,10 @@ class TestCaseSqliteStore:
                 return []
             self._require_current_schema(version)
             statement = select(self._test_case_sources.c.source_path).distinct()
-            if operation is not None or variant is not None:
+            if operation is not None:
                 statement = statement.join(self._test_cases)
             if operation is not None:
                 statement = statement.where(self._test_cases.c.operation == operation)
-            if variant is not None:
-                statement = statement.where(self._test_cases.c.variant == variant)
             rows = (
                 connection.execute(
                     statement.order_by(self._test_case_sources.c.source_path)
@@ -270,7 +261,6 @@ class TestCaseSqliteStore:
                     test_case.query,
                     test_case.answer,
                     operation=test_case.operation,
-                    variant=test_case.variant,
                 )
                 if test_case.test_case_id != expected_id:
                     raise ScinoephileError(
@@ -452,7 +442,6 @@ class TestCaseSqliteStore:
         return PersistedTestCase(
             test_case_id=test_case_id,
             operation=str(row["operation"]),
-            variant=str(row["variant"]),
             difficulty=max(int(source_row["difficulty"]) for source_row in source_rows),
             prompt=any(bool(source_row["prompt"]) for source_row in source_rows),
             verified=any(bool(source_row["verified"]) for source_row in source_rows),
@@ -523,7 +512,6 @@ class TestCaseSqliteStore:
                     .values(
                         test_case_id=test_case.test_case_id,
                         operation=test_case.operation,
-                        variant=test_case.variant,
                         query_json=self._serialize_json_object(test_case.query),
                         answer_json=self._serialize_json_object(test_case.answer),
                     )

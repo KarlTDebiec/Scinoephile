@@ -16,8 +16,6 @@ class SyncReport:
 
     operation: str
     """Operation that was synchronized."""
-    variant: str
-    """Stable schema variant that was synchronized."""
     input_paths: tuple[Path, ...]
     """Input JSON paths included in the sync run."""
     insert_ids: tuple[str, ...]

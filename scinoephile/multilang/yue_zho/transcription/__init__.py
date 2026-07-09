@@ -20,7 +20,8 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.dual_2_to_2 import Dual2To2Manager
+from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
+from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.providers.registry import get_provider
 
 from .deliniation import (
@@ -79,14 +80,14 @@ _YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (
 YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-transcription-deliniation",
     manager_cls=Dual2To2Manager,
-    prompt_cls=YueDeliniationVsZhoPromptYueHans,
+    prompt_cls=Dual2To2Prompt,
 )
 """Operation specification for written Cantonese transcription deliniation."""
 
 YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-transcription-punctuation",
     manager_cls=YueZhoPunctuationManager,
-    prompt_cls=YuePunctuationVsZhoPromptYueHans,
+    prompt_cls=DualNTo1Prompt,
 )
 """Operation specification for written Cantonese transcription punctuation."""
 

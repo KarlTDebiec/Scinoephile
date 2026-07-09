@@ -10,7 +10,14 @@ from typing import Any, ClassVar, Unpack, cast
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    Prompt,
+    Query,
+    TestCase,
+    TestCaseClsKwargs,
+)
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import GapTranslationPrompt
@@ -192,3 +199,25 @@ class GapTranslationManager(Manager):
         ]
         gaps = tuple(idx for idx in range(size) if idx not in source_one_idxs)
         return cls.get_test_case_cls(size=size, gaps=gaps, prompt_cls=prompt_cls)
+
+    @classmethod
+    def get_test_case_cls_with_prompt(
+        cls,
+        test_case_cls: type[TestCase],
+        prompt_cls: type[Prompt],
+    ) -> type[TestCase]:
+        """Get a test-case class with the same size and gaps for another prompt.
+
+        Arguments:
+            test_case_cls: test-case class whose size and gaps should be preserved
+            prompt_cls: prompt class whose correspondence fields should be used
+        Returns:
+            equivalently shaped test-case class
+        """
+        size: int = getattr(test_case_cls, "size")
+        gaps: tuple[int, ...] = getattr(test_case_cls, "gaps")
+        return cls.get_test_case_cls(
+            size=size,
+            gaps=gaps,
+            prompt_cls=cast(type[GapTranslationPrompt], prompt_cls),
+        )

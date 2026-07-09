@@ -11,7 +11,14 @@ from typing import Any, ClassVar, Unpack, cast
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    Prompt,
+    Query,
+    TestCase,
+    TestCaseClsKwargs,
+)
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import GuidedReviewPrompt
@@ -172,6 +179,28 @@ class GuidedReviewManager(Manager):
         target_size = sum(1 for field in data["query"] if target_pattern.match(field))
         guide_size = sum(1 for field in data["query"] if guide_pattern.match(field))
         return cls.get_test_case_cls(target_size, guide_size, prompt_cls)
+
+    @classmethod
+    def get_test_case_cls_with_prompt(
+        cls,
+        test_case_cls: type[TestCase],
+        prompt_cls: type[Prompt],
+    ) -> type[TestCase]:
+        """Get an equivalently sized test-case class for another prompt.
+
+        Arguments:
+            test_case_cls: test-case class whose sizes should be preserved
+            prompt_cls: prompt class whose correspondence fields should be used
+        Returns:
+            equivalently sized test-case class
+        """
+        target_size: int = getattr(test_case_cls, "target_size")
+        guide_size: int = getattr(test_case_cls, "guide_size")
+        return cls.get_test_case_cls(
+            target_size=target_size,
+            guide_size=guide_size,
+            prompt_cls=cast(type[GuidedReviewPrompt], prompt_cls),
+        )
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:

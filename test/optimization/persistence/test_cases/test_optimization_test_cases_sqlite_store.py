@@ -26,7 +26,6 @@ def get_test_case(
     query: dict[str, object] | None = None,
     answer: dict[str, object] | None = None,
     operation: str = "unit",
-    variant: str = "basic",
 ) -> PersistedTestCase:
     """Get a persisted test case with provided values."""
     if query is None:
@@ -42,7 +41,6 @@ def get_test_case(
             "verified": verified,
         },
         operation=operation,
-        variant=variant,
     )
 
 
@@ -65,7 +63,6 @@ def test_store_round_trips_normalized_json(tmp_path: Path):
     loaded = store.get_test_case(test_case.test_case_id)
     assert loaded is not None
     assert loaded.operation == "unit"
-    assert loaded.variant == "basic"
     assert loaded.query == test_case.query
     assert loaded.answer == test_case.answer
     assert loaded.source_paths == ["x.json"]
@@ -79,7 +76,6 @@ def test_store_round_trips_normalized_json(tmp_path: Path):
         "operation",
         "query_json",
         "test_case_id",
-        "variant",
     }
 
 
@@ -129,13 +125,13 @@ def test_store_aggregates_and_recalculates_source_metadata(tmp_path: Path):
     assert recalculated.source_paths == ["low.json"]
 
 
-def test_store_filters_source_paths_by_operation_and_variant(tmp_path: Path):
-    """Source lookup should support catalog operation and variant filters."""
+def test_store_filters_source_paths_by_operation(tmp_path: Path):
+    """Source lookup should support catalog operation filters."""
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
-    first = get_test_case(operation="review", variant="eng")
-    second = get_test_case(operation="review", variant="zho-hant")
-    third = get_test_case(operation="translation", variant="eng-zho")
+    first = get_test_case(operation="review", query={"input": "first"})
+    second = get_test_case(operation="review", query={"input": "second"})
+    third = get_test_case(operation="translation", query={"input": "third"})
 
     store.sync_source_paths(
         {
@@ -150,14 +146,9 @@ def test_store_filters_source_paths_by_operation_and_variant(tmp_path: Path):
         "first.json",
         "second.json",
     ]
-    assert store.list_source_paths(
-        operation="review",
-        variant="zho-hant",
-    ) == ["second.json"]
     filtered = store.get_test_cases_by_source_path(
         "second.json",
         operation="review",
-        variant="zho-hant",
     )
     assert [test_case.test_case_id for test_case in filtered] == [second.test_case_id]
 

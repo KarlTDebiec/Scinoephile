@@ -31,9 +31,6 @@ OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "列出将插入、更新或删除的行而不写入"
         ),
         "one or more input JSON paths": "一个或多个输入 JSON 路径",
-        "stable schema variant name for these test cases": (
-            "这些测试用例的稳定架构变体名称"
-        ),
         "synchronize persisted LLM test cases from JSON into SQLite": (
             "将 JSON 测试用例同步到 SQLite"
         ),
@@ -46,9 +43,6 @@ OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "列出將插入、更新或刪除的列而不寫入"
         ),
         "one or more input JSON paths": "一個或多個輸入 JSON 路徑",
-        "stable schema variant name for these test cases": (
-            "這些測試用例的穩定架構變體名稱"
-        ),
         "synchronize persisted LLM test cases from JSON into SQLite": (
             "將 JSON 測試用例同步到 SQLite"
         ),
@@ -106,12 +100,6 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
                 "list rows that would be inserted, updated, or deleted without writing"
             ),
         )
-        arg_groups["operation arguments"].add_argument(
-            "--variant",
-            required=True,
-            help="stable schema variant name for these test cases",
-        )
-
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "--outfile",
@@ -136,15 +124,13 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         infile_paths: list[Path],
         operation: OperationSpec,
         dry_run: bool,
-        variant: str,
         outfile: Path,
     ):
         """Execute with provided keyword arguments."""
         # Perform operations
         report = sync_test_cases_from_json_paths(
             database_path=outfile,
-            operation=operation.operation,
-            variant=variant,
+            operation_spec=operation,
             input_paths=infile_paths,
             dry_run=dry_run,
         )
@@ -161,7 +147,6 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             print(
                 {
                     "operation": report.operation,
-                    "variant": report.variant,
                     "sources": len(report.input_paths),
                     "inserted": len(report.insert_ids),
                     "updated": len(report.update_ids),

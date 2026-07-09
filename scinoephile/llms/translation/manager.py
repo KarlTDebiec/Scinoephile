@@ -11,7 +11,14 @@ from typing import Any, ClassVar, Unpack, cast
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    Prompt,
+    Query,
+    TestCase,
+    TestCaseClsKwargs,
+)
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import TranslationPrompt
@@ -145,3 +152,23 @@ class TranslationManager(Manager):
         pattern = re.compile(rf"^{re.escape(prompt_cls.input_pfx)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)
+
+    @classmethod
+    def get_test_case_cls_with_prompt(
+        cls,
+        test_case_cls: type[TestCase],
+        prompt_cls: type[Prompt],
+    ) -> type[TestCase]:
+        """Get an equivalently sized test-case class for another prompt.
+
+        Arguments:
+            test_case_cls: test-case class whose size should be preserved
+            prompt_cls: prompt class whose correspondence fields should be used
+        Returns:
+            equivalently sized test-case class
+        """
+        size: int = getattr(test_case_cls, "size")
+        return cls.get_test_case_cls(
+            size=size,
+            prompt_cls=cast(type[TranslationPrompt], prompt_cls),
+        )

@@ -18,7 +18,6 @@ def get_test_case_id(
     answer: Answer | Mapping[str, object],
     *,
     operation: str,
-    variant: str,
 ) -> str:
     """Compute canonical identifier for a test case.
 
@@ -26,16 +25,13 @@ def get_test_case_id(
         query: query payload
         answer: answer payload
         operation: operation to which the test case belongs
-        variant: stable schema variant within the operation
     Returns:
         deterministic hexadecimal identifier
     Raises:
-        ValueError: if operation or variant is empty
+        ValueError: if operation is empty
     """
     if not operation.strip():
         raise ValueError("Operation must not be empty.")
-    if not variant.strip():
-        raise ValueError("Variant must not be empty.")
     if isinstance(query, Query):
         query_payload = query.model_dump(mode="json")
     else:
@@ -49,7 +45,6 @@ def get_test_case_id(
             "answer": answer_payload,
             "operation": operation,
             "query": query_payload,
-            "variant": variant,
         },
         ensure_ascii=False,
         sort_keys=True,

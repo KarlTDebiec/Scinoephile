@@ -21,4 +21,4 @@ class OperationSpec:
     manager_cls: type[Manager]
     """Manager class used to load and validate cases for this operation."""
     prompt_cls: type[Prompt]
-    """Prompt class used to load and validate cases for this operation."""
+    """Base prompt class defining the operation's persisted field names."""

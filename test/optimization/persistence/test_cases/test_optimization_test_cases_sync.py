@@ -6,16 +6,88 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import ClassVar
 
 from pytest import raises
 
 from scinoephile import common
 from scinoephile.core import ScinoephileError
-from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
+from scinoephile.lang.review import REVIEW_OPERATION_SPEC
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
+from scinoephile.multilang.translation.standard import TRANSLATION_OPERATION_SPEC
+from scinoephile.multilang.yue_zho.transcription import (
+    YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
+)
+from scinoephile.optimization.persistence.test_cases import (
+    PersistedTestCase,
+    TestCaseSqliteStore,
+)
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
+
+
+class _LocalizedReviewPrompt(ReviewPrompt):
+    """Review prompt using localized correspondence field names."""
+
+    input_pfx: ClassVar[str] = "zimu_"
+    output_pfx: ClassVar[str] = "xiugai_"
+    note_pfx: ClassVar[str] = "beizhu_"
+
+
+class _AlternativeReviewPrompt(ReviewPrompt):
+    """Review prompt using an alternative correspondence schema."""
+
+    input_pfx: ClassVar[str] = "source_"
+    output_pfx: ClassVar[str] = "correction_"
+    note_pfx: ClassVar[str] = "explanation_"
+
+
+def test_normalization_makes_prompt_field_aliases_share_identity():
+    """Equivalent field aliases should normalize to one SQL identity."""
+    localized_cls = ReviewManager.get_test_case_cls(
+        size=1,
+        prompt_cls=_LocalizedReviewPrompt,
+    )
+    alternative_cls = ReviewManager.get_test_case_cls(
+        size=1,
+        prompt_cls=_AlternativeReviewPrompt,
+    )
+    localized = localized_cls.model_validate(
+        {
+            "query": {"zimu_1": "original"},
+            "answer": {"xiugai_1": "corrected", "beizhu_1": "typo"},
+        }
+    )
+    alternative = alternative_cls.model_validate(
+        {
+            "query": {"source_1": "original"},
+            "answer": {
+                "correction_1": "corrected",
+                "explanation_1": "typo",
+            },
+        }
+    )
+    base_cls = ReviewManager.get_test_case_cls(size=1, prompt_cls=ReviewPrompt)
+
+    localized_persisted = PersistedTestCase.from_test_case(
+        localized,
+        operation="review",
+        base_test_case_cls=base_cls,
+    )
+    alternative_persisted = PersistedTestCase.from_test_case(
+        alternative,
+        operation="review",
+        base_test_case_cls=base_cls,
+    )
+
+    assert localized_persisted.query == {"subtitle_1": "original"}
+    assert localized_persisted.answer == {
+        "revised_1": "corrected",
+        "note_1": "typo",
+    }
+    assert localized_persisted.test_case_id == alternative_persisted.test_case_id
 
 
 def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
@@ -38,8 +110,7 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
 
     first_report = sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation="translation",
-        variant="unit",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -48,14 +119,12 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
         first_data[1]["query"],
         first_data[1]["answer"],
         operation="translation",
-        variant="unit",
     )
 
     source_path.write_text(json.dumps(first_data[:1]), encoding="utf-8")
     second_report = sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation="translation",
-        variant="unit",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -70,13 +139,12 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     database_path = Path("test_cases.sqlite")
     source_path = Path("source.json")
     source_path.write_text(
-        json.dumps([{"query": {"q": "a"}, "answer": {"a": "b"}}]),
+        json.dumps([{"query": {"input_1": "a"}, "answer": {"output_1": "b"}}]),
         encoding="utf-8",
     )
     first_report = sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation="unit",
-        variant="basic",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -84,8 +152,7 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     source_path.write_text("[]\n", encoding="utf-8")
     second_report = sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation="unit",
-        variant="basic",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
         input_paths=[source_path.resolve()],
         dry_run=False,
     )
@@ -99,16 +166,15 @@ def test_sync_dry_run_reports_source_metadata_updates(tmp_path: Path):
     source_path = tmp_path / "source.json"
     data = [
         {
-            "query": {"q": "a"},
-            "answer": {"a": "b"},
+            "query": {"input_1": "a"},
+            "answer": {"output_1": "b"},
             "difficulty": 1,
         }
     ]
     source_path.write_text(json.dumps(data), encoding="utf-8")
     first_report = sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation="unit",
-        variant="basic",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -119,8 +185,7 @@ def test_sync_dry_run_reports_source_metadata_updates(tmp_path: Path):
     source_path.write_text(json.dumps(data), encoding="utf-8")
     dry_run_report = sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation="unit",
-        variant="basic",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
         input_paths=[source_path],
         dry_run=True,
     )
@@ -135,8 +200,7 @@ def test_sync_dry_run_reports_source_metadata_updates(tmp_path: Path):
 
     sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation="unit",
-        variant="basic",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -155,15 +219,15 @@ def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
     valid_path = tmp_path / "valid.json"
     invalid_path = tmp_path / "invalid.json"
     valid_path.write_text(
-        json.dumps([{"query": {"q": "a"}, "answer": {"a": "b"}}]),
+        json.dumps([{"query": {"input_1": "a"}, "answer": {"output_1": "b"}}]),
         encoding="utf-8",
     )
     invalid_path.write_text(
         json.dumps(
             [
                 {
-                    "query": {"q": "c"},
-                    "answer": {"a": "d"},
+                    "query": {"input_1": "c"},
+                    "answer": {"output_1": "d"},
                     "difficulty": "hard",
                 }
             ]
@@ -174,8 +238,7 @@ def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
     with raises(ScinoephileError, match="difficulty must be an integer"):
         sync_test_cases_from_json_paths(
             database_path=database_path,
-            operation="unit",
-            variant="basic",
+            operation_spec=TRANSLATION_OPERATION_SPEC,
             input_paths=[valid_path, invalid_path],
             dry_run=False,
         )
@@ -183,8 +246,8 @@ def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
     assert not database_path.exists()
 
 
-def test_sync_round_trips_localized_repository_data(tmp_path: Path):
-    """Localized fields should survive SQL persistence without prompt parsing."""
+def test_sync_normalizes_localized_repository_data(tmp_path: Path):
+    """Localized fields should be stored using base prompt English field names."""
     source_path = (
         common.package_root.parent
         / "test/data/kob/output/zho-Hant_ocr/lang/zho/review.json"
@@ -194,34 +257,26 @@ def test_sync_round_trips_localized_repository_data(tmp_path: Path):
 
     sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation="review",
-        variant="zho-hant",
+        operation_spec=REVIEW_OPERATION_SPEC,
         input_paths=[source_path],
         dry_run=False,
     )
     loaded = TestCaseSqliteStore(database_path).get_test_cases_by_source_path(
         str(source_path.resolve()),
         operation="review",
-        variant="zho-hant",
     )
 
-    raw_payloads = {
-        json.dumps(
-            {"query": item["query"], "answer": item["answer"]},
-            ensure_ascii=False,
-            sort_keys=True,
-        )
-        for item in raw_data
-    }
-    loaded_payloads = {
-        json.dumps(
-            {"query": test_case.query, "answer": test_case.answer},
-            ensure_ascii=False,
-            sort_keys=True,
-        )
+    assert len(loaded) == len(raw_data)
+    assert all(
+        all(field.startswith("subtitle_") for field in test_case.query)
         for test_case in loaded
-    }
-    assert loaded_payloads == raw_payloads
+    )
+    assert all(
+        all(field.startswith(("revised_", "note_")) for field in test_case.answer)
+        for test_case in loaded
+    )
+    raw_subtitles = {item["query"]["zimu_1"] for item in raw_data}
+    assert {test_case.query["subtitle_1"] for test_case in loaded} == raw_subtitles
 
 
 def test_sync_round_trips_unbounded_lists(tmp_path: Path):
@@ -235,8 +290,7 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
 
     sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation="yue-zho-transcription-punctuation",
-        variant="yue-hans",
+        operation_spec=YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -246,7 +300,7 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
 
     list_lengths: list[int] = []
     for test_case in loaded:
-        value = test_case.query.get("yuewen_to_punctuate")
+        value = test_case.query.get("one")
         if isinstance(value, list):
             list_lengths.append(len(value))
     assert max(list_lengths) >= 36
