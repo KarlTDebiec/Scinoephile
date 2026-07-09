@@ -19,7 +19,7 @@ from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
 )
 from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.dual_1_to_1.ocr_fusion import (
+from scinoephile.llms.ocr_fusion import (
     OcrFusionManager,
     OcrFusionProcessor,
     OcrFusionPrompt,

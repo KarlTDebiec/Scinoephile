@@ -30,7 +30,6 @@ from scinoephile.lang.zho.block_review import (
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.llms.block_review import BlockReviewManager, BlockReviewPrompt
 from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
-from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNPrompt
@@ -38,6 +37,7 @@ from scinoephile.llms.gap_translation import (
     GapTranslationManager,
     GapTranslationPrompt,
 )
+from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
 from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
@@ -175,7 +175,7 @@ def get_kob_eng_block_review_test_cases(
 
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptEng,
+    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
@@ -411,7 +411,7 @@ def get_kob_zho_hant_block_review_test_cases(
 
 @cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
+    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB zho-Hant OCR fusion test cases.

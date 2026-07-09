@@ -30,7 +30,7 @@ class OcrFusionProcessor(Processor):
     def process(
         self, source_one: Series, source_two: Series, stop_at_idx: int | None = None
     ) -> Series:
-        """Process OCR fusion dual 1 to 1 matters.
+        """Fuse two one-to-one OCR subtitle series.
 
         Arguments:
             source_one: subtitles from source one
