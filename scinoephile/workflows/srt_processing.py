@@ -13,22 +13,18 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
-from scinoephile.lang.eng.block_review import (
-    get_eng_block_reviewed,
-    get_eng_block_reviewer,
-)
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
-from scinoephile.lang.yue.romanization import get_yue_romanized
-from scinoephile.lang.zho.block_review import (
-    BlockReviewPromptZhoHans,
-    BlockReviewPromptZhoHant,
-    get_zho_block_reviewed,
-    get_zho_reviewer,
+from scinoephile.lang.yue.block_review import (
+    BlockReviewPromptYueHans,
+    BlockReviewPromptYueHant,
 )
+from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.llms.block_review import BlockReviewPrompt
+from scinoephile.workflows.block_review import review_series_blocks
 
 __all__ = [
     "SrtProcessingResult",
@@ -151,7 +147,8 @@ class SrtProcessingWorkflow:
         simplify = self._simplify(timewarp)
         simplify_review = self._review(
             simplify,
-            prompt_cls=BlockReviewPromptZhoHans,
+            language=Language.yue_hans,
+            prompt_cls=BlockReviewPromptYueHans,
             output_name="clean_review_flatten_timewarp_simplify_review",
             test_case_name="simplify_block_review.json",
             log_label=(
@@ -221,7 +218,8 @@ class SrtProcessingWorkflow:
         self,
         series: Series,
         *,
-        prompt_cls: type[BlockReviewPromptZhoHant] | None = None,
+        language: Language | None = None,
+        prompt_cls: type[BlockReviewPrompt] | None = None,
         output_name: str = "clean_review",
         test_case_name: str = "block_review.json",
         log_label: str = "Cleaned reviewed SRT output",
@@ -230,7 +228,8 @@ class SrtProcessingWorkflow:
 
         Arguments:
             series: source subtitle series
-            prompt_cls: Yue review prompt class
+            language: language to use for block review
+            prompt_cls: review prompt class
             output_name: output filename stem and output_paths key
             test_case_name: review test case JSON filename
             log_label: human-readable output label for logging
@@ -245,32 +244,30 @@ class SrtProcessingWorkflow:
             reviewer_kw = dict(self.reviewer_kw)
             reviewer_kw["auto_verify"] = True
             reviewer_kw.setdefault("additional_context", self.additional_context)
-            if self.language is Language.eng:
-                reviewer = get_eng_block_reviewer(
-                    test_case_path=self.output_dir_path
-                    / "lang"
-                    / "eng"
-                    / "block_review.json",
-                    provider=self.provider,
-                    **reviewer_kw,
-                )
-                review = get_eng_block_reviewed(series, reviewer)
+            review_language = language or self.language
+            if review_language is Language.eng:
+                test_case_language_dir_name = "eng"
             else:
                 if prompt_cls is None:
-                    if self.language is Language.yue_hant:
-                        prompt_cls = BlockReviewPromptZhoHant
+                    if review_language is Language.yue_hant:
+                        prompt_cls = BlockReviewPromptYueHant
                     else:
-                        prompt_cls = BlockReviewPromptZhoHans
+                        prompt_cls = BlockReviewPromptYueHans
+                test_case_language_dir_name = "yue"
 
-                reviewer = get_zho_reviewer(
-                    prompt_cls=prompt_cls,
-                    test_case_path=(
-                        self.output_dir_path / "lang" / "yue" / test_case_name
-                    ),
-                    provider=self.provider,
-                    **reviewer_kw,
-                )
-                review = get_zho_block_reviewed(series, processor=reviewer)
+            review = review_series_blocks(
+                series,
+                language=review_language,
+                prompt_cls=prompt_cls,
+                test_case_path=(
+                    self.output_dir_path
+                    / "lang"
+                    / test_case_language_dir_name
+                    / test_case_name
+                ),
+                provider=self.provider,
+                **reviewer_kw,
+            )
             review.save(review_path, format_="srt")
         self.output_paths[output_name] = review_path
         return review

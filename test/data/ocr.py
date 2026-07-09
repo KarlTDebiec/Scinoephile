@@ -11,21 +11,20 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
-from scinoephile.lang.eng.block_review import (
-    get_eng_block_reviewed,
-    get_eng_block_reviewer,
-)
 from scinoephile.lang.eng.flattening import get_eng_flattened
+from scinoephile.lang.yue.block_review import (
+    BlockReviewPromptYueHans,
+    BlockReviewPromptYueHant,
+)
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHans,
     BlockReviewPromptZhoHant,
-    get_zho_block_reviewed,
-    get_zho_reviewer,
 )
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.workflows.block_review import review_series_blocks
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
 
 __all__ = [
@@ -106,7 +105,10 @@ def process_ocr(
             output_dir_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
         )
         simplify_reviewer_kw = dict(reviewer_kw or {})
-        simplify_reviewer_kw["prompt_cls"] = BlockReviewPromptZhoHans
+        if language is Language.yue_hant:
+            simplify_reviewer_kw["prompt_cls"] = BlockReviewPromptYueHans
+        else:
+            simplify_reviewer_kw["prompt_cls"] = BlockReviewPromptZhoHans
         simplify_reviewer_kw["test_case_path"] = (
             output_dir_path / "lang" / language.tag[:3] / "simplify_block_review.json"
         )
@@ -256,14 +258,11 @@ def _review(
     reviewer_kw.setdefault("auto_verify", True)
 
     # Run and save
-    if language is Language.eng:
-        reviewer = get_eng_block_reviewer(**reviewer_kw)
-        review = get_eng_block_reviewed(series, reviewer)
-    else:
-        if language.script == "traditional":
-            reviewer_kw.setdefault("prompt_cls", BlockReviewPromptZhoHant)
-        reviewer = get_zho_reviewer(**reviewer_kw)
-        review = get_zho_block_reviewed(series, reviewer)
+    if language is Language.yue_hant:
+        reviewer_kw.setdefault("prompt_cls", BlockReviewPromptYueHant)
+    elif language is Language.zho_hant:
+        reviewer_kw.setdefault("prompt_cls", BlockReviewPromptZhoHant)
+    review = review_series_blocks(series, language=language, **reviewer_kw)
     review.save(path)
     return review
 

@@ -8,12 +8,6 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.cli.helpers.io import read_series, write_series
-from scinoephile.cli.helpers.llms import (
-    LLM_LOCALIZATIONS,
-    LlmArguments,
-    add_llm_provider_args,
-    read_llm_additional_context,
-)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -21,14 +15,8 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.eng.block_review import (
-    get_eng_block_reviewed,
-    get_eng_block_reviewer,
-)
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
-from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["EngProcessCli"]
 
@@ -48,7 +36,6 @@ ENG_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "shift subtitle timings by this many milliseconds": (
             "按指定毫秒数平移字幕时间"
         ),
-        "proofread subtitles using LLM": "使用大语言模型校对字幕",
     },
     "zh-hant": {
         "clean subtitles of closed-caption annotations and other anomalies": (
@@ -65,7 +52,6 @@ ENG_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "shift subtitle timings by this many milliseconds": (
             "依指定毫秒數平移字幕時間"
         ),
-        "proofread subtitles using LLM": "使用大型語言模型校對字幕",
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -74,10 +60,7 @@ ENG_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class EngProcessCli(ScinoephileCliBase):
     """Modify English subtitles."""
 
-    localizations = merge_localizations(
-        LLM_LOCALIZATIONS,
-        ENG_PROCESS_LOCALIZATIONS,
-    )
+    localizations = ENG_PROCESS_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -92,9 +75,7 @@ class EngProcessCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
-            "llm arguments",
             "output arguments",
-            "additional help",
             optional_arguments_name="additional arguments",
         )
 
@@ -118,14 +99,6 @@ class EngProcessCli(ScinoephileCliBase):
             "--flatten",
             action="store_true",
             help="flatten multi-line subtitles into single lines",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--proofread",
-            action="store_true",
-            help="proofread subtitles using LLM",
-        )
-        add_llm_provider_args(
-            arg_groups["llm arguments"], arg_groups["additional help"]
         )
         arg_groups["operation arguments"].add_argument(
             "--offset",
@@ -168,8 +141,6 @@ class EngProcessCli(ScinoephileCliBase):
         outfile_path: Path | None,
         clean: bool,
         flatten: bool,
-        proofread: bool,
-        llm_args: LlmArguments,
         offset: int,
         overwrite: bool,
     ):
@@ -177,29 +148,19 @@ class EngProcessCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
 
-        if not (clean or flatten or proofread or offset):
+        if not (clean or flatten or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
-        additional_context = read_llm_additional_context(
-            parser, llm_args.additional_context_file_path
-        )
 
         # Perform operations
         if clean:
             series = get_eng_cleaned(series)
         if flatten:
             series = get_eng_flattened(series)
-        if proofread:
-            provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
-            reviewer = get_eng_block_reviewer(
-                provider=provider,
-                additional_context=additional_context,
-            )
-            series = get_eng_block_reviewed(series, processor=reviewer)
         if offset:
             series.shift(ms=offset)
 

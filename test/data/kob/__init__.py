@@ -19,6 +19,10 @@ from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
+from scinoephile.lang.yue.block_review import (
+    BlockReviewPromptYueHans,
+    BlockReviewPromptYueHant,
+)
 from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHans,
     BlockReviewPromptZhoHant,
@@ -190,7 +194,7 @@ def get_kob_eng_ocr_fusion_test_cases(
 
 @cache
 def get_kob_yue_hans_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hans block review test cases.
@@ -212,7 +216,7 @@ def get_kob_yue_hans_block_review_test_cases(
 
 @cache
 def get_kob_yue_hant_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHant,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hant block review test cases.
@@ -234,7 +238,7 @@ def get_kob_yue_hant_block_review_test_cases(
 
 @cache
 def get_kob_yue_hant_simplify_block_review_test_cases(
-    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[BlockReviewPrompt] = BlockReviewPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hant simplification block review test cases.

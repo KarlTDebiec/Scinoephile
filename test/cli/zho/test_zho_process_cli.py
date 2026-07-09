@@ -13,7 +13,6 @@ from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 from test.helpers import assert_series_equal, parametrize, test_data_root
 
 
@@ -113,42 +112,3 @@ def test_zho_process_cli_rejects_bare_convert_flag():
 
     with raises(SystemExit, match="2"):
         run_cli_with_args(ZhoProcessCli, f"--infile {full_input_path} --convert")
-
-
-def test_zho_process_cli_passes_llm_options_to_reviewer(tmp_path):
-    """Test standard Chinese CLI constructs configured LLM provider for review."""
-    full_input_path = test_data_root / "mnt/output/zho-Hant_ocr/fuse_clean_validate.srt"
-    expected = Series.load(
-        test_data_root / "mnt/output/zho-Hant_ocr/fuse_clean_validate_review.srt"
-    )
-    context_path = tmp_path / "context.txt"
-    context_path.write_text("Use glossary terms.\n", encoding="utf-8")
-
-    def get_reviewer(
-        *,
-        prompt_cls: object,
-        provider: DeepSeekProvider,
-        additional_context: str | None,
-    ) -> str:
-        """Validate reviewer options passed by the CLI."""
-        assert prompt_cls is not None
-        assert provider.model == "custom-model"
-        assert additional_context == "Use glossary terms.\n"
-        return "proofreader"
-
-    with get_temp_file_path(".srt") as output_path:
-        with patch(
-            "scinoephile.cli.zho.zho_process_cli.get_zho_reviewer",
-            side_effect=get_reviewer,
-        ):
-            with patch(
-                "scinoephile.cli.zho.zho_process_cli.get_zho_block_reviewed",
-                return_value=expected,
-            ):
-                run_cli_with_args(
-                    ZhoProcessCli,
-                    f"--infile {full_input_path} --proofread traditional "
-                    "--llm-provider deepseek --llm-model custom-model "
-                    f"--llm-additional-content-file {context_path} "
-                    f"--outfile {output_path}",
-                )
