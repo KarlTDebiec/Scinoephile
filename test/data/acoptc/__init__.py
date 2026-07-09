@@ -21,6 +21,10 @@ from scinoephile.lang.yue.block_review import (
     BlockReviewPromptYueHans,
     BlockReviewPromptYueHant,
 )
+from scinoephile.lang.yue.ocr_fusion import (
+    OcrFusionPromptYueHans,
+    OcrFusionPromptYueHant,
+)
 from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHans,
     BlockReviewPromptZhoHant,
@@ -191,7 +195,7 @@ def get_acoptc_yue_hans_block_review_test_cases(
 
 @cache
 def get_acoptc_yue_hans_ocr_fusion_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHans,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPTC yue-Hans OCR fusion test cases.
@@ -229,7 +233,7 @@ def get_acoptc_yue_hant_block_review_test_cases(
 
 @cache
 def get_acoptc_yue_hant_ocr_fusion_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptYueHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPTC yue-Hant OCR fusion test cases.
