@@ -3,7 +3,7 @@
 """Code related to dual 1 to 1 matters using LLMs.
 
 Package hierarchy (modules may import from any above):
-* ocr_fusion / prompt
+* prompt
 * manager
 """
 
