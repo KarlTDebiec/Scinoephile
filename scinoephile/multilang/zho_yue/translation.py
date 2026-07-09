@@ -9,8 +9,8 @@ from typing import ClassVar
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.prompts import PromptZhoHans
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.dual_n_to_m import DualNToMPrompt
 from scinoephile.llms.gap_translation import GapTranslationPrompt
+from scinoephile.llms.guided_translation import GuidedTranslationPrompt
 from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
@@ -125,7 +125,7 @@ class ZhoYueGapTranslationPromptZhoHant(ZhoYueGapTranslationPromptZhoHans):
     """Config for converting simplified Chinese characters from the parent class."""
 
 
-class ZhoYueGuidedTranslationPromptZhoHans(DualNToMPrompt, PromptZhoHans):
+class ZhoYueGuidedTranslationPromptZhoHans(GuidedTranslationPrompt, PromptZhoHans):
     """Text for simplified guided standard Chinese translation from Cantonese."""
 
     # Prompt

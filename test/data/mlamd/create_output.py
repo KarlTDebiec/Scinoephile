@@ -27,7 +27,7 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
-from scinoephile.workflows.translation import translate_series_gap
+from scinoephile.workflows.translation import translate_series_gaps
 from test.data.mlamd import (
     get_mlamd_yue_deliniation_test_cases,
     get_mlamd_yue_punctuation_test_cases,
@@ -124,7 +124,7 @@ if "yue-Hans_transcribe" in actions:
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_review_translate = translate_series_gap(
+    yue_hans_review_translate = translate_series_gaps(
         zho_hans,
         yue_hans_line_reviewed,
         source_language=Language.zho_hans,

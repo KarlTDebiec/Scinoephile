@@ -10,8 +10,8 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.id import get_series_language
-from scinoephile.llms.dual_n_to_m import DualNToMProcessor
 from scinoephile.llms.gap_translation import GapTranslationProcessor
+from scinoephile.llms.guided_translation import GuidedTranslationProcessor
 from scinoephile.llms.translation import TranslationProcessor
 from scinoephile.multilang.translation.gap import get_gap_translator
 from scinoephile.multilang.translation.guided import get_guided_translator
@@ -19,7 +19,7 @@ from scinoephile.multilang.translation.standard import get_translator
 
 __all__ = [
     "translate_series",
-    "translate_series_gap",
+    "translate_series_gaps",
     "translate_series_guided",
 ]
 
@@ -61,7 +61,7 @@ def translate_series(
     return translator.process(source)
 
 
-def translate_series_gap(
+def translate_series_gaps(
     source: Series,
     target: Series,
     *,
@@ -107,7 +107,7 @@ def translate_series_guided(
     target_language: Language | None = None,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
-    translator: DualNToMProcessor | None = None,
+    translator: GuidedTranslationProcessor | None = None,
 ) -> Series:
     """Translate a subtitle series using target-language guidance.
 

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for dual n to m transforms."""
+"""Text for LLM correspondence for guided translation."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
-__all__ = ["DualNToMPrompt"]
+__all__ = ["GuidedTranslationPrompt"]
 
 
-class DualNToMPrompt(Prompt, ABC):
-    """Text for dual input blocks where outputs follow source one cardinality."""
+class GuidedTranslationPrompt(Prompt, ABC):
+    """Text for guided translation blocks."""
 
     # Query fields
     src_1_pfx: ClassVar[str] = "source_one_"

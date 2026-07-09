@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to dual n to m transforms using LLMs.
+"""Code related to guided translation using LLMs.
 
 Package hierarchy (modules may import from any above):
 * prompt
@@ -10,12 +10,12 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .manager import DualNToMManager
-from .processor import DualNToMProcessor
-from .prompt import DualNToMPrompt
+from .manager import GuidedTranslationManager
+from .processor import GuidedTranslationProcessor
+from .prompt import GuidedTranslationPrompt
 
 __all__ = [
-    "DualNToMManager",
-    "DualNToMProcessor",
-    "DualNToMPrompt",
+    "GuidedTranslationManager",
+    "GuidedTranslationProcessor",
+    "GuidedTranslationPrompt",
 ]

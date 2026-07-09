@@ -10,8 +10,8 @@ from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHans
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.dual_n_to_m import DualNToMPrompt
 from scinoephile.llms.gap_translation import GapTranslationPrompt
+from scinoephile.llms.guided_translation import GuidedTranslationPrompt
 from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
@@ -159,7 +159,7 @@ class YueEngGapTranslationPromptYueHant(YueEngGapTranslationPromptYueHans):
 
 
 class YueEngGuidedTranslationPromptYueHans(
-    DictionaryToolPrompt, DualNToMPrompt, PromptYueHans
+    DictionaryToolPrompt, GuidedTranslationPrompt, PromptYueHans
 ):
     """Text for simplified guided written Cantonese translation from English."""
 

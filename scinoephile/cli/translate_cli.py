@@ -31,7 +31,7 @@ from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.translation import (
     translate_series,
-    translate_series_gap,
+    translate_series_gaps,
     translate_series_guided,
 )
 
@@ -217,7 +217,7 @@ class TranslateCli(ScinoephileCliBase):
         try:
             if gapped_infile_path is not None:
                 target = read_series(parser, gapped_infile_path)
-                output = translate_series_gap(source, target, **kwargs)
+                output = translate_series_gaps(source, target, **kwargs)
             elif guide_infile_path is not None:
                 guide = read_series(parser, guide_infile_path)
                 output = translate_series_guided(source, guide, **kwargs)

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual n to m transforms."""
+"""Processes guided translation."""
 
 from __future__ import annotations
 
@@ -11,22 +11,22 @@ from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 
-from .manager import DualNToMManager
-from .prompt import DualNToMPrompt
+from .manager import GuidedTranslationManager
+from .prompt import GuidedTranslationPrompt
 
-__all__ = ["DualNToMProcessor"]
+__all__ = ["GuidedTranslationProcessor"]
 
 
 logger = getLogger(__name__)
 
 
-class DualNToMProcessor(Processor):
-    """Processes dual input blocks where outputs follow source one cardinality."""
+class GuidedTranslationProcessor(Processor):
+    """Processes guided translation blocks."""
 
-    prompt_cls: type[DualNToMPrompt]
+    prompt_cls: type[GuidedTranslationPrompt]
     """Text for LLM correspondence."""
 
-    manager_cls = DualNToMManager
+    manager_cls = GuidedTranslationManager
     """Manager class used to construct test case models."""
 
     def process(
@@ -35,14 +35,14 @@ class DualNToMProcessor(Processor):
         source_two: Series,
         stop_at_idx: int | None = None,
     ) -> Series:
-        """Process paired subtitle blocks with output cardinality from source one.
+        """Translate source blocks using guide blocks.
 
         Arguments:
-            source_one: primary subtitles that determine output timing and count
-            source_two: secondary subtitles providing reference text
+            source_one: source subtitles that determine output timing and count
+            source_two: guide subtitles providing target-language reference text
             stop_at_idx: stop processing at this block index
         Returns:
-            generated subtitles using source-one timing
+            translated subtitles using source-one timing
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
@@ -57,7 +57,7 @@ class DualNToMProcessor(Processor):
                 output_series_to_concatenate[blk_idx] = Series()
                 continue
 
-            test_case_cls = DualNToMManager.get_test_case_cls(
+            test_case_cls = GuidedTranslationManager.get_test_case_cls(
                 source_one_size=len(one_blk),
                 source_two_size=len(two_blk),
                 prompt_cls=self.prompt_cls,

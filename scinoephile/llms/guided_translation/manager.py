@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for dual n to m LLM classes."""
+"""Factories for guided translation LLM classes."""
 
 from __future__ import annotations
 
@@ -14,15 +14,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import DualNToMPrompt
+from .prompt import GuidedTranslationPrompt
 
-__all__ = ["DualNToMManager"]
+__all__ = ["GuidedTranslationManager"]
 
 
-class DualNToMManager(Manager):
-    """Factories for dual n to m LLM classes."""
+class GuidedTranslationManager(Manager):
+    """Factories for guided translation LLM classes."""
 
-    prompt_cls: ClassVar[type[DualNToMPrompt]] = DualNToMPrompt
+    prompt_cls: ClassVar[type[GuidedTranslationPrompt]] = GuidedTranslationPrompt
     """Default prompt class."""
 
     @classmethod
@@ -31,7 +31,7 @@ class DualNToMManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt_cls: type[DualNToMPrompt] = DualNToMPrompt,
+        prompt_cls: type[GuidedTranslationPrompt] = GuidedTranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -45,7 +45,7 @@ class DualNToMManager(Manager):
         cls._validate_sizes(source_one_size, source_two_size)
 
         name = get_model_name(
-            "DualNToMAnswer",
+            "GuidedTranslationAnswer",
             f"{source_one_size}_{source_two_size}_{prompt_cls.__name__}",
         )
         fields: dict[str, Any] = {}
@@ -71,7 +71,7 @@ class DualNToMManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt_cls: type[DualNToMPrompt] = DualNToMPrompt,
+        prompt_cls: type[GuidedTranslationPrompt] = GuidedTranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -85,7 +85,7 @@ class DualNToMManager(Manager):
         cls._validate_sizes(source_one_size, source_two_size)
 
         name = get_model_name(
-            "DualNToMQuery",
+            "GuidedTranslationQuery",
             f"{source_one_size}_{source_two_size}_{prompt_cls.__name__}",
         )
         fields: dict[str, Any] = {}
@@ -115,7 +115,7 @@ class DualNToMManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt_cls: type[DualNToMPrompt] = DualNToMPrompt,
+        prompt_cls: type[GuidedTranslationPrompt] = GuidedTranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -129,7 +129,7 @@ class DualNToMManager(Manager):
         cls._validate_sizes(source_one_size, source_two_size)
 
         name = get_model_name(
-            "DualNToMTestCase",
+            "GuidedTranslationTestCase",
             f"{source_one_size}_{source_two_size}_{prompt_cls.__name__}",
         )
         query_cls = cls.get_query_cls(source_one_size, source_two_size, prompt_cls)
@@ -169,7 +169,7 @@ class DualNToMManager(Manager):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[DualNToMPrompt], prompt_cls)
+        prompt_cls = cast(type[GuidedTranslationPrompt], prompt_cls)
         source_one_pattern = re.compile(rf"^{re.escape(prompt_cls.src_1_pfx)}\d+$")
         source_two_pattern = re.compile(rf"^{re.escape(prompt_cls.src_2_pfx)}\d+$")
         source_one_size = sum(

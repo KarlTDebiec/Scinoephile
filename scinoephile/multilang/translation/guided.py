@@ -15,10 +15,10 @@ from scinoephile.core.llms import (
     TestCase,
 )
 from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.dual_n_to_m import (
-    DualNToMManager,
-    DualNToMProcessor,
-    DualNToMPrompt,
+from scinoephile.llms.guided_translation import (
+    GuidedTranslationManager,
+    GuidedTranslationProcessor,
+    GuidedTranslationPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.eng_yue.translation import EngYueGuidedTranslationPrompt
@@ -48,8 +48,8 @@ __all__ = [
 GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="guided-translation",
     test_case_table_name="test_cases__guided_translation",
-    manager_cls=DualNToMManager,
-    prompt_cls=DualNToMPrompt,
+    manager_cls=GuidedTranslationManager,
+    prompt_cls=GuidedTranslationPrompt,
 )
 """Operation specification for guided translation."""
 
@@ -80,7 +80,7 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
 }
 """Guided translation JSON paths keyed by exact source and target languages."""
 
-_PROMPTS: dict[tuple[Language, Language], type[DualNToMPrompt]] = {
+_PROMPTS: dict[tuple[Language, Language], type[GuidedTranslationPrompt]] = {
     (Language.yue_hans, Language.eng): EngYueGuidedTranslationPrompt,
     (Language.yue_hant, Language.eng): EngYueGuidedTranslationPrompt,
     (Language.zho_hans, Language.eng): EngZhoGuidedTranslationPrompt,
@@ -104,11 +104,11 @@ _PROMPTS: dict[tuple[Language, Language], type[DualNToMPrompt]] = {
 def get_guided_translator(
     source_language: Language,
     target_language: Language,
-    prompt_cls: type[DualNToMPrompt] | None = None,
+    prompt_cls: type[GuidedTranslationPrompt] | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
-) -> DualNToMProcessor:
+) -> GuidedTranslationProcessor:
     """Get a guided translation processor for a supported language pair.
 
     Arguments:
@@ -126,9 +126,11 @@ def get_guided_translator(
     if test_cases is None:
         json_paths = _JSON_PATHS[source_language, target_language]
         test_cases = list(
-            load_default_test_cases(DualNToMManager, prompt_cls, json_paths)
+            load_default_test_cases(GuidedTranslationManager, prompt_cls, json_paths)
         )
     if provider is None:
         provider = get_provider()
 
-    return DualNToMProcessor(prompt_cls, test_cases, provider=provider, **kwargs)
+    return GuidedTranslationProcessor(
+        prompt_cls, test_cases, provider=provider, **kwargs
+    )

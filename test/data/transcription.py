@@ -31,7 +31,7 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
-from scinoephile.workflows.translation import translate_series_gap
+from scinoephile.workflows.translation import translate_series_gaps
 
 __all__ = ["process_yue_hans_transcription"]
 
@@ -204,7 +204,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         translator = get_gap_translator(
             Language.zho_hans, Language.yue_hans, **translator_kw
         )
-        translate = translate_series_gap(
+        translate = translate_series_gaps(
             zho,
             line_review,
             source_language=Language.zho_hans,

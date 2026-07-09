@@ -28,7 +28,10 @@ from scinoephile.lang.zho.ocr_fusion import (
 from scinoephile.llms.block_review import BlockReviewManager, BlockReviewPrompt
 from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
-from scinoephile.llms.dual_n_to_m import DualNToMManager, DualNToMPrompt
+from scinoephile.llms.guided_translation import (
+    GuidedTranslationManager,
+    GuidedTranslationPrompt,
+)
 from test.data.prompts import EngZhoYueGuidedTranslationPrompt
 from test.helpers import test_data_root
 
@@ -144,7 +147,7 @@ def get_mnt_eng_ocr_fusion_test_cases(
 
 @cache
 def get_mnt_eng_zho_guided_translation_test_cases(
-    prompt_cls: type[DualNToMPrompt] = EngZhoYueGuidedTranslationPrompt,
+    prompt_cls: type[GuidedTranslationPrompt] = EngZhoYueGuidedTranslationPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English-from-Cantonese guided translation test cases.
@@ -157,7 +160,7 @@ def get_mnt_eng_zho_guided_translation_test_cases(
     """
     path = output_dir / "yue_eng/multilang/eng_zho/guided_translation.json"
     return load_test_cases_from_json(
-        path, DualNToMManager, prompt_cls=prompt_cls, **kwargs
+        path, GuidedTranslationManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

@@ -8,8 +8,8 @@ from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
-from scinoephile.llms.dual_n_to_m import DualNToMPrompt
 from scinoephile.llms.gap_translation import GapTranslationPrompt
+from scinoephile.llms.guided_translation import GuidedTranslationPrompt
 from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
@@ -102,7 +102,7 @@ class EngZhoGapTranslationPrompt(GapTranslationPrompt, PromptEng):
     """Description template for generated English output fields in answer."""
 
 
-class EngZhoGuidedTranslationPrompt(DualNToMPrompt, PromptEng):
+class EngZhoGuidedTranslationPrompt(GuidedTranslationPrompt, PromptEng):
     """Text for guided translation of English from Chinese with English guidance."""
 
     # Prompt
