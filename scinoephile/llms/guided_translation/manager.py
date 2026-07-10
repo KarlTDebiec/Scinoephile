@@ -39,7 +39,7 @@ class GuidedTranslationManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt(),
+        prompt: GuidedTranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -79,7 +79,7 @@ class GuidedTranslationManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt(),
+        prompt: GuidedTranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -123,7 +123,7 @@ class GuidedTranslationManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt(),
+        prompt: GuidedTranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 

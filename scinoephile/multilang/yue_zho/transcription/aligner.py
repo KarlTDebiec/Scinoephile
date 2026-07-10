@@ -118,7 +118,7 @@ class Aligner:
                 continue
             # TODO: try/except and return original written Cantonese on error
             # (not yet encountered).
-            test_case: TestCase = self.delineation_queryer.call(test_case)
+            test_case: TestCase = self.delineation_queryer(test_case)
 
             # If there is no change, continue
             query = test_case.query
@@ -315,7 +315,7 @@ class Aligner:
                 nascent_sg.append(([zw_idx], []))
                 continue
             try:
-                test_case = self.punctuation_queryer.call(test_case)
+                test_case = self.punctuation_queryer(test_case)
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
                 logger.error(

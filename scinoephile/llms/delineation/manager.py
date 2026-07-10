@@ -29,7 +29,7 @@ class DelineationManager(Manager):
     @cache
     def get_query_cls(
         cls,
-        prompt: DelineationPrompt = DelineationPrompt(),
+        prompt: DelineationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -76,7 +76,7 @@ class DelineationManager(Manager):
     @cache
     def get_answer_cls(
         cls,
-        prompt: DelineationPrompt = DelineationPrompt(),
+        prompt: DelineationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 

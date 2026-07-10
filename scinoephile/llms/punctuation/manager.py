@@ -29,7 +29,7 @@ class PunctuationManager(Manager):
     @cache
     def get_query_cls(
         cls,
-        prompt: PunctuationPrompt = PunctuationPrompt(),
+        prompt: PunctuationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -68,7 +68,7 @@ class PunctuationManager(Manager):
     @cache
     def get_answer_cls(
         cls,
-        prompt: PunctuationPrompt = PunctuationPrompt(),
+        prompt: PunctuationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 

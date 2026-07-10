@@ -39,7 +39,7 @@ class GuidedReviewManager(Manager):
         cls,
         target_size: int,
         guide_size: int,
-        prompt: GuidedReviewPrompt = GuidedReviewPrompt(),
+        prompt: GuidedReviewPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided block sizes.
 
@@ -81,7 +81,7 @@ class GuidedReviewManager(Manager):
         cls,
         target_size: int,
         guide_size: int,
-        prompt: GuidedReviewPrompt = GuidedReviewPrompt(),
+        prompt: GuidedReviewPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided block sizes.
 
@@ -124,7 +124,7 @@ class GuidedReviewManager(Manager):
         cls,
         target_size: int,
         guide_size: int,
-        prompt: GuidedReviewPrompt = GuidedReviewPrompt(),
+        prompt: GuidedReviewPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided block sizes.
 

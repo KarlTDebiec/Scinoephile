@@ -37,7 +37,7 @@ class TranslationManager(Manager):
     def get_query_cls(
         cls,
         size: int,
-        prompt: TranslationPrompt = TranslationPrompt(),
+        prompt: TranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -69,7 +69,7 @@ class TranslationManager(Manager):
     def get_answer_cls(
         cls,
         size: int,
-        prompt: TranslationPrompt = TranslationPrompt(),
+        prompt: TranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -101,7 +101,7 @@ class TranslationManager(Manager):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt: TranslationPrompt = TranslationPrompt(),
+        prompt: TranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 

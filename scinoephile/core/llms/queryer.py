@@ -1,16 +1,16 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for LLM queryers."""
+"""LLM query execution."""
 
 from __future__ import annotations
 
 import hashlib
 import json
-from abc import ABC
 from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
+from typing import cast
 
 from pydantic import ValidationError
 
@@ -29,14 +29,14 @@ __all__ = ["Queryer"]
 logger = getLogger(__name__)
 
 
-class Queryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
-    """ABC for LLM queryers."""
+class Queryer:
+    """Execute LLM queries using a prompt and provider."""
 
     def __init__(
         self,
         prompt: Prompt,
-        few_shot_test_cases: list[TTestCase] | None = None,
-        verified_test_cases: list[TTestCase] | None = None,
+        few_shot_test_cases: list[TestCase] | None = None,
+        verified_test_cases: list[TestCase] | None = None,
         *,
         provider: LLMProvider,
         cache_dir_path: Path | str | None = None,
@@ -71,7 +71,7 @@ class Queryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             tc.query.key: tc for tc in verified_test_cases or []
         }
         """Test cases whose answers are verified for which LLM will not be queried."""
-        self.encountered_test_cases: dict[tuple, TTestCase] = {}
+        self.encountered_test_cases: dict[tuple, TestCase] = {}
         """Test cases actually encountered."""
 
         self.cache_dir_path = None
@@ -88,18 +88,8 @@ class Queryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         self.tool_box = tool_box or ToolBox()
         """Available tools and handlers."""
 
-    def __call__(self, test_case: TTestCase) -> TTestCase:
+    def __call__[TTestCase: TestCase](self, test_case: TTestCase) -> TTestCase:
         """Query LLM.
-
-        Arguments:
-            test_case: test case containing query for LLM
-        Returns:
-            test case including LLM's answer
-        """
-        return self.call(test_case)
-
-    def call(self, test_case: TTestCase) -> TTestCase:
-        """Query LLM synchronously.
 
         Arguments:
             test_case: test case containing query for LLM
@@ -108,7 +98,7 @@ class Queryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         """
         # Load from verified if available
         if verified_test_case := self._get_verified_test_case(test_case.query):
-            return verified_test_case
+            return cast(TTestCase, verified_test_case)
 
         # Load from cache if available
         system_prompt = self._get_system_prompt(test_case.answer_cls)
@@ -231,7 +221,7 @@ class Queryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
             )
         return few_shot
 
-    def log_encountered_test_case(self, test_case: TTestCase):
+    def log_encountered_test_case(self, test_case: TestCase):
         """Log a test case as having been encountered.
 
         Arguments:
@@ -263,7 +253,7 @@ class Queryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
-    def _get_cached_test_case(
+    def _get_cached_test_case[TTestCase: TestCase](
         self, system_prompt: str, tools_json: str, test_case: TTestCase
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
@@ -325,7 +315,7 @@ class Queryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
 
         return system_prompt
 
-    def _get_verified_test_case(self, query: TQuery) -> TTestCase | None:
+    def _get_verified_test_case(self, query: Query) -> TestCase | None:
         """Get verified test case for the given query if available.
 
         Arguments:

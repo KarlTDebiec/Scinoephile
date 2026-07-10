@@ -29,7 +29,7 @@ class PairwiseReviewManager(Manager):
     @cache
     def get_answer_cls(
         cls,
-        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt(),
+        prompt: PairwiseReviewPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -61,7 +61,7 @@ class PairwiseReviewManager(Manager):
     @cache
     def get_query_cls(
         cls,
-        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt(),
+        prompt: PairwiseReviewPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 

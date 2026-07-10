@@ -38,7 +38,7 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt: GapTranslationPrompt = GapTranslationPrompt(),
+        prompt: GapTranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -85,7 +85,7 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt: GapTranslationPrompt = GapTranslationPrompt(),
+        prompt: GapTranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -128,7 +128,7 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt: GapTranslationPrompt = GapTranslationPrompt(),
+        prompt: GapTranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 

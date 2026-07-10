@@ -37,7 +37,7 @@ class ReviewManager(Manager):
     def get_answer_cls(
         cls,
         size: int,
-        prompt: ReviewPrompt = ReviewPrompt(),
+        prompt: ReviewPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -72,7 +72,7 @@ class ReviewManager(Manager):
     def get_query_cls(
         cls,
         size: int,
-        prompt: ReviewPrompt = ReviewPrompt(),
+        prompt: ReviewPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -104,7 +104,7 @@ class ReviewManager(Manager):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt: ReviewPrompt = ReviewPrompt(),
+        prompt: ReviewPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 

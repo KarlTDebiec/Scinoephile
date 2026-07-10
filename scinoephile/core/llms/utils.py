@@ -19,11 +19,11 @@ __all__ = [
 ]
 
 
-def load_test_cases_from_json[TTestCase: TestCase](
+def load_test_cases_from_json(
     input_path: Path,
     manager_cls: type[Manager],
     prompt: Prompt,
-) -> list[TTestCase]:
+) -> list[TestCase]:
     """Load test cases from JSON file.
 
     Arguments:
@@ -36,14 +36,14 @@ def load_test_cases_from_json[TTestCase: TestCase](
     with open(input_path, encoding="utf-8") as f:
         raw_test_cases: list[dict] = json.load(f)
 
-    test_cases: list[TTestCase] = []
+    test_cases: list[TestCase] = []
     for test_case_data in raw_test_cases:
         base_test_case_cls = manager_cls.get_test_case_cls_from_data(test_case_data)
         base_test_case = base_test_case_cls.model_validate(
             test_case_data,
             extra="forbid",
         )
-        test_case_cls: type[TTestCase] = manager_cls.get_test_case_cls_with_prompt(
+        test_case_cls = manager_cls.get_test_case_cls_with_prompt(
             base_test_case_cls,
             prompt,
         )

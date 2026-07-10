@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar
 
 from pydantic import Field, create_model, model_validator
 
@@ -27,7 +27,7 @@ class OcrFusionManager(Manager):
 
     @classmethod
     @cache
-    def get_answer_cls[TAnswer: Answer](cls, prompt: OcrFusionPrompt) -> type[TAnswer]:
+    def get_answer_cls(cls, prompt: OcrFusionPrompt) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
@@ -44,22 +44,19 @@ class OcrFusionManager(Manager):
             "validate_answer": model_validator(mode="after")(cls.validate_answer),
         }
 
-        model = cast(
-            "type[TAnswer]",
-            create_model(
-                name,
-                __base__=Answer,
-                __module__=Answer.__module__,
-                __validators__=validators,
-                **fields,
-            ),
+        model = create_model(
+            name,
+            __base__=Answer,
+            __module__=Answer.__module__,
+            __validators__=validators,
+            **fields,
         )
         model.prompt = prompt
         return model
 
     @classmethod
     @cache
-    def get_query_cls[TQuery: Query](cls, prompt: OcrFusionPrompt) -> type[TQuery]:
+    def get_query_cls(cls, prompt: OcrFusionPrompt) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
@@ -76,15 +73,12 @@ class OcrFusionManager(Manager):
             "validate_query": model_validator(mode="after")(cls.validate_query),
         }
 
-        model = cast(
-            "type[TQuery]",
-            create_model(
-                name,
-                __base__=Query,
-                __module__=Query.__module__,
-                __validators__=validators,
-                **fields,
-            ),
+        model = create_model(
+            name,
+            __base__=Query,
+            __module__=Query.__module__,
+            __validators__=validators,
+            **fields,
         )
         model.prompt = prompt
         return model
