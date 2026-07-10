@@ -16,9 +16,9 @@ def test_prompt_specs_are_stable_and_manager_compatible():
     for alias, prompt_spec in PROMPT_SPECS.items():
         assert prompt_spec.alias == alias
         assert OPERATIONS[prompt_spec.manager_cls.operation] is prompt_spec.manager_cls
-        assert issubclass(prompt_spec.prompt_cls, prompt_spec.manager_cls.prompt_cls)
-        persisted = PersistedPrompt.from_prompt_cls(
-            prompt_spec.prompt_cls,
+        assert isinstance(prompt_spec.prompt, type(prompt_spec.manager_cls.base_prompt))
+        persisted = PersistedPrompt.from_prompt(
+            prompt_spec.prompt,
             prompt_spec.manager_cls,
         )
         assert isinstance(persisted.language, Language)
@@ -29,12 +29,12 @@ def test_prompt_specs_preserve_distinct_workflow_aliases():
     first = PROMPT_SPECS["guided-review-eng-vs-yue-hans"]
     second = PROMPT_SPECS["guided-review-eng-vs-zho-hans"]
 
-    first_prompt = PersistedPrompt.from_prompt_cls(
-        first.prompt_cls,
+    first_prompt = PersistedPrompt.from_prompt(
+        first.prompt,
         first.manager_cls,
     )
-    second_prompt = PersistedPrompt.from_prompt_cls(
-        second.prompt_cls,
+    second_prompt = PersistedPrompt.from_prompt(
+        second.prompt,
         second.manager_cls,
     )
 

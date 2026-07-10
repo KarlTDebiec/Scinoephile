@@ -67,7 +67,7 @@ _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
 }
 """Review JSON paths keyed by language."""
 
-_PROMPTS: dict[Language, type[ReviewPrompt]] = {
+_PROMPTS: dict[Language, ReviewPrompt] = {
     Language.eng: ReviewPromptEng,
     Language.yue_hans: ReviewPromptYueHans,
     Language.yue_hant: ReviewPromptYueHant,
@@ -79,7 +79,7 @@ _PROMPTS: dict[Language, type[ReviewPrompt]] = {
 
 def get_reviewer(
     language: Language,
-    prompt_cls: type[ReviewPrompt] | None = None,
+    prompt: ReviewPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
@@ -88,7 +88,7 @@ def get_reviewer(
 
     Arguments:
         language: subtitle language
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
         **kwargs: additional keyword arguments for ReviewProcessor
@@ -100,13 +100,11 @@ def get_reviewer(
     if language not in _PROMPTS:
         raise ScinoephileError(f"Review does not support language {language.tag}")
 
-    if prompt_cls is None:
-        prompt_cls = _PROMPTS[language]
+    if prompt is None:
+        prompt = _PROMPTS[language]
     if test_cases is None:
         json_paths = _JSON_PATHS[language]
-        test_cases = list(
-            load_default_test_cases(ReviewManager, prompt_cls, json_paths)
-        )
+        test_cases = list(load_default_test_cases(ReviewManager, prompt, json_paths))
     if provider is None:
         provider = get_provider()
-    return ReviewProcessor(prompt_cls, test_cases, provider=provider, **kwargs)
+    return ReviewProcessor(prompt, test_cases, provider=provider, **kwargs)

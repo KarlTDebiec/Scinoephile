@@ -15,6 +15,8 @@ __all__ = ["GapTranslationPrompt"]
 class GapTranslationPrompt(Prompt, ABC):
     """Text for LLM correspondence for gap translation matters."""
 
+    __slots__ = ()
+
     # Query fields
     src_1_pfx: ClassVar[str] = "one_"
     """Prefix for source one fields in query."""
@@ -36,39 +38,32 @@ class GapTranslationPrompt(Prompt, ABC):
     """Description template for output fields in answer."""
 
     # Query fields
-    @classmethod
-    def src_1(cls, idx: int) -> str:
+    def src_1(self, idx: int) -> str:
         """Name of source one field in query."""
-        return f"{cls.src_1_pfx}{idx}"
+        return f"{self.src_1_pfx}{idx}"
 
-    @classmethod
-    def src_1_desc(cls, idx: int) -> str:
+    def src_1_desc(self, idx: int) -> str:
         """Description of source one field in query."""
-        return cls.src_1_desc_tpl.format(idx=idx)
+        return self.src_1_desc_tpl.format(idx=idx)
 
-    @classmethod
-    def src_2(cls, idx: int) -> str:
+    def src_2(self, idx: int) -> str:
         """Name of source two field in query."""
-        return f"{cls.src_2_pfx}{idx}"
+        return f"{self.src_2_pfx}{idx}"
 
-    @classmethod
-    def src_2_desc(cls, idx: int) -> str:
+    def src_2_desc(self, idx: int) -> str:
         """Description of source two field in query."""
-        return cls.src_2_desc_tpl.format(idx=idx)
+        return self.src_2_desc_tpl.format(idx=idx)
 
     # Answer fields
-    @classmethod
-    def output_contains_note_err(cls, idx: int) -> str:
+    def output_contains_note_err(self, idx: int) -> str:
         """Error when output includes note-like text."""
-        template = getattr(cls, "output_contains_note_err_tpl")
+        template = getattr(self, "output_contains_note_err_tpl")
         return str(template).format(idx=idx)
 
-    @classmethod
-    def output(cls, idx: int) -> str:
+    def output(self, idx: int) -> str:
         """Name of output field in answer."""
-        return f"{cls.output_pfx}{idx}"
+        return f"{self.output_pfx}{idx}"
 
-    @classmethod
-    def output_desc(cls, idx: int) -> str:
+    def output_desc(self, idx: int) -> str:
         """Description of output subtitle field in answer."""
-        return cls.output_desc_tpl.format(idx=idx)
+        return self.output_desc_tpl.format(idx=idx)

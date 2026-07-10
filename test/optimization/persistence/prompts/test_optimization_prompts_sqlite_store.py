@@ -8,7 +8,6 @@ import sqlite3
 from contextlib import closing
 from dataclasses import replace
 from pathlib import Path
-from typing import ClassVar
 
 from pydantic import JsonValue
 from pytest import raises
@@ -27,12 +26,10 @@ from scinoephile.optimization.persistence.test_cases import (
 )
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
-
-class _UpdatedReviewPrompt(ReviewPromptEng):
-    """English review prompt with updated zero-shot instructions."""
-
-    base_system_prompt: ClassVar[str] = "Review subtitles with exceptional care."
-    """Base system prompt."""
+_UPDATED_REVIEW_PROMPT = ReviewPromptEng.with_attributes(
+    {"base_system_prompt": "Review subtitles with exceptional care."}
+)
+"""English review prompt with updated zero-shot instructions."""
 
 
 def test_store_round_trips_prompts_and_aliases(tmp_path: Path):
@@ -43,7 +40,7 @@ def test_store_round_trips_prompts_and_aliases(tmp_path: Path):
     """
     database_path = tmp_path / "optimization.sqlite"
     store = PromptSqliteStore(database_path)
-    prompt = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
+    prompt = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
 
     changes = store.sync_aliases({"review-eng": prompt}, dry_run=False)
     loaded = store.get_prompt(prompt.prompt_id)
@@ -82,7 +79,7 @@ def test_store_shares_database_with_test_cases(tmp_path: Path):
     database_path = tmp_path / "optimization.sqlite"
     prompt_store = PromptSqliteStore(database_path)
     test_case_store = TestCaseSqliteStore(database_path)
-    prompt = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
+    prompt = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
     query: dict[str, JsonValue] = {"input_1": "Hello"}
     answer: dict[str, JsonValue] = {"output_1": "Hello"}
     test_case = PersistedTestCase(
@@ -123,7 +120,7 @@ def test_store_deduplicates_content_across_aliases(tmp_path: Path):
     """
     database_path = tmp_path / "optimization.sqlite"
     store = PromptSqliteStore(database_path)
-    prompt = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
+    prompt = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
 
     store.sync_aliases(
         {
@@ -147,7 +144,7 @@ def test_store_filters_prompts_by_operation(tmp_path: Path):
     """
     database_path = tmp_path / "optimization.sqlite"
     store = PromptSqliteStore(database_path)
-    prompt = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
+    prompt = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
     store.sync_aliases({"review-eng": prompt}, dry_run=False)
 
     assert store.list_prompts(manager_cls=ReviewManager)
@@ -162,8 +159,8 @@ def test_store_moves_alias_without_deleting_history(tmp_path: Path):
     """
     database_path = tmp_path / "optimization.sqlite"
     store = PromptSqliteStore(database_path)
-    original = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
-    updated = PersistedPrompt.from_prompt_cls(_UpdatedReviewPrompt, ReviewManager)
+    original = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
+    updated = PersistedPrompt.from_prompt(_UPDATED_REVIEW_PROMPT, ReviewManager)
     store.sync_aliases({"review-eng": original}, dry_run=False)
 
     changes = store.sync_aliases({"review-eng": updated}, dry_run=False)
@@ -185,7 +182,7 @@ def test_store_dry_run_does_not_create_database(tmp_path: Path):
     """
     database_path = tmp_path / "optimization.sqlite"
     store = PromptSqliteStore(database_path)
-    prompt = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
+    prompt = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
 
     changes = store.sync_aliases({"review-eng": prompt}, dry_run=True)
 
@@ -201,7 +198,7 @@ def test_store_rejects_invalid_alias_and_id(tmp_path: Path):
     """
     database_path = tmp_path / "optimization.sqlite"
     store = PromptSqliteStore(database_path)
-    prompt = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
+    prompt = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
 
     with raises(ScinoephileError, match="outer whitespace"):
         store.sync_aliases({" review-eng": prompt}, dry_run=False)
@@ -234,16 +231,15 @@ def test_store_rejects_non_string_persisted_attributes(tmp_path: Path):
         store.get_prompt("corrupted")
 
 
-def test_store_rejects_unsupported_schema(tmp_path: Path):
-    """Reads should reject databases from another optimization schema.
+def test_test_case_store_reads_prompt_only_database_as_empty(tmp_path: Path):
+    """Component stores should treat absent peer tables as empty.
 
     Arguments:
         tmp_path: temporary directory
     """
     database_path = tmp_path / "optimization.sqlite"
-    with closing(sqlite3.connect(database_path)) as connection:
-        connection.execute("PRAGMA user_version=4")
-    store = PromptSqliteStore(database_path)
+    PromptSqliteStore(database_path).create_schema()
+    store = TestCaseSqliteStore(database_path)
 
-    with raises(ScinoephileError, match="schema version 4 is unsupported"):
-        store.get_prompt("missing")
+    assert store.get_test_case("missing") is None
+    assert store.get_test_cases_by_source_path("missing.json") == []

@@ -258,12 +258,15 @@ def test_store_syncs_shared_source_path_within_operation(tmp_path: Path):
     assert loaded_translation.source_paths == ("source.json",)
 
 
-def test_store_rejects_legacy_schema(tmp_path: Path):
-    """Writing should reject rather than silently relabel a legacy schema."""
+def test_store_does_not_manage_a_global_schema_version(tmp_path: Path):
+    """Component table creation should leave SQLite user versions untouched."""
     database_path = tmp_path / "test_cases.sqlite"
     with closing(sqlite3.connect(database_path)) as connection:
         connection.execute("PRAGMA user_version=3")
     store = TestCaseSqliteStore(database_path)
 
-    with raises(ScinoephileError, match="schema version 3 is unsupported"):
-        store.create_schema()
+    store.create_schema()
+
+    with closing(sqlite3.connect(database_path)) as connection:
+        version = connection.execute("PRAGMA user_version").fetchone()[0]
+    assert version == 3

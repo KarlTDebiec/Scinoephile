@@ -1,39 +1,38 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for declarative prompt definition and materialization."""
+"""Tests for immutable prompt values."""
 
 from __future__ import annotations
 
+from pytest import raises
+
 from scinoephile.core import Language
 from scinoephile.lang.eng.review import ReviewPromptEng
-from scinoephile.llms import PromptDefinition
 from scinoephile.llms.review import ReviewPrompt
 
 
-def test_definition_materializes_cached_language_aware_prompt_class():
-    """Equivalent definitions should reuse one language-aware runtime class."""
-    definition = PromptDefinition.from_prompt_cls(ReviewPromptEng)
-
-    first_prompt_cls = definition.get_prompt_cls(ReviewPrompt)
-    second_prompt_cls = definition.get_prompt_cls(ReviewPrompt)
-
-    assert first_prompt_cls is second_prompt_cls
-    assert first_prompt_cls.language == Language.eng
-    assert first_prompt_cls.base_system_prompt == ReviewPromptEng.base_system_prompt
-
-
-def test_definition_language_changes_runtime_class_identity():
-    """The declared language should participate in runtime class identity."""
-    definition = PromptDefinition.from_prompt_cls(ReviewPromptEng)
-    translated_definition = PromptDefinition.from_attributes(
-        Language.zho_hant,
-        dict(definition.attributes),
+def test_prompt_values_are_hashable_and_content_addressed():
+    """Equivalent prompt values should compare and hash by content."""
+    equivalent = ReviewPrompt.from_attributes(
+        ReviewPromptEng.language,
+        dict(ReviewPromptEng.attributes),
     )
 
-    translated_prompt_cls = translated_definition.get_prompt_cls(ReviewPrompt)
+    assert equivalent == ReviewPromptEng
+    assert hash(equivalent) == hash(ReviewPromptEng)
+    assert equivalent.name == ReviewPromptEng.name
 
-    assert translated_prompt_cls is not ReviewPromptEng
-    assert translated_prompt_cls.language == Language.zho_hant
-    assert (
-        translated_prompt_cls.base_system_prompt == ReviewPromptEng.base_system_prompt
-    )
+
+def test_prompt_transformation_preserves_type_and_changes_language():
+    """Transforming a prompt should return another value of the same operation type."""
+    transformed = ReviewPromptEng.transformed(Language.zho_hant, str.upper)
+
+    assert isinstance(transformed, ReviewPrompt)
+    assert transformed.language == Language.zho_hant
+    assert transformed.base_system_prompt == ReviewPromptEng.base_system_prompt.upper()
+
+
+def test_prompt_values_are_immutable():
+    """Prompt values should reject mutation."""
+    with raises((AttributeError, TypeError)):
+        setattr(ReviewPromptEng, "base_system_prompt", "changed")

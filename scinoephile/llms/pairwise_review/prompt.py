@@ -15,6 +15,8 @@ __all__ = ["PairwiseReviewPrompt"]
 class PairwiseReviewPrompt(Prompt, ABC):
     """Text for reviewing one subtitle against one reference subtitle."""
 
+    __slots__ = ()
+
     # Query fields
     target: ClassVar[str] = "target"
     """Name of target field in query."""

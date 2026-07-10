@@ -13,6 +13,7 @@ from sqlalchemy import (
     Column,
     ForeignKey,
     Index,
+    MetaData,
     Table,
     Text,
     inspect,
@@ -27,7 +28,6 @@ from scinoephile.core.llms import Manager
 from scinoephile.optimization.persistence.sqlite import (
     OptimizationSqliteStore,
     load_json_object,
-    metadata,
     serialize_json_object,
 )
 
@@ -38,13 +38,16 @@ __all__ = ["PromptSqliteStore"]
 
 logger = getLogger(__name__)
 
+_metadata = MetaData()
+"""SQLAlchemy metadata owned by prompt persistence."""
+
 
 class PromptSqliteStore(OptimizationSqliteStore):
     """Normalized SQLite persistence and lookup for zero-shot prompts."""
 
     _prompts = Table(
         "prompts",
-        metadata,
+        _metadata,
         Column("prompt_id", Text, primary_key=True),
         Column("operation", Text, nullable=False),
         Column("language", Text, nullable=False),
@@ -63,7 +66,7 @@ class PromptSqliteStore(OptimizationSqliteStore):
 
     _prompt_aliases = Table(
         "prompt_aliases",
-        metadata,
+        _metadata,
         Column("alias", Text, primary_key=True),
         Column(
             "prompt_id",
@@ -74,6 +77,10 @@ class PromptSqliteStore(OptimizationSqliteStore):
         Index("prompt_aliases_prompt_id", "prompt_id"),
     )
     """Stable aliases pointing to current zero-shot prompts."""
+
+    def create_schema(self):
+        """Create the prompt tables if needed."""
+        self._create_tables(_metadata)
 
     def get_prompt(self, prompt_id: str) -> PersistedPrompt | None:
         """Fetch a single prompt by ID.
@@ -86,10 +93,6 @@ class PromptSqliteStore(OptimizationSqliteStore):
         if not self.database_path.exists():
             return None
         with self.engine.connect() as connection:
-            version = self._get_schema_version(connection)
-            if version == 0:
-                return None
-            self._require_current_schema(version)
             if not inspect(connection).has_table("prompts"):
                 return None
             row = (
@@ -114,10 +117,6 @@ class PromptSqliteStore(OptimizationSqliteStore):
         if not self.database_path.exists():
             return None
         with self.engine.connect() as connection:
-            version = self._get_schema_version(connection)
-            if version == 0:
-                return None
-            self._require_current_schema(version)
             if not inspect(connection).has_table("prompt_aliases"):
                 return None
             row = (
@@ -148,10 +147,6 @@ class PromptSqliteStore(OptimizationSqliteStore):
         if not self.database_path.exists():
             return []
         with self.engine.connect() as connection:
-            version = self._get_schema_version(connection)
-            if version == 0:
-                return []
-            self._require_current_schema(version)
             if not inspect(connection).has_table("prompts"):
                 return []
             statement = select(self._prompts)
@@ -223,11 +218,8 @@ class PromptSqliteStore(OptimizationSqliteStore):
 
         if dry_run:
             with self.engine.connect() as connection:
-                version = self._get_schema_version(connection)
-                if version == 0:
-                    return (set(prompts_by_id), set(alias_prompts), set())
-                self._require_current_schema(version)
-                if not inspect(connection).has_table("prompts"):
+                table_names = set(inspect(connection).get_table_names())
+                if not {"prompts", "prompt_aliases"} <= table_names:
                     return (set(prompts_by_id), set(alias_prompts), set())
                 return self._get_changes(connection, alias_prompts, prompts_by_id)
 

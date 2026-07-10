@@ -10,8 +10,8 @@ from pathlib import Path
 from typing import Any, cast
 
 from pydantic import JsonValue
-from sqlalchemy import MetaData, create_engine, text
-from sqlalchemy.engine import URL, Connection
+from sqlalchemy import MetaData, create_engine
+from sqlalchemy.engine import URL
 from sqlalchemy.event import listen
 from sqlalchemy.pool import NullPool
 
@@ -21,12 +21,8 @@ from scinoephile.core.exceptions import ScinoephileError
 __all__ = [
     "OptimizationSqliteStore",
     "load_json_object",
-    "metadata",
     "serialize_json_object",
 ]
-
-metadata = MetaData()
-"""SQLAlchemy Core metadata for the optimization catalog."""
 
 
 def load_json_object(value: object, subject: str) -> dict[str, JsonValue]:
@@ -68,10 +64,7 @@ def serialize_json_object(value: Mapping[str, JsonValue]) -> str:
 
 
 class OptimizationSqliteStore:
-    """Shared SQLite connection and schema management for optimization data."""
-
-    schema_version = 6
-    """SQLite schema version."""
+    """Shared SQLite connection infrastructure for optimization data."""
 
     def __init__(self, database_path: Path):
         """Initialize.
@@ -91,22 +84,15 @@ class OptimizationSqliteStore:
         )
         listen(self.engine, "connect", self._enable_sqlite_foreign_keys)
 
-    def create_schema(self):
-        """Create the current SQLite schema if needed.
+    def _create_tables(self, metadata: MetaData):
+        """Create one store's tables if needed.
 
-        Raises:
-            ScinoephileError: if the database uses an unsupported schema version
+        Arguments:
+            metadata: component-owned SQLAlchemy table metadata
         """
         self.database_path = val_output_path(self.database_path, exist_ok=True)
         with self.engine.begin() as connection:
-            version = self._get_schema_version(connection)
-            if version not in {0, self.schema_version}:
-                raise ScinoephileError(
-                    f"SQLite optimization schema version {version} is unsupported; "
-                    "create a new database."
-                )
             metadata.create_all(connection)
-            connection.execute(text(f"PRAGMA user_version={self.schema_version}"))
 
     @staticmethod
     def _enable_sqlite_foreign_keys(
@@ -117,29 +103,3 @@ class OptimizationSqliteStore:
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON")
         cursor.close()
-
-    @staticmethod
-    def _get_schema_version(connection: Connection) -> int:
-        """Get the SQLite user schema version.
-
-        Arguments:
-            connection: SQLAlchemy connection
-        Returns:
-            SQLite user schema version
-        """
-        return int(connection.execute(text("PRAGMA user_version")).scalar_one())
-
-    @classmethod
-    def _require_current_schema(cls, version: int):
-        """Require the current optimization schema version.
-
-        Arguments:
-            version: SQLite user schema version
-        Raises:
-            ScinoephileError: if the schema version is unsupported
-        """
-        if version != cls.schema_version:
-            raise ScinoephileError(
-                f"SQLite optimization schema version {version} is unsupported; "
-                "create a new database."
-            )

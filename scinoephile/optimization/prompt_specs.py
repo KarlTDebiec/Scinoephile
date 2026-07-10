@@ -45,8 +45,8 @@ class PromptSpec:
     """Stable workflow-facing alias."""
     manager_cls: type[Manager]
     """Manager defining the prompt's operation and base contract."""
-    prompt_cls: type[Prompt]
-    """Concrete zero-shot prompt class."""
+    prompt: Prompt
+    """Concrete zero-shot prompt."""
 
 
 _PROMPT_SPECS = {
@@ -54,17 +54,17 @@ _PROMPT_SPECS = {
         f"review-{language.tag.lower()}": PromptSpec(
             alias=f"review-{language.tag.lower()}",
             manager_cls=ReviewManager,
-            prompt_cls=prompt_cls,
+            prompt=prompt,
         )
-        for language, prompt_cls in review._PROMPTS.items()
+        for language, prompt in review._PROMPTS.items()
     },
     **{
         f"ocr-fusion-{language.tag.lower()}": PromptSpec(
             alias=f"ocr-fusion-{language.tag.lower()}",
             manager_cls=OcrFusionManager,
-            prompt_cls=prompt_cls,
+            prompt=prompt,
         )
-        for language, prompt_cls in ocr_fusion._PROMPTS.items()
+        for language, prompt in ocr_fusion._PROMPTS.items()
     },
     **{
         f"guided-review-{language.tag.lower()}-vs-{guide_language.tag.lower()}": (
@@ -74,10 +74,10 @@ _PROMPT_SPECS = {
                     f"{guide_language.tag.lower()}"
                 ),
                 manager_cls=GuidedReviewManager,
-                prompt_cls=prompt_cls,
+                prompt=prompt,
             )
         )
-        for (language, guide_language), prompt_cls in guided_review._PROMPTS.items()
+        for (language, guide_language), prompt in guided_review._PROMPTS.items()
     },
     **{
         f"pairwise-review-{language.tag.lower()}-vs-"
@@ -87,12 +87,12 @@ _PROMPT_SPECS = {
                 f"{reference_language.tag.lower()}"
             ),
             manager_cls=PairwiseReviewManager,
-            prompt_cls=prompt_cls,
+            prompt=prompt,
         )
         for (
             language,
             reference_language,
-        ), prompt_cls in pairwise_review._PROMPTS.items()
+        ), prompt in pairwise_review._PROMPTS.items()
     },
     **{
         f"translation-{source_language.tag.lower()}-to-"
@@ -102,12 +102,12 @@ _PROMPT_SPECS = {
                 f"{target_language.tag.lower()}"
             ),
             manager_cls=TranslationManager,
-            prompt_cls=prompt_cls,
+            prompt=prompt,
         )
         for (
             source_language,
             target_language,
-        ), prompt_cls in translation._PROMPTS.items()
+        ), prompt in translation._PROMPTS.items()
     },
     **{
         f"gap-translation-{source_language.tag.lower()}-to-"
@@ -117,12 +117,12 @@ _PROMPT_SPECS = {
                 f"{target_language.tag.lower()}"
             ),
             manager_cls=GapTranslationManager,
-            prompt_cls=prompt_cls,
+            prompt=prompt,
         )
         for (
             source_language,
             target_language,
-        ), prompt_cls in gap_translation._PROMPTS.items()
+        ), prompt in gap_translation._PROMPTS.items()
     },
     **{
         f"guided-translation-{source_language.tag.lower()}-to-"
@@ -132,32 +132,32 @@ _PROMPT_SPECS = {
                 f"{target_language.tag.lower()}"
             ),
             manager_cls=GuidedTranslationManager,
-            prompt_cls=prompt_cls,
+            prompt=prompt,
         )
         for (
             source_language,
             target_language,
-        ), prompt_cls in guided_translation._PROMPTS.items()
+        ), prompt in guided_translation._PROMPTS.items()
     },
     "delineation-yue-hans-vs-zho": PromptSpec(
         alias="delineation-yue-hans-vs-zho",
         manager_cls=DelineationManager,
-        prompt_cls=YueDelineationVsZhoPromptYueHans,
+        prompt=YueDelineationVsZhoPromptYueHans,
     ),
     "delineation-yue-hant-vs-zho": PromptSpec(
         alias="delineation-yue-hant-vs-zho",
         manager_cls=DelineationManager,
-        prompt_cls=YueDelineationVsZhoPromptYueHant,
+        prompt=YueDelineationVsZhoPromptYueHant,
     ),
     "punctuation-yue-hans-vs-zho": PromptSpec(
         alias="punctuation-yue-hans-vs-zho",
         manager_cls=PunctuationManager,
-        prompt_cls=YuePunctuationVsZhoPromptYueHans,
+        prompt=YuePunctuationVsZhoPromptYueHans,
     ),
     "punctuation-yue-hant-vs-zho": PromptSpec(
         alias="punctuation-yue-hant-vs-zho",
         manager_cls=PunctuationManager,
-        prompt_cls=YuePunctuationVsZhoPromptYueHant,
+        prompt=YuePunctuationVsZhoPromptYueHant,
     ),
 }
 """Registered prompt specifications before canonical alias ordering."""

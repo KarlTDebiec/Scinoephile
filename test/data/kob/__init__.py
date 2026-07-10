@@ -147,32 +147,30 @@ def kob_yue_hant() -> Series:
 
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptEng,
+    prompt: OcrFusionPrompt = OcrFusionPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "eng_ocr/lang/eng/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_kob_eng_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptEng,
+    prompt: ReviewPrompt = ReviewPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -180,23 +178,23 @@ def get_kob_eng_review_test_cases(
     ocr_path = output_dir / "eng_ocr/lang/eng/review.json"
     srt_path = output_dir / "eng/lang/eng/review.json"
     ocr_test_cases = load_test_cases_from_json(
-        ocr_path, ReviewManager, prompt_cls=prompt_cls, **kwargs
+        ocr_path, ReviewManager, prompt=prompt, **kwargs
     )
     srt_test_cases = load_test_cases_from_json(
-        srt_path, ReviewManager, prompt_cls=prompt_cls, **kwargs
+        srt_path, ReviewManager, prompt=prompt, **kwargs
     )
     return ocr_test_cases + srt_test_cases
 
 
 @cache
 def get_kob_yue_delineation_test_cases(
-    prompt_cls: type[DelineationPrompt] = YueDelineationVsZhoPromptYueHans,
+    prompt: DelineationPrompt = YueDelineationVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hans delineation test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -210,20 +208,18 @@ def get_kob_yue_delineation_test_cases(
         / "delineation"
         / f"{get_torch_device()}.json"
     )
-    return load_test_cases_from_json(
-        path, DelineationManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, DelineationManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_kob_yue_from_zho_gap_translation_test_cases(
-    prompt_cls: type[GapTranslationPrompt] = YueZhoGapTranslationPromptYueHans,
+    prompt: GapTranslationPrompt = YueZhoGapTranslationPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hans from zho-Hans gap translation test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -237,27 +233,25 @@ def get_kob_yue_from_zho_gap_translation_test_cases(
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, GapTranslationManager, prompt_cls=prompt_cls, **kwargs
+        path, GapTranslationManager, prompt=prompt, **kwargs
     )
 
 
 @cache
 def get_kob_yue_hans_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
+    prompt: ReviewPrompt = ReviewPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hans review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "yue-Hans/lang/yue/review.json"
-    test_cases = load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    test_cases = load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
     for test_case in test_cases:
         test_case.verified = True
     return test_cases
@@ -265,21 +259,19 @@ def get_kob_yue_hans_review_test_cases(
 
 @cache
 def get_kob_yue_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHant,
+    prompt: ReviewPrompt = ReviewPromptYueHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hant review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "yue-Hant/lang/yue/review.json"
-    test_cases = load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    test_cases = load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
     for test_case in test_cases:
         test_case.verified = True
     return test_cases
@@ -287,21 +279,19 @@ def get_kob_yue_hant_review_test_cases(
 
 @cache
 def get_kob_yue_hant_simplify_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans,
+    prompt: ReviewPrompt = ReviewPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hant simplification review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "yue-Hant/lang/yue/simplify_review.json"
-    test_cases = load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    test_cases = load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
     for test_case in test_cases:
         test_case.verified = True
     return test_cases
@@ -309,13 +299,13 @@ def get_kob_yue_hant_simplify_review_test_cases(
 
 @cache
 def get_kob_yue_punctuation_test_cases(
-    prompt_cls: type[PunctuationPrompt] = YuePunctuationVsZhoPromptYueHans,
+    prompt: PunctuationPrompt = YuePunctuationVsZhoPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hans punctuation test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -330,19 +320,19 @@ def get_kob_yue_punctuation_test_cases(
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, YueZhoPunctuationManager, prompt_cls=prompt_cls, **kwargs
+        path, YueZhoPunctuationManager, prompt=prompt, **kwargs
     )
 
 
 @cache
 def get_kob_yue_vs_zho_guided_review_test_cases(
-    prompt_cls: type[GuidedReviewPrompt] = YueZhoGuidedReviewPromptYueHans,
+    prompt: GuidedReviewPrompt = YueZhoGuidedReviewPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hans vs zho-Hans guided review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -355,20 +345,18 @@ def get_kob_yue_vs_zho_guided_review_test_cases(
         / "guided_review"
         / f"{get_torch_device()}.json"
     )
-    return load_test_cases_from_json(
-        path, GuidedReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, GuidedReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_kob_yue_vs_zho_pairwise_review_test_cases(
-    prompt_cls: type[PairwiseReviewPrompt] = YueZhoPairwiseReviewPromptYueHans,
+    prompt: PairwiseReviewPrompt = YueZhoPairwiseReviewPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hans vs zho-Hans pairwise review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -382,65 +370,59 @@ def get_kob_yue_vs_zho_pairwise_review_test_cases(
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, PairwiseReviewManager, prompt_cls=prompt_cls, **kwargs
+        path, PairwiseReviewManager, prompt=prompt, **kwargs
     )
 
 
 @cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptZhoHant,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB zho-Hant OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_kob_zho_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant,
+    prompt: ReviewPrompt = ReviewPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB zho-Hant review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_kob_zho_hant_simplify_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans,
+    prompt: ReviewPrompt = ReviewPromptZhoHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB zho-Hant simplification review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/simplify_review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @fixture

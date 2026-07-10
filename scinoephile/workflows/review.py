@@ -32,7 +32,7 @@ def review_series(
     series: Series,
     *,
     language: Language | None = None,
-    prompt_cls: type[ReviewPrompt] | None = None,
+    prompt: ReviewPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     reviewer: ReviewProcessor | None = None,
@@ -44,7 +44,7 @@ def review_series(
     Arguments:
         series: subtitle series to review
         language: explicit language, or None to detect it
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
@@ -60,7 +60,7 @@ def review_series(
     if reviewer is None:
         reviewer = get_reviewer(
             resolved_language,
-            prompt_cls,
+            prompt,
             test_cases,
             provider,
             **kwargs,
@@ -74,7 +74,7 @@ def review_series_guided(
     *,
     language: Language | None = None,
     guide_language: Language | None = None,
-    prompt_cls: type[GuidedReviewPrompt] | None = None,
+    prompt: GuidedReviewPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     reviewer: GuidedReviewProcessor | None = None,
@@ -88,7 +88,7 @@ def review_series_guided(
         guide: subtitle series providing block-level guidance
         language: explicit target language, or None to detect it
         guide_language: explicit guide language, or None to detect it
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
@@ -105,7 +105,7 @@ def review_series_guided(
         reviewer = get_guided_reviewer(
             resolved_language,
             resolved_guide_language,
-            prompt_cls,
+            prompt,
             test_cases,
             provider=provider,
             **kwargs,
@@ -119,7 +119,7 @@ def review_series_pairwise(
     *,
     language: Language | None = None,
     reference_language: Language | None = None,
-    prompt_cls: type[PairwiseReviewPrompt] | None = None,
+    prompt: PairwiseReviewPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     reviewer: PairwiseReviewProcessor | None = None,
@@ -133,7 +133,7 @@ def review_series_pairwise(
         reference: subtitle series providing line-level reference text
         language: explicit target language, or None to detect it
         reference_language: explicit reference language, or None to detect it
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
@@ -150,7 +150,7 @@ def review_series_pairwise(
         reviewer = get_pairwise_reviewer(
             resolved_language,
             resolved_reference_language,
-            prompt_cls,
+            prompt,
             test_cases,
             provider=provider,
             **kwargs,

@@ -145,7 +145,7 @@ class SrtProcessingWorkflow:
         simplify_review = self._review(
             simplify,
             language=Language.yue_hans,
-            prompt_cls=ReviewPromptYueHans,
+            prompt=ReviewPromptYueHans,
             output_name="clean_review_flatten_timewarp_simplify_review",
             test_case_name="simplify_review.json",
             log_label=(
@@ -216,7 +216,7 @@ class SrtProcessingWorkflow:
         series: Series,
         *,
         language: Language | None = None,
-        prompt_cls: type[ReviewPrompt] | None = None,
+        prompt: ReviewPrompt | None = None,
         output_name: str = "clean_review",
         test_case_name: str = "review.json",
         log_label: str = "Cleaned reviewed SRT output",
@@ -226,7 +226,7 @@ class SrtProcessingWorkflow:
         Arguments:
             series: source subtitle series
             language: language to use for review
-            prompt_cls: review prompt class
+            prompt: review prompt
             output_name: output filename stem and output_paths key
             test_case_name: review test case JSON filename
             log_label: human-readable output label for logging
@@ -245,17 +245,17 @@ class SrtProcessingWorkflow:
             if review_language is Language.eng:
                 test_case_language_dir_name = "eng"
             else:
-                if prompt_cls is None:
+                if prompt is None:
                     if review_language is Language.yue_hant:
-                        prompt_cls = ReviewPromptYueHant
+                        prompt = ReviewPromptYueHant
                     else:
-                        prompt_cls = ReviewPromptYueHans
+                        prompt = ReviewPromptYueHans
                 test_case_language_dir_name = "yue"
 
             review = review_series(
                 series,
                 language=review_language,
-                prompt_cls=prompt_cls,
+                prompt=prompt,
                 test_case_path=(
                     self.output_dir_path
                     / "lang"

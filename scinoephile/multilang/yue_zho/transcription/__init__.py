@@ -20,16 +20,13 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.delineation import DelineationManager
+from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
 from scinoephile.llms.providers.registry import get_provider
+from scinoephile.llms.punctuation import PunctuationPrompt
 
-from .delineation import (
-    YueDelineationVsZhoPromptYueHans,
-    YueDelineationVsZhoPromptYueHant,
-)
+from .delineation import YueDelineationVsZhoPromptYueHans
 from .punctuation import (
     YuePunctuationVsZhoPromptYueHans,
-    YuePunctuationVsZhoPromptYueHant,
     YueZhoPunctuationManager,
 )
 from .transcriber import (
@@ -95,10 +92,10 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """provider to use for queries."""
     convert: OpenCCConfig | None
     """OpenCC configuration used for transcribed text conversion."""
-    delineation_prompt_cls: type[YueDelineationVsZhoPromptYueHant]
-    """prompt class used for alignment delineation."""
-    punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHant]
-    """prompt class used for transcription punctuation."""
+    delineation_prompt: DelineationPrompt
+    """prompt used for alignment delineation."""
+    punctuation_prompt: PunctuationPrompt
+    """prompt used for transcription punctuation."""
     test_case_directory_path: Path | None
     """directory where encountered transcription test cases are persisted."""
     delineation_test_cases: list[TestCase] | None
@@ -137,12 +134,8 @@ def get_yue_vs_zho_transcriber(
     provider: LLMProvider | None = None,
     convert: OpenCCConfig | None = None,
     additional_context: str | None = None,
-    delineation_prompt_cls: type[YueDelineationVsZhoPromptYueHant] = (
-        YueDelineationVsZhoPromptYueHans
-    ),
-    punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHant] = (
-        YuePunctuationVsZhoPromptYueHans
-    ),
+    delineation_prompt: DelineationPrompt = (YueDelineationVsZhoPromptYueHans),
+    punctuation_prompt: PunctuationPrompt = (YuePunctuationVsZhoPromptYueHans),
     test_case_directory_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
@@ -156,8 +149,8 @@ def get_yue_vs_zho_transcriber(
         provider: provider to use for queries
         convert: OpenCC configuration used for transcribed text conversion
         additional_context: additional context to include in LLM prompts
-        delineation_prompt_cls: prompt class for alignment delineation
-        punctuation_prompt_cls: prompt class for transcription punctuation
+        delineation_prompt: prompt for alignment delineation
+        punctuation_prompt: prompt for transcription punctuation
         test_case_directory_path: optional directory where test cases are updated
         delineation_test_cases: optional delineation test cases
         punctuation_test_cases: optional punctuation test cases
@@ -172,7 +165,7 @@ def get_yue_vs_zho_transcriber(
         delineation_test_cases = list(
             load_default_test_cases(
                 DelineationManager,
-                delineation_prompt_cls,
+                delineation_prompt,
                 _YUE_ZHO_TRANSCRIPTION_DELINEATION_JSON_PATHS,
             )
         )
@@ -180,7 +173,7 @@ def get_yue_vs_zho_transcriber(
         punctuation_test_cases = list(
             load_default_test_cases(
                 YueZhoPunctuationManager,
-                punctuation_prompt_cls,
+                punctuation_prompt,
                 _YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
             )
         )
@@ -191,8 +184,8 @@ def get_yue_vs_zho_transcriber(
         provider=provider,
         convert=convert,
         additional_context=additional_context,
-        delineation_prompt_cls=delineation_prompt_cls,
-        punctuation_prompt_cls=punctuation_prompt_cls,
+        delineation_prompt=delineation_prompt,
+        punctuation_prompt=punctuation_prompt,
         test_case_directory_path=test_case_directory_path,
         delineation_test_cases=delineation_test_cases,
         punctuation_test_cases=punctuation_test_cases,

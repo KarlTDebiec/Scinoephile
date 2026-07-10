@@ -57,8 +57,8 @@ def sync_prompts(
             raise ScinoephileError(
                 f"Prompt alias {prompt_spec.alias} was provided more than once."
             )
-        alias_prompts[prompt_spec.alias] = PersistedPrompt.from_prompt_cls(
-            prompt_spec.prompt_cls,
+        alias_prompts[prompt_spec.alias] = PersistedPrompt.from_prompt(
+            prompt_spec.prompt,
             prompt_spec.manager_cls,
         )
 

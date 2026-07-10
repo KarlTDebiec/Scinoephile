@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
-from typing import ClassVar, cast
+from typing import cast
 
 from pytest import raises
 
@@ -19,36 +19,29 @@ from scinoephile.multilang.yue_eng.translation import (
 )
 from scinoephile.optimization.persistence.prompts import PersistedPrompt
 
+_ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT = ReviewPromptEng.with_attributes(
+    {
+        "difficulty_description": "Different difficulty description.",
+        "few_shot_answer_intro": "Different example answer:",
+        "few_shot_intro": "Different examples:",
+        "few_shot_query_intro": "Different example query:",
+        "prompt_description": "Different prompt flag description.",
+        "verified_description": "Different verified description.",
+    }
+)
+"""English review prompt with different few-shot-only text."""
 
-class _AlternativeFewShotReviewPrompt(ReviewPromptEng):
-    """English review prompt with different few-shot-only text."""
-
-    difficulty_description: ClassVar[str] = "Different difficulty description."
-    """Description of test-case difficulty."""
-    few_shot_answer_intro: ClassVar[str] = "Different example answer:"
-    """Text preceding a few-shot answer."""
-    few_shot_intro: ClassVar[str] = "Different examples:"
-    """Text preceding few-shot examples."""
-    few_shot_query_intro: ClassVar[str] = "Different example query:"
-    """Text preceding a few-shot query."""
-    prompt_description: ClassVar[str] = "Different prompt flag description."
-    """Description of test-case prompt inclusion."""
-    verified_description: ClassVar[str] = "Different verified description."
-    """Description of test-case verification."""
-
-
-class _AlternativeZeroShotReviewPrompt(ReviewPromptEng):
-    """English review prompt with different zero-shot instructions."""
-
-    base_system_prompt: ClassVar[str] = "Review every subtitle carefully."
-    """Base system prompt."""
+_ALTERNATIVE_ZERO_SHOT_REVIEW_PROMPT = ReviewPromptEng.with_attributes(
+    {"base_system_prompt": "Review every subtitle carefully."}
+)
+"""English review prompt with different zero-shot instructions."""
 
 
 def test_conversion_excludes_few_shot_and_curation_attributes():
     """Few-shot-only and test-case curation text should not affect identity."""
-    baseline = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
-    alternative = PersistedPrompt.from_prompt_cls(
-        _AlternativeFewShotReviewPrompt,
+    baseline = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
+    alternative = PersistedPrompt.from_prompt(
+        _ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT,
         ReviewManager,
     )
 
@@ -63,9 +56,9 @@ def test_conversion_excludes_few_shot_and_curation_attributes():
 
 def test_conversion_includes_zero_shot_attributes():
     """Changing zero-shot instructions should change persisted content."""
-    baseline = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
-    alternative = PersistedPrompt.from_prompt_cls(
-        _AlternativeZeroShotReviewPrompt,
+    baseline = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
+    alternative = PersistedPrompt.from_prompt(
+        _ALTERNATIVE_ZERO_SHOT_REVIEW_PROMPT,
         ReviewManager,
     )
 
@@ -76,34 +69,34 @@ def test_conversion_includes_zero_shot_attributes():
     )
 
 
-def test_conversion_rejects_incompatible_prompt_class():
-    """A manager should reject a prompt class from another operation."""
+def test_conversion_rejects_incompatible_prompt():
+    """A manager should reject a prompt from another operation."""
     with raises(ScinoephileError, match="not compatible with operation translation"):
-        PersistedPrompt.from_prompt_cls(ReviewPromptEng, TranslationManager)
+        PersistedPrompt.from_prompt(ReviewPromptEng, TranslationManager)
 
 
 def test_reconstruction_rejects_invalid_content_addressed_id():
     """Reconstruction should reject a prompt whose ID does not match its content."""
-    prompt = PersistedPrompt.from_prompt_cls(ReviewPromptEng, ReviewManager)
+    prompt = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
 
     with raises(ScinoephileError, match="content-addressed ID"):
-        replace(prompt, prompt_id="incorrect").to_prompt_cls(ReviewManager)
+        replace(prompt, prompt_id="incorrect").to_prompt(ReviewManager)
 
 
 def test_reconstruction_round_trips_generated_and_tool_text():
     """Generated Hans and dictionary-tool text should survive reconstruction."""
-    persisted = PersistedPrompt.from_prompt_cls(
+    persisted = PersistedPrompt.from_prompt(
         YueEngTranslationPromptYueHans,
         TranslationManager,
     )
-    prompt_cls = persisted.to_prompt_cls(TranslationManager)
-    dictionary_prompt_cls = cast(type[DictionaryToolPrompt], prompt_cls)
+    prompt = persisted.to_prompt(TranslationManager)
+    dictionary_prompt = cast(DictionaryToolPrompt, prompt)
 
-    assert prompt_cls.base_system_prompt == (
+    assert prompt.base_system_prompt == (
         YueEngTranslationPromptYueHans.base_system_prompt
     )
-    assert prompt_cls.language == Language.yue_hans
-    assert dictionary_prompt_cls.dictionary_tool_description == (
+    assert prompt.language == Language.yue_hans
+    assert dictionary_prompt.dictionary_tool_description == (
         YueEngTranslationPromptYueHans.dictionary_tool_description
     )
     assert "dictionary_tool_description" in persisted.attributes

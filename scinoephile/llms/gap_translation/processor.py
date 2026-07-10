@@ -26,7 +26,7 @@ logger = getLogger(__name__)
 class GapTranslationProcessor(Processor):
     """Processes gap translation matters."""
 
-    prompt_cls: type[GapTranslationPrompt]
+    prompt: GapTranslationPrompt
     """Text for LLM correspondence."""
 
     manager_cls = GapTranslationManager
@@ -68,18 +68,18 @@ class GapTranslationProcessor(Processor):
 
             # Query LLM
             test_case_cls = GapTranslationManager.get_test_case_cls(
-                size, gaps, self.prompt_cls
+                size, gaps, self.prompt
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             one_idx = 0
             for two_idx in range(size):
                 if two_idx not in gaps:
-                    one_key = self.prompt_cls.src_1(two_idx + 1)
+                    one_key = self.prompt.src_1(two_idx + 1)
                     one_val = one_blk.events[one_idx].text_with_newline.strip()
                     query_kwargs[one_key] = one_val
                     one_idx += 1
-                two_key = self.prompt_cls.src_2(two_idx + 1)
+                two_key = self.prompt.src_2(two_idx + 1)
                 two_val = two_blk.events[two_idx].text_with_newline.strip()
                 query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)
@@ -92,10 +92,10 @@ class GapTranslationProcessor(Processor):
                 start = two_sub.start
                 end = two_sub.end
                 if two_idx not in gaps:
-                    one_key = self.prompt_cls.src_1(two_idx + 1)
+                    one_key = self.prompt.src_1(two_idx + 1)
                     output = getattr(test_case.query, one_key)
                 else:
-                    one_key = self.prompt_cls.output(two_idx + 1)
+                    one_key = self.prompt.output(two_idx + 1)
                     output = getattr(test_case.answer, one_key)
                 output_series.append(Subtitle(start=start, end=end, text=output))
 

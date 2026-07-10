@@ -109,13 +109,13 @@ class YueZhoPunctuationManager(PunctuationManager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
+        prompt: PunctuationPrompt = getattr(model, "llm_prompt")
         min_difficulty = PunctuationManager.get_min_difficulty(model)
         if model.answer is None:
             return min_difficulty
 
-        zhongwen = getattr(model.query, prompt_cls.src_2, "")
-        yuewen_punctuated = getattr(model.answer, prompt_cls.output, "")
+        zhongwen = getattr(model.query, prompt.src_2, "")
+        yuewen_punctuated = getattr(model.answer, prompt.output, "")
         if remove_non_punc_and_whitespace(yuewen_punctuated):
             min_difficulty = max(min_difficulty, 1)
         if remove_non_punc_and_whitespace(zhongwen) != remove_non_punc_and_whitespace(
@@ -133,17 +133,17 @@ class YueZhoPunctuationManager(PunctuationManager):
         Returns:
             validated test case
         """
-        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
+        prompt: PunctuationPrompt = getattr(model, "llm_prompt")
         if model.answer is None:
             return model
 
-        yuewen_to_punctuate = getattr(model.query, prompt_cls.src_1, None) or []
-        yuewen_punctuated = getattr(model.answer, prompt_cls.output, None) or ""
+        yuewen_to_punctuate = getattr(model.query, prompt.src_1, None) or []
+        yuewen_punctuated = getattr(model.answer, prompt.output, None) or ""
 
         expected = "".join(
             remove_punc_and_whitespace(subtitle) for subtitle in yuewen_to_punctuate
         )
         received = remove_punc_and_whitespace(yuewen_punctuated)
         if expected != received:
-            raise ValueError(prompt_cls.src_1_chars_changed_err(expected, received))
+            raise ValueError(prompt.src_1_chars_changed_err(expected, received))
         return model

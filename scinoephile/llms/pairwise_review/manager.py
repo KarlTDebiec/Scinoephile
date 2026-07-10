@@ -22,71 +22,71 @@ class PairwiseReviewManager(Manager):
 
     operation: ClassVar[str] = "pairwise-review"
     """Stable operation identifier used in persistence and CLIs."""
-    prompt_cls: ClassVar[type[PairwiseReviewPrompt]] = PairwiseReviewPrompt
-    """Base prompt class defining persisted test-case field names."""
+    base_prompt: ClassVar[PairwiseReviewPrompt] = PairwiseReviewPrompt.from_attributes()
+    """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
     def get_answer_cls(
         cls,
-        prompt_cls: type[PairwiseReviewPrompt] = PairwiseReviewPrompt,
+        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt.from_attributes(),
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             answer model class
         """
         fields: dict[str, Any] = {
-            prompt_cls.output: (
+            prompt.output: (
                 str,
-                Field("", description=prompt_cls.output_desc, max_length=1000),
+                Field("", description=prompt.output_desc, max_length=1000),
             ),
-            prompt_cls.note: (
+            prompt.note: (
                 str,
-                Field("", description=prompt_cls.note_desc, max_length=1000),
+                Field("", description=prompt.note_desc, max_length=1000),
             ),
         }
         model = create_model(
-            get_model_name("PairwiseReviewAnswer", prompt_cls.__name__),
+            get_model_name("PairwiseReviewAnswer", prompt.name),
             __base__=Answer,
             __module__=Answer.__module__,
             **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.llm_prompt = prompt
         return model
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[PairwiseReviewPrompt] = PairwiseReviewPrompt,
+        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt.from_attributes(),
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             query model class
         """
         fields: dict[str, Any] = {
-            prompt_cls.target: (
+            prompt.target: (
                 str,
-                Field(..., description=prompt_cls.target_desc, max_length=1000),
+                Field(..., description=prompt.target_desc, max_length=1000),
             ),
-            prompt_cls.reference: (
+            prompt.reference: (
                 str,
-                Field(..., description=prompt_cls.reference_desc, max_length=1000),
+                Field(..., description=prompt.reference_desc, max_length=1000),
             ),
         }
         model = create_model(
-            get_model_name("PairwiseReviewQuery", prompt_cls.__name__),
+            get_model_name("PairwiseReviewQuery", prompt.name),
             __base__=Query,
             __module__=Query.__module__,
             **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.llm_prompt = prompt
         return model
 
     @staticmethod
@@ -100,9 +100,9 @@ class PairwiseReviewManager(Manager):
         """
         if model.answer is None:
             return 0
-        prompt_cls: type[PairwiseReviewPrompt] = getattr(model, "prompt_cls")
-        target = getattr(model.query, prompt_cls.target)
-        output = getattr(model.answer, prompt_cls.output)
+        prompt: PairwiseReviewPrompt = getattr(model, "llm_prompt")
+        target = getattr(model.query, prompt.target)
+        output = getattr(model.answer, prompt.output)
         if output and output != target:
             return 1
         return 0
@@ -122,15 +122,15 @@ class PairwiseReviewManager(Manager):
         if model.answer is None:
             return model
 
-        prompt_cls: type[PairwiseReviewPrompt] = getattr(model, "prompt_cls")
-        target = getattr(model.query, prompt_cls.target)
-        output = getattr(model.answer, prompt_cls.output)
-        note = getattr(model.answer, prompt_cls.note)
+        prompt: PairwiseReviewPrompt = getattr(model, "llm_prompt")
+        target = getattr(model.query, prompt.target)
+        output = getattr(model.answer, prompt.output)
+        note = getattr(model.answer, prompt.note)
         if output == target:
-            setattr(model.answer, prompt_cls.output, "")
-            setattr(model.answer, prompt_cls.note, "")
+            setattr(model.answer, prompt.output, "")
+            setattr(model.answer, prompt.note, "")
         elif output and not note:
-            raise ValueError(prompt_cls.note_missing_err)
+            raise ValueError(prompt.note_missing_err)
         elif not output and note:
-            raise ValueError(prompt_cls.output_missing_err)
+            raise ValueError(prompt.output_missing_err)
         return model

@@ -67,21 +67,23 @@ hierarchy comment. This serves two purposes:
 - **Dependency hygiene**: a place to notice and resolve sibling dependency
   cycles (cycles should be called out explicitly and grouped together).
 
-### Prompt definitions and materialization
+### Immutable prompt values
 
-Operation-specific prompt classes in `scinoephile.llms` define behavior and the
+Operation-specific prompt types in `scinoephile.llms` define behavior and the
 required correspondence fields for review, translation, OCR fusion, and the
 other LLM shapes. Authored prompt text is declarative: `define_prompt` combines
-the text with a `Language` and materializes a cached runtime subclass of the
-operation-specific base. The runtime class is content-addressed, so identical
-text for the same operation and language reuses the same class.
+the text with a `Language` and constructs a frozen, hashable prompt value. LLM
+managers, processors, queryers, and workflows pass these values directly.
 
-`PromptDefinition` is the data representation used by optimization persistence.
-It contains the prompt language and effective zero-shot string attributes.
-Few-shot labels and test-case curation descriptions are intentionally excluded.
-The shared optimization SQLite database stores these prompt definitions and
-test cases in separate normalized tables, allowing both kinds of data to live
-in the same file.
+Only generated Pydantic query, answer, and test-case models are represented by
+runtime classes. Managers cache those model classes using the immutable prompt
+value, whose stable content-addressed name is used in generated model names.
+
+Optimization persistence stores a prompt's language and effective zero-shot
+string attributes. Few-shot labels and test-case curation descriptions are
+intentionally excluded. Prompt and test-case SQLite stores own and create their
+tables independently; both table groups may coexist in one SQLite file without
+a global schema version or migration contract.
 
 ## Command Line Interface
 

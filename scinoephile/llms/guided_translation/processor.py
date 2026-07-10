@@ -23,7 +23,7 @@ logger = getLogger(__name__)
 class GuidedTranslationProcessor(Processor):
     """Processes guided translation blocks."""
 
-    prompt_cls: type[GuidedTranslationPrompt]
+    prompt: GuidedTranslationPrompt
     """Text for LLM correspondence."""
 
     manager_cls = GuidedTranslationManager
@@ -60,15 +60,15 @@ class GuidedTranslationProcessor(Processor):
             test_case_cls = GuidedTranslationManager.get_test_case_cls(
                 source_one_size=len(one_blk),
                 source_two_size=len(two_blk),
-                prompt_cls=self.prompt_cls,
+                prompt=self.prompt,
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for sub_idx, sub in enumerate(one_blk.events, 1):
-                key = self.prompt_cls.src_1(sub_idx)
+                key = self.prompt.src_1(sub_idx)
                 query_kwargs[key] = sub.text_with_newline.strip()
             for sub_idx, sub in enumerate(two_blk.events, 1):
-                key = self.prompt_cls.src_2(sub_idx)
+                key = self.prompt.src_2(sub_idx)
                 query_kwargs[key] = sub.text_with_newline.strip()
 
             query = query_cls(**query_kwargs)
@@ -77,7 +77,7 @@ class GuidedTranslationProcessor(Processor):
 
             output_series = Series()
             for sub_idx, sub in enumerate(one_blk.events, 1):
-                output_key = self.prompt_cls.output(sub_idx)
+                output_key = self.prompt.output(sub_idx)
                 output = getattr(test_case.answer, output_key)
                 output_series.append(
                     Subtitle(start=sub.start, end=sub.end, text=output)

@@ -113,223 +113,199 @@ output_dir = title_root / "output"
 
 @cache
 def get_acopopb_eng_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptEng,
+    prompt: OcrFusionPrompt = OcrFusionPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPOPB English OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "eng_ocr/lang/eng/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_eng_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptEng, **kwargs: Any
+    prompt: ReviewPrompt = ReviewPromptEng, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB English review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "eng_ocr/lang/eng/review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_yue_hans_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptYueHans,
+    prompt: OcrFusionPrompt = OcrFusionPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hans OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "yue-Hans_ocr/lang/yue/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_yue_hans_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans, **kwargs: Any
+    prompt: ReviewPrompt = ReviewPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hans review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "yue-Hans_ocr/lang/yue/review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_yue_hant_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptYueHant,
+    prompt: OcrFusionPrompt = OcrFusionPromptYueHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hant OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "yue-Hant_ocr/lang/yue/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_yue_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHant, **kwargs: Any
+    prompt: ReviewPrompt = ReviewPromptYueHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hant review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "yue-Hant_ocr/lang/yue/review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_yue_hant_simplify_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptYueHans, **kwargs: Any
+    prompt: ReviewPrompt = ReviewPromptYueHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB yue-Hant simplification review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "yue-Hant_ocr/lang/yue/simplify_review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_zho_hans_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptZhoHans,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPOPB zho-Hans OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hans_ocr/lang/zho/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_zho_hans_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
+    prompt: ReviewPrompt = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB zho-Hans review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hans_ocr/lang/zho/review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = OcrFusionPromptZhoHant,
+    prompt: OcrFusionPrompt = OcrFusionPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get ACOPOPB zho-Hant OCR fusion test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, OcrFusionManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_zho_hant_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHant, **kwargs: Any
+    prompt: ReviewPrompt = ReviewPromptZhoHant, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB zho-Hant review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
 def get_acopopb_zho_hant_simplify_review_test_cases(
-    prompt_cls: type[ReviewPrompt] = ReviewPromptZhoHans, **kwargs: Any
+    prompt: ReviewPrompt = ReviewPromptZhoHans, **kwargs: Any
 ) -> list[TestCase]:
     """Get ACOPOPB zho-Hant simplification review test cases.
 
     Arguments:
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/simplify_review.json"
-    return load_test_cases_from_json(
-        path, ReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, ReviewManager, prompt=prompt, **kwargs)
 
 
 @fixture

@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.llms import Manager, Prompt
-from scinoephile.llms import PromptDefinition
 from scinoephile.llms.prompt_definition import get_prompt_attribute_names
 
 from .id import get_prompt_id
@@ -33,51 +32,47 @@ class PersistedPrompt:
     """Stable aliases currently associated with this prompt."""
 
     @classmethod
-    def from_prompt_cls(
+    def from_prompt(
         cls,
-        prompt_cls: type[Prompt],
+        prompt: Prompt,
         manager_cls: type[Manager],
     ) -> PersistedPrompt:
-        """Convert a prompt class to its persisted representation.
+        """Convert a prompt to its persisted representation.
 
         Arguments:
-            prompt_cls: concrete zero-shot prompt class
-            manager_cls: manager defining the prompt's operation and base contract
+            prompt: concrete zero-shot prompt
+            manager_cls: manager defining the prompt's operation and contract
         Returns:
             persisted prompt
         Raises:
             ScinoephileError: if the prompt is incompatible or incomplete
         """
-        if not issubclass(prompt_cls, manager_cls.prompt_cls):
+        if not isinstance(prompt, type(manager_cls.base_prompt)):
             raise ScinoephileError(
-                f"Prompt class {prompt_cls.__name__} is not compatible with "
+                f"Prompt type {type(prompt).__name__} is not compatible with "
                 f"operation {manager_cls.operation}."
             )
-        try:
-            definition = PromptDefinition.from_prompt_cls(prompt_cls)
-        except ValueError as exc:
-            raise ScinoephileError(str(exc)) from exc
-        attributes = dict(definition.attributes)
+        attributes = dict(prompt.zero_shot_attributes)
         _require_attributes(attributes, manager_cls)
         return cls(
             prompt_id=get_prompt_id(
                 attributes,
                 manager_cls.operation,
-                definition.language,
+                prompt.language,
             ),
             operation=manager_cls.operation,
-            language=definition.language,
+            language=prompt.language,
             attributes=attributes,
             aliases=(),
         )
 
-    def to_prompt_cls(self, manager_cls: type[Manager]) -> type[Prompt]:
-        """Reconstruct a runtime prompt class.
+    def to_prompt(self, manager_cls: type[Manager]) -> Prompt:
+        """Reconstruct an immutable runtime prompt.
 
         Arguments:
-            manager_cls: manager defining the prompt's operation and base contract
+            manager_cls: manager defining the prompt's operation and contract
         Returns:
-            runtime prompt class
+            runtime prompt
         Raises:
             ScinoephileError: if the persisted prompt is incompatible or invalid
         """
@@ -96,11 +91,11 @@ class PersistedPrompt:
                 f"Prompt {self.prompt_id} does not match its content-addressed ID."
             )
         _require_attributes(self.attributes, manager_cls)
-        definition = PromptDefinition.from_attributes(
-            self.language,
-            self.attributes,
-        )
-        return definition.get_prompt_cls(manager_cls.prompt_cls)
+        prompt_type = type(manager_cls.base_prompt)
+        try:
+            return prompt_type.from_attributes(self.language, self.attributes)
+        except ValueError as exc:
+            raise ScinoephileError(str(exc)) from exc
 
 
 def _require_attributes(
@@ -122,10 +117,10 @@ def _require_attributes(
     )
     if invalid_names:
         raise ScinoephileError(
-            f"Prompt attributes must have nonempty names and string values: "
+            "Prompt attributes must have nonempty names and string values: "
             f"{', '.join(invalid_names)}."
         )
-    required_names = get_prompt_attribute_names(manager_cls.prompt_cls)
+    required_names = get_prompt_attribute_names(type(manager_cls.base_prompt))
     missing_names = sorted(required_names - attributes.keys())
     if missing_names:
         raise ScinoephileError(

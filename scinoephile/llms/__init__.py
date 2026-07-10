@@ -34,12 +34,7 @@ import scinoephile.core.llms.utils as llm_utils
 from scinoephile import common
 from scinoephile.core.llms import Manager, Prompt, TestCase
 
-from .prompt_definition import PromptDefinition
-
-__all__ = [
-    "PromptDefinition",
-    "load_default_test_cases",
-]
+__all__ = ["load_default_test_cases"]
 
 logger = logging.getLogger(__name__)
 
@@ -47,14 +42,14 @@ logger = logging.getLogger(__name__)
 @functools.cache
 def load_default_test_cases(
     manager_cls: type[Manager],
-    prompt_cls: type[Prompt],
+    prompt: Prompt,
     relative_paths: tuple[Path, ...],
 ) -> tuple[TestCase, ...]:
     """Load default test cases from repository JSON files and cache the result.
 
     Arguments:
         manager_cls: manager class used to construct test case models
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         relative_paths: paths relative to repository test data root
     Returns:
         loaded test cases
@@ -70,9 +65,7 @@ def load_default_test_cases(
         if not path.is_file():
             continue
         loaded_test_cases.extend(
-            llm_utils.load_test_cases_from_json(
-                path, manager_cls, prompt_cls=prompt_cls
-            )
+            llm_utils.load_test_cases_from_json(path, manager_cls, prompt=prompt)
         )
         logger.info(f"Loaded {len(loaded_test_cases)} test cases from {path}.")
     return tuple(loaded_test_cases)

@@ -22,39 +22,39 @@ class DelineationManager(Manager):
 
     operation: ClassVar[str] = "delineation"
     """Stable operation identifier used in persistence and CLIs."""
-    prompt_cls: ClassVar[type[DelineationPrompt]] = DelineationPrompt
-    """Base prompt class defining persisted test-case field names."""
+    base_prompt: ClassVar[DelineationPrompt] = DelineationPrompt.from_attributes()
+    """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[DelineationPrompt] = DelineationPrompt,
+        prompt: DelineationPrompt = DelineationPrompt.from_attributes(),
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             query model class
         """
-        name = get_model_name("DelineationQuery", prompt_cls.__name__)
+        name = get_model_name("DelineationQuery", prompt.name)
         fields: dict[str, Any] = {
-            prompt_cls.src_1_sub_1: (
+            prompt.src_1_sub_1: (
                 str,
-                Field(..., description=prompt_cls.src_1_sub_1_desc),
+                Field(..., description=prompt.src_1_sub_1_desc),
             ),
-            prompt_cls.src_1_sub_2: (
+            prompt.src_1_sub_2: (
                 str,
-                Field(..., description=prompt_cls.src_1_sub_2_desc),
+                Field(..., description=prompt.src_1_sub_2_desc),
             ),
-            prompt_cls.src_2_sub_1: (
+            prompt.src_2_sub_1: (
                 str,
-                Field("", description=prompt_cls.src_2_sub_1_desc),
+                Field("", description=prompt.src_2_sub_1_desc),
             ),
-            prompt_cls.src_2_sub_2: (
+            prompt.src_2_sub_2: (
                 str,
-                Field("", description=prompt_cls.src_2_sub_2_desc),
+                Field("", description=prompt.src_2_sub_2_desc),
             ),
         }
 
@@ -69,31 +69,31 @@ class DelineationManager(Manager):
             __validators__=validators,
             **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.llm_prompt = prompt
         return model
 
     @classmethod
     @cache
     def get_answer_cls(
         cls,
-        prompt_cls: type[DelineationPrompt] = DelineationPrompt,
+        prompt: DelineationPrompt = DelineationPrompt.from_attributes(),
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             answer model class
         """
-        name = get_model_name("DelineationAnswer", prompt_cls.__name__)
+        name = get_model_name("DelineationAnswer", prompt.name)
         fields: dict[str, Any] = {
-            prompt_cls.src_2_sub_1_shifted: (
+            prompt.src_2_sub_1_shifted: (
                 str,
-                Field("", description=prompt_cls.src_2_sub_1_shifted_desc),
+                Field("", description=prompt.src_2_sub_1_shifted_desc),
             ),
-            prompt_cls.src_2_sub_2_shifted: (
+            prompt.src_2_sub_2_shifted: (
                 str,
-                Field("", description=prompt_cls.src_2_sub_2_shifted_desc),
+                Field("", description=prompt.src_2_sub_2_shifted_desc),
             ),
         }
 
@@ -103,7 +103,7 @@ class DelineationManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.llm_prompt = prompt
         return model
 
     @classmethod
@@ -115,7 +115,7 @@ class DelineationManager(Manager):
         Returns:
             test case model class
         """
-        return cls.get_test_case_cls(cls.prompt_cls)
+        return cls.get_test_case_cls(cls.base_prompt)
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:
@@ -126,13 +126,13 @@ class DelineationManager(Manager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: type[DelineationPrompt] = getattr(model, "prompt_cls")
+        prompt: DelineationPrompt = getattr(model, "llm_prompt")
         min_difficulty = 0
         if model.answer is None:
             return min_difficulty
 
-        target_1_shifted = getattr(model.answer, prompt_cls.src_2_sub_1_shifted, None)
-        target_2_shifted = getattr(model.answer, prompt_cls.src_2_sub_2_shifted, None)
+        target_1_shifted = getattr(model.answer, prompt.src_2_sub_1_shifted, None)
+        target_2_shifted = getattr(model.answer, prompt.src_2_sub_2_shifted, None)
         if target_1_shifted != "" or target_2_shifted != "":
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
@@ -146,11 +146,11 @@ class DelineationManager(Manager):
         Returns:
             validated query
         """
-        prompt_cls: type[DelineationPrompt] = getattr(model, "prompt_cls")
-        src_2_sub_1 = getattr(model, prompt_cls.src_2_sub_1, None)
-        src_2_sub_2 = getattr(model, prompt_cls.src_2_sub_2, None)
+        prompt: DelineationPrompt = getattr(model, "llm_prompt")
+        src_2_sub_1 = getattr(model, prompt.src_2_sub_1, None)
+        src_2_sub_2 = getattr(model, prompt.src_2_sub_2, None)
         if not src_2_sub_1 and not src_2_sub_2:
-            raise ValueError(prompt_cls.src_2_sub_1_sub_2_missing_err)
+            raise ValueError(prompt.src_2_sub_1_sub_2_missing_err)
         return model
 
     @staticmethod
@@ -162,19 +162,19 @@ class DelineationManager(Manager):
         Returns:
             validated test case
         """
-        prompt_cls: type[DelineationPrompt] = getattr(model, "prompt_cls")
+        prompt: DelineationPrompt = getattr(model, "llm_prompt")
         if model.answer is None:
             return model
 
-        target_1 = getattr(model.query, prompt_cls.src_2_sub_1, "")
-        target_2 = getattr(model.query, prompt_cls.src_2_sub_2, "")
-        target_1_shifted = getattr(model.answer, prompt_cls.src_2_sub_1_shifted, "")
-        target_2_shifted = getattr(model.answer, prompt_cls.src_2_sub_2_shifted, "")
+        target_1 = getattr(model.query, prompt.src_2_sub_1, "")
+        target_2 = getattr(model.query, prompt.src_2_sub_2, "")
+        target_1_shifted = getattr(model.answer, prompt.src_2_sub_1_shifted, "")
+        target_2_shifted = getattr(model.answer, prompt.src_2_sub_2_shifted, "")
         if target_1 == target_1_shifted and target_2 == target_2_shifted:
-            raise ValueError(prompt_cls.src_2_sub_1_sub_2_unchanged_err)
+            raise ValueError(prompt.src_2_sub_1_sub_2_unchanged_err)
         if target_1_shifted != "" or target_2_shifted != "":
             expected = target_1 + target_2
             received = target_1_shifted + target_2_shifted
             if expected != received:
-                raise ValueError(prompt_cls.src_2_chars_changed_err(expected, received))
+                raise ValueError(prompt.src_2_chars_changed_err(expected, received))
         return model

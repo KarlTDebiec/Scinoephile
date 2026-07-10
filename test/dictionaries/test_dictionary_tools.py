@@ -5,9 +5,10 @@
 from __future__ import annotations
 
 from collections.abc import Generator
+from dataclasses import dataclass
 from os import environ
 from pathlib import Path
-from typing import Any, ClassVar, cast
+from typing import Any, cast
 from unittest.mock import patch
 
 from pytest import fixture
@@ -30,17 +31,22 @@ from scinoephile.dictionaries.dictionary_tools import (
 )
 
 
-class StubDictionaryToolPrompt(DictionaryToolPrompt):
+@dataclass(frozen=True, slots=True)
+class _StubDictionaryToolPrompt:
     """Prompt stub providing custom dictionary tool specification text."""
 
-    dictionary_tool_name: ClassVar[str] = "lookup_stub_dictionary"
+    dictionary_tool_name: str = "lookup_stub_dictionary"
     """Name of the dictionary lookup tool."""
 
-    dictionary_tool_description: ClassVar[str] = "Custom dictionary lookup tool."
+    dictionary_tool_description: str = "Custom dictionary lookup tool."
     """Description of the dictionary lookup tool."""
 
-    dictionary_tool_query_description: ClassVar[str] = "Custom query description."
+    dictionary_tool_query_description: str = "Custom query description."
     """Description of the dictionary lookup query parameter."""
+
+
+_STUB_DICTIONARY_TOOL_PROMPT: DictionaryToolPrompt = _StubDictionaryToolPrompt()
+"""Prompt stub providing custom dictionary tool specification text."""
 
 
 @fixture
@@ -163,12 +169,12 @@ def test_dictionary_entry_to_dict():
 
 def test_get_dictionary_tools_uses_prompt_text():
     """Build the tool spec from the prompt-provided text."""
-    tool_box = get_dictionary_tools(StubDictionaryToolPrompt)
+    tool_box = get_dictionary_tools(_STUB_DICTIONARY_TOOL_PROMPT)
 
     assert [tool["name"] for tool in tool_box.specs] == [
-        StubDictionaryToolPrompt.dictionary_tool_name
+        _STUB_DICTIONARY_TOOL_PROMPT.dictionary_tool_name
     ]
-    assert tool_box.handler_names == [StubDictionaryToolPrompt.dictionary_tool_name]
+    assert tool_box.handler_names == [_STUB_DICTIONARY_TOOL_PROMPT.dictionary_tool_name]
 
     parameters = cast(dict[str, object], tool_box.specs[0]["parameters"])
     properties = cast(dict[str, object], parameters["properties"])
@@ -176,10 +182,10 @@ def test_get_dictionary_tools_uses_prompt_text():
 
     assert (
         tool_box.specs[0]["description"]
-        == StubDictionaryToolPrompt.dictionary_tool_description
+        == _STUB_DICTIONARY_TOOL_PROMPT.dictionary_tool_description
     )
     assert query_schema["description"] == (
-        StubDictionaryToolPrompt.dictionary_tool_query_description
+        _STUB_DICTIONARY_TOOL_PROMPT.dictionary_tool_query_description
     )
 
 

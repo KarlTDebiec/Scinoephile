@@ -103,7 +103,7 @@ class _PatchedSrtPipeline:
         """
         self.calls: list[str] = []
         self.review_language_calls: list[Language] = []
-        self.review_prompt_calls: list[type[ReviewPrompt] | None] = []
+        self.review_prompt_calls: list[ReviewPrompt | None] = []
         self.review_test_case_path_calls: list[Path] = []
         self.review_auto_verify_calls: list[object] = []
         self.reviewed_text_calls: list[list[str]] = []
@@ -133,7 +133,7 @@ class _PatchedSrtPipeline:
         series: Series,
         *,
         language: Language,
-        prompt_cls: type[ReviewPrompt] | None,
+        prompt: ReviewPrompt | None,
         test_case_path: Path,
         provider: object,
         **kwargs: object,
@@ -143,7 +143,7 @@ class _PatchedSrtPipeline:
         Arguments:
             series: subtitle series to review
             language: language selected by the workflow
-            prompt_cls: prompt class selected by the workflow
+            prompt: prompt selected by the workflow
             test_case_path: path where test cases should be written
             provider: provider passed through by workflow
             **kwargs: reviewer keyword arguments
@@ -152,7 +152,7 @@ class _PatchedSrtPipeline:
         """
         self.calls.append("review")
         self.review_language_calls.append(language)
-        self.review_prompt_calls.append(prompt_cls)
+        self.review_prompt_calls.append(prompt)
         self.review_test_case_path_calls.append(test_case_path)
         self.review_auto_verify_calls.append(kwargs["auto_verify"])
         self.reviewed_text_calls.append(_series_texts(series))

@@ -11,7 +11,6 @@ from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
-from typing import ClassVar, Self, cast
 
 from pydantic import ValidationError
 
@@ -34,20 +33,17 @@ class Queryer[
     TQuery: Query,
     TAnswer: Answer,
     TTestCase: TestCase,
-    TPrompt: Prompt,
 ](ABC):
     """ABC for LLM queryers."""
 
-    prompt_cls: ClassVar[type[Prompt]]
-    """Text for LLM correspondence."""
-
     def __init__(
         self,
+        prompt: Prompt,
         prompt_test_cases: list[TTestCase] | None = None,
         verified_test_cases: list[TTestCase] | None = None,
         *,
         provider: LLMProvider,
-        cache_dir_path: str | None = None,
+        cache_dir_path: Path | str | None = None,
         additional_context: str | None = None,
         max_attempts: int = 5,
         auto_verify: bool = False,
@@ -56,6 +52,7 @@ class Queryer[
         """Initialize.
 
         Arguments:
+            prompt: text for LLM correspondence
             prompt_test_cases: test cases included in the prompt for few-shot learning
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
@@ -66,6 +63,8 @@ class Queryer[
             auto_verify: automatically mark test cases as verified if no changes
             tool_box: available tools and handlers
         """
+        self.prompt = prompt
+        """Text for LLM correspondence."""
         self.provider = provider
 
         self.prompt_test_cases = {tc.query.key: tc for tc in prompt_test_cases or []}
@@ -157,9 +156,9 @@ class Queryer[
                     {
                         "role": "user",
                         "content": (
-                            f"{self.prompt_cls.answer_invalid_pre}\n"
+                            f"{self.prompt.answer_invalid_pre}\n"
                             f"{'\n'.join([e['msg'] for e in exc.errors()])}\n"
-                            f"{self.prompt_cls.answer_invalid_post}"
+                            f"{self.prompt.answer_invalid_post}"
                         ),
                     }
                 )
@@ -185,9 +184,9 @@ class Queryer[
                     {
                         "role": "user",
                         "content": (
-                            f"{self.prompt_cls.test_case_invalid_pre}\n"
+                            f"{self.prompt.test_case_invalid_pre}\n"
                             f"{'\n'.join([e['msg'] for e in exc.errors()])}\n"
-                            f"{self.prompt_cls.test_case_invalid_post}"
+                            f"{self.prompt.test_case_invalid_post}"
                         ),
                     }
                 )
@@ -216,7 +215,7 @@ class Queryer[
         """String representation of all test cases in the log."""
         if not self.prompt_test_cases:
             return ""
-        few_shot = f"\n\n{self.prompt_cls.few_shot_intro}"
+        few_shot = f"\n\n{self.prompt.few_shot_intro}"
         for test_case in self.prompt_test_cases.values():
             if test_case.answer is None:
                 logger.warning(
@@ -224,11 +223,11 @@ class Queryer[
                     "skipping."
                 )
                 continue
-            few_shot += f"\n\n{self.prompt_cls.few_shot_query_intro}\n"
+            few_shot += f"\n\n{self.prompt.few_shot_query_intro}\n"
             few_shot += json.dumps(
                 test_case.query.model_dump(), indent=4, ensure_ascii=False
             )
-            few_shot += f"\n{self.prompt_cls.few_shot_answer_intro}\n"
+            few_shot += f"\n{self.prompt.few_shot_answer_intro}\n"
             few_shot += json.dumps(
                 test_case.answer.model_dump(), indent=4, ensure_ascii=False
             )
@@ -320,11 +319,11 @@ class Queryer[
         schema = answer_cls.model_json_schema()
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
 
-        system_prompt = self.prompt_cls.base_system_prompt
+        system_prompt = self.prompt.base_system_prompt
         if self.additional_context:
             system_prompt += f"\n\nAdditional context:\n{self.additional_context}"
         system_prompt += self.get_prompt_test_cases_few_shot_str()
-        system_prompt += f"\n\n{self.prompt_cls.schema_intro}\n{schema_json}\n"
+        system_prompt += f"\n\n{self.prompt.schema_intro}\n{schema_json}\n"
 
         return system_prompt
 
@@ -357,21 +356,3 @@ class Queryer[
             message = str(error.get("msg"))
             lines.append(f"{location}: {message}" if location else message)
         return "\n".join(lines)
-
-    @classmethod
-    @cache
-    def get_queryer_cls(cls, prompt_cls: type[Prompt]) -> type[Self]:
-        """Get concrete queryer class with provided text.
-
-        Arguments:
-            prompt_cls: text for LLM correspondence
-        Returns:
-            LLMQueryer type with appropriate text
-        """
-        name = f"{cls.__name__}_{prompt_cls.__name__}"
-        attrs = {
-            "__module__": cls.__module__,
-            "prompt_cls": prompt_cls,
-        }
-        queryer_cls = type(name, (cls,), attrs)
-        return cast("type[Self]", queryer_cls)

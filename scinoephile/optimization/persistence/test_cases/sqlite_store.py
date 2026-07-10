@@ -15,8 +15,10 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    MetaData,
     Table,
     Text,
+    inspect,
     select,
 )
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
@@ -27,7 +29,6 @@ from scinoephile.core.llms import Manager
 from scinoephile.optimization.persistence.sqlite import (
     OptimizationSqliteStore,
     load_json_object,
-    metadata,
     serialize_json_object,
 )
 
@@ -38,6 +39,9 @@ __all__ = ["TestCaseSqliteStore"]
 
 logger = getLogger(__name__)
 
+_metadata = MetaData()
+"""SQLAlchemy metadata owned by test-case persistence."""
+
 
 class TestCaseSqliteStore(OptimizationSqliteStore):
     """Normalized SQLite persistence and lookup for test cases."""
@@ -47,7 +51,7 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
 
     _test_cases = Table(
         "test_cases",
-        metadata,
+        _metadata,
         Column("test_case_id", Text, primary_key=True),
         Column("operation", Text, nullable=False),
         Column("difficulty", Integer, nullable=False),
@@ -63,7 +67,7 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
 
     _test_case_sources = Table(
         "test_case_sources",
-        metadata,
+        _metadata,
         Column(
             "test_case_id",
             Text,
@@ -74,6 +78,10 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
         Index("test_case_sources_source_path", "source_path"),
     )
     """JSON source provenance for imported test cases."""
+
+    def create_schema(self):
+        """Create the test-case tables if needed."""
+        self._create_tables(_metadata)
 
     def get_test_case(self, test_case_id: str) -> PersistedTestCase | None:
         """Fetch a single test case by ID.
@@ -86,10 +94,8 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
         if not self.database_path.exists():
             return None
         with self.engine.connect() as connection:
-            version = self._get_schema_version(connection)
-            if version == 0:
+            if not inspect(connection).has_table("test_cases"):
                 return None
-            self._require_current_schema(version)
             row = (
                 connection.execute(
                     select(self._test_cases).where(
@@ -120,10 +126,9 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
         if not self.database_path.exists():
             return []
         with self.engine.connect() as connection:
-            version = self._get_schema_version(connection)
-            if version == 0:
+            table_names = set(inspect(connection).get_table_names())
+            if not {"test_cases", "test_case_sources"} <= table_names:
                 return []
-            self._require_current_schema(version)
             statement = (
                 select(self._test_cases)
                 .join(self._test_case_sources)
@@ -203,10 +208,9 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
 
         if dry_run:
             with self.engine.connect() as connection:
-                version = self._get_schema_version(connection)
-                if version == 0:
+                table_names = set(inspect(connection).get_table_names())
+                if not {"test_cases", "test_case_sources"} <= table_names:
                     return (all_desired_ids, set())
-                self._require_current_schema(version)
                 return self._sync_source_paths(
                     connection,
                     desired_by_source,
