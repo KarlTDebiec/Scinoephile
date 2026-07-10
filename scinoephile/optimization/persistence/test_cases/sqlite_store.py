@@ -6,11 +6,13 @@ from __future__ import annotations
 
 import json
 from collections.abc import Iterable, Mapping
+from dataclasses import replace
 from logging import getLogger
 from pathlib import Path
 from typing import Any
 
 from sqlalchemy import (
+    Boolean,
     CheckConstraint,
     Column,
     ForeignKey,
@@ -20,7 +22,6 @@ from sqlalchemy import (
     Table,
     Text,
     create_engine,
-    inspect,
     select,
     text,
 )
@@ -39,9 +40,6 @@ __all__ = ["TestCaseSqliteStore"]
 
 logger = getLogger(__name__)
 
-type _SourceMetadata = tuple[int, bool, bool]
-"""Difficulty, prompt, and verified metadata for one source association."""
-
 
 def _enable_sqlite_foreign_keys(
     dbapi_connection: Any,
@@ -59,7 +57,7 @@ class TestCaseSqliteStore:
     __test__ = False
     """Inform pytest not to collect this class as a test."""
 
-    schema_version = 3
+    schema_version = 4
     """SQLite schema version."""
 
     _metadata = MetaData()
@@ -70,13 +68,16 @@ class TestCaseSqliteStore:
         _metadata,
         Column("test_case_id", Text, primary_key=True),
         Column("operation", Text, nullable=False),
+        Column("difficulty", Integer, nullable=False),
+        Column("prompt", Boolean, nullable=False),
+        Column("verified", Boolean, nullable=False),
         Column("query_json", Text, nullable=False),
         Column("answer_json", Text, nullable=False),
         CheckConstraint("json_valid(query_json)", name="test_cases_query_json_valid"),
         CheckConstraint("json_valid(answer_json)", name="test_cases_answer_json_valid"),
         Index("test_cases_operation", "operation"),
     )
-    """Content-addressed test cases shared by all operations."""
+    """Content-addressed test cases and SQL-owned curation metadata."""
 
     _test_case_sources = Table(
         "test_case_sources",
@@ -88,12 +89,9 @@ class TestCaseSqliteStore:
             primary_key=True,
         ),
         Column("source_path", Text, primary_key=True),
-        Column("difficulty", Integer, nullable=False),
-        Column("prompt", Integer, nullable=False),
-        Column("verified", Integer, nullable=False),
         Index("test_case_sources_source_path", "source_path"),
     )
-    """Source associations and source-specific curation metadata."""
+    """JSON source provenance for imported test cases."""
 
     def __init__(self, database_path: Path):
         """Initialize.
@@ -193,70 +191,29 @@ class TestCaseSqliteStore:
             )
             return [self._row_to_test_case(connection, row) for row in rows]
 
-    def list_source_paths(
-        self,
-        *,
-        operation: str | None = None,
-    ) -> list[str]:
-        """List source paths, optionally filtered by operation.
-
-        Arguments:
-            operation: optional operation filter
-        Returns:
-            ordered source paths
-        """
-        if not self.database_path.exists():
-            return []
-        with self.engine.connect() as connection:
-            version = self._get_schema_version(connection)
-            if version == 0:
-                return []
-            self._require_current_schema(version)
-            statement = select(self._test_case_sources.c.source_path).distinct()
-            if operation is not None:
-                statement = statement.join(self._test_cases)
-            if operation is not None:
-                statement = statement.where(self._test_cases.c.operation == operation)
-            rows = (
-                connection.execute(
-                    statement.order_by(self._test_case_sources.c.source_path)
-                )
-                .scalars()
-                .all()
-            )
-        return [str(row) for row in rows]
-
-    def list_tables(self) -> list[str]:
-        """List tables currently present in the database.
-
-        Returns:
-            ordered table names
-        """
-        if not self.database_path.exists():
-            return []
-        return sorted(inspect(self.engine).get_table_names())
-
     def sync_source_paths(
         self,
         source_test_cases: Mapping[str, Iterable[PersistedTestCase]],
         *,
         dry_run: bool,
-    ) -> tuple[list[PersistedTestCase], list[PersistedTestCase], list[str]]:
-        """Synchronize complete test-case sets for one or more source paths.
+    ) -> tuple[set[str], set[str]]:
+        """Synchronize provenance links for one or more source paths.
 
-        All source sets are written in one transaction. Metadata is stored on each
-        source association and aggregated when a test case is read.
+        New test cases initialize their SQL-owned curation metadata from the maximum
+        difficulty and union of prompt and verified flags across this import. Existing
+        SQL metadata is not changed by later JSON synchronization.
 
         Arguments:
             source_test_cases: desired test cases keyed by canonical source path
             dry_run: if True, compute changes without writing
         Returns:
-            inserted associations, updated associations, and removed association IDs
+            test case IDs whose source association was inserted or removed
         """
         desired_by_source: dict[str, dict[str, PersistedTestCase]] = {}
-        for source_path, test_cases in source_test_cases.items():
+        canonical_by_id: dict[str, PersistedTestCase] = {}
+        for source_path in sorted(source_test_cases):
             desired_by_id: dict[str, PersistedTestCase] = {}
-            for test_case in test_cases:
+            for test_case in source_test_cases[source_path]:
                 expected_id = get_test_case_id(
                     test_case.query,
                     test_case.answer,
@@ -268,30 +225,36 @@ class TestCaseSqliteStore:
                         "content-addressed ID."
                     )
                 desired_by_id[test_case.test_case_id] = test_case
+                existing = canonical_by_id.get(test_case.test_case_id)
+                if existing is None:
+                    canonical_by_id[test_case.test_case_id] = test_case
+                else:
+                    canonical_by_id[test_case.test_case_id] = replace(
+                        existing,
+                        difficulty=max(existing.difficulty, test_case.difficulty),
+                        prompt=existing.prompt or test_case.prompt,
+                        verified=existing.verified or test_case.verified,
+                    )
             desired_by_source[source_path] = desired_by_id
 
+        all_desired_ids = {
+            test_case_id
+            for desired_by_id in desired_by_source.values()
+            for test_case_id in desired_by_id
+        }
         if dry_run and not self.database_path.exists():
-            inserted = [
-                test_case
-                for source_path in sorted(desired_by_source)
-                for test_case in desired_by_source[source_path].values()
-            ]
-            return (inserted, [], [])
+            return (all_desired_ids, set())
 
         if dry_run:
             with self.engine.connect() as connection:
                 version = self._get_schema_version(connection)
                 if version == 0:
-                    inserted = [
-                        test_case
-                        for source_path in sorted(desired_by_source)
-                        for test_case in desired_by_source[source_path].values()
-                    ]
-                    return (inserted, [], [])
+                    return (all_desired_ids, set())
                 self._require_current_schema(version)
                 return self._sync_source_paths(
                     connection,
                     desired_by_source,
+                    canonical_by_id,
                     dry_run=True,
                 )
 
@@ -300,6 +263,7 @@ class TestCaseSqliteStore:
             changes = self._sync_source_paths(
                 connection,
                 desired_by_source,
+                canonical_by_id,
                 dry_run=False,
             )
         logger.info(f"Synchronized {len(desired_by_source)} test-case source paths")
@@ -316,69 +280,27 @@ class TestCaseSqliteStore:
         """
         return int(connection.execute(text("PRAGMA user_version")).scalar_one())
 
-    def _get_source_metadata(
-        self,
-        connection: Connection,
-        source_path: str,
-    ) -> dict[str, _SourceMetadata]:
-        """Get persisted metadata for one source path.
-
-        Arguments:
-            connection: SQLAlchemy connection
-            source_path: canonical source path
-        Returns:
-            source metadata keyed by test case ID
-        """
-        rows = connection.execute(
-            select(
-                self._test_case_sources.c.test_case_id,
-                self._test_case_sources.c.difficulty,
-                self._test_case_sources.c.prompt,
-                self._test_case_sources.c.verified,
-            ).where(self._test_case_sources.c.source_path == source_path)
-        ).all()
-        return {
-            str(row.test_case_id): (
-                int(row.difficulty),
-                bool(row.prompt),
-                bool(row.verified),
-            )
-            for row in rows
-        }
-
-    def _get_source_rows(
+    def _get_source_paths(
         self,
         connection: Connection,
         test_case_id: str,
-    ) -> list[RowMapping]:
-        """Get source association rows for a test case.
+    ) -> tuple[str, ...]:
+        """Get source paths for a test case.
 
         Arguments:
             connection: SQLAlchemy connection
             test_case_id: test case identifier
         Returns:
-            source association rows
+            ordered source paths
         """
-        return list(
-            connection.execute(
-                select(self._test_case_sources)
+        return tuple(
+            str(source_path)
+            for source_path in connection.execute(
+                select(self._test_case_sources.c.source_path)
                 .where(self._test_case_sources.c.test_case_id == test_case_id)
                 .order_by(self._test_case_sources.c.source_path)
-            )
-            .mappings()
-            .all()
+            ).scalars()
         )
-
-    @staticmethod
-    def _get_test_case_metadata(test_case: PersistedTestCase) -> _SourceMetadata:
-        """Get source metadata from a persisted test case.
-
-        Arguments:
-            test_case: persisted test case
-        Returns:
-            source metadata tuple
-        """
-        return (test_case.difficulty, test_case.prompt, test_case.verified)
 
     @staticmethod
     def _load_json_object(value: object, field_name: str) -> dict[str, object]:
@@ -396,7 +318,12 @@ class TestCaseSqliteStore:
             raise ScinoephileError(
                 f"Persisted test case {field_name} is not JSON text."
             )
-        loaded = json.loads(value)
+        try:
+            loaded = json.loads(value)
+        except json.JSONDecodeError as exc:
+            raise ScinoephileError(
+                f"Persisted test case {field_name} is invalid JSON."
+            ) from exc
         if not isinstance(loaded, dict):
             raise ScinoephileError(
                 f"Persisted test case {field_name} is not a JSON object."
@@ -423,31 +350,24 @@ class TestCaseSqliteStore:
         connection: Connection,
         row: RowMapping,
     ) -> PersistedTestCase:
-        """Convert a test-case row and its source metadata to a model.
+        """Convert a test-case row to a model.
 
         Arguments:
             connection: SQLAlchemy connection
             row: test-case row
         Returns:
             persisted test case
-        Raises:
-            ScinoephileError: if the row has no source associations
         """
         test_case_id = str(row["test_case_id"])
-        source_rows = self._get_source_rows(connection, test_case_id)
-        if not source_rows:
-            raise ScinoephileError(
-                f"Persisted test case {test_case_id} has no source associations."
-            )
         return PersistedTestCase(
             test_case_id=test_case_id,
             operation=str(row["operation"]),
-            difficulty=max(int(source_row["difficulty"]) for source_row in source_rows),
-            prompt=any(bool(source_row["prompt"]) for source_row in source_rows),
-            verified=any(bool(source_row["verified"]) for source_row in source_rows),
+            difficulty=int(row["difficulty"]),
+            prompt=bool(row["prompt"]),
+            verified=bool(row["verified"]),
             query=self._load_json_object(row["query_json"], "query"),
             answer=self._load_json_object(row["answer_json"], "answer"),
-            source_paths=[str(source_row["source_path"]) for source_row in source_rows],
+            source_paths=self._get_source_paths(connection, test_case_id),
         )
 
     @staticmethod
@@ -470,48 +390,49 @@ class TestCaseSqliteStore:
         self,
         connection: Connection,
         desired_by_source: Mapping[str, Mapping[str, PersistedTestCase]],
+        canonical_by_id: Mapping[str, PersistedTestCase],
         *,
         dry_run: bool,
-    ) -> tuple[list[PersistedTestCase], list[PersistedTestCase], list[str]]:
+    ) -> tuple[set[str], set[str]]:
         """Synchronize source paths using an existing connection.
 
         Arguments:
             connection: SQLAlchemy connection
             desired_by_source: desired cases keyed by source path and test case ID
+            canonical_by_id: new test cases with aggregated initial metadata
             dry_run: if True, compute changes without writing
         Returns:
-            inserted associations, updated associations, and removed association IDs
+            test case IDs whose source association was inserted or removed
         """
-        inserted: list[PersistedTestCase] = []
-        updated: list[PersistedTestCase] = []
-        deleted: list[str] = []
+        inserted: set[str] = set()
+        deleted: set[str] = set()
         for source_path in sorted(desired_by_source):
-            desired_by_id = desired_by_source[source_path]
-            existing_metadata = self._get_source_metadata(connection, source_path)
-            existing_ids = set(existing_metadata)
-            desired_ids = set(desired_by_id)
-
-            insert_ids = sorted(desired_ids - existing_ids)
-            update_ids = sorted(
-                test_case_id
-                for test_case_id in desired_ids & existing_ids
-                if existing_metadata[test_case_id]
-                != self._get_test_case_metadata(desired_by_id[test_case_id])
+            desired_ids = set(desired_by_source[source_path])
+            existing_ids = set(
+                connection.execute(
+                    select(self._test_case_sources.c.test_case_id).where(
+                        self._test_case_sources.c.source_path == source_path
+                    )
+                ).scalars()
             )
-            delete_ids = sorted(existing_ids - desired_ids)
-            inserted.extend(desired_by_id[test_case_id] for test_case_id in insert_ids)
-            updated.extend(desired_by_id[test_case_id] for test_case_id in update_ids)
-            deleted.extend(delete_ids)
+            insert_ids = desired_ids - existing_ids
+            delete_ids = existing_ids - desired_ids
+            inserted.update(insert_ids)
+            deleted.update(delete_ids)
 
             if dry_run:
                 continue
 
-            for test_case in desired_by_id.values():
+            for test_case_id in sorted(insert_ids):
+                test_case = canonical_by_id[test_case_id]
                 connection.execute(
                     sqlite_insert(self._test_cases)
                     .values(
                         test_case_id=test_case.test_case_id,
                         operation=test_case.operation,
+                        difficulty=test_case.difficulty,
+                        prompt=test_case.prompt,
+                        verified=test_case.verified,
                         query_json=self._serialize_json_object(test_case.query),
                         answer_json=self._serialize_json_object(test_case.answer),
                     )
@@ -519,24 +440,14 @@ class TestCaseSqliteStore:
                         index_elements=[self._test_cases.c.test_case_id]
                     )
                 )
-                source_insert = sqlite_insert(self._test_case_sources).values(
-                    test_case_id=test_case.test_case_id,
-                    source_path=source_path,
-                    difficulty=test_case.difficulty,
-                    prompt=int(test_case.prompt),
-                    verified=int(test_case.verified),
-                )
                 connection.execute(
-                    source_insert.on_conflict_do_update(
+                    sqlite_insert(self._test_case_sources)
+                    .values(test_case_id=test_case_id, source_path=source_path)
+                    .on_conflict_do_nothing(
                         index_elements=[
                             self._test_case_sources.c.test_case_id,
                             self._test_case_sources.c.source_path,
-                        ],
-                        set_={
-                            "difficulty": source_insert.excluded.difficulty,
-                            "prompt": source_insert.excluded.prompt,
-                            "verified": source_insert.excluded.verified,
-                        },
+                        ]
                     )
                 )
 
@@ -547,18 +458,4 @@ class TestCaseSqliteStore:
                         & (self._test_case_sources.c.test_case_id.in_(delete_ids))
                     )
                 )
-                remaining_source = (
-                    select(self._test_case_sources.c.test_case_id)
-                    .where(
-                        self._test_case_sources.c.test_case_id
-                        == self._test_cases.c.test_case_id
-                    )
-                    .exists()
-                )
-                connection.execute(
-                    self._test_cases.delete().where(
-                        self._test_cases.c.test_case_id.in_(delete_ids),
-                        ~remaining_source,
-                    )
-                )
-        return (inserted, updated, deleted)
+        return (inserted, deleted)

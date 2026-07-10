@@ -4,67 +4,36 @@
 
 from __future__ import annotations
 
-from scinoephile.llms.translation.manager import TranslationManager
-from scinoephile.llms.translation.prompt import TranslationPrompt
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 
 def test_get_test_case_id_stable_for_same_payload():
-    """Computing an ID twice for identical data should match."""
-    test_case_cls = TranslationManager.get_test_case_cls(
-        size=1, prompt_cls=TranslationPrompt
-    )
-    tc1 = test_case_cls.model_validate(
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
-        }
-    )
-    tc2 = test_case_cls.model_validate(
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
-        }
-    )
-    assert tc1.answer is not None
-    assert tc2.answer is not None
+    """Computing an ID twice for identical normalized data should match."""
+    query = {"input_1": "a"}
+    answer = {"output_1": "b"}
+
     assert get_test_case_id(
-        tc1.query,
-        tc1.answer,
+        query,
+        answer,
         operation="translation",
     ) == get_test_case_id(
-        tc2.query,
-        tc2.answer,
+        query,
+        answer,
         operation="translation",
     )
 
 
 def test_get_test_case_id_changes_with_answer():
-    """Changing answer content should change computed ID."""
-    test_case_cls = TranslationManager.get_test_case_cls(
-        size=1, prompt_cls=TranslationPrompt
-    )
-    tc1 = test_case_cls.model_validate(
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b", "note_1": "changed"},
-        }
-    )
-    tc2 = test_case_cls.model_validate(
-        {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "c", "note_1": "changed"},
-        }
-    )
-    assert tc1.answer is not None
-    assert tc2.answer is not None
+    """Changing normalized answer content should change the computed ID."""
+    query = {"input_1": "a"}
+
     assert get_test_case_id(
-        tc1.query,
-        tc1.answer,
+        query,
+        {"output_1": "b"},
         operation="translation",
     ) != get_test_case_id(
-        tc2.query,
-        tc2.answer,
+        query,
+        {"output_1": "c"},
         operation="translation",
     )
 
@@ -73,13 +42,12 @@ def test_get_test_case_id_changes_with_operation():
     """Catalog scope should contribute to the content-addressed ID."""
     query = {"input_1": "a"}
     answer = {"output_1": "b"}
-    first = get_test_case_id(
+
+    assert get_test_case_id(
         query,
         answer,
         operation="translation",
-    )
-
-    assert first != get_test_case_id(
+    ) != get_test_case_id(
         query,
         answer,
         operation="review",

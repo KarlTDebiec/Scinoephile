@@ -12,13 +12,14 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     output_file_arg,
 )
+from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.llms import OperationSpec
+from scinoephile.core.llms import OperationSpec, Prompt
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
 
-from .argument_types import operation_arg
+from .argument_types import operation_arg, source_prompt_arg
 
 __all__ = ["OptimizationSyncTestCasesCli"]
 
@@ -27,10 +28,14 @@ OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "SQLite database outfile path": "SQLite 数据库输出路径",
         "LLM operation name from the optimization registry for these test case JSON "
         "file(s)": ("这些测试用例 JSON 文件对应的优化注册表 LLM 操作名称"),
-        "list rows that would be inserted, updated, or deleted without writing": (
-            "列出将插入、更新或删除的行而不写入"
+        "list source associations that would be inserted or deleted without writing": (
+            "列出将插入或删除的来源关联而不写入"
         ),
         "one or more input JSON paths": "一个或多个输入 JSON 路径",
+        "Python path to the prompt class defining input JSON field names; defaults "
+        "to the operation base prompt class": (
+            "定义输入 JSON 字段名称的提示词类 Python 路径；默认使用操作的基础提示词类"
+        ),
         "synchronize persisted LLM test cases from JSON into SQLite": (
             "将 JSON 测试用例同步到 SQLite"
         ),
@@ -39,10 +44,15 @@ OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "SQLite database outfile path": "SQLite 資料庫輸出路徑",
         "LLM operation name from the optimization registry for these test case JSON "
         "file(s)": ("這些測試用例 JSON 檔對應的最佳化登錄檔 LLM 操作名稱"),
-        "list rows that would be inserted, updated, or deleted without writing": (
-            "列出將插入、更新或刪除的列而不寫入"
+        "list source associations that would be inserted or deleted without writing": (
+            "列出將插入或刪除的來源關聯而不寫入"
         ),
         "one or more input JSON paths": "一個或多個輸入 JSON 路徑",
+        "Python path to the prompt class defining input JSON field names; defaults "
+        "to the operation base prompt class": (
+            "定義輸入 JSON 欄位名稱的提示詞類別 Python 路徑；"
+            "預設使用操作的基礎提示詞類別"
+        ),
         "synchronize persisted LLM test cases from JSON into SQLite": (
             "將 JSON 測試用例同步到 SQLite"
         ),
@@ -94,10 +104,20 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             ),
         )
         arg_groups["operation arguments"].add_argument(
+            "--source-prompt",
+            dest="source_prompt_cls",
+            type=source_prompt_arg,
+            help=(
+                "Python path to the prompt class defining input JSON field names; "
+                "defaults to the operation base prompt class"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
             "--dry-run",
             action="store_true",
             help=(
-                "list rows that would be inserted, updated, or deleted without writing"
+                "list source associations that would be inserted or deleted without "
+                "writing"
             ),
         )
         # Output arguments
@@ -121,26 +141,34 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
     def _main(
         cls,
         *,
+        _parser: ArgumentParser | None = None,
         infile_paths: list[Path],
         operation: OperationSpec,
+        source_prompt_cls: type[Prompt] | None,
         dry_run: bool,
         outfile: Path,
     ):
         """Execute with provided keyword arguments."""
+        parser = _parser or cls.argparser()
+        if source_prompt_cls is None:
+            source_prompt_cls = operation.prompt_cls
+
         # Perform operations
-        report = sync_test_cases_from_json_paths(
-            database_path=outfile,
-            operation_spec=operation,
-            input_paths=infile_paths,
-            dry_run=dry_run,
-        )
+        try:
+            report = sync_test_cases_from_json_paths(
+                database_path=outfile,
+                operation_spec=operation,
+                source_prompt_cls=source_prompt_cls,
+                input_paths=infile_paths,
+                dry_run=dry_run,
+            )
+        except ScinoephileError as exc:
+            parser.error(str(exc))
 
         # Write outputs
         if dry_run:
             for test_case_id in report.insert_ids:
                 print({"action": "insert", "test_case_id": test_case_id})
-            for test_case_id in report.update_ids:
-                print({"action": "update", "test_case_id": test_case_id})
             for test_case_id in report.delete_ids:
                 print({"action": "delete", "test_case_id": test_case_id})
         else:
@@ -149,7 +177,6 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
                     "operation": report.operation,
                     "sources": len(report.input_paths),
                     "inserted": len(report.insert_ids),
-                    "updated": len(report.update_ids),
                     "deleted": len(report.delete_ids),
                 }
             )

@@ -12,13 +12,17 @@ from pytest import raises
 
 from scinoephile import common
 from scinoephile.core import ScinoephileError
+from scinoephile.lang.zho.review import ReviewPromptZhoHant
 from scinoephile.llms.punctuation import PUNCTUATION_OPERATION_SPEC
 from scinoephile.llms.review import (
     REVIEW_OPERATION_SPEC,
     ReviewManager,
     ReviewPrompt,
 )
-from scinoephile.llms.translation import TRANSLATION_OPERATION_SPEC
+from scinoephile.llms.translation import TRANSLATION_OPERATION_SPEC, TranslationPrompt
+from scinoephile.multilang.yue_zho.transcription.punctuation import (
+    YuePunctuationVsZhoPromptYueHans,
+)
 from scinoephile.optimization.persistence.test_cases import (
     PersistedTestCase,
     TestCaseSqliteStore,
@@ -91,8 +95,23 @@ def test_normalization_makes_prompt_field_aliases_share_identity():
     assert localized_persisted.test_case_id == alternative_persisted.test_case_id
 
 
-def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
-    """Sync should insert new IDs and delete obsolete IDs per source JSON."""
+def test_sync_rejects_source_prompt_from_another_operation(tmp_path: Path):
+    """Source prompts should belong to the selected operation's base prompt."""
+    with raises(ScinoephileError, match="is not a subclass"):
+        sync_test_cases_from_json_paths(
+            database_path=tmp_path / "test_cases.sqlite",
+            operation_spec=TRANSLATION_OPERATION_SPEC,
+            source_prompt_cls=ReviewPrompt,
+            input_paths=[],
+            dry_run=False,
+        )
+
+
+def test_sync_inserts_and_removes_provenance_by_source_path(
+    tmp_path: Path,
+    monkeypatch,
+):
+    """Sync should insert and remove provenance links per source JSON."""
     monkeypatch.chdir(tmp_path)
     database_path = Path("test_cases.sqlite")
     source_path = Path("source.json")
@@ -112,6 +131,7 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
     first_report = sync_test_cases_from_json_paths(
         database_path=database_path,
         operation_spec=TRANSLATION_OPERATION_SPEC,
+        source_prompt_cls=TranslationPrompt,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -126,12 +146,15 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
     second_report = sync_test_cases_from_json_paths(
         database_path=database_path,
         operation_spec=TRANSLATION_OPERATION_SPEC,
+        source_prompt_cls=TranslationPrompt,
         input_paths=[source_path],
         dry_run=False,
     )
 
     assert second_report.delete_ids == (deleted_id,)
-    assert TestCaseSqliteStore(database_path).get_test_case(deleted_id) is None
+    retained = TestCaseSqliteStore(database_path).get_test_case(deleted_id)
+    assert retained is not None
+    assert retained.source_paths == ()
 
 
 def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
@@ -146,6 +169,7 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     first_report = sync_test_cases_from_json_paths(
         database_path=database_path,
         operation_spec=TRANSLATION_OPERATION_SPEC,
+        source_prompt_cls=TranslationPrompt,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -154,6 +178,7 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     second_report = sync_test_cases_from_json_paths(
         database_path=database_path,
         operation_spec=TRANSLATION_OPERATION_SPEC,
+        source_prompt_cls=TranslationPrompt,
         input_paths=[source_path.resolve()],
         dry_run=False,
     )
@@ -161,8 +186,8 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     assert second_report.delete_ids == first_report.insert_ids
 
 
-def test_sync_dry_run_reports_source_metadata_updates(tmp_path: Path):
-    """Dry-run sync should report source-specific metadata updates."""
+def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
+    """JSON synchronization should not overwrite SQL-owned metadata."""
     database_path = tmp_path / "test_cases.sqlite"
     source_path = tmp_path / "source.json"
     data = [
@@ -176,6 +201,7 @@ def test_sync_dry_run_reports_source_metadata_updates(tmp_path: Path):
     first_report = sync_test_cases_from_json_paths(
         database_path=database_path,
         operation_spec=TRANSLATION_OPERATION_SPEC,
+        source_prompt_cls=TranslationPrompt,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -187,12 +213,13 @@ def test_sync_dry_run_reports_source_metadata_updates(tmp_path: Path):
     dry_run_report = sync_test_cases_from_json_paths(
         database_path=database_path,
         operation_spec=TRANSLATION_OPERATION_SPEC,
+        source_prompt_cls=TranslationPrompt,
         input_paths=[source_path],
         dry_run=True,
     )
 
     assert dry_run_report.insert_ids == ()
-    assert dry_run_report.update_ids == first_report.insert_ids
+    assert dry_run_report.delete_ids == ()
     loaded_before_write = TestCaseSqliteStore(database_path).get_test_case(
         first_report.insert_ids[0]
     )
@@ -202,6 +229,7 @@ def test_sync_dry_run_reports_source_metadata_updates(tmp_path: Path):
     sync_test_cases_from_json_paths(
         database_path=database_path,
         operation_spec=TRANSLATION_OPERATION_SPEC,
+        source_prompt_cls=TranslationPrompt,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -209,9 +237,9 @@ def test_sync_dry_run_reports_source_metadata_updates(tmp_path: Path):
         first_report.insert_ids[0]
     )
     assert loaded is not None
-    assert loaded.difficulty == 2
-    assert loaded.prompt
-    assert loaded.verified
+    assert loaded.difficulty == 1
+    assert not loaded.prompt
+    assert not loaded.verified
 
 
 def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
@@ -236,10 +264,11 @@ def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
         encoding="utf-8",
     )
 
-    with raises(ScinoephileError, match="difficulty must be an integer"):
+    with raises(ScinoephileError, match="valid integer"):
         sync_test_cases_from_json_paths(
             database_path=database_path,
             operation_spec=TRANSLATION_OPERATION_SPEC,
+            source_prompt_cls=TranslationPrompt,
             input_paths=[valid_path, invalid_path],
             dry_run=False,
         )
@@ -259,6 +288,7 @@ def test_sync_normalizes_localized_repository_data(tmp_path: Path):
     sync_test_cases_from_json_paths(
         database_path=database_path,
         operation_spec=REVIEW_OPERATION_SPEC,
+        source_prompt_cls=ReviewPromptZhoHant,
         input_paths=[source_path],
         dry_run=False,
     )
@@ -292,6 +322,7 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
     sync_test_cases_from_json_paths(
         database_path=database_path,
         operation_spec=PUNCTUATION_OPERATION_SPEC,
+        source_prompt_cls=YuePunctuationVsZhoPromptYueHans,
         input_paths=[source_path],
         dry_run=False,
     )

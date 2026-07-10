@@ -16,6 +16,7 @@ from scinoephile.optimization.persistence.test_cases import (
     PersistedTestCase,
     TestCaseSqliteStore,
 )
+from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 
 def get_test_case(
@@ -32,15 +33,15 @@ def get_test_case(
         query = {"input": "same"}
     if answer is None:
         answer = {"output": "same"}
-    return PersistedTestCase.from_json_data(
-        {
-            "query": query,
-            "answer": answer,
-            "difficulty": difficulty,
-            "prompt": prompt,
-            "verified": verified,
-        },
+    return PersistedTestCase(
+        test_case_id=get_test_case_id(query, answer, operation=operation),
         operation=operation,
+        difficulty=difficulty,
+        prompt=prompt,
+        verified=verified,
+        query=query,
+        answer=answer,
+        source_paths=(),
     )
 
 
@@ -65,18 +66,26 @@ def test_store_round_trips_normalized_json(tmp_path: Path):
     assert loaded.operation == "unit"
     assert loaded.query == test_case.query
     assert loaded.answer == test_case.answer
-    assert loaded.source_paths == ["x.json"]
+    assert loaded.source_paths == ("x.json",)
 
     with closing(sqlite3.connect(database_path)) as connection:
         columns = {
             str(row[1]) for row in connection.execute("PRAGMA table_info(test_cases)")
         }
+        source_columns = {
+            str(row[1])
+            for row in connection.execute("PRAGMA table_info(test_case_sources)")
+        }
     assert columns == {
         "answer_json",
+        "difficulty",
         "operation",
+        "prompt",
         "query_json",
         "test_case_id",
+        "verified",
     }
+    assert source_columns == {"source_path", "test_case_id"}
 
 
 def test_store_does_not_create_parent_dir_on_init(tmp_path: Path):
@@ -86,12 +95,11 @@ def test_store_does_not_create_parent_dir_on_init(tmp_path: Path):
 
     assert not database_path.parent.exists()
     assert store.get_test_case("missing") is None
-    assert store.list_tables() == []
     assert not database_path.parent.exists()
 
 
-def test_store_aggregates_and_recalculates_source_metadata(tmp_path: Path):
-    """Removing a source should recalculate aggregated curation metadata."""
+def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
+    """Removing provenance should not change SQL-owned curation metadata."""
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
     low_metadata = get_test_case(difficulty=1)
@@ -114,18 +122,18 @@ def test_store_aggregates_and_recalculates_source_metadata(tmp_path: Path):
     assert loaded.difficulty == 3
     assert loaded.prompt
     assert loaded.verified
-    assert loaded.source_paths == ["high.json", "low.json"]
+    assert loaded.source_paths == ("high.json", "low.json")
 
     store.sync_source_paths({"high.json": []}, dry_run=False)
-    recalculated = store.get_test_case(low_metadata.test_case_id)
-    assert recalculated is not None
-    assert recalculated.difficulty == 1
-    assert not recalculated.prompt
-    assert not recalculated.verified
-    assert recalculated.source_paths == ["low.json"]
+    retained = store.get_test_case(low_metadata.test_case_id)
+    assert retained is not None
+    assert retained.difficulty == 3
+    assert retained.prompt
+    assert retained.verified
+    assert retained.source_paths == ("low.json",)
 
 
-def test_store_filters_source_paths_by_operation(tmp_path: Path):
+def test_store_filters_source_lookup_by_operation(tmp_path: Path):
     """Source lookup should support catalog operation filters."""
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
@@ -142,15 +150,18 @@ def test_store_filters_source_paths_by_operation(tmp_path: Path):
         dry_run=False,
     )
 
-    assert store.list_source_paths(operation="review") == [
-        "first.json",
-        "second.json",
-    ]
     filtered = store.get_test_cases_by_source_path(
         "second.json",
         operation="review",
     )
     assert [test_case.test_case_id for test_case in filtered] == [second.test_case_id]
+    assert (
+        store.get_test_cases_by_source_path(
+            "second.json",
+            operation="translation",
+        )
+        == []
+    )
 
 
 def test_store_rejects_mismatched_content_addressed_id(tmp_path: Path):
@@ -169,8 +180,8 @@ def test_store_rejects_legacy_schema(tmp_path: Path):
     """Writing should reject rather than silently relabel a legacy schema."""
     database_path = tmp_path / "test_cases.sqlite"
     with closing(sqlite3.connect(database_path)) as connection:
-        connection.execute("PRAGMA user_version=2")
+        connection.execute("PRAGMA user_version=3")
     store = TestCaseSqliteStore(database_path)
 
-    with raises(ScinoephileError, match="schema version 2 is unsupported"):
+    with raises(ScinoephileError, match="schema version 3 is unsupported"):
         store.create_schema()

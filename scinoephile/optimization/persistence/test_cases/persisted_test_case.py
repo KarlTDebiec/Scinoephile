@@ -29,99 +29,15 @@ class PersistedTestCase:
     verified: bool
     """Whether the test case answer has been verified."""
     query: dict[str, object]
-    """Query JSON."""
+    """Query JSON using base-prompt field names."""
     answer: dict[str, object]
-    """Answer JSON."""
-    source_paths: list[str]
+    """Answer JSON using base-prompt field names."""
+    source_paths: tuple[str, ...]
     """Source JSON paths that contributed this test case."""
 
     @classmethod
-    def from_json_data(
-        cls,
-        data: object,
-        *,
-        operation: str,
-    ) -> PersistedTestCase:
-        """Validate raw JSON test-case data and prepare it for persistence.
-
-        Arguments:
-            data: raw JSON test-case object
-            operation: operation to which the test case belongs
-        Returns:
-            persisted test case
-        Raises:
-            ScinoephileError: if the serialized test case has an invalid shape
-        """
-        if not isinstance(data, dict):
-            raise ScinoephileError("Each optimization test case must be an object.")
-        if not operation.strip():
-            raise ScinoephileError(
-                "Optimization test case operation must not be empty."
-            )
-        allowed_fields = {"answer", "difficulty", "prompt", "query", "verified"}
-        unexpected_fields = sorted(set(data) - allowed_fields)
-        if unexpected_fields:
-            fields = ", ".join(str(field) for field in unexpected_fields)
-            raise ScinoephileError(
-                f"Optimization test case contains unexpected fields: {fields}."
-            )
-
-        query = data.get("query")
-        if not isinstance(query, dict):
-            raise ScinoephileError(
-                "Optimization test case query must be a JSON object."
-            )
-        if any(not isinstance(key, str) for key in query):
-            raise ScinoephileError("Optimization test case query keys must be strings.")
-        query_payload = {
-            key: value for key, value in query.items() if isinstance(key, str)
-        }
-        answer = data.get("answer")
-        if not isinstance(answer, dict):
-            raise ScinoephileError(
-                "Optimization test case answer must be a JSON object."
-            )
-        if any(not isinstance(key, str) for key in answer):
-            raise ScinoephileError(
-                "Optimization test case answer keys must be strings."
-            )
-        answer_payload = {
-            key: value for key, value in answer.items() if isinstance(key, str)
-        }
-
-        difficulty = data.get("difficulty", 0)
-        if type(difficulty) is not int:
-            raise ScinoephileError(
-                "Optimization test case difficulty must be an integer."
-            )
-        prompt = data.get("prompt", False)
-        if type(prompt) is not bool:
-            raise ScinoephileError(
-                "Optimization test case prompt flag must be a boolean."
-            )
-        verified = data.get("verified", False)
-        if type(verified) is not bool:
-            raise ScinoephileError(
-                "Optimization test case verified flag must be a boolean."
-            )
-
-        return cls(
-            test_case_id=get_test_case_id(
-                query_payload,
-                answer_payload,
-                operation=operation,
-            ),
-            operation=operation,
-            difficulty=difficulty,
-            prompt=prompt,
-            verified=verified,
-            query=query_payload,
-            answer=answer_payload,
-            source_paths=[],
-        )
-
-    @staticmethod
     def from_test_case(
+        cls,
         test_case: TestCase,
         *,
         operation: str,
@@ -138,32 +54,27 @@ class PersistedTestCase:
         """
         if test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")
-        query_dict = PersistedTestCase._normalize_payload(
+        query = cls._normalize_payload(
             test_case.query.model_dump(mode="json"),
             tuple(type(test_case.query).model_fields),
             tuple(base_test_case_cls.query_cls.model_fields),
             "query",
         )
-        answer_dict = PersistedTestCase._normalize_payload(
+        answer = cls._normalize_payload(
             test_case.answer.model_dump(mode="json"),
             tuple(type(test_case.answer).model_fields),
             tuple(base_test_case_cls.answer_cls.model_fields),
             "answer",
         )
-        test_case_id = get_test_case_id(
-            query_dict,
-            answer_dict,
+        return cls(
+            test_case_id=get_test_case_id(query, answer, operation=operation),
             operation=operation,
-        )
-        return PersistedTestCase(
-            test_case_id=test_case_id,
-            operation=operation,
-            difficulty=int(test_case.difficulty),
-            prompt=bool(test_case.prompt),
-            verified=bool(test_case.verified),
-            query=query_dict,
-            answer=answer_dict,
-            source_paths=[],
+            difficulty=test_case.difficulty,
+            prompt=test_case.prompt,
+            verified=test_case.verified,
+            query=query,
+            answer=answer,
+            source_paths=(),
         )
 
     @staticmethod
