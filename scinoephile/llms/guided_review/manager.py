@@ -30,7 +30,7 @@ class GuidedReviewManager(Manager):
 
     operation: ClassVar[str] = "guided-review"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[GuidedReviewPrompt] = GuidedReviewPrompt.from_attributes()
+    base_prompt: ClassVar[GuidedReviewPrompt] = GuidedReviewPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -39,7 +39,7 @@ class GuidedReviewManager(Manager):
         cls,
         target_size: int,
         guide_size: int,
-        prompt: GuidedReviewPrompt = GuidedReviewPrompt.from_attributes(),
+        prompt: GuidedReviewPrompt = GuidedReviewPrompt(),
     ) -> type[Answer]:
         """Get concrete answer class with provided block sizes.
 
@@ -81,7 +81,7 @@ class GuidedReviewManager(Manager):
         cls,
         target_size: int,
         guide_size: int,
-        prompt: GuidedReviewPrompt = GuidedReviewPrompt.from_attributes(),
+        prompt: GuidedReviewPrompt = GuidedReviewPrompt(),
     ) -> type[Query]:
         """Get concrete query class with provided block sizes.
 
@@ -124,7 +124,7 @@ class GuidedReviewManager(Manager):
         cls,
         target_size: int,
         guide_size: int,
-        prompt: GuidedReviewPrompt = GuidedReviewPrompt.from_attributes(),
+        prompt: GuidedReviewPrompt = GuidedReviewPrompt(),
     ) -> type[TestCase]:
         """Get concrete test case class with provided block sizes.
 

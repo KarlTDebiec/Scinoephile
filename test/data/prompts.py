@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.multilang.eng_zho.translation import (
     EngZhoGuidedTranslationPrompt,
@@ -11,9 +13,9 @@ from scinoephile.multilang.eng_zho.translation import (
 
 __all__ = ["EngZhoYueGuidedTranslationPrompt"]
 
-EngZhoYueGuidedTranslationPrompt = EngZhoGuidedTranslationPrompt.with_attributes(
-    {
-        "base_system_prompt": dedent_and_compact("""
+EngZhoYueGuidedTranslationPrompt = replace(
+    EngZhoGuidedTranslationPrompt,
+    base_system_prompt=dedent_and_compact("""
             You are responsible for creating English subtitles from Chinese subtitles
             for Cantonese/Yue audio. You will also receive original English subtitles
             from the same scene as reference material.
@@ -33,13 +35,10 @@ EngZhoYueGuidedTranslationPrompt = EngZhoGuidedTranslationPrompt.with_attributes
             commentary, or any text outside the subtitle itself. Preserve subtitle
             markup only when it is appropriate for the generated English subtitle.
             """),
-        "src_1_desc_tpl": (
-            "Chinese subtitle {idx} of Cantonese/Yue source to translate"
-        ),
-        "output_desc_tpl": (
-            "Generated English subtitle {idx} corresponding to Chinese subtitle {idx} "
-            "of Cantonese/Yue source"
-        ),
-    }
+    src_1_desc_tpl="Chinese subtitle {idx} of Cantonese/Yue source to translate",
+    output_desc_tpl=(
+        "Generated English subtitle {idx} corresponding to Chinese subtitle {idx} "
+        "of Cantonese/Yue source"
+    ),
 )
 """Text for guided English translation from Chinese subtitles of Yue source."""

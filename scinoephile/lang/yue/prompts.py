@@ -4,49 +4,32 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
-
 from scinoephile.core import Language
 from scinoephile.core.llms import Prompt
 from scinoephile.lang.zho.prompts import PromptZhoHant
-from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = ["PromptYueHant"]
 
 
-@define_prompt(Prompt, Language.yue_hant, parent=PromptZhoHant)
-class PromptYueHant:
-    """LLM correspondence text for traditional written Cantonese."""
-
-    # Prompt
-    schema_intro: ClassVar[str] = "你嘅回覆一定要係一個有以下結構嘅 JSON 物件："
-    """Text preceding schema description."""
-
-    few_shot_intro: ClassVar[str] = "下面係一啲查詢同埋佢哋預期答案嘅例子："
-    """Text preceding few-shot examples."""
-
-    few_shot_query_intro: ClassVar[str] = "例子查詢："
-    """Text preceding each few-shot example query."""
-
-    few_shot_answer_intro: ClassVar[str] = "預期答案："
-    """Text preceding each few-shot expected answer."""
-
-    # Answer validation errors
-    answer_invalid_pre: ClassVar[str] = (
+PromptYueHant = Prompt(
+    language=Language.yue_hant,
+    base_system_prompt=PromptZhoHant.base_system_prompt,
+    difficulty_description=PromptZhoHant.difficulty_description,
+    few_shot_description=PromptZhoHant.few_shot_description,
+    verified_description=PromptZhoHant.verified_description,
+    schema_intro="你嘅回覆一定要係一個有以下結構嘅 JSON 物件：",
+    few_shot_intro="下面係一啲查詢同埋佢哋預期答案嘅例子：",
+    few_shot_query_intro="例子查詢：",
+    few_shot_answer_intro="預期答案：",
+    answer_invalid_pre=(
         "你之前嘅回覆唔係有效嘅 JSON，或者未符合預期嘅模式要求。錯誤詳情："
-    )
-    """Text preceding answer validation errors."""
-
-    answer_invalid_post: ClassVar[str] = (
+    ),
+    answer_invalid_post=(
         "請你再試一次，並且淨係返返一個符合該模式要求嘅有效 JSON 物件。"
-    )
-    """Text following answer validation errors."""
-
-    # Test case validation errors
-    test_case_invalid_pre: ClassVar[str] = (
+    ),
+    test_case_invalid_pre=(
         "你之前嘅回覆係符合答案模式嘅有效 JSON，但唔適用於而家呢個特定查詢。錯誤詳情："
-    )
-    """Text preceding test case validation errors."""
-
-    test_case_invalid_post: ClassVar[str] = "請你根據錯誤信息對你嘅回覆作相應修改。"
-    """Text following test case validation errors."""
+    ),
+    test_case_invalid_post="請你根據錯誤信息對你嘅回覆作相應修改。",
+)
+"""LLM correspondence text for traditional written Cantonese."""

@@ -29,7 +29,7 @@ class ReviewManager(Manager):
 
     operation: ClassVar[str] = "review"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[ReviewPrompt] = ReviewPrompt.from_attributes()
+    base_prompt: ClassVar[ReviewPrompt] = ReviewPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -37,7 +37,7 @@ class ReviewManager(Manager):
     def get_answer_cls(
         cls,
         size: int,
-        prompt: ReviewPrompt = ReviewPrompt.from_attributes(),
+        prompt: ReviewPrompt = ReviewPrompt(),
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -72,7 +72,7 @@ class ReviewManager(Manager):
     def get_query_cls(
         cls,
         size: int,
-        prompt: ReviewPrompt = ReviewPrompt.from_attributes(),
+        prompt: ReviewPrompt = ReviewPrompt(),
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -104,7 +104,7 @@ class ReviewManager(Manager):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt: ReviewPrompt = ReviewPrompt.from_attributes(),
+        prompt: ReviewPrompt = ReviewPrompt(),
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 

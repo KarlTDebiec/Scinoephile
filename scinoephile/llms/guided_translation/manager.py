@@ -30,9 +30,7 @@ class GuidedTranslationManager(Manager):
 
     operation: ClassVar[str] = "guided-translation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[GuidedTranslationPrompt] = (
-        GuidedTranslationPrompt.from_attributes()
-    )
+    base_prompt: ClassVar[GuidedTranslationPrompt] = GuidedTranslationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -41,7 +39,7 @@ class GuidedTranslationManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt.from_attributes(),
+        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt(),
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -81,7 +79,7 @@ class GuidedTranslationManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt.from_attributes(),
+        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt(),
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -125,7 +123,7 @@ class GuidedTranslationManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt.from_attributes(),
+        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt(),
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 

@@ -4,57 +4,43 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
-
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.ocr_fusion import OcrFusionPrompt
-from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = ["OcrFusionPromptEng"]
 
 
-@define_prompt(OcrFusionPrompt, Language.eng, parent=PromptEng)
-class OcrFusionPromptEng:
-    """Text for LLM correspondence for English OCR fusion."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+OcrFusionPromptEng = OcrFusionPrompt(
+    language=Language.eng,
+    schema_intro=PromptEng.schema_intro,
+    few_shot_intro=PromptEng.few_shot_intro,
+    few_shot_query_intro=PromptEng.few_shot_query_intro,
+    few_shot_answer_intro=PromptEng.few_shot_answer_intro,
+    answer_invalid_pre=PromptEng.answer_invalid_pre,
+    answer_invalid_post=PromptEng.answer_invalid_post,
+    difficulty_description=PromptEng.difficulty_description,
+    few_shot_description=PromptEng.few_shot_description,
+    verified_description=PromptEng.verified_description,
+    test_case_invalid_pre=PromptEng.test_case_invalid_pre,
+    test_case_invalid_post=PromptEng.test_case_invalid_post,
+    base_system_prompt=dedent_and_compact("""
         You are responsible for merging English subtitle OCR results from two different
         sources: Google Lens and Tesseract.
         Please follow these guidelines:
         * Google Lens is more reliable at recognizing text overall.
         * Tesseract is more reliable at italics.
         * Tesseract is more reliable at line breaks.
-        * Tesseract is more reliable at the capitalization of the first word.""")
-    """Base system prompt."""
-
-    # Query fields
-    src_1: ClassVar[str] = "lens"
-    """Name of source one field in query."""
-
-    src_1_desc: ClassVar[str] = "Subtitle text OCRed using Google Lens"
-    """Description of source one field in query."""
-
-    src_2: ClassVar[str] = "tesseract"
-    """Name for source two field in query."""
-
-    src_2_desc: ClassVar[str] = "Subtitle text OCRed using Tesseract"
-    """Description of source two field in query."""
-
-    # Query validation errors
-    src_1_missing_err: ClassVar[str] = (
-        "Subtitle text OCRed using Google Lens is required."
-    )
-    """Error when source one field is missing from query."""
-
-    src_2_missing_err: ClassVar[str] = (
-        "Subtitle text OCRed using Tesseract is required."
-    )
-    """Error when source two field is missing from query."""
-
-    src_1_src_2_equal_err: ClassVar[str] = (
+        * Tesseract is more reliable at the capitalization of the first word."""),
+    src_1="lens",
+    src_1_desc="Subtitle text OCRed using Google Lens",
+    src_2="tesseract",
+    src_2_desc="Subtitle text OCRed using Tesseract",
+    src_1_missing_err="Subtitle text OCRed using Google Lens is required.",
+    src_2_missing_err="Subtitle text OCRed using Tesseract is required.",
+    src_1_src_2_equal_err=(
         "Subtitle text OCRed using Google Lens and Tesseract must differ."
-    )
-    """Error when source one and two fields are equal."""
+    ),
+)
+"""Text for LLM correspondence for English OCR fusion."""

@@ -4,40 +4,44 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from typing import ClassVar
+from dataclasses import dataclass
 
 from scinoephile.core.llms import Prompt
 
 __all__ = ["GuidedTranslationPrompt"]
 
 
-class GuidedTranslationPrompt(Prompt, ABC):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class GuidedTranslationPrompt(Prompt):
     """Text for guided translation blocks."""
 
-    __slots__ = ()
-
     # Query fields
-    src_1_pfx: ClassVar[str] = "source_one_"
+    src_1_pfx: str = "source_one_"
     """Prefix for source one fields in query."""
 
-    src_1_desc_tpl: ClassVar[str] = "Subtitle {idx} text from source one"
+    src_1_desc_tpl: str = "Subtitle {idx} text from source one"
     """Description template for source one fields in query."""
 
-    src_2_pfx: ClassVar[str] = "source_two_"
+    src_2_pfx: str = "source_two_"
     """Prefix for source two fields in query."""
 
-    src_2_desc_tpl: ClassVar[str] = "Subtitle {idx} text from source two"
+    src_2_desc_tpl: str = "Subtitle {idx} text from source two"
     """Description template for source two fields in query."""
 
     # Answer fields
-    output_pfx: ClassVar[str] = "output_"
+    output_pfx: str = "output_"
     """Prefix for output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = (
-        "Subtitle {idx} generated for source one subtitle {idx}"
-    )
+    output_desc_tpl: str = "Subtitle {idx} generated for source one subtitle {idx}"
     """Description template for output fields in answer."""
+
+    # Dictionary tool
+    dictionary_tool_name: str = ""
+    """Name of dictionary lookup tool."""
+    dictionary_tool_description: str = ""
+    """Description of dictionary lookup tool."""
+    dictionary_tool_query_description: str = ""
+    """Description of dictionary lookup query."""
 
     def output(self, idx: int) -> str:
         """Name of output field in answer."""

@@ -22,14 +22,14 @@ class DelineationManager(Manager):
 
     operation: ClassVar[str] = "delineation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[DelineationPrompt] = DelineationPrompt.from_attributes()
+    base_prompt: ClassVar[DelineationPrompt] = DelineationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt: DelineationPrompt = DelineationPrompt.from_attributes(),
+        prompt: DelineationPrompt = DelineationPrompt(),
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -76,7 +76,7 @@ class DelineationManager(Manager):
     @cache
     def get_answer_cls(
         cls,
-        prompt: DelineationPrompt = DelineationPrompt.from_attributes(),
+        prompt: DelineationPrompt = DelineationPrompt(),
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 

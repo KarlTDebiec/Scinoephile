@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import ClassVar
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
@@ -16,7 +15,6 @@ from scinoephile.lang.zho.script.conversion import (
 )
 from scinoephile.llms.gap_translation import GapTranslationPrompt
 from scinoephile.llms.guided_translation import GuidedTranslationPrompt
-from scinoephile.llms.prompt_definition import define_prompt
 from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
@@ -29,12 +27,20 @@ __all__ = [
 ]
 
 
-@define_prompt(TranslationPrompt, Language.zho_hant, parent=PromptZhoHant)
-class ZhoYueTranslationPromptZhoHant:
-    """Text for traditional standard Chinese translation from written Cantonese."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+ZhoYueTranslationPromptZhoHant = TranslationPrompt(
+    language=Language.zho_hant,
+    schema_intro=PromptZhoHant.schema_intro,
+    few_shot_intro=PromptZhoHant.few_shot_intro,
+    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
+    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
+    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
+    answer_invalid_post=PromptZhoHant.answer_invalid_post,
+    difficulty_description=PromptZhoHant.difficulty_description,
+    few_shot_description=PromptZhoHant.few_shot_description,
+    verified_description=PromptZhoHant.verified_description,
+    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
+    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    base_system_prompt=dedent_and_compact("""
         你負責根據粵文字幕，創作對應的標準中文字幕。
 
         每條粵文字幕都要輸出一條標準中文字幕。譯文要自然、通順，準確表達粵文字幕
@@ -44,40 +50,34 @@ class ZhoYueTranslationPromptZhoHant:
 
         輸出內容只能是生成的中文字幕正文。不要附加英文、備註、解釋、標籤、
         替代譯文、方括號內容、括號內容，或任何字幕以外的說明。
-        """)
-    """Base system prompt."""
-
-    # Query fields
-    input_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for written Cantonese source fields in query."""
-
-    input_desc_tpl: ClassVar[str] = "要翻譯成標準中文的粵文字幕 {idx}"
-    """Description template for written Cantonese source fields in query."""
-
-    # Answer fields
-    output_pfx: ClassVar[str] = "zhongwen_"
-    """Prefix for generated standard Chinese output fields in answer."""
-
-    output_desc_tpl: ClassVar[str] = "字幕 {idx} 對應的標準中文譯文"
-    """Description template for generated standard Chinese output fields."""
-
-
-@define_prompt(
-    TranslationPrompt,
-    Language.zho_hans,
-    parent=ZhoYueTranslationPromptZhoHant,
-    transform=partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+        """),
+    input_pfx="yuewen_",
+    input_desc_tpl="要翻譯成標準中文的粵文字幕 {idx}",
+    output_pfx="zhongwen_",
+    output_desc_tpl="字幕 {idx} 對應的標準中文譯文",
 )
-class ZhoYueTranslationPromptZhoHans:
-    """Text for simplified standard Chinese translation from written Cantonese."""
+"""Text for traditional standard Chinese translation from written Cantonese."""
 
+ZhoYueTranslationPromptZhoHans = ZhoYueTranslationPromptZhoHant.transformed(
+    Language.zho_hans,
+    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+)
+"""Text for simplified standard Chinese translation from written Cantonese."""
 
-@define_prompt(GapTranslationPrompt, Language.zho_hant, parent=PromptZhoHant)
-class ZhoYueGapTranslationPromptZhoHant:
-    """Text for traditional standard Chinese gap translation using Cantonese."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+ZhoYueGapTranslationPromptZhoHant = GapTranslationPrompt(
+    language=Language.zho_hant,
+    schema_intro=PromptZhoHant.schema_intro,
+    few_shot_intro=PromptZhoHant.few_shot_intro,
+    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
+    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
+    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
+    answer_invalid_post=PromptZhoHant.answer_invalid_post,
+    difficulty_description=PromptZhoHant.difficulty_description,
+    few_shot_description=PromptZhoHant.few_shot_description,
+    verified_description=PromptZhoHant.verified_description,
+    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
+    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    base_system_prompt=dedent_and_compact("""
         你負責根據對應的粵文字幕，補翻譯缺失的標準中文字幕。
         只有當某行現有中文字幕爲空字符串時，才需要提供譯文。
         如果某行已經有中文內容，不要修改，該行請輸出空字符串。
@@ -86,60 +86,41 @@ class ZhoYueGapTranslationPromptZhoHant:
         輸出內容只能是字幕正文本身，不要附加英文、備註、解釋、標籤、
         方括號內容、括號內容，或任何譯文以外的說明。
         如果不需要翻譯，就輸出空字符串。
-        """)
-    """Base system prompt."""
-
-    # Query fields
-    src_1_pfx: ClassVar[str] = "zhongwen_"
-    """Prefix for source one fields in query."""
-
-    src_1_desc_tpl: ClassVar[str] = "字幕 {idx} 現有的中文內容；如果爲空就代表要翻譯"
-    """Description template for source one fields in query."""
-
-    src_2_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for source two fields in query."""
-
-    src_2_desc_tpl: ClassVar[str] = "字幕 {idx} 對應的粵文字幕"
-    """Description template for source two fields in query."""
-
-    # Answer fields
-    output_pfx: ClassVar[str] = "zhongwen_"
-    """Prefix for output fields in answer."""
-
-    output_desc_tpl: ClassVar[str] = (
-        '字幕 {idx} 譯好後的標準中文正文；如果不需要翻譯請輸出 ""。'
-        "不要包含英文、備註、解釋、標籤或者括號說明。"
-    )
-    """Description template for output fields in answer."""
-
-    # Test case validation errors
-    output_unmodified_err_tpl: ClassVar[str] = (
-        "字幕 {idx} 已經有中文內容，該行輸出必須爲空字符串。"
-    )
-    """Error template when output is present but unmodified relative to source one."""
-
-    output_contains_note_err_tpl: ClassVar[str] = (
+        """),
+    src_1_pfx="zhongwen_",
+    src_1_desc_tpl="字幕 {idx} 現有的中文內容；如果爲空就代表要翻譯",
+    src_2_pfx="yuewen_",
+    src_2_desc_tpl="字幕 {idx} 對應的粵文字幕",
+    output_pfx="zhongwen_",
+    output_desc_tpl='字幕 {idx} 譯好後的標準中文正文；如果不需要翻譯請輸出 ""。'
+    "不要包含英文、備註、解釋、標籤或者括號說明。",
+    output_unmodified_err_tpl="字幕 {idx} 已經有中文內容，該行輸出必須爲空字符串。",
+    output_contains_note_err_tpl=(
         "字幕 {idx} 包含英文或者備註說明；只可以輸出中文字幕正文。"
-    )
-    """Error template when output includes leaked note text."""
-
-
-@define_prompt(
-    GapTranslationPrompt,
-    Language.zho_hans,
-    parent=ZhoYueGapTranslationPromptZhoHant,
-    transform=partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+    ),
 )
-class ZhoYueGapTranslationPromptZhoHans:
-    """Text for simplified standard Chinese gap translation using Cantonese."""
+"""Text for traditional standard Chinese gap translation using Cantonese."""
 
+ZhoYueGapTranslationPromptZhoHans = ZhoYueGapTranslationPromptZhoHant.transformed(
+    Language.zho_hans,
+    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+)
+"""Text for simplified standard Chinese gap translation using Cantonese."""
 
-@define_prompt(GuidedTranslationPrompt, Language.zho_hant, parent=PromptZhoHant)
-class ZhoYueGuidedTranslationPromptZhoHant:
-    """Text for traditional guided standard Chinese translation from Cantonese."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+ZhoYueGuidedTranslationPromptZhoHant = GuidedTranslationPrompt(
+    language=Language.zho_hant,
+    schema_intro=PromptZhoHant.schema_intro,
+    few_shot_intro=PromptZhoHant.few_shot_intro,
+    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
+    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
+    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
+    answer_invalid_post=PromptZhoHant.answer_invalid_post,
+    difficulty_description=PromptZhoHant.difficulty_description,
+    few_shot_description=PromptZhoHant.few_shot_description,
+    verified_description=PromptZhoHant.verified_description,
+    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
+    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    base_system_prompt=dedent_and_compact("""
         你負責根據粵文字幕，創作對應的標準中文字幕。你也會收到同一段場景的
         既有中文字幕，作爲參考材料。
 
@@ -151,35 +132,18 @@ class ZhoYueGuidedTranslationPromptZhoHant:
 
         輸出內容只能是生成的中文字幕正文。不要附加英文、備註、解釋、標籤、
         替代譯文、方括號內容、括號內容，或任何字幕以外的說明。
-        """)
-    """Base system prompt."""
-
-    # Query fields
-    src_1_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for written Cantonese source fields in query."""
-
-    src_1_desc_tpl: ClassVar[str] = "要翻譯成標準中文的粵文字幕 {idx}"
-    """Description template for written Cantonese source fields in query."""
-
-    src_2_pfx: ClassVar[str] = "zhongwen_reference_"
-    """Prefix for standard Chinese reference fields in query."""
-
-    src_2_desc_tpl: ClassVar[str] = "同一段場景的既有標準中文參考字幕 {idx}"
-    """Description template for standard Chinese reference fields in query."""
-
-    # Answer fields
-    output_pfx: ClassVar[str] = "zhongwen_"
-    """Prefix for generated standard Chinese output fields in answer."""
-
-    output_desc_tpl: ClassVar[str] = "字幕 {idx} 對應的標準中文譯文"
-    """Description template for generated standard Chinese output fields."""
-
-
-@define_prompt(
-    GuidedTranslationPrompt,
-    Language.zho_hans,
-    parent=ZhoYueGuidedTranslationPromptZhoHant,
-    transform=partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+        """),
+    src_1_pfx="yuewen_",
+    src_1_desc_tpl="要翻譯成標準中文的粵文字幕 {idx}",
+    src_2_pfx="zhongwen_reference_",
+    src_2_desc_tpl="同一段場景的既有標準中文參考字幕 {idx}",
+    output_pfx="zhongwen_",
+    output_desc_tpl="字幕 {idx} 對應的標準中文譯文",
 )
-class ZhoYueGuidedTranslationPromptZhoHans:
-    """Text for simplified guided standard Chinese translation from Cantonese."""
+"""Text for traditional guided standard Chinese translation from Cantonese."""
+
+ZhoYueGuidedTranslationPromptZhoHans = ZhoYueGuidedTranslationPromptZhoHant.transformed(
+    Language.zho_hans,
+    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+)
+"""Text for simplified guided standard Chinese translation from Cantonese."""

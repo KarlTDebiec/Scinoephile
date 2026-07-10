@@ -29,7 +29,7 @@ class GapTranslationManager(Manager):
 
     operation: ClassVar[str] = "gap-translation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[GapTranslationPrompt] = GapTranslationPrompt.from_attributes()
+    base_prompt: ClassVar[GapTranslationPrompt] = GapTranslationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -38,7 +38,7 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt: GapTranslationPrompt = GapTranslationPrompt.from_attributes(),
+        prompt: GapTranslationPrompt = GapTranslationPrompt(),
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -85,7 +85,7 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt: GapTranslationPrompt = GapTranslationPrompt.from_attributes(),
+        prompt: GapTranslationPrompt = GapTranslationPrompt(),
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -128,7 +128,7 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt: GapTranslationPrompt = GapTranslationPrompt.from_attributes(),
+        prompt: GapTranslationPrompt = GapTranslationPrompt(),
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 

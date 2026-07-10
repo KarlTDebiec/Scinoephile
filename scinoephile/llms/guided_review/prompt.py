@@ -4,56 +4,50 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from typing import ClassVar
+from dataclasses import dataclass
 
 from scinoephile.core.llms import Prompt
 
 __all__ = ["GuidedReviewPrompt"]
 
 
-class GuidedReviewPrompt(Prompt, ABC):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class GuidedReviewPrompt(Prompt):
     """Text for reviewing target blocks using guide blocks."""
 
-    __slots__ = ()
-
     # Query fields
-    target_pfx: ClassVar[str] = "target_"
+    target_pfx: str = "target_"
     """Prefix for target fields in query."""
 
-    target_desc_tpl: ClassVar[str] = "Target subtitle {idx} to review"
+    target_desc_tpl: str = "Target subtitle {idx} to review"
     """Description template for target fields in query."""
 
-    guide_pfx: ClassVar[str] = "guide_"
+    guide_pfx: str = "guide_"
     """Prefix for guide fields in query."""
 
-    guide_desc_tpl: ClassVar[str] = "Guide subtitle {idx}"
+    guide_desc_tpl: str = "Guide subtitle {idx}"
     """Description template for guide fields in query."""
 
     # Answer fields
-    output_pfx: ClassVar[str] = "output_"
+    output_pfx: str = "output_"
     """Prefix for output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = (
-        'Revised target subtitle {idx}, or "" if no change is needed'
-    )
+    output_desc_tpl: str = 'Revised target subtitle {idx}, or "" if no change is needed'
     """Description template for output fields in answer."""
 
-    note_pfx: ClassVar[str] = "note_"
+    note_pfx: str = "note_"
     """Prefix for note fields in answer."""
 
-    note_desc_tpl: ClassVar[str] = (
-        'Explanation of the revision to target subtitle {idx}, or ""'
-    )
+    note_desc_tpl: str = 'Explanation of the revision to target subtitle {idx}, or ""'
     """Description template for note fields in answer."""
 
     # Test case errors
-    note_missing_err_tpl: ClassVar[str] = (
+    note_missing_err_tpl: str = (
         "Target subtitle {idx} is revised, but no note is provided."
     )
     """Error template when note is missing for a revision."""
 
-    output_missing_err_tpl: ClassVar[str] = (
+    output_missing_err_tpl: str = (
         "Target subtitle {idx} is unchanged, but a note is provided."
     )
     """Error template when output is missing for a note."""

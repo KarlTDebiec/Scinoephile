@@ -24,21 +24,17 @@ from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases,
 )
 
-_LOCALIZED_REVIEW_PROMPT = ReviewPrompt.from_attributes(
-    attributes={
-        "input_pfx": "zimu_",
-        "output_pfx": "xiugai_",
-        "note_pfx": "beizhu_",
-    }
+_LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
+    input_pfx="zimu_",
+    output_pfx="xiugai_",
+    note_pfx="beizhu_",
 )
 """Review prompt using localized correspondence field names."""
 
-_ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt.from_attributes(
-    attributes={
-        "input_pfx": "source_",
-        "output_pfx": "correction_",
-        "note_pfx": "explanation_",
-    }
+_ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
+    input_pfx="source_",
+    output_pfx="correction_",
+    note_pfx="explanation_",
 )
 """Review prompt using an alternative correspondence schema."""
 

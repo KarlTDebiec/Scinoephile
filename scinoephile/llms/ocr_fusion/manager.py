@@ -22,7 +22,7 @@ class OcrFusionManager(Manager):
 
     operation: ClassVar[str] = "ocr-fusion"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[OcrFusionPrompt] = OcrFusionPrompt.from_attributes()
+    base_prompt: ClassVar[OcrFusionPrompt] = OcrFusionPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod

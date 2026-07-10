@@ -22,14 +22,14 @@ class PunctuationManager(Manager):
 
     operation: ClassVar[str] = "punctuation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[PunctuationPrompt] = PunctuationPrompt.from_attributes()
+    base_prompt: ClassVar[PunctuationPrompt] = PunctuationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt: PunctuationPrompt = PunctuationPrompt.from_attributes(),
+        prompt: PunctuationPrompt = PunctuationPrompt(),
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -68,7 +68,7 @@ class PunctuationManager(Manager):
     @cache
     def get_answer_cls(
         cls,
-        prompt: PunctuationPrompt = PunctuationPrompt.from_attributes(),
+        prompt: PunctuationPrompt = PunctuationPrompt(),
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 

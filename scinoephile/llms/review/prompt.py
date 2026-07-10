@@ -4,57 +4,53 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from typing import ClassVar
+from dataclasses import dataclass
 
 from scinoephile.core.llms import Prompt
 
 __all__ = ["ReviewPrompt"]
 
 
-class ReviewPrompt(Prompt, ABC):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ReviewPrompt(Prompt):
     """Text for LLM correspondence for review matters."""
 
-    __slots__ = ()
-
     # Query fields
-    input_pfx: ClassVar[str] = "subtitle_"
+    input_pfx: str = "subtitle_"
     """Prefix for input fields in query."""
 
-    input_desc_tpl: ClassVar[str] = "Input {idx}"
+    input_desc_tpl: str = "Input {idx}"
     """Description template for input fields in query."""
 
     # Answer fields
-    output_pfx: ClassVar[str] = "revised_"
+    output_pfx: str = "revised_"
     """Prefix for output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = (
-        "Output {idx}, or an empty string if no change is necessary."
-    )
+    output_desc_tpl: str = "Output {idx}, or an empty string if no change is necessary."
     """Description template for output fields in answer."""
 
-    note_pfx: ClassVar[str] = "note_"
+    note_pfx: str = "note_"
     """Prefix for note fields in answer."""
 
-    note_desc_tpl: ClassVar[str] = (
+    note_desc_tpl: str = (
         "Note concerning output {idx}, or an empty string if no change is necessary."
     )
     """Description template for note fields in answer."""
 
     # Test case errors
-    output_unmodified_err_tpl: ClassVar[str] = (
+    output_unmodified_err_tpl: str = (
         "Answer's output {idx} is unmodified relative to query's input {idx}, "
         "if no change is needed an empty string must be provided."
     )
     """Error template when output is present but unmodified."""
 
-    note_missing_err_tpl: ClassVar[str] = (
+    note_missing_err_tpl: str = (
         "Answer's output {idx} is modified relative to query's input {idx}, but no "
         "note is provided, if a change is needed a note must be provided."
     )
     """Error template when note is missing for a change."""
 
-    output_missing_err_tpl: ClassVar[str] = (
+    output_missing_err_tpl: str = (
         "Answer's output {idx} is not provided relative to query's input {idx}, but a "
         "note is provided, if no change is needed an empty string must be provided."
     )

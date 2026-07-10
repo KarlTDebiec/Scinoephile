@@ -29,7 +29,7 @@ class TranslationManager(Manager):
 
     operation: ClassVar[str] = "translation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[TranslationPrompt] = TranslationPrompt.from_attributes()
+    base_prompt: ClassVar[TranslationPrompt] = TranslationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -37,7 +37,7 @@ class TranslationManager(Manager):
     def get_query_cls(
         cls,
         size: int,
-        prompt: TranslationPrompt = TranslationPrompt.from_attributes(),
+        prompt: TranslationPrompt = TranslationPrompt(),
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -69,7 +69,7 @@ class TranslationManager(Manager):
     def get_answer_cls(
         cls,
         size: int,
-        prompt: TranslationPrompt = TranslationPrompt.from_attributes(),
+        prompt: TranslationPrompt = TranslationPrompt(),
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -101,7 +101,7 @@ class TranslationManager(Manager):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt: TranslationPrompt = TranslationPrompt.from_attributes(),
+        prompt: TranslationPrompt = TranslationPrompt(),
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 

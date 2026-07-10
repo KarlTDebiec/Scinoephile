@@ -67,10 +67,10 @@ hierarchy comment. This serves two purposes:
 
 ### Immutable prompt values
 
-Operation-specific prompt types in `scinoephile.llms` define behavior and the
-required correspondence fields for review, translation, OCR fusion, and the
-other LLM shapes. Authored prompt text is declarative: `define_prompt` combines
-the text with a `Language` and constructs a frozen, hashable prompt value. LLM
+Operation-specific prompt types in `scinoephile.llms` are frozen, keyword-only
+dataclasses defining behavior and named correspondence fields for review,
+translation, OCR fusion, and the other LLM shapes. Authored and localized
+prompts construct those types directly with a `Language` and string fields. LLM
 managers, processors, queryers, and workflows pass these values directly.
 
 Only generated Pydantic query, answer, and test-case models are represented by

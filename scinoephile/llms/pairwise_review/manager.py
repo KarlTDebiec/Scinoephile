@@ -22,14 +22,14 @@ class PairwiseReviewManager(Manager):
 
     operation: ClassVar[str] = "pairwise-review"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[PairwiseReviewPrompt] = PairwiseReviewPrompt.from_attributes()
+    base_prompt: ClassVar[PairwiseReviewPrompt] = PairwiseReviewPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
     def get_answer_cls(
         cls,
-        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt.from_attributes(),
+        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt(),
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -61,7 +61,7 @@ class PairwiseReviewManager(Manager):
     @cache
     def get_query_cls(
         cls,
-        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt.from_attributes(),
+        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt(),
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 

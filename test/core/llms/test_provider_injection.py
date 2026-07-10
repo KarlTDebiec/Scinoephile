@@ -24,19 +24,17 @@ from scinoephile.core.llms import (
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tool_box import ToolBox
 
-_PROMPT = Prompt.from_attributes(
-    Language.eng,
-    {
-        "base_system_prompt": "System prompt",
-        "schema_intro": "Schema",
-        "few_shot_intro": "Few shot",
-        "few_shot_query_intro": "Query",
-        "few_shot_answer_intro": "Answer",
-        "answer_invalid_pre": "Invalid answer pre",
-        "answer_invalid_post": "Invalid answer post",
-        "test_case_invalid_pre": "Invalid test-case pre",
-        "test_case_invalid_post": "Invalid test-case post",
-    },
+_PROMPT = Prompt(
+    language=Language.eng,
+    base_system_prompt="System prompt",
+    schema_intro="Schema",
+    few_shot_intro="Few shot",
+    few_shot_query_intro="Query",
+    few_shot_answer_intro="Answer",
+    answer_invalid_pre="Invalid answer pre",
+    answer_invalid_post="Invalid answer post",
+    test_case_invalid_pre="Invalid test-case pre",
+    test_case_invalid_post="Invalid test-case post",
 )
 """Prompt fixture for provider-injection tests."""
 
