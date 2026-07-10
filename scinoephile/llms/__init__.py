@@ -10,17 +10,17 @@ Hierarchy within module, where lower entries may import from higher entries:
 
 LLM shapes:
 
-| Tracks | T1 | T2 | Name | Prefix | Description |
-| ------ | -- | -- | ---- | ------ | ----------- |
-| 1 | n | | review | Review | Changes with note. |
-| 1 | n | | translation | Translation | Translation. |
-| 2 | 1 | 1 | pairwise_review | PairwiseReview | Pairwise changes with note. |
-| 2 | n | m | guided_review | GuidedReview | Guided changes with note. |
-| 2 | 1 | 1 | ocr_fusion | OcrFusion | Fuse paired OCR results. |
-| 2 | n | 1 | punctuation | Punctuation | Punctuate text from reference. |
-| 2 | 2 | 2 | delineation | Delineation | Delineate adjacent subtitle pairs. |
-| 2 | n - m | n | gap_translation | GapTranslation | Fill gaps. |
-| 2 | n | m | guided_translation | GuidedTranslation | Guided translation. |
+| Tracks | T1    | T2 | Name               | Prefix            |
+| ------ | ----- | -- | ------------------ | ----------------- |
+| 1      | n     |    | review             | Review            |
+| 1      | n     |    | translation        | Translation       |
+| 2      | 1     | 1  | pairwise_review    | PairwiseReview    |
+| 2      | n     | m  | guided_review      | GuidedReview      |
+| 2      | 1     | 1  | ocr_fusion         | OcrFusion         |
+| 2      | n     | 1  | punctuation        | Punctuation       |
+| 2      | 2     | 2  | delineation        | Delineation       |
+| 2      | n - m | n  | gap_translation    | GapTranslation    |
+| 2      | n     | m  | guided_translation | GuidedTranslation |
 """
 
 from __future__ import annotations
