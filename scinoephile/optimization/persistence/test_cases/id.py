@@ -36,7 +36,7 @@ def get_test_case_id(
             "query": dict(query),
         },
         ensure_ascii=False,
-        sort_keys=True,
         separators=(",", ":"),
+        sort_keys=True,
     )
     return hashlib.sha256(payload_json.encode()).hexdigest()
