@@ -38,10 +38,7 @@ class Manager(ABC):
 
     @classmethod
     @cache
-    def get_query_cls(
-        cls,
-        prompt_cls: type[Prompt],
-    ) -> type[Query]:
+    def get_query_cls(cls, prompt_cls: type[Prompt]) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
@@ -53,10 +50,7 @@ class Manager(ABC):
 
     @classmethod
     @cache
-    def get_answer_cls(
-        cls,
-        prompt_cls: type[Prompt],
-    ) -> type[Answer]:
+    def get_answer_cls(cls, prompt_cls: type[Prompt]) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
