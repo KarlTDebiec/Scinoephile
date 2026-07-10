@@ -204,14 +204,13 @@ class Alignment:
         # Return
         if len(yw_1) == 0 and len(yw_2) == 0:
             return None
-        test_case_cls = DelineationManager.get_test_case_cls(
-            prompt=YueDelineationVsZhoPromptYueHans
-        )
+        prompt = YueDelineationVsZhoPromptYueHans
+        test_case_cls = DelineationManager.get_test_case_cls(prompt=prompt)
         query_kwargs = {
-            test_case_cls.prompt.src_1_sub_1: zw_1,
-            test_case_cls.prompt.src_2_sub_1: yw_1,
-            test_case_cls.prompt.src_1_sub_2: zw_2,
-            test_case_cls.prompt.src_2_sub_2: yw_2,
+            prompt.src_1_sub_1: zw_1,
+            prompt.src_2_sub_1: yw_1,
+            prompt.src_1_sub_2: zw_2,
+            prompt.src_2_sub_2: yw_2,
         }
         # noinspection PyArgumentList
         test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
@@ -250,12 +249,11 @@ class Alignment:
         yws = [self.yuewen[i].text for i in yw_idxs]
 
         # Return punctuate query
-        test_case_cls = YueZhoPunctuationManager.get_test_case_cls(
-            prompt=YuePunctuationVsZhoPromptYueHans
-        )
+        prompt = YuePunctuationVsZhoPromptYueHans
+        test_case_cls = YueZhoPunctuationManager.get_test_case_cls(prompt=prompt)
         query_kwargs = {
-            test_case_cls.prompt.src_2: zw,
-            test_case_cls.prompt.src_1: yws,
+            prompt.src_2: zw,
+            prompt.src_1: yws,
         }
         # noinspection PyArgumentList
         test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
