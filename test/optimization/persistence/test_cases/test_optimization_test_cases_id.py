@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pydantic import JsonValue
+
 from scinoephile.llms.review import REVIEW_OPERATION_SPEC
 from scinoephile.llms.translation import TRANSLATION_OPERATION_SPEC
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
@@ -11,8 +13,8 @@ from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 def test_get_test_case_id_stable_for_same_payload():
     """Computing an ID twice for identical normalized data should match."""
-    query = {"input_1": "a"}
-    answer = {"output_1": "b"}
+    query: dict[str, JsonValue] = {"input_1": "a"}
+    answer: dict[str, JsonValue] = {"output_1": "b"}
 
     assert get_test_case_id(
         query,
@@ -27,7 +29,7 @@ def test_get_test_case_id_stable_for_same_payload():
 
 def test_get_test_case_id_changes_with_answer():
     """Changing normalized answer content should change the computed ID."""
-    query = {"input_1": "a"}
+    query: dict[str, JsonValue] = {"input_1": "a"}
 
     assert get_test_case_id(
         query,
@@ -42,8 +44,8 @@ def test_get_test_case_id_changes_with_answer():
 
 def test_get_test_case_id_changes_with_operation():
     """Catalog scope should contribute to the content-addressed ID."""
-    query = {"input_1": "a"}
-    answer = {"output_1": "b"}
+    query: dict[str, JsonValue] = {"input_1": "a"}
+    answer: dict[str, JsonValue] = {"output_1": "b"}
 
     assert get_test_case_id(
         query,

@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Mapping
 
 from pydantic import JsonValue
 
@@ -16,8 +15,8 @@ __all__ = ["get_test_case_id"]
 
 
 def get_test_case_id(
-    query: Mapping[str, JsonValue],
-    answer: Mapping[str, JsonValue],
+    query: dict[str, JsonValue],
+    answer: dict[str, JsonValue],
     spec: OperationSpec,
 ) -> str:
     """Compute canonical identifier for a test case.

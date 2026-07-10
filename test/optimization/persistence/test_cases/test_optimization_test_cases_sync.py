@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from typing import ClassVar
 
+from pydantic import JsonValue
 from pytest import raises
 
 from scinoephile import common
@@ -141,6 +142,8 @@ def test_sync_inserts_and_removes_provenance_by_source_path(
     monkeypatch.chdir(tmp_path)
     database_path = Path("test_cases.sqlite")
     source_path = Path("source.json")
+    deleted_query: dict[str, JsonValue] = {"input_1": "c"}
+    deleted_answer: dict[str, JsonValue] = {"output_1": "d"}
     first_data = [
         {
             "query": {"input_1": "a"},
@@ -148,8 +151,8 @@ def test_sync_inserts_and_removes_provenance_by_source_path(
             "verified": True,
         },
         {
-            "query": {"input_1": "c"},
-            "answer": {"output_1": "d"},
+            "query": deleted_query,
+            "answer": deleted_answer,
         },
     ]
     source_path.write_text(json.dumps(first_data), encoding="utf-8")
@@ -163,8 +166,8 @@ def test_sync_inserts_and_removes_provenance_by_source_path(
     )
     assert len(first_report.insert_ids) == 2
     deleted_id = get_test_case_id(
-        first_data[1]["query"],
-        first_data[1]["answer"],
+        deleted_query,
+        deleted_answer,
         TRANSLATION_OPERATION_SPEC,
     )
 
