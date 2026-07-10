@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.yue.ocr_fusion import (
     OcrFusionPromptYueHans,
@@ -26,10 +26,7 @@ from scinoephile.llms.ocr_fusion import (
 )
 from scinoephile.llms.providers.registry import get_provider
 
-__all__ = [
-    "OCR_FUSION_OPERATION_SPEC",
-    "get_ocr_fuser",
-]
+__all__ = ["get_ocr_fuser"]
 
 _ENG_OCR_FUSION_JSON_PATHS = (
     Path("kob/output/eng_ocr/lang/eng/ocr_fusion.json"),
@@ -67,13 +64,6 @@ _ZHO_HANT_OCR_FUSION_JSON_PATHS = (
     Path("t/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
 )
 """Default traditional standard Chinese OCR fusion JSON paths."""
-
-OCR_FUSION_OPERATION_SPEC = OperationSpec(
-    operation="ocr-fusion",
-    manager_cls=OcrFusionManager,
-    prompt_cls=OcrFusionPrompt,
-)
-"""Operation specification for monolingual OCR fusion."""
 
 _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
     Language.eng: _ENG_OCR_FUSION_JSON_PATHS,

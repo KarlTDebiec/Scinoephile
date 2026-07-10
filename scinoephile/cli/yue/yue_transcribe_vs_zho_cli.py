@@ -41,9 +41,9 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueDeliniationVsZhoPromptYueHans,
-    YueDeliniationVsZhoPromptYueHant,
+from scinoephile.multilang.yue_zho.transcription.delineation import (
+    YueDelineationVsZhoPromptYueHans,
+    YueDelineationVsZhoPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
@@ -247,18 +247,18 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
     def _get_transcription_prompt_classes(
         cls, script: str
     ) -> tuple[
-        type[YueDeliniationVsZhoPromptYueHant], type[YuePunctuationVsZhoPromptYueHant]
+        type[YueDelineationVsZhoPromptYueHant], type[YuePunctuationVsZhoPromptYueHant]
     ]:
         """Get transcription prompt classes for the selected script.
 
         Arguments:
             script: selected script identifier
         Returns:
-            deliniation and punctuation prompt classes
+            delineation and punctuation prompt classes
         """
         if script == "traditional":
-            return YueDeliniationVsZhoPromptYueHant, YuePunctuationVsZhoPromptYueHant
-        return YueDeliniationVsZhoPromptYueHans, YuePunctuationVsZhoPromptYueHans
+            return YueDelineationVsZhoPromptYueHant, YuePunctuationVsZhoPromptYueHant
+        return YueDelineationVsZhoPromptYueHans, YuePunctuationVsZhoPromptYueHans
 
     @classmethod
     def _main(
@@ -322,7 +322,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Perform operations
-        deliniation_prompt_cls, punctuation_prompt_cls = (
+        delineation_prompt_cls, punctuation_prompt_cls = (
             cls._get_transcription_prompt_classes(script)
         )
         additional_context = read_llm_additional_context(
@@ -335,7 +335,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             vad_mode=vad,
             provider=provider,
             convert=convert,
-            deliniation_prompt_cls=deliniation_prompt_cls,
+            delineation_prompt_cls=delineation_prompt_cls,
             punctuation_prompt_cls=punctuation_prompt_cls,
             additional_context=additional_context,
         )

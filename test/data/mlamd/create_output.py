@@ -24,7 +24,7 @@ from scinoephile.multilang.yue_zho.transcription import (
 from scinoephile.workflows.review import review_series_guided, review_series_pairwise
 from scinoephile.workflows.translation import translate_series_gaps
 from test.data.mlamd import (
-    get_mlamd_yue_deliniation_test_cases,
+    get_mlamd_yue_delineation_test_cases,
     get_mlamd_yue_punctuation_test_cases,
 )
 from test.data.ocr import process_ocr
@@ -83,7 +83,7 @@ if "yue-Hans_transcribe" in actions:
         test_case_directory_path=output_path
         / "yue-Hans_transcribe"
         / "multilang/yue_zho",
-        deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
+        delineation_test_cases=get_mlamd_yue_delineation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
     )
     yue_hans = get_yue_transcribed_vs_zho(yue_hans, zho_hans, transcriber=transcriber)

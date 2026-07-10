@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.guided_review import (
     GuidedReviewManager,
@@ -35,17 +35,7 @@ from scinoephile.multilang.zho_yue.review import (
     ZhoYueGuidedReviewPromptZhoHant,
 )
 
-__all__ = [
-    "GUIDED_REVIEW_OPERATION_SPEC",
-    "get_guided_reviewer",
-]
-
-GUIDED_REVIEW_OPERATION_SPEC = OperationSpec(
-    operation="guided-review",
-    manager_cls=GuidedReviewManager,
-    prompt_cls=GuidedReviewPrompt,
-)
-"""Operation specification for guided review."""
+__all__ = ["get_guided_reviewer"]
 
 _YUE_ZHO_JSON_PATHS = (
     Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/guided_review/cuda.json"),

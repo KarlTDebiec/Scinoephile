@@ -15,12 +15,22 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
+from scinoephile.core.llms import OperationSpec
+
 from .manager import GapTranslationManager
 from .processor import GapTranslationProcessor
 from .prompt import GapTranslationPrompt
 
 __all__ = [
+    "GAP_TRANSLATION_OPERATION_SPEC",
     "GapTranslationManager",
     "GapTranslationProcessor",
     "GapTranslationPrompt",
 ]
+
+GAP_TRANSLATION_OPERATION_SPEC = OperationSpec(
+    operation="gap-translation",
+    manager_cls=GapTranslationManager,
+    prompt_cls=GapTranslationPrompt,
+)
+"""Operation specification for gap translation."""

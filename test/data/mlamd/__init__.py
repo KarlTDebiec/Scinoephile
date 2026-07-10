@@ -25,8 +25,7 @@ from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
 )
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
-from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
-from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
+from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
 from scinoephile.llms.gap_translation import (
     GapTranslationManager,
     GapTranslationPrompt,
@@ -37,13 +36,14 @@ from scinoephile.llms.pairwise_review import (
     PairwiseReviewManager,
     PairwiseReviewPrompt,
 )
+from scinoephile.llms.punctuation import PunctuationPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from scinoephile.multilang.yue_zho.review import (
     YueZhoGuidedReviewPromptYueHans,
     YueZhoPairwiseReviewPromptYueHans,
 )
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueDeliniationVsZhoPromptYueHans,
+from scinoephile.multilang.yue_zho.transcription.delineation import (
+    YueDelineationVsZhoPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
@@ -60,7 +60,7 @@ __all__ = [
     "mlamd_zho_hant_ocr_sup_path",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_eng_review_test_cases",
-    "get_mlamd_yue_deliniation_test_cases",
+    "get_mlamd_yue_delineation_test_cases",
     "get_mlamd_yue_from_zho_gap_translation_test_cases",
     "get_mlamd_yue_punctuation_test_cases",
     "get_mlamd_yue_vs_zho_guided_review_test_cases",
@@ -180,11 +180,11 @@ def get_mlamd_eng_review_test_cases(
 
 
 @cache
-def get_mlamd_yue_deliniation_test_cases(
-    prompt_cls: type[Dual2To2Prompt] = YueDeliniationVsZhoPromptYueHans,
+def get_mlamd_yue_delineation_test_cases(
+    prompt_cls: type[DelineationPrompt] = YueDelineationVsZhoPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD yue-Hans deliniation test cases.
+    """Get MLAMD yue-Hans delineation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -198,11 +198,11 @@ def get_mlamd_yue_deliniation_test_cases(
         / "multilang"
         / "yue_zho"
         / "transcription"
-        / "deliniation"
+        / "delineation"
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, Dual2To2Manager, prompt_cls=prompt_cls, **kwargs
+        path, DelineationManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -234,7 +234,7 @@ def get_mlamd_yue_from_zho_gap_translation_test_cases(
 
 @cache
 def get_mlamd_yue_punctuation_test_cases(
-    prompt_cls: type[DualNTo1Prompt] = YuePunctuationVsZhoPromptYueHans,
+    prompt_cls: type[PunctuationPrompt] = YuePunctuationVsZhoPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD yue-Hans punctuation test cases.

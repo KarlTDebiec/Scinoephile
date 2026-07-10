@@ -3,7 +3,7 @@
 """Cantonese transcription tooling for written Cantonese/standard Chinese workflows.
 
 Package hierarchy (modules may import from any above):
-* deliniation / punctuation
+* delineation / punctuation
 * alignment
 * aligner
 * transcriber
@@ -15,18 +15,17 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.core.llms import LLMProvider, OperationSpec, TestCase
+from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
-from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
+from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.providers.registry import get_provider
 
-from .deliniation import (
-    YueDeliniationVsZhoPromptYueHans,
-    YueDeliniationVsZhoPromptYueHant,
+from .delineation import (
+    YueDelineationVsZhoPromptYueHans,
+    YueDelineationVsZhoPromptYueHant,
 )
 from .punctuation import (
     YuePunctuationVsZhoPromptYueHans,
@@ -42,8 +41,6 @@ from .transcriber import (
 
 __all__ = [
     "DEFAULT_YUE_WHISPER_MODEL_NAME",
-    "YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC",
-    "YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC",
     "get_yue_transcribed_vs_zho",
     "get_yue_vs_zho_transcriber",
     "DemucsMode",
@@ -53,17 +50,17 @@ __all__ = [
     "YueZhoTranscriptionKwargs",
 ]
 
-_YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS = (
+_YUE_ZHO_TRANSCRIPTION_DELINEATION_JSON_PATHS = (
     Path(
         "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
-        "deliniation/cuda.json"
+        "delineation/cuda.json"
     ),
     Path(
         "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
-        "deliniation/mps.json"
+        "delineation/mps.json"
     ),
 )
-"""Default written Cantonese transcription deliniation JSON paths."""
+"""Default written Cantonese transcription delineation JSON paths."""
 
 _YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (
     Path(
@@ -76,20 +73,6 @@ _YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (
     ),
 )
 """Default written Cantonese transcription punctuation JSON paths."""
-
-YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC = OperationSpec(
-    operation="yue-zho-transcription-deliniation",
-    manager_cls=Dual2To2Manager,
-    prompt_cls=Dual2To2Prompt,
-)
-"""Operation specification for written Cantonese transcription deliniation."""
-
-YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC = OperationSpec(
-    operation="yue-zho-transcription-punctuation",
-    manager_cls=YueZhoPunctuationManager,
-    prompt_cls=DualNTo1Prompt,
-)
-"""Operation specification for written Cantonese transcription punctuation."""
 
 
 class YueZhoTranscriptionKwargs(TypedDict, total=False):
@@ -112,14 +95,14 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """provider to use for queries."""
     convert: OpenCCConfig | None
     """OpenCC configuration used for transcribed text conversion."""
-    deliniation_prompt_cls: type[YueDeliniationVsZhoPromptYueHant]
-    """prompt class used for alignment deliniation."""
+    delineation_prompt_cls: type[YueDelineationVsZhoPromptYueHant]
+    """prompt class used for alignment delineation."""
     punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHant]
     """prompt class used for transcription punctuation."""
     test_case_directory_path: Path | None
     """directory where encountered transcription test cases are persisted."""
-    deliniation_test_cases: list[TestCase] | None
-    """preloaded deliniation test cases used to seed the transcriber."""
+    delineation_test_cases: list[TestCase] | None
+    """preloaded delineation test cases used to seed the transcriber."""
     punctuation_test_cases: list[TestCase] | None
     """preloaded punctuation test cases used to seed the transcriber."""
 
@@ -154,14 +137,14 @@ def get_yue_vs_zho_transcriber(
     provider: LLMProvider | None = None,
     convert: OpenCCConfig | None = None,
     additional_context: str | None = None,
-    deliniation_prompt_cls: type[YueDeliniationVsZhoPromptYueHant] = (
-        YueDeliniationVsZhoPromptYueHans
+    delineation_prompt_cls: type[YueDelineationVsZhoPromptYueHant] = (
+        YueDelineationVsZhoPromptYueHans
     ),
     punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHant] = (
         YuePunctuationVsZhoPromptYueHans
     ),
     test_case_directory_path: Path | None = None,
-    deliniation_test_cases: list[TestCase] | None = None,
+    delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
 ) -> YueTranscriber:
     """Get YueTranscriber with default resources when available.
@@ -173,10 +156,10 @@ def get_yue_vs_zho_transcriber(
         provider: provider to use for queries
         convert: OpenCC configuration used for transcribed text conversion
         additional_context: additional context to include in LLM prompts
-        deliniation_prompt_cls: prompt class for alignment deliniation
+        delineation_prompt_cls: prompt class for alignment delineation
         punctuation_prompt_cls: prompt class for transcription punctuation
         test_case_directory_path: optional directory where test cases are updated
-        deliniation_test_cases: optional deliniation test cases
+        delineation_test_cases: optional delineation test cases
         punctuation_test_cases: optional punctuation test cases
     Returns:
         configured YueTranscriber
@@ -185,12 +168,12 @@ def get_yue_vs_zho_transcriber(
         provider = get_provider()
     if test_case_directory_path is None:
         test_case_directory_path = _get_default_test_case_dir_path()
-    if deliniation_test_cases is None:
-        deliniation_test_cases = list(
+    if delineation_test_cases is None:
+        delineation_test_cases = list(
             load_default_test_cases(
-                Dual2To2Manager,
-                deliniation_prompt_cls,
-                _YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
+                DelineationManager,
+                delineation_prompt_cls,
+                _YUE_ZHO_TRANSCRIPTION_DELINEATION_JSON_PATHS,
             )
         )
     if punctuation_test_cases is None:
@@ -208,10 +191,10 @@ def get_yue_vs_zho_transcriber(
         provider=provider,
         convert=convert,
         additional_context=additional_context,
-        deliniation_prompt_cls=deliniation_prompt_cls,
+        delineation_prompt_cls=delineation_prompt_cls,
         punctuation_prompt_cls=punctuation_prompt_cls,
         test_case_directory_path=test_case_directory_path,
-        deliniation_test_cases=deliniation_test_cases,
+        delineation_test_cases=delineation_test_cases,
         punctuation_test_cases=punctuation_test_cases,
     )
 
@@ -223,7 +206,7 @@ def _get_default_test_case_dir_path() -> Path:
         writable runtime test-case root with transcription subdirectories present
     """
     test_case_dir_path = get_runtime_cache_dir_path("test_cases")
-    (test_case_dir_path / "multilang/yue_zho/transcription/deliniation").mkdir(
+    (test_case_dir_path / "multilang/yue_zho/transcription/delineation").mkdir(
         parents=True, exist_ok=True
     )
     (test_case_dir_path / "multilang/yue_zho/transcription/punctuation").mkdir(

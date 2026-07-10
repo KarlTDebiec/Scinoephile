@@ -26,8 +26,8 @@ from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
 from .alignment import Alignment
-from .deliniation import (
-    YueDeliniationVsZhoPromptYueHant,
+from .delineation import (
+    YueDelineationVsZhoPromptYueHant,
 )
 from .punctuation import (
     YuePunctuationVsZhoPromptYueHant,
@@ -44,20 +44,20 @@ class Aligner:
 
     def __init__(
         self,
-        deliniation_queryer: Queryer,
+        delineation_queryer: Queryer,
         punctuation_queryer: Queryer,
         test_case_dir_path: Path | None = None,
     ):
         """Initialize.
 
         Arguments:
-            deliniation_queryer: queryer for delineation
+            delineation_queryer: queryer for delineation
             punctuation_queryer: queryer for punctuation
             test_case_dir_path: directory where encountered test cases are written
         """
         self.punctuation_queryer = punctuation_queryer
         """Punctuates written Cantonese from corresponding standard Chinese."""
-        self.deliniation_queryer = deliniation_queryer
+        self.delineation_queryer = delineation_queryer
         """Shifts written Cantonese between adjacent subtitles from standard Chinese."""
         self.test_case_dir_path = None
         if test_case_dir_path is not None:
@@ -110,7 +110,7 @@ class Aligner:
         """
         for sg_1_idx in range(len(alignment.sync_groups) - 1):
             # Run query
-            test_case = alignment.get_deliniation_test_case(sg_1_idx)
+            test_case = alignment.get_delineation_test_case(sg_1_idx)
             if test_case is None:
                 logger.info(
                     f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} "
@@ -119,7 +119,7 @@ class Aligner:
                 continue
             # TODO: try/except and return original written Cantonese on error
             # (not yet encountered).
-            test_case: TestCase = self.deliniation_queryer.call(test_case)
+            test_case: TestCase = self.delineation_queryer.call(test_case)
 
             # If there is no change, continue
             query = test_case.query
@@ -128,7 +128,7 @@ class Aligner:
                 message = "Delineation query returned no answer."
                 logger.error(message)
                 raise ScinoephileError(message)
-            prompt_cls: type[YueDeliniationVsZhoPromptYueHant] = getattr(
+            prompt_cls: type[YueDelineationVsZhoPromptYueHant] = getattr(
                 test_case, "prompt_cls"
             )
             yuewen_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, None)
@@ -174,7 +174,7 @@ class Aligner:
         sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get written Cantonese
-        prompt_cls: type[YueDeliniationVsZhoPromptYueHant] = getattr(
+        prompt_cls: type[YueDelineationVsZhoPromptYueHant] = getattr(
             query, "prompt_cls"
         )
         yw_1_idxs = sg_1[1]
@@ -350,12 +350,12 @@ class Aligner:
         if self.test_case_dir_path is None:
             return
 
-        deliniation_output_path = (
-            self.test_case_dir_path / "deliniation" / f"{get_torch_device()}.json"
+        delineation_output_path = (
+            self.test_case_dir_path / "delineation" / f"{get_torch_device()}.json"
         )
         save_test_cases_to_json(
-            deliniation_output_path,
-            list(self.deliniation_queryer.encountered_test_cases.values()),
+            delineation_output_path,
+            list(self.delineation_queryer.encountered_test_cases.values()),
         )
         punctuation_output_path = (
             self.test_case_dir_path / "punctuation" / f"{get_torch_device()}.json"

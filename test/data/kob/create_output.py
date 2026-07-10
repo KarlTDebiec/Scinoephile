@@ -19,9 +19,9 @@ from scinoephile.multilang.yue_zho.review import (
     YueZhoPairwiseReviewPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueDeliniationVsZhoPromptYueHans,
-    YueDeliniationVsZhoPromptYueHant,
+from scinoephile.multilang.yue_zho.transcription.delineation import (
+    YueDelineationVsZhoPromptYueHans,
+    YueDelineationVsZhoPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
@@ -121,7 +121,7 @@ if "yue-Hans_transcribe" in actions:
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
             "convert": OpenCCConfig.hk2s,
-            "deliniation_prompt_cls": YueDeliniationVsZhoPromptYueHans,
+            "delineation_prompt_cls": YueDelineationVsZhoPromptYueHans,
             "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHans,
         },
         pairwise_reviewer_kw={"prompt_cls": YueZhoPairwiseReviewPromptYueHans},
@@ -142,7 +142,7 @@ if "yue-Hans_transcribe" in actions:
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
             "convert": OpenCCConfig.s2hk,
-            "deliniation_prompt_cls": YueDeliniationVsZhoPromptYueHant,
+            "delineation_prompt_cls": YueDelineationVsZhoPromptYueHant,
             "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHant,
         },
         pairwise_reviewer_kw={"prompt_cls": YueZhoPairwiseReviewPromptYueHant},

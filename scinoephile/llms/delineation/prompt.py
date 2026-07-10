@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for dual 2 to 2 matters."""
+"""Text for LLM correspondence for delineation."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
-__all__ = ["Dual2To2Prompt"]
+__all__ = ["DelineationPrompt"]
 
 
-class Dual2To2Prompt(Prompt, ABC):
-    """Text for LLM correspondence for dual 2 to 2 matters."""
+class DelineationPrompt(Prompt, ABC):
+    """Text for LLM correspondence for delineation."""
 
     # Query fields
     src_1_sub_1: ClassVar[str] = "src_1_sub_1"

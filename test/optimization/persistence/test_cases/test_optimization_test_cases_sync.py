@@ -12,12 +12,13 @@ from pytest import raises
 
 from scinoephile import common
 from scinoephile.core import ScinoephileError
-from scinoephile.lang.review import REVIEW_OPERATION_SPEC
-from scinoephile.llms.review import ReviewManager, ReviewPrompt
-from scinoephile.multilang.translation.standard import TRANSLATION_OPERATION_SPEC
-from scinoephile.multilang.yue_zho.transcription import (
-    YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
+from scinoephile.llms.punctuation import PUNCTUATION_OPERATION_SPEC
+from scinoephile.llms.review import (
+    REVIEW_OPERATION_SPEC,
+    ReviewManager,
+    ReviewPrompt,
 )
+from scinoephile.llms.translation import TRANSLATION_OPERATION_SPEC
 from scinoephile.optimization.persistence.test_cases import (
     PersistedTestCase,
     TestCaseSqliteStore,
@@ -290,7 +291,7 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
 
     sync_test_cases_from_json_paths(
         database_path=database_path,
-        operation_spec=YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
+        operation_spec=PUNCTUATION_OPERATION_SPEC,
         input_paths=[source_path],
         dry_run=False,
     )

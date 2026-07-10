@@ -14,15 +14,15 @@ that hierarchy:
 - `scinoephile.core`: core subtitle-domain logic; may import from `common`
 - `analysis`, `image`, and `llms`: domain packages that may import from `common`
   and `core`
-- `scinoephile.media`: media probing, extraction, subtitle cache, and offset
-  logic built on the lower layers
+- `scinoephile.media` and `scinoephile.optimization`: media tooling and prompt
+  optimization infrastructure built on the lower layers
 - `scinoephile.lang`: language-specific subtitle operations that may import from
   the packages above
 - `audio`, `dictionaries`, and `web`: audio, dictionary, and web UI packages
   that may import from the packages above
 - `multilang`: cross-language operations that may import from the packages above
-- `scinoephile.optimization` and `workflows`: prompt optimization tooling and
-  reusable workflow orchestration that may import from the packages above
+- `scinoephile.workflows`: reusable workflow orchestration that may import from
+  the packages above
 - `scinoephile.cli`: user-facing command-line wrappers that may import from any
   package listed above it
 
@@ -42,6 +42,8 @@ intended to keep dependencies flowing toward earlier layers:
     utilities.
 - **`media`**: media-file probing, subtitle extraction helpers, subtitle cache
   analysis, and visual offset estimation.
+- **`optimization`**: prompt optimization operations and persisted test-case
+  synchronization built on `core` and `llms`.
 - **`lang`**: language-specific subtitle operations (English, standard Chinese,
   written Cantonese, etc.).
 - **`audio`, `dictionaries`, and `web`**: audio representation and transcription
@@ -49,8 +51,6 @@ intended to keep dependencies flowing toward earlier layers:
 - **`multilang`**: pair-specific cross-language operations.
 - **`workflows`**: reusable end-to-end orchestration that coordinates multiple
   domain packages, including `multilang`.
-- **`optimization`**: prompt optimization operations and persisted test-case
-  synchronization.
 - **`cli`**: thin wrappers around lower layers; argument parsing, validation,
   and user-facing orchestration.
 

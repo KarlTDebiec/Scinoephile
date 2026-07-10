@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.translation import (
@@ -35,17 +35,7 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueTranslationPromptZhoHant,
 )
 
-__all__ = [
-    "TRANSLATION_OPERATION_SPEC",
-    "get_translator",
-]
-
-TRANSLATION_OPERATION_SPEC = OperationSpec(
-    operation="translation",
-    manager_cls=TranslationManager,
-    prompt_cls=TranslationPrompt,
-)
-"""Operation specification for regular translation."""
+__all__ = ["get_translator"]
 
 _ENG_YUE_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default written Cantonese-to-English regular translation JSON paths."""

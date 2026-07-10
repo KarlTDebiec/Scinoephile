@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for dual n to 1 LLM classes."""
+"""Factories for punctuation LLM classes."""
 
 from __future__ import annotations
 
@@ -12,22 +12,22 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import DualNTo1Prompt
+from .prompt import PunctuationPrompt
 
-__all__ = ["DualNTo1Manager"]
+__all__ = ["PunctuationManager"]
 
 
-class DualNTo1Manager(Manager):
-    """Factories for dual n to 1 LLM classes."""
+class PunctuationManager(Manager):
+    """Factories for punctuation LLM classes."""
 
-    prompt_cls: ClassVar[type[DualNTo1Prompt]] = DualNTo1Prompt
+    prompt_cls: ClassVar[type[PunctuationPrompt]] = PunctuationPrompt
     """Default prompt class."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[DualNTo1Prompt] = DualNTo1Prompt,
+        prompt_cls: type[PunctuationPrompt] = PunctuationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -36,7 +36,7 @@ class DualNTo1Manager(Manager):
         Returns:
             query model class
         """
-        name = get_model_name("DualNTo1Query", prompt_cls.__name__)
+        name = get_model_name("PunctuationQuery", prompt_cls.__name__)
         fields: dict[str, Any] = {
             prompt_cls.src_1: (
                 list[str],
@@ -66,7 +66,7 @@ class DualNTo1Manager(Manager):
     @cache
     def get_answer_cls(
         cls,
-        prompt_cls: type[DualNTo1Prompt] = DualNTo1Prompt,
+        prompt_cls: type[PunctuationPrompt] = PunctuationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -75,7 +75,7 @@ class DualNTo1Manager(Manager):
         Returns:
             answer model class
         """
-        name = get_model_name("DualNTo1Answer", prompt_cls.__name__)
+        name = get_model_name("PunctuationAnswer", prompt_cls.__name__)
         fields: dict[str, Any] = {
             prompt_cls.output: (
                 str,
@@ -123,7 +123,7 @@ class DualNTo1Manager(Manager):
         Returns:
             validated query
         """
-        prompt_cls: type[DualNTo1Prompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
         source_one = getattr(model, prompt_cls.src_1, None)
         source_two = getattr(model, prompt_cls.src_2, None)
         if not source_one:
@@ -141,7 +141,7 @@ class DualNTo1Manager(Manager):
         Returns:
             validated answer
         """
-        prompt_cls: type[DualNTo1Prompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
         output = getattr(model, prompt_cls.output, None)
         if not output:
             raise ValueError(prompt_cls.output_missing_err)
