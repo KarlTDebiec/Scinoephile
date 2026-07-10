@@ -8,11 +8,41 @@ import hashlib
 import json
 from collections.abc import Callable
 from dataclasses import dataclass, fields, replace
-from typing import Self
+from typing import Self, TypedDict
 
 from scinoephile.core.language import Language
 
-__all__ = ["Prompt"]
+__all__ = [
+    "Prompt",
+    "PromptLocalizationKwargs",
+]
+
+
+class PromptLocalizationKwargs(TypedDict):
+    """Shared localization fields accepted by all prompt types."""
+
+    schema_intro: str
+    """Text preceding schema description."""
+    few_shot_intro: str
+    """Text preceding few-shot examples."""
+    few_shot_query_intro: str
+    """Text preceding each few-shot example query."""
+    few_shot_answer_intro: str
+    """Text preceding each few-shot expected answer."""
+    answer_invalid_pre: str
+    """Text preceding answer validation errors."""
+    answer_invalid_post: str
+    """Text following answer validation errors."""
+    difficulty_description: str
+    """Description of 'difficulty' field."""
+    few_shot_description: str
+    """Description of 'few_shot' field."""
+    verified_description: str
+    """Description of 'verified' field."""
+    test_case_invalid_pre: str
+    """Text preceding test case validation errors."""
+    test_case_invalid_post: str
+    """Text following test case validation errors."""
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -57,6 +87,23 @@ class Prompt:
     """Text preceding test case validation errors."""
     test_case_invalid_post: str = ""
     """Text following test case validation errors."""
+
+    @property
+    def localization_kwargs(self) -> PromptLocalizationKwargs:
+        """Get shared localization fields as prompt-construction keywords."""
+        return {
+            "schema_intro": self.schema_intro,
+            "few_shot_intro": self.few_shot_intro,
+            "few_shot_query_intro": self.few_shot_query_intro,
+            "few_shot_answer_intro": self.few_shot_answer_intro,
+            "answer_invalid_pre": self.answer_invalid_pre,
+            "answer_invalid_post": self.answer_invalid_post,
+            "difficulty_description": self.difficulty_description,
+            "few_shot_description": self.few_shot_description,
+            "verified_description": self.verified_description,
+            "test_case_invalid_pre": self.test_case_invalid_pre,
+            "test_case_invalid_post": self.test_case_invalid_post,
+        }
 
     @property
     def name(self) -> str:

@@ -29,17 +29,7 @@ __all__ = [
 
 ZhoYueTranslationPromptZhoHant = TranslationPrompt(
     language=Language.zho_hant,
-    schema_intro=PromptZhoHant.schema_intro,
-    few_shot_intro=PromptZhoHant.few_shot_intro,
-    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
-    answer_invalid_post=PromptZhoHant.answer_invalid_post,
-    difficulty_description=PromptZhoHant.difficulty_description,
-    few_shot_description=PromptZhoHant.few_shot_description,
-    verified_description=PromptZhoHant.verified_description,
-    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    **PromptZhoHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責根據粵文字幕，創作對應的標準中文字幕。
 
@@ -66,17 +56,7 @@ ZhoYueTranslationPromptZhoHans = ZhoYueTranslationPromptZhoHant.transformed(
 
 ZhoYueGapTranslationPromptZhoHant = GapTranslationPrompt(
     language=Language.zho_hant,
-    schema_intro=PromptZhoHant.schema_intro,
-    few_shot_intro=PromptZhoHant.few_shot_intro,
-    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
-    answer_invalid_post=PromptZhoHant.answer_invalid_post,
-    difficulty_description=PromptZhoHant.difficulty_description,
-    few_shot_description=PromptZhoHant.few_shot_description,
-    verified_description=PromptZhoHant.verified_description,
-    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    **PromptZhoHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責根據對應的粵文字幕，補翻譯缺失的標準中文字幕。
         只有當某行現有中文字幕爲空字符串時，才需要提供譯文。
@@ -109,17 +89,7 @@ ZhoYueGapTranslationPromptZhoHans = ZhoYueGapTranslationPromptZhoHant.transforme
 
 ZhoYueGuidedTranslationPromptZhoHant = GuidedTranslationPrompt(
     language=Language.zho_hant,
-    schema_intro=PromptZhoHant.schema_intro,
-    few_shot_intro=PromptZhoHant.few_shot_intro,
-    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
-    answer_invalid_post=PromptZhoHant.answer_invalid_post,
-    difficulty_description=PromptZhoHant.difficulty_description,
-    few_shot_description=PromptZhoHant.few_shot_description,
-    verified_description=PromptZhoHant.verified_description,
-    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    **PromptZhoHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責根據粵文字幕，創作對應的標準中文字幕。你也會收到同一段場景的
         既有中文字幕，作爲參考材料。

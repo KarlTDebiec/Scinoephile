@@ -20,17 +20,7 @@ __all__ = [
 
 EngZhoTranslationPrompt = TranslationPrompt(
     language=Language.eng,
-    schema_intro=PromptEng.schema_intro,
-    few_shot_intro=PromptEng.few_shot_intro,
-    few_shot_query_intro=PromptEng.few_shot_query_intro,
-    few_shot_answer_intro=PromptEng.few_shot_answer_intro,
-    answer_invalid_pre=PromptEng.answer_invalid_pre,
-    answer_invalid_post=PromptEng.answer_invalid_post,
-    difficulty_description=PromptEng.difficulty_description,
-    few_shot_description=PromptEng.few_shot_description,
-    verified_description=PromptEng.verified_description,
-    test_case_invalid_pre=PromptEng.test_case_invalid_pre,
-    test_case_invalid_post=PromptEng.test_case_invalid_post,
+    **PromptEng.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         You are responsible for creating English subtitles from Chinese subtitles.
 
@@ -55,17 +45,7 @@ EngZhoTranslationPrompt = TranslationPrompt(
 
 EngZhoGapTranslationPrompt = GapTranslationPrompt(
     language=Language.eng,
-    schema_intro=PromptEng.schema_intro,
-    few_shot_intro=PromptEng.few_shot_intro,
-    few_shot_query_intro=PromptEng.few_shot_query_intro,
-    few_shot_answer_intro=PromptEng.few_shot_answer_intro,
-    answer_invalid_pre=PromptEng.answer_invalid_pre,
-    answer_invalid_post=PromptEng.answer_invalid_post,
-    difficulty_description=PromptEng.difficulty_description,
-    few_shot_description=PromptEng.few_shot_description,
-    verified_description=PromptEng.verified_description,
-    test_case_invalid_pre=PromptEng.test_case_invalid_pre,
-    test_case_invalid_post=PromptEng.test_case_invalid_post,
+    **PromptEng.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         You are responsible for filling missing English subtitle lines using the
         corresponding Chinese subtitles as reference.
@@ -97,17 +77,7 @@ EngZhoGapTranslationPrompt = GapTranslationPrompt(
 
 EngZhoGuidedTranslationPrompt = GuidedTranslationPrompt(
     language=Language.eng,
-    schema_intro=PromptEng.schema_intro,
-    few_shot_intro=PromptEng.few_shot_intro,
-    few_shot_query_intro=PromptEng.few_shot_query_intro,
-    few_shot_answer_intro=PromptEng.few_shot_answer_intro,
-    answer_invalid_pre=PromptEng.answer_invalid_pre,
-    answer_invalid_post=PromptEng.answer_invalid_post,
-    difficulty_description=PromptEng.difficulty_description,
-    few_shot_description=PromptEng.few_shot_description,
-    verified_description=PromptEng.verified_description,
-    test_case_invalid_pre=PromptEng.test_case_invalid_pre,
-    test_case_invalid_post=PromptEng.test_case_invalid_post,
+    **PromptEng.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         You are responsible for creating English subtitles from Chinese subtitles. You
         will also receive original English subtitles from the same scene as reference

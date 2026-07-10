@@ -29,17 +29,7 @@ __all__ = [
 
 GuidedReviewPromptZhoHant = GuidedReviewPrompt(
     language=Language.zho_hant,
-    schema_intro=PromptZhoHant.schema_intro,
-    few_shot_intro=PromptZhoHant.few_shot_intro,
-    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
-    answer_invalid_post=PromptZhoHant.answer_invalid_post,
-    difficulty_description=PromptZhoHant.difficulty_description,
-    few_shot_description=PromptZhoHant.few_shot_description,
-    verified_description=PromptZhoHant.verified_description,
-    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    **PromptZhoHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責對中文字幕進行最後審核。
         你還會看到涵蓋同一段內容的參考字幕；參考字幕可以使用另一種語言，數量也可能不同。
@@ -63,17 +53,7 @@ GuidedReviewPromptZhoHans = GuidedReviewPromptZhoHant.transformed(
 
 PairwiseReviewPromptZhoHant = PairwiseReviewPrompt(
     language=Language.zho_hant,
-    schema_intro=PromptZhoHant.schema_intro,
-    few_shot_intro=PromptZhoHant.few_shot_intro,
-    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
-    answer_invalid_post=PromptZhoHant.answer_invalid_post,
-    difficulty_description=PromptZhoHant.difficulty_description,
-    few_shot_description=PromptZhoHant.few_shot_description,
-    verified_description=PromptZhoHant.verified_description,
-    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    **PromptZhoHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         將一條中文字幕與一條對應的參考字幕逐條比較校對；參考字幕可以使用另一種語言。
         僅修正參考字幕足以證實的明顯聽寫、用字或名稱錯誤。
@@ -97,17 +77,7 @@ PairwiseReviewPromptZhoHans = PairwiseReviewPromptZhoHant.transformed(
 
 ReviewPromptZhoHant = ReviewPrompt(
     language=Language.zho_hant,
-    schema_intro=PromptZhoHant.schema_intro,
-    few_shot_intro=PromptZhoHant.few_shot_intro,
-    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
-    answer_invalid_post=PromptZhoHant.answer_invalid_post,
-    difficulty_description=PromptZhoHant.difficulty_description,
-    few_shot_description=PromptZhoHant.few_shot_description,
-    verified_description=PromptZhoHant.verified_description,
-    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    **PromptZhoHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責校對中文字幕。
         僅修正排版與錯別字等排版性/輸入性錯誤。

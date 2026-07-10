@@ -29,17 +29,7 @@ __all__ = [
 
 GuidedReviewPromptYueHant = GuidedReviewPrompt(
     language=Language.yue_hant,
-    schema_intro=PromptYueHant.schema_intro,
-    few_shot_intro=PromptYueHant.few_shot_intro,
-    few_shot_query_intro=PromptYueHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptYueHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptYueHant.answer_invalid_pre,
-    answer_invalid_post=PromptYueHant.answer_invalid_post,
-    difficulty_description=PromptYueHant.difficulty_description,
-    few_shot_description=PromptYueHant.few_shot_description,
-    verified_description=PromptYueHant.verified_description,
-    test_case_invalid_pre=PromptYueHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptYueHant.test_case_invalid_post,
+    **PromptYueHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責為粵文字幕做最後審核。
         你亦會見到同一段內容嘅參考字幕；參考字幕可以係另一種語言，字幕數量亦未必相同。
@@ -63,17 +53,7 @@ GuidedReviewPromptYueHans = GuidedReviewPromptYueHant.transformed(
 
 PairwiseReviewPromptYueHant = PairwiseReviewPrompt(
     language=Language.yue_hant,
-    schema_intro=PromptYueHant.schema_intro,
-    few_shot_intro=PromptYueHant.few_shot_intro,
-    few_shot_query_intro=PromptYueHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptYueHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptYueHant.answer_invalid_pre,
-    answer_invalid_post=PromptYueHant.answer_invalid_post,
-    difficulty_description=PromptYueHant.difficulty_description,
-    few_shot_description=PromptYueHant.few_shot_description,
-    verified_description=PromptYueHant.verified_description,
-    test_case_invalid_pre=PromptYueHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptYueHant.test_case_invalid_post,
+    **PromptYueHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         將一條粵文字幕同一條對應嘅參考字幕作比較校對；參考字幕可以係另一種語言。
         只修正參考字幕足以證實嘅明顯聽錯字、寫錯字或者名稱錯誤。
@@ -97,17 +77,7 @@ PairwiseReviewPromptYueHans = PairwiseReviewPromptYueHant.transformed(
 
 ReviewPromptYueHant = ReviewPrompt(
     language=Language.yue_hant,
-    schema_intro=PromptYueHant.schema_intro,
-    few_shot_intro=PromptYueHant.few_shot_intro,
-    few_shot_query_intro=PromptYueHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptYueHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptYueHant.answer_invalid_pre,
-    answer_invalid_post=PromptYueHant.answer_invalid_post,
-    difficulty_description=PromptYueHant.difficulty_description,
-    few_shot_description=PromptYueHant.few_shot_description,
-    verified_description=PromptYueHant.verified_description,
-    test_case_invalid_pre=PromptYueHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptYueHant.test_case_invalid_post,
+    **PromptYueHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責校對粵文字幕。
         只修正排版、錯別字、OCR 或轉寫造成嘅明顯錯誤。

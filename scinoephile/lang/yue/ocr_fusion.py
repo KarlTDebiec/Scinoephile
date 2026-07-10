@@ -23,17 +23,7 @@ __all__ = [
 
 OcrFusionPromptYueHant = OcrFusionPrompt(
     language=Language.yue_hant,
-    schema_intro=PromptYueHant.schema_intro,
-    few_shot_intro=PromptYueHant.few_shot_intro,
-    few_shot_query_intro=PromptYueHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptYueHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptYueHant.answer_invalid_pre,
-    answer_invalid_post=PromptYueHant.answer_invalid_post,
-    difficulty_description=PromptYueHant.difficulty_description,
-    few_shot_description=PromptYueHant.few_shot_description,
-    verified_description=PromptYueHant.verified_description,
-    test_case_invalid_pre=PromptYueHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptYueHant.test_case_invalid_post,
+    **PromptYueHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責將來自兩個唔同來源嘅粵文字幕 OCR 結果融合：Google Lens 同 PaddleOCR。
         請遵循以下原則：

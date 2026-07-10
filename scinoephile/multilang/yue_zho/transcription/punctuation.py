@@ -29,17 +29,7 @@ __all__ = [
 
 YuePunctuationVsZhoPromptYueHant = PunctuationPrompt(
     language=Language.yue_hant,
-    schema_intro=PromptYueHant.schema_intro,
-    few_shot_intro=PromptYueHant.few_shot_intro,
-    few_shot_query_intro=PromptYueHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptYueHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptYueHant.answer_invalid_pre,
-    answer_invalid_post=PromptYueHant.answer_invalid_post,
-    difficulty_description=PromptYueHant.difficulty_description,
-    few_shot_description=PromptYueHant.few_shot_description,
-    verified_description=PromptYueHant.verified_description,
-    test_case_invalid_pre=PromptYueHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptYueHant.test_case_invalid_post,
+    **PromptYueHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責將廣東話口語嘅粵文字幕同對應嘅中文字幕對齊。
         你會收到一條中文字幕，以及同一條字幕對應嘅多行粵文轉寫。

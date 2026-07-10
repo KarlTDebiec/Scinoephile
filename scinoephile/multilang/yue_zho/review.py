@@ -26,17 +26,7 @@ __all__ = [
 
 YueZhoGuidedReviewPromptYueHant = GuidedReviewPrompt(
     language=Language.yue_hant,
-    schema_intro=PromptYueHant.schema_intro,
-    few_shot_intro=PromptYueHant.few_shot_intro,
-    few_shot_query_intro=PromptYueHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptYueHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptYueHant.answer_invalid_pre,
-    answer_invalid_post=PromptYueHant.answer_invalid_post,
-    difficulty_description=PromptYueHant.difficulty_description,
-    few_shot_description=PromptYueHant.few_shot_description,
-    verified_description=PromptYueHant.verified_description,
-    test_case_invalid_pre=PromptYueHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptYueHant.test_case_invalid_post,
+    **PromptYueHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責為廣東話語音嘅粵文字幕做最後審核。
         作為指引，你會見到同一段內容嘅中文字幕；兩邊字幕數量未必相同。
@@ -70,17 +60,7 @@ YueZhoGuidedReviewPromptYueHans = YueZhoGuidedReviewPromptYueHant.transformed(
 
 YueZhoPairwiseReviewPromptYueHant = PairwiseReviewPrompt(
     language=Language.yue_hant,
-    schema_intro=PromptYueHant.schema_intro,
-    few_shot_intro=PromptYueHant.few_shot_intro,
-    few_shot_query_intro=PromptYueHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptYueHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptYueHant.answer_invalid_pre,
-    answer_invalid_post=PromptYueHant.answer_invalid_post,
-    difficulty_description=PromptYueHant.difficulty_description,
-    few_shot_description=PromptYueHant.few_shot_description,
-    verified_description=PromptYueHant.verified_description,
-    test_case_invalid_pre=PromptYueHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptYueHant.test_case_invalid_post,
+    **PromptYueHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責為廣東話語音嘅粵文字幕做校對。
         作為參考，你會見到一條對應嘅中文字幕。

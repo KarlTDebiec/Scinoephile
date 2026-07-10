@@ -23,17 +23,7 @@ __all__ = [
 
 OcrFusionPromptZhoHant = OcrFusionPrompt(
     language=Language.zho_hant,
-    schema_intro=PromptZhoHant.schema_intro,
-    few_shot_intro=PromptZhoHant.few_shot_intro,
-    few_shot_query_intro=PromptZhoHant.few_shot_query_intro,
-    few_shot_answer_intro=PromptZhoHant.few_shot_answer_intro,
-    answer_invalid_pre=PromptZhoHant.answer_invalid_pre,
-    answer_invalid_post=PromptZhoHant.answer_invalid_post,
-    difficulty_description=PromptZhoHant.difficulty_description,
-    few_shot_description=PromptZhoHant.few_shot_description,
-    verified_description=PromptZhoHant.verified_description,
-    test_case_invalid_pre=PromptZhoHant.test_case_invalid_pre,
-    test_case_invalid_post=PromptZhoHant.test_case_invalid_post,
+    **PromptZhoHant.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         你負責將來自兩個不同來源的中文字幕 OCR 結果進行融合：Google Lens 和 PaddleOCR。
         請遵循以下原則：

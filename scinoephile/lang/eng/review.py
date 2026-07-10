@@ -20,17 +20,7 @@ __all__ = [
 
 GuidedReviewPromptEng = GuidedReviewPrompt(
     language=Language.eng,
-    schema_intro=PromptEng.schema_intro,
-    few_shot_intro=PromptEng.few_shot_intro,
-    few_shot_query_intro=PromptEng.few_shot_query_intro,
-    few_shot_answer_intro=PromptEng.few_shot_answer_intro,
-    answer_invalid_pre=PromptEng.answer_invalid_pre,
-    answer_invalid_post=PromptEng.answer_invalid_post,
-    difficulty_description=PromptEng.difficulty_description,
-    few_shot_description=PromptEng.few_shot_description,
-    verified_description=PromptEng.verified_description,
-    test_case_invalid_pre=PromptEng.test_case_invalid_pre,
-    test_case_invalid_post=PromptEng.test_case_invalid_post,
+    **PromptEng.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         You are responsible for the final review of English subtitles.
         You will also receive guide subtitles covering the same passage, possibly in
@@ -50,17 +40,7 @@ GuidedReviewPromptEng = GuidedReviewPrompt(
 
 PairwiseReviewPromptEng = PairwiseReviewPrompt(
     language=Language.eng,
-    schema_intro=PromptEng.schema_intro,
-    few_shot_intro=PromptEng.few_shot_intro,
-    few_shot_query_intro=PromptEng.few_shot_query_intro,
-    few_shot_answer_intro=PromptEng.few_shot_answer_intro,
-    answer_invalid_pre=PromptEng.answer_invalid_pre,
-    answer_invalid_post=PromptEng.answer_invalid_post,
-    difficulty_description=PromptEng.difficulty_description,
-    few_shot_description=PromptEng.few_shot_description,
-    verified_description=PromptEng.verified_description,
-    test_case_invalid_pre=PromptEng.test_case_invalid_pre,
-    test_case_invalid_post=PromptEng.test_case_invalid_post,
+    **PromptEng.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         Review one English subtitle against one corresponding reference subtitle,
         which may be in another language. Correct only clear transcription, spelling,
@@ -79,17 +59,7 @@ PairwiseReviewPromptEng = PairwiseReviewPrompt(
 
 ReviewPromptEng = ReviewPrompt(
     language=Language.eng,
-    schema_intro=PromptEng.schema_intro,
-    few_shot_intro=PromptEng.few_shot_intro,
-    few_shot_query_intro=PromptEng.few_shot_query_intro,
-    few_shot_answer_intro=PromptEng.few_shot_answer_intro,
-    answer_invalid_pre=PromptEng.answer_invalid_pre,
-    answer_invalid_post=PromptEng.answer_invalid_post,
-    difficulty_description=PromptEng.difficulty_description,
-    few_shot_description=PromptEng.few_shot_description,
-    verified_description=PromptEng.verified_description,
-    test_case_invalid_pre=PromptEng.test_case_invalid_pre,
-    test_case_invalid_post=PromptEng.test_case_invalid_post,
+    **PromptEng.localization_kwargs,
     base_system_prompt=dedent_and_compact("""
         You are responsible for proofreading English subtitles.
         For each subtitle, you are to provide revised subtitle only if revisions are
