@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from pytest import CaptureFixture, raises
@@ -47,6 +48,30 @@ def test_audit_cli_stdout_outfile_and_validation(
     assert stdout.startswith("# Review Audit\n")
     assert "- subtitle range: 1-indexed numbers 1 through 1" in stdout
     assert "- table rows: 1" in stdout
+
+    run_cli_with_args(AuditCli, f"{arguments} --characters 错")
+    stdout = capsys.readouterr().out
+    assert "- character filter: 錯, 错" in stdout
+    assert "- table rows: 1" in stdout
+
+    review_json_path = tmp_path / "review.json"
+    review_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitle_1": "錯"},
+                    "answer": {"revised_1": "正", "note_1": "修正。"},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    run_cli_with_args(
+        AuditCli,
+        f"{arguments} --traditional-json {review_json_path}",
+    )
+    assert "Traditional review: 修正。" in capsys.readouterr().out
 
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(AuditCli, f"{arguments} --outfile {outfile_path}")

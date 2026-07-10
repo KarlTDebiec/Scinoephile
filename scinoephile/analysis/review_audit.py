@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-import json
 from collections.abc import Iterable, Mapping, Sequence
 from enum import StrEnum
-from pathlib import Path
+from typing import cast
 
 from scinoephile.core import ScinoephileError
+from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
 __all__ = [
@@ -39,9 +39,9 @@ def audit_reviews(
     traditional_simplified_reviewed: Series,
     simplified: Series,
     simplified_reviewed: Series,
-    traditional_json_path: Path | None = None,
-    traditional_simplified_json_path: Path | None = None,
-    simplified_json_path: Path | None = None,
+    traditional_review_cases: Sequence[TestCase] = (),
+    traditional_simplified_review_cases: Sequence[TestCase] = (),
+    simplified_review_cases: Sequence[TestCase] = (),
     row_filter: ReviewAuditFilter = ReviewAuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
@@ -57,18 +57,18 @@ def audit_reviews(
             subtitles
         simplified: simplified-script review input
         simplified_reviewed: simplified-script reviewed subtitles
-        traditional_json_path: optional traditional review JSON path
-        traditional_simplified_json_path: optional traditional simplification review
-            JSON path
-        simplified_json_path: optional simplified review JSON path
+        traditional_review_cases: traditional review test cases
+        traditional_simplified_review_cases: traditional simplification review test
+            cases
+        simplified_review_cases: simplified review test cases
         row_filter: row status filter
-        characters: characters whose occurrence further limits included rows
+        characters: individual characters whose occurrence limits included rows
         first_index: first 1-indexed subtitle number to include, inclusive
         last_index: last 1-indexed subtitle number to include, inclusive
     Returns:
         Markdown audit report
     Raises:
-        ScinoephileError: if review JSON cannot be read or parsed
+        ScinoephileError: if review test cases do not match the subtitle series
     """
     try:
         input_series = {
@@ -87,17 +87,17 @@ def audit_reviews(
         # Match block-based notes against the complete inputs
         notes = {
             "traditional": _get_review_notes(
-                traditional_json_path,
+                traditional_review_cases,
                 series["traditional"],
                 series["traditional_reviewed"],
             ),
             "traditional_simplified": _get_review_notes(
-                traditional_simplified_json_path,
+                traditional_simplified_review_cases,
                 series["traditional_simplified"],
                 series["traditional_simplified_reviewed"],
             ),
             "simplified": _get_review_notes(
-                simplified_json_path,
+                simplified_review_cases,
                 series["simplified"],
                 series["simplified_reviewed"],
             ),
@@ -135,15 +135,12 @@ def audit_reviews(
             ),
         }
 
-        normalized_characters = tuple(
-            dict.fromkeys(character for value in characters for character in value)
-        )
         selected_indexes = _get_filtered_indexes(
             series=series,
             changes=changes,
             indexes=indexes,
             row_filter=row_filter,
-            characters=normalized_characters,
+            characters=characters,
         )
         return _format_markdown(
             series=series,
@@ -151,11 +148,11 @@ def audit_reviews(
             notes=notes,
             indexes=selected_indexes,
             row_filter=row_filter,
-            characters=normalized_characters,
+            characters=characters,
             first_index=first_index,
             last_index=last_index,
         )
-    except (OSError, UnicodeError, ValueError) as exc:
+    except ValueError as exc:
         raise ScinoephileError(f"Unable to audit subtitle reviews: {exc}") from exc
 
 
@@ -367,36 +364,44 @@ def _get_filtered_indexes(
 
 
 def _get_review_notes(
-    json_path: Path | None,
+    review_cases: Sequence[TestCase],
     original: Sequence[str],
     reviewed: Sequence[str],
 ) -> dict[int, tuple[str, ...]]:
-    """Load review notes and match their blocks to subtitle text.
+    """Match review test-case notes to subtitle text.
 
     Arguments:
-        json_path: optional review JSON path
+        review_cases: deserialized review test cases
         original: original subtitle text
         reviewed: reviewed subtitle text
     Returns:
         review notes keyed by zero-based subtitle index
     Raises:
-        ValueError: if review JSON has an invalid or mismatched structure
+        ValueError: if a review test case does not match the subtitles
     """
-    if json_path is None:
-        return {}
-
-    data: object = json.loads(json_path.read_text(encoding="utf-8-sig"))
-    if not isinstance(data, list):
-        raise ValueError(f"Review JSON must contain a list: {json_path}")
-
     original_texts = list(original)
     reviewed_texts = list(reviewed)
     notes_by_index: dict[int, list[str]] = {}
-    for case_index, raw_case in enumerate(data, 1):
-        review_case = _parse_review_case(raw_case, case_index, json_path)
-        if review_case is None:
+    for case_index, review_case in enumerate(review_cases, 1):
+        answer = review_case.answer
+        if answer is None:
             continue
-        query_texts, revised_texts, note_fields = review_case
+        query_fields = cast(dict[str, str], review_case.query.model_dump())
+        answer_fields = cast(dict[str, str], answer.model_dump())
+        query_texts = [
+            query_fields[f"subtitle_{local_index}"]
+            for local_index in range(1, len(query_fields) + 1)
+        ]
+        revised_texts: list[str] = []
+        note_fields: dict[int, str] = {}
+        for local_index, query_text in enumerate(query_texts, 1):
+            revised_text = answer_fields[f"revised_{local_index}"] or query_text
+            revised_texts.append(revised_text)
+            note = answer_fields[f"note_{local_index}"].strip()
+            if note:
+                note_fields[local_index] = note
+        if not note_fields:
+            continue
 
         candidate_starts = [
             start
@@ -405,8 +410,7 @@ def _get_review_notes(
         ]
         if not candidate_starts:
             raise ValueError(
-                f"Review JSON item {case_index} does not match its SRT pair: "
-                f"{json_path}"
+                f"Review test case {case_index} does not match its subtitle pair"
             )
         matched_note_fields: set[int] = set()
         for start in candidate_starts:
@@ -427,83 +431,8 @@ def _get_review_notes(
                 f"note_{local_index}" for local_index in unmatched_note_fields
             )
             raise ValueError(
-                f"Review JSON item {case_index} fields {formatted_fields} do not "
-                f"match reviewed SRT text: {json_path}"
+                f"Review test case {case_index} fields {formatted_fields} do not "
+                "match reviewed subtitle text"
             )
 
     return {index: tuple(notes) for index, notes in sorted(notes_by_index.items())}
-
-
-def _parse_review_case(
-    raw_case: object,
-    case_index: int,
-    json_path: Path,
-) -> tuple[list[str], list[str], dict[int, str]] | None:
-    """Parse one block-based review JSON item.
-
-    Arguments:
-        raw_case: unchecked JSON item
-        case_index: one-based JSON item index
-        json_path: review JSON path for error messages
-    Returns:
-        query texts, revised texts, and nonempty notes, or None when there are no
-        notes
-    Raises:
-        ValueError: if the JSON item has an invalid review structure
-    """
-    if not isinstance(raw_case, dict):
-        raise ValueError(
-            f"Review JSON item {case_index} must be an object: {json_path}"
-        )
-    raw_query = raw_case.get("query")
-    raw_answer = raw_case.get("answer", {})
-    if not isinstance(raw_query, dict) or not isinstance(raw_answer, dict):
-        raise ValueError(
-            f"Review JSON item {case_index} must contain query and answer objects: "
-            f"{json_path}"
-        )
-
-    note_fields = {
-        int(key[5:]): value.strip()
-        for key, value in raw_answer.items()
-        if isinstance(key, str)
-        and key.startswith("note_")
-        and key[5:].isdigit()
-        and isinstance(value, str)
-        and value.strip()
-    }
-    if not note_fields:
-        return None
-
-    query_texts: list[str] = []
-    revised_texts: list[str] = []
-    for local_index in range(1, len(raw_query) + 1):
-        query_text = raw_query.get(f"subtitle_{local_index}")
-        if not isinstance(query_text, str):
-            raise ValueError(
-                f"Review JSON item {case_index} has nonsequential subtitle fields: "
-                f"{json_path}"
-            )
-        revised_text = raw_answer.get(f"revised_{local_index}", query_text)
-        if not isinstance(revised_text, str):
-            raise ValueError(
-                f"Review JSON item {case_index} has an invalid revised field: "
-                f"{json_path}"
-            )
-        if revised_text == "":
-            revised_text = query_text
-        query_texts.append(query_text)
-        revised_texts.append(revised_text)
-
-    for local_index in note_fields:
-        if local_index > len(query_texts):
-            raise ValueError(
-                f"Review JSON item {case_index} has a note without a matching "
-                f"subtitle: {json_path}"
-            )
-        if revised_texts[local_index - 1] == query_texts[local_index - 1]:
-            raise ValueError(
-                f"Review JSON item {case_index} has a note without a matching "
-                f"revision: {json_path}"
-            )
-    return query_texts, revised_texts, note_fields

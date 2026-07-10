@@ -20,6 +20,10 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.llms import TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converter
+from scinoephile.llms.review import ReviewManager
 
 __all__ = ["AuditCli"]
 
@@ -63,11 +67,13 @@ AUDIT_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         (
             "further limit rows to those containing any listed character in any "
-            "input; values may be separated or combined (Yue examples: 些 番 是 着 "
-            "喇啦啰 这那; Zho examples: 著 着 甚 什)"
+            "input; values may be separated or combined, and simplified and "
+            "traditional variants are included automatically (Yue examples: 些 番 "
+            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
         ): (
-            "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入"
-            "（粤语示例：些 番 是 着 喇啦啰 这那；中文示例：著 着 甚 什）"
+            "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入，"
+            "并自动包含简繁体变体（粤语示例：些 番 是 着 喇啦啰 这那；中文"
+            "示例：著 着 甚 什）"
         ),
         "Markdown outfile path (default: stdout)": (
             "Markdown 输出文件路径（默认：标准输出）"
@@ -112,11 +118,13 @@ AUDIT_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         (
             "further limit rows to those containing any listed character in any "
-            "input; values may be separated or combined (Yue examples: 些 番 是 着 "
-            "喇啦啰 这那; Zho examples: 著 着 甚 什)"
+            "input; values may be separated or combined, and simplified and "
+            "traditional variants are included automatically (Yue examples: 些 番 "
+            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
         ): (
-            "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入"
-            "（粵語範例：些 番 是 着 喇啦啰 这那；中文範例：著 着 甚 什）"
+            "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入，"
+            "並自動包含簡繁體變體（粵語範例：些 番 是 着 喇啦啰 这那；中文"
+            "範例：著 着 甚 什）"
         ),
         "Markdown outfile path (default: stdout)": (
             "Markdown 輸出檔路徑（預設：標準輸出）"
@@ -240,8 +248,9 @@ class AuditCli(ScinoephileCliBase):
             nargs="+",
             help=(
                 "further limit rows to those containing any listed character in any "
-                "input; values may be separated or combined (Yue examples: 些 番 是 "
-                "着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
+                "input; values may be separated or combined, and simplified and "
+                "traditional variants are included automatically (Yue examples: 些 "
+                "番 是 着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
             ),
         )
 
@@ -285,6 +294,16 @@ class AuditCli(ScinoephileCliBase):
         ):
             parser.error("--first-index must be less than or equal to --last-index")
 
+        # Resolve character variants
+        provided_characters = set("".join(characters))
+        character_variants = provided_characters.copy()
+        s2t_converter = get_zho_converter(OpenCCConfig.s2t)
+        t2s_converter = get_zho_converter(OpenCCConfig.t2s)
+        for character in provided_characters:
+            character_variants.update(s2t_converter.convert(character))
+            character_variants.update(t2s_converter.convert(character))
+        characters = tuple(sorted(character_variants))
+
         # Read inputs
         simplified = read_series(parser, simplified_path)
         simplified_reviewed = read_series(parser, simplified_reviewed_path)
@@ -306,6 +325,25 @@ class AuditCli(ScinoephileCliBase):
         if len(set(map(len, input_series))) != 1:
             parser.error("Subtitle inputs must contain the same number of subtitles")
 
+        review_json_paths = {
+            "simplified": simplified_json_path,
+            "traditional": traditional_json_path,
+            "traditional_simplified": traditional_simplified_json_path,
+        }
+        review_cases: dict[str, Sequence[TestCase]] = {}
+        try:
+            for name, json_path in review_json_paths.items():
+                if json_path is None:
+                    review_cases[name] = ()
+                    continue
+                review_cases[name] = load_test_cases_from_json(
+                    json_path,
+                    ReviewManager,
+                    ReviewManager.prompt_cls,
+                )
+        except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
+            parser.error(f"Unable to load review JSON: {exc}")
+
         # Perform operation
         try:
             report = audit_reviews(
@@ -315,9 +353,11 @@ class AuditCli(ScinoephileCliBase):
                 traditional_reviewed=traditional_reviewed,
                 traditional_simplified=traditional_simplified,
                 traditional_simplified_reviewed=traditional_simplified_reviewed,
-                simplified_json_path=simplified_json_path,
-                traditional_json_path=traditional_json_path,
-                traditional_simplified_json_path=traditional_simplified_json_path,
+                simplified_review_cases=review_cases["simplified"],
+                traditional_review_cases=review_cases["traditional"],
+                traditional_simplified_review_cases=(
+                    review_cases["traditional_simplified"]
+                ),
                 row_filter=row_filter,
                 characters=characters,
                 first_index=first_index,

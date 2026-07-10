@@ -9,7 +9,10 @@ from pathlib import Path
 from typing import TypedDict
 
 from scinoephile.analysis.review_audit import ReviewAuditFilter, audit_reviews
+from scinoephile.core.llms import TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.llms.review import ReviewManager
 
 
 class _AuditInputs(TypedDict):
@@ -33,14 +36,14 @@ class _AuditInputs(TypedDict):
     simplified_reviewed: Series
     """Simplified reviewed subtitles."""
 
-    traditional_json_path: Path
-    """Traditional review JSON path."""
+    traditional_review_cases: list[TestCase]
+    """Traditional review test cases."""
 
-    traditional_simplified_json_path: Path
-    """Traditional simplification review JSON path."""
+    traditional_simplified_review_cases: list[TestCase]
+    """Traditional simplification review test cases."""
 
-    simplified_json_path: Path
-    """Simplified review JSON path."""
+    simplified_review_cases: list[TestCase]
+    """Simplified review test cases."""
 
 
 def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
@@ -79,7 +82,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     report = audit_reviews(
         **inputs,
         row_filter=ReviewAuditFilter.all,
-        characters=("著丙",),
+        characters=("著", "丙"),
     )
     assert "- character filter: 著, 丙" in report
     assert "- table rows: 1" in report
@@ -121,7 +124,7 @@ def test_audit_reviews_reuses_deduplicated_json_note(tmp_path: Path):
         traditional_simplified_reviewed=reviewed,
         simplified=reviewed,
         simplified_reviewed=reviewed,
-        traditional_json_path=json_path,
+        traditional_review_cases=_load_review_cases(json_path),
     )
 
     assert report.count("Traditional review: 修正。") == 2
@@ -185,9 +188,11 @@ def _get_audit_inputs(tmp_path: Path) -> _AuditInputs:
         traditional_simplified_reviewed=series["traditional_simplified_reviewed"],
         simplified=series["simplified"],
         simplified_reviewed=series["simplified_reviewed"],
-        traditional_json_path=traditional_json_path,
-        traditional_simplified_json_path=traditional_simplified_json_path,
-        simplified_json_path=simplified_json_path,
+        traditional_review_cases=_load_review_cases(traditional_json_path),
+        traditional_simplified_review_cases=_load_review_cases(
+            traditional_simplified_json_path
+        ),
+        simplified_review_cases=_load_review_cases(simplified_json_path),
     )
 
 
@@ -200,6 +205,21 @@ def _get_series(texts: tuple[str, ...]) -> Series:
         subtitle series
     """
     return Series(events=[Subtitle(text=text) for text in texts])
+
+
+def _load_review_cases(json_path: Path) -> list[TestCase]:
+    """Load review test cases from a JSON fixture.
+
+    Arguments:
+        json_path: review JSON path
+    Returns:
+        deserialized review test cases
+    """
+    return load_test_cases_from_json(
+        json_path,
+        ReviewManager,
+        ReviewManager.prompt_cls,
+    )
 
 
 def _write_review_json(
