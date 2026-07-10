@@ -96,19 +96,16 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--source-dictionary-like-data-path",
-            default=None,
             type=input_file_arg(),
             help="path to Unihan_DictionaryLikeData.txt (default: bundled local data)",
         )
         arg_groups["input arguments"].add_argument(
             "--source-readings-path",
-            default=None,
             type=input_file_arg(),
             help="path to Unihan_Readings.txt (default: bundled local data)",
         )
         arg_groups["input arguments"].add_argument(
             "--source-variants-path",
-            default=None,
             type=input_file_arg(),
             help="path to Unihan_Variants.txt (default: bundled local data)",
         )

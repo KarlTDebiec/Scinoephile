@@ -173,7 +173,6 @@ class MultiStackCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
             type=output_file_arg(exist_ok=True),
             help="stacked subtitle outfile path (default: stdout)",
