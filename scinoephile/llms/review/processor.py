@@ -51,10 +51,7 @@ class ReviewProcessor(Processor):
                 break
 
             # Query LLM
-            test_case_cls = ReviewManager.get_test_case_cls(
-                len(block),
-                self.prompt,
-            )
+            test_case_cls = ReviewManager.get_test_case_cls(len(block), self.prompt)
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for idx, subtitle in enumerate(block.events):

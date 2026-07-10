@@ -51,10 +51,7 @@ class Manager(ABC):
 
     @classmethod
     @cache
-    def get_test_case_cls[TTestCase: TestCase](
-        cls,
-        prompt: Prompt,
-    ) -> type[TTestCase]:
+    def get_test_case_cls[TTestCase: TestCase](cls, prompt: Prompt) -> type[TTestCase]:
         """Get concrete test case class with provided configuration.
 
         Arguments:

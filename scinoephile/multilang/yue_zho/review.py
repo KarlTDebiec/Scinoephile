@@ -9,10 +9,7 @@ from functools import partial
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
-from scinoephile.lang.zho.script.conversion import (
-    OpenCCConfig,
-    get_zho_text_converted,
-)
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.guided_review import GuidedReviewPrompt
 from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
 

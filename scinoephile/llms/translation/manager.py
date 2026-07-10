@@ -161,7 +161,4 @@ class TranslationManager(Manager):
             equivalently sized test-case class
         """
         size: int = getattr(test_case_cls, "size")
-        return cls.get_test_case_cls(
-            size=size,
-            prompt=cast(TranslationPrompt, prompt),
-        )
+        return cls.get_test_case_cls(size=size, prompt=cast(TranslationPrompt, prompt))

@@ -9,10 +9,7 @@ from functools import partial
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
-from scinoephile.lang.zho.script.conversion import (
-    OpenCCConfig,
-    get_zho_text_converted,
-)
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.delineation import DelineationPrompt
 
 __all__ = [

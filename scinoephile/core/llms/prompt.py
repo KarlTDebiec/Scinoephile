@@ -110,11 +110,7 @@ class Prompt:
         language_name = self.language.tag.replace("-", "_")
         return f"{type(self).__name__}_{language_name}_{digest}"
 
-    def transformed(
-        self,
-        language: Language,
-        transform: Callable[[str], str],
-    ) -> Self:
+    def transformed(self, language: Language, transform: Callable[[str], str]) -> Self:
         """Build a prompt with all string fields transformed.
 
         Arguments:

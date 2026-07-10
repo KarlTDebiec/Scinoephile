@@ -21,9 +21,7 @@ logger = getLogger(__name__)
 """Module logger."""
 
 
-def get_dictionary_tools(
-    prompt: DictionaryToolPrompt,
-) -> ToolBox:
+def get_dictionary_tools(prompt: DictionaryToolPrompt) -> ToolBox:
     """Get dictionary tool definitions and handlers for LLM providers.
 
     Arguments:

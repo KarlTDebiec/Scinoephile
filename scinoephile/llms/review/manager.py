@@ -164,10 +164,7 @@ class ReviewManager(Manager):
             equivalently sized test-case class
         """
         size: int = getattr(test_case_cls, "size")
-        return cls.get_test_case_cls(
-            size=size,
-            prompt=cast(ReviewPrompt, prompt),
-        )
+        return cls.get_test_case_cls(size=size, prompt=cast(ReviewPrompt, prompt))
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:

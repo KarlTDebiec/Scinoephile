@@ -14,10 +14,7 @@ from scinoephile.core.text import (
     remove_punc_and_whitespace,
 )
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
-from scinoephile.lang.zho.script.conversion import (
-    OpenCCConfig,
-    get_zho_text_converted,
-)
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 
 __all__ = [

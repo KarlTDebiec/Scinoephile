@@ -27,10 +27,7 @@ class OcrFusionManager(Manager):
 
     @classmethod
     @cache
-    def get_answer_cls[TAnswer: Answer](
-        cls,
-        prompt: OcrFusionPrompt,
-    ) -> type[TAnswer]:
+    def get_answer_cls[TAnswer: Answer](cls, prompt: OcrFusionPrompt) -> type[TAnswer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
@@ -62,10 +59,7 @@ class OcrFusionManager(Manager):
 
     @classmethod
     @cache
-    def get_query_cls[TQuery: Query](
-        cls,
-        prompt: OcrFusionPrompt,
-    ) -> type[TQuery]:
+    def get_query_cls[TQuery: Query](cls, prompt: OcrFusionPrompt) -> type[TQuery]:
         """Get concrete query class with provided configuration.
 
         Arguments:

@@ -212,12 +212,7 @@ def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
     provider = Mock(spec=LLMProvider)
     provider.chat_completion.return_value = '{"output":"done"}'
     monkeypatch.setattr(_TestCase, "get_auto_verified", lambda self: True)
-    queryer = Queryer(
-        _PROMPT,
-        provider=provider,
-        max_attempts=1,
-        auto_verify=True,
-    )
+    queryer = Queryer(_PROMPT, provider=provider, max_attempts=1, auto_verify=True)
 
     test_case = queryer(_TestCase(query=_Query(text="input")))
 

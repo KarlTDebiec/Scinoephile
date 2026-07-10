@@ -22,10 +22,7 @@ def test_prompt_values_are_hashable_and_content_addressed():
 
 def test_prompt_transformation_preserves_type_and_changes_language():
     """Transforming a prompt should return another value of the same operation type."""
-    prompt = ReviewPrompt(
-        language=Language.eng,
-        base_system_prompt="Review subtitles.",
-    )
+    prompt = ReviewPrompt(language=Language.eng, base_system_prompt="Review subtitles.")
 
     transformed = prompt.transformed(Language.zho_hant, str.upper)
 

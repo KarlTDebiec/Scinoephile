@@ -115,11 +115,7 @@ def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
     low_metadata = get_test_case(difficulty=1)
-    high_metadata = get_test_case(
-        difficulty=3,
-        few_shot=True,
-        verified=True,
-    )
+    high_metadata = get_test_case(difficulty=3, few_shot=True, verified=True)
     assert low_metadata.test_case_id == high_metadata.test_case_id
 
     store.sync_source_paths(

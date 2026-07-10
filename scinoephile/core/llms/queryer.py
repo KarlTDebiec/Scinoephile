@@ -29,11 +29,7 @@ __all__ = ["Queryer"]
 logger = getLogger(__name__)
 
 
-class Queryer[
-    TQuery: Query,
-    TAnswer: Answer,
-    TTestCase: TestCase,
-](ABC):
+class Queryer[TQuery: Query, TAnswer: Answer, TTestCase: TestCase](ABC):
     """ABC for LLM queryers."""
 
     def __init__(
