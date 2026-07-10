@@ -307,10 +307,20 @@ def test_sync_loads_canonical_repository_data(tmp_path: Path):
 
 def test_sync_round_trips_unbounded_lists(tmp_path: Path):
     """JSON list payloads should not have a persistence width limit."""
-    source_path = (
-        common.package_root.parent
-        / "test/data/kob/output/yue-Hans_transcribe/test_simplified/"
-        "multilang/yue_zho/transcription/punctuation/mps.json"
+    source_path = tmp_path / "source.json"
+    source_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "one": [f"line {idx}" for idx in range(36)],
+                        "two": "reference",
+                    },
+                    "answer": {"output": "output"},
+                }
+            ]
+        ),
+        encoding="utf-8",
     )
     database_path = tmp_path / "test_cases.sqlite"
 
