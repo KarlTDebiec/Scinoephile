@@ -78,12 +78,12 @@ def test_normalization_makes_prompt_field_aliases_share_identity():
 
     localized_persisted = PersistedTestCase.from_test_case(
         localized,
-        operation="review",
+        operation_spec=REVIEW_OPERATION_SPEC,
         base_test_case_cls=base_cls,
     )
     alternative_persisted = PersistedTestCase.from_test_case(
         alternative,
-        operation="review",
+        operation_spec=REVIEW_OPERATION_SPEC,
         base_test_case_cls=base_cls,
     )
 
@@ -165,7 +165,7 @@ def test_sync_inserts_and_removes_provenance_by_source_path(
     deleted_id = get_test_case_id(
         first_data[1]["query"],
         first_data[1]["answer"],
-        operation="translation",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
     )
 
     source_path.write_text(json.dumps(first_data[:1]), encoding="utf-8")
@@ -320,7 +320,7 @@ def test_sync_normalizes_localized_repository_data(tmp_path: Path):
     )
     loaded = TestCaseSqliteStore(database_path).get_test_cases_by_source_path(
         str(source_path.resolve()),
-        operation="review",
+        operation_spec=REVIEW_OPERATION_SPEC,
     )
 
     assert len(loaded) == len(raw_data)

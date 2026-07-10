@@ -7,7 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 
 from .id import get_test_case_id
 
@@ -40,14 +40,14 @@ class PersistedTestCase:
         cls,
         test_case: TestCase,
         *,
-        operation: str,
+        operation_spec: OperationSpec,
         base_test_case_cls: type[TestCase],
     ) -> PersistedTestCase:
         """Convert a loaded test case to its persisted representation.
 
         Arguments:
             test_case: loaded test case
-            operation: operation to which the test case belongs
+            operation_spec: operation to which the test case belongs
             base_test_case_cls: equivalent class using base-prompt field names
         Returns:
             persisted test case
@@ -67,8 +67,12 @@ class PersistedTestCase:
             "answer",
         )
         return cls(
-            test_case_id=get_test_case_id(query, answer, operation=operation),
-            operation=operation,
+            test_case_id=get_test_case_id(
+                query,
+                answer,
+                operation_spec=operation_spec,
+            ),
+            operation=operation_spec.operation,
             difficulty=test_case.difficulty,
             prompt=test_case.prompt,
             verified=test_case.verified,

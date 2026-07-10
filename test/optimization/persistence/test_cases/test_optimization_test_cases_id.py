@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from scinoephile.llms.review import REVIEW_OPERATION_SPEC
+from scinoephile.llms.translation import TRANSLATION_OPERATION_SPEC
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 
@@ -15,11 +17,11 @@ def test_get_test_case_id_stable_for_same_payload():
     assert get_test_case_id(
         query,
         answer,
-        operation="translation",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
     ) == get_test_case_id(
         query,
         answer,
-        operation="translation",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
     )
 
 
@@ -30,11 +32,11 @@ def test_get_test_case_id_changes_with_answer():
     assert get_test_case_id(
         query,
         {"output_1": "b"},
-        operation="translation",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
     ) != get_test_case_id(
         query,
         {"output_1": "c"},
-        operation="translation",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
     )
 
 
@@ -46,9 +48,9 @@ def test_get_test_case_id_changes_with_operation():
     assert get_test_case_id(
         query,
         answer,
-        operation="translation",
+        operation_spec=TRANSLATION_OPERATION_SPEC,
     ) != get_test_case_id(
         query,
         answer,
-        operation="review",
+        operation_spec=REVIEW_OPERATION_SPEC,
     )

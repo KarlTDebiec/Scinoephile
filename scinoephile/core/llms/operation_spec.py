@@ -22,3 +22,16 @@ class OperationSpec:
     """Manager class used to load and validate cases for this operation."""
     prompt_cls: type[Prompt]
     """Base prompt class defining the operation's persisted field names."""
+
+    def __post_init__(self):
+        """Validate the operation name.
+
+        Raises:
+            ValueError: if the operation name is blank or has surrounding whitespace
+        """
+        if not self.operation.strip():
+            raise ValueError("Operation must not be empty.")
+        if self.operation != self.operation.strip():
+            raise ValueError(
+                "Operation must not contain leading or trailing whitespace."
+            )

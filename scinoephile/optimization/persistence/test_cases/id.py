@@ -8,6 +8,8 @@ import hashlib
 import json
 from collections.abc import Mapping
 
+from scinoephile.core.llms import OperationSpec
+
 __all__ = ["get_test_case_id"]
 
 
@@ -15,25 +17,21 @@ def get_test_case_id(
     query: Mapping[str, object],
     answer: Mapping[str, object],
     *,
-    operation: str,
+    operation_spec: OperationSpec,
 ) -> str:
     """Compute canonical identifier for a test case.
 
     Arguments:
         query: query payload
         answer: answer payload
-        operation: operation to which the test case belongs
+        operation_spec: operation to which the test case belongs
     Returns:
         deterministic hexadecimal identifier
-    Raises:
-        ValueError: if operation is empty
     """
-    if not operation.strip():
-        raise ValueError("Operation must not be empty.")
     payload_json = json.dumps(
         {
             "answer": dict(answer),
-            "operation": operation,
+            "operation": operation_spec.operation,
             "query": dict(query),
         },
         ensure_ascii=False,

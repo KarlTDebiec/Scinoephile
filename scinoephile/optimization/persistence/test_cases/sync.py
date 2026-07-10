@@ -83,6 +83,7 @@ def sync_test_cases_from_json_paths(
     store = TestCaseSqliteStore(database_path)
     insert_ids, delete_ids = store.sync_source_paths(
         source_test_cases,
+        operation_spec=operation_spec,
         dry_run=dry_run,
     )
     return SyncReport(
@@ -176,6 +177,6 @@ def _normalize_test_case(
     )
     return PersistedTestCase.from_test_case(
         test_case,
-        operation=operation_spec.operation,
+        operation_spec=operation_spec,
         base_test_case_cls=base_test_case_cls,
     )

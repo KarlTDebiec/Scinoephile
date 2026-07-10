@@ -32,6 +32,7 @@ from sqlalchemy.pool import NullPool
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.llms import OperationSpec
 
 from .id import get_test_case_id
 from .persisted_test_case import PersistedTestCase
@@ -160,13 +161,13 @@ class TestCaseSqliteStore:
         self,
         source_path: str,
         *,
-        operation: str | None = None,
+        operation_spec: OperationSpec | None = None,
     ) -> list[PersistedTestCase]:
         """Fetch test cases associated with a source path.
 
         Arguments:
             source_path: original JSON path recorded during import
-            operation: optional operation filter
+            operation_spec: optional operation filter
         Returns:
             persisted test cases
         """
@@ -182,8 +183,10 @@ class TestCaseSqliteStore:
                 .join(self._test_case_sources)
                 .where(self._test_case_sources.c.source_path == source_path)
             )
-            if operation is not None:
-                statement = statement.where(self._test_cases.c.operation == operation)
+            if operation_spec is not None:
+                statement = statement.where(
+                    self._test_cases.c.operation == operation_spec.operation
+                )
             rows = (
                 connection.execute(statement.order_by(self._test_cases.c.test_case_id))
                 .mappings()
@@ -195,6 +198,7 @@ class TestCaseSqliteStore:
         self,
         source_test_cases: Mapping[str, Iterable[PersistedTestCase]],
         *,
+        operation_spec: OperationSpec,
         dry_run: bool,
     ) -> tuple[set[str], set[str]]:
         """Synchronize provenance links for one or more source paths.
@@ -205,6 +209,7 @@ class TestCaseSqliteStore:
 
         Arguments:
             source_test_cases: desired test cases keyed by canonical source path
+            operation_spec: operation synchronized by this import
             dry_run: if True, compute changes without writing
         Returns:
             test case IDs whose source association was inserted or removed
@@ -214,10 +219,15 @@ class TestCaseSqliteStore:
         for source_path in sorted(source_test_cases):
             desired_by_id: dict[str, PersistedTestCase] = {}
             for test_case in source_test_cases[source_path]:
+                if test_case.operation != operation_spec.operation:
+                    raise ScinoephileError(
+                        f"Test case operation {test_case.operation} does not match "
+                        f"synchronized operation {operation_spec.operation}."
+                    )
                 expected_id = get_test_case_id(
                     test_case.query,
                     test_case.answer,
-                    operation=test_case.operation,
+                    operation_spec=operation_spec,
                 )
                 if test_case.test_case_id != expected_id:
                     raise ScinoephileError(
@@ -255,6 +265,7 @@ class TestCaseSqliteStore:
                     connection,
                     desired_by_source,
                     canonical_by_id,
+                    operation=operation_spec.operation,
                     dry_run=True,
                 )
 
@@ -264,6 +275,7 @@ class TestCaseSqliteStore:
                 connection,
                 desired_by_source,
                 canonical_by_id,
+                operation=operation_spec.operation,
                 dry_run=False,
             )
         logger.info(f"Synchronized {len(desired_by_source)} test-case source paths")
@@ -392,6 +404,7 @@ class TestCaseSqliteStore:
         desired_by_source: Mapping[str, Mapping[str, PersistedTestCase]],
         canonical_by_id: Mapping[str, PersistedTestCase],
         *,
+        operation: str,
         dry_run: bool,
     ) -> tuple[set[str], set[str]]:
         """Synchronize source paths using an existing connection.
@@ -400,6 +413,7 @@ class TestCaseSqliteStore:
             connection: SQLAlchemy connection
             desired_by_source: desired cases keyed by source path and test case ID
             canonical_by_id: new test cases with aggregated initial metadata
+            operation: operation whose source associations are synchronized
             dry_run: if True, compute changes without writing
         Returns:
             test case IDs whose source association was inserted or removed
@@ -410,9 +424,10 @@ class TestCaseSqliteStore:
             desired_ids = set(desired_by_source[source_path])
             existing_ids = set(
                 connection.execute(
-                    select(self._test_case_sources.c.test_case_id).where(
-                        self._test_case_sources.c.source_path == source_path
-                    )
+                    select(self._test_case_sources.c.test_case_id)
+                    .join(self._test_cases)
+                    .where(self._test_case_sources.c.source_path == source_path)
+                    .where(self._test_cases.c.operation == operation)
                 ).scalars()
             )
             insert_ids = desired_ids - existing_ids
