@@ -80,6 +80,8 @@ The CLI is organized as a tree of `argparse` subparsers. The complete command
 surface (commands and subcommands) is:
 
 - `scinoephile`
+  - `audit`: audit review changes and final discrepancies across simplified and
+    traditional subtitle paths
   - `dictionary`
     - `build`
       - `cuhk`: build CUHK dictionary cache
