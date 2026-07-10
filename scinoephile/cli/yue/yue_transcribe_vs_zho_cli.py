@@ -164,7 +164,6 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "--stream-index",
             type=int_arg(min_value=0),
-            default=None,
             help=(
                 "media stream index of audio stream in media input "
                 "(default: first audio stream)"
@@ -222,7 +221,6 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
             type=output_file_arg(exist_ok=True),
             help="Written Cantonese subtitle outfile path (default: stdout)",

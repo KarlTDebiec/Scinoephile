@@ -5,7 +5,7 @@
 This module may import from: common, core
 
 Hierarchy within module (lower may import from higher):
-* line_alignment
+* line_alignment / review_audit
 * diff
 * character_error_rate
 """

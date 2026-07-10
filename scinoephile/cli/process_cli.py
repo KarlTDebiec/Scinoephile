@@ -131,7 +131,6 @@ class ProcessCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
-            default=None,
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
             help="subtitle language tag (detected from infile if omitted)",
@@ -166,7 +165,6 @@ class ProcessCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
             type=output_file_arg(exist_ok=True),
             help="subtitle outfile path (default: stdout)",
