@@ -219,7 +219,7 @@ def _load_review_cases(json_path: Path) -> list[TestCase]:
     return load_test_cases_from_json(
         json_path,
         ReviewManager,
-        ReviewManager.prompt_cls,
+        ReviewManager.base_prompt,
     )
 
 
