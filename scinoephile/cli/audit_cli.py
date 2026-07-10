@@ -295,14 +295,13 @@ class AuditCli(ScinoephileCliBase):
             parser.error("--first-index must be less than or equal to --last-index")
 
         # Resolve character variants
-        provided_characters = set("".join(characters))
-        character_variants = provided_characters.copy()
+        chars = "".join(characters)
+        char_variants = set(chars)
         s2t_converter = get_zho_converter(OpenCCConfig.s2t)
         t2s_converter = get_zho_converter(OpenCCConfig.t2s)
-        for character in provided_characters:
-            character_variants.update(s2t_converter.convert(character))
-            character_variants.update(t2s_converter.convert(character))
-        characters = tuple(sorted(character_variants))
+        char_variants.update(s2t_converter.convert(chars))
+        char_variants.update(t2s_converter.convert(chars))
+        characters = tuple(sorted(char_variants))
 
         # Read inputs
         simplified = read_series(parser, simplified_path)

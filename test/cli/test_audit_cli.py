@@ -49,9 +49,9 @@ def test_audit_cli_stdout_outfile_and_validation(
     assert "- subtitle range: 1-indexed numbers 1 through 1" in stdout
     assert "- table rows: 1" in stdout
 
-    run_cli_with_args(AuditCli, f"{arguments} --characters 错")
+    run_cli_with_args(AuditCli, f"{arguments} --characters 错这")
     stdout = capsys.readouterr().out
-    assert "- character filter: 錯, 错" in stdout
+    assert "- character filter: 这, 這, 錯, 错" in stdout
     assert "- table rows: 1" in stdout
 
     review_json_path = tmp_path / "review.json"

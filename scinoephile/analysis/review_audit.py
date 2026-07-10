@@ -70,21 +70,21 @@ def audit_reviews(
     Raises:
         ScinoephileError: if review test cases do not match the subtitle series
     """
-    try:
-        input_series = {
-            "traditional": traditional,
-            "traditional_reviewed": traditional_reviewed,
-            "traditional_simplified": traditional_simplified,
-            "traditional_simplified_reviewed": traditional_simplified_reviewed,
-            "simplified": simplified,
-            "simplified_reviewed": simplified_reviewed,
-        }
-        series = {
-            name: tuple(subtitle.text_with_newline for subtitle in subtitle_series)
-            for name, subtitle_series in input_series.items()
-        }
+    input_series = {
+        "traditional": traditional,
+        "traditional_reviewed": traditional_reviewed,
+        "traditional_simplified": traditional_simplified,
+        "traditional_simplified_reviewed": traditional_simplified_reviewed,
+        "simplified": simplified,
+        "simplified_reviewed": simplified_reviewed,
+    }
+    series = {
+        name: tuple(subtitle.text_with_newline for subtitle in subtitle_series)
+        for name, subtitle_series in input_series.items()
+    }
 
-        # Match block-based notes against the complete inputs
+    # Match block-based notes against the complete inputs
+    try:
         notes = {
             "traditional": _get_review_notes(
                 traditional_review_cases,
@@ -102,58 +102,58 @@ def audit_reviews(
                 series["simplified_reviewed"],
             ),
         }
-
-        # Select the requested zero-based subtitle indexes
-        start_index = 0
-        if first_index is not None:
-            start_index = first_index - 1
-        stop_index = len(series["traditional"])
-        if last_index is not None:
-            stop_index = min(last_index, stop_index)
-        indexes = range(start_index, stop_index)
-
-        changes = {
-            "traditional": _get_changed_indexes(
-                series["traditional"],
-                series["traditional_reviewed"],
-                indexes,
-            ),
-            "traditional_simplified": _get_changed_indexes(
-                series["traditional_simplified"],
-                series["traditional_simplified_reviewed"],
-                indexes,
-            ),
-            "simplified": _get_changed_indexes(
-                series["simplified"],
-                series["simplified_reviewed"],
-                indexes,
-            ),
-            "final": _get_changed_indexes(
-                series["simplified_reviewed"],
-                series["traditional_simplified_reviewed"],
-                indexes,
-            ),
-        }
-
-        selected_indexes = _get_filtered_indexes(
-            series=series,
-            changes=changes,
-            indexes=indexes,
-            row_filter=row_filter,
-            characters=characters,
-        )
-        return _format_markdown(
-            series=series,
-            changes=changes,
-            notes=notes,
-            indexes=selected_indexes,
-            row_filter=row_filter,
-            characters=characters,
-            first_index=first_index,
-            last_index=last_index,
-        )
     except ValueError as exc:
         raise ScinoephileError(f"Unable to audit subtitle reviews: {exc}") from exc
+
+    # Select the requested zero-based subtitle indexes
+    start_index = 0
+    if first_index is not None:
+        start_index = first_index - 1
+    stop_index = len(series["traditional"])
+    if last_index is not None:
+        stop_index = min(last_index, stop_index)
+    indexes = range(start_index, stop_index)
+
+    changes = {
+        "traditional": _get_changed_indexes(
+            series["traditional"],
+            series["traditional_reviewed"],
+            indexes,
+        ),
+        "traditional_simplified": _get_changed_indexes(
+            series["traditional_simplified"],
+            series["traditional_simplified_reviewed"],
+            indexes,
+        ),
+        "simplified": _get_changed_indexes(
+            series["simplified"],
+            series["simplified_reviewed"],
+            indexes,
+        ),
+        "final": _get_changed_indexes(
+            series["simplified_reviewed"],
+            series["traditional_simplified_reviewed"],
+            indexes,
+        ),
+    }
+
+    selected_indexes = _get_filtered_indexes(
+        series=series,
+        changes=changes,
+        indexes=indexes,
+        row_filter=row_filter,
+        characters=characters,
+    )
+    return _format_markdown(
+        series=series,
+        changes=changes,
+        notes=notes,
+        indexes=selected_indexes,
+        row_filter=row_filter,
+        characters=characters,
+        first_index=first_index,
+        last_index=last_index,
+    )
 
 
 def _escape_cell(value: str) -> str:
@@ -199,47 +199,34 @@ def _format_markdown(
         ("Traditional simplification review", notes["traditional_simplified"]),
     )
     for index in indexes:
-        if index not in changes["final"]:
-            final_cell = series["simplified_reviewed"][index]
-        else:
-            final_cell = (
-                f"{series['simplified_reviewed'][index]}\n"
-                f"{series['traditional_simplified_reviewed'][index]}"
-            )
-
-        note_lines: list[str] = []
-        for label, review_notes in note_sources:
-            note_lines.extend(
-                f"{label}: {note}" for note in review_notes.get(index, ())
-            )
-
-        row_lines.append(
-            "| "
-            + " | ".join(
-                (
-                    _escape_cell(str(index + 1)),
-                    _escape_cell(
-                        _format_review_cell(
-                            index,
-                            changes["simplified"],
-                            series["simplified"],
-                            series["simplified_reviewed"],
-                        )
-                    ),
-                    _escape_cell(
-                        _format_review_cell(
-                            index,
-                            changes["traditional"],
-                            series["traditional"],
-                            series["traditional_reviewed"],
-                        )
-                    ),
-                    _escape_cell(final_cell),
-                    _escape_cell("\n".join(note_lines)),
-                )
-            )
-            + " |"
+        note_lines = [
+            f"{label}: {note}"
+            for label, review_notes in note_sources
+            for note in review_notes.get(index, ())
+        ]
+        cells = (
+            str(index + 1),
+            _format_review_cell(
+                index,
+                changes["simplified"],
+                series["simplified"],
+                series["simplified_reviewed"],
+            ),
+            _format_review_cell(
+                index,
+                changes["traditional"],
+                series["traditional"],
+                series["traditional_reviewed"],
+            ),
+            _format_review_cell(
+                index,
+                changes["final"],
+                series["simplified_reviewed"],
+                series["traditional_simplified_reviewed"],
+            ),
+            "\n".join(note_lines),
         )
+        row_lines.append(f"| {' | '.join(_escape_cell(cell) for cell in cells)} |")
 
     lines = [
         "# Review Audit",
@@ -365,8 +352,8 @@ def _get_filtered_indexes(
 
 def _get_review_notes(
     review_cases: Sequence[TestCase],
-    original: Sequence[str],
-    reviewed: Sequence[str],
+    original: tuple[str, ...],
+    reviewed: tuple[str, ...],
 ) -> dict[int, tuple[str, ...]]:
     """Match review test-case notes to subtitle text.
 
@@ -379,8 +366,6 @@ def _get_review_notes(
     Raises:
         ValueError: if a review test case does not match the subtitles
     """
-    original_texts = list(original)
-    reviewed_texts = list(reviewed)
     notes_by_index: dict[int, list[str]] = {}
     for case_index, review_case in enumerate(review_cases, 1):
         answer = review_case.answer
@@ -388,10 +373,10 @@ def _get_review_notes(
             continue
         query_fields = cast(dict[str, str], review_case.query.model_dump())
         answer_fields = cast(dict[str, str], answer.model_dump())
-        query_texts = [
+        query_texts = tuple(
             query_fields[f"subtitle_{local_index}"]
             for local_index in range(1, len(query_fields) + 1)
-        ]
+        )
         revised_texts: list[str] = []
         note_fields: dict[int, str] = {}
         for local_index, query_text in enumerate(query_texts, 1):
@@ -405,8 +390,8 @@ def _get_review_notes(
 
         candidate_starts = [
             start
-            for start in range(len(original_texts) - len(query_texts) + 1)
-            if original_texts[start : start + len(query_texts)] == query_texts
+            for start in range(len(original) - len(query_texts) + 1)
+            if original[start : start + len(query_texts)] == query_texts
         ]
         if not candidate_starts:
             raise ValueError(
@@ -415,17 +400,14 @@ def _get_review_notes(
         matched_note_fields: set[int] = set()
         for start in candidate_starts:
             for local_index, note in note_fields.items():
-                if (
-                    reviewed_texts[start + local_index - 1]
-                    != revised_texts[local_index - 1]
-                ):
+                if reviewed[start + local_index - 1] != revised_texts[local_index - 1]:
                     continue
                 index = start + local_index - 1
                 notes = notes_by_index.setdefault(index, [])
                 if note not in notes:
                     notes.append(note)
                 matched_note_fields.add(local_index)
-        unmatched_note_fields = sorted(set(note_fields) - matched_note_fields)
+        unmatched_note_fields = sorted(note_fields.keys() - matched_note_fields)
         if unmatched_note_fields:
             formatted_fields = ", ".join(
                 f"note_{local_index}" for local_index in unmatched_note_fields
@@ -435,4 +417,4 @@ def _get_review_notes(
                 "match reviewed subtitle text"
             )
 
-    return {index: tuple(notes) for index, notes in sorted(notes_by_index.items())}
+    return {index: tuple(notes) for index, notes in notes_by_index.items()}
