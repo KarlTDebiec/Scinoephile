@@ -131,8 +131,8 @@ def test_audit_reviews_reuses_deduplicated_json_note(tmp_path: Path):
     assert report.count("Traditional review: 修正。") == 2
 
 
-def test_audit_reviews_rejects_misaligned_series(tmp_path: Path):
-    """Test mismatched subtitle numbers are rejected.
+def test_audit_reviews_rejects_mismatched_counts(tmp_path: Path):
+    """Test mismatched subtitle counts are rejected.
 
     Arguments:
         tmp_path: temporary path
@@ -140,7 +140,7 @@ def test_audit_reviews_rejects_misaligned_series(tmp_path: Path):
     paths = _write_audit_inputs(tmp_path)
     _write_srt(paths["simplified_reviewed_path"], ("甲", "简正", "着正"))
 
-    with raises(ScinoephileError, match="missing subtitles"):
+    with raises(ScinoephileError, match="Subtitle counts do not match"):
         audit_reviews(**paths, first_index=1, last_index=2)
 
 

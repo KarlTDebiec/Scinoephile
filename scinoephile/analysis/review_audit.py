@@ -95,7 +95,7 @@ def audit_reviews(
     Returns:
         Markdown audit report
     Raises:
-        ScinoephileError: if an input cannot be parsed or the series do not align
+        ScinoephileError: if an input cannot be parsed or subtitle counts differ
     """
     try:
         _validate_index_range(first_index, last_index)
@@ -110,9 +110,10 @@ def audit_reviews(
         series = {
             name: _parse_srt(series_path) for name, series_path in series_paths.items()
         }
-        _validate_series(series)
+        if len({len(events) for events in series.values()}) != 1:
+            raise ValueError("Subtitle counts do not match across series")
 
-        # Match block-based notes against the complete aligned inputs
+        # Match block-based notes against the complete inputs
         traditional_notes = _get_review_notes(
             traditional_json_path,
             series["traditional"],
@@ -129,7 +130,7 @@ def audit_reviews(
             series["simplified_reviewed"],
         )
 
-        # Limit report calculations after validating the complete inputs
+        # Limit report calculations after validating the input counts
         series = {
             name: {
                 number: event
@@ -321,20 +322,6 @@ def _format_markdown(
         )
     )
     return "\n".join(lines) + "\n"
-
-
-def _format_mismatch_numbers(numbers: Sequence[int]) -> str:
-    """Format mismatch subtitle numbers compactly.
-
-    Arguments:
-        numbers: subtitle numbers
-    Returns:
-        formatted subtitle numbers
-    """
-    if len(numbers) <= 20:
-        return ", ".join(str(number) for number in numbers)
-    displayed_numbers = ", ".join(str(number) for number in numbers[:20])
-    return f"{displayed_numbers}, ... ({len(numbers)} total)"
 
 
 def _format_review_cell(
@@ -633,46 +620,3 @@ def _validate_index_range(first_index: int | None, last_index: int | None) -> No
         raise ValueError("--last-index must be a positive 1-indexed subtitle number")
     if first_index is not None and last_index is not None and first_index > last_index:
         raise ValueError("--first-index must be less than or equal to --last-index")
-
-
-def _validate_series(series: Mapping[str, Mapping[int, _SrtEvent]]) -> None:
-    """Validate subtitle numbers across audited series.
-
-    Arguments:
-        series: parsed SRT events keyed by internal series name
-    Raises:
-        ValueError: if subtitle numbers differ
-    """
-    labels = {
-        "traditional": "traditional",
-        "traditional_reviewed": "traditional reviewed",
-        "traditional_simplified": "traditional simplified",
-        "traditional_simplified_reviewed": "traditional simplified reviewed",
-        "simplified": "simplified",
-        "simplified_reviewed": "simplified reviewed",
-    }
-    reference_name = "traditional"
-    reference_numbers = set(series[reference_name])
-    errors: list[str] = []
-    for name, events in series.items():
-        if name == reference_name:
-            continue
-        numbers = set(events)
-        missing_numbers = sorted(reference_numbers - numbers)
-        extra_numbers = sorted(numbers - reference_numbers)
-        if missing_numbers:
-            errors.append(
-                f"{labels[name]} is missing subtitles present in traditional: "
-                f"{_format_mismatch_numbers(missing_numbers)}"
-            )
-        if extra_numbers:
-            errors.append(
-                f"{labels[name]} has extra subtitles not present in traditional: "
-                f"{_format_mismatch_numbers(extra_numbers)}"
-            )
-
-    if errors:
-        raise ValueError(
-            "Subtitle number validation failed:\n"
-            + "\n".join(f"- {error}" for error in errors)
-        )
