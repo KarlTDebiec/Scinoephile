@@ -13,13 +13,9 @@ from pytest import raises
 
 from scinoephile import common
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.punctuation import PUNCTUATION_OPERATION_SPEC
-from scinoephile.llms.review import (
-    REVIEW_OPERATION_SPEC,
-    ReviewManager,
-    ReviewPrompt,
-)
-from scinoephile.llms.translation import TRANSLATION_OPERATION_SPEC
+from scinoephile.llms.punctuation import PunctuationManager
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
+from scinoephile.llms.translation import TranslationManager
 from scinoephile.optimization.persistence.test_cases import (
     PersistedTestCase,
     TestCaseSqliteStore,
@@ -73,11 +69,11 @@ def test_normalization_makes_prompt_field_aliases_share_identity():
     )
     localized_persisted = PersistedTestCase.from_test_case(
         localized,
-        REVIEW_OPERATION_SPEC,
+        ReviewManager,
     )
     alternative_persisted = PersistedTestCase.from_test_case(
         alternative,
-        REVIEW_OPERATION_SPEC,
+        ReviewManager,
     )
 
     assert localized_persisted.query == {"subtitle_1": "original"}
@@ -108,7 +104,7 @@ def test_sync_rejects_fields_outside_test_case_schema(tmp_path: Path):
             sync_test_cases(
                 [source_path],
                 tmp_path / "test_cases.sqlite",
-                TRANSLATION_OPERATION_SPEC,
+                TranslationManager,
                 dry_run=False,
             )
 
@@ -139,21 +135,21 @@ def test_sync_inserts_and_removes_provenance_by_source_path(
     first_report = sync_test_cases(
         [source_path],
         database_path,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
         dry_run=False,
     )
     assert len(first_report.insert_ids) == 2
     deleted_id = get_test_case_id(
         deleted_query,
         deleted_answer,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
     )
 
     source_path.write_text(json.dumps(first_data[:1]), encoding="utf-8")
     second_report = sync_test_cases(
         [source_path],
         database_path,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
         dry_run=False,
     )
 
@@ -175,7 +171,7 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     first_report = sync_test_cases(
         [source_path],
         database_path,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
         dry_run=False,
     )
 
@@ -183,7 +179,7 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     second_report = sync_test_cases(
         [source_path.resolve()],
         database_path,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
         dry_run=False,
     )
 
@@ -205,7 +201,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     first_report = sync_test_cases(
         [source_path],
         database_path,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
         dry_run=False,
     )
 
@@ -216,7 +212,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     dry_run_report = sync_test_cases(
         [source_path],
         database_path,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
         dry_run=True,
     )
 
@@ -231,7 +227,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     sync_test_cases(
         [source_path],
         database_path,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
         dry_run=False,
     )
     loaded = TestCaseSqliteStore(database_path).get_test_case(
@@ -269,7 +265,7 @@ def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
         sync_test_cases(
             [valid_path, invalid_path],
             database_path,
-            TRANSLATION_OPERATION_SPEC,
+            TranslationManager,
             dry_run=False,
         )
 
@@ -288,12 +284,12 @@ def test_sync_loads_canonical_repository_data(tmp_path: Path):
     sync_test_cases(
         [source_path],
         database_path,
-        REVIEW_OPERATION_SPEC,
+        ReviewManager,
         dry_run=False,
     )
     loaded = TestCaseSqliteStore(database_path).get_test_cases_by_source_path(
         str(source_path.resolve()),
-        spec=REVIEW_OPERATION_SPEC,
+        manager_cls=ReviewManager,
     )
 
     assert len(loaded) == len(raw_data)
@@ -321,7 +317,7 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
     sync_test_cases(
         [source_path],
         database_path,
-        PUNCTUATION_OPERATION_SPEC,
+        PunctuationManager,
         dry_run=False,
     )
     loaded = TestCaseSqliteStore(database_path).get_test_cases_by_source_path(

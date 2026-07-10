@@ -27,6 +27,8 @@ __all__ = ["ReviewManager"]
 class ReviewManager(Manager):
     """Factories for review LLM classes."""
 
+    operation: ClassVar[str] = "review"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[ReviewPrompt]] = ReviewPrompt
     """Base prompt class defining persisted test-case field names."""
 
@@ -134,20 +136,15 @@ class ReviewManager(Manager):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls,
-        data: dict,
-        prompt_cls: type[Prompt],
-    ) -> type[TestCase]:
-        """Get concrete test case class for provided data.
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: data from JSON
-            prompt_cls: text for LLM correspondence
         Returns:
             test case model class
         """
-        prompt_cls = cast(type[ReviewPrompt], prompt_cls)
+        prompt_cls = cls.prompt_cls
         pattern = re.compile(rf"^{re.escape(prompt_cls.input_pfx)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)

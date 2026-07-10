@@ -38,10 +38,7 @@ def load_test_cases_from_json[TTestCase: TestCase](
 
     test_cases: list[TTestCase] = []
     for test_case_data in raw_test_cases:
-        base_test_case_cls = manager_cls.get_test_case_cls_from_data(
-            test_case_data,
-            manager_cls.prompt_cls,
-        )
+        base_test_case_cls = manager_cls.get_test_case_cls_from_data(test_case_data)
         base_test_case = base_test_case_cls.model_validate(
             test_case_data,
             extra="forbid",

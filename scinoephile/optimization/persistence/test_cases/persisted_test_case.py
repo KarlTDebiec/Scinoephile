@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pydantic import JsonValue
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.llms import OperationSpec, TestCase
+from scinoephile.core.llms import Manager, TestCase
 from scinoephile.core.llms.test_case_mapping import remap_test_case
 
 from .id import get_test_case_id
@@ -42,31 +42,31 @@ class PersistedTestCase:
     def from_test_case(
         cls,
         test_case: TestCase,
-        spec: OperationSpec,
+        manager_cls: type[Manager],
     ) -> PersistedTestCase:
         """Convert a loaded test case to its persisted representation.
 
         Arguments:
             test_case: loaded test case
-            spec: operation to which the test case belongs
+            manager_cls: manager defining the test case's operation and base prompt
         Returns:
             persisted test case
         """
         if test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")
-        base_test_case_cls = spec.manager_cls.get_test_case_cls_with_prompt(
+        base_test_case_cls = manager_cls.get_test_case_cls_with_prompt(
             type(test_case),
-            spec.prompt_cls,
+            manager_cls.prompt_cls,
         )
         base_test_case = remap_test_case(test_case, base_test_case_cls)
         query = base_test_case.query.model_dump(mode="json")
         if base_test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")
         answer = base_test_case.answer.model_dump(mode="json")
-        test_case_id = get_test_case_id(query, answer, spec)
+        test_case_id = get_test_case_id(query, answer, manager_cls)
         return cls(
             test_case_id=test_case_id,
-            operation=spec.operation,
+            operation=manager_cls.operation,
             difficulty=test_case.difficulty,
             prompt=test_case.prompt,
             verified=test_case.verified,

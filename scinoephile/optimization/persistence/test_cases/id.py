@@ -9,7 +9,7 @@ import json
 
 from pydantic import JsonValue
 
-from scinoephile.core.llms import OperationSpec
+from scinoephile.core.llms import Manager
 
 __all__ = ["get_test_case_id"]
 
@@ -17,21 +17,21 @@ __all__ = ["get_test_case_id"]
 def get_test_case_id(
     query: dict[str, JsonValue],
     answer: dict[str, JsonValue],
-    spec: OperationSpec,
+    manager_cls: type[Manager],
 ) -> str:
     """Compute canonical identifier for a test case.
 
     Arguments:
         query: query payload
         answer: answer payload
-        spec: operation to which the test case belongs
+        manager_cls: manager defining the test case's operation
     Returns:
         deterministic hexadecimal identifier
     """
     payload_json = json.dumps(
         {
             "answer": dict(answer),
-            "operation": spec.operation,
+            "operation": manager_cls.operation,
             "query": dict(query),
         },
         ensure_ascii=False,

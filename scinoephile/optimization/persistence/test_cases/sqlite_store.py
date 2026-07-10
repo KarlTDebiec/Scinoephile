@@ -33,7 +33,7 @@ from sqlalchemy.pool import NullPool
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.llms import OperationSpec
+from scinoephile.core.llms import Manager
 
 from .id import get_test_case_id
 from .persisted_test_case import PersistedTestCase
@@ -162,13 +162,13 @@ class TestCaseSqliteStore:
         self,
         source_path: str,
         *,
-        spec: OperationSpec | None = None,
+        manager_cls: type[Manager] | None = None,
     ) -> list[PersistedTestCase]:
         """Fetch test cases associated with a source path.
 
         Arguments:
             source_path: original JSON path recorded during import
-            spec: optional operation filter
+            manager_cls: optional manager defining the operation filter
         Returns:
             persisted test cases
         """
@@ -184,9 +184,9 @@ class TestCaseSqliteStore:
                 .join(self._test_case_sources)
                 .where(self._test_case_sources.c.source_path == source_path)
             )
-            if spec is not None:
+            if manager_cls is not None:
                 statement = statement.where(
-                    self._test_cases.c.operation == spec.operation
+                    self._test_cases.c.operation == manager_cls.operation
                 )
             rows = (
                 connection.execute(statement.order_by(self._test_cases.c.test_case_id))
@@ -199,7 +199,7 @@ class TestCaseSqliteStore:
         self,
         source_test_cases: Mapping[str, Iterable[PersistedTestCase]],
         *,
-        spec: OperationSpec,
+        manager_cls: type[Manager],
         dry_run: bool,
     ) -> tuple[set[str], set[str]]:
         """Synchronize provenance links for one or more source paths.
@@ -210,7 +210,7 @@ class TestCaseSqliteStore:
 
         Arguments:
             source_test_cases: desired test cases keyed by canonical source path
-            spec: operation synchronized by this import
+            manager_cls: manager defining the synchronized operation
             dry_run: if True, compute changes without writing
         Returns:
             test case IDs whose source association was inserted or removed
@@ -220,15 +220,15 @@ class TestCaseSqliteStore:
         for source_path in sorted(source_test_cases):
             desired_by_id: dict[str, PersistedTestCase] = {}
             for test_case in source_test_cases[source_path]:
-                if test_case.operation != spec.operation:
+                if test_case.operation != manager_cls.operation:
                     raise ScinoephileError(
                         f"Test case operation {test_case.operation} does not match "
-                        f"synchronized operation {spec.operation}."
+                        f"synchronized operation {manager_cls.operation}."
                     )
                 expected_id = get_test_case_id(
                     test_case.query,
                     test_case.answer,
-                    spec,
+                    manager_cls,
                 )
                 if test_case.test_case_id != expected_id:
                     raise ScinoephileError(
@@ -266,7 +266,7 @@ class TestCaseSqliteStore:
                     connection,
                     desired_by_source,
                     canonical_by_id,
-                    operation=spec.operation,
+                    operation=manager_cls.operation,
                     dry_run=True,
                 )
 
@@ -276,7 +276,7 @@ class TestCaseSqliteStore:
                 connection,
                 desired_by_source,
                 canonical_by_id,
-                operation=spec.operation,
+                operation=manager_cls.operation,
                 dry_run=False,
             )
         logger.info(f"Synchronized {len(desired_by_source)} test-case source paths")

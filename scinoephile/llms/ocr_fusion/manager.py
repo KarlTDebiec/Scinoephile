@@ -20,6 +20,8 @@ __all__ = ["OcrFusionManager"]
 class OcrFusionManager(Manager):
     """Factories for OCR fusion LLM classes."""
 
+    operation: ClassVar[str] = "ocr-fusion"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[OcrFusionPrompt]] = OcrFusionPrompt
     """Base prompt class defining persisted test-case field names."""
 

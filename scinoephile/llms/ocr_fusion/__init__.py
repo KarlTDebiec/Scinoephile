@@ -10,21 +10,12 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from scinoephile.core.llms import OperationSpec
-
 from .manager import OcrFusionManager
 from .processor import OcrFusionProcessor
 from .prompt import OcrFusionPrompt
 
 __all__ = [
-    "OCR_FUSION_OPERATION_SPEC",
     "OcrFusionManager",
     "OcrFusionProcessor",
     "OcrFusionPrompt",
 ]
-
-OCR_FUSION_OPERATION_SPEC = OperationSpec(
-    operation="ocr-fusion",
-    manager_cls=OcrFusionManager,
-)
-"""Operation specification for monolingual OCR fusion."""

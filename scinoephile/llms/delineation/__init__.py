@@ -9,19 +9,10 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from scinoephile.core.llms import OperationSpec
-
 from .manager import DelineationManager
 from .prompt import DelineationPrompt
 
 __all__ = [
-    "DELINEATION_OPERATION_SPEC",
     "DelineationManager",
     "DelineationPrompt",
 ]
-
-DELINEATION_OPERATION_SPEC = OperationSpec(
-    operation="delineation",
-    manager_cls=DelineationManager,
-)
-"""Operation specification for delineation."""

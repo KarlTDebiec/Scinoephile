@@ -28,6 +28,8 @@ __all__ = ["GuidedTranslationManager"]
 class GuidedTranslationManager(Manager):
     """Factories for guided translation LLM classes."""
 
+    operation: ClassVar[str] = "guided-translation"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[GuidedTranslationPrompt]] = GuidedTranslationPrompt
     """Base prompt class defining persisted test-case field names."""
 
@@ -160,20 +162,15 @@ class GuidedTranslationManager(Manager):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls,
-        data: dict,
-        prompt_cls: type[Prompt],
-    ) -> type[TestCase]:
-        """Get concrete test case class for provided data.
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: data from JSON
-            prompt_cls: text for LLM correspondence
         Returns:
             test case model class
         """
-        prompt_cls = cast(type[GuidedTranslationPrompt], prompt_cls)
+        prompt_cls = cls.prompt_cls
         source_one_pattern = re.compile(rf"^{re.escape(prompt_cls.src_1_pfx)}\d+$")
         source_two_pattern = re.compile(rf"^{re.escape(prompt_cls.src_2_pfx)}\d+$")
         source_one_size = sum(

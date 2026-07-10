@@ -9,7 +9,7 @@ from typing import Any, ClassVar
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Answer, Manager, Prompt, Query, TestCase
+from scinoephile.core.llms import Answer, Manager, Query, TestCase
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import DelineationPrompt
@@ -20,6 +20,8 @@ __all__ = ["DelineationManager"]
 class DelineationManager(Manager):
     """Factories for delineation LLM classes."""
 
+    operation: ClassVar[str] = "delineation"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[DelineationPrompt]] = DelineationPrompt
     """Base prompt class defining persisted test-case field names."""
 
@@ -105,20 +107,15 @@ class DelineationManager(Manager):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls,
-        data: dict,
-        prompt_cls: type[Prompt],
-    ) -> type[TestCase]:
-        """Get concrete test case class for provided data.
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: data from JSON
-            prompt_cls: text for LLM correspondence
         Returns:
             test case model class
         """
-        return cls.get_test_case_cls(prompt_cls)
+        return cls.get_test_case_cls(cls.prompt_cls)
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:

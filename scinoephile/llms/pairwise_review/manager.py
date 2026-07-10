@@ -20,6 +20,8 @@ __all__ = ["PairwiseReviewManager"]
 class PairwiseReviewManager(Manager):
     """Factories for pairwise-review LLM classes."""
 
+    operation: ClassVar[str] = "pairwise-review"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[PairwiseReviewPrompt]] = PairwiseReviewPrompt
     """Base prompt class defining persisted test-case field names."""
 

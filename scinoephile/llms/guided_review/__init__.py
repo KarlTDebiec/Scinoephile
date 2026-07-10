@@ -10,21 +10,12 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from scinoephile.core.llms import OperationSpec
-
 from .manager import GuidedReviewManager
 from .processor import GuidedReviewProcessor
 from .prompt import GuidedReviewPrompt
 
 __all__ = [
-    "GUIDED_REVIEW_OPERATION_SPEC",
     "GuidedReviewManager",
     "GuidedReviewProcessor",
     "GuidedReviewPrompt",
 ]
-
-GUIDED_REVIEW_OPERATION_SPEC = OperationSpec(
-    operation="guided-review",
-    manager_cls=GuidedReviewManager,
-)
-"""Operation specification for guided review."""

@@ -10,21 +10,12 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from scinoephile.core.llms import OperationSpec
-
 from .manager import PairwiseReviewManager
 from .processor import PairwiseReviewProcessor
 from .prompt import PairwiseReviewPrompt
 
 __all__ = [
-    "PAIRWISE_REVIEW_OPERATION_SPEC",
     "PairwiseReviewManager",
     "PairwiseReviewProcessor",
     "PairwiseReviewPrompt",
 ]
-
-PAIRWISE_REVIEW_OPERATION_SPEC = OperationSpec(
-    operation="pairwise-review",
-    manager_cls=PairwiseReviewManager,
-)
-"""Operation specification for pairwise review."""

@@ -28,6 +28,8 @@ __all__ = ["GuidedReviewManager"]
 class GuidedReviewManager(Manager):
     """Factories for guided-review LLM classes."""
 
+    operation: ClassVar[str] = "guided-review"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[GuidedReviewPrompt]] = GuidedReviewPrompt
     """Base prompt class defining persisted test-case field names."""
 
@@ -157,20 +159,15 @@ class GuidedReviewManager(Manager):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls,
-        data: dict,
-        prompt_cls: type[Prompt],
-    ) -> type[TestCase]:
-        """Get concrete test case class for serialized data.
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: serialized test case data
-            prompt_cls: text for LLM correspondence
         Returns:
             test case model class
         """
-        prompt_cls = cast(type[GuidedReviewPrompt], prompt_cls)
+        prompt_cls = cls.prompt_cls
         target_pattern = re.compile(rf"^{re.escape(prompt_cls.target_pfx)}\d+$")
         guide_pattern = re.compile(rf"^{re.escape(prompt_cls.guide_pfx)}\d+$")
         target_size = sum(1 for field in data["query"] if target_pattern.match(field))

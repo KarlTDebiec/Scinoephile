@@ -9,19 +9,10 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from scinoephile.core.llms import OperationSpec
-
 from .manager import PunctuationManager
 from .prompt import PunctuationPrompt
 
 __all__ = [
-    "PUNCTUATION_OPERATION_SPEC",
     "PunctuationManager",
     "PunctuationPrompt",
 ]
-
-PUNCTUATION_OPERATION_SPEC = OperationSpec(
-    operation="punctuation",
-    manager_cls=PunctuationManager,
-)
-"""Operation specification for punctuation."""

@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pydantic import JsonValue
 
-from scinoephile.llms.review import REVIEW_OPERATION_SPEC
-from scinoephile.llms.translation import TRANSLATION_OPERATION_SPEC
+from scinoephile.llms.review import ReviewManager
+from scinoephile.llms.translation import TranslationManager
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 
@@ -19,11 +19,11 @@ def test_get_test_case_id_stable_for_same_payload():
     assert get_test_case_id(
         query,
         answer,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
     ) == get_test_case_id(
         query,
         answer,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
     )
 
 
@@ -34,11 +34,11 @@ def test_get_test_case_id_changes_with_answer():
     assert get_test_case_id(
         query,
         {"output_1": "b"},
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
     ) != get_test_case_id(
         query,
         {"output_1": "c"},
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
     )
 
 
@@ -50,9 +50,9 @@ def test_get_test_case_id_changes_with_operation():
     assert get_test_case_id(
         query,
         answer,
-        TRANSLATION_OPERATION_SPEC,
+        TranslationManager,
     ) != get_test_case_id(
         query,
         answer,
-        REVIEW_OPERATION_SPEC,
+        ReviewManager,
     )

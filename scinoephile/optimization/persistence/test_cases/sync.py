@@ -13,7 +13,7 @@ from typing import cast
 from pydantic import ValidationError
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.llms import OperationSpec
+from scinoephile.core.llms import Manager
 
 from .persisted_test_case import PersistedTestCase
 from .sqlite_store import TestCaseSqliteStore
@@ -41,7 +41,7 @@ class SyncReport:
 def sync_test_cases(
     input_paths: Iterable[Path],
     output_path: Path,
-    spec: OperationSpec,
+    manager_cls: type[Manager],
     *,
     dry_run: bool,
 ) -> SyncReport:
@@ -52,7 +52,7 @@ def sync_test_cases(
     Arguments:
         input_paths: JSON paths to import or synchronize
         output_path: SQLite database output path
-        spec: operation, manager, and base prompt configuration
+        manager_cls: manager defining the operation and base prompt
         dry_run: if True, report planned changes without writing
     Returns:
         sync report
@@ -61,7 +61,7 @@ def sync_test_cases(
     source_test_cases = {
         str(input_path): _load_test_cases(
             input_path,
-            spec,
+            manager_cls,
         )
         for input_path in input_paths_tuple
     }
@@ -69,11 +69,11 @@ def sync_test_cases(
     store = TestCaseSqliteStore(output_path)
     insert_ids, delete_ids = store.sync_source_paths(
         source_test_cases,
-        spec=spec,
+        manager_cls=manager_cls,
         dry_run=dry_run,
     )
     return SyncReport(
-        operation=spec.operation,
+        operation=manager_cls.operation,
         input_paths=input_paths_tuple,
         insert_ids=tuple(sorted(insert_ids)),
         delete_ids=tuple(sorted(delete_ids)),
@@ -82,13 +82,13 @@ def sync_test_cases(
 
 def _load_test_cases(
     input_path: Path,
-    spec: OperationSpec,
+    manager_cls: type[Manager],
 ) -> list[PersistedTestCase]:
     """Load, validate, and normalize persisted test cases from JSON.
 
     Arguments:
         input_path: path to a JSON test-case array
-        spec: operation, manager, and base prompt configuration
+        manager_cls: manager defining the operation and base prompt
     Returns:
         persisted test cases using base-prompt field names
     Raises:
@@ -114,7 +114,7 @@ def _load_test_cases(
             item_dict = cast("dict[str, object]", item)
             test_case = _normalize_test_case(
                 item_dict,
-                spec,
+                manager_cls,
             )
         except (
             AttributeError,
@@ -132,24 +132,21 @@ def _load_test_cases(
 
 def _normalize_test_case(
     data: dict[str, object],
-    spec: OperationSpec,
+    manager_cls: type[Manager],
 ) -> PersistedTestCase:
     """Validate one test case using its operation's base prompt field names.
 
     Arguments:
         data: serialized test case
-        spec: operation, manager, and base prompt configuration
+        manager_cls: manager defining the operation and base prompt
     Returns:
         test case using base-prompt field names
     Raises:
         ScinoephileError: if the payload contains fields outside the prompt schema
     """
-    test_case_cls = spec.manager_cls.get_test_case_cls_from_data(
-        data,
-        spec.prompt_cls,
-    )
+    test_case_cls = manager_cls.get_test_case_cls_from_data(data)
     test_case = test_case_cls.model_validate(data, strict=True, extra="forbid")
     return PersistedTestCase.from_test_case(
         test_case,
-        spec,
+        manager_cls,
     )
