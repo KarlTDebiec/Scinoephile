@@ -5,15 +5,25 @@
 Package hierarchy (modules may import from any above):
 * prompt
 * manager
-* operation
 """
 
 from __future__ import annotations
+
+from scinoephile.core.llms import OperationSpec
 
 from .manager import DelineationManager
 from .prompt import DelineationPrompt
 
 __all__ = [
+    "DELINEATION_OPERATION_SPEC",
     "DelineationManager",
     "DelineationPrompt",
 ]
+
+DELINEATION_OPERATION_SPEC = OperationSpec(
+    operation="delineation",
+    test_case_table_name="test_cases__delineation",
+    manager_cls=DelineationManager,
+    prompt_cls=DelineationPrompt,
+)
+"""Operation specification for delineation."""

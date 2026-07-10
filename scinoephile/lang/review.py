@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
@@ -16,10 +16,7 @@ from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.review import ReviewManager, ReviewProcessor, ReviewPrompt
 
-__all__ = [
-    "REVIEW_OPERATION_SPEC",
-    "get_reviewer",
-]
+__all__ = ["get_reviewer"]
 
 _ENG_REVIEW_JSON_PATHS = (
     Path("kob/output/eng_ocr/lang/eng/review.json"),
@@ -60,14 +57,6 @@ _ZHO_HANT_REVIEW_JSON_PATHS = (
     Path("t/output/zho-Hant_ocr/lang/zho/review.json"),
 )
 """Default traditional standard Chinese review JSON paths."""
-
-REVIEW_OPERATION_SPEC = OperationSpec(
-    operation="review",
-    test_case_table_name="test_cases__review",
-    manager_cls=ReviewManager,
-    prompt_cls=ReviewPrompt,
-)
-"""Operation specification for monolingual review."""
 
 _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
     Language.eng: _ENG_REVIEW_JSON_PATHS,

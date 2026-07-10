@@ -10,7 +10,6 @@ from typing import Unpack
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import (
     LLMProvider,
-    OperationSpec,
     ProcessorKwargs,
     TestCase,
 )
@@ -40,18 +39,7 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueGapTranslationPromptZhoHant,
 )
 
-__all__ = [
-    "GAP_TRANSLATION_OPERATION_SPEC",
-    "get_gap_translator",
-]
-
-GAP_TRANSLATION_OPERATION_SPEC = OperationSpec(
-    operation="gap-translation",
-    test_case_table_name="test_cases__gap_translation",
-    manager_cls=GapTranslationManager,
-    prompt_cls=GapTranslationPrompt,
-)
-"""Operation specification for gap translation."""
+__all__ = ["get_gap_translator"]
 
 _ENG_YUE_GAP_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default written Cantonese-to-English gap translation JSON paths."""

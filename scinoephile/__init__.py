@@ -6,10 +6,10 @@ Module hierarchy (modules may import from any above):
 * common
 * core
 * analysis / image / llms
-* media
+* media / optimization
 * lang
 * audio / dictionaries / web
 * multilang
-* optimization / workflows
+* workflows
 * cli
 """

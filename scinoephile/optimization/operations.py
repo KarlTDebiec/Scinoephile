@@ -5,15 +5,15 @@
 from __future__ import annotations
 
 from scinoephile.core.llms import OperationSpec
-from scinoephile.lang.ocr_fusion import OCR_FUSION_OPERATION_SPEC
-from scinoephile.lang.review import REVIEW_OPERATION_SPEC
-from scinoephile.llms.delineation.operation import DELINEATION_OPERATION_SPEC
-from scinoephile.llms.punctuation.operation import PUNCTUATION_OPERATION_SPEC
-from scinoephile.multilang.review.guided import GUIDED_REVIEW_OPERATION_SPEC
-from scinoephile.multilang.review.pairwise import PAIRWISE_REVIEW_OPERATION_SPEC
-from scinoephile.multilang.translation.gap import GAP_TRANSLATION_OPERATION_SPEC
-from scinoephile.multilang.translation.guided import GUIDED_TRANSLATION_OPERATION_SPEC
-from scinoephile.multilang.translation.standard import TRANSLATION_OPERATION_SPEC
+from scinoephile.llms.delineation import DELINEATION_OPERATION_SPEC
+from scinoephile.llms.gap_translation import GAP_TRANSLATION_OPERATION_SPEC
+from scinoephile.llms.guided_review import GUIDED_REVIEW_OPERATION_SPEC
+from scinoephile.llms.guided_translation import GUIDED_TRANSLATION_OPERATION_SPEC
+from scinoephile.llms.ocr_fusion import OCR_FUSION_OPERATION_SPEC
+from scinoephile.llms.pairwise_review import PAIRWISE_REVIEW_OPERATION_SPEC
+from scinoephile.llms.punctuation import PUNCTUATION_OPERATION_SPEC
+from scinoephile.llms.review import REVIEW_OPERATION_SPEC
+from scinoephile.llms.translation import TRANSLATION_OPERATION_SPEC
 
 __all__ = ["OPERATIONS"]
 
