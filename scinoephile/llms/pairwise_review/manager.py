@@ -54,7 +54,7 @@ class PairwiseReviewManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
@@ -86,7 +86,7 @@ class PairwiseReviewManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @staticmethod
@@ -100,7 +100,7 @@ class PairwiseReviewManager(Manager):
         """
         if model.answer is None:
             return 0
-        prompt: PairwiseReviewPrompt = getattr(model, "llm_prompt")
+        prompt: PairwiseReviewPrompt = getattr(model, "prompt")
         target = getattr(model.query, prompt.target)
         output = getattr(model.answer, prompt.output)
         if output and output != target:
@@ -122,7 +122,7 @@ class PairwiseReviewManager(Manager):
         if model.answer is None:
             return model
 
-        prompt: PairwiseReviewPrompt = getattr(model, "llm_prompt")
+        prompt: PairwiseReviewPrompt = getattr(model, "prompt")
         target = getattr(model.query, prompt.target)
         output = getattr(model.answer, prompt.output)
         note = getattr(model.answer, prompt.note)

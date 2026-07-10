@@ -39,7 +39,7 @@ class Queryer[
     def __init__(
         self,
         prompt: Prompt,
-        prompt_test_cases: list[TTestCase] | None = None,
+        few_shot_test_cases: list[TTestCase] | None = None,
         verified_test_cases: list[TTestCase] | None = None,
         *,
         provider: LLMProvider,
@@ -53,7 +53,7 @@ class Queryer[
 
         Arguments:
             prompt: text for LLM correspondence
-            prompt_test_cases: test cases included in the prompt for few-shot learning
+            few_shot_test_cases: test cases included as few-shot examples
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
             provider: provider to use for queries
@@ -67,8 +67,10 @@ class Queryer[
         """Text for LLM correspondence."""
         self.provider = provider
 
-        self.prompt_test_cases = {tc.query.key: tc for tc in prompt_test_cases or []}
-        """Test cases included in the prompt for few-shot learning."""
+        self.few_shot_test_cases = {
+            tc.query.key: tc for tc in few_shot_test_cases or []
+        }
+        """Test cases included as few-shot examples."""
         self.verified_test_cases = {
             tc.query.key: tc for tc in verified_test_cases or []
         }
@@ -211,15 +213,15 @@ class Queryer[
 
         return test_case
 
-    def get_prompt_test_cases_few_shot_str(self) -> str:
+    def get_few_shot_test_cases_str(self) -> str:
         """String representation of all test cases in the log."""
-        if not self.prompt_test_cases:
+        if not self.few_shot_test_cases:
             return ""
         few_shot = f"\n\n{self.prompt.few_shot_intro}"
-        for test_case in self.prompt_test_cases.values():
+        for test_case in self.few_shot_test_cases.values():
             if test_case.answer is None:
                 logger.warning(
-                    f"Prompt test case {test_case.query.key_str} has no answer; "
+                    f"Few-shot test case {test_case.query.key_str} has no answer; "
                     "skipping."
                 )
                 continue
@@ -240,7 +242,7 @@ class Queryer[
             test_case: test case to log
         """
         key = test_case.query.key
-        test_case.prompt = test_case.prompt or key in self.prompt_test_cases
+        test_case.few_shot = test_case.few_shot or key in self.few_shot_test_cases
         test_case.verified = test_case.verified or key in self.verified_test_cases
         self.encountered_test_cases[key] = test_case
         logger.debug(f"Logged test case: {test_case.query.key_str}")
@@ -322,7 +324,7 @@ class Queryer[
         system_prompt = self.prompt.base_system_prompt
         if self.additional_context:
             system_prompt += f"\n\nAdditional context:\n{self.additional_context}"
-        system_prompt += self.get_prompt_test_cases_few_shot_str()
+        system_prompt += self.get_few_shot_test_cases_str()
         system_prompt += f"\n\n{self.prompt.schema_intro}\n{schema_json}\n"
 
         return system_prompt

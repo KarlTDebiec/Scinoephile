@@ -118,7 +118,7 @@ class YueTranscriber:
             self.no_vad_transcriber = self._get_whisper_transcriber(use_vad=False)
         self.delineation_queryer = Queryer(
             delineation_prompt,
-            prompt_test_cases=[tc for tc in delineation_test_cases if tc.prompt],
+            few_shot_test_cases=[tc for tc in delineation_test_cases if tc.few_shot],
             verified_test_cases=[tc for tc in delineation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
@@ -126,7 +126,7 @@ class YueTranscriber:
         )
         self.punctuation_queryer = Queryer(
             punctuation_prompt,
-            prompt_test_cases=[tc for tc in punctuation_test_cases if tc.prompt],
+            few_shot_test_cases=[tc for tc in punctuation_test_cases if tc.few_shot],
             verified_test_cases=[tc for tc in punctuation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),

@@ -27,8 +27,8 @@ class PersistedTestCase:
     """Operation to which this test case belongs."""
     difficulty: int
     """Difficulty level for filtering and prioritization."""
-    prompt: bool
-    """Whether the test case is included in the prompt."""
+    few_shot: bool
+    """Whether the test case is included as a few-shot example."""
     verified: bool
     """Whether the test case answer has been verified."""
     query: dict[str, JsonValue]
@@ -68,7 +68,7 @@ class PersistedTestCase:
             test_case_id=test_case_id,
             operation=manager_cls.operation,
             difficulty=test_case.difficulty,
-            prompt=test_case.prompt,
+            few_shot=test_case.few_shot,
             verified=test_case.verified,
             query=query,
             answer=answer,

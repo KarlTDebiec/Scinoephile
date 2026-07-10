@@ -20,7 +20,7 @@ _EXCLUDED_ZERO_SHOT_ATTRIBUTE_NAMES = frozenset(
         "few_shot_answer_intro",
         "few_shot_intro",
         "few_shot_query_intro",
-        "prompt_description",
+        "few_shot_description",
         "verified_description",
     }
 )
@@ -46,7 +46,7 @@ class Prompt:
         "few_shot_answer_intro": "",
         "few_shot_intro": "",
         "few_shot_query_intro": "",
-        "prompt_description": "Whether to include test case in prompt examples.",
+        "few_shot_description": "Whether to include test case in few-shot examples.",
         "schema_intro": "",
         "test_case_invalid_post": "",
         "test_case_invalid_pre": "",
@@ -77,8 +77,8 @@ class Prompt:
     # Test case field descriptions
     difficulty_description: ClassVar[str]
     """Description of 'difficulty' field."""
-    prompt_description: ClassVar[str]
-    """Description of 'prompt' field."""
+    few_shot_description: ClassVar[str]
+    """Description of 'few_shot' field."""
     verified_description: ClassVar[str]
     """Description of 'verified' field."""
 

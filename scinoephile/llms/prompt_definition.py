@@ -20,7 +20,7 @@ _EXCLUDED_ZERO_SHOT_ATTRIBUTE_NAMES = frozenset(
         "few_shot_answer_intro",
         "few_shot_intro",
         "few_shot_query_intro",
-        "prompt_description",
+        "few_shot_description",
         "verified_description",
     }
 )

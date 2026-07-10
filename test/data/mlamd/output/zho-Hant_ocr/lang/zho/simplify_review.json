@@ -524,7 +524,7 @@
       "note_1": "将「帶著」中的「著」修正为简体字「着」。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -553,7 +553,7 @@
       "note_6": "将“包著鸡”中的“著”改为现代汉语常用的“着”，以统一简体字规范。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -760,7 +760,7 @@
       "note_7": "将“著”改为“着”，统一为简体中文用字。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1186,7 +1186,7 @@
       "note_2": "在“今届奥运”后补充“会”，补全常用说法“奥运会”。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1208,7 +1208,7 @@
       "note_9": "将简体字中的“著”修改为正确用字“着”。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1287,7 +1287,7 @@
       "note_8": "与第 7 条保持一致，将“盒”改为“盒子”。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1299,7 +1299,7 @@
       "note_1": "补全了明显缺失的词语“回”，使常用表达“无力挽回”完整。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1363,7 +1363,7 @@
       "note_2": "在 dot 与 com 两侧补充空格，以符合中英混排规范。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

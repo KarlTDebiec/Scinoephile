@@ -109,7 +109,7 @@ class YueZhoPunctuationManager(PunctuationManager):
         Returns:
             minimum difficulty
         """
-        prompt: PunctuationPrompt = getattr(model, "llm_prompt")
+        prompt: PunctuationPrompt = getattr(model, "prompt")
         min_difficulty = PunctuationManager.get_min_difficulty(model)
         if model.answer is None:
             return min_difficulty
@@ -133,7 +133,7 @@ class YueZhoPunctuationManager(PunctuationManager):
         Returns:
             validated test case
         """
-        prompt: PunctuationPrompt = getattr(model, "llm_prompt")
+        prompt: PunctuationPrompt = getattr(model, "prompt")
         if model.answer is None:
             return model
 

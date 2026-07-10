@@ -76,7 +76,7 @@ class Manager(ABC):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model  # ty:ignore[invalid-return-type]
@@ -134,9 +134,9 @@ class Manager(ABC):
                 int,
                 Field(0, description=prompt.difficulty_description),
             ),
-            "prompt": (
+            "few_shot": (
                 bool,
-                Field(False, description=prompt.prompt_description),
+                Field(False, description=prompt.few_shot_description),
             ),
             "verified": (
                 bool,
@@ -162,7 +162,7 @@ class Manager(ABC):
 
     @staticmethod
     def enforce_min_difficulty(model: TestCase) -> TestCase:
-        """Ensure difficulty reflects prompt/split status if not already higher.
+        """Ensure difficulty reflects few-shot/split status if not already higher.
 
         Arguments:
             model: test case to validate

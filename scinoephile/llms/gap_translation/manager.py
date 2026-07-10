@@ -74,7 +74,7 @@ class GapTranslationManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "gaps", gaps)
         return model
@@ -117,7 +117,7 @@ class GapTranslationManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "gaps", gaps)
         return model
@@ -162,7 +162,7 @@ class GapTranslationManager(Manager):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "gaps", gaps)
         setattr(model, "get_auto_verified", cls.get_auto_verified)

@@ -64,11 +64,11 @@ class _TestCase(TestCase):
     """Optional answer fixture."""
 
 
-_Query.llm_prompt = _PROMPT
-_Answer.llm_prompt = _PROMPT
+_Query.prompt = _PROMPT
+_Answer.prompt = _PROMPT
 _TestCase.query_cls = _Query
 _TestCase.answer_cls = _Answer
-_TestCase.llm_prompt = _PROMPT
+_TestCase.prompt = _PROMPT
 
 
 class _Manager(Manager):
@@ -147,15 +147,15 @@ def test_queryer_requires_injected_provider():
 def test_queryer_includes_additional_context_before_few_shot_prompt():
     """Test queryer includes additional context before few-shot examples."""
     provider = _RecordingProvider()
-    prompt_test_case = _TestCase(
+    few_shot_test_case = _TestCase(
         query=_Query(text="example"),
         answer=_Answer(output="example output"),
-        prompt=True,
+        few_shot=True,
     )
     queryer = Queryer(
         _PROMPT,
         additional_context="Use canonical names.",
-        prompt_test_cases=[prompt_test_case],
+        few_shot_test_cases=[few_shot_test_case],
         provider=provider,
         max_attempts=1,
     )
@@ -172,20 +172,20 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
 
 
 def test_queryer_preserves_existing_encountered_test_case_metadata():
-    """Test queryer preserves existing prompt and verified metadata."""
+    """Test queryer preserves existing few-shot and verified metadata."""
     provider = Mock(spec=LLMProvider)
     queryer = Queryer(_PROMPT, provider=provider)
     test_case = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="done"),
-        prompt=True,
+        few_shot=True,
         verified=True,
     )
 
     queryer.log_encountered_test_case(test_case)
 
     encountered_test_case = queryer.encountered_test_cases[test_case.query.key]
-    assert encountered_test_case.prompt is True
+    assert encountered_test_case.few_shot is True
     assert encountered_test_case.verified is True
 
 
@@ -197,7 +197,7 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
     test_case = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="old"),
-        prompt=True,
+        few_shot=True,
         verified=True,
     )
 
@@ -205,7 +205,7 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
 
     assert output_test_case.answer is not None
     assert output_test_case.answer.output == "new"
-    assert output_test_case.prompt is True
+    assert output_test_case.few_shot is True
     assert output_test_case.verified is False
 
 

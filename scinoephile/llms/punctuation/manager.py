@@ -61,7 +61,7 @@ class PunctuationManager(Manager):
             __validators__=validators,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
@@ -96,7 +96,7 @@ class PunctuationManager(Manager):
             __validators__=validators,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
@@ -119,7 +119,7 @@ class PunctuationManager(Manager):
         Returns:
             validated query
         """
-        prompt: PunctuationPrompt = getattr(model, "llm_prompt")
+        prompt: PunctuationPrompt = getattr(model, "prompt")
         source_one = getattr(model, prompt.src_1, None)
         source_two = getattr(model, prompt.src_2, None)
         if not source_one:
@@ -137,7 +137,7 @@ class PunctuationManager(Manager):
         Returns:
             validated answer
         """
-        prompt: PunctuationPrompt = getattr(model, "llm_prompt")
+        prompt: PunctuationPrompt = getattr(model, "prompt")
         output = getattr(model, prompt.output, None)
         if not output:
             raise ValueError(prompt.output_missing_err)

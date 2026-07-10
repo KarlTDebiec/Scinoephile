@@ -57,7 +57,7 @@ class OcrFusionManager(Manager):
                 **fields,
             ),
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
@@ -92,7 +92,7 @@ class OcrFusionManager(Manager):
                 **fields,
             ),
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @staticmethod
@@ -110,7 +110,7 @@ class OcrFusionManager(Manager):
         if model.get_min_difficulty() > 1:
             return False
 
-        prompt: OcrFusionPrompt = getattr(model, "llm_prompt")
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
         source_one = getattr(model.query, prompt.src_1, None)
         source_two = getattr(model.query, prompt.src_2, None)
         output_text = getattr(model.answer, prompt.output, None)
@@ -134,7 +134,7 @@ class OcrFusionManager(Manager):
         Returns:
             minimum difficulty
         """
-        prompt: OcrFusionPrompt = getattr(model, "llm_prompt")
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
         min_difficulty = max(Manager.get_min_difficulty(model), 1)
         if model.answer is None:
             return min_difficulty
@@ -153,7 +153,7 @@ class OcrFusionManager(Manager):
         Returns:
             validated answer
         """
-        prompt: OcrFusionPrompt = getattr(model, "llm_prompt")
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
         output = getattr(model, prompt.output, None)
         note = getattr(model, prompt.note, None)
         if not output:
@@ -171,7 +171,7 @@ class OcrFusionManager(Manager):
         Returns:
             validated query
         """
-        prompt: OcrFusionPrompt = getattr(model, "llm_prompt")
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
         source_one = getattr(model, prompt.src_1, None)
         source_two = getattr(model, prompt.src_2, None)
         if not source_one:

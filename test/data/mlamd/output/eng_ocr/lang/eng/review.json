@@ -273,7 +273,7 @@
       "note_4": "Corrected 'middleaged' to 'middle-aged'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -404,7 +404,7 @@
       "subtitle_27": "In my dream!"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1022,7 +1022,7 @@
       "note_13": "Changed the closing straight quote to a right double quote."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

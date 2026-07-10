@@ -60,7 +60,7 @@ class TranslationManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         return model
 
@@ -92,7 +92,7 @@ class TranslationManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         return model
 
@@ -126,7 +126,7 @@ class TranslationManager(Manager):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)

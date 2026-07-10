@@ -208,10 +208,10 @@ class Alignment:
             prompt=YueDelineationVsZhoPromptYueHans
         )
         query_kwargs = {
-            test_case_cls.llm_prompt.src_1_sub_1: zw_1,
-            test_case_cls.llm_prompt.src_2_sub_1: yw_1,
-            test_case_cls.llm_prompt.src_1_sub_2: zw_2,
-            test_case_cls.llm_prompt.src_2_sub_2: yw_2,
+            test_case_cls.prompt.src_1_sub_1: zw_1,
+            test_case_cls.prompt.src_2_sub_1: yw_1,
+            test_case_cls.prompt.src_1_sub_2: zw_2,
+            test_case_cls.prompt.src_2_sub_2: yw_2,
         }
         # noinspection PyArgumentList
         test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
@@ -254,8 +254,8 @@ class Alignment:
             prompt=YuePunctuationVsZhoPromptYueHans
         )
         query_kwargs = {
-            test_case_cls.llm_prompt.src_2: zw,
-            test_case_cls.llm_prompt.src_1: yws,
+            test_case_cls.prompt.src_2: zw,
+            test_case_cls.prompt.src_1: yws,
         }
         # noinspection PyArgumentList
         test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))

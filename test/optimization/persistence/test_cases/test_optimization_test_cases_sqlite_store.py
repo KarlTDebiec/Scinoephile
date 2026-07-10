@@ -26,7 +26,7 @@ from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 def get_test_case(
     *,
     difficulty: int = 0,
-    prompt: bool = False,
+    few_shot: bool = False,
     verified: bool = False,
     query: dict[str, JsonValue] | None = None,
     answer: dict[str, JsonValue] | None = None,
@@ -45,7 +45,7 @@ def get_test_case(
         ),
         operation=manager_cls.operation,
         difficulty=difficulty,
-        prompt=prompt,
+        few_shot=few_shot,
         verified=verified,
         query=query,
         answer=answer,
@@ -117,7 +117,7 @@ def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
     low_metadata = get_test_case(difficulty=1)
     high_metadata = get_test_case(
         difficulty=3,
-        prompt=True,
+        few_shot=True,
         verified=True,
     )
     assert low_metadata.test_case_id == high_metadata.test_case_id
@@ -133,7 +133,7 @@ def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
     loaded = store.get_test_case(low_metadata.test_case_id)
     assert loaded is not None
     assert loaded.difficulty == 3
-    assert loaded.prompt
+    assert loaded.few_shot
     assert loaded.verified
     assert loaded.source_paths == ("high.json", "low.json")
 
@@ -145,7 +145,7 @@ def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
     retained = store.get_test_case(low_metadata.test_case_id)
     assert retained is not None
     assert retained.difficulty == 3
-    assert retained.prompt
+    assert retained.few_shot
     assert retained.verified
     assert retained.source_paths == ("low.json",)
 

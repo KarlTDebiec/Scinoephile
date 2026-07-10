@@ -71,7 +71,7 @@
       "subtitle_10": "The cops are on the prowl!"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -252,7 +252,7 @@
       "note_4": "Corrected 'if' to 'it' to match the intended meaning: 'cut it off'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -967,7 +967,7 @@
       "subtitle_6": "Are you calling your family or not?"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1245,7 +1245,7 @@
       "subtitle_16": "Find a sauna."
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1445,7 +1445,7 @@
       "subtitle_3": "Let's go have some fun?"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
