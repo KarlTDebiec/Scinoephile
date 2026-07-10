@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from enum import StrEnum
 from pathlib import Path
 
@@ -80,79 +80,76 @@ def audit_reviews(
             "simplified_reviewed": simplified_reviewed,
         }
         series = {
-            name: {
-                number: subtitle.text_with_newline
-                for number, subtitle in enumerate(subtitle_series, 1)
-            }
+            name: tuple(subtitle.text_with_newline for subtitle in subtitle_series)
             for name, subtitle_series in input_series.items()
         }
 
         # Match block-based notes against the complete inputs
-        traditional_notes = _get_review_notes(
-            traditional_json_path,
-            series["traditional"],
-            series["traditional_reviewed"],
-        )
-        traditional_simplified_notes = _get_review_notes(
-            traditional_simplified_json_path,
-            series["traditional_simplified"],
-            series["traditional_simplified_reviewed"],
-        )
-        simplified_notes = _get_review_notes(
-            simplified_json_path,
-            series["simplified"],
-            series["simplified_reviewed"],
-        )
-
-        # Limit report calculations to the requested subtitle range
-        series = {
-            name: {
-                number: event
-                for number, event in events.items()
-                if (first_index is None or number >= first_index)
-                and (last_index is None or number <= last_index)
-            }
-            for name, events in series.items()
+        notes = {
+            "traditional": _get_review_notes(
+                traditional_json_path,
+                series["traditional"],
+                series["traditional_reviewed"],
+            ),
+            "traditional_simplified": _get_review_notes(
+                traditional_simplified_json_path,
+                series["traditional_simplified"],
+                series["traditional_simplified_reviewed"],
+            ),
+            "simplified": _get_review_notes(
+                simplified_json_path,
+                series["simplified"],
+                series["simplified_reviewed"],
+            ),
         }
-        traditional_changes = _get_review_changes(
-            series["traditional"],
-            series["traditional_reviewed"],
-        )
-        traditional_simplified_changes = _get_review_changes(
-            series["traditional_simplified"],
-            series["traditional_simplified_reviewed"],
-        )
-        simplified_changes = _get_review_changes(
-            series["simplified"],
-            series["simplified_reviewed"],
-        )
-        final_discrepancies = _get_review_changes(
-            series["simplified_reviewed"],
-            series["traditional_simplified_reviewed"],
-        )
+
+        # Select the requested zero-based subtitle indexes
+        start_index = 0
+        if first_index is not None:
+            start_index = first_index - 1
+        stop_index = len(series["traditional"])
+        if last_index is not None:
+            stop_index = min(last_index, stop_index)
+        indexes = range(start_index, stop_index)
+
+        changes = {
+            "traditional": _get_changed_indexes(
+                series["traditional"],
+                series["traditional_reviewed"],
+                indexes,
+            ),
+            "traditional_simplified": _get_changed_indexes(
+                series["traditional_simplified"],
+                series["traditional_simplified_reviewed"],
+                indexes,
+            ),
+            "simplified": _get_changed_indexes(
+                series["simplified"],
+                series["simplified_reviewed"],
+                indexes,
+            ),
+            "final": _get_changed_indexes(
+                series["simplified_reviewed"],
+                series["traditional_simplified_reviewed"],
+                indexes,
+            ),
+        }
 
         normalized_characters = tuple(
             dict.fromkeys(character for value in characters for character in value)
         )
-        numbers = _get_filtered_numbers(
+        selected_indexes = _get_filtered_indexes(
             series=series,
-            traditional_changes=traditional_changes,
-            traditional_simplified_changes=traditional_simplified_changes,
-            simplified_changes=simplified_changes,
-            final_discrepancies=final_discrepancies,
+            changes=changes,
+            indexes=indexes,
             row_filter=row_filter,
             characters=normalized_characters,
         )
         return _format_markdown(
             series=series,
-            traditional_changes=traditional_changes,
-            traditional_simplified_changes=traditional_simplified_changes,
-            simplified_changes=simplified_changes,
-            final_discrepancies=final_discrepancies,
-            traditional_notes=traditional_notes,
-            traditional_simplified_notes=traditional_simplified_notes,
-            simplified_notes=simplified_notes,
-            numbers=numbers,
+            changes=changes,
+            notes=notes,
+            indexes=selected_indexes,
             row_filter=row_filter,
             characters=normalized_characters,
             first_index=first_index,
@@ -175,15 +172,10 @@ def _escape_cell(value: str) -> str:
 
 def _format_markdown(
     *,
-    series: Mapping[str, Mapping[int, str]],
-    traditional_changes: set[int],
-    traditional_simplified_changes: set[int],
-    simplified_changes: set[int],
-    final_discrepancies: set[int],
-    traditional_notes: Mapping[int, Sequence[str]],
-    traditional_simplified_notes: Mapping[int, Sequence[str]],
-    simplified_notes: Mapping[int, Sequence[str]],
-    numbers: Sequence[int],
+    series: Mapping[str, Sequence[str]],
+    changes: Mapping[str, set[int]],
+    notes: Mapping[str, Mapping[int, Sequence[str]]],
+    indexes: Sequence[int],
     row_filter: ReviewAuditFilter,
     characters: Sequence[str],
     first_index: int | None,
@@ -192,17 +184,10 @@ def _format_markdown(
     """Format a review audit as Markdown.
 
     Arguments:
-        series: subtitle text by internal series name and number
-        traditional_changes: traditional review changes by subtitle number
-        traditional_simplified_changes: traditional simplification review changes by
-            subtitle number
-        simplified_changes: simplified review changes by subtitle number
-        final_discrepancies: final discrepancies by subtitle number
-        traditional_notes: traditional review notes by subtitle number
-        traditional_simplified_notes: traditional simplification review notes by
-            subtitle number
-        simplified_notes: simplified review notes by subtitle number
-        numbers: subtitle numbers to include
+        series: subtitle text by internal series name
+        changes: changed subtitle indexes by review name
+        notes: review notes by review name and subtitle index
+        indexes: zero-based subtitle indexes to include
         row_filter: active row filter
         characters: active character filter
         first_index: first included 1-indexed subtitle number
@@ -211,41 +196,43 @@ def _format_markdown(
         Markdown report
     """
     row_lines: list[str] = []
-    for number in numbers:
-        if number not in final_discrepancies:
-            final_cell = series["simplified_reviewed"][number]
+    note_sources = (
+        ("Simplified review", notes["simplified"]),
+        ("Traditional review", notes["traditional"]),
+        ("Traditional simplification review", notes["traditional_simplified"]),
+    )
+    for index in indexes:
+        if index not in changes["final"]:
+            final_cell = series["simplified_reviewed"][index]
         else:
             final_cell = (
-                f"{series['simplified_reviewed'][number]}\n"
-                f"{series['traditional_simplified_reviewed'][number]}"
+                f"{series['simplified_reviewed'][index]}\n"
+                f"{series['traditional_simplified_reviewed'][index]}"
             )
 
         note_lines: list[str] = []
-        note_sources = (
-            ("Simplified review", simplified_notes),
-            ("Traditional review", traditional_notes),
-            ("Traditional simplification review", traditional_simplified_notes),
-        )
-        for label, notes in note_sources:
-            note_lines.extend(f"{label}: {note}" for note in notes.get(number, ()))
+        for label, review_notes in note_sources:
+            note_lines.extend(
+                f"{label}: {note}" for note in review_notes.get(index, ())
+            )
 
         row_lines.append(
             "| "
             + " | ".join(
                 (
-                    _escape_cell(str(number)),
+                    _escape_cell(str(index + 1)),
                     _escape_cell(
                         _format_review_cell(
-                            number,
-                            simplified_changes,
+                            index,
+                            changes["simplified"],
                             series["simplified"],
                             series["simplified_reviewed"],
                         )
                     ),
                     _escape_cell(
                         _format_review_cell(
-                            number,
-                            traditional_changes,
+                            index,
+                            changes["traditional"],
                             series["traditional"],
                             series["traditional_reviewed"],
                         )
@@ -262,13 +249,13 @@ def _format_markdown(
         "",
         "## Summary",
         "",
-        f"- simplified review edits: {len(simplified_changes)}",
-        f"- traditional review edits: {len(traditional_changes)}",
+        f"- simplified review edits: {len(changes['simplified'])}",
+        f"- traditional review edits: {len(changes['traditional'])}",
         (
             "- traditional simplification review edits: "
-            f"{len(traditional_simplified_changes)}"
+            f"{len(changes['traditional_simplified'])}"
         ),
-        f"- final text discrepancies: {len(final_discrepancies)}",
+        f"- final text discrepancies: {len(changes['final'])}",
         f"- row filter: {row_filter.value}",
     ]
     if characters:
@@ -301,103 +288,97 @@ def _format_markdown(
 
 
 def _format_review_cell(
-    number: int,
-    changes: set[int],
-    original: Mapping[int, str],
-    reviewed: Mapping[int, str],
+    index: int,
+    changed_indexes: set[int],
+    original: Sequence[str],
+    reviewed: Sequence[str],
 ) -> str:
     """Format one initial-review table cell.
 
     Arguments:
-        number: subtitle number
-        changes: subtitle numbers changed during review
-        original: original subtitle text by number
-        reviewed: reviewed subtitle text by number
+        index: zero-based subtitle index
+        changed_indexes: subtitle indexes changed during review
+        original: original subtitle text
+        reviewed: reviewed subtitle text
     Returns:
         formatted review text
     """
-    if number not in changes:
-        return reviewed[number]
-    return f"{original[number]}\n{reviewed[number]}"
+    if index not in changed_indexes:
+        return reviewed[index]
+    return f"{original[index]}\n{reviewed[index]}"
 
 
-def _get_filtered_numbers(
+def _get_changed_indexes(
+    original: Sequence[str],
+    reviewed: Sequence[str],
+    indexes: Iterable[int],
+) -> set[int]:
+    """Get subtitle indexes changed during review.
+
+    Arguments:
+        original: original subtitle text
+        reviewed: reviewed subtitle text
+        indexes: zero-based subtitle indexes to compare
+    Returns:
+        changed subtitle indexes
+    """
+    return {index for index in indexes if original[index] != reviewed[index]}
+
+
+def _get_filtered_indexes(
     *,
-    series: Mapping[str, Mapping[int, str]],
-    traditional_changes: set[int],
-    traditional_simplified_changes: set[int],
-    simplified_changes: set[int],
-    final_discrepancies: set[int],
+    series: Mapping[str, Sequence[str]],
+    changes: Mapping[str, set[int]],
+    indexes: Iterable[int],
     row_filter: ReviewAuditFilter,
     characters: Sequence[str],
 ) -> list[int]:
-    """Get subtitle numbers selected for the report.
+    """Get subtitle indexes selected for the report.
 
     Arguments:
-        series: subtitle text by internal series name and number
-        traditional_changes: traditional review changes by subtitle number
-        traditional_simplified_changes: traditional simplification review changes by
-            subtitle number
-        simplified_changes: simplified review changes by subtitle number
-        final_discrepancies: final discrepancies by subtitle number
+        series: subtitle text by internal series name
+        changes: changed subtitle indexes by review name
+        indexes: zero-based subtitle indexes eligible for inclusion
         row_filter: row status filter
         characters: optional character filter
     Returns:
-        selected subtitle numbers
+        selected subtitle indexes
     """
     if row_filter is ReviewAuditFilter.all:
-        numbers = set(series["traditional"])
+        selected_indexes = set(indexes)
     elif row_filter is ReviewAuditFilter.changes:
-        numbers = (
-            traditional_changes
-            | traditional_simplified_changes
-            | simplified_changes
-            | final_discrepancies
-        )
+        selected_indexes = {
+            index for changed_indexes in changes.values() for index in changed_indexes
+        }
     else:
-        numbers = final_discrepancies.copy()
+        selected_indexes = changes["final"].copy()
 
     if characters:
-        numbers = {
-            number
-            for number in numbers
+        selected_indexes = {
+            index
+            for index in selected_indexes
             if any(
-                character in events[number]
-                for events in series.values()
+                character in subtitles[index]
+                for subtitles in series.values()
                 for character in characters
             )
         }
-    return sorted(numbers)
-
-
-def _get_review_changes(
-    original: Mapping[int, str],
-    reviewed: Mapping[int, str],
-) -> set[int]:
-    """Get subtitle numbers changed during review.
-
-    Arguments:
-        original: original subtitle text by number
-        reviewed: reviewed subtitle text by number
-    Returns:
-        changed subtitle numbers
-    """
-    return {number for number, text in original.items() if text != reviewed[number]}
+    return sorted(selected_indexes)
 
 
 def _get_review_notes(
     json_path: Path | None,
-    original: Mapping[int, str],
-    reviewed: Mapping[int, str],
+    original: Sequence[str],
+    reviewed: Sequence[str],
 ) -> dict[int, tuple[str, ...]]:
     """Load review notes and match their blocks to subtitle text.
 
     Arguments:
         json_path: optional review JSON path
-        original: original subtitle text by number
-        reviewed: reviewed subtitle text by number
+        original: original subtitle text
+        reviewed: reviewed subtitle text
     Returns:
-        review notes keyed by subtitle number
+        review notes keyed by zero-based subtitle index
     Raises:
         ValueError: if review JSON has an invalid or mismatched structure
     """
@@ -408,10 +389,9 @@ def _get_review_notes(
     if not isinstance(data, list):
         raise ValueError(f"Review JSON must contain a list: {json_path}")
 
-    ordered_numbers = list(original)
-    original_texts = list(original.values())
-    reviewed_texts = list(reviewed.values())
-    notes_by_number: dict[int, list[str]] = {}
+    original_texts = list(original)
+    reviewed_texts = list(reviewed)
+    notes_by_index: dict[int, list[str]] = {}
     for case_index, raw_case in enumerate(data, 1):
         review_case = _parse_review_case(raw_case, case_index, json_path)
         if review_case is None:
@@ -436,8 +416,8 @@ def _get_review_notes(
                     != revised_texts[local_index - 1]
                 ):
                     continue
-                number = ordered_numbers[start + local_index - 1]
-                notes = notes_by_number.setdefault(number, [])
+                index = start + local_index - 1
+                notes = notes_by_index.setdefault(index, [])
                 if note not in notes:
                     notes.append(note)
                 matched_note_fields.add(local_index)
@@ -451,7 +431,7 @@ def _get_review_notes(
                 f"match reviewed SRT text: {json_path}"
             )
 
-    return {number: tuple(notes) for number, notes in sorted(notes_by_number.items())}
+    return {index: tuple(notes) for index, notes in sorted(notes_by_index.items())}
 
 
 def _parse_review_case(
