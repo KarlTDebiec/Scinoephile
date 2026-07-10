@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
 from typing import Any, ClassVar
 
 from pydantic import Field, create_model, model_validator
@@ -49,6 +50,7 @@ class Manager(ABC):
         raise NotImplementedError
 
     @classmethod
+    @cache
     def get_test_case_cls[TTestCase: TestCase](
         cls,
         prompt_cls: type[Prompt],
