@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from collections.abc import Sequence
 from pathlib import Path
 
 from scinoephile.analysis.review_audit import ReviewAuditFilter, audit_reviews
@@ -233,6 +234,7 @@ class AuditCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",
+            default=(),
             metavar="CHARACTER",
             nargs="+",
             help=(
@@ -267,7 +269,7 @@ class AuditCli(ScinoephileCliBase):
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
         row_filter: ReviewAuditFilter,
-        characters: list[str] | None,
+        characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
         outfile_path: Path | None,
@@ -290,7 +292,7 @@ class AuditCli(ScinoephileCliBase):
                 traditional_json_path=traditional_json_path,
                 traditional_simplified_json_path=traditional_simplified_json_path,
                 row_filter=row_filter,
-                characters=characters or (),
+                characters=characters,
                 first_index=first_index,
                 last_index=last_index,
             )
