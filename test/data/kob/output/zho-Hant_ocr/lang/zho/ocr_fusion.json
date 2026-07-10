@@ -9,7 +9,7 @@
       "note": "省略了 Google Lens 中存在但 PaddleOCR 中不存在的换行符。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -46,7 +46,7 @@
       "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的〝爹，〞；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -59,7 +59,7 @@
       "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -96,7 +96,7 @@
       "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -193,7 +193,7 @@
       "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 2,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -242,7 +242,7 @@
       "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 2,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -327,7 +327,7 @@
       "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -652,7 +652,7 @@
       "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 2,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -773,7 +773,7 @@
       "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
     },
     "difficulty": 2,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1374,7 +1374,7 @@
       "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

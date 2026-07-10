@@ -127,7 +127,6 @@ class OcrProcessCli(ScinoephileCliBase):
         )
         arg_groups["input arguments"].add_argument(
             "--stream-index",
-            default=None,
             type=int_arg(min_value=0),
             help="media subtitle stream index when infile is media",
         )

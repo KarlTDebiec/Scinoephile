@@ -30,7 +30,7 @@ class GuidedReviewManager(Manager):
 
     operation: ClassVar[str] = "guided-review"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[GuidedReviewPrompt] = GuidedReviewPrompt.from_attributes()
+    base_prompt: ClassVar[GuidedReviewPrompt] = GuidedReviewPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -39,7 +39,7 @@ class GuidedReviewManager(Manager):
         cls,
         target_size: int,
         guide_size: int,
-        prompt: GuidedReviewPrompt = GuidedReviewPrompt.from_attributes(),
+        prompt: GuidedReviewPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided block sizes.
 
@@ -70,7 +70,7 @@ class GuidedReviewManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "target_size", target_size)
         setattr(model, "guide_size", guide_size)
         return model
@@ -81,7 +81,7 @@ class GuidedReviewManager(Manager):
         cls,
         target_size: int,
         guide_size: int,
-        prompt: GuidedReviewPrompt = GuidedReviewPrompt.from_attributes(),
+        prompt: GuidedReviewPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided block sizes.
 
@@ -113,7 +113,7 @@ class GuidedReviewManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "target_size", target_size)
         setattr(model, "guide_size", guide_size)
         return model
@@ -124,7 +124,7 @@ class GuidedReviewManager(Manager):
         cls,
         target_size: int,
         guide_size: int,
-        prompt: GuidedReviewPrompt = GuidedReviewPrompt.from_attributes(),
+        prompt: GuidedReviewPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided block sizes.
 
@@ -151,7 +151,7 @@ class GuidedReviewManager(Manager):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "target_size", target_size)
         setattr(model, "guide_size", guide_size)
         setattr(model, "get_auto_verified", cls.get_auto_verified)
@@ -207,7 +207,7 @@ class GuidedReviewManager(Manager):
         """
         if model.answer is None:
             return 0
-        prompt: GuidedReviewPrompt = getattr(model, "llm_prompt")
+        prompt: GuidedReviewPrompt = getattr(model, "prompt")
         target_size: int = getattr(model, "target_size")
         for idx in range(1, target_size + 1):
             target = getattr(model.query, prompt.target(idx))
@@ -227,7 +227,7 @@ class GuidedReviewManager(Manager):
         """
         if model.answer is None:
             return model
-        prompt: GuidedReviewPrompt = getattr(model, "llm_prompt")
+        prompt: GuidedReviewPrompt = getattr(model, "prompt")
         target_size: int = getattr(model, "target_size")
         for idx in range(1, target_size + 1):
             target = getattr(model.query, prompt.target(idx))

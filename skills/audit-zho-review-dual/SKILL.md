@@ -1,51 +1,50 @@
 ---
 name: audit-zho-review-dual
-description: Use when auditing standard Chinese OCR datasets across zho-Hans review, zho-Hant review, and final zho-Hans versus simplified zho-Hant outputs in one combined table.
+description: Audit standard Chinese OCR subtitle reviews across zho-Hans, zho-Hant, and simplified zho-Hant tracks, including review notes, character-focused checks, and final script discrepancies.
 ---
 
 # Audit Zho Review Dual
 
-Use this workflow when a Zho OCR dataset needs one table that shows:
+Use `scinoephile audit` to produce one table showing:
 
-- what zho-Hans review changed
-- what zho-Hant review changed
-- what still differs between final zho-Hans and final simplified zho-Hant
+- zho-Hans review changes
+- zho-Hant review changes
+- simplified zho-Hant review changes
+- final zho-Hans versus simplified zho-Hant discrepancies
 
-This is useful when review decisions should be checked across both scripts at
-the same subtitle number.
+Run commands from the repository root.
 
-Important:
+## Protect source data
 
 - Never edit files under `test/data/<dataset>/input/`.
-- Do not edit generated reviewed, flattened, simplified, or romanized SRT files
-  directly.
-- Edit review JSON files for review corrections, then regenerate reviewed
-  outputs from them.
+- Do not edit generated reviewed, flattened, simplified, or romanized SRT files.
+- Apply review corrections only to the relevant review JSON, then regenerate
+  outputs.
 - Edit `fuse_clean_validate.srt` and `image/index.html` only when the user
-  explicitly asks for an OCR validation-source correction.
+  explicitly requests an OCR validation-source correction.
 
-## Inputs
+## Run an OCR dataset
 
-The audit uses these OCR files:
+Replace `<dataset>` and run:
 
-- `test/data/<dataset>/output/zho-Hans_ocr/fuse_clean_validate.srt`
-- `test/data/<dataset>/output/zho-Hans_ocr/fuse_clean_validate_review.srt`
-- `test/data/<dataset>/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt`
-- `test/data/<dataset>/output/zho-Hant_ocr/fuse_clean_validate.srt`
-- `test/data/<dataset>/output/zho-Hant_ocr/fuse_clean_validate_review.srt`
-- `test/data/<dataset>/output/zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify_review.srt`
+```shell
+UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit \
+  --simplified test/data/<dataset>/output/zho-Hans_ocr/fuse_clean_validate.srt \
+  --simplified-reviewed test/data/<dataset>/output/zho-Hans_ocr/fuse_clean_validate_review.srt \
+  --traditional test/data/<dataset>/output/zho-Hant_ocr/fuse_clean_validate.srt \
+  --traditional-reviewed test/data/<dataset>/output/zho-Hant_ocr/fuse_clean_validate_review.srt \
+  --traditional-simplified test/data/<dataset>/output/zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt \
+  --traditional-simplified-reviewed test/data/<dataset>/output/zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify_review.srt \
+  --simplified-json test/data/<dataset>/output/zho-Hans_ocr/lang/zho/review.json \
+  --traditional-json test/data/<dataset>/output/zho-Hant_ocr/lang/zho/review.json \
+  --traditional-simplified-json test/data/<dataset>/output/zho-Hant_ocr/lang/zho/simplify_review.json
+```
 
-Edit these review JSON files when applying review corrections:
+`--simplified-reviewed` is both the reviewed zho-Hans track and the
+simplified-side input to the final comparison. The command exits if the six SRT
+tracks do not contain the same number of subtitles.
 
-- `test/data/<dataset>/output/zho-Hans_ocr/lang/zho/review.json`
-- `test/data/<dataset>/output/zho-Hant_ocr/lang/zho/review.json`
-- `test/data/<dataset>/output/zho-Hant_ocr/lang/zho/simplify_review.json`
-
-All audited Zho OCR SRT files should share subtitle numbers and timings.
-
-## Run
-
-On Windows, set UTF-8 first:
+On PowerShell, configure UTF-8 before running commands that print subtitles:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
@@ -55,56 +54,43 @@ $env:PYTHONUTF8 = "1"
 $env:PYTHONIOENCODING = "utf-8"
 ```
 
-Run the bundled script from the repository root:
+## Focus the audit
 
-```powershell
-uv run python skills/audit-zho-review-dual/scripts/audit_zho_review_dual.py --dataset tmm
+The default `--filter changes` includes every review change and final
+discrepancy. Use `--filter discrepancies` for final discrepancies only, or
+`--filter all` for every subtitle.
+
+Add `--characters` to keep only rows containing any requested character in any
+track. Values may be separate or combined. Simplified and traditional variants
+are included automatically. Zho characters commonly worth checking include
+`著`, `着`, `甚`, and `什`.
+
+For example, append this for a complete occurrence audit:
+
+```shell
+--filter all --characters 著 着 甚 什
 ```
 
-To limit the audit to a subtitle-number range, pass `--first-index` and/or
-`--last-index`. These bounds are 1-indexed subtitle numbers and are inclusive:
+Use inclusive 1-indexed bounds with `--first-index` and `--last-index`. The CLI
+prints Markdown to stdout by default; use `--outfile <path>.md` for a large
+report that needs inspection before presentation.
 
-```powershell
-uv run python skills/audit-zho-review-dual/scripts/audit_zho_review_dual.py --dataset tmm --first-index 1 --last-index 200
-```
+## Review the report
 
-The script prints Markdown directly to stdout for review in the
-console/conversation. Do not redirect to an intermediate `.md` file during
-normal runs.
+Inspect every displayed row. Compare the two initial review columns for
+asymmetric corrections, the traditional-simplified review for final cleanup,
+and the final comparison for remaining simplification, lexical, OCR,
+punctuation, or whitespace issues.
 
-The script fails before printing the table if any audited SRT file disagrees on
-subtitle numbers or timings.
+The JSON arguments populate `Notes` with the reasons recorded for matching
+review changes. Preserve useful JSON notes. Before presenting the report, fill
+every remaining blank note with one concise judgment based on the row. Do not
+use placeholders such as `N/A` or `-`.
 
-## Interpret
+If one script makes an appropriate lexical, OCR, or punctuation correction and
+the other contains the same underlying issue, flag the asymmetry. Prefer making
+the correction in the corresponding initial review instead of relying on later
+simplification cleanup.
 
-Review the union table row by row. A row appears when at least one of these is
-true:
-
-- zho-Hans review changed the subtitle
-- zho-Hant review changed the subtitle
-- final zho-Hans text differs from final simplified zho-Hant text
-
-Use the zho-Hans and zho-Hant columns to check whether both scripts made the
-same approved correction at the same subtitle number. Use the final-comparison
-column to find remaining simplification, OCR, punctuation, or whitespace issues.
-
-Flag asymmetric review corrections as discrepancies. If one script makes an
-approved OCR, punctuation, or lexical correction and the corresponding
-other-script line has the same underlying issue, the other script should usually
-make the same correction in its initial review instead of leaving it to
-simplification review or final comparison.
-
-Manual review rule:
-
-- The script intentionally leaves `Notes` blank; fill every row manually before
-  sending a user-facing audit table.
-- Do not change subtitle numbers, text columns, or summary lines.
-- Write one concise note per row describing the review behavior or remaining
-  discrepancy.
-- Do not send a table with any blank Notes cell.
-
-Output safety rule:
-
-- Do not wrap the report in code fences.
-- The final user-facing audit response must begin with the report title, such as
-  `# tmm Zho Review Dual`, and contain only raw Markdown report content.
+Return the complete raw Markdown report. Do not wrap it in a code fence and do
+not replace it with a summary.

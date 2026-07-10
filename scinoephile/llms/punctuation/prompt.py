@@ -4,52 +4,50 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from typing import ClassVar
+from dataclasses import dataclass
 
 from scinoephile.core.llms import Prompt
 
 __all__ = ["PunctuationPrompt"]
 
 
-class PunctuationPrompt(Prompt, ABC):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class PunctuationPrompt(Prompt):
     """Text for LLM correspondence for punctuation."""
 
-    __slots__ = ()
-
     # Query fields
-    src_1: ClassVar[str] = "one"
+    src_1: str = "one"
     """Name of source one field in query."""
 
-    src_1_desc: ClassVar[str] = "Subtitle texts from source one"
+    src_1_desc: str = "Subtitle texts from source one"
     """Description of source one field in query."""
 
-    src_2: ClassVar[str] = "two"
+    src_2: str = "two"
     """Name of source two field in query."""
 
-    src_2_desc: ClassVar[str] = "Subtitle text from source two"
+    src_2_desc: str = "Subtitle text from source two"
     """Description of source two field in query."""
 
     # Query validation errors
-    src_1_missing_err: ClassVar[str] = "Subtitle texts from source one are required."
+    src_1_missing_err: str = "Subtitle texts from source one are required."
     """Error when source one field is missing from query."""
 
-    src_2_missing_err: ClassVar[str] = "Subtitle text from source two is required."
+    src_2_missing_err: str = "Subtitle text from source two is required."
     """Error when source two field is missing from query."""
 
     # Answer fields
-    output: ClassVar[str] = "output"
+    output: str = "output"
     """Name of output field in answer."""
 
-    output_desc: ClassVar[str] = "Output subtitle text"
+    output_desc: str = "Output subtitle text"
     """Description of output field in answer."""
 
     # Answer validation errors
-    output_missing_err: ClassVar[str] = "Output subtitle text is required."
+    output_missing_err: str = "Output subtitle text is required."
     """Error when output field is missing from answer."""
 
     # Test case validation errors
-    src_1_chars_changed_err_tpl: ClassVar[str] = (
+    src_1_chars_changed_err_tpl: str = (
         "Answer output stripped of punctuation and whitespace does not match query "
         "source one concatenated:\n"
         "Expected: {expected}\n"

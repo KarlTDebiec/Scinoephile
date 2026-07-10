@@ -22,14 +22,14 @@ class PunctuationManager(Manager):
 
     operation: ClassVar[str] = "punctuation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[PunctuationPrompt] = PunctuationPrompt.from_attributes()
+    base_prompt: ClassVar[PunctuationPrompt] = PunctuationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt: PunctuationPrompt = PunctuationPrompt.from_attributes(),
+        prompt: PunctuationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -61,14 +61,14 @@ class PunctuationManager(Manager):
             __validators__=validators,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
     @cache
     def get_answer_cls(
         cls,
-        prompt: PunctuationPrompt = PunctuationPrompt.from_attributes(),
+        prompt: PunctuationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -96,7 +96,7 @@ class PunctuationManager(Manager):
             __validators__=validators,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
@@ -119,7 +119,7 @@ class PunctuationManager(Manager):
         Returns:
             validated query
         """
-        prompt: PunctuationPrompt = getattr(model, "llm_prompt")
+        prompt: PunctuationPrompt = getattr(model, "prompt")
         source_one = getattr(model, prompt.src_1, None)
         source_two = getattr(model, prompt.src_2, None)
         if not source_one:
@@ -137,7 +137,7 @@ class PunctuationManager(Manager):
         Returns:
             validated answer
         """
-        prompt: PunctuationPrompt = getattr(model, "llm_prompt")
+        prompt: PunctuationPrompt = getattr(model, "prompt")
         output = getattr(model, prompt.output, None)
         if not output:
             raise ValueError(prompt.output_missing_err)

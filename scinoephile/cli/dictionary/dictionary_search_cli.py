@@ -84,7 +84,6 @@ class DictionarySearchCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--database-path",
-            default=None,
             type=input_file_arg(),
             help=(
                 "SQLite database input path for one dictionary; omit to use runtime "

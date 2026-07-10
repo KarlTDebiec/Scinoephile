@@ -111,14 +111,12 @@ class ProofreadCli(ScinoephileCliBase):
         guide_input_group.add_argument(
             "--pairwise-guide-infile",
             dest="pairwise_guide_infile_path",
-            default=None,
             type=input_file_arg(),
             help="pairwise guide subtitle infile",
         )
         guide_input_group.add_argument(
             "--guide-infile",
             dest="guide_infile_path",
-            default=None,
             type=input_file_arg(),
             help="guide subtitle infile for guided review",
         )
@@ -126,14 +124,12 @@ class ProofreadCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
-            default=None,
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
             help="subtitle language tag (detected from infile if omitted)",
         )
         arg_groups["operation arguments"].add_argument(
             "--reference-language",
-            default=None,
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
             help=(
@@ -148,7 +144,6 @@ class ProofreadCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
             type=output_file_arg(exist_ok=True),
             help="subtitle outfile path (default: stdout)",

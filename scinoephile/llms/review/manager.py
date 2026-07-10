@@ -29,7 +29,7 @@ class ReviewManager(Manager):
 
     operation: ClassVar[str] = "review"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[ReviewPrompt] = ReviewPrompt.from_attributes()
+    base_prompt: ClassVar[ReviewPrompt] = ReviewPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -37,7 +37,7 @@ class ReviewManager(Manager):
     def get_answer_cls(
         cls,
         size: int,
-        prompt: ReviewPrompt = ReviewPrompt.from_attributes(),
+        prompt: ReviewPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -63,7 +63,7 @@ class ReviewManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         return model
 
@@ -72,7 +72,7 @@ class ReviewManager(Manager):
     def get_query_cls(
         cls,
         size: int,
-        prompt: ReviewPrompt = ReviewPrompt.from_attributes(),
+        prompt: ReviewPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -95,7 +95,7 @@ class ReviewManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         return model
 
@@ -104,7 +104,7 @@ class ReviewManager(Manager):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt: ReviewPrompt = ReviewPrompt.from_attributes(),
+        prompt: ReviewPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -129,7 +129,7 @@ class ReviewManager(Manager):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)
@@ -164,10 +164,7 @@ class ReviewManager(Manager):
             equivalently sized test-case class
         """
         size: int = getattr(test_case_cls, "size")
-        return cls.get_test_case_cls(
-            size=size,
-            prompt=cast(ReviewPrompt, prompt),
-        )
+        return cls.get_test_case_cls(size=size, prompt=cast(ReviewPrompt, prompt))
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:
@@ -178,7 +175,7 @@ class ReviewManager(Manager):
         Returns:
             minimum difficulty
         """
-        prompt: ReviewPrompt = getattr(model, "llm_prompt")
+        prompt: ReviewPrompt = getattr(model, "prompt")
         size: int = getattr(model, "size")
         min_difficulty = 0
         if model.answer is None:
@@ -200,7 +197,7 @@ class ReviewManager(Manager):
         Returns:
             validated test case
         """
-        prompt: ReviewPrompt = getattr(model, "llm_prompt")
+        prompt: ReviewPrompt = getattr(model, "prompt")
         size: int = getattr(model, "size")
         if model.answer is None:
             return model

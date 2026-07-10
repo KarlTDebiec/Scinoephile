@@ -9,7 +9,7 @@
       "note": "Used 'So' instead of '80'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -22,7 +22,7 @@
       "note": "Used lower-case 'our'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -83,7 +83,7 @@
       "note": "Used lower-case 'why'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -108,7 +108,7 @@
       "note": "Used ' ' instead of '\n'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -133,7 +133,7 @@
       "note": "Placed '-' on second line."
     },
     "difficulty": 2,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -230,7 +230,7 @@
       "note": "Added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -243,7 +243,7 @@
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

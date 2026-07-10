@@ -9,7 +9,7 @@
       "note": "Corrected '临盘' to '临盆' as '临盆' is the correct term for childbirth."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -33,7 +33,7 @@
       "note": "Corrected '荔枝角度' to '荔枝角道' and '大角咀度' to '大角咀道' as '道' is the correct word for 'road' in both cases."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -57,7 +57,7 @@
       "output": "都系唔好：",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -80,7 +80,7 @@
       "output": "转下，转下⋯都系唔好：",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -93,7 +93,7 @@
       "note": "Corrected '阿街路街' to '亚皆老街' as it is a mishearing of the street name '亚皆老街'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -117,7 +117,7 @@
       "output": "飞下，飞下⋯",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -142,7 +142,7 @@
       "note": "Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for 'temple' and matches the meaning of '额角' in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -178,7 +178,7 @@
       "note": "Corrected '异象' to '异像' as '异像' is the correct term in this context."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -301,7 +301,7 @@
       "output": "嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -326,7 +326,7 @@
       "note": "Corrected '救运' to '够运' as '够运' is the correct term for being lucky, matching the original meaning."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -361,7 +361,7 @@
       "note": "Corrected '唔返去冒运行' to '都行运定咗' as the original phrase was a mishearing; '行运定咗' matches the meaning of '行运定了'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -397,7 +397,7 @@
       "note": "Corrected '滴嘟' to '嘀督' to match the intended sound and meaning of '嘀督' as a phonetic rendering of '嘀督' (答应了)."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -432,7 +432,7 @@
       "note": "Corrected '话自周人烦' to '话似周润发' as it is a mishearing of the actor's name, matching the meaning in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -500,7 +500,7 @@
       "output": "咦，麦太，咩唔见你一排",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -513,7 +513,7 @@
       "note": "Corrected '脚刮囊' to '脚瓜囊' as '脚瓜囊' is the correct Cantonese term for 'calf', matching the meaning of '小腿'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -761,7 +761,7 @@
       "note": "Corrected '噏文' to '噏乜' as '噏乜' (what he's saying) matches the meaning of '他的说话', while '噏文' is likely a mishearing."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -798,7 +798,7 @@
       "note": "Cleared as '都唔好湾吉校坟交涉白！' bears no resemblance to the original phrase '也不能忘记校训九十八！' and is clearly a pure artifact."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -811,7 +811,7 @@
       "note": "Corrected '嗰个位同学' to '各位同学' as '嗰个位' is a mishearing of '各位', which is the correct address for a group."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -857,7 +857,7 @@
       "output": "交！",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -926,7 +926,7 @@
       "note": "Corrected '失魂' to '游魂' as '游魂' matches the meaning of '游魂' in the 中文, while '失魂' is a likely mishearing; Corrected '班主有Miss Chan' to '班主任Miss Chan' for proper transcription of 'class teacher'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1147,7 +1147,7 @@
       "note": "Corrected 'Orange' to '屙－烂－煮' as '屙－烂－煮' appears to be an indentional transliteration of 'orange' into Chinese characters, matching the styling in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1367,7 +1367,7 @@
       "note": "Added '河粉' after '鱼蛋' to match the intended meaning of '鱼蛋河粉' in the 中文, as '好' is likely a mishearing of '河粉'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1414,7 +1414,7 @@
       "note": "Corrected '蜜丸粗啊' to '墨鱼丸粗面啊' as '蜜丸' is a mishearing of '墨鱼丸', and added '面' to match the intended dish."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1620,7 +1620,7 @@
       "note": "Corrected '阿伦厨' to '屙兰煮' as it is a likely mishearing and matches the intended pun on 'orange' ('屙﹣兰﹣煮') in the context; Also corrected 'Ballana' to '芭﹣娜﹣娜' as it is a mishearing of 'Banana', and is meant to be styled in the same phonetic manner as '屙﹣兰﹣煮'."
     },
     "difficulty": 3,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1790,7 +1790,7 @@
       "note": "Corrected 'mcticege' to '麦太世界' to match the style of the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1992,7 +1992,7 @@
       "note": "Corrected '别节' to '别致' as '别致' is the correct term for 'unique' or 'special', matching the meaning in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2167,7 +2167,7 @@
       "note": "Corrected '纸包鸡' to '纸鸡包'"
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2348,7 +2348,7 @@
       "output": "佢，一、二、三、四、五、六、七",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2361,7 +2361,7 @@
       "note": "Removed '字幕由Amara.org' as it is not part of the spoken content and is an artifact from subtitle credits in the training set."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2635,7 +2635,7 @@
       "note": "Cleared as '嗨！' bears no resemblance to the original phrase '校长早晨！' and is clearly a complete mismatch."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2670,7 +2670,7 @@
       "note": "Corrected '好迪士尼呢同埋HelloTT呢' to '嗰度有 Disney 同埋 Hello Kitty'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2899,7 +2899,7 @@
       "output": "唔使！同佢打多支针添呢！",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2955,7 +2955,7 @@
       "output": "妈妈我唔想食药水呀",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2979,7 +2979,7 @@
       "output": "我唔食士多啤梨药水呀！",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3093,7 +3093,7 @@
       "output": "嚟啦，食多更！",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3150,7 +3150,7 @@
       "output": "我饮下一格，又一格，又一格⋯",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3186,7 +3186,7 @@
       "note": "Corrected '饮实' to '饮晒' as '饮晒' means 'drink it all', matching the meaning of '喝光了' in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3221,7 +3221,7 @@
       "note": "Corrected '阿哋' to '我哋' as '我哋' is the correct Cantonese pronoun for 'we', while '阿哋' is likely a mishearing."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3244,7 +3244,7 @@
       "output": "呢，你话我返就同我去马尔代夫㗎嘛！",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3302,7 +3302,7 @@
       "output": "妈妈我唔系讲喇㗎，又系你话嘅⋯",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3336,7 +3336,7 @@
       "output": "唔系㖞，妈妈你话好咗就同我去㗎㖞",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3436,7 +3436,7 @@
       "output": "系喇系喇系喇，发咗喇",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -8851,7 +8851,7 @@
       "output": "唔好意思，特餐卖晒嘅",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -8898,7 +8898,7 @@
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -9101,7 +9101,7 @@
       "output": "唔好意思，午餐卖晒",
       "note": ""
     },
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

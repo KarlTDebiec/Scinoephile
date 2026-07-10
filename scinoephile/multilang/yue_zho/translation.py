@@ -5,18 +5,13 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import ClassVar
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.yue.prompts import PromptYueHant
-from scinoephile.lang.zho.script.conversion import (
-    OpenCCConfig,
-    get_zho_text_converted,
-)
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.gap_translation import GapTranslationPrompt
 from scinoephile.llms.guided_translation import GuidedTranslationPrompt
-from scinoephile.llms.prompt_definition import define_prompt
 from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
@@ -29,26 +24,13 @@ __all__ = [
 ]
 
 
-@define_prompt(TranslationPrompt, Language.yue_hant, parent=PromptYueHant)
-class YueZhoTranslationPromptYueHant:
-    """Text for traditional written Cantonese translation from Chinese."""
-
-    # Dictionary tool
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。"
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。"
-    )
-    """Description of the dictionary lookup query parameter."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+YueZhoTranslationPromptYueHant = TranslationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    dictionary_tool_name="lookup_dictionary",
+    dictionary_tool_description="查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。",
+    dictionary_tool_query_description="要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。",
+    base_system_prompt=dedent_and_compact("""
         你負責根據中文字幕，創作對應嘅粵文字幕。
 
         每條中文字幕都要輸出一條粵文字幕。譯文要用自然、通順嘅書面粵語，
@@ -58,54 +40,27 @@ class YueZhoTranslationPromptYueHant:
 
         輸出內容只可以係生成嘅粵文字幕正文。絕對唔好附加英文、備註、解釋、標籤、
         替代譯文、方括號內容、括號內容，或者任何字幕以外嘅説明。
-        """)
-    """Base system prompt."""
-
-    # Query fields
-    input_pfx: ClassVar[str] = "zhongwen_"
-    """Prefix for Chinese source fields in query."""
-
-    input_desc_tpl: ClassVar[str] = "要翻譯成粵文嘅中文字幕 {idx}"
-    """Description template for Chinese source fields in query."""
-
-    # Answer fields
-    output_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for generated written Cantonese output fields in answer."""
-
-    output_desc_tpl: ClassVar[str] = "字幕 {idx} 對應嘅粵文譯文"
-    """Description template for generated written Cantonese output fields."""
-
-
-@define_prompt(
-    TranslationPrompt,
-    Language.yue_hans,
-    parent=YueZhoTranslationPromptYueHant,
-    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+        """),
+    input_pfx="zhongwen_",
+    input_desc_tpl="要翻譯成粵文嘅中文字幕 {idx}",
+    output_pfx="yuewen_",
+    output_desc_tpl="字幕 {idx} 對應嘅粵文譯文",
 )
-class YueZhoTranslationPromptYueHans:
-    """Text for simplified written Cantonese translation from Chinese."""
+"""Text for traditional written Cantonese translation from Chinese."""
 
+YueZhoTranslationPromptYueHans = YueZhoTranslationPromptYueHant.transformed(
+    Language.yue_hans,
+    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+"""Text for simplified written Cantonese translation from Chinese."""
 
-@define_prompt(GapTranslationPrompt, Language.yue_hant, parent=PromptYueHant)
-class YueZhoGapTranslationPromptYueHant:
-    """Text for traditional written Cantonese gap translation using Chinese."""
-
-    # Dictionary tool
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。"
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。"
-    )
-    """Description of the dictionary lookup query parameter."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact(
+YueZhoGapTranslationPromptYueHant = GapTranslationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    dictionary_tool_name="lookup_dictionary",
+    dictionary_tool_description="查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。",
+    dictionary_tool_query_description="要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。",
+    base_system_prompt=dedent_and_compact(
         """
         你負責根據對應嘅中文字幕，補翻譯缺失咗嘅粵文字幕。
         只有當某行現有粵文字幕係空字串時，先需要提供譯文。
@@ -116,74 +71,34 @@ class YueZhoGapTranslationPromptYueHant:
         方括號內容、括號內容，或者任何譯文以外嘅説明。
         如果唔需要翻譯，就輸出空字串。
         """
-    )
-    """Base system prompt."""
-
-    # Query fields
-    src_1_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for source one fields in query."""
-
-    src_1_desc_tpl: ClassVar[str] = "字幕 {idx} 現有嘅粵文內容；如果係空就代表要翻譯"
-    """Description template for source one fields in query."""
-
-    src_2_pfx: ClassVar[str] = "zhongwen_"
-    """Prefix for source two fields in query."""
-
-    src_2_desc_tpl: ClassVar[str] = "字幕 {idx} 對應嘅中文字幕"
-    """Description template for source two fields in query."""
-
-    # Answer fields
-    output_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for output fields in answer."""
-
-    output_desc_tpl: ClassVar[str] = (
-        '字幕 {idx} 譯好後嘅粵文正文；如果唔需要翻譯請輸出 ""。'
-        "唔好包含英文、備註、解釋、標籤或者括號説明。"
-    )
-    """Description template for output fields in answer."""
-
-    # Test case validation errors
-    output_unmodified_err_tpl: ClassVar[str] = (
-        "字幕 {idx} 已經有粵文內容，嗰行輸出必須係空字串。"
-    )
-    """Error template when output is present but unmodified relative to source one."""
-
-    output_contains_note_err_tpl: ClassVar[str] = (
+    ),
+    src_1_pfx="yuewen_",
+    src_1_desc_tpl="字幕 {idx} 現有嘅粵文內容；如果係空就代表要翻譯",
+    src_2_pfx="zhongwen_",
+    src_2_desc_tpl="字幕 {idx} 對應嘅中文字幕",
+    output_pfx="yuewen_",
+    output_desc_tpl='字幕 {idx} 譯好後嘅粵文正文；如果唔需要翻譯請輸出 ""。'
+    "唔好包含英文、備註、解釋、標籤或者括號説明。",
+    output_unmodified_err_tpl="字幕 {idx} 已經有粵文內容，嗰行輸出必須係空字串。",
+    output_contains_note_err_tpl=(
         "字幕 {idx} 包含英文或者備註説明；只可以輸出粵文字幕正文。"
-    )
-    """Error template when output includes leaked note text."""
-
-
-@define_prompt(
-    GapTranslationPrompt,
-    Language.yue_hans,
-    parent=YueZhoGapTranslationPromptYueHant,
-    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+    ),
 )
-class YueZhoGapTranslationPromptYueHans:
-    """Text for simplified written Cantonese gap translation using Chinese."""
+"""Text for traditional written Cantonese gap translation using Chinese."""
 
+YueZhoGapTranslationPromptYueHans = YueZhoGapTranslationPromptYueHant.transformed(
+    Language.yue_hans,
+    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+"""Text for simplified written Cantonese gap translation using Chinese."""
 
-@define_prompt(GuidedTranslationPrompt, Language.yue_hant, parent=PromptYueHant)
-class YueZhoGuidedTranslationPromptYueHant:
-    """Text for traditional guided written Cantonese translation from Chinese."""
-
-    # Dictionary tool
-    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
-    """Name of the dictionary lookup tool."""
-
-    dictionary_tool_description: ClassVar[str] = (
-        "查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。"
-    )
-    """Description of the dictionary lookup tool."""
-
-    dictionary_tool_query_description: ClassVar[str] = (
-        "要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。"
-    )
-    """Description of the dictionary lookup query parameter."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+YueZhoGuidedTranslationPromptYueHant = GuidedTranslationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    dictionary_tool_name="lookup_dictionary",
+    dictionary_tool_description="查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。",
+    dictionary_tool_query_description="要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。",
+    base_system_prompt=dedent_and_compact("""
         你負責根據中文字幕，創作對應嘅粵文字幕。你亦會收到同一段場景嘅
         既有粵文字幕，作為參考材料。
 
@@ -195,35 +110,18 @@ class YueZhoGuidedTranslationPromptYueHant:
 
         輸出內容只可以係生成嘅粵文字幕正文。絕對唔好附加英文、備註、解釋、標籤、
         替代譯文、方括號內容、括號內容，或者任何字幕以外嘅説明。
-        """)
-    """Base system prompt."""
-
-    # Query fields
-    src_1_pfx: ClassVar[str] = "zhongwen_"
-    """Prefix for Chinese source fields in query."""
-
-    src_1_desc_tpl: ClassVar[str] = "要翻譯成粵文嘅中文字幕 {idx}"
-    """Description template for Chinese source fields in query."""
-
-    src_2_pfx: ClassVar[str] = "yuewen_reference_"
-    """Prefix for written Cantonese reference fields in query."""
-
-    src_2_desc_tpl: ClassVar[str] = "同一段場景嘅既有粵文參考字幕 {idx}"
-    """Description template for written Cantonese reference fields in query."""
-
-    # Answer fields
-    output_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for generated written Cantonese output fields in answer."""
-
-    output_desc_tpl: ClassVar[str] = "字幕 {idx} 對應嘅粵文譯文"
-    """Description template for generated written Cantonese output fields."""
-
-
-@define_prompt(
-    GuidedTranslationPrompt,
-    Language.yue_hans,
-    parent=YueZhoGuidedTranslationPromptYueHant,
-    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+        """),
+    src_1_pfx="zhongwen_",
+    src_1_desc_tpl="要翻譯成粵文嘅中文字幕 {idx}",
+    src_2_pfx="yuewen_reference_",
+    src_2_desc_tpl="同一段場景嘅既有粵文參考字幕 {idx}",
+    output_pfx="yuewen_",
+    output_desc_tpl="字幕 {idx} 對應嘅粵文譯文",
 )
-class YueZhoGuidedTranslationPromptYueHans:
-    """Text for simplified guided written Cantonese translation from Chinese."""
+"""Text for traditional guided written Cantonese translation from Chinese."""
+
+YueZhoGuidedTranslationPromptYueHans = YueZhoGuidedTranslationPromptYueHant.transformed(
+    Language.yue_hans,
+    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+"""Text for simplified guided written Cantonese translation from Chinese."""

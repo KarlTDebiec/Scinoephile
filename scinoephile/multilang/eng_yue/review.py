@@ -4,11 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.core import Language
 from scinoephile.lang.eng.review import GuidedReviewPromptEng, PairwiseReviewPromptEng
-from scinoephile.llms.guided_review import GuidedReviewPrompt
-from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
-from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = [
     "EngYueGuidedReviewPrompt",
@@ -16,11 +12,8 @@ __all__ = [
 ]
 
 
-@define_prompt(GuidedReviewPrompt, Language.eng, parent=GuidedReviewPromptEng)
-class EngYueGuidedReviewPrompt:
-    """Prompt for guided review of English using written Cantonese."""
+EngYueGuidedReviewPrompt = GuidedReviewPromptEng
+"""Prompt for guided review of English using written Cantonese."""
 
-
-@define_prompt(PairwiseReviewPrompt, Language.eng, parent=PairwiseReviewPromptEng)
-class EngYuePairwiseReviewPrompt:
-    """Prompt for pairwise review of English using written Cantonese."""
+EngYuePairwiseReviewPrompt = PairwiseReviewPromptEng
+"""Prompt for pairwise review of English using written Cantonese."""

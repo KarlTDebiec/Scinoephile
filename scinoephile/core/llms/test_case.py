@@ -27,7 +27,7 @@ class TestCase(BaseModel, ABC):
     """Query model class."""
     answer_cls: ClassVar[type[Answer]]
     """Answer model class."""
-    llm_prompt: ClassVar[Prompt]
+    prompt: ClassVar[Prompt]
     """Text for LLM correspondence."""
     query: Query
     """Query data for the test case."""
@@ -35,8 +35,8 @@ class TestCase(BaseModel, ABC):
     """Answer data for the test case."""
     difficulty: int = 0
     """Difficulty level for filtering and prioritization."""
-    prompt: bool = False
-    """Whether the test case is included in the prompt."""
+    few_shot: bool = False
+    """Whether the test case is included as a few-shot example."""
     verified: bool = False
     """Whether the test case answer has been verified."""
 

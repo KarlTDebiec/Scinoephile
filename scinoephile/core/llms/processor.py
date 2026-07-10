@@ -94,7 +94,7 @@ class Processor(ABC):
 
         self.queryer = Queryer(
             self.prompt,
-            prompt_test_cases=[tc for tc in test_cases if tc.prompt],
+            few_shot_test_cases=[tc for tc in test_cases if tc.few_shot],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),

@@ -1,16 +1,16 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for LLM queryers."""
+"""LLM query execution."""
 
 from __future__ import annotations
 
 import hashlib
 import json
-from abc import ABC
 from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
+from typing import cast
 
 from pydantic import ValidationError
 
@@ -29,18 +29,14 @@ __all__ = ["Queryer"]
 logger = getLogger(__name__)
 
 
-class Queryer[
-    TQuery: Query,
-    TAnswer: Answer,
-    TTestCase: TestCase,
-](ABC):
-    """ABC for LLM queryers."""
+class Queryer:
+    """Execute LLM queries using a prompt and provider."""
 
     def __init__(
         self,
         prompt: Prompt,
-        prompt_test_cases: list[TTestCase] | None = None,
-        verified_test_cases: list[TTestCase] | None = None,
+        few_shot_test_cases: list[TestCase] | None = None,
+        verified_test_cases: list[TestCase] | None = None,
         *,
         provider: LLMProvider,
         cache_dir_path: Path | str | None = None,
@@ -53,7 +49,7 @@ class Queryer[
 
         Arguments:
             prompt: text for LLM correspondence
-            prompt_test_cases: test cases included in the prompt for few-shot learning
+            few_shot_test_cases: test cases included as few-shot examples
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
             provider: provider to use for queries
@@ -67,13 +63,15 @@ class Queryer[
         """Text for LLM correspondence."""
         self.provider = provider
 
-        self.prompt_test_cases = {tc.query.key: tc for tc in prompt_test_cases or []}
-        """Test cases included in the prompt for few-shot learning."""
+        self.few_shot_test_cases = {
+            tc.query.key: tc for tc in few_shot_test_cases or []
+        }
+        """Test cases included as few-shot examples."""
         self.verified_test_cases = {
             tc.query.key: tc for tc in verified_test_cases or []
         }
         """Test cases whose answers are verified for which LLM will not be queried."""
-        self.encountered_test_cases: dict[tuple, TTestCase] = {}
+        self.encountered_test_cases: dict[tuple, TestCase] = {}
         """Test cases actually encountered."""
 
         self.cache_dir_path = None
@@ -90,18 +88,8 @@ class Queryer[
         self.tool_box = tool_box or ToolBox()
         """Available tools and handlers."""
 
-    def __call__(self, test_case: TTestCase) -> TTestCase:
+    def __call__[TTestCase: TestCase](self, test_case: TTestCase) -> TTestCase:
         """Query LLM.
-
-        Arguments:
-            test_case: test case containing query for LLM
-        Returns:
-            test case including LLM's answer
-        """
-        return self.call(test_case)
-
-    def call(self, test_case: TTestCase) -> TTestCase:
-        """Query LLM synchronously.
 
         Arguments:
             test_case: test case containing query for LLM
@@ -110,7 +98,7 @@ class Queryer[
         """
         # Load from verified if available
         if verified_test_case := self._get_verified_test_case(test_case.query):
-            return verified_test_case
+            return cast(TTestCase, verified_test_case)
 
         # Load from cache if available
         system_prompt = self._get_system_prompt(test_case.answer_cls)
@@ -211,15 +199,15 @@ class Queryer[
 
         return test_case
 
-    def get_prompt_test_cases_few_shot_str(self) -> str:
+    def get_few_shot_test_cases_str(self) -> str:
         """String representation of all test cases in the log."""
-        if not self.prompt_test_cases:
+        if not self.few_shot_test_cases:
             return ""
         few_shot = f"\n\n{self.prompt.few_shot_intro}"
-        for test_case in self.prompt_test_cases.values():
+        for test_case in self.few_shot_test_cases.values():
             if test_case.answer is None:
                 logger.warning(
-                    f"Prompt test case {test_case.query.key_str} has no answer; "
+                    f"Few-shot test case {test_case.query.key_str} has no answer; "
                     "skipping."
                 )
                 continue
@@ -233,14 +221,14 @@ class Queryer[
             )
         return few_shot
 
-    def log_encountered_test_case(self, test_case: TTestCase):
+    def log_encountered_test_case(self, test_case: TestCase):
         """Log a test case as having been encountered.
 
         Arguments:
             test_case: test case to log
         """
         key = test_case.query.key
-        test_case.prompt = test_case.prompt or key in self.prompt_test_cases
+        test_case.few_shot = test_case.few_shot or key in self.few_shot_test_cases
         test_case.verified = test_case.verified or key in self.verified_test_cases
         self.encountered_test_cases[key] = test_case
         logger.debug(f"Logged test case: {test_case.query.key_str}")
@@ -265,7 +253,7 @@ class Queryer[
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
-    def _get_cached_test_case(
+    def _get_cached_test_case[TTestCase: TestCase](
         self, system_prompt: str, tools_json: str, test_case: TTestCase
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
@@ -322,12 +310,12 @@ class Queryer[
         system_prompt = self.prompt.base_system_prompt
         if self.additional_context:
             system_prompt += f"\n\nAdditional context:\n{self.additional_context}"
-        system_prompt += self.get_prompt_test_cases_few_shot_str()
+        system_prompt += self.get_few_shot_test_cases_str()
         system_prompt += f"\n\n{self.prompt.schema_intro}\n{schema_json}\n"
 
         return system_prompt
 
-    def _get_verified_test_case(self, query: TQuery) -> TTestCase | None:
+    def _get_verified_test_case(self, query: Query) -> TestCase | None:
         """Get verified test case for the given query if available.
 
         Arguments:

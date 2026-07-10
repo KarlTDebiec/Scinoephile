@@ -51,10 +51,7 @@ class Manager(ABC):
 
     @classmethod
     @cache
-    def get_test_case_cls[TTestCase: TestCase](
-        cls,
-        prompt: Prompt,
-    ) -> type[TTestCase]:
+    def get_test_case_cls(cls, prompt: Prompt) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
@@ -76,16 +73,13 @@ class Manager(ABC):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)
-        return model  # ty:ignore[invalid-return-type]
+        return model
 
     @classmethod
-    def get_test_case_cls_from_data[TTestCase: TestCase](
-        cls,
-        data: dict,
-    ) -> type[TTestCase]:
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
         """Get concrete test case class for canonical serialized data.
 
         Arguments:
@@ -96,11 +90,11 @@ class Manager(ABC):
         return cls.get_test_case_cls(cls.base_prompt)
 
     @classmethod
-    def get_test_case_cls_with_prompt[TTestCase: TestCase](
+    def get_test_case_cls_with_prompt(
         cls,
         test_case_cls: type[TestCase],
         prompt: Prompt,
-    ) -> type[TTestCase]:
+    ) -> type[TestCase]:
         """Get an equivalently shaped test-case class for another prompt.
 
         Arguments:
@@ -134,9 +128,9 @@ class Manager(ABC):
                 int,
                 Field(0, description=prompt.difficulty_description),
             ),
-            "prompt": (
+            "few_shot": (
                 bool,
-                Field(False, description=prompt.prompt_description),
+                Field(False, description=prompt.few_shot_description),
             ),
             "verified": (
                 bool,
@@ -162,7 +156,7 @@ class Manager(ABC):
 
     @staticmethod
     def enforce_min_difficulty(model: TestCase) -> TestCase:
-        """Ensure difficulty reflects prompt/split status if not already higher.
+        """Ensure difficulty reflects few-shot/split status if not already higher.
 
         Arguments:
             model: test case to validate

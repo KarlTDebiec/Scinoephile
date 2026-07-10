@@ -48,11 +48,5 @@ def fuse_ocr_series(
         ScinoephileError: if OCR fusion does not support the language
     """
     if fuser is None:
-        fuser = get_ocr_fuser(
-            language,
-            prompt,
-            test_cases,
-            provider,
-            **kwargs,
-        )
+        fuser = get_ocr_fuser(language, prompt, test_cases, provider, **kwargs)
     return fuser.process(source_one, source_two, stop_at_idx=stop_at_idx)

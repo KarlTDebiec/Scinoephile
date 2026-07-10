@@ -24,21 +24,17 @@ from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases,
 )
 
-_LOCALIZED_REVIEW_PROMPT = ReviewPrompt.from_attributes(
-    attributes={
-        "input_pfx": "zimu_",
-        "output_pfx": "xiugai_",
-        "note_pfx": "beizhu_",
-    }
+_LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
+    input_pfx="zimu_",
+    output_pfx="xiugai_",
+    note_pfx="beizhu_",
 )
 """Review prompt using localized correspondence field names."""
 
-_ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt.from_attributes(
-    attributes={
-        "input_pfx": "source_",
-        "output_pfx": "correction_",
-        "note_pfx": "explanation_",
-    }
+_ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
+    input_pfx="source_",
+    output_pfx="correction_",
+    note_pfx="explanation_",
 )
 """Review prompt using an alternative correspondence schema."""
 
@@ -207,7 +203,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     )
 
     data[0]["difficulty"] = 2
-    data[0]["prompt"] = True
+    data[0]["few_shot"] = True
     data[0]["verified"] = True
     source_path.write_text(json.dumps(data), encoding="utf-8")
     dry_run_report = sync_test_cases(
@@ -236,7 +232,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     )
     assert loaded is not None
     assert loaded.difficulty == 1
-    assert not loaded.prompt
+    assert not loaded.few_shot
     assert not loaded.verified
 
 

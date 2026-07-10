@@ -119,25 +119,21 @@ class MultiTimewarpCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--anchor-start-idx",
             type=int_arg(min_value=1),
-            default=None,
             help="1-based start index in anchor series (default: 1)",
         )
         arg_groups["operation arguments"].add_argument(
             "--anchor-end-idx",
             type=int_arg(min_value=1),
-            default=None,
             help="1-based end index in anchor series (default: final subtitle)",
         )
         arg_groups["operation arguments"].add_argument(
             "--mobile-start-idx",
             type=int_arg(min_value=1),
-            default=None,
             help="1-based start index in moving series (default: 1)",
         )
         arg_groups["operation arguments"].add_argument(
             "--mobile-end-idx",
             type=int_arg(min_value=1),
-            default=None,
             help="1-based end index in moving series (default: final subtitle)",
         )
 
@@ -145,7 +141,6 @@ class MultiTimewarpCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
             type=output_file_arg(exist_ok=True),
             help="timewarped subtitle outfile path (default: stdout)",

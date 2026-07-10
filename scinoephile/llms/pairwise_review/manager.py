@@ -22,14 +22,14 @@ class PairwiseReviewManager(Manager):
 
     operation: ClassVar[str] = "pairwise-review"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[PairwiseReviewPrompt] = PairwiseReviewPrompt.from_attributes()
+    base_prompt: ClassVar[PairwiseReviewPrompt] = PairwiseReviewPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
     def get_answer_cls(
         cls,
-        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt.from_attributes(),
+        prompt: PairwiseReviewPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -54,14 +54,14 @@ class PairwiseReviewManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt: PairwiseReviewPrompt = PairwiseReviewPrompt.from_attributes(),
+        prompt: PairwiseReviewPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -86,7 +86,7 @@ class PairwiseReviewManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @staticmethod
@@ -100,7 +100,7 @@ class PairwiseReviewManager(Manager):
         """
         if model.answer is None:
             return 0
-        prompt: PairwiseReviewPrompt = getattr(model, "llm_prompt")
+        prompt: PairwiseReviewPrompt = getattr(model, "prompt")
         target = getattr(model.query, prompt.target)
         output = getattr(model.answer, prompt.output)
         if output and output != target:
@@ -122,7 +122,7 @@ class PairwiseReviewManager(Manager):
         if model.answer is None:
             return model
 
-        prompt: PairwiseReviewPrompt = getattr(model, "llm_prompt")
+        prompt: PairwiseReviewPrompt = getattr(model, "prompt")
         target = getattr(model.query, prompt.target)
         output = getattr(model.answer, prompt.output)
         note = getattr(model.answer, prompt.note)

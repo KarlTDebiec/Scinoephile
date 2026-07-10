@@ -22,14 +22,14 @@ class DelineationManager(Manager):
 
     operation: ClassVar[str] = "delineation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[DelineationPrompt] = DelineationPrompt.from_attributes()
+    base_prompt: ClassVar[DelineationPrompt] = DelineationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt: DelineationPrompt = DelineationPrompt.from_attributes(),
+        prompt: DelineationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -69,14 +69,14 @@ class DelineationManager(Manager):
             __validators__=validators,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
     @cache
     def get_answer_cls(
         cls,
-        prompt: DelineationPrompt = DelineationPrompt.from_attributes(),
+        prompt: DelineationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -103,7 +103,7 @@ class DelineationManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
@@ -126,7 +126,7 @@ class DelineationManager(Manager):
         Returns:
             minimum difficulty
         """
-        prompt: DelineationPrompt = getattr(model, "llm_prompt")
+        prompt: DelineationPrompt = getattr(model, "prompt")
         min_difficulty = 0
         if model.answer is None:
             return min_difficulty
@@ -146,7 +146,7 @@ class DelineationManager(Manager):
         Returns:
             validated query
         """
-        prompt: DelineationPrompt = getattr(model, "llm_prompt")
+        prompt: DelineationPrompt = getattr(model, "prompt")
         src_2_sub_1 = getattr(model, prompt.src_2_sub_1, None)
         src_2_sub_2 = getattr(model, prompt.src_2_sub_2, None)
         if not src_2_sub_1 and not src_2_sub_2:
@@ -162,7 +162,7 @@ class DelineationManager(Manager):
         Returns:
             validated test case
         """
-        prompt: DelineationPrompt = getattr(model, "llm_prompt")
+        prompt: DelineationPrompt = getattr(model, "prompt")
         if model.answer is None:
             return model
 

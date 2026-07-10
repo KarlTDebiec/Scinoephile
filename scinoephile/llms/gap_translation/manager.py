@@ -29,7 +29,7 @@ class GapTranslationManager(Manager):
 
     operation: ClassVar[str] = "gap-translation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[GapTranslationPrompt] = GapTranslationPrompt.from_attributes()
+    base_prompt: ClassVar[GapTranslationPrompt] = GapTranslationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -38,7 +38,7 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt: GapTranslationPrompt = GapTranslationPrompt.from_attributes(),
+        prompt: GapTranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -74,7 +74,7 @@ class GapTranslationManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "gaps", gaps)
         return model
@@ -85,7 +85,7 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt: GapTranslationPrompt = GapTranslationPrompt.from_attributes(),
+        prompt: GapTranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -117,7 +117,7 @@ class GapTranslationManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "gaps", gaps)
         return model
@@ -128,7 +128,7 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt: GapTranslationPrompt = GapTranslationPrompt.from_attributes(),
+        prompt: GapTranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -162,7 +162,7 @@ class GapTranslationManager(Manager):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "gaps", gaps)
         setattr(model, "get_auto_verified", cls.get_auto_verified)

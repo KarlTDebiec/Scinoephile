@@ -1064,7 +1064,7 @@
       "note_1": "Corrected 'may be' to 'maybe'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

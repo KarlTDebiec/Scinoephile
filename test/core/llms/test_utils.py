@@ -14,13 +14,11 @@ from scinoephile.core.llms.utils import (
 )
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 
-_LOCALIZED_REVIEW_PROMPT = ReviewPrompt.from_attributes(
-    Language.zho_hans,
-    {
-        "input_pfx": "zimu_",
-        "output_pfx": "xiugai_",
-        "note_pfx": "beizhu_",
-    },
+_LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
+    language=Language.zho_hans,
+    input_pfx="zimu_",
+    output_pfx="xiugai_",
+    note_pfx="beizhu_",
 )
 """Review prompt using localized correspondence field names."""
 

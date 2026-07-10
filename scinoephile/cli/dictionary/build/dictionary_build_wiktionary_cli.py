@@ -89,7 +89,6 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--source-jsonl-path",
-            default=None,
             type=input_file_arg(),
             help=(
                 "path to Kaikki Chinese Wiktionary JSONL dump (default: bundled "

@@ -4,16 +4,27 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, fields, replace
 
 from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.llms import Manager, Prompt
-from scinoephile.llms.prompt_definition import get_prompt_attribute_names
 
 from .id import get_prompt_id
 
 __all__ = ["PersistedPrompt"]
+
+_EXCLUDED_ZERO_SHOT_ATTRIBUTE_NAMES = frozenset(
+    {
+        "difficulty_description",
+        "few_shot_answer_intro",
+        "few_shot_description",
+        "few_shot_intro",
+        "few_shot_query_intro",
+        "verified_description",
+    }
+)
+"""Prompt fields that do not affect zero-shot execution."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -52,7 +63,7 @@ class PersistedPrompt:
                 f"Prompt type {type(prompt).__name__} is not compatible with "
                 f"operation {manager_cls.operation}."
             )
-        attributes = dict(prompt.zero_shot_attributes)
+        attributes = _get_zero_shot_attributes(prompt)
         _require_attributes(attributes, manager_cls)
         return cls(
             prompt_id=get_prompt_id(
@@ -91,11 +102,31 @@ class PersistedPrompt:
                 f"Prompt {self.prompt_id} does not match its content-addressed ID."
             )
         _require_attributes(self.attributes, manager_cls)
-        prompt_type = type(manager_cls.base_prompt)
         try:
-            return prompt_type.from_attributes(self.language, self.attributes)
-        except ValueError as exc:
+            return replace(
+                manager_cls.base_prompt,
+                language=self.language,
+                **self.attributes,
+            )
+        except TypeError as exc:
             raise ScinoephileError(str(exc)) from exc
+
+
+def _get_zero_shot_attributes(prompt: Prompt) -> dict[str, str]:
+    """Get persisted string fields that affect zero-shot execution.
+
+    Arguments:
+        prompt: prompt whose zero-shot fields should be returned
+    Returns:
+        zero-shot prompt attributes keyed by field name
+    """
+    return {
+        field.name: value
+        for field in fields(prompt)
+        if field.name != "language"
+        and field.name not in _EXCLUDED_ZERO_SHOT_ATTRIBUTE_NAMES
+        and isinstance(value := getattr(prompt, field.name), str)
+    }
 
 
 def _require_attributes(
@@ -120,7 +151,7 @@ def _require_attributes(
             "Prompt attributes must have nonempty names and string values: "
             f"{', '.join(invalid_names)}."
         )
-    required_names = get_prompt_attribute_names(type(manager_cls.base_prompt))
+    required_names = _get_zero_shot_attributes(manager_cls.base_prompt).keys()
     missing_names = sorted(required_names - attributes.keys())
     if missing_names:
         raise ScinoephileError(

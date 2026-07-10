@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar
 
 from pydantic import Field, create_model, model_validator
 
@@ -22,15 +22,12 @@ class OcrFusionManager(Manager):
 
     operation: ClassVar[str] = "ocr-fusion"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[OcrFusionPrompt] = OcrFusionPrompt.from_attributes()
+    base_prompt: ClassVar[OcrFusionPrompt] = OcrFusionPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
-    def get_answer_cls[TAnswer: Answer](
-        cls,
-        prompt: OcrFusionPrompt,
-    ) -> type[TAnswer]:
+    def get_answer_cls(cls, prompt: OcrFusionPrompt) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
@@ -47,25 +44,19 @@ class OcrFusionManager(Manager):
             "validate_answer": model_validator(mode="after")(cls.validate_answer),
         }
 
-        model = cast(
-            "type[TAnswer]",
-            create_model(
-                name,
-                __base__=Answer,
-                __module__=Answer.__module__,
-                __validators__=validators,
-                **fields,
-            ),
+        model = create_model(
+            name,
+            __base__=Answer,
+            __module__=Answer.__module__,
+            __validators__=validators,
+            **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @classmethod
     @cache
-    def get_query_cls[TQuery: Query](
-        cls,
-        prompt: OcrFusionPrompt,
-    ) -> type[TQuery]:
+    def get_query_cls(cls, prompt: OcrFusionPrompt) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
@@ -82,17 +73,14 @@ class OcrFusionManager(Manager):
             "validate_query": model_validator(mode="after")(cls.validate_query),
         }
 
-        model = cast(
-            "type[TQuery]",
-            create_model(
-                name,
-                __base__=Query,
-                __module__=Query.__module__,
-                __validators__=validators,
-                **fields,
-            ),
+        model = create_model(
+            name,
+            __base__=Query,
+            __module__=Query.__module__,
+            __validators__=validators,
+            **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         return model
 
     @staticmethod
@@ -110,7 +98,7 @@ class OcrFusionManager(Manager):
         if model.get_min_difficulty() > 1:
             return False
 
-        prompt: OcrFusionPrompt = getattr(model, "llm_prompt")
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
         source_one = getattr(model.query, prompt.src_1, None)
         source_two = getattr(model.query, prompt.src_2, None)
         output_text = getattr(model.answer, prompt.output, None)
@@ -134,7 +122,7 @@ class OcrFusionManager(Manager):
         Returns:
             minimum difficulty
         """
-        prompt: OcrFusionPrompt = getattr(model, "llm_prompt")
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
         min_difficulty = max(Manager.get_min_difficulty(model), 1)
         if model.answer is None:
             return min_difficulty
@@ -153,7 +141,7 @@ class OcrFusionManager(Manager):
         Returns:
             validated answer
         """
-        prompt: OcrFusionPrompt = getattr(model, "llm_prompt")
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
         output = getattr(model, prompt.output, None)
         note = getattr(model, prompt.note, None)
         if not output:
@@ -171,7 +159,7 @@ class OcrFusionManager(Manager):
         Returns:
             validated query
         """
-        prompt: OcrFusionPrompt = getattr(model, "llm_prompt")
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
         source_one = getattr(model, prompt.src_1, None)
         source_two = getattr(model, prompt.src_2, None)
         if not source_one:

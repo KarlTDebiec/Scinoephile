@@ -19,20 +19,20 @@ from scinoephile.multilang.yue_eng.translation import (
 )
 from scinoephile.optimization.persistence.prompts import PersistedPrompt
 
-_ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT = ReviewPromptEng.with_attributes(
-    {
-        "difficulty_description": "Different difficulty description.",
-        "few_shot_answer_intro": "Different example answer:",
-        "few_shot_intro": "Different examples:",
-        "few_shot_query_intro": "Different example query:",
-        "prompt_description": "Different prompt flag description.",
-        "verified_description": "Different verified description.",
-    }
+_ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT = replace(
+    ReviewPromptEng,
+    difficulty_description="Different difficulty description.",
+    few_shot_answer_intro="Different example answer:",
+    few_shot_description="Different few-shot flag description.",
+    few_shot_intro="Different examples:",
+    few_shot_query_intro="Different example query:",
+    verified_description="Different verified description.",
 )
 """English review prompt with different few-shot-only text."""
 
-_ALTERNATIVE_ZERO_SHOT_REVIEW_PROMPT = ReviewPromptEng.with_attributes(
-    {"base_system_prompt": "Review every subtitle carefully."}
+_ALTERNATIVE_ZERO_SHOT_REVIEW_PROMPT = replace(
+    ReviewPromptEng,
+    base_system_prompt="Review every subtitle carefully.",
 )
 """English review prompt with different zero-shot instructions."""
 
@@ -50,7 +50,7 @@ def test_conversion_excludes_few_shot_and_curation_attributes():
     assert baseline.attributes == alternative.attributes
     assert all("few_shot" not in name for name in baseline.attributes)
     assert "difficulty_description" not in baseline.attributes
-    assert "prompt_description" not in baseline.attributes
+    assert "few_shot_description" not in baseline.attributes
     assert "verified_description" not in baseline.attributes
 
 

@@ -121,14 +121,12 @@ class OcrFuseCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "--tesseract-infile",
             dest="tesseract_infile_path",
-            default=None,
             type=input_file_arg(allow_stdin=True),
             help="English subtitles OCRed using Tesseract or '-' for stdin",
         )
         arg_groups["input arguments"].add_argument(
             "--paddle-infile",
             dest="paddle_infile_path",
-            default=None,
             type=input_file_arg(allow_stdin=True),
             help="Chinese subtitles OCRed using PaddleOCR or '-' for stdin",
         )
@@ -157,7 +155,6 @@ class OcrFuseCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
             type=output_file_arg(exist_ok=True),
             help="fused subtitle outfile path (default: stdout)",

@@ -29,7 +29,7 @@ class TranslationManager(Manager):
 
     operation: ClassVar[str] = "translation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[TranslationPrompt] = TranslationPrompt.from_attributes()
+    base_prompt: ClassVar[TranslationPrompt] = TranslationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -37,7 +37,7 @@ class TranslationManager(Manager):
     def get_query_cls(
         cls,
         size: int,
-        prompt: TranslationPrompt = TranslationPrompt.from_attributes(),
+        prompt: TranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -60,7 +60,7 @@ class TranslationManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         return model
 
@@ -69,7 +69,7 @@ class TranslationManager(Manager):
     def get_answer_cls(
         cls,
         size: int,
-        prompt: TranslationPrompt = TranslationPrompt.from_attributes(),
+        prompt: TranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -92,7 +92,7 @@ class TranslationManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         return model
 
@@ -101,7 +101,7 @@ class TranslationManager(Manager):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt: TranslationPrompt = TranslationPrompt.from_attributes(),
+        prompt: TranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -126,7 +126,7 @@ class TranslationManager(Manager):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)
@@ -161,7 +161,4 @@ class TranslationManager(Manager):
             equivalently sized test-case class
         """
         size: int = getattr(test_case_cls, "size")
-        return cls.get_test_case_cls(
-            size=size,
-            prompt=cast(TranslationPrompt, prompt),
-        )
+        return cls.get_test_case_cls(size=size, prompt=cast(TranslationPrompt, prompt))

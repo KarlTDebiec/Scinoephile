@@ -4,16 +4,12 @@
 
 from __future__ import annotations
 
-from scinoephile.core import Language
 from scinoephile.lang.yue.review import (
     GuidedReviewPromptYueHans,
     GuidedReviewPromptYueHant,
     PairwiseReviewPromptYueHans,
     PairwiseReviewPromptYueHant,
 )
-from scinoephile.llms.guided_review import GuidedReviewPrompt
-from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
-from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = [
     "YueEngGuidedReviewPromptYueHans",
@@ -23,37 +19,14 @@ __all__ = [
 ]
 
 
-@define_prompt(
-    GuidedReviewPrompt,
-    Language.yue_hant,
-    parent=GuidedReviewPromptYueHant,
-)
-class YueEngGuidedReviewPromptYueHant:
-    """Prompt for guided review of traditional written Cantonese using English."""
+YueEngGuidedReviewPromptYueHant = GuidedReviewPromptYueHant
+"""Prompt for guided review of traditional written Cantonese using English."""
 
+YueEngGuidedReviewPromptYueHans = GuidedReviewPromptYueHans
+"""Prompt for guided review of simplified written Cantonese using English."""
 
-@define_prompt(
-    GuidedReviewPrompt,
-    Language.yue_hans,
-    parent=GuidedReviewPromptYueHans,
-)
-class YueEngGuidedReviewPromptYueHans:
-    """Prompt for guided review of simplified written Cantonese using English."""
+YueEngPairwiseReviewPromptYueHant = PairwiseReviewPromptYueHant
+"""Prompt for pairwise review of traditional written Cantonese using English."""
 
-
-@define_prompt(
-    PairwiseReviewPrompt,
-    Language.yue_hant,
-    parent=PairwiseReviewPromptYueHant,
-)
-class YueEngPairwiseReviewPromptYueHant:
-    """Prompt for pairwise review of traditional written Cantonese using English."""
-
-
-@define_prompt(
-    PairwiseReviewPrompt,
-    Language.yue_hans,
-    parent=PairwiseReviewPromptYueHans,
-)
-class YueEngPairwiseReviewPromptYueHans:
-    """Prompt for pairwise review of simplified written Cantonese using English."""
+YueEngPairwiseReviewPromptYueHans = PairwiseReviewPromptYueHans
+"""Prompt for pairwise review of simplified written Cantonese using English."""

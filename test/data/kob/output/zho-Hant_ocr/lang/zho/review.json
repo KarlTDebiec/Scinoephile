@@ -72,7 +72,7 @@
       "subtitle_44": "他日老爺做大壽，要比他威風"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1209,7 +1209,7 @@
       "subtitle_9": "是"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

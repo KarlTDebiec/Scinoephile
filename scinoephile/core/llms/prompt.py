@@ -6,120 +6,99 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Callable, Mapping
-from dataclasses import dataclass
-from typing import ClassVar, Self
+from collections.abc import Callable
+from dataclasses import dataclass, fields, replace
+from typing import Self, TypedDict
 
 from scinoephile.core.language import Language
 
-__all__ = ["Prompt"]
-
-_EXCLUDED_ZERO_SHOT_ATTRIBUTE_NAMES = frozenset(
-    {
-        "difficulty_description",
-        "few_shot_answer_intro",
-        "few_shot_intro",
-        "few_shot_query_intro",
-        "prompt_description",
-        "verified_description",
-    }
-)
-"""Prompt attributes that do not affect zero-shot execution."""
+__all__ = [
+    "Prompt",
+    "PromptLocalizationFields",
+]
 
 
-@dataclass(frozen=True, slots=True)
+class PromptLocalizationFields(TypedDict):
+    """Shared localization fields accepted by all prompt types."""
+
+    schema_intro: str
+    """Text preceding schema description."""
+    few_shot_intro: str
+    """Text preceding few-shot examples."""
+    few_shot_query_intro: str
+    """Text preceding each few-shot example query."""
+    few_shot_answer_intro: str
+    """Text preceding each few-shot expected answer."""
+    answer_invalid_pre: str
+    """Text preceding answer validation errors."""
+    answer_invalid_post: str
+    """Text following answer validation errors."""
+    difficulty_description: str
+    """Description of 'difficulty' field."""
+    few_shot_description: str
+    """Description of 'few_shot' field."""
+    verified_description: str
+    """Description of 'verified' field."""
+    test_case_invalid_pre: str
+    """Text preceding test case validation errors."""
+    test_case_invalid_post: str
+    """Text following test case validation errors."""
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
 class Prompt:
     """Immutable text and field configuration for LLM correspondence."""
 
-    language: Language
+    language: Language = Language.eng
     """Language in which the prompt corresponds with the LLM."""
-    attributes: tuple[tuple[str, str], ...]
-    """Ordered effective string attributes."""
-
-    _attribute_defaults: ClassVar[Mapping[str, str]] = {
-        "answer_invalid_post": "",
-        "answer_invalid_pre": "",
-        "base_system_prompt": "",
-        "difficulty_description": (
-            "Difficulty level of the test case, used for filtering."
-        ),
-        "few_shot_answer_intro": "",
-        "few_shot_intro": "",
-        "few_shot_query_intro": "",
-        "prompt_description": "Whether to include test case in prompt examples.",
-        "schema_intro": "",
-        "test_case_invalid_post": "",
-        "test_case_invalid_pre": "",
-        "verified_description": (
-            "Whether to include test case in the verified answers cache."
-        ),
-    }
-    """Default effective string attributes."""
 
     # Prompt
-    base_system_prompt: ClassVar[str]
+    base_system_prompt: str = ""
     """Base system prompt."""
-    schema_intro: ClassVar[str]
+    schema_intro: str = ""
     """Text preceding schema description."""
-    few_shot_intro: ClassVar[str]
+    few_shot_intro: str = ""
     """Text preceding few-shot examples."""
-    few_shot_query_intro: ClassVar[str]
+    few_shot_query_intro: str = ""
     """Text preceding each few-shot example query."""
-    few_shot_answer_intro: ClassVar[str]
+    few_shot_answer_intro: str = ""
     """Text preceding each few-shot expected answer."""
 
     # Answer validation errors
-    answer_invalid_pre: ClassVar[str]
+    answer_invalid_pre: str = ""
     """Text preceding answer validation errors."""
-    answer_invalid_post: ClassVar[str]
+    answer_invalid_post: str = ""
     """Text following answer validation errors."""
 
     # Test case field descriptions
-    difficulty_description: ClassVar[str]
+    difficulty_description: str = (
+        "Difficulty level of the test case, used for filtering."
+    )
     """Description of 'difficulty' field."""
-    prompt_description: ClassVar[str]
-    """Description of 'prompt' field."""
-    verified_description: ClassVar[str]
+    few_shot_description: str = "Whether to include test case in few-shot examples."
+    """Description of 'few_shot' field."""
+    verified_description: str = (
+        "Whether to include test case in the verified answers cache."
+    )
     """Description of 'verified' field."""
 
     # Test case validation errors
-    test_case_invalid_pre: ClassVar[str]
+    test_case_invalid_pre: str = ""
     """Text preceding test case validation errors."""
-    test_case_invalid_post: ClassVar[str]
+    test_case_invalid_post: str = ""
     """Text following test case validation errors."""
-
-    def __getattribute__(self, name: str) -> object:
-        """Get effective string attributes before prompt-type defaults."""
-        if name not in {"attributes", "language"}:
-            attributes = object.__getattribute__(self, "attributes")
-            for attribute_name, value in attributes:
-                if attribute_name == name:
-                    return value
-        return object.__getattribute__(self, name)
-
-    def __getattr__(self, name: str) -> str:
-        """Get an effective prompt attribute by name.
-
-        Arguments:
-            name: attribute name
-        Returns:
-            effective string attribute
-        Raises:
-            AttributeError: if the prompt does not define the attribute
-        """
-        try:
-            return dict(self.attributes)[name]
-        except KeyError as exc:
-            raise AttributeError(
-                f"{type(self).__name__} has no attribute {name!r}"
-            ) from exc
 
     @property
     def name(self) -> str:
         """Stable content-addressed name used for generated model classes."""
+        prompt_fields = {
+            field.name: getattr(self, field.name)
+            for field in fields(self)
+            if field.name != "language"
+        }
         payload_json = json.dumps(
             {
-                "attributes": dict(self.attributes),
+                "fields": prompt_fields,
                 "language": self.language.tag,
                 "type": type(self).__name__,
             },
@@ -131,70 +110,8 @@ class Prompt:
         language_name = self.language.tag.replace("-", "_")
         return f"{type(self).__name__}_{language_name}_{digest}"
 
-    @property
-    def zero_shot_attributes(self) -> tuple[tuple[str, str], ...]:
-        """Ordered attributes affecting zero-shot execution."""
-        return tuple(
-            (name, value)
-            for name, value in self.attributes
-            if name not in _EXCLUDED_ZERO_SHOT_ATTRIBUTE_NAMES
-        )
-
-    @classmethod
-    def from_attributes(
-        cls,
-        language: Language = Language.eng,
-        attributes: Mapping[str, str] | None = None,
-    ) -> Self:
-        """Build a prompt from effective string attributes.
-
-        Arguments:
-            language: language in which the prompt corresponds with the LLM
-            attributes: effective string attributes overriding defaults
-        Returns:
-            immutable prompt
-        Raises:
-            ValueError: if an attribute name is empty or a value is not a string
-        """
-        merged_attributes = cls.get_attribute_defaults()
-        if attributes is not None:
-            merged_attributes.update(attributes)
-        invalid_names = sorted(
-            name
-            for name, value in merged_attributes.items()
-            if not name or not isinstance(value, str)
-        )
-        if invalid_names:
-            raise ValueError(
-                "Prompt attributes must have nonempty names and string values: "
-                f"{', '.join(invalid_names)}."
-            )
-        return cls(
-            language=language,
-            attributes=tuple(sorted(merged_attributes.items())),
-        )
-
-    @classmethod
-    def get_attribute_defaults(cls) -> dict[str, str]:
-        """Get effective attribute defaults across the prompt type hierarchy."""
-        defaults: dict[str, str] = {}
-        for prompt_type in reversed(cls.__mro__):
-            prompt_defaults = vars(prompt_type).get("_attribute_defaults")
-            if isinstance(prompt_defaults, Mapping):
-                defaults.update(prompt_defaults)
-            annotations = vars(prompt_type).get("__annotations__", {})
-            for name in annotations:
-                value = vars(prompt_type).get(name)
-                if isinstance(value, str):
-                    defaults[name] = value
-        return defaults
-
-    def transformed(
-        self,
-        language: Language,
-        transform: Callable[[str], str],
-    ) -> Self:
-        """Build a prompt by transforming every effective string attribute.
+    def transformed(self, language: Language, transform: Callable[[str], str]) -> Self:
+        """Build a prompt with all string fields transformed.
 
         Arguments:
             language: language of the transformed prompt
@@ -202,19 +119,10 @@ class Prompt:
         Returns:
             transformed prompt
         """
-        return type(self).from_attributes(
-            language,
-            {name: transform(value) for name, value in self.attributes},
-        )
-
-    def with_attributes(self, attributes: Mapping[str, str]) -> Self:
-        """Build a prompt with additional or overridden attributes.
-
-        Arguments:
-            attributes: attributes to merge into this prompt
-        Returns:
-            merged prompt
-        """
-        merged_attributes = dict(self.attributes)
-        merged_attributes.update(attributes)
-        return type(self).from_attributes(self.language, merged_attributes)
+        transformed_fields = {
+            field.name: transform(value)
+            for field in fields(self)
+            if field.name != "language"
+            and isinstance(value := getattr(self, field.name), str)
+        }
+        return replace(self, language=language, **transformed_fields)

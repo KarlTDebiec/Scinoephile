@@ -14,14 +14,13 @@ that hierarchy:
 - `scinoephile.core`: core subtitle-domain logic; may import from `common`
 - `analysis`, `image`, and `llms`: domain packages that may import from `common`
   and `core`
-- `scinoephile.media`: media tooling built on the lower layers
+- `scinoephile.media` and `scinoephile.optimization`: media tooling and prompt
+  optimization infrastructure built on the lower layers
 - `scinoephile.lang`: language-specific subtitle operations that may import from
   the packages above
 - `audio`, `dictionaries`, and `web`: audio, dictionary, and web UI packages
   that may import from the packages above
 - `multilang`: cross-language operations that may import from the packages above
-- `scinoephile.optimization`: prompt optimization and persistence infrastructure
-  that may import from the packages above
 - `scinoephile.workflows`: reusable workflow orchestration that may import from
   the packages above
 - `scinoephile.cli`: user-facing command-line wrappers that may import from any
@@ -43,14 +42,13 @@ intended to keep dependencies flowing toward earlier layers:
     utilities.
 - **`media`**: media-file probing, subtitle extraction helpers, subtitle cache
   analysis, and visual offset estimation.
+- **`optimization`**: prompt optimization operations and normalized prompt and
+  test-case persistence built on `core` and `llms`.
 - **`lang`**: language-specific subtitle operations (English, standard Chinese,
   written Cantonese, etc.).
 - **`audio`, `dictionaries`, and `web`**: audio representation and transcription
   tooling, dictionary lookup/build logic, and web interfaces.
 - **`multilang`**: pair-specific cross-language operations.
-- **`optimization`**: prompt optimization operations and normalized SQLite
-  persistence for zero-shot prompts and test cases across registered LLM,
-  language, and cross-language operations.
 - **`workflows`**: reusable end-to-end orchestration that coordinates multiple
   domain packages, including `multilang`.
 - **`cli`**: thin wrappers around lower layers; argument parsing, validation,
@@ -69,18 +67,20 @@ hierarchy comment. This serves two purposes:
 
 ### Immutable prompt values
 
-Operation-specific prompt types in `scinoephile.llms` define behavior and the
-required correspondence fields for review, translation, OCR fusion, and the
-other LLM shapes. Authored prompt text is declarative: `define_prompt` combines
-the text with a `Language` and constructs a frozen, hashable prompt value. LLM
+Operation-specific prompt types in `scinoephile.llms` are frozen, keyword-only
+dataclasses defining behavior and named correspondence fields for review,
+translation, OCR fusion, and the other LLM shapes. Authored and localized
+prompts construct those types directly with a `Language` and string fields. LLM
 managers, processors, queryers, and workflows pass these values directly.
+Authored prompts may reuse typed language-specific field dictionaries while
+keeping their language and operation-specific fields explicit.
 
 Only generated Pydantic query, answer, and test-case models are represented by
 runtime classes. Managers cache those model classes using the immutable prompt
 value, whose stable content-addressed name is used in generated model names.
 
 Optimization persistence stores a prompt's language and effective zero-shot
-string attributes. Few-shot labels and test-case curation descriptions are
+string fields. Few-shot labels and test-case curation descriptions are
 intentionally excluded. Prompt and test-case SQLite stores own and create their
 tables independently; both table groups may coexist in one SQLite file without
 a global schema version or migration contract.
@@ -100,6 +100,8 @@ The CLI is organized as a tree of `argparse` subparsers. The complete command
 surface (commands and subcommands) is:
 
 - `scinoephile`
+  - `audit`: audit review changes and final discrepancies across simplified and
+    traditional subtitle paths
   - `dictionary`
     - `build`
       - `cuhk`: build CUHK dictionary cache
@@ -138,7 +140,6 @@ surface (commands and subcommands) is:
       - `prune`: remove stale cached files
       - `stats`: inspect cache size and entry counts
     - `optimization`
-      - `sync-prompts`: synchronize registered zero-shot prompts
       - `sync-test-cases`: synchronize persisted prompt-optimization test cases
   - `translate`: translate subtitles between supported languages
   - `yue`

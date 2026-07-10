@@ -4,14 +4,11 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
-
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import PromptEng
+from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
 from scinoephile.llms.gap_translation import GapTranslationPrompt
 from scinoephile.llms.guided_translation import GuidedTranslationPrompt
-from scinoephile.llms.prompt_definition import define_prompt
 from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
@@ -21,12 +18,10 @@ __all__ = [
 ]
 
 
-@define_prompt(TranslationPrompt, Language.eng, parent=PromptEng)
-class EngYueTranslationPrompt:
-    """Text for English translation from written Cantonese."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+EngYueTranslationPrompt = TranslationPrompt(
+    language=Language.eng,
+    **ENG_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact("""
         You are responsible for creating English subtitles from written Cantonese
         subtitles.
 
@@ -39,33 +34,21 @@ class EngYueTranslationPrompt:
         Output only the generated English subtitle text in each answer field. Do not
         include notes, explanations, labels, alternate translations, bracketed
         commentary, or any text outside the subtitle itself.
-        """)
-    """Base system prompt."""
-
-    # Query fields
-    input_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for written Cantonese source fields in query."""
-
-    input_desc_tpl: ClassVar[str] = "Written Cantonese subtitle {idx} to translate"
-    """Description template for written Cantonese source fields in query."""
-
-    # Answer fields
-    output_pfx: ClassVar[str] = "eng_"
-    """Prefix for generated English output fields in answer."""
-
-    output_desc_tpl: ClassVar[str] = (
+        """),
+    input_pfx="yuewen_",
+    input_desc_tpl="Written Cantonese subtitle {idx} to translate",
+    output_pfx="eng_",
+    output_desc_tpl=(
         "Generated English subtitle {idx} corresponding to written Cantonese "
         "subtitle {idx}"
-    )
-    """Description template for generated English output fields in answer."""
+    ),
+)
+"""Text for English translation from written Cantonese."""
 
-
-@define_prompt(GapTranslationPrompt, Language.eng, parent=PromptEng)
-class EngYueGapTranslationPrompt:
-    """Text for English gap translation using written Cantonese."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+EngYueGapTranslationPrompt = GapTranslationPrompt(
+    language=Language.eng,
+    **ENG_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact("""
         You are responsible for filling missing English subtitle lines using the
         corresponding written Cantonese subtitles as reference.
 
@@ -81,42 +64,24 @@ class EngYueGapTranslationPrompt:
         translation is needed for a line, output an empty string. Do not include notes,
         explanations, labels, alternate translations, bracketed commentary, or any text
         outside the subtitle itself.
-        """)
-    """Base system prompt."""
-
-    # Query fields
-    src_1_pfx: ClassVar[str] = "eng_"
-    """Prefix for existing English fields in query."""
-
-    src_1_desc_tpl: ClassVar[str] = (
+        """),
+    src_1_pfx="eng_",
+    src_1_desc_tpl=(
         "Existing English subtitle {idx}; missing entries require translation"
-    )
-    """Description template for existing English fields in query."""
-
-    src_2_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for written Cantonese reference fields in query."""
-
-    src_2_desc_tpl: ClassVar[str] = (
-        "Written Cantonese subtitle {idx} corresponding to line {idx}"
-    )
-    """Description template for written Cantonese reference fields in query."""
-
-    # Answer fields
-    output_pfx: ClassVar[str] = "eng_"
-    """Prefix for generated English output fields in answer."""
-
-    output_desc_tpl: ClassVar[str] = (
+    ),
+    src_2_pfx="yuewen_",
+    src_2_desc_tpl="Written Cantonese subtitle {idx} corresponding to line {idx}",
+    output_pfx="eng_",
+    output_desc_tpl=(
         'English subtitle {idx} for a missing line, or "" if no translation is needed'
-    )
-    """Description template for generated English output fields in answer."""
+    ),
+)
+"""Text for English gap translation using written Cantonese."""
 
-
-@define_prompt(GuidedTranslationPrompt, Language.eng, parent=PromptEng)
-class EngYueGuidedTranslationPrompt:
-    """Text for guided translation of English from written Cantonese."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+EngYueGuidedTranslationPrompt = GuidedTranslationPrompt(
+    language=Language.eng,
+    **ENG_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact("""
         You are responsible for creating English subtitles from written Cantonese
         subtitles. You will also receive original English subtitles from the same
         scene as reference material.
@@ -135,30 +100,15 @@ class EngYueGuidedTranslationPrompt:
         include notes, explanations, labels, alternate translations, bracketed
         commentary, or any text outside the subtitle itself. Preserve subtitle markup
         only when it is appropriate for the generated English subtitle.
-        """)
-    """Base system prompt."""
-
-    # Query fields
-    src_1_pfx: ClassVar[str] = "yuewen_"
-    """Prefix for written Cantonese source fields in query."""
-
-    src_1_desc_tpl: ClassVar[str] = "Written Cantonese subtitle {idx} to translate"
-    """Description template for written Cantonese source fields in query."""
-
-    src_2_pfx: ClassVar[str] = "eng_reference_"
-    """Prefix for English reference fields in query."""
-
-    src_2_desc_tpl: ClassVar[str] = (
-        "Original English reference subtitle {idx} from the same block"
-    )
-    """Description template for English reference fields in query."""
-
-    # Answer fields
-    output_pfx: ClassVar[str] = "eng_"
-    """Prefix for generated English output fields in answer."""
-
-    output_desc_tpl: ClassVar[str] = (
+        """),
+    src_1_pfx="yuewen_",
+    src_1_desc_tpl="Written Cantonese subtitle {idx} to translate",
+    src_2_pfx="eng_reference_",
+    src_2_desc_tpl="Original English reference subtitle {idx} from the same block",
+    output_pfx="eng_",
+    output_desc_tpl=(
         "Generated English subtitle {idx} corresponding to written Cantonese "
         "subtitle {idx}"
-    )
-    """Description template for generated English output fields in answer."""
+    ),
+)
+"""Text for guided translation of English from written Cantonese."""

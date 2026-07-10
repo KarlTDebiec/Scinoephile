@@ -119,11 +119,7 @@ def get_pairwise_reviewer(
         prompt = _PROMPTS[key]
     if test_cases is None:
         test_cases = list(
-            load_default_test_cases(
-                PairwiseReviewManager,
-                prompt,
-                _JSON_PATHS[key],
-            )
+            load_default_test_cases(PairwiseReviewManager, prompt, _JSON_PATHS[key])
         )
     if provider is None:
         provider = get_provider()

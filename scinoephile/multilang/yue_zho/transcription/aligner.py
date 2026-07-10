@@ -118,7 +118,7 @@ class Aligner:
                 continue
             # TODO: try/except and return original written Cantonese on error
             # (not yet encountered).
-            test_case: TestCase = self.delineation_queryer.call(test_case)
+            test_case: TestCase = self.delineation_queryer(test_case)
 
             # If there is no change, continue
             query = test_case.query
@@ -127,7 +127,7 @@ class Aligner:
                 message = "Delineation query returned no answer."
                 logger.error(message)
                 raise ScinoephileError(message)
-            prompt: DelineationPrompt = getattr(test_case, "llm_prompt")
+            prompt: DelineationPrompt = getattr(test_case, "prompt")
             yuewen_1_shifted = getattr(answer, prompt.src_2_sub_1_shifted, None)
             yuewen_2_shifted = getattr(answer, prompt.src_2_sub_2_shifted, None)
             if yuewen_1_shifted == "" and yuewen_2_shifted == "":
@@ -171,7 +171,7 @@ class Aligner:
         sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get written Cantonese
-        prompt: DelineationPrompt = getattr(query, "llm_prompt")
+        prompt: DelineationPrompt = getattr(query, "prompt")
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
         yw_1 = getattr(query, prompt.src_2_sub_1, "")
@@ -315,7 +315,7 @@ class Aligner:
                 nascent_sg.append(([zw_idx], []))
                 continue
             try:
-                test_case = self.punctuation_queryer.call(test_case)
+                test_case = self.punctuation_queryer(test_case)
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
                 logger.error(
@@ -324,7 +324,7 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            prompt: PunctuationPrompt = getattr(test_case, "llm_prompt")
+            prompt: PunctuationPrompt = getattr(test_case, "prompt")
             yuewen_punctuated = getattr(test_case.answer, prompt.output, None)
             yw = get_sub_merged(yws, text=yuewen_punctuated)
             yw.start = zw.start

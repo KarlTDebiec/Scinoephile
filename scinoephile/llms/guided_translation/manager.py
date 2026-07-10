@@ -30,9 +30,7 @@ class GuidedTranslationManager(Manager):
 
     operation: ClassVar[str] = "guided-translation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[GuidedTranslationPrompt] = (
-        GuidedTranslationPrompt.from_attributes()
-    )
+    base_prompt: ClassVar[GuidedTranslationPrompt] = GuidedTranslationPrompt()
     """Base prompt defining persisted test-case field names."""
 
     @classmethod
@@ -41,7 +39,7 @@ class GuidedTranslationManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt.from_attributes(),
+        prompt: GuidedTranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -70,7 +68,7 @@ class GuidedTranslationManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "source_one_size", source_one_size)
         setattr(model, "source_two_size", source_two_size)
         return model
@@ -81,7 +79,7 @@ class GuidedTranslationManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt.from_attributes(),
+        prompt: GuidedTranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -114,7 +112,7 @@ class GuidedTranslationManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "source_one_size", source_one_size)
         setattr(model, "source_two_size", source_two_size)
         return model
@@ -125,7 +123,7 @@ class GuidedTranslationManager(Manager):
         cls,
         source_one_size: int,
         source_two_size: int,
-        prompt: GuidedTranslationPrompt = GuidedTranslationPrompt.from_attributes(),
+        prompt: GuidedTranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -156,7 +154,7 @@ class GuidedTranslationManager(Manager):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.llm_prompt = prompt
+        model.prompt = prompt
         setattr(model, "source_one_size", source_one_size)
         setattr(model, "source_two_size", source_two_size)
         setattr(model, "get_auto_verified", cls.get_auto_verified)

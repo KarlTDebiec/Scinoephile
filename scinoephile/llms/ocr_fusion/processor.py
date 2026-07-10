@@ -91,10 +91,7 @@ class OcrFusionProcessor(Processor):
             # Query LLM
             test_case_cls = OcrFusionManager.get_test_case_cls(prompt)
             query_cls = test_case_cls.query_cls
-            query_kwargs = {
-                prompt.src_1: text_one,
-                prompt.src_2: text_two,
-            }
+            query_kwargs = {prompt.src_1: text_one, prompt.src_2: text_two}
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)

@@ -26,8 +26,9 @@ from scinoephile.optimization.persistence.test_cases import (
 )
 from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
-_UPDATED_REVIEW_PROMPT = ReviewPromptEng.with_attributes(
-    {"base_system_prompt": "Review subtitles with exceptional care."}
+_UPDATED_REVIEW_PROMPT = replace(
+    ReviewPromptEng,
+    base_system_prompt="Review subtitles with exceptional care.",
 )
 """English review prompt with updated zero-shot instructions."""
 
@@ -86,7 +87,7 @@ def test_store_shares_database_with_test_cases(tmp_path: Path):
         test_case_id=get_test_case_id(query, answer, TranslationManager),
         operation=TranslationManager.operation,
         difficulty=0,
-        prompt=False,
+        few_shot=False,
         verified=True,
         query=query,
         answer=answer,
