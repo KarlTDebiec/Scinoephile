@@ -4,14 +4,10 @@
 
 from __future__ import annotations
 
-import json
 from collections.abc import Iterable, Mapping
 from dataclasses import replace
 from logging import getLogger
-from pathlib import Path
-from typing import Any, cast
 
-from pydantic import JsonValue
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
@@ -19,21 +15,21 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
-    MetaData,
     Table,
     Text,
-    create_engine,
     select,
-    text,
 )
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
-from sqlalchemy.engine import URL, Connection, RowMapping
-from sqlalchemy.event import listen
-from sqlalchemy.pool import NullPool
+from sqlalchemy.engine import Connection, RowMapping
 
-from scinoephile.common.validation import val_output_path
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.llms import Manager
+from scinoephile.optimization.persistence.sqlite import (
+    OptimizationSqliteStore,
+    load_json_object,
+    metadata,
+    serialize_json_object,
+)
 
 from .id import get_test_case_id
 from .persisted_test_case import PersistedTestCase
@@ -43,31 +39,15 @@ __all__ = ["TestCaseSqliteStore"]
 logger = getLogger(__name__)
 
 
-def _enable_sqlite_foreign_keys(
-    dbapi_connection: Any,
-    _connection_record: object,
-):
-    """Enable SQLite foreign-key enforcement on a new DB-API connection."""
-    cursor = dbapi_connection.cursor()
-    cursor.execute("PRAGMA foreign_keys=ON")
-    cursor.close()
-
-
-class TestCaseSqliteStore:
+class TestCaseSqliteStore(OptimizationSqliteStore):
     """Normalized SQLite persistence and lookup for test cases."""
 
     __test__ = False
     """Inform pytest not to collect this class as a test."""
 
-    schema_version = 4
-    """SQLite schema version."""
-
-    _metadata = MetaData()
-    """SQLAlchemy Core metadata for the test-case catalog."""
-
     _test_cases = Table(
         "test_cases",
-        _metadata,
+        metadata,
         Column("test_case_id", Text, primary_key=True),
         Column("operation", Text, nullable=False),
         Column("difficulty", Integer, nullable=False),
@@ -83,7 +63,7 @@ class TestCaseSqliteStore:
 
     _test_case_sources = Table(
         "test_case_sources",
-        _metadata,
+        metadata,
         Column(
             "test_case_id",
             Text,
@@ -94,41 +74,6 @@ class TestCaseSqliteStore:
         Index("test_case_sources_source_path", "source_path"),
     )
     """JSON source provenance for imported test cases."""
-
-    def __init__(self, database_path: Path):
-        """Initialize.
-
-        Arguments:
-            database_path: SQLite database path
-        """
-        self.database_path = val_output_path(
-            database_path,
-            exist_ok=True,
-            create=False,
-        )
-        self.engine = create_engine(
-            URL.create("sqlite", database=str(self.database_path)),
-            future=True,
-            poolclass=NullPool,
-        )
-        listen(self.engine, "connect", _enable_sqlite_foreign_keys)
-
-    def create_schema(self):
-        """Create the normalized SQLite schema if needed.
-
-        Raises:
-            ScinoephileError: if the database uses an unsupported schema version
-        """
-        self.database_path = val_output_path(self.database_path, exist_ok=True)
-        with self.engine.begin() as connection:
-            version = self._get_schema_version(connection)
-            if version not in {0, self.schema_version}:
-                raise ScinoephileError(
-                    f"SQLite test-case schema version {version} is unsupported; "
-                    "create a new database."
-                )
-            self._metadata.create_all(connection)
-            connection.execute(text(f"PRAGMA user_version={self.schema_version}"))
 
     def get_test_case(self, test_case_id: str) -> PersistedTestCase | None:
         """Fetch a single test case by ID.
@@ -282,17 +227,6 @@ class TestCaseSqliteStore:
         logger.info(f"Synchronized {len(desired_by_source)} test-case source paths")
         return changes
 
-    @staticmethod
-    def _get_schema_version(connection: Connection) -> int:
-        """Get the SQLite user schema version.
-
-        Arguments:
-            connection: SQLAlchemy connection
-        Returns:
-            SQLite user schema version
-        """
-        return int(connection.execute(text("PRAGMA user_version")).scalar_one())
-
     def _get_source_paths(
         self,
         connection: Connection,
@@ -315,49 +249,6 @@ class TestCaseSqliteStore:
             ).scalars()
         )
 
-    @staticmethod
-    def _load_json_object(value: object, field_name: str) -> dict[str, JsonValue]:
-        """Load a JSON object stored in a SQLite text column.
-
-        Arguments:
-            value: SQLite column value
-            field_name: field name used in corruption errors
-        Returns:
-            loaded JSON object
-        Raises:
-            ScinoephileError: if the stored value is not a JSON object
-        """
-        if not isinstance(value, str):
-            raise ScinoephileError(
-                f"Persisted test case {field_name} is not JSON text."
-            )
-        try:
-            loaded = json.loads(value)
-        except json.JSONDecodeError as exc:
-            raise ScinoephileError(
-                f"Persisted test case {field_name} is invalid JSON."
-            ) from exc
-        if not isinstance(loaded, dict):
-            raise ScinoephileError(
-                f"Persisted test case {field_name} is not a JSON object."
-            )
-        return cast("dict[str, JsonValue]", loaded)
-
-    @staticmethod
-    def _require_current_schema(version: int):
-        """Require the current normalized schema version.
-
-        Arguments:
-            version: SQLite user schema version
-        Raises:
-            ScinoephileError: if the schema version is unsupported
-        """
-        if version != TestCaseSqliteStore.schema_version:
-            raise ScinoephileError(
-                f"SQLite test-case schema version {version} is unsupported; "
-                "create a new database."
-            )
-
     def _row_to_test_case(
         self,
         connection: Connection,
@@ -378,25 +269,9 @@ class TestCaseSqliteStore:
             difficulty=int(row["difficulty"]),
             prompt=bool(row["prompt"]),
             verified=bool(row["verified"]),
-            query=self._load_json_object(row["query_json"], "query"),
-            answer=self._load_json_object(row["answer_json"], "answer"),
+            query=load_json_object(row["query_json"], "Persisted test case query"),
+            answer=load_json_object(row["answer_json"], "Persisted test case answer"),
             source_paths=self._get_source_paths(connection, test_case_id),
-        )
-
-    @staticmethod
-    def _serialize_json_object(value: dict[str, JsonValue]) -> str:
-        """Serialize a JSON object canonically for SQLite storage.
-
-        Arguments:
-            value: JSON object
-        Returns:
-            canonical JSON text
-        """
-        return json.dumps(
-            value,
-            ensure_ascii=False,
-            sort_keys=True,
-            separators=(",", ":"),
         )
 
     def _sync_source_paths(
@@ -449,8 +324,8 @@ class TestCaseSqliteStore:
                         difficulty=test_case.difficulty,
                         prompt=test_case.prompt,
                         verified=test_case.verified,
-                        query_json=self._serialize_json_object(test_case.query),
-                        answer_json=self._serialize_json_object(test_case.answer),
+                        query_json=serialize_json_object(test_case.query),
+                        answer_json=serialize_json_object(test_case.answer),
                     )
                     .on_conflict_do_nothing(
                         index_elements=[self._test_cases.c.test_case_id]

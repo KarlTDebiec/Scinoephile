@@ -4,14 +4,19 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import ClassVar
 
-from scinoephile.core.dictionaries import DictionaryToolPrompt
+from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+)
 from scinoephile.llms.gap_translation import GapTranslationPrompt
 from scinoephile.llms.guided_translation import GuidedTranslationPrompt
+from scinoephile.llms.prompt_definition import define_prompt
 from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
@@ -24,9 +29,8 @@ __all__ = [
 ]
 
 
-class YueEngTranslationPromptYueHant(
-    DictionaryToolPrompt, TranslationPrompt, PromptYueHant
-):
+@define_prompt(TranslationPrompt, Language.yue_hant, parent=PromptYueHant)
+class YueEngTranslationPromptYueHant:
     """Text for traditional written Cantonese translation from English."""
 
     # Dictionary tool
@@ -72,16 +76,18 @@ class YueEngTranslationPromptYueHant(
     """Description template for generated written Cantonese output fields."""
 
 
-class YueEngTranslationPromptYueHans(YueEngTranslationPromptYueHant):
+@define_prompt(
+    TranslationPrompt,
+    Language.yue_hans,
+    parent=YueEngTranslationPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class YueEngTranslationPromptYueHans:
     """Text for simplified written Cantonese translation from English."""
 
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Chinese characters from the parent class."""
 
-
-class YueEngGapTranslationPromptYueHant(
-    DictionaryToolPrompt, GapTranslationPrompt, PromptYueHant
-):
+@define_prompt(GapTranslationPrompt, Language.yue_hant, parent=PromptYueHant)
+class YueEngGapTranslationPromptYueHant:
     """Text for traditional written Cantonese gap translation using English."""
 
     # Dictionary tool
@@ -145,22 +151,19 @@ class YueEngGapTranslationPromptYueHant(
     )
     """Error template when output includes leaked note text."""
 
-    @classmethod
-    def output_contains_note_err(cls, idx: int) -> str:
-        """Error when output includes note-like text."""
-        return cls.output_contains_note_err_tpl.format(idx=idx)
 
-
-class YueEngGapTranslationPromptYueHans(YueEngGapTranslationPromptYueHant):
+@define_prompt(
+    GapTranslationPrompt,
+    Language.yue_hans,
+    parent=YueEngGapTranslationPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class YueEngGapTranslationPromptYueHans:
     """Text for simplified written Cantonese gap translation using English."""
 
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Chinese characters from the parent class."""
 
-
-class YueEngGuidedTranslationPromptYueHant(
-    DictionaryToolPrompt, GuidedTranslationPrompt, PromptYueHant
-):
+@define_prompt(GuidedTranslationPrompt, Language.yue_hant, parent=PromptYueHant)
+class YueEngGuidedTranslationPromptYueHant:
     """Text for traditional guided written Cantonese translation from English."""
 
     # Dictionary tool
@@ -214,8 +217,11 @@ class YueEngGuidedTranslationPromptYueHant(
     """Description template for generated written Cantonese output fields."""
 
 
-class YueEngGuidedTranslationPromptYueHans(YueEngGuidedTranslationPromptYueHant):
+@define_prompt(
+    GuidedTranslationPrompt,
+    Language.yue_hans,
+    parent=YueEngGuidedTranslationPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class YueEngGuidedTranslationPromptYueHans:
     """Text for simplified guided written Cantonese translation from English."""
-
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Chinese characters from the parent class."""

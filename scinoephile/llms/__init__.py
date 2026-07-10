@@ -6,7 +6,8 @@ This module may import from: common, core
 
 Hierarchy within module, where lower entries may import from higher entries:
 * delineation / gap_translation / guided_review / guided_translation / ocr_fusion
-  / pairwise_review / providers / punctuation / review / translation
+  / pairwise_review / prompt_definition / providers / punctuation / review
+  / translation
 
 LLM shapes:
 
@@ -33,7 +34,12 @@ import scinoephile.core.llms.utils as llm_utils
 from scinoephile import common
 from scinoephile.core.llms import Manager, Prompt, TestCase
 
-__all__ = ["load_default_test_cases"]
+from .prompt_definition import PromptDefinition
+
+__all__ = [
+    "PromptDefinition",
+    "load_default_test_cases",
+]
 
 logger = logging.getLogger(__name__)
 

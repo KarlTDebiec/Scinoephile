@@ -11,5 +11,6 @@ This module may import from:
 - multilang
 
 Package hierarchy (modules may import from any above):
-* operations / persistence
+* operations / prompt_specs
+* persistence
 """

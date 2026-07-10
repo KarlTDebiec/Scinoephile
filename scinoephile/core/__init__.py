@@ -6,9 +6,9 @@ This module may import from: common
 
 Hierarchy within module (lower may import from higher):
 * dictionaries / exceptions / ml / paths
-* cache / llms / subtitles / text
+* cache / subtitles / text
 * language / pairs / romanization / timing
-* cli / media / synchronization
+* cli / llms / media / synchronization
 * stacking
 """
 

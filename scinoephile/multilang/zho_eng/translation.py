@@ -4,13 +4,19 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.prompts import PromptZhoHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+)
 from scinoephile.llms.gap_translation import GapTranslationPrompt
 from scinoephile.llms.guided_translation import GuidedTranslationPrompt
+from scinoephile.llms.prompt_definition import define_prompt
 from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
@@ -23,7 +29,8 @@ __all__ = [
 ]
 
 
-class ZhoEngTranslationPromptZhoHant(TranslationPrompt, PromptZhoHant):
+@define_prompt(TranslationPrompt, Language.zho_hant, parent=PromptZhoHant)
+class ZhoEngTranslationPromptZhoHant:
     """Text for traditional standard Chinese translation from English."""
 
     # Prompt
@@ -55,14 +62,18 @@ class ZhoEngTranslationPromptZhoHant(TranslationPrompt, PromptZhoHant):
     """Description template for generated standard Chinese output fields."""
 
 
-class ZhoEngTranslationPromptZhoHans(ZhoEngTranslationPromptZhoHant):
+@define_prompt(
+    TranslationPrompt,
+    Language.zho_hans,
+    parent=ZhoEngTranslationPromptZhoHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+)
+class ZhoEngTranslationPromptZhoHans:
     """Text for simplified standard Chinese translation from English."""
 
-    opencc_config = OpenCCConfig.t2s
-    """Config for converting traditional Chinese characters from the parent class."""
 
-
-class ZhoEngGapTranslationPromptZhoHant(GapTranslationPrompt, PromptZhoHant):
+@define_prompt(GapTranslationPrompt, Language.zho_hant, parent=PromptZhoHant)
+class ZhoEngGapTranslationPromptZhoHant:
     """Text for traditional standard Chinese gap translation using English."""
 
     # Prompt
@@ -112,20 +123,19 @@ class ZhoEngGapTranslationPromptZhoHant(GapTranslationPrompt, PromptZhoHant):
     )
     """Error template when output includes leaked note text."""
 
-    @classmethod
-    def output_contains_note_err(cls, idx: int) -> str:
-        """Error when output includes note-like text."""
-        return cls.output_contains_note_err_tpl.format(idx=idx)
 
-
-class ZhoEngGapTranslationPromptZhoHans(ZhoEngGapTranslationPromptZhoHant):
+@define_prompt(
+    GapTranslationPrompt,
+    Language.zho_hans,
+    parent=ZhoEngGapTranslationPromptZhoHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+)
+class ZhoEngGapTranslationPromptZhoHans:
     """Text for simplified standard Chinese gap translation using English."""
 
-    opencc_config = OpenCCConfig.t2s
-    """Config for converting traditional Chinese characters from the parent class."""
 
-
-class ZhoEngGuidedTranslationPromptZhoHant(GuidedTranslationPrompt, PromptZhoHant):
+@define_prompt(GuidedTranslationPrompt, Language.zho_hant, parent=PromptZhoHant)
+class ZhoEngGuidedTranslationPromptZhoHant:
     """Text for traditional guided standard Chinese translation from English."""
 
     # Prompt
@@ -165,8 +175,11 @@ class ZhoEngGuidedTranslationPromptZhoHant(GuidedTranslationPrompt, PromptZhoHan
     """Description template for generated standard Chinese output fields."""
 
 
-class ZhoEngGuidedTranslationPromptZhoHans(ZhoEngGuidedTranslationPromptZhoHant):
+@define_prompt(
+    GuidedTranslationPrompt,
+    Language.zho_hans,
+    parent=ZhoEngGuidedTranslationPromptZhoHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.t2s),
+)
+class ZhoEngGuidedTranslationPromptZhoHans:
     """Text for simplified guided standard Chinese translation from English."""
-
-    opencc_config = OpenCCConfig.t2s
-    """Config for converting traditional Chinese characters from the parent class."""

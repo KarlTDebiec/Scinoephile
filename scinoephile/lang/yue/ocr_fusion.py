@@ -4,12 +4,18 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+)
 from scinoephile.llms.ocr_fusion import OcrFusionPrompt
+from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = [
     "OcrFusionPromptYueHans",
@@ -17,7 +23,8 @@ __all__ = [
 ]
 
 
-class OcrFusionPromptYueHant(OcrFusionPrompt, PromptYueHant):
+@define_prompt(OcrFusionPrompt, Language.yue_hant, parent=PromptYueHant)
+class OcrFusionPromptYueHant:
     """LLM correspondence text for traditional written Cantonese OCR fusion."""
 
     # Prompt
@@ -75,8 +82,11 @@ class OcrFusionPromptYueHant(OcrFusionPrompt, PromptYueHant):
     """Error when note field is missing from answer."""
 
 
-class OcrFusionPromptYueHans(OcrFusionPromptYueHant):
+@define_prompt(
+    OcrFusionPrompt,
+    Language.yue_hans,
+    parent=OcrFusionPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class OcrFusionPromptYueHans:
     """LLM correspondence text for simplified written Cantonese OCR fusion."""
-
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Cantonese from the parent class."""

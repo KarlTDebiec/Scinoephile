@@ -4,15 +4,18 @@
 
 from __future__ import annotations
 
-from abc import ABC
 from typing import ClassVar
 
+from scinoephile.core import Language
+from scinoephile.core.llms import Prompt
 from scinoephile.lang.zho.prompts import PromptZhoHant
+from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = ["PromptYueHant"]
 
 
-class PromptYueHant(PromptZhoHant, ABC):
+@define_prompt(Prompt, Language.yue_hant, parent=PromptZhoHant)
+class PromptYueHant:
     """LLM correspondence text for traditional written Cantonese."""
 
     # Prompt

@@ -4,15 +4,17 @@
 
 from __future__ import annotations
 
-from abc import ABC
 from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.llms import Prompt
+from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = ["PromptEng"]
 
 
-class PromptEng(Prompt, ABC):
+@define_prompt(Prompt, Language.eng)
+class PromptEng:
     """LLM correspondence text for English."""
 
     # Prompt

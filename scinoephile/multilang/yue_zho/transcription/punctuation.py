@@ -4,8 +4,10 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.llms import TestCase
 from scinoephile.core.text import (
     dedent_and_compact,
@@ -13,7 +15,11 @@ from scinoephile.core.text import (
     remove_punc_and_whitespace,
 )
 from scinoephile.lang.yue.prompts import PromptYueHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+)
+from scinoephile.llms.prompt_definition import define_prompt
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 
 __all__ = [
@@ -23,7 +29,8 @@ __all__ = [
 ]
 
 
-class YuePunctuationVsZhoPromptYueHant(PunctuationPrompt, PromptYueHant):
+@define_prompt(PunctuationPrompt, Language.yue_hant, parent=PromptYueHant)
+class YuePunctuationVsZhoPromptYueHant:
     """Text for traditional written Cantonese/standard Chinese punctuation."""
 
     # Prompt
@@ -80,11 +87,14 @@ class YuePunctuationVsZhoPromptYueHant(PunctuationPrompt, PromptYueHant):
     """Error when punctuated written Cantonese characters do not match original."""
 
 
-class YuePunctuationVsZhoPromptYueHans(YuePunctuationVsZhoPromptYueHant):
+@define_prompt(
+    PunctuationPrompt,
+    Language.yue_hans,
+    parent=YuePunctuationVsZhoPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class YuePunctuationVsZhoPromptYueHans:
     """Text for simplified written Cantonese/standard Chinese punctuation."""
-
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Chinese characters from the parent class."""
 
 
 class YueZhoPunctuationManager(PunctuationManager):

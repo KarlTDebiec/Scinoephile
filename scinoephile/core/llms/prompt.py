@@ -5,13 +5,19 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
+
+if TYPE_CHECKING:
+    from scinoephile.core.language import Language
 
 __all__ = ["Prompt"]
 
 
 class Prompt(ABC):
     """Text strings to be used for corresponding with an LLM."""
+
+    language: ClassVar[Language]
+    """Language in which the prompt corresponds with the LLM."""
 
     # Prompt
     base_system_prompt: ClassVar[str]

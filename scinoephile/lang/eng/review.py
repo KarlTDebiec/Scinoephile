@@ -6,10 +6,12 @@ from __future__ import annotations
 
 from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.guided_review import GuidedReviewPrompt
 from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
+from scinoephile.llms.prompt_definition import define_prompt
 from scinoephile.llms.review import ReviewPrompt
 
 __all__ = [
@@ -19,7 +21,8 @@ __all__ = [
 ]
 
 
-class GuidedReviewPromptEng(GuidedReviewPrompt, PromptEng):
+@define_prompt(GuidedReviewPrompt, Language.eng, parent=PromptEng)
+class GuidedReviewPromptEng:
     """LLM correspondence text for guided review of English subtitles."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -49,7 +52,8 @@ class GuidedReviewPromptEng(GuidedReviewPrompt, PromptEng):
     """Prefix for output fields in answer."""
 
 
-class PairwiseReviewPromptEng(PairwiseReviewPrompt, PromptEng):
+@define_prompt(PairwiseReviewPrompt, Language.eng, parent=PromptEng)
+class PairwiseReviewPromptEng:
     """LLM correspondence text for pairwise review of English subtitles."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -78,7 +82,8 @@ class PairwiseReviewPromptEng(PairwiseReviewPrompt, PromptEng):
     """Name of output field in answer."""
 
 
-class ReviewPromptEng(ReviewPrompt, PromptEng):
+@define_prompt(ReviewPrompt, Language.eng, parent=PromptEng)
+class ReviewPromptEng:
     """LLM correspondence text for English review."""
 
     # Prompt

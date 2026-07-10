@@ -58,6 +58,12 @@ class GapTranslationPrompt(Prompt, ABC):
 
     # Answer fields
     @classmethod
+    def output_contains_note_err(cls, idx: int) -> str:
+        """Error when output includes note-like text."""
+        template = getattr(cls, "output_contains_note_err_tpl")
+        return str(template).format(idx=idx)
+
+    @classmethod
     def output(cls, idx: int) -> str:
         """Name of output field in answer."""
         return f"{cls.output_pfx}{idx}"

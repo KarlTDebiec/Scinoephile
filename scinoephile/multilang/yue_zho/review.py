@@ -4,13 +4,19 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+)
 from scinoephile.llms.guided_review import GuidedReviewPrompt
 from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
+from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = [
     "YueZhoGuidedReviewPromptYueHans",
@@ -20,7 +26,8 @@ __all__ = [
 ]
 
 
-class YueZhoGuidedReviewPromptYueHant(GuidedReviewPrompt, PromptYueHant):
+@define_prompt(GuidedReviewPrompt, Language.yue_hant, parent=PromptYueHant)
+class YueZhoGuidedReviewPromptYueHant:
     """Prompt for guided review of traditional written Cantonese using Chinese."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -76,14 +83,18 @@ class YueZhoGuidedReviewPromptYueHant(GuidedReviewPrompt, PromptYueHant):
     """Error template when output is missing for a note."""
 
 
-class YueZhoGuidedReviewPromptYueHans(YueZhoGuidedReviewPromptYueHant):
+@define_prompt(
+    GuidedReviewPrompt,
+    Language.yue_hans,
+    parent=YueZhoGuidedReviewPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class YueZhoGuidedReviewPromptYueHans:
     """Prompt for guided review of simplified written Cantonese using Chinese."""
 
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Chinese characters from the parent class."""
 
-
-class YueZhoPairwiseReviewPromptYueHant(PairwiseReviewPrompt, PromptYueHant):
+@define_prompt(PairwiseReviewPrompt, Language.yue_hant, parent=PromptYueHant)
+class YueZhoPairwiseReviewPromptYueHant:
     """Prompt for pairwise review of traditional written Cantonese using Chinese."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -131,8 +142,11 @@ class YueZhoPairwiseReviewPromptYueHant(PairwiseReviewPrompt, PromptYueHant):
     """Error when output is missing for a note."""
 
 
-class YueZhoPairwiseReviewPromptYueHans(YueZhoPairwiseReviewPromptYueHant):
+@define_prompt(
+    PairwiseReviewPrompt,
+    Language.yue_hans,
+    parent=YueZhoPairwiseReviewPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class YueZhoPairwiseReviewPromptYueHans:
     """Prompt for pairwise review of simplified written Cantonese using Chinese."""
-
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Chinese characters from the parent class."""

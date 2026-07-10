@@ -14,13 +14,14 @@ that hierarchy:
 - `scinoephile.core`: core subtitle-domain logic; may import from `common`
 - `analysis`, `image`, and `llms`: domain packages that may import from `common`
   and `core`
-- `scinoephile.media` and `scinoephile.optimization`: media tooling and prompt
-  optimization infrastructure built on the lower layers
+- `scinoephile.media`: media tooling built on the lower layers
 - `scinoephile.lang`: language-specific subtitle operations that may import from
   the packages above
 - `audio`, `dictionaries`, and `web`: audio, dictionary, and web UI packages
   that may import from the packages above
 - `multilang`: cross-language operations that may import from the packages above
+- `scinoephile.optimization`: prompt optimization and persistence infrastructure
+  that may import from the packages above
 - `scinoephile.workflows`: reusable workflow orchestration that may import from
   the packages above
 - `scinoephile.cli`: user-facing command-line wrappers that may import from any
@@ -42,13 +43,14 @@ intended to keep dependencies flowing toward earlier layers:
     utilities.
 - **`media`**: media-file probing, subtitle extraction helpers, subtitle cache
   analysis, and visual offset estimation.
-- **`optimization`**: prompt optimization operations and persisted test-case
-  synchronization built on `core` and `llms`.
 - **`lang`**: language-specific subtitle operations (English, standard Chinese,
   written Cantonese, etc.).
 - **`audio`, `dictionaries`, and `web`**: audio representation and transcription
   tooling, dictionary lookup/build logic, and web interfaces.
 - **`multilang`**: pair-specific cross-language operations.
+- **`optimization`**: prompt optimization operations and normalized SQLite
+  persistence for zero-shot prompts and test cases across registered LLM,
+  language, and cross-language operations.
 - **`workflows`**: reusable end-to-end orchestration that coordinates multiple
   domain packages, including `multilang`.
 - **`cli`**: thin wrappers around lower layers; argument parsing, validation,
@@ -64,6 +66,22 @@ hierarchy comment. This serves two purposes:
 - **Documentation**: a fast, local reference for where new code should live.
 - **Dependency hygiene**: a place to notice and resolve sibling dependency
   cycles (cycles should be called out explicitly and grouped together).
+
+### Prompt definitions and materialization
+
+Operation-specific prompt classes in `scinoephile.llms` define behavior and the
+required correspondence fields for review, translation, OCR fusion, and the
+other LLM shapes. Authored prompt text is declarative: `define_prompt` combines
+the text with a `Language` and materializes a cached runtime subclass of the
+operation-specific base. The runtime class is content-addressed, so identical
+text for the same operation and language reuses the same class.
+
+`PromptDefinition` is the data representation used by optimization persistence.
+It contains the prompt language and effective zero-shot string attributes.
+Few-shot labels and test-case curation descriptions are intentionally excluded.
+The shared optimization SQLite database stores these prompt definitions and
+test cases in separate normalized tables, allowing both kinds of data to live
+in the same file.
 
 ## Command Line Interface
 
@@ -118,6 +136,7 @@ surface (commands and subcommands) is:
       - `prune`: remove stale cached files
       - `stats`: inspect cache size and entry counts
     - `optimization`
+      - `sync-prompts`: synchronize registered zero-shot prompts
       - `sync-test-cases`: synchronize persisted prompt-optimization test cases
   - `translate`: translate subtitles between supported languages
   - `yue`

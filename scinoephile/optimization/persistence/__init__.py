@@ -1,3 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Persistence helpers for optimization data."""
+"""Persistence helpers for optimization data.
+
+Package hierarchy (modules may import from any above):
+* sqlite
+* prompts / test_cases
+"""
+
+from __future__ import annotations
+
+from .sqlite import OptimizationSqliteStore
+
+__all__ = ["OptimizationSqliteStore"]
