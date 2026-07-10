@@ -33,7 +33,9 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.providers.registry import get_provider
+from scinoephile.llms.punctuation import PunctuationPrompt
 from scinoephile.multilang.yue_zho.transcription import (
     DEFAULT_YUE_WHISPER_MODEL_NAME,
     DemucsMode,
@@ -242,17 +244,15 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         return "transcribe-vs-zho"
 
     @classmethod
-    def _get_transcription_prompt_classes(
+    def _get_transcription_prompts(
         cls, script: str
-    ) -> tuple[
-        type[YueDelineationVsZhoPromptYueHant], type[YuePunctuationVsZhoPromptYueHant]
-    ]:
-        """Get transcription prompt classes for the selected script.
+    ) -> tuple[DelineationPrompt, PunctuationPrompt]:
+        """Get transcription prompts for the selected script.
 
         Arguments:
             script: selected script identifier
         Returns:
-            delineation and punctuation prompt classes
+            delineation and punctuation prompts
         """
         if script == "traditional":
             return YueDelineationVsZhoPromptYueHant, YuePunctuationVsZhoPromptYueHant
@@ -320,9 +320,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Perform operations
-        delineation_prompt_cls, punctuation_prompt_cls = (
-            cls._get_transcription_prompt_classes(script)
-        )
+        delineation_prompt, punctuation_prompt = cls._get_transcription_prompts(script)
         additional_context = read_llm_additional_context(
             parser, llm_args.additional_context_file_path
         )
@@ -333,8 +331,8 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             vad_mode=vad,
             provider=provider,
             convert=convert,
-            delineation_prompt_cls=delineation_prompt_cls,
-            punctuation_prompt_cls=punctuation_prompt_cls,
+            delineation_prompt=delineation_prompt,
+            punctuation_prompt=punctuation_prompt,
             additional_context=additional_context,
         )
         yuewen = get_yue_transcribed_vs_zho(

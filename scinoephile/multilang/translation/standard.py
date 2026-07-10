@@ -75,7 +75,7 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
 }
 """Regular translation JSON paths keyed by exact source and target languages."""
 
-_PROMPTS: dict[tuple[Language, Language], type[TranslationPrompt]] = {
+_PROMPTS: dict[tuple[Language, Language], TranslationPrompt] = {
     (Language.yue_hans, Language.eng): EngYueTranslationPrompt,
     (Language.yue_hant, Language.eng): EngYueTranslationPrompt,
     (Language.zho_hans, Language.eng): EngZhoTranslationPrompt,
@@ -99,7 +99,7 @@ _PROMPTS: dict[tuple[Language, Language], type[TranslationPrompt]] = {
 def get_translator(
     source_language: Language,
     target_language: Language,
-    prompt_cls: type[TranslationPrompt] | None = None,
+    prompt: TranslationPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
@@ -109,7 +109,7 @@ def get_translator(
     Arguments:
         source_language: source language
         target_language: target language
-        prompt_cls: prompt class override
+        prompt: prompt override
         test_cases: test cases
         provider: provider to use for queries
         **kwargs: processor initialization keyword arguments
@@ -125,14 +125,14 @@ def get_translator(
             f"{source_language.tag} -> {target_language.tag}"
         )
 
-    if prompt_cls is None:
-        prompt_cls = _PROMPTS[key]
+    if prompt is None:
+        prompt = _PROMPTS[key]
     if test_cases is None:
         json_paths = _JSON_PATHS[key]
         test_cases = list(
-            load_default_test_cases(TranslationManager, prompt_cls, json_paths)
+            load_default_test_cases(TranslationManager, prompt, json_paths)
         )
     if provider is None:
         provider = get_provider()
 
-    return TranslationProcessor(prompt_cls, test_cases, provider=provider, **kwargs)
+    return TranslationProcessor(prompt, test_cases, provider=provider, **kwargs)

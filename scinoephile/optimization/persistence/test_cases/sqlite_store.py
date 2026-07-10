@@ -71,6 +71,7 @@ class TestCaseSqliteStore:
         Column("test_case_id", Text, primary_key=True),
         Column("operation", Text, nullable=False),
         Column("difficulty", Integer, nullable=False),
+        # Retain the physical column name to avoid a SQLite schema migration
         Column("prompt", Boolean, nullable=False),
         Column("verified", Boolean, nullable=False),
         Column("query_json", Text, nullable=False),
@@ -205,8 +206,8 @@ class TestCaseSqliteStore:
         """Synchronize provenance links for one or more source paths.
 
         New test cases initialize their SQL-owned curation metadata from the maximum
-        difficulty and union of prompt and verified flags across this import. Existing
-        SQL metadata is not changed by later JSON synchronization.
+        difficulty and union of few-shot and verified flags across this import.
+        Existing SQL metadata is not changed by later JSON synchronization.
 
         Arguments:
             source_test_cases: desired test cases keyed by canonical source path
@@ -243,7 +244,7 @@ class TestCaseSqliteStore:
                     canonical_by_id[test_case.test_case_id] = replace(
                         existing,
                         difficulty=max(existing.difficulty, test_case.difficulty),
-                        prompt=existing.prompt or test_case.prompt,
+                        few_shot=existing.few_shot or test_case.few_shot,
                         verified=existing.verified or test_case.verified,
                     )
             desired_by_source[source_path] = desired_by_id
@@ -376,7 +377,7 @@ class TestCaseSqliteStore:
             test_case_id=test_case_id,
             operation=str(row["operation"]),
             difficulty=int(row["difficulty"]),
-            prompt=bool(row["prompt"]),
+            few_shot=bool(row["prompt"]),
             verified=bool(row["verified"]),
             query=self._load_json_object(row["query_json"], "query"),
             answer=self._load_json_object(row["answer_json"], "answer"),
@@ -447,7 +448,7 @@ class TestCaseSqliteStore:
                         test_case_id=test_case.test_case_id,
                         operation=test_case.operation,
                         difficulty=test_case.difficulty,
-                        prompt=test_case.prompt,
+                        prompt=test_case.few_shot,
                         verified=test_case.verified,
                         query_json=self._serialize_json_object(test_case.query),
                         answer_json=self._serialize_json_object(test_case.answer),

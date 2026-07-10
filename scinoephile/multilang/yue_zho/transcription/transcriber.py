@@ -26,15 +26,11 @@ from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.providers.registry import get_provider
+from scinoephile.llms.punctuation import PunctuationPrompt
 
 from .aligner import Aligner
-from .delineation import (
-    YueDelineationVsZhoPromptYueHant,
-)
-from .punctuation import (
-    YuePunctuationVsZhoPromptYueHant,
-)
 
 __all__ = [
     "DEFAULT_YUE_WHISPER_MODEL_NAME",
@@ -81,8 +77,8 @@ class YueTranscriber:
         provider: LLMProvider | None = None,
         convert: OpenCCConfig | None = None,
         additional_context: str | None = None,
-        delineation_prompt_cls: type[YueDelineationVsZhoPromptYueHant],
-        punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHant],
+        delineation_prompt: DelineationPrompt,
+        punctuation_prompt: PunctuationPrompt,
         test_case_directory_path: Path,
         delineation_test_cases: list[TestCase],
         punctuation_test_cases: list[TestCase],
@@ -96,8 +92,8 @@ class YueTranscriber:
             provider: provider to use for LLM queryers
             convert: OpenCC configuration used to convert transcribed text
             additional_context: additional context to include in LLM prompts
-            delineation_prompt_cls: prompt class for block-boundary delineation
-            punctuation_prompt_cls: prompt class for line punctuation
+            delineation_prompt: prompt for block-boundary delineation
+            punctuation_prompt: prompt for line punctuation
             test_case_directory_path: path to directory containing test cases
             delineation_test_cases: delineation test cases
             punctuation_test_cases: punctuation test cases
@@ -120,17 +116,17 @@ class YueTranscriber:
         self.no_vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.OFF):
             self.no_vad_transcriber = self._get_whisper_transcriber(use_vad=False)
-        delineation_queryer_cls = Queryer.get_queryer_cls(delineation_prompt_cls)
-        self.delineation_queryer = delineation_queryer_cls(
-            prompt_test_cases=[tc for tc in delineation_test_cases if tc.prompt],
+        self.delineation_queryer = Queryer(
+            delineation_prompt,
+            few_shot_test_cases=[tc for tc in delineation_test_cases if tc.few_shot],
             verified_test_cases=[tc for tc in delineation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
             additional_context=additional_context,
         )
-        punctuation_queryer_cls = Queryer.get_queryer_cls(punctuation_prompt_cls)
-        self.punctuation_queryer = punctuation_queryer_cls(
-            prompt_test_cases=[tc for tc in punctuation_test_cases if tc.prompt],
+        self.punctuation_queryer = Queryer(
+            punctuation_prompt,
+            few_shot_test_cases=[tc for tc in punctuation_test_cases if tc.few_shot],
             verified_test_cases=[tc for tc in punctuation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),

@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar
 
 from pydantic import Field, create_model, model_validator
 
@@ -22,77 +22,65 @@ class OcrFusionManager(Manager):
 
     operation: ClassVar[str] = "ocr-fusion"
     """Stable operation identifier used in persistence and CLIs."""
-    prompt_cls: ClassVar[type[OcrFusionPrompt]] = OcrFusionPrompt
-    """Base prompt class defining persisted test-case field names."""
+    base_prompt: ClassVar[OcrFusionPrompt] = OcrFusionPrompt()
+    """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
-    def get_answer_cls[TAnswer: Answer](
-        cls,
-        prompt_cls: type[OcrFusionPrompt],
-    ) -> type[TAnswer]:
+    def get_answer_cls(cls, prompt: OcrFusionPrompt) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             answer model class
         """
-        name = get_model_name(Answer.__name__, prompt_cls.__name__)
+        name = get_model_name(Answer.__name__, prompt.name)
         fields: dict[str, Any] = {
-            prompt_cls.output: (str, Field(..., description=prompt_cls.output_desc)),
-            prompt_cls.note: (str, Field(..., description=prompt_cls.note_desc)),
+            prompt.output: (str, Field(..., description=prompt.output_desc)),
+            prompt.note: (str, Field(..., description=prompt.note_desc)),
         }
         validators: dict[str, Any] = {
             "validate_answer": model_validator(mode="after")(cls.validate_answer),
         }
 
-        model = cast(
-            "type[TAnswer]",
-            create_model(
-                name,
-                __base__=Answer,
-                __module__=Answer.__module__,
-                __validators__=validators,
-                **fields,
-            ),
+        model = create_model(
+            name,
+            __base__=Answer,
+            __module__=Answer.__module__,
+            __validators__=validators,
+            **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.prompt = prompt
         return model
 
     @classmethod
     @cache
-    def get_query_cls[TQuery: Query](
-        cls,
-        prompt_cls: type[OcrFusionPrompt],
-    ) -> type[TQuery]:
+    def get_query_cls(cls, prompt: OcrFusionPrompt) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             query model class
         """
-        name = get_model_name(Query.__name__, prompt_cls.__name__)
+        name = get_model_name(Query.__name__, prompt.name)
         fields: dict[str, Any] = {
-            prompt_cls.src_1: (str, Field(..., description=prompt_cls.src_1_desc)),
-            prompt_cls.src_2: (str, Field(..., description=prompt_cls.src_2_desc)),
+            prompt.src_1: (str, Field(..., description=prompt.src_1_desc)),
+            prompt.src_2: (str, Field(..., description=prompt.src_2_desc)),
         }
         validators: dict[str, Any] = {
             "validate_query": model_validator(mode="after")(cls.validate_query),
         }
 
-        model = cast(
-            "type[TQuery]",
-            create_model(
-                name,
-                __base__=Query,
-                __module__=Query.__module__,
-                __validators__=validators,
-                **fields,
-            ),
+        model = create_model(
+            name,
+            __base__=Query,
+            __module__=Query.__module__,
+            __validators__=validators,
+            **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.prompt = prompt
         return model
 
     @staticmethod
@@ -110,10 +98,10 @@ class OcrFusionManager(Manager):
         if model.get_min_difficulty() > 1:
             return False
 
-        prompt_cls: type[OcrFusionPrompt] = getattr(model, "prompt_cls")
-        source_one = getattr(model.query, prompt_cls.src_1, None)
-        source_two = getattr(model.query, prompt_cls.src_2, None)
-        output_text = getattr(model.answer, prompt_cls.output, None)
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
+        source_one = getattr(model.query, prompt.src_1, None)
+        source_two = getattr(model.query, prompt.src_2, None)
+        output_text = getattr(model.answer, prompt.output, None)
         if (
             source_one is not None
             and source_two is not None
@@ -134,12 +122,12 @@ class OcrFusionManager(Manager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: type[OcrFusionPrompt] = getattr(model, "prompt_cls")
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
         min_difficulty = max(Manager.get_min_difficulty(model), 1)
         if model.answer is None:
             return min_difficulty
 
-        if output_text := getattr(model.answer, prompt_cls.output):
+        if output_text := getattr(model.answer, prompt.output):
             if any(char in output_text for char in ("-", '"', "“", "”")):
                 min_difficulty = max(min_difficulty, 2)
         return min_difficulty
@@ -153,13 +141,13 @@ class OcrFusionManager(Manager):
         Returns:
             validated answer
         """
-        prompt_cls: type[OcrFusionPrompt] = getattr(model, "prompt_cls")
-        output = getattr(model, prompt_cls.output, None)
-        note = getattr(model, prompt_cls.note, None)
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
+        output = getattr(model, prompt.output, None)
+        note = getattr(model, prompt.note, None)
         if not output:
-            raise ValueError(prompt_cls.output_missing_err)
+            raise ValueError(prompt.output_missing_err)
         if not note:
-            raise ValueError(prompt_cls.note_missing_err)
+            raise ValueError(prompt.note_missing_err)
         return model
 
     @staticmethod
@@ -171,13 +159,13 @@ class OcrFusionManager(Manager):
         Returns:
             validated query
         """
-        prompt_cls: type[OcrFusionPrompt] = getattr(model, "prompt_cls")
-        source_one = getattr(model, prompt_cls.src_1, None)
-        source_two = getattr(model, prompt_cls.src_2, None)
+        prompt: OcrFusionPrompt = getattr(model, "prompt")
+        source_one = getattr(model, prompt.src_1, None)
+        source_two = getattr(model, prompt.src_2, None)
         if not source_one:
-            raise ValueError(prompt_cls.src_1_missing_err)
+            raise ValueError(prompt.src_1_missing_err)
         if not source_two:
-            raise ValueError(prompt_cls.src_2_missing_err)
+            raise ValueError(prompt.src_2_missing_err)
         if source_one == source_two:
-            raise ValueError(prompt_cls.src_1_src_2_equal_err)
+            raise ValueError(prompt.src_1_src_2_equal_err)
         return model

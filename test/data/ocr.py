@@ -99,9 +99,9 @@ def process_ocr(
         )
         simplify_reviewer_kw = dict(reviewer_kw or {})
         if language is Language.yue_hant:
-            simplify_reviewer_kw["prompt_cls"] = ReviewPromptYueHans
+            simplify_reviewer_kw["prompt"] = ReviewPromptYueHans
         else:
-            simplify_reviewer_kw["prompt_cls"] = ReviewPromptZhoHans
+            simplify_reviewer_kw["prompt"] = ReviewPromptZhoHans
         simplify_reviewer_kw["test_case_path"] = (
             output_dir_path / "lang" / language.tag[:3] / "simplify_review.json"
         )
@@ -250,9 +250,9 @@ def _review(
 
     # Run and save
     if language is Language.yue_hant:
-        reviewer_kw.setdefault("prompt_cls", ReviewPromptYueHant)
+        reviewer_kw.setdefault("prompt", ReviewPromptYueHant)
     elif language is Language.zho_hant:
-        reviewer_kw.setdefault("prompt_cls", ReviewPromptZhoHant)
+        reviewer_kw.setdefault("prompt", ReviewPromptZhoHant)
     review = review_series(series, language=language, **reviewer_kw)
     review.save(path)
     return review

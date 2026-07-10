@@ -12,7 +12,7 @@
       "subtitle_2": "The towel, young master"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -73,7 +73,7 @@
       "subtitle_44": "If I hold a birthday party in future,\nI want a better invitation card!"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -970,7 +970,7 @@
       "subtitle_1": "Kidding? Damn you! They are cheating"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -991,7 +991,7 @@
       "note_1": "Corrected 'may be' to 'maybe'."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1081,7 +1081,7 @@
     },
     "answer": {},
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1195,7 +1195,7 @@
       "note_16": "Corrected 'co-operated' to 'cooperated' (no hyphen needed)."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1618,7 +1618,7 @@
       "note_4": "Added 'an' before 'idiot' for correct grammar."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1983,7 +1983,7 @@
     },
     "answer": {},
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

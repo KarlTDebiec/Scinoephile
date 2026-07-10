@@ -191,7 +191,7 @@
       "guide_23": "太好了！大家去上堂吧"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

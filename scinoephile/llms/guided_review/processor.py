@@ -24,7 +24,7 @@ logger = getLogger(__name__)
 class GuidedReviewProcessor(Processor):
     """Processes guided review."""
 
-    prompt_cls: type[GuidedReviewPrompt]
+    prompt: GuidedReviewPrompt
     """Text for LLM correspondence."""
 
     manager_cls = GuidedReviewManager
@@ -68,16 +68,16 @@ class GuidedReviewProcessor(Processor):
             test_case_cls = GuidedReviewManager.get_test_case_cls(
                 len(target_block),
                 len(guide_block),
-                self.prompt_cls,
+                self.prompt,
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for idx, subtitle in enumerate(target_block, 1):
-                query_kwargs[self.prompt_cls.target(idx)] = (
+                query_kwargs[self.prompt.target(idx)] = (
                     subtitle.text_with_newline.strip()
                 )
             for idx, subtitle in enumerate(guide_block, 1):
-                query_kwargs[self.prompt_cls.guide(idx)] = (
+                query_kwargs[self.prompt.guide(idx)] = (
                     subtitle.text_with_newline.strip()
                 )
             test_case = test_case_cls(query=query_cls(**query_kwargs))
@@ -86,7 +86,7 @@ class GuidedReviewProcessor(Processor):
             output_block = Series()
             for idx, subtitle in enumerate(target_block, 1):
                 output_subtitle = type(subtitle)(**subtitle.as_dict())
-                output_text = getattr(test_case.answer, self.prompt_cls.output(idx))
+                output_text = getattr(test_case.answer, self.prompt.output(idx))
                 if output_text:
                     output_subtitle.text = replace_control_characters(output_text)
                 output_block.append(output_subtitle)

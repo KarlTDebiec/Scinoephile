@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import ClassVar, Protocol
+from typing import Protocol
 
 __all__ = ["DictionaryToolPrompt"]
 
@@ -12,11 +12,11 @@ __all__ = ["DictionaryToolPrompt"]
 class DictionaryToolPrompt(Protocol):
     """Prompt text required to build dictionary tool specifications."""
 
-    dictionary_tool_name: ClassVar[str]
+    dictionary_tool_name: str
     """Name of the dictionary lookup tool."""
 
-    dictionary_tool_description: ClassVar[str]
+    dictionary_tool_description: str
     """Description of the dictionary lookup tool."""
 
-    dictionary_tool_query_description: ClassVar[str]
+    dictionary_tool_query_description: str
     """Description of the dictionary lookup query parameter."""

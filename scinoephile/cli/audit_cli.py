@@ -338,7 +338,7 @@ class AuditCli(ScinoephileCliBase):
                 review_cases[name] = load_test_cases_from_json(
                     json_path,
                     ReviewManager,
-                    ReviewManager.prompt_cls,
+                    ReviewManager.base_prompt,
                 )
         except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
             parser.error(f"Unable to load review JSON: {exc}")

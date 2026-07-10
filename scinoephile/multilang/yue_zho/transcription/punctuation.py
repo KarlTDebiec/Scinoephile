@@ -4,16 +4,17 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from functools import partial
 
+from scinoephile.core import Language
 from scinoephile.core.llms import TestCase
 from scinoephile.core.text import (
     dedent_and_compact,
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
 )
-from scinoephile.lang.yue.prompts import PromptYueHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 
 __all__ = [
@@ -23,11 +24,10 @@ __all__ = [
 ]
 
 
-class YuePunctuationVsZhoPromptYueHant(PunctuationPrompt, PromptYueHant):
-    """Text for traditional written Cantonese/standard Chinese punctuation."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = dedent_and_compact("""
+YuePunctuationVsZhoPromptYueHant = PunctuationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact("""
         你負責將廣東話口語嘅粵文字幕同對應嘅中文字幕對齊。
         你會收到一條中文字幕，以及同一條字幕對應嘅多行粵文轉寫。
         多行粵文代表口語停頓拆開嘅行。
@@ -36,55 +36,30 @@ class YuePunctuationVsZhoPromptYueHant(PunctuationPrompt, PromptYueHant):
         必須包含所有粵文字，整理成一行。
         唔好從中文字幕拷貝漢字。
         只可以調整粵文嘅標點同空格以配合中文字幕。
-        除咗標點同空格之外唔好改任何粵文內容。""")
-    """Base system prompt."""
-
-    # Query fields
-    src_1: ClassVar[str] = "yuewen_to_punctuate"
-    """Name of source one field in query."""
-
-    src_1_desc: ClassVar[str] = "要整理同加標點嘅粵文字幕行"
-    """Description of source one field in query."""
-
-    src_2: ClassVar[str] = "zhongwen"
-    """Name of source two field in query."""
-
-    src_2_desc: ClassVar[str] = "對應嘅中文字幕"
-    """Description of source two field in query."""
-
-    # Query validation errors
-    src_1_missing_err: ClassVar[str] = "查詢必須包含要整理同加標點嘅粵文字幕行。"
-    """Error when source one field is missing from query."""
-
-    src_2_missing_err: ClassVar[str] = "查詢必須包含對應嘅中文字幕。"
-    """Error when source two field is missing from query."""
-
-    # Answer fields
-    output: ClassVar[str] = "yuewen_punctuated"
-    """Name of output field in answer."""
-
-    output_desc: ClassVar[str] = "整理同加標點後嘅粵文字幕"
-    """Description of output field in answer."""
-
-    # Answer validation errors
-    output_missing_err: ClassVar[str] = "答案必須包含整理同加標點後嘅粵文字幕。"
-    """Error when output field is missing from answer."""
-
-    # Test case validation errors
-    src_1_chars_changed_err_tpl: ClassVar[str] = (
+        除咗標點同空格之外唔好改任何粵文內容。"""),
+    src_1="yuewen_to_punctuate",
+    src_1_desc="要整理同加標點嘅粵文字幕行",
+    src_2="zhongwen",
+    src_2_desc="對應嘅中文字幕",
+    src_1_missing_err="查詢必須包含要整理同加標點嘅粵文字幕行。",
+    src_2_missing_err="查詢必須包含對應嘅中文字幕。",
+    output="yuewen_punctuated",
+    output_desc="整理同加標點後嘅粵文字幕",
+    output_missing_err="答案必須包含整理同加標點後嘅粵文字幕。",
+    src_1_chars_changed_err_tpl=(
         "Answer's written Cantonese subtitle stripped of punctuation and whitespace "
         "does not match query's written Cantonese subtitle concatenated:\n"
         "Expected: {expected}\n"
         "Received: {received}"
-    )
-    """Error when punctuated written Cantonese characters do not match original."""
+    ),
+)
+"""Text for traditional written Cantonese/standard Chinese punctuation."""
 
-
-class YuePunctuationVsZhoPromptYueHans(YuePunctuationVsZhoPromptYueHant):
-    """Text for simplified written Cantonese/standard Chinese punctuation."""
-
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Chinese characters from the parent class."""
+YuePunctuationVsZhoPromptYueHans = YuePunctuationVsZhoPromptYueHant.transformed(
+    Language.yue_hans,
+    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+"""Text for simplified written Cantonese/standard Chinese punctuation."""
 
 
 class YueZhoPunctuationManager(PunctuationManager):
@@ -99,13 +74,13 @@ class YueZhoPunctuationManager(PunctuationManager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
+        prompt: PunctuationPrompt = getattr(model, "prompt")
         min_difficulty = PunctuationManager.get_min_difficulty(model)
         if model.answer is None:
             return min_difficulty
 
-        zhongwen = getattr(model.query, prompt_cls.src_2, "")
-        yuewen_punctuated = getattr(model.answer, prompt_cls.output, "")
+        zhongwen = getattr(model.query, prompt.src_2, "")
+        yuewen_punctuated = getattr(model.answer, prompt.output, "")
         if remove_non_punc_and_whitespace(yuewen_punctuated):
             min_difficulty = max(min_difficulty, 1)
         if remove_non_punc_and_whitespace(zhongwen) != remove_non_punc_and_whitespace(
@@ -123,17 +98,17 @@ class YueZhoPunctuationManager(PunctuationManager):
         Returns:
             validated test case
         """
-        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
+        prompt: PunctuationPrompt = getattr(model, "prompt")
         if model.answer is None:
             return model
 
-        yuewen_to_punctuate = getattr(model.query, prompt_cls.src_1, None) or []
-        yuewen_punctuated = getattr(model.answer, prompt_cls.output, None) or ""
+        yuewen_to_punctuate = getattr(model.query, prompt.src_1, None) or []
+        yuewen_punctuated = getattr(model.answer, prompt.output, None) or ""
 
         expected = "".join(
             remove_punc_and_whitespace(subtitle) for subtitle in yuewen_to_punctuate
         )
         received = remove_punc_and_whitespace(yuewen_punctuated)
         if expected != received:
-            raise ValueError(prompt_cls.src_1_chars_changed_err(expected, received))
+            raise ValueError(prompt.src_1_chars_changed_err(expected, received))
         return model

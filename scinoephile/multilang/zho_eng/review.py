@@ -19,17 +19,14 @@ __all__ = [
 ]
 
 
-class ZhoEngGuidedReviewPromptZhoHant(GuidedReviewPromptZhoHant):
-    """Prompt for guided review of traditional Chinese using English."""
+ZhoEngGuidedReviewPromptZhoHant = GuidedReviewPromptZhoHant
+"""Prompt for guided review of traditional Chinese using English."""
 
+ZhoEngGuidedReviewPromptZhoHans = GuidedReviewPromptZhoHans
+"""Prompt for guided review of simplified Chinese using English."""
 
-class ZhoEngGuidedReviewPromptZhoHans(GuidedReviewPromptZhoHans):
-    """Prompt for guided review of simplified Chinese using English."""
+ZhoEngPairwiseReviewPromptZhoHant = PairwiseReviewPromptZhoHant
+"""Prompt for pairwise review of traditional Chinese using English."""
 
-
-class ZhoEngPairwiseReviewPromptZhoHant(PairwiseReviewPromptZhoHant):
-    """Prompt for pairwise review of traditional Chinese using English."""
-
-
-class ZhoEngPairwiseReviewPromptZhoHans(PairwiseReviewPromptZhoHans):
-    """Prompt for pairwise review of simplified Chinese using English."""
+ZhoEngPairwiseReviewPromptZhoHans = PairwiseReviewPromptZhoHans
+"""Prompt for pairwise review of simplified Chinese using English."""

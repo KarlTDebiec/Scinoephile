@@ -4,49 +4,53 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from typing import ClassVar
+from dataclasses import dataclass
 
 from scinoephile.core.llms import Prompt
 
 __all__ = ["TranslationPrompt"]
 
 
-class TranslationPrompt(Prompt, ABC):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class TranslationPrompt(Prompt):
     """Text for LLM correspondence for translation matters."""
 
     # Query fields
-    input_pfx: ClassVar[str] = "input_"
+    input_pfx: str = "input_"
     """Prefix for input fields in query."""
 
-    input_desc_tpl: ClassVar[str] = "Input {idx}"
+    input_desc_tpl: str = "Input {idx}"
     """Description template for input fields in query."""
 
     # Answer fields
-    output_pfx: ClassVar[str] = "output_"
+    output_pfx: str = "output_"
     """Prefix for output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = "Output {idx}"
+    output_desc_tpl: str = "Output {idx}"
     """Description template for output fields in answer."""
 
-    # Query fields
-    @classmethod
-    def input(cls, idx: int) -> str:
-        """Name of input field in query."""
-        return f"{cls.input_pfx}{idx}"
+    # Dictionary tool
+    dictionary_tool_name: str = ""
+    """Name of dictionary lookup tool."""
+    dictionary_tool_description: str = ""
+    """Description of dictionary lookup tool."""
+    dictionary_tool_query_description: str = ""
+    """Description of dictionary lookup query."""
 
-    @classmethod
-    def input_desc(cls, idx: int) -> str:
+    # Query fields
+    def input(self, idx: int) -> str:
+        """Name of input field in query."""
+        return f"{self.input_pfx}{idx}"
+
+    def input_desc(self, idx: int) -> str:
         """Description of input field in query."""
-        return cls.input_desc_tpl.format(idx=idx)
+        return self.input_desc_tpl.format(idx=idx)
 
     # Answer fields
-    @classmethod
-    def output(cls, idx: int) -> str:
+    def output(self, idx: int) -> str:
         """Name of output field in answer."""
-        return f"{cls.output_pfx}{idx}"
+        return f"{self.output_pfx}{idx}"
 
-    @classmethod
-    def output_desc(cls, idx: int) -> str:
+    def output_desc(self, idx: int) -> str:
         """Description of output field in answer."""
-        return cls.output_desc_tpl.format(idx=idx)
+        return self.output_desc_tpl.format(idx=idx)

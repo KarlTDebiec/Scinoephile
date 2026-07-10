@@ -44,7 +44,7 @@ _YUE_ZHO_JSON_PATHS = (
 )
 """Default written Cantonese/Chinese guided-review JSON paths."""
 
-_PROMPTS: dict[tuple[Language, Language], type[GuidedReviewPrompt]] = {
+_PROMPTS: dict[tuple[Language, Language], GuidedReviewPrompt] = {
     (Language.eng, Language.yue_hans): EngYueGuidedReviewPrompt,
     (Language.eng, Language.yue_hant): EngYueGuidedReviewPrompt,
     (Language.eng, Language.zho_hans): EngZhoGuidedReviewPrompt,
@@ -79,7 +79,7 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
 def get_guided_reviewer(
     language: Language,
     guide_language: Language,
-    prompt_cls: type[GuidedReviewPrompt] | None = None,
+    prompt: GuidedReviewPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
@@ -89,7 +89,7 @@ def get_guided_reviewer(
     Arguments:
         language: language of subtitles to review
         guide_language: language of guide subtitles
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
         **kwargs: additional processor keyword arguments
@@ -104,16 +104,12 @@ def get_guided_reviewer(
             "Guided review does not support language pair "
             f"{language.tag} <- {guide_language.tag}"
         )
-    if prompt_cls is None:
-        prompt_cls = _PROMPTS[key]
+    if prompt is None:
+        prompt = _PROMPTS[key]
     if test_cases is None:
         test_cases = list(
-            load_default_test_cases(
-                GuidedReviewManager,
-                prompt_cls,
-                _JSON_PATHS[key],
-            )
+            load_default_test_cases(GuidedReviewManager, prompt, _JSON_PATHS[key])
         )
     if provider is None:
         provider = get_provider()
-    return GuidedReviewProcessor(prompt_cls, test_cases, provider=provider, **kwargs)
+    return GuidedReviewProcessor(prompt, test_cases, provider=provider, **kwargs)

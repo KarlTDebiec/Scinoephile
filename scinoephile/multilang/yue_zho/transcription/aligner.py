@@ -24,14 +24,11 @@ from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
-from scinoephile.llms.delineation import DelineationManager
+from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
+from scinoephile.llms.punctuation import PunctuationPrompt
 
 from .alignment import Alignment
-from .delineation import (
-    YueDelineationVsZhoPromptYueHant,
-)
 from .punctuation import (
-    YuePunctuationVsZhoPromptYueHant,
     YueZhoPunctuationManager,
 )
 
@@ -121,7 +118,7 @@ class Aligner:
                 continue
             # TODO: try/except and return original written Cantonese on error
             # (not yet encountered).
-            test_case: TestCase = self.delineation_queryer.call(test_case)
+            test_case: TestCase = self.delineation_queryer(test_case)
 
             # If there is no change, continue
             query = test_case.query
@@ -130,11 +127,9 @@ class Aligner:
                 message = "Delineation query returned no answer."
                 logger.error(message)
                 raise ScinoephileError(message)
-            prompt_cls: type[YueDelineationVsZhoPromptYueHant] = getattr(
-                test_case, "prompt_cls"
-            )
-            yuewen_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, None)
-            yuewen_2_shifted = getattr(answer, prompt_cls.src_2_sub_2_shifted, None)
+            prompt: DelineationPrompt = getattr(test_case, "prompt")
+            yuewen_1_shifted = getattr(answer, prompt.src_2_sub_1_shifted, None)
+            yuewen_2_shifted = getattr(answer, prompt.src_2_sub_2_shifted, None)
             if yuewen_1_shifted == "" and yuewen_2_shifted == "":
                 continue
             if self._delineate_one(alignment, sg_1_idx, query, answer):
@@ -176,15 +171,13 @@ class Aligner:
         sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get written Cantonese
-        prompt_cls: type[YueDelineationVsZhoPromptYueHant] = getattr(
-            query, "prompt_cls"
-        )
+        prompt: DelineationPrompt = getattr(query, "prompt")
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
-        yw_1 = getattr(query, prompt_cls.src_2_sub_1, "")
-        yw_2 = getattr(query, prompt_cls.src_2_sub_2, "")
-        yw_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, "")
-        yw_2_shifted = getattr(answer, prompt_cls.src_2_sub_2_shifted, "")
+        yw_1 = getattr(query, prompt.src_2_sub_1, "")
+        yw_2 = getattr(query, prompt.src_2_sub_2, "")
+        yw_1_shifted = getattr(answer, prompt.src_2_sub_1_shifted, "")
+        yw_2_shifted = getattr(answer, prompt.src_2_sub_2_shifted, "")
 
         # Shift written Cantonese
         nascent_sg = deepcopy(alignment.sync_groups)
@@ -322,7 +315,7 @@ class Aligner:
                 nascent_sg.append(([zw_idx], []))
                 continue
             try:
-                test_case = self.punctuation_queryer.call(test_case)
+                test_case = self.punctuation_queryer(test_case)
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
                 logger.error(
@@ -331,10 +324,8 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            prompt_cls: type[YuePunctuationVsZhoPromptYueHant] = getattr(
-                test_case, "prompt_cls"
-            )
-            yuewen_punctuated = getattr(test_case.answer, prompt_cls.output, None)
+            prompt: PunctuationPrompt = getattr(test_case, "prompt")
+            yuewen_punctuated = getattr(test_case.answer, prompt.output, None)
             yw = get_sub_merged(yws, text=yuewen_punctuated)
             yw.start = zw.start
             yw.end = zw.end

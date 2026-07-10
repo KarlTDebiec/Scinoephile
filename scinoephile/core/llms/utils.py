@@ -19,33 +19,33 @@ __all__ = [
 ]
 
 
-def load_test_cases_from_json[TTestCase: TestCase](
+def load_test_cases_from_json(
     input_path: Path,
     manager_cls: type[Manager],
-    prompt_cls: type[Prompt],
-) -> list[TTestCase]:
+    prompt: Prompt,
+) -> list[TestCase]:
     """Load test cases from JSON file.
 
     Arguments:
         input_path: path to JSON file containing test cases
         manager_cls: manager class used to construct test case models
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
     Returns:
         list of test cases
     """
     with open(input_path, encoding="utf-8") as f:
         raw_test_cases: list[dict] = json.load(f)
 
-    test_cases: list[TTestCase] = []
+    test_cases: list[TestCase] = []
     for test_case_data in raw_test_cases:
         base_test_case_cls = manager_cls.get_test_case_cls_from_data(test_case_data)
         base_test_case = base_test_case_cls.model_validate(
             test_case_data,
             extra="forbid",
         )
-        test_case_cls: type[TTestCase] = manager_cls.get_test_case_cls_with_prompt(
+        test_case_cls = manager_cls.get_test_case_cls_with_prompt(
             base_test_case_cls,
-            prompt_cls,
+            prompt,
         )
         test_cases.append(remap_test_case(base_test_case, test_case_cls))
 
@@ -68,7 +68,7 @@ def save_test_cases_to_json(
     for test_case in test_cases:
         base_test_case_cls = manager_cls.get_test_case_cls_with_prompt(
             type(test_case),
-            manager_cls.prompt_cls,
+            manager_cls.base_prompt,
         )
         base_test_case = remap_test_case(test_case, base_test_case_cls)
         data.append(base_test_case.model_dump(mode="json", exclude_defaults=True))

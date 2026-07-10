@@ -65,6 +65,20 @@ hierarchy comment. This serves two purposes:
 - **Dependency hygiene**: a place to notice and resolve sibling dependency
   cycles (cycles should be called out explicitly and grouped together).
 
+### Immutable prompt values
+
+Operation-specific prompt types in `scinoephile.llms` are frozen, keyword-only
+dataclasses defining behavior and named correspondence fields for review,
+translation, OCR fusion, and the other LLM shapes. Authored and localized
+prompts construct those types directly with a `Language` and string fields. LLM
+managers, processors, queryers, and workflows pass these values directly.
+Authored prompts may reuse typed language-specific field dictionaries while
+keeping their language and operation-specific fields explicit.
+
+Only generated Pydantic query, answer, and test-case models are represented by
+runtime classes. Managers cache those model classes using the immutable prompt
+value, whose stable content-addressed name is used in generated model names.
+
 ## Command Line Interface
 
 The entrypoint configured in `pyproject.toml` is:

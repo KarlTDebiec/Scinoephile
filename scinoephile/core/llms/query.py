@@ -19,7 +19,7 @@ __all__ = ["Query"]
 class Query(BaseModel, ABC):
     """ABC for LLM queries."""
 
-    prompt_cls: ClassVar[type[Prompt]]
+    prompt: ClassVar[Prompt]
     """Text for LLM correspondence."""
 
     def __str__(self) -> str:

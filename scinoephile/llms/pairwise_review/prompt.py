@@ -4,50 +4,48 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from typing import ClassVar
+from dataclasses import dataclass
 
 from scinoephile.core.llms import Prompt
 
 __all__ = ["PairwiseReviewPrompt"]
 
 
-class PairwiseReviewPrompt(Prompt, ABC):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class PairwiseReviewPrompt(Prompt):
     """Text for reviewing one subtitle against one reference subtitle."""
 
     # Query fields
-    target: ClassVar[str] = "target"
+    target: str = "target"
     """Name of target field in query."""
 
-    target_desc: ClassVar[str] = "Subtitle text to review"
+    target_desc: str = "Subtitle text to review"
     """Description of target field in query."""
 
-    reference: ClassVar[str] = "reference"
+    reference: str = "reference"
     """Name of reference field in query."""
 
-    reference_desc: ClassVar[str] = "Corresponding reference subtitle text"
+    reference_desc: str = "Corresponding reference subtitle text"
     """Description of reference field in query."""
 
     # Answer fields
-    output: ClassVar[str] = "output"
+    output: str = "output"
     """Name of output field in answer."""
 
-    output_desc: ClassVar[str] = (
+    output_desc: str = (
         'Revised target subtitle, "" if unchanged, or "�" if it should be removed'
     )
     """Description of output field in answer."""
 
-    note: ClassVar[str] = "note"
+    note: str = "note"
     """Name of note field in answer."""
 
-    note_desc: ClassVar[str] = "Explanation of the revision, or an empty string"
+    note_desc: str = "Explanation of the revision, or an empty string"
     """Description of note field in answer."""
 
     # Test case errors
-    note_missing_err: ClassVar[str] = "The target is revised, but no note is provided."
+    note_missing_err: str = "The target is revised, but no note is provided."
     """Error when note is missing for a revision."""
 
-    output_missing_err: ClassVar[str] = (
-        "The target is unchanged, but a note is provided."
-    )
+    output_missing_err: str = "The target is unchanged, but a note is provided."
     """Error when output is missing for a note."""

@@ -10,6 +10,7 @@ from unittest.mock import Mock
 
 from pytest import raises
 
+from scinoephile.core import Language
 from scinoephile.core.llms import (
     Answer,
     LLMProvider,
@@ -23,28 +24,19 @@ from scinoephile.core.llms import (
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tool_box import ToolBox
 
-
-class _Prompt(Prompt):
-    """Prompt fixture for provider-injection tests."""
-
-    base_system_prompt = "System prompt"
-    """Base system prompt."""
-    schema_intro = "Schema"
-    """Schema intro text."""
-    few_shot_intro = "Few shot"
-    """Few-shot intro text."""
-    few_shot_query_intro = "Query"
-    """Few-shot query intro text."""
-    few_shot_answer_intro = "Answer"
-    """Few-shot answer intro text."""
-    answer_invalid_pre = "Invalid answer pre"
-    """Text before an invalid answer."""
-    answer_invalid_post = "Invalid answer post"
-    """Text after an invalid answer."""
-    test_case_invalid_pre = "Invalid test-case pre"
-    """Text before an invalid test case."""
-    test_case_invalid_post = "Invalid test-case post"
-    """Text after an invalid test case."""
+_PROMPT = Prompt(
+    language=Language.eng,
+    base_system_prompt="System prompt",
+    schema_intro="Schema",
+    few_shot_intro="Few shot",
+    few_shot_query_intro="Query",
+    few_shot_answer_intro="Answer",
+    answer_invalid_pre="Invalid answer pre",
+    answer_invalid_post="Invalid answer post",
+    test_case_invalid_pre="Invalid test-case pre",
+    test_case_invalid_post="Invalid test-case post",
+)
+"""Prompt fixture for provider-injection tests."""
 
 
 class _Query(Query):
@@ -70,25 +62,30 @@ class _TestCase(TestCase):
     """Optional answer fixture."""
 
 
-_Query.prompt_cls = _Prompt
-_Answer.prompt_cls = _Prompt
+_Query.prompt = _PROMPT
+_Answer.prompt = _PROMPT
 _TestCase.query_cls = _Query
 _TestCase.answer_cls = _Answer
-_TestCase.prompt_cls = _Prompt
+_TestCase.prompt = _PROMPT
 
 
 class _Manager(Manager):
     """Manager fixture for provider-injection tests."""
 
+    operation = "test"
+    """Stable operation identifier."""
+    base_prompt = _PROMPT
+    """Base prompt."""
+
     @classmethod
     @cache
-    def get_query_cls(cls, prompt_cls: type[Prompt]) -> type[Query]:
+    def get_query_cls(cls, prompt: Prompt) -> type[Query]:
         """Get test query class."""
         return _Query
 
     @classmethod
     @cache
-    def get_answer_cls(cls, prompt_cls: type[Prompt]) -> type[Answer]:
+    def get_answer_cls(cls, prompt: Prompt) -> type[Answer]:
         """Get test answer class."""
         return _Answer
 
@@ -128,8 +125,7 @@ class _RecordingProvider(LLMProvider):
 def test_queryer_uses_injected_provider():
     """Test queryer uses the injected provider for completions."""
     provider = _RecordingProvider()
-    queryer_cls = Queryer.get_queryer_cls(_Prompt)
-    queryer = queryer_cls(provider=provider, max_attempts=1)
+    queryer = Queryer(_PROMPT, provider=provider, max_attempts=1)
 
     test_case = _TestCase(query=_Query(text="input"))
     output_test_case = queryer(test_case)
@@ -141,24 +137,23 @@ def test_queryer_uses_injected_provider():
 
 def test_queryer_requires_injected_provider():
     """Test queryer no longer constructs concrete providers by default."""
-    queryer_cls = Queryer.get_queryer_cls(_Prompt)
-
+    queryer_type: Any = Queryer
     with raises(TypeError):
-        queryer_cls()
+        queryer_type(_PROMPT)
 
 
 def test_queryer_includes_additional_context_before_few_shot_prompt():
     """Test queryer includes additional context before few-shot examples."""
     provider = _RecordingProvider()
-    queryer_cls = Queryer.get_queryer_cls(_Prompt)
-    prompt_test_case = _TestCase(
+    few_shot_test_case = _TestCase(
         query=_Query(text="example"),
         answer=_Answer(output="example output"),
-        prompt=True,
+        few_shot=True,
     )
-    queryer = queryer_cls(
+    queryer = Queryer(
+        _PROMPT,
         additional_context="Use canonical names.",
-        prompt_test_cases=[prompt_test_case],
+        few_shot_test_cases=[few_shot_test_case],
         provider=provider,
         max_attempts=1,
     )
@@ -170,26 +165,25 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
     system_message = messages[0]["content"]
     assert "Additional context:\nUse canonical names." in system_message
     assert system_message.index("Additional context:") < system_message.index(
-        _Prompt.few_shot_intro
+        _PROMPT.few_shot_intro
     )
 
 
 def test_queryer_preserves_existing_encountered_test_case_metadata():
-    """Test queryer preserves existing prompt and verified metadata."""
+    """Test queryer preserves existing few-shot and verified metadata."""
     provider = Mock(spec=LLMProvider)
-    queryer_cls = Queryer.get_queryer_cls(_Prompt)
-    queryer = queryer_cls(provider=provider)
+    queryer = Queryer(_PROMPT, provider=provider)
     test_case = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="done"),
-        prompt=True,
+        few_shot=True,
         verified=True,
     )
 
     queryer.log_encountered_test_case(test_case)
 
     encountered_test_case = queryer.encountered_test_cases[test_case.query.key]
-    assert encountered_test_case.prompt is True
+    assert encountered_test_case.few_shot is True
     assert encountered_test_case.verified is True
 
 
@@ -197,12 +191,11 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
     """Test queryer clears stale verified metadata after generating an answer."""
     provider = Mock(spec=LLMProvider)
     provider.chat_completion.return_value = '{"output":"new"}'
-    queryer_cls = Queryer.get_queryer_cls(_Prompt)
-    queryer = queryer_cls(provider=provider, max_attempts=1)
+    queryer = Queryer(_PROMPT, provider=provider, max_attempts=1)
     test_case = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="old"),
-        prompt=True,
+        few_shot=True,
         verified=True,
     )
 
@@ -210,7 +203,7 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
 
     assert output_test_case.answer is not None
     assert output_test_case.answer.output == "new"
-    assert output_test_case.prompt is True
+    assert output_test_case.few_shot is True
     assert output_test_case.verified is False
 
 
@@ -219,8 +212,7 @@ def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
     provider = Mock(spec=LLMProvider)
     provider.chat_completion.return_value = '{"output":"done"}'
     monkeypatch.setattr(_TestCase, "get_auto_verified", lambda self: True)
-    queryer_cls = Queryer.get_queryer_cls(_Prompt)
-    queryer = queryer_cls(provider=provider, max_attempts=1, auto_verify=True)
+    queryer = Queryer(_PROMPT, provider=provider, max_attempts=1, auto_verify=True)
 
     test_case = queryer(_TestCase(query=_Query(text="input")))
 
@@ -231,6 +223,6 @@ def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
 def test_processor_passes_injected_provider_to_queryer():
     """Test processor wires injected providers into its queryer."""
     provider = Mock(spec=LLMProvider)
-    processor = _Processor(prompt_cls=_Prompt, provider=provider)
+    processor = _Processor(prompt=_PROMPT, provider=provider)
 
     assert processor.queryer.provider is provider

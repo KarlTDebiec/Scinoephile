@@ -9,7 +9,7 @@
       "note": "Corrected italics and musical notes placement from Tesseract."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -22,7 +22,7 @@
       "note": "Used musical notes from Tesseract and corrected italics placement."
     },
     "difficulty": 3,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -71,7 +71,7 @@
       "note": "Corrected '90' to 'go' from Lens; added musical notes from Tesseract."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -144,7 +144,7 @@
       "note": "Used musical notes and correct words from Lens; corrected spacing around the first note and reduced double closing notes to a single one."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -241,7 +241,7 @@
       "note": "Removed incorrect italics from Tesseract."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -626,7 +626,7 @@
       "note": "Used space instead of newline as in Tesseract."
     },
     "difficulty": 1,
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

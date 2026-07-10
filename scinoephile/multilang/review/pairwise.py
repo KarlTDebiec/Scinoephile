@@ -46,7 +46,7 @@ _YUE_ZHO_JSON_PATHS = (
 )
 """Default written Cantonese/Chinese pairwise-review JSON paths."""
 
-_PROMPTS: dict[tuple[Language, Language], type[PairwiseReviewPrompt]] = {
+_PROMPTS: dict[tuple[Language, Language], PairwiseReviewPrompt] = {
     (Language.eng, Language.yue_hans): EngYuePairwiseReviewPrompt,
     (Language.eng, Language.yue_hant): EngYuePairwiseReviewPrompt,
     (Language.eng, Language.zho_hans): EngZhoPairwiseReviewPrompt,
@@ -90,7 +90,7 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
 def get_pairwise_reviewer(
     language: Language,
     reference_language: Language,
-    prompt_cls: type[PairwiseReviewPrompt] | None = None,
+    prompt: PairwiseReviewPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
@@ -100,7 +100,7 @@ def get_pairwise_reviewer(
     Arguments:
         language: language of subtitles to review
         reference_language: language of reference subtitles
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
         **kwargs: additional processor keyword arguments
@@ -115,16 +115,12 @@ def get_pairwise_reviewer(
             "Pairwise review does not support language pair "
             f"{language.tag} <- {reference_language.tag}"
         )
-    if prompt_cls is None:
-        prompt_cls = _PROMPTS[key]
+    if prompt is None:
+        prompt = _PROMPTS[key]
     if test_cases is None:
         test_cases = list(
-            load_default_test_cases(
-                PairwiseReviewManager,
-                prompt_cls,
-                _JSON_PATHS[key],
-            )
+            load_default_test_cases(PairwiseReviewManager, prompt, _JSON_PATHS[key])
         )
     if provider is None:
         provider = get_provider()
-    return PairwiseReviewProcessor(prompt_cls, test_cases, provider=provider, **kwargs)
+    return PairwiseReviewProcessor(prompt, test_cases, provider=provider, **kwargs)

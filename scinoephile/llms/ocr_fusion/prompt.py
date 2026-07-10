@@ -4,56 +4,56 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from typing import ClassVar
+from dataclasses import dataclass
 
 from scinoephile.core.llms import Prompt
 
 __all__ = ["OcrFusionPrompt"]
 
 
-class OcrFusionPrompt(Prompt, ABC):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class OcrFusionPrompt(Prompt):
     """Text for LLM correspondence for OCR fusion matters."""
 
     # Query fields
-    src_1: ClassVar[str] = "one"
+    src_1: str = "one"
     """Name of source one field in query."""
 
-    src_1_desc: ClassVar[str] = "Subtitle text from source one"
+    src_1_desc: str = "Subtitle text from source one"
     """Description of source one field in query."""
 
-    src_2: ClassVar[str] = "two"
+    src_2: str = "two"
     """Name of source two field in query."""
 
-    src_2_desc: ClassVar[str] = "Subtitle text from source two"
+    src_2_desc: str = "Subtitle text from source two"
     """Description of source two field in query."""
 
     # Query validation errors
-    src_1_missing_err: ClassVar[str] = "Subtitle text from source one is required."
+    src_1_missing_err: str = "Subtitle text from source one is required."
     """Error when source one field is missing from query."""
 
-    src_2_missing_err: ClassVar[str] = "Subtitle text from source two is required."
+    src_2_missing_err: str = "Subtitle text from source two is required."
     """Error when source two field is missing from query."""
 
-    src_1_src_2_equal_err: ClassVar[str] = "Subtitle text from two sources must differ."
+    src_1_src_2_equal_err: str = "Subtitle text from two sources must differ."
     """Error when source one and two fields are equal in query."""
 
     # Answer fields
-    output: ClassVar[str] = "output"
+    output: str = "output"
     """Name of output field in answer."""
 
-    output_desc: ClassVar[str] = "Output subtitle text"
+    output_desc: str = "Output subtitle text"
     """Description of output field in answer."""
 
-    note: ClassVar[str] = "note"
+    note: str = "note"
     """Name of note field in answer."""
 
-    note_desc: ClassVar[str] = "Explanation of output"
+    note_desc: str = "Explanation of output"
     """Description of note field in answer."""
 
     # Answer validation errors
-    output_missing_err: ClassVar[str] = "Output subtitle text is required."
+    output_missing_err: str = "Output subtitle text is required."
     """Error when output field is missing from answer."""
 
-    note_missing_err: ClassVar[str] = "Explanation of output is required."
+    note_missing_err: str = "Explanation of output is required."
     """Error when note field is missing from answer."""

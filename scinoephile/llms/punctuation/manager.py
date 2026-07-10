@@ -22,31 +22,31 @@ class PunctuationManager(Manager):
 
     operation: ClassVar[str] = "punctuation"
     """Stable operation identifier used in persistence and CLIs."""
-    prompt_cls: ClassVar[type[PunctuationPrompt]] = PunctuationPrompt
-    """Base prompt class defining persisted test-case field names."""
+    base_prompt: ClassVar[PunctuationPrompt] = PunctuationPrompt()
+    """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[PunctuationPrompt] = PunctuationPrompt,
+        prompt: PunctuationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             query model class
         """
-        name = get_model_name("PunctuationQuery", prompt_cls.__name__)
+        name = get_model_name("PunctuationQuery", prompt.name)
         fields: dict[str, Any] = {
-            prompt_cls.src_1: (
+            prompt.src_1: (
                 list[str],
-                Field(..., description=prompt_cls.src_1_desc),
+                Field(..., description=prompt.src_1_desc),
             ),
-            prompt_cls.src_2: (
+            prompt.src_2: (
                 str,
-                Field(..., description=prompt_cls.src_2_desc),
+                Field(..., description=prompt.src_2_desc),
             ),
         }
 
@@ -61,27 +61,27 @@ class PunctuationManager(Manager):
             __validators__=validators,
             **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.prompt = prompt
         return model
 
     @classmethod
     @cache
     def get_answer_cls(
         cls,
-        prompt_cls: type[PunctuationPrompt] = PunctuationPrompt,
+        prompt: PunctuationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             answer model class
         """
-        name = get_model_name("PunctuationAnswer", prompt_cls.__name__)
+        name = get_model_name("PunctuationAnswer", prompt.name)
         fields: dict[str, Any] = {
-            prompt_cls.output: (
+            prompt.output: (
                 str,
-                Field(..., description=prompt_cls.output_desc),
+                Field(..., description=prompt.output_desc),
             ),
         }
 
@@ -96,7 +96,7 @@ class PunctuationManager(Manager):
             __validators__=validators,
             **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.prompt = prompt
         return model
 
     @classmethod
@@ -108,7 +108,7 @@ class PunctuationManager(Manager):
         Returns:
             test case model class
         """
-        return cls.get_test_case_cls(cls.prompt_cls)
+        return cls.get_test_case_cls(cls.base_prompt)
 
     @staticmethod
     def validate_query(model: Query) -> Query:
@@ -119,13 +119,13 @@ class PunctuationManager(Manager):
         Returns:
             validated query
         """
-        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
-        source_one = getattr(model, prompt_cls.src_1, None)
-        source_two = getattr(model, prompt_cls.src_2, None)
+        prompt: PunctuationPrompt = getattr(model, "prompt")
+        source_one = getattr(model, prompt.src_1, None)
+        source_two = getattr(model, prompt.src_2, None)
         if not source_one:
-            raise ValueError(prompt_cls.src_1_missing_err)
+            raise ValueError(prompt.src_1_missing_err)
         if not source_two:
-            raise ValueError(prompt_cls.src_2_missing_err)
+            raise ValueError(prompt.src_2_missing_err)
         return model
 
     @staticmethod
@@ -137,8 +137,8 @@ class PunctuationManager(Manager):
         Returns:
             validated answer
         """
-        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
-        output = getattr(model, prompt_cls.output, None)
+        prompt: PunctuationPrompt = getattr(model, "prompt")
+        output = getattr(model, prompt.output, None)
         if not output:
-            raise ValueError(prompt_cls.output_missing_err)
+            raise ValueError(prompt.output_missing_err)
         return model

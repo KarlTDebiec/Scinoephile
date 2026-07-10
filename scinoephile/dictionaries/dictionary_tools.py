@@ -21,13 +21,11 @@ logger = getLogger(__name__)
 """Module logger."""
 
 
-def get_dictionary_tools(
-    prompt_cls: type[DictionaryToolPrompt],
-) -> ToolBox:
+def get_dictionary_tools(prompt: DictionaryToolPrompt) -> ToolBox:
     """Get dictionary tool definitions and handlers for LLM providers.
 
     Arguments:
-        prompt_cls: prompt class providing dictionary tool text
+        prompt: prompt providing dictionary tool text
     Returns:
         tool box containing dictionary tooling
     """
@@ -60,8 +58,8 @@ def get_dictionary_tools(
         [
             Tool(
                 spec={
-                    "name": prompt_cls.dictionary_tool_name,
-                    "description": prompt_cls.dictionary_tool_description,
+                    "name": prompt.dictionary_tool_name,
+                    "description": prompt.dictionary_tool_description,
                     "parameters": {
                         "type": "object",
                         "additionalProperties": False,
@@ -70,7 +68,7 @@ def get_dictionary_tools(
                             "query": {
                                 "type": "string",
                                 "description": (
-                                    prompt_cls.dictionary_tool_query_description
+                                    prompt.dictionary_tool_query_description
                                 ),
                             },
                         },

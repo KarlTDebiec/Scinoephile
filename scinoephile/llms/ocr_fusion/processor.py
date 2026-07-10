@@ -46,7 +46,7 @@ class OcrFusionProcessor(Processor):
                 f"subtitles; got {len(source_one)} and {len(source_two)}."
             )
 
-        prompt_cls: type[OcrFusionPrompt] = getattr(self, "prompt_cls")
+        prompt: OcrFusionPrompt = getattr(self, "prompt")
 
         # Process subtitles
         output_subtitles = []
@@ -76,30 +76,27 @@ class OcrFusionProcessor(Processor):
             if not text_two:
                 output_subtitles.append(sub_one)
                 logger.info(
-                    f"Subtitle {sub_idx + 1} from {prompt_cls.src_1}: "
+                    f"Subtitle {sub_idx + 1} from {prompt.src_1}: "
                     f"{sub_one.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
             if not text_one:
                 output_subtitles.append(sub_two)
                 logger.info(
-                    f"Subtitle {sub_idx + 1} from {prompt_cls.src_2}: "
+                    f"Subtitle {sub_idx + 1} from {prompt.src_2}: "
                     f"{sub_two.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
 
             # Query LLM
-            test_case_cls = OcrFusionManager.get_test_case_cls(prompt_cls)
+            test_case_cls = OcrFusionManager.get_test_case_cls(prompt)
             query_cls = test_case_cls.query_cls
-            query_kwargs = {
-                prompt_cls.src_1: text_one,
-                prompt_cls.src_2: text_two,
-            }
+            query_kwargs = {prompt.src_1: text_one, prompt.src_2: text_two}
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
-            output_text = getattr(test_case.answer, prompt_cls.output)
+            output_text = getattr(test_case.answer, prompt.output)
             sub = Subtitle(start=sub_one.start, end=sub_one.end, text=output_text)
             logger.info(
                 f"Subtitle {sub_idx + 1} processed:     {sub.text.replace('\n', '\\n')}"

@@ -79,7 +79,7 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
 }
 """Guided translation JSON paths keyed by exact source and target languages."""
 
-_PROMPTS: dict[tuple[Language, Language], type[GuidedTranslationPrompt]] = {
+_PROMPTS: dict[tuple[Language, Language], GuidedTranslationPrompt] = {
     (Language.yue_hans, Language.eng): EngYueGuidedTranslationPrompt,
     (Language.yue_hant, Language.eng): EngYueGuidedTranslationPrompt,
     (Language.zho_hans, Language.eng): EngZhoGuidedTranslationPrompt,
@@ -103,7 +103,7 @@ _PROMPTS: dict[tuple[Language, Language], type[GuidedTranslationPrompt]] = {
 def get_guided_translator(
     source_language: Language,
     target_language: Language,
-    prompt_cls: type[GuidedTranslationPrompt] | None = None,
+    prompt: GuidedTranslationPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
@@ -113,7 +113,7 @@ def get_guided_translator(
     Arguments:
         source_language: source language
         target_language: target language
-        prompt_cls: prompt class override
+        prompt: prompt override
         test_cases: test cases
         provider: provider to use for queries
         **kwargs: processor initialization keyword arguments
@@ -129,16 +129,14 @@ def get_guided_translator(
             f"{source_language.tag} -> {target_language.tag}"
         )
 
-    if prompt_cls is None:
-        prompt_cls = _PROMPTS[key]
+    if prompt is None:
+        prompt = _PROMPTS[key]
     if test_cases is None:
         json_paths = _JSON_PATHS[key]
         test_cases = list(
-            load_default_test_cases(GuidedTranslationManager, prompt_cls, json_paths)
+            load_default_test_cases(GuidedTranslationManager, prompt, json_paths)
         )
     if provider is None:
         provider = get_provider()
 
-    return GuidedTranslationProcessor(
-        prompt_cls, test_cases, provider=provider, **kwargs
-    )
+    return GuidedTranslationProcessor(prompt, test_cases, provider=provider, **kwargs)

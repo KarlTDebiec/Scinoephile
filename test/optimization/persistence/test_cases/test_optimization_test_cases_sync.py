@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import ClassVar
 
 from pydantic import JsonValue
 from pytest import raises
@@ -25,32 +24,30 @@ from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases,
 )
 
+_LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
+    input_pfx="zimu_",
+    output_pfx="xiugai_",
+    note_pfx="beizhu_",
+)
+"""Review prompt using localized correspondence field names."""
 
-class _LocalizedReviewPrompt(ReviewPrompt):
-    """Review prompt using localized correspondence field names."""
-
-    input_pfx: ClassVar[str] = "zimu_"
-    output_pfx: ClassVar[str] = "xiugai_"
-    note_pfx: ClassVar[str] = "beizhu_"
-
-
-class _AlternativeReviewPrompt(ReviewPrompt):
-    """Review prompt using an alternative correspondence schema."""
-
-    input_pfx: ClassVar[str] = "source_"
-    output_pfx: ClassVar[str] = "correction_"
-    note_pfx: ClassVar[str] = "explanation_"
+_ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
+    input_pfx="source_",
+    output_pfx="correction_",
+    note_pfx="explanation_",
+)
+"""Review prompt using an alternative correspondence schema."""
 
 
 def test_normalization_makes_prompt_field_aliases_share_identity():
     """Equivalent field aliases should normalize to one SQL identity."""
     localized_cls = ReviewManager.get_test_case_cls(
         size=1,
-        prompt_cls=_LocalizedReviewPrompt,
+        prompt=_LOCALIZED_REVIEW_PROMPT,
     )
     alternative_cls = ReviewManager.get_test_case_cls(
         size=1,
-        prompt_cls=_AlternativeReviewPrompt,
+        prompt=_ALTERNATIVE_REVIEW_PROMPT,
     )
     localized = localized_cls.model_validate(
         {
@@ -206,7 +203,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     )
 
     data[0]["difficulty"] = 2
-    data[0]["prompt"] = True
+    data[0]["few_shot"] = True
     data[0]["verified"] = True
     source_path.write_text(json.dumps(data), encoding="utf-8")
     dry_run_report = sync_test_cases(
@@ -235,7 +232,7 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     )
     assert loaded is not None
     assert loaded.difficulty == 1
-    assert not loaded.prompt
+    assert not loaded.few_shot
     assert not loaded.verified
 
 

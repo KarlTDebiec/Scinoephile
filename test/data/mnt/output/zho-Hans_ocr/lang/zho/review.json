@@ -214,7 +214,7 @@
       "subtitle_6": "今天天气那么好\n不可能会有鬼的"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -539,7 +539,7 @@
       "subtitle_13": "都整理好了没？"
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

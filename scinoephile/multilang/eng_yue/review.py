@@ -12,9 +12,8 @@ __all__ = [
 ]
 
 
-class EngYueGuidedReviewPrompt(GuidedReviewPromptEng):
-    """Prompt for guided review of English using written Cantonese."""
+EngYueGuidedReviewPrompt = GuidedReviewPromptEng
+"""Prompt for guided review of English using written Cantonese."""
 
-
-class EngYuePairwiseReviewPrompt(PairwiseReviewPromptEng):
-    """Prompt for pairwise review of English using written Cantonese."""
+EngYuePairwiseReviewPrompt = PairwiseReviewPromptEng
+"""Prompt for pairwise review of English using written Cantonese."""

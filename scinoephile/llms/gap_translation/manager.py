@@ -29,8 +29,8 @@ class GapTranslationManager(Manager):
 
     operation: ClassVar[str] = "gap-translation"
     """Stable operation identifier used in persistence and CLIs."""
-    prompt_cls: ClassVar[type[GapTranslationPrompt]] = GapTranslationPrompt
-    """Base prompt class defining persisted test-case field names."""
+    base_prompt: ClassVar[GapTranslationPrompt] = GapTranslationPrompt()
+    """Base prompt defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -38,14 +38,14 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt_cls: type[GapTranslationPrompt] = GapTranslationPrompt,
+        prompt: GapTranslationPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
             size: number of subtitles in the secondary block
             gaps: indices missing from the primary block
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             query model class
         """
@@ -56,18 +56,16 @@ class GapTranslationManager(Manager):
 
         name = get_model_name(
             "GapTranslationQuery",
-            f"{size}_"
-            f"{'-'.join(map(str, [gap + 1 for gap in gaps]))}_"
-            f"{prompt_cls.__name__}",
+            f"{size}_{'-'.join(map(str, [gap + 1 for gap in gaps]))}_{prompt.name}",
         )
         fields: dict[str, Any] = {}
         for idx in range(size):
             if idx not in gaps:
-                key = prompt_cls.src_1(idx + 1)
-                description = prompt_cls.src_1_desc(idx + 1)
+                key = prompt.src_1(idx + 1)
+                description = prompt.src_1_desc(idx + 1)
                 fields[key] = (str, Field(..., description=description))
-            key = prompt_cls.src_2(idx + 1)
-            description = prompt_cls.src_2_desc(idx + 1)
+            key = prompt.src_2(idx + 1)
+            description = prompt.src_2_desc(idx + 1)
             fields[key] = (str, Field(..., description=description))
 
         model = create_model(
@@ -76,7 +74,7 @@ class GapTranslationManager(Manager):
             __module__=Query.__module__,
             **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "gaps", gaps)
         return model
@@ -87,14 +85,14 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt_cls: type[GapTranslationPrompt] = GapTranslationPrompt,
+        prompt: GapTranslationPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
             size: number of subtitles in the secondary block
             gaps: indices missing from the primary block
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             answer model class
         """
@@ -105,14 +103,12 @@ class GapTranslationManager(Manager):
 
         name = get_model_name(
             "GapTranslationAnswer",
-            f"{size}_"
-            f"{'-'.join(map(str, [gap + 1 for gap in gaps]))}_"
-            f"{prompt_cls.__name__}",
+            f"{size}_{'-'.join(map(str, [gap + 1 for gap in gaps]))}_{prompt.name}",
         )
         fields: dict[str, Any] = {}
         for idx in gaps:
-            key = prompt_cls.output(idx + 1)
-            description = prompt_cls.output_desc(idx + 1)
+            key = prompt.output(idx + 1)
+            description = prompt.output_desc(idx + 1)
             fields[key] = (str, Field(..., description=description))
 
         model = create_model(
@@ -121,7 +117,7 @@ class GapTranslationManager(Manager):
             __module__=Answer.__module__,
             **fields,
         )
-        model.prompt_cls = prompt_cls
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "gaps", gaps)
         return model
@@ -132,14 +128,14 @@ class GapTranslationManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt_cls: type[GapTranslationPrompt] = GapTranslationPrompt,
+        prompt: GapTranslationPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
             size: number of subtitles in the secondary block
             gaps: indices missing from the primary block
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             test case model class
         """
@@ -150,13 +146,11 @@ class GapTranslationManager(Manager):
 
         name = get_model_name(
             "GapTranslationTestCase",
-            f"{size}_"
-            f"{'-'.join(map(str, [gap + 1 for gap in gaps]))}_"
-            f"{prompt_cls.__name__}",
+            f"{size}_{'-'.join(map(str, [gap + 1 for gap in gaps]))}_{prompt.name}",
         )
-        query_cls = cls.get_query_cls(size, gaps, prompt_cls)
-        answer_cls = cls.get_answer_cls(size, gaps, prompt_cls)
-        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt_cls)
+        query_cls = cls.get_query_cls(size, gaps, prompt)
+        answer_cls = cls.get_answer_cls(size, gaps, prompt)
+        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt)
         validators = cls.get_test_case_validators()
 
         model = create_model(
@@ -168,7 +162,7 @@ class GapTranslationManager(Manager):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.prompt_cls = prompt_cls
+        model.prompt = prompt
         setattr(model, "size", size)
         setattr(model, "gaps", gaps)
         setattr(model, "get_auto_verified", cls.get_auto_verified)
@@ -184,27 +178,27 @@ class GapTranslationManager(Manager):
         Returns:
             test case model class
         """
-        prompt_cls = cls.prompt_cls
-        size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_2_pfx))
+        prompt = cls.base_prompt
+        size = sum(1 for key in data["query"] if key.startswith(prompt.src_2_pfx))
         source_one_idxs = [
-            int(key.removeprefix(prompt_cls.src_1_pfx)) - 1
+            int(key.removeprefix(prompt.src_1_pfx)) - 1
             for key in data["query"]
-            if key.startswith(prompt_cls.src_1_pfx)
+            if key.startswith(prompt.src_1_pfx)
         ]
         gaps = tuple(idx for idx in range(size) if idx not in source_one_idxs)
-        return cls.get_test_case_cls(size=size, gaps=gaps, prompt_cls=prompt_cls)
+        return cls.get_test_case_cls(size=size, gaps=gaps, prompt=prompt)
 
     @classmethod
     def get_test_case_cls_with_prompt(
         cls,
         test_case_cls: type[TestCase],
-        prompt_cls: type[Prompt],
+        prompt: Prompt,
     ) -> type[TestCase]:
         """Get a test-case class with the same size and gaps for another prompt.
 
         Arguments:
             test_case_cls: test-case class whose size and gaps should be preserved
-            prompt_cls: prompt class whose correspondence fields should be used
+            prompt: prompt whose correspondence fields should be used
         Returns:
             equivalently shaped test-case class
         """
@@ -213,5 +207,5 @@ class GapTranslationManager(Manager):
         return cls.get_test_case_cls(
             size=size,
             gaps=gaps,
-            prompt_cls=cast(type[GapTranslationPrompt], prompt_cls),
+            prompt=cast(GapTranslationPrompt, prompt),
         )

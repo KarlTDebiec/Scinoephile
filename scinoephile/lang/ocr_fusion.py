@@ -74,7 +74,7 @@ _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
 }
 """OCR fusion JSON paths keyed by language."""
 
-_PROMPTS: dict[Language, type[OcrFusionPrompt]] = {
+_PROMPTS: dict[Language, OcrFusionPrompt] = {
     Language.eng: OcrFusionPromptEng,
     Language.yue_hans: OcrFusionPromptYueHans,
     Language.yue_hant: OcrFusionPromptYueHant,
@@ -86,7 +86,7 @@ _PROMPTS: dict[Language, type[OcrFusionPrompt]] = {
 
 def get_ocr_fuser(
     language: Language,
-    prompt_cls: type[OcrFusionPrompt] | None = None,
+    prompt: OcrFusionPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
@@ -95,7 +95,7 @@ def get_ocr_fuser(
 
     Arguments:
         language: subtitle language
-        prompt_cls: text for LLM correspondence
+        prompt: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
         **kwargs: additional keyword arguments for OcrFusionProcessor
@@ -107,13 +107,11 @@ def get_ocr_fuser(
     if language not in _PROMPTS:
         raise ScinoephileError(f"OCR fusion does not support language {language.tag}")
 
-    if prompt_cls is None:
-        prompt_cls = _PROMPTS[language]
+    if prompt is None:
+        prompt = _PROMPTS[language]
     if test_cases is None:
         json_paths = _JSON_PATHS[language]
-        test_cases = list(
-            load_default_test_cases(OcrFusionManager, prompt_cls, json_paths)
-        )
+        test_cases = list(load_default_test_cases(OcrFusionManager, prompt, json_paths))
     if provider is None:
         provider = get_provider()
-    return OcrFusionProcessor(prompt_cls, test_cases, provider=provider, **kwargs)
+    return OcrFusionProcessor(prompt, test_cases, provider=provider, **kwargs)

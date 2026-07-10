@@ -47,12 +47,12 @@ class Processor(ABC):
     manager_cls: type[Manager] | None = None
     """Manager class used to construct test case models."""
 
-    prompt_cls: type[Prompt]
+    prompt: Prompt
     """Text for LLM correspondence."""
 
     def __init__(
         self,
-        prompt_cls: type[Prompt],
+        prompt: Prompt,
         test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
         *,
@@ -64,7 +64,7 @@ class Processor(ABC):
         """Initialize.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
             test_cases: test cases
             test_case_path: path to file containing test cases
             provider: provider to use for queries
@@ -72,7 +72,7 @@ class Processor(ABC):
             auto_verify: automatically verify test cases if they meet selected criteria
             tool_box: available tools and handlers
         """
-        self.prompt_cls = prompt_cls
+        self.prompt = prompt
         if self.manager_cls is None:
             raise ValueError("manager_cls must be set on Processor subclasses.")
 
@@ -86,15 +86,15 @@ class Processor(ABC):
                     load_test_cases_from_json(
                         test_case_path,
                         self.manager_cls,
-                        prompt_cls=self.prompt_cls,
+                        prompt=self.prompt,
                     )
                 )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
-        queryer_cls = Queryer.get_queryer_cls(self.prompt_cls)
-        self.queryer = queryer_cls(
-            prompt_test_cases=[tc for tc in test_cases if tc.prompt],
+        self.queryer = Queryer(
+            self.prompt,
+            few_shot_test_cases=[tc for tc in test_cases if tc.few_shot],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),

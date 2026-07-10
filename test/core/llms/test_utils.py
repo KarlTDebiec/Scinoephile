@@ -6,26 +6,26 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 
-
-class _LocalizedReviewPrompt(ReviewPrompt):
-    """Review prompt using localized correspondence field names."""
-
-    input_pfx: ClassVar[str] = "zimu_"
-    output_pfx: ClassVar[str] = "xiugai_"
-    note_pfx: ClassVar[str] = "beizhu_"
+_LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
+    language=Language.zho_hans,
+    input_pfx="zimu_",
+    output_pfx="xiugai_",
+    note_pfx="beizhu_",
+)
+"""Review prompt using localized correspondence field names."""
 
 
 def test_json_uses_base_prompt_fields(tmp_path: Path):
     """JSON should persist base fields and load them into a concrete prompt."""
-    test_case_cls = ReviewManager.get_test_case_cls(1, _LocalizedReviewPrompt)
+    test_case_cls = ReviewManager.get_test_case_cls(1, _LOCALIZED_REVIEW_PROMPT)
     test_case = test_case_cls.model_validate(
         {
             "query": {"zimu_1": "original"},
@@ -48,7 +48,7 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
     loaded = load_test_cases_from_json(
         output_path,
         ReviewManager,
-        _LocalizedReviewPrompt,
+        _LOCALIZED_REVIEW_PROMPT,
     )
     assert loaded[0].query.model_dump() == {"zimu_1": "original"}
     assert loaded[0].answer is not None

@@ -195,7 +195,7 @@
       "subtitle_12": "Well, hurry it up, then."
     },
     "answer": {},
-    "prompt": true,
+    "few_shot": true,
     "verified": true
   },
   {

@@ -12,9 +12,8 @@ __all__ = [
 ]
 
 
-class EngZhoGuidedReviewPrompt(GuidedReviewPromptEng):
-    """Prompt for guided review of English using standard Chinese."""
+EngZhoGuidedReviewPrompt = GuidedReviewPromptEng
+"""Prompt for guided review of English using standard Chinese."""
 
-
-class EngZhoPairwiseReviewPrompt(PairwiseReviewPromptEng):
-    """Prompt for pairwise review of English using standard Chinese."""
+EngZhoPairwiseReviewPrompt = PairwiseReviewPromptEng
+"""Prompt for pairwise review of English using standard Chinese."""

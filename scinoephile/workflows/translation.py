@@ -36,7 +36,7 @@ def translate_series(
     *,
     target_language: Language,
     source_language: Language | None = None,
-    prompt_cls: type[TranslationPrompt] | None = None,
+    prompt: TranslationPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     translator: TranslationProcessor | None = None,
@@ -49,7 +49,7 @@ def translate_series(
         source: source-language subtitle series
         source_language: explicit source language, or None to detect it
         target_language: target language
-        prompt_cls: prompt class override
+        prompt: prompt override
         test_cases: test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
@@ -66,7 +66,7 @@ def translate_series(
         translator = get_translator(
             resolved_source_language,
             target_language,
-            prompt_cls,
+            prompt,
             test_cases,
             provider,
             **kwargs,
@@ -80,7 +80,7 @@ def translate_series_gaps(
     *,
     source_language: Language | None = None,
     target_language: Language | None = None,
-    prompt_cls: type[GapTranslationPrompt] | None = None,
+    prompt: GapTranslationPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     translator: GapTranslationProcessor | None = None,
@@ -94,7 +94,7 @@ def translate_series_gaps(
         target: target-language gapped subtitle series
         source_language: explicit source language, or None to detect it
         target_language: explicit target language, or None to detect it
-        prompt_cls: prompt class override
+        prompt: prompt override
         test_cases: test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
@@ -112,7 +112,7 @@ def translate_series_gaps(
         translator = get_gap_translator(
             resolved_source_language,
             resolved_target_language,
-            prompt_cls,
+            prompt,
             test_cases,
             provider,
             **kwargs,
@@ -126,7 +126,7 @@ def translate_series_guided(
     *,
     source_language: Language | None = None,
     target_language: Language | None = None,
-    prompt_cls: type[GuidedTranslationPrompt] | None = None,
+    prompt: GuidedTranslationPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     translator: GuidedTranslationProcessor | None = None,
@@ -140,7 +140,7 @@ def translate_series_guided(
         guide: target-language guide subtitle series
         source_language: explicit source language, or None to detect it
         target_language: explicit target language, or None to detect it
-        prompt_cls: prompt class override
+        prompt: prompt override
         test_cases: test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
@@ -158,7 +158,7 @@ def translate_series_guided(
         translator = get_guided_translator(
             resolved_source_language,
             resolved_target_language,
-            prompt_cls,
+            prompt,
             test_cases,
             provider,
             **kwargs,
