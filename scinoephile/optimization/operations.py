@@ -9,13 +9,15 @@ from scinoephile.lang.ocr_fusion import OCR_FUSION_OPERATION_SPEC
 from scinoephile.lang.review import REVIEW_OPERATION_SPEC
 from scinoephile.multilang.review.guided import GUIDED_REVIEW_OPERATION_SPEC
 from scinoephile.multilang.review.pairwise import PAIRWISE_REVIEW_OPERATION_SPEC
+from scinoephile.multilang.transcription.delineation import (
+    DELINEATION_OPERATION_SPEC,
+)
+from scinoephile.multilang.transcription.punctuation import (
+    PUNCTUATION_OPERATION_SPEC,
+)
 from scinoephile.multilang.translation.gap import GAP_TRANSLATION_OPERATION_SPEC
 from scinoephile.multilang.translation.guided import GUIDED_TRANSLATION_OPERATION_SPEC
 from scinoephile.multilang.translation.standard import TRANSLATION_OPERATION_SPEC
-from scinoephile.multilang.yue_zho.transcription import (
-    YUE_ZHO_TRANSCRIPTION_DELINEATION_OPERATION_SPEC,
-    YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
-)
 
 __all__ = ["OPERATIONS"]
 
@@ -24,15 +26,15 @@ OPERATIONS: dict[str, OperationSpec] = {
     spec.operation: spec
     for spec in sorted(
         (
+            DELINEATION_OPERATION_SPEC,
             GAP_TRANSLATION_OPERATION_SPEC,
             GUIDED_REVIEW_OPERATION_SPEC,
             GUIDED_TRANSLATION_OPERATION_SPEC,
             OCR_FUSION_OPERATION_SPEC,
             PAIRWISE_REVIEW_OPERATION_SPEC,
+            PUNCTUATION_OPERATION_SPEC,
             REVIEW_OPERATION_SPEC,
             TRANSLATION_OPERATION_SPEC,
-            YUE_ZHO_TRANSCRIPTION_DELINEATION_OPERATION_SPEC,
-            YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
         ),
         key=lambda operation_spec: operation_spec.operation,
     )
