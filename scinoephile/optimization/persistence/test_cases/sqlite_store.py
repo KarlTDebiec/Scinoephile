@@ -227,7 +227,7 @@ class TestCaseSqliteStore:
                 expected_id = get_test_case_id(
                     test_case.query,
                     test_case.answer,
-                    operation_spec=operation_spec,
+                    operation_spec,
                 )
                 if test_case.test_case_id != expected_id:
                     raise ScinoephileError(

@@ -70,7 +70,7 @@ class PersistedTestCase:
             test_case_id=get_test_case_id(
                 query,
                 answer,
-                operation_spec=operation_spec,
+                operation_spec,
             ),
             operation=operation_spec.operation,
             difficulty=test_case.difficulty,

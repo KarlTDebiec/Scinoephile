@@ -16,7 +16,6 @@ __all__ = ["get_test_case_id"]
 def get_test_case_id(
     query: Mapping[str, object],
     answer: Mapping[str, object],
-    *,
     operation_spec: OperationSpec,
 ) -> str:
     """Compute canonical identifier for a test case.

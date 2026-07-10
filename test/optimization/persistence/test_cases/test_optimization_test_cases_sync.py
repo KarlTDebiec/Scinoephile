@@ -165,7 +165,7 @@ def test_sync_inserts_and_removes_provenance_by_source_path(
     deleted_id = get_test_case_id(
         first_data[1]["query"],
         first_data[1]["answer"],
-        operation_spec=TRANSLATION_OPERATION_SPEC,
+        TRANSLATION_OPERATION_SPEC,
     )
 
     source_path.write_text(json.dumps(first_data[:1]), encoding="utf-8")
