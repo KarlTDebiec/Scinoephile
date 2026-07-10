@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from pydantic import JsonValue
+
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.llms import OperationSpec, TestCase
 
@@ -28,9 +30,9 @@ class PersistedTestCase:
     """Whether the test case is included in the prompt."""
     verified: bool
     """Whether the test case answer has been verified."""
-    query: dict[str, object]
+    query: dict[str, JsonValue]
     """Query JSON using base-prompt field names."""
-    answer: dict[str, object]
+    answer: dict[str, JsonValue]
     """Answer JSON using base-prompt field names."""
     source_paths: tuple[str, ...]
     """Source JSON paths that contributed this test case."""
@@ -83,11 +85,11 @@ class PersistedTestCase:
 
     @staticmethod
     def _normalize_payload(
-        payload: dict[str, object],
+        payload: dict[str, JsonValue],
         concrete_fields: tuple[str, ...],
         base_fields: tuple[str, ...],
         payload_name: str,
-    ) -> dict[str, object]:
+    ) -> dict[str, JsonValue]:
         """Rename concrete prompt fields to equivalent base-prompt fields.
 
         Arguments:

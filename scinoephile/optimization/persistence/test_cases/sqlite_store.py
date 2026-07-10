@@ -9,8 +9,9 @@ from collections.abc import Iterable, Mapping
 from dataclasses import replace
 from logging import getLogger
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
+from pydantic import JsonValue
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
@@ -315,7 +316,7 @@ class TestCaseSqliteStore:
         )
 
     @staticmethod
-    def _load_json_object(value: object, field_name: str) -> dict[str, object]:
+    def _load_json_object(value: object, field_name: str) -> dict[str, JsonValue]:
         """Load a JSON object stored in a SQLite text column.
 
         Arguments:
@@ -340,7 +341,7 @@ class TestCaseSqliteStore:
             raise ScinoephileError(
                 f"Persisted test case {field_name} is not a JSON object."
             )
-        return loaded
+        return cast("dict[str, JsonValue]", loaded)
 
     @staticmethod
     def _require_current_schema(version: int):
@@ -383,7 +384,7 @@ class TestCaseSqliteStore:
         )
 
     @staticmethod
-    def _serialize_json_object(value: dict[str, object]) -> str:
+    def _serialize_json_object(value: dict[str, JsonValue]) -> str:
         """Serialize a JSON object canonically for SQLite storage.
 
         Arguments:

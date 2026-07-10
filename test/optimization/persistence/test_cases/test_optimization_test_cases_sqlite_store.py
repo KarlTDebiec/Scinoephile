@@ -9,6 +9,7 @@ from contextlib import closing
 from dataclasses import replace
 from pathlib import Path
 
+from pydantic import JsonValue
 from pytest import raises
 
 from scinoephile.core import ScinoephileError
@@ -27,8 +28,8 @@ def get_test_case(
     difficulty: int = 0,
     prompt: bool = False,
     verified: bool = False,
-    query: dict[str, object] | None = None,
-    answer: dict[str, object] | None = None,
+    query: dict[str, JsonValue] | None = None,
+    answer: dict[str, JsonValue] | None = None,
     operation_spec: OperationSpec = TRANSLATION_OPERATION_SPEC,
 ) -> PersistedTestCase:
     """Get a persisted test case with provided values."""
