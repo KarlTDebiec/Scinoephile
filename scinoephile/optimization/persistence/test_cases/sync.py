@@ -13,7 +13,7 @@ from typing import cast
 from pydantic import ValidationError
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.llms import OperationSpec, Prompt, TestCase
+from scinoephile.core.llms import OperationSpec, Prompt
 
 from .persisted_test_case import PersistedTestCase
 from .sqlite_store import TestCaseSqliteStore
@@ -125,7 +125,9 @@ def _load_test_cases(
     test_cases: list[PersistedTestCase] = []
     for index, item in enumerate(data, start=1):
         try:
-            item_dict = _validate_json_object(item)
+            if not isinstance(item, dict):
+                raise ScinoephileError("Each optimization test case must be an object.")
+            item_dict = cast("dict[str, object]", item)
             test_case = _normalize_test_case(
                 item_dict,
                 operation_spec=operation_spec,
@@ -167,8 +169,7 @@ def _normalize_test_case(
         data,
         prompt_cls=source_prompt_cls,
     )
-    _validate_payload_fields(data, test_case_cls)
-    test_case = test_case_cls.model_validate(data, strict=True)
+    test_case = test_case_cls.model_validate(data, strict=True, extra="forbid")
     base_test_case_cls = manager_cls.get_test_case_cls_with_prompt(
         test_case_cls,
         operation_spec.prompt_cls,
@@ -178,55 +179,3 @@ def _normalize_test_case(
         operation=operation_spec.operation,
         base_test_case_cls=base_test_case_cls,
     )
-
-
-def _validate_json_object(data: object) -> dict[str, object]:
-    """Validate top-level serialized test-case structure.
-
-    Arguments:
-        data: raw JSON test-case value
-    Returns:
-        validated test-case dictionary
-    Raises:
-        ScinoephileError: if the serialized test case has an invalid shape
-    """
-    if not isinstance(data, dict):
-        raise ScinoephileError("Each optimization test case must be an object.")
-    allowed_fields = {"answer", "difficulty", "prompt", "query", "verified"}
-    unexpected_fields = sorted(set(data) - allowed_fields)
-    if unexpected_fields:
-        fields = ", ".join(str(field) for field in unexpected_fields)
-        raise ScinoephileError(
-            f"Optimization test case contains unexpected fields: {fields}."
-        )
-    return cast("dict[str, object]", data)
-
-
-def _validate_payload_fields(
-    data: dict[str, object],
-    test_case_cls: type[TestCase],
-):
-    """Reject query or answer fields outside a concrete prompt schema.
-
-    Arguments:
-        data: serialized test case
-        test_case_cls: concrete prompt test-case class
-    Raises:
-        ScinoephileError: if query or answer fields are not in the schema
-    """
-    for payload_name, model_cls in (
-        ("query", test_case_cls.query_cls),
-        ("answer", test_case_cls.answer_cls),
-    ):
-        payload = data[payload_name]
-        if not isinstance(payload, dict):
-            raise ScinoephileError(
-                f"Optimization test case {payload_name} must be a JSON object."
-            )
-        unexpected_fields = sorted(set(payload) - set(model_cls.model_fields))
-        if unexpected_fields:
-            fields = ", ".join(str(field) for field in unexpected_fields)
-            raise ScinoephileError(
-                f"Optimization test case {payload_name} contains fields outside "
-                f"the prompt schema: {fields}."
-            )

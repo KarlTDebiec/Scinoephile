@@ -107,6 +107,32 @@ def test_sync_rejects_source_prompt_from_another_operation(tmp_path: Path):
         )
 
 
+def test_sync_rejects_fields_outside_test_case_schema(tmp_path: Path):
+    """Unexpected test-case and payload fields should be rejected."""
+    source_path = tmp_path / "source.json"
+    invalid_test_cases = [
+        {
+            "query": {"input_1": "a"},
+            "answer": {"output_1": "b"},
+            "unexpected": True,
+        },
+        {
+            "query": {"input_1": "a", "unexpected": True},
+            "answer": {"output_1": "b"},
+        },
+    ]
+    for test_case in invalid_test_cases:
+        source_path.write_text(json.dumps([test_case]), encoding="utf-8")
+        with raises(ScinoephileError, match="Extra inputs are not permitted"):
+            sync_test_cases_from_json_paths(
+                database_path=tmp_path / "test_cases.sqlite",
+                operation_spec=TRANSLATION_OPERATION_SPEC,
+                source_prompt_cls=TranslationPrompt,
+                input_paths=[source_path],
+                dry_run=False,
+            )
+
+
 def test_sync_inserts_and_removes_provenance_by_source_path(
     tmp_path: Path,
     monkeypatch,
