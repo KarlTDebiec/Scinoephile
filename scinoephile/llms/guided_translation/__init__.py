@@ -10,12 +10,23 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
+from scinoephile.core.llms import OperationSpec
+
 from .manager import GuidedTranslationManager
 from .processor import GuidedTranslationProcessor
 from .prompt import GuidedTranslationPrompt
 
 __all__ = [
+    "GUIDED_TRANSLATION_OPERATION_SPEC",
     "GuidedTranslationManager",
     "GuidedTranslationProcessor",
     "GuidedTranslationPrompt",
 ]
+
+GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
+    operation="guided-translation",
+    test_case_table_name="test_cases__guided_translation",
+    manager_cls=GuidedTranslationManager,
+    prompt_cls=GuidedTranslationPrompt,
+)
+"""Operation specification for guided translation."""

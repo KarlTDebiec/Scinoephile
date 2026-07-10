@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider, OperationSpec, ProcessorKwargs, TestCase
+from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.pairwise_review import (
     PairwiseReviewManager,
@@ -35,18 +35,7 @@ from scinoephile.multilang.zho_yue.review import (
     ZhoYuePairwiseReviewPromptZhoHant,
 )
 
-__all__ = [
-    "PAIRWISE_REVIEW_OPERATION_SPEC",
-    "get_pairwise_reviewer",
-]
-
-PAIRWISE_REVIEW_OPERATION_SPEC = OperationSpec(
-    operation="pairwise-review",
-    test_case_table_name="test_cases__pairwise_review",
-    manager_cls=PairwiseReviewManager,
-    prompt_cls=PairwiseReviewPrompt,
-)
-"""Operation specification for pairwise review."""
+__all__ = ["get_pairwise_reviewer"]
 
 _YUE_ZHO_JSON_PATHS = (
     Path(

@@ -19,10 +19,10 @@ from scinoephile.core.synchronization import (
     get_sync_groups_string,
     get_sync_overlap_matrix,
 )
-from scinoephile.llms.dual_2_to_2 import Dual2To2Manager
+from scinoephile.llms.delineation import DelineationManager
 
-from .deliniation import (
-    YueDeliniationVsZhoPromptYueHans,
+from .delineation import (
+    YueDelineationVsZhoPromptYueHans,
 )
 from .punctuation import (
     YuePunctuationVsZhoPromptYueHans,
@@ -143,8 +143,8 @@ class Alignment:
         zw_idxs = set([zw_idx for sg in self.sync_groups for zw_idx in sg[0]])
         return zw_idxs == set(range(len(self.zhongwen)))
 
-    def get_deliniation_test_case(self, sg_1_idx: int) -> TestCase | None:
-        """Get deliniation query for a sync group index.
+    def get_delineation_test_case(self, sg_1_idx: int) -> TestCase | None:
+        """Get delineation query for a sync group index.
 
         Arguments:
             sg_1_idx: Index of sync group 1
@@ -204,8 +204,8 @@ class Alignment:
         # Return
         if len(yw_1) == 0 and len(yw_2) == 0:
             return None
-        test_case_cls = Dual2To2Manager.get_test_case_cls(
-            prompt_cls=YueDeliniationVsZhoPromptYueHans
+        test_case_cls = DelineationManager.get_test_case_cls(
+            prompt_cls=YueDelineationVsZhoPromptYueHans
         )
         query_kwargs = {
             test_case_cls.prompt_cls.src_1_sub_1: zw_1,

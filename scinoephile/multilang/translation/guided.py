@@ -10,7 +10,6 @@ from typing import Unpack
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import (
     LLMProvider,
-    OperationSpec,
     ProcessorKwargs,
     TestCase,
 )
@@ -40,18 +39,7 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueGuidedTranslationPromptZhoHant,
 )
 
-__all__ = [
-    "GUIDED_TRANSLATION_OPERATION_SPEC",
-    "get_guided_translator",
-]
-
-GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
-    operation="guided-translation",
-    test_case_table_name="test_cases__guided_translation",
-    manager_cls=GuidedTranslationManager,
-    prompt_cls=GuidedTranslationPrompt,
-)
-"""Operation specification for guided translation."""
+__all__ = ["get_guided_translator"]
 
 _ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default written Cantonese-to-English guided translation JSON paths."""

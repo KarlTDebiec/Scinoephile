@@ -29,8 +29,8 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_provider
 
 from .aligner import Aligner
-from .deliniation import (
-    YueDeliniationVsZhoPromptYueHant,
+from .delineation import (
+    YueDelineationVsZhoPromptYueHant,
 )
 from .punctuation import (
     YuePunctuationVsZhoPromptYueHant,
@@ -81,10 +81,10 @@ class YueTranscriber:
         provider: LLMProvider | None = None,
         convert: OpenCCConfig | None = None,
         additional_context: str | None = None,
-        deliniation_prompt_cls: type[YueDeliniationVsZhoPromptYueHant],
+        delineation_prompt_cls: type[YueDelineationVsZhoPromptYueHant],
         punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHant],
         test_case_directory_path: Path,
-        deliniation_test_cases: list[TestCase],
+        delineation_test_cases: list[TestCase],
         punctuation_test_cases: list[TestCase],
     ):
         """Initialize.
@@ -96,10 +96,10 @@ class YueTranscriber:
             provider: provider to use for LLM queryers
             convert: OpenCC configuration used to convert transcribed text
             additional_context: additional context to include in LLM prompts
-            deliniation_prompt_cls: prompt class for block-boundary deliniation
+            delineation_prompt_cls: prompt class for block-boundary delineation
             punctuation_prompt_cls: prompt class for line punctuation
             test_case_directory_path: path to directory containing test cases
-            deliniation_test_cases: deliniation test cases
+            delineation_test_cases: delineation test cases
             punctuation_test_cases: punctuation test cases
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
@@ -120,10 +120,10 @@ class YueTranscriber:
         self.no_vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.OFF):
             self.no_vad_transcriber = self._get_whisper_transcriber(use_vad=False)
-        deliniation_queryer_cls = Queryer.get_queryer_cls(deliniation_prompt_cls)
-        self.deliniation_queryer = deliniation_queryer_cls(
-            prompt_test_cases=[tc for tc in deliniation_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in deliniation_test_cases if tc.verified],
+        delineation_queryer_cls = Queryer.get_queryer_cls(delineation_prompt_cls)
+        self.delineation_queryer = delineation_queryer_cls(
+            prompt_test_cases=[tc for tc in delineation_test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in delineation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
             additional_context=additional_context,
@@ -137,7 +137,7 @@ class YueTranscriber:
             additional_context=additional_context,
         )
         self.aligner = Aligner(
-            deliniation_queryer=self.deliniation_queryer,
+            delineation_queryer=self.delineation_queryer,
             punctuation_queryer=self.punctuation_queryer,
             test_case_dir_path=self.test_case_directory_path,
         )

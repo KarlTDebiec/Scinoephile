@@ -94,7 +94,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     # Ensure test-case directories exist (some constructors validate as "input dirs")
     transcription_test_case_dir_path = test_case_dir_path / "transcription"
-    (transcription_test_case_dir_path / "deliniation").mkdir(
+    (transcription_test_case_dir_path / "delineation").mkdir(
         parents=True, exist_ok=True
     )
     (transcription_test_case_dir_path / "punctuation").mkdir(

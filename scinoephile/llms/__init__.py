@@ -5,23 +5,22 @@
 This module may import from: common, core
 
 Hierarchy within module, where lower entries may import from higher entries:
-* dual_2_to_2 / dual_n_to_1 / gap_translation / guided_review
-  / guided_translation / ocr_fusion / pairwise_review / providers / review
-  / translation
+* delineation / gap_translation / guided_review / guided_translation / ocr_fusion
+  / pairwise_review / providers / punctuation / review / translation
 
 LLM shapes:
 
-| Tracks | T1 | T2 | Name | Prefix | Description |
-| ------ | -- | -- | ---- | ------ | ----------- |
-| 1 | n | | review | Review | Changes with note. |
-| 1 | n | | translation | Translation | Translation. |
-| 2 | 1 | 1 | pairwise_review | PairwiseReview | Pairwise changes with note. |
-| 2 | n | m | guided_review | GuidedReview | Guided changes with note. |
-| 2 | 1 | 1 | ocr_fusion | OcrFusion | Fuse paired OCR results. |
-| 2 | n | 1 | dual_n_to_1 | DualNTo1 | n to one. |
-| 2 | 2 | 2 | dual_2_to_2 | Dual2To2 | Two pairs. |
-| 2 | n - m | n | gap_translation | GapTranslation | Fill gaps. |
-| 2 | n | m | guided_translation | GuidedTranslation | Guided translation. |
+| Tracks | T1    | T2 | Name               | Prefix            |
+| ------ | ----- | -- | ------------------ | ----------------- |
+| 1      | n     |    | review             | Review            |
+| 1      | n     |    | translation        | Translation       |
+| 2      | 1     | 1  | pairwise_review    | PairwiseReview    |
+| 2      | n     | m  | guided_review      | GuidedReview      |
+| 2      | 1     | 1  | ocr_fusion         | OcrFusion         |
+| 2      | n     | 1  | punctuation        | Punctuation       |
+| 2      | 2     | 2  | delineation        | Delineation       |
+| 2      | n - m | n  | gap_translation    | GapTranslation    |
+| 2      | n     | m  | guided_translation | GuidedTranslation |
 """
 
 from __future__ import annotations
