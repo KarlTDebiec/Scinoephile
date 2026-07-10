@@ -5,6 +5,7 @@
 Package hierarchy (modules may import from any above):
 * prompt
 * manager
+* operation
 """
 
 from __future__ import annotations

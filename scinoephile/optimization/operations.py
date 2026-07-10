@@ -7,14 +7,10 @@ from __future__ import annotations
 from scinoephile.core.llms import OperationSpec
 from scinoephile.lang.ocr_fusion import OCR_FUSION_OPERATION_SPEC
 from scinoephile.lang.review import REVIEW_OPERATION_SPEC
+from scinoephile.llms.delineation.operation import DELINEATION_OPERATION_SPEC
+from scinoephile.llms.punctuation.operation import PUNCTUATION_OPERATION_SPEC
 from scinoephile.multilang.review.guided import GUIDED_REVIEW_OPERATION_SPEC
 from scinoephile.multilang.review.pairwise import PAIRWISE_REVIEW_OPERATION_SPEC
-from scinoephile.multilang.transcription.delineation import (
-    DELINEATION_OPERATION_SPEC,
-)
-from scinoephile.multilang.transcription.punctuation import (
-    PUNCTUATION_OPERATION_SPEC,
-)
 from scinoephile.multilang.translation.gap import GAP_TRANSLATION_OPERATION_SPEC
 from scinoephile.multilang.translation.guided import GUIDED_TRANSLATION_OPERATION_SPEC
 from scinoephile.multilang.translation.standard import TRANSLATION_OPERATION_SPEC
