@@ -24,6 +24,7 @@ from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
+from scinoephile.llms.delineation import DelineationManager
 
 from .alignment import Alignment
 from .delineation import (
@@ -31,6 +32,7 @@ from .delineation import (
 )
 from .punctuation import (
     YuePunctuationVsZhoPromptYueHant,
+    YueZhoPunctuationManager,
 )
 
 __all__ = ["Aligner"]
@@ -356,6 +358,7 @@ class Aligner:
         save_test_cases_to_json(
             delineation_output_path,
             list(self.delineation_queryer.encountered_test_cases.values()),
+            DelineationManager,
         )
         punctuation_output_path = (
             self.test_case_dir_path / "punctuation" / f"{get_torch_device()}.json"
@@ -363,4 +366,5 @@ class Aligner:
         save_test_cases_to_json(
             punctuation_output_path,
             list(self.punctuation_queryer.encountered_test_cases.values()),
+            YueZhoPunctuationManager,
         )

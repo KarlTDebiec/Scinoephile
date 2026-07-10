@@ -21,7 +21,7 @@ class OcrFusionManager(Manager):
     """Factories for OCR fusion LLM classes."""
 
     prompt_cls: ClassVar[type[OcrFusionPrompt]] = OcrFusionPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache

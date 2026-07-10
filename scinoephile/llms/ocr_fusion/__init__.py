@@ -26,6 +26,5 @@ __all__ = [
 OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="ocr-fusion",
     manager_cls=OcrFusionManager,
-    prompt_cls=OcrFusionPrompt,
 )
 """Operation specification for monolingual OCR fusion."""

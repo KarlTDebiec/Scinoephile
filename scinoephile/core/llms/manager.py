@@ -6,11 +6,9 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Any, TypedDict, Unpack, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model, model_validator
-
-from scinoephile.core import ScinoephileError
 
 from .answer import Answer
 from .models import get_model_name
@@ -18,23 +16,14 @@ from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
 
-__all__ = [
-    "Manager",
-    "TestCaseClsKwargs",
-]
-
-
-class TestCaseClsKwargs(TypedDict, total=False):
-    """Keyword arguments for Manager.get_test_case_cls_from_data."""
-
-    prompt_cls: type[Prompt]
-    """Prompt class used to construct the test case."""
-    manager_cls: type[Manager]
-    """Manager class used to construct the test case."""
+__all__ = ["Manager"]
 
 
 class Manager(ABC):
     """ABC for LLM managers."""
+
+    prompt_cls: ClassVar[type[Prompt]]
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -99,20 +88,17 @@ class Manager(ABC):
     def get_test_case_cls_from_data[TTestCase: TestCase](
         cls,
         data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
+        prompt_cls: type[Prompt],
     ) -> type[TTestCase]:
         """Get concrete test case class for provided data with provided configuration.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
+            prompt_cls: text for LLM correspondence
         Returns:
             test case class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        manager_cls = kwargs.get("manager_cls") or cls
-        return manager_cls.get_test_case_cls(prompt_cls=prompt_cls)
+        return cls.get_test_case_cls(prompt_cls)
 
     @classmethod
     def get_test_case_cls_with_prompt[TTestCase: TestCase](

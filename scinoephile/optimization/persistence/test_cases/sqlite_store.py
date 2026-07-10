@@ -162,13 +162,13 @@ class TestCaseSqliteStore:
         self,
         source_path: str,
         *,
-        operation_spec: OperationSpec | None = None,
+        spec: OperationSpec | None = None,
     ) -> list[PersistedTestCase]:
         """Fetch test cases associated with a source path.
 
         Arguments:
             source_path: original JSON path recorded during import
-            operation_spec: optional operation filter
+            spec: optional operation filter
         Returns:
             persisted test cases
         """
@@ -184,9 +184,9 @@ class TestCaseSqliteStore:
                 .join(self._test_case_sources)
                 .where(self._test_case_sources.c.source_path == source_path)
             )
-            if operation_spec is not None:
+            if spec is not None:
                 statement = statement.where(
-                    self._test_cases.c.operation == operation_spec.operation
+                    self._test_cases.c.operation == spec.operation
                 )
             rows = (
                 connection.execute(statement.order_by(self._test_cases.c.test_case_id))
@@ -199,7 +199,7 @@ class TestCaseSqliteStore:
         self,
         source_test_cases: Mapping[str, Iterable[PersistedTestCase]],
         *,
-        operation_spec: OperationSpec,
+        spec: OperationSpec,
         dry_run: bool,
     ) -> tuple[set[str], set[str]]:
         """Synchronize provenance links for one or more source paths.
@@ -210,7 +210,7 @@ class TestCaseSqliteStore:
 
         Arguments:
             source_test_cases: desired test cases keyed by canonical source path
-            operation_spec: operation synchronized by this import
+            spec: operation synchronized by this import
             dry_run: if True, compute changes without writing
         Returns:
             test case IDs whose source association was inserted or removed
@@ -220,15 +220,15 @@ class TestCaseSqliteStore:
         for source_path in sorted(source_test_cases):
             desired_by_id: dict[str, PersistedTestCase] = {}
             for test_case in source_test_cases[source_path]:
-                if test_case.operation != operation_spec.operation:
+                if test_case.operation != spec.operation:
                     raise ScinoephileError(
                         f"Test case operation {test_case.operation} does not match "
-                        f"synchronized operation {operation_spec.operation}."
+                        f"synchronized operation {spec.operation}."
                     )
                 expected_id = get_test_case_id(
                     test_case.query,
                     test_case.answer,
-                    operation_spec,
+                    spec,
                 )
                 if test_case.test_case_id != expected_id:
                     raise ScinoephileError(
@@ -266,7 +266,7 @@ class TestCaseSqliteStore:
                     connection,
                     desired_by_source,
                     canonical_by_id,
-                    operation=operation_spec.operation,
+                    operation=spec.operation,
                     dry_run=True,
                 )
 
@@ -276,7 +276,7 @@ class TestCaseSqliteStore:
                 connection,
                 desired_by_source,
                 canonical_by_id,
-                operation=operation_spec.operation,
+                operation=spec.operation,
                 dry_run=False,
             )
         logger.info(f"Synchronized {len(desired_by_source)} test-case source paths")

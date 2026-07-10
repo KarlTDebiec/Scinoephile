@@ -13,14 +13,14 @@ from typing import cast
 from pydantic import ValidationError
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.llms import OperationSpec, Prompt
+from scinoephile.core.llms import OperationSpec
 
 from .persisted_test_case import PersistedTestCase
 from .sqlite_store import TestCaseSqliteStore
 
 __all__ = [
     "SyncReport",
-    "sync_test_cases_from_json_paths",
+    "sync_test_cases",
 ]
 
 
@@ -38,56 +38,42 @@ class SyncReport:
     """Test case identifiers whose source association would be removed."""
 
 
-def sync_test_cases_from_json_paths(
-    *,
-    database_path: Path,
-    operation_spec: OperationSpec,
-    source_prompt_cls: type[Prompt],
+def sync_test_cases(
     input_paths: Iterable[Path],
+    output_path: Path,
+    spec: OperationSpec,
+    *,
     dry_run: bool,
 ) -> SyncReport:
     """Synchronize test cases from JSON files into SQLite.
 
-    Source prompt field names are normalized to the operation's base prompt field
-    names before test-case IDs are computed. All input files are loaded and validated
-    before the database is modified.
+    All input files are loaded and validated before the database is modified.
 
     Arguments:
-        database_path: SQLite database path
-        operation_spec: operation, manager, and base prompt configuration
-        source_prompt_cls: prompt class defining the input JSON field names
         input_paths: JSON paths to import or synchronize
+        output_path: SQLite database output path
+        spec: operation, manager, and base prompt configuration
         dry_run: if True, report planned changes without writing
     Returns:
         sync report
-    Raises:
-        ScinoephileError: if the source prompt does not belong to the operation
     """
-    if not issubclass(source_prompt_cls, operation_spec.prompt_cls):
-        raise ScinoephileError(
-            f"Source prompt {source_prompt_cls.__name__} is not a subclass of "
-            f"{operation_spec.prompt_cls.__name__} for operation "
-            f"{operation_spec.operation}."
-        )
-
     input_paths_tuple = tuple(input_path.resolve() for input_path in input_paths)
     source_test_cases = {
         str(input_path): _load_test_cases(
             input_path,
-            operation_spec=operation_spec,
-            source_prompt_cls=source_prompt_cls,
+            spec,
         )
         for input_path in input_paths_tuple
     }
 
-    store = TestCaseSqliteStore(database_path)
+    store = TestCaseSqliteStore(output_path)
     insert_ids, delete_ids = store.sync_source_paths(
         source_test_cases,
-        operation_spec=operation_spec,
+        spec=spec,
         dry_run=dry_run,
     )
     return SyncReport(
-        operation=operation_spec.operation,
+        operation=spec.operation,
         input_paths=input_paths_tuple,
         insert_ids=tuple(sorted(insert_ids)),
         delete_ids=tuple(sorted(delete_ids)),
@@ -96,16 +82,13 @@ def sync_test_cases_from_json_paths(
 
 def _load_test_cases(
     input_path: Path,
-    *,
-    operation_spec: OperationSpec,
-    source_prompt_cls: type[Prompt],
+    spec: OperationSpec,
 ) -> list[PersistedTestCase]:
     """Load, validate, and normalize persisted test cases from JSON.
 
     Arguments:
         input_path: path to a JSON test-case array
-        operation_spec: operation, manager, and base prompt configuration
-        source_prompt_cls: prompt class defining the input JSON field names
+        spec: operation, manager, and base prompt configuration
     Returns:
         persisted test cases using base-prompt field names
     Raises:
@@ -131,8 +114,7 @@ def _load_test_cases(
             item_dict = cast("dict[str, object]", item)
             test_case = _normalize_test_case(
                 item_dict,
-                operation_spec=operation_spec,
-                source_prompt_cls=source_prompt_cls,
+                spec,
             )
         except (
             AttributeError,
@@ -150,33 +132,24 @@ def _load_test_cases(
 
 def _normalize_test_case(
     data: dict[str, object],
-    *,
-    operation_spec: OperationSpec,
-    source_prompt_cls: type[Prompt],
+    spec: OperationSpec,
 ) -> PersistedTestCase:
-    """Validate one test case and normalize its prompt-specific field names.
+    """Validate one test case using its operation's base prompt field names.
 
     Arguments:
         data: serialized test case
-        operation_spec: operation, manager, and base prompt configuration
-        source_prompt_cls: prompt class defining the input JSON field names
+        spec: operation, manager, and base prompt configuration
     Returns:
         test case using base-prompt field names
     Raises:
         ScinoephileError: if the payload contains fields outside the prompt schema
     """
-    manager_cls = operation_spec.manager_cls
-    test_case_cls = manager_cls.get_test_case_cls_from_data(
+    test_case_cls = spec.manager_cls.get_test_case_cls_from_data(
         data,
-        prompt_cls=source_prompt_cls,
+        spec.prompt_cls,
     )
     test_case = test_case_cls.model_validate(data, strict=True, extra="forbid")
-    base_test_case_cls = manager_cls.get_test_case_cls_with_prompt(
-        test_case_cls,
-        operation_spec.prompt_cls,
-    )
     return PersistedTestCase.from_test_case(
         test_case,
-        operation_spec=operation_spec,
-        base_test_case_cls=base_test_case_cls,
+        spec,
     )

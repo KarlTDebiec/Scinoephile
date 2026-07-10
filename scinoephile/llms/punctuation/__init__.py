@@ -23,6 +23,5 @@ __all__ = [
 PUNCTUATION_OPERATION_SPEC = OperationSpec(
     operation="punctuation",
     manager_cls=PunctuationManager,
-    prompt_cls=PunctuationPrompt,
 )
 """Operation specification for punctuation."""

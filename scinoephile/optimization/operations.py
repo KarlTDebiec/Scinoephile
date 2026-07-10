@@ -32,7 +32,7 @@ OPERATIONS: dict[str, OperationSpec] = {
             REVIEW_OPERATION_SPEC,
             TRANSLATION_OPERATION_SPEC,
         ),
-        key=lambda operation_spec: operation_spec.operation,
+        key=lambda spec: spec.operation,
     )
 }
 """Optimization operations keyed by operation name."""

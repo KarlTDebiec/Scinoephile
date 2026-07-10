@@ -6,18 +6,16 @@ from __future__ import annotations
 
 import re
 from functools import cache
-from typing import Any, ClassVar, Unpack, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import (
     Answer,
     Manager,
     Prompt,
     Query,
     TestCase,
-    TestCaseClsKwargs,
 )
 from scinoephile.core.llms.models import get_model_name
 
@@ -30,7 +28,7 @@ class ReviewManager(Manager):
     """Factories for review LLM classes."""
 
     prompt_cls: ClassVar[type[ReviewPrompt]] = ReviewPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -139,18 +137,16 @@ class ReviewManager(Manager):
     def get_test_case_cls_from_data(
         cls,
         data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
+        prompt_cls: type[Prompt],
     ) -> type[TestCase]:
         """Get concrete test case class for provided data.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
+            prompt_cls: text for LLM correspondence
         Returns:
             test case model class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
         prompt_cls = cast(type[ReviewPrompt], prompt_cls)
         pattern = re.compile(rf"^{re.escape(prompt_cls.input_pfx)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))

@@ -6,7 +6,7 @@ Package hierarchy (modules may import from any above):
 * models / prompt / tool
 * answer / query / tool_box
 * llm_provider / test_case
-* manager / openai_provider_base / queryer
+* manager / openai_provider_base / queryer / test_case_mapping
 * operation_spec / utils
 * processor
 """
@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
-from .manager import Manager, TestCaseClsKwargs
+from .manager import Manager
 from .openai_provider_base import OpenAIProviderBase
 from .operation_spec import OperationSpec
 from .processor import Processor, ProcessorKwargs
@@ -38,7 +38,6 @@ __all__ = [
     "Prompt",
     "Query",
     "Queryer",
-    "TestCaseClsKwargs",
     "TestCase",
     "Tool",
     "ToolBox",

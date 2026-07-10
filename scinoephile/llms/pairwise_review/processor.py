@@ -103,7 +103,9 @@ class PairwiseReviewProcessor(Processor):
 
         if self.test_case_path is not None:
             save_test_cases_to_json(
-                self.test_case_path, self.queryer.encountered_test_cases.values()
+                self.test_case_path,
+                self.queryer.encountered_test_cases.values(),
+                self.manager_cls,
             )
 
         processed_blocks = [block for block in output_blocks if block is not None]

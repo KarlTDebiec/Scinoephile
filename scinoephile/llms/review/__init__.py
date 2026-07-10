@@ -26,6 +26,5 @@ __all__ = [
 REVIEW_OPERATION_SPEC = OperationSpec(
     operation="review",
     manager_cls=ReviewManager,
-    prompt_cls=ReviewPrompt,
 )
 """Operation specification for monolingual review."""

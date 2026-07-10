@@ -30,7 +30,7 @@ def get_test_case(
     verified: bool = False,
     query: dict[str, JsonValue] | None = None,
     answer: dict[str, JsonValue] | None = None,
-    operation_spec: OperationSpec = TRANSLATION_OPERATION_SPEC,
+    spec: OperationSpec = TRANSLATION_OPERATION_SPEC,
 ) -> PersistedTestCase:
     """Get a persisted test case with provided values."""
     if query is None:
@@ -41,9 +41,9 @@ def get_test_case(
         test_case_id=get_test_case_id(
             query,
             answer,
-            operation_spec,
+            spec,
         ),
-        operation=operation_spec.operation,
+        operation=spec.operation,
         difficulty=difficulty,
         prompt=prompt,
         verified=verified,
@@ -69,7 +69,7 @@ def test_store_round_trips_normalized_json(tmp_path: Path):
 
     store.sync_source_paths(
         {"x.json": [test_case]},
-        operation_spec=TRANSLATION_OPERATION_SPEC,
+        spec=TRANSLATION_OPERATION_SPEC,
         dry_run=False,
     )
 
@@ -127,7 +127,7 @@ def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
             "low.json": [low_metadata],
             "high.json": [high_metadata],
         },
-        operation_spec=TRANSLATION_OPERATION_SPEC,
+        spec=TRANSLATION_OPERATION_SPEC,
         dry_run=False,
     )
     loaded = store.get_test_case(low_metadata.test_case_id)
@@ -139,7 +139,7 @@ def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):
 
     store.sync_source_paths(
         {"high.json": []},
-        operation_spec=TRANSLATION_OPERATION_SPEC,
+        spec=TRANSLATION_OPERATION_SPEC,
         dry_run=False,
     )
     retained = store.get_test_case(low_metadata.test_case_id)
@@ -155,15 +155,15 @@ def test_store_filters_source_lookup_by_operation(tmp_path: Path):
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
     first = get_test_case(
-        operation_spec=REVIEW_OPERATION_SPEC,
+        spec=REVIEW_OPERATION_SPEC,
         query={"input": "first"},
     )
     second = get_test_case(
-        operation_spec=REVIEW_OPERATION_SPEC,
+        spec=REVIEW_OPERATION_SPEC,
         query={"input": "second"},
     )
     third = get_test_case(
-        operation_spec=TRANSLATION_OPERATION_SPEC,
+        spec=TRANSLATION_OPERATION_SPEC,
         query={"input": "third"},
     )
 
@@ -172,24 +172,24 @@ def test_store_filters_source_lookup_by_operation(tmp_path: Path):
             "first.json": [first],
             "second.json": [second],
         },
-        operation_spec=REVIEW_OPERATION_SPEC,
+        spec=REVIEW_OPERATION_SPEC,
         dry_run=False,
     )
     store.sync_source_paths(
         {"third.json": [third]},
-        operation_spec=TRANSLATION_OPERATION_SPEC,
+        spec=TRANSLATION_OPERATION_SPEC,
         dry_run=False,
     )
 
     filtered = store.get_test_cases_by_source_path(
         "second.json",
-        operation_spec=REVIEW_OPERATION_SPEC,
+        spec=REVIEW_OPERATION_SPEC,
     )
     assert [test_case.test_case_id for test_case in filtered] == [second.test_case_id]
     assert (
         store.get_test_cases_by_source_path(
             "second.json",
-            operation_spec=TRANSLATION_OPERATION_SPEC,
+            spec=TRANSLATION_OPERATION_SPEC,
         )
         == []
     )
@@ -204,23 +204,23 @@ def test_store_rejects_mismatched_content_addressed_id(tmp_path: Path):
     with raises(ScinoephileError, match="does not match its content-addressed ID"):
         store.sync_source_paths(
             {"source.json": [test_case]},
-            operation_spec=TRANSLATION_OPERATION_SPEC,
+            spec=TRANSLATION_OPERATION_SPEC,
             dry_run=False,
         )
 
     assert not database_path.exists()
 
 
-def test_store_rejects_mismatched_operation_spec(tmp_path: Path):
+def test_store_rejects_mismatched_spec(tmp_path: Path):
     """Writes should reject test cases from another operation."""
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
-    test_case = get_test_case(operation_spec=TRANSLATION_OPERATION_SPEC)
+    test_case = get_test_case(spec=TRANSLATION_OPERATION_SPEC)
 
     with raises(ScinoephileError, match="does not match synchronized operation"):
         store.sync_source_paths(
             {"source.json": [test_case]},
-            operation_spec=REVIEW_OPERATION_SPEC,
+            spec=REVIEW_OPERATION_SPEC,
             dry_run=False,
         )
 
@@ -231,22 +231,22 @@ def test_store_syncs_shared_source_path_within_operation(tmp_path: Path):
     """Syncing one operation should preserve another operation's provenance."""
     database_path = tmp_path / "test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
-    review = get_test_case(operation_spec=REVIEW_OPERATION_SPEC)
-    translation = get_test_case(operation_spec=TRANSLATION_OPERATION_SPEC)
+    review = get_test_case(spec=REVIEW_OPERATION_SPEC)
+    translation = get_test_case(spec=TRANSLATION_OPERATION_SPEC)
 
     store.sync_source_paths(
         {"source.json": [review]},
-        operation_spec=REVIEW_OPERATION_SPEC,
+        spec=REVIEW_OPERATION_SPEC,
         dry_run=False,
     )
     store.sync_source_paths(
         {"source.json": [translation]},
-        operation_spec=TRANSLATION_OPERATION_SPEC,
+        spec=TRANSLATION_OPERATION_SPEC,
         dry_run=False,
     )
     store.sync_source_paths(
         {"source.json": []},
-        operation_spec=REVIEW_OPERATION_SPEC,
+        spec=REVIEW_OPERATION_SPEC,
         dry_run=False,
     )
 

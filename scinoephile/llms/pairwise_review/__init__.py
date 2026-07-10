@@ -26,6 +26,5 @@ __all__ = [
 PAIRWISE_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="pairwise-review",
     manager_cls=PairwiseReviewManager,
-    prompt_cls=PairwiseReviewPrompt,
 )
 """Operation specification for pairwise review."""

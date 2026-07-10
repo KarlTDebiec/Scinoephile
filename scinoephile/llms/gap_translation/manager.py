@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, Unpack, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model
 
@@ -16,7 +16,6 @@ from scinoephile.core.llms import (
     Prompt,
     Query,
     TestCase,
-    TestCaseClsKwargs,
 )
 from scinoephile.core.llms.models import get_model_name
 
@@ -29,7 +28,7 @@ class GapTranslationManager(Manager):
     """Factories for gap translation LLM classes."""
 
     prompt_cls: ClassVar[type[GapTranslationPrompt]] = GapTranslationPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -178,18 +177,16 @@ class GapTranslationManager(Manager):
     def get_test_case_cls_from_data(
         cls,
         data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
+        prompt_cls: type[Prompt],
     ) -> type[TestCase]:
         """Get concrete test case class for provided data.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
+            prompt_cls: text for LLM correspondence
         Returns:
             test case model class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
         prompt_cls = cast(type[GapTranslationPrompt], prompt_cls)
         size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_2_pfx))
         source_one_idxs = [

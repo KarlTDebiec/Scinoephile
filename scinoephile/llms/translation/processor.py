@@ -81,7 +81,9 @@ class TranslationProcessor(Processor):
         # Log test cases
         if self.test_case_path is not None:
             save_test_cases_to_json(
-                self.test_case_path, self.queryer.encountered_test_cases.values()
+                self.test_case_path,
+                self.queryer.encountered_test_cases.values(),
+                self.manager_cls,
             )
 
         # Organize and return

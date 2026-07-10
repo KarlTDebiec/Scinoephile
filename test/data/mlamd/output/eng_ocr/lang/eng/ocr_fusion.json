@@ -1,8 +1,8 @@
 [
   {
     "query": {
-      "lens": "It flied on …",
-      "tesseract": "It flled on…"
+      "one": "It flied on …",
+      "two": "It flled on…"
     },
     "answer": {
       "output": "It flied on…",
@@ -13,8 +13,8 @@
   },
   {
     "query": {
-      "lens": "There, on the right hand side of\nMrs.\nMcBing.",
-      "tesseract": "There, on the right hand side of\nMrs. McBing."
+      "one": "There, on the right hand side of\nMrs.\nMcBing.",
+      "two": "There, on the right hand side of\nMrs. McBing."
     },
     "answer": {
       "output": "There, on the right hand side of\nMrs.\nMcBing.",
@@ -25,8 +25,8 @@
   },
   {
     "query": {
-      "lens": "So Mrs. McBing amended her wish:",
-      "tesseract": "SO Mrs. McBing amended her wish:"
+      "one": "So Mrs. McBing amended her wish:",
+      "two": "SO Mrs. McBing amended her wish:"
     },
     "answer": {
       "output": "So Mrs. McBing amended her wish:",
@@ -37,8 +37,8 @@
   },
   {
     "query": {
-      "lens": "A smart boy?\nA lucky boy?",
-      "tesseract": "A smart boy? A lucky boy?"
+      "one": "A smart boy?\nA lucky boy?",
+      "two": "A smart boy? A lucky boy?"
     },
     "answer": {
       "output": "A smart boy? A lucky boy?",
@@ -49,8 +49,8 @@
   },
   {
     "query": {
-      "lens": "I am the boy, no more McNificient…",
-      "tesseract": "lam the boy, no more McNificient…"
+      "one": "I am the boy, no more McNificient…",
+      "two": "lam the boy, no more McNificient…"
     },
     "answer": {
       "output": "I am the boy, no more McNificient…",
@@ -61,8 +61,8 @@
   },
   {
     "query": {
-      "lens": "Spring Flower offer white teachers!",
-      "tesseract": "spring Flower offer white teachers!"
+      "one": "Spring Flower offer white teachers!",
+      "two": "spring Flower offer white teachers!"
     },
     "answer": {
       "output": "spring Flower offer white teachers!",
@@ -73,8 +73,8 @@
   },
   {
     "query": {
-      "lens": "\"We learn as we grow…",
-      "tesseract": "“We learn as we grow…”"
+      "one": "\"We learn as we grow…",
+      "two": "“We learn as we grow…”"
     },
     "answer": {
       "output": "“We learn as we grow…”",
@@ -85,8 +85,8 @@
   },
   {
     "query": {
-      "lens": "This piggy kid in a rabbit outfit…",
-      "tesseract": "This piggy kid in a rabbit outtit…"
+      "one": "This piggy kid in a rabbit outfit…",
+      "two": "This piggy kid in a rabbit outtit…"
     },
     "answer": {
       "output": "This piggy kid in a rabbit outfit…",
@@ -97,8 +97,8 @@
   },
   {
     "query": {
-      "lens": "That's me,\nMcDull.",
-      "tesseract": "That's me, McDull."
+      "one": "That's me,\nMcDull.",
+      "two": "That's me, McDull."
     },
     "answer": {
       "output": "That's me, McDull.",
@@ -109,8 +109,8 @@
   },
   {
     "query": {
-      "lens": "I had difficulty hearing him.",
-      "tesseract": "| had difficulty hearing him."
+      "one": "I had difficulty hearing him.",
+      "two": "| had difficulty hearing him."
     },
     "answer": {
       "output": "I had difficulty hearing him.",
@@ -121,8 +121,8 @@
   },
   {
     "query": {
-      "lens": "- Tart!\n- Tart!",
-      "tesseract": "- Tart! - Tart!"
+      "one": "- Tart!\n- Tart!",
+      "two": "- Tart! - Tart!"
     },
     "answer": {
       "output": "- Tart!\n- Tart!",
@@ -133,8 +133,8 @@
   },
   {
     "query": {
-      "lens": "- Duck dumpling!\n- Duck dumpling!",
-      "tesseract": "- Duck dumpling! - Duck dumpling!"
+      "one": "- Duck dumpling!\n- Duck dumpling!",
+      "two": "- Duck dumpling! - Duck dumpling!"
     },
     "answer": {
       "output": "- Duck dumpling!    - Duck dumpling!",
@@ -145,8 +145,8 @@
   },
   {
     "query": {
-      "lens": "- The 97 Rule…\n- The 97 Rule…",
-      "tesseract": "- The 97 Rule… - The 97 Rule…"
+      "one": "- The 97 Rule…\n- The 97 Rule…",
+      "two": "- The 97 Rule… - The 97 Rule…"
     },
     "answer": {
       "output": "- The 97 Rule…\n- The 97 Rule…",
@@ -157,8 +157,8 @@
   },
   {
     "query": {
-      "lens": "- McMug!\n- Present!",
-      "tesseract": "- McMug! - Present!"
+      "one": "- McMug!\n- Present!",
+      "two": "- McMug! - Present!"
     },
     "answer": {
       "output": "- McMug!\n- Present!",
@@ -169,8 +169,8 @@
   },
   {
     "query": {
-      "lens": "- Fai!\n- Present!",
-      "tesseract": "- Fai! 〈i〉-〈/i〉 Present!"
+      "one": "- Fai!\n- Present!",
+      "two": "- Fai! 〈i〉-〈/i〉 Present!"
     },
     "answer": {
       "output": "- Fai!\n- Present!",
@@ -180,8 +180,8 @@
   },
   {
     "query": {
-      "lens": "- Goosie!\n- Present!",
-      "tesseract": "- Goosie! - Present!"
+      "one": "- Goosie!\n- Present!",
+      "two": "- Goosie! - Present!"
     },
     "answer": {
       "output": "- Goosie!\n- Present!",
@@ -192,8 +192,8 @@
   },
   {
     "query": {
-      "lens": "- Darby!\n- Present!",
-      "tesseract": "- Darby! 〈i〉-〈/i〉 Present!"
+      "one": "- Darby!\n- Present!",
+      "two": "- Darby! 〈i〉-〈/i〉 Present!"
     },
     "answer": {
       "output": "- Darby!\n- Present!",
@@ -203,8 +203,8 @@
   },
   {
     "query": {
-      "lens": "- May!\n- Present!",
-      "tesseract": "- May! 〈i〉-〈/i〉 Present!"
+      "one": "- May!\n- Present!",
+      "two": "- May! 〈i〉-〈/i〉 Present!"
     },
     "answer": {
       "output": "- May!\n- Present!",
@@ -214,8 +214,8 @@
   },
   {
     "query": {
-      "lens": "- June!\n- Present!",
-      "tesseract": "- June! - Present!"
+      "one": "- June!\n- Present!",
+      "two": "- June! - Present!"
     },
     "answer": {
       "output": "- June!    - Present!",
@@ -226,8 +226,8 @@
   },
   {
     "query": {
-      "lens": "- May!\n- Present!",
-      "tesseract": "- May! - Present!"
+      "one": "- May!\n- Present!",
+      "two": "- May! - Present!"
     },
     "answer": {
       "output": "- May!\n- Present!",
@@ -238,8 +238,8 @@
   },
   {
     "query": {
-      "lens": "- McMug!\n- Present!",
-      "tesseract": "- McMug! 〈i〉-〈/i〉 Present!"
+      "one": "- McMug!\n- Present!",
+      "two": "- McMug! 〈i〉-〈/i〉 Present!"
     },
     "answer": {
       "output": "- McMug!\n- Present!",
@@ -249,8 +249,8 @@
   },
   {
     "query": {
-      "lens": "Have I missed anyone?",
-      "tesseract": "Have | missed anyone?"
+      "one": "Have I missed anyone?",
+      "two": "Have | missed anyone?"
     },
     "answer": {
       "output": "Have I missed anyone?",
@@ -261,8 +261,8 @@
   },
   {
     "query": {
-      "lens": "Hey, I don't understand…",
-      "tesseract": "Hey, | don't understand…"
+      "one": "Hey, I don't understand…",
+      "two": "Hey, | don't understand…"
     },
     "answer": {
       "output": "Hey, I don't understand…",
@@ -273,8 +273,8 @@
   },
   {
     "query": {
-      "lens": "I keep feeling that…",
-      "tesseract": "| Keep feeling that…"
+      "one": "I keep feeling that…",
+      "two": "| Keep feeling that…"
     },
     "answer": {
       "output": "I keep feeling that…",
@@ -285,8 +285,8 @@
   },
   {
     "query": {
-      "lens": "I was contemplating something academic:",
-      "tesseract": "| was contemplating something academic:"
+      "one": "I was contemplating something academic:",
+      "two": "| was contemplating something academic:"
     },
     "answer": {
       "output": "I was contemplating something academic:",
@@ -297,8 +297,8 @@
   },
   {
     "query": {
-      "lens": "I mean, I ate 6 oranges that morning…",
-      "tesseract": "| mean, | ate 6 oranges that morning…"
+      "one": "I mean, I ate 6 oranges that morning…",
+      "two": "| mean, | ate 6 oranges that morning…"
     },
     "answer": {
       "output": "I mean, I ate 6 oranges that morning…",
@@ -309,8 +309,8 @@
   },
   {
     "query": {
-      "lens": "Then I ate 3 bananas this morning.",
-      "tesseract": "Then | ate 3 bananas this morning."
+      "one": "Then I ate 3 bananas this morning.",
+      "two": "Then | ate 3 bananas this morning."
     },
     "answer": {
       "output": "Then I ate 3 bananas this morning.",
@@ -321,8 +321,8 @@
   },
   {
     "query": {
-      "lens": "There are so many things that\nI don't understand.",
-      "tesseract": "There are so many things that\n| don't understand."
+      "one": "There are so many things that\nI don't understand.",
+      "two": "There are so many things that\n| don't understand."
     },
     "answer": {
       "output": "There are so many things that\nI don't understand.",
@@ -333,8 +333,8 @@
   },
   {
     "query": {
-      "lens": "But I am not afraid.",
-      "tesseract": "But | am not afraid."
+      "one": "But I am not afraid.",
+      "two": "But | am not afraid."
     },
     "answer": {
       "output": "But I am not afraid.",
@@ -345,8 +345,8 @@
   },
   {
     "query": {
-      "lens": "One day, when I finish kindergarten…",
-      "tesseract": "One day, when | finish kindergarten…"
+      "one": "One day, when I finish kindergarten…",
+      "two": "One day, when | finish kindergarten…"
     },
     "answer": {
       "output": "One day, when I finish kindergarten…",
@@ -357,8 +357,8 @@
   },
   {
     "query": {
-      "lens": "I shall move up…",
-      "tesseract": "| shall move up…"
+      "one": "I shall move up…",
+      "two": "| shall move up…"
     },
     "answer": {
       "output": "I shall move up…",
@@ -369,8 +369,8 @@
   },
   {
     "query": {
-      "lens": "When I graduate from university, I know…",
-      "tesseract": "When | graduate from university, | know…"
+      "one": "When I graduate from university, I know…",
+      "two": "When | graduate from university, | know…"
     },
     "answer": {
       "output": "When I graduate from university, I know…",
@@ -381,8 +381,8 @@
   },
   {
     "query": {
-      "lens": "I shall understand everything!",
-      "tesseract": "| shall understand everything!"
+      "one": "I shall understand everything!",
+      "two": "| shall understand everything!"
     },
     "answer": {
       "output": "I shall understand everything!",
@@ -393,8 +393,8 @@
   },
   {
     "query": {
-      "lens": "I will buy my mother a house!",
-      "tesseract": "| will buy my mother a house!"
+      "one": "I will buy my mother a house!",
+      "two": "| will buy my mother a house!"
     },
     "answer": {
       "output": "I will buy my mother a house!",
@@ -405,8 +405,8 @@
   },
   {
     "query": {
-      "lens": "Our headmaster runs a teastand…",
-      "tesseract": "Our headmaster runs a teastancd…"
+      "one": "Our headmaster runs a teastand…",
+      "two": "Our headmaster runs a teastancd…"
     },
     "answer": {
       "output": "Our headmaster runs a teastand…",
@@ -417,8 +417,8 @@
   },
   {
     "query": {
-      "lens": "Again?",
-      "tesseract": "Again’?"
+      "one": "Again?",
+      "two": "Again’?"
     },
     "answer": {
       "output": "Again?",
@@ -429,8 +429,8 @@
   },
   {
     "query": {
-      "lens": "you can probably tell how smart I am.",
-      "tesseract": "you can probably tell how smart | am."
+      "one": "you can probably tell how smart I am.",
+      "two": "you can probably tell how smart | am."
     },
     "answer": {
       "output": "you can probably tell how smart I am.",
@@ -441,8 +441,8 @@
   },
   {
     "query": {
-      "lens": "I feel full of strength!",
-      "tesseract": "| feel full of strength!"
+      "one": "I feel full of strength!",
+      "two": "| feel full of strength!"
     },
     "answer": {
       "output": "I feel full of strength!",
@@ -453,8 +453,8 @@
   },
   {
     "query": {
-      "lens": "The world is beautiful!",
-      "tesseract": "The world is beautifu!!"
+      "one": "The world is beautiful!",
+      "two": "The world is beautifu!!"
     },
     "answer": {
       "output": "The world is beautiful!",
@@ -465,8 +465,8 @@
   },
   {
     "query": {
-      "lens": "Which I always want to learn…",
-      "tesseract": "Which | always want to learn…"
+      "one": "Which I always want to learn…",
+      "two": "Which | always want to learn…"
     },
     "answer": {
       "output": "Which I always want to learn…",
@@ -477,8 +477,8 @@
   },
   {
     "query": {
-      "lens": "1,2,3,4,5,6,7…",
-      "tesseract": "1,2,3,4,5,6, 7…"
+      "one": "1,2,3,4,5,6,7…",
+      "two": "1,2,3,4,5,6, 7…"
     },
     "answer": {
       "output": "1,2,3,4,5,6,7…",
@@ -489,8 +489,8 @@
   },
   {
     "query": {
-      "lens": "She works in insurance,\nreal estate and trading.",
-      "tesseract": "She works In insurance,\nreal estate and trading."
+      "one": "She works in insurance,\nreal estate and trading.",
+      "two": "She works In insurance,\nreal estate and trading."
     },
     "answer": {
       "output": "She works in insurance,\nreal estate and trading.",
@@ -501,8 +501,8 @@
   },
   {
     "query": {
-      "lens": "Welcome to“Mrs. Mc Can Cook”.",
-      "tesseract": "Welcome to'“Mrs. Mc Can Cook”."
+      "one": "Welcome to“Mrs. Mc Can Cook”.",
+      "two": "Welcome to'“Mrs. Mc Can Cook”."
     },
     "answer": {
       "output": "Welcome to“Mrs. Mc Can Cook”.",
@@ -513,8 +513,8 @@
   },
   {
     "query": {
-      "lens": "Isn't this a lovely bun?",
-      "tesseract": "Isn't this a lovely bun’?"
+      "one": "Isn't this a lovely bun?",
+      "two": "Isn't this a lovely bun’?"
     },
     "answer": {
       "output": "Isn't this a lovely bun?",
@@ -525,8 +525,8 @@
   },
   {
     "query": {
-      "lens": "See if the chicken is good!",
-      "tesseract": "see if the chicken is good!"
+      "one": "See if the chicken is good!",
+      "two": "see if the chicken is good!"
     },
     "answer": {
       "output": "see if the chicken is good!",
@@ -537,8 +537,8 @@
   },
   {
     "query": {
-      "lens": "today's dish…",
-      "tesseract": "today’s dish…"
+      "one": "today's dish…",
+      "two": "today’s dish…"
     },
     "answer": {
       "output": "today's dish…",
@@ -549,8 +549,8 @@
   },
   {
     "query": {
-      "lens": "It takes simple work.",
-      "tesseract": "lt takes simple work."
+      "one": "It takes simple work.",
+      "two": "lt takes simple work."
     },
     "answer": {
       "output": "It takes simple work.",
@@ -561,8 +561,8 @@
   },
   {
     "query": {
-      "lens": "Once upon a time, a boy was naughty.\nOne day…",
-      "tesseract": "Once upon a time, a boy was naugNty.\nOne day…"
+      "one": "Once upon a time, a boy was naughty.\nOne day…",
+      "two": "Once upon a time, a boy was naugNty.\nOne day…"
     },
     "answer": {
       "output": "Once upon a time, a boy was naughty.\nOne day…",
@@ -573,8 +573,8 @@
   },
   {
     "query": {
-      "lens": "Mother, I want to sleep.",
-      "tesseract": "Mother, | want to sleep."
+      "one": "Mother, I want to sleep.",
+      "two": "Mother, | want to sleep."
     },
     "answer": {
       "output": "Mother, I want to sleep.",
@@ -585,8 +585,8 @@
   },
   {
     "query": {
-      "lens": "Her love for me is direct.",
-      "tesseract": "Her love for me Is direct."
+      "one": "Her love for me is direct.",
+      "two": "Her love for me Is direct."
     },
     "answer": {
       "output": "Her love for me is direct.",
@@ -597,8 +597,8 @@
   },
   {
     "query": {
-      "lens": "I did try hard, but then…",
-      "tesseract": "| did try hard, but then…"
+      "one": "I did try hard, but then…",
+      "two": "| did try hard, but then…"
     },
     "answer": {
       "output": "I did try hard, but then…",
@@ -609,8 +609,8 @@
   },
   {
     "query": {
-      "lens": "But then, I still have dreams.",
-      "tesseract": "But then, | still have dreams."
+      "one": "But then, I still have dreams.",
+      "two": "But then, | still have dreams."
     },
     "answer": {
       "output": "But then, I still have dreams.",
@@ -621,8 +621,8 @@
   },
   {
     "query": {
-      "lens": "One day when I am rich.",
-      "tesseract": "One day when | am rich."
+      "one": "One day when I am rich.",
+      "two": "One day when | am rich."
     },
     "answer": {
       "output": "One day when I am rich.",
@@ -633,8 +633,8 @@
   },
   {
     "query": {
-      "lens": "I bought my hairpin there.",
-      "tesseract": "| bought my hairpin there."
+      "one": "I bought my hairpin there.",
+      "two": "| bought my hairpin there."
     },
     "answer": {
       "output": "I bought my hairpin there.",
@@ -645,8 +645,8 @@
   },
   {
     "query": {
-      "lens": "As for the place I most want to go, wow!",
-      "tesseract": "As for the place | most want to go, wow!"
+      "one": "As for the place I most want to go, wow!",
+      "two": "As for the place | most want to go, wow!"
     },
     "answer": {
       "output": "As for the place I most want to go, wow!",
@@ -657,8 +657,8 @@
   },
   {
     "query": {
-      "lens": "It is a world outside our world.",
-      "tesseract": "lt is a world outside our world."
+      "one": "It is a world outside our world.",
+      "two": "lt is a world outside our world."
     },
     "answer": {
       "output": "It is a world outside our world.",
@@ -669,8 +669,8 @@
   },
   {
     "query": {
-      "lens": "Oh?",
-      "tesseract": "On?"
+      "one": "Oh?",
+      "two": "On?"
     },
     "answer": {
       "output": "Oh?",
@@ -681,8 +681,8 @@
   },
   {
     "query": {
-      "lens": "Is he scared of dying?",
-      "tesseract": "ls he scared of dying?"
+      "one": "Is he scared of dying?",
+      "two": "ls he scared of dying?"
     },
     "answer": {
       "output": "Is he scared of dying?",
@@ -693,8 +693,8 @@
   },
   {
     "query": {
-      "lens": "Mother I don't want medicine.",
-      "tesseract": "Mother | don't want medicine."
+      "one": "Mother I don't want medicine.",
+      "two": "Mother | don't want medicine."
     },
     "answer": {
       "output": "Mother I don't want medicine.",
@@ -705,8 +705,8 @@
   },
   {
     "query": {
-      "lens": "I don't want the strawberry drink!",
-      "tesseract": "| don't want the strawberry drink!"
+      "one": "I don't want the strawberry drink!",
+      "two": "| don't want the strawberry drink!"
     },
     "answer": {
       "output": "I don't want the strawberry drink!",
@@ -717,8 +717,8 @@
   },
   {
     "query": {
-      "lens": "Sweetie, we will go to Maldives once\nyou get well.",
-      "tesseract": "sweetie, we will go to Maldives once\nyou get well."
+      "one": "Sweetie, we will go to Maldives once\nyou get well.",
+      "two": "sweetie, we will go to Maldives once\nyou get well."
     },
     "answer": {
       "output": "sweetie, we will go to Maldives once\nyou get well.",
@@ -729,8 +729,8 @@
   },
   {
     "query": {
-      "lens": "I will book the ticket once you get well.",
-      "tesseract": "| will book the ticket once you get well."
+      "one": "I will book the ticket once you get well.",
+      "two": "| will book the ticket once you get well."
     },
     "answer": {
       "output": "I will book the ticket once you get well.",
@@ -741,8 +741,8 @@
   },
   {
     "query": {
-      "lens": "Mother, I am well!",
-      "tesseract": "Mother, | am well!"
+      "one": "Mother, I am well!",
+      "two": "Mother, | am well!"
     },
     "answer": {
       "output": "Mother, I am well!",
@@ -753,8 +753,8 @@
   },
   {
     "query": {
-      "lens": "And I gulped it down bit by bit…",
-      "tesseract": "And | gulped it down bit by bit…"
+      "one": "And I gulped it down bit by bit…",
+      "two": "And | gulped it down bit by bit…"
     },
     "answer": {
       "output": "And I gulped it down bit by bit…",
@@ -765,8 +765,8 @@
   },
   {
     "query": {
-      "lens": "I did it!",
-      "tesseract": "| did it!"
+      "one": "I did it!",
+      "two": "| did it!"
     },
     "answer": {
       "output": "I did it!",
@@ -777,8 +777,8 @@
   },
   {
     "query": {
-      "lens": "Now I am a good boy!",
-      "tesseract": "Now | am a good boy!"
+      "one": "Now I am a good boy!",
+      "two": "Now | am a good boy!"
     },
     "answer": {
       "output": "Now I am a good boy!",
@@ -789,8 +789,8 @@
   },
   {
     "query": {
-      "lens": "Now I am not sick!",
-      "tesseract": "Now | am not sick!"
+      "one": "Now I am not sick!",
+      "two": "Now | am not sick!"
     },
     "answer": {
       "output": "Now I am not sick!",
@@ -801,8 +801,8 @@
   },
   {
     "query": {
-      "lens": "You said we would go once I get well.",
-      "tesseract": "You said we would go once | get well."
+      "one": "You said we would go once I get well.",
+      "two": "You said we would go once | get well."
     },
     "answer": {
       "output": "You said we would go once I get well.",
@@ -813,8 +813,8 @@
   },
   {
     "query": {
-      "lens": "I am happy for you.",
-      "tesseract": "| am happy for you."
+      "one": "I am happy for you.",
+      "two": "| am happy for you."
     },
     "answer": {
       "output": "I am happy for you.",
@@ -825,8 +825,8 @@
   },
   {
     "query": {
-      "lens": "We'd go to Maldives once I get well.",
-      "tesseract": "We'd go to Maldives once | get well."
+      "one": "We'd go to Maldives once I get well.",
+      "two": "We'd go to Maldives once | get well."
     },
     "answer": {
       "output": "We'd go to Maldives once I get well.",
@@ -837,8 +837,8 @@
   },
   {
     "query": {
-      "lens": "I meant once I get rich.",
-      "tesseract": "| meant once | get rich."
+      "one": "I meant once I get rich.",
+      "two": "| meant once | get rich."
     },
     "answer": {
       "output": "I meant once I get rich.",
@@ -849,8 +849,8 @@
   },
   {
     "query": {
-      "lens": "You said we'd go once I get well.",
-      "tesseract": "You said we'd go once | get well."
+      "one": "You said we'd go once I get well.",
+      "two": "You said we'd go once | get well."
     },
     "answer": {
       "output": "You said we'd go once I get well.",
@@ -861,8 +861,8 @@
   },
   {
     "query": {
-      "lens": "- Really?\n- Yes.",
-      "tesseract": "- Really? - Yes."
+      "one": "- Really?\n- Yes.",
+      "two": "- Really? - Yes."
     },
     "answer": {
       "output": "- Really?\n- Yes.",
@@ -873,8 +873,8 @@
   },
   {
     "query": {
-      "lens": "Once I get rich.",
-      "tesseract": "Once | get rich."
+      "one": "Once I get rich.",
+      "two": "Once | get rich."
     },
     "answer": {
       "output": "Once I get rich.",
@@ -885,8 +885,8 @@
   },
   {
     "query": {
-      "lens": "Sure, sure, I am rich.",
-      "tesseract": "Sure, sure, | am rich."
+      "one": "Sure, sure, I am rich.",
+      "two": "Sure, sure, | am rich."
     },
     "answer": {
       "output": "Sure, sure, I am rich.",
@@ -897,8 +897,8 @@
   },
   {
     "query": {
-      "lens": "- Yes…\n- Is that right?",
-      "tesseract": "- Yes… 〈i〉-〈/i〉 Is that right?"
+      "one": "- Yes…\n- Is that right?",
+      "two": "- Yes… 〈i〉-〈/i〉 Is that right?"
     },
     "answer": {
       "output": "- Yes…\n- Is that right?",
@@ -908,8 +908,8 @@
   },
   {
     "query": {
-      "lens": "I need to pack now. Talk to you later.",
-      "tesseract": "| need to pack now. Talk to you later."
+      "one": "I need to pack now. Talk to you later.",
+      "two": "| need to pack now. Talk to you later."
     },
     "answer": {
       "output": "I need to pack now. Talk to you later.",
@@ -920,8 +920,8 @@
   },
   {
     "query": {
-      "lens": "See you!",
-      "tesseract": "see you!"
+      "one": "See you!",
+      "two": "see you!"
     },
     "answer": {
       "output": "see you!",
@@ -932,8 +932,8 @@
   },
   {
     "query": {
-      "lens": "Mother, do I need to bring\nmy birth certificate?",
-      "tesseract": "Mother, do | need to bring\nmy birth certificate?"
+      "one": "Mother, do I need to bring\nmy birth certificate?",
+      "two": "Mother, do | need to bring\nmy birth certificate?"
     },
     "answer": {
       "output": "Mother, do I need to bring\nmy birth certificate?",
@@ -944,8 +944,8 @@
   },
   {
     "query": {
-      "lens": "I guess so.",
-      "tesseract": "| guess So."
+      "one": "I guess so.",
+      "two": "| guess So."
     },
     "answer": {
       "output": "I guess so.",
@@ -956,8 +956,8 @@
   },
   {
     "query": {
-      "lens": "I found it!",
-      "tesseract": "| found it!"
+      "one": "I found it!",
+      "two": "| found it!"
     },
     "answer": {
       "output": "I found it!",
@@ -968,8 +968,8 @@
   },
   {
     "query": {
-      "lens": "I found my birth certificate!",
-      "tesseract": "| found my birth certificate!"
+      "one": "I found my birth certificate!",
+      "two": "| found my birth certificate!"
     },
     "answer": {
       "output": "I found my birth certificate!",
@@ -980,8 +980,8 @@
   },
   {
     "query": {
-      "lens": "Mother, you keep it and don't lose it…",
-      "tesseract": "Mother, you keep it and don't lose tt…"
+      "one": "Mother, you keep it and don't lose it…",
+      "two": "Mother, you keep it and don't lose tt…"
     },
     "answer": {
       "output": "Mother, you keep it and don't lose it…",
@@ -992,8 +992,8 @@
   },
   {
     "query": {
-      "lens": "- Goodnight, mother!\n- Goodnight!",
-      "tesseract": "- Goodnight, mother! 〈i〉-〈/i〉 Goodnight!"
+      "one": "- Goodnight, mother!\n- Goodnight!",
+      "two": "- Goodnight, mother! 〈i〉-〈/i〉 Goodnight!"
     },
     "answer": {
       "output": "- Goodnight, mother!\n- Goodnight!",
@@ -1003,8 +1003,8 @@
   },
   {
     "query": {
-      "lens": "San San, when confirmed her winning…",
-      "tesseract": "san San, when confirmed her winning…"
+      "one": "San San, when confirmed her winning…",
+      "two": "san San, when confirmed her winning…"
     },
     "answer": {
       "output": "san San, when confirmed her winning…",
@@ -1015,8 +1015,8 @@
   },
   {
     "query": {
-      "lens": "Excuse me, it should be“honourable”.",
-      "tesseract": "Excuse me, It should be“honourable’”."
+      "one": "Excuse me, it should be“honourable”.",
+      "two": "Excuse me, It should be“honourable’”."
     },
     "answer": {
       "output": "Excuse me, it should be“honourable”.",
@@ -1027,8 +1027,8 @@
   },
   {
     "query": {
-      "lens": "I know it is not easy.",
-      "tesseract": "| Know it is not easy."
+      "one": "I know it is not easy.",
+      "two": "| Know it is not easy."
     },
     "answer": {
       "output": "I know it is not easy.",
@@ -1039,8 +1039,8 @@
   },
   {
     "query": {
-      "lens": "I know it is not easy to find Logan.",
-      "tesseract": "| Know it is not easy to find Logan."
+      "one": "I know it is not easy to find Logan.",
+      "two": "| Know it is not easy to find Logan."
     },
     "answer": {
       "output": "I know it is not easy to find Logan.",
@@ -1051,8 +1051,8 @@
   },
   {
     "query": {
-      "lens": "I know it is not easy for him to take me in.",
-      "tesseract": "| Know it is not easy for him to take me in."
+      "one": "I know it is not easy for him to take me in.",
+      "two": "| Know it is not easy for him to take me in."
     },
     "answer": {
       "output": "I know it is not easy for him to take me in.",
@@ -1063,8 +1063,8 @@
   },
   {
     "query": {
-      "lens": "No matter how difficult this is…",
-      "tesseract": "No matter how difficult this ts…"
+      "one": "No matter how difficult this is…",
+      "two": "No matter how difficult this ts…"
     },
     "answer": {
       "output": "No matter how difficult this is…",
@@ -1075,8 +1075,8 @@
   },
   {
     "query": {
-      "lens": "I shall get an Olympic medal!",
-      "tesseract": "| shall get an Olympic medal!!"
+      "one": "I shall get an Olympic medal!",
+      "two": "| shall get an Olympic medal!!"
     },
     "answer": {
       "output": "I shall get an Olympic medal!",
@@ -1087,8 +1087,8 @@
   },
   {
     "query": {
-      "lens": "When I receive my Olympic medal…",
-      "tesseract": "When | receive my Olympic medal…"
+      "one": "When I receive my Olympic medal…",
+      "two": "When | receive my Olympic medal…"
     },
     "answer": {
       "output": "When I receive my Olympic medal…",
@@ -1099,8 +1099,8 @@
   },
   {
     "query": {
-      "lens": "I shall tell the world:",
-      "tesseract": "| shall tell the world:"
+      "one": "I shall tell the world:",
+      "two": "| shall tell the world:"
     },
     "answer": {
       "output": "I shall tell the world:",
@@ -1111,8 +1111,8 @@
   },
   {
     "query": {
-      "lens": "Cheung Chau, I finally make it here.",
-      "tesseract": "Cheung Chau, | finally make it here."
+      "one": "Cheung Chau, I finally make it here.",
+      "two": "Cheung Chau, | finally make it here."
     },
     "answer": {
       "output": "Cheung Chau, I finally make it here.",
@@ -1123,8 +1123,8 @@
   },
   {
     "query": {
-      "lens": "I must kiss this holy land!",
-      "tesseract": "| must kiss this holy land!"
+      "one": "I must kiss this holy land!",
+      "two": "| must kiss this holy land!"
     },
     "answer": {
       "output": "I must kiss this holy land!",
@@ -1135,8 +1135,8 @@
   },
   {
     "query": {
-      "lens": "I came into hiding on this island…",
-      "tesseract": "| came into hiding on this island…"
+      "one": "I came into hiding on this island…",
+      "two": "| came into hiding on this island…"
     },
     "answer": {
       "output": "I came into hiding on this island…",
@@ -1147,8 +1147,8 @@
   },
   {
     "query": {
-      "lens": "So I came to live here.",
-      "tesseract": "So | came to live here."
+      "one": "So I came to live here.",
+      "two": "So | came to live here."
     },
     "answer": {
       "output": "So I came to live here.",
@@ -1159,8 +1159,8 @@
   },
   {
     "query": {
-      "lens": "Dream\non!",
-      "tesseract": "Dream on!"
+      "one": "Dream\non!",
+      "two": "Dream on!"
     },
     "answer": {
       "output": "Dream on!",
@@ -1171,8 +1171,8 @@
   },
   {
     "query": {
-      "lens": "So thick, so strong!",
-      "tesseract": "90 thick, so strong!"
+      "one": "So thick, so strong!",
+      "two": "90 thick, so strong!"
     },
     "answer": {
       "output": "So thick, so strong!",
@@ -1183,8 +1183,8 @@
   },
   {
     "query": {
-      "lens": "How much pain must it bear…",
-      "tesseract": "How much pain must tt bear…"
+      "one": "How much pain must it bear…",
+      "two": "How much pain must tt bear…"
     },
     "answer": {
       "output": "How much pain must it bear…",
@@ -1195,8 +1195,8 @@
   },
   {
     "query": {
-      "lens": "I shall have this calf!",
-      "tesseract": "| shall have this calf!"
+      "one": "I shall have this calf!",
+      "two": "| shall have this calf!"
     },
     "answer": {
       "output": "I shall have this calf!",
@@ -1207,8 +1207,8 @@
   },
   {
     "query": {
-      "lens": "Can I take a pee?",
-      "tesseract": "Can | take a pee?"
+      "one": "Can I take a pee?",
+      "two": "Can | take a pee?"
     },
     "answer": {
       "output": "Can I take a pee?",
@@ -1219,8 +1219,8 @@
   },
   {
     "query": {
-      "lens": "Whenever I sing this song, I need to pee.",
-      "tesseract": "Whenever | sing this song, | need to pee."
+      "one": "Whenever I sing this song, I need to pee.",
+      "two": "Whenever | sing this song, | need to pee."
     },
     "answer": {
       "output": "Whenever I sing this song, I need to pee.",
@@ -1231,8 +1231,8 @@
   },
   {
     "query": {
-      "lens": "But I must sing it now.",
-      "tesseract": "But | must sing it now."
+      "one": "But I must sing it now.",
+      "two": "But | must sing it now."
     },
     "answer": {
       "output": "But I must sing it now.",
@@ -1243,8 +1243,8 @@
   },
   {
     "query": {
-      "lens": "With this song, I hope…",
-      "tesseract": "With this song, | hope…"
+      "one": "With this song, I hope…",
+      "two": "With this song, | hope…"
     },
     "answer": {
       "output": "With this song, I hope…",
@@ -1255,8 +1255,8 @@
   },
   {
     "query": {
-      "lens": "I must grab my chance.",
-      "tesseract": "| must grab my chance."
+      "one": "I must grab my chance.",
+      "two": "| must grab my chance."
     },
     "answer": {
       "output": "I must grab my chance.",
@@ -1267,8 +1267,8 @@
   },
   {
     "query": {
-      "lens": "I tell mother what happened today.",
-      "tesseract": "| tell mother what happened today."
+      "one": "I tell mother what happened today.",
+      "two": "| tell mother what happened today."
     },
     "answer": {
       "output": "I tell mother what happened today.",
@@ -1279,8 +1279,8 @@
   },
   {
     "query": {
-      "lens": "She won't say a word…",
-      "tesseract": "she won't say a word…"
+      "one": "She won't say a word…",
+      "two": "she won't say a word…"
     },
     "answer": {
       "output": "she won't say a word…",
@@ -1291,8 +1291,8 @@
   },
   {
     "query": {
-      "lens": "She mumbles something when…",
-      "tesseract": "she mumbles something when…"
+      "one": "She mumbles something when…",
+      "two": "she mumbles something when…"
     },
     "answer": {
       "output": "she mumbles something when…",
@@ -1303,8 +1303,8 @@
   },
   {
     "query": {
-      "lens": "She says in her solemn, tender voice:",
-      "tesseract": "she says in her solemn, tender voice:"
+      "one": "She says in her solemn, tender voice:",
+      "two": "she says in her solemn, tender voice:"
     },
     "answer": {
       "output": "she says in her solemn, tender voice:",
@@ -1315,8 +1315,8 @@
   },
   {
     "query": {
-      "lens": "As I am the last disciple of the master…",
-      "tesseract": "As | am the last disciple of the master…"
+      "one": "As I am the last disciple of the master…",
+      "two": "As | am the last disciple of the master…"
     },
     "answer": {
       "output": "As I am the last disciple of the master…",
@@ -1327,8 +1327,8 @@
   },
   {
     "query": {
-      "lens": "San San's lover thinks…",
-      "tesseract": "San Sans lover thinks…"
+      "one": "San San's lover thinks…",
+      "two": "San Sans lover thinks…"
     },
     "answer": {
       "output": "San San's lover thinks…",
@@ -1339,8 +1339,8 @@
   },
   {
     "query": {
-      "lens": "I have a nice thick back.",
-      "tesseract": "| have a nice thick back."
+      "one": "I have a nice thick back.",
+      "two": "| have a nice thick back."
     },
     "answer": {
       "output": "I have a nice thick back.",
@@ -1351,8 +1351,8 @@
   },
   {
     "query": {
-      "lens": "San San is in training and couldn't come.",
-      "tesseract": "San San Is in training and couldn't come."
+      "one": "San San is in training and couldn't come.",
+      "two": "San San Is in training and couldn't come."
     },
     "answer": {
       "output": "San San is in training and couldn't come.",
@@ -1363,8 +1363,8 @@
   },
   {
     "query": {
-      "lens": "Mother pours a cup of tea and\nI offer it to the master.",
-      "tesseract": "Mother pours a cup of tea and\n| offer it to the master."
+      "one": "Mother pours a cup of tea and\nI offer it to the master.",
+      "two": "Mother pours a cup of tea and\n| offer it to the master."
     },
     "answer": {
       "output": "Mother pours a cup of tea and\nI offer it to the master.",
@@ -1375,8 +1375,8 @@
   },
   {
     "query": {
-      "lens": "Now I can windsurf together with\nSan San!",
-      "tesseract": "Now | can windsurf together with\nSan San!"
+      "one": "Now I can windsurf together with\nSan San!",
+      "two": "Now | can windsurf together with\nSan San!"
     },
     "answer": {
       "output": "Now I can windsurf together with\nSan San!",
@@ -1387,8 +1387,8 @@
   },
   {
     "query": {
-      "lens": "I offer the tea to Logan…",
-      "tesseract": "| offer the tea to Logan…"
+      "one": "I offer the tea to Logan…",
+      "two": "| offer the tea to Logan…"
     },
     "answer": {
       "output": "I offer the tea to Logan…",
@@ -1399,8 +1399,8 @@
   },
   {
     "query": {
-      "lens": "In my life, I have two skills that\nI'm proud of.",
-      "tesseract": "In my life, | have two skills that\nI'm proud of."
+      "one": "In my life, I have two skills that\nI'm proud of.",
+      "two": "In my life, | have two skills that\nI'm proud of."
     },
     "answer": {
       "output": "In my life, I have two skills that\nI'm proud of.",
@@ -1411,8 +1411,8 @@
   },
   {
     "query": {
-      "lens": "That I have passed onto San San.",
-      "tesseract": "That | have passed onto San San."
+      "one": "That I have passed onto San San.",
+      "two": "That | have passed onto San San."
     },
     "answer": {
       "output": "That I have passed onto San San.",
@@ -1423,8 +1423,8 @@
   },
   {
     "query": {
-      "lens": "The other, I shall pass onto\nmy new disciple…",
-      "tesseract": "The other, | shall pass onto\nmy new disciple…"
+      "one": "The other, I shall pass onto\nmy new disciple…",
+      "two": "The other, | shall pass onto\nmy new disciple…"
     },
     "answer": {
       "output": "The other, I shall pass onto my new disciple…",
@@ -1435,8 +1435,8 @@
   },
   {
     "query": {
-      "lens": "what a marvelous skill that is!",
-      "tesseract": "what a marvelous skill that ts!"
+      "one": "what a marvelous skill that is!",
+      "two": "what a marvelous skill that ts!"
     },
     "answer": {
       "output": "what a marvelous skill that is!",
@@ -1447,8 +1447,8 @@
   },
   {
     "query": {
-      "lens": "That is…",
-      "tesseract": "That Is…"
+      "one": "That is…",
+      "two": "That Is…"
     },
     "answer": {
       "output": "That is…",
@@ -1459,8 +1459,8 @@
   },
   {
     "query": {
-      "lens": "Set up 3 stacks of bun to celebrate.",
-      "tesseract": "set up 3 stacks of bun to celebrate."
+      "one": "Set up 3 stacks of bun to celebrate.",
+      "two": "set up 3 stacks of bun to celebrate."
     },
     "answer": {
       "output": "set up 3 stacks of bun to celebrate.",
@@ -1471,8 +1471,8 @@
   },
   {
     "query": {
-      "lens": "And the unique tradition is lost.",
-      "tesseract": "And the unique tradition Is lost."
+      "one": "And the unique tradition is lost.",
+      "two": "And the unique tradition Is lost."
     },
     "answer": {
       "output": "And the unique tradition is lost.",
@@ -1483,8 +1483,8 @@
   },
   {
     "query": {
-      "lens": "The Olympic medal…\nit has slipped away.",
-      "tesseract": "The Olympic medal…\nithas slipped away."
+      "one": "The Olympic medal…\nit has slipped away.",
+      "two": "The Olympic medal…\nithas slipped away."
     },
     "answer": {
       "output": "The Olympic medal…\nit has slipped away.",
@@ -1495,8 +1495,8 @@
   },
   {
     "query": {
-      "lens": "All I do is to go to the master's home…",
-      "tesseract": "All | do is to go to the master's home…"
+      "one": "All I do is to go to the master's home…",
+      "two": "All | do is to go to the master's home…"
     },
     "answer": {
       "output": "All I do is to go to the master's home…",
@@ -1507,8 +1507,8 @@
   },
   {
     "query": {
-      "lens": "Seeing San San…",
-      "tesseract": "seeing San San…"
+      "one": "Seeing San San…",
+      "two": "seeing San San…"
     },
     "answer": {
       "output": "seeing San San…",
@@ -1519,8 +1519,8 @@
   },
   {
     "query": {
-      "lens": "Makes me forget all these weeks'\nhard work.",
-      "tesseract": "Makes me forget all these weeks’\nhard work."
+      "one": "Makes me forget all these weeks'\nhard work.",
+      "two": "Makes me forget all these weeks’\nhard work."
     },
     "answer": {
       "output": "Makes me forget all these weeks'\nhard work.",
@@ -1531,8 +1531,8 @@
   },
   {
     "query": {
-      "lens": "San yourself! Work!",
-      "tesseract": "san yourself! Work!"
+      "one": "San yourself! Work!",
+      "two": "san yourself! Work!"
     },
     "answer": {
       "output": "san yourself! Work!",
@@ -1543,8 +1543,8 @@
   },
   {
     "query": {
-      "lens": "So San San leaves without seeing me.",
-      "tesseract": "SO San San leaves without seeing me."
+      "one": "So San San leaves without seeing me.",
+      "two": "SO San San leaves without seeing me."
     },
     "answer": {
       "output": "So San San leaves without seeing me.",
@@ -1555,8 +1555,8 @@
   },
   {
     "query": {
-      "lens": "In despair, I crawl up the shelf.",
-      "tesseract": "In despair, | crawl up the shelf."
+      "one": "In despair, I crawl up the shelf.",
+      "two": "In despair, | crawl up the shelf."
     },
     "answer": {
       "output": "In despair, I crawl up the shelf.",
@@ -1567,8 +1567,8 @@
   },
   {
     "query": {
-      "lens": "I have had a lot of things said to me…",
-      "tesseract": "| have had a lot of things said to me…"
+      "one": "I have had a lot of things said to me…",
+      "two": "| have had a lot of things said to me…"
     },
     "answer": {
       "output": "I have had a lot of things said to me…",
@@ -1579,8 +1579,8 @@
   },
   {
     "query": {
-      "lens": "I am quitting!",
-      "tesseract": "lam quitting!"
+      "one": "I am quitting!",
+      "two": "lam quitting!"
     },
     "answer": {
       "output": "I am quitting!",
@@ -1591,8 +1591,8 @@
   },
   {
     "query": {
-      "lens": "Today is the first time\nI sit down with Logan.",
-      "tesseract": "Today is the first time\n| sit down with Logan."
+      "one": "Today is the first time\nI sit down with Logan.",
+      "two": "Today is the first time\n| sit down with Logan."
     },
     "answer": {
       "output": "Today is the first time\nI sit down with Logan.",
@@ -1603,8 +1603,8 @@
   },
   {
     "query": {
-      "lens": "Dull… he's not a bad student.",
-      "tesseract": "Dull… he’s not a bad student."
+      "one": "Dull… he's not a bad student.",
+      "two": "Dull… he’s not a bad student."
     },
     "answer": {
       "output": "Dull… he's not a bad student.",
@@ -1615,8 +1615,8 @@
   },
   {
     "query": {
-      "lens": "Something combining Fist,",
-      "tesseract": "something combining Fist,"
+      "one": "Something combining Fist,",
+      "two": "something combining Fist,"
     },
     "answer": {
       "output": "something combining Fist,",
@@ -1627,8 +1627,8 @@
   },
   {
     "query": {
-      "lens": "I have no idea why would Dull need…",
-      "tesseract": "| have no idea why would Dull need…"
+      "one": "I have no idea why would Dull need…",
+      "two": "| have no idea why would Dull need…"
     },
     "answer": {
       "output": "I have no idea why would Dull need…",
@@ -1639,8 +1639,8 @@
   },
   {
     "query": {
-      "lens": "I am reminded of Dull's pa, Bing.",
-      "tesseract": "| am reminded of Dull's pa, Bing."
+      "one": "I am reminded of Dull's pa, Bing.",
+      "two": "| am reminded of Dull's pa, Bing."
     },
     "answer": {
       "output": "I am reminded of Dull's pa, Bing.",
@@ -1651,8 +1651,8 @@
   },
   {
     "query": {
-      "lens": "Mother must have translated it\nword by word.",
-      "tesseract": "Mother must have translated It\nword by word."
+      "one": "Mother must have translated it\nword by word.",
+      "two": "Mother must have translated It\nword by word."
     },
     "answer": {
       "output": "Mother must have translated it\nword by word.",
@@ -1663,8 +1663,8 @@
   },
   {
     "query": {
-      "lens": "I use the machine to turn it back\ninto Chinese.",
-      "tesseract": "| use the machine to turn it back\ninto Chinese."
+      "one": "I use the machine to turn it back\ninto Chinese.",
+      "two": "| use the machine to turn it back\ninto Chinese."
     },
     "answer": {
       "output": "I use the machine to turn it back\ninto Chinese.",
@@ -1675,8 +1675,8 @@
   },
   {
     "query": {
-      "lens": "It is addressed to\nthe Olympic Committee Chairman.",
-      "tesseract": "lt is addressed to\nthe Olympic Committee Chairman."
+      "one": "It is addressed to\nthe Olympic Committee Chairman.",
+      "two": "lt is addressed to\nthe Olympic Committee Chairman."
     },
     "answer": {
       "output": "It is addressed to\nthe Olympic Committee Chairman.",
@@ -1687,8 +1687,8 @@
   },
   {
     "query": {
-      "lens": "“How are you? I am fine.”",
-      "tesseract": "“How are you? | am fine.”"
+      "one": "“How are you? I am fine.”",
+      "two": "“How are you? | am fine.”"
     },
     "answer": {
       "output": "“How are you? I am fine.”",
@@ -1699,8 +1699,8 @@
   },
   {
     "query": {
-      "lens": "“You like bun? I like bun!”",
-      "tesseract": "“You like bun? | like bun!”"
+      "one": "“You like bun? I like bun!”",
+      "two": "“You like bun? | like bun!”"
     },
     "answer": {
       "output": "“You like bun? I like bun!”",
@@ -1711,8 +1711,8 @@
   },
   {
     "query": {
-      "lens": "it is important to snatch buns.'",
-      "tesseract": "it is important to snatch buns.\""
+      "one": "it is important to snatch buns.'",
+      "two": "it is important to snatch buns.\""
     },
     "answer": {
       "output": "it is important to snatch buns.'",
@@ -1723,8 +1723,8 @@
   },
   {
     "query": {
-      "lens": "“I have a boy, Dull.”",
-      "tesseract": "“| have a boy, Dull.”"
+      "one": "“I have a boy, Dull.”",
+      "two": "“| have a boy, Dull.”"
     },
     "answer": {
       "output": "“I have a boy, Dull.”",
@@ -1735,8 +1735,8 @@
   },
   {
     "query": {
-      "lens": "“One day,\nI can see him snatching buns…”",
-      "tesseract": "“One day,\n| can see him snatching buns…”"
+      "one": "“One day,\nI can see him snatching buns…”",
+      "two": "“One day,\n| can see him snatching buns…”"
     },
     "answer": {
       "output": "“One day,\nI can see him snatching buns…”",
@@ -1747,8 +1747,8 @@
   },
   {
     "query": {
-      "lens": "“That is why I write you this sudden letter.”",
-      "tesseract": "“That is why | write you this sudden letter.”"
+      "one": "“That is why I write you this sudden letter.”",
+      "two": "“That is why | write you this sudden letter.”"
     },
     "answer": {
       "output": "“That is why I write you this sudden letter.”",
@@ -1759,8 +1759,8 @@
   },
   {
     "query": {
-      "lens": "“But my boy is big, very big.”",
-      "tesseract": "“But my boy its big, very big.”"
+      "one": "“But my boy is big, very big.”",
+      "two": "“But my boy its big, very big.”"
     },
     "answer": {
       "output": "“But my boy is big, very big.”",
@@ -1771,8 +1771,8 @@
   },
   {
     "query": {
-      "lens": "I go back to Cheung Chau to practice.",
-      "tesseract": "| go back to Cheung Chau to practice."
+      "one": "I go back to Cheung Chau to practice.",
+      "two": "| go back to Cheung Chau to practice."
     },
     "answer": {
       "output": "I go back to Cheung Chau to practice.",
@@ -1783,8 +1783,8 @@
   },
   {
     "query": {
-      "lens": "I don't know why I want to snatch a bun.",
-      "tesseract": "| don't Know why | want to snatch a bun."
+      "one": "I don't know why I want to snatch a bun.",
+      "two": "| don't Know why | want to snatch a bun."
     },
     "answer": {
       "output": "I don't know why I want to snatch a bun.",
@@ -1795,8 +1795,8 @@
   },
   {
     "query": {
-      "lens": "And I don't think it will ever become\nan Olympic item.",
-      "tesseract": "And | don't think it will ever become\nan Olympic item."
+      "one": "And I don't think it will ever become\nan Olympic item.",
+      "two": "And | don't think it will ever become\nan Olympic item."
     },
     "answer": {
       "output": "And I don't think it will ever become\nan Olympic item.",
@@ -1807,8 +1807,8 @@
   },
   {
     "query": {
-      "lens": "But I keep learning.",
-      "tesseract": "But | keep learning."
+      "one": "But I keep learning.",
+      "two": "But | keep learning."
     },
     "answer": {
       "output": "But I keep learning.",
@@ -1819,8 +1819,8 @@
   },
   {
     "query": {
-      "lens": "Because I love my mother.",
-      "tesseract": "Because | love my mother."
+      "one": "Because I love my mother.",
+      "two": "Because | love my mother."
     },
     "answer": {
       "output": "Because I love my mother.",
@@ -1831,8 +1831,8 @@
   },
   {
     "query": {
-      "lens": "Later, I learn from McMug…",
-      "tesseract": "Later, | learn from McMug…"
+      "one": "Later, I learn from McMug…",
+      "two": "Later, | learn from McMug…"
     },
     "answer": {
       "output": "Later, I learn from McMug…",
@@ -1843,8 +1843,8 @@
   },
   {
     "query": {
-      "lens": "I don't know much about Kung Fu kings…",
-      "tesseract": "| don't know much about Kung Fu kings…"
+      "one": "I don't know much about Kung Fu kings…",
+      "two": "| don't know much about Kung Fu kings…"
     },
     "answer": {
       "output": "I don't know much about Kung Fu kings…",
@@ -1855,8 +1855,8 @@
   },
   {
     "query": {
-      "lens": "But I must be the ultimate pork…",
-      "tesseract": "But | must be the ultimate pork…"
+      "one": "But I must be the ultimate pork…",
+      "two": "But | must be the ultimate pork…"
     },
     "answer": {
       "output": "But I must be the ultimate pork…",
@@ -1867,8 +1867,8 @@
   },
   {
     "query": {
-      "lens": "My mind boggles as I practice, after all…",
-      "tesseract": "My mind boggles as | practice, after all…"
+      "one": "My mind boggles as I practice, after all…",
+      "two": "My mind boggles as | practice, after all…"
     },
     "answer": {
       "output": "My mind boggles as I practice, after all…",
@@ -1879,8 +1879,8 @@
   },
   {
     "query": {
-      "lens": "I am not a fan of bun snatching.",
-      "tesseract": "| am not a fan of bun snatching."
+      "one": "I am not a fan of bun snatching.",
+      "two": "| am not a fan of bun snatching."
     },
     "answer": {
       "output": "I am not a fan of bun snatching.",
@@ -1891,8 +1891,8 @@
   },
   {
     "query": {
-      "lens": "I am only doing this for mother.",
-      "tesseract": "| am only doing this for mother."
+      "one": "I am only doing this for mother.",
+      "two": "| am only doing this for mother."
     },
     "answer": {
       "output": "I am only doing this for mother.",
@@ -1903,8 +1903,8 @@
   },
   {
     "query": {
-      "lens": "Hence I hang on…",
-      "tesseract": "Hence | hang on…"
+      "one": "Hence I hang on…",
+      "two": "Hence | hang on…"
     },
     "answer": {
       "output": "Hence I hang on…",
@@ -1915,8 +1915,8 @@
   },
   {
     "query": {
-      "lens": "I make it pass\nthe“12 Bun Snatching Hands”.",
-      "tesseract": "| make it pass\nthe“12 Bun Snatching Hands”."
+      "one": "I make it pass\nthe“12 Bun Snatching Hands”.",
+      "two": "| make it pass\nthe“12 Bun Snatching Hands”."
     },
     "answer": {
       "output": "I make it pass\nthe“12 Bun Snatching Hands”.",
@@ -1927,8 +1927,8 @@
   },
   {
     "query": {
-      "lens": "Dull the boy's world is still filled\nwith fantasy…",
-      "tesseract": "Dull the boy's world ts still filled\nwith fantasy…"
+      "one": "Dull the boy's world is still filled\nwith fantasy…",
+      "two": "Dull the boy's world ts still filled\nwith fantasy…"
     },
     "answer": {
       "output": "Dull the boy's world is still filled\nwith fantasy…",
@@ -1939,8 +1939,8 @@
   },
   {
     "query": {
-      "lens": "But I shall tell more about Dull the boy.",
-      "tesseract": "But | shall tell more about Dull the boy."
+      "one": "But I shall tell more about Dull the boy.",
+      "two": "But | shall tell more about Dull the boy."
     },
     "answer": {
       "output": "But I shall tell more about Dull the boy.",
@@ -1951,8 +1951,8 @@
   },
   {
     "query": {
-      "lens": "Right, I haven't eaten any turkey then.",
-      "tesseract": "Right, | haven't eaten any turkey then."
+      "one": "Right, I haven't eaten any turkey then.",
+      "two": "Right, | haven't eaten any turkey then."
     },
     "answer": {
       "output": "Right, I haven't eaten any turkey then.",
@@ -1963,8 +1963,8 @@
   },
   {
     "query": {
-      "lens": "I had never eaten a turkey.",
-      "tesseract": "| had never eaten a turkey."
+      "one": "I had never eaten a turkey.",
+      "two": "| had never eaten a turkey."
     },
     "answer": {
       "output": "I had never eaten a turkey.",
@@ -1975,8 +1975,8 @@
   },
   {
     "query": {
-      "lens": "I had never even smelt one.",
-      "tesseract": "| had never even smelt one."
+      "one": "I had never even smelt one.",
+      "two": "| had never even smelt one."
     },
     "answer": {
       "output": "I had never even smelt one.",
@@ -1987,8 +1987,8 @@
   },
   {
     "query": {
-      "lens": "I was really, really disappointed.",
-      "tesseract": "| was really, really disappointed."
+      "one": "I was really, really disappointed.",
+      "two": "| was really, really disappointed."
     },
     "answer": {
       "output": "I was really, really disappointed.",
@@ -1999,8 +1999,8 @@
   },
   {
     "query": {
-      "lens": "I rubbed the turkey's thick chest.",
-      "tesseract": "| rubbed the turkey's thick chest."
+      "one": "I rubbed the turkey's thick chest.",
+      "two": "| rubbed the turkey's thick chest."
     },
     "answer": {
       "output": "I rubbed the turkey's thick chest.",
@@ -2011,8 +2011,8 @@
   },
   {
     "query": {
-      "lens": "I cried: the turkey's stomach won't stop!",
-      "tesseract": "| cried: the turkey’s stomach won't stop!"
+      "one": "I cried: the turkey's stomach won't stop!",
+      "two": "| cried: the turkey’s stomach won't stop!"
     },
     "answer": {
       "output": "I cried: the turkey's stomach won't stop!",
@@ -2023,8 +2023,8 @@
   },
   {
     "query": {
-      "lens": "Such a beautiful night!",
-      "tesseract": "such a beautiful night!"
+      "one": "Such a beautiful night!",
+      "two": "such a beautiful night!"
     },
     "answer": {
       "output": "such a beautiful night!",
@@ -2035,8 +2035,8 @@
   },
   {
     "query": {
-      "lens": "I had never tasted anything so strong.",
-      "tesseract": "| had never tasted anything so strong."
+      "one": "I had never tasted anything so strong.",
+      "two": "| had never tasted anything so strong."
     },
     "answer": {
       "output": "I had never tasted anything so strong.",
@@ -2047,8 +2047,8 @@
   },
   {
     "query": {
-      "lens": "I woke up late the next day.",
-      "tesseract": "| woke up late the next day."
+      "one": "I woke up late the next day.",
+      "two": "| woke up late the next day."
     },
     "answer": {
       "output": "I woke up late the next day.",
@@ -2059,8 +2059,8 @@
   },
   {
     "query": {
-      "lens": "I idly found diced turkey…",
-      "tesseract": "| idly found diced turkey…"
+      "one": "I idly found diced turkey…",
+      "two": "| idly found diced turkey…"
     },
     "answer": {
       "output": "I idly found diced turkey…",
@@ -2071,8 +2071,8 @@
   },
   {
     "query": {
-      "lens": "I boldly suggested eating out.",
-      "tesseract": "| boldly suggested eating out."
+      "one": "I boldly suggested eating out.",
+      "two": "| boldly suggested eating out."
     },
     "answer": {
       "output": "I boldly suggested eating out.",
@@ -2083,8 +2083,8 @@
   },
   {
     "query": {
-      "lens": "Mother said I was ungrateful…",
-      "tesseract": "Mother said | was ungrateful…"
+      "one": "Mother said I was ungrateful…",
+      "two": "Mother said | was ungrateful…"
     },
     "answer": {
       "output": "Mother said I was ungrateful…",
@@ -2095,8 +2095,8 @@
   },
   {
     "query": {
-      "lens": "I shouldn't have said anything about\nthe turkey's stomach.",
-      "tesseract": "| shouldn't have said anything about\nthe turkey's stomach."
+      "one": "I shouldn't have said anything about\nthe turkey's stomach.",
+      "two": "| shouldn't have said anything about\nthe turkey's stomach."
     },
     "answer": {
       "output": "I shouldn't have said anything about\nthe turkey's stomach.",
@@ -2107,8 +2107,8 @@
   },
   {
     "query": {
-      "lens": "Came Dragon Boat Festival,\nwhen I dug into the dumpling…",
-      "tesseract": "Came Dragon Boat Festival,\nwhen | dug into the dumpling…"
+      "one": "Came Dragon Boat Festival,\nwhen I dug into the dumpling…",
+      "two": "Came Dragon Boat Festival,\nwhen | dug into the dumpling…"
     },
     "answer": {
       "output": "Came Dragon Boat Festival,\nwhen I dug into the dumpling…",
@@ -2119,8 +2119,8 @@
   },
   {
     "query": {
-      "lens": "I lost it. I cried.",
-      "tesseract": "| lost it. | cried."
+      "one": "I lost it. I cried.",
+      "two": "| lost it. | cried."
     },
     "answer": {
       "output": "I lost it. I cried.",
@@ -2131,8 +2131,8 @@
   },
   {
     "query": {
-      "lens": "Later, I learned that…",
-      "tesseract": "Later, | learned that…"
+      "one": "Later, I learned that…",
+      "two": "Later, | learned that…"
     },
     "answer": {
       "output": "Later, I learned that…",
@@ -2143,8 +2143,8 @@
   },
   {
     "query": {
-      "lens": "I realized also, with turkey…",
-      "tesseract": "| realized also, with turkey…"
+      "one": "I realized also, with turkey…",
+      "two": "| realized also, with turkey…"
     },
     "answer": {
       "output": "I realized also, with turkey…",
@@ -2155,8 +2155,8 @@
   },
   {
     "query": {
-      "lens": "Afterwards,\nit is just be over and done with it\".",
-      "tesseract": "Afterwards,\nit is just“be over and done with it”."
+      "one": "Afterwards,\nit is just be over and done with it\".",
+      "two": "Afterwards,\nit is just“be over and done with it”."
     },
     "answer": {
       "output": "Afterwards,\nit is just be over and done with it\".",
@@ -2167,8 +2167,8 @@
   },
   {
     "query": {
-      "lens": "I am no philosopher.",
-      "tesseract": "| am no philosopher."
+      "one": "I am no philosopher.",
+      "two": "| am no philosopher."
     },
     "answer": {
       "output": "I am no philosopher.",
@@ -2179,8 +2179,8 @@
   },
   {
     "query": {
-      "lens": "I could not come up with any profundity.",
-      "tesseract": "| could not come up with any profundity."
+      "one": "I could not come up with any profundity.",
+      "two": "| could not come up with any profundity."
     },
     "answer": {
       "output": "I could not come up with any profundity.",
@@ -2191,8 +2191,8 @@
   },
   {
     "query": {
-      "lens": "But, such thoughts…",
-      "tesseract": "But, such thougNts…"
+      "one": "But, such thoughts…",
+      "two": "But, such thougNts…"
     },
     "answer": {
       "output": "But, such thoughts…",
@@ -2203,8 +2203,8 @@
   },
   {
     "query": {
-      "lens": "After I grew up…",
-      "tesseract": "After | grew up…"
+      "one": "After I grew up…",
+      "two": "After | grew up…"
     },
     "answer": {
       "output": "After I grew up…",
@@ -2215,8 +2215,8 @@
   },
   {
     "query": {
-      "lens": "It was at my mother's cremation.",
-      "tesseract": "lt was at my mother's cremation."
+      "one": "It was at my mother's cremation.",
+      "two": "lt was at my mother's cremation."
     },
     "answer": {
       "output": "It was at my mother's cremation.",
@@ -2227,8 +2227,8 @@
   },
   {
     "query": {
-      "lens": "That day, I was looking at\nthe smoke rising up.",
-      "tesseract": "That day, | was looking at\nthe smoke rising up."
+      "one": "That day, I was looking at\nthe smoke rising up.",
+      "two": "That day, | was looking at\nthe smoke rising up."
     },
     "answer": {
       "output": "That day, I was looking at\nthe smoke rising up.",
@@ -2239,8 +2239,8 @@
   },
   {
     "query": {
-      "lens": "Suddenly, the smell of\nthe turkey returned.",
-      "tesseract": "suddenly, the smell of\nthe turkey returned."
+      "one": "Suddenly, the smell of\nthe turkey returned.",
+      "two": "suddenly, the smell of\nthe turkey returned."
     },
     "answer": {
       "output": "suddenly, the smell of\nthe turkey returned.",
@@ -2251,8 +2251,8 @@
   },
   {
     "query": {
-      "lens": "I regretted I made mother\nthrew the turkey away.",
-      "tesseract": "| regretted | made mother\nthrew the turkey away."
+      "one": "I regretted I made mother\nthrew the turkey away.",
+      "two": "| regretted | made mother\nthrew the turkey away."
     },
     "answer": {
       "output": "I regretted I made mother\nthrew the turkey away.",
@@ -2263,8 +2263,8 @@
   },
   {
     "query": {
-      "lens": "'Special Report\"",
-      "tesseract": "‘Special Report\""
+      "one": "'Special Report\"",
+      "two": "‘Special Report\""
     },
     "answer": {
       "output": "'Special Report\"",
@@ -2275,8 +2275,8 @@
   },
   {
     "query": {
-      "lens": "Response from\nall sides has been\nenthusiastic.",
-      "tesseract": "Response from\nall sides has been enthusiastic."
+      "one": "Response from\nall sides has been\nenthusiastic.",
+      "two": "Response from\nall sides has been enthusiastic."
     },
     "answer": {
       "output": "Response from\nall sides has been enthusiastic.",
@@ -2287,8 +2287,8 @@
   },
   {
     "query": {
-      "lens": "Is proposing Mahjong for official game.",
-      "tesseract": "ls proposing Mahjong for official game."
+      "one": "Is proposing Mahjong for official game.",
+      "two": "ls proposing Mahjong for official game."
     },
     "answer": {
       "output": "Is proposing Mahjong for official game.",
@@ -2299,8 +2299,8 @@
   },
   {
     "query": {
-      "lens": "have vowed…",
-      "tesseract": "have vowea…"
+      "one": "have vowed…",
+      "two": "have vowea…"
     },
     "answer": {
       "output": "have vowed…",
@@ -2311,8 +2311,8 @@
   },
   {
     "query": {
-      "lens": "To campaign for“Tart Throwing”.",
-      "tesseract": "To campaign for“ Tart Throwing”."
+      "one": "To campaign for“Tart Throwing”.",
+      "two": "To campaign for“ Tart Throwing”."
     },
     "answer": {
       "output": "To campaign for“ Tart Throwing”.",
@@ -2323,8 +2323,8 @@
   },
   {
     "query": {
-      "lens": "“Duck Hanging”\nwould make an ideal addition.",
-      "tesseract": "“Duck Hanging”\nwould make an ideal adaition."
+      "one": "“Duck Hanging”\nwould make an ideal addition.",
+      "two": "“Duck Hanging”\nwould make an ideal adaition."
     },
     "answer": {
       "output": "“Duck Hanging” would make an ideal addition.",
@@ -2335,8 +2335,8 @@
   },
   {
     "query": {
-      "lens": "More\ninteresting,\nCIC Insurance is joining force with…",
-      "tesseract": "More interesting,\nCIC Insurance is joining force with…"
+      "one": "More\ninteresting,\nCIC Insurance is joining force with…",
+      "two": "More interesting,\nCIC Insurance is joining force with…"
     },
     "answer": {
       "output": "More interesting,\nCIC Insurance is joining force with…",
@@ -2347,8 +2347,8 @@
   },
   {
     "query": {
-      "lens": "In secondary school,\nI stopped practicing the 12 hands.",
-      "tesseract": "In secondary school,\n| stopped practicing the 12 hands."
+      "one": "In secondary school,\nI stopped practicing the 12 hands.",
+      "two": "In secondary school,\n| stopped practicing the 12 hands."
     },
     "answer": {
       "output": "In secondary school,\nI stopped practicing the 12 hands.",
@@ -2359,8 +2359,8 @@
   },
   {
     "query": {
-      "lens": "Sometimes, when I went out with mother…",
-      "tesseract": "Sometimes, when | went out with mother…"
+      "one": "Sometimes, when I went out with mother…",
+      "two": "Sometimes, when | went out with mother…"
     },
     "answer": {
       "output": "Sometimes, when I went out with mother…",
@@ -2371,8 +2371,8 @@
   },
   {
     "query": {
-      "lens": "Each time I saw him.",
-      "tesseract": "Each time | saw him."
+      "one": "Each time I saw him.",
+      "two": "Each time | saw him."
     },
     "answer": {
       "output": "Each time I saw him.",
@@ -2383,8 +2383,8 @@
   },
   {
     "query": {
-      "lens": "For environmental reason…",
-      "tesseract": "For environmental! reason…"
+      "one": "For environmental reason…",
+      "two": "For environmental! reason…"
     },
     "answer": {
       "output": "For environmental reason…",
@@ -2395,8 +2395,8 @@
   },
   {
     "query": {
-      "lens": "As I was the one who could crawl…",
-      "tesseract": "As | was the one who could crawl…"
+      "one": "As I was the one who could crawl…",
+      "two": "As | was the one who could crawl…"
     },
     "answer": {
       "output": "As I was the one who could crawl…",
@@ -2407,8 +2407,8 @@
   },
   {
     "query": {
-      "lens": "My mates said I should take a look and\nmaybe get rich.",
-      "tesseract": "My mates said | should take a look and\nmaybe get rich."
+      "one": "My mates said I should take a look and\nmaybe get rich.",
+      "two": "My mates said | should take a look and\nmaybe get rich."
     },
     "answer": {
       "output": "My mates said I should take a look and\nmaybe get rich.",
@@ -2419,8 +2419,8 @@
   },
   {
     "query": {
-      "lens": "So I crawled along the dark and\nnarrow cave.",
-      "tesseract": "SO | crawled along the dark and\nnarrow cave."
+      "one": "So I crawled along the dark and\nnarrow cave.",
+      "two": "SO | crawled along the dark and\nnarrow cave."
     },
     "answer": {
       "output": "So I crawled along the dark and\nnarrow cave.",
@@ -2431,8 +2431,8 @@
   },
   {
     "query": {
-      "lens": "I opened the box…",
-      "tesseract": "| opened the box…"
+      "one": "I opened the box…",
+      "two": "| opened the box…"
     },
     "answer": {
       "output": "I opened the box…",
@@ -2443,8 +2443,8 @@
   },
   {
     "query": {
-      "lens": "“Eating 12lb white bread last night…\n”",
-      "tesseract": "\"Eating 172lb white bread last night… °"
+      "one": "“Eating 12lb white bread last night…\n”",
+      "two": "\"Eating 172lb white bread last night… °"
     },
     "answer": {
       "output": "“Eating 12lb white bread last night…\n”",
@@ -2455,8 +2455,8 @@
   },
   {
     "query": {
-      "lens": "“Excelled 6 sets of steps\nwhen I was young…”",
-      "tesseract": "“Excelled 6 sets of steps\nwhen | was young…”"
+      "one": "“Excelled 6 sets of steps\nwhen I was young…”",
+      "two": "“Excelled 6 sets of steps\nwhen | was young…”"
     },
     "answer": {
       "output": "“Excelled 6 sets of steps\nwhen I was young…”",
@@ -2467,8 +2467,8 @@
   },
   {
     "query": {
-      "lens": "“Brought up San San\nwhen I am old! Still…”",
-      "tesseract": "“Brought up San San\nwhen | am old! Still…”"
+      "one": "“Brought up San San\nwhen I am old! Still…”",
+      "two": "“Brought up San San\nwhen | am old! Still…”"
     },
     "answer": {
       "output": "“Brought up San San\nwhen I am old! Still…”",
@@ -2479,8 +2479,8 @@
   },
   {
     "query": {
-      "lens": "Bun in hand, I suddenly realized…",
-      "tesseract": "Bun in hand, | suddenly realized…"
+      "one": "Bun in hand, I suddenly realized…",
+      "two": "Bun in hand, | suddenly realized…"
     },
     "answer": {
       "output": "Bun in hand, I suddenly realized…",
@@ -2491,8 +2491,8 @@
   },
   {
     "query": {
-      "lens": "A no is a no.",
-      "tesseract": "Anoisano."
+      "one": "A no is a no.",
+      "two": "Anoisano."
     },
     "answer": {
       "output": "A no is a no.",
@@ -2503,8 +2503,8 @@
   },
   {
     "query": {
-      "lens": "Bun in hand, I suddenly thought…",
-      "tesseract": "Bun in hand, | suddenly thought…"
+      "one": "Bun in hand, I suddenly thought…",
+      "two": "Bun in hand, | suddenly thought…"
     },
     "answer": {
       "output": "Bun in hand, I suddenly thought…",
@@ -2515,8 +2515,8 @@
   },
   {
     "query": {
-      "lens": "What shall I be?",
-      "tesseract": "What shall | be?"
+      "one": "What shall I be?",
+      "two": "What shall | be?"
     },
     "answer": {
       "output": "What shall I be?",
@@ -2527,8 +2527,8 @@
   },
   {
     "query": {
-      "lens": "“I Have Grown Up”",
-      "tesseract": "“| Have Grown Up”"
+      "one": "“I Have Grown Up”",
+      "two": "“| Have Grown Up”"
     },
     "answer": {
       "output": "“I Have Grown Up”",
@@ -2539,8 +2539,8 @@
   },
   {
     "query": {
-      "lens": "Right, I am McDull the big guy.",
-      "tesseract": "Right, | am McDull the big guy."
+      "one": "Right, I am McDull the big guy.",
+      "two": "Right, | am McDull the big guy."
     },
     "answer": {
       "output": "Right, I am McDull the big guy.",
@@ -2551,8 +2551,8 @@
   },
   {
     "query": {
-      "lens": "I got bored one time and stared at it…",
-      "tesseract": "| got bored one time and stared at it…"
+      "one": "I got bored one time and stared at it…",
+      "two": "| got bored one time and stared at it…"
     },
     "answer": {
       "output": "I got bored one time and stared at it…",
@@ -2563,8 +2563,8 @@
   },
   {
     "query": {
-      "lens": "I have my calves.",
-      "tesseract": "| have my calves."
+      "one": "I have my calves.",
+      "two": "| have my calves."
     },
     "answer": {
       "output": "I have my calves.",
@@ -2575,8 +2575,8 @@
   },
   {
     "query": {
-      "lens": "I feel great.",
-      "tesseract": "| feel great."
+      "one": "I feel great.",
+      "two": "| feel great."
     },
     "answer": {
       "output": "I feel great.",
@@ -2587,8 +2587,8 @@
   },
   {
     "query": {
-      "lens": "If mother could see me like this…",
-      "tesseract": "lf mother could see me like this…"
+      "one": "If mother could see me like this…",
+      "two": "lf mother could see me like this…"
     },
     "answer": {
       "output": "If mother could see me like this…",
@@ -2599,8 +2599,8 @@
   },
   {
     "query": {
-      "lens": "She'd be happy.",
-      "tesseract": "she'd be happy."
+      "one": "She'd be happy.",
+      "two": "she'd be happy."
     },
     "answer": {
       "output": "she'd be happy.",
@@ -2611,8 +2611,8 @@
   },
   {
     "query": {
-      "lens": "She published a cookbook.",
-      "tesseract": "she published a cookbook."
+      "one": "She published a cookbook.",
+      "two": "she published a cookbook."
     },
     "answer": {
       "output": "she published a cookbook.",
@@ -2623,8 +2623,8 @@
   },
   {
     "query": {
-      "lens": "If you want a delicious chicken…",
-      "tesseract": "lf you want a delicious chicken…"
+      "one": "If you want a delicious chicken…",
+      "two": "lf you want a delicious chicken…"
     },
     "answer": {
       "output": "If you want a delicious chicken…",
@@ -2635,8 +2635,8 @@
   },
   {
     "query": {
-      "lens": "What's a Special?",
-      "tesseract": "What's a Special’?"
+      "one": "What's a Special?",
+      "two": "What's a Special’?"
     },
     "answer": {
       "output": "What's a Special?",
@@ -2647,8 +2647,8 @@
   },
   {
     "query": {
-      "lens": "Same as Regular.",
-      "tesseract": "same as Regular."
+      "one": "Same as Regular.",
+      "two": "same as Regular."
     },
     "answer": {
       "output": "same as Regular.",
@@ -2659,8 +2659,8 @@
   },
   {
     "query": {
-      "lens": "Sorry, Regular is gone.",
-      "tesseract": "sorry, Regular is gone."
+      "one": "Sorry, Regular is gone.",
+      "two": "sorry, Regular is gone."
     },
     "answer": {
       "output": "sorry, Regular is gone.",
@@ -2671,8 +2671,8 @@
   },
   {
     "query": {
-      "lens": "Same as Supper.",
-      "tesseract": "same as Supper."
+      "one": "Same as Supper.",
+      "two": "same as Supper."
     },
     "answer": {
       "output": "same as Supper.",
@@ -2683,8 +2683,8 @@
   },
   {
     "query": {
-      "lens": "This is too much!\nIs there anything we can eat here?",
-      "tesseract": "This is too much!\nls there anything we can eat here?"
+      "one": "This is too much!\nIs there anything we can eat here?",
+      "two": "This is too much!\nls there anything we can eat here?"
     },
     "answer": {
       "output": "This is too much!\nIs there anything we can eat here?",
@@ -2695,8 +2695,8 @@
   },
   {
     "query": {
-      "lens": "And what about the Regular?",
-      "tesseract": "And what about the Regular’?"
+      "one": "And what about the Regular?",
+      "two": "And what about the Regular’?"
     },
     "answer": {
       "output": "And what about the Regular?",
@@ -2707,8 +2707,8 @@
   },
   {
     "query": {
-      "lens": "Sorry, Lunch is gone.",
-      "tesseract": "sorry, Lunch is gone."
+      "one": "Sorry, Lunch is gone.",
+      "two": "sorry, Lunch is gone."
     },
     "answer": {
       "output": "sorry, Lunch is gone.",
@@ -2719,8 +2719,8 @@
   },
   {
     "query": {
-      "lens": "I'm not having supper\nunder board\ndaylight!",
-      "tesseract": "I'm not having supper\nunder board daylight!"
+      "one": "I'm not having supper\nunder board\ndaylight!",
+      "two": "I'm not having supper\nunder board daylight!"
     },
     "answer": {
       "output": "I'm not having supper\nunder board daylight!",
@@ -2731,8 +2731,8 @@
   },
   {
     "query": {
-      "lens": "- Fai!\n- Present!",
-      "tesseract": "- Fai!{\\i1}-{\\i0}Present!"
+      "one": "- Fai!\n- Present!",
+      "two": "- Fai!{\\i1}-{\\i0}Present!"
     },
     "answer": {
       "output": "- Fai!\n- Present!",
@@ -2743,8 +2743,8 @@
   },
   {
     "query": {
-      "lens": "- Darby!\n- Present!",
-      "tesseract": "- Darby!{\\i1}-{\\i0}Present!"
+      "one": "- Darby!\n- Present!",
+      "two": "- Darby!{\\i1}-{\\i0}Present!"
     },
     "answer": {
       "output": "- Darby!\n- Present!",
@@ -2755,8 +2755,8 @@
   },
   {
     "query": {
-      "lens": "- May!\n- Present!",
-      "tesseract": "- May!{\\i1}-{\\i0}Present!"
+      "one": "- May!\n- Present!",
+      "two": "- May!{\\i1}-{\\i0}Present!"
     },
     "answer": {
       "output": "- May!\n- Present!",
@@ -2767,8 +2767,8 @@
   },
   {
     "query": {
-      "lens": "- McMug!\n- Present!",
-      "tesseract": "- McMug!{\\i1}-{\\i0}Present!"
+      "one": "- McMug!\n- Present!",
+      "two": "- McMug!{\\i1}-{\\i0}Present!"
     },
     "answer": {
       "output": "- McMug!\n- Present!",
@@ -2779,8 +2779,8 @@
   },
   {
     "query": {
-      "lens": "- Yes…\n- Is that right?",
-      "tesseract": "- Yes…{\\i1}-{\\i0}Is that right?"
+      "one": "- Yes…\n- Is that right?",
+      "two": "- Yes…{\\i1}-{\\i0}Is that right?"
     },
     "answer": {
       "output": "- Yes…\n- Is that right?",
@@ -2791,8 +2791,8 @@
   },
   {
     "query": {
-      "lens": "- Goodnight, mother!\n- Goodnight!",
-      "tesseract": "- Goodnight, mother!{\\i1}-{\\i0}Goodnight!"
+      "one": "- Goodnight, mother!\n- Goodnight!",
+      "two": "- Goodnight, mother!{\\i1}-{\\i0}Goodnight!"
     },
     "answer": {
       "output": "- Goodnight, mother!\n- Goodnight!",

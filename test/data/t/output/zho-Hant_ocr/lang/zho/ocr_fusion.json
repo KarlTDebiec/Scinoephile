@@ -1,3000 +1,3000 @@
 [
   {
     "query": {
-      "lens": "檢查一下\n收到",
-      "paddle": "檢查一下 收到"
+      "one": "檢查一下\n收到",
+      "two": "檢查一下 收到"
     },
     "answer": {
-      "ronghe": "檢查一下　　收到",
-      "beizhu": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
+      "output": "檢查一下　　收到",
+      "note": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "袋子裡裝甚麼？總機",
-      "paddle": "袋子裡裝甚麼？ 總機"
+      "one": "袋子裡裝甚麼？總機",
+      "two": "袋子裡裝甚麼？ 總機"
     },
     "answer": {
-      "ronghe": "袋子裡裝甚麼？總機",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+      "output": "袋子裡裝甚麼？總機",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "打開來看看\n身份證號碼C532743",
-      "paddle": "打開來看看 身份證號碼C532743"
+      "one": "打開來看看\n身份證號碼C532743",
+      "two": "打開來看看 身份證號碼C532743"
     },
     "answer": {
-      "ronghe": "打開來看看　　身份證號碼C532743",
-      "beizhu": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
+      "output": "打開來看看　　身份證號碼C532743",
+      "note": "將了 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "也是我們雙方共同的責任",
-      "paddle": "也是我們雙共同的責任"
+      "one": "也是我們雙方共同的責任",
+      "two": "也是我們雙共同的責任"
     },
     "answer": {
-      "ronghe": "也是我們雙方共同的責任",
-      "beizhu": "採用 Google Lens 中較可靠的「雙方」修正 PaddleOCR 中誤識別為「雙」的結果。"
+      "output": "也是我們雙方共同的責任",
+      "note": "採用 Google Lens 中較可靠的「雙方」修正 PaddleOCR 中誤識別為「雙」的結果。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不要逼我自己動手",
-      "paddle": "不要逼我自動手"
+      "one": "不要逼我自己動手",
+      "two": "不要逼我自動手"
     },
     "answer": {
-      "ronghe": "不要逼我自己動手",
-      "beizhu": "採用 Google Lens 中的「自己」，修正了 PaddleOCR 中誤識為「自動」的字詞。"
+      "output": "不要逼我自己動手",
+      "note": "採用 Google Lens 中的「自己」，修正了 PaddleOCR 中誤識為「自動」的字詞。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "人家有靠山，拿牌照做生意的！",
-      "paddle": "人家有靠山，拿牌照做意的！"
+      "one": "人家有靠山，拿牌照做生意的！",
+      "two": "人家有靠山，拿牌照做意的！"
     },
     "answer": {
-      "ronghe": "人家有靠山，拿牌照做生意的！",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「生」字；保留了 Google Lens 中的標點符號。"
+      "output": "人家有靠山，拿牌照做生意的！",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「生」字；保留了 Google Lens 中的標點符號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "戀一生\n差一些\n不可一起",
-      "paddle": "戀一生 差一些 不可一起"
+      "one": "戀一生\n差一些\n不可一起",
+      "two": "戀一生 差一些 不可一起"
     },
     "answer": {
-      "ronghe": "戀一生　　差一些　　不可一起",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "戀一生　　差一些　　不可一起",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "祇一心\n等一天\n日月如飛\n卻等不到你",
-      "paddle": "只一心 等一天 如飛 卻等不到你"
+      "one": "祇一心\n等一天\n日月如飛\n卻等不到你",
+      "two": "只一心 等一天 如飛 卻等不到你"
     },
     "answer": {
-      "ronghe": "祇一心　　等一天　　日月如飛　　卻等不到你",
-      "beizhu": "採用 Google Lens 識別出的漢字「祇」「日月如飛」，並保留其換行所對應的段落間隔；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+      "output": "祇一心　　等一天　　日月如飛　　卻等不到你",
+      "note": "採用 Google Lens 識別出的漢字「祇」「日月如飛」，並保留其換行所對應的段落間隔；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "願忘記\n又想起你",
-      "paddle": "願忘記 又想起你"
+      "one": "願忘記\n又想起你",
+      "two": "願忘記 又想起你"
     },
     "answer": {
-      "ronghe": "願忘記　　又想起你",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "願忘記　　又想起你",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "紅裙\n紅絲巾",
-      "paddle": "紅裙 紅絲巾"
+      "one": "紅裙\n紅絲巾",
+      "two": "紅裙 紅絲巾"
     },
     "answer": {
-      "ronghe": "紅裙　　紅絲巾",
-      "beizhu": "將 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
+      "output": "紅裙　　紅絲巾",
+      "note": "將 Google Lens 中顯示為換行符和 PaddleOCR 中顯示為空格的間隙替換為兩個表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "警察知道你兒子在哪兒嗎？",
-      "paddle": "警察知道你兒子在哪兒吗？"
+      "one": "警察知道你兒子在哪兒嗎？",
+      "two": "警察知道你兒子在哪兒吗？"
     },
     "answer": {
-      "ronghe": "警察知道你兒子在哪兒嗎？",
-      "beizhu": "採用 Google Lens 中較可靠的漢字「嗎」；保留句末問號。"
+      "output": "警察知道你兒子在哪兒嗎？",
+      "note": "採用 Google Lens 中較可靠的漢字「嗎」；保留句末問號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "打電話\n給警務處處長！",
-      "paddle": "打電話給警務處處長！"
+      "one": "打電話\n給警務處處長！",
+      "two": "打電話給警務處處長！"
     },
     "answer": {
-      "ronghe": "打電話給警務處處長！",
-      "beizhu": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+      "output": "打電話給警務處處長！",
+      "note": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "人家的兒子在哪兒，你應問當事人",
-      "paddle": "家的兒在哪兒，你應問當事"
+      "one": "人家的兒子在哪兒，你應問當事人",
+      "two": "家的兒在哪兒，你應問當事"
     },
     "answer": {
-      "ronghe": "人家的兒子在哪兒，你應問當事人",
-      "beizhu": "採用了 Google Lens 中較完整且較可靠的漢字識別結果，補回了 PaddleOCR 中缺失的「人」、「子」和「人」；其餘標點與格式未作特別更動。"
+      "output": "人家的兒子在哪兒，你應問當事人",
+      "note": "採用了 Google Lens 中較完整且較可靠的漢字識別結果，補回了 PaddleOCR 中缺失的「人」、「子」和「人」；其餘標點與格式未作特別更動。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "何先生，如果有人威脅你，你說一句",
-      "paddle": "何先生，如果有威脅你，你說一句"
+      "one": "何先生，如果有人威脅你，你說一句",
+      "two": "何先生，如果有威脅你，你說一句"
     },
     "answer": {
-      "ronghe": "何先生，如果有人威脅你，你說一句",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「人」字。"
+      "output": "何先生，如果有人威脅你，你說一句",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「人」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "公幹？旅遊？",
-      "paddle": "公幹？旅游？"
+      "one": "公幹？旅遊？",
+      "two": "公幹？旅游？"
     },
     "answer": {
-      "ronghe": "公幹？旅遊？",
-      "beizhu": "採用了 Google Lens 中較可靠的「旅遊」；保留了兩者一致的問號標點。"
+      "output": "公幹？旅遊？",
+      "note": "採用了 Google Lens 中較可靠的「旅遊」；保留了兩者一致的問號標點。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "明晚八時，風滿樓",
-      "paddle": "明晚時，風滿樓"
+      "one": "明晚八時，風滿樓",
+      "two": "明晚時，風滿樓"
     },
     "answer": {
-      "ronghe": "明晚八時，風滿樓",
-      "beizhu": "採用了 Google Lens 中正確識別的「八」與逗號，補正了 PaddleOCR 遺漏的字元。"
+      "output": "明晚八時，風滿樓",
+      "note": "採用了 Google Lens 中正確識別的「八」與逗號，補正了 PaddleOCR 遺漏的字元。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "別他媽要我等你！",
-      "paddle": "别他媽要我等你！"
+      "one": "別他媽要我等你！",
+      "two": "别他媽要我等你！"
     },
     "answer": {
-      "ronghe": "別他媽要我等你！",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字「別」，修正了 PaddleOCR 中的「别」；其餘標點與內容一致。"
+      "output": "別他媽要我等你！",
+      "note": "採用了 Google Lens 中較可靠的漢字「別」，修正了 PaddleOCR 中的「别」；其餘標點與內容一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "拿著\n甚麼？",
-      "paddle": "拿著 甚麼？"
+      "one": "拿著\n甚麼？",
+      "two": "拿著 甚麼？"
     },
     "answer": {
-      "ronghe": "拿著　　甚麼？",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "拿著　　甚麼？",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "方老闆",
-      "paddle": "老闆"
+      "one": "方老闆",
+      "two": "老闆"
     },
     "answer": {
-      "ronghe": "方老闆",
-      "beizhu": "採用了 Google Lens 中存在而 PaddleOCR 中缺失的「方」；保留了兩者共同的「老闆」。"
+      "output": "方老闆",
+      "note": "採用了 Google Lens 中存在而 PaddleOCR 中缺失的「方」；保留了兩者共同的「老闆」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "這位就是接手「易發」舖位的張大寶",
-      "paddle": "這位就是接手 易發」舖位的張大寶"
+      "one": "這位就是接手「易發」舖位的張大寶",
+      "two": "這位就是接手 易發」舖位的張大寶"
     },
     "answer": {
-      "ronghe": "這位就是接手「易發」舖位的張大寶",
-      "beizhu": "採用了 Google Lens 中更可靠的引號「」與詞語「易發」；省略了 PaddleOCR 中多餘的空格。"
+      "output": "這位就是接手「易發」舖位的張大寶",
+      "note": "採用了 Google Lens 中更可靠的引號「」與詞語「易發」；省略了 PaddleOCR 中多餘的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "張總！",
-      "paddle": "張總"
+      "one": "張總！",
+      "two": "張總"
     },
     "answer": {
-      "ronghe": "張總！",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
+      "output": "張總！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "大家先喝一杯",
-      "paddle": "家先喝杯"
+      "one": "大家先喝一杯",
+      "two": "家先喝杯"
     },
     "answer": {
-      "ronghe": "大家先喝一杯",
-      "beizhu": "採用 Google Lens 的漢字結果，補回了 PaddleOCR 中缺失的「大」和「一」。"
+      "output": "大家先喝一杯",
+      "note": "採用 Google Lens 的漢字結果，補回了 PaddleOCR 中缺失的「大」和「一」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "乾呀！",
-      "paddle": "乾呀"
+      "one": "乾呀！",
+      "two": "乾呀"
     },
     "answer": {
-      "ronghe": "乾呀！",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
+      "output": "乾呀！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "乾，乾",
-      "paddle": "乾， 乾"
+      "one": "乾，乾",
+      "two": "乾， 乾"
     },
     "answer": {
-      "ronghe": "乾，乾",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格；採用了 Google Lens 中更可靠的標點符號。"
+      "output": "乾，乾",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格；採用了 Google Lens 中更可靠的標點符號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "但是一見如故，相逢恨晚！",
-      "paddle": "但是見如故，相逢恨晚！"
+      "one": "但是一見如故，相逢恨晚！",
+      "two": "但是見如故，相逢恨晚！"
     },
     "answer": {
-      "ronghe": "但是一見如故，相逢恨晚！",
-      "beizhu": "補入了 Google Lens 中存在但 PaddleOCR 中缺失的「一」字。"
+      "output": "但是一見如故，相逢恨晚！",
+      "note": "補入了 Google Lens 中存在但 PaddleOCR 中缺失的「一」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "陳科說三十便三十",
-      "paddle": "陳科說三十便三"
+      "one": "陳科說三十便三十",
+      "two": "陳科說三十便三"
     },
     "answer": {
-      "ronghe": "陳科說三十便三十",
-      "beizhu": "採用了 Google Lens 中的「十」，修正了 PaddleOCR 末尾少識別的字。"
+      "output": "陳科說三十便三十",
+      "note": "採用了 Google Lens 中的「十」，修正了 PaddleOCR 末尾少識別的字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "明天上來工商局拿批文",
-      "paddle": "明天上來工商局拿批"
+      "one": "明天上來工商局拿批文",
+      "two": "明天上來工商局拿批"
     },
     "answer": {
-      "ronghe": "明天上來工商局拿批文",
-      "beizhu": "採用了 Google Lens 中存在但 PaddleOCR 中不存在的「文」，以補全詞語。"
+      "output": "明天上來工商局拿批文",
+      "note": "採用了 Google Lens 中存在但 PaddleOCR 中不存在的「文」，以補全詞語。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我才不吃肥膩的",
-      "paddle": "我才不吃肥腻的"
+      "one": "我才不吃肥膩的",
+      "two": "我才不吃肥腻的"
     },
     "answer": {
-      "ronghe": "我才不吃肥膩的",
-      "beizhu": "採用 Google Lens 中較可靠的漢字「膩」，修正了 PaddleOCR 中的簡化字「腻」。"
+      "output": "我才不吃肥膩的",
+      "note": "採用 Google Lens 中較可靠的漢字「膩」，修正了 PaddleOCR 中的簡化字「腻」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不要吐\n飯是冷的！",
-      "paddle": "不要吐 飯是冷的！"
+      "one": "不要吐\n飯是冷的！",
+      "two": "不要吐 飯是冷的！"
     },
     "answer": {
-      "ronghe": "不要吐　　飯是冷的！",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "不要吐　　飯是冷的！",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不好意思，飯是冷的嗎？我要茶！",
-      "paddle": "不好意思，飯是冷的吗？ 我要茶！"
+      "one": "不好意思，飯是冷的嗎？我要茶！",
+      "two": "不好意思，飯是冷的吗？ 我要茶！"
     },
     "answer": {
-      "ronghe": "不好意思，飯是冷的嗎？我要茶！",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字「嗎」，並省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+      "output": "不好意思，飯是冷的嗎？我要茶！",
+      "note": "採用了 Google Lens 中較可靠的漢字「嗎」，並省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "快點\n小姐，麻煩你告訴我⋯",
-      "paddle": "快點 小姐，麻煩你告訴我"
+      "one": "快點\n小姐，麻煩你告訴我⋯",
+      "two": "快點 小姐，麻煩你告訴我"
     },
     "answer": {
-      "ronghe": "快點　　小姐，麻煩你告訴我⋯",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "快點　　小姐，麻煩你告訴我⋯",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格；包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我要茶！等我一下，我帶你去",
-      "paddle": "我要茶！ 等我一下，我帶你去"
+      "one": "我要茶！等我一下，我帶你去",
+      "two": "我要茶！ 等我一下，我帶你去"
     },
     "answer": {
-      "ronghe": "我要茶！等我一下，我帶你去",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+      "output": "我要茶！等我一下，我帶你去",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我征服了一座山",
-      "paddle": "我征服了一座"
+      "one": "我征服了一座山",
+      "two": "我征服了一座"
     },
     "answer": {
-      "ronghe": "我征服了一座山",
-      "beizhu": "採用了 Google Lens 中多出的「山」；PaddleOCR 可能漏識。"
+      "output": "我征服了一座山",
+      "note": "採用了 Google Lens 中多出的「山」；PaddleOCR 可能漏識。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "當然得再找一座更高、更難爬的山",
-      "paddle": "當然得再找一座更、更難爬的山"
+      "one": "當然得再找一座更高、更難爬的山",
+      "two": "當然得再找一座更、更難爬的山"
     },
     "answer": {
-      "ronghe": "當然得再找一座更高、更難爬的山",
-      "beizhu": "採用 Google Lens 中的「高」來修正 PaddleOCR 的漏字；其餘標點與文字保持一致。"
+      "output": "當然得再找一座更高、更難爬的山",
+      "note": "採用 Google Lens 中的「高」來修正 PaddleOCR 的漏字；其餘標點與文字保持一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "走最前的老鬼在香港有案底",
-      "paddle": "走最前的老鬼在港有案底"
+      "one": "走最前的老鬼在香港有案底",
+      "two": "走最前的老鬼在港有案底"
     },
     "answer": {
-      "ronghe": "走最前的老鬼在香港有案底",
-      "beizhu": "採用 Google Lens 中較可靠的漢字「香港」，修正了 PaddleOCR 誤識的「港」。"
+      "output": "走最前的老鬼在香港有案底",
+      "note": "採用 Google Lens 中較可靠的漢字「香港」，修正了 PaddleOCR 誤識的「港」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "走了！別喝了！走了！",
-      "paddle": "走了！别喝了！走了！"
+      "one": "走了！別喝了！走了！",
+      "two": "走了！别喝了！走了！"
     },
     "answer": {
-      "ronghe": "走了！別喝了！走了！",
-      "beizhu": "采用了 Google Lens 中更可靠的漢字「別」，其餘標點與內容一致。"
+      "output": "走了！別喝了！走了！",
+      "note": "采用了 Google Lens 中更可靠的漢字「別」，其餘標點與內容一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "潮哥！",
-      "paddle": "潮哥"
+      "one": "潮哥！",
+      "two": "潮哥"
     },
     "answer": {
-      "ronghe": "潮哥！",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
+      "output": "潮哥！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "坐，吃飯",
-      "paddle": "坐， 吃飯"
+      "one": "坐，吃飯",
+      "two": "坐， 吃飯"
     },
     "answer": {
-      "ronghe": "坐，吃飯",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+      "output": "坐，吃飯",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "反正就是見一個人",
-      "paddle": "反正就是見一個"
+      "one": "反正就是見一個人",
+      "two": "反正就是見一個"
     },
     "answer": {
-      "ronghe": "反正就是見一個人",
-      "beizhu": "採用 Google Lens 中完整的漢字結果「反正就是見一個人」，補全了 PaddleOCR 中遺漏的「人」。"
+      "output": "反正就是見一個人",
+      "note": "採用 Google Lens 中完整的漢字結果「反正就是見一個人」，補全了 PaddleOCR 中遺漏的「人」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "有人找你\n喂",
-      "paddle": "有人找你 喂"
+      "one": "有人找你\n喂",
+      "two": "有人找你 喂"
     },
     "answer": {
-      "ronghe": "有人找你　　喂",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "有人找你　　喂",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "你幹甚麼？這麼客氣，進來坐",
-      "paddle": "你干甚麼？這麼客氣，進來坐"
+      "one": "你幹甚麼？這麼客氣，進來坐",
+      "two": "你干甚麼？這麼客氣，進來坐"
     },
     "answer": {
-      "ronghe": "你幹甚麼？這麼客氣，進來坐",
-      "beizhu": "採用了 Google Lens 中識別較可靠的漢字「幹」；其餘內容一致。"
+      "output": "你幹甚麼？這麼客氣，進來坐",
+      "note": "採用了 Google Lens 中識別較可靠的漢字「幹」；其餘內容一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "這丫頭，一玩就忘形了！穿好拖鞋",
-      "paddle": "這丫頭 ，一玩就忘形了！穿好拖鞋"
+      "one": "這丫頭，一玩就忘形了！穿好拖鞋",
+      "two": "這丫頭 ，一玩就忘形了！穿好拖鞋"
     },
     "answer": {
-      "ronghe": "這丫頭，一玩就忘形了！穿好拖鞋",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+      "output": "這丫頭，一玩就忘形了！穿好拖鞋",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "快點！",
-      "paddle": "快點"
+      "one": "快點！",
+      "two": "快點"
     },
     "answer": {
-      "ronghe": "快點！",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的驚嘆號。"
+      "output": "快點！",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的驚嘆號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我待會打你屁股\n真乖",
-      "paddle": "我待會打你屁股 真乖"
+      "one": "我待會打你屁股\n真乖",
+      "two": "我待會打你屁股 真乖"
     },
     "answer": {
-      "ronghe": "我待會打你屁股　　真乖",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "我待會打你屁股　　真乖",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "「嫖賭飲蕩吹⋯",
-      "paddle": "「嫖賭飲蕩吹"
+      "one": "「嫖賭飲蕩吹⋯",
+      "two": "「嫖賭飲蕩吹"
     },
     "answer": {
-      "ronghe": "「嫖賭飲蕩吹⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "「嫖賭飲蕩吹⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我要洗腎，不戒不行",
-      "paddle": "我要洗肾，不戒不行"
+      "one": "我要洗腎，不戒不行",
+      "two": "我要洗肾，不戒不行"
     },
     "answer": {
-      "ronghe": "我要洗腎，不戒不行",
-      "beizhu": "采用了 Google Lens 中更可靠的漢字「腎」；保留了 Google Lens 中的逗號。"
+      "output": "我要洗腎，不戒不行",
+      "note": "采用了 Google Lens 中更可靠的漢字「腎」；保留了 Google Lens 中的逗號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "最近在幹甚麼？",
-      "paddle": "最近在干甚麼？"
+      "one": "最近在幹甚麼？",
+      "two": "最近在干甚麼？"
     },
     "answer": {
-      "ronghe": "最近在幹甚麼？",
-      "beizhu": "採用了 Google Lens 中的「幹」而非 PaddleOCR 中的「干」，因為 Google Lens 在漢字識別方面更可靠。"
+      "output": "最近在幹甚麼？",
+      "note": "採用了 Google Lens 中的「幹」而非 PaddleOCR 中的「干」，因為 Google Lens 在漢字識別方面更可靠。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我可以幹甚麼？",
-      "paddle": "我可以干甚麼？"
+      "one": "我可以幹甚麼？",
+      "two": "我可以干甚麼？"
     },
     "answer": {
-      "ronghe": "我可以幹甚麼？",
-      "beizhu": "包括了 Google Lens 中更可靠的漢字「幹」；保留了句末問號。"
+      "output": "我可以幹甚麼？",
+      "note": "包括了 Google Lens 中更可靠的漢字「幹」；保留了句末問號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "以前幹地盤臨時工",
-      "paddle": "以前幹地盤臨時"
+      "one": "以前幹地盤臨時工",
+      "two": "以前幹地盤臨時"
     },
     "answer": {
-      "ronghe": "以前幹地盤臨時工",
-      "beizhu": "採用了 Google Lens 中完整的「工」；PaddleOCR 少識別了末尾一字。"
+      "output": "以前幹地盤臨時工",
+      "note": "採用了 Google Lens 中完整的「工」；PaddleOCR 少識別了末尾一字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "以後沒有人用傳呼機了",
-      "paddle": "以後沒有人傳呼機了"
+      "one": "以後沒有人用傳呼機了",
+      "two": "以後沒有人傳呼機了"
     },
     "answer": {
-      "ronghe": "以後沒有人用傳呼機了",
-      "beizhu": "補入了 Google Lens 中存在但 PaddleOCR 中缺失的「用」。"
+      "output": "以後沒有人用傳呼機了",
+      "note": "補入了 Google Lens 中存在但 PaddleOCR 中缺失的「用」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "盡幹些偷雞摸狗的勾當",
-      "paddle": "尽幹些偷摸狗的勾當"
+      "one": "盡幹些偷雞摸狗的勾當",
+      "two": "尽幹些偷摸狗的勾當"
     },
     "answer": {
-      "ronghe": "盡幹些偷雞摸狗的勾當",
-      "beizhu": "採用 Google Lens 中較可靠的漢字「盡」「雞」與完整片語「偷雞摸狗」；修正了 PaddleOCR 中漏識的字。"
+      "output": "盡幹些偷雞摸狗的勾當",
+      "note": "採用 Google Lens 中較可靠的漢字「盡」「雞」與完整片語「偷雞摸狗」；修正了 PaddleOCR 中漏識的字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "幹甚麼？",
-      "paddle": "干甚麼？"
+      "one": "幹甚麼？",
+      "two": "干甚麼？"
     },
     "answer": {
-      "ronghe": "幹甚麼？",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字「幹」，並保留兩者一致的問號。"
+      "output": "幹甚麼？",
+      "note": "採用了 Google Lens 中較可靠的漢字「幹」，並保留兩者一致的問號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "陳科的三十萬，你點算一下",
-      "paddle": "陳科的三萬，你點算一下"
+      "one": "陳科的三十萬，你點算一下",
+      "two": "陳科的三萬，你點算一下"
     },
     "answer": {
-      "ronghe": "陳科的三十萬，你點算一下",
-      "beizhu": "採用了 Google Lens 中較可靠的「三十萬」，修正了 PaddleOCR 中誤識別的「三萬」。"
+      "output": "陳科的三十萬，你點算一下",
+      "note": "採用了 Google Lens 中較可靠的「三十萬」，修正了 PaddleOCR 中誤識別的「三萬」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "新款的三十三吋新畫皇",
-      "paddle": "新款的三十三吋新画皇"
+      "one": "新款的三十三吋新畫皇",
+      "two": "新款的三十三吋新画皇"
     },
     "answer": {
-      "ronghe": "新款的三十三吋新畫皇",
-      "beizhu": "採用 Google Lens 中較可靠的漢字「畫」，修正了 PaddleOCR 中的「画」。"
+      "output": "新款的三十三吋新畫皇",
+      "note": "採用 Google Lens 中較可靠的漢字「畫」，修正了 PaddleOCR 中的「画」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "快點\n甚麼事？",
-      "paddle": "快點 甚麼事？"
+      "one": "快點\n甚麼事？",
+      "two": "快點 甚麼事？"
     },
     "answer": {
-      "ronghe": "快點　　甚麼事？",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "快點　　甚麼事？",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "貨物出事了？",
-      "paddle": "货物出事了？"
+      "one": "貨物出事了？",
+      "two": "货物出事了？"
     },
     "answer": {
-      "ronghe": "貨物出事了？",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字「貨」；保留兩者一致的問號。"
+      "output": "貨物出事了？",
+      "note": "採用了 Google Lens 中較可靠的漢字「貨」；保留兩者一致的問號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "喂，幹甚麼？",
-      "paddle": "喂，干甚麼？"
+      "one": "喂，幹甚麼？",
+      "two": "喂，干甚麼？"
     },
     "answer": {
-      "ronghe": "喂，幹甚麼？",
-      "beizhu": "採用了 Google Lens 中更可靠的漢字「幹」，其餘標點一致。"
+      "output": "喂，幹甚麼？",
+      "note": "採用了 Google Lens 中更可靠的漢字「幹」，其餘標點一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "賺不了錢！記得要跟緊我",
-      "paddle": "賺不了錢！ 記得要跟緊我"
+      "one": "賺不了錢！記得要跟緊我",
+      "two": "賺不了錢！ 記得要跟緊我"
     },
     "answer": {
-      "ronghe": "賺不了錢！記得要跟緊我",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+      "output": "賺不了錢！記得要跟緊我",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "跟卓子強、季正雄",
-      "paddle": "跟卓強、季正雄"
+      "one": "跟卓子強、季正雄",
+      "two": "跟卓強、季正雄"
     },
     "answer": {
-      "ronghe": "跟卓子強、季正雄",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字識別「子」；其餘標點與內容保持一致。"
+      "output": "跟卓子強、季正雄",
+      "note": "採用了 Google Lens 中較可靠的漢字識別「子」；其餘標點與內容保持一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "跟我走私多些電器",
-      "paddle": "跟我私多些電器"
+      "one": "跟我走私多些電器",
+      "two": "跟我私多些電器"
     },
     "answer": {
-      "ronghe": "跟我走私多些電器",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「走」字。"
+      "output": "跟我走私多些電器",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「走」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "英明！",
-      "paddle": "英明"
+      "one": "英明！",
+      "two": "英明"
     },
     "answer": {
-      "ronghe": "英明！",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的感叹号。"
+      "output": "英明！",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的感叹号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "潮哥，那⋯",
-      "paddle": "潮哥，那"
+      "one": "潮哥，那⋯",
+      "two": "潮哥，那"
     },
     "answer": {
-      "ronghe": "潮哥，那⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "潮哥，那⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "四大天王同台演出",
-      "paddle": "四天王同台演出"
+      "one": "四大天王同台演出",
+      "two": "四天王同台演出"
     },
     "answer": {
-      "ronghe": "四大天王同台演出",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「大」字。"
+      "output": "四大天王同台演出",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「大」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "四大天王破天荒第一次合唱",
-      "paddle": "四天王破天荒第次合唱"
+      "one": "四大天王破天荒第一次合唱",
+      "two": "四天王破天荒第次合唱"
     },
     "answer": {
-      "ronghe": "四大天王破天荒第一次合唱",
-      "beizhu": "採用 Google Lens 中較可靠的漢字識別，補回了 PaddleOCR 漏識的「大」與「一」；其餘內容維持一致。"
+      "output": "四大天王破天荒第一次合唱",
+      "note": "採用 Google Lens 中較可靠的漢字識別，補回了 PaddleOCR 漏識的「大」與「一」；其餘內容維持一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "卓先生，你怎麼才肯放過我丈夫？",
-      "paddle": "卓先，你怎麼才肯放過我丈夫？"
+      "one": "卓先生，你怎麼才肯放過我丈夫？",
+      "two": "卓先，你怎麼才肯放過我丈夫？"
     },
     "answer": {
-      "ronghe": "卓先生，你怎麼才肯放過我丈夫？",
-      "beizhu": "採用了 Google Lens 中更可靠的「卓先生」，修正了 PaddleOCR 誤識別為「卓先」。"
+      "output": "卓先生，你怎麼才肯放過我丈夫？",
+      "note": "採用了 Google Lens 中更可靠的「卓先生」，修正了 PaddleOCR 誤識別為「卓先」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "要不你開個價，我自己掏腰包⋯",
-      "paddle": "要不你開個價，我自己掏腰包"
+      "one": "要不你開個價，我自己掏腰包⋯",
+      "two": "要不你開個價，我自己掏腰包"
     },
     "answer": {
-      "ronghe": "要不你開個價，我自己掏腰包⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略號。"
+      "output": "要不你開個價，我自己掏腰包⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "搞甚麼都厲害！",
-      "paddle": "搞甚麼都害！"
+      "one": "搞甚麼都厲害！",
+      "two": "搞甚麼都害！"
     },
     "answer": {
-      "ronghe": "搞甚麼都厲害！",
-      "beizhu": "採用 Google Lens 中的「厲」字，修正了 PaddleOCR 中漏識的字；保留了感嘆號。"
+      "output": "搞甚麼都厲害！",
+      "note": "採用 Google Lens 中的「厲」字，修正了 PaddleOCR 中漏識的字；保留了感嘆號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不是很方便",
-      "paddle": "不是很便"
+      "one": "不是很方便",
+      "two": "不是很便"
     },
     "answer": {
-      "ronghe": "不是很方便",
-      "beizhu": "採用 Google Lens 中更完整且可靠的漢字識別結果，補全了 PaddleOCR 中缺失的「利」字。"
+      "output": "不是很方便",
+      "note": "採用 Google Lens 中更完整且可靠的漢字識別結果，補全了 PaddleOCR 中缺失的「利」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "走啊！",
-      "paddle": "走啊"
+      "one": "走啊！",
+      "two": "走啊"
     },
     "answer": {
-      "ronghe": "走啊！",
-      "beizhu": "採用了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
+      "output": "走啊！",
+      "note": "採用了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "找方老闆",
-      "paddle": "找老闆"
+      "one": "找方老闆",
+      "two": "找老闆"
     },
     "answer": {
-      "ronghe": "找方老闆",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「方」字。"
+      "output": "找方老闆",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的「方」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "好，好⋯",
-      "paddle": "好，好"
+      "one": "好，好⋯",
+      "two": "好，好"
     },
     "answer": {
-      "ronghe": "好，好⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "好，好⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "好，是⋯",
-      "paddle": "好，是"
+      "one": "好，是⋯",
+      "two": "好，是"
     },
     "answer": {
-      "ronghe": "好，是⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "好，是⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "在這耍大牌！",
-      "paddle": "在這要大牌！"
+      "one": "在這耍大牌！",
+      "two": "在這要大牌！"
     },
     "answer": {
-      "ronghe": "在這耍大牌！",
-      "beizhu": "採用 Google Lens 中的「耍」而非 PaddleOCR 的「要」；其餘標點一致。"
+      "output": "在這耍大牌！",
+      "note": "採用 Google Lens 中的「耍」而非 PaddleOCR 的「要」；其餘標點一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "龍科說，晚上再談",
-      "paddle": "龍科說，晩上再談"
+      "one": "龍科說，晚上再談",
+      "two": "龍科說，晩上再談"
     },
     "answer": {
-      "ronghe": "龍科說，晚上再談",
-      "beizhu": "採用 Google Lens 中的「晚上」修正了 PaddleOCR 中的「晩上」；保留了 Google Lens 中的逗號。"
+      "output": "龍科說，晚上再談",
+      "note": "採用 Google Lens 中的「晚上」修正了 PaddleOCR 中的「晩上」；保留了 Google Lens 中的逗號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "行⋯",
-      "paddle": "行"
+      "one": "行⋯",
+      "two": "行"
     },
     "answer": {
-      "ronghe": "行⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "行⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "是⋯",
-      "paddle": "是"
+      "one": "是⋯",
+      "two": "是"
     },
     "answer": {
-      "ronghe": "是⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "是⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "吃甚麼？吃甚麼？",
-      "paddle": "吃甚麼？吃甚麽？"
+      "one": "吃甚麼？吃甚麼？",
+      "two": "吃甚麼？吃甚麽？"
     },
     "answer": {
-      "ronghe": "吃甚麼？吃甚麼？",
-      "beizhu": "採用 Google Lens 中較可靠的漢字識別，將 PaddleOCR 中的「麽」更正為「麼」。"
+      "output": "吃甚麼？吃甚麼？",
+      "note": "採用 Google Lens 中較可靠的漢字識別，將 PaddleOCR 中的「麽」更正為「麼」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "這麼粗，你吃吧！",
-      "paddle": "這麼粗， ，你吃吧！"
+      "one": "這麼粗，你吃吧！",
+      "two": "這麼粗， ，你吃吧！"
     },
     "answer": {
-      "ronghe": "這麼粗，你吃吧！",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的多餘空格與標點。"
+      "output": "這麼粗，你吃吧！",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的多餘空格與標點。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "鮑參翅肚！",
-      "paddle": "鮑参翅肚！"
+      "one": "鮑參翅肚！",
+      "two": "鮑参翅肚！"
     },
     "answer": {
-      "ronghe": "鮑參翅肚！",
-      "beizhu": "採用 Google Lens 中較可靠的漢字識別，將 PaddleOCR 的「参」更正為「參」。"
+      "output": "鮑參翅肚！",
+      "note": "採用 Google Lens 中較可靠的漢字識別，將 PaddleOCR 的「参」更正為「參」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "好，KTV",
-      "paddle": "好 6 KTV"
+      "one": "好，KTV",
+      "two": "好 6 KTV"
     },
     "answer": {
-      "ronghe": "好，KTV",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中多识别的「6」；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+      "output": "好，KTV",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中多识别的「6」；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不行了⋯",
-      "paddle": "不了．"
+      "one": "不行了⋯",
+      "two": "不了．"
     },
     "answer": {
-      "ronghe": "不行了⋯",
-      "beizhu": "採用 Google Lens 中較可靠的漢字與標點；省略了 PaddleOCR 中不一致的字詞與標點。"
+      "output": "不行了⋯",
+      "note": "採用 Google Lens 中較可靠的漢字與標點；省略了 PaddleOCR 中不一致的字詞與標點。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "⋯對⋯",
-      "paddle": "對"
+      "one": "⋯對⋯",
+      "two": "對"
     },
     "answer": {
-      "ronghe": "⋯對⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "⋯對⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "來⋯",
-      "paddle": "來"
+      "one": "來⋯",
+      "two": "來"
     },
     "answer": {
-      "ronghe": "來⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "來⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "感謝⋯",
-      "paddle": "感謝"
+      "one": "感謝⋯",
+      "two": "感謝"
     },
     "answer": {
-      "ronghe": "感謝⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "感謝⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "以前跟他混的那些手下、銷贓那些呢？",
-      "paddle": "以前跟他混的那些手下、銷那些呢？"
+      "one": "以前跟他混的那些手下、銷贓那些呢？",
+      "two": "以前跟他混的那些手下、銷那些呢？"
     },
     "answer": {
-      "ronghe": "以前跟他混的那些手下、銷贓那些呢？",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「贓」字。"
+      "output": "以前跟他混的那些手下、銷贓那些呢？",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「贓」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "明天十二時，在廟街打把紫色傘",
-      "paddle": "明天十時，在廟街打把紫色傘"
+      "one": "明天十二時，在廟街打把紫色傘",
+      "two": "明天十時，在廟街打把紫色傘"
     },
     "answer": {
-      "ronghe": "明天十二時，在廟街打把紫色傘",
-      "beizhu": "採用了 Google Lens 中更可靠的漢字識別結果「十二時」，修正了 PaddleOCR 中誤識為「十時」的部分。"
+      "output": "明天十二時，在廟街打把紫色傘",
+      "note": "採用了 Google Lens 中更可靠的漢字識別結果「十二時」，修正了 PaddleOCR 中誤識為「十時」的部分。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "卓老闆，我好羨慕你，你所有新聞我都看過",
-      "paddle": "卓老闆，我好羡慕你，你所有新聞我都看過"
+      "one": "卓老闆，我好羨慕你，你所有新聞我都看過",
+      "two": "卓老闆，我好羡慕你，你所有新聞我都看過"
     },
     "answer": {
-      "ronghe": "卓老闆，我好羨慕你，你所有新聞我都看過",
-      "beizhu": "採用 Google Lens 中的「羨」以修正 PaddleOCR 的「羡」；其餘內容一致。"
+      "output": "卓老闆，我好羨慕你，你所有新聞我都看過",
+      "note": "採用 Google Lens 中的「羨」以修正 PaddleOCR 的「羡」；其餘內容一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "打劫前，最重要教他們甚麼？",
-      "paddle": "打劫前，最重要教他们甚麼？"
+      "one": "打劫前，最重要教他們甚麼？",
+      "two": "打劫前，最重要教他们甚麼？"
     },
     "answer": {
-      "ronghe": "打劫前，最重要教他們甚麼？",
-      "beizhu": "採用 Google Lens 中較可靠的漢字「他們」，修正了 PaddleOCR 中的「他们」。"
+      "output": "打劫前，最重要教他們甚麼？",
+      "note": "採用 Google Lens 中較可靠的漢字「他們」，修正了 PaddleOCR 中的「他们」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我有一次，帶大圈文、湖南鬼、潮州威",
-      "paddle": "我有一次，带大圈、湖南鬼、潮州威"
+      "one": "我有一次，帶大圈文、湖南鬼、潮州威",
+      "two": "我有一次，带大圈、湖南鬼、潮州威"
     },
     "answer": {
-      "ronghe": "我有一次，帶大圈文、湖南鬼、潮州威",
-      "beizhu": "採納了 Google Lens 中較可靠的漢字「帶大圈文」，並保留了 Google Lens 中的逗號與 PaddleOCR 中的頓號格式。"
+      "output": "我有一次，帶大圈文、湖南鬼、潮州威",
+      "note": "採納了 Google Lens 中較可靠的漢字「帶大圈文」，並保留了 Google Lens 中的逗號與 PaddleOCR 中的頓號格式。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "跟警察駁火的時候，「砰！砰！砰！」",
-      "paddle": "跟警察駁的時候，「砰！砰！砰！」"
+      "one": "跟警察駁火的時候，「砰！砰！砰！」",
+      "two": "跟警察駁的時候，「砰！砰！砰！」"
     },
     "answer": {
-      "ronghe": "跟警察駁火的時候，「砰！砰！砰！」",
-      "beizhu": "補上了 Google Lens 中存在而 PaddleOCR 誤漏的「火」字。"
+      "output": "跟警察駁火的時候，「砰！砰！砰！」",
+      "note": "補上了 Google Lens 中存在而 PaddleOCR 誤漏的「火」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "所以他欠我很多，知道嗎？",
-      "paddle": "所以他欠我很多，知道吗？"
+      "one": "所以他欠我很多，知道嗎？",
+      "two": "所以他欠我很多，知道吗？"
     },
     "answer": {
-      "ronghe": "所以他欠我很多，知道嗎？",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字「嗎」；保留了兩者一致的標點符號。"
+      "output": "所以他欠我很多，知道嗎？",
+      "note": "採用了 Google Lens 中較可靠的漢字「嗎」；保留了兩者一致的標點符號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "明天站在你倆面前",
-      "paddle": "明天站在你倆前"
+      "one": "明天站在你倆面前",
+      "two": "明天站在你倆前"
     },
     "answer": {
-      "ronghe": "明天站在你倆面前",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「面」字。"
+      "output": "明天站在你倆面前",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「面」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "卓老闆說，要找那兩位大哥聊一聊",
-      "paddle": "卓老闆說，要找那兩位大哥聊聊"
+      "one": "卓老闆說，要找那兩位大哥聊一聊",
+      "two": "卓老闆說，要找那兩位大哥聊聊"
     },
     "answer": {
-      "ronghe": "卓老闆說，要找那兩位大哥聊一聊",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「一」字，修正為「聊一聊」。"
+      "output": "卓老闆說，要找那兩位大哥聊一聊",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「一」字，修正為「聊一聊」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "可樂哥，接走她也通知一聲嘛",
-      "paddle": "可樂哥，接她也通知聲嘛"
+      "one": "可樂哥，接走她也通知一聲嘛",
+      "two": "可樂哥，接她也通知聲嘛"
     },
     "answer": {
-      "ronghe": "可樂哥，接走她也通知一聲嘛",
-      "beizhu": "採用 Google Lens 中較可靠的「走」和「一聲」；其餘標點與文字沿用 Lens。"
+      "output": "可樂哥，接走她也通知一聲嘛",
+      "note": "採用 Google Lens 中較可靠的「走」和「一聲」；其餘標點與文字沿用 Lens。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我剛好順路\n嚇壞我們了",
-      "paddle": "我剛好順路 嚇壞我們了"
+      "one": "我剛好順路\n嚇壞我們了",
+      "two": "我剛好順路 嚇壞我們了"
     },
     "answer": {
-      "ronghe": "我剛好順路　　嚇壞我們了",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "我剛好順路　　嚇壞我們了",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不好意思\n把小女孩嚇壞了",
-      "paddle": "不好意思 把小女孩嚇壞了"
+      "one": "不好意思\n把小女孩嚇壞了",
+      "two": "不好意思 把小女孩嚇壞了"
     },
     "answer": {
-      "ronghe": "不好意思　　把小女孩嚇壞了",
-      "beizhu": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "不好意思　　把小女孩嚇壞了",
+      "note": "将了 Google Lens 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "是，不好意思⋯",
-      "paddle": "是，不好意思"
+      "one": "是，不好意思⋯",
+      "two": "是，不好意思"
     },
     "answer": {
-      "ronghe": "是，不好意思⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "是，不好意思⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "還跑！",
-      "paddle": "還跑"
+      "one": "還跑！",
+      "two": "還跑"
     },
     "answer": {
-      "ronghe": "還跑！",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的感叹号。"
+      "output": "還跑！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的感叹号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "老首長朋友的兒子",
-      "paddle": "長朋友的兒"
+      "one": "老首長朋友的兒子",
+      "two": "長朋友的兒"
     },
     "answer": {
-      "ronghe": "老首長朋友的兒子",
-      "beizhu": "採用 Google Lens 中更完整且更可靠的漢字識別結果，補全了 PaddleOCR 遺漏的「老首」與「子」。"
+      "output": "老首長朋友的兒子",
+      "note": "採用 Google Lens 中更完整且更可靠的漢字識別結果，補全了 PaddleOCR 遺漏的「老首」與「子」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不要把自己看得這麼重",
-      "paddle": "不要把自看得這麼重"
+      "one": "不要把自己看得這麼重",
+      "two": "不要把自看得這麼重"
     },
     "answer": {
-      "ronghe": "不要把自己看得這麼重",
-      "beizhu": "採用 Google Lens 中較完整且合理的漢字識別結果「不要把自己看得這麼重」，修正了 PaddleOCR 中漏識的「己」。"
+      "output": "不要把自己看得這麼重",
+      "note": "採用 Google Lens 中較完整且合理的漢字識別結果「不要把自己看得這麼重」，修正了 PaddleOCR 中漏識的「己」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我們是好兄弟⋯",
-      "paddle": "我們是好兄弟・"
+      "one": "我們是好兄弟⋯",
+      "two": "我們是好兄弟・"
     },
     "answer": {
-      "ronghe": "我們是好兄弟⋯",
-      "beizhu": "採用了 Google Lens 中的省略號，因其在標點符號方面更可靠；省略了 PaddleOCR 中的異體標點。"
+      "output": "我們是好兄弟⋯",
+      "note": "採用了 Google Lens 中的省略號，因其在標點符號方面更可靠；省略了 PaddleOCR 中的異體標點。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "好兄弟⋯",
-      "paddle": "好兄弟"
+      "one": "好兄弟⋯",
+      "two": "好兄弟"
     },
     "answer": {
-      "ronghe": "好兄弟⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "好兄弟⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "幸好⋯",
-      "paddle": "幸好"
+      "one": "幸好⋯",
+      "two": "幸好"
     },
     "answer": {
-      "ronghe": "幸好⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "幸好⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "幸好廁所有⋯",
-      "paddle": "幸好厕所有．"
+      "one": "幸好廁所有⋯",
+      "two": "幸好厕所有．"
     },
     "answer": {
-      "ronghe": "幸好廁所有⋯",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字「廁」以及省略号「⋯」，並省略了 PaddleOCR 中較不可靠的「厕」與「．」。"
+      "output": "幸好廁所有⋯",
+      "note": "採用了 Google Lens 中較可靠的漢字「廁」以及省略号「⋯」，並省略了 PaddleOCR 中較不可靠的「厕」與「．」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "他說收了你一百萬，幫你找昆西",
-      "paddle": "他說收了你一百萬，幫你找昆"
+      "one": "他說收了你一百萬，幫你找昆西",
+      "two": "他說收了你一百萬，幫你找昆"
     },
     "answer": {
-      "ronghe": "他說收了你一百萬，幫你找昆西",
-      "beizhu": "採用 Google Lens 中完整的漢字「西」，補全了 PaddleOCR 中缺失的字。"
+      "output": "他說收了你一百萬，幫你找昆西",
+      "note": "採用 Google Lens 中完整的漢字「西」，補全了 PaddleOCR 中缺失的字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "道義啊⋯",
-      "paddle": "道義啊"
+      "one": "道義啊⋯",
+      "two": "道義啊"
     },
     "answer": {
-      "ronghe": "道義啊⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "道義啊⋯",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "叫完就滾吧！",
-      "paddle": "叫完就滚吧！"
+      "one": "叫完就滾吧！",
+      "two": "叫完就滚吧！"
     },
     "answer": {
-      "ronghe": "叫完就滾吧！",
-      "beizhu": "采用了 Google Lens 中更可靠的漢字「滾」，修正了 PaddleOCR 中的同音誤識「滚」。"
+      "output": "叫完就滾吧！",
+      "note": "采用了 Google Lens 中更可靠的漢字「滾」，修正了 PaddleOCR 中的同音誤識「滚」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "你襲警？別耍花樣",
-      "paddle": "你襲警？ 別要花樣"
+      "one": "你襲警？別耍花樣",
+      "two": "你襲警？ 別要花樣"
     },
     "answer": {
-      "ronghe": "你襲警？別耍花樣",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字「耍」而非 PaddleOCR 的「要」；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+      "output": "你襲警？別耍花樣",
+      "note": "採用了 Google Lens 中較可靠的漢字「耍」而非 PaddleOCR 的「要」；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "那就看有沒有人能拿到了",
-      "paddle": "那就看有没有人能拿到了"
+      "one": "那就看有沒有人能拿到了",
+      "two": "那就看有没有人能拿到了"
     },
     "answer": {
-      "ronghe": "那就看有沒有人能拿到了",
-      "beizhu": "採用 Google Lens 中的漢字「有沒有人」；PaddleOCR 的對應結果為「有没有人」。"
+      "output": "那就看有沒有人能拿到了",
+      "note": "採用 Google Lens 中的漢字「有沒有人」；PaddleOCR 的對應結果為「有没有人」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "投注都集中在大熱門「追風神駒」身上",
-      "paddle": "投注都集中在大熱「追風神駒」身上"
+      "one": "投注都集中在大熱門「追風神駒」身上",
+      "two": "投注都集中在大熱「追風神駒」身上"
     },
     "answer": {
-      "ronghe": "投注都集中在大熱門「追風神駒」身上",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「熱門」。"
+      "output": "投注都集中在大熱門「追風神駒」身上",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「熱門」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "最冷的是「好天氣」，是九十九倍",
-      "paddle": "最冷的是「好天氣 ，是九十九倍"
+      "one": "最冷的是「好天氣」，是九十九倍",
+      "two": "最冷的是「好天氣 ，是九十九倍"
     },
     "answer": {
-      "ronghe": "最冷的是「好天氣」，是九十九倍",
-      "beizhu": "採用 Google Lens 中較可靠的標點符號，補上了引號後的逗號，並省略了 PaddleOCR 中多餘的空格。"
+      "output": "最冷的是「好天氣」，是九十九倍",
+      "note": "採用 Google Lens 中較可靠的標點符號，補上了引號後的逗號，並省略了 PaddleOCR 中多餘的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "沒夾子了？",
-      "paddle": "沒爽子了？"
+      "one": "沒夾子了？",
+      "two": "沒爽子了？"
     },
     "answer": {
-      "ronghe": "沒夾子了？",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字識別結果「夾」；保留了兩者一致的問號。"
+      "output": "沒夾子了？",
+      "note": "採用了 Google Lens 中較可靠的漢字識別結果「夾」；保留了兩者一致的問號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "如果一注獨中的話",
-      "paddle": "如果注獨中的話"
+      "one": "如果一注獨中的話",
+      "two": "如果注獨中的話"
     },
     "answer": {
-      "ronghe": "如果一注獨中的話",
-      "beizhu": "補充了 Google Lens 中存在但 PaddleOCR 中遺漏的「一」字。"
+      "output": "如果一注獨中的話",
+      "note": "補充了 Google Lens 中存在但 PaddleOCR 中遺漏的「一」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "如果爆冷門的話",
-      "paddle": "如果爆冷的話"
+      "one": "如果爆冷門的話",
+      "two": "如果爆冷的話"
     },
     "answer": {
-      "ronghe": "如果爆冷門的話",
-      "beizhu": "包括了 Google Lens 中識別出的「門」字；PaddleOCR 中缺少該字。"
+      "output": "如果爆冷門的話",
+      "note": "包括了 Google Lens 中識別出的「門」字；PaddleOCR 中缺少該字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "也算我們兩兄弟一份",
-      "paddle": "也算我們兩兄弟份"
+      "one": "也算我們兩兄弟一份",
+      "two": "也算我們兩兄弟份"
     },
     "answer": {
-      "ronghe": "也算我們兩兄弟一份",
-      "beizhu": "補回了 Google Lens 中有而 PaddleOCR 中缺少的「一」字。"
+      "output": "也算我們兩兄弟一份",
+      "note": "補回了 Google Lens 中有而 PaddleOCR 中缺少的「一」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "規矩我懂，一定不會跟別人亂說話的",
-      "paddle": "规矩我懂，，一定不會跟別人亂說話的"
+      "one": "規矩我懂，一定不會跟別人亂說話的",
+      "two": "规矩我懂，，一定不會跟別人亂說話的"
     },
     "answer": {
-      "ronghe": "規矩我懂，一定不會跟別人亂說話的",
-      "beizhu": "採用 Google Lens 的漢字「規矩」而非 PaddleOCR 的簡體「规矩」；採用 Google Lens 的單個逗號而非 PaddleOCR 的雙逗號。"
+      "output": "規矩我懂，一定不會跟別人亂說話的",
+      "note": "採用 Google Lens 的漢字「規矩」而非 PaddleOCR 的簡體「规矩」；採用 Google Lens 的單個逗號而非 PaddleOCR 的雙逗號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "你們三大賊王合作⋯",
-      "paddle": "你們三大賊王合作"
+      "one": "你們三大賊王合作⋯",
+      "two": "你們三大賊王合作"
     },
     "answer": {
-      "ronghe": "你們三大賊王合作⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "你們三大賊王合作⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "知道這麼多幹嗎？",
-      "paddle": "知道這麼多干嗎？"
+      "one": "知道這麼多幹嗎？",
+      "two": "知道這麼多干嗎？"
     },
     "answer": {
-      "ronghe": "知道這麼多幹嗎？",
-      "beizhu": "包括了 Google Lens 中更可靠的漢字「幹」；省略了 PaddleOCR 中的「干」。"
+      "output": "知道這麼多幹嗎？",
+      "note": "包括了 Google Lens 中更可靠的漢字「幹」；省略了 PaddleOCR 中的「干」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "生活過得很好",
-      "paddle": "活過得很好"
+      "one": "生活過得很好",
+      "two": "活過得很好"
     },
     "answer": {
-      "ronghe": "生活過得很好",
-      "beizhu": "補充了 Google Lens 中存在但 PaddleOCR 中不存在的「生」字。"
+      "output": "生活過得很好",
+      "note": "補充了 Google Lens 中存在但 PaddleOCR 中不存在的「生」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "大家好兄弟",
-      "paddle": "家好兄弟"
+      "one": "大家好兄弟",
+      "two": "家好兄弟"
     },
     "answer": {
-      "ronghe": "大家好兄弟",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「大」字。"
+      "output": "大家好兄弟",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「大」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "老大明天一早就走",
-      "paddle": "明天早就"
+      "one": "老大明天一早就走",
+      "two": "明天早就"
     },
     "answer": {
-      "ronghe": "老大明天一早就走",
-      "beizhu": "採用 Google Lens 的漢字識別結果；PaddleOCR 的結果缺少前後文且不完整，因此未採用其內容。"
+      "output": "老大明天一早就走",
+      "note": "採用 Google Lens 的漢字識別結果；PaddleOCR 的結果缺少前後文且不完整，因此未採用其內容。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "卓老闆，一路上來辛苦了",
-      "paddle": "卓老闆， ，一路上來辛苦了"
+      "one": "卓老闆，一路上來辛苦了",
+      "two": "卓老闆， ，一路上來辛苦了"
     },
     "answer": {
-      "ronghe": "卓老闆，一路上來辛苦了",
-      "beizhu": "採用 Google Lens 中的標點與文字；省略了 PaddleOCR 中多餘的空格與重複標點。"
+      "output": "卓老闆，一路上來辛苦了",
+      "note": "採用 Google Lens 中的標點與文字；省略了 PaddleOCR 中多餘的空格與重複標點。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "黑星、手榴彈、AK",
-      "paddle": "黑星、榴彈、AK"
+      "one": "黑星、手榴彈、AK",
+      "two": "黑星、榴彈、AK"
     },
     "answer": {
-      "ronghe": "黑星、手榴彈、AK",
-      "beizhu": "採用 Google Lens 中更可靠的漢字「手」；其餘內容與 PaddleOCR 一致。"
+      "output": "黑星、手榴彈、AK",
+      "note": "採用 Google Lens 中更可靠的漢字「手」；其餘內容與 PaddleOCR 一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "零錢！",
-      "paddle": "零錢"
+      "one": "零錢！",
+      "two": "零錢"
     },
     "answer": {
-      "ronghe": "零錢！",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
+      "output": "零錢！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "是不是卓子強？",
-      "paddle": "是不是卓子强？"
+      "one": "是不是卓子強？",
+      "two": "是不是卓子强？"
     },
     "answer": {
-      "ronghe": "是不是卓子強？",
-      "beizhu": "採用了 Google Lens 中更可靠的漢字「強」，並保留兩者一致的問號。"
+      "output": "是不是卓子強？",
+      "note": "採用了 Google Lens 中更可靠的漢字「強」，並保留兩者一致的問號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "86年油麻地東盛錶行是我做的",
-      "paddle": "86年油麻地东盛錶行是我做的"
+      "one": "86年油麻地東盛錶行是我做的",
+      "two": "86年油麻地东盛錶行是我做的"
     },
     "answer": {
-      "ronghe": "86年油麻地東盛錶行是我做的",
-      "beizhu": "採用 Google Lens 中更可靠的漢字「東」來修正 PaddleOCR 中的「东」；其餘內容一致。"
+      "output": "86年油麻地東盛錶行是我做的",
+      "note": "採用 Google Lens 中更可靠的漢字「東」來修正 PaddleOCR 中的「东」；其餘內容一致。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我只好順水推舟⋯你等一會！別掛啊",
-      "paddle": "我只好顺水推舟．你等一會！別掛啊"
+      "one": "我只好順水推舟⋯你等一會！別掛啊",
+      "two": "我只好顺水推舟．你等一會！別掛啊"
     },
     "answer": {
-      "ronghe": "我只好順水推舟⋯你等一會！別掛啊",
-      "beizhu": "採用 Google Lens 識別的「順水推舟」與省略號「⋯」，修正了 PaddleOCR 中將「順」誤識為「顺」以及將省略號誤識為「．」。"
+      "output": "我只好順水推舟⋯你等一會！別掛啊",
+      "note": "採用 Google Lens 識別的「順水推舟」與省略號「⋯」，修正了 PaddleOCR 中將「順」誤識為「顺」以及將省略號誤識為「．」。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "卓老闆的性命",
-      "paddle": "卓闆的性命"
+      "one": "卓老闆的性命",
+      "two": "卓闆的性命"
     },
     "answer": {
-      "ronghe": "卓老闆的性命",
-      "beizhu": "採用了 Google Lens 中更可靠的漢字「老」；省略了 PaddleOCR 中缺失的該字。"
+      "output": "卓老闆的性命",
+      "note": "採用了 Google Lens 中更可靠的漢字「老」；省略了 PaddleOCR 中缺失的該字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不做生意就不做生意",
-      "paddle": "不做意就不做意"
+      "one": "不做生意就不做生意",
+      "two": "不做意就不做意"
     },
     "answer": {
-      "ronghe": "不做生意就不做生意",
-      "beizhu": "採用 Google Lens 中較可靠的漢字識別結果，補回了 PaddleOCR 中漏識的「生」字。"
+      "output": "不做生意就不做生意",
+      "note": "採用 Google Lens 中較可靠的漢字識別結果，補回了 PaddleOCR 中漏識的「生」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不是⋯",
-      "paddle": "不是"
+      "one": "不是⋯",
+      "two": "不是"
     },
     "answer": {
-      "ronghe": "不是⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "output": "不是⋯",
+      "note": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "迷了路，便吵了兩句",
-      "paddle": "迷了路，便吵了两句"
+      "one": "迷了路，便吵了兩句",
+      "two": "迷了路，便吵了两句"
     },
     "answer": {
-      "ronghe": "迷了路，便吵了兩句",
-      "beizhu": "採用了 Google Lens 中較可靠的漢字「兩句」，保留了標點「，」，未作其他更正。"
+      "output": "迷了路，便吵了兩句",
+      "note": "採用了 Google Lens 中較可靠的漢字「兩句」，保留了標點「，」，未作其他更正。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "證件呢？有",
-      "paddle": "證件呢？ 有"
+      "one": "證件呢？有",
+      "two": "證件呢？ 有"
     },
     "answer": {
-      "ronghe": "證件呢？有",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+      "output": "證件呢？有",
+      "note": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "但不知這裡是甚麼地方",
-      "paddle": "但不知這裡是甚麼地"
+      "one": "但不知這裡是甚麼地方",
+      "two": "但不知這裡是甚麼地"
     },
     "answer": {
-      "ronghe": "但不知這裡是甚麼地方",
-      "beizhu": "採用 Google Lens 中完整的「方」，修正了 PaddleOCR 中缺失的字。"
+      "output": "但不知這裡是甚麼地方",
+      "note": "採用 Google Lens 中完整的「方」，修正了 PaddleOCR 中缺失的字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我想到幹甚麼了！",
-      "paddle": "我想到干甚麼了！"
+      "one": "我想到幹甚麼了！",
+      "two": "我想到干甚麼了！"
     },
     "answer": {
-      "ronghe": "我想到幹甚麼了！",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「幹」；省略了 PaddleOCR 中將「幹」誤識為「干」的結果。"
+      "output": "我想到幹甚麼了！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的「幹」；省略了 PaddleOCR 中將「幹」誤識為「干」的結果。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "媽的！",
-      "paddle": "媽的"
+      "one": "媽的！",
+      "two": "媽的"
     },
     "answer": {
-      "ronghe": "媽的！",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
+      "output": "媽的！",
+      "note": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的驚嘆號。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "待會出去大街，坐的士",
-      "paddle": "待會出去大街，坐的"
+      "one": "待會出去大街，坐的士",
+      "two": "待會出去大街，坐的"
     },
     "answer": {
-      "ronghe": "待會出去大街，坐的士",
-      "beizhu": "採用 Google Lens 中完整的「士」，以修正 PaddleOCR 省略的字；保留 Google Lens 中的逗号。"
+      "output": "待會出去大街，坐的士",
+      "note": "採用 Google Lens 中完整的「士」，以修正 PaddleOCR 省略的字；保留 Google Lens 中的逗号。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "「大陸哩」？",
-      "paddle": "「大陸喱」？"
+      "one": "「大陸哩」？",
+      "two": "「大陸喱」？"
     },
     "answer": {
-      "ronghe": "「大陸哩」？",
-      "beizhu": "採用 Google Lens 中的「哩」，修正 PaddleOCR 中誤識別的「喱」；標點符號沿用兩者一致的「」與？。"
+      "output": "「大陸哩」？",
+      "note": "採用 Google Lens 中的「哩」，修正 PaddleOCR 中誤識別的「喱」；標點符號沿用兩者一致的「」與？。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "喂\n這邊請",
-      "paddle": "喂 這邊請"
+      "one": "喂\n這邊請",
+      "two": "喂 這邊請"
     },
     "answer": {
-      "ronghe": "喂　　這邊請",
-      "beizhu": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "output": "喂　　這邊請",
+      "note": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "快！小姐，你告訴我，我自己去找吧",
-      "paddle": "快！ 小姐，你告訴我，我自去找吧"
+      "one": "快！小姐，你告訴我，我自己去找吧",
+      "two": "快！ 小姐，你告訴我，我自去找吧"
     },
     "answer": {
-      "ronghe": "快！小姐，你告訴我，我自己去找吧",
-      "beizhu": "採用 Google Lens 中更可靠的「快！」與「自己」；省略了 PaddleOCR 中多出的空格。"
+      "output": "快！小姐，你告訴我，我自己去找吧",
+      "note": "採用 Google Lens 中更可靠的「快！」與「自己」；省略了 PaddleOCR 中多出的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我要茶！我帶你去，等我一下",
-      "paddle": "我要茶！ 我带你去，等我一下"
+      "one": "我要茶！我帶你去，等我一下",
+      "two": "我要茶！ 我带你去，等我一下"
     },
     "answer": {
-      "ronghe": "我要茶！我帶你去，等我一下",
-      "beizhu": "採用 Google Lens 中的「帶」而非 PaddleOCR 的「带」；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
+      "output": "我要茶！我帶你去，等我一下",
+      "note": "採用 Google Lens 中的「帶」而非 PaddleOCR 的「带」；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "看著你們開展非凡的新時代",
-      "paddle": "看著你們開展凡的新時代"
+      "one": "看著你們開展非凡的新時代",
+      "two": "看著你們開展凡的新時代"
     },
     "answer": {
-      "ronghe": "看著你們開展非凡的新時代",
-      "beizhu": "補入了 Google Lens 中存在但 PaddleOCR 中不存在的「非」字。"
+      "output": "看著你們開展非凡的新時代",
+      "note": "補入了 Google Lens 中存在但 PaddleOCR 中不存在的「非」字。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "袋子裡裝甚麼？\n總機",
-      "paddle": "袋子裡裝甚麼？ 總機"
+      "one": "袋子裡裝甚麼？\n總機",
+      "two": "袋子裡裝甚麼？ 總機"
     },
     "answer": {
-      "ronghe": "袋子裡裝甚麼？總機",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "袋子裡裝甚麼？總機",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "尾數一，\n季正雄",
-      "paddle": "尾數一，季正雄"
+      "one": "尾數一，\n季正雄",
+      "two": "尾數一，季正雄"
     },
     "answer": {
-      "ronghe": "尾數一，季正雄",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "尾數一，季正雄",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "確保\n《聯合聲明》",
-      "paddle": "確保《聯合聲明》"
+      "one": "確保\n《聯合聲明》",
+      "two": "確保《聯合聲明》"
     },
     "answer": {
-      "ronghe": "確保《聯合聲明》",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "確保《聯合聲明》",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "真是威風！\n歡哥！",
-      "paddle": "真是威風！歡哥！"
+      "one": "真是威風！\n歡哥！",
+      "two": "真是威風！歡哥！"
     },
     "answer": {
-      "ronghe": "真是威風！歡哥！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "真是威風！歡哥！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "你看！\n到處都是血！",
-      "paddle": "你看！到處都是血！"
+      "one": "你看！\n到處都是血！",
+      "two": "你看！到處都是血！"
     },
     "answer": {
-      "ronghe": "你看！到處都是血！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "你看！到處都是血！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "甚麼\n「易發」？",
-      "paddle": "甚麼「易發」？"
+      "one": "甚麼\n「易發」？",
+      "two": "甚麼「易發」？"
     },
     "answer": {
-      "ronghe": "甚麼「易發」？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "甚麼「易發」？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "番禺\n「易發」",
-      "paddle": "番禺「易發」"
+      "one": "番禺\n「易發」",
+      "two": "番禺「易發」"
     },
     "answer": {
-      "ronghe": "番禺「易發」",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "番禺「易發」",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "這麼大模大樣\n？\n如此明目張膽？",
-      "paddle": "這麼大模大樣？如此明目張膽？"
+      "one": "這麼大模大樣\n？\n如此明目張膽？",
+      "two": "這麼大模大樣？如此明目張膽？"
     },
     "answer": {
-      "ronghe": "這麼大模大樣？如此明目張膽？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "這麼大模大樣？如此明目張膽？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "要舊鈔，\n不連號！",
-      "paddle": "要舊鈔，不連號！"
+      "one": "要舊鈔，\n不連號！",
+      "two": "要舊鈔，不連號！"
     },
     "answer": {
-      "ronghe": "要舊鈔，不連號！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "要舊鈔，不連號！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "沈經理，\n籌到多少？",
-      "paddle": "沈經理，籌到多少？"
+      "one": "沈經理，\n籌到多少？",
+      "two": "沈經理，籌到多少？"
     },
     "answer": {
-      "ronghe": "沈經理，籌到多少？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "沈經理，籌到多少？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不行！\n再來！",
-      "paddle": "不行！再來！"
+      "one": "不行！\n再來！",
+      "two": "不行！再來！"
     },
     "answer": {
-      "ronghe": "不行！再來！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "不行！再來！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "五億，\n先拿著吧",
-      "paddle": "五億，先拿著吧"
+      "one": "五億，\n先拿著吧",
+      "two": "五億，先拿著吧"
     },
     "answer": {
-      "ronghe": "五億，先拿著吧",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "五億，先拿著吧",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不要！\n不要！",
-      "paddle": "不要！不要！"
+      "one": "不要！\n不要！",
+      "two": "不要！不要！"
     },
     "answer": {
-      "ronghe": "不要！不要！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "不要！不要！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "胡警官，\n走這麼快？",
-      "paddle": "胡警官，走這麼快？"
+      "one": "胡警官，\n走這麼快？",
+      "two": "胡警官，走這麼快？"
     },
     "answer": {
-      "ronghe": "胡警官，走這麼快？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "胡警官，走這麼快？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "聽見嗎？\n警察先生？",
-      "paddle": "聽見嗎？警察先生？"
+      "one": "聽見嗎？\n警察先生？",
+      "two": "聽見嗎？警察先生？"
     },
     "answer": {
-      "ronghe": "聽見嗎？警察先生？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "聽見嗎？警察先生？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "克制點，\n皇家警察！",
-      "paddle": "克制點，皇家警察！"
+      "one": "克制點，\n皇家警察！",
+      "two": "克制點，皇家警察！"
     },
     "answer": {
-      "ronghe": "克制點，皇家警察！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "克制點，皇家警察！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "是，\n我是商人",
-      "paddle": "是，我是商人"
+      "one": "是，\n我是商人",
+      "two": "是，我是商人"
     },
     "answer": {
-      "ronghe": "是，我是商人",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "是，我是商人",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "姓陳的，\n謝謝",
-      "paddle": "姓陳的，謝謝"
+      "one": "姓陳的，\n謝謝",
+      "two": "姓陳的，謝謝"
     },
     "answer": {
-      "ronghe": "姓陳的，謝謝",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "姓陳的，謝謝",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "拿著，\n我要戴狗帶",
-      "paddle": "拿著，我要戴狗帶"
+      "one": "拿著，\n我要戴狗帶",
+      "two": "拿著，我要戴狗帶"
     },
     "answer": {
-      "ronghe": "拿著，我要戴狗帶",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "拿著，我要戴狗帶",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "來，\n坐",
-      "paddle": "來，坐"
+      "one": "來，\n坐",
+      "two": "來，坐"
     },
     "answer": {
-      "ronghe": "來，坐",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "來，坐",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "張總，\n看看想吃甚麼？",
-      "paddle": "張總，看看想吃甚麼？"
+      "one": "張總，\n看看想吃甚麼？",
+      "two": "張總，看看想吃甚麼？"
     },
     "answer": {
-      "ronghe": "張總，看看想吃甚麼？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "張總，看看想吃甚麼？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "飯馬上來，\n很快",
-      "paddle": "飯馬上來，很快"
+      "one": "飯馬上來，\n很快",
+      "two": "飯馬上來，很快"
     },
     "answer": {
-      "ronghe": "飯馬上來，很快",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "飯馬上來，很快",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "先生，\n這邊請",
-      "paddle": "先生，這邊請"
+      "one": "先生，\n這邊請",
+      "two": "先生，這邊請"
     },
     "answer": {
-      "ronghe": "先生，這邊請",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "先生，這邊請",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不好意思，飯是冷的嗎？\n我要茶！",
-      "paddle": "不好意思，飯是冷的吗？ 我要茶！"
+      "one": "不好意思，飯是冷的嗎？\n我要茶！",
+      "two": "不好意思，飯是冷的吗？ 我要茶！"
     },
     "answer": {
-      "ronghe": "不好意思，飯是冷的嗎？我要茶！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "不好意思，飯是冷的嗎？我要茶！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我要茶！\n等我一下，我帶你去",
-      "paddle": "我要茶！ 等我一下，我帶你去"
+      "one": "我要茶！\n等我一下，我帶你去",
+      "two": "我要茶！ 等我一下，我帶你去"
     },
     "answer": {
-      "ronghe": "我要茶！等我一下，我帶你去",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "我要茶！等我一下，我帶你去",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "茶，\n我幫你拿",
-      "paddle": "茶，我幫你拿"
+      "one": "茶，\n我幫你拿",
+      "two": "茶，我幫你拿"
     },
     "answer": {
-      "ronghe": "茶，我幫你拿",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "茶，我幫你拿",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "說出來，\n我們商量一下",
-      "paddle": "說出來，我們商量一下"
+      "one": "說出來，\n我們商量一下",
+      "two": "說出來，我們商量一下"
     },
     "answer": {
-      "ronghe": "說出來，我們商量一下",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "說出來，我們商量一下",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "鄭建權，\n五十三歲",
-      "paddle": "鄭建權，五十三歲"
+      "one": "鄭建權，\n五十三歲",
+      "two": "鄭建權，五十三歲"
     },
     "answer": {
-      "ronghe": "鄭建權，五十三歲",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "鄭建權，五十三歲",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "對，\n一千塊錢一部",
-      "paddle": "對，一千塊錢一部"
+      "one": "對，\n一千塊錢一部",
+      "two": "對，一千塊錢一部"
     },
     "answer": {
-      "ronghe": "對，一千塊錢一部",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "對，一千塊錢一部",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "潮哥，\n不好意思",
-      "paddle": "潮哥，不好意思"
+      "one": "潮哥，\n不好意思",
+      "two": "潮哥，不好意思"
     },
     "answer": {
-      "ronghe": "潮哥，不好意思",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "潮哥，不好意思",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "明白，\n完全明白",
-      "paddle": "明白，完全明白"
+      "one": "明白，\n完全明白",
+      "two": "明白，完全明白"
     },
     "answer": {
-      "ronghe": "明白，完全明白",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "明白，完全明白",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "走了，\n向陽、\n老胡",
-      "paddle": "走了，向陽、老胡"
+      "one": "走了，\n向陽、\n老胡",
+      "two": "走了，向陽、老胡"
     },
     "answer": {
-      "ronghe": "走了，向陽、老胡",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "走了，向陽、老胡",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "懂，\n當然懂",
-      "paddle": "懂，當然懂"
+      "one": "懂，\n當然懂",
+      "two": "懂，當然懂"
     },
     "answer": {
-      "ronghe": "懂，當然懂",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "懂，當然懂",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "來！\n先喝一杯",
-      "paddle": "來！先喝一杯"
+      "one": "來！\n先喝一杯",
+      "two": "來！先喝一杯"
     },
     "answer": {
-      "ronghe": "來！先喝一杯",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "來！先喝一杯",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "好，一定，\n我會的",
-      "paddle": "好，一定，我會的"
+      "one": "好，一定，\n我會的",
+      "two": "好，一定，我會的"
     },
     "answer": {
-      "ronghe": "好，一定，我會的",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "好，一定，我會的",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "坐，\n吃飯",
-      "paddle": "坐， 吃飯"
+      "one": "坐，\n吃飯",
+      "two": "坐， 吃飯"
     },
     "answer": {
-      "ronghe": "坐，吃飯",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "坐，吃飯",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "Noon\n，\n去買可樂",
-      "paddle": "Noon，去買可樂"
+      "one": "Noon\n，\n去買可樂",
+      "two": "Noon，去買可樂"
     },
     "answer": {
-      "ronghe": "Noon，去買可樂",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "Noon，去買可樂",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "可樂哥\n，\n吃飯",
-      "paddle": "可樂哥，吃飯"
+      "one": "可樂哥\n，\n吃飯",
+      "two": "可樂哥，吃飯"
     },
     "answer": {
-      "ronghe": "可樂哥，吃飯",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "可樂哥，吃飯",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "還頂嘴\n，\n下來",
-      "paddle": "還頂嘴，下來"
+      "one": "還頂嘴\n，\n下來",
+      "two": "還頂嘴，下來"
     },
     "answer": {
-      "ronghe": "還頂嘴，下來",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "還頂嘴，下來",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "快點\n！",
-      "paddle": "快點"
+      "one": "快點\n！",
+      "two": "快點"
     },
     "answer": {
-      "ronghe": "快點！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "快點！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "這丫頭\n！",
-      "paddle": "這丫頭！"
+      "one": "這丫頭\n！",
+      "two": "這丫頭！"
     },
     "answer": {
-      "ronghe": "這丫頭！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "這丫頭！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "你真好，\n做老闆了",
-      "paddle": "你真好，做老闆了"
+      "one": "你真好，\n做老闆了",
+      "two": "你真好，做老闆了"
     },
     "answer": {
-      "ronghe": "你真好，做老闆了",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "你真好，做老闆了",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "爸爸\n，\n手冊不見了！",
-      "paddle": "爸爸，手冊不見了！"
+      "one": "爸爸\n，\n手冊不見了！",
+      "two": "爸爸，手冊不見了！"
     },
     "answer": {
-      "ronghe": "爸爸，手冊不見了！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "爸爸，手冊不見了！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "多謝你，\n六十八萬",
-      "paddle": "多謝你，六十八萬"
+      "one": "多謝你，\n六十八萬",
+      "two": "多謝你，六十八萬"
     },
     "answer": {
-      "ronghe": "多謝你，六十八萬",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "多謝你，六十八萬",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "三十萬，\n數目正確",
-      "paddle": "三十萬，數目正確"
+      "one": "三十萬，\n數目正確",
+      "two": "三十萬，數目正確"
     },
     "answer": {
-      "ronghe": "三十萬，數目正確",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "三十萬，數目正確",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "張總！\n張總！",
-      "paddle": "張總！張總！"
+      "one": "張總！\n張總！",
+      "two": "張總！張總！"
     },
     "answer": {
-      "ronghe": "張總！張總！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "張總！張總！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "嘴這麼硬？\n打給你老婆報平安",
-      "paddle": "嘴這麼硬？打給你老婆報平安"
+      "one": "嘴這麼硬？\n打給你老婆報平安",
+      "two": "嘴這麼硬？打給你老婆報平安"
     },
     "answer": {
-      "ronghe": "嘴這麼硬？打給你老婆報平安",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "嘴這麼硬？打給你老婆報平安",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "報平安\n，\n混蛋",
-      "paddle": "報平安，混蛋"
+      "one": "報平安\n，\n混蛋",
+      "two": "報平安，混蛋"
     },
     "answer": {
-      "ronghe": "報平安，混蛋",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "報平安，混蛋",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "卓，\n耐心點",
-      "paddle": "卓，耐心點"
+      "one": "卓，\n耐心點",
+      "two": "卓，耐心點"
     },
     "answer": {
-      "ronghe": "卓，耐心點",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "卓，耐心點",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "喂，\n幹甚麼？",
-      "paddle": "喂，干甚麼？"
+      "one": "喂，\n幹甚麼？",
+      "two": "喂，干甚麼？"
     },
     "answer": {
-      "ronghe": "喂，幹甚麼？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "喂，幹甚麼？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "賺不了錢！\n記得要跟緊我",
-      "paddle": "賺不了錢！ 記得要跟緊我"
+      "one": "賺不了錢！\n記得要跟緊我",
+      "two": "賺不了錢！ 記得要跟緊我"
     },
     "answer": {
-      "ronghe": "賺不了錢！記得要跟緊我",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "賺不了錢！記得要跟緊我",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "跟卓子強\n、\n季正雄",
-      "paddle": "跟卓強、季正雄"
+      "one": "跟卓子強\n、\n季正雄",
+      "two": "跟卓強、季正雄"
     },
     "answer": {
-      "ronghe": "跟卓子強、季正雄",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "跟卓子強、季正雄",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "打劫！\n打劫！",
-      "paddle": "打劫！打劫！"
+      "one": "打劫！\n打劫！",
+      "two": "打劫！打劫！"
     },
     "answer": {
-      "ronghe": "打劫！打劫！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "打劫！打劫！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "就算開\n「魚蛋檔」",
-      "paddle": "就算開「魚蛋檔」"
+      "one": "就算開\n「魚蛋檔」",
+      "two": "就算開「魚蛋檔」"
     },
     "answer": {
-      "ronghe": "就算開「魚蛋檔」",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "就算開「魚蛋檔」",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "行，\n自己來",
-      "paddle": "行，自己來"
+      "one": "行，\n自己來",
+      "two": "行，自己來"
     },
     "answer": {
-      "ronghe": "行，自己來",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "行，自己來",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "老大，\n出事了！",
-      "paddle": "老大，出事了！"
+      "one": "老大，\n出事了！",
+      "two": "老大，出事了！"
     },
     "answer": {
-      "ronghe": "老大，出事了！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "老大，出事了！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "金，\n金！",
-      "paddle": "金，金！"
+      "one": "金，\n金！",
+      "two": "金，金！"
     },
     "answer": {
-      "ronghe": "金，金！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "金，金！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "別動，\n手放頭上",
-      "paddle": "別動，手放頭上"
+      "one": "別動，\n手放頭上",
+      "two": "別動，手放頭上"
     },
     "answer": {
-      "ronghe": "別動，手放頭上",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "別動，手放頭上",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "貨物充公\n，人就槍斃",
-      "paddle": "貨物充公，人就槍斃"
+      "one": "貨物充公\n，人就槍斃",
+      "two": "貨物充公，人就槍斃"
     },
     "answer": {
-      "ronghe": "貨物充公，人就槍斃",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "貨物充公，人就槍斃",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "是，\n明白明白",
-      "paddle": "是，明白明白"
+      "one": "是，\n明白明白",
+      "two": "是，明白明白"
     },
     "answer": {
-      "ronghe": "是，明白明白",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "是，明白明白",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "科長，\n有人找你",
-      "paddle": "科長，有人找你"
+      "one": "科長，\n有人找你",
+      "two": "科長，有人找你"
     },
     "answer": {
-      "ronghe": "科長，有人找你",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "科長，有人找你",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "龍科說，\n晚上再談",
-      "paddle": "龍科說，晩上再談"
+      "one": "龍科說，\n晚上再談",
+      "two": "龍科說，晩上再談"
     },
     "answer": {
-      "ronghe": "龍科說，晚上再談",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "龍科說，晚上再談",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "快些\n！",
-      "paddle": "快些！"
+      "one": "快些\n！",
+      "two": "快些！"
     },
     "answer": {
-      "ronghe": "快些！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "快些！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "就是，\n他不懂吃！",
-      "paddle": "就是，他不懂吃！"
+      "one": "就是，\n他不懂吃！",
+      "two": "就是，他不懂吃！"
     },
     "answer": {
-      "ronghe": "就是，他不懂吃！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "就是，他不懂吃！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "這一次，\n幫幫他吧",
-      "paddle": "這一次，幫幫他吧"
+      "one": "這一次，\n幫幫他吧",
+      "two": "這一次，幫幫他吧"
     },
     "answer": {
-      "ronghe": "這一次，幫幫他吧",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "這一次，幫幫他吧",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "吃甚麼？\n吃甚麼？",
-      "paddle": "吃甚麼？吃甚麽？"
+      "one": "吃甚麼？\n吃甚麼？",
+      "two": "吃甚麼？吃甚麽？"
     },
     "answer": {
-      "ronghe": "吃甚麼？吃甚麼？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "吃甚麼？吃甚麼？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "龍科，\n那事就拜託你",
-      "paddle": "龍科，那事就拜託你"
+      "one": "龍科，\n那事就拜託你",
+      "two": "龍科，那事就拜託你"
     },
     "answer": {
-      "ronghe": "龍科，那事就拜託你",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "龍科，那事就拜託你",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "泡澡，\n泡澡好",
-      "paddle": "泡澡，泡澡好"
+      "one": "泡澡，\n泡澡好",
+      "two": "泡澡，泡澡好"
     },
     "answer": {
-      "ronghe": "泡澡，泡澡好",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "泡澡，泡澡好",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "喂，\n你們過來",
-      "paddle": "喂，你們過來"
+      "one": "喂，\n你們過來",
+      "two": "喂，你們過來"
     },
     "answer": {
-      "ronghe": "喂，你們過來",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "喂，你們過來",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "誰報料，\n誰就有錢收",
-      "paddle": "誰報料，誰就有錢收"
+      "one": "誰報料，\n誰就有錢收",
+      "two": "誰報料，誰就有錢收"
     },
     "answer": {
-      "ronghe": "誰報料，誰就有錢收",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "誰報料，誰就有錢收",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "那麼張揚？\n警察一定竊聽",
-      "paddle": "那麼張揚？警察一定竊聽"
+      "one": "那麼張揚？\n警察一定竊聽",
+      "two": "那麼張揚？警察一定竊聽"
     },
     "answer": {
-      "ronghe": "那麼張揚？警察一定竊聽",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "那麼張揚？警察一定竊聽",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "長官教我們\n：\n安全第一",
-      "paddle": "長官教我們：安全第一"
+      "one": "長官教我們\n：\n安全第一",
+      "two": "長官教我們：安全第一"
     },
     "answer": {
-      "ronghe": "長官教我們：安全第一",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "長官教我們：安全第一",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "多豪爽\n！",
-      "paddle": "多豪爽！"
+      "one": "多豪爽\n！",
+      "two": "多豪爽！"
     },
     "answer": {
-      "ronghe": "多豪爽！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "多豪爽！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "先生，\n請站住",
-      "paddle": "先生，請站住"
+      "one": "先生，\n請站住",
+      "two": "先生，請站住"
     },
     "answer": {
-      "ronghe": "先生，請站住",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "先生，請站住",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "還喝？\n還不聽話！",
-      "paddle": "還喝？還不聽話！"
+      "one": "還喝？\n還不聽話！",
+      "two": "還喝？還不聽話！"
     },
     "answer": {
-      "ronghe": "還喝？還不聽話！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "還喝？還不聽話！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "宋局，\n你真是好兄弟",
-      "paddle": "宋局，你真是好兄弟"
+      "one": "宋局，\n你真是好兄弟",
+      "two": "宋局，你真是好兄弟"
     },
     "answer": {
-      "ronghe": "宋局，你真是好兄弟",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "宋局，你真是好兄弟",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "他們倆，\n是我當兵時",
-      "paddle": "他們倆，是我當兵時"
+      "one": "他們倆，\n是我當兵時",
+      "two": "他們倆，是我當兵時"
     },
     "answer": {
-      "ronghe": "他們倆，是我當兵時",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "他們倆，是我當兵時",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "老闆，\n多謝二百萬",
-      "paddle": "老闆，多謝二百萬"
+      "one": "老闆，\n多謝二百萬",
+      "two": "老闆，多謝二百萬"
     },
     "answer": {
-      "ronghe": "老闆，多謝二百萬",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "老闆，多謝二百萬",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "出去等，\n先出去，\n出去",
-      "paddle": "出去等，先出去，出去"
+      "one": "出去等，\n先出去，\n出去",
+      "two": "出去等，先出去，出去"
     },
     "answer": {
-      "ronghe": "出去等，先出去，出去",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "出去等，先出去，出去",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "出去等，\n全都出去！",
-      "paddle": "出去等，全都出去！"
+      "one": "出去等，\n全都出去！",
+      "two": "出去等，全都出去！"
     },
     "answer": {
-      "ronghe": "出去等，全都出去！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "出去等，全都出去！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "瘋了，\n瘋了！",
-      "paddle": "瘋了，瘋了！"
+      "one": "瘋了，\n瘋了！",
+      "two": "瘋了，瘋了！"
     },
     "answer": {
-      "ronghe": "瘋了，瘋了！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "瘋了，瘋了！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "他進牢時，\n香港電話才是六位數！",
-      "paddle": "他進牢時，香港電話才是六位數！"
+      "one": "他進牢時，\n香港電話才是六位數！",
+      "two": "他進牢時，香港電話才是六位數！"
     },
     "answer": {
-      "ronghe": "他進牢時，香港電話才是六位數！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "他進牢時，香港電話才是六位數！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不報警？\n那我就放人了！",
-      "paddle": "不報警？那我就放人了！"
+      "one": "不報警？\n那我就放人了！",
+      "two": "不報警？那我就放人了！"
     },
     "answer": {
-      "ronghe": "不報警？那我就放人了！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "不報警？那我就放人了！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "你襲警？\n別耍花樣",
-      "paddle": "你襲警？ 別要花樣"
+      "one": "你襲警？\n別耍花樣",
+      "two": "你襲警？ 別要花樣"
     },
     "answer": {
-      "ronghe": "你襲警？別耍花樣",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "你襲警？別耍花樣",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我知道，\n我知道了！",
-      "paddle": "我知道，我知道了！"
+      "one": "我知道，\n我知道了！",
+      "two": "我知道，我知道了！"
     },
     "answer": {
-      "ronghe": "我知道，我知道了！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "我知道，我知道了！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "是，\n歡哥",
-      "paddle": "是，歡哥"
+      "one": "是，\n歡哥",
+      "two": "是，歡哥"
     },
     "answer": {
-      "ronghe": "是，歡哥",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "是，歡哥",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "說真的，\n我們可以的",
-      "paddle": "說真的，我們可以的"
+      "one": "說真的，\n我們可以的",
+      "two": "說真的，我們可以的"
     },
     "answer": {
-      "ronghe": "說真的，我們可以的",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "說真的，我們可以的",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "算了，\n不用說了！",
-      "paddle": "算了，不用說了！"
+      "one": "算了，\n不用說了！",
+      "two": "算了，不用說了！"
     },
     "answer": {
-      "ronghe": "算了，不用說了！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "算了，不用說了！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "來，\n這邊這邊",
-      "paddle": "來，這邊這邊"
+      "one": "來，\n這邊這邊",
+      "two": "來，這邊這邊"
     },
     "answer": {
-      "ronghe": "來，這邊這邊",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "來，這邊這邊",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "黑星、\n手榴彈、AK",
-      "paddle": "黑星、榴彈、AK"
+      "one": "黑星、\n手榴彈、AK",
+      "two": "黑星、榴彈、AK"
     },
     "answer": {
-      "ronghe": "黑星、手榴彈、AK",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "黑星、手榴彈、AK",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "老大，\n再考慮一下",
-      "paddle": "老大，再考慮一下"
+      "one": "老大，\n再考慮一下",
+      "two": "老大，再考慮一下"
     },
     "answer": {
-      "ronghe": "老大，再考慮一下",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "老大，再考慮一下",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "喂，\n卓子強",
-      "paddle": "喂，卓子強"
+      "one": "喂，\n卓子強",
+      "two": "喂，卓子強"
     },
     "answer": {
-      "ronghe": "喂，卓子強",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "喂，卓子強",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "誰\n？",
-      "paddle": "誰？"
+      "one": "誰\n？",
+      "two": "誰？"
     },
     "answer": {
-      "ronghe": "誰？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "誰？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我只好順水推舟⋯\n你等一會！別掛啊",
-      "paddle": "我只好顺水推舟．你等一會！別掛啊"
+      "one": "我只好順水推舟⋯\n你等一會！別掛啊",
+      "two": "我只好顺水推舟．你等一會！別掛啊"
     },
     "answer": {
-      "ronghe": "我只好順水推舟⋯你等一會！別掛啊",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "我只好順水推舟⋯你等一會！別掛啊",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "就是你\n，葉國歡！",
-      "paddle": "就是你，葉國歡！"
+      "one": "就是你\n，葉國歡！",
+      "two": "就是你，葉國歡！"
     },
     "answer": {
-      "ronghe": "就是你，葉國歡！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "就是你，葉國歡！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "好，\n回香港再聯絡",
-      "paddle": "好，回香港再聯絡"
+      "one": "好，\n回香港再聯絡",
+      "two": "好，回香港再聯絡"
     },
     "answer": {
-      "ronghe": "好，回香港再聯絡",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "好，回香港再聯絡",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "季正雄，\n你還在嗎？",
-      "paddle": "季正雄，你還在嗎？"
+      "one": "季正雄，\n你還在嗎？",
+      "two": "季正雄，你還在嗎？"
     },
     "answer": {
-      "ronghe": "季正雄，你還在嗎？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "季正雄，你還在嗎？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "迷了路，\n便吵了兩句",
-      "paddle": "迷了路，便吵了两句"
+      "one": "迷了路，\n便吵了兩句",
+      "two": "迷了路，便吵了两句"
     },
     "answer": {
-      "ronghe": "迷了路，便吵了兩句",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "迷了路，便吵了兩句",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "證件呢？\n有",
-      "paddle": "證件呢？ 有"
+      "one": "證件呢？\n有",
+      "two": "證件呢？ 有"
     },
     "answer": {
-      "ronghe": "證件呢？有",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "證件呢？有",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "PC1844\n，\n叫電台",
-      "paddle": "PC1844，叫電台"
+      "one": "PC1844\n，\n叫電台",
+      "two": "PC1844，叫電台"
     },
     "answer": {
-      "ronghe": "PC1844，叫電台",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "PC1844，叫電台",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "快點！\n追快點！",
-      "paddle": "快點！追快點！"
+      "one": "快點！\n追快點！",
+      "two": "快點！追快點！"
     },
     "answer": {
-      "ronghe": "快點！追快點！",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "快點！追快點！",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "知道，\n馬上回來",
-      "paddle": "知道，馬上回來"
+      "one": "知道，\n馬上回來",
+      "two": "知道，馬上回來"
     },
     "answer": {
-      "ronghe": "知道，馬上回來",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "知道，馬上回來",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "去澳門，\n是上環碼頭",
-      "paddle": "去澳門，是上環碼頭"
+      "one": "去澳門，\n是上環碼頭",
+      "two": "去澳門，是上環碼頭"
     },
     "answer": {
-      "ronghe": "去澳門，是上環碼頭",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "去澳門，是上環碼頭",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "「大陸喱」\n，\n懵頭懵腦",
-      "paddle": "「大陸喱」，懵頭懵腦"
+      "one": "「大陸喱」\n，\n懵頭懵腦",
+      "two": "「大陸喱」，懵頭懵腦"
     },
     "answer": {
-      "ronghe": "「大陸喱」，懵頭懵腦",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "「大陸喱」，懵頭懵腦",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "「大陸哩」\n？",
-      "paddle": "「大陸喱」？"
+      "one": "「大陸哩」\n？",
+      "two": "「大陸喱」？"
     },
     "answer": {
-      "ronghe": "「大陸哩」？",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "「大陸哩」？",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "陳先生，\n這邊請",
-      "paddle": "陳先生，這邊請"
+      "one": "陳先生，\n這邊請",
+      "two": "陳先生，這邊請"
     },
     "answer": {
-      "ronghe": "陳先生，這邊請",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "陳先生，這邊請",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "不好意思，\n這邊請",
-      "paddle": "不好意思，這邊請"
+      "one": "不好意思，\n這邊請",
+      "two": "不好意思，這邊請"
     },
     "answer": {
-      "ronghe": "不好意思，這邊請",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "不好意思，這邊請",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "快！\n小姐，你告訴我，我自己去找吧",
-      "paddle": "快！ 小姐，你告訴我，我自去找吧"
+      "one": "快！\n小姐，你告訴我，我自己去找吧",
+      "two": "快！ 小姐，你告訴我，我自去找吧"
     },
     "answer": {
-      "ronghe": "快！小姐，你告訴我，我自己去找吧",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "快！小姐，你告訴我，我自己去找吧",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "lens": "我要茶！\n我帶你去，等我一下",
-      "paddle": "我要茶！ 我带你去，等我一下"
+      "one": "我要茶！\n我帶你去，等我一下",
+      "two": "我要茶！ 我带你去，等我一下"
     },
     "answer": {
-      "ronghe": "我要茶！我帶你去，等我一下",
-      "beizhu": "按預期融合 OCR 文本。"
+      "output": "我要茶！我帶你去，等我一下",
+      "note": "按預期融合 OCR 文本。"
     },
     "difficulty": 1,
     "verified": true

@@ -26,6 +26,5 @@ __all__ = [
 GUIDED_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="guided-review",
     manager_cls=GuidedReviewManager,
-    prompt_cls=GuidedReviewPrompt,
 )
 """Operation specification for guided review."""

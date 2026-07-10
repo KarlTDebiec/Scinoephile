@@ -21,7 +21,7 @@ class PairwiseReviewManager(Manager):
     """Factories for pairwise-review LLM classes."""
 
     prompt_cls: ClassVar[type[PairwiseReviewPrompt]] = PairwiseReviewPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache

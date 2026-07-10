@@ -104,11 +104,6 @@ class YuePunctuationVsZhoPromptYueHans(YuePunctuationVsZhoPromptYueHant):
 class YueZhoPunctuationManager(PunctuationManager):
     """Factories for written Cantonese/standard Chinese punctuation LLM classes."""
 
-    prompt_cls: ClassVar[type[YuePunctuationVsZhoPromptYueHant]] = (
-        YuePunctuationVsZhoPromptYueHans
-    )
-    """Default prompt class."""
-
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:
         """Get minimum difficulty based on the test case properties.

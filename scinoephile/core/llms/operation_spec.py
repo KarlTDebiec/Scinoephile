@@ -20,8 +20,6 @@ class OperationSpec:
     """Operation name exposed through CLIs and registries."""
     manager_cls: type[Manager]
     """Manager class used to load and validate cases for this operation."""
-    prompt_cls: type[Prompt]
-    """Base prompt class defining the operation's persisted field names."""
 
     def __post_init__(self):
         """Validate the operation name.
@@ -35,3 +33,8 @@ class OperationSpec:
             raise ValueError(
                 "Operation must not contain leading or trailing whitespace."
             )
+
+    @property
+    def prompt_cls(self) -> type[Prompt]:
+        """Base prompt class defining the operation's persisted field names."""
+        return self.manager_cls.prompt_cls

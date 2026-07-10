@@ -14,12 +14,12 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.llms import OperationSpec, Prompt
+from scinoephile.core.llms import OperationSpec
 from scinoephile.optimization.persistence.test_cases.sync import (
-    sync_test_cases_from_json_paths,
+    sync_test_cases,
 )
 
-from .argument_types import operation_arg, source_prompt_arg
+from .argument_types import operation_arg
 
 __all__ = ["OptimizationSyncTestCasesCli"]
 
@@ -32,10 +32,6 @@ OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "列出将插入或删除的来源关联而不写入"
         ),
         "one or more input JSON paths": "一个或多个输入 JSON 路径",
-        "Python path to the prompt class defining input JSON field names; defaults "
-        "to the operation base prompt class": (
-            "定义输入 JSON 字段名称的提示词类 Python 路径；默认使用操作的基础提示词类"
-        ),
         "synchronize persisted LLM test cases from JSON into SQLite": (
             "将 JSON 测试用例同步到 SQLite"
         ),
@@ -48,11 +44,6 @@ OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "列出將插入或刪除的來源關聯而不寫入"
         ),
         "one or more input JSON paths": "一個或多個輸入 JSON 路徑",
-        "Python path to the prompt class defining input JSON field names; defaults "
-        "to the operation base prompt class": (
-            "定義輸入 JSON 欄位名稱的提示詞類別 Python 路徑；"
-            "預設使用操作的基礎提示詞類別"
-        ),
         "synchronize persisted LLM test cases from JSON into SQLite": (
             "將 JSON 測試用例同步到 SQLite"
         ),
@@ -96,20 +87,12 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--operation",
+            dest="spec",
             required=True,
             type=operation_arg,
             help=(
                 "LLM operation name from the optimization registry for these test "
                 "case JSON file(s)"
-            ),
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--source-prompt",
-            dest="source_prompt_cls",
-            type=source_prompt_arg,
-            help=(
-                "Python path to the prompt class defining input JSON field names; "
-                "defaults to the operation base prompt class"
             ),
         )
         arg_groups["operation arguments"].add_argument(
@@ -120,9 +103,11 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
                 "writing"
             ),
         )
+
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "--outfile",
+            dest="outfile_path",
             required=True,
             type=output_file_arg(exist_ok=True),
             help="SQLite database outfile path",
@@ -143,23 +128,19 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_paths: list[Path],
-        operation: OperationSpec,
-        source_prompt_cls: type[Prompt] | None,
+        spec: OperationSpec,
         dry_run: bool,
-        outfile: Path,
+        outfile_path: Path,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        if source_prompt_cls is None:
-            source_prompt_cls = operation.prompt_cls
 
         # Perform operations
         try:
-            report = sync_test_cases_from_json_paths(
-                database_path=outfile,
-                operation_spec=operation,
-                source_prompt_cls=source_prompt_cls,
-                input_paths=infile_paths,
+            report = sync_test_cases(
+                infile_paths,
+                outfile_path,
+                spec,
                 dry_run=dry_run,
             )
         except ScinoephileError as exc:

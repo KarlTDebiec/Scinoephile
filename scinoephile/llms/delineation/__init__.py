@@ -23,6 +23,5 @@ __all__ = [
 DELINEATION_OPERATION_SPEC = OperationSpec(
     operation="delineation",
     manager_cls=DelineationManager,
-    prompt_cls=DelineationPrompt,
 )
 """Operation specification for delineation."""

@@ -31,6 +31,5 @@ __all__ = [
 GAP_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="gap-translation",
     manager_cls=GapTranslationManager,
-    prompt_cls=GapTranslationPrompt,
 )
 """Operation specification for gap translation."""

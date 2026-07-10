@@ -26,6 +26,5 @@ __all__ = [
 TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="translation",
     manager_cls=TranslationManager,
-    prompt_cls=TranslationPrompt,
 )
 """Operation specification for regular translation."""

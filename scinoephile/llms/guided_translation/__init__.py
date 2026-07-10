@@ -26,6 +26,5 @@ __all__ = [
 GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="guided-translation",
     manager_cls=GuidedTranslationManager,
-    prompt_cls=GuidedTranslationPrompt,
 )
 """Operation specification for guided translation."""

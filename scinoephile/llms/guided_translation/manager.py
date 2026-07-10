@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import re
 from functools import cache
-from typing import Any, ClassVar, Unpack, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model
 
@@ -17,7 +17,6 @@ from scinoephile.core.llms import (
     Prompt,
     Query,
     TestCase,
-    TestCaseClsKwargs,
 )
 from scinoephile.core.llms.models import get_model_name
 
@@ -30,7 +29,7 @@ class GuidedTranslationManager(Manager):
     """Factories for guided translation LLM classes."""
 
     prompt_cls: ClassVar[type[GuidedTranslationPrompt]] = GuidedTranslationPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -164,18 +163,16 @@ class GuidedTranslationManager(Manager):
     def get_test_case_cls_from_data(
         cls,
         data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
+        prompt_cls: type[Prompt],
     ) -> type[TestCase]:
         """Get concrete test case class for provided data.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
+            prompt_cls: text for LLM correspondence
         Returns:
             test case model class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
         prompt_cls = cast(type[GuidedTranslationPrompt], prompt_cls)
         source_one_pattern = re.compile(rf"^{re.escape(prompt_cls.src_1_pfx)}\d+$")
         source_two_pattern = re.compile(rf"^{re.escape(prompt_cls.src_2_pfx)}\d+$")

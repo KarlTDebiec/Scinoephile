@@ -5,11 +5,11 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, Unpack
+from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
+from scinoephile.core.llms import Answer, Manager, Prompt, Query, TestCase
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import PunctuationPrompt
@@ -21,7 +21,7 @@ class PunctuationManager(Manager):
     """Factories for punctuation LLM classes."""
 
     prompt_cls: ClassVar[type[PunctuationPrompt]] = PunctuationPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -101,18 +101,18 @@ class PunctuationManager(Manager):
     def get_test_case_cls_from_data(
         cls,
         data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
+        prompt_cls: type[Prompt],
     ) -> type[TestCase]:
         """Get concrete test case class for provided data.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
+            prompt_cls: text for LLM correspondence
         Returns:
             test case model class
         """
-        prompt_cls = kwargs.get("prompt_cls") or cls.prompt_cls
-        return cls.get_test_case_cls(prompt_cls=prompt_cls)
+        prompt_cls = cast(type[PunctuationPrompt], prompt_cls)
+        return cls.get_test_case_cls(prompt_cls)
 
     @staticmethod
     def validate_query(model: Query) -> Query:
