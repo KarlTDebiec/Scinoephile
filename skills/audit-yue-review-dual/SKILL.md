@@ -112,10 +112,10 @@ asymmetric corrections, the traditional-simplified review for final cleanup,
 and the final comparison for remaining lexical, OCR, punctuation, whitespace,
 or Mandarinization issues.
 
-The JSON arguments populate `Notes` with the reasons recorded for matching
-review changes. Preserve useful JSON notes. Before presenting the report, fill
-every remaining blank note with one concise judgment based on the row. Do not
-use placeholders such as `N/A` or `-`.
+The JSON arguments populate `Notes` with recorded reasons only as review
+context. Before presenting the report, replace every `Notes` cell with your own
+concise assessment of the situation shown in that row. Do not preserve or
+merely restate JSON notes, and do not use placeholders such as `N/A` or `-`.
 
 If one script makes an appropriate lexical, OCR, or punctuation correction and
 the other contains the same underlying issue, flag the asymmetry. Prefer making
