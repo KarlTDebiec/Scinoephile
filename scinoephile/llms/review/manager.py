@@ -6,12 +6,17 @@ from __future__ import annotations
 
 import re
 from functools import cache
-from typing import Any, ClassVar, Unpack, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model
 
-from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    Prompt,
+    Query,
+    TestCase,
+)
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import ReviewPrompt
@@ -22,8 +27,10 @@ __all__ = ["ReviewManager"]
 class ReviewManager(Manager):
     """Factories for review LLM classes."""
 
+    operation: ClassVar[str] = "review"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[ReviewPrompt]] = ReviewPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -129,25 +136,38 @@ class ReviewManager(Manager):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls,
-        data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
-    ) -> type[TestCase]:
-        """Get concrete test case class for provided data.
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             test case model class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[ReviewPrompt], prompt_cls)
+        prompt_cls = cls.prompt_cls
         pattern = re.compile(rf"^{re.escape(prompt_cls.input_pfx)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)
+
+    @classmethod
+    def get_test_case_cls_with_prompt(
+        cls,
+        test_case_cls: type[TestCase],
+        prompt_cls: type[Prompt],
+    ) -> type[TestCase]:
+        """Get an equivalently sized test-case class for another prompt.
+
+        Arguments:
+            test_case_cls: test-case class whose size should be preserved
+            prompt_cls: prompt class whose correspondence fields should be used
+        Returns:
+            equivalently sized test-case class
+        """
+        size: int = getattr(test_case_cls, "size")
+        return cls.get_test_case_cls(
+            size=size,
+            prompt_cls=cast(type[ReviewPrompt], prompt_cls),
+        )
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:

@@ -5,12 +5,11 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, Unpack
+from typing import Any, ClassVar
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
+from scinoephile.core.llms import Answer, Manager, Query, TestCase
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import DelineationPrompt
@@ -21,8 +20,10 @@ __all__ = ["DelineationManager"]
 class DelineationManager(Manager):
     """Factories for delineation LLM classes."""
 
+    operation: ClassVar[str] = "delineation"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[DelineationPrompt]] = DelineationPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -106,22 +107,15 @@ class DelineationManager(Manager):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls,
-        data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
-    ) -> type[TestCase]:
-        """Get concrete test case class for provided data.
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             test case model class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        return cls.get_test_case_cls(prompt_cls=prompt_cls)
+        return cls.get_test_case_cls(cls.prompt_cls)
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:

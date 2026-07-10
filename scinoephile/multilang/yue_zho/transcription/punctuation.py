@@ -71,27 +71,13 @@ class YuePunctuationVsZhoPromptYueHant(PunctuationPrompt, PromptYueHant):
     """Error when output field is missing from answer."""
 
     # Test case validation errors
-    yuewen_chars_changed_err_tpl: ClassVar[str] = (
+    src_1_chars_changed_err_tpl: ClassVar[str] = (
         "Answer's written Cantonese subtitle stripped of punctuation and whitespace "
         "does not match query's written Cantonese subtitle concatenated:\n"
         "Expected: {expected}\n"
         "Received: {received}"
     )
     """Error when punctuated written Cantonese characters do not match original."""
-
-    @classmethod
-    def yuewen_chars_changed_err(cls, expected: str, received: str) -> str:
-        """Error when punctuated written Cantonese characters do not match original.
-
-        Arguments:
-            expected: expected written Cantonese characters
-            received: received written Cantonese characters
-        Returns:
-            error message
-        """
-        return cls.yuewen_chars_changed_err_tpl.format(
-            expected=expected, received=received
-        )
 
 
 class YuePunctuationVsZhoPromptYueHans(YuePunctuationVsZhoPromptYueHant):
@@ -104,11 +90,6 @@ class YuePunctuationVsZhoPromptYueHans(YuePunctuationVsZhoPromptYueHant):
 class YueZhoPunctuationManager(PunctuationManager):
     """Factories for written Cantonese/standard Chinese punctuation LLM classes."""
 
-    prompt_cls: ClassVar[type[YuePunctuationVsZhoPromptYueHant]] = (
-        YuePunctuationVsZhoPromptYueHans
-    )
-    """Default prompt class."""
-
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -118,9 +99,7 @@ class YueZhoPunctuationManager(PunctuationManager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: type[YuePunctuationVsZhoPromptYueHant] = getattr(
-            model, "prompt_cls"
-        )
+        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
         min_difficulty = PunctuationManager.get_min_difficulty(model)
         if model.answer is None:
             return min_difficulty
@@ -144,9 +123,7 @@ class YueZhoPunctuationManager(PunctuationManager):
         Returns:
             validated test case
         """
-        prompt_cls: type[YuePunctuationVsZhoPromptYueHant] = getattr(
-            model, "prompt_cls"
-        )
+        prompt_cls: type[PunctuationPrompt] = getattr(model, "prompt_cls")
         if model.answer is None:
             return model
 
@@ -158,5 +135,5 @@ class YueZhoPunctuationManager(PunctuationManager):
         )
         received = remove_punc_and_whitespace(yuewen_punctuated)
         if expected != received:
-            raise ValueError(prompt_cls.yuewen_chars_changed_err(expected, received))
+            raise ValueError(prompt_cls.src_1_chars_changed_err(expected, received))
         return model

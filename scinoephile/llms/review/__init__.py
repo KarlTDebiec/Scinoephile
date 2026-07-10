@@ -10,23 +10,12 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from scinoephile.core.llms import OperationSpec
-
 from .manager import ReviewManager
 from .processor import ReviewProcessor
 from .prompt import ReviewPrompt
 
 __all__ = [
-    "REVIEW_OPERATION_SPEC",
     "ReviewManager",
     "ReviewProcessor",
     "ReviewPrompt",
 ]
-
-REVIEW_OPERATION_SPEC = OperationSpec(
-    operation="review",
-    test_case_table_name="test_cases__review",
-    manager_cls=ReviewManager,
-    prompt_cls=ReviewPrompt,
-)
-"""Operation specification for monolingual review."""

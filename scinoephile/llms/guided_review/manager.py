@@ -6,12 +6,18 @@ from __future__ import annotations
 
 import re
 from functools import cache
-from typing import Any, ClassVar, Unpack, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    Prompt,
+    Query,
+    TestCase,
+)
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import GuidedReviewPrompt
@@ -22,8 +28,10 @@ __all__ = ["GuidedReviewManager"]
 class GuidedReviewManager(Manager):
     """Factories for guided-review LLM classes."""
 
+    operation: ClassVar[str] = "guided-review"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[GuidedReviewPrompt]] = GuidedReviewPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -151,27 +159,42 @@ class GuidedReviewManager(Manager):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls,
-        data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
-    ) -> type[TestCase]:
-        """Get concrete test case class for serialized data.
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: serialized test case data
-            **kwargs: additional keyword arguments
         Returns:
             test case model class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[GuidedReviewPrompt], prompt_cls)
+        prompt_cls = cls.prompt_cls
         target_pattern = re.compile(rf"^{re.escape(prompt_cls.target_pfx)}\d+$")
         guide_pattern = re.compile(rf"^{re.escape(prompt_cls.guide_pfx)}\d+$")
         target_size = sum(1 for field in data["query"] if target_pattern.match(field))
         guide_size = sum(1 for field in data["query"] if guide_pattern.match(field))
         return cls.get_test_case_cls(target_size, guide_size, prompt_cls)
+
+    @classmethod
+    def get_test_case_cls_with_prompt(
+        cls,
+        test_case_cls: type[TestCase],
+        prompt_cls: type[Prompt],
+    ) -> type[TestCase]:
+        """Get an equivalently sized test-case class for another prompt.
+
+        Arguments:
+            test_case_cls: test-case class whose sizes should be preserved
+            prompt_cls: prompt class whose correspondence fields should be used
+        Returns:
+            equivalently sized test-case class
+        """
+        target_size: int = getattr(test_case_cls, "target_size")
+        guide_size: int = getattr(test_case_cls, "guide_size")
+        return cls.get_test_case_cls(
+            target_size=target_size,
+            guide_size=guide_size,
+            prompt_cls=cast(type[GuidedReviewPrompt], prompt_cls),
+        )
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:

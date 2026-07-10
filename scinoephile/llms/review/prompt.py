@@ -16,14 +16,14 @@ class ReviewPrompt(Prompt, ABC):
     """Text for LLM correspondence for review matters."""
 
     # Query fields
-    input_pfx: ClassVar[str] = "input_"
+    input_pfx: ClassVar[str] = "subtitle_"
     """Prefix for input fields in query."""
 
     input_desc_tpl: ClassVar[str] = "Input {idx}"
     """Description template for input fields in query."""
 
     # Answer fields
-    output_pfx: ClassVar[str] = "output_"
+    output_pfx: ClassVar[str] = "revised_"
     """Prefix for output fields in answer."""
 
     output_desc_tpl: ClassVar[str] = (

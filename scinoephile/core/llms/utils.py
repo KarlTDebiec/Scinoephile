@@ -5,11 +5,13 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any
 
 from .manager import Manager
+from .prompt import Prompt
 from .test_case import TestCase
+from .test_case_mapping import remap_test_case
 
 __all__ = [
     "load_test_cases_from_json",
@@ -20,14 +22,14 @@ __all__ = [
 def load_test_cases_from_json[TTestCase: TestCase](
     input_path: Path,
     manager_cls: type[Manager],
-    **kwargs: Any,
+    prompt_cls: type[Prompt],
 ) -> list[TTestCase]:
     """Load test cases from JSON file.
 
     Arguments:
         input_path: path to JSON file containing test cases
         manager_cls: manager class used to construct test case models
-        **kwargs: additional keyword arguments passed to manager_cls
+        prompt_cls: text for LLM correspondence
     Returns:
         list of test cases
     """
@@ -36,23 +38,40 @@ def load_test_cases_from_json[TTestCase: TestCase](
 
     test_cases: list[TTestCase] = []
     for test_case_data in raw_test_cases:
-        test_case_cls: type[TTestCase] = manager_cls.get_test_case_cls_from_data(
-            test_case_data, **kwargs
+        base_test_case_cls = manager_cls.get_test_case_cls_from_data(test_case_data)
+        base_test_case = base_test_case_cls.model_validate(
+            test_case_data,
+            extra="forbid",
         )
-        test_case: TTestCase = test_case_cls.model_validate(test_case_data)
-        test_cases.append(test_case)
+        test_case_cls: type[TTestCase] = manager_cls.get_test_case_cls_with_prompt(
+            base_test_case_cls,
+            prompt_cls,
+        )
+        test_cases.append(remap_test_case(base_test_case, test_case_cls))
 
     return test_cases
 
 
-def save_test_cases_to_json(output_path: Path, test_cases: list[TestCase]):
+def save_test_cases_to_json(
+    output_path: Path,
+    test_cases: Iterable[TestCase],
+    manager_cls: type[Manager],
+):
     """Save test cases to JSON file.
 
     Arguments:
         output_path: path to JSON file to which to save
         test_cases: test cases to save
+        manager_cls: manager class used to construct test case models
     """
-    data = [tc.model_dump(exclude_defaults=True) for tc in test_cases]
+    data = []
+    for test_case in test_cases:
+        base_test_case_cls = manager_cls.get_test_case_cls_with_prompt(
+            type(test_case),
+            manager_cls.prompt_cls,
+        )
+        base_test_case = remap_test_case(test_case, base_test_case_cls)
+        data.append(base_test_case.model_dump(mode="json", exclude_defaults=True))
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, "w", encoding="utf-8") as f:

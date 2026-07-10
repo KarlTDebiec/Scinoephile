@@ -6,12 +6,18 @@ from __future__ import annotations
 
 import re
 from functools import cache
-from typing import Any, ClassVar, Unpack, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    Prompt,
+    Query,
+    TestCase,
+)
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import GuidedTranslationPrompt
@@ -22,8 +28,10 @@ __all__ = ["GuidedTranslationManager"]
 class GuidedTranslationManager(Manager):
     """Factories for guided translation LLM classes."""
 
+    operation: ClassVar[str] = "guided-translation"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[GuidedTranslationPrompt]] = GuidedTranslationPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -154,22 +162,15 @@ class GuidedTranslationManager(Manager):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls,
-        data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
-    ) -> type[TestCase]:
-        """Get concrete test case class for provided data.
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             test case model class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[GuidedTranslationPrompt], prompt_cls)
+        prompt_cls = cls.prompt_cls
         source_one_pattern = re.compile(rf"^{re.escape(prompt_cls.src_1_pfx)}\d+$")
         source_two_pattern = re.compile(rf"^{re.escape(prompt_cls.src_2_pfx)}\d+$")
         source_one_size = sum(
@@ -182,6 +183,28 @@ class GuidedTranslationManager(Manager):
             source_one_size=source_one_size,
             source_two_size=source_two_size,
             prompt_cls=prompt_cls,
+        )
+
+    @classmethod
+    def get_test_case_cls_with_prompt(
+        cls,
+        test_case_cls: type[TestCase],
+        prompt_cls: type[Prompt],
+    ) -> type[TestCase]:
+        """Get an equivalently sized test-case class for another prompt.
+
+        Arguments:
+            test_case_cls: test-case class whose sizes should be preserved
+            prompt_cls: prompt class whose correspondence fields should be used
+        Returns:
+            equivalently sized test-case class
+        """
+        source_one_size: int = getattr(test_case_cls, "source_one_size")
+        source_two_size: int = getattr(test_case_cls, "source_two_size")
+        return cls.get_test_case_cls(
+            source_one_size=source_one_size,
+            source_two_size=source_two_size,
+            prompt_cls=cast(type[GuidedTranslationPrompt], prompt_cls),
         )
 
     @staticmethod

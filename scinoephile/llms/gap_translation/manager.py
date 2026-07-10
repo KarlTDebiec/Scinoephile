@@ -5,12 +5,18 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, Unpack, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    Prompt,
+    Query,
+    TestCase,
+)
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import GapTranslationPrompt
@@ -21,8 +27,10 @@ __all__ = ["GapTranslationManager"]
 class GapTranslationManager(Manager):
     """Factories for gap translation LLM classes."""
 
+    operation: ClassVar[str] = "gap-translation"
+    """Stable operation identifier used in persistence and CLIs."""
     prompt_cls: ClassVar[type[GapTranslationPrompt]] = GapTranslationPrompt
-    """Default prompt class."""
+    """Base prompt class defining persisted test-case field names."""
 
     @classmethod
     @cache
@@ -168,22 +176,15 @@ class GapTranslationManager(Manager):
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(
-        cls,
-        data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
-    ) -> type[TestCase]:
-        """Get concrete test case class for provided data.
+    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             test case model class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[GapTranslationPrompt], prompt_cls)
+        prompt_cls = cls.prompt_cls
         size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_2_pfx))
         source_one_idxs = [
             int(key.removeprefix(prompt_cls.src_1_pfx)) - 1
@@ -192,3 +193,25 @@ class GapTranslationManager(Manager):
         ]
         gaps = tuple(idx for idx in range(size) if idx not in source_one_idxs)
         return cls.get_test_case_cls(size=size, gaps=gaps, prompt_cls=prompt_cls)
+
+    @classmethod
+    def get_test_case_cls_with_prompt(
+        cls,
+        test_case_cls: type[TestCase],
+        prompt_cls: type[Prompt],
+    ) -> type[TestCase]:
+        """Get a test-case class with the same size and gaps for another prompt.
+
+        Arguments:
+            test_case_cls: test-case class whose size and gaps should be preserved
+            prompt_cls: prompt class whose correspondence fields should be used
+        Returns:
+            equivalently shaped test-case class
+        """
+        size: int = getattr(test_case_cls, "size")
+        gaps: tuple[int, ...] = getattr(test_case_cls, "gaps")
+        return cls.get_test_case_cls(
+            size=size,
+            gaps=gaps,
+            prompt_cls=cast(type[GapTranslationPrompt], prompt_cls),
+        )

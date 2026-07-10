@@ -45,3 +45,27 @@ class PunctuationPrompt(Prompt, ABC):
     # Answer validation errors
     output_missing_err: ClassVar[str] = "Output subtitle text is required."
     """Error when output field is missing from answer."""
+
+    # Test case validation errors
+    src_1_chars_changed_err_tpl: ClassVar[str] = (
+        "Answer output stripped of punctuation and whitespace does not match query "
+        "source one concatenated:\n"
+        "Expected: {expected}\n"
+        "Received: {received}"
+    )
+    """Error when output characters do not match source one."""
+
+    @classmethod
+    def src_1_chars_changed_err(cls, expected: str, received: str) -> str:
+        """Error when output characters do not match source one.
+
+        Arguments:
+            expected: expected source one characters
+            received: received output characters
+        Returns:
+            error message
+        """
+        return cls.src_1_chars_changed_err_tpl.format(
+            expected=expected,
+            received=received,
+        )

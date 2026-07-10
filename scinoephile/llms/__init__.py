@@ -31,7 +31,7 @@ from pathlib import Path
 
 import scinoephile.core.llms.utils as llm_utils
 from scinoephile import common
-from scinoephile.core.llms import Manager, TestCase
+from scinoephile.core.llms import Manager, Prompt, TestCase
 
 __all__ = ["load_default_test_cases"]
 
@@ -41,7 +41,7 @@ logger = logging.getLogger(__name__)
 @functools.cache
 def load_default_test_cases(
     manager_cls: type[Manager],
-    prompt_cls: type,
+    prompt_cls: type[Prompt],
     relative_paths: tuple[Path, ...],
 ) -> tuple[TestCase, ...]:
     """Load default test cases from repository JSON files and cache the result.

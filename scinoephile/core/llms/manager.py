@@ -6,11 +6,9 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Any, TypedDict, Unpack, cast
+from typing import Any, ClassVar
 
 from pydantic import Field, create_model, model_validator
-
-from scinoephile.core import ScinoephileError
 
 from .answer import Answer
 from .models import get_model_name
@@ -18,30 +16,19 @@ from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
 
-__all__ = [
-    "Manager",
-    "TestCaseClsKwargs",
-]
-
-
-class TestCaseClsKwargs(TypedDict, total=False):
-    """Keyword arguments for Manager.get_test_case_cls_from_data."""
-
-    prompt_cls: type[Prompt]
-    """Prompt class used to construct the test case."""
-    manager_cls: type[Manager]
-    """Manager class used to construct the test case."""
+__all__ = ["Manager"]
 
 
 class Manager(ABC):
     """ABC for LLM managers."""
 
+    operation: ClassVar[str]
+    """Stable operation identifier used in persistence and CLIs."""
+    prompt_cls: ClassVar[type[Prompt]]
+    """Base prompt class defining persisted test-case field names."""
+
     @classmethod
-    @cache
-    def get_query_cls(
-        cls,
-        prompt_cls: type[Prompt],
-    ) -> type[Query]:
+    def get_query_cls(cls, prompt_cls: type[Prompt]) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
@@ -52,11 +39,7 @@ class Manager(ABC):
         raise NotImplementedError
 
     @classmethod
-    @cache
-    def get_answer_cls(
-        cls,
-        prompt_cls: type[Prompt],
-    ) -> type[Answer]:
+    def get_answer_cls(cls, prompt_cls: type[Prompt]) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
@@ -84,41 +67,49 @@ class Manager(ABC):
         fields = cls.get_test_case_fields(query_cls, answer_cls, prompt_cls)
         validators = cls.get_test_case_validators()
 
-        model = cast(
-            "type[TTestCase]",
-            create_model(
-                get_model_name(TestCase.__name__, prompt_cls.__name__),
-                __base__=TestCase,
-                __module__=TestCase.__module__,
-                __validators__=validators,
-                **fields,
-            ),
+        model = create_model(
+            get_model_name(TestCase.__name__, prompt_cls.__name__),
+            __base__=TestCase,
+            __module__=TestCase.__module__,
+            __validators__=validators,
+            **fields,
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.prompt_cls = prompt_cls
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)
-        return model
+        return model  # ty:ignore[invalid-return-type]
 
     @classmethod
     def get_test_case_cls_from_data[TTestCase: TestCase](
         cls,
         data: dict,
-        **kwargs: Unpack[TestCaseClsKwargs],
     ) -> type[TTestCase]:
-        """Get concrete test case class for provided data with provided configuration.
+        """Get concrete test case class for canonical serialized data.
 
         Arguments:
             data: data from JSON
-            **kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             test case class
         """
-        if (prompt_cls := kwargs.get("prompt_cls")) is None:
-            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        manager_cls = kwargs.get("manager_cls") or cls
-        return manager_cls.get_test_case_cls(prompt_cls=prompt_cls)
+        return cls.get_test_case_cls(cls.prompt_cls)
+
+    @classmethod
+    def get_test_case_cls_with_prompt[TTestCase: TestCase](
+        cls,
+        test_case_cls: type[TestCase],
+        prompt_cls: type[Prompt],
+    ) -> type[TTestCase]:
+        """Get an equivalently shaped test-case class for another prompt.
+
+        Arguments:
+            test_case_cls: test-case class whose shape should be preserved
+            prompt_cls: prompt class whose correspondence fields should be used
+        Returns:
+            equivalently shaped test-case class
+        """
+        return cls.get_test_case_cls(prompt_cls=prompt_cls)
 
     @classmethod
     def get_test_case_fields(
