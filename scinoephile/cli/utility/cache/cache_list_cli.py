@@ -76,7 +76,6 @@ class CacheListCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--namespace",
-            default=None,
             help="cache namespace to inspect",
         )
         arg_groups["operation arguments"].add_argument(
@@ -89,7 +88,6 @@ class CacheListCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--limit",
             type=int_arg(min_value=1),
-            default=None,
             help="maximum number of entries to show",
         )
         arg_groups["operation arguments"].add_argument(

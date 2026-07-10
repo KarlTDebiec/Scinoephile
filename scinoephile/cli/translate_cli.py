@@ -132,14 +132,12 @@ class TranslateCli(ScinoephileCliBase):
         target_input_group.add_argument(
             "--gapped-infile",
             dest="gapped_infile_path",
-            default=None,
             type=input_file_arg(),
             help="target-language subtitle infile with gaps to fill",
         )
         target_input_group.add_argument(
             "--guide-infile",
             dest="guide_infile_path",
-            default=None,
             type=input_file_arg(),
             help="target-language subtitle infile with which to guide translation",
         )
@@ -147,14 +145,12 @@ class TranslateCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--source-language",
-            default=None,
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
             help="source language tag (detected from infile if omitted)",
         )
         arg_groups["operation arguments"].add_argument(
             "--target-language",
-            default=None,
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
             help=(
@@ -170,7 +166,6 @@ class TranslateCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
             type=output_file_arg(exist_ok=True),
             help="subtitle outfile path (default: stdout)",

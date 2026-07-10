@@ -211,13 +211,11 @@ class AuditCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--first-index",
-            default=None,
             type=int_arg(min_value=1),
             help="first 1-indexed subtitle number to include, inclusive",
         )
         arg_groups["operation arguments"].add_argument(
             "--last-index",
-            default=None,
             type=int_arg(min_value=1),
             help="last 1-indexed subtitle number to include, inclusive",
         )
@@ -235,7 +233,6 @@ class AuditCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",
-            default=None,
             metavar="CHARACTER",
             nargs="+",
             help=(
@@ -249,7 +246,6 @@ class AuditCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
             dest="outfile_path",
             type=output_file_arg(),
             help="Markdown outfile path (default: stdout)",

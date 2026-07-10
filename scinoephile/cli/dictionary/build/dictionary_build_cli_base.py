@@ -73,7 +73,6 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "--database-path",
-            default=None,
             type=output_file_arg(exist_ok=True),
             help="SQLite database output path (default: source-specific runtime cache)",
         )

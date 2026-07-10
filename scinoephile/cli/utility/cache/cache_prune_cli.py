@@ -98,7 +98,6 @@ class CachePruneCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--namespace",
-            default=None,
             help="cache namespace to inspect",
         )
         arg_groups["operation arguments"].add_argument(
