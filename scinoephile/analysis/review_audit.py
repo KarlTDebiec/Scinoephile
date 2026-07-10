@@ -220,6 +220,12 @@ def _format_markdown(
             ),
             _format_review_cell(
                 index,
+                changes["traditional_simplified"],
+                series["traditional_simplified"],
+                series["traditional_simplified_reviewed"],
+            ),
+            _format_review_cell(
+                index,
                 changes["final"],
                 series["simplified_reviewed"],
                 series["traditional_simplified_reviewed"],
@@ -262,9 +268,10 @@ def _format_markdown(
             "",
             (
                 "| Subtitle | Simplified | Traditional | "
+                "Traditional->Simplified review | "
                 "Simplified vs Traditional->Simplified | Notes |"
             ),
-            "|---:|---|---|---|---|",
+            "|---:|---|---|---|---|---|",
             *row_lines,
         )
     )

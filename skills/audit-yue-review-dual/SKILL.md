@@ -46,9 +46,9 @@ Replace `<dataset>` and run:
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit \
-  --simplified test/data/<dataset>/input/yue-Hans.srt \
+  --simplified test/data/<dataset>/output/yue-Hans/clean.srt \
   --simplified-reviewed test/data/<dataset>/output/yue-Hans/clean_review.srt \
-  --traditional test/data/<dataset>/input/yue-Hant.srt \
+  --traditional test/data/<dataset>/output/yue-Hant/clean.srt \
   --traditional-reviewed test/data/<dataset>/output/yue-Hant/clean_review.srt \
   --traditional-simplified test/data/<dataset>/output/yue-Hant/clean_review_flatten_timewarp_simplify.srt \
   --traditional-simplified-reviewed test/data/<dataset>/output/yue-Hant/clean_review_flatten_timewarp_simplify_review.srt \

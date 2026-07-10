@@ -65,7 +65,8 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     assert "- final text discrepancies: 2" in report
     assert "- table rows: 3" in report
     assert "| 1 |" not in report
-    assert "| 2 | 简错<br>简正 | 傳錯<br>傳正 | 简正<br>传正 |" in report
+    assert "| 2 | 简错<br>简正 | 傳錯<br>傳正 | 传正 | 简正<br>传正 |" in report
+    assert "| 3 | 着正 | 著 | 着错<br>着正 | 着正 |" in report
     assert "Simplified review: 修正简体字。" in report
     assert "Traditional review: 修正繁體字。" in report
     assert "Traditional simplification review: 修正簡化結果。" in report
