@@ -6,10 +6,12 @@ from __future__ import annotations
 
 from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.gap_translation import GapTranslationPrompt
 from scinoephile.llms.guided_translation import GuidedTranslationPrompt
+from scinoephile.llms.prompt_definition import define_prompt
 from scinoephile.llms.translation import TranslationPrompt
 
 __all__ = [
@@ -19,7 +21,8 @@ __all__ = [
 ]
 
 
-class EngYueTranslationPrompt(TranslationPrompt, PromptEng):
+@define_prompt(TranslationPrompt, Language.eng, parent=PromptEng)
+class EngYueTranslationPrompt:
     """Text for English translation from written Cantonese."""
 
     # Prompt
@@ -57,7 +60,8 @@ class EngYueTranslationPrompt(TranslationPrompt, PromptEng):
     """Description template for generated English output fields in answer."""
 
 
-class EngYueGapTranslationPrompt(GapTranslationPrompt, PromptEng):
+@define_prompt(GapTranslationPrompt, Language.eng, parent=PromptEng)
+class EngYueGapTranslationPrompt:
     """Text for English gap translation using written Cantonese."""
 
     # Prompt
@@ -107,7 +111,8 @@ class EngYueGapTranslationPrompt(GapTranslationPrompt, PromptEng):
     """Description template for generated English output fields in answer."""
 
 
-class EngYueGuidedTranslationPrompt(GuidedTranslationPrompt, PromptEng):
+@define_prompt(GuidedTranslationPrompt, Language.eng, parent=PromptEng)
+class EngYueGuidedTranslationPrompt:
     """Text for guided translation of English from written Cantonese."""
 
     # Prompt

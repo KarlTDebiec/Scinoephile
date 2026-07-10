@@ -15,6 +15,8 @@ __all__ = ["ReviewPrompt"]
 class ReviewPrompt(Prompt, ABC):
     """Text for LLM correspondence for review matters."""
 
+    __slots__ = ()
+
     # Query fields
     input_pfx: ClassVar[str] = "subtitle_"
     """Prefix for input fields in query."""
@@ -59,40 +61,33 @@ class ReviewPrompt(Prompt, ABC):
     """Error template when output is missing for a note."""
 
     # Query fields
-    @classmethod
-    def input(cls, idx: int) -> str:
+    def input(self, idx: int) -> str:
         """Name of input field in query."""
-        return f"{cls.input_pfx}{idx}"
+        return f"{self.input_pfx}{idx}"
 
-    @classmethod
-    def input_desc(cls, idx: int) -> str:
+    def input_desc(self, idx: int) -> str:
         """Description of input field in query."""
-        return cls.input_desc_tpl.format(idx=idx)
+        return self.input_desc_tpl.format(idx=idx)
 
     # Answer fields
-    @classmethod
-    def note(cls, idx: int) -> str:
+    def note(self, idx: int) -> str:
         """Name of note field in answer."""
-        return f"{cls.note_pfx}{idx}"
+        return f"{self.note_pfx}{idx}"
 
-    @classmethod
-    def note_desc(cls, idx: int) -> str:
+    def note_desc(self, idx: int) -> str:
         """Description of note field in answer."""
-        return cls.note_desc_tpl.format(idx=idx)
+        return self.note_desc_tpl.format(idx=idx)
 
-    @classmethod
-    def output(cls, idx: int) -> str:
+    def output(self, idx: int) -> str:
         """Name of output field in answer."""
-        return f"{cls.output_pfx}{idx}"
+        return f"{self.output_pfx}{idx}"
 
-    @classmethod
-    def output_desc(cls, idx: int) -> str:
+    def output_desc(self, idx: int) -> str:
         """Description of output field in answer."""
-        return cls.output_desc_tpl.format(idx=idx)
+        return self.output_desc_tpl.format(idx=idx)
 
     # Test case errors
-    @classmethod
-    def note_missing_err(cls, idx: int) -> str:
+    def note_missing_err(self, idx: int) -> str:
         """Error when note is missing for a change.
 
         Arguments:
@@ -100,10 +95,9 @@ class ReviewPrompt(Prompt, ABC):
         Returns:
             error message
         """
-        return cls.note_missing_err_tpl.format(idx=idx)
+        return self.note_missing_err_tpl.format(idx=idx)
 
-    @classmethod
-    def output_missing_err(cls, idx: int) -> str:
+    def output_missing_err(self, idx: int) -> str:
         """Error when output is missing for a note.
 
         Arguments:
@@ -111,10 +105,9 @@ class ReviewPrompt(Prompt, ABC):
         Returns:
             error message
         """
-        return cls.output_missing_err_tpl.format(idx=idx)
+        return self.output_missing_err_tpl.format(idx=idx)
 
-    @classmethod
-    def output_unmodified_err(cls, idx: int) -> str:
+    def output_unmodified_err(self, idx: int) -> str:
         """Error when output is present but unmodified.
 
         Arguments:
@@ -122,4 +115,4 @@ class ReviewPrompt(Prompt, ABC):
         Returns:
             error message
         """
-        return cls.output_unmodified_err_tpl.format(idx=idx)
+        return self.output_unmodified_err_tpl.format(idx=idx)

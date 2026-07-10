@@ -4,12 +4,16 @@
 
 from __future__ import annotations
 
+from scinoephile.core import Language
 from scinoephile.lang.zho.review import (
     GuidedReviewPromptZhoHans,
     GuidedReviewPromptZhoHant,
     PairwiseReviewPromptZhoHans,
     PairwiseReviewPromptZhoHant,
 )
+from scinoephile.llms.guided_review import GuidedReviewPrompt
+from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
+from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = [
     "ZhoYueGuidedReviewPromptZhoHans",
@@ -19,17 +23,37 @@ __all__ = [
 ]
 
 
-class ZhoYueGuidedReviewPromptZhoHant(GuidedReviewPromptZhoHant):
+@define_prompt(
+    GuidedReviewPrompt,
+    Language.zho_hant,
+    parent=GuidedReviewPromptZhoHant,
+)
+class ZhoYueGuidedReviewPromptZhoHant:
     """Prompt for guided review of traditional Chinese using written Cantonese."""
 
 
-class ZhoYueGuidedReviewPromptZhoHans(GuidedReviewPromptZhoHans):
+@define_prompt(
+    GuidedReviewPrompt,
+    Language.zho_hans,
+    parent=GuidedReviewPromptZhoHans,
+)
+class ZhoYueGuidedReviewPromptZhoHans:
     """Prompt for guided review of simplified Chinese using written Cantonese."""
 
 
-class ZhoYuePairwiseReviewPromptZhoHant(PairwiseReviewPromptZhoHant):
+@define_prompt(
+    PairwiseReviewPrompt,
+    Language.zho_hant,
+    parent=PairwiseReviewPromptZhoHant,
+)
+class ZhoYuePairwiseReviewPromptZhoHant:
     """Prompt for pairwise review of traditional Chinese using written Cantonese."""
 
 
-class ZhoYuePairwiseReviewPromptZhoHans(PairwiseReviewPromptZhoHans):
+@define_prompt(
+    PairwiseReviewPrompt,
+    Language.zho_hans,
+    parent=PairwiseReviewPromptZhoHans,
+)
+class ZhoYuePairwiseReviewPromptZhoHans:
     """Prompt for pairwise review of simplified Chinese using written Cantonese."""

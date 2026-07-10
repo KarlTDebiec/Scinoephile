@@ -85,7 +85,7 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
 }
 """Gap translation JSON paths keyed by exact source and target languages."""
 
-_PROMPTS: dict[tuple[Language, Language], type[GapTranslationPrompt]] = {
+_PROMPTS: dict[tuple[Language, Language], GapTranslationPrompt] = {
     (Language.yue_hans, Language.eng): EngYueGapTranslationPrompt,
     (Language.yue_hant, Language.eng): EngYueGapTranslationPrompt,
     (Language.zho_hans, Language.eng): EngZhoGapTranslationPrompt,
@@ -109,7 +109,7 @@ _PROMPTS: dict[tuple[Language, Language], type[GapTranslationPrompt]] = {
 def get_gap_translator(
     source_language: Language,
     target_language: Language,
-    prompt_cls: type[GapTranslationPrompt] | None = None,
+    prompt: GapTranslationPrompt | None = None,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ProcessorKwargs],
@@ -119,7 +119,7 @@ def get_gap_translator(
     Arguments:
         source_language: source language
         target_language: target language
-        prompt_cls: prompt class override
+        prompt: prompt override
         test_cases: test cases
         provider: provider to use for queries
         **kwargs: processor initialization keyword arguments
@@ -135,14 +135,14 @@ def get_gap_translator(
             f"{source_language.tag} -> {target_language.tag}"
         )
 
-    if prompt_cls is None:
-        prompt_cls = _PROMPTS[key]
+    if prompt is None:
+        prompt = _PROMPTS[key]
     if test_cases is None:
         json_paths = _JSON_PATHS[key]
         test_cases = list(
-            load_default_test_cases(GapTranslationManager, prompt_cls, json_paths)
+            load_default_test_cases(GapTranslationManager, prompt, json_paths)
         )
     if provider is None:
         provider = get_provider()
 
-    return GapTranslationProcessor(prompt_cls, test_cases, provider=provider, **kwargs)
+    return GapTranslationProcessor(prompt, test_cases, provider=provider, **kwargs)

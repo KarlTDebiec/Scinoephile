@@ -15,6 +15,8 @@ __all__ = ["GuidedReviewPrompt"]
 class GuidedReviewPrompt(Prompt, ABC):
     """Text for reviewing target blocks using guide blocks."""
 
+    __slots__ = ()
+
     # Query fields
     target_pfx: ClassVar[str] = "target_"
     """Prefix for target fields in query."""
@@ -56,52 +58,42 @@ class GuidedReviewPrompt(Prompt, ABC):
     )
     """Error template when output is missing for a note."""
 
-    @classmethod
-    def guide(cls, idx: int) -> str:
+    def guide(self, idx: int) -> str:
         """Name of guide field in query."""
-        return f"{cls.guide_pfx}{idx}"
+        return f"{self.guide_pfx}{idx}"
 
-    @classmethod
-    def guide_desc(cls, idx: int) -> str:
+    def guide_desc(self, idx: int) -> str:
         """Description of guide field in query."""
-        return cls.guide_desc_tpl.format(idx=idx)
+        return self.guide_desc_tpl.format(idx=idx)
 
-    @classmethod
-    def note(cls, idx: int) -> str:
+    def note(self, idx: int) -> str:
         """Name of note field in answer."""
-        return f"{cls.note_pfx}{idx}"
+        return f"{self.note_pfx}{idx}"
 
-    @classmethod
-    def note_desc(cls, idx: int) -> str:
+    def note_desc(self, idx: int) -> str:
         """Description of note field in answer."""
-        return cls.note_desc_tpl.format(idx=idx)
+        return self.note_desc_tpl.format(idx=idx)
 
-    @classmethod
-    def note_missing_err(cls, idx: int) -> str:
+    def note_missing_err(self, idx: int) -> str:
         """Error when note is missing for a revision."""
-        return cls.note_missing_err_tpl.format(idx=idx)
+        return self.note_missing_err_tpl.format(idx=idx)
 
-    @classmethod
-    def output(cls, idx: int) -> str:
+    def output(self, idx: int) -> str:
         """Name of output field in answer."""
-        return f"{cls.output_pfx}{idx}"
+        return f"{self.output_pfx}{idx}"
 
-    @classmethod
-    def output_desc(cls, idx: int) -> str:
+    def output_desc(self, idx: int) -> str:
         """Description of output field in answer."""
-        return cls.output_desc_tpl.format(idx=idx)
+        return self.output_desc_tpl.format(idx=idx)
 
-    @classmethod
-    def output_missing_err(cls, idx: int) -> str:
+    def output_missing_err(self, idx: int) -> str:
         """Error when output is missing for a note."""
-        return cls.output_missing_err_tpl.format(idx=idx)
+        return self.output_missing_err_tpl.format(idx=idx)
 
-    @classmethod
-    def target(cls, idx: int) -> str:
+    def target(self, idx: int) -> str:
         """Name of target field in query."""
-        return f"{cls.target_pfx}{idx}"
+        return f"{self.target_pfx}{idx}"
 
-    @classmethod
-    def target_desc(cls, idx: int) -> str:
+    def target_desc(self, idx: int) -> str:
         """Description of target field in query."""
-        return cls.target_desc_tpl.format(idx=idx)
+        return self.target_desc_tpl.format(idx=idx)

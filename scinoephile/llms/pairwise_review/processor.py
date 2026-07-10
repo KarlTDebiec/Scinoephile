@@ -27,7 +27,7 @@ logger = getLogger(__name__)
 class PairwiseReviewProcessor(Processor):
     """Processes pairwise review."""
 
-    prompt_cls: type[PairwiseReviewPrompt]
+    prompt: PairwiseReviewPrompt
     """Text for LLM correspondence."""
 
     manager_cls = PairwiseReviewManager
@@ -59,7 +59,7 @@ class PairwiseReviewProcessor(Processor):
         elif stop_at_idx < 0:
             raise ValueError("stop_at_idx must be greater than or equal to 0")
 
-        test_case_cls = PairwiseReviewManager.get_test_case_cls(self.prompt_cls)
+        test_case_cls = PairwiseReviewManager.get_test_case_cls(self.prompt)
         query_cls = test_case_cls.query_cls
         for block_idx, (target_block, reference_block) in enumerate(block_pairs):
             if block_idx >= stop_at_idx:
@@ -83,13 +83,13 @@ class PairwiseReviewProcessor(Processor):
                 if target_text != reference_text:
                     query = query_cls(
                         **{
-                            self.prompt_cls.target: target_text,
-                            self.prompt_cls.reference: reference_text,
+                            self.prompt.target: target_text,
+                            self.prompt.reference: reference_text,
                         }
                     )
                     test_case = test_case_cls(query=query)
                     test_case = self.queryer(test_case)
-                    output_text = getattr(test_case.answer, self.prompt_cls.output)
+                    output_text = getattr(test_case.answer, self.prompt.output)
 
                 if output_text == "�":
                     continue

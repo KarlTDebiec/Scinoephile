@@ -24,26 +24,26 @@ class Manager(ABC):
 
     operation: ClassVar[str]
     """Stable operation identifier used in persistence and CLIs."""
-    prompt_cls: ClassVar[type[Prompt]]
-    """Base prompt class defining persisted test-case field names."""
+    base_prompt: ClassVar[Prompt]
+    """Base prompt defining persisted test-case field names."""
 
     @classmethod
-    def get_query_cls(cls, prompt_cls: type[Prompt]) -> type[Query]:
+    def get_query_cls(cls, prompt: Prompt) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             query model class
         """
         raise NotImplementedError
 
     @classmethod
-    def get_answer_cls(cls, prompt_cls: type[Prompt]) -> type[Answer]:
+    def get_answer_cls(cls, prompt: Prompt) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             answer model class
         """
@@ -53,22 +53,22 @@ class Manager(ABC):
     @cache
     def get_test_case_cls[TTestCase: TestCase](
         cls,
-        prompt_cls: type[Prompt],
+        prompt: Prompt,
     ) -> type[TTestCase]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             test case model class
         """
-        query_cls = cls.get_query_cls(prompt_cls)
-        answer_cls = cls.get_answer_cls(prompt_cls)
-        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt_cls)
+        query_cls = cls.get_query_cls(prompt)
+        answer_cls = cls.get_answer_cls(prompt)
+        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt)
         validators = cls.get_test_case_validators()
 
         model = create_model(
-            get_model_name(TestCase.__name__, prompt_cls.__name__),
+            get_model_name(TestCase.__name__, prompt.name),
             __base__=TestCase,
             __module__=TestCase.__module__,
             __validators__=validators,
@@ -76,7 +76,7 @@ class Manager(ABC):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        model.prompt_cls = prompt_cls
+        model.llm_prompt = prompt
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model  # ty:ignore[invalid-return-type]
@@ -93,37 +93,37 @@ class Manager(ABC):
         Returns:
             test case class
         """
-        return cls.get_test_case_cls(cls.prompt_cls)
+        return cls.get_test_case_cls(cls.base_prompt)
 
     @classmethod
     def get_test_case_cls_with_prompt[TTestCase: TestCase](
         cls,
         test_case_cls: type[TestCase],
-        prompt_cls: type[Prompt],
+        prompt: Prompt,
     ) -> type[TTestCase]:
         """Get an equivalently shaped test-case class for another prompt.
 
         Arguments:
             test_case_cls: test-case class whose shape should be preserved
-            prompt_cls: prompt class whose correspondence fields should be used
+            prompt: prompt whose correspondence fields should be used
         Returns:
             equivalently shaped test-case class
         """
-        return cls.get_test_case_cls(prompt_cls=prompt_cls)
+        return cls.get_test_case_cls(prompt=prompt)
 
     @classmethod
     def get_test_case_fields(
         cls,
         query_cls: type[Query],
         answer_cls: type[Answer],
-        prompt_cls: type[Prompt],
+        prompt: Prompt,
     ) -> dict[str, Any]:
         """Get fields dictionary for dynamic TestCase class creation.
 
         Arguments:
             query_cls: query model class
             answer_cls: answer model class
-            prompt_cls: text for LLM correspondence
+            prompt: text for LLM correspondence
         Returns:
             fields dictionary for create_model
         """
@@ -132,15 +132,15 @@ class Manager(ABC):
             "answer": (answer_cls | None, Field(default=None)),
             "difficulty": (
                 int,
-                Field(0, description=prompt_cls.difficulty_description),
+                Field(0, description=prompt.difficulty_description),
             ),
             "prompt": (
                 bool,
-                Field(False, description=prompt_cls.prompt_description),
+                Field(False, description=prompt.prompt_description),
             ),
             "verified": (
                 bool,
-                Field(False, description=prompt_cls.verified_description),
+                Field(False, description=prompt.verified_description),
             ),
         }
         return fields

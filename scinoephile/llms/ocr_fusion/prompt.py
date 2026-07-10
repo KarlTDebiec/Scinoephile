@@ -15,6 +15,8 @@ __all__ = ["OcrFusionPrompt"]
 class OcrFusionPrompt(Prompt, ABC):
     """Text for LLM correspondence for OCR fusion matters."""
 
+    __slots__ = ()
+
     # Query fields
     src_1: ClassVar[str] = "one"
     """Name of source one field in query."""

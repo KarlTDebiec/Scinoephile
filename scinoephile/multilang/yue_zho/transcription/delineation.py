@@ -4,13 +4,18 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
-from scinoephile.lang.yue.prompts import PromptYueHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+)
 from scinoephile.llms.delineation import DelineationPrompt
+from scinoephile.llms.prompt_definition import define_prompt
 
 __all__ = [
     "YueDelineationVsZhoPromptYueHans",
@@ -18,7 +23,8 @@ __all__ = [
 ]
 
 
-class YueDelineationVsZhoPromptYueHant(DelineationPrompt, PromptEng, PromptYueHant):
+@define_prompt(DelineationPrompt, Language.yue_hant, parent=PromptEng)
+class YueDelineationVsZhoPromptYueHant:
     """Text for LLM correspondence for traditional written Cantonese delineation."""
 
     # Prompt
@@ -93,23 +99,12 @@ class YueDelineationVsZhoPromptYueHant(DelineationPrompt, PromptEng, PromptYueHa
     )
     """Error template when shifted source two characters do not match original."""
 
-    @classmethod
-    def src_2_chars_changed_err(cls, expected: str, received: str) -> str:
-        """Error when shifted source two characters do not match original.
 
-        Arguments:
-            expected: expected concatenated source two characters
-            received: received concatenated source two characters
-        Returns:
-            formatted error message
-        """
-        return cls.src_2_chars_changed_err_tpl.format(
-            expected=expected, received=received
-        )
-
-
-class YueDelineationVsZhoPromptYueHans(YueDelineationVsZhoPromptYueHant):
+@define_prompt(
+    DelineationPrompt,
+    Language.yue_hans,
+    parent=YueDelineationVsZhoPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class YueDelineationVsZhoPromptYueHans:
     """Text for LLM correspondence for simplified written Cantonese delineation."""
-
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Chinese characters from the parent class."""

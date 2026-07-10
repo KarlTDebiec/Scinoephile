@@ -17,6 +17,8 @@ from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.llms.delineation import DelineationPrompt
+from scinoephile.llms.punctuation import PunctuationPrompt
 from scinoephile.multilang.yue_zho.transcription import DEFAULT_YUE_WHISPER_MODEL_NAME
 from scinoephile.multilang.yue_zho.transcription.delineation import (
     YueDelineationVsZhoPromptYueHant,
@@ -171,8 +173,8 @@ def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
         vad_mode: object,
         provider: object,
         convert: OpenCCConfig | None,
-        delineation_prompt_cls: type[YueDelineationVsZhoPromptYueHant],
-        punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHant],
+        delineation_prompt: DelineationPrompt,
+        punctuation_prompt: PunctuationPrompt,
         additional_context: str | None,
     ) -> str:
         """Validate script and conversion options passed by the CLI."""
@@ -181,8 +183,8 @@ def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
         assert vad_mode is not None
         assert provider is not None
         assert convert == OpenCCConfig.hk2s
-        assert delineation_prompt_cls is YueDelineationVsZhoPromptYueHant
-        assert punctuation_prompt_cls is YuePunctuationVsZhoPromptYueHant
+        assert delineation_prompt is YueDelineationVsZhoPromptYueHant
+        assert punctuation_prompt is YuePunctuationVsZhoPromptYueHant
         assert additional_context is None
         return "transcriber"
 

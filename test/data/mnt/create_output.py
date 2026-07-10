@@ -79,7 +79,7 @@ if "yue_eng" in actions:
     translator = get_guided_translator(
         Language.zho_hant,
         Language.eng,
-        prompt_cls=EngZhoYueGuidedTranslationPrompt,
+        prompt=EngZhoYueGuidedTranslationPrompt,
         test_case_path=(
             output_path / "yue_eng/multilang/eng_zho/guided_translation.json"
         ),

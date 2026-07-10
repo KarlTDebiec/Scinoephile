@@ -27,7 +27,7 @@ class TestCase(BaseModel, ABC):
     """Query model class."""
     answer_cls: ClassVar[type[Answer]]
     """Answer model class."""
-    prompt_cls: ClassVar[type[Prompt]]
+    llm_prompt: ClassVar[Prompt]
     """Text for LLM correspondence."""
     query: Query
     """Query data for the test case."""

@@ -23,7 +23,7 @@ logger = getLogger(__name__)
 class ReviewProcessor(Processor):
     """Processes review LLM queries."""
 
-    prompt_cls: type[ReviewPrompt]
+    prompt: ReviewPrompt
     """Text for LLM correspondence."""
 
     manager_cls = ReviewManager
@@ -53,12 +53,12 @@ class ReviewProcessor(Processor):
             # Query LLM
             test_case_cls = ReviewManager.get_test_case_cls(
                 len(block),
-                self.prompt_cls,
+                self.prompt,
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for idx, subtitle in enumerate(block.events):
-                key = self.prompt_cls.input(idx + 1)
+                key = self.prompt.input(idx + 1)
                 query_kwargs[key] = subtitle.text_with_newline.strip()
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
@@ -66,7 +66,7 @@ class ReviewProcessor(Processor):
 
             output_series = Series()
             for sub_idx, subtitle in enumerate(block):
-                key = self.prompt_cls.output(sub_idx + 1)
+                key = self.prompt.output(sub_idx + 1)
                 output_text = getattr(test_case.answer, key)
                 output_subtitle = type(subtitle)(**subtitle.as_dict())
                 if output_text:

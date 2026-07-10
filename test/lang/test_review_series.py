@@ -79,7 +79,7 @@ from test.helpers import assert_series_equal, parametrize
         "expected_fixture",
         "test_case_loader",
         "language",
-        "prompt_cls",
+        "prompt",
     ),
     [
         param(
@@ -410,7 +410,7 @@ def test_review_series(
     expected_fixture: str,
     test_case_loader: Callable[[], list[TestCase]],
     language: Language,
-    prompt_cls: type[ReviewPrompt],
+    prompt: ReviewPrompt,
 ):
     """Test review against expected outputs.
 
@@ -420,12 +420,12 @@ def test_review_series(
         expected_fixture: fixture name for expected output series
         test_case_loader: test case loader for the review path
         language: language to review
-        prompt_cls: prompt class for the review path
+        prompt: prompt for the review path
     """
     provider = Mock(spec=LLMProvider)
     reviewer = get_reviewer(
         language,
-        prompt_cls=prompt_cls,
+        prompt=prompt,
         test_cases=test_case_loader(),
         provider=provider,
     )

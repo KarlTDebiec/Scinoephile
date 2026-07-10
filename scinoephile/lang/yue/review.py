@@ -4,13 +4,19 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import ClassVar
 
+from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+)
 from scinoephile.llms.guided_review import GuidedReviewPrompt
 from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
+from scinoephile.llms.prompt_definition import define_prompt
 from scinoephile.llms.review import ReviewPrompt
 
 __all__ = [
@@ -23,7 +29,8 @@ __all__ = [
 ]
 
 
-class GuidedReviewPromptYueHant(GuidedReviewPrompt, PromptYueHant):
+@define_prompt(GuidedReviewPrompt, Language.yue_hant, parent=PromptYueHant)
+class GuidedReviewPromptYueHant:
     """LLM correspondence text for guided review of traditional Cantonese."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -51,14 +58,18 @@ class GuidedReviewPromptYueHant(GuidedReviewPrompt, PromptYueHant):
     """Prefix for output fields in answer."""
 
 
-class GuidedReviewPromptYueHans(GuidedReviewPromptYueHant):
+@define_prompt(
+    GuidedReviewPrompt,
+    Language.yue_hans,
+    parent=GuidedReviewPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class GuidedReviewPromptYueHans:
     """LLM correspondence text for guided review of simplified Cantonese."""
 
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Cantonese characters from the parent class."""
 
-
-class PairwiseReviewPromptYueHant(PairwiseReviewPrompt, PromptYueHant):
+@define_prompt(PairwiseReviewPrompt, Language.yue_hant, parent=PromptYueHant)
+class PairwiseReviewPromptYueHant:
     """LLM correspondence text for pairwise review of traditional Cantonese."""
 
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -88,14 +99,18 @@ class PairwiseReviewPromptYueHant(PairwiseReviewPrompt, PromptYueHant):
     """Name of note field in answer."""
 
 
-class PairwiseReviewPromptYueHans(PairwiseReviewPromptYueHant):
+@define_prompt(
+    PairwiseReviewPrompt,
+    Language.yue_hans,
+    parent=PairwiseReviewPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class PairwiseReviewPromptYueHans:
     """LLM correspondence text for pairwise review of simplified Cantonese."""
 
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Cantonese characters from the parent class."""
 
-
-class ReviewPromptYueHant(ReviewPrompt, PromptYueHant):
+@define_prompt(ReviewPrompt, Language.yue_hant, parent=PromptYueHant)
+class ReviewPromptYueHant:
     """LLM correspondence text for traditional written Cantonese review."""
 
     # Prompt
@@ -146,8 +161,11 @@ class ReviewPromptYueHant(ReviewPrompt, PromptYueHant):
     """Error template when output is missing for a note."""
 
 
-class ReviewPromptYueHans(ReviewPromptYueHant):
+@define_prompt(
+    ReviewPrompt,
+    Language.yue_hans,
+    parent=ReviewPromptYueHant,
+    transform=partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+class ReviewPromptYueHans:
     """LLM correspondence text for simplified written Cantonese review."""
-
-    opencc_config = OpenCCConfig.hk2s
-    """Config for converting traditional Cantonese characters from the parent class."""

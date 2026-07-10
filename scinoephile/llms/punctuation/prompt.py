@@ -15,6 +15,8 @@ __all__ = ["PunctuationPrompt"]
 class PunctuationPrompt(Prompt, ABC):
     """Text for LLM correspondence for punctuation."""
 
+    __slots__ = ()
+
     # Query fields
     src_1: ClassVar[str] = "one"
     """Name of source one field in query."""
@@ -55,8 +57,7 @@ class PunctuationPrompt(Prompt, ABC):
     )
     """Error when output characters do not match source one."""
 
-    @classmethod
-    def src_1_chars_changed_err(cls, expected: str, received: str) -> str:
+    def src_1_chars_changed_err(self, expected: str, received: str) -> str:
         """Error when output characters do not match source one.
 
         Arguments:
@@ -65,7 +66,7 @@ class PunctuationPrompt(Prompt, ABC):
         Returns:
             error message
         """
-        return cls.src_1_chars_changed_err_tpl.format(
+        return self.src_1_chars_changed_err_tpl.format(
             expected=expected,
             received=received,
         )

@@ -15,6 +15,8 @@ __all__ = ["TranslationPrompt"]
 class TranslationPrompt(Prompt, ABC):
     """Text for LLM correspondence for translation matters."""
 
+    __slots__ = ()
+
     # Query fields
     input_pfx: ClassVar[str] = "input_"
     """Prefix for input fields in query."""
@@ -30,23 +32,19 @@ class TranslationPrompt(Prompt, ABC):
     """Description template for output fields in answer."""
 
     # Query fields
-    @classmethod
-    def input(cls, idx: int) -> str:
+    def input(self, idx: int) -> str:
         """Name of input field in query."""
-        return f"{cls.input_pfx}{idx}"
+        return f"{self.input_pfx}{idx}"
 
-    @classmethod
-    def input_desc(cls, idx: int) -> str:
+    def input_desc(self, idx: int) -> str:
         """Description of input field in query."""
-        return cls.input_desc_tpl.format(idx=idx)
+        return self.input_desc_tpl.format(idx=idx)
 
     # Answer fields
-    @classmethod
-    def output(cls, idx: int) -> str:
+    def output(self, idx: int) -> str:
         """Name of output field in answer."""
-        return f"{cls.output_pfx}{idx}"
+        return f"{self.output_pfx}{idx}"
 
-    @classmethod
-    def output_desc(cls, idx: int) -> str:
+    def output_desc(self, idx: int) -> str:
         """Description of output field in answer."""
-        return cls.output_desc_tpl.format(idx=idx)
+        return self.output_desc_tpl.format(idx=idx)

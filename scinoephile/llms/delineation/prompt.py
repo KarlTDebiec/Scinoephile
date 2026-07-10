@@ -15,6 +15,8 @@ __all__ = ["DelineationPrompt"]
 class DelineationPrompt(Prompt, ABC):
     """Text for LLM correspondence for delineation."""
 
+    __slots__ = ()
+
     # Query fields
     src_1_sub_1: ClassVar[str] = "src_1_sub_1"
     """Name of source one subtitle one field in query."""
@@ -75,8 +77,7 @@ class DelineationPrompt(Prompt, ABC):
     )
     """Error template when shifted source two characters do not match original."""
 
-    @classmethod
-    def src_2_chars_changed_err(cls, expected: str, received: str) -> str:
+    def src_2_chars_changed_err(self, expected: str, received: str) -> str:
         """Error when shifted source two characters do not match original.
 
         Arguments:
@@ -85,6 +86,6 @@ class DelineationPrompt(Prompt, ABC):
         Returns:
             formatted error message
         """
-        return cls.src_2_chars_changed_err_tpl.format(
+        return self.src_2_chars_changed_err_tpl.format(
             expected=expected, received=received
         )
