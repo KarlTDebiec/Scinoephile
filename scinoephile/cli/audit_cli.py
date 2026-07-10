@@ -148,6 +148,20 @@ class AuditCli(ScinoephileCliBase):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
+            "--simplified",
+            dest="simplified_path",
+            required=True,
+            type=input_file_arg(),
+            help="simplified-script review input SRT file",
+        )
+        arg_groups["input arguments"].add_argument(
+            "--simplified-reviewed",
+            dest="simplified_reviewed_path",
+            required=True,
+            type=input_file_arg(),
+            help="simplified-script reviewed SRT file",
+        )
+        arg_groups["input arguments"].add_argument(
             "--traditional",
             dest="traditional_path",
             required=True,
@@ -176,39 +190,22 @@ class AuditCli(ScinoephileCliBase):
             help="simplified traditional-script SRT file after its final review",
         )
         arg_groups["input arguments"].add_argument(
-            "--simplified",
-            dest="simplified_path",
-            required=True,
+            "--simplified-json",
+            dest="simplified_json_path",
             type=input_file_arg(),
-            help="simplified-script review input SRT file",
-        )
-        arg_groups["input arguments"].add_argument(
-            "--simplified-reviewed",
-            dest="simplified_reviewed_path",
-            required=True,
-            type=input_file_arg(),
-            help="simplified-script reviewed SRT file",
+            help="optional review JSON corresponding to --simplified",
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-json",
-            default=None,
             dest="traditional_json_path",
             type=input_file_arg(),
             help="optional review JSON corresponding to --traditional",
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-simplified-json",
-            default=None,
             dest="traditional_simplified_json_path",
             type=input_file_arg(),
             help=("optional review JSON corresponding to --traditional-simplified"),
-        )
-        arg_groups["input arguments"].add_argument(
-            "--simplified-json",
-            default=None,
-            dest="simplified_json_path",
-            type=input_file_arg(),
-            help="optional review JSON corresponding to --simplified",
         )
 
         # Operation arguments
@@ -264,15 +261,15 @@ class AuditCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
+        simplified_path: Path,
+        simplified_reviewed_path: Path,
         traditional_path: Path,
         traditional_reviewed_path: Path,
         traditional_simplified_path: Path,
         traditional_simplified_reviewed_path: Path,
-        simplified_path: Path,
-        simplified_reviewed_path: Path,
+        simplified_json_path: Path | None,
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
-        simplified_json_path: Path | None,
         row_filter: ReviewAuditFilter,
         characters: list[str] | None,
         first_index: int | None,
@@ -285,17 +282,17 @@ class AuditCli(ScinoephileCliBase):
         # Perform operation
         try:
             report = audit_reviews(
+                simplified_path=simplified_path,
+                simplified_reviewed_path=simplified_reviewed_path,
                 traditional_path=traditional_path,
                 traditional_reviewed_path=traditional_reviewed_path,
                 traditional_simplified_path=traditional_simplified_path,
                 traditional_simplified_reviewed_path=(
                     traditional_simplified_reviewed_path
                 ),
-                simplified_path=simplified_path,
-                simplified_reviewed_path=simplified_reviewed_path,
+                simplified_json_path=simplified_json_path,
                 traditional_json_path=traditional_json_path,
                 traditional_simplified_json_path=traditional_simplified_json_path,
-                simplified_json_path=simplified_json_path,
                 row_filter=row_filter,
                 characters=characters or (),
                 first_index=first_index,
