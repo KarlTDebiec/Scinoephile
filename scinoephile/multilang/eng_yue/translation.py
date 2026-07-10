@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import PromptEng
+from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
 from scinoephile.llms.gap_translation import GapTranslationPrompt
 from scinoephile.llms.guided_translation import GuidedTranslationPrompt
 from scinoephile.llms.translation import TranslationPrompt
@@ -20,7 +20,7 @@ __all__ = [
 
 EngYueTranslationPrompt = TranslationPrompt(
     language=Language.eng,
-    **PromptEng.localization_kwargs,
+    **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         You are responsible for creating English subtitles from written Cantonese
         subtitles.
@@ -47,7 +47,7 @@ EngYueTranslationPrompt = TranslationPrompt(
 
 EngYueGapTranslationPrompt = GapTranslationPrompt(
     language=Language.eng,
-    **PromptEng.localization_kwargs,
+    **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         You are responsible for filling missing English subtitle lines using the
         corresponding written Cantonese subtitles as reference.
@@ -80,7 +80,7 @@ EngYueGapTranslationPrompt = GapTranslationPrompt(
 
 EngYueGuidedTranslationPrompt = GuidedTranslationPrompt(
     language=Language.eng,
-    **PromptEng.localization_kwargs,
+    **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         You are responsible for creating English subtitles from written Cantonese
         subtitles. You will also receive original English subtitles from the same

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import PromptEng
+from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
 from scinoephile.llms.ocr_fusion import OcrFusionPrompt
 
 __all__ = ["OcrFusionPromptEng"]
@@ -14,7 +14,7 @@ __all__ = ["OcrFusionPromptEng"]
 
 OcrFusionPromptEng = OcrFusionPrompt(
     language=Language.eng,
-    **PromptEng.localization_kwargs,
+    **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         You are responsible for merging English subtitle OCR results from two different
         sources: Google Lens and Tesseract.

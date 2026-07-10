@@ -8,7 +8,7 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.yue.prompts import PromptYueHant
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
@@ -23,7 +23,7 @@ __all__ = [
 
 OcrFusionPromptYueHant = OcrFusionPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責將來自兩個唔同來源嘅粵文字幕 OCR 結果融合：Google Lens 同 PaddleOCR。
         請遵循以下原則：

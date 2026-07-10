@@ -8,7 +8,7 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.zho.prompts import PromptZhoHant
+from scinoephile.lang.zho.prompts import ZHO_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
@@ -29,7 +29,7 @@ __all__ = [
 
 GuidedReviewPromptZhoHant = GuidedReviewPrompt(
     language=Language.zho_hant,
-    **PromptZhoHant.localization_kwargs,
+    **ZHO_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責對中文字幕進行最後審核。
         你還會看到涵蓋同一段內容的參考字幕；參考字幕可以使用另一種語言，數量也可能不同。
@@ -53,7 +53,7 @@ GuidedReviewPromptZhoHans = GuidedReviewPromptZhoHant.transformed(
 
 PairwiseReviewPromptZhoHant = PairwiseReviewPrompt(
     language=Language.zho_hant,
-    **PromptZhoHant.localization_kwargs,
+    **ZHO_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         將一條中文字幕與一條對應的參考字幕逐條比較校對；參考字幕可以使用另一種語言。
         僅修正參考字幕足以證實的明顯聽寫、用字或名稱錯誤。
@@ -77,7 +77,7 @@ PairwiseReviewPromptZhoHans = PairwiseReviewPromptZhoHant.transformed(
 
 ReviewPromptZhoHant = ReviewPrompt(
     language=Language.zho_hant,
-    **PromptZhoHant.localization_kwargs,
+    **ZHO_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責校對中文字幕。
         僅修正排版與錯別字等排版性/輸入性錯誤。

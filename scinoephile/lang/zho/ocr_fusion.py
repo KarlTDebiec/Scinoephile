@@ -8,7 +8,7 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.zho.prompts import PromptZhoHant
+from scinoephile.lang.zho.prompts import ZHO_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
@@ -23,7 +23,7 @@ __all__ = [
 
 OcrFusionPromptZhoHant = OcrFusionPrompt(
     language=Language.zho_hant,
-    **PromptZhoHant.localization_kwargs,
+    **ZHO_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責將來自兩個不同來源的中文字幕 OCR 結果進行融合：Google Lens 和 PaddleOCR。
         請遵循以下原則：

@@ -8,7 +8,7 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.yue.prompts import PromptYueHant
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
@@ -29,7 +29,7 @@ __all__ = [
 
 YueZhoTranslationPromptYueHant = TranslationPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     dictionary_tool_name="lookup_dictionary",
     dictionary_tool_description="查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。",
     dictionary_tool_query_description="要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。",
@@ -59,7 +59,7 @@ YueZhoTranslationPromptYueHans = YueZhoTranslationPromptYueHant.transformed(
 
 YueZhoGapTranslationPromptYueHant = GapTranslationPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     dictionary_tool_name="lookup_dictionary",
     dictionary_tool_description="查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。",
     dictionary_tool_query_description="要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。",
@@ -97,7 +97,7 @@ YueZhoGapTranslationPromptYueHans = YueZhoGapTranslationPromptYueHant.transforme
 
 YueZhoGuidedTranslationPromptYueHant = GuidedTranslationPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     dictionary_tool_name="lookup_dictionary",
     dictionary_tool_description="查本地詞典入面嘅粵語同普通話詞條。工具會自動判斷查詢係漢字、拼音定粵拼。",
     dictionary_tool_query_description="要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。",

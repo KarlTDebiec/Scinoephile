@@ -8,7 +8,7 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.yue.prompts import PromptYueHant
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
@@ -29,7 +29,7 @@ __all__ = [
 
 GuidedReviewPromptYueHant = GuidedReviewPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責為粵文字幕做最後審核。
         你亦會見到同一段內容嘅參考字幕；參考字幕可以係另一種語言，字幕數量亦未必相同。
@@ -53,7 +53,7 @@ GuidedReviewPromptYueHans = GuidedReviewPromptYueHant.transformed(
 
 PairwiseReviewPromptYueHant = PairwiseReviewPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         將一條粵文字幕同一條對應嘅參考字幕作比較校對；參考字幕可以係另一種語言。
         只修正參考字幕足以證實嘅明顯聽錯字、寫錯字或者名稱錯誤。
@@ -77,7 +77,7 @@ PairwiseReviewPromptYueHans = PairwiseReviewPromptYueHant.transformed(
 
 ReviewPromptYueHant = ReviewPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責校對粵文字幕。
         只修正排版、錯別字、OCR 或轉寫造成嘅明顯錯誤。

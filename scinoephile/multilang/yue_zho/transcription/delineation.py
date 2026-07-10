@@ -8,7 +8,7 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import PromptEng
+from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
@@ -23,7 +23,7 @@ __all__ = [
 
 YueDelineationVsZhoPromptYueHant = DelineationPrompt(
     language=Language.yue_hant,
-    **PromptEng.localization_kwargs,
+    **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責將廣東話口語嘅粵文字幕同對應嘅中文字幕對齊。
         你會收到一條中文字幕 (zhongwen_1) 同一條初步粵文字幕 (yuewen_1)，

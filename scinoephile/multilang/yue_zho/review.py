@@ -8,7 +8,7 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.yue.prompts import PromptYueHant
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
@@ -26,7 +26,7 @@ __all__ = [
 
 YueZhoGuidedReviewPromptYueHant = GuidedReviewPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責為廣東話語音嘅粵文字幕做最後審核。
         作為指引，你會見到同一段內容嘅中文字幕；兩邊字幕數量未必相同。
@@ -60,7 +60,7 @@ YueZhoGuidedReviewPromptYueHans = YueZhoGuidedReviewPromptYueHant.transformed(
 
 YueZhoPairwiseReviewPromptYueHant = PairwiseReviewPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責為廣東話語音嘅粵文字幕做校對。
         作為參考，你會見到一條對應嘅中文字幕。

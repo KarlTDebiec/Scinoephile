@@ -8,7 +8,7 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.zho.prompts import PromptZhoHant
+from scinoephile.lang.zho.prompts import ZHO_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
@@ -29,7 +29,7 @@ __all__ = [
 
 ZhoYueTranslationPromptZhoHant = TranslationPrompt(
     language=Language.zho_hant,
-    **PromptZhoHant.localization_kwargs,
+    **ZHO_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責根據粵文字幕，創作對應的標準中文字幕。
 
@@ -56,7 +56,7 @@ ZhoYueTranslationPromptZhoHans = ZhoYueTranslationPromptZhoHant.transformed(
 
 ZhoYueGapTranslationPromptZhoHant = GapTranslationPrompt(
     language=Language.zho_hant,
-    **PromptZhoHant.localization_kwargs,
+    **ZHO_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責根據對應的粵文字幕，補翻譯缺失的標準中文字幕。
         只有當某行現有中文字幕爲空字符串時，才需要提供譯文。
@@ -89,7 +89,7 @@ ZhoYueGapTranslationPromptZhoHans = ZhoYueGapTranslationPromptZhoHant.transforme
 
 ZhoYueGuidedTranslationPromptZhoHant = GuidedTranslationPrompt(
     language=Language.zho_hant,
-    **PromptZhoHant.localization_kwargs,
+    **ZHO_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責根據粵文字幕，創作對應的標準中文字幕。你也會收到同一段場景的
         既有中文字幕，作爲參考材料。

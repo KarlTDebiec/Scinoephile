@@ -4,32 +4,32 @@
 
 from __future__ import annotations
 
-from scinoephile.core import Language
-from scinoephile.core.llms import Prompt
-from scinoephile.lang.zho.prompts import PromptZhoHant
+from typing import Final
 
-__all__ = ["PromptYueHant"]
+from scinoephile.core.llms import PromptLocalizationFields
+
+__all__ = ["YUE_HANT_PROMPT_FIELDS"]
 
 
-PromptYueHant = Prompt(
-    language=Language.yue_hant,
-    base_system_prompt=PromptZhoHant.base_system_prompt,
-    difficulty_description=PromptZhoHant.difficulty_description,
-    few_shot_description=PromptZhoHant.few_shot_description,
-    verified_description=PromptZhoHant.verified_description,
-    schema_intro="你嘅回覆一定要係一個有以下結構嘅 JSON 物件：",
-    few_shot_intro="下面係一啲查詢同埋佢哋預期答案嘅例子：",
-    few_shot_query_intro="例子查詢：",
-    few_shot_answer_intro="預期答案：",
-    answer_invalid_pre=(
+YUE_HANT_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
+    "schema_intro": "你嘅回覆一定要係一個有以下結構嘅 JSON 物件：",
+    "few_shot_intro": "下面係一啲查詢同埋佢哋預期答案嘅例子：",
+    "few_shot_query_intro": "例子查詢：",
+    "few_shot_answer_intro": "預期答案：",
+    "answer_invalid_pre": (
         "你之前嘅回覆唔係有效嘅 JSON，或者未符合預期嘅模式要求。錯誤詳情："
     ),
-    answer_invalid_post=(
+    "answer_invalid_post": (
         "請你再試一次，並且淨係返返一個符合該模式要求嘅有效 JSON 物件。"
     ),
-    test_case_invalid_pre=(
+    "difficulty_description": "Difficulty level of the test case, used for filtering.",
+    "few_shot_description": "Whether to include test case in few-shot examples.",
+    "verified_description": (
+        "Whether to include test case in the verified answers cache."
+    ),
+    "test_case_invalid_pre": (
         "你之前嘅回覆係符合答案模式嘅有效 JSON，但唔適用於而家呢個特定查詢。錯誤詳情："
     ),
-    test_case_invalid_post="請你根據錯誤信息對你嘅回覆作相應修改。",
-)
-"""LLM correspondence text for traditional written Cantonese."""
+    "test_case_invalid_post": "請你根據錯誤信息對你嘅回覆作相應修改。",
+}
+"""Shared traditional written Cantonese LLM correspondence fields."""

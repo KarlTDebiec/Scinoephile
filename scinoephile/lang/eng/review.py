@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import PromptEng
+from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
 from scinoephile.llms.guided_review import GuidedReviewPrompt
 from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
 from scinoephile.llms.review import ReviewPrompt
@@ -20,7 +20,7 @@ __all__ = [
 
 GuidedReviewPromptEng = GuidedReviewPrompt(
     language=Language.eng,
-    **PromptEng.localization_kwargs,
+    **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         You are responsible for the final review of English subtitles.
         You will also receive guide subtitles covering the same passage, possibly in
@@ -40,7 +40,7 @@ GuidedReviewPromptEng = GuidedReviewPrompt(
 
 PairwiseReviewPromptEng = PairwiseReviewPrompt(
     language=Language.eng,
-    **PromptEng.localization_kwargs,
+    **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         Review one English subtitle against one corresponding reference subtitle,
         which may be in another language. Correct only clear transcription, spelling,
@@ -59,7 +59,7 @@ PairwiseReviewPromptEng = PairwiseReviewPrompt(
 
 ReviewPromptEng = ReviewPrompt(
     language=Language.eng,
-    **PromptEng.localization_kwargs,
+    **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         You are responsible for proofreading English subtitles.
         For each subtitle, you are to provide revised subtitle only if revisions are

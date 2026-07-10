@@ -34,28 +34,6 @@ def test_prompt_transformation_preserves_type_and_changes_language():
     assert transformed.base_system_prompt == "REVIEW SUBTITLES."
 
 
-def test_prompt_localization_kwargs_reuse_only_shared_fields():
-    """Localization keywords should exclude operation-specific prompt fields."""
-    base_prompt = ReviewPrompt(
-        language=Language.zho_hant,
-        base_system_prompt="Base operation instructions.",
-        schema_intro="Localized schema introduction.",
-        input_pfx="source_",
-    )
-
-    localized_prompt = ReviewPrompt(
-        language=base_prompt.language,
-        **base_prompt.localization_kwargs,
-        base_system_prompt="Specialized operation instructions.",
-        input_pfx="subtitle_",
-    )
-
-    assert localized_prompt.language == Language.zho_hant
-    assert localized_prompt.schema_intro == "Localized schema introduction."
-    assert localized_prompt.base_system_prompt == "Specialized operation instructions."
-    assert localized_prompt.input_pfx == "subtitle_"
-
-
 def test_prompt_values_are_immutable():
     """Prompt values should reject mutation."""
     prompt = ReviewPrompt(language=Language.eng)

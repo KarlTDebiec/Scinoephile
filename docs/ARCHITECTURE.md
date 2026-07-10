@@ -72,8 +72,8 @@ dataclasses defining behavior and named correspondence fields for review,
 translation, OCR fusion, and the other LLM shapes. Authored and localized
 prompts construct those types directly with a `Language` and string fields. LLM
 managers, processors, queryers, and workflows pass these values directly.
-Authored prompts may reuse a language base prompt's fixed shared fields through
-its typed `localization_kwargs` projection.
+Authored prompts may reuse typed language-specific field dictionaries while
+keeping their language and operation-specific fields explicit.
 
 Only generated Pydantic query, answer, and test-case models are represented by
 runtime classes. Managers cache those model classes using the immutable prompt

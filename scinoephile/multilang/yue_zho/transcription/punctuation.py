@@ -13,7 +13,7 @@ from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
 )
-from scinoephile.lang.yue.prompts import PromptYueHant
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
@@ -29,7 +29,7 @@ __all__ = [
 
 YuePunctuationVsZhoPromptYueHant = PunctuationPrompt(
     language=Language.yue_hant,
-    **PromptYueHant.localization_kwargs,
+    **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責將廣東話口語嘅粵文字幕同對應嘅中文字幕對齊。
         你會收到一條中文字幕，以及同一條字幕對應嘅多行粵文轉寫。

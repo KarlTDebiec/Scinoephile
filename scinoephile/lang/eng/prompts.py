@@ -4,24 +4,35 @@
 
 from __future__ import annotations
 
-from scinoephile.core import Language
-from scinoephile.core.llms import Prompt
+from typing import Final
 
-__all__ = ["PromptEng"]
+from scinoephile.core.llms import PromptLocalizationFields
+
+__all__ = ["ENG_PROMPT_FIELDS"]
 
 
-PromptEng = Prompt(
-    language=Language.eng,
-    schema_intro="Your response must be a JSON object with the following structure:",
-    few_shot_intro="Here are some examples of queries and expected answers:",
-    few_shot_query_intro="Example query:",
-    few_shot_answer_intro="Expected answer:",
-    answer_invalid_pre="Your previous response was not valid JSON or did "
-    "not match the expected schema. Error details:",
-    answer_invalid_post="Please try again and respond only with a valid "
-    "JSON object matching the schema.",
-    test_case_invalid_pre="Your previous response was valid JSON compliant with "
-    "the answer schema, but not valid for this specific query. Error details:",
-    test_case_invalid_post="Please revise your response accordingly.",
-)
-"""LLM correspondence text for English."""
+ENG_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
+    "schema_intro": "Your response must be a JSON object with the following structure:",
+    "few_shot_intro": "Here are some examples of queries and expected answers:",
+    "few_shot_query_intro": "Example query:",
+    "few_shot_answer_intro": "Expected answer:",
+    "answer_invalid_pre": (
+        "Your previous response was not valid JSON or did not match the expected "
+        "schema. Error details:"
+    ),
+    "answer_invalid_post": (
+        "Please try again and respond only with a valid JSON object matching the "
+        "schema."
+    ),
+    "difficulty_description": "Difficulty level of the test case, used for filtering.",
+    "few_shot_description": "Whether to include test case in few-shot examples.",
+    "verified_description": (
+        "Whether to include test case in the verified answers cache."
+    ),
+    "test_case_invalid_pre": (
+        "Your previous response was valid JSON compliant with the answer schema, but "
+        "not valid for this specific query. Error details:"
+    ),
+    "test_case_invalid_post": "Please revise your response accordingly.",
+}
+"""Shared English LLM correspondence fields."""
