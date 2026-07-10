@@ -8,32 +8,30 @@ import json
 from pathlib import Path
 from typing import TypedDict
 
-from pytest import raises
-
 from scinoephile.analysis.review_audit import ReviewAuditFilter, audit_reviews
-from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series, Subtitle
 
 
-class _AuditPaths(TypedDict):
-    """Paths comprising one complete audit input set."""
+class _AuditInputs(TypedDict):
+    """Inputs comprising one complete audit input set."""
 
-    traditional_path: Path
-    """Traditional review input path."""
+    traditional: Series
+    """Traditional review input."""
 
-    traditional_reviewed_path: Path
-    """Traditional reviewed path."""
+    traditional_reviewed: Series
+    """Traditional reviewed subtitles."""
 
-    traditional_simplified_path: Path
-    """Traditional simplification review input path."""
+    traditional_simplified: Series
+    """Traditional simplification review input."""
 
-    traditional_simplified_reviewed_path: Path
-    """Traditional simplification reviewed path."""
+    traditional_simplified_reviewed: Series
+    """Traditional simplification reviewed subtitles."""
 
-    simplified_path: Path
-    """Simplified review input path."""
+    simplified: Series
+    """Simplified review input."""
 
-    simplified_reviewed_path: Path
-    """Simplified reviewed path."""
+    simplified_reviewed: Series
+    """Simplified reviewed subtitles."""
 
     traditional_json_path: Path
     """Traditional review JSON path."""
@@ -51,10 +49,10 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     Arguments:
         tmp_path: temporary path
     """
-    paths = _write_audit_inputs(tmp_path)
+    inputs = _get_audit_inputs(tmp_path)
 
     report = audit_reviews(
-        **paths,
+        **inputs,
         row_filter=ReviewAuditFilter.changes,
     )
 
@@ -70,7 +68,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     assert "Traditional simplification review: 修正簡化結果。" in report
 
     report = audit_reviews(
-        **paths,
+        **inputs,
         row_filter=ReviewAuditFilter.discrepancies,
     )
     assert "- table rows: 2" in report
@@ -79,7 +77,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     assert "| 4 |" in report
 
     report = audit_reviews(
-        **paths,
+        **inputs,
         row_filter=ReviewAuditFilter.all,
         characters=("著丙",),
     )
@@ -89,7 +87,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     assert "| 3 |" in report
 
     report = audit_reviews(
-        **paths,
+        **inputs,
         row_filter=ReviewAuditFilter.all,
         first_index=2,
         last_index=3,
@@ -109,51 +107,24 @@ def test_audit_reviews_reuses_deduplicated_json_note(tmp_path: Path):
     Arguments:
         tmp_path: temporary path
     """
-    original_path = tmp_path / "original.srt"
-    reviewed_path = tmp_path / "reviewed.srt"
     original_texts = ("錯", "錯")
     reviewed_texts = ("正", "正")
-    _write_srt(original_path, original_texts)
-    _write_srt(reviewed_path, reviewed_texts)
+    original = _get_series(original_texts)
+    reviewed = _get_series(reviewed_texts)
     json_path = tmp_path / "review.json"
     _write_review_json(json_path, ("錯",), {1: ("正", "修正。")})
 
     report = audit_reviews(
-        traditional_path=original_path,
-        traditional_reviewed_path=reviewed_path,
-        traditional_simplified_path=reviewed_path,
-        traditional_simplified_reviewed_path=reviewed_path,
-        simplified_path=reviewed_path,
-        simplified_reviewed_path=reviewed_path,
+        traditional=original,
+        traditional_reviewed=reviewed,
+        traditional_simplified=reviewed,
+        traditional_simplified_reviewed=reviewed,
+        simplified=reviewed,
+        simplified_reviewed=reviewed,
         traditional_json_path=json_path,
     )
 
     assert report.count("Traditional review: 修正。") == 2
-
-
-def test_audit_reviews_rejects_mismatched_counts(tmp_path: Path):
-    """Test mismatched subtitle counts are rejected.
-
-    Arguments:
-        tmp_path: temporary path
-    """
-    paths = _write_audit_inputs(tmp_path)
-    _write_srt(paths["simplified_reviewed_path"], ("甲", "简正", "着正"))
-
-    with raises(ScinoephileError, match="Subtitle counts do not match"):
-        audit_reviews(**paths, first_index=1, last_index=2)
-
-
-def test_audit_reviews_validates_index_range(tmp_path: Path):
-    """Test invalid subtitle index ranges are rejected.
-
-    Arguments:
-        tmp_path: temporary path
-    """
-    paths = _write_audit_inputs(tmp_path)
-
-    with raises(ScinoephileError, match="--first-index"):
-        audit_reviews(**paths, first_index=3, last_index=2)
 
 
 def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
@@ -162,29 +133,22 @@ def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
     Arguments:
         tmp_path: temporary path
     """
-    paths = _write_audit_inputs(tmp_path)
-    reviewed_path = paths["traditional_reviewed_path"]
-    reviewed_text = reviewed_path.read_text(encoding="utf-8")
-    reviewed_path.write_text(
-        reviewed_text.replace(
-            "00:00:02,000 --> 00:00:02,500",
-            "00:01:02,000 --> 00:01:02,500",
-        ),
-        encoding="utf-8",
-    )
+    inputs = _get_audit_inputs(tmp_path)
+    inputs["traditional_reviewed"].events[1].start = 62_000
+    inputs["traditional_reviewed"].events[1].end = 62_500
 
-    report = audit_reviews(**paths, row_filter=ReviewAuditFilter.all)
+    report = audit_reviews(**inputs, row_filter=ReviewAuditFilter.all)
 
     assert "- table rows: 4" in report
 
 
-def _write_audit_inputs(tmp_path: Path) -> _AuditPaths:
-    """Write a complete audit input set.
+def _get_audit_inputs(tmp_path: Path) -> _AuditInputs:
+    """Get a complete audit input set.
 
     Arguments:
         tmp_path: temporary path
     Returns:
-        audit argument paths
+        audit inputs
     """
     texts_by_name = {
         "traditional": ("甲", "傳錯", "著", "異"),
@@ -194,11 +158,7 @@ def _write_audit_inputs(tmp_path: Path) -> _AuditPaths:
         "simplified": ("甲", "简错", "着正", "异甲"),
         "simplified_reviewed": ("甲", "简正", "着正", "异甲"),
     }
-    series_paths: dict[str, Path] = {}
-    for name, texts in texts_by_name.items():
-        path = tmp_path / f"{name}.srt"
-        _write_srt(path, texts)
-        series_paths[name] = path
+    series = {name: _get_series(texts) for name, texts in texts_by_name.items()}
 
     traditional_json_path = tmp_path / "traditional.json"
     _write_review_json(
@@ -218,19 +178,28 @@ def _write_audit_inputs(tmp_path: Path) -> _AuditPaths:
         texts_by_name["simplified"],
         {2: ("简正", "修正简体字。")},
     )
-    return _AuditPaths(
-        traditional_path=series_paths["traditional"],
-        traditional_reviewed_path=series_paths["traditional_reviewed"],
-        traditional_simplified_path=series_paths["traditional_simplified"],
-        traditional_simplified_reviewed_path=(
-            series_paths["traditional_simplified_reviewed"]
-        ),
-        simplified_path=series_paths["simplified"],
-        simplified_reviewed_path=series_paths["simplified_reviewed"],
+    return _AuditInputs(
+        traditional=series["traditional"],
+        traditional_reviewed=series["traditional_reviewed"],
+        traditional_simplified=series["traditional_simplified"],
+        traditional_simplified_reviewed=series["traditional_simplified_reviewed"],
+        simplified=series["simplified"],
+        simplified_reviewed=series["simplified_reviewed"],
         traditional_json_path=traditional_json_path,
         traditional_simplified_json_path=traditional_simplified_json_path,
         simplified_json_path=simplified_json_path,
     )
+
+
+def _get_series(texts: tuple[str, ...]) -> Series:
+    """Get a subtitle series fixture.
+
+    Arguments:
+        texts: subtitle texts
+    Returns:
+        subtitle series
+    """
+    return Series(events=[Subtitle(text=text) for text in texts])
 
 
 def _write_review_json(
@@ -254,17 +223,3 @@ def _write_review_json(
         json.dumps([{"query": query, "answer": answer}], ensure_ascii=False),
         encoding="utf-8",
     )
-
-
-def _write_srt(srt_path: Path, texts: tuple[str, ...]):
-    """Write an SRT fixture.
-
-    Arguments:
-        srt_path: output SRT path
-        texts: subtitle texts
-    """
-    blocks = [
-        f"{number}\n00:00:{number:02},000 --> 00:00:{number:02},500\n{text}"
-        for number, text in enumerate(texts, 1)
-    ]
-    srt_path.write_text("\n\n".join(blocks) + "\n", encoding="utf-8")

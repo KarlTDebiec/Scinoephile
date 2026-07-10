@@ -6,15 +6,18 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pytest import CaptureFixture
+from pytest import CaptureFixture, raises
 
 from scinoephile.cli.audit_cli import AuditCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
 
 
-def test_audit_cli_stdout_and_outfile(tmp_path: Path, capsys: CaptureFixture):
-    """Test audit reports can be printed or written to Markdown.
+def test_audit_cli_stdout_outfile_and_validation(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test audit output and input validation.
 
     Arguments:
         tmp_path: temporary path
@@ -49,6 +52,23 @@ def test_audit_cli_stdout_and_outfile(tmp_path: Path, capsys: CaptureFixture):
     run_cli_with_args(AuditCli, f"{arguments} --outfile {outfile_path}")
     assert capsys.readouterr().out == ""
     assert outfile_path.read_text(encoding="utf-8").startswith("# Review Audit\n")
+
+    with raises(SystemExit):
+        run_cli_with_args(AuditCli, f"{arguments} --first-index 2 --last-index 1")
+    assert "--first-index must be less than or equal to --last-index" in (
+        capsys.readouterr().err
+    )
+
+    reviewed_path.write_text(
+        reviewed_path.read_text(encoding="utf-8")
+        + "\n2\n00:00:02,000 --> 00:00:02,500\n又\n",
+        encoding="utf-8",
+    )
+    with raises(SystemExit):
+        run_cli_with_args(AuditCli, arguments)
+    assert "Subtitle inputs must contain the same number of subtitles" in (
+        capsys.readouterr().err
+    )
 
 
 def test_audit_cli_is_top_level_subcommand():

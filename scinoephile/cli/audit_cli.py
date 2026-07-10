@@ -9,6 +9,7 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from scinoephile.analysis.review_audit import ReviewAuditFilter, audit_reviews
+from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -275,19 +276,45 @@ class AuditCli(ScinoephileCliBase):
         outfile_path: Path | None,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
+        if (
+            first_index is not None
+            and last_index is not None
+            and first_index > last_index
+        ):
+            parser.error("--first-index must be less than or equal to --last-index")
+
+        # Read inputs
+        simplified = read_series(parser, simplified_path)
+        simplified_reviewed = read_series(parser, simplified_reviewed_path)
+        traditional = read_series(parser, traditional_path)
+        traditional_reviewed = read_series(parser, traditional_reviewed_path)
+        traditional_simplified = read_series(parser, traditional_simplified_path)
+        traditional_simplified_reviewed = read_series(
+            parser,
+            traditional_simplified_reviewed_path,
+        )
+        input_series = (
+            simplified,
+            simplified_reviewed,
+            traditional,
+            traditional_reviewed,
+            traditional_simplified,
+            traditional_simplified_reviewed,
+        )
+        if len(set(map(len, input_series))) != 1:
+            parser.error("Subtitle inputs must contain the same number of subtitles")
 
         # Perform operation
         try:
             report = audit_reviews(
-                simplified_path=simplified_path,
-                simplified_reviewed_path=simplified_reviewed_path,
-                traditional_path=traditional_path,
-                traditional_reviewed_path=traditional_reviewed_path,
-                traditional_simplified_path=traditional_simplified_path,
-                traditional_simplified_reviewed_path=(
-                    traditional_simplified_reviewed_path
-                ),
+                simplified=simplified,
+                simplified_reviewed=simplified_reviewed,
+                traditional=traditional,
+                traditional_reviewed=traditional_reviewed,
+                traditional_simplified=traditional_simplified,
+                traditional_simplified_reviewed=traditional_simplified_reviewed,
                 simplified_json_path=simplified_json_path,
                 traditional_json_path=traditional_json_path,
                 traditional_simplified_json_path=traditional_simplified_json_path,

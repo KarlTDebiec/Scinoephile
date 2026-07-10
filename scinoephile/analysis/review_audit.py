@@ -5,14 +5,12 @@
 from __future__ import annotations
 
 import json
-import re
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
-from typing import cast
 
 from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series
 
 __all__ = [
     "ReviewAuditFilter",
@@ -33,39 +31,14 @@ class ReviewAuditFilter(StrEnum):
     """Include only final discrepancies."""
 
 
-@dataclass(frozen=True)
-class _ReviewChange:
-    """One subtitle review edit."""
-
-    original: str
-    """Original subtitle text."""
-
-    revised: str
-    """Reviewed subtitle text."""
-
-
-@dataclass(frozen=True)
-class _SrtEvent:
-    """One SRT event parsed without normalizing its text."""
-
-    number: int
-    """Subtitle number."""
-
-    timing: str
-    """Raw SRT timing line."""
-
-    text: str
-    """Raw subtitle text."""
-
-
 def audit_reviews(
     *,
-    traditional_path: Path,
-    traditional_reviewed_path: Path,
-    traditional_simplified_path: Path,
-    traditional_simplified_reviewed_path: Path,
-    simplified_path: Path,
-    simplified_reviewed_path: Path,
+    traditional: Series,
+    traditional_reviewed: Series,
+    traditional_simplified: Series,
+    traditional_simplified_reviewed: Series,
+    simplified: Series,
+    simplified_reviewed: Series,
     traditional_json_path: Path | None = None,
     traditional_simplified_json_path: Path | None = None,
     simplified_json_path: Path | None = None,
@@ -74,16 +47,16 @@ def audit_reviews(
     first_index: int | None = None,
     last_index: int | None = None,
 ) -> str:
-    """Audit subtitle review paths and return a Markdown report.
+    """Audit subtitle review series and return a Markdown report.
 
     Arguments:
-        traditional_path: traditional-script review input SRT path
-        traditional_reviewed_path: traditional-script reviewed SRT path
-        traditional_simplified_path: simplified traditional-script SRT path
-        traditional_simplified_reviewed_path: reviewed simplified traditional-script
-            SRT path
-        simplified_path: simplified-script review input SRT path
-        simplified_reviewed_path: simplified-script reviewed SRT path
+        traditional: traditional-script review input
+        traditional_reviewed: traditional-script reviewed subtitles
+        traditional_simplified: simplified traditional-script subtitles
+        traditional_simplified_reviewed: reviewed simplified traditional-script
+            subtitles
+        simplified: simplified-script review input
+        simplified_reviewed: simplified-script reviewed subtitles
         traditional_json_path: optional traditional review JSON path
         traditional_simplified_json_path: optional traditional simplification review
             JSON path
@@ -95,23 +68,24 @@ def audit_reviews(
     Returns:
         Markdown audit report
     Raises:
-        ScinoephileError: if an input cannot be parsed or subtitle counts differ
+        ScinoephileError: if review JSON cannot be read or parsed
     """
     try:
-        _validate_index_range(first_index, last_index)
-        series_paths = {
-            "traditional": traditional_path,
-            "traditional_reviewed": traditional_reviewed_path,
-            "traditional_simplified": traditional_simplified_path,
-            "traditional_simplified_reviewed": (traditional_simplified_reviewed_path),
-            "simplified": simplified_path,
-            "simplified_reviewed": simplified_reviewed_path,
+        input_series = {
+            "traditional": traditional,
+            "traditional_reviewed": traditional_reviewed,
+            "traditional_simplified": traditional_simplified,
+            "traditional_simplified_reviewed": traditional_simplified_reviewed,
+            "simplified": simplified,
+            "simplified_reviewed": simplified_reviewed,
         }
         series = {
-            name: _parse_srt(series_path) for name, series_path in series_paths.items()
+            name: {
+                number: subtitle.text_with_newline
+                for number, subtitle in enumerate(subtitle_series, 1)
+            }
+            for name, subtitle_series in input_series.items()
         }
-        if len({len(events) for events in series.values()}) != 1:
-            raise ValueError("Subtitle counts do not match across series")
 
         # Match block-based notes against the complete inputs
         traditional_notes = _get_review_notes(
@@ -130,7 +104,7 @@ def audit_reviews(
             series["simplified_reviewed"],
         )
 
-        # Limit report calculations after validating the input counts
+        # Limit report calculations to the requested subtitle range
         series = {
             name: {
                 number: event
@@ -184,8 +158,6 @@ def audit_reviews(
             first_index=first_index,
             last_index=last_index,
         )
-    except ScinoephileError:
-        raise
     except (OSError, UnicodeError, ValueError) as exc:
         raise ScinoephileError(f"Unable to audit subtitle reviews: {exc}") from exc
 
@@ -203,11 +175,11 @@ def _escape_cell(value: str) -> str:
 
 def _format_markdown(
     *,
-    series: Mapping[str, Mapping[int, _SrtEvent]],
-    traditional_changes: Mapping[int, _ReviewChange],
-    traditional_simplified_changes: Mapping[int, _ReviewChange],
-    simplified_changes: Mapping[int, _ReviewChange],
-    final_discrepancies: Mapping[int, _ReviewChange],
+    series: Mapping[str, Mapping[int, str]],
+    traditional_changes: set[int],
+    traditional_simplified_changes: set[int],
+    simplified_changes: set[int],
+    final_discrepancies: set[int],
     traditional_notes: Mapping[int, Sequence[str]],
     traditional_simplified_notes: Mapping[int, Sequence[str]],
     simplified_notes: Mapping[int, Sequence[str]],
@@ -220,7 +192,7 @@ def _format_markdown(
     """Format a review audit as Markdown.
 
     Arguments:
-        series: parsed SRT events keyed by internal series name
+        series: subtitle text by internal series name and number
         traditional_changes: traditional review changes by subtitle number
         traditional_simplified_changes: traditional simplification review changes by
             subtitle number
@@ -240,11 +212,13 @@ def _format_markdown(
     """
     row_lines: list[str] = []
     for number in numbers:
-        final_discrepancy = final_discrepancies.get(number)
-        if final_discrepancy is None:
-            final_cell = series["simplified_reviewed"][number].text
+        if number not in final_discrepancies:
+            final_cell = series["simplified_reviewed"][number]
         else:
-            final_cell = f"{final_discrepancy.original}\n{final_discrepancy.revised}"
+            final_cell = (
+                f"{series['simplified_reviewed'][number]}\n"
+                f"{series['traditional_simplified_reviewed'][number]}"
+            )
 
         note_lines: list[str] = []
         note_sources = (
@@ -264,6 +238,7 @@ def _format_markdown(
                         _format_review_cell(
                             number,
                             simplified_changes,
+                            series["simplified"],
                             series["simplified_reviewed"],
                         )
                     ),
@@ -271,6 +246,7 @@ def _format_markdown(
                         _format_review_cell(
                             number,
                             traditional_changes,
+                            series["traditional"],
                             series["traditional_reviewed"],
                         )
                     ),
@@ -326,38 +302,39 @@ def _format_markdown(
 
 def _format_review_cell(
     number: int,
-    changes: Mapping[int, _ReviewChange],
-    reviewed: Mapping[int, _SrtEvent],
+    changes: set[int],
+    original: Mapping[int, str],
+    reviewed: Mapping[int, str],
 ) -> str:
     """Format one initial-review table cell.
 
     Arguments:
         number: subtitle number
-        changes: review changes by subtitle number
-        reviewed: reviewed subtitle events
+        changes: subtitle numbers changed during review
+        original: original subtitle text by number
+        reviewed: reviewed subtitle text by number
     Returns:
         formatted review text
     """
-    change = changes.get(number)
-    if change is None:
-        return reviewed[number].text
-    return f"{change.original}\n{change.revised}"
+    if number not in changes:
+        return reviewed[number]
+    return f"{original[number]}\n{reviewed[number]}"
 
 
 def _get_filtered_numbers(
     *,
-    series: Mapping[str, Mapping[int, _SrtEvent]],
-    traditional_changes: Mapping[int, _ReviewChange],
-    traditional_simplified_changes: Mapping[int, _ReviewChange],
-    simplified_changes: Mapping[int, _ReviewChange],
-    final_discrepancies: Mapping[int, _ReviewChange],
+    series: Mapping[str, Mapping[int, str]],
+    traditional_changes: set[int],
+    traditional_simplified_changes: set[int],
+    simplified_changes: set[int],
+    final_discrepancies: set[int],
     row_filter: ReviewAuditFilter,
     characters: Sequence[str],
 ) -> list[int]:
     """Get subtitle numbers selected for the report.
 
     Arguments:
-        series: parsed SRT events keyed by internal series name
+        series: subtitle text by internal series name and number
         traditional_changes: traditional review changes by subtitle number
         traditional_simplified_changes: traditional simplification review changes by
             subtitle number
@@ -372,20 +349,20 @@ def _get_filtered_numbers(
         numbers = set(series["traditional"])
     elif row_filter is ReviewAuditFilter.changes:
         numbers = (
-            set(traditional_changes)
-            | set(traditional_simplified_changes)
-            | set(simplified_changes)
-            | set(final_discrepancies)
+            traditional_changes
+            | traditional_simplified_changes
+            | simplified_changes
+            | final_discrepancies
         )
     else:
-        numbers = set(final_discrepancies)
+        numbers = final_discrepancies.copy()
 
     if characters:
         numbers = {
             number
             for number in numbers
             if any(
-                character in events[number].text
+                character in events[number]
                 for events in series.values()
                 for character in characters
             )
@@ -394,38 +371,31 @@ def _get_filtered_numbers(
 
 
 def _get_review_changes(
-    original: Mapping[int, _SrtEvent],
-    reviewed: Mapping[int, _SrtEvent],
-) -> dict[int, _ReviewChange]:
-    """Get text changes between original and reviewed events.
+    original: Mapping[int, str],
+    reviewed: Mapping[int, str],
+) -> set[int]:
+    """Get subtitle numbers changed during review.
 
     Arguments:
-        original: original subtitle events
-        reviewed: reviewed subtitle events
+        original: original subtitle text by number
+        reviewed: reviewed subtitle text by number
     Returns:
-        review changes keyed by subtitle number
+        changed subtitle numbers
     """
-    return {
-        number: _ReviewChange(
-            original=event.text,
-            revised=reviewed[number].text,
-        )
-        for number, event in original.items()
-        if event.text != reviewed[number].text
-    }
+    return {number for number, text in original.items() if text != reviewed[number]}
 
 
 def _get_review_notes(
     json_path: Path | None,
-    original: Mapping[int, _SrtEvent],
-    reviewed: Mapping[int, _SrtEvent],
+    original: Mapping[int, str],
+    reviewed: Mapping[int, str],
 ) -> dict[int, tuple[str, ...]]:
-    """Load review notes and match their blocks to SRT events.
+    """Load review notes and match their blocks to subtitle text.
 
     Arguments:
         json_path: optional review JSON path
-        original: original subtitle events
-        reviewed: reviewed subtitle events
+        original: original subtitle text by number
+        reviewed: reviewed subtitle text by number
     Returns:
         review notes keyed by subtitle number
     Raises:
@@ -439,8 +409,8 @@ def _get_review_notes(
         raise ValueError(f"Review JSON must contain a list: {json_path}")
 
     ordered_numbers = list(original)
-    original_texts = [original[number].text for number in ordered_numbers]
-    reviewed_texts = [reviewed[number].text for number in ordered_numbers]
+    original_texts = list(original.values())
+    reviewed_texts = list(reviewed.values())
     notes_by_number: dict[int, list[str]] = {}
     for case_index, raw_case in enumerate(data, 1):
         review_case = _parse_review_case(raw_case, case_index, json_path)
@@ -513,7 +483,15 @@ def _parse_review_case(
             f"{json_path}"
         )
 
-    note_fields = _parse_review_note_fields(cast(Mapping[object, object], raw_answer))
+    note_fields = {
+        int(key[5:]): value.strip()
+        for key, value in raw_answer.items()
+        if isinstance(key, str)
+        and key.startswith("note_")
+        and key[5:].isdigit()
+        and isinstance(value, str)
+        and value.strip()
+    }
     if not note_fields:
         return None
 
@@ -549,74 +527,3 @@ def _parse_review_case(
                 f"revision: {json_path}"
             )
     return query_texts, revised_texts, note_fields
-
-
-def _parse_review_note_fields(
-    raw_answer: Mapping[object, object],
-) -> dict[int, str]:
-    """Parse nonempty note fields from one review answer.
-
-    Arguments:
-        raw_answer: unchecked review answer mapping
-    Returns:
-        nonempty notes keyed by one-based local subtitle index
-    """
-    note_fields: dict[int, str] = {}
-    for key, value in raw_answer.items():
-        if not isinstance(key, str):
-            continue
-        match = re.fullmatch(r"note_(\d+)", key)
-        if match is None or not isinstance(value, str) or not value.strip():
-            continue
-        note_fields[int(match.group(1))] = value.strip()
-    return note_fields
-
-
-def _parse_srt(srt_path: Path) -> dict[int, _SrtEvent]:
-    """Parse an SRT file without normalizing subtitle text.
-
-    Arguments:
-        srt_path: SRT file path
-    Returns:
-        SRT events keyed by subtitle number
-    Raises:
-        ValueError: if the SRT structure is invalid
-    """
-    text = srt_path.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
-    blocks = [block for block in re.split(r"\n{2,}", text.strip("\n")) if block]
-    events: dict[int, _SrtEvent] = {}
-    for block_index, block in enumerate(blocks, 1):
-        lines = block.split("\n")
-        if len(lines) < 2:
-            raise ValueError(f"Invalid SRT block {block_index}: {srt_path}")
-        try:
-            number = int(lines[0])
-        except ValueError as exc:
-            raise ValueError(
-                f"Invalid subtitle number in SRT block {block_index}: {srt_path}"
-            ) from exc
-        if number in events:
-            raise ValueError(f"Duplicate subtitle number {number}: {srt_path}")
-        events[number] = _SrtEvent(
-            number=number,
-            timing=lines[1],
-            text="\n".join(lines[2:]),
-        )
-    return events
-
-
-def _validate_index_range(first_index: int | None, last_index: int | None) -> None:
-    """Validate inclusive 1-indexed subtitle range bounds.
-
-    Arguments:
-        first_index: first 1-indexed subtitle number to include, inclusive
-        last_index: last 1-indexed subtitle number to include, inclusive
-    Raises:
-        ValueError: if either bound is invalid
-    """
-    if first_index is not None and first_index < 1:
-        raise ValueError("--first-index must be a positive 1-indexed subtitle number")
-    if last_index is not None and last_index < 1:
-        raise ValueError("--last-index must be a positive 1-indexed subtitle number")
-    if first_index is not None and last_index is not None and first_index > last_index:
-        raise ValueError("--first-index must be less than or equal to --last-index")
