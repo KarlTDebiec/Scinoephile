@@ -60,8 +60,8 @@ def test_store_shares_database_with_test_cases(tmp_path: Path):
     prompt_store = PromptSqliteStore(database_path)
     test_case_store = TestCaseSqliteStore(database_path)
     prompt = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
-    query: dict[str, JsonValue] = {"input_1": "Hello"}
-    answer: dict[str, JsonValue] = {"output_1": "Hello"}
+    query: dict[str, JsonValue] = {"subtitles": [{"index": 1, "text": "Hello"}]}
+    answer: dict[str, JsonValue] = {"outputs": [{"index": 1, "text": "Hello"}]}
     test_case = PersistedTestCase(
         test_case_id=get_test_case_id(query, answer, TranslationManager),
         operation=TranslationManager.operation,

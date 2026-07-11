@@ -31,17 +31,19 @@ EngYueTranslationPrompt = TranslationPrompt(
         phrasing. Preserve names, proper nouns, recurring terms, and subtitle markup
         when they are present and appropriate in the generated English subtitle.
 
-        Output only the generated English subtitle text in each answer field. Do not
-        include notes, explanations, labels, alternate translations, bracketed
-        commentary, or any text outside the subtitle itself.
+        Output only the generated English subtitle text in each output item's text
+        field. Do not include notes, explanations, labels, alternate translations,
+        bracketed commentary, or any text outside the subtitle itself.
         """),
-    input_pfx="yuewen_",
-    input_desc_tpl="Written Cantonese subtitle {idx} to translate",
-    output_pfx="eng_",
-    output_desc_tpl=(
-        "Generated English subtitle {idx} corresponding to written Cantonese "
-        "subtitle {idx}"
+    subtitles="yuewen",
+    subtitles_desc="Written Cantonese subtitles to translate, in order.",
+    outputs="eng",
+    outputs_desc=(
+        "Generated English subtitles corresponding to the written Cantonese "
+        "subtitles, in order."
     ),
+    subtitle_text_desc="Written Cantonese subtitle text to translate.",
+    output_text_desc="Generated English subtitle text.",
 )
 """Text for English translation from written Cantonese."""
 

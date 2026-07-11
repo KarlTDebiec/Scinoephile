@@ -1,10 +1,9 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for translation LLM classes."""
+"""Factories for prompt-specific translation LLM classes."""
 
 from __future__ import annotations
 
-import re
 from functools import cache
 from typing import Any, ClassVar, cast
 
@@ -13,19 +12,25 @@ from pydantic import Field, create_model
 from scinoephile.core.llms import (
     Answer,
     Manager,
-    Prompt,
     Query,
     TestCase,
+    TestCaseSubtitle,
 )
 from scinoephile.core.llms.models import get_model_name
 
+from .models import (
+    TranslationAnswer,
+    TranslationOutput,
+    TranslationQuery,
+    TranslationTestCase,
+)
 from .prompt import TranslationPrompt
 
 __all__ = ["TranslationManager"]
 
 
 class TranslationManager(Manager):
-    """Factories for translation LLM classes."""
+    """Factories for prompt-specific translation LLM classes."""
 
     operation: ClassVar[str] = "translation"
     """Stable operation identifier used in persistence and CLIs."""
@@ -34,131 +39,163 @@ class TranslationManager(Manager):
 
     @classmethod
     @cache
-    def get_query_cls(
-        cls,
-        size: int,
-        prompt: TranslationPrompt,
-    ) -> type[Query]:
-        """Get concrete query class with provided configuration.
+    def get_answer_cls(cls, prompt: TranslationPrompt) -> type[Answer]:
+        """Get concrete answer class with prompt-specific JSON field aliases.
 
         Arguments:
-            size: number of subtitles in the block
-            prompt: text for LLM correspondence
-        Returns:
-            query model class
-        """
-        name = get_model_name("TranslationQuery", f"{size}_{prompt.name}")
-        fields: dict[str, Any] = {}
-        for idx in range(size):
-            key = prompt.input(idx + 1)
-            desc = prompt.input_desc(idx + 1)
-            fields[key] = (str, Field(..., description=desc, max_length=1000))
-
-        model = create_model(
-            name,
-            __base__=Query,
-            __module__=Query.__module__,
-            **fields,
-        )
-        model.prompt = prompt
-        setattr(model, "size", size)
-        return model
-
-    @classmethod
-    @cache
-    def get_answer_cls(
-        cls,
-        size: int,
-        prompt: TranslationPrompt,
-    ) -> type[Answer]:
-        """Get concrete answer class with provided configuration.
-
-        Arguments:
-            size: number of subtitles in the block
-            prompt: text for LLM correspondence
+            prompt: text and field aliases for LLM correspondence
         Returns:
             answer model class
         """
-        name = get_model_name("TranslationAnswer", f"{size}_{prompt.name}")
-        fields: dict[str, Any] = {}
-        for idx in range(size):
-            key = prompt.output(idx + 1)
-            desc = prompt.output_desc(idx + 1)
-            fields[key] = (str, Field(..., description=desc))
-
+        output_cls = cls.get_output_cls(prompt)
+        fields: dict[str, Any] = {
+            "outputs": (
+                list[output_cls],  # ty: ignore[invalid-type-form]
+                Field(
+                    ...,
+                    alias=prompt.outputs,
+                    description=prompt.outputs_desc,
+                    min_length=1,
+                ),
+            ),
+        }
         model = create_model(
-            name,
-            __base__=Answer,
-            __module__=Answer.__module__,
+            get_model_name("TranslationAnswer", prompt.name),
+            __base__=TranslationAnswer,
+            __module__=TranslationAnswer.__module__,
             **fields,
         )
         model.prompt = prompt
-        setattr(model, "size", size)
         return model
 
     @classmethod
     @cache
-    def get_test_case_cls(
-        cls,
-        size: int,
-        prompt: TranslationPrompt,
-    ) -> type[TestCase]:
-        """Get concrete test case class with provided configuration.
+    def get_output_cls(cls, prompt: TranslationPrompt) -> type[TranslationOutput]:
+        """Get output class with prompt-specific JSON field aliases.
 
         Arguments:
-            size: number of subtitles in the block
-            prompt: text for LLM correspondence
+            prompt: text and field aliases for LLM correspondence
         Returns:
-            test case model class
+            output model class
         """
-        name = get_model_name("TranslationTestCase", f"{size}_{prompt.name}")
-        query_cls = cls.get_query_cls(size, prompt)
-        answer_cls = cls.get_answer_cls(size, prompt)
-        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt)
-        validators = cls.get_test_case_validators()
-
-        model = create_model(
-            name,
-            __base__=TestCase,
-            __module__=TestCase.__module__,
-            __validators__=validators,
+        fields: dict[str, Any] = {
+            "index": (
+                int,
+                Field(
+                    ...,
+                    alias=prompt.index,
+                    description=prompt.index_desc,
+                    ge=1,
+                ),
+            ),
+            "text": (
+                str,
+                Field(
+                    ...,
+                    alias=prompt.text,
+                    description=prompt.output_text_desc,
+                ),
+            ),
+        }
+        return create_model(
+            get_model_name("TranslationOutput", prompt.name),
+            __base__=TranslationOutput,
+            __module__=TranslationAnswer.__module__,
             **fields,
         )
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
+
+    @classmethod
+    @cache
+    def get_query_cls(cls, prompt: TranslationPrompt) -> type[Query]:
+        """Get concrete query class with prompt-specific JSON field aliases.
+
+        Arguments:
+            prompt: text and field aliases for LLM correspondence
+        Returns:
+            query model class
+        """
+        subtitle_cls = cls.get_subtitle_cls(prompt)
+        fields: dict[str, Any] = {
+            "subtitles": (
+                list[subtitle_cls],  # ty: ignore[invalid-type-form]
+                Field(
+                    ...,
+                    alias=prompt.subtitles,
+                    description=prompt.subtitles_desc,
+                    min_length=1,
+                ),
+            ),
+        }
+        model = create_model(
+            get_model_name("TranslationQuery", prompt.name),
+            __base__=TranslationQuery,
+            __module__=TranslationQuery.__module__,
+            **fields,
+        )
         model.prompt = prompt
-        setattr(model, "size", size)
-        setattr(model, "get_auto_verified", cls.get_auto_verified)
-        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
-        """Get concrete test case class for canonical serialized data.
+    @cache
+    def get_subtitle_cls(cls, prompt: TranslationPrompt) -> type[TestCaseSubtitle]:
+        """Get subtitle class with prompt-specific JSON field aliases.
 
         Arguments:
-            data: data from JSON
+            prompt: text and field aliases for LLM correspondence
         Returns:
-            test case model class
+            subtitle model class
         """
-        prompt = cls.base_prompt
-        pattern = re.compile(rf"^{re.escape(prompt.input_pfx)}\d+$")
-        size = sum(1 for field in data["query"] if pattern.match(field))
-        return cls.get_test_case_cls(size=size, prompt=prompt)
+        fields: dict[str, Any] = {
+            "index": (
+                int,
+                Field(
+                    ...,
+                    alias=prompt.index,
+                    description=prompt.index_desc,
+                    ge=1,
+                ),
+            ),
+            "text": (
+                str,
+                Field(
+                    ...,
+                    alias=prompt.text,
+                    description=prompt.subtitle_text_desc,
+                    max_length=1000,
+                ),
+            ),
+        }
+        return create_model(
+            get_model_name("TranslationSubtitle", prompt.name),
+            __base__=TestCaseSubtitle,
+            __module__=TranslationQuery.__module__,
+            **fields,
+        )
 
     @classmethod
-    def get_test_case_cls_with_prompt(
-        cls,
-        test_case_cls: type[TestCase],
-        prompt: Prompt,
-    ) -> type[TestCase]:
-        """Get an equivalently sized test-case class for another prompt.
+    @cache
+    def get_test_case_cls(cls, prompt: TranslationPrompt) -> type[TestCase]:
+        """Get concrete test-case class for a prompt-independent list shape.
 
         Arguments:
-            test_case_cls: test-case class whose size should be preserved
-            prompt: prompt whose correspondence fields should be used
+            prompt: text and field aliases for LLM correspondence
         Returns:
-            equivalently sized test-case class
+            test-case model class
         """
-        size: int = getattr(test_case_cls, "size")
-        return cls.get_test_case_cls(size=size, prompt=cast(TranslationPrompt, prompt))
+        query_cls = cls.get_query_cls(prompt)
+        answer_cls = cls.get_answer_cls(prompt)
+        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt)
+        validators = cls.get_test_case_validators()
+        model = create_model(
+            get_model_name("TranslationTestCase", prompt.name),
+            __base__=TranslationTestCase,
+            __module__=TranslationTestCase.__module__,
+            __validators__=validators,
+            **fields,
+        )
+        model.query_cls = cast(type[TranslationQuery], query_cls)
+        model.answer_cls = cast(type[TranslationAnswer], answer_cls)
+        model.prompt = prompt
+        setattr(model, "get_auto_verified", cls.get_auto_verified)
+        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
+        return model

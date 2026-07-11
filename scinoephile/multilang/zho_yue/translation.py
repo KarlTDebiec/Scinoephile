@@ -35,13 +35,21 @@ ZhoYueTranslationPromptZhoHant = TranslationPrompt(
         更像自然的標準中文字幕。專名、固定稱呼、重複術語和字幕標記要在適合時
         保留或按標準中文習慣處理。
 
-        輸出內容只能是生成的中文字幕正文。不要附加英文、備註、解釋、標籤、
-        替代譯文、方括號內容、括號內容，或任何字幕以外的說明。
+        每個輸出項目的文本欄只能是生成的中文字幕正文。不要附加英文、備註、解釋、
+        標籤、替代譯文、方括號內容、括號內容，或任何字幕以外的說明。
         """),
-    input_pfx="yuewen_",
-    input_desc_tpl="要翻譯成標準中文的粵文字幕 {idx}",
-    output_pfx="zhongwen_",
-    output_desc_tpl="字幕 {idx} 對應的標準中文譯文",
+    subtitles="yuewen",
+    subtitles_desc="按順序排列、要翻譯成標準中文的粵文字幕",
+    outputs="zhongwen",
+    outputs_desc="按輸入字幕順序排列的標準中文譯文",
+    index="xuhao",
+    index_desc="從 1 開始的字幕序號",
+    text="wenben",
+    subtitle_text_desc="要翻譯成標準中文的粵文字幕文本",
+    output_text_desc="完整標準中文譯文",
+    subtitle_indices_err="查詢字幕序號必須從 1 開始、連續並按順序排列。",
+    output_indices_err="答案輸出序號必須從 1 開始、連續並按順序排列。",
+    output_correspondence_err="答案輸出序號必須與查詢字幕序號完全對應。",
 )
 """Text for traditional standard Chinese translation from written Cantonese."""
 

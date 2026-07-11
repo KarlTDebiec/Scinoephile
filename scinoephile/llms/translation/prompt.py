@@ -16,18 +16,52 @@ class TranslationPrompt(Prompt):
     """Text for LLM correspondence for translation matters."""
 
     # Query fields
-    input_pfx: str = "input_"
-    """Prefix for input fields in query."""
+    subtitles: str = "subtitles"
+    """Name of subtitles field in query."""
 
-    input_desc_tpl: str = "Input {idx}"
-    """Description template for input fields in query."""
+    subtitles_desc: str = "Subtitles to translate, in order."
+    """Description of subtitles field in query."""
 
     # Answer fields
-    output_pfx: str = "output_"
-    """Prefix for output fields in answer."""
+    outputs: str = "outputs"
+    """Name of outputs field in answer."""
 
-    output_desc_tpl: str = "Output {idx}"
-    """Description template for output fields in answer."""
+    outputs_desc: str = "Translated subtitles, in order."
+    """Description of outputs field in answer."""
+
+    # Subtitle fields
+    index: str = "index"
+    """Name of index field in subtitle and output items."""
+
+    index_desc: str = "One-based subtitle index."
+    """Description of index field in subtitle and output items."""
+
+    text: str = "text"
+    """Name of text field in subtitle and output items."""
+
+    subtitle_text_desc: str = "Subtitle text to translate."
+    """Description of text field in subtitle items."""
+
+    output_text_desc: str = "Translated subtitle text."
+    """Description of text field in output items."""
+
+    # Query errors
+    subtitle_indices_err: str = (
+        "Query subtitle indexes must be consecutive, ordered, and begin at 1."
+    )
+    """Error when query subtitle indexes are invalid."""
+
+    # Answer errors
+    output_indices_err: str = (
+        "Answer output indexes must be consecutive, ordered, and begin at 1."
+    )
+    """Error when answer output indexes are invalid."""
+
+    # Test case errors
+    output_correspondence_err: str = (
+        "Answer output indexes must correspond exactly to query subtitle indexes."
+    )
+    """Error when answer outputs do not correspond to query subtitles."""
 
     # Dictionary tool
     dictionary_tool_name: str = ""
@@ -36,21 +70,3 @@ class TranslationPrompt(Prompt):
     """Description of dictionary lookup tool."""
     dictionary_tool_query_description: str = ""
     """Description of dictionary lookup query."""
-
-    # Query fields
-    def input(self, idx: int) -> str:
-        """Name of input field in query."""
-        return f"{self.input_pfx}{idx}"
-
-    def input_desc(self, idx: int) -> str:
-        """Description of input field in query."""
-        return self.input_desc_tpl.format(idx=idx)
-
-    # Answer fields
-    def output(self, idx: int) -> str:
-        """Name of output field in answer."""
-        return f"{self.output_pfx}{idx}"
-
-    def output_desc(self, idx: int) -> str:
-        """Description of output field in answer."""
-        return self.output_desc_tpl.format(idx=idx)
