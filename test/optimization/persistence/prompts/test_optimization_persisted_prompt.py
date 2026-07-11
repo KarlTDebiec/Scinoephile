@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for persisted zero-shot prompt conversion."""
+"""Tests for persisted prompt conversion."""
 
 from __future__ import annotations
 
@@ -29,23 +29,29 @@ _ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT = replace(
 """English review prompt with different few-shot-only text."""
 
 
-def test_conversion_excludes_few_shot_and_curation_attributes():
-    """Few-shot-only and test-case curation text should not affect identity."""
+def test_conversion_includes_all_string_fields():
+    """Every string field should contribute to persisted prompt identity."""
     baseline = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
     alternative = PersistedPrompt.from_prompt(
         _ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT,
         ReviewManager,
     )
 
-    assert baseline == alternative
+    alternative_attributes = dict(alternative.attributes)
+
+    assert baseline.prompt_id != alternative.prompt_id
     assert baseline.language == Language.eng
-    assert all("few_shot" not in name for name, _ in baseline.attributes)
-    assert "difficulty_description" not in dict(baseline.attributes)
-    assert "verified_description" not in dict(baseline.attributes)
+    assert alternative_attributes["few_shot_intro"] == "Different examples:"
+    assert alternative_attributes["difficulty_description"] == (
+        "Different difficulty description."
+    )
+    assert alternative_attributes["verified_description"] == (
+        "Different verified description."
+    )
 
 
-def test_conversion_includes_zero_shot_and_tool_attributes():
-    """Zero-shot instructions and dictionary tool text should be persisted."""
+def test_conversion_includes_operation_and_tool_attributes():
+    """Operation instructions and dictionary tool text should be persisted."""
     baseline = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
     alternative = PersistedPrompt.from_prompt(
         replace(

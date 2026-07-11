@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""SQLite persistence for zero-shot LLM prompts."""
+"""SQLite persistence for LLM prompts."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ logger = getLogger(__name__)
 
 
 class PromptSqliteStore(_OptimizationSqliteStore):
-    """SQLite persistence and lookup for zero-shot prompts by alias."""
+    """SQLite persistence and lookup for prompts by alias."""
 
     _metadata = MetaData()
     """SQLAlchemy metadata owned by prompt persistence."""
@@ -51,7 +51,7 @@ class PromptSqliteStore(_OptimizationSqliteStore):
             name="prompts_attributes_json_object",
         ),
     )
-    """Current zero-shot prompt content keyed by stable alias."""
+    """Current prompt content keyed by stable alias."""
 
     def get_prompt_by_alias(self, alias: str) -> PersistedPrompt | None:
         """Fetch the prompt currently associated with an alias.

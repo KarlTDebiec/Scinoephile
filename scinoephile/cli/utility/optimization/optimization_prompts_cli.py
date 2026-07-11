@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Synchronize registered zero-shot LLM prompts into SQLite."""
+"""Synchronize registered LLM prompts into SQLite."""
 
 from __future__ import annotations
 
@@ -24,12 +24,12 @@ OPTIMIZATION_SYNC_PROMPTS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "list prompt and alias changes without writing": (
             "列出提示词和别名变更而不写入"
         ),
-        "one or more zero-shot prompt aliases from the optimization registry": (
-            "优化注册表中的一个或多个零样本提示词别名"
+        "one or more prompt aliases from the optimization registry": (
+            "优化注册表中的一个或多个提示词别名"
         ),
-        "synchronize all registered zero-shot prompts": "同步所有已注册的零样本提示词",
-        "synchronize registered zero-shot LLM prompts into SQLite": (
-            "将已注册的零样本大语言模型提示词同步到 SQLite"
+        "synchronize all registered prompts": "同步所有已注册的提示词",
+        "synchronize registered LLM prompts into SQLite": (
+            "将已注册的大语言模型提示词同步到 SQLite"
         ),
     },
     "zh-hant": {
@@ -37,12 +37,12 @@ OPTIMIZATION_SYNC_PROMPTS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "list prompt and alias changes without writing": (
             "列出提示詞和別名變更而不寫入"
         ),
-        "one or more zero-shot prompt aliases from the optimization registry": (
-            "最佳化登錄檔中的一個或多個零樣本提示詞別名"
+        "one or more prompt aliases from the optimization registry": (
+            "最佳化登錄檔中的一個或多個提示詞別名"
         ),
-        "synchronize all registered zero-shot prompts": "同步所有已登錄的零樣本提示詞",
-        "synchronize registered zero-shot LLM prompts into SQLite": (
-            "將已登錄的零樣本大型語言模型提示詞同步到 SQLite"
+        "synchronize all registered prompts": "同步所有已登錄的提示詞",
+        "synchronize registered LLM prompts into SQLite": (
+            "將已登錄的大型語言模型提示詞同步到 SQLite"
         ),
     },
 }
@@ -50,7 +50,7 @@ OPTIMIZATION_SYNC_PROMPTS_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class OptimizationSyncPromptsCli(ScinoephileCliBase):
-    """Synchronize registered zero-shot LLM prompts into SQLite."""
+    """Synchronize registered LLM prompts into SQLite."""
 
     localizations = OPTIMIZATION_SYNC_PROMPTS_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
@@ -79,15 +79,13 @@ class OptimizationSyncPromptsCli(ScinoephileCliBase):
             dest="prompt_aliases",
             nargs="+",
             choices=PROMPT_SPECS,
-            help=(
-                "one or more zero-shot prompt aliases from the optimization registry"
-            ),
+            help=("one or more prompt aliases from the optimization registry"),
         )
         selection_group.add_argument(
             "--all",
             dest="all_prompts",
             action="store_true",
-            help="synchronize all registered zero-shot prompts",
+            help="synchronize all registered prompts",
         )
         arg_groups["operation arguments"].add_argument(
             "--dry-run",

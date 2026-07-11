@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Registry of zero-shot prompts available to optimization workflows."""
+"""Registry of prompts available to optimization workflows."""
 
 from __future__ import annotations
 
@@ -39,12 +39,12 @@ __all__ = [
 
 @dataclass(frozen=True, slots=True)
 class PromptSpec:
-    """A registered zero-shot prompt and its manager."""
+    """A registered prompt and its manager."""
 
     manager_cls: type[Manager]
     """Manager defining the prompt's operation and base contract."""
     prompt: Prompt
-    """Concrete zero-shot prompt."""
+    """Concrete prompt."""
 
 
 _PROMPT_SPECS = {
@@ -135,4 +135,4 @@ _PROMPT_SPECS = {
 """Registered prompt specifications before canonical alias ordering."""
 
 PROMPT_SPECS: dict[str, PromptSpec] = dict(sorted(_PROMPT_SPECS.items()))
-"""Registered zero-shot prompts keyed by stable alias."""
+"""Registered prompts keyed by stable alias."""

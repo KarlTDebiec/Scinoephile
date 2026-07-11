@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Identifiers for persisted zero-shot LLM prompts."""
+"""Identifiers for persisted LLM prompts."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ def get_prompt_id(
     operation: str,
     language: Language,
 ) -> str:
-    """Compute a canonical identifier for a zero-shot prompt.
+    """Compute a canonical identifier for a prompt.
 
     Arguments:
         attributes: effective prompt attributes

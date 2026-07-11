@@ -80,11 +80,10 @@ runtime classes. Managers cache those model classes using the immutable prompt
 value, whose stable content-addressed name is used in generated model names.
 
 Optimization persistence stores each prompt alias with its content-addressed
-identifier, language, and effective zero-shot string fields. Few-shot labels
-and test-case curation descriptions are intentionally excluded. Prompt and
-test-case SQLite stores own and create their tables independently; both table
-groups may coexist in one SQLite file without a global schema version or
-migration contract.
+identifier, language, and complete set of string fields. Prompt and test-case
+SQLite stores own and create their tables independently; both table groups may
+coexist in one SQLite file without a global schema version or migration
+contract.
 
 ## Command Line Interface
 
@@ -141,7 +140,7 @@ surface (commands and subcommands) is:
       - `prune`: remove stale cached files
       - `stats`: inspect cache size and entry counts
     - `optimization`
-      - `sync-prompts`: synchronize registered zero-shot prompts
+      - `sync-prompts`: synchronize registered prompts
       - `sync-test-cases`: synchronize persisted prompt-optimization test cases
   - `translate`: translate subtitles between supported languages
   - `yue`

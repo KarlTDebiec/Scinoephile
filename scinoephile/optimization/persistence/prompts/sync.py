@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Synchronization of registered zero-shot prompts into SQLite."""
+"""Synchronization of registered prompts into SQLite."""
 
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ def sync_prompts(
     *,
     dry_run: bool,
 ) -> PromptSyncReport:
-    """Synchronize registered zero-shot prompts into SQLite.
+    """Synchronize registered prompts into SQLite.
 
     Arguments:
         prompt_specs: registered prompts to synchronize

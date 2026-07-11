@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for SQLite zero-shot prompt persistence."""
+"""Tests for SQLite prompt persistence."""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ _UPDATED_REVIEW_PROMPT = replace(
     ReviewPromptEng,
     base_system_prompt="Review subtitles with exceptional care.",
 )
-"""English review prompt with updated zero-shot instructions."""
+"""English review prompt with updated instructions."""
 
 
 def test_store_round_trips_and_updates_alias(tmp_path: Path):
