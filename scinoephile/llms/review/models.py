@@ -75,3 +75,35 @@ class ReviewTestCase(TestCase):
     """Subtitles to review."""
     answer: ReviewAnswer | None = None
     """Sparse subtitle revisions, if available."""
+
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty based on whether any subtitle is revised.
+
+        Returns:
+            minimum difficulty
+        """
+        min_difficulty = super().get_min_difficulty()
+        if self.answer is not None and self.answer.revisions:
+            min_difficulty = max(min_difficulty, 1)
+        return min_difficulty
+
+    @model_validator(mode="after")
+    def validate_revision_correspondence(self) -> Self:
+        """Ensure every answer revision changes a query subtitle.
+
+        Returns:
+            validated test case
+        """
+        if self.answer is None:
+            return self
+
+        query_text_by_index = {
+            subtitle.index: subtitle.text for subtitle in self.query.subtitles
+        }
+        for revision in self.answer.revisions:
+            input_text = query_text_by_index.get(revision.index)
+            if input_text is None:
+                raise ValueError(self.prompt.revision_index_missing_err(revision.index))
+            if revision.text == input_text:
+                raise ValueError(self.prompt.revision_unmodified_err(revision.index))
+        return self

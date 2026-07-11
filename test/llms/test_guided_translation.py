@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest.mock import Mock
 
 from pydantic import ValidationError
-from pytest import raises
+from pytest import mark, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider
@@ -22,6 +22,7 @@ from scinoephile.llms.guided_translation import (
     GuidedTranslationManager,
     GuidedTranslationProcessor,
     GuidedTranslationPrompt,
+    GuidedTranslationTestCase,
 )
 
 _LOCALIZED_PROMPT = GuidedTranslationPrompt(
@@ -104,12 +105,20 @@ def test_query_and_answer_require_consecutive_ordered_indexes():
     answer_cls.model_validate({"outputs": [{"index": 1, "text": long_text}]})
 
 
-def test_outputs_must_correspond_to_query_subtitles():
+@mark.parametrize(
+    "test_case_cls",
+    [
+        GuidedTranslationTestCase,
+        GuidedTranslationManager.get_test_case_cls(
+            GuidedTranslationManager.base_prompt
+        ),
+    ],
+    ids=["static", "generated"],
+)
+def test_outputs_must_correspond_to_query_subtitles(
+    test_case_cls: type[GuidedTranslationTestCase],
+):
     """Every query subtitle should have exactly one same-index output."""
-    test_case_cls = GuidedTranslationManager.get_test_case_cls(
-        GuidedTranslationManager.base_prompt
-    )
-
     with raises(ValidationError, match="correspond exactly"):
         test_case_cls.model_validate(
             {

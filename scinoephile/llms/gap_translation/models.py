@@ -93,3 +93,24 @@ class GapTranslationTestCase(TestCase):
     """Sparse targets and complete guides."""
     answer: GapTranslationAnswer | None = None
     """Translations for target gaps, if available."""
+
+    @model_validator(mode="after")
+    def validate_output_correspondence(self) -> Self:
+        """Ensure outputs exactly fill the guide indexes absent from targets.
+
+        Returns:
+            validated test case
+        """
+        if self.answer is None:
+            return self
+
+        target_indexes = {target.index for target in self.query.targets}
+        expected_output_indexes = [
+            guide.index
+            for guide in self.query.guides
+            if guide.index not in target_indexes
+        ]
+        output_indexes = [output.index for output in self.answer.outputs]
+        if output_indexes != expected_output_indexes:
+            raise ValueError(self.prompt.output_indices_mismatch_err)
+        return self
