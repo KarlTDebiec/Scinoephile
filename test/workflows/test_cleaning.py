@@ -4,172 +4,509 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
+
 from pytest import FixtureRequest, param
 
 from scinoephile.core import Language
+from scinoephile.lang.eng.cleaning import get_eng_text_cleaned
+from scinoephile.lang.zho.cleaning import get_zho_text_cleaned
 from scinoephile.workflows.cleaning import clean_series
 from test.helpers import assert_series_equal, parametrize
-from test.helpers.series_files import get_text_series
-
-_ENG_SERIES_FIXTURE_NAMES = [
-    *[
-        f"{dataset_name}_eng_ocr_{stage_name}"
-        for dataset_name in ("acopopb", "acoptc", "kob", "tmm")
-        for stage_name in ("fuse", "lens", "tesseract")
-    ],
-    "kob_eng",
-    *[f"{dataset_name}_eng_fuse" for dataset_name in ("mlamd", "mnt", "t")],
-    *[
-        f"{dataset_name}_eng_ocr_{stage_name}"
-        for dataset_name in ("mlamd", "mnt", "t")
-        for stage_name in ("lens", "tesseract")
-    ],
-]
-"""English input series fixture names."""
-
-_CHINESE_LANGUAGES = (
-    ("yue_hans", Language.yue_hans),
-    ("yue_hant", Language.yue_hant),
-    ("zho_hans", Language.zho_hans),
-    ("zho_hant", Language.zho_hant),
-)
-"""Chinese fixture name stems and languages."""
-
-_CHINESE_SERIES_FIXTURES = [
-    *[
-        (f"{dataset_name}_{language_stem}_ocr_{stage_name}", language)
-        for dataset_name in ("acopopb", "acoptc")
-        for language_stem, language in _CHINESE_LANGUAGES
-        for stage_name in ("fuse", "lens", "paddle")
-    ],
-    *[
-        (f"kob_zho_hant_ocr_{stage_name}", Language.zho_hant)
-        for stage_name in ("fuse", "lens", "paddle")
-    ],
-    ("kob_yue_hans", Language.yue_hans),
-    ("kob_yue_hant", Language.yue_hant),
-    *[
-        (f"{dataset_name}_{language_stem}_fuse", language)
-        for dataset_name in ("mlamd", "mnt", "t")
-        for language_stem, language in _CHINESE_LANGUAGES[2:]
-    ],
-    *[
-        (f"{dataset_name}_{language_stem}_ocr_{stage_name}", language)
-        for dataset_name in ("mlamd", "mnt", "t")
-        for language_stem, language in _CHINESE_LANGUAGES[2:]
-        for stage_name in ("lens", "paddle")
-    ],
-    *[
-        (f"tmm_{language_stem}_ocr_{stage_name}", language)
-        for language_stem, language in _CHINESE_LANGUAGES
-        for stage_name in ("fuse", "lens", "paddle")
-    ],
-]
-"""Chinese input series fixture names and languages."""
-
-_CLEAN_SERIES_CASES = [
-    *[
-        param(
-            fixture_name,
-            f"{fixture_name}_clean",
-            Language.eng,
-            id=fixture_name.replace("_", "-"),
-        )
-        for fixture_name in _ENG_SERIES_FIXTURE_NAMES
-    ],
-    *[
-        param(
-            fixture_name,
-            f"{fixture_name}_clean",
-            language,
-            id=fixture_name.replace("_", "-"),
-        )
-        for fixture_name, language in _CHINESE_SERIES_FIXTURES
-    ],
-]
-"""Language-aware series cleaning cases."""
-
-
-@parametrize(
-    ("language", "text", "expected"),
-    [
-        param(
-            Language.eng,
-            "hello\\N-\\Nworld",
-            "hello\\Nworld",
-            id="eng-empty-dialogue-line",
-        ),
-        param(
-            Language.eng,
-            '<font face="Monospace">{\\an7}WOODY:\xa0Look out!</font>',
-            "WOODY: Look out!",
-            id="eng-extraction-markup",
-        ),
-        param(
-            Language.eng,
-            "hello\x00world",
-            "hello world",
-            id="eng-null-character",
-        ),
-        param(
-            Language.eng,
-            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
-            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
-            "０１２３４５６７８９",
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
-            id="eng-full-width-alphanumerics",
-        ),
-        param(Language.eng, "ΟΚ, οκ.", "OK, ok.", id="eng-greek-lookalikes"),
-        param(
-            Language.zho_hant,
-            '<font face="Monospace">{\\an7}中文\xa0測試</font>',
-            "中文 測試",
-            id="zho-extraction-markup",
-        ),
-        param(
-            Language.zho_hans,
-            "ΟΚ\x00中文",
-            "OK 中文",
-            id="zho-null-character",
-        ),
-        param(
-            Language.yue_hans,
-            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
-            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
-            "０１２３４５６７８９",
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
-            id="zho-full-width-alphanumerics",
-        ),
-        param(
-            Language.yue_hant,
-            "｢你好､世界｡｣周·星馳･劉德華",
-            "「你好、世界。」周・星馳・劉德華",
-            id="zho-punctuation",
-        ),
-    ],
-)
-def test_clean_series_normalization(language: Language, text: str, expected: str):
-    """Test language-specific text cleaning.
-
-    Arguments:
-        language: language to use for cleaning
-        text: text to clean
-        expected: expected cleaned text
-    """
-    output = clean_series(
-        get_text_series(text),
-        language=language,
-        remove_empty=False,
-    )
-
-    assert next(iter(output)).text == expected
 
 
 @parametrize(
     ("series_fixture", "expected_fixture", "language"),
-    _CLEAN_SERIES_CASES,
+    [
+        param(
+            "acopopb_eng_ocr_fuse",
+            "acopopb_eng_ocr_fuse_clean",
+            Language.eng,
+            id="acopopb-eng-fuse",
+        ),
+        param(
+            "acopopb_eng_ocr_lens",
+            "acopopb_eng_ocr_lens_clean",
+            Language.eng,
+            id="acopopb-eng-lens",
+        ),
+        param(
+            "acopopb_eng_ocr_tesseract",
+            "acopopb_eng_ocr_tesseract_clean",
+            Language.eng,
+            id="acopopb-eng-tesseract",
+        ),
+        param(
+            "acoptc_eng_ocr_fuse",
+            "acoptc_eng_ocr_fuse_clean",
+            Language.eng,
+            id="acoptc-eng-fuse",
+        ),
+        param(
+            "acoptc_eng_ocr_lens",
+            "acoptc_eng_ocr_lens_clean",
+            Language.eng,
+            id="acoptc-eng-lens",
+        ),
+        param(
+            "acoptc_eng_ocr_tesseract",
+            "acoptc_eng_ocr_tesseract_clean",
+            Language.eng,
+            id="acoptc-eng-tesseract",
+        ),
+        param(
+            "kob_eng_ocr_fuse",
+            "kob_eng_ocr_fuse_clean",
+            Language.eng,
+            id="kob-eng-fuse",
+        ),
+        param(
+            "kob_eng_ocr_lens",
+            "kob_eng_ocr_lens_clean",
+            Language.eng,
+            id="kob-eng-lens",
+        ),
+        param(
+            "kob_eng_ocr_tesseract",
+            "kob_eng_ocr_tesseract_clean",
+            Language.eng,
+            id="kob-eng-tesseract",
+        ),
+        param(
+            "kob_eng",
+            "kob_eng_clean",
+            Language.eng,
+            id="kob-eng-srt",
+        ),
+        param(
+            "mlamd_eng_fuse",
+            "mlamd_eng_fuse_clean",
+            Language.eng,
+            id="mlamd-eng-fuse",
+        ),
+        param(
+            "mlamd_eng_ocr_lens",
+            "mlamd_eng_ocr_lens_clean",
+            Language.eng,
+            id="mlamd-eng-lens",
+        ),
+        param(
+            "mlamd_eng_ocr_tesseract",
+            "mlamd_eng_ocr_tesseract_clean",
+            Language.eng,
+            id="mlamd-eng-tesseract",
+        ),
+        param(
+            "mnt_eng_fuse",
+            "mnt_eng_fuse_clean",
+            Language.eng,
+            id="mnt-eng-fuse",
+        ),
+        param(
+            "mnt_eng_ocr_lens",
+            "mnt_eng_ocr_lens_clean",
+            Language.eng,
+            id="mnt-eng-lens",
+        ),
+        param(
+            "mnt_eng_ocr_tesseract",
+            "mnt_eng_ocr_tesseract_clean",
+            Language.eng,
+            id="mnt-eng-tesseract",
+        ),
+        param(
+            "t_eng_fuse",
+            "t_eng_fuse_clean",
+            Language.eng,
+            id="t-eng-fuse",
+        ),
+        param(
+            "t_eng_ocr_lens",
+            "t_eng_ocr_lens_clean",
+            Language.eng,
+            id="t-eng-lens",
+        ),
+        param(
+            "t_eng_ocr_tesseract",
+            "t_eng_ocr_tesseract_clean",
+            Language.eng,
+            id="t-eng-tesseract",
+        ),
+        param(
+            "tmm_eng_ocr_fuse",
+            "tmm_eng_ocr_fuse_clean",
+            Language.eng,
+            id="tmm-eng-fuse",
+        ),
+        param(
+            "tmm_eng_ocr_lens",
+            "tmm_eng_ocr_lens_clean",
+            Language.eng,
+            id="tmm-eng-lens",
+        ),
+        param(
+            "tmm_eng_ocr_tesseract",
+            "tmm_eng_ocr_tesseract_clean",
+            Language.eng,
+            id="tmm-eng-tesseract",
+        ),
+        param(
+            "acopopb_yue_hans_ocr_fuse",
+            "acopopb_yue_hans_ocr_fuse_clean",
+            Language.yue_hans,
+            id="acopopb-yue-hans-fuse",
+        ),
+        param(
+            "acopopb_yue_hans_ocr_lens",
+            "acopopb_yue_hans_ocr_lens_clean",
+            Language.yue_hans,
+            id="acopopb-yue-hans-lens",
+        ),
+        param(
+            "acopopb_yue_hans_ocr_paddle",
+            "acopopb_yue_hans_ocr_paddle_clean",
+            Language.yue_hans,
+            id="acopopb-yue-hans-paddle",
+        ),
+        param(
+            "acopopb_yue_hant_ocr_fuse",
+            "acopopb_yue_hant_ocr_fuse_clean",
+            Language.yue_hant,
+            id="acopopb-yue-hant-fuse",
+        ),
+        param(
+            "acopopb_yue_hant_ocr_lens",
+            "acopopb_yue_hant_ocr_lens_clean",
+            Language.yue_hant,
+            id="acopopb-yue-hant-lens",
+        ),
+        param(
+            "acopopb_yue_hant_ocr_paddle",
+            "acopopb_yue_hant_ocr_paddle_clean",
+            Language.yue_hant,
+            id="acopopb-yue-hant-paddle",
+        ),
+        param(
+            "acopopb_zho_hans_ocr_fuse",
+            "acopopb_zho_hans_ocr_fuse_clean",
+            Language.zho_hans,
+            id="acopopb-zho-hans-fuse",
+        ),
+        param(
+            "acopopb_zho_hans_ocr_lens",
+            "acopopb_zho_hans_ocr_lens_clean",
+            Language.zho_hans,
+            id="acopopb-zho-hans-lens",
+        ),
+        param(
+            "acopopb_zho_hans_ocr_paddle",
+            "acopopb_zho_hans_ocr_paddle_clean",
+            Language.zho_hans,
+            id="acopopb-zho-hans-paddle",
+        ),
+        param(
+            "acopopb_zho_hant_ocr_fuse",
+            "acopopb_zho_hant_ocr_fuse_clean",
+            Language.zho_hant,
+            id="acopopb-zho-hant-fuse",
+        ),
+        param(
+            "acopopb_zho_hant_ocr_lens",
+            "acopopb_zho_hant_ocr_lens_clean",
+            Language.zho_hant,
+            id="acopopb-zho-hant-lens",
+        ),
+        param(
+            "acopopb_zho_hant_ocr_paddle",
+            "acopopb_zho_hant_ocr_paddle_clean",
+            Language.zho_hant,
+            id="acopopb-zho-hant-paddle",
+        ),
+        param(
+            "acoptc_yue_hans_ocr_fuse",
+            "acoptc_yue_hans_ocr_fuse_clean",
+            Language.yue_hans,
+            id="acoptc-yue-hans-fuse",
+        ),
+        param(
+            "acoptc_yue_hans_ocr_lens",
+            "acoptc_yue_hans_ocr_lens_clean",
+            Language.yue_hans,
+            id="acoptc-yue-hans-lens",
+        ),
+        param(
+            "acoptc_yue_hans_ocr_paddle",
+            "acoptc_yue_hans_ocr_paddle_clean",
+            Language.yue_hans,
+            id="acoptc-yue-hans-paddle",
+        ),
+        param(
+            "acoptc_yue_hant_ocr_fuse",
+            "acoptc_yue_hant_ocr_fuse_clean",
+            Language.yue_hant,
+            id="acoptc-yue-hant-fuse",
+        ),
+        param(
+            "acoptc_yue_hant_ocr_lens",
+            "acoptc_yue_hant_ocr_lens_clean",
+            Language.yue_hant,
+            id="acoptc-yue-hant-lens",
+        ),
+        param(
+            "acoptc_yue_hant_ocr_paddle",
+            "acoptc_yue_hant_ocr_paddle_clean",
+            Language.yue_hant,
+            id="acoptc-yue-hant-paddle",
+        ),
+        param(
+            "acoptc_zho_hans_ocr_fuse",
+            "acoptc_zho_hans_ocr_fuse_clean",
+            Language.zho_hans,
+            id="acoptc-zho-hans-fuse",
+        ),
+        param(
+            "acoptc_zho_hans_ocr_lens",
+            "acoptc_zho_hans_ocr_lens_clean",
+            Language.zho_hans,
+            id="acoptc-zho-hans-lens",
+        ),
+        param(
+            "acoptc_zho_hans_ocr_paddle",
+            "acoptc_zho_hans_ocr_paddle_clean",
+            Language.zho_hans,
+            id="acoptc-zho-hans-paddle",
+        ),
+        param(
+            "acoptc_zho_hant_ocr_fuse",
+            "acoptc_zho_hant_ocr_fuse_clean",
+            Language.zho_hant,
+            id="acoptc-zho-hant-fuse",
+        ),
+        param(
+            "acoptc_zho_hant_ocr_lens",
+            "acoptc_zho_hant_ocr_lens_clean",
+            Language.zho_hant,
+            id="acoptc-zho-hant-lens",
+        ),
+        param(
+            "acoptc_zho_hant_ocr_paddle",
+            "acoptc_zho_hant_ocr_paddle_clean",
+            Language.zho_hant,
+            id="acoptc-zho-hant-paddle",
+        ),
+        param(
+            "kob_zho_hant_ocr_fuse",
+            "kob_zho_hant_ocr_fuse_clean",
+            Language.zho_hant,
+            id="kob-zho-hant-fuse",
+        ),
+        param(
+            "kob_zho_hant_ocr_lens",
+            "kob_zho_hant_ocr_lens_clean",
+            Language.zho_hant,
+            id="kob-zho-hant-lens",
+        ),
+        param(
+            "kob_zho_hant_ocr_paddle",
+            "kob_zho_hant_ocr_paddle_clean",
+            Language.zho_hant,
+            id="kob-zho-hant-paddle",
+        ),
+        param(
+            "kob_yue_hans",
+            "kob_yue_hans_clean",
+            Language.yue_hans,
+            id="kob-yue-hans-srt",
+        ),
+        param(
+            "kob_yue_hant",
+            "kob_yue_hant_clean",
+            Language.yue_hant,
+            id="kob-yue-hant-srt",
+        ),
+        param(
+            "mlamd_zho_hans_fuse",
+            "mlamd_zho_hans_fuse_clean",
+            Language.zho_hans,
+            id="mlamd-zho-hans-fuse",
+        ),
+        param(
+            "mlamd_zho_hans_ocr_lens",
+            "mlamd_zho_hans_ocr_lens_clean",
+            Language.zho_hans,
+            id="mlamd-zho-hans-lens",
+        ),
+        param(
+            "mlamd_zho_hans_ocr_paddle",
+            "mlamd_zho_hans_ocr_paddle_clean",
+            Language.zho_hans,
+            id="mlamd-zho-hans-paddle",
+        ),
+        param(
+            "mlamd_zho_hant_fuse",
+            "mlamd_zho_hant_fuse_clean",
+            Language.zho_hant,
+            id="mlamd-zho-hant-fuse",
+        ),
+        param(
+            "mlamd_zho_hant_ocr_lens",
+            "mlamd_zho_hant_ocr_lens_clean",
+            Language.zho_hant,
+            id="mlamd-zho-hant-lens",
+        ),
+        param(
+            "mlamd_zho_hant_ocr_paddle",
+            "mlamd_zho_hant_ocr_paddle_clean",
+            Language.zho_hant,
+            id="mlamd-zho-hant-paddle",
+        ),
+        param(
+            "mnt_zho_hans_fuse",
+            "mnt_zho_hans_fuse_clean",
+            Language.zho_hans,
+            id="mnt-zho-hans-fuse",
+        ),
+        param(
+            "mnt_zho_hans_ocr_lens",
+            "mnt_zho_hans_ocr_lens_clean",
+            Language.zho_hans,
+            id="mnt-zho-hans-lens",
+        ),
+        param(
+            "mnt_zho_hans_ocr_paddle",
+            "mnt_zho_hans_ocr_paddle_clean",
+            Language.zho_hans,
+            id="mnt-zho-hans-paddle",
+        ),
+        param(
+            "mnt_zho_hant_fuse",
+            "mnt_zho_hant_fuse_clean",
+            Language.zho_hant,
+            id="mnt-zho-hant-fuse",
+        ),
+        param(
+            "mnt_zho_hant_ocr_lens",
+            "mnt_zho_hant_ocr_lens_clean",
+            Language.zho_hant,
+            id="mnt-zho-hant-lens",
+        ),
+        param(
+            "mnt_zho_hant_ocr_paddle",
+            "mnt_zho_hant_ocr_paddle_clean",
+            Language.zho_hant,
+            id="mnt-zho-hant-paddle",
+        ),
+        param(
+            "t_zho_hans_fuse",
+            "t_zho_hans_fuse_clean",
+            Language.zho_hans,
+            id="t-zho-hans-fuse",
+        ),
+        param(
+            "t_zho_hans_ocr_lens",
+            "t_zho_hans_ocr_lens_clean",
+            Language.zho_hans,
+            id="t-zho-hans-lens",
+        ),
+        param(
+            "t_zho_hans_ocr_paddle",
+            "t_zho_hans_ocr_paddle_clean",
+            Language.zho_hans,
+            id="t-zho-hans-paddle",
+        ),
+        param(
+            "t_zho_hant_fuse",
+            "t_zho_hant_fuse_clean",
+            Language.zho_hant,
+            id="t-zho-hant-fuse",
+        ),
+        param(
+            "t_zho_hant_ocr_lens",
+            "t_zho_hant_ocr_lens_clean",
+            Language.zho_hant,
+            id="t-zho-hant-lens",
+        ),
+        param(
+            "t_zho_hant_ocr_paddle",
+            "t_zho_hant_ocr_paddle_clean",
+            Language.zho_hant,
+            id="t-zho-hant-paddle",
+        ),
+        param(
+            "tmm_yue_hans_ocr_fuse",
+            "tmm_yue_hans_ocr_fuse_clean",
+            Language.yue_hans,
+            id="tmm-yue-hans-fuse",
+        ),
+        param(
+            "tmm_yue_hans_ocr_lens",
+            "tmm_yue_hans_ocr_lens_clean",
+            Language.yue_hans,
+            id="tmm-yue-hans-lens",
+        ),
+        param(
+            "tmm_yue_hans_ocr_paddle",
+            "tmm_yue_hans_ocr_paddle_clean",
+            Language.yue_hans,
+            id="tmm-yue-hans-paddle",
+        ),
+        param(
+            "tmm_yue_hant_ocr_fuse",
+            "tmm_yue_hant_ocr_fuse_clean",
+            Language.yue_hant,
+            id="tmm-yue-hant-fuse",
+        ),
+        param(
+            "tmm_yue_hant_ocr_lens",
+            "tmm_yue_hant_ocr_lens_clean",
+            Language.yue_hant,
+            id="tmm-yue-hant-lens",
+        ),
+        param(
+            "tmm_yue_hant_ocr_paddle",
+            "tmm_yue_hant_ocr_paddle_clean",
+            Language.yue_hant,
+            id="tmm-yue-hant-paddle",
+        ),
+        param(
+            "tmm_zho_hans_ocr_fuse",
+            "tmm_zho_hans_ocr_fuse_clean",
+            Language.zho_hans,
+            id="tmm-zho-hans-fuse",
+        ),
+        param(
+            "tmm_zho_hans_ocr_lens",
+            "tmm_zho_hans_ocr_lens_clean",
+            Language.zho_hans,
+            id="tmm-zho-hans-lens",
+        ),
+        param(
+            "tmm_zho_hans_ocr_paddle",
+            "tmm_zho_hans_ocr_paddle_clean",
+            Language.zho_hans,
+            id="tmm-zho-hans-paddle",
+        ),
+        param(
+            "tmm_zho_hant_ocr_fuse",
+            "tmm_zho_hant_ocr_fuse_clean",
+            Language.zho_hant,
+            id="tmm-zho-hant-fuse",
+        ),
+        param(
+            "tmm_zho_hant_ocr_lens",
+            "tmm_zho_hant_ocr_lens_clean",
+            Language.zho_hant,
+            id="tmm-zho-hant-lens",
+        ),
+        param(
+            "tmm_zho_hant_ocr_paddle",
+            "tmm_zho_hant_ocr_paddle_clean",
+            Language.zho_hant,
+            id="tmm-zho-hant-paddle",
+        ),
+    ],
 )
-def test_clean_series_outputs(
+def test_clean_series(
     request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
@@ -189,3 +526,81 @@ def test_clean_series_outputs(
         remove_empty=False,
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
+
+
+@parametrize(
+    ("cleaner", "text", "expected"),
+    [
+        param(
+            get_eng_text_cleaned,
+            "hello\\N-\\Nworld",
+            "hello\\Nworld",
+            id="eng-empty-dialogue-line",
+        ),
+        param(
+            get_eng_text_cleaned,
+            '<font face="Monospace">{\\an7}WOODY:\xa0Look out!</font>',
+            "WOODY: Look out!",
+            id="eng-extraction-markup",
+        ),
+        param(
+            get_eng_text_cleaned,
+            "hello\x00world",
+            "hello world",
+            id="eng-null-character",
+        ),
+        param(
+            get_eng_text_cleaned,
+            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
+            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
+            "０１２３４５６７８９",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
+            id="eng-full-width-alphanumerics",
+        ),
+        param(
+            get_eng_text_cleaned,
+            "ΟΚ, οκ.",
+            "OK, ok.",
+            id="eng-greek-lookalikes",
+        ),
+        param(
+            get_zho_text_cleaned,
+            '<font face="Monospace">{\\an7}中文\xa0測試</font>',
+            "中文 測試",
+            id="zho-extraction-markup",
+        ),
+        param(
+            get_zho_text_cleaned,
+            "ΟΚ\x00中文",
+            "OK 中文",
+            id="zho-null-character",
+        ),
+        param(
+            get_zho_text_cleaned,
+            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
+            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
+            "０１２３４５６７８９",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
+            id="zho-full-width-alphanumerics",
+        ),
+        param(
+            get_zho_text_cleaned,
+            "｢你好､世界｡｣周·星馳･劉德華",
+            "「你好、世界。」周・星馳・劉德華",
+            id="zho-punctuation",
+        ),
+    ],
+)
+def test_get_text_cleaned(
+    cleaner: Callable[[str], str | None],
+    text: str,
+    expected: str,
+):
+    """Test language-specific text cleaning.
+
+    Arguments:
+        cleaner: language-specific text cleaner
+        text: text to clean
+        expected: expected cleaned text
+    """
+    assert cleaner(text) == expected
