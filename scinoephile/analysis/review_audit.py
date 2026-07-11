@@ -83,7 +83,7 @@ def audit_reviews(
     first_index: int | None = None,
     last_index: int | None = None,
 ) -> str:
-    """Audit the legacy dual-script review workflow.
+    """Audit parallel simplified and traditional-to-simplified review paths.
 
     Arguments:
         traditional: traditional-script review input

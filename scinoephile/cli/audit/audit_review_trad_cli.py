@@ -34,11 +34,11 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified traditional-script SRT file after review": (
             "校对后由繁体字转换的简体字 SRT 文件"
         ),
-        "optional review JSON corresponding to --traditional": (
-            "与 --traditional 对应的可选校对 JSON"
+        "optional JSON corresponding to the traditional review": (
+            "与繁体字校对对应的可选 JSON"
         ),
-        "optional review JSON corresponding to --traditional-simplified": (
-            "与 --traditional-simplified 对应的可选校对 JSON"
+        "optional JSON corresponding to the traditional simplification review": (
+            "与繁体字简化校对对应的可选 JSON"
         ),
     },
     "zh-hant": {
@@ -53,11 +53,11 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified traditional-script SRT file after review": (
             "校對後由繁體字轉換的簡體字 SRT 檔"
         ),
-        "optional review JSON corresponding to --traditional": (
-            "與 --traditional 對應的選用校對 JSON"
+        "optional JSON corresponding to the traditional review": (
+            "與繁體字校對對應的選用 JSON"
         ),
-        "optional review JSON corresponding to --traditional-simplified": (
-            "與 --traditional-simplified 對應的選用校對 JSON"
+        "optional JSON corresponding to the traditional simplification review": (
+            "與繁體字簡化校對對應的選用 JSON"
         ),
     },
 }
@@ -115,15 +115,16 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
             "--traditional-json",
             dest="traditional_json_path",
             type=input_file_arg(),
-            help="optional review JSON corresponding to --traditional",
+            help="optional JSON corresponding to the traditional review",
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-simplified-json",
             dest="traditional_simplified_json_path",
             type=input_file_arg(),
-            help="optional review JSON corresponding to --traditional-simplified",
+            help=(
+                "optional JSON corresponding to the traditional simplification review"
+            ),
         )
-        cls.add_common_arguments_to_argparser(parser)
 
     @classmethod
     def name(cls) -> str:
@@ -152,9 +153,11 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
         outfile_path: Path | None,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
 
+        # Read inputs
         traditional = read_series(parser, traditional_path)
         traditional_reviewed = read_series(parser, traditional_reviewed_path)
         traditional_simplified = read_series(parser, traditional_simplified_path)
@@ -162,6 +165,8 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
             parser,
             traditional_simplified_reviewed_path,
         )
+
+        # Perform operation
         try:
             report = audit_review_workflow(
                 reviews=(
@@ -191,6 +196,8 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
+
+        # Write output
         cls.write_report(parser, report, outfile_path)
 
 

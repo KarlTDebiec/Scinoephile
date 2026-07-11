@@ -29,9 +29,7 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "subtitle SRT file before review": "校对前的字幕 SRT 文件",
         "subtitle SRT file after review": "校对后的字幕 SRT 文件",
-        "optional review JSON corresponding to --original": (
-            "与 --original 对应的可选校对 JSON"
-        ),
+        "optional JSON corresponding to this review": "与此次校对对应的可选 JSON",
     },
     "zh-hant": {
         "audit one subtitle review with automatic language and script detection": (
@@ -39,9 +37,7 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "subtitle SRT file before review": "校對前的字幕 SRT 檔",
         "subtitle SRT file after review": "校對後的字幕 SRT 檔",
-        "optional review JSON corresponding to --original": (
-            "與 --original 對應的選用校對 JSON"
-        ),
+        "optional JSON corresponding to this review": "與此次校對對應的選用 JSON",
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -93,9 +89,8 @@ class AuditReviewCli(AuditWorkflowCliBase):
             "--json",
             dest="json_path",
             type=input_file_arg(),
-            help="optional review JSON corresponding to --original",
+            help="optional JSON corresponding to this review",
         )
-        cls.add_common_arguments_to_argparser(parser)
 
     @classmethod
     def name(cls) -> str:
@@ -121,11 +116,15 @@ class AuditReviewCli(AuditWorkflowCliBase):
         outfile_path: Path | None,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
 
+        # Read inputs
         original = read_series(parser, original_path)
         reviewed = read_series(parser, reviewed_path)
+
+        # Detect language
         detected_languages = {
             language
             for series in (original, reviewed)
@@ -140,6 +139,7 @@ class AuditReviewCli(AuditWorkflowCliBase):
             parser.error("Unable to detect the language and script of subtitle inputs")
         language = detected_languages.pop()
 
+        # Perform operation
         try:
             report = audit_review_workflow(
                 reviews=(
@@ -157,6 +157,8 @@ class AuditReviewCli(AuditWorkflowCliBase):
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
+
+        # Write output
         cls.write_report(parser, report, outfile_path)
 
 

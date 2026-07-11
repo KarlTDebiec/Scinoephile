@@ -7,6 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
+from typing import ClassVar
 
 from scinoephile.analysis.review_audit import ReviewAuditFilter
 from scinoephile.common.argument_parsing import (
@@ -77,14 +78,24 @@ class AuditWorkflowCliBase(ScinoephileCliBase):
 
     localizations = AUDIT_WORKFLOW_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
+    row_filter_help: ClassVar[str] = (
+        "rows to include: all or changes (default: changes)"
+    )
+    """Help text for the workflow's supported row filters."""
+    row_filters: ClassVar[tuple[ReviewAuditFilter, ...]] = (
+        ReviewAuditFilter.all,
+        ReviewAuditFilter.changes,
+    )
+    """Row filters supported by the workflow."""
 
     @classmethod
-    def add_common_arguments_to_argparser(cls, parser: ArgumentParser):
+    def add_arguments_to_argparser(cls, parser: ArgumentParser):
         """Add shared operation and output arguments to a parser.
 
         Arguments:
             parser: nascent argument parser
         """
+        super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
@@ -102,14 +113,15 @@ class AuditWorkflowCliBase(ScinoephileCliBase):
             type=int_arg(min_value=1),
             help="last 1-indexed subtitle number to include, inclusive",
         )
+        row_filter_values = ",".join(row_filter.value for row_filter in cls.row_filters)
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=(ReviewAuditFilter.all, ReviewAuditFilter.changes),
+            choices=cls.row_filters,
             default=ReviewAuditFilter.changes,
             dest="row_filter",
-            metavar="{all,changes}",
+            metavar=f"{{{row_filter_values}}}",
             type=enum_arg(ReviewAuditFilter),
-            help="rows to include: all or changes (default: changes)",
+            help=cls.row_filter_help,
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",
