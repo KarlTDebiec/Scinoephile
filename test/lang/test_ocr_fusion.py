@@ -11,9 +11,8 @@ from pytest import FixtureRequest, param
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.ocr_fusion import get_ocr_fuser
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
+from scinoephile.workflows.cleaning import clean_series
 from scinoephile.workflows.ocr_fusion import fuse_ocr_series
 from test.data.acopopb import (
     get_acopopb_eng_ocr_fusion_test_cases,
@@ -297,12 +296,8 @@ def test_fuse_ocr_series(
     """
     lens = request.getfixturevalue(lens_fixture)
     secondary = request.getfixturevalue(secondary_fixture)
-    if language is Language.eng:
-        lens = get_eng_cleaned(lens, remove_empty=False)
-        secondary = get_eng_cleaned(secondary, remove_empty=False)
-    else:
-        lens = get_zho_cleaned(lens, remove_empty=False)
-        secondary = get_zho_cleaned(secondary, remove_empty=False)
+    lens = clean_series(lens, language=language, remove_empty=False)
+    secondary = clean_series(secondary, language=language, remove_empty=False)
 
     provider = Mock(spec=LLMProvider)
     processor = get_ocr_fuser(

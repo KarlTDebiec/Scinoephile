@@ -13,13 +13,12 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.llms.review import ReviewPrompt
 from scinoephile.workflows.review import review_series
 
+from .cleaning import clean_series
 from .flattening import flatten_series
 from .romanization import romanize_series
 
@@ -182,10 +181,7 @@ class SrtProcessingWorkflow:
             logger.info(f"Cleaned SRT output exists: {clean_path}")
             clean = Series.load(clean_path)
         else:
-            if self.language is Language.eng:
-                clean = get_eng_cleaned(series)
-            else:
-                clean = get_zho_cleaned(series)
+            clean = clean_series(series, language=self.language)
             clean.save(clean_path, format_="srt")
         self.output_paths["clean"] = clean_path
         return clean

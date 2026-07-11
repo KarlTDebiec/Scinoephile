@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
@@ -21,14 +20,13 @@ from scinoephile.image.ocr.tesseract import (
     ocr_image_series_with_tesseract,
 )
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
     get_subtitle_cache_path,
 )
 from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
+from .cleaning import clean_series
 from .ocr_fusion import fuse_ocr_series
 from .ocr_validation import validate_ocr
 
@@ -145,14 +143,6 @@ class OcrProcessingWorkflow:
             output_paths=self.output_paths,
         )
 
-    @property
-    def clean_function(self) -> Callable[..., Series]:
-        """OCR output cleaning function for the workflow language."""
-        if self.language is Language.eng:
-            return get_eng_cleaned
-        else:
-            return get_zho_cleaned
-
     def _export_image_series(self, series: ImageSeries):
         """Export source image subtitles.
 
@@ -197,7 +187,7 @@ class OcrProcessingWorkflow:
             logger.info(f"Cleaned fused OCR output exists: {fuse_clean_path}")
             fuse_clean = Series.load(fuse_clean_path)
         else:
-            fuse_clean = self.clean_function(fuse, remove_empty=False)
+            fuse_clean = clean_series(fuse, language=self.language, remove_empty=False)
             fuse_clean.save(fuse_clean_path, format_="srt")
         self.output_paths["fuse_clean"] = fuse_clean_path
         return fuse_clean
@@ -251,7 +241,7 @@ class OcrProcessingWorkflow:
             logger.info(f"Lens OCR output exists: {lens_clean_path}")
             lens_clean = Series.load(lens_clean_path)
         else:
-            lens_clean = self.clean_function(lens, remove_empty=False)
+            lens_clean = clean_series(lens, language=self.language, remove_empty=False)
             lens_clean.save(lens_clean_path, format_="srt")
         self.output_paths["lens_clean"] = lens_clean_path
         return lens_clean
@@ -282,7 +272,9 @@ class OcrProcessingWorkflow:
             logger.info(f"Paddle OCR output exists: {paddle_clean_path}")
             paddle_clean = Series.load(paddle_clean_path)
         else:
-            paddle_clean = self.clean_function(paddle, remove_empty=False)
+            paddle_clean = clean_series(
+                paddle, language=self.language, remove_empty=False
+            )
             paddle_clean.save(paddle_clean_path, format_="srt")
         self.output_paths["paddle_clean"] = paddle_clean_path
         return paddle_clean
@@ -315,7 +307,9 @@ class OcrProcessingWorkflow:
             logger.info(f"Tesseract OCR output exists: {tesseract_clean_path}")
             tesseract_clean = Series.load(tesseract_clean_path)
         else:
-            tesseract_clean = self.clean_function(tesseract, remove_empty=False)
+            tesseract_clean = clean_series(
+                tesseract, language=self.language, remove_empty=False
+            )
             tesseract_clean.save(tesseract_clean_path, format_="srt")
         self.output_paths["tesseract_clean"] = tesseract_clean_path
         return tesseract_clean

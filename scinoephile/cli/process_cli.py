@@ -26,12 +26,11 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_converted,
 )
+from scinoephile.workflows.cleaning import clean_series
 from scinoephile.workflows.flattening import flatten_series
 from scinoephile.workflows.helpers import resolve_language
 from scinoephile.workflows.romanization import romanize_series
@@ -218,10 +217,7 @@ class ProcessCli(ScinoephileCliBase):
 
         # Perform operations
         if clean:
-            if resolved_language.is_chinese:
-                series = get_zho_cleaned(series)
-            else:
-                series = get_eng_cleaned(series)
+            series = clean_series(series, language=resolved_language)
         if resolved_convert is not None:
             series = get_zho_converted(series, resolved_convert)
         if flatten:
