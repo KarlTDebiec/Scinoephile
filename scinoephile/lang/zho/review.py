@@ -80,23 +80,25 @@ ReviewPromptZhoHant = ReviewPrompt(
         僅修正排版與錯別字等排版性/輸入性錯誤。
         不要潤色、改寫、改動語氣或用詞，也不要根據上下文改劇情。
         如果沒有明顯的錯別字或排版錯誤，請保持原文不變。
-        對每條字幕，只有在需要修改時才提供修訂後的字幕。
-        若需要修改，請返回完整的修訂後字幕，並給出說明修改內容的備註。
-        若不需要修改，修訂後字幕與備註均返回空字符串。"""),
-    input_pfx="zimu_",
-    input_desc_tpl="第 {idx} 條字幕",
-    output_pfx="xiugai_",
-    output_desc_tpl="第 {idx} 條修改後的字幕",
-    note_pfx="beizhu_",
-    note_desc_tpl="關於第 {idx} 條字幕修改的備註說明",
-    output_unmodified_err_tpl=(
-        "第 {idx} 條答案的修改文本與查詢文本相同。如果不需要修改，應提供空字符串。"
-    ),
-    note_missing_err_tpl=(
-        "第 {idx} 條答案的文本已被修改，但未提供備註。如需修改，必須附帶備註說明。"
-    ),
-    output_missing_err_tpl=(
-        "第 {idx} 條答案的文本未修改，但提供了備註。如果不需要修改，應提供空字符串。"
+        只有在字幕需要修改時才加入一項修改。每項修改必須包含字幕序號、
+        修訂後的完整文本，以及說明修改內容的備註。
+        如果全部字幕都不需要修改，請返回空的修改列表。"""),
+    subtitles="zimu",
+    subtitles_desc="按順序排列、需要校對的中文字幕",
+    revisions="xiugai",
+    revisions_desc="需要修改的中文字幕；不需要修改的字幕不要包含在內",
+    index="xuhao",
+    index_desc="從 1 開始的字幕序號",
+    text="wenben",
+    subtitle_text_desc="需要校對的中文字幕文本",
+    revision_text_desc="修改後的完整中文字幕文本",
+    note="beizhu",
+    note_desc="關於中文字幕修改的備註說明",
+    subtitle_indices_err="查詢字幕序號必須從 1 開始、連續並按順序排列。",
+    revision_indices_err="答案修改序號必須唯一並按升序排列。",
+    revision_index_missing_err_tpl="答案修改序號 {idx} 在查詢字幕中不存在。",
+    revision_unmodified_err_tpl=(
+        "答案修改 {idx} 與查詢字幕 {idx} 相同；不需要修改的字幕必須從修改列表省略。"
     ),
 )
 """LLM correspondence text for traditional standard Chinese review."""

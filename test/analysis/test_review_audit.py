@@ -235,11 +235,17 @@ def _write_review_json(
         texts: query texts
         revisions: revised text and note keyed by one-based local index
     """
-    query = {f"subtitle_{index}": text for index, text in enumerate(texts, 1)}
-    answer: dict[str, str] = {}
-    for index, (revised, note) in revisions.items():
-        answer[f"revised_{index}"] = revised
-        answer[f"note_{index}"] = note
+    query = {
+        "subtitles": [
+            {"index": index, "text": text} for index, text in enumerate(texts, 1)
+        ]
+    }
+    answer = {
+        "revisions": [
+            {"index": index, "text": revised, "note": note}
+            for index, (revised, note) in revisions.items()
+        ]
+    }
     json_path.write_text(
         json.dumps([{"query": query, "answer": answer}], ensure_ascii=False),
         encoding="utf-8",

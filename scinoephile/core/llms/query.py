@@ -24,15 +24,18 @@ class Query(BaseModel, ABC):
 
     def __str__(self) -> str:
         """String representation."""
-        return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
+        return json.dumps(
+            self.model_dump(by_alias=True),
+            indent=2,
+            ensure_ascii=False,
+        )
 
     @property
     def key(self) -> tuple:
         """Unique key for the query, with hashable values."""
-        # noinspection PyTypeChecker
+        data = self.model_dump(mode="json")
         return tuple(
-            make_hashable(getattr(self, field))
-            for field in sorted(type(self).model_fields)
+            make_hashable(data[field]) for field in sorted(type(self).model_fields)
         )
 
     @property

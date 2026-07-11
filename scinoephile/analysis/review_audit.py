@@ -378,20 +378,29 @@ def _get_review_notes(
         answer = review_case.answer
         if answer is None:
             continue
-        query_fields = cast(dict[str, str], review_case.query.model_dump())
-        answer_fields = cast(dict[str, str], answer.model_dump())
-        query_texts = tuple(
-            query_fields[f"subtitle_{local_index}"]
-            for local_index in range(1, len(query_fields) + 1)
+        query_subtitles = cast(
+            list[dict[str, int | str]],
+            review_case.query.model_dump()["subtitles"],
         )
+        answer_revisions = cast(
+            list[dict[str, int | str]],
+            answer.model_dump()["revisions"],
+        )
+        query_texts = tuple(cast(str, subtitle["text"]) for subtitle in query_subtitles)
+        revision_by_index = {
+            cast(int, revision["index"]): revision for revision in answer_revisions
+        }
         revised_texts: list[str] = []
-        note_fields: dict[int, str] = {}
         for local_index, query_text in enumerate(query_texts, 1):
-            revised_text = answer_fields[f"revised_{local_index}"] or query_text
-            revised_texts.append(revised_text)
-            note = answer_fields[f"note_{local_index}"].strip()
-            if note:
-                note_fields[local_index] = note
+            revision = revision_by_index.get(local_index)
+            if revision is None:
+                revised_texts.append(query_text)
+            else:
+                revised_texts.append(cast(str, revision["text"]))
+        note_fields = {
+            local_index: cast(str, revision["note"]).strip()
+            for local_index, revision in revision_by_index.items()
+        }
         if not note_fields:
             continue
 
@@ -417,7 +426,7 @@ def _get_review_notes(
         unmatched_note_fields = sorted(note_fields.keys() - matched_note_fields)
         if unmatched_note_fields:
             formatted_fields = ", ".join(
-                f"note_{local_index}" for local_index in unmatched_note_fields
+                f"revision {local_index}" for local_index in unmatched_note_fields
             )
             raise ValueError(
                 f"Review test case {case_index} fields {formatted_fields} do not "

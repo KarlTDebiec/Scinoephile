@@ -16,99 +16,83 @@ class ReviewPrompt(Prompt):
     """Text for LLM correspondence for review matters."""
 
     # Query fields
-    input_pfx: str = "subtitle_"
-    """Prefix for input fields in query."""
+    subtitles: str = "subtitles"
+    """Name of subtitles field in query."""
 
-    input_desc_tpl: str = "Input {idx}"
-    """Description template for input fields in query."""
-
-    # Answer fields
-    output_pfx: str = "revised_"
-    """Prefix for output fields in answer."""
-
-    output_desc_tpl: str = "Output {idx}, or an empty string if no change is necessary."
-    """Description template for output fields in answer."""
-
-    note_pfx: str = "note_"
-    """Prefix for note fields in answer."""
-
-    note_desc_tpl: str = (
-        "Note concerning output {idx}, or an empty string if no change is necessary."
-    )
-    """Description template for note fields in answer."""
-
-    # Test case errors
-    output_unmodified_err_tpl: str = (
-        "Answer's output {idx} is unmodified relative to query's input {idx}, "
-        "if no change is needed an empty string must be provided."
-    )
-    """Error template when output is present but unmodified."""
-
-    note_missing_err_tpl: str = (
-        "Answer's output {idx} is modified relative to query's input {idx}, but no "
-        "note is provided, if a change is needed a note must be provided."
-    )
-    """Error template when note is missing for a change."""
-
-    output_missing_err_tpl: str = (
-        "Answer's output {idx} is not provided relative to query's input {idx}, but a "
-        "note is provided, if no change is needed an empty string must be provided."
-    )
-    """Error template when output is missing for a note."""
-
-    # Query fields
-    def input(self, idx: int) -> str:
-        """Name of input field in query."""
-        return f"{self.input_pfx}{idx}"
-
-    def input_desc(self, idx: int) -> str:
-        """Description of input field in query."""
-        return self.input_desc_tpl.format(idx=idx)
+    subtitles_desc: str = "Subtitles to review, in order."
+    """Description of subtitles field in query."""
 
     # Answer fields
-    def note(self, idx: int) -> str:
-        """Name of note field in answer."""
-        return f"{self.note_pfx}{idx}"
+    revisions: str = "revisions"
+    """Name of revisions field in answer."""
 
-    def note_desc(self, idx: int) -> str:
-        """Description of note field in answer."""
-        return self.note_desc_tpl.format(idx=idx)
+    revisions_desc: str = (
+        "Revised subtitles; include only subtitles that require revision."
+    )
+    """Description of revisions field in answer."""
 
-    def output(self, idx: int) -> str:
-        """Name of output field in answer."""
-        return f"{self.output_pfx}{idx}"
+    # Subtitle fields
+    index: str = "index"
+    """Name of index field in subtitle and revision items."""
 
-    def output_desc(self, idx: int) -> str:
-        """Description of output field in answer."""
-        return self.output_desc_tpl.format(idx=idx)
+    index_desc: str = "One-based subtitle index."
+    """Description of index field in subtitle and revision items."""
+
+    text: str = "text"
+    """Name of text field in subtitle and revision items."""
+
+    subtitle_text_desc: str = "Subtitle text to review."
+    """Description of text field in subtitle items."""
+
+    revision_text_desc: str = "Full revised subtitle text."
+    """Description of text field in revision items."""
+
+    note: str = "note"
+    """Name of note field in revision items."""
+
+    note_desc: str = "Note explaining the revision."
+    """Description of note field in revision items."""
+
+    # Query errors
+    subtitle_indices_err: str = (
+        "Query subtitle indexes must be consecutive, ordered, and begin at 1."
+    )
+    """Error when query subtitle indexes are invalid."""
+
+    # Answer errors
+    revision_indices_err: str = (
+        "Answer revision indexes must be unique and in ascending order."
+    )
+    """Error when answer revision indexes are invalid."""
 
     # Test case errors
-    def note_missing_err(self, idx: int) -> str:
-        """Error when note is missing for a change.
+    revision_index_missing_err_tpl: str = (
+        "Answer revision index {idx} does not correspond to a query subtitle."
+    )
+    """Error template when a revision index is absent from the query."""
+
+    revision_unmodified_err_tpl: str = (
+        "Answer revision {idx} is unmodified relative to query subtitle {idx}; "
+        "unchanged subtitles must be omitted from revisions."
+    )
+    """Error template when a revision is unmodified."""
+
+    def revision_index_missing_err(self, idx: int) -> str:
+        """Get error when a revision index is absent from the query.
 
         Arguments:
-            idx: index of item
+            idx: one-based subtitle index
         Returns:
             error message
         """
-        return self.note_missing_err_tpl.format(idx=idx)
+        return self.revision_index_missing_err_tpl.format(idx=idx)
 
-    def output_missing_err(self, idx: int) -> str:
-        """Error when output is missing for a note.
+    def revision_unmodified_err(self, idx: int) -> str:
+        """Get error when a revision is unmodified.
 
         Arguments:
-            idx: index of item
+            idx: one-based subtitle index
         Returns:
             error message
         """
-        return self.output_missing_err_tpl.format(idx=idx)
-
-    def output_unmodified_err(self, idx: int) -> str:
-        """Error when output is present but unmodified.
-
-        Arguments:
-            idx: index of item
-        Returns:
-            error message
-        """
-        return self.output_unmodified_err_tpl.format(idx=idx)
+        return self.revision_unmodified_err_tpl.format(idx=idx)
