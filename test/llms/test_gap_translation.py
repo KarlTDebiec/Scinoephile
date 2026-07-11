@@ -10,7 +10,7 @@ from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
-from pytest import raises
+from pytest import mark, raises
 
 from scinoephile import common
 from scinoephile.core import Language
@@ -228,11 +228,18 @@ def test_gap_translation_preserves_unbounded_text():
     answer_cls.model_validate({"outputs": [{"index": 2, "text": long_text}]})
 
 
-def test_test_case_requires_outputs_to_exactly_fill_gaps():
+@mark.parametrize(
+    "test_case_cls",
+    [
+        GapTranslationTestCase,
+        GapTranslationManager.get_test_case_cls(GapTranslationManager.base_prompt),
+    ],
+    ids=["static", "generated"],
+)
+def test_test_case_requires_outputs_to_exactly_fill_gaps(
+    test_case_cls: type[GapTranslationTestCase],
+):
     """Output indexes should exactly complement target indexes within guides."""
-    test_case_cls = GapTranslationManager.get_test_case_cls(
-        GapTranslationManager.base_prompt
-    )
     query = {
         "targets": [{"index": 1, "text": "one"}],
         "guides": [
@@ -250,19 +257,16 @@ def test_test_case_requires_outputs_to_exactly_fill_gaps():
             }
         )
 
-    test_case = cast(
-        GapTranslationTestCase,
-        test_case_cls.model_validate(
-            {
-                "query": query,
-                "answer": {
-                    "outputs": [
-                        {"index": 2, "text": "translated two"},
-                        {"index": 3, "text": "translated three"},
-                    ]
-                },
-            }
-        ),
+    test_case = test_case_cls.model_validate(
+        {
+            "query": query,
+            "answer": {
+                "outputs": [
+                    {"index": 2, "text": "translated two"},
+                    {"index": 3, "text": "translated three"},
+                ]
+            },
+        }
     )
     assert test_case.answer is not None
     assert [output.index for output in test_case.answer.outputs] == [2, 3]

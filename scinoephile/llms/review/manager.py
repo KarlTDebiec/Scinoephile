@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar
 
 from pydantic import Field, create_model
 
@@ -187,42 +187,3 @@ class ReviewManager(Manager):
             __module__=ReviewQuery.__module__,
             **fields,
         )
-
-    @staticmethod
-    def get_min_difficulty(model: TestCase) -> int:
-        """Get minimum difficulty based on whether any subtitle is revised.
-
-        Arguments:
-            model: test case to inspect
-        Returns:
-            minimum difficulty
-        """
-        review_model = cast(ReviewTestCase, model)
-        if review_model.answer is not None and review_model.answer.revisions:
-            return 1
-        return 0
-
-    @staticmethod
-    def validate_test_case(model: TestCase) -> TestCase:
-        """Ensure every answer revision changes a query subtitle.
-
-        Arguments:
-            model: test case to validate
-        Returns:
-            validated test case
-        """
-        review_model = cast(ReviewTestCase, model)
-        if review_model.answer is None:
-            return model
-
-        prompt: ReviewPrompt = getattr(model, "prompt")
-        query_text_by_index = {
-            subtitle.index: subtitle.text for subtitle in review_model.query.subtitles
-        }
-        for revision in review_model.answer.revisions:
-            input_text = query_text_by_index.get(revision.index)
-            if input_text is None:
-                raise ValueError(prompt.revision_index_missing_err(revision.index))
-            if revision.text == input_text:
-                raise ValueError(prompt.revision_unmodified_err(revision.index))
-        return model

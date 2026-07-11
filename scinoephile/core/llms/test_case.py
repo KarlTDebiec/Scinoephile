@@ -6,9 +6,9 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from typing import ClassVar
+from typing import ClassVar, Self
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 
 from .answer import Answer
 from .prompt import Prompt
@@ -43,6 +43,16 @@ class TestCase(BaseModel, ABC):
     def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
+
+    @model_validator(mode="after")
+    def enforce_min_difficulty(self) -> Self:
+        """Ensure difficulty is at least the model-defined minimum.
+
+        Returns:
+            validated test case
+        """
+        self.difficulty = max(self.difficulty, self.get_min_difficulty())
+        return self
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified.

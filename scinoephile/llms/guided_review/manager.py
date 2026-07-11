@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar
 
 from pydantic import Field, create_model
 
@@ -233,45 +233,3 @@ class GuidedReviewManager(Manager):
             __module__=GuidedReviewQuery.__module__,
             **fields,
         )
-
-    @staticmethod
-    def get_min_difficulty(model: TestCase) -> int:
-        """Get minimum difficulty based on whether any target is revised.
-
-        Arguments:
-            model: test case to inspect
-        Returns:
-            minimum difficulty
-        """
-        guided_review_model = cast(GuidedReviewTestCase, model)
-        if (
-            guided_review_model.answer is not None
-            and guided_review_model.answer.revisions
-        ):
-            return 1
-        return 0
-
-    @staticmethod
-    def validate_test_case(model: TestCase) -> TestCase:
-        """Ensure every answer revision changes a query target.
-
-        Arguments:
-            model: test case to validate
-        Returns:
-            validated test case
-        """
-        guided_review_model = cast(GuidedReviewTestCase, model)
-        if guided_review_model.answer is None:
-            return model
-
-        prompt: GuidedReviewPrompt = getattr(model, "prompt")
-        target_text_by_index = {
-            target.index: target.text for target in guided_review_model.query.targets
-        }
-        for revision in guided_review_model.answer.revisions:
-            target_text = target_text_by_index.get(revision.index)
-            if target_text is None:
-                raise ValueError(prompt.revision_index_missing_err(revision.index))
-            if revision.text == target_text:
-                raise ValueError(prompt.revision_unmodified_err(revision.index))
-        return model

@@ -85,3 +85,35 @@ class GuidedReviewTestCase(TestCase):
     """Target and guide subtitles."""
     answer: GuidedReviewAnswer | None = None
     """Sparse target revisions, if available."""
+
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty based on whether any target is revised.
+
+        Returns:
+            minimum difficulty
+        """
+        min_difficulty = super().get_min_difficulty()
+        if self.answer is not None and self.answer.revisions:
+            min_difficulty = max(min_difficulty, 1)
+        return min_difficulty
+
+    @model_validator(mode="after")
+    def validate_revision_correspondence(self) -> Self:
+        """Ensure every answer revision changes a query target.
+
+        Returns:
+            validated test case
+        """
+        if self.answer is None:
+            return self
+
+        target_text_by_index = {
+            target.index: target.text for target in self.query.targets
+        }
+        for revision in self.answer.revisions:
+            target_text = target_text_by_index.get(revision.index)
+            if target_text is None:
+                raise ValueError(self.prompt.revision_index_missing_err(revision.index))
+            if revision.text == target_text:
+                raise ValueError(self.prompt.revision_unmodified_err(revision.index))
+        return self

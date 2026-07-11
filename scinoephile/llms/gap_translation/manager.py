@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar
 
 from pydantic import Field, create_model
 
@@ -222,28 +222,3 @@ class GapTranslationManager(Manager):
             __module__=GapTranslationQuery.__module__,
             **fields,
         )
-
-    @staticmethod
-    def validate_test_case(model: TestCase) -> TestCase:
-        """Ensure outputs exactly fill the guide indexes absent from targets.
-
-        Arguments:
-            model: test case to validate
-        Returns:
-            validated test case
-        """
-        gap_model = cast(GapTranslationTestCase, model)
-        if gap_model.answer is None:
-            return model
-
-        target_indexes = {target.index for target in gap_model.query.targets}
-        expected_output_indexes = [
-            guide.index
-            for guide in gap_model.query.guides
-            if guide.index not in target_indexes
-        ]
-        output_indexes = [output.index for output in gap_model.answer.outputs]
-        if output_indexes != expected_output_indexes:
-            prompt: GapTranslationPrompt = getattr(model, "prompt")
-            raise ValueError(prompt.output_indices_mismatch_err)
-        return model

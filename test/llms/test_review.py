@@ -8,11 +8,11 @@ import json
 from unittest.mock import Mock
 
 from pydantic import ValidationError
-from pytest import raises
+from pytest import mark, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, Queryer
-from scinoephile.llms.review import ReviewManager, ReviewPrompt
+from scinoephile.llms.review import ReviewManager, ReviewPrompt, ReviewTestCase
 
 _LOCALIZED_PROMPT = ReviewPrompt(
     language=Language.zho_hant,
@@ -21,6 +21,7 @@ _LOCALIZED_PROMPT = ReviewPrompt(
     index="xuhao",
     text="wenben",
     note="beizhu",
+    revision_index_missing_err_tpl="修訂序號 {idx} 未對應字幕。",
 )
 """Review prompt with Chinese correspondence field names."""
 
@@ -115,9 +116,18 @@ def test_answer_requires_unique_ordered_revision_indexes():
         )
 
 
-def test_test_case_rejects_missing_and_unmodified_revision_indexes():
+@mark.parametrize(
+    "test_case_cls",
+    [
+        ReviewTestCase,
+        ReviewManager.get_test_case_cls(ReviewManager.base_prompt),
+    ],
+    ids=["static", "generated"],
+)
+def test_test_case_rejects_missing_and_unmodified_revision_indexes(
+    test_case_cls: type[ReviewTestCase],
+):
     """Revisions should target and modify query subtitles."""
-    test_case_cls = ReviewManager.get_test_case_cls(ReviewManager.base_prompt)
     query = {"subtitles": [{"index": 1, "text": "original"}]}
 
     with raises(ValidationError, match="does not correspond to a query subtitle"):
@@ -140,9 +150,18 @@ def test_test_case_rejects_missing_and_unmodified_revision_indexes():
         )
 
 
-def test_revisions_raise_minimum_difficulty():
+@mark.parametrize(
+    "test_case_cls",
+    [
+        ReviewTestCase,
+        ReviewManager.get_test_case_cls(ReviewManager.base_prompt),
+    ],
+    ids=["static", "generated"],
+)
+def test_revisions_raise_minimum_difficulty(
+    test_case_cls: type[ReviewTestCase],
+):
     """A nonempty revisions list should require difficulty one."""
-    test_case_cls = ReviewManager.get_test_case_cls(ReviewManager.base_prompt)
     unchanged = test_case_cls.model_validate(
         {
             "query": {"subtitles": [{"index": 1, "text": "original"}]},
@@ -160,3 +179,18 @@ def test_revisions_raise_minimum_difficulty():
 
     assert unchanged.difficulty == 0
     assert changed.difficulty == 1
+
+
+def test_generated_test_case_uses_prompt_validation_errors():
+    """Generated test-case validators should use their localized prompt."""
+    test_case_cls = ReviewManager.get_test_case_cls(_LOCALIZED_PROMPT)
+
+    with raises(ValidationError, match="修訂序號 2 未對應字幕"):
+        test_case_cls.model_validate(
+            {
+                "query": {"subtitles": [{"index": 1, "text": "原文"}]},
+                "answer": {
+                    "revisions": [{"index": 2, "text": "修改", "note": "修正錯字"}]
+                },
+            }
+        )
