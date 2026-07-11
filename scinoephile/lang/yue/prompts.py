@@ -22,11 +22,6 @@ YUE_HANT_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
     "answer_invalid_post": (
         "請你再試一次，並且淨係返返一個符合該模式要求嘅有效 JSON 物件。"
     ),
-    "difficulty_description": "Difficulty level of the test case, used for filtering.",
-    "few_shot_description": "Whether to include test case in few-shot examples.",
-    "verified_description": (
-        "Whether to include test case in the verified answers cache."
-    ),
     "test_case_invalid_pre": (
         "你之前嘅回覆係符合答案模式嘅有效 JSON，但唔適用於而家呢個特定查詢。錯誤詳情："
     ),

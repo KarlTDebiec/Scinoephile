@@ -55,3 +55,34 @@ def test_test_case_enforces_minimum_difficulty_without_lowering_higher_values():
 
     assert minimum.difficulty == 2
     assert higher.difficulty == 3
+
+
+def test_test_case_metadata_fields_have_stable_schema():
+    """Test-case metadata should have stable order, defaults, and descriptions."""
+    schema = _TestCase.model_json_schema()
+
+    assert list(schema["properties"]) == [
+        "query",
+        "answer",
+        "difficulty",
+        "few_shot",
+        "verified",
+    ]
+    assert schema["properties"]["difficulty"] == {
+        "default": 0,
+        "description": "Difficulty level of the test case, used for filtering.",
+        "title": "Difficulty",
+        "type": "integer",
+    }
+    assert schema["properties"]["few_shot"] == {
+        "default": False,
+        "description": "Whether to include test case in few-shot examples.",
+        "title": "Few Shot",
+        "type": "boolean",
+    }
+    assert schema["properties"]["verified"] == {
+        "default": False,
+        "description": "Whether to include test case in the verified answers cache.",
+        "title": "Verified",
+        "type": "boolean",
+    }

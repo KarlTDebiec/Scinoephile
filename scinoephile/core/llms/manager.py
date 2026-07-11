@@ -63,7 +63,7 @@ class Manager(ABC):
         """
         query_cls = cls.get_query_cls(prompt)
         answer_cls = cls.get_answer_cls(prompt)
-        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt)
+        fields = cls.get_test_case_fields(query_cls, answer_cls)
 
         model = create_model(
             get_model_name(cls.test_case_base_cls.__name__, prompt.name),
@@ -81,31 +81,17 @@ class Manager(ABC):
         cls,
         query_cls: type[Query],
         answer_cls: type[Answer],
-        prompt: Prompt,
     ) -> dict[str, Any]:
         """Get fields dictionary for dynamic TestCase class creation.
 
         Arguments:
             query_cls: query model class
             answer_cls: answer model class
-            prompt: text for LLM correspondence
         Returns:
             fields dictionary for create_model
         """
         fields: dict[str, Any] = {
             "query": (query_cls, Field(...)),
             "answer": (answer_cls | None, Field(default=None)),
-            "difficulty": (
-                int,
-                Field(0, description=prompt.difficulty_description),
-            ),
-            "few_shot": (
-                bool,
-                Field(False, description=prompt.few_shot_description),
-            ),
-            "verified": (
-                bool,
-                Field(False, description=prompt.verified_description),
-            ),
         }
         return fields

@@ -24,11 +24,6 @@ ENG_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
         "Please try again and respond only with a valid JSON object matching the "
         "schema."
     ),
-    "difficulty_description": "Difficulty level of the test case, used for filtering.",
-    "few_shot_description": "Whether to include test case in few-shot examples.",
-    "verified_description": (
-        "Whether to include test case in the verified answers cache."
-    ),
     "test_case_invalid_pre": (
         "Your previous response was valid JSON compliant with the answer schema, but "
         "not valid for this specific query. Error details:"
