@@ -81,9 +81,11 @@ value, whose stable content-addressed name is used in generated model names.
 
 Optimization persistence stores each prompt alias with its content-addressed
 identifier, language, and complete set of string fields. Prompt and test-case
-SQLite stores own and create their tables independently; both table groups may
-coexist in one SQLite file without a global schema version or migration
-contract.
+SQLite stores own and create their tables independently. Model persistence uses
+immutable, content-addressed rows containing the provider, resolved model name,
+effective base URL, and non-secret inference settings. Credentials and provider
+client state are excluded. All table groups may coexist in one SQLite file
+without a global schema version or migration contract.
 
 ## Command Line Interface
 
