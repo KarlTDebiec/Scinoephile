@@ -56,25 +56,32 @@ ZhoYueGapTranslationPromptZhoHant = GapTranslationPrompt(
     **ZHO_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責根據對應的粵文字幕，補翻譯缺失的標準中文字幕。
-        只有當某行現有中文字幕爲空字符串時，才需要提供譯文。
-        如果某行已經有中文內容，不要修改，該行請輸出空字符串。
+        只為現有中文字幕列表中缺失的序號提供譯文。每個缺失序號必須恰好返回
+        一項輸出；已有中文內容的序號不要返回輸出，也不要修改。
         譯文要自然、通順，語氣和用詞要儘量貼近附近已有的中文字幕。
         粵文字幕是意思來源；譯文不需要逐字對應，但要準確表達該行意思。
         輸出內容只能是字幕正文本身，不要附加英文、備註、解釋、標籤、
         方括號內容、括號內容，或任何譯文以外的說明。
-        如果不需要翻譯，就輸出空字符串。
+        如果某個缺失序號不需要中文字幕，仍要保留該輸出項目，文本使用空字符串。
         """),
-    src_1_pfx="zhongwen_",
-    src_1_desc_tpl="字幕 {idx} 現有的中文內容；如果爲空就代表要翻譯",
-    src_2_pfx="yuewen_",
-    src_2_desc_tpl="字幕 {idx} 對應的粵文字幕",
-    output_pfx="zhongwen_",
-    output_desc_tpl='字幕 {idx} 譯好後的標準中文正文；如果不需要翻譯請輸出 ""。'
-    "不要包含英文、備註、解釋、標籤或者括號說明。",
-    output_unmodified_err_tpl="字幕 {idx} 已經有中文內容，該行輸出必須爲空字符串。",
-    output_contains_note_err_tpl=(
-        "字幕 {idx} 包含英文或者備註說明；只可以輸出中文字幕正文。"
-    ),
+    targets="zhongwen",
+    targets_desc="已有的中文字幕，序號與粵文參考字幕一致",
+    guides="yuewen",
+    guides_desc="按序號完整排列的粵文參考字幕",
+    outputs="zhongwen",
+    outputs_desc="現有中文字幕缺失序號所需的標準中文譯文",
+    index="xuhao",
+    index_desc="從 1 開始的字幕序號",
+    text="wenben",
+    target_text_desc="已有的中文字幕文本",
+    guide_text_desc="粵文參考字幕文本",
+    output_text_desc="缺失序號對應的標準中文譯文正文；如果不需要字幕則使用空字符串",
+    guide_indices_err="查詢參考字幕序號必須從 1 開始、連續並按順序排列。",
+    target_indices_err="查詢現有字幕序號必須唯一並按升序排列。",
+    target_index_missing_err="每個查詢現有字幕序號都必須對應一個參考字幕序號。",
+    target_gap_missing_err="查詢現有字幕必須缺少至少一個需要翻譯的參考字幕序號。",
+    output_indices_err="答案輸出序號必須唯一並按升序排列。",
+    output_indices_mismatch_err="答案輸出序號必須恰好對應查詢現有字幕缺失的參考字幕序號。",
 )
 """Text for traditional standard Chinese gap translation using Cantonese."""
 
