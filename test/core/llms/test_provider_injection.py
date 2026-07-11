@@ -76,6 +76,8 @@ class _Manager(Manager):
     """Stable operation identifier."""
     base_prompt = _PROMPT
     """Base prompt."""
+    test_case_base_cls = _TestCase
+    """Static test-case model."""
 
     @classmethod
     @cache

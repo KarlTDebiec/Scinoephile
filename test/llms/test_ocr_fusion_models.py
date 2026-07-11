@@ -14,7 +14,6 @@ from pytest import mark, raises
 from scinoephile.core import Language
 from scinoephile.core.llms import Answer, LLMProvider, Query, Queryer
 from scinoephile.core.llms.models import get_model_name
-from scinoephile.core.llms.test_case_mapping import remap_test_case
 from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
@@ -354,7 +353,9 @@ def test_repository_json_fixtures_round_trip_without_rewrite():
             localized_test_cases,
             strict=True,
         ):
-            base_test_case = remap_test_case(localized_test_case, base_test_case_cls)
+            base_test_case = base_test_case_cls.model_validate(
+                localized_test_case.model_dump(mode="json")
+            )
             assert (
                 base_test_case.model_dump(
                     mode="json",

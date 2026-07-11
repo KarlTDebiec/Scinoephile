@@ -65,6 +65,43 @@ def test_static_shape_factory_caches_and_isolates_prompt_aliases():
     }
 
 
+def test_prompt_specific_classes_revalidate_by_semantic_field_name():
+    """Equivalent prompt classes should revalidate without positional mapping."""
+    localized_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
+    alternative_cls = ReviewManager.get_test_case_cls(_ALTERNATIVE_REVIEW_PROMPT)
+    localized = localized_cls.model_validate(
+        {
+            "query": {"zimu": [{"xuhao": 1, "wenben": "original"}]},
+            "answer": {
+                "xiugai": [
+                    {
+                        "xuhao": 1,
+                        "wenben": "corrected",
+                        "beizhu": "typo",
+                    }
+                ]
+            },
+        }
+    )
+
+    alternative = alternative_cls.model_validate(localized.model_dump(mode="json"))
+
+    assert alternative.model_dump(mode="json") == localized.model_dump(mode="json")
+    assert alternative.query.model_dump(by_alias=True) == {
+        "sources": [{"position": 1, "content": "original"}]
+    }
+    assert alternative.answer is not None
+    assert alternative.answer.model_dump(by_alias=True) == {
+        "corrections": [
+            {
+                "position": 1,
+                "content": "corrected",
+                "explanation": "typo",
+            }
+        ]
+    }
+
+
 def test_punctuation_factory_uses_static_fields_with_prompt_aliases():
     """Punctuation models should use semantic fields and prompt aliases."""
     test_case_cls = PunctuationManager.get_test_case_cls(_LOCALIZED_PUNCTUATION_PROMPT)

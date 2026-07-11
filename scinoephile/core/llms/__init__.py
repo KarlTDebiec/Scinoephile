@@ -6,7 +6,7 @@ Package hierarchy (modules may import from any above):
 * models / prompt / test_case_subtitle / tool
 * answer / query / tool_box
 * llm_provider / test_case
-* manager / openai_provider_base / queryer / test_case_mapping
+* manager / openai_provider_base / queryer
 * utils
 * processor
 """

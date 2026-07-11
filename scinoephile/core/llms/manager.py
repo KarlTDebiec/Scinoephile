@@ -8,7 +8,7 @@ from abc import ABC
 from functools import cache
 from typing import Any, ClassVar
 
-from pydantic import Field, create_model, model_validator
+from pydantic import Field, create_model
 
 from .answer import Answer
 from .models import get_model_name
@@ -26,7 +26,7 @@ class Manager(ABC):
     """Stable operation identifier used in persistence and CLIs."""
     base_prompt: ClassVar[Prompt]
     """Base prompt defining persisted test-case field names."""
-    test_case_base_cls: ClassVar[type[TestCase]] = TestCase
+    test_case_base_cls: ClassVar[type[TestCase]]
     """Static test-case model defining the operation's semantic shape."""
 
     @classmethod
@@ -64,25 +64,16 @@ class Manager(ABC):
         query_cls = cls.get_query_cls(prompt)
         answer_cls = cls.get_answer_cls(prompt)
         fields = cls.get_test_case_fields(query_cls, answer_cls, prompt)
-        legacy_test_case = cls.test_case_base_cls is TestCase
-        if legacy_test_case:
-            validators = cls.get_test_case_validators()
-        else:
-            validators = {}
 
         model = create_model(
             get_model_name(cls.test_case_base_cls.__name__, prompt.name),
             __base__=cls.test_case_base_cls,
             __module__=cls.test_case_base_cls.__module__,
-            __validators__=validators,
             **fields,
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.prompt = prompt
-        if legacy_test_case:
-            setattr(model, "get_auto_verified", cls.get_auto_verified)
-            setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model
 
     @classmethod
@@ -118,70 +109,3 @@ class Manager(ABC):
             ),
         }
         return fields
-
-    @classmethod
-    def get_test_case_validators(cls) -> dict[str, Any]:
-        """Get validators dictionary for dynamic TestCase class creation.
-
-        Returns:
-            validators dictionary for create_model
-        """
-        validators: dict[str, Any] = {
-            "validate_test_case": model_validator(mode="after")(cls.validate_test_case),
-        }
-        return validators
-
-    @staticmethod
-    def get_auto_verified(model: TestCase) -> bool:
-        """Whether this test case should automatically be verified.
-
-        Arguments:
-            model: test case to inspect
-        Returns:
-            whether the test case should be auto-verified
-        """
-        return False
-
-    @staticmethod
-    def get_min_difficulty(model: TestCase) -> int:
-        """Get minimum difficulty based on the test case properties.
-
-        Arguments:
-            model: test case to inspect
-        Returns:
-            minimum difficulty
-        """
-        return 0
-
-    @staticmethod
-    def validate_query(model: Query) -> Query:
-        """Ensure query is valid.
-
-        Arguments:
-            model: query to validate
-        Returns:
-            validated query
-        """
-        return model
-
-    @staticmethod
-    def validate_answer(model: Answer) -> Answer:
-        """Ensure answer is valid.
-
-        Arguments:
-            model: answer to validate
-        Returns:
-            validated answer
-        """
-        return model
-
-    @staticmethod
-    def validate_test_case(model: TestCase) -> TestCase:
-        """Ensure query and answer together are valid.
-
-        Arguments:
-            model: test case to validate
-        Returns:
-            validated test case
-        """
-        return model

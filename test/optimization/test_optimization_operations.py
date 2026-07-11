@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from scinoephile.core.llms import TestCase
 from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
@@ -13,6 +14,9 @@ from scinoephile.llms.pairwise_review import PairwiseReviewManager
 from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
+from scinoephile.multilang.yue_zho.transcription.punctuation import (
+    YueZhoPunctuationManager,
+)
 from scinoephile.optimization.operations import OPERATIONS
 
 
@@ -29,3 +33,12 @@ def test_operations_are_keyed_by_stable_manager_identifiers():
         "review": ReviewManager,
         "translation": TranslationManager,
     }
+
+
+def test_concrete_managers_declare_static_test_case_bases():
+    """Every production manager should explicitly declare its semantic model."""
+    manager_classes = (*OPERATIONS.values(), YueZhoPunctuationManager)
+
+    for manager_cls in manager_classes:
+        assert "test_case_base_cls" in manager_cls.__dict__
+        assert manager_cls.test_case_base_cls is not TestCase
