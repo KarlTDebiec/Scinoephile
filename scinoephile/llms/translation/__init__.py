@@ -4,6 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * prompt
+* models
 * manager
 * processor
 """
@@ -11,11 +12,21 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import TranslationManager
+from .models import (
+    TranslationAnswer,
+    TranslationOutput,
+    TranslationQuery,
+    TranslationTestCase,
+)
 from .processor import TranslationProcessor
 from .prompt import TranslationPrompt
 
 __all__ = [
+    "TranslationAnswer",
     "TranslationManager",
+    "TranslationOutput",
     "TranslationPrompt",
     "TranslationProcessor",
+    "TranslationQuery",
+    "TranslationTestCase",
 ]

@@ -30,16 +30,18 @@ EngZhoTranslationPrompt = TranslationPrompt(
         proper nouns, recurring terms, and subtitle markup when they are present and
         appropriate in the generated English subtitle.
 
-        Output only the generated English subtitle text in each answer field. Do not
-        include notes, explanations, labels, alternate translations, bracketed
-        commentary, or any text outside the subtitle itself.
+        Output only the generated English subtitle text in each output item's text
+        field. Do not include notes, explanations, labels, alternate translations,
+        bracketed commentary, or any text outside the subtitle itself.
         """),
-    input_pfx="zho_",
-    input_desc_tpl="Chinese subtitle {idx} to translate",
-    output_pfx="eng_",
-    output_desc_tpl=(
-        "Generated English subtitle {idx} corresponding to Chinese subtitle {idx}"
+    subtitles="zho",
+    subtitles_desc="Chinese subtitles to translate, in order.",
+    outputs="eng",
+    outputs_desc=(
+        "Generated English subtitles corresponding to the Chinese subtitles, in order."
     ),
+    subtitle_text_desc="Chinese subtitle text to translate.",
+    output_text_desc="Generated English subtitle text.",
 )
 """Text for English translation from Chinese."""
 

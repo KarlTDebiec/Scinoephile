@@ -38,13 +38,21 @@ YueEngTranslationPromptYueHant = TranslationPrompt(
         可以調整措辭令佢更似自然粵文字幕。專名、固定稱呼、重複術語同字幕標記
         要喺適合時保留或者按粵語習慣處理。
 
-        輸出內容只可以係生成嘅粵文字幕正文。絕對唔好附加英文、備註、解釋、標籤、
-        替代譯文、方括號內容、括號內容，或者任何字幕以外嘅説明。
+        每個輸出項目嘅文本欄只可以係生成嘅粵文字幕正文。絕對唔好附加英文、備註、
+        解釋、標籤、替代譯文、方括號內容、括號內容，或者任何字幕以外嘅説明。
         """),
-    input_pfx="eng_",
-    input_desc_tpl="要翻譯成粵文嘅英文字幕 {idx}",
-    output_pfx="yuewen_",
-    output_desc_tpl="字幕 {idx} 對應嘅粵文譯文",
+    subtitles="eng",
+    subtitles_desc="按順序排列、要翻譯成粵文嘅英文字幕",
+    outputs="yuewen",
+    outputs_desc="按輸入字幕順序排列嘅粵文譯文",
+    index="xuhao",
+    index_desc="由 1 開始嘅字幕序號",
+    text="wenben",
+    subtitle_text_desc="要翻譯成粵文嘅英文字幕文本",
+    output_text_desc="完整粵文譯文",
+    subtitle_indices_err="查詢字幕序號必須由 1 開始、連續並按順序排列。",
+    output_indices_err="答案輸出序號必須由 1 開始、連續並按順序排列。",
+    output_correspondence_err="答案輸出序號必須同查詢字幕序號完全對應。",
 )
 """Text for traditional written Cantonese translation from English."""
 

@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import cast
 
 from scinoephile.core.llms import Processor
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -12,6 +13,7 @@ from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.text import replace_control_characters
 
 from .manager import TranslationManager
+from .models import TranslationAnswer
 from .prompt import TranslationPrompt
 
 __all__ = ["TranslationProcessor"]
@@ -49,22 +51,29 @@ class TranslationProcessor(Processor):
                 break
 
             # Query LLM
-            test_case_cls = TranslationManager.get_test_case_cls(
-                len(block), self.prompt
-            )
+            test_case_cls = TranslationManager.get_test_case_cls(self.prompt)
             query_cls = test_case_cls.query_cls
-            query_kwargs: dict[str, str] = {}
-            for idx, subtitle in enumerate(block.events):
-                key = self.prompt.input(idx + 1)
-                query_kwargs[key] = subtitle.text_with_newline.strip()
-            query = query_cls(**query_kwargs)
+            query = query_cls.model_validate(
+                {
+                    "subtitles": [
+                        {
+                            "index": idx,
+                            "text": subtitle.text_with_newline.strip(),
+                        }
+                        for idx, subtitle in enumerate(block.events, 1)
+                    ]
+                }
+            )
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
+            answer = cast(TranslationAnswer, test_case.answer)
+            output_text_by_index = {
+                output.index: output.text for output in answer.outputs
+            }
             output_series = Series()
-            for sub_idx, subtitle in enumerate(block):
-                key = self.prompt.output(sub_idx + 1)
-                output_text = getattr(test_case.answer, key)
+            for sub_idx, subtitle in enumerate(block, 1):
+                output_text = output_text_by_index[sub_idx]
                 output_subtitle = type(subtitle)(**subtitle.as_dict())
                 output_subtitle.text = replace_control_characters(output_text)
                 output_series.append(output_subtitle)

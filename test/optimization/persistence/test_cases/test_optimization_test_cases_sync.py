@@ -43,6 +43,16 @@ _ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
 """Review prompt using an alternative correspondence schema."""
 
 
+def _get_translation_answer(text: str) -> dict[str, JsonValue]:
+    """Get a canonical translation answer payload."""
+    return {"outputs": [{"index": 1, "text": text}]}
+
+
+def _get_translation_query(text: str) -> dict[str, JsonValue]:
+    """Get a canonical translation query payload."""
+    return {"subtitles": [{"index": 1, "text": text}]}
+
+
 def test_normalization_makes_prompt_field_aliases_share_identity():
     """Equivalent field aliases should normalize to one SQL identity."""
     localized_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
@@ -98,13 +108,16 @@ def test_sync_rejects_fields_outside_test_case_schema(tmp_path: Path):
     source_path = tmp_path / "source.json"
     invalid_test_cases = [
         {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b"},
+            "query": _get_translation_query("a"),
+            "answer": _get_translation_answer("b"),
             "unexpected": True,
         },
         {
-            "query": {"input_1": "a", "unexpected": True},
-            "answer": {"output_1": "b"},
+            "query": {
+                **_get_translation_query("a"),
+                "unexpected": True,
+            },
+            "answer": _get_translation_answer("b"),
         },
     ]
     for test_case in invalid_test_cases:
@@ -126,12 +139,12 @@ def test_sync_inserts_and_removes_provenance_by_source_path(
     monkeypatch.chdir(tmp_path)
     database_path = Path("test_cases.sqlite")
     source_path = Path("source.json")
-    deleted_query: dict[str, JsonValue] = {"input_1": "c"}
-    deleted_answer: dict[str, JsonValue] = {"output_1": "d"}
+    deleted_query = _get_translation_query("c")
+    deleted_answer = _get_translation_answer("d")
     first_data = [
         {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b"},
+            "query": _get_translation_query("a"),
+            "answer": _get_translation_answer("b"),
             "verified": True,
         },
         {
@@ -174,7 +187,14 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     database_path = Path("test_cases.sqlite")
     source_path = Path("source.json")
     source_path.write_text(
-        json.dumps([{"query": {"input_1": "a"}, "answer": {"output_1": "b"}}]),
+        json.dumps(
+            [
+                {
+                    "query": _get_translation_query("a"),
+                    "answer": _get_translation_answer("b"),
+                }
+            ]
+        ),
         encoding="utf-8",
     )
     first_report = sync_test_cases(
@@ -201,8 +221,8 @@ def test_sync_does_not_overwrite_sql_owned_metadata(tmp_path: Path):
     source_path = tmp_path / "source.json"
     data = [
         {
-            "query": {"input_1": "a"},
-            "answer": {"output_1": "b"},
+            "query": _get_translation_query("a"),
+            "answer": _get_translation_answer("b"),
             "difficulty": 1,
         }
     ]
@@ -254,15 +274,22 @@ def test_sync_validates_all_inputs_before_writing(tmp_path: Path):
     valid_path = tmp_path / "valid.json"
     invalid_path = tmp_path / "invalid.json"
     valid_path.write_text(
-        json.dumps([{"query": {"input_1": "a"}, "answer": {"output_1": "b"}}]),
+        json.dumps(
+            [
+                {
+                    "query": _get_translation_query("a"),
+                    "answer": _get_translation_answer("b"),
+                }
+            ]
+        ),
         encoding="utf-8",
     )
     invalid_path.write_text(
         json.dumps(
             [
                 {
-                    "query": {"input_1": "c"},
-                    "answer": {"output_1": "d"},
+                    "query": _get_translation_query("c"),
+                    "answer": _get_translation_answer("d"),
                     "difficulty": "hard",
                 }
             ]
