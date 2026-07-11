@@ -33,12 +33,29 @@ GuidedReviewPromptZhoHant = GuidedReviewPrompt(
         請利用參考字幕判斷中文字幕是否有明顯的聽寫、用字、名稱或前後一致性錯誤。
         不要翻譯參考字幕，也不要為了貼近參考字幕而改寫原本正確的中文。
         不要潤色或改動語氣、文法與措辭。
-        只有確實需要修改時才返回完整修訂字幕與簡短備註，否則兩者均返回空字符串。"""),
-    target_pfx="zhongwen_",
-    target_desc_tpl="第 {idx} 條中文字幕",
-    guide_pfx="cankao_",
-    guide_desc_tpl="第 {idx} 條參考字幕",
-    output_pfx="xiugai_zhongwen_",
+        只有確實需要修改的中文字幕才加入修改列表。每項修改必須包含字幕序號、
+        完整修訂後文本與簡短備註。如果全部字幕都不需要修改，請返回空的修改列表。"""),
+    targets="zhongwen",
+    targets_desc="按順序排列、需要審核的中文字幕",
+    guides="cankao",
+    guides_desc="按順序排列、涵蓋同一段內容的參考字幕",
+    revisions="xiugai_zhongwen",
+    revisions_desc="需要修改的中文字幕；不需要修改的字幕不要包含在內",
+    index="xuhao",
+    index_desc="從 1 開始的字幕序號",
+    text="wenben",
+    target_text_desc="需要審核的中文字幕文本",
+    guide_text_desc="參考字幕文本",
+    revision_text_desc="修改後的完整中文字幕文本",
+    note="beizhu",
+    note_desc="關於中文字幕修改的簡短備註",
+    target_indices_err="查詢目標字幕序號必須從 1 開始、連續並按順序排列。",
+    guide_indices_err="查詢參考字幕序號必須從 1 開始、連續並按順序排列。",
+    revision_indices_err="答案修改序號必須唯一並按升序排列。",
+    revision_index_missing_err_tpl="答案修改序號 {idx} 在查詢目標字幕中不存在。",
+    revision_unmodified_err_tpl=(
+        "答案修改 {idx} 與查詢目標字幕 {idx} 相同；不需要修改的字幕必須從修改列表省略。"
+    ),
 )
 """LLM correspondence text for guided review of traditional Chinese."""
 

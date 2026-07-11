@@ -33,12 +33,29 @@ GuidedReviewPromptYueHant = GuidedReviewPrompt(
         請利用參考字幕判斷粵文有冇明顯嘅聽錯字、寫錯字、名稱錯誤或者前後矛盾。
         唔好翻譯參考字幕，亦唔好為咗貼近參考字幕而改寫本來正確嘅粵文。
         唔好潤色或者改動語氣、文法、助詞、量詞同措辭。
-        只有確實需要修改時先回傳完整修訂後字幕同英文備註，否則兩者都回傳空字串。"""),
-    target_pfx="yuewen_",
-    target_desc_tpl="第 {idx} 條粵文字幕",
-    guide_pfx="cankao_",
-    guide_desc_tpl="第 {idx} 條參考字幕",
-    output_pfx="xiugai_yuewen_",
+        只有確實需要修改嘅粵文字幕先加入修改列表。每項修改必須包含字幕序號、
+        完整修訂後文本同英文備註。如果全部字幕都唔需要修改，請返回空嘅修改列表。"""),
+    targets="yuewen",
+    targets_desc="按順序排列、需要審核嘅粵文字幕",
+    guides="cankao",
+    guides_desc="按順序排列、涵蓋同一段內容嘅參考字幕",
+    revisions="xiugai_yuewen",
+    revisions_desc="需要修改嘅粵文字幕；唔需要修改嘅字幕唔好包括喺內",
+    index="xuhao",
+    index_desc="由 1 開始嘅字幕序號",
+    text="wenben",
+    target_text_desc="需要審核嘅粵文字幕文本",
+    guide_text_desc="參考字幕文本",
+    revision_text_desc="修改後嘅完整粵文字幕文本",
+    note="beizhu",
+    note_desc="關於粵文字幕修改嘅英文備註",
+    target_indices_err="查詢目標字幕序號必須由 1 開始、連續並按順序排列。",
+    guide_indices_err="查詢參考字幕序號必須由 1 開始、連續並按順序排列。",
+    revision_indices_err="答案修改序號必須唯一並按升序排列。",
+    revision_index_missing_err_tpl="答案修改序號 {idx} 喺查詢目標字幕中不存在。",
+    revision_unmodified_err_tpl=(
+        "答案修改 {idx} 同查詢目標字幕 {idx} 相同；唔需要修改嘅字幕必須從修改列表省略。"
+    ),
 )
 """LLM correspondence text for guided review of traditional Cantonese."""
 

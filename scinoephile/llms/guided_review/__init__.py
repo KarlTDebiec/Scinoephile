@@ -4,6 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * prompt
+* models
 * manager
 * processor
 """
@@ -11,11 +12,15 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import GuidedReviewManager
+from .models import GuidedReviewAnswer, GuidedReviewQuery, GuidedReviewTestCase
 from .processor import GuidedReviewProcessor
 from .prompt import GuidedReviewPrompt
 
 __all__ = [
+    "GuidedReviewAnswer",
     "GuidedReviewManager",
     "GuidedReviewProcessor",
     "GuidedReviewPrompt",
+    "GuidedReviewQuery",
+    "GuidedReviewTestCase",
 ]
