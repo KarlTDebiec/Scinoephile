@@ -1,12 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.lang.eng.get_eng_cleaned."""
+"""Tests of English subtitle cleaning."""
 
 from __future__ import annotations
 
 from pytest import FixtureRequest, param
 
-from scinoephile.lang.eng.cleaning import get_eng_cleaned, get_eng_text_cleaned
+from scinoephile.core import Language
+from scinoephile.lang.eng.cleaning import get_eng_text_cleaned
+from scinoephile.workflows.cleaning import clean_series
 from test.helpers import assert_series_equal, parametrize
 
 
@@ -153,20 +155,21 @@ def test_get_eng_text_cleaned(text: str, expected: str):
         ),
     ],
 )
-def test_get_eng_cleaned(
+def test_clean_series_eng(
     request: FixtureRequest,
     series_fixture: str,
     expected_fixture: str,
 ):
-    """Test get_eng_cleaned against expected cleaned outputs.
+    """Test English cleaning against expected outputs.
 
     Arguments:
         request: pytest request for fixture lookup
         series_fixture: fixture name for input series
         expected_fixture: fixture name for expected output series
     """
-    output = get_eng_cleaned(
+    output = clean_series(
         request.getfixturevalue(series_fixture),
+        language=Language.eng,
         remove_empty=False,
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))

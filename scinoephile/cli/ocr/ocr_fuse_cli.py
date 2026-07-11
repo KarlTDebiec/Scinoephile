@@ -28,8 +28,6 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.script.conversion import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
@@ -37,6 +35,7 @@ from scinoephile.lang.zho.script.conversion import (
     get_zho_converted,
 )
 from scinoephile.llms.providers.registry import get_provider
+from scinoephile.workflows.cleaning import clean_series
 from scinoephile.workflows.ocr_fusion import fuse_ocr_series
 
 __all__ = ["OcrFuseCli"]
@@ -228,12 +227,8 @@ class OcrFuseCli(ScinoephileCliBase):
 
         # Clean and convert inputs
         if clean:
-            if language is Language.eng:
-                lens = get_eng_cleaned(lens, remove_empty=False)
-                secondary = get_eng_cleaned(secondary, remove_empty=False)
-            else:
-                lens = get_zho_cleaned(lens, remove_empty=False)
-                secondary = get_zho_cleaned(secondary, remove_empty=False)
+            lens = clean_series(lens, language=language, remove_empty=False)
+            secondary = clean_series(secondary, language=language, remove_empty=False)
         fusion_language = language
         if resolved_convert is not None:
             lens = get_zho_converted(lens, resolved_convert)

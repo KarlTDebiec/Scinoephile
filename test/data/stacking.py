@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from scinoephile.core import Language
 from scinoephile.core.stacking import get_stacked_series
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
-from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.workflows.cleaning import clean_series
 
 __all__ = [
     "process_yue_hans_eng",
@@ -44,13 +44,13 @@ def process_yue_hans_eng(
         if yue_hans_path is None:
             yue_hans_path = output_dir / "yue-Hans.srt"
         yue_hans = Series.load(yue_hans_path)
-        yue_hans = get_zho_cleaned(yue_hans)
+        yue_hans = clean_series(yue_hans, language=Language.yue_hans)
         yue_hans = get_zho_flattened(yue_hans)
 
         if eng_path is None:
             eng_path = output_dir / "eng.srt"
         eng = Series.load(eng_path)
-        eng = get_eng_cleaned(eng)
+        eng = clean_series(eng, language=Language.eng)
         eng = get_eng_flattened(eng)
 
         yue_hans_eng = get_stacked_series(yue_hans, eng)
