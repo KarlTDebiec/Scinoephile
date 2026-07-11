@@ -4,6 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * prompt
+* models
 * manager
 * processor
 """
@@ -11,11 +12,15 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import OcrFusionManager
+from .models import OcrFusionAnswer, OcrFusionQuery, OcrFusionTestCase
 from .processor import OcrFusionProcessor
 from .prompt import OcrFusionPrompt
 
 __all__ = [
+    "OcrFusionAnswer",
     "OcrFusionManager",
     "OcrFusionProcessor",
     "OcrFusionPrompt",
+    "OcrFusionQuery",
+    "OcrFusionTestCase",
 ]

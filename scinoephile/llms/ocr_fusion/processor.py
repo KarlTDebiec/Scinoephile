@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import cast
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Processor
@@ -13,6 +14,7 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import are_series_one_to_one
 
 from .manager import OcrFusionManager
+from .models import OcrFusionAnswer
 from .prompt import OcrFusionPrompt
 
 __all__ = ["OcrFusionProcessor"]
@@ -91,12 +93,12 @@ class OcrFusionProcessor(Processor):
             # Query LLM
             test_case_cls = OcrFusionManager.get_test_case_cls(prompt)
             query_cls = test_case_cls.query_cls
-            query_kwargs = {prompt.src_1: text_one, prompt.src_2: text_two}
-            query = query_cls(**query_kwargs)
+            query = query_cls(source_one=text_one, source_two=text_two)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
-            output_text = getattr(test_case.answer, prompt.output)
+            answer = cast(OcrFusionAnswer, test_case.answer)
+            output_text = answer.output
             sub = Subtitle(start=sub_one.start, end=sub_one.end, text=output_text)
             logger.info(
                 f"Subtitle {sub_idx + 1} processed:     {sub.text.replace('\n', '\\n')}"

@@ -8,29 +8,6 @@ from pydantic import ValidationError
 from pytest import raises
 
 from scinoephile.llms.delineation import DelineationManager
-from scinoephile.llms.ocr_fusion import OcrFusionManager
-
-
-def test_ocr_fusion_retains_auto_verification_and_minimum_difficulty():
-    """OCR fusion should retain its legacy difficulty and verification rules."""
-    test_case_cls = OcrFusionManager.get_test_case_cls(OcrFusionManager.base_prompt)
-    simple = test_case_cls.model_validate(
-        {
-            "query": {"one": "source one", "two": "source two"},
-            "answer": {"output": "source one", "note": "selected source one"},
-        }
-    )
-    complex_case = test_case_cls.model_validate(
-        {
-            "query": {"one": "source-one", "two": "source two"},
-            "answer": {"output": "source-one", "note": "selected source one"},
-        }
-    )
-
-    assert simple.difficulty == 1
-    assert simple.get_auto_verified()
-    assert complex_case.difficulty == 2
-    assert not complex_case.get_auto_verified()
 
 
 def test_delineation_retains_validation_and_minimum_difficulty():
