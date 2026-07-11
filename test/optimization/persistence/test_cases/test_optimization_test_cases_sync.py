@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import ClassVar
 
 from pydantic import JsonValue
 from pytest import raises
@@ -23,6 +24,15 @@ from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases,
 )
+
+_BASE_REVIEW_PROMPT = ReviewPrompt(
+    subtitles="base_subtitles",
+    revisions="base_revisions",
+    index="base_index",
+    text="base_text",
+    note="base_note",
+)
+"""Review prompt whose aliases intentionally differ from semantic field names."""
 
 _LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
     subtitles="zimu",
@@ -43,6 +53,15 @@ _ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
 """Review prompt using an alternative correspondence schema."""
 
 
+class _AliasedBaseReviewManager(ReviewManager):
+    """Review manager with distinct semantic, base, and localized field names."""
+
+    operation: ClassVar[str] = "aliased-base-review"
+    """Stable operation identifier used in persistence."""
+    base_prompt: ClassVar[ReviewPrompt] = _BASE_REVIEW_PROMPT
+    """Prompt defining intentionally distinct persisted field names."""
+
+
 def _get_translation_answer(text: str) -> dict[str, JsonValue]:
     """Get a canonical translation answer payload."""
     return {"outputs": [{"index": 1, "text": text}]}
@@ -53,10 +72,14 @@ def _get_translation_query(text: str) -> dict[str, JsonValue]:
     return {"subtitles": [{"index": 1, "text": text}]}
 
 
-def test_normalization_makes_prompt_field_aliases_share_identity():
-    """Equivalent field aliases should normalize to one SQL identity."""
-    localized_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
-    alternative_cls = ReviewManager.get_test_case_cls(_ALTERNATIVE_REVIEW_PROMPT)
+def test_normalization_makes_prompt_field_aliases_share_identity(tmp_path: Path):
+    """Equivalent aliases should normalize to one base-aliased SQL identity."""
+    localized_cls = _AliasedBaseReviewManager.get_test_case_cls(
+        _LOCALIZED_REVIEW_PROMPT
+    )
+    alternative_cls = _AliasedBaseReviewManager.get_test_case_cls(
+        _ALTERNATIVE_REVIEW_PROMPT
+    )
     localized = localized_cls.model_validate(
         {
             "query": {"zimu": [{"xuhao": 1, "wenben": "original"}]},
@@ -87,20 +110,37 @@ def test_normalization_makes_prompt_field_aliases_share_identity():
     )
     localized_persisted = PersistedTestCase.from_test_case(
         localized,
-        ReviewManager,
+        _AliasedBaseReviewManager,
     )
     alternative_persisted = PersistedTestCase.from_test_case(
         alternative,
-        ReviewManager,
+        _AliasedBaseReviewManager,
     )
 
     assert localized_persisted.query == {
-        "subtitles": [{"index": 1, "text": "original"}]
+        "base_subtitles": [{"base_index": 1, "base_text": "original"}]
     }
     assert localized_persisted.answer == {
-        "revisions": [{"index": 1, "text": "corrected", "note": "typo"}]
+        "base_revisions": [
+            {
+                "base_index": 1,
+                "base_text": "corrected",
+                "base_note": "typo",
+            }
+        ]
     }
     assert localized_persisted.test_case_id == alternative_persisted.test_case_id
+
+    store = TestCaseSqliteStore(tmp_path / "test_cases.sqlite")
+    store.sync_source_paths(
+        {"aliases.json": [localized_persisted]},
+        manager_cls=_AliasedBaseReviewManager,
+        dry_run=False,
+    )
+    loaded = store.get_test_case(localized_persisted.test_case_id)
+    assert loaded is not None
+    assert loaded.query == localized_persisted.query
+    assert loaded.answer == localized_persisted.answer
 
 
 def test_sync_rejects_fields_outside_test_case_schema(tmp_path: Path):

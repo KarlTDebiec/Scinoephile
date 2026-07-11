@@ -67,7 +67,13 @@ def save_test_cases_to_json(
             manager_cls.base_prompt,
         )
         base_test_case = remap_test_case(test_case, base_test_case_cls)
-        data.append(base_test_case.model_dump(mode="json", exclude_defaults=True))
+        data.append(
+            base_test_case.model_dump(
+                mode="json",
+                by_alias=True,
+                exclude_defaults=True,
+            )
+        )
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, "w", encoding="utf-8") as f:
