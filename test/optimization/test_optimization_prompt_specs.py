@@ -11,8 +11,7 @@ from scinoephile.optimization.prompt_specs import PROMPT_SPECS
 
 
 def test_prompt_specs_are_stable_and_manager_compatible():
-    """Registry aliases should be ordered and compatible with their managers."""
-    assert tuple(PROMPT_SPECS) == tuple(sorted(PROMPT_SPECS))
+    """Registered prompts should be compatible with their managers."""
     for prompt_spec in PROMPT_SPECS.values():
         assert OPERATIONS[prompt_spec.manager_cls.operation] is prompt_spec.manager_cls
         assert isinstance(prompt_spec.prompt, type(prompt_spec.manager_cls.base_prompt))

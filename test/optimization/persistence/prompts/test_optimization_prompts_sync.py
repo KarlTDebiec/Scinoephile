@@ -43,6 +43,6 @@ def test_sync_all_registered_prompts(tmp_path: Path):
     store = PromptSqliteStore(database_path)
 
     assert report.prompt_count == len(PROMPT_SPECS)
-    assert report.insert_aliases == tuple(PROMPT_SPECS)
+    assert report.insert_aliases == tuple(sorted(PROMPT_SPECS))
     assert store.get_prompt_by_alias("review-eng")
     assert store.get_prompt_by_alias("translation-yue-hans-to-eng")

@@ -47,7 +47,7 @@ class PromptSpec:
     """Concrete prompt."""
 
 
-_PROMPT_SPECS = {
+PROMPT_SPECS: dict[str, PromptSpec] = {
     **{
         f"review-{language.tag.lower()}": PromptSpec(
             manager_cls=ReviewManager,
@@ -132,7 +132,4 @@ _PROMPT_SPECS = {
         prompt=YuePunctuationVsZhoPromptYueHant,
     ),
 }
-"""Registered prompt specifications before canonical alias ordering."""
-
-PROMPT_SPECS: dict[str, PromptSpec] = dict(sorted(_PROMPT_SPECS.items()))
 """Registered prompts keyed by stable alias."""
