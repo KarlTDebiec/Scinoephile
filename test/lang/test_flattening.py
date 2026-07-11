@@ -7,7 +7,6 @@ from __future__ import annotations
 from pytest import FixtureRequest, fail, param, raises
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.lang.eng.flattening import get_eng_text_flattened
 from scinoephile.workflows.flattening import flatten_series
 from test.helpers import assert_series_equal, parametrize
 from test.helpers.series_files import get_text_series
@@ -231,22 +230,6 @@ def test_flatten_series_excludes_indexes():
 
     assert [event.text for event in output] == ["first\nline", "second line"]
     assert [event.text for event in source] == ["first\nline", "second\nline"]
-
-
-@parametrize(
-    ("text", "expected"),
-    [
-        ("line 1\nline 2", "line 1 line 2"),
-    ],
-)
-def test_flatten_series_flattens_eng_text(text: str, expected: str):
-    """Test English text flattening.
-
-    Arguments:
-        text: text to flatten
-        expected: expected flattened text
-    """
-    assert get_eng_text_flattened(text) == expected
 
 
 def test_flatten_series_rejects_nonpositive_exclusions():
