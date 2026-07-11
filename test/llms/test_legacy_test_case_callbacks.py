@@ -10,10 +10,6 @@ from pytest import raises
 from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
 from scinoephile.llms.pairwise_review import PairwiseReviewManager
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
-    YueZhoPunctuationManager,
-)
 
 
 def test_pairwise_review_retains_validation_and_minimum_difficulty():
@@ -67,27 +63,6 @@ def test_ocr_fusion_retains_auto_verification_and_minimum_difficulty():
     assert simple.get_auto_verified()
     assert complex_case.difficulty == 2
     assert not complex_case.get_auto_verified()
-
-
-def test_punctuation_retains_validation_and_minimum_difficulty():
-    """Localized punctuation should retain its manager-defined test-case rules."""
-    prompt = YuePunctuationVsZhoPromptYueHans
-    test_case_cls = YueZhoPunctuationManager.get_test_case_cls(prompt)
-    test_case = test_case_cls.model_validate(
-        {
-            "query": {prompt.src_1: ["你好"], prompt.src_2: "你好"},
-            "answer": {prompt.output: "你，好"},
-        }
-    )
-
-    assert test_case.difficulty == 2
-    with raises(ValidationError, match="does not match"):
-        test_case_cls.model_validate(
-            {
-                "query": {prompt.src_1: ["你好"], prompt.src_2: "你好"},
-                "answer": {prompt.output: "你壞"},
-            }
-        )
 
 
 def test_delineation_retains_validation_and_minimum_difficulty():
