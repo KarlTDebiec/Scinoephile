@@ -26,7 +26,7 @@ dependencies = [
     "pypinyin>=0.55.0",
     "pysubs2>=1.8.1",
     "requests>=2.34.2",
-    "setuptools>=82.0.1",
+    "setuptools>=83.0.0",
     "sqlalchemy>=2.0.51",
     "typing-extensions>=4.16.0",
 ]
