@@ -4,11 +4,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
-from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.optimization.prompt_specs import PromptSpec
 
 from .persisted_prompt import PersistedPrompt
@@ -24,10 +23,8 @@ __all__ = [
 class PromptSyncReport:
     """Summary of a prompt synchronization operation."""
 
-    aliases: tuple[str, ...]
-    """Prompt aliases included in the synchronization run."""
-    insert_ids: tuple[str, ...]
-    """Prompt identifiers that would be inserted."""
+    prompt_count: int
+    """Number of prompt aliases included in the synchronization run."""
     insert_aliases: tuple[str, ...]
     """Aliases that would be inserted."""
     update_aliases: tuple[str, ...]
@@ -35,7 +32,7 @@ class PromptSyncReport:
 
 
 def sync_prompts(
-    prompt_specs: Iterable[PromptSpec],
+    prompt_specs: Mapping[str, PromptSpec],
     output_path: Path,
     *,
     dry_run: bool,
@@ -49,27 +46,23 @@ def sync_prompts(
     Returns:
         prompt synchronization report
     Raises:
-        ScinoephileError: if a prompt alias is provided more than once
+        ScinoephileError: if a prompt is incompatible with its manager
     """
-    alias_prompts: dict[str, PersistedPrompt] = {}
-    for prompt_spec in prompt_specs:
-        if prompt_spec.alias in alias_prompts:
-            raise ScinoephileError(
-                f"Prompt alias {prompt_spec.alias} was provided more than once."
-            )
-        alias_prompts[prompt_spec.alias] = PersistedPrompt.from_prompt(
+    alias_prompts = {
+        alias: PersistedPrompt.from_prompt(
             prompt_spec.prompt,
             prompt_spec.manager_cls,
         )
+        for alias, prompt_spec in prompt_specs.items()
+    }
 
     store = PromptSqliteStore(output_path)
-    insert_ids, insert_aliases, update_aliases = store.sync_aliases(
+    insert_aliases, update_aliases = store.sync_aliases(
         alias_prompts,
         dry_run=dry_run,
     )
     return PromptSyncReport(
-        aliases=tuple(sorted(alias_prompts)),
-        insert_ids=tuple(sorted(insert_ids)),
+        prompt_count=len(alias_prompts),
         insert_aliases=tuple(sorted(insert_aliases)),
         update_aliases=tuple(sorted(update_aliases)),
     )

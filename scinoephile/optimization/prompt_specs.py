@@ -39,10 +39,8 @@ __all__ = [
 
 @dataclass(frozen=True, slots=True)
 class PromptSpec:
-    """A registered zero-shot prompt and its stable alias."""
+    """A registered zero-shot prompt and its manager."""
 
-    alias: str
-    """Stable workflow-facing alias."""
     manager_cls: type[Manager]
     """Manager defining the prompt's operation and base contract."""
     prompt: Prompt
@@ -52,7 +50,6 @@ class PromptSpec:
 _PROMPT_SPECS = {
     **{
         f"review-{language.tag.lower()}": PromptSpec(
-            alias=f"review-{language.tag.lower()}",
             manager_cls=ReviewManager,
             prompt=prompt,
         )
@@ -60,7 +57,6 @@ _PROMPT_SPECS = {
     },
     **{
         f"ocr-fusion-{language.tag.lower()}": PromptSpec(
-            alias=f"ocr-fusion-{language.tag.lower()}",
             manager_cls=OcrFusionManager,
             prompt=prompt,
         )
@@ -69,10 +65,6 @@ _PROMPT_SPECS = {
     **{
         f"guided-review-{language.tag.lower()}-vs-{guide_language.tag.lower()}": (
             PromptSpec(
-                alias=(
-                    f"guided-review-{language.tag.lower()}-vs-"
-                    f"{guide_language.tag.lower()}"
-                ),
                 manager_cls=GuidedReviewManager,
                 prompt=prompt,
             )
@@ -82,10 +74,6 @@ _PROMPT_SPECS = {
     **{
         f"pairwise-review-{language.tag.lower()}-vs-"
         f"{reference_language.tag.lower()}": PromptSpec(
-            alias=(
-                f"pairwise-review-{language.tag.lower()}-vs-"
-                f"{reference_language.tag.lower()}"
-            ),
             manager_cls=PairwiseReviewManager,
             prompt=prompt,
         )
@@ -97,10 +85,6 @@ _PROMPT_SPECS = {
     **{
         f"translation-{source_language.tag.lower()}-to-"
         f"{target_language.tag.lower()}": PromptSpec(
-            alias=(
-                f"translation-{source_language.tag.lower()}-to-"
-                f"{target_language.tag.lower()}"
-            ),
             manager_cls=TranslationManager,
             prompt=prompt,
         )
@@ -112,10 +96,6 @@ _PROMPT_SPECS = {
     **{
         f"gap-translation-{source_language.tag.lower()}-to-"
         f"{target_language.tag.lower()}": PromptSpec(
-            alias=(
-                f"gap-translation-{source_language.tag.lower()}-to-"
-                f"{target_language.tag.lower()}"
-            ),
             manager_cls=GapTranslationManager,
             prompt=prompt,
         )
@@ -127,10 +107,6 @@ _PROMPT_SPECS = {
     **{
         f"guided-translation-{source_language.tag.lower()}-to-"
         f"{target_language.tag.lower()}": PromptSpec(
-            alias=(
-                f"guided-translation-{source_language.tag.lower()}-to-"
-                f"{target_language.tag.lower()}"
-            ),
             manager_cls=GuidedTranslationManager,
             prompt=prompt,
         )
@@ -140,22 +116,18 @@ _PROMPT_SPECS = {
         ), prompt in guided_translation._PROMPTS.items()
     },
     "delineation-yue-hans-vs-zho": PromptSpec(
-        alias="delineation-yue-hans-vs-zho",
         manager_cls=DelineationManager,
         prompt=YueDelineationVsZhoPromptYueHans,
     ),
     "delineation-yue-hant-vs-zho": PromptSpec(
-        alias="delineation-yue-hant-vs-zho",
         manager_cls=DelineationManager,
         prompt=YueDelineationVsZhoPromptYueHant,
     ),
     "punctuation-yue-hans-vs-zho": PromptSpec(
-        alias="punctuation-yue-hans-vs-zho",
         manager_cls=PunctuationManager,
         prompt=YuePunctuationVsZhoPromptYueHans,
     ),
     "punctuation-yue-hant-vs-zho": PromptSpec(
-        alias="punctuation-yue-hant-vs-zho",
         manager_cls=PunctuationManager,
         prompt=YuePunctuationVsZhoPromptYueHant,
     ),

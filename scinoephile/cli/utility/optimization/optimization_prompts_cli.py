@@ -14,9 +14,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.optimization.persistence.prompts.sync import sync_prompts
-from scinoephile.optimization.prompt_specs import PROMPT_SPECS, PromptSpec
-
-from .argument_types import prompt_spec_arg
+from scinoephile.optimization.prompt_specs import PROMPT_SPECS
 
 __all__ = ["OptimizationSyncPromptsCli"]
 
@@ -78,9 +76,9 @@ class OptimizationSyncPromptsCli(ScinoephileCliBase):
         ].add_mutually_exclusive_group(required=True)
         selection_group.add_argument(
             "--prompt",
-            dest="prompt_specs",
+            dest="prompt_aliases",
             nargs="+",
-            type=prompt_spec_arg,
+            choices=PROMPT_SPECS,
             help=(
                 "one or more zero-shot prompt aliases from the optimization registry"
             ),
@@ -120,7 +118,7 @@ class OptimizationSyncPromptsCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        prompt_specs: list[PromptSpec] | None,
+        prompt_aliases: list[str] | None,
         all_prompts: bool,
         dry_run: bool,
         outfile_path: Path,
@@ -129,10 +127,12 @@ class OptimizationSyncPromptsCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
 
         # Perform operations
-        selected_prompt_specs = prompt_specs
+        selected_prompt_specs = {
+            alias: PROMPT_SPECS[alias] for alias in prompt_aliases or ()
+        }
         if all_prompts:
-            selected_prompt_specs = list(PROMPT_SPECS.values())
-        if selected_prompt_specs is None:
+            selected_prompt_specs = PROMPT_SPECS
+        if not selected_prompt_specs:
             parser.error("One or more prompts must be selected.")
         try:
             report = sync_prompts(
@@ -145,8 +145,6 @@ class OptimizationSyncPromptsCli(ScinoephileCliBase):
 
         # Write outputs
         if dry_run:
-            for prompt_id in report.insert_ids:
-                print({"action": "insert-prompt", "prompt_id": prompt_id})
             for alias in report.insert_aliases:
                 print({"action": "insert-alias", "alias": alias})
             for alias in report.update_aliases:
@@ -154,8 +152,7 @@ class OptimizationSyncPromptsCli(ScinoephileCliBase):
         else:
             print(
                 {
-                    "prompts": len(report.aliases),
-                    "inserted": len(report.insert_ids),
+                    "prompts": report.prompt_count,
                     "aliases_inserted": len(report.insert_aliases),
                     "aliases_updated": len(report.update_aliases),
                 }

@@ -27,7 +27,7 @@ from sqlalchemy.engine import Connection, RowMapping
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.llms import Manager
 from scinoephile.optimization.persistence.sqlite import (
-    OptimizationSqliteStore,
+    _OptimizationSqliteStore,
     load_json_object,
     serialize_json_object,
 )
@@ -39,15 +39,15 @@ __all__ = ["TestCaseSqliteStore"]
 
 logger = getLogger(__name__)
 
-_metadata = MetaData()
-"""SQLAlchemy metadata owned by test-case persistence."""
 
-
-class TestCaseSqliteStore(OptimizationSqliteStore):
+class TestCaseSqliteStore(_OptimizationSqliteStore):
     """Normalized SQLite persistence and lookup for test cases."""
 
     __test__ = False
     """Inform pytest not to collect this class as a test."""
+
+    _metadata = MetaData()
+    """SQLAlchemy metadata owned by test-case persistence."""
 
     _test_cases = Table(
         "test_cases",
@@ -79,10 +79,6 @@ class TestCaseSqliteStore(OptimizationSqliteStore):
         Index("test_case_sources_source_path", "source_path"),
     )
     """JSON source provenance for imported test cases."""
-
-    def create_schema(self):
-        """Create the test-case tables if needed."""
-        self._create_tables(_metadata)
 
     def get_test_case(self, test_case_id: str) -> PersistedTestCase | None:
         """Fetch a single test case by ID.

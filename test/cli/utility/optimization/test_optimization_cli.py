@@ -46,7 +46,6 @@ def test_sync_prompts_cli_dry_run(
     )
 
     output = capsys.readouterr().out
-    assert "insert-prompt" in output
     assert "insert-alias" in output
     assert not database_path.exists()
 

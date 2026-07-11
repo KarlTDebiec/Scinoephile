@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, ClassVar, cast
 
 from pydantic import JsonValue
 from sqlalchemy import MetaData, create_engine
@@ -19,7 +19,6 @@ from scinoephile.common.validation import val_output_path
 from scinoephile.core.exceptions import ScinoephileError
 
 __all__ = [
-    "OptimizationSqliteStore",
     "load_json_object",
     "serialize_json_object",
 ]
@@ -63,8 +62,11 @@ def serialize_json_object(value: Mapping[str, JsonValue]) -> str:
     )
 
 
-class OptimizationSqliteStore:
+class _OptimizationSqliteStore:
     """Shared SQLite connection infrastructure for optimization data."""
+
+    _metadata: ClassVar[MetaData]
+    """Component-owned SQLAlchemy metadata."""
 
     def __init__(self, database_path: Path):
         """Initialize.
@@ -84,15 +86,11 @@ class OptimizationSqliteStore:
         )
         listen(self.engine, "connect", self._enable_sqlite_foreign_keys)
 
-    def _create_tables(self, metadata: MetaData):
-        """Create one store's tables if needed.
-
-        Arguments:
-            metadata: component-owned SQLAlchemy table metadata
-        """
+    def create_schema(self):
+        """Create this store's tables if needed."""
         self.database_path = val_output_path(self.database_path, exist_ok=True)
         with self.engine.begin() as connection:
-            metadata.create_all(connection)
+            self._metadata.create_all(connection)
 
     @staticmethod
     def _enable_sqlite_foreign_keys(

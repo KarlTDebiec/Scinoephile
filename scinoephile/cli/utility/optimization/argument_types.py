@@ -8,12 +8,8 @@ from argparse import ArgumentTypeError
 
 from scinoephile.core.llms import Manager
 from scinoephile.optimization.operations import OPERATIONS
-from scinoephile.optimization.prompt_specs import PROMPT_SPECS, PromptSpec
 
-__all__ = [
-    "operation_arg",
-    "prompt_spec_arg",
-]
+__all__ = ["operation_arg"]
 
 
 def operation_arg(value: str) -> type[Manager]:
@@ -30,21 +26,4 @@ def operation_arg(value: str) -> type[Manager]:
         return OPERATIONS[value]
     except KeyError as exc:
         options = ", ".join(OPERATIONS)
-        raise ArgumentTypeError(f"{value} is not one of {options}") from exc
-
-
-def prompt_spec_arg(value: str) -> PromptSpec:
-    """Validate an optimization prompt alias CLI argument.
-
-    Arguments:
-        value: raw CLI argument value
-    Returns:
-        registered prompt specification
-    Raises:
-        ArgumentTypeError: if the prompt alias is not known
-    """
-    try:
-        return PROMPT_SPECS[value]
-    except KeyError as exc:
-        options = ", ".join(PROMPT_SPECS)
         raise ArgumentTypeError(f"{value} is not one of {options}") from exc

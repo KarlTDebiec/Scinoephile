@@ -13,8 +13,7 @@ from scinoephile.optimization.prompt_specs import PROMPT_SPECS
 def test_prompt_specs_are_stable_and_manager_compatible():
     """Registry aliases should be ordered and compatible with their managers."""
     assert tuple(PROMPT_SPECS) == tuple(sorted(PROMPT_SPECS))
-    for alias, prompt_spec in PROMPT_SPECS.items():
-        assert prompt_spec.alias == alias
+    for prompt_spec in PROMPT_SPECS.values():
         assert OPERATIONS[prompt_spec.manager_cls.operation] is prompt_spec.manager_cls
         assert isinstance(prompt_spec.prompt, type(prompt_spec.manager_cls.base_prompt))
         persisted = PersistedPrompt.from_prompt(
@@ -22,21 +21,3 @@ def test_prompt_specs_are_stable_and_manager_compatible():
             prompt_spec.manager_cls,
         )
         assert isinstance(persisted.language, Language)
-
-
-def test_prompt_specs_preserve_distinct_workflow_aliases():
-    """Equivalent workflow variants should retain aliases but share content."""
-    first = PROMPT_SPECS["guided-review-eng-vs-yue-hans"]
-    second = PROMPT_SPECS["guided-review-eng-vs-zho-hans"]
-
-    first_prompt = PersistedPrompt.from_prompt(
-        first.prompt,
-        first.manager_cls,
-    )
-    second_prompt = PersistedPrompt.from_prompt(
-        second.prompt,
-        second.manager_cls,
-    )
-
-    assert first.alias != second.alias
-    assert first_prompt.prompt_id == second_prompt.prompt_id

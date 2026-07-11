@@ -3,8 +3,8 @@
 """CLI tools for optimization workflows.
 
 Package hierarchy (modules may import from any above):
-* argument_types
-* optimization_prompts_cli / optimization_test_cases_cli
+* argument_types / optimization_prompts_cli
+* optimization_test_cases_cli
 * optimization_cli
 """
 

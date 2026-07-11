@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 
 from scinoephile.core import Language
 
@@ -14,7 +14,7 @@ __all__ = ["get_prompt_id"]
 
 
 def get_prompt_id(
-    attributes: Mapping[str, str],
+    attributes: Mapping[str, str] | Iterable[tuple[str, str]],
     operation: str,
     language: Language,
 ) -> str:

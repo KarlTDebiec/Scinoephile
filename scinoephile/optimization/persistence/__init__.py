@@ -6,9 +6,3 @@ Package hierarchy (modules may import from any above):
 * sqlite
 * prompts / test_cases
 """
-
-from __future__ import annotations
-
-from .sqlite import OptimizationSqliteStore
-
-__all__ = ["OptimizationSqliteStore"]

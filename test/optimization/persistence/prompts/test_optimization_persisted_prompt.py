@@ -5,12 +5,10 @@
 from __future__ import annotations
 
 from dataclasses import replace
-from typing import cast
 
 from pytest import raises
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
@@ -30,12 +28,6 @@ _ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT = replace(
 )
 """English review prompt with different few-shot-only text."""
 
-_ALTERNATIVE_ZERO_SHOT_REVIEW_PROMPT = replace(
-    ReviewPromptEng,
-    base_system_prompt="Review every subtitle carefully.",
-)
-"""English review prompt with different zero-shot instructions."""
-
 
 def test_conversion_excludes_few_shot_and_curation_attributes():
     """Few-shot-only and test-case curation text should not affect identity."""
@@ -45,60 +37,36 @@ def test_conversion_excludes_few_shot_and_curation_attributes():
         ReviewManager,
     )
 
-    assert baseline.prompt_id == alternative.prompt_id
+    assert baseline == alternative
     assert baseline.language == Language.eng
-    assert baseline.attributes == alternative.attributes
-    assert all("few_shot" not in name for name in baseline.attributes)
-    assert "difficulty_description" not in baseline.attributes
-    assert "few_shot_description" not in baseline.attributes
-    assert "verified_description" not in baseline.attributes
+    assert all("few_shot" not in name for name, _ in baseline.attributes)
+    assert "difficulty_description" not in dict(baseline.attributes)
+    assert "verified_description" not in dict(baseline.attributes)
 
 
-def test_conversion_includes_zero_shot_attributes():
-    """Changing zero-shot instructions should change persisted content."""
+def test_conversion_includes_zero_shot_and_tool_attributes():
+    """Zero-shot instructions and dictionary tool text should be persisted."""
     baseline = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
     alternative = PersistedPrompt.from_prompt(
-        _ALTERNATIVE_ZERO_SHOT_REVIEW_PROMPT,
+        replace(
+            ReviewPromptEng,
+            base_system_prompt="Review every subtitle carefully.",
+        ),
         ReviewManager,
     )
+    translation = PersistedPrompt.from_prompt(
+        YueEngTranslationPromptYueHans,
+        TranslationManager,
+    )
+    translation_attributes = dict(translation.attributes)
 
     assert baseline.prompt_id != alternative.prompt_id
-    assert (
-        baseline.attributes["base_system_prompt"]
-        != alternative.attributes["base_system_prompt"]
-    )
+    assert "dictionary_tool_description" in translation_attributes
+    assert "language" not in translation_attributes
+    assert "opencc_config" not in translation_attributes
 
 
 def test_conversion_rejects_incompatible_prompt():
     """A manager should reject a prompt from another operation."""
     with raises(ScinoephileError, match="not compatible with operation translation"):
         PersistedPrompt.from_prompt(ReviewPromptEng, TranslationManager)
-
-
-def test_reconstruction_rejects_invalid_content_addressed_id():
-    """Reconstruction should reject a prompt whose ID does not match its content."""
-    prompt = PersistedPrompt.from_prompt(ReviewPromptEng, ReviewManager)
-
-    with raises(ScinoephileError, match="content-addressed ID"):
-        replace(prompt, prompt_id="incorrect").to_prompt(ReviewManager)
-
-
-def test_reconstruction_round_trips_generated_and_tool_text():
-    """Generated Hans and dictionary-tool text should survive reconstruction."""
-    persisted = PersistedPrompt.from_prompt(
-        YueEngTranslationPromptYueHans,
-        TranslationManager,
-    )
-    prompt = persisted.to_prompt(TranslationManager)
-    dictionary_prompt = cast(DictionaryToolPrompt, prompt)
-
-    assert prompt.base_system_prompt == (
-        YueEngTranslationPromptYueHans.base_system_prompt
-    )
-    assert prompt.language == Language.yue_hans
-    assert dictionary_prompt.dictionary_tool_description == (
-        YueEngTranslationPromptYueHans.dictionary_tool_description
-    )
-    assert "dictionary_tool_description" in persisted.attributes
-    assert "language" not in persisted.attributes
-    assert "opencc_config" not in persisted.attributes

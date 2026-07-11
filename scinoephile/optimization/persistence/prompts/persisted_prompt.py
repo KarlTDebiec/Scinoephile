@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, fields, replace
+from dataclasses import dataclass, fields
 
 from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
@@ -37,10 +37,8 @@ class PersistedPrompt:
     """Operation to which this prompt belongs."""
     language: Language
     """Language in which the prompt corresponds with the LLM."""
-    attributes: dict[str, str]
-    """Effective string attributes that affect zero-shot execution."""
-    aliases: tuple[str, ...]
-    """Stable aliases currently associated with this prompt."""
+    attributes: tuple[tuple[str, str], ...]
+    """Ordered effective string attributes that affect zero-shot execution."""
 
     @classmethod
     def from_prompt(
@@ -64,7 +62,6 @@ class PersistedPrompt:
                 f"operation {manager_cls.operation}."
             )
         attributes = _get_zero_shot_attributes(prompt)
-        _require_attributes(attributes, manager_cls)
         return cls(
             prompt_id=get_prompt_id(
                 attributes,
@@ -74,45 +71,10 @@ class PersistedPrompt:
             operation=manager_cls.operation,
             language=prompt.language,
             attributes=attributes,
-            aliases=(),
         )
 
-    def to_prompt(self, manager_cls: type[Manager]) -> Prompt:
-        """Reconstruct an immutable runtime prompt.
 
-        Arguments:
-            manager_cls: manager defining the prompt's operation and contract
-        Returns:
-            runtime prompt
-        Raises:
-            ScinoephileError: if the persisted prompt is incompatible or invalid
-        """
-        if self.operation != manager_cls.operation:
-            raise ScinoephileError(
-                f"Prompt operation {self.operation} does not match requested "
-                f"operation {manager_cls.operation}."
-            )
-        expected_id = get_prompt_id(
-            self.attributes,
-            self.operation,
-            self.language,
-        )
-        if self.prompt_id != expected_id:
-            raise ScinoephileError(
-                f"Prompt {self.prompt_id} does not match its content-addressed ID."
-            )
-        _require_attributes(self.attributes, manager_cls)
-        try:
-            return replace(
-                manager_cls.base_prompt,
-                language=self.language,
-                **self.attributes,
-            )
-        except TypeError as exc:
-            raise ScinoephileError(str(exc)) from exc
-
-
-def _get_zero_shot_attributes(prompt: Prompt) -> dict[str, str]:
+def _get_zero_shot_attributes(prompt: Prompt) -> tuple[tuple[str, str], ...]:
     """Get persisted string fields that affect zero-shot execution.
 
     Arguments:
@@ -120,41 +82,12 @@ def _get_zero_shot_attributes(prompt: Prompt) -> dict[str, str]:
     Returns:
         zero-shot prompt attributes keyed by field name
     """
-    return {
-        field.name: value
-        for field in fields(prompt)
-        if field.name != "language"
-        and field.name not in _EXCLUDED_ZERO_SHOT_ATTRIBUTE_NAMES
-        and isinstance(value := getattr(prompt, field.name), str)
-    }
-
-
-def _require_attributes(
-    attributes: dict[str, str],
-    manager_cls: type[Manager],
-):
-    """Require all attributes in a manager's zero-shot prompt contract.
-
-    Arguments:
-        attributes: prompt attributes to validate
-        manager_cls: manager defining the required base contract
-    Raises:
-        ScinoephileError: if an attribute is missing or not string-valued
-    """
-    invalid_names = sorted(
-        name
-        for name, value in attributes.items()
-        if not name or not isinstance(value, str)
+    return tuple(
+        sorted(
+            (field.name, value)
+            for field in fields(prompt)
+            if field.name != "language"
+            and field.name not in _EXCLUDED_ZERO_SHOT_ATTRIBUTE_NAMES
+            and isinstance(value := getattr(prompt, field.name), str)
+        )
     )
-    if invalid_names:
-        raise ScinoephileError(
-            "Prompt attributes must have nonempty names and string values: "
-            f"{', '.join(invalid_names)}."
-        )
-    required_names = _get_zero_shot_attributes(manager_cls.base_prompt).keys()
-    missing_names = sorted(required_names - attributes.keys())
-    if missing_names:
-        raise ScinoephileError(
-            f"Prompt for operation {manager_cls.operation} is missing attributes: "
-            f"{', '.join(missing_names)}."
-        )
