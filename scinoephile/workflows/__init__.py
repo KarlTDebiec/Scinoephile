@@ -4,6 +4,6 @@
 
 Package hierarchy (modules may import from any above):
 * helpers / ocr_fusion / ocr_validation / subtitle_extraction
-* flattening / ocr_processing / review / translation
+* flattening / ocr_processing / review / romanization / translation
 * srt_processing
 """
