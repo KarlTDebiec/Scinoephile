@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from copy import deepcopy
 from functools import cache
 from logging import getLogger
 from typing import Any
@@ -20,14 +19,12 @@ from scinoephile.core.romanization import (
     join_romanized_tokens,
     normalize_romanized_punctuation,
 )
-from scinoephile.core.subtitles import Series
 from scinoephile.core.text import RE_WESTERN, get_char_type
 from scinoephile.lang.zho.script.conversion import get_zho_converter
 
 __all__ = [
     "get_yue_char_romanized",
     "get_yue_jyutping_query_strings",
-    "get_yue_romanized",
     "get_yue_text_romanized",
     "is_accented_yale",
     "is_numbered_jyutping",
@@ -87,26 +84,6 @@ def get_yue_jyutping_query_strings(text: str) -> list[str]:
         return pycantonese.yale_to_jyutping(text)
     except ValueError:
         return []
-
-
-def get_yue_romanized(series: Series, append: bool = True) -> Series:
-    """Get the Yale Cantonese romanization of a Chinese series.
-
-    Arguments:
-        series: Series for which to get Yale Cantonese romanization
-        append: Whether to append romanization to original text
-    Returns:
-        Yale Cantonese romanization of series
-    """
-    series = deepcopy(series)
-    for event in series:
-        romanized = get_yue_text_romanized(event.text)
-        if append:
-            if romanized:
-                event.text = f"{event.text}\\N{romanized}"
-        else:
-            event.text = romanized
-    return series
 
 
 def is_accented_yale(text: str) -> bool:

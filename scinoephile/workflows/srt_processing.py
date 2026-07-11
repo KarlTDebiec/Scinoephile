@@ -16,12 +16,13 @@ from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
-from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.llms.review import ReviewPrompt
 from scinoephile.workflows.review import review_series
+
+from .romanization import romanize_series
 
 __all__ = [
     "SrtProcessingResult",
@@ -290,7 +291,11 @@ class SrtProcessingWorkflow:
             logger.info(f"{log_label} exists: {romanize_path}")
             romanize = Series.load(romanize_path)
         else:
-            romanize = get_yue_romanized(series, append=True)
+            romanize = romanize_series(
+                series,
+                language=self.language,
+                append=True,
+            )
             romanize.save(romanize_path, format_="srt")
         self.output_paths[output_name] = romanize_path
         return romanize
