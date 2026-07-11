@@ -16,30 +16,78 @@ class GapTranslationPrompt(Prompt):
     """Text for LLM correspondence for gap translation matters."""
 
     # Query fields
-    src_1_pfx: str = "one_"
-    """Prefix for source one fields in query."""
+    targets: str = "targets"
+    """Name of targets field in query."""
 
-    src_1_desc_tpl: str = "Subtitle {idx} text from source one"
-    """Description template for source one fields in query."""
+    targets_desc: str = "Existing target subtitles, indexed by guide position."
+    """Description of targets field in query."""
 
-    src_2_pfx: str = "two_"
-    """Prefix for source two fields in query."""
+    guides: str = "guides"
+    """Name of guides field in query."""
 
-    src_2_desc_tpl: str = "Subtitle {idx} text from source two"
-    """Description template for source two fields in query."""
+    guides_desc: str = "Complete guide subtitles, in order."
+    """Description of guides field in query."""
 
     # Answer fields
-    output_pfx: str = "output_"
-    """Prefix for output fields in answer."""
+    outputs: str = "outputs"
+    """Name of outputs field in answer."""
 
-    output_desc_tpl: str = 'Subtitle {idx} output, or "" if no change.'
-    """Description template for output fields in answer."""
+    outputs_desc: str = "Translations for guide indexes missing from targets."
+    """Description of outputs field in answer."""
+
+    # Subtitle fields
+    index: str = "index"
+    """Name of index field in target, guide, and output items."""
+
+    index_desc: str = "One-based subtitle index."
+    """Description of index field in target, guide, and output items."""
+
+    text: str = "text"
+    """Name of text field in target, guide, and output items."""
+
+    target_text_desc: str = "Existing target subtitle text."
+    """Description of text field in target items."""
+
+    guide_text_desc: str = "Guide subtitle text."
+    """Description of text field in guide items."""
+
+    output_text_desc: str = (
+        "Translated target subtitle text, or an empty string if none is needed."
+    )
+    """Description of text field in output items."""
+
+    # Query validation errors
+    guide_indices_err: str = (
+        "Query guide indexes must be consecutive, ordered, and begin at 1."
+    )
+    """Error when guide indexes are invalid."""
+
+    target_indices_err: str = (
+        "Query target indexes must be unique and in ascending order."
+    )
+    """Error when target indexes are invalid."""
+
+    target_index_missing_err: str = (
+        "Every query target index must correspond to a guide index."
+    )
+    """Error when a target index is absent from the guides."""
+
+    target_gap_missing_err: str = (
+        "Query targets must omit at least one guide index for translation."
+    )
+    """Error when targets contain every guide index."""
 
     # Answer validation errors
-    output_contains_note_err_tpl: str = ""
-    """Error template when output includes note-like text."""
-    output_unmodified_err_tpl: str = ""
-    """Error template when output is unchanged."""
+    output_indices_err: str = (
+        "Answer output indexes must be unique and in ascending order."
+    )
+    """Error when output indexes are invalid."""
+
+    # Test case validation errors
+    output_indices_mismatch_err: str = (
+        "Answer output indexes must exactly match guide indexes missing from targets."
+    )
+    """Error when output indexes do not match target gaps."""
 
     # Dictionary tool
     dictionary_tool_name: str = ""
@@ -48,33 +96,3 @@ class GapTranslationPrompt(Prompt):
     """Description of dictionary lookup tool."""
     dictionary_tool_query_description: str = ""
     """Description of dictionary lookup query."""
-
-    # Query fields
-    def src_1(self, idx: int) -> str:
-        """Name of source one field in query."""
-        return f"{self.src_1_pfx}{idx}"
-
-    def src_1_desc(self, idx: int) -> str:
-        """Description of source one field in query."""
-        return self.src_1_desc_tpl.format(idx=idx)
-
-    def src_2(self, idx: int) -> str:
-        """Name of source two field in query."""
-        return f"{self.src_2_pfx}{idx}"
-
-    def src_2_desc(self, idx: int) -> str:
-        """Description of source two field in query."""
-        return self.src_2_desc_tpl.format(idx=idx)
-
-    # Answer fields
-    def output_contains_note_err(self, idx: int) -> str:
-        """Error when output includes note-like text."""
-        return self.output_contains_note_err_tpl.format(idx=idx)
-
-    def output(self, idx: int) -> str:
-        """Name of output field in answer."""
-        return f"{self.output_pfx}{idx}"
-
-    def output_desc(self, idx: int) -> str:
-        """Description of output subtitle field in answer."""
-        return self.output_desc_tpl.format(idx=idx)

@@ -5,9 +5,11 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import cast
 
 import numpy as np
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Processor
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.pairs import get_block_pairs_by_pause
@@ -15,6 +17,7 @@ from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 
 from .manager import GapTranslationManager
+from .models import GapTranslationTestCase
 from .prompt import GapTranslationPrompt
 
 __all__ = ["GapTranslationProcessor"]
@@ -54,7 +57,7 @@ class GapTranslationProcessor(Processor):
             if blk_idx >= stop_at_idx:
                 break
 
-            # Determine TestCase configuration
+            # Determine missing target positions
             size = len(two_blk)
             overlap = get_sync_overlap_matrix(one_blk, two_blk)
             sync_grps = [([], [two_idx]) for two_idx in range(len(two_blk))]
@@ -67,36 +70,48 @@ class GapTranslationProcessor(Processor):
                 continue
 
             # Query LLM
-            test_case_cls = GapTranslationManager.get_test_case_cls(
-                size, gaps, self.prompt
-            )
+            test_case_cls = GapTranslationManager.get_test_case_cls(self.prompt)
             query_cls = test_case_cls.query_cls
-            query_kwargs: dict[str, str] = {}
+            targets: list[dict[str, int | str]] = []
+            guides: list[dict[str, int | str]] = []
             one_idx = 0
             for two_idx in range(size):
+                index = two_idx + 1
                 if two_idx not in gaps:
-                    one_key = self.prompt.src_1(two_idx + 1)
-                    one_val = one_blk.events[one_idx].text_with_newline.strip()
-                    query_kwargs[one_key] = one_val
+                    targets.append(
+                        {
+                            "index": index,
+                            "text": one_blk.events[one_idx].text_with_newline.strip(),
+                        }
+                    )
                     one_idx += 1
-                two_key = self.prompt.src_2(two_idx + 1)
-                two_val = two_blk.events[two_idx].text_with_newline.strip()
-                query_kwargs[two_key] = two_val
-            query = query_cls(**query_kwargs)
+                guides.append(
+                    {
+                        "index": index,
+                        "text": two_blk.events[two_idx].text_with_newline.strip(),
+                    }
+                )
+            query = query_cls.model_validate({"targets": targets, "guides": guides})
             test_case = test_case_cls(query=query)
-            test_case = self.queryer(test_case)
+            test_case = cast(GapTranslationTestCase, self.queryer(test_case))
 
+            if test_case.answer is None:
+                raise ScinoephileError("Gap translation returned no answer.")
+            target_text_by_index = {
+                target.index: target.text for target in test_case.query.targets
+            }
+            output_text_by_index = {
+                output.index: output.text for output in test_case.answer.outputs
+            }
             output_series = Series()
             for two_idx in range(size):
                 two_sub = two_blk[two_idx]
                 start = two_sub.start
                 end = two_sub.end
-                if two_idx not in gaps:
-                    one_key = self.prompt.src_1(two_idx + 1)
-                    output = getattr(test_case.query, one_key)
-                else:
-                    one_key = self.prompt.output(two_idx + 1)
-                    output = getattr(test_case.answer, one_key)
+                index = two_idx + 1
+                output = target_text_by_index.get(index)
+                if output is None:
+                    output = output_text_by_index[index]
                 output_series.append(Subtitle(start=start, end=end, text=output))
 
             logger.info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")

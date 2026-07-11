@@ -70,25 +70,32 @@ YueEngGapTranslationPromptYueHant = GapTranslationPrompt(
     dictionary_tool_query_description="要查嘅普通話或者粵語詞語，可以係漢字、拼音或者粵拼。",
     base_system_prompt=dedent_and_compact("""
         你負責根據對應嘅英文字幕，補翻譯缺失咗嘅粵文字幕。
-        只有當某行現有粵文字幕係空字串時，先需要提供譯文。
-        如果某行已經有粵文內容，唔好改，嗰行請輸出空字串。
+        淨係為現有粵文字幕列表入面缺失嘅序號提供譯文。每個缺失序號一定要
+        啱啱好返回一項輸出；已經有粵文內容嘅序號唔好返回輸出，亦都唔好修改。
         譯文要用自然、通順嘅書面粵語，語氣同用詞要儘量貼近附近已有嘅粵文字幕。
         英文字幕係意思來源；譯文唔需要逐字對應，但要準確表達該行意思。
         輸出內容只可以係字幕正文本身，絕對唔好附加英文、備註、解釋、標籤、
         方括號內容、括號內容，或者任何譯文以外嘅説明。
-        如果唔需要翻譯，就輸出空字串。
+        如果某個缺失序號唔需要粵文字幕，仍然要保留嗰個輸出項目，文本用空字串。
         """),
-    src_1_pfx="yuewen_",
-    src_1_desc_tpl="字幕 {idx} 現有嘅粵文內容；如果係空就代表要翻譯",
-    src_2_pfx="eng_",
-    src_2_desc_tpl="字幕 {idx} 對應嘅英文字幕",
-    output_pfx="yuewen_",
-    output_desc_tpl='字幕 {idx} 譯好後嘅粵文正文；如果唔需要翻譯請輸出 ""。'
-    "唔好包含英文、備註、解釋、標籤或者括號説明。",
-    output_unmodified_err_tpl="字幕 {idx} 已經有粵文內容，嗰行輸出必須係空字串。",
-    output_contains_note_err_tpl=(
-        "字幕 {idx} 包含英文或者備註説明；只可以輸出粵文字幕正文。"
-    ),
+    targets="yuewen",
+    targets_desc="已有嘅粵文字幕，序號同英文參考字幕一致",
+    guides="eng",
+    guides_desc="按序號完整排列嘅英文參考字幕",
+    outputs="yuewen",
+    outputs_desc="現有粵文字幕缺失序號所需嘅粵文譯文",
+    index="xuhao",
+    index_desc="由 1 開始嘅字幕序號",
+    text="wenben",
+    target_text_desc="已有嘅粵文字幕文本",
+    guide_text_desc="英文參考字幕文本",
+    output_text_desc="缺失序號對應嘅粵文譯文正文；如果唔需要字幕就用空字串",
+    guide_indices_err="查詢參考字幕序號一定要由 1 開始、連續並按順序排列。",
+    target_indices_err="查詢現有字幕序號一定要唯一並按升序排列。",
+    target_index_missing_err="每個查詢現有字幕序號都一定要對應一個參考字幕序號。",
+    target_gap_missing_err="查詢現有字幕一定要缺少至少一個需要翻譯嘅參考字幕序號。",
+    output_indices_err="答案輸出序號一定要唯一並按升序排列。",
+    output_indices_mismatch_err="答案輸出序號一定要啱啱好對應查詢現有字幕缺失嘅參考字幕序號。",
 )
 """Text for traditional written Cantonese gap translation using English."""
 

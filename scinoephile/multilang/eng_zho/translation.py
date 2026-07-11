@@ -52,27 +52,31 @@ EngZhoGapTranslationPrompt = GapTranslationPrompt(
         You are responsible for filling missing English subtitle lines using the
         corresponding Chinese subtitles as reference.
 
-        Only provide an English translation when the existing English subtitle line is
-        missing. If a line already has English content, do not revise it; output an
-        empty string for that line. Translate missing lines into natural subtitle
-        English that matches nearby English wording, register, dramatic intent, and
-        speaker intent. Use the Chinese as the source of meaning, but keep style and
-        terminology consistent with the existing English subtitles around the gap.
+        Only provide an English translation for indexes absent from the existing
+        English targets. Return exactly one output for every missing target index, and
+        do not return outputs for indexes that already have English content. Translate
+        missing lines into natural subtitle English that matches nearby English
+        wording, register, dramatic intent, and speaker intent. Use the Chinese as the
+        source of meaning, but keep style and terminology consistent with the existing
+        English subtitles around the gap.
 
-        Output only the generated English subtitle text in each answer field. If no
-        translation is needed for a line, output an empty string. Do not include notes,
-        explanations, labels, alternate translations, bracketed commentary, or any text
-        outside the subtitle itself.
+        Output only the generated English subtitle text for each missing target index.
+        If a missing position should not produce an English subtitle, retain its
+        indexed output item with an empty text value. Do not include notes,
+        explanations, labels, alternate translations, bracketed commentary, or any
+        text outside the subtitle itself.
         """),
-    src_1_pfx="eng_",
-    src_1_desc_tpl=(
-        "Existing English subtitle {idx}; missing entries require translation"
-    ),
-    src_2_pfx="zho_",
-    src_2_desc_tpl="Chinese subtitle {idx} corresponding to line {idx}",
-    output_pfx="eng_",
-    output_desc_tpl=(
-        'English subtitle {idx} for a missing line, or "" if no translation is needed'
+    targets="eng",
+    targets_desc="Existing English subtitles, indexed by Chinese position",
+    guides="zho",
+    guides_desc="Complete Chinese subtitles in index order",
+    outputs="eng",
+    outputs_desc="English translations for indexes absent from the existing targets",
+    target_text_desc="Existing English subtitle text",
+    guide_text_desc="Chinese guide subtitle text",
+    output_text_desc=(
+        "English translation for the missing target index, or an empty string if "
+        "none is needed"
     ),
 )
 """Text for English gap translation using Chinese."""

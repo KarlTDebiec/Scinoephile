@@ -9,6 +9,7 @@ and output a single completed Series.
 
 Package hierarchy (modules may import from any above):
 * prompt
+* models
 * manager
 * processor
 """
@@ -16,11 +17,21 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import GapTranslationManager
+from .models import (
+    GapTranslationAnswer,
+    GapTranslationQuery,
+    GapTranslationSubtitle,
+    GapTranslationTestCase,
+)
 from .processor import GapTranslationProcessor
 from .prompt import GapTranslationPrompt
 
 __all__ = [
+    "GapTranslationAnswer",
     "GapTranslationManager",
     "GapTranslationProcessor",
     "GapTranslationPrompt",
+    "GapTranslationQuery",
+    "GapTranslationSubtitle",
+    "GapTranslationTestCase",
 ]
