@@ -16,78 +16,97 @@ class GuidedReviewPrompt(Prompt):
     """Text for reviewing target blocks using guide blocks."""
 
     # Query fields
-    target_pfx: str = "target_"
-    """Prefix for target fields in query."""
+    targets: str = "targets"
+    """Name of targets field in query."""
 
-    target_desc_tpl: str = "Target subtitle {idx} to review"
-    """Description template for target fields in query."""
+    targets_desc: str = "Target subtitles to review, in order."
+    """Description of targets field in query."""
 
-    guide_pfx: str = "guide_"
-    """Prefix for guide fields in query."""
+    guides: str = "guides"
+    """Name of guides field in query."""
 
-    guide_desc_tpl: str = "Guide subtitle {idx}"
-    """Description template for guide fields in query."""
+    guides_desc: str = "Guide subtitles for the same passage, in order."
+    """Description of guides field in query."""
 
     # Answer fields
-    output_pfx: str = "output_"
-    """Prefix for output fields in answer."""
+    revisions: str = "revisions"
+    """Name of revisions field in answer."""
 
-    output_desc_tpl: str = 'Revised target subtitle {idx}, or "" if no change is needed'
-    """Description template for output fields in answer."""
+    revisions_desc: str = (
+        "Revised target subtitles; include only targets that require revision."
+    )
+    """Description of revisions field in answer."""
 
-    note_pfx: str = "note_"
-    """Prefix for note fields in answer."""
+    # Subtitle fields
+    index: str = "index"
+    """Name of index field in target, guide, and revision items."""
 
-    note_desc_tpl: str = 'Explanation of the revision to target subtitle {idx}, or ""'
-    """Description template for note fields in answer."""
+    index_desc: str = "One-based subtitle index."
+    """Description of index field in target, guide, and revision items."""
+
+    text: str = "text"
+    """Name of text field in target, guide, and revision items."""
+
+    target_text_desc: str = "Target subtitle text to review."
+    """Description of text field in target items."""
+
+    guide_text_desc: str = "Guide subtitle text."
+    """Description of text field in guide items."""
+
+    revision_text_desc: str = "Full revised target subtitle text."
+    """Description of text field in revision items."""
+
+    note: str = "note"
+    """Name of note field in revision items."""
+
+    note_desc: str = "Note explaining the target subtitle revision."
+    """Description of note field in revision items."""
+
+    # Query errors
+    target_indices_err: str = (
+        "Query target indexes must be consecutive, ordered, and begin at 1."
+    )
+    """Error when query target indexes are invalid."""
+
+    guide_indices_err: str = (
+        "Query guide indexes must be consecutive, ordered, and begin at 1."
+    )
+    """Error when query guide indexes are invalid."""
+
+    # Answer errors
+    revision_indices_err: str = (
+        "Answer revision indexes must be unique and in ascending order."
+    )
+    """Error when answer revision indexes are invalid."""
 
     # Test case errors
-    note_missing_err_tpl: str = (
-        "Target subtitle {idx} is revised, but no note is provided."
+    revision_index_missing_err_tpl: str = (
+        "Answer revision index {idx} does not correspond to a query target."
     )
-    """Error template when note is missing for a revision."""
+    """Error template when a revision index is absent from query targets."""
 
-    output_missing_err_tpl: str = (
-        "Target subtitle {idx} is unchanged, but a note is provided."
+    revision_unmodified_err_tpl: str = (
+        "Answer revision {idx} is unmodified relative to query target {idx}; "
+        "unchanged targets must be omitted from revisions."
     )
-    """Error template when output is missing for a note."""
+    """Error template when a revision is unmodified."""
 
-    def guide(self, idx: int) -> str:
-        """Name of guide field in query."""
-        return f"{self.guide_pfx}{idx}"
+    def revision_index_missing_err(self, idx: int) -> str:
+        """Get error when a revision index is absent from query targets.
 
-    def guide_desc(self, idx: int) -> str:
-        """Description of guide field in query."""
-        return self.guide_desc_tpl.format(idx=idx)
+        Arguments:
+            idx: one-based target subtitle index
+        Returns:
+            error message
+        """
+        return self.revision_index_missing_err_tpl.format(idx=idx)
 
-    def note(self, idx: int) -> str:
-        """Name of note field in answer."""
-        return f"{self.note_pfx}{idx}"
+    def revision_unmodified_err(self, idx: int) -> str:
+        """Get error when a revision is unmodified.
 
-    def note_desc(self, idx: int) -> str:
-        """Description of note field in answer."""
-        return self.note_desc_tpl.format(idx=idx)
-
-    def note_missing_err(self, idx: int) -> str:
-        """Error when note is missing for a revision."""
-        return self.note_missing_err_tpl.format(idx=idx)
-
-    def output(self, idx: int) -> str:
-        """Name of output field in answer."""
-        return f"{self.output_pfx}{idx}"
-
-    def output_desc(self, idx: int) -> str:
-        """Description of output field in answer."""
-        return self.output_desc_tpl.format(idx=idx)
-
-    def output_missing_err(self, idx: int) -> str:
-        """Error when output is missing for a note."""
-        return self.output_missing_err_tpl.format(idx=idx)
-
-    def target(self, idx: int) -> str:
-        """Name of target field in query."""
-        return f"{self.target_pfx}{idx}"
-
-    def target_desc(self, idx: int) -> str:
-        """Description of target field in query."""
-        return self.target_desc_tpl.format(idx=idx)
+        Arguments:
+            idx: one-based target subtitle index
+        Returns:
+            error message
+        """
+        return self.revision_unmodified_err_tpl.format(idx=idx)

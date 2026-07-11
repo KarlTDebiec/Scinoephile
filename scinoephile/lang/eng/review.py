@@ -28,13 +28,21 @@ GuidedReviewPromptEng = GuidedReviewPrompt(
         Use the guide to identify clear transcription, spelling, name, or continuity
         errors, but do not translate the guide or rewrite correct English to match it.
         Do not improve style, grammar, tone, or phrasing unless the target is clearly
-        erroneous. For each target subtitle, return the full revision and a short note
-        only when a change is necessary. Otherwise return empty strings."""),
-    target_pfx="english_",
-    target_desc_tpl="English target subtitle {idx}",
-    guide_pfx="reference_",
-    guide_desc_tpl="Reference subtitle {idx}",
-    output_pfx="revised_english_",
+        erroneous. Include a revision only when a target subtitle requires a change.
+        Each revision must include the target's index, its full revised text, and a
+        short note. If no revisions are needed, return an empty revisions list."""),
+    targets="english",
+    targets_desc="English target subtitles to review, in order.",
+    guides="references",
+    guides_desc="Reference subtitles for the same passage, in order.",
+    revisions="revised_english",
+    revisions_desc=(
+        "Revised English target subtitles; include only targets that require revision."
+    ),
+    target_text_desc="English target subtitle text to review.",
+    guide_text_desc="Reference subtitle text.",
+    revision_text_desc="Full revised English target subtitle text.",
+    note_desc="Note explaining the English target subtitle revision.",
 )
 """LLM correspondence text for guided review of English subtitles."""
 
