@@ -75,9 +75,13 @@ managers, processors, queryers, and workflows pass these values directly.
 Authored prompts may reuse typed language-specific field dictionaries while
 keeping their language and operation-specific fields explicit.
 
-Only generated Pydantic query, answer, and test-case models are represented by
-runtime classes. Managers cache those model classes using the immutable prompt
-value, whose stable content-addressed name is used in generated model names.
+Operation-specific Pydantic query, answer, and test-case models define stable
+structural fields. When JSON field names are part of LLM correspondence, managers
+generate and cache prompt-specific subclasses whose aliases and descriptions come
+from the immutable prompt value. List-shaped operations represent variable
+cardinality in model data, such as indexed subtitle lists, rather than in generated
+class fields. The prompt's stable content-addressed name is used in generated model
+names.
 
 Optimization persistence stores each prompt alias with its content-addressed
 identifier, language, and complete set of string fields. Prompt and test-case

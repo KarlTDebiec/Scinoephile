@@ -12,8 +12,8 @@ from scinoephile.llms.review import ReviewPrompt
 
 def test_prompt_values_are_hashable_and_content_addressed():
     """Equivalent prompt values should compare and hash by content."""
-    prompt = ReviewPrompt(language=Language.eng, input_pfx="subtitle_")
-    equivalent = ReviewPrompt(language=Language.eng, input_pfx="subtitle_")
+    prompt = ReviewPrompt(language=Language.eng, subtitles="subtitles")
+    equivalent = ReviewPrompt(language=Language.eng, subtitles="subtitles")
 
     assert equivalent == prompt
     assert hash(equivalent) == hash(prompt)

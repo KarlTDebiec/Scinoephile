@@ -1,2567 +1,7597 @@
 [
   {
     "query": {
-      "subtitle_1": "少爺！準備好了"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "少爺！準備好了"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "辛苦了！少爺",
-      "subtitle_2": "少爺！擦個汗吧"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "辛苦了！少爺"
+        },
+        {
+          "index": 2,
+          "text": "少爺！擦個汗吧"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "師爺，少爺寫的是甚麼？",
-      "subtitle_2": "名字",
-      "subtitle_3": "好棒！原來少爺會寫自己的名字",
-      "subtitle_4": "對呀"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "師爺，少爺寫的是甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "名字"
+        },
+        {
+          "index": 3,
+          "text": "好棒！原來少爺會寫自己的名字"
+        },
+        {
+          "index": 4,
+          "text": "對呀"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "好字",
-      "subtitle_2": "走開",
-      "subtitle_3": "好字！龍飛鳳舞，蘇察哈爾燦",
-      "subtitle_4": "你唸反了，老爺",
-      "subtitle_5": "燦爾哈察蘇",
-      "subtitle_6": "好小子，但是別驕傲，知道嗎？",
-      "subtitle_7": "爹，我們蘇察哈爾家",
-      "subtitle_8": "自太祖皇帝到現在",
-      "subtitle_9": "都沒有幾個會寫字的",
-      "subtitle_10": "現在可不同，我的兒子你的孫兒阿燦",
-      "subtitle_11": "他會寫自己的名字",
-      "subtitle_12": "爹，這可是非同少可",
-      "subtitle_13": "今天會寫字",
-      "subtitle_14": "他朝必成大學士",
-      "subtitle_15": "今天會寫名",
-      "subtitle_16": "他日一定會生子",
-      "subtitle_17": "少爺，你真是要好好地學習寫字",
-      "subtitle_18": "阿燦，先把它裱起來",
-      "subtitle_19": "裱起它",
-      "subtitle_20": "師爺，把它掛在最當眼的地方",
-      "subtitle_21": "這樣吧，師爺",
-      "subtitle_22": "你先揹著它簪花掛紅，遊行威風一下",
-      "subtitle_23": "走吧",
-      "subtitle_24": "阿燦，來⋯坐⋯",
-      "subtitle_25": "你這麼爭氣，我也很安慰",
-      "subtitle_26": "你聽我說，爹是有名的敗家兒",
-      "subtitle_27": "家裡的財產也敗得差不多",
-      "subtitle_28": "說難聽一點，日後我兩腳一伸",
-      "subtitle_29": "你個王八蛋，怎麼到這裡來討飯？",
-      "subtitle_30": "向來我都是靠自己",
-      "subtitle_31": "十萬兩一張，省一點花啊",
-      "subtitle_32": "茂利，把我的西洋帽拿來",
-      "subtitle_33": "你去哪，阿燦？",
-      "subtitle_34": "今晚我做大壽",
-      "subtitle_35": "你貴庚？",
-      "subtitle_36": "廿五歲大壽，早點到",
-      "subtitle_37": "做大壽你也得先把頭髮梳整齊",
-      "subtitle_38": "老是一個乞丐的模樣",
-      "subtitle_39": "乞丐會那麼有錢？我也想當",
-      "subtitle_40": "那壽頭真是⋯",
-      "subtitle_41": "過來，過來",
-      "subtitle_42": "老爺，甚麼事？",
-      "subtitle_43": "那臭小子的壽帖真威風",
-      "subtitle_44": "他日老爺做大壽，要比他威風"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好字"
+        },
+        {
+          "index": 2,
+          "text": "走開"
+        },
+        {
+          "index": 3,
+          "text": "好字！龍飛鳳舞，蘇察哈爾燦"
+        },
+        {
+          "index": 4,
+          "text": "你唸反了，老爺"
+        },
+        {
+          "index": 5,
+          "text": "燦爾哈察蘇"
+        },
+        {
+          "index": 6,
+          "text": "好小子，但是別驕傲，知道嗎？"
+        },
+        {
+          "index": 7,
+          "text": "爹，我們蘇察哈爾家"
+        },
+        {
+          "index": 8,
+          "text": "自太祖皇帝到現在"
+        },
+        {
+          "index": 9,
+          "text": "都沒有幾個會寫字的"
+        },
+        {
+          "index": 10,
+          "text": "現在可不同，我的兒子你的孫兒阿燦"
+        },
+        {
+          "index": 11,
+          "text": "他會寫自己的名字"
+        },
+        {
+          "index": 12,
+          "text": "爹，這可是非同少可"
+        },
+        {
+          "index": 13,
+          "text": "今天會寫字"
+        },
+        {
+          "index": 14,
+          "text": "他朝必成大學士"
+        },
+        {
+          "index": 15,
+          "text": "今天會寫名"
+        },
+        {
+          "index": 16,
+          "text": "他日一定會生子"
+        },
+        {
+          "index": 17,
+          "text": "少爺，你真是要好好地學習寫字"
+        },
+        {
+          "index": 18,
+          "text": "阿燦，先把它裱起來"
+        },
+        {
+          "index": 19,
+          "text": "裱起它"
+        },
+        {
+          "index": 20,
+          "text": "師爺，把它掛在最當眼的地方"
+        },
+        {
+          "index": 21,
+          "text": "這樣吧，師爺"
+        },
+        {
+          "index": 22,
+          "text": "你先揹著它簪花掛紅，遊行威風一下"
+        },
+        {
+          "index": 23,
+          "text": "走吧"
+        },
+        {
+          "index": 24,
+          "text": "阿燦，來⋯坐⋯"
+        },
+        {
+          "index": 25,
+          "text": "你這麼爭氣，我也很安慰"
+        },
+        {
+          "index": 26,
+          "text": "你聽我說，爹是有名的敗家兒"
+        },
+        {
+          "index": 27,
+          "text": "家裡的財產也敗得差不多"
+        },
+        {
+          "index": 28,
+          "text": "說難聽一點，日後我兩腳一伸"
+        },
+        {
+          "index": 29,
+          "text": "你個王八蛋，怎麼到這裡來討飯？"
+        },
+        {
+          "index": 30,
+          "text": "向來我都是靠自己"
+        },
+        {
+          "index": 31,
+          "text": "十萬兩一張，省一點花啊"
+        },
+        {
+          "index": 32,
+          "text": "茂利，把我的西洋帽拿來"
+        },
+        {
+          "index": 33,
+          "text": "你去哪，阿燦？"
+        },
+        {
+          "index": 34,
+          "text": "今晚我做大壽"
+        },
+        {
+          "index": 35,
+          "text": "你貴庚？"
+        },
+        {
+          "index": 36,
+          "text": "廿五歲大壽，早點到"
+        },
+        {
+          "index": 37,
+          "text": "做大壽你也得先把頭髮梳整齊"
+        },
+        {
+          "index": 38,
+          "text": "老是一個乞丐的模樣"
+        },
+        {
+          "index": 39,
+          "text": "乞丐會那麼有錢？我也想當"
+        },
+        {
+          "index": 40,
+          "text": "那壽頭真是⋯"
+        },
+        {
+          "index": 41,
+          "text": "過來，過來"
+        },
+        {
+          "index": 42,
+          "text": "老爺，甚麼事？"
+        },
+        {
+          "index": 43,
+          "text": "那臭小子的壽帖真威風"
+        },
+        {
+          "index": 44,
+          "text": "他日老爺做大壽，要比他威風"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "few_shot": true,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "皇爺，你覺得廣東大戲怎樣？",
-      "subtitle_2": "地方戲曲，當然不及京戲",
-      "subtitle_3": "但也算是一種見識"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "打賞⋯打賞",
-      "subtitle_2": "恭喜蘇翁生辰快樂",
-      "subtitle_3": "我家破人亡、貧病老弱",
-      "subtitle_4": "無親無故、妻離子散",
-      "subtitle_5": "打賞個救命錢　　怎麼攪的，死乞丐！",
-      "subtitle_6": "你個王八蛋，怎麼到這裏來討飯？",
-      "subtitle_7": "我打⋯",
-      "subtitle_8": "打賞　　是，少爺",
-      "subtitle_9": "這樣也有打賞？",
-      "subtitle_10": "乞丐也是人",
-      "subtitle_11": "只要有錢的都可以來",
-      "subtitle_12": "你這個月來這裡",
-      "subtitle_13": "吃飯看戲宵夜嫖妓，我包",
-      "subtitle_14": "你包？",
-      "subtitle_15": "不可以嗎？",
-      "subtitle_16": "可以，可以",
-      "subtitle_17": "大爺進我間房吧⋯　　請你跟我來",
-      "subtitle_18": "蘇⋯翁",
-      "subtitle_19": "是⋯",
-      "subtitle_20": "你好嗎，鴇母？",
-      "subtitle_21": "你真壞，有名字你不叫，叫我鴇母",
-      "subtitle_22": "大家坦白一點不好嗎？",
-      "subtitle_23": "要坦白嗎",
-      "subtitle_24": "你的帽子像披麻帶孝似的",
-      "subtitle_25": "你老爸死了嗎？",
-      "subtitle_26": "這樣說大家才開心嘛",
-      "subtitle_27": "趙先生這趟幫本官掃平長毛賊",
-      "subtitle_28": "皇上一定重重有賞",
-      "subtitle_29": "那就有勞皇爺在皇上面前",
-      "subtitle_30": "多說幾句好說話",
-      "subtitle_31": "大戲做完了，請用毛巾"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "蘇翁來了⋯",
-      "subtitle_2": "蘇翁，恭喜發財",
-      "subtitle_3": "這邊⋯這邊",
-      "subtitle_4": "蘇翁，今天是你的好日子，很高興吧",
-      "subtitle_5": "我們有幾位新來的姑娘，保證你滿意",
-      "subtitle_6": "金魚還是木魚？",
-      "subtitle_7": "少爺，甚麼金魚、木魚？",
-      "subtitle_8": "傻瓜，金魚只可以看",
-      "subtitle_9": "木魚則可以碰嘛",
-      "subtitle_10": "那當然要木魚",
-      "subtitle_11": "你們還不過來待候客人⋯",
-      "subtitle_12": "蘇翁，今天是你的大日子",
-      "subtitle_13": "你想要怎樣的女人，你說就成",
-      "subtitle_14": "隨便，女人都是一樣的",
-      "subtitle_15": "沒甚麼特別"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "蘇翁，甚麼事？",
-      "subtitle_2": "我給人挑了一下",
-      "subtitle_3": "甚麼？",
-      "subtitle_4": "誰膽敢挑你？讓我打她的咀",
-      "subtitle_5": "不是用咀",
-      "subtitle_6": "是用眼睛",
-      "subtitle_7": "誘惑中帶有煞氣，這種眼神我沒見過",
-      "subtitle_8": "究竟是何方神聖？",
-      "subtitle_9": "這位如霜姑娘是客串",
-      "subtitle_10": "趙大人有沒有興趣和她擺房？",
-      "subtitle_11": "你應該先問皇爺才對",
-      "subtitle_12": "怎麼樣，皇爺？",
-      "subtitle_13": "大家自己人，何必客氣呢？",
-      "subtitle_14": "趙先生，請隨便",
-      "subtitle_15": "那我就卻之不恭了",
-      "subtitle_16": "擺房",
-      "subtitle_17": "如霜，快點下來見趙大人",
-      "subtitle_18": "姐姐，就是他",
-      "subtitle_19": "殺阿爹的人就是他",
-      "subtitle_20": "我知道，鎮定點",
-      "subtitle_21": "走吧",
-      "subtitle_22": "失陪　　趙大人",
-      "subtitle_23": "如霜姑娘到",
-      "subtitle_24": "小女子如霜，拜見趙大人"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "果然是美人",
-      "subtitle_2": "趙大人，那今晚⋯",
-      "subtitle_3": "銀票十萬兩",
-      "subtitle_4": "如霜姑娘今晚要陪我家少爺",
-      "subtitle_5": "沒空招呼你",
-      "subtitle_6": "各位⋯真不好意思",
-      "subtitle_7": "有甚麼意見嗎？",
-      "subtitle_8": "讓我來⋯讓我說句公道話",
-      "subtitle_9": "只要你們誰能付超過十萬兩銀票",
-      "subtitle_10": "如霜姑娘就陪誰",
-      "subtitle_11": "千萬不要傷和氣，對不對？",
-      "subtitle_12": "這位朋友真捨得花錢",
-      "subtitle_13": "銀票實在太普通",
-      "subtitle_14": "我有一顆朝廷大內的定風珠，無價寶"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "我還是比較喜歡珍珠",
-      "subtitle_2": "趙大人，我回房間等你",
-      "subtitle_3": "這顆珠值十萬兩嗎？",
-      "subtitle_4": "十萬兩你還嫌少嗎，姑娘？",
-      "subtitle_5": "我也喜歡銀兩，只是不喜歡你"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "夠坦白，我真的非常喜歡",
-      "subtitle_2": "蘇翁⋯",
-      "subtitle_3": "沒相干",
-      "subtitle_4": "一定是我今天的帽子和髮型不配",
-      "subtitle_5": "如霜姑娘看不上我，是我該死",
-      "subtitle_6": "你明白就好了",
-      "subtitle_7": "放心，我還有很多很漂亮的姑娘",
-      "subtitle_8": "鴇母，那今晚就倚仗你了",
-      "subtitle_9": "這與我無關",
-      "subtitle_10": "大膽！放肆"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "螳螂拳？像模像樣的",
-      "subtitle_2": "奏樂"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "先放好",
-      "subtitle_2": "鶴咀",
-      "subtitle_3": "虎爪"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "螳螂怎跟老虎鬥？何況我還有一隻鶴",
-      "subtitle_2": "虎鶴雙形我也會",
-      "subtitle_3": "那你試試看我的螳螂"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "好⋯好",
-      "subtitle_2": "我的螳螂拳再破你的虎鶴雙形",
-      "subtitle_3": "原來不是虎鶴雙形",
-      "subtitle_4": "是孔雀開屏",
-      "subtitle_5": "難怪比較差"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "動作蠻快",
-      "subtitle_2": "看來你比較像樣",
-      "subtitle_3": "年青人，不知天高地厚"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "廣州將軍到",
-      "subtitle_2": "走開⋯",
-      "subtitle_3": "誰敢欺負我的兒子，我就射誰",
-      "subtitle_4": "老爺",
-      "subtitle_5": "不用害怕，阿燦，誰欺負你？",
-      "subtitle_6": "是我欺負別人",
-      "subtitle_7": "甚麼？你欺負別人？",
-      "subtitle_8": "他有多少家財？他夠不夠資格",
-      "subtitle_9": "老爺！是他們",
-      "subtitle_10": "誰？",
-      "subtitle_11": "你看看就知道",
-      "subtitle_12": "鐵帽子王？",
-      "subtitle_13": "送賀禮",
-      "subtitle_14": "阿燦",
-      "subtitle_15": "人家送那麼厚的禮就不要再欺負他",
-      "subtitle_16": "來⋯拿去打賞給這裡的姑娘　　老爺",
-      "subtitle_17": "令牌上寫著「鐵帽子王僧格林參」"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你膽敢搶皇爺的令牌？",
-      "subtitle_2": "把他鎖起來",
-      "subtitle_3": "等一等！根據大清律例",
-      "subtitle_4": "身為朝廷命官，不得嫖妓",
-      "subtitle_5": "你現在身在怡紅院",
-      "subtitle_6": "知法犯法，該當何罪？",
-      "subtitle_7": "那麼你呢？",
-      "subtitle_8": "你說我？　　是",
-      "subtitle_9": "對呀，我是來⋯",
-      "subtitle_10": "來拉⋯　　拉你",
-      "subtitle_11": "他！　　拉他",
-      "subtitle_12": "我身為廣州將軍",
-      "subtitle_13": "當然要來拉你這害羣之馬",
-      "subtitle_14": "還有⋯還有",
-      "subtitle_15": "還有甚麼？說吧",
-      "subtitle_16": "今天是清太祖皇后葉赫拿拉氏的忌辰",
-      "subtitle_17": "身為京官罪加一等",
-      "subtitle_18": "可以問斬",
-      "subtitle_19": "斬他⋯斬他"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "根據大清律例",
-      "subtitle_2": "任何人不束辮子也要問斬",
-      "subtitle_3": "那你是要⋯",
-      "subtitle_4": "還想不想看？",
-      "subtitle_5": "再多也有，傻瓜",
-      "subtitle_6": "不用再說，斬他",
-      "subtitle_7": "好了好了，玩完了",
-      "subtitle_8": "蘇將軍，大家玩得那麼開心就算了吧",
-      "subtitle_9": "我今晚還沒玩過",
-      "subtitle_10": "皇爺",
-      "subtitle_11": "沒想到在這裡會讓他們打擾你的雅興",
-      "subtitle_12": "小人安排不週",
-      "subtitle_13": "這與你無關",
-      "subtitle_14": "我們走",
-      "subtitle_15": "老爺！這個不能惹，見好就收",
-      "subtitle_16": "收吧",
-      "subtitle_17": "大事化小，小事化無",
-      "subtitle_18": "少爺，你的帽子"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "真是高手"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "莫大叔，酒菜已經加了斷腸散",
-      "subtitle_2": "好！趙無極暗算我們幫主",
-      "subtitle_3": "和太平天國的幾名將領",
-      "subtitle_4": "還嫁禍給我們丐幫",
-      "subtitle_5": "弄得江湖上的兄弟",
-      "subtitle_6": "人人也瞧不起我們",
-      "subtitle_7": "說我們投靠了朝廷",
-      "subtitle_8": "這個仇今天可以報了",
-      "subtitle_9": "他們的先天罡氣很厲害",
-      "subtitle_10": "你們待會見他沒上當，千萬別出手",
-      "subtitle_11": "因為湊合我們幾個也不是他的對手",
-      "subtitle_12": "我會盡量誘他到床邊",
-      "subtitle_13": "長老，有人來",
-      "subtitle_14": "大家準備⋯"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "如霜姑娘，我們又見面了",
-      "subtitle_2": "怎麼是你？趙大爺呢？",
-      "subtitle_3": "趙大爺的定風珠",
-      "subtitle_4": "給蘇翁一打就變成珍珠粉末",
-      "subtitle_5": "我沖水喝了",
-      "subtitle_6": "你不要看蘇翁的頭髮像掃帚",
-      "subtitle_7": "其實他為人很有情趣",
-      "subtitle_8": "但是⋯",
-      "subtitle_9": "但是甚麼，十萬兩我已拿了",
-      "subtitle_10": "我不會還給他的",
-      "subtitle_11": "說到蘇翁的為人⋯",
-      "subtitle_12": "廢話少說，鴇母",
-      "subtitle_13": "你先出去",
-      "subtitle_14": "是的⋯是的",
-      "subtitle_15": "七姑娘⋯　　將就一下⋯"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "這個是誰？",
-      "subtitle_2": "我不知道",
-      "subtitle_3": "姑娘，首先有個好消息",
-      "subtitle_4": "我很喜歡你",
-      "subtitle_5": "這對我來說是一個壞消息",
-      "subtitle_6": "我早知道你會這樣說",
-      "subtitle_7": "閒話休提",
-      "subtitle_8": "我願意出一百顆珍珠",
-      "subtitle_9": "希望如霜姑娘今晚能夠陪我把酒談歡",
-      "subtitle_10": "我不想跟你多說",
-      "subtitle_11": "請你出去",
-      "subtitle_12": "我果然沒選錯人",
-      "subtitle_13": "好，我先飲為敬",
-      "subtitle_14": "不要喝⋯"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "實在讓我太感意外",
-      "subtitle_2": "姑娘",
-      "subtitle_3": "放手",
-      "subtitle_4": "原來你會武功",
-      "subtitle_5": "不，我根本就不會武功",
-      "subtitle_6": "我求求你別再纏著我",
-      "subtitle_7": "我不會陪你",
-      "subtitle_8": "如霜，從來沒有人這樣對我",
-      "subtitle_9": "我發覺我已經愛上了你",
-      "subtitle_10": "你說甚麼？",
-      "subtitle_11": "我說，我已經愛上了你",
-      "subtitle_12": "你沒有弄錯吧？",
-      "subtitle_13": "絕對沒有！我決定要娶你",
-      "subtitle_14": "你有神經病",
-      "subtitle_15": "不是吧",
-      "subtitle_16": "原來有人藏在這裡"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "正好，我正想找個證人",
-      "subtitle_2": "證人？　　對",
-      "subtitle_3": "我就對著你的寶劍發誓",
-      "subtitle_4": "我是真心要娶如霜姑娘為妻",
-      "subtitle_5": "若然有半句假話，天打雷劈",
-      "subtitle_6": "姐姐，我真的替你興奮⋯",
-      "subtitle_7": "唏！",
-      "subtitle_8": "你以為當我丈夫那麼容易嗎",
-      "subtitle_9": "要怎樣才可以當你丈夫呢？",
-      "subtitle_10": "我要他武功蓋世，狀元之才",
-      "subtitle_11": "一人之下，萬人之上",
-      "subtitle_12": "那你是否做得到？",
-      "subtitle_13": "讓我想一想"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "做得到",
-      "subtitle_2": "好",
-      "subtitle_3": "待你做得到的時候，才回來找我",
-      "subtitle_4": "既然如此，我想我們要先定婚期",
-      "subtitle_5": "因為做狀元對我來說易如反掌",
-      "subtitle_6": "好！那也應該給我時間作考慮",
-      "subtitle_7": "沒問題，我就在外面的花園等待答覆",
-      "subtitle_8": "不見不散"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "變態"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "丐幫辦事，閒雜人等立即離開"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "大人，半炷香的時間剛剛好",
-      "subtitle_2": "現在路上很安全，請上路",
-      "subtitle_3": "好！非常好",
-      "subtitle_4": "起轎！"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "糟糕！我們來晚了",
-      "subtitle_2": "都是那個人礙事！"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "姐姐⋯姐姐",
-      "subtitle_2": "甚麼事？",
-      "subtitle_3": "那個神經病還在",
-      "subtitle_4": "不如殺了他",
-      "subtitle_5": "算吧！他不是有心阻礙我們",
-      "subtitle_6": "由他吧"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你不是喜歡他吧？",
-      "subtitle_2": "你胡說甚麼？",
-      "subtitle_3": "趙無極一日不死",
-      "subtitle_4": "我也不會想這些事",
-      "subtitle_5": "何況是他",
-      "subtitle_6": "趙無極武功很高",
-      "subtitle_7": "莫大叔說不會降龍十八掌便打不過他",
-      "subtitle_8": "那我豈不是嫁不出嗎？",
-      "subtitle_9": "行吧！別發情"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "何方妖孽？竟敢來嚇我？",
-      "subtitle_2": "蘇翁，我是鴇母⋯",
-      "subtitle_3": "你是鴇母？",
-      "subtitle_4": "是的",
-      "subtitle_5": "胸部那麼平，你的奶子呢？",
-      "subtitle_6": "那麼早，還未睡醒⋯",
-      "subtitle_7": "這次沒有把你打死，算是你走運",
-      "subtitle_8": "以後沒有化粧不要四處走，知道嗎？",
-      "subtitle_9": "不會了，不會了",
-      "subtitle_10": "你不用等如霜姑娘了，她已經走了⋯",
-      "subtitle_11": "走了？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "那究竟如霜姑娘去了哪裡？",
-      "subtitle_2": "聽說，她⋯她去了京城",
-      "subtitle_3": "京城？",
-      "subtitle_4": "男兒為國家⋯",
-      "subtitle_5": "⋯辮子怎樣戴⋯",
-      "subtitle_6": "揮啊！揮啊！",
-      "subtitle_7": "我拉長它又彈它⋯",
-      "subtitle_8": "阿爹",
-      "subtitle_9": "我決定上京考文武狀元",
-      "subtitle_10": "阿燦",
-      "subtitle_11": "爹等你說這句話，等了二十五年",
-      "subtitle_12": "為了蘇察哈爾家，你應該這樣做",
-      "subtitle_13": "別誤會，我這樣做並不是為誰",
-      "subtitle_14": "只是為了一個女人",
-      "subtitle_15": "英雄",
-      "subtitle_16": "為妞死，為妞亡，為妞上京考狀元",
-      "subtitle_17": "何家女子？",
-      "subtitle_18": "怡紅院金牌清官人如霜姑娘",
-      "subtitle_19": "妓女？",
-      "subtitle_20": "有何不妥？",
-      "subtitle_21": "品味與別不同，真是能人所不能",
-      "subtitle_22": "阿爹欽佩你",
-      "subtitle_23": "我陪你上京",
-      "subtitle_24": "二，三，四，五，六",
-      "subtitle_25": "來了，老爺",
-      "subtitle_26": "少爺上京赴考，我們搬家",
-      "subtitle_27": "你們不要追了",
-      "subtitle_28": "這些雞不帶了，京城多的是",
-      "subtitle_29": "你這個笨蛋小心點",
-      "subtitle_30": "弄花了我的東西，我不會放過你",
-      "subtitle_31": "小心點",
-      "subtitle_32": "老爹，早",
-      "subtitle_33": "早",
-      "subtitle_34": "真的全部都搬走？",
-      "subtitle_35": "當然",
-      "subtitle_36": "留件衣服給我穿啊",
-      "subtitle_37": "小孩子怕甚麼呢？",
-      "subtitle_38": "我不小了",
-      "subtitle_39": "呸！比我大嗎？",
-      "subtitle_40": "小看我？",
-      "subtitle_41": "總有一天比你大",
-      "subtitle_42": "有誰願意脫下衣服來給我穿一下",
-      "subtitle_43": "沒眼看",
-      "subtitle_44": "你們站著幹嘛？還不把它搬走",
-      "subtitle_45": "屋那麼大，何時才搬妥",
-      "subtitle_46": "請大家賣力點，好不好",
-      "subtitle_47": "數三聲！一，二，三，推",
-      "subtitle_48": "推⋯",
-      "subtitle_49": "小心推",
-      "subtitle_50": "綁牢一點⋯綁牢一點",
-      "subtitle_51": "老爺，樹也要搬？",
-      "subtitle_52": "當然",
-      "subtitle_53": "否則我到京城那有荔枝吃？",
-      "subtitle_54": "推到那邊⋯推到那邊",
-      "subtitle_55": "小心點⋯小心我的荔枝",
-      "subtitle_56": "小心我的荔枝，笨蛋",
-      "subtitle_57": "趙無極這趟協助微臣",
-      "subtitle_58": "到廣西剿平長毛餘孽立功不少",
-      "subtitle_59": "微臣特意帶他來見皇上",
-      "subtitle_60": "好！朕現在賜你為都察院副左都御史",
-      "subtitle_61": "希望你日後好好為大清效力",
-      "subtitle_62": "謝主龍恩",
-      "subtitle_63": "皇上，趙先生一身奇技異術",
-      "subtitle_64": "不如請他示範一下，讓皇上開開眼界",
-      "subtitle_65": "異術？",
-      "subtitle_66": "趙先生，你就示範給朕看",
-      "subtitle_67": "是"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "大驚小怪！退下",
-      "subtitle_2": "是"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "微臣大膽，讓皇上受驚",
-      "subtitle_2": "如果這個女人是真的就好了",
-      "subtitle_3": "站好！快點",
-      "subtitle_4": "甚麼事⋯甚麼事？",
-      "subtitle_5": "來⋯進去"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "甚麼事？",
-      "subtitle_2": "躲進去",
-      "subtitle_3": "準備好了，少爺",
-      "subtitle_4": "來",
-      "subtitle_5": "全部站好別再動"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "那麼香？你是飄紅",
-      "subtitle_2": "少爺你很棒，我喜歡",
-      "subtitle_3": "靠攏一點",
-      "subtitle_4": "那麼大？一定是小小",
-      "subtitle_5": "少爺你很壞，這樣說人家",
-      "subtitle_6": "你是大嘛",
-      "subtitle_7": "懷孕的也有？騙不倒我",
-      "subtitle_8": "你是爹",
-      "subtitle_9": "你很壞！這樣也給你猜中",
-      "subtitle_10": "聰明，聰明",
-      "subtitle_11": "阿爹還想作弄你一下，好棒好棒",
-      "subtitle_12": "好了好了，少爺明早要考試",
-      "subtitle_13": "別玩得太瘋",
-      "subtitle_14": "出去，出去",
-      "subtitle_15": "阿燦，你明天考試",
-      "subtitle_16": "準備好了沒有？",
-      "subtitle_17": "準備甚麼？我贏定了，你不知道嗎",
-      "subtitle_18": "知道",
-      "subtitle_19": "你這樣的態度，我就有信心",
-      "subtitle_20": "阿燦，這位是鄭世伯",
-      "subtitle_21": "明天鄭世伯做主考",
-      "subtitle_22": "你來打個招呼",
-      "subtitle_23": "鄭世伯，招呼不週",
-      "subtitle_24": "你看",
-      "subtitle_25": "我的兒子是否狀元臉？",
-      "subtitle_26": "要看他的造化了",
-      "subtitle_27": "老鄭，你給我的考卷",
-      "subtitle_28": "我已經找人在做",
-      "subtitle_29": "不會改了吧？",
-      "subtitle_30": "考卷方面是沒問題了",
-      "subtitle_31": "至於臨場考弓箭、騎馬",
-      "subtitle_32": "舉石、搏擊、兵器",
-      "subtitle_33": "就全靠他自己",
-      "subtitle_34": "這一點你放心",
-      "subtitle_35": "我的兒子十八般武藝樣樣精通",
-      "subtitle_36": "那二百萬兩可否酌量減一點？",
-      "subtitle_37": "人情歸人情，數目一定要分明"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "決定佈個雁行陣，馬隊前駐中鋒營",
-      "subtitle_2": "弓隊側翼，槍隊殿後"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "武狀元初賽，考生進場"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "舉不起來"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "留力而矣",
-      "subtitle_2": "無恥？無恥你娘"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "十分！"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "武狀元決賽現在開始",
-      "subtitle_2": "今天武狀元之爭",
-      "subtitle_3": "是由蒙古的博達爾多⋯",
-      "subtitle_4": "好⋯好",
-      "subtitle_5": "⋯對廣東的蘇察哈爾燦",
-      "subtitle_6": "最後三分鐘",
-      "subtitle_7": "蘇察哈爾燦一賠十，博達爾多一賠一",
-      "subtitle_8": "有沒有攪錯，賠率怎麼差那麼多？",
-      "subtitle_9": "一個是一賠十，一個是一賠一",
-      "subtitle_10": "對蘇燦那麼沒信心！",
-      "subtitle_11": "沒辦法，蘇燦在舉重項目棄權",
-      "subtitle_12": "你看，博達爾多",
-      "subtitle_13": "全部是滿分進級，怎麼比呢？",
-      "subtitle_14": "現在是考狀元，又不是當苦力",
-      "subtitle_15": "舉重了得又有何用！",
-      "subtitle_16": "話不是這樣說　　甚麼？",
-      "subtitle_17": "這位同僚有見識",
-      "subtitle_18": "我鑽研了這場比賽很久",
-      "subtitle_19": "也覺得個賠率有點古怪",
-      "subtitle_20": "這個博達爾多外型俊朗，渾身有力",
-      "subtitle_21": "但是未出賽行圈頸部就已經有白汗",
-      "subtitle_22": "我猜可能是虛火",
-      "subtitle_23": "是嗎？",
-      "subtitle_24": "但是這個蘇察哈爾燦",
-      "subtitle_25": "怎樣？怎樣？",
-      "subtitle_26": "雖然沿途低著頭",
-      "subtitle_27": "但是能進入決賽是很困難的",
-      "subtitle_28": "甚麼？",
-      "subtitle_29": "是洋文！即是有鬥心",
-      "subtitle_30": "所以我準備全押",
-      "subtitle_31": "是嗎？那你打算押多少？",
-      "subtitle_32": "八十萬兩！",
-      "subtitle_33": "八十萬兩那麼少？買夠二百萬兩嘛",
-      "subtitle_34": "怎麼？為甚麼你突然間看好他",
-      "subtitle_35": "我看你分析得那麼清楚",
-      "subtitle_36": "給你說說",
-      "subtitle_37": "我都覺得蘇燦像贏定的",
-      "subtitle_38": "過來過來",
-      "subtitle_39": "我第二次全押",
-      "subtitle_40": "是嗎？",
-      "subtitle_41": "二百萬兩",
-      "subtitle_42": "豪氣！豪氣",
-      "subtitle_43": "為甚麼你不下注？",
-      "subtitle_44": "我下注幹甚麼？他是我的兒子",
-      "subtitle_45": "糟了！我少分析了這個",
-      "subtitle_46": "少分析了甚麼？",
-      "subtitle_47": "血統",
-      "subtitle_48": "主考到",
-      "subtitle_49": "不是老鄭主考嗎？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "請坐",
-      "subtitle_2": "僧格林參？",
-      "subtitle_3": "有甚麼問題？",
-      "subtitle_4": "他是博達爾多的叔叔",
-      "subtitle_5": "開始"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "開始"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "靶都射穿了！至少都多加兩分",
-      "subtitle_2": "照道理是！照道理是",
-      "subtitle_3": "蘇燦靶上沒有箭！博達爾多勝"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "有沒有攪錯！你老祖！要把戲？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "考生上馬！準備下一回合",
-      "subtitle_2": "趙先生"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你拿著這套袖箭！必要時有用",
-      "subtitle_2": "第二回合開始"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "兵器都動了手腳？",
-      "subtitle_2": "太黑暗了！退票不賭行不行？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "追回一局了",
-      "subtitle_2": "你的票撕了沒有",
-      "subtitle_3": "沒有"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "有沒有攪錯？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "還不認輸？再來"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "重新開始，讓你一手一腳",
-      "subtitle_2": "免你說我欺負你"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你用這骯髒的手段來取得勝利？",
-      "subtitle_2": "小子你睡醒了嗎",
-      "subtitle_3": "好棒呀！贏了",
-      "subtitle_4": "喝茶！喝茶",
-      "subtitle_5": "祝你好運",
-      "subtitle_6": "這當然要用臀啦！還有別處可用嗎？",
-      "subtitle_7": "是洋文",
-      "subtitle_8": "洋文",
-      "subtitle_9": "例上沒有說明不準用暗器",
-      "subtitle_10": "你先掉下來，這個回合判博達爾多勝"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你個短命的老鄭，竟敢騙我",
-      "subtitle_2": "以後不要給我看見你",
-      "subtitle_3": "見一次打一次",
-      "subtitle_4": "不用了！你以後都不會見到他",
-      "subtitle_5": "為甚麼？",
-      "subtitle_6": "我現在就去劈他",
-      "subtitle_7": "我那裡有二百萬輸？",
-      "subtitle_8": "只是說說而已",
-      "subtitle_9": "卑鄙無恥",
-      "subtitle_10": "博達爾多三局兩勝，是今科武狀元",
-      "subtitle_11": "明明是我贏！我抗議"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "甚麼事？",
-      "subtitle_2": "鏢有毒",
-      "subtitle_3": "報應來了！死得好",
-      "subtitle_4": "這枝有毒的鏢是他自己的",
-      "subtitle_5": "他死了，我兒子就當狀元？",
-      "subtitle_6": "那我現在不是發財了嗎？",
-      "subtitle_7": "對⋯",
-      "subtitle_8": "你⋯你⋯"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "光宗耀祖了⋯",
-      "subtitle_2": "有眼光",
-      "subtitle_3": "大人，皇上說要親自欽點"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "好"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "武狀元，我想問你幾句作為朝庭紀錄",
-      "subtitle_2": "你這次成功！會先感謝誰？",
-      "subtitle_3": "如霜姑娘",
-      "subtitle_4": "如霜姑娘！會不會是他的娘？"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "皇爺，你覺得廣東大戲怎樣？"
+        },
+        {
+          "index": 2,
+          "text": "地方戲曲，當然不及京戲"
+        },
+        {
+          "index": 3,
+          "text": "但也算是一種見識"
+        }
+      ]
     },
     "answer": {
-      "revised_1": "武狀元，我想問你幾句作為朝廷紀錄",
-      "note_1": "將“朝庭”更正為“朝廷”，修正錯別字。"
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "打賞⋯打賞"
+        },
+        {
+          "index": 2,
+          "text": "恭喜蘇翁生辰快樂"
+        },
+        {
+          "index": 3,
+          "text": "我家破人亡、貧病老弱"
+        },
+        {
+          "index": 4,
+          "text": "無親無故、妻離子散"
+        },
+        {
+          "index": 5,
+          "text": "打賞個救命錢　　怎麼攪的，死乞丐！"
+        },
+        {
+          "index": 6,
+          "text": "你個王八蛋，怎麼到這裏來討飯？"
+        },
+        {
+          "index": 7,
+          "text": "我打⋯"
+        },
+        {
+          "index": 8,
+          "text": "打賞　　是，少爺"
+        },
+        {
+          "index": 9,
+          "text": "這樣也有打賞？"
+        },
+        {
+          "index": 10,
+          "text": "乞丐也是人"
+        },
+        {
+          "index": 11,
+          "text": "只要有錢的都可以來"
+        },
+        {
+          "index": 12,
+          "text": "你這個月來這裡"
+        },
+        {
+          "index": 13,
+          "text": "吃飯看戲宵夜嫖妓，我包"
+        },
+        {
+          "index": 14,
+          "text": "你包？"
+        },
+        {
+          "index": 15,
+          "text": "不可以嗎？"
+        },
+        {
+          "index": 16,
+          "text": "可以，可以"
+        },
+        {
+          "index": 17,
+          "text": "大爺進我間房吧⋯　　請你跟我來"
+        },
+        {
+          "index": 18,
+          "text": "蘇⋯翁"
+        },
+        {
+          "index": 19,
+          "text": "是⋯"
+        },
+        {
+          "index": 20,
+          "text": "你好嗎，鴇母？"
+        },
+        {
+          "index": 21,
+          "text": "你真壞，有名字你不叫，叫我鴇母"
+        },
+        {
+          "index": 22,
+          "text": "大家坦白一點不好嗎？"
+        },
+        {
+          "index": 23,
+          "text": "要坦白嗎"
+        },
+        {
+          "index": 24,
+          "text": "你的帽子像披麻帶孝似的"
+        },
+        {
+          "index": 25,
+          "text": "你老爸死了嗎？"
+        },
+        {
+          "index": 26,
+          "text": "這樣說大家才開心嘛"
+        },
+        {
+          "index": 27,
+          "text": "趙先生這趟幫本官掃平長毛賊"
+        },
+        {
+          "index": 28,
+          "text": "皇上一定重重有賞"
+        },
+        {
+          "index": 29,
+          "text": "那就有勞皇爺在皇上面前"
+        },
+        {
+          "index": 30,
+          "text": "多說幾句好說話"
+        },
+        {
+          "index": 31,
+          "text": "大戲做完了，請用毛巾"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "蘇翁來了⋯"
+        },
+        {
+          "index": 2,
+          "text": "蘇翁，恭喜發財"
+        },
+        {
+          "index": 3,
+          "text": "這邊⋯這邊"
+        },
+        {
+          "index": 4,
+          "text": "蘇翁，今天是你的好日子，很高興吧"
+        },
+        {
+          "index": 5,
+          "text": "我們有幾位新來的姑娘，保證你滿意"
+        },
+        {
+          "index": 6,
+          "text": "金魚還是木魚？"
+        },
+        {
+          "index": 7,
+          "text": "少爺，甚麼金魚、木魚？"
+        },
+        {
+          "index": 8,
+          "text": "傻瓜，金魚只可以看"
+        },
+        {
+          "index": 9,
+          "text": "木魚則可以碰嘛"
+        },
+        {
+          "index": 10,
+          "text": "那當然要木魚"
+        },
+        {
+          "index": 11,
+          "text": "你們還不過來待候客人⋯"
+        },
+        {
+          "index": 12,
+          "text": "蘇翁，今天是你的大日子"
+        },
+        {
+          "index": 13,
+          "text": "你想要怎樣的女人，你說就成"
+        },
+        {
+          "index": 14,
+          "text": "隨便，女人都是一樣的"
+        },
+        {
+          "index": 15,
+          "text": "沒甚麼特別"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "蘇翁，甚麼事？"
+        },
+        {
+          "index": 2,
+          "text": "我給人挑了一下"
+        },
+        {
+          "index": 3,
+          "text": "甚麼？"
+        },
+        {
+          "index": 4,
+          "text": "誰膽敢挑你？讓我打她的咀"
+        },
+        {
+          "index": 5,
+          "text": "不是用咀"
+        },
+        {
+          "index": 6,
+          "text": "是用眼睛"
+        },
+        {
+          "index": 7,
+          "text": "誘惑中帶有煞氣，這種眼神我沒見過"
+        },
+        {
+          "index": 8,
+          "text": "究竟是何方神聖？"
+        },
+        {
+          "index": 9,
+          "text": "這位如霜姑娘是客串"
+        },
+        {
+          "index": 10,
+          "text": "趙大人有沒有興趣和她擺房？"
+        },
+        {
+          "index": 11,
+          "text": "你應該先問皇爺才對"
+        },
+        {
+          "index": 12,
+          "text": "怎麼樣，皇爺？"
+        },
+        {
+          "index": 13,
+          "text": "大家自己人，何必客氣呢？"
+        },
+        {
+          "index": 14,
+          "text": "趙先生，請隨便"
+        },
+        {
+          "index": 15,
+          "text": "那我就卻之不恭了"
+        },
+        {
+          "index": 16,
+          "text": "擺房"
+        },
+        {
+          "index": 17,
+          "text": "如霜，快點下來見趙大人"
+        },
+        {
+          "index": 18,
+          "text": "姐姐，就是他"
+        },
+        {
+          "index": 19,
+          "text": "殺阿爹的人就是他"
+        },
+        {
+          "index": 20,
+          "text": "我知道，鎮定點"
+        },
+        {
+          "index": 21,
+          "text": "走吧"
+        },
+        {
+          "index": 22,
+          "text": "失陪　　趙大人"
+        },
+        {
+          "index": 23,
+          "text": "如霜姑娘到"
+        },
+        {
+          "index": 24,
+          "text": "小女子如霜，拜見趙大人"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "果然是美人"
+        },
+        {
+          "index": 2,
+          "text": "趙大人，那今晚⋯"
+        },
+        {
+          "index": 3,
+          "text": "銀票十萬兩"
+        },
+        {
+          "index": 4,
+          "text": "如霜姑娘今晚要陪我家少爺"
+        },
+        {
+          "index": 5,
+          "text": "沒空招呼你"
+        },
+        {
+          "index": 6,
+          "text": "各位⋯真不好意思"
+        },
+        {
+          "index": 7,
+          "text": "有甚麼意見嗎？"
+        },
+        {
+          "index": 8,
+          "text": "讓我來⋯讓我說句公道話"
+        },
+        {
+          "index": 9,
+          "text": "只要你們誰能付超過十萬兩銀票"
+        },
+        {
+          "index": 10,
+          "text": "如霜姑娘就陪誰"
+        },
+        {
+          "index": 11,
+          "text": "千萬不要傷和氣，對不對？"
+        },
+        {
+          "index": 12,
+          "text": "這位朋友真捨得花錢"
+        },
+        {
+          "index": 13,
+          "text": "銀票實在太普通"
+        },
+        {
+          "index": 14,
+          "text": "我有一顆朝廷大內的定風珠，無價寶"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我還是比較喜歡珍珠"
+        },
+        {
+          "index": 2,
+          "text": "趙大人，我回房間等你"
+        },
+        {
+          "index": 3,
+          "text": "這顆珠值十萬兩嗎？"
+        },
+        {
+          "index": 4,
+          "text": "十萬兩你還嫌少嗎，姑娘？"
+        },
+        {
+          "index": 5,
+          "text": "我也喜歡銀兩，只是不喜歡你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "夠坦白，我真的非常喜歡"
+        },
+        {
+          "index": 2,
+          "text": "蘇翁⋯"
+        },
+        {
+          "index": 3,
+          "text": "沒相干"
+        },
+        {
+          "index": 4,
+          "text": "一定是我今天的帽子和髮型不配"
+        },
+        {
+          "index": 5,
+          "text": "如霜姑娘看不上我，是我該死"
+        },
+        {
+          "index": 6,
+          "text": "你明白就好了"
+        },
+        {
+          "index": 7,
+          "text": "放心，我還有很多很漂亮的姑娘"
+        },
+        {
+          "index": 8,
+          "text": "鴇母，那今晚就倚仗你了"
+        },
+        {
+          "index": 9,
+          "text": "這與我無關"
+        },
+        {
+          "index": 10,
+          "text": "大膽！放肆"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "螳螂拳？像模像樣的"
+        },
+        {
+          "index": 2,
+          "text": "奏樂"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "先放好"
+        },
+        {
+          "index": 2,
+          "text": "鶴咀"
+        },
+        {
+          "index": 3,
+          "text": "虎爪"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "螳螂怎跟老虎鬥？何況我還有一隻鶴"
+        },
+        {
+          "index": 2,
+          "text": "虎鶴雙形我也會"
+        },
+        {
+          "index": 3,
+          "text": "那你試試看我的螳螂"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好⋯好"
+        },
+        {
+          "index": 2,
+          "text": "我的螳螂拳再破你的虎鶴雙形"
+        },
+        {
+          "index": 3,
+          "text": "原來不是虎鶴雙形"
+        },
+        {
+          "index": 4,
+          "text": "是孔雀開屏"
+        },
+        {
+          "index": 5,
+          "text": "難怪比較差"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "動作蠻快"
+        },
+        {
+          "index": 2,
+          "text": "看來你比較像樣"
+        },
+        {
+          "index": 3,
+          "text": "年青人，不知天高地厚"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "廣州將軍到"
+        },
+        {
+          "index": 2,
+          "text": "走開⋯"
+        },
+        {
+          "index": 3,
+          "text": "誰敢欺負我的兒子，我就射誰"
+        },
+        {
+          "index": 4,
+          "text": "老爺"
+        },
+        {
+          "index": 5,
+          "text": "不用害怕，阿燦，誰欺負你？"
+        },
+        {
+          "index": 6,
+          "text": "是我欺負別人"
+        },
+        {
+          "index": 7,
+          "text": "甚麼？你欺負別人？"
+        },
+        {
+          "index": 8,
+          "text": "他有多少家財？他夠不夠資格"
+        },
+        {
+          "index": 9,
+          "text": "老爺！是他們"
+        },
+        {
+          "index": 10,
+          "text": "誰？"
+        },
+        {
+          "index": 11,
+          "text": "你看看就知道"
+        },
+        {
+          "index": 12,
+          "text": "鐵帽子王？"
+        },
+        {
+          "index": 13,
+          "text": "送賀禮"
+        },
+        {
+          "index": 14,
+          "text": "阿燦"
+        },
+        {
+          "index": 15,
+          "text": "人家送那麼厚的禮就不要再欺負他"
+        },
+        {
+          "index": 16,
+          "text": "來⋯拿去打賞給這裡的姑娘　　老爺"
+        },
+        {
+          "index": 17,
+          "text": "令牌上寫著「鐵帽子王僧格林參」"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你膽敢搶皇爺的令牌？"
+        },
+        {
+          "index": 2,
+          "text": "把他鎖起來"
+        },
+        {
+          "index": 3,
+          "text": "等一等！根據大清律例"
+        },
+        {
+          "index": 4,
+          "text": "身為朝廷命官，不得嫖妓"
+        },
+        {
+          "index": 5,
+          "text": "你現在身在怡紅院"
+        },
+        {
+          "index": 6,
+          "text": "知法犯法，該當何罪？"
+        },
+        {
+          "index": 7,
+          "text": "那麼你呢？"
+        },
+        {
+          "index": 8,
+          "text": "你說我？　　是"
+        },
+        {
+          "index": 9,
+          "text": "對呀，我是來⋯"
+        },
+        {
+          "index": 10,
+          "text": "來拉⋯　　拉你"
+        },
+        {
+          "index": 11,
+          "text": "他！　　拉他"
+        },
+        {
+          "index": 12,
+          "text": "我身為廣州將軍"
+        },
+        {
+          "index": 13,
+          "text": "當然要來拉你這害羣之馬"
+        },
+        {
+          "index": 14,
+          "text": "還有⋯還有"
+        },
+        {
+          "index": 15,
+          "text": "還有甚麼？說吧"
+        },
+        {
+          "index": 16,
+          "text": "今天是清太祖皇后葉赫拿拉氏的忌辰"
+        },
+        {
+          "index": 17,
+          "text": "身為京官罪加一等"
+        },
+        {
+          "index": 18,
+          "text": "可以問斬"
+        },
+        {
+          "index": 19,
+          "text": "斬他⋯斬他"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "根據大清律例"
+        },
+        {
+          "index": 2,
+          "text": "任何人不束辮子也要問斬"
+        },
+        {
+          "index": 3,
+          "text": "那你是要⋯"
+        },
+        {
+          "index": 4,
+          "text": "還想不想看？"
+        },
+        {
+          "index": 5,
+          "text": "再多也有，傻瓜"
+        },
+        {
+          "index": 6,
+          "text": "不用再說，斬他"
+        },
+        {
+          "index": 7,
+          "text": "好了好了，玩完了"
+        },
+        {
+          "index": 8,
+          "text": "蘇將軍，大家玩得那麼開心就算了吧"
+        },
+        {
+          "index": 9,
+          "text": "我今晚還沒玩過"
+        },
+        {
+          "index": 10,
+          "text": "皇爺"
+        },
+        {
+          "index": 11,
+          "text": "沒想到在這裡會讓他們打擾你的雅興"
+        },
+        {
+          "index": 12,
+          "text": "小人安排不週"
+        },
+        {
+          "index": 13,
+          "text": "這與你無關"
+        },
+        {
+          "index": 14,
+          "text": "我們走"
+        },
+        {
+          "index": 15,
+          "text": "老爺！這個不能惹，見好就收"
+        },
+        {
+          "index": 16,
+          "text": "收吧"
+        },
+        {
+          "index": 17,
+          "text": "大事化小，小事化無"
+        },
+        {
+          "index": 18,
+          "text": "少爺，你的帽子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "真是高手"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "莫大叔，酒菜已經加了斷腸散"
+        },
+        {
+          "index": 2,
+          "text": "好！趙無極暗算我們幫主"
+        },
+        {
+          "index": 3,
+          "text": "和太平天國的幾名將領"
+        },
+        {
+          "index": 4,
+          "text": "還嫁禍給我們丐幫"
+        },
+        {
+          "index": 5,
+          "text": "弄得江湖上的兄弟"
+        },
+        {
+          "index": 6,
+          "text": "人人也瞧不起我們"
+        },
+        {
+          "index": 7,
+          "text": "說我們投靠了朝廷"
+        },
+        {
+          "index": 8,
+          "text": "這個仇今天可以報了"
+        },
+        {
+          "index": 9,
+          "text": "他們的先天罡氣很厲害"
+        },
+        {
+          "index": 10,
+          "text": "你們待會見他沒上當，千萬別出手"
+        },
+        {
+          "index": 11,
+          "text": "因為湊合我們幾個也不是他的對手"
+        },
+        {
+          "index": 12,
+          "text": "我會盡量誘他到床邊"
+        },
+        {
+          "index": 13,
+          "text": "長老，有人來"
+        },
+        {
+          "index": 14,
+          "text": "大家準備⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "如霜姑娘，我們又見面了"
+        },
+        {
+          "index": 2,
+          "text": "怎麼是你？趙大爺呢？"
+        },
+        {
+          "index": 3,
+          "text": "趙大爺的定風珠"
+        },
+        {
+          "index": 4,
+          "text": "給蘇翁一打就變成珍珠粉末"
+        },
+        {
+          "index": 5,
+          "text": "我沖水喝了"
+        },
+        {
+          "index": 6,
+          "text": "你不要看蘇翁的頭髮像掃帚"
+        },
+        {
+          "index": 7,
+          "text": "其實他為人很有情趣"
+        },
+        {
+          "index": 8,
+          "text": "但是⋯"
+        },
+        {
+          "index": 9,
+          "text": "但是甚麼，十萬兩我已拿了"
+        },
+        {
+          "index": 10,
+          "text": "我不會還給他的"
+        },
+        {
+          "index": 11,
+          "text": "說到蘇翁的為人⋯"
+        },
+        {
+          "index": 12,
+          "text": "廢話少說，鴇母"
+        },
+        {
+          "index": 13,
+          "text": "你先出去"
+        },
+        {
+          "index": 14,
+          "text": "是的⋯是的"
+        },
+        {
+          "index": 15,
+          "text": "七姑娘⋯　　將就一下⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這個是誰？"
+        },
+        {
+          "index": 2,
+          "text": "我不知道"
+        },
+        {
+          "index": 3,
+          "text": "姑娘，首先有個好消息"
+        },
+        {
+          "index": 4,
+          "text": "我很喜歡你"
+        },
+        {
+          "index": 5,
+          "text": "這對我來說是一個壞消息"
+        },
+        {
+          "index": 6,
+          "text": "我早知道你會這樣說"
+        },
+        {
+          "index": 7,
+          "text": "閒話休提"
+        },
+        {
+          "index": 8,
+          "text": "我願意出一百顆珍珠"
+        },
+        {
+          "index": 9,
+          "text": "希望如霜姑娘今晚能夠陪我把酒談歡"
+        },
+        {
+          "index": 10,
+          "text": "我不想跟你多說"
+        },
+        {
+          "index": 11,
+          "text": "請你出去"
+        },
+        {
+          "index": 12,
+          "text": "我果然沒選錯人"
+        },
+        {
+          "index": 13,
+          "text": "好，我先飲為敬"
+        },
+        {
+          "index": 14,
+          "text": "不要喝⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "實在讓我太感意外"
+        },
+        {
+          "index": 2,
+          "text": "姑娘"
+        },
+        {
+          "index": 3,
+          "text": "放手"
+        },
+        {
+          "index": 4,
+          "text": "原來你會武功"
+        },
+        {
+          "index": 5,
+          "text": "不，我根本就不會武功"
+        },
+        {
+          "index": 6,
+          "text": "我求求你別再纏著我"
+        },
+        {
+          "index": 7,
+          "text": "我不會陪你"
+        },
+        {
+          "index": 8,
+          "text": "如霜，從來沒有人這樣對我"
+        },
+        {
+          "index": 9,
+          "text": "我發覺我已經愛上了你"
+        },
+        {
+          "index": 10,
+          "text": "你說甚麼？"
+        },
+        {
+          "index": 11,
+          "text": "我說，我已經愛上了你"
+        },
+        {
+          "index": 12,
+          "text": "你沒有弄錯吧？"
+        },
+        {
+          "index": 13,
+          "text": "絕對沒有！我決定要娶你"
+        },
+        {
+          "index": 14,
+          "text": "你有神經病"
+        },
+        {
+          "index": 15,
+          "text": "不是吧"
+        },
+        {
+          "index": 16,
+          "text": "原來有人藏在這裡"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "正好，我正想找個證人"
+        },
+        {
+          "index": 2,
+          "text": "證人？　　對"
+        },
+        {
+          "index": 3,
+          "text": "我就對著你的寶劍發誓"
+        },
+        {
+          "index": 4,
+          "text": "我是真心要娶如霜姑娘為妻"
+        },
+        {
+          "index": 5,
+          "text": "若然有半句假話，天打雷劈"
+        },
+        {
+          "index": 6,
+          "text": "姐姐，我真的替你興奮⋯"
+        },
+        {
+          "index": 7,
+          "text": "唏！"
+        },
+        {
+          "index": 8,
+          "text": "你以為當我丈夫那麼容易嗎"
+        },
+        {
+          "index": 9,
+          "text": "要怎樣才可以當你丈夫呢？"
+        },
+        {
+          "index": 10,
+          "text": "我要他武功蓋世，狀元之才"
+        },
+        {
+          "index": 11,
+          "text": "一人之下，萬人之上"
+        },
+        {
+          "index": 12,
+          "text": "那你是否做得到？"
+        },
+        {
+          "index": 13,
+          "text": "讓我想一想"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "做得到"
+        },
+        {
+          "index": 2,
+          "text": "好"
+        },
+        {
+          "index": 3,
+          "text": "待你做得到的時候，才回來找我"
+        },
+        {
+          "index": 4,
+          "text": "既然如此，我想我們要先定婚期"
+        },
+        {
+          "index": 5,
+          "text": "因為做狀元對我來說易如反掌"
+        },
+        {
+          "index": 6,
+          "text": "好！那也應該給我時間作考慮"
+        },
+        {
+          "index": 7,
+          "text": "沒問題，我就在外面的花園等待答覆"
+        },
+        {
+          "index": 8,
+          "text": "不見不散"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "變態"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "丐幫辦事，閒雜人等立即離開"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大人，半炷香的時間剛剛好"
+        },
+        {
+          "index": 2,
+          "text": "現在路上很安全，請上路"
+        },
+        {
+          "index": 3,
+          "text": "好！非常好"
+        },
+        {
+          "index": 4,
+          "text": "起轎！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "糟糕！我們來晚了"
+        },
+        {
+          "index": 2,
+          "text": "都是那個人礙事！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "姐姐⋯姐姐"
+        },
+        {
+          "index": 2,
+          "text": "甚麼事？"
+        },
+        {
+          "index": 3,
+          "text": "那個神經病還在"
+        },
+        {
+          "index": 4,
+          "text": "不如殺了他"
+        },
+        {
+          "index": 5,
+          "text": "算吧！他不是有心阻礙我們"
+        },
+        {
+          "index": 6,
+          "text": "由他吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你不是喜歡他吧？"
+        },
+        {
+          "index": 2,
+          "text": "你胡說甚麼？"
+        },
+        {
+          "index": 3,
+          "text": "趙無極一日不死"
+        },
+        {
+          "index": 4,
+          "text": "我也不會想這些事"
+        },
+        {
+          "index": 5,
+          "text": "何況是他"
+        },
+        {
+          "index": 6,
+          "text": "趙無極武功很高"
+        },
+        {
+          "index": 7,
+          "text": "莫大叔說不會降龍十八掌便打不過他"
+        },
+        {
+          "index": 8,
+          "text": "那我豈不是嫁不出嗎？"
+        },
+        {
+          "index": 9,
+          "text": "行吧！別發情"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "何方妖孽？竟敢來嚇我？"
+        },
+        {
+          "index": 2,
+          "text": "蘇翁，我是鴇母⋯"
+        },
+        {
+          "index": 3,
+          "text": "你是鴇母？"
+        },
+        {
+          "index": 4,
+          "text": "是的"
+        },
+        {
+          "index": 5,
+          "text": "胸部那麼平，你的奶子呢？"
+        },
+        {
+          "index": 6,
+          "text": "那麼早，還未睡醒⋯"
+        },
+        {
+          "index": 7,
+          "text": "這次沒有把你打死，算是你走運"
+        },
+        {
+          "index": 8,
+          "text": "以後沒有化粧不要四處走，知道嗎？"
+        },
+        {
+          "index": 9,
+          "text": "不會了，不會了"
+        },
+        {
+          "index": 10,
+          "text": "你不用等如霜姑娘了，她已經走了⋯"
+        },
+        {
+          "index": 11,
+          "text": "走了？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那究竟如霜姑娘去了哪裡？"
+        },
+        {
+          "index": 2,
+          "text": "聽說，她⋯她去了京城"
+        },
+        {
+          "index": 3,
+          "text": "京城？"
+        },
+        {
+          "index": 4,
+          "text": "男兒為國家⋯"
+        },
+        {
+          "index": 5,
+          "text": "⋯辮子怎樣戴⋯"
+        },
+        {
+          "index": 6,
+          "text": "揮啊！揮啊！"
+        },
+        {
+          "index": 7,
+          "text": "我拉長它又彈它⋯"
+        },
+        {
+          "index": 8,
+          "text": "阿爹"
+        },
+        {
+          "index": 9,
+          "text": "我決定上京考文武狀元"
+        },
+        {
+          "index": 10,
+          "text": "阿燦"
+        },
+        {
+          "index": 11,
+          "text": "爹等你說這句話，等了二十五年"
+        },
+        {
+          "index": 12,
+          "text": "為了蘇察哈爾家，你應該這樣做"
+        },
+        {
+          "index": 13,
+          "text": "別誤會，我這樣做並不是為誰"
+        },
+        {
+          "index": 14,
+          "text": "只是為了一個女人"
+        },
+        {
+          "index": 15,
+          "text": "英雄"
+        },
+        {
+          "index": 16,
+          "text": "為妞死，為妞亡，為妞上京考狀元"
+        },
+        {
+          "index": 17,
+          "text": "何家女子？"
+        },
+        {
+          "index": 18,
+          "text": "怡紅院金牌清官人如霜姑娘"
+        },
+        {
+          "index": 19,
+          "text": "妓女？"
+        },
+        {
+          "index": 20,
+          "text": "有何不妥？"
+        },
+        {
+          "index": 21,
+          "text": "品味與別不同，真是能人所不能"
+        },
+        {
+          "index": 22,
+          "text": "阿爹欽佩你"
+        },
+        {
+          "index": 23,
+          "text": "我陪你上京"
+        },
+        {
+          "index": 24,
+          "text": "二，三，四，五，六"
+        },
+        {
+          "index": 25,
+          "text": "來了，老爺"
+        },
+        {
+          "index": 26,
+          "text": "少爺上京赴考，我們搬家"
+        },
+        {
+          "index": 27,
+          "text": "你們不要追了"
+        },
+        {
+          "index": 28,
+          "text": "這些雞不帶了，京城多的是"
+        },
+        {
+          "index": 29,
+          "text": "你這個笨蛋小心點"
+        },
+        {
+          "index": 30,
+          "text": "弄花了我的東西，我不會放過你"
+        },
+        {
+          "index": 31,
+          "text": "小心點"
+        },
+        {
+          "index": 32,
+          "text": "老爹，早"
+        },
+        {
+          "index": 33,
+          "text": "早"
+        },
+        {
+          "index": 34,
+          "text": "真的全部都搬走？"
+        },
+        {
+          "index": 35,
+          "text": "當然"
+        },
+        {
+          "index": 36,
+          "text": "留件衣服給我穿啊"
+        },
+        {
+          "index": 37,
+          "text": "小孩子怕甚麼呢？"
+        },
+        {
+          "index": 38,
+          "text": "我不小了"
+        },
+        {
+          "index": 39,
+          "text": "呸！比我大嗎？"
+        },
+        {
+          "index": 40,
+          "text": "小看我？"
+        },
+        {
+          "index": 41,
+          "text": "總有一天比你大"
+        },
+        {
+          "index": 42,
+          "text": "有誰願意脫下衣服來給我穿一下"
+        },
+        {
+          "index": 43,
+          "text": "沒眼看"
+        },
+        {
+          "index": 44,
+          "text": "你們站著幹嘛？還不把它搬走"
+        },
+        {
+          "index": 45,
+          "text": "屋那麼大，何時才搬妥"
+        },
+        {
+          "index": 46,
+          "text": "請大家賣力點，好不好"
+        },
+        {
+          "index": 47,
+          "text": "數三聲！一，二，三，推"
+        },
+        {
+          "index": 48,
+          "text": "推⋯"
+        },
+        {
+          "index": 49,
+          "text": "小心推"
+        },
+        {
+          "index": 50,
+          "text": "綁牢一點⋯綁牢一點"
+        },
+        {
+          "index": 51,
+          "text": "老爺，樹也要搬？"
+        },
+        {
+          "index": 52,
+          "text": "當然"
+        },
+        {
+          "index": 53,
+          "text": "否則我到京城那有荔枝吃？"
+        },
+        {
+          "index": 54,
+          "text": "推到那邊⋯推到那邊"
+        },
+        {
+          "index": 55,
+          "text": "小心點⋯小心我的荔枝"
+        },
+        {
+          "index": 56,
+          "text": "小心我的荔枝，笨蛋"
+        },
+        {
+          "index": 57,
+          "text": "趙無極這趟協助微臣"
+        },
+        {
+          "index": 58,
+          "text": "到廣西剿平長毛餘孽立功不少"
+        },
+        {
+          "index": 59,
+          "text": "微臣特意帶他來見皇上"
+        },
+        {
+          "index": 60,
+          "text": "好！朕現在賜你為都察院副左都御史"
+        },
+        {
+          "index": 61,
+          "text": "希望你日後好好為大清效力"
+        },
+        {
+          "index": 62,
+          "text": "謝主龍恩"
+        },
+        {
+          "index": 63,
+          "text": "皇上，趙先生一身奇技異術"
+        },
+        {
+          "index": 64,
+          "text": "不如請他示範一下，讓皇上開開眼界"
+        },
+        {
+          "index": 65,
+          "text": "異術？"
+        },
+        {
+          "index": 66,
+          "text": "趙先生，你就示範給朕看"
+        },
+        {
+          "index": 67,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大驚小怪！退下"
+        },
+        {
+          "index": 2,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "微臣大膽，讓皇上受驚"
+        },
+        {
+          "index": 2,
+          "text": "如果這個女人是真的就好了"
+        },
+        {
+          "index": 3,
+          "text": "站好！快點"
+        },
+        {
+          "index": 4,
+          "text": "甚麼事⋯甚麼事？"
+        },
+        {
+          "index": 5,
+          "text": "來⋯進去"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "甚麼事？"
+        },
+        {
+          "index": 2,
+          "text": "躲進去"
+        },
+        {
+          "index": 3,
+          "text": "準備好了，少爺"
+        },
+        {
+          "index": 4,
+          "text": "來"
+        },
+        {
+          "index": 5,
+          "text": "全部站好別再動"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那麼香？你是飄紅"
+        },
+        {
+          "index": 2,
+          "text": "少爺你很棒，我喜歡"
+        },
+        {
+          "index": 3,
+          "text": "靠攏一點"
+        },
+        {
+          "index": 4,
+          "text": "那麼大？一定是小小"
+        },
+        {
+          "index": 5,
+          "text": "少爺你很壞，這樣說人家"
+        },
+        {
+          "index": 6,
+          "text": "你是大嘛"
+        },
+        {
+          "index": 7,
+          "text": "懷孕的也有？騙不倒我"
+        },
+        {
+          "index": 8,
+          "text": "你是爹"
+        },
+        {
+          "index": 9,
+          "text": "你很壞！這樣也給你猜中"
+        },
+        {
+          "index": 10,
+          "text": "聰明，聰明"
+        },
+        {
+          "index": 11,
+          "text": "阿爹還想作弄你一下，好棒好棒"
+        },
+        {
+          "index": 12,
+          "text": "好了好了，少爺明早要考試"
+        },
+        {
+          "index": 13,
+          "text": "別玩得太瘋"
+        },
+        {
+          "index": 14,
+          "text": "出去，出去"
+        },
+        {
+          "index": 15,
+          "text": "阿燦，你明天考試"
+        },
+        {
+          "index": 16,
+          "text": "準備好了沒有？"
+        },
+        {
+          "index": 17,
+          "text": "準備甚麼？我贏定了，你不知道嗎"
+        },
+        {
+          "index": 18,
+          "text": "知道"
+        },
+        {
+          "index": 19,
+          "text": "你這樣的態度，我就有信心"
+        },
+        {
+          "index": 20,
+          "text": "阿燦，這位是鄭世伯"
+        },
+        {
+          "index": 21,
+          "text": "明天鄭世伯做主考"
+        },
+        {
+          "index": 22,
+          "text": "你來打個招呼"
+        },
+        {
+          "index": 23,
+          "text": "鄭世伯，招呼不週"
+        },
+        {
+          "index": 24,
+          "text": "你看"
+        },
+        {
+          "index": 25,
+          "text": "我的兒子是否狀元臉？"
+        },
+        {
+          "index": 26,
+          "text": "要看他的造化了"
+        },
+        {
+          "index": 27,
+          "text": "老鄭，你給我的考卷"
+        },
+        {
+          "index": 28,
+          "text": "我已經找人在做"
+        },
+        {
+          "index": 29,
+          "text": "不會改了吧？"
+        },
+        {
+          "index": 30,
+          "text": "考卷方面是沒問題了"
+        },
+        {
+          "index": 31,
+          "text": "至於臨場考弓箭、騎馬"
+        },
+        {
+          "index": 32,
+          "text": "舉石、搏擊、兵器"
+        },
+        {
+          "index": 33,
+          "text": "就全靠他自己"
+        },
+        {
+          "index": 34,
+          "text": "這一點你放心"
+        },
+        {
+          "index": 35,
+          "text": "我的兒子十八般武藝樣樣精通"
+        },
+        {
+          "index": 36,
+          "text": "那二百萬兩可否酌量減一點？"
+        },
+        {
+          "index": 37,
+          "text": "人情歸人情，數目一定要分明"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "決定佈個雁行陣，馬隊前駐中鋒營"
+        },
+        {
+          "index": 2,
+          "text": "弓隊側翼，槍隊殿後"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "武狀元初賽，考生進場"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "舉不起來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "留力而矣"
+        },
+        {
+          "index": 2,
+          "text": "無恥？無恥你娘"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "十分！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "武狀元決賽現在開始"
+        },
+        {
+          "index": 2,
+          "text": "今天武狀元之爭"
+        },
+        {
+          "index": 3,
+          "text": "是由蒙古的博達爾多⋯"
+        },
+        {
+          "index": 4,
+          "text": "好⋯好"
+        },
+        {
+          "index": 5,
+          "text": "⋯對廣東的蘇察哈爾燦"
+        },
+        {
+          "index": 6,
+          "text": "最後三分鐘"
+        },
+        {
+          "index": 7,
+          "text": "蘇察哈爾燦一賠十，博達爾多一賠一"
+        },
+        {
+          "index": 8,
+          "text": "有沒有攪錯，賠率怎麼差那麼多？"
+        },
+        {
+          "index": 9,
+          "text": "一個是一賠十，一個是一賠一"
+        },
+        {
+          "index": 10,
+          "text": "對蘇燦那麼沒信心！"
+        },
+        {
+          "index": 11,
+          "text": "沒辦法，蘇燦在舉重項目棄權"
+        },
+        {
+          "index": 12,
+          "text": "你看，博達爾多"
+        },
+        {
+          "index": 13,
+          "text": "全部是滿分進級，怎麼比呢？"
+        },
+        {
+          "index": 14,
+          "text": "現在是考狀元，又不是當苦力"
+        },
+        {
+          "index": 15,
+          "text": "舉重了得又有何用！"
+        },
+        {
+          "index": 16,
+          "text": "話不是這樣說　　甚麼？"
+        },
+        {
+          "index": 17,
+          "text": "這位同僚有見識"
+        },
+        {
+          "index": 18,
+          "text": "我鑽研了這場比賽很久"
+        },
+        {
+          "index": 19,
+          "text": "也覺得個賠率有點古怪"
+        },
+        {
+          "index": 20,
+          "text": "這個博達爾多外型俊朗，渾身有力"
+        },
+        {
+          "index": 21,
+          "text": "但是未出賽行圈頸部就已經有白汗"
+        },
+        {
+          "index": 22,
+          "text": "我猜可能是虛火"
+        },
+        {
+          "index": 23,
+          "text": "是嗎？"
+        },
+        {
+          "index": 24,
+          "text": "但是這個蘇察哈爾燦"
+        },
+        {
+          "index": 25,
+          "text": "怎樣？怎樣？"
+        },
+        {
+          "index": 26,
+          "text": "雖然沿途低著頭"
+        },
+        {
+          "index": 27,
+          "text": "但是能進入決賽是很困難的"
+        },
+        {
+          "index": 28,
+          "text": "甚麼？"
+        },
+        {
+          "index": 29,
+          "text": "是洋文！即是有鬥心"
+        },
+        {
+          "index": 30,
+          "text": "所以我準備全押"
+        },
+        {
+          "index": 31,
+          "text": "是嗎？那你打算押多少？"
+        },
+        {
+          "index": 32,
+          "text": "八十萬兩！"
+        },
+        {
+          "index": 33,
+          "text": "八十萬兩那麼少？買夠二百萬兩嘛"
+        },
+        {
+          "index": 34,
+          "text": "怎麼？為甚麼你突然間看好他"
+        },
+        {
+          "index": 35,
+          "text": "我看你分析得那麼清楚"
+        },
+        {
+          "index": 36,
+          "text": "給你說說"
+        },
+        {
+          "index": 37,
+          "text": "我都覺得蘇燦像贏定的"
+        },
+        {
+          "index": 38,
+          "text": "過來過來"
+        },
+        {
+          "index": 39,
+          "text": "我第二次全押"
+        },
+        {
+          "index": 40,
+          "text": "是嗎？"
+        },
+        {
+          "index": 41,
+          "text": "二百萬兩"
+        },
+        {
+          "index": 42,
+          "text": "豪氣！豪氣"
+        },
+        {
+          "index": 43,
+          "text": "為甚麼你不下注？"
+        },
+        {
+          "index": 44,
+          "text": "我下注幹甚麼？他是我的兒子"
+        },
+        {
+          "index": 45,
+          "text": "糟了！我少分析了這個"
+        },
+        {
+          "index": 46,
+          "text": "少分析了甚麼？"
+        },
+        {
+          "index": 47,
+          "text": "血統"
+        },
+        {
+          "index": 48,
+          "text": "主考到"
+        },
+        {
+          "index": 49,
+          "text": "不是老鄭主考嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "請坐"
+        },
+        {
+          "index": 2,
+          "text": "僧格林參？"
+        },
+        {
+          "index": 3,
+          "text": "有甚麼問題？"
+        },
+        {
+          "index": 4,
+          "text": "他是博達爾多的叔叔"
+        },
+        {
+          "index": 5,
+          "text": "開始"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "開始"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "靶都射穿了！至少都多加兩分"
+        },
+        {
+          "index": 2,
+          "text": "照道理是！照道理是"
+        },
+        {
+          "index": 3,
+          "text": "蘇燦靶上沒有箭！博達爾多勝"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有沒有攪錯！你老祖！要把戲？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "考生上馬！準備下一回合"
+        },
+        {
+          "index": 2,
+          "text": "趙先生"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你拿著這套袖箭！必要時有用"
+        },
+        {
+          "index": 2,
+          "text": "第二回合開始"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "兵器都動了手腳？"
+        },
+        {
+          "index": 2,
+          "text": "太黑暗了！退票不賭行不行？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "追回一局了"
+        },
+        {
+          "index": 2,
+          "text": "你的票撕了沒有"
+        },
+        {
+          "index": 3,
+          "text": "沒有"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有沒有攪錯？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "還不認輸？再來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "重新開始，讓你一手一腳"
+        },
+        {
+          "index": 2,
+          "text": "免你說我欺負你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你用這骯髒的手段來取得勝利？"
+        },
+        {
+          "index": 2,
+          "text": "小子你睡醒了嗎"
+        },
+        {
+          "index": 3,
+          "text": "好棒呀！贏了"
+        },
+        {
+          "index": 4,
+          "text": "喝茶！喝茶"
+        },
+        {
+          "index": 5,
+          "text": "祝你好運"
+        },
+        {
+          "index": 6,
+          "text": "這當然要用臀啦！還有別處可用嗎？"
+        },
+        {
+          "index": 7,
+          "text": "是洋文"
+        },
+        {
+          "index": 8,
+          "text": "洋文"
+        },
+        {
+          "index": 9,
+          "text": "例上沒有說明不準用暗器"
+        },
+        {
+          "index": 10,
+          "text": "你先掉下來，這個回合判博達爾多勝"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你個短命的老鄭，竟敢騙我"
+        },
+        {
+          "index": 2,
+          "text": "以後不要給我看見你"
+        },
+        {
+          "index": 3,
+          "text": "見一次打一次"
+        },
+        {
+          "index": 4,
+          "text": "不用了！你以後都不會見到他"
+        },
+        {
+          "index": 5,
+          "text": "為甚麼？"
+        },
+        {
+          "index": 6,
+          "text": "我現在就去劈他"
+        },
+        {
+          "index": 7,
+          "text": "我那裡有二百萬輸？"
+        },
+        {
+          "index": 8,
+          "text": "只是說說而已"
+        },
+        {
+          "index": 9,
+          "text": "卑鄙無恥"
+        },
+        {
+          "index": 10,
+          "text": "博達爾多三局兩勝，是今科武狀元"
+        },
+        {
+          "index": 11,
+          "text": "明明是我贏！我抗議"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "甚麼事？"
+        },
+        {
+          "index": 2,
+          "text": "鏢有毒"
+        },
+        {
+          "index": 3,
+          "text": "報應來了！死得好"
+        },
+        {
+          "index": 4,
+          "text": "這枝有毒的鏢是他自己的"
+        },
+        {
+          "index": 5,
+          "text": "他死了，我兒子就當狀元？"
+        },
+        {
+          "index": 6,
+          "text": "那我現在不是發財了嗎？"
+        },
+        {
+          "index": 7,
+          "text": "對⋯"
+        },
+        {
+          "index": 8,
+          "text": "你⋯你⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "光宗耀祖了⋯"
+        },
+        {
+          "index": 2,
+          "text": "有眼光"
+        },
+        {
+          "index": 3,
+          "text": "大人，皇上說要親自欽點"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "武狀元，我想問你幾句作為朝庭紀錄"
+        },
+        {
+          "index": 2,
+          "text": "你這次成功！會先感謝誰？"
+        },
+        {
+          "index": 3,
+          "text": "如霜姑娘"
+        },
+        {
+          "index": 4,
+          "text": "如霜姑娘！會不會是他的娘？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "武狀元，我想問你幾句作為朝廷紀錄",
+          "note": "將“朝庭”更正為“朝廷”，修正錯別字。"
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "萬歲！萬歲！萬萬歲",
-      "subtitle_2": "平身",
-      "subtitle_3": "謝皇上",
-      "subtitle_4": "僧格林參，今科武狀元是誰？",
-      "subtitle_5": "稟告皇上，是廣東的蘇察哈爾燦",
-      "subtitle_6": "蘇察哈爾燦！參見皇上",
-      "subtitle_7": "皇上，微臣有事啟奏",
-      "subtitle_8": "准奏",
-      "subtitle_9": "微臣查出蘇察哈爾燦目不識丁",
-      "subtitle_10": "怎可以答到考戰略的題目呢？",
-      "subtitle_11": "分明有詐"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "萬歲！萬歲！萬萬歲"
+        },
+        {
+          "index": 2,
+          "text": "平身"
+        },
+        {
+          "index": 3,
+          "text": "謝皇上"
+        },
+        {
+          "index": 4,
+          "text": "僧格林參，今科武狀元是誰？"
+        },
+        {
+          "index": 5,
+          "text": "稟告皇上，是廣東的蘇察哈爾燦"
+        },
+        {
+          "index": 6,
+          "text": "蘇察哈爾燦！參見皇上"
+        },
+        {
+          "index": 7,
+          "text": "皇上，微臣有事啟奏"
+        },
+        {
+          "index": 8,
+          "text": "准奏"
+        },
+        {
+          "index": 9,
+          "text": "微臣查出蘇察哈爾燦目不識丁"
+        },
+        {
+          "index": 10,
+          "text": "怎可以答到考戰略的題目呢？"
+        },
+        {
+          "index": 11,
+          "text": "分明有詐"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "給朕拿文房四寶來",
-      "subtitle_2": "是"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "給朕拿文房四寶來"
+        },
+        {
+          "index": 2,
+          "text": "是"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "蘇察哈爾燦，馬上寫出你的名字來",
-      "subtitle_2": "走運了！他懂得寫名字",
-      "subtitle_3": "懂寫名字！懂寫名字"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "蘇察哈爾燦，馬上寫出你的名字來"
+        },
+        {
+          "index": 2,
+          "text": "走運了！他懂得寫名字"
+        },
+        {
+          "index": 3,
+          "text": "懂寫名字！懂寫名字"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "我不會寫",
-      "subtitle_2": "你分明作弊",
-      "subtitle_3": "拉他出去斬",
-      "subtitle_4": "不要！不要",
-      "subtitle_5": "皇上，作弊的是奴才",
-      "subtitle_6": "不關我兒子的事",
-      "subtitle_7": "要斬就斬我吧",
-      "subtitle_8": "不對！應該斬我",
-      "subtitle_9": "對不起，阿爹",
-      "subtitle_10": "其實我連自己名字都不會寫",
-      "subtitle_11": "不用說！剛剛知道了",
-      "subtitle_12": "皇上！要斬就斬我吧",
-      "subtitle_13": "斬我吧　　斬我吧",
-      "subtitle_14": "斬我吧　　皇上！你還是斬我吧",
-      "subtitle_15": "混帳！你們說要斬誰就斬誰嗎",
-      "subtitle_16": "你兩父子同謀",
-      "subtitle_17": "吏部尚書按例判刑",
-      "subtitle_18": "吏部尚書，快點出來！出來",
-      "subtitle_19": "我在這裡！在這裡"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我不會寫"
+        },
+        {
+          "index": 2,
+          "text": "你分明作弊"
+        },
+        {
+          "index": 3,
+          "text": "拉他出去斬"
+        },
+        {
+          "index": 4,
+          "text": "不要！不要"
+        },
+        {
+          "index": 5,
+          "text": "皇上，作弊的是奴才"
+        },
+        {
+          "index": 6,
+          "text": "不關我兒子的事"
+        },
+        {
+          "index": 7,
+          "text": "要斬就斬我吧"
+        },
+        {
+          "index": 8,
+          "text": "不對！應該斬我"
+        },
+        {
+          "index": 9,
+          "text": "對不起，阿爹"
+        },
+        {
+          "index": 10,
+          "text": "其實我連自己名字都不會寫"
+        },
+        {
+          "index": 11,
+          "text": "不用說！剛剛知道了"
+        },
+        {
+          "index": 12,
+          "text": "皇上！要斬就斬我吧"
+        },
+        {
+          "index": 13,
+          "text": "斬我吧　　斬我吧"
+        },
+        {
+          "index": 14,
+          "text": "斬我吧　　皇上！你還是斬我吧"
+        },
+        {
+          "index": 15,
+          "text": "混帳！你們說要斬誰就斬誰嗎"
+        },
+        {
+          "index": 16,
+          "text": "你兩父子同謀"
+        },
+        {
+          "index": 17,
+          "text": "吏部尚書按例判刑"
+        },
+        {
+          "index": 18,
+          "text": "吏部尚書，快點出來！出來"
+        },
+        {
+          "index": 19,
+          "text": "我在這裡！在這裡"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "他是吏部尚書？",
-      "subtitle_2": "蘇察哈爾燦兩父子罪犯欺君理應問斬",
-      "subtitle_3": "念在你是功臣之後！可免一死",
-      "subtitle_4": "但貪贓依例充公，枉法嗎⋯",
-      "subtitle_5": "你有沒有執過法？",
-      "subtitle_6": "沒有！我七年都沒有到過軍營",
-      "subtitle_7": "沒有執法即是沒有枉法",
-      "subtitle_8": "是這樣的",
-      "subtitle_9": "皇上，依例最多判抄家的罪"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他是吏部尚書？"
+        },
+        {
+          "index": 2,
+          "text": "蘇察哈爾燦兩父子罪犯欺君理應問斬"
+        },
+        {
+          "index": 3,
+          "text": "念在你是功臣之後！可免一死"
+        },
+        {
+          "index": 4,
+          "text": "但貪贓依例充公，枉法嗎⋯"
+        },
+        {
+          "index": 5,
+          "text": "你有沒有執過法？"
+        },
+        {
+          "index": 6,
+          "text": "沒有！我七年都沒有到過軍營"
+        },
+        {
+          "index": 7,
+          "text": "沒有執法即是沒有枉法"
+        },
+        {
+          "index": 8,
+          "text": "是這樣的"
+        },
+        {
+          "index": 9,
+          "text": "皇上，依例最多判抄家的罪"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "這麼輕？你有沒有記錯？",
-      "subtitle_2": "奴才很公正的",
-      "subtitle_3": "全都是依足基本法例辦事",
-      "subtitle_4": "那朕現在多加刑罰行不行？",
-      "subtitle_5": "皇上說要加，當然沒問題",
-      "subtitle_6": "好！那朕就判你們兩父子一輩子討飯",
-      "subtitle_7": "僧格林參",
-      "subtitle_8": "為甚麼他作弊你沒有查出來",
-      "subtitle_9": "這一次幸好有趙無極",
-      "subtitle_10": "趙無極，你揭發有功！朕會好好賞你",
-      "subtitle_11": "身如柳絮⋯",
-      "subtitle_12": "這是我爹的神主牌位，你也要沒收",
-      "subtitle_13": "這個香爐鍋，你拿了也沒用",
-      "subtitle_14": "⋯歷劫滄桑⋯鴛鴦扣",
-      "subtitle_15": "宜結不宜解，苦相思⋯",
-      "subtitle_16": "少爺",
-      "subtitle_17": "從今天開始",
-      "subtitle_18": "我想你要認真的學寫字了"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這麼輕？你有沒有記錯？"
+        },
+        {
+          "index": 2,
+          "text": "奴才很公正的"
+        },
+        {
+          "index": 3,
+          "text": "全都是依足基本法例辦事"
+        },
+        {
+          "index": 4,
+          "text": "那朕現在多加刑罰行不行？"
+        },
+        {
+          "index": 5,
+          "text": "皇上說要加，當然沒問題"
+        },
+        {
+          "index": 6,
+          "text": "好！那朕就判你們兩父子一輩子討飯"
+        },
+        {
+          "index": 7,
+          "text": "僧格林參"
+        },
+        {
+          "index": 8,
+          "text": "為甚麼他作弊你沒有查出來"
+        },
+        {
+          "index": 9,
+          "text": "這一次幸好有趙無極"
+        },
+        {
+          "index": 10,
+          "text": "趙無極，你揭發有功！朕會好好賞你"
+        },
+        {
+          "index": 11,
+          "text": "身如柳絮⋯"
+        },
+        {
+          "index": 12,
+          "text": "這是我爹的神主牌位，你也要沒收"
+        },
+        {
+          "index": 13,
+          "text": "這個香爐鍋，你拿了也沒用"
+        },
+        {
+          "index": 14,
+          "text": "⋯歷劫滄桑⋯鴛鴦扣"
+        },
+        {
+          "index": 15,
+          "text": "宜結不宜解，苦相思⋯"
+        },
+        {
+          "index": 16,
+          "text": "少爺"
+        },
+        {
+          "index": 17,
+          "text": "從今天開始"
+        },
+        {
+          "index": 18,
+          "text": "我想你要認真的學寫字了"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "苦相思，能買不能賣⋯"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "苦相思，能買不能賣⋯"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "師爺",
-      "subtitle_2": "我會學的",
-      "subtitle_3": "悔不該，惹下⋯",
-      "subtitle_4": "老爺，我會好好把小烏龜養大",
-      "subtitle_5": "對不起，老爺",
-      "subtitle_6": "我們跟你一起這麼久，蛋都沒有生過",
-      "subtitle_7": "不相干，不相干",
-      "subtitle_8": "是老爺辦事不力",
-      "subtitle_9": "若然老爺要的話，孩子多的是了",
-      "subtitle_10": "不過老爺有阿燦一個就夠了",
-      "subtitle_11": "還在這幹嗎？快走",
-      "subtitle_12": "老爺，我們走了",
-      "subtitle_13": "我們走了，老爺",
-      "subtitle_14": "走吧，走吧",
-      "subtitle_15": "安樂了",
-      "subtitle_16": "真開心",
-      "subtitle_17": "太開心了"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "師爺"
+        },
+        {
+          "index": 2,
+          "text": "我會學的"
+        },
+        {
+          "index": 3,
+          "text": "悔不該，惹下⋯"
+        },
+        {
+          "index": 4,
+          "text": "老爺，我會好好把小烏龜養大"
+        },
+        {
+          "index": 5,
+          "text": "對不起，老爺"
+        },
+        {
+          "index": 6,
+          "text": "我們跟你一起這麼久，蛋都沒有生過"
+        },
+        {
+          "index": 7,
+          "text": "不相干，不相干"
+        },
+        {
+          "index": 8,
+          "text": "是老爺辦事不力"
+        },
+        {
+          "index": 9,
+          "text": "若然老爺要的話，孩子多的是了"
+        },
+        {
+          "index": 10,
+          "text": "不過老爺有阿燦一個就夠了"
+        },
+        {
+          "index": 11,
+          "text": "還在這幹嗎？快走"
+        },
+        {
+          "index": 12,
+          "text": "老爺，我們走了"
+        },
+        {
+          "index": 13,
+          "text": "我們走了，老爺"
+        },
+        {
+          "index": 14,
+          "text": "走吧，走吧"
+        },
+        {
+          "index": 15,
+          "text": "安樂了"
+        },
+        {
+          "index": 16,
+          "text": "真開心"
+        },
+        {
+          "index": 17,
+          "text": "太開心了"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "進去，進去",
-      "subtitle_2": "快點⋯",
-      "subtitle_3": "為甚麼他們給人家抄家還這樣開心？",
-      "subtitle_4": "笑死人了⋯",
-      "subtitle_5": "請進，請進⋯",
-      "subtitle_6": "歡迎⋯歡迎",
-      "subtitle_7": "孩兒，我們被抄家，我很想哭",
-      "subtitle_8": "不要！千萬別丟臉",
-      "subtitle_9": "繼續笑",
-      "subtitle_10": "孩兒，你剛才有沒有留點銀票傍身",
-      "subtitle_11": "沒有！你呢？",
-      "subtitle_12": "我忘記了",
-      "subtitle_13": "完蛋了！我倆真是完蛋了",
-      "subtitle_14": "善有善報，可憐我這個小乞丐⋯",
-      "subtitle_15": "孩兒！你看這個像不像阿爹？",
-      "subtitle_16": "你指唱歌那個？",
-      "subtitle_17": "不是，是給錢的那個",
-      "subtitle_18": "他比唱歌那個更沒良心",
-      "subtitle_19": "不是吧！多瀟灑，各人眼光不同吧",
-      "subtitle_20": "都怪老爹不好",
-      "subtitle_21": "以前老叫你小乞丐！小乞丐",
-      "subtitle_22": "現在就真的要做了",
-      "subtitle_23": "我並不相信這命運",
-      "subtitle_24": "皇帝要我們做乞丐",
-      "subtitle_25": "我們就乖乖當乞丐嗎？",
-      "subtitle_26": "以我這種人才和武藝",
-      "subtitle_27": "天也不准我去當乞丐",
-      "subtitle_28": "這就是嘛",
-      "subtitle_29": "我那裡像乞丐？",
-      "subtitle_30": "不像",
-      "subtitle_31": "小乞丐老乞丐，拿去買東西吧"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "進去，進去"
+        },
+        {
+          "index": 2,
+          "text": "快點⋯"
+        },
+        {
+          "index": 3,
+          "text": "為甚麼他們給人家抄家還這樣開心？"
+        },
+        {
+          "index": 4,
+          "text": "笑死人了⋯"
+        },
+        {
+          "index": 5,
+          "text": "請進，請進⋯"
+        },
+        {
+          "index": 6,
+          "text": "歡迎⋯歡迎"
+        },
+        {
+          "index": 7,
+          "text": "孩兒，我們被抄家，我很想哭"
+        },
+        {
+          "index": 8,
+          "text": "不要！千萬別丟臉"
+        },
+        {
+          "index": 9,
+          "text": "繼續笑"
+        },
+        {
+          "index": 10,
+          "text": "孩兒，你剛才有沒有留點銀票傍身"
+        },
+        {
+          "index": 11,
+          "text": "沒有！你呢？"
+        },
+        {
+          "index": 12,
+          "text": "我忘記了"
+        },
+        {
+          "index": 13,
+          "text": "完蛋了！我倆真是完蛋了"
+        },
+        {
+          "index": 14,
+          "text": "善有善報，可憐我這個小乞丐⋯"
+        },
+        {
+          "index": 15,
+          "text": "孩兒！你看這個像不像阿爹？"
+        },
+        {
+          "index": 16,
+          "text": "你指唱歌那個？"
+        },
+        {
+          "index": 17,
+          "text": "不是，是給錢的那個"
+        },
+        {
+          "index": 18,
+          "text": "他比唱歌那個更沒良心"
+        },
+        {
+          "index": 19,
+          "text": "不是吧！多瀟灑，各人眼光不同吧"
+        },
+        {
+          "index": 20,
+          "text": "都怪老爹不好"
+        },
+        {
+          "index": 21,
+          "text": "以前老叫你小乞丐！小乞丐"
+        },
+        {
+          "index": 22,
+          "text": "現在就真的要做了"
+        },
+        {
+          "index": 23,
+          "text": "我並不相信這命運"
+        },
+        {
+          "index": 24,
+          "text": "皇帝要我們做乞丐"
+        },
+        {
+          "index": 25,
+          "text": "我們就乖乖當乞丐嗎？"
+        },
+        {
+          "index": 26,
+          "text": "以我這種人才和武藝"
+        },
+        {
+          "index": 27,
+          "text": "天也不准我去當乞丐"
+        },
+        {
+          "index": 28,
+          "text": "這就是嘛"
+        },
+        {
+          "index": 29,
+          "text": "我那裡像乞丐？"
+        },
+        {
+          "index": 30,
+          "text": "不像"
+        },
+        {
+          "index": 31,
+          "text": "小乞丐老乞丐，拿去買東西吧"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "你真的當我們是乞丐？",
-      "subtitle_2": "混你的帳！你⋯",
-      "subtitle_3": "太過分了！吃飯吃飯"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你真的當我們是乞丐？"
+        },
+        {
+          "index": 2,
+          "text": "混你的帳！你⋯"
+        },
+        {
+          "index": 3,
+          "text": "太過分了！吃飯吃飯"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "阿燦，反正吃飽沒事幹",
-      "subtitle_2": "讓我在那邊坐一會，說不定有晚飯吃",
-      "subtitle_3": "那你真的當自己是乞丐嗎",
-      "subtitle_4": "阿爹！不用擔心",
-      "subtitle_5": "想要錢都不需要去討",
-      "subtitle_6": "不需要討那裡有錢呢？",
-      "subtitle_7": "問人家借就行了",
-      "subtitle_8": "兄弟，貴姓大名？",
-      "subtitle_9": "牛大春",
-      "subtitle_10": "你身上有沒有銀兩？",
-      "subtitle_11": "有　　借來用用",
-      "subtitle_12": "好的"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦，反正吃飽沒事幹"
+        },
+        {
+          "index": 2,
+          "text": "讓我在那邊坐一會，說不定有晚飯吃"
+        },
+        {
+          "index": 3,
+          "text": "那你真的當自己是乞丐嗎"
+        },
+        {
+          "index": 4,
+          "text": "阿爹！不用擔心"
+        },
+        {
+          "index": 5,
+          "text": "想要錢都不需要去討"
+        },
+        {
+          "index": 6,
+          "text": "不需要討那裡有錢呢？"
+        },
+        {
+          "index": 7,
+          "text": "問人家借就行了"
+        },
+        {
+          "index": 8,
+          "text": "兄弟，貴姓大名？"
+        },
+        {
+          "index": 9,
+          "text": "牛大春"
+        },
+        {
+          "index": 10,
+          "text": "你身上有沒有銀兩？"
+        },
+        {
+          "index": 11,
+          "text": "有　　借來用用"
+        },
+        {
+          "index": 12,
+          "text": "好的"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "多謝",
-      "subtitle_2": "我為甚麼要給你錢？",
-      "subtitle_3": "你問這麼多幹甚麼！",
-      "subtitle_4": "那總該知道吧",
-      "subtitle_5": "知道要給，不知道也要給",
-      "subtitle_6": "不行不行，還是弄清楚比較好",
-      "subtitle_7": "你拿來吧！問這麼多幹嗎",
-      "subtitle_8": "放手",
-      "subtitle_9": "你這樣即是搶",
-      "subtitle_10": "強盜⋯",
-      "subtitle_11": "不是搶！我們是討飯",
-      "subtitle_12": "原來你這兩個臭東西的想騙我",
-      "subtitle_13": "別當我呆子！我很聰明的！",
-      "subtitle_14": "已兩天了",
-      "subtitle_15": "天氣越來越冷！肚子越來越餓",
-      "subtitle_16": "你想到沒有？",
-      "subtitle_17": "有辦法，我有個朋友的阿姨的妹妹",
-      "subtitle_18": "正好住在京城",
-      "subtitle_19": "他早就向我透露很欣賞你",
-      "subtitle_20": "會有這回事？",
-      "subtitle_21": "是！如果你肯跟他交際一下",
-      "subtitle_22": "我想他會幫我們忙先回廣州",
-      "subtitle_23": "但是就要你老人家犧牲一下",
-      "subtitle_24": "不知道你老人家意思⋯",
-      "subtitle_25": "為了這個家，我甚麼都可以做",
-      "subtitle_26": "我知道太為難你了",
-      "subtitle_27": "別再說了！我們去見他",
-      "subtitle_28": "我早就跟你安排好了",
-      "subtitle_29": "就在對面燈籠下穿紅衣服的那個"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "多謝"
+        },
+        {
+          "index": 2,
+          "text": "我為甚麼要給你錢？"
+        },
+        {
+          "index": 3,
+          "text": "你問這麼多幹甚麼！"
+        },
+        {
+          "index": 4,
+          "text": "那總該知道吧"
+        },
+        {
+          "index": 5,
+          "text": "知道要給，不知道也要給"
+        },
+        {
+          "index": 6,
+          "text": "不行不行，還是弄清楚比較好"
+        },
+        {
+          "index": 7,
+          "text": "你拿來吧！問這麼多幹嗎"
+        },
+        {
+          "index": 8,
+          "text": "放手"
+        },
+        {
+          "index": 9,
+          "text": "你這樣即是搶"
+        },
+        {
+          "index": 10,
+          "text": "強盜⋯"
+        },
+        {
+          "index": 11,
+          "text": "不是搶！我們是討飯"
+        },
+        {
+          "index": 12,
+          "text": "原來你這兩個臭東西的想騙我"
+        },
+        {
+          "index": 13,
+          "text": "別當我呆子！我很聰明的！"
+        },
+        {
+          "index": 14,
+          "text": "已兩天了"
+        },
+        {
+          "index": 15,
+          "text": "天氣越來越冷！肚子越來越餓"
+        },
+        {
+          "index": 16,
+          "text": "你想到沒有？"
+        },
+        {
+          "index": 17,
+          "text": "有辦法，我有個朋友的阿姨的妹妹"
+        },
+        {
+          "index": 18,
+          "text": "正好住在京城"
+        },
+        {
+          "index": 19,
+          "text": "他早就向我透露很欣賞你"
+        },
+        {
+          "index": 20,
+          "text": "會有這回事？"
+        },
+        {
+          "index": 21,
+          "text": "是！如果你肯跟他交際一下"
+        },
+        {
+          "index": 22,
+          "text": "我想他會幫我們忙先回廣州"
+        },
+        {
+          "index": 23,
+          "text": "但是就要你老人家犧牲一下"
+        },
+        {
+          "index": 24,
+          "text": "不知道你老人家意思⋯"
+        },
+        {
+          "index": 25,
+          "text": "為了這個家，我甚麼都可以做"
+        },
+        {
+          "index": 26,
+          "text": "我知道太為難你了"
+        },
+        {
+          "index": 27,
+          "text": "別再說了！我們去見他"
+        },
+        {
+          "index": 28,
+          "text": "我早就跟你安排好了"
+        },
+        {
+          "index": 29,
+          "text": "就在對面燈籠下穿紅衣服的那個"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "鬼"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "鬼"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "沒問題嗎",
-      "subtitle_2": "沒問題！不過你先來，我跟在後面"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "沒問題嗎"
+        },
+        {
+          "index": 2,
+          "text": "沒問題！不過你先來，我跟在後面"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "阿燦，胸口碎大石我還沒玩過",
-      "subtitle_2": "小心點",
-      "subtitle_3": "不用怕，我會很小心",
-      "subtitle_4": "確保你沒有事",
-      "subtitle_5": "你也想賺點錢吃碗魚翅吧？",
-      "subtitle_6": "對⋯",
-      "subtitle_7": "走開⋯走開",
-      "subtitle_8": "不許在這兒賣藝"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦，胸口碎大石我還沒玩過"
+        },
+        {
+          "index": 2,
+          "text": "小心點"
+        },
+        {
+          "index": 3,
+          "text": "不用怕，我會很小心"
+        },
+        {
+          "index": 4,
+          "text": "確保你沒有事"
+        },
+        {
+          "index": 5,
+          "text": "你也想賺點錢吃碗魚翅吧？"
+        },
+        {
+          "index": 6,
+          "text": "對⋯"
+        },
+        {
+          "index": 7,
+          "text": "走開⋯走開"
+        },
+        {
+          "index": 8,
+          "text": "不許在這兒賣藝"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "大人，我們只想賺點錢",
-      "subtitle_2": "回廣州去",
-      "subtitle_3": "給我們一條生路，不要趕盡殺絕",
-      "subtitle_4": "皇上御旨",
-      "subtitle_5": "蘇察哈爾燦兩父子終身行乞",
-      "subtitle_6": "你們只可以當乞丐",
-      "subtitle_7": "我是奉本子辦事！人來",
-      "subtitle_8": "有　　將所有東西搬走",
-      "subtitle_9": "是"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大人，我們只想賺點錢"
+        },
+        {
+          "index": 2,
+          "text": "回廣州去"
+        },
+        {
+          "index": 3,
+          "text": "給我們一條生路，不要趕盡殺絕"
+        },
+        {
+          "index": 4,
+          "text": "皇上御旨"
+        },
+        {
+          "index": 5,
+          "text": "蘇察哈爾燦兩父子終身行乞"
+        },
+        {
+          "index": 6,
+          "text": "你們只可以當乞丐"
+        },
+        {
+          "index": 7,
+          "text": "我是奉本子辦事！人來"
+        },
+        {
+          "index": 8,
+          "text": "有　　將所有東西搬走"
+        },
+        {
+          "index": 9,
+          "text": "是"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "few_shot": true,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "救命",
-      "subtitle_2": "趙大人！一個人搬不動",
-      "subtitle_3": "一個搬不動多上幾個人",
-      "subtitle_4": "是",
-      "subtitle_5": "你們想怎麼樣？",
-      "subtitle_6": "不行，都搬不動　　讓我來吧",
-      "subtitle_7": "那你是想打架吧？",
-      "subtitle_8": "上次你在怡紅院逃過一次",
-      "subtitle_9": "這次你沒有這勝券",
-      "subtitle_10": "這個人非同小可",
-      "subtitle_11": "我一定要在第一招出盡力打敗他",
-      "subtitle_12": "不然他就會有還擊的機會"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿燦⋯",
-      "subtitle_2": "阿燦",
-      "subtitle_3": "你的手腳跟全身經脈都給我打斷",
-      "subtitle_4": "你一輩子都像廢人一樣！",
-      "subtitle_5": "想用武功？沒你份兒！",
-      "subtitle_6": "不過，伸手討幾個錢還可以",
-      "subtitle_7": "乖乖當乞丐吧",
-      "subtitle_8": "走⋯沒事⋯走開"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "不用怕阿燦，沒事的，沒事的⋯",
-      "subtitle_2": "不用怕，沒事的⋯",
-      "subtitle_3": "不用怕",
-      "subtitle_4": "那天我跟我兒子踏入試場",
-      "subtitle_5": "再抬頭一看那個試官",
-      "subtitle_6": "你們猜他是誰？",
-      "subtitle_7": "就是僧格林參這個龜兒子",
-      "subtitle_8": "這個龜兒子跟我們父子倆有過節嗎",
-      "subtitle_9": "一說到他我就氣死了⋯",
-      "subtitle_10": "不要說了，先吸口煙",
-      "subtitle_11": "吸口煙提提神",
-      "subtitle_12": "是的，好多了",
-      "subtitle_13": "這個王八蛋當日在怡紅院",
-      "subtitle_14": "我們父子倆放他一馬",
-      "subtitle_15": "想不到他恩將仇報",
-      "subtitle_16": "陷害我的兒子",
-      "subtitle_17": "在兵器上全都動了手腳",
-      "subtitle_18": "還好我兒子有真材實料⋯",
-      "subtitle_19": "我要他武功蓋世，狀元之才",
-      "subtitle_20": "一人之下，萬人之上",
-      "subtitle_21": "那你做不做得到呢？",
-      "subtitle_22": "做得到",
-      "subtitle_23": "好",
-      "subtitle_24": "待你做得到的時候就回來找我",
-      "subtitle_25": "既然如此，我想我們要先定婚期",
-      "subtitle_26": "因為做狀元對我來說易如反掌"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "馬上寫出你的名字來",
-      "subtitle_2": "我不會寫"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "燦！怎麼？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "又作惡夢？",
-      "subtitle_2": "別想這麼多"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "雖然休息了兩個月，手腳可以動了",
-      "subtitle_2": "但是還沒有完全好了",
-      "subtitle_3": "哈爾叔　　來⋯",
-      "subtitle_4": "阿爹出去找點食物回來",
-      "subtitle_5": "然後煮最後一趟藥給你喝",
-      "subtitle_6": "爹，又去討飯",
-      "subtitle_7": "討飯當然要老夫出馬",
-      "subtitle_8": "難道要你堂堂武狀元⋯",
-      "subtitle_9": "阿燦，原來當乞丐也不簡單",
-      "subtitle_10": "有很多竅門",
-      "subtitle_11": "不是伸手出來就有錢的",
-      "subtitle_12": "至少要拿個砵子！這樣才有身份",
-      "subtitle_13": "乞丐也論身份，真混帳",
-      "subtitle_14": "快點走",
-      "subtitle_15": "來了",
-      "subtitle_16": "再不去就討不到飯了",
-      "subtitle_17": "是的⋯",
-      "subtitle_18": "你以為自己是以前的大將軍"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "給我點錢",
-      "subtitle_2": "沒有沒有，走吧",
-      "subtitle_3": "走，快走⋯別礙我做生意",
-      "subtitle_4": "阿燦，阿爹出去了"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "謝謝⋯"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "謝謝⋯謝謝"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "別那麼吝嗇吧，老兄？",
-      "subtitle_2": "你不會自己寫？",
-      "subtitle_3": "我見你下班了，借你地方用一下吧",
-      "subtitle_4": "你當我呆子嗎？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿爹",
-      "subtitle_2": "你甚麼？",
-      "subtitle_3": "好冷⋯阿燦！好冷⋯",
-      "subtitle_4": "好冷？糟糕了！你身體好熨",
-      "subtitle_5": "你病了？",
-      "subtitle_6": "沒有⋯沒有",
-      "subtitle_7": "這麼晚了",
-      "subtitle_8": "阿爹出去討些東西給你吃",
-      "subtitle_9": "你快躺下吧，今天讓我去",
-      "subtitle_10": "你去討飯？",
-      "subtitle_11": "沒有問題，我會有辦法",
-      "subtitle_12": "你休息一下",
-      "subtitle_13": "我找到錢就回來帶你看大夫"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你這渾小子為何不吃",
-      "subtitle_2": "你不吃又怎能像阿爹般強壯",
-      "subtitle_3": "快點吃",
-      "subtitle_4": "吃不下了，我飽了",
-      "subtitle_5": "飽⋯飽也要吃，快點吃",
-      "subtitle_6": "不吃嗎！不吃就回家",
-      "subtitle_7": "吃！快點吃，吃",
-      "subtitle_8": "小朋友",
-      "subtitle_9": "甚麼？",
-      "subtitle_10": "可不可以⋯　　不可以"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "好心吧！福心吧！",
-      "subtitle_2": "可憐我這個⋯小乞丐",
-      "subtitle_3": "我爹快要冷死了",
-      "subtitle_4": "小乞丐，這裡有點碎碳你要不要",
-      "subtitle_5": "多謝",
-      "subtitle_6": "可不可以再給我多一點零錢",
-      "subtitle_7": "是你",
-      "subtitle_8": "不是我",
-      "subtitle_9": "姐姐！是他",
-      "subtitle_10": "不是他！不是他",
-      "subtitle_11": "姐姐⋯姐姐！蘇燦"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "等一下"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "小姐，你找誰呀？",
-      "subtitle_2": "對不起，我認錯人！",
-      "subtitle_3": "小翠，去拿幾個饅頭出來",
-      "subtitle_4": "你認錯人了！他不是蘇燦",
-      "subtitle_5": "你很像我一個朋友",
-      "subtitle_6": "以後沒東西吃，就到我家取饅頭",
-      "subtitle_7": "我家裡人少，吃不完",
-      "subtitle_8": "饅頭來了",
-      "subtitle_9": "拿去"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "謝謝⋯",
-      "subtitle_2": "姐姐",
-      "subtitle_3": "要不是為了你，他也不會變成這樣"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿爹！怎麼呢",
-      "subtitle_2": "阿燦！我剛剛餓壞了",
-      "subtitle_3": "看見小孩子吃饅頭，我借來咬一口",
-      "subtitle_4": "我這裡有饅頭！還給他",
-      "subtitle_5": "這樣也可以嗎？",
-      "subtitle_6": "我斬了你個頭再還給你可不可以？",
-      "subtitle_7": "你是狀元爺嗎？",
-      "subtitle_8": "是不是？是不是你？",
-      "subtitle_9": "差點兒是",
-      "subtitle_10": "真的！真是狀元爺",
-      "subtitle_11": "一定給面子狀元爺",
-      "subtitle_12": "多謝⋯多謝",
-      "subtitle_13": "等一等！相請不如偶遇",
-      "subtitle_14": "相請不如偶遇，是否想請我們喝酒呢"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "給狗吃的飯到",
-      "subtitle_2": "狀元爺，吃完這飯就放你的爹"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "甚麼？",
-      "subtitle_2": "吃吧"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿燦！你不能吃",
-      "subtitle_2": "你吃了後怎樣見人？",
-      "subtitle_3": "阿爹年紀大沒甚麼大不了",
-      "subtitle_4": "老兄，說到底我是廣州將軍",
-      "subtitle_5": "想怎樣呀？",
-      "subtitle_6": "不要打",
-      "subtitle_7": "站好"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "狀元爺吃狗的飯",
-      "subtitle_2": "爹，味道不錯",
-      "subtitle_3": "嚐嚐⋯嚐嚐，來⋯來"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "好吃，是嗎？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿爹，你看",
-      "subtitle_2": "有些肉絲在裡面",
-      "subtitle_3": "甚麼肉絲？是肉排"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你倆比狗還要餓！",
-      "subtitle_2": "注定這輩子都吃狗的飯",
-      "subtitle_3": "吃吧！快點吧！",
-      "subtitle_4": "這碗飯太好吃了",
-      "subtitle_5": "這一口我想留下來作夜宵",
-      "subtitle_6": "多虧你想像得到",
-      "subtitle_7": "真是天生當乞丐的料子",
-      "subtitle_8": "狀元爺都要吃狗的飯",
-      "subtitle_9": "來！我們去吃人的飯吧"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "蘇老伯"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你是⋯",
-      "subtitle_2": "丐幫幫主就是我爹",
-      "subtitle_3": "不如你倆加入丐幫，好不好？",
-      "subtitle_4": "莫大叔，好不好",
-      "subtitle_5": "好",
-      "subtitle_6": "丐幫是不是討飯幫？",
-      "subtitle_7": "是",
-      "subtitle_8": "正好⋯現在我們當乞丐",
-      "subtitle_9": "加入你們丐幫有個照應也好",
-      "subtitle_10": "阿燦⋯他去哪兒呢？",
-      "subtitle_11": "阿燦呢？在哪裡？",
-      "subtitle_12": "好，我們兩個報名，兩個",
-      "subtitle_13": "燦⋯燦"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "如霜！恭喜發財",
-      "subtitle_2": "莫大叔！恭喜發財",
-      "subtitle_3": "這禮物是給你的",
-      "subtitle_4": "多謝！多謝",
-      "subtitle_5": "這兩件衣服，一件給你，一件給阿燦",
-      "subtitle_6": "先把東西放下，先把東西放下",
-      "subtitle_7": "有沒有零錢？",
-      "subtitle_8": "有",
-      "subtitle_9": "有就拿來！來⋯　　幹甚麼？",
-      "subtitle_10": "幹甚麼？過新年當然要利利是是",
-      "subtitle_11": "來，祝你身體健康",
-      "subtitle_12": "恭喜發財",
-      "subtitle_13": "你就青春美麗　　謝謝",
-      "subtitle_14": "莫大叔，我們二老就兩免了",
-      "subtitle_15": "阿燦呢？",
-      "subtitle_16": "阿燦？他由年三十睡到大年初一",
-      "subtitle_17": "還沒睡醒",
-      "subtitle_18": "他剛剛才睡！別把他吵醒",
-      "subtitle_19": "我做年糕給大家吃吧",
-      "subtitle_20": "好！我幫你",
-      "subtitle_21": "新年還在睡覺",
-      "subtitle_22": "真是沒用的傢伙！",
-      "subtitle_23": "大家到齊了沒？",
-      "subtitle_24": "對付趙無極一定要團結丐幫",
-      "subtitle_25": "我們要選出新幫主來主持大局",
-      "subtitle_26": "如霜⋯如霜",
-      "subtitle_27": "對付三位長老的蓮花落陣",
-      "subtitle_28": "全靠你了",
-      "subtitle_29": "莫大叔！蓮花落陣你也沒把握",
-      "subtitle_30": "以我現在打狗棒法的功力",
-      "subtitle_31": "怎麼可能打敗三位長老當上幫主呢？",
-      "subtitle_32": "這顆大還丹，你吃了之後會功力大增",
-      "subtitle_33": "不行！這顆大還丹是給你治內傷用的",
-      "subtitle_34": "我怎麼能吃呢？",
-      "subtitle_35": "不用擔心不用擔心",
-      "subtitle_36": "想找人比武可以找我兒子",
-      "subtitle_37": "我兒子怎麼說也是一個武狀元",
-      "subtitle_38": "現在⋯",
-      "subtitle_39": "⋯不！曾經",
-      "subtitle_40": "你看他懶洋洋的",
-      "subtitle_41": "只會睡覺，怎能打架呢？",
-      "subtitle_42": "連當乞丐的資格都沒有",
-      "subtitle_43": "你別那麼坦白行不行？",
-      "subtitle_44": "你別那麼大聲好不好？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿燦，不管人家現在怎麼看不起你",
-      "subtitle_2": "老爹對你很有信心",
-      "subtitle_3": "雖然現在你沒有武功",
-      "subtitle_4": "但是以你的底子",
-      "subtitle_5": "只要你肯出一點點力",
-      "subtitle_6": "必定會有一番作為",
-      "subtitle_7": "我現在已經沒有力，也不想再用力",
-      "subtitle_8": "怎麼會沒有力呢？",
-      "subtitle_9": "快打我一拳"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "這一拳蠻有力嗎",
-      "subtitle_2": "所以我說，做人⋯",
-      "subtitle_3": "算了！不要再浪費時間",
-      "subtitle_4": "還是讓我多睡一會兒吧"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你怎麼把門鎖上？",
-      "subtitle_2": "你慢慢睡吧"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "孩兒，我費盡心思才弄出這麼大陣容",
-      "subtitle_2": "你要多用點心把打狗棒法練好才行"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你爬得那麼高幹甚麼？",
-      "subtitle_2": "就算你要我練打狗棒法",
-      "subtitle_3": "你總該留個棒子給我吧",
-      "subtitle_4": "抱歉抱歉！你接好了"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "天將降大任於斯人也",
-      "subtitle_2": "必先勞其筋骨，餓其體膚，苦其心智"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "苦海無涯？你寫的？",
-      "subtitle_2": "寫得這麼醜，把它擦掉也對",
-      "subtitle_3": "乞丐？",
-      "subtitle_4": "是",
-      "subtitle_5": "我也是",
-      "subtitle_6": "恭喜你",
-      "subtitle_7": "有沒有東西吃？　　沒有",
-      "subtitle_8": "正好我有"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "這造型不去討飯博人家同情，真可惜",
-      "subtitle_2": "這與你無關！",
-      "subtitle_3": "你當乞丐也這麼懶",
-      "subtitle_4": "同行都瞧不起你了",
-      "subtitle_5": "我以前到那裡都被人家看重",
-      "subtitle_6": "還不是落得這個下場",
-      "subtitle_7": "我正好剛剛相反",
-      "subtitle_8": "我一輩子沒被人瞧得起過",
-      "subtitle_9": "聽我說，先別走，聽我說",
-      "subtitle_10": "記得有一次，在廣東",
-      "subtitle_11": "請我吃飯喝酒嫖妓過夜",
-      "subtitle_12": "這樣的人也有",
-      "subtitle_13": "帥哥，我記得你",
-      "subtitle_14": "臭小子，我也記得你",
-      "subtitle_15": "廢話少說",
-      "subtitle_16": "還我錢讓我頂一下",
-      "subtitle_17": "如果我有錢",
-      "subtitle_18": "我也不用在這兒捱饅頭"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "不過你不用怕，你有恩於我",
-      "subtitle_2": "我會報答你的",
-      "subtitle_3": "多謝，心領",
-      "subtitle_4": "給你錢也沒有用",
-      "subtitle_5": "也買不回你失去的東西",
-      "subtitle_6": "我失去了甚麼？",
-      "subtitle_7": "尊嚴，自信",
-      "subtitle_8": "還有你心愛的女人",
-      "subtitle_9": "你究竟是何人？",
-      "subtitle_10": "好說，在下洪日新，外號老鬼新",
-      "subtitle_11": "乞丐中輩份最高，字號最老",
-      "subtitle_12": "做乞丐有甚麼不好？",
-      "subtitle_13": "想走就走，想睡就睡",
-      "subtitle_14": "你也可以一樣嗎",
-      "subtitle_15": "你說，你想要甚麼？我成全你",
-      "subtitle_16": "我想重新做人",
-      "subtitle_17": "怎麼你覺得你不像人嗎？",
-      "subtitle_18": "一直都不算是",
-      "subtitle_19": "所以你才會弄成這樣，年青人",
-      "subtitle_20": "非常好，非常好",
-      "subtitle_21": "實不相瞞，我看閣下從頭到腳趾頭",
-      "subtitle_22": "沒有一個地方不露乞丐形格",
-      "subtitle_23": "又如何？",
-      "subtitle_24": "即是說閣下注定討飯討一輩子"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "還是不跟你說，我想睡一會兒",
-      "subtitle_2": "先別走！行行出狀元",
-      "subtitle_3": "如果我沒看錯",
-      "subtitle_4": "你會是乞丐中的霸主",
-      "subtitle_5": "乞丐中的霸主？那是甚麼？",
-      "subtitle_6": "還是乞丐"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "我不管你是甚麼人，我不想再跟你說",
-      "subtitle_2": "請你讓開，不要礙著我睡覺",
-      "subtitle_3": "你找死吧？",
-      "subtitle_4": "不是⋯你說要睡覺",
-      "subtitle_5": "我只想跟你一塊兒",
-      "subtitle_6": "神經病"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "年青人，我們夢中相見"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "佛前金座，羅漢歸位",
-      "subtitle_2": "降龍，伏虎"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "蘇燦，你享盡人間富貴",
-      "subtitle_2": "亦嚐盡人間苦楚",
-      "subtitle_3": "如今大徹大悟",
-      "subtitle_4": "我就以洪七公第七代傳人的身份",
-      "subtitle_5": "封你為睡夢羅漢",
-      "subtitle_6": "醉回夢生法，傳授你睡夢羅漢拳",
-      "subtitle_7": "希望你好好利用，接招"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "前輩⋯"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "苦盡甘來？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "萬歲！萬歲！萬萬歲",
-      "subtitle_2": "白羊降世，天理循環",
-      "subtitle_3": "真空家鄉，無生老母，賜我神通",
-      "subtitle_4": "超渡眾生"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "皇帝明天會到成都狩獵",
-      "subtitle_2": "我會用獻上美女的理由接近他",
-      "subtitle_3": "宛玲，你明天可能要犧牲一下色相",
-      "subtitle_4": "是",
-      "subtitle_5": "只要明天殺了皇帝",
-      "subtitle_6": "天下就盡在我手",
-      "subtitle_7": "榮華富貴絕對少不了你們"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "萬歲！萬歲！萬萬歲",
-      "subtitle_2": "長老",
-      "subtitle_3": "回去再說"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "長老",
-      "subtitle_2": "我們走"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "長老"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "我們追　　不用追了！",
-      "subtitle_2": "皇上快要出發",
-      "subtitle_3": "你殺了我的女人⋯",
-      "subtitle_4": "⋯我要把你獻給皇上"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "怎麼？沒有人敢上來當幫主",
-      "subtitle_2": "叫莫老三把打狗棒交出來"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "莫大叔跟你姐姐到底到哪處？",
-      "subtitle_2": "我怎麼知道",
-      "subtitle_3": "剛才我聽見莫大叔跟姐姐說了幾句話",
-      "subtitle_4": "就出去了",
-      "subtitle_5": "難道他倆有曖昧關係？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "現在開始選幫主"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "莫大叔⋯",
-      "subtitle_2": "真的被你嚇我一跳",
-      "subtitle_3": "還以為你不會來了",
-      "subtitle_4": "沒事嗎？　　姐姐呢？",
-      "subtitle_5": "你姐姐給趙無極抓了",
-      "subtitle_6": "我們要找人上去選幫主"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "到底派誰上去呢？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "讓我去",
-      "subtitle_2": "莫大叔",
-      "subtitle_3": "不如讓我試試"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿燦",
-      "subtitle_2": "你不是九代弟子，快下來",
-      "subtitle_3": "既然你挑不出好的，我可以教育你！",
-      "subtitle_4": "阿燦，你不要以為好玩",
-      "subtitle_5": "你會沒命的！快下來",
-      "subtitle_6": "沒相干，我的命早就當沒了",
-      "subtitle_7": "廢話！丟他"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "既然如此，我就成全你"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "他在幹嗎？",
-      "subtitle_2": "睡覺？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "這一招難道就是⋯",
-      "subtitle_2": "新師叔的睡夢羅漢拳？",
-      "subtitle_3": "佈陣"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "天亮了沒有"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "各位不好意思",
-      "subtitle_2": "我贏了",
-      "subtitle_3": "你打贏我們有甚麼用？",
-      "subtitle_4": "你又不會打狗棒法",
-      "subtitle_5": "你不配當幫主"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "打狗棒！是嗎"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "棒棒都打狗",
-      "subtitle_2": "誰說我不會打狗棒法？",
-      "subtitle_3": "不像打狗棒法",
-      "subtitle_4": "也蠻厲害！"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "他打斷了打狗棒",
-      "subtitle_2": "他打斷我們鎮幫之寶！我們殺了他"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "洪七公在此誰敢放肆",
-      "subtitle_2": "我當年定下幫規",
-      "subtitle_3": "任何弟子破了蓮花落陣",
-      "subtitle_4": "都有資格當幫主",
-      "subtitle_5": "你們是不是全忘掉了？",
-      "subtitle_6": "丐幫之所以成為天下第一大幫",
-      "subtitle_7": "全因為團結兩個字",
-      "subtitle_8": "我洪某當年留下打狗棒",
-      "subtitle_9": "目的只是留給大家作為留念",
-      "subtitle_10": "棒的本身並不代表甚麼",
-      "subtitle_11": "但是你這些蠢蛋居然當寶",
-      "subtitle_12": "還為了爭奪它弄到丐幫四分五裂",
-      "subtitle_13": "五年沒有幫主在位！你們慚不慚愧？",
-      "subtitle_14": "蘇燦現在把棒打斷了",
-      "subtitle_15": "以後大家沒得爭",
-      "subtitle_16": "絕對是有功沒有過",
-      "subtitle_17": "這個年青人！雖然資歷低",
-      "subtitle_18": "但是天才橫溢！聰明絕頂",
-      "subtitle_19": "還是我洪某的傳人洪日新親手提攜",
-      "subtitle_20": "誰要對付他就是對付我",
-      "subtitle_21": "你們不只要選他當幫主",
-      "subtitle_22": "還要交出你們的愛心",
-      "subtitle_23": "來愛護他！關懷他！常常請他喝茶",
-      "subtitle_24": "那我洪某在天之靈",
-      "subtitle_25": "定會保佑丐幫生意興隆！千秋萬世",
-      "subtitle_26": "是真的還是假的？",
-      "subtitle_27": "寧可信其有不可信其無",
-      "subtitle_28": "洪七公顯靈",
-      "subtitle_29": "天有眼，我們有福",
-      "subtitle_30": "就這樣瞞天過海，我果真是天才！",
-      "subtitle_31": "大家有飯吃了",
-      "subtitle_32": "發生甚麼事？",
-      "subtitle_33": "參見幫主"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "很棒",
-      "subtitle_2": "莫大叔！我兒子有一套嗎",
-      "subtitle_3": "想不到你學會睡夢羅漢拳",
-      "subtitle_4": "由現在開始，你就是丐幫幫主",
-      "subtitle_5": "這一本是降龍十八掌",
-      "subtitle_6": "還有大還丹都交給你",
-      "subtitle_7": "希望你好好領導丐幫",
-      "subtitle_8": "我只想盡快救回如霜",
-      "subtitle_9": "如霜總算沒看錯你",
-      "subtitle_10": "好棒！幫主好棒！"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "莫大叔⋯莫大叔！你怎麼呢？",
-      "subtitle_2": "莫大叔，莫大叔",
-      "subtitle_3": "莫大叔⋯莫大叔"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "長路漫漫伴你闖",
-      "subtitle_2": "帶一身膽色與熱腸",
-      "subtitle_3": "尋自我覓真情",
-      "subtitle_4": "停步處視作家鄉",
-      "subtitle_5": "投入命運萬劫火",
-      "subtitle_6": "那得失怎麼去量",
-      "subtitle_7": "馳馬蕩江湖",
-      "subtitle_8": "燦哥",
-      "subtitle_9": "降龍十八掌的心法你真的明白了？",
-      "subtitle_10": "你別當我是呆子？",
-      "subtitle_11": "我得到大還丹的幫助",
-      "subtitle_12": "全身經脈已經回復正常，內力大增",
-      "subtitle_13": "降龍十八掌首十七掌我已經領會到",
-      "subtitle_14": "但是第十八式「殺龍有悔」",
-      "subtitle_15": "又沒有圖又沒有文字",
-      "subtitle_16": "我怎麼看都不明白",
-      "subtitle_17": "最糟糕的是莫大叔已經不在，那怎辦",
-      "subtitle_18": "沒甚麼法子了！",
-      "subtitle_19": "無論如何我也先出發去救如霜",
-      "subtitle_20": "迎入日月萬里風",
-      "subtitle_21": "笑揖清風洗我狂",
-      "subtitle_22": "來日醉臥逍遙",
-      "subtitle_23": "寧願鏽蝕我纓槍"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你們到大營去看那兒準備好沒有？",
-      "subtitle_2": "是"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "趙無極",
-      "subtitle_2": "你帶這個女人來是甚麼意思？",
-      "subtitle_3": "我知道皇上喜歡美女",
-      "subtitle_4": "所以我獻上一美女給他",
-      "subtitle_5": "我想見一見皇上",
-      "subtitle_6": "皇上並沒有詔見，你別驚動他",
-      "subtitle_7": "人來，帶這個女人入營",
-      "subtitle_8": "是",
-      "subtitle_9": "走吧"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "大人，好一陣子不見，氣色不錯",
-      "subtitle_2": "你應該回到自己的崗位",
-      "subtitle_3": "不要擅離職守",
-      "subtitle_4": "是"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "啟稟皇上",
-      "subtitle_2": "趙大人帶了個女人來獻給皇上",
-      "subtitle_3": "女人？",
-      "subtitle_4": "趙無極這個人",
-      "subtitle_5": "我先去沐浴更衣，稍後帶他來見我",
-      "subtitle_6": "是"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "這個王八蛋又想見皇上",
-      "subtitle_2": "再讓你多見幾次，不是連官都沒得當"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "人來",
-      "subtitle_2": "大人",
-      "subtitle_3": "看看發生甚麼事　　是"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "大人，樹林裡有一大隊人馬",
-      "subtitle_2": "甚麼人馬？",
-      "subtitle_3": "不知道",
-      "subtitle_4": "放狼煙",
-      "subtitle_5": "戒備",
-      "subtitle_6": "是"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "前面大營放狼煙，大家戒備",
-      "subtitle_2": "是"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "臭乞丐？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "蘇察哈爾燦，你攪甚麼鬼？",
-      "subtitle_2": "沒有！只是想向你討個錢",
-      "subtitle_3": "豈有此理！你是不是不想活？",
-      "subtitle_4": "不想活的是你",
-      "subtitle_5": "趙無極陰謀造反",
-      "subtitle_6": "現在還帶人殺皇帝去",
-      "subtitle_7": "你還那麼傻頭傻腦！",
-      "subtitle_8": "你以為你是誰",
-      "subtitle_9": "膽大包天！竟敢誣告官員？",
-      "subtitle_10": "再行一步格殺勿論"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿燦，對方這麼多人馬我們怎麼打？",
-      "subtitle_2": "長老　　在",
-      "subtitle_3": "其他人馬呢？",
-      "subtitle_4": "其他人馬正在趕來",
-      "subtitle_5": "沒時間再等了",
-      "subtitle_6": "你們留下來接應其他兄弟",
-      "subtitle_7": "我先上",
-      "subtitle_8": "我稍後跟來",
-      "subtitle_9": "真的才好",
-      "subtitle_10": "幫主，你放心去吧",
-      "subtitle_11": "我現在死定了？放心去",
-      "subtitle_12": "說句吉利話行不行？",
-      "subtitle_13": "行！恭祝你福壽與天齊",
-      "subtitle_14": "慶賀你生辰快樂",
-      "subtitle_15": "年年都有今日⋯",
-      "subtitle_16": "夠了夠了",
-      "subtitle_17": "還沒唱完",
-      "subtitle_18": "等我走了你再才唱　　好的"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "前面放狼煙，一定有人打草驚蛇",
-      "subtitle_2": "準備麒麟煙　　是",
-      "subtitle_3": "攻入大營"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "作反了！這些狗賊真的作反了",
-      "subtitle_2": "太可惡",
-      "subtitle_3": "射不死你的那個人才是最可惡",
-      "subtitle_4": "糟糕！毒煙吹向皇上大營",
-      "subtitle_5": "這次真的完了"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "不是！風向轉了",
-      "subtitle_2": "對！等等我",
-      "subtitle_3": "丐幫再不撤退，格殺勿論"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你們看這邊"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "天理教的麒麟煙"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "大家鎮定點！用尿可以解毒",
-      "subtitle_2": "撒尿⋯撒尿⋯"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "那我該怎麼辦？",
-      "subtitle_2": "不怕！我的尿多，分一點給你",
-      "subtitle_3": "來⋯拿著它"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "衝！"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "形勢如何？",
-      "subtitle_2": "托皇上鴻福，風向轉變",
-      "subtitle_3": "毒煙已吹不過來",
-      "subtitle_4": "四圍營和左右護翼情況怎麼樣？",
-      "subtitle_5": "都全軍覆沒，皇上",
-      "subtitle_6": "拿刀來",
-      "subtitle_7": "不要皇上，皇上⋯",
-      "subtitle_8": "不要阻我，走開",
-      "subtitle_9": "皇上，很危險的！不要走",
-      "subtitle_10": "不去！難道坐在這裡等死嗎？走開",
-      "subtitle_11": "我叫你們走開",
-      "subtitle_12": "不要走"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "救命"
+        },
+        {
+          "index": 2,
+          "text": "趙大人！一個人搬不動"
+        },
+        {
+          "index": 3,
+          "text": "一個搬不動多上幾個人"
+        },
+        {
+          "index": 4,
+          "text": "是"
+        },
+        {
+          "index": 5,
+          "text": "你們想怎麼樣？"
+        },
+        {
+          "index": 6,
+          "text": "不行，都搬不動　　讓我來吧"
+        },
+        {
+          "index": 7,
+          "text": "那你是想打架吧？"
+        },
+        {
+          "index": 8,
+          "text": "上次你在怡紅院逃過一次"
+        },
+        {
+          "index": 9,
+          "text": "這次你沒有這勝券"
+        },
+        {
+          "index": 10,
+          "text": "這個人非同小可"
+        },
+        {
+          "index": 11,
+          "text": "我一定要在第一招出盡力打敗他"
+        },
+        {
+          "index": 12,
+          "text": "不然他就會有還擊的機會"
+        }
+      ]
     },
     "answer": {
-      "revised_2": "託皇上鴻福，風向轉變",
-      "note_2": "「托」改為「託」，書面語中表示「依靠、由於」時慣用「託」。"
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦⋯"
+        },
+        {
+          "index": 2,
+          "text": "阿燦"
+        },
+        {
+          "index": 3,
+          "text": "你的手腳跟全身經脈都給我打斷"
+        },
+        {
+          "index": 4,
+          "text": "你一輩子都像廢人一樣！"
+        },
+        {
+          "index": 5,
+          "text": "想用武功？沒你份兒！"
+        },
+        {
+          "index": 6,
+          "text": "不過，伸手討幾個錢還可以"
+        },
+        {
+          "index": 7,
+          "text": "乖乖當乞丐吧"
+        },
+        {
+          "index": 8,
+          "text": "走⋯沒事⋯走開"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不用怕阿燦，沒事的，沒事的⋯"
+        },
+        {
+          "index": 2,
+          "text": "不用怕，沒事的⋯"
+        },
+        {
+          "index": 3,
+          "text": "不用怕"
+        },
+        {
+          "index": 4,
+          "text": "那天我跟我兒子踏入試場"
+        },
+        {
+          "index": 5,
+          "text": "再抬頭一看那個試官"
+        },
+        {
+          "index": 6,
+          "text": "你們猜他是誰？"
+        },
+        {
+          "index": 7,
+          "text": "就是僧格林參這個龜兒子"
+        },
+        {
+          "index": 8,
+          "text": "這個龜兒子跟我們父子倆有過節嗎"
+        },
+        {
+          "index": 9,
+          "text": "一說到他我就氣死了⋯"
+        },
+        {
+          "index": 10,
+          "text": "不要說了，先吸口煙"
+        },
+        {
+          "index": 11,
+          "text": "吸口煙提提神"
+        },
+        {
+          "index": 12,
+          "text": "是的，好多了"
+        },
+        {
+          "index": 13,
+          "text": "這個王八蛋當日在怡紅院"
+        },
+        {
+          "index": 14,
+          "text": "我們父子倆放他一馬"
+        },
+        {
+          "index": 15,
+          "text": "想不到他恩將仇報"
+        },
+        {
+          "index": 16,
+          "text": "陷害我的兒子"
+        },
+        {
+          "index": 17,
+          "text": "在兵器上全都動了手腳"
+        },
+        {
+          "index": 18,
+          "text": "還好我兒子有真材實料⋯"
+        },
+        {
+          "index": 19,
+          "text": "我要他武功蓋世，狀元之才"
+        },
+        {
+          "index": 20,
+          "text": "一人之下，萬人之上"
+        },
+        {
+          "index": 21,
+          "text": "那你做不做得到呢？"
+        },
+        {
+          "index": 22,
+          "text": "做得到"
+        },
+        {
+          "index": 23,
+          "text": "好"
+        },
+        {
+          "index": 24,
+          "text": "待你做得到的時候就回來找我"
+        },
+        {
+          "index": 25,
+          "text": "既然如此，我想我們要先定婚期"
+        },
+        {
+          "index": 26,
+          "text": "因為做狀元對我來說易如反掌"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "馬上寫出你的名字來"
+        },
+        {
+          "index": 2,
+          "text": "我不會寫"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "燦！怎麼？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "又作惡夢？"
+        },
+        {
+          "index": 2,
+          "text": "別想這麼多"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "雖然休息了兩個月，手腳可以動了"
+        },
+        {
+          "index": 2,
+          "text": "但是還沒有完全好了"
+        },
+        {
+          "index": 3,
+          "text": "哈爾叔　　來⋯"
+        },
+        {
+          "index": 4,
+          "text": "阿爹出去找點食物回來"
+        },
+        {
+          "index": 5,
+          "text": "然後煮最後一趟藥給你喝"
+        },
+        {
+          "index": 6,
+          "text": "爹，又去討飯"
+        },
+        {
+          "index": 7,
+          "text": "討飯當然要老夫出馬"
+        },
+        {
+          "index": 8,
+          "text": "難道要你堂堂武狀元⋯"
+        },
+        {
+          "index": 9,
+          "text": "阿燦，原來當乞丐也不簡單"
+        },
+        {
+          "index": 10,
+          "text": "有很多竅門"
+        },
+        {
+          "index": 11,
+          "text": "不是伸手出來就有錢的"
+        },
+        {
+          "index": 12,
+          "text": "至少要拿個砵子！這樣才有身份"
+        },
+        {
+          "index": 13,
+          "text": "乞丐也論身份，真混帳"
+        },
+        {
+          "index": 14,
+          "text": "快點走"
+        },
+        {
+          "index": 15,
+          "text": "來了"
+        },
+        {
+          "index": 16,
+          "text": "再不去就討不到飯了"
+        },
+        {
+          "index": 17,
+          "text": "是的⋯"
+        },
+        {
+          "index": 18,
+          "text": "你以為自己是以前的大將軍"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "給我點錢"
+        },
+        {
+          "index": 2,
+          "text": "沒有沒有，走吧"
+        },
+        {
+          "index": 3,
+          "text": "走，快走⋯別礙我做生意"
+        },
+        {
+          "index": 4,
+          "text": "阿燦，阿爹出去了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "謝謝⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "謝謝⋯謝謝"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "別那麼吝嗇吧，老兄？"
+        },
+        {
+          "index": 2,
+          "text": "你不會自己寫？"
+        },
+        {
+          "index": 3,
+          "text": "我見你下班了，借你地方用一下吧"
+        },
+        {
+          "index": 4,
+          "text": "你當我呆子嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿爹"
+        },
+        {
+          "index": 2,
+          "text": "你甚麼？"
+        },
+        {
+          "index": 3,
+          "text": "好冷⋯阿燦！好冷⋯"
+        },
+        {
+          "index": 4,
+          "text": "好冷？糟糕了！你身體好熨"
+        },
+        {
+          "index": 5,
+          "text": "你病了？"
+        },
+        {
+          "index": 6,
+          "text": "沒有⋯沒有"
+        },
+        {
+          "index": 7,
+          "text": "這麼晚了"
+        },
+        {
+          "index": 8,
+          "text": "阿爹出去討些東西給你吃"
+        },
+        {
+          "index": 9,
+          "text": "你快躺下吧，今天讓我去"
+        },
+        {
+          "index": 10,
+          "text": "你去討飯？"
+        },
+        {
+          "index": 11,
+          "text": "沒有問題，我會有辦法"
+        },
+        {
+          "index": 12,
+          "text": "你休息一下"
+        },
+        {
+          "index": 13,
+          "text": "我找到錢就回來帶你看大夫"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你這渾小子為何不吃"
+        },
+        {
+          "index": 2,
+          "text": "你不吃又怎能像阿爹般強壯"
+        },
+        {
+          "index": 3,
+          "text": "快點吃"
+        },
+        {
+          "index": 4,
+          "text": "吃不下了，我飽了"
+        },
+        {
+          "index": 5,
+          "text": "飽⋯飽也要吃，快點吃"
+        },
+        {
+          "index": 6,
+          "text": "不吃嗎！不吃就回家"
+        },
+        {
+          "index": 7,
+          "text": "吃！快點吃，吃"
+        },
+        {
+          "index": 8,
+          "text": "小朋友"
+        },
+        {
+          "index": 9,
+          "text": "甚麼？"
+        },
+        {
+          "index": 10,
+          "text": "可不可以⋯　　不可以"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好心吧！福心吧！"
+        },
+        {
+          "index": 2,
+          "text": "可憐我這個⋯小乞丐"
+        },
+        {
+          "index": 3,
+          "text": "我爹快要冷死了"
+        },
+        {
+          "index": 4,
+          "text": "小乞丐，這裡有點碎碳你要不要"
+        },
+        {
+          "index": 5,
+          "text": "多謝"
+        },
+        {
+          "index": 6,
+          "text": "可不可以再給我多一點零錢"
+        },
+        {
+          "index": 7,
+          "text": "是你"
+        },
+        {
+          "index": 8,
+          "text": "不是我"
+        },
+        {
+          "index": 9,
+          "text": "姐姐！是他"
+        },
+        {
+          "index": 10,
+          "text": "不是他！不是他"
+        },
+        {
+          "index": 11,
+          "text": "姐姐⋯姐姐！蘇燦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "等一下"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "小姐，你找誰呀？"
+        },
+        {
+          "index": 2,
+          "text": "對不起，我認錯人！"
+        },
+        {
+          "index": 3,
+          "text": "小翠，去拿幾個饅頭出來"
+        },
+        {
+          "index": 4,
+          "text": "你認錯人了！他不是蘇燦"
+        },
+        {
+          "index": 5,
+          "text": "你很像我一個朋友"
+        },
+        {
+          "index": 6,
+          "text": "以後沒東西吃，就到我家取饅頭"
+        },
+        {
+          "index": 7,
+          "text": "我家裡人少，吃不完"
+        },
+        {
+          "index": 8,
+          "text": "饅頭來了"
+        },
+        {
+          "index": 9,
+          "text": "拿去"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "謝謝⋯"
+        },
+        {
+          "index": 2,
+          "text": "姐姐"
+        },
+        {
+          "index": 3,
+          "text": "要不是為了你，他也不會變成這樣"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿爹！怎麼呢"
+        },
+        {
+          "index": 2,
+          "text": "阿燦！我剛剛餓壞了"
+        },
+        {
+          "index": 3,
+          "text": "看見小孩子吃饅頭，我借來咬一口"
+        },
+        {
+          "index": 4,
+          "text": "我這裡有饅頭！還給他"
+        },
+        {
+          "index": 5,
+          "text": "這樣也可以嗎？"
+        },
+        {
+          "index": 6,
+          "text": "我斬了你個頭再還給你可不可以？"
+        },
+        {
+          "index": 7,
+          "text": "你是狀元爺嗎？"
+        },
+        {
+          "index": 8,
+          "text": "是不是？是不是你？"
+        },
+        {
+          "index": 9,
+          "text": "差點兒是"
+        },
+        {
+          "index": 10,
+          "text": "真的！真是狀元爺"
+        },
+        {
+          "index": 11,
+          "text": "一定給面子狀元爺"
+        },
+        {
+          "index": 12,
+          "text": "多謝⋯多謝"
+        },
+        {
+          "index": 13,
+          "text": "等一等！相請不如偶遇"
+        },
+        {
+          "index": 14,
+          "text": "相請不如偶遇，是否想請我們喝酒呢"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "給狗吃的飯到"
+        },
+        {
+          "index": 2,
+          "text": "狀元爺，吃完這飯就放你的爹"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "吃吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦！你不能吃"
+        },
+        {
+          "index": 2,
+          "text": "你吃了後怎樣見人？"
+        },
+        {
+          "index": 3,
+          "text": "阿爹年紀大沒甚麼大不了"
+        },
+        {
+          "index": 4,
+          "text": "老兄，說到底我是廣州將軍"
+        },
+        {
+          "index": 5,
+          "text": "想怎樣呀？"
+        },
+        {
+          "index": 6,
+          "text": "不要打"
+        },
+        {
+          "index": 7,
+          "text": "站好"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "狀元爺吃狗的飯"
+        },
+        {
+          "index": 2,
+          "text": "爹，味道不錯"
+        },
+        {
+          "index": 3,
+          "text": "嚐嚐⋯嚐嚐，來⋯來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "好吃，是嗎？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿爹，你看"
+        },
+        {
+          "index": 2,
+          "text": "有些肉絲在裡面"
+        },
+        {
+          "index": 3,
+          "text": "甚麼肉絲？是肉排"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你倆比狗還要餓！"
+        },
+        {
+          "index": 2,
+          "text": "注定這輩子都吃狗的飯"
+        },
+        {
+          "index": 3,
+          "text": "吃吧！快點吧！"
+        },
+        {
+          "index": 4,
+          "text": "這碗飯太好吃了"
+        },
+        {
+          "index": 5,
+          "text": "這一口我想留下來作夜宵"
+        },
+        {
+          "index": 6,
+          "text": "多虧你想像得到"
+        },
+        {
+          "index": 7,
+          "text": "真是天生當乞丐的料子"
+        },
+        {
+          "index": 8,
+          "text": "狀元爺都要吃狗的飯"
+        },
+        {
+          "index": 9,
+          "text": "來！我們去吃人的飯吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "蘇老伯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你是⋯"
+        },
+        {
+          "index": 2,
+          "text": "丐幫幫主就是我爹"
+        },
+        {
+          "index": 3,
+          "text": "不如你倆加入丐幫，好不好？"
+        },
+        {
+          "index": 4,
+          "text": "莫大叔，好不好"
+        },
+        {
+          "index": 5,
+          "text": "好"
+        },
+        {
+          "index": 6,
+          "text": "丐幫是不是討飯幫？"
+        },
+        {
+          "index": 7,
+          "text": "是"
+        },
+        {
+          "index": 8,
+          "text": "正好⋯現在我們當乞丐"
+        },
+        {
+          "index": 9,
+          "text": "加入你們丐幫有個照應也好"
+        },
+        {
+          "index": 10,
+          "text": "阿燦⋯他去哪兒呢？"
+        },
+        {
+          "index": 11,
+          "text": "阿燦呢？在哪裡？"
+        },
+        {
+          "index": 12,
+          "text": "好，我們兩個報名，兩個"
+        },
+        {
+          "index": 13,
+          "text": "燦⋯燦"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "如霜！恭喜發財"
+        },
+        {
+          "index": 2,
+          "text": "莫大叔！恭喜發財"
+        },
+        {
+          "index": 3,
+          "text": "這禮物是給你的"
+        },
+        {
+          "index": 4,
+          "text": "多謝！多謝"
+        },
+        {
+          "index": 5,
+          "text": "這兩件衣服，一件給你，一件給阿燦"
+        },
+        {
+          "index": 6,
+          "text": "先把東西放下，先把東西放下"
+        },
+        {
+          "index": 7,
+          "text": "有沒有零錢？"
+        },
+        {
+          "index": 8,
+          "text": "有"
+        },
+        {
+          "index": 9,
+          "text": "有就拿來！來⋯　　幹甚麼？"
+        },
+        {
+          "index": 10,
+          "text": "幹甚麼？過新年當然要利利是是"
+        },
+        {
+          "index": 11,
+          "text": "來，祝你身體健康"
+        },
+        {
+          "index": 12,
+          "text": "恭喜發財"
+        },
+        {
+          "index": 13,
+          "text": "你就青春美麗　　謝謝"
+        },
+        {
+          "index": 14,
+          "text": "莫大叔，我們二老就兩免了"
+        },
+        {
+          "index": 15,
+          "text": "阿燦呢？"
+        },
+        {
+          "index": 16,
+          "text": "阿燦？他由年三十睡到大年初一"
+        },
+        {
+          "index": 17,
+          "text": "還沒睡醒"
+        },
+        {
+          "index": 18,
+          "text": "他剛剛才睡！別把他吵醒"
+        },
+        {
+          "index": 19,
+          "text": "我做年糕給大家吃吧"
+        },
+        {
+          "index": 20,
+          "text": "好！我幫你"
+        },
+        {
+          "index": 21,
+          "text": "新年還在睡覺"
+        },
+        {
+          "index": 22,
+          "text": "真是沒用的傢伙！"
+        },
+        {
+          "index": 23,
+          "text": "大家到齊了沒？"
+        },
+        {
+          "index": 24,
+          "text": "對付趙無極一定要團結丐幫"
+        },
+        {
+          "index": 25,
+          "text": "我們要選出新幫主來主持大局"
+        },
+        {
+          "index": 26,
+          "text": "如霜⋯如霜"
+        },
+        {
+          "index": 27,
+          "text": "對付三位長老的蓮花落陣"
+        },
+        {
+          "index": 28,
+          "text": "全靠你了"
+        },
+        {
+          "index": 29,
+          "text": "莫大叔！蓮花落陣你也沒把握"
+        },
+        {
+          "index": 30,
+          "text": "以我現在打狗棒法的功力"
+        },
+        {
+          "index": 31,
+          "text": "怎麼可能打敗三位長老當上幫主呢？"
+        },
+        {
+          "index": 32,
+          "text": "這顆大還丹，你吃了之後會功力大增"
+        },
+        {
+          "index": 33,
+          "text": "不行！這顆大還丹是給你治內傷用的"
+        },
+        {
+          "index": 34,
+          "text": "我怎麼能吃呢？"
+        },
+        {
+          "index": 35,
+          "text": "不用擔心不用擔心"
+        },
+        {
+          "index": 36,
+          "text": "想找人比武可以找我兒子"
+        },
+        {
+          "index": 37,
+          "text": "我兒子怎麼說也是一個武狀元"
+        },
+        {
+          "index": 38,
+          "text": "現在⋯"
+        },
+        {
+          "index": 39,
+          "text": "⋯不！曾經"
+        },
+        {
+          "index": 40,
+          "text": "你看他懶洋洋的"
+        },
+        {
+          "index": 41,
+          "text": "只會睡覺，怎能打架呢？"
+        },
+        {
+          "index": 42,
+          "text": "連當乞丐的資格都沒有"
+        },
+        {
+          "index": 43,
+          "text": "你別那麼坦白行不行？"
+        },
+        {
+          "index": 44,
+          "text": "你別那麼大聲好不好？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦，不管人家現在怎麼看不起你"
+        },
+        {
+          "index": 2,
+          "text": "老爹對你很有信心"
+        },
+        {
+          "index": 3,
+          "text": "雖然現在你沒有武功"
+        },
+        {
+          "index": 4,
+          "text": "但是以你的底子"
+        },
+        {
+          "index": 5,
+          "text": "只要你肯出一點點力"
+        },
+        {
+          "index": 6,
+          "text": "必定會有一番作為"
+        },
+        {
+          "index": 7,
+          "text": "我現在已經沒有力，也不想再用力"
+        },
+        {
+          "index": 8,
+          "text": "怎麼會沒有力呢？"
+        },
+        {
+          "index": 9,
+          "text": "快打我一拳"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這一拳蠻有力嗎"
+        },
+        {
+          "index": 2,
+          "text": "所以我說，做人⋯"
+        },
+        {
+          "index": 3,
+          "text": "算了！不要再浪費時間"
+        },
+        {
+          "index": 4,
+          "text": "還是讓我多睡一會兒吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你怎麼把門鎖上？"
+        },
+        {
+          "index": 2,
+          "text": "你慢慢睡吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "孩兒，我費盡心思才弄出這麼大陣容"
+        },
+        {
+          "index": 2,
+          "text": "你要多用點心把打狗棒法練好才行"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你爬得那麼高幹甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "就算你要我練打狗棒法"
+        },
+        {
+          "index": 3,
+          "text": "你總該留個棒子給我吧"
+        },
+        {
+          "index": 4,
+          "text": "抱歉抱歉！你接好了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "天將降大任於斯人也"
+        },
+        {
+          "index": 2,
+          "text": "必先勞其筋骨，餓其體膚，苦其心智"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "苦海無涯？你寫的？"
+        },
+        {
+          "index": 2,
+          "text": "寫得這麼醜，把它擦掉也對"
+        },
+        {
+          "index": 3,
+          "text": "乞丐？"
+        },
+        {
+          "index": 4,
+          "text": "是"
+        },
+        {
+          "index": 5,
+          "text": "我也是"
+        },
+        {
+          "index": 6,
+          "text": "恭喜你"
+        },
+        {
+          "index": 7,
+          "text": "有沒有東西吃？　　沒有"
+        },
+        {
+          "index": 8,
+          "text": "正好我有"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這造型不去討飯博人家同情，真可惜"
+        },
+        {
+          "index": 2,
+          "text": "這與你無關！"
+        },
+        {
+          "index": 3,
+          "text": "你當乞丐也這麼懶"
+        },
+        {
+          "index": 4,
+          "text": "同行都瞧不起你了"
+        },
+        {
+          "index": 5,
+          "text": "我以前到那裡都被人家看重"
+        },
+        {
+          "index": 6,
+          "text": "還不是落得這個下場"
+        },
+        {
+          "index": 7,
+          "text": "我正好剛剛相反"
+        },
+        {
+          "index": 8,
+          "text": "我一輩子沒被人瞧得起過"
+        },
+        {
+          "index": 9,
+          "text": "聽我說，先別走，聽我說"
+        },
+        {
+          "index": 10,
+          "text": "記得有一次，在廣東"
+        },
+        {
+          "index": 11,
+          "text": "請我吃飯喝酒嫖妓過夜"
+        },
+        {
+          "index": 12,
+          "text": "這樣的人也有"
+        },
+        {
+          "index": 13,
+          "text": "帥哥，我記得你"
+        },
+        {
+          "index": 14,
+          "text": "臭小子，我也記得你"
+        },
+        {
+          "index": 15,
+          "text": "廢話少說"
+        },
+        {
+          "index": 16,
+          "text": "還我錢讓我頂一下"
+        },
+        {
+          "index": 17,
+          "text": "如果我有錢"
+        },
+        {
+          "index": 18,
+          "text": "我也不用在這兒捱饅頭"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不過你不用怕，你有恩於我"
+        },
+        {
+          "index": 2,
+          "text": "我會報答你的"
+        },
+        {
+          "index": 3,
+          "text": "多謝，心領"
+        },
+        {
+          "index": 4,
+          "text": "給你錢也沒有用"
+        },
+        {
+          "index": 5,
+          "text": "也買不回你失去的東西"
+        },
+        {
+          "index": 6,
+          "text": "我失去了甚麼？"
+        },
+        {
+          "index": 7,
+          "text": "尊嚴，自信"
+        },
+        {
+          "index": 8,
+          "text": "還有你心愛的女人"
+        },
+        {
+          "index": 9,
+          "text": "你究竟是何人？"
+        },
+        {
+          "index": 10,
+          "text": "好說，在下洪日新，外號老鬼新"
+        },
+        {
+          "index": 11,
+          "text": "乞丐中輩份最高，字號最老"
+        },
+        {
+          "index": 12,
+          "text": "做乞丐有甚麼不好？"
+        },
+        {
+          "index": 13,
+          "text": "想走就走，想睡就睡"
+        },
+        {
+          "index": 14,
+          "text": "你也可以一樣嗎"
+        },
+        {
+          "index": 15,
+          "text": "你說，你想要甚麼？我成全你"
+        },
+        {
+          "index": 16,
+          "text": "我想重新做人"
+        },
+        {
+          "index": 17,
+          "text": "怎麼你覺得你不像人嗎？"
+        },
+        {
+          "index": 18,
+          "text": "一直都不算是"
+        },
+        {
+          "index": 19,
+          "text": "所以你才會弄成這樣，年青人"
+        },
+        {
+          "index": 20,
+          "text": "非常好，非常好"
+        },
+        {
+          "index": 21,
+          "text": "實不相瞞，我看閣下從頭到腳趾頭"
+        },
+        {
+          "index": 22,
+          "text": "沒有一個地方不露乞丐形格"
+        },
+        {
+          "index": 23,
+          "text": "又如何？"
+        },
+        {
+          "index": 24,
+          "text": "即是說閣下注定討飯討一輩子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "還是不跟你說，我想睡一會兒"
+        },
+        {
+          "index": 2,
+          "text": "先別走！行行出狀元"
+        },
+        {
+          "index": 3,
+          "text": "如果我沒看錯"
+        },
+        {
+          "index": 4,
+          "text": "你會是乞丐中的霸主"
+        },
+        {
+          "index": 5,
+          "text": "乞丐中的霸主？那是甚麼？"
+        },
+        {
+          "index": 6,
+          "text": "還是乞丐"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我不管你是甚麼人，我不想再跟你說"
+        },
+        {
+          "index": 2,
+          "text": "請你讓開，不要礙著我睡覺"
+        },
+        {
+          "index": 3,
+          "text": "你找死吧？"
+        },
+        {
+          "index": 4,
+          "text": "不是⋯你說要睡覺"
+        },
+        {
+          "index": 5,
+          "text": "我只想跟你一塊兒"
+        },
+        {
+          "index": 6,
+          "text": "神經病"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "年青人，我們夢中相見"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "佛前金座，羅漢歸位"
+        },
+        {
+          "index": 2,
+          "text": "降龍，伏虎"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "蘇燦，你享盡人間富貴"
+        },
+        {
+          "index": 2,
+          "text": "亦嚐盡人間苦楚"
+        },
+        {
+          "index": 3,
+          "text": "如今大徹大悟"
+        },
+        {
+          "index": 4,
+          "text": "我就以洪七公第七代傳人的身份"
+        },
+        {
+          "index": 5,
+          "text": "封你為睡夢羅漢"
+        },
+        {
+          "index": 6,
+          "text": "醉回夢生法，傳授你睡夢羅漢拳"
+        },
+        {
+          "index": 7,
+          "text": "希望你好好利用，接招"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "前輩⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "苦盡甘來？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "萬歲！萬歲！萬萬歲"
+        },
+        {
+          "index": 2,
+          "text": "白羊降世，天理循環"
+        },
+        {
+          "index": 3,
+          "text": "真空家鄉，無生老母，賜我神通"
+        },
+        {
+          "index": 4,
+          "text": "超渡眾生"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "皇帝明天會到成都狩獵"
+        },
+        {
+          "index": 2,
+          "text": "我會用獻上美女的理由接近他"
+        },
+        {
+          "index": 3,
+          "text": "宛玲，你明天可能要犧牲一下色相"
+        },
+        {
+          "index": 4,
+          "text": "是"
+        },
+        {
+          "index": 5,
+          "text": "只要明天殺了皇帝"
+        },
+        {
+          "index": 6,
+          "text": "天下就盡在我手"
+        },
+        {
+          "index": 7,
+          "text": "榮華富貴絕對少不了你們"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "萬歲！萬歲！萬萬歲"
+        },
+        {
+          "index": 2,
+          "text": "長老"
+        },
+        {
+          "index": 3,
+          "text": "回去再說"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "長老"
+        },
+        {
+          "index": 2,
+          "text": "我們走"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "長老"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我們追　　不用追了！"
+        },
+        {
+          "index": 2,
+          "text": "皇上快要出發"
+        },
+        {
+          "index": 3,
+          "text": "你殺了我的女人⋯"
+        },
+        {
+          "index": 4,
+          "text": "⋯我要把你獻給皇上"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎麼？沒有人敢上來當幫主"
+        },
+        {
+          "index": 2,
+          "text": "叫莫老三把打狗棒交出來"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "莫大叔跟你姐姐到底到哪處？"
+        },
+        {
+          "index": 2,
+          "text": "我怎麼知道"
+        },
+        {
+          "index": 3,
+          "text": "剛才我聽見莫大叔跟姐姐說了幾句話"
+        },
+        {
+          "index": 4,
+          "text": "就出去了"
+        },
+        {
+          "index": 5,
+          "text": "難道他倆有曖昧關係？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "現在開始選幫主"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "莫大叔⋯"
+        },
+        {
+          "index": 2,
+          "text": "真的被你嚇我一跳"
+        },
+        {
+          "index": 3,
+          "text": "還以為你不會來了"
+        },
+        {
+          "index": 4,
+          "text": "沒事嗎？　　姐姐呢？"
+        },
+        {
+          "index": 5,
+          "text": "你姐姐給趙無極抓了"
+        },
+        {
+          "index": 6,
+          "text": "我們要找人上去選幫主"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "到底派誰上去呢？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "讓我去"
+        },
+        {
+          "index": 2,
+          "text": "莫大叔"
+        },
+        {
+          "index": 3,
+          "text": "不如讓我試試"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦"
+        },
+        {
+          "index": 2,
+          "text": "你不是九代弟子，快下來"
+        },
+        {
+          "index": 3,
+          "text": "既然你挑不出好的，我可以教育你！"
+        },
+        {
+          "index": 4,
+          "text": "阿燦，你不要以為好玩"
+        },
+        {
+          "index": 5,
+          "text": "你會沒命的！快下來"
+        },
+        {
+          "index": 6,
+          "text": "沒相干，我的命早就當沒了"
+        },
+        {
+          "index": 7,
+          "text": "廢話！丟他"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "既然如此，我就成全你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他在幹嗎？"
+        },
+        {
+          "index": 2,
+          "text": "睡覺？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這一招難道就是⋯"
+        },
+        {
+          "index": 2,
+          "text": "新師叔的睡夢羅漢拳？"
+        },
+        {
+          "index": 3,
+          "text": "佈陣"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "天亮了沒有"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "各位不好意思"
+        },
+        {
+          "index": 2,
+          "text": "我贏了"
+        },
+        {
+          "index": 3,
+          "text": "你打贏我們有甚麼用？"
+        },
+        {
+          "index": 4,
+          "text": "你又不會打狗棒法"
+        },
+        {
+          "index": 5,
+          "text": "你不配當幫主"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "打狗棒！是嗎"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "棒棒都打狗"
+        },
+        {
+          "index": 2,
+          "text": "誰說我不會打狗棒法？"
+        },
+        {
+          "index": 3,
+          "text": "不像打狗棒法"
+        },
+        {
+          "index": 4,
+          "text": "也蠻厲害！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "他打斷了打狗棒"
+        },
+        {
+          "index": 2,
+          "text": "他打斷我們鎮幫之寶！我們殺了他"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "洪七公在此誰敢放肆"
+        },
+        {
+          "index": 2,
+          "text": "我當年定下幫規"
+        },
+        {
+          "index": 3,
+          "text": "任何弟子破了蓮花落陣"
+        },
+        {
+          "index": 4,
+          "text": "都有資格當幫主"
+        },
+        {
+          "index": 5,
+          "text": "你們是不是全忘掉了？"
+        },
+        {
+          "index": 6,
+          "text": "丐幫之所以成為天下第一大幫"
+        },
+        {
+          "index": 7,
+          "text": "全因為團結兩個字"
+        },
+        {
+          "index": 8,
+          "text": "我洪某當年留下打狗棒"
+        },
+        {
+          "index": 9,
+          "text": "目的只是留給大家作為留念"
+        },
+        {
+          "index": 10,
+          "text": "棒的本身並不代表甚麼"
+        },
+        {
+          "index": 11,
+          "text": "但是你這些蠢蛋居然當寶"
+        },
+        {
+          "index": 12,
+          "text": "還為了爭奪它弄到丐幫四分五裂"
+        },
+        {
+          "index": 13,
+          "text": "五年沒有幫主在位！你們慚不慚愧？"
+        },
+        {
+          "index": 14,
+          "text": "蘇燦現在把棒打斷了"
+        },
+        {
+          "index": 15,
+          "text": "以後大家沒得爭"
+        },
+        {
+          "index": 16,
+          "text": "絕對是有功沒有過"
+        },
+        {
+          "index": 17,
+          "text": "這個年青人！雖然資歷低"
+        },
+        {
+          "index": 18,
+          "text": "但是天才橫溢！聰明絕頂"
+        },
+        {
+          "index": 19,
+          "text": "還是我洪某的傳人洪日新親手提攜"
+        },
+        {
+          "index": 20,
+          "text": "誰要對付他就是對付我"
+        },
+        {
+          "index": 21,
+          "text": "你們不只要選他當幫主"
+        },
+        {
+          "index": 22,
+          "text": "還要交出你們的愛心"
+        },
+        {
+          "index": 23,
+          "text": "來愛護他！關懷他！常常請他喝茶"
+        },
+        {
+          "index": 24,
+          "text": "那我洪某在天之靈"
+        },
+        {
+          "index": 25,
+          "text": "定會保佑丐幫生意興隆！千秋萬世"
+        },
+        {
+          "index": 26,
+          "text": "是真的還是假的？"
+        },
+        {
+          "index": 27,
+          "text": "寧可信其有不可信其無"
+        },
+        {
+          "index": 28,
+          "text": "洪七公顯靈"
+        },
+        {
+          "index": 29,
+          "text": "天有眼，我們有福"
+        },
+        {
+          "index": 30,
+          "text": "就這樣瞞天過海，我果真是天才！"
+        },
+        {
+          "index": 31,
+          "text": "大家有飯吃了"
+        },
+        {
+          "index": 32,
+          "text": "發生甚麼事？"
+        },
+        {
+          "index": 33,
+          "text": "參見幫主"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "很棒"
+        },
+        {
+          "index": 2,
+          "text": "莫大叔！我兒子有一套嗎"
+        },
+        {
+          "index": 3,
+          "text": "想不到你學會睡夢羅漢拳"
+        },
+        {
+          "index": 4,
+          "text": "由現在開始，你就是丐幫幫主"
+        },
+        {
+          "index": 5,
+          "text": "這一本是降龍十八掌"
+        },
+        {
+          "index": 6,
+          "text": "還有大還丹都交給你"
+        },
+        {
+          "index": 7,
+          "text": "希望你好好領導丐幫"
+        },
+        {
+          "index": 8,
+          "text": "我只想盡快救回如霜"
+        },
+        {
+          "index": 9,
+          "text": "如霜總算沒看錯你"
+        },
+        {
+          "index": 10,
+          "text": "好棒！幫主好棒！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "莫大叔⋯莫大叔！你怎麼呢？"
+        },
+        {
+          "index": 2,
+          "text": "莫大叔，莫大叔"
+        },
+        {
+          "index": 3,
+          "text": "莫大叔⋯莫大叔"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "長路漫漫伴你闖"
+        },
+        {
+          "index": 2,
+          "text": "帶一身膽色與熱腸"
+        },
+        {
+          "index": 3,
+          "text": "尋自我覓真情"
+        },
+        {
+          "index": 4,
+          "text": "停步處視作家鄉"
+        },
+        {
+          "index": 5,
+          "text": "投入命運萬劫火"
+        },
+        {
+          "index": 6,
+          "text": "那得失怎麼去量"
+        },
+        {
+          "index": 7,
+          "text": "馳馬蕩江湖"
+        },
+        {
+          "index": 8,
+          "text": "燦哥"
+        },
+        {
+          "index": 9,
+          "text": "降龍十八掌的心法你真的明白了？"
+        },
+        {
+          "index": 10,
+          "text": "你別當我是呆子？"
+        },
+        {
+          "index": 11,
+          "text": "我得到大還丹的幫助"
+        },
+        {
+          "index": 12,
+          "text": "全身經脈已經回復正常，內力大增"
+        },
+        {
+          "index": 13,
+          "text": "降龍十八掌首十七掌我已經領會到"
+        },
+        {
+          "index": 14,
+          "text": "但是第十八式「殺龍有悔」"
+        },
+        {
+          "index": 15,
+          "text": "又沒有圖又沒有文字"
+        },
+        {
+          "index": 16,
+          "text": "我怎麼看都不明白"
+        },
+        {
+          "index": 17,
+          "text": "最糟糕的是莫大叔已經不在，那怎辦"
+        },
+        {
+          "index": 18,
+          "text": "沒甚麼法子了！"
+        },
+        {
+          "index": 19,
+          "text": "無論如何我也先出發去救如霜"
+        },
+        {
+          "index": 20,
+          "text": "迎入日月萬里風"
+        },
+        {
+          "index": 21,
+          "text": "笑揖清風洗我狂"
+        },
+        {
+          "index": 22,
+          "text": "來日醉臥逍遙"
+        },
+        {
+          "index": 23,
+          "text": "寧願鏽蝕我纓槍"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你們到大營去看那兒準備好沒有？"
+        },
+        {
+          "index": 2,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "趙無極"
+        },
+        {
+          "index": 2,
+          "text": "你帶這個女人來是甚麼意思？"
+        },
+        {
+          "index": 3,
+          "text": "我知道皇上喜歡美女"
+        },
+        {
+          "index": 4,
+          "text": "所以我獻上一美女給他"
+        },
+        {
+          "index": 5,
+          "text": "我想見一見皇上"
+        },
+        {
+          "index": 6,
+          "text": "皇上並沒有詔見，你別驚動他"
+        },
+        {
+          "index": 7,
+          "text": "人來，帶這個女人入營"
+        },
+        {
+          "index": 8,
+          "text": "是"
+        },
+        {
+          "index": 9,
+          "text": "走吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大人，好一陣子不見，氣色不錯"
+        },
+        {
+          "index": 2,
+          "text": "你應該回到自己的崗位"
+        },
+        {
+          "index": 3,
+          "text": "不要擅離職守"
+        },
+        {
+          "index": 4,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "啟稟皇上"
+        },
+        {
+          "index": 2,
+          "text": "趙大人帶了個女人來獻給皇上"
+        },
+        {
+          "index": 3,
+          "text": "女人？"
+        },
+        {
+          "index": 4,
+          "text": "趙無極這個人"
+        },
+        {
+          "index": 5,
+          "text": "我先去沐浴更衣，稍後帶他來見我"
+        },
+        {
+          "index": 6,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "這個王八蛋又想見皇上"
+        },
+        {
+          "index": 2,
+          "text": "再讓你多見幾次，不是連官都沒得當"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "人來"
+        },
+        {
+          "index": 2,
+          "text": "大人"
+        },
+        {
+          "index": 3,
+          "text": "看看發生甚麼事　　是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大人，樹林裡有一大隊人馬"
+        },
+        {
+          "index": 2,
+          "text": "甚麼人馬？"
+        },
+        {
+          "index": 3,
+          "text": "不知道"
+        },
+        {
+          "index": 4,
+          "text": "放狼煙"
+        },
+        {
+          "index": 5,
+          "text": "戒備"
+        },
+        {
+          "index": 6,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "前面大營放狼煙，大家戒備"
+        },
+        {
+          "index": 2,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "臭乞丐？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "蘇察哈爾燦，你攪甚麼鬼？"
+        },
+        {
+          "index": 2,
+          "text": "沒有！只是想向你討個錢"
+        },
+        {
+          "index": 3,
+          "text": "豈有此理！你是不是不想活？"
+        },
+        {
+          "index": 4,
+          "text": "不想活的是你"
+        },
+        {
+          "index": 5,
+          "text": "趙無極陰謀造反"
+        },
+        {
+          "index": 6,
+          "text": "現在還帶人殺皇帝去"
+        },
+        {
+          "index": 7,
+          "text": "你還那麼傻頭傻腦！"
+        },
+        {
+          "index": 8,
+          "text": "你以為你是誰"
+        },
+        {
+          "index": 9,
+          "text": "膽大包天！竟敢誣告官員？"
+        },
+        {
+          "index": 10,
+          "text": "再行一步格殺勿論"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦，對方這麼多人馬我們怎麼打？"
+        },
+        {
+          "index": 2,
+          "text": "長老　　在"
+        },
+        {
+          "index": 3,
+          "text": "其他人馬呢？"
+        },
+        {
+          "index": 4,
+          "text": "其他人馬正在趕來"
+        },
+        {
+          "index": 5,
+          "text": "沒時間再等了"
+        },
+        {
+          "index": 6,
+          "text": "你們留下來接應其他兄弟"
+        },
+        {
+          "index": 7,
+          "text": "我先上"
+        },
+        {
+          "index": 8,
+          "text": "我稍後跟來"
+        },
+        {
+          "index": 9,
+          "text": "真的才好"
+        },
+        {
+          "index": 10,
+          "text": "幫主，你放心去吧"
+        },
+        {
+          "index": 11,
+          "text": "我現在死定了？放心去"
+        },
+        {
+          "index": 12,
+          "text": "說句吉利話行不行？"
+        },
+        {
+          "index": 13,
+          "text": "行！恭祝你福壽與天齊"
+        },
+        {
+          "index": 14,
+          "text": "慶賀你生辰快樂"
+        },
+        {
+          "index": 15,
+          "text": "年年都有今日⋯"
+        },
+        {
+          "index": 16,
+          "text": "夠了夠了"
+        },
+        {
+          "index": 17,
+          "text": "還沒唱完"
+        },
+        {
+          "index": 18,
+          "text": "等我走了你再才唱　　好的"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "前面放狼煙，一定有人打草驚蛇"
+        },
+        {
+          "index": 2,
+          "text": "準備麒麟煙　　是"
+        },
+        {
+          "index": 3,
+          "text": "攻入大營"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "作反了！這些狗賊真的作反了"
+        },
+        {
+          "index": 2,
+          "text": "太可惡"
+        },
+        {
+          "index": 3,
+          "text": "射不死你的那個人才是最可惡"
+        },
+        {
+          "index": 4,
+          "text": "糟糕！毒煙吹向皇上大營"
+        },
+        {
+          "index": 5,
+          "text": "這次真的完了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "不是！風向轉了"
+        },
+        {
+          "index": 2,
+          "text": "對！等等我"
+        },
+        {
+          "index": 3,
+          "text": "丐幫再不撤退，格殺勿論"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你們看這邊"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "天理教的麒麟煙"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "大家鎮定點！用尿可以解毒"
+        },
+        {
+          "index": 2,
+          "text": "撒尿⋯撒尿⋯"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "那我該怎麼辦？"
+        },
+        {
+          "index": 2,
+          "text": "不怕！我的尿多，分一點給你"
+        },
+        {
+          "index": 3,
+          "text": "來⋯拿著它"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "衝！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "形勢如何？"
+        },
+        {
+          "index": 2,
+          "text": "托皇上鴻福，風向轉變"
+        },
+        {
+          "index": 3,
+          "text": "毒煙已吹不過來"
+        },
+        {
+          "index": 4,
+          "text": "四圍營和左右護翼情況怎麼樣？"
+        },
+        {
+          "index": 5,
+          "text": "都全軍覆沒，皇上"
+        },
+        {
+          "index": 6,
+          "text": "拿刀來"
+        },
+        {
+          "index": 7,
+          "text": "不要皇上，皇上⋯"
+        },
+        {
+          "index": 8,
+          "text": "不要阻我，走開"
+        },
+        {
+          "index": 9,
+          "text": "皇上，很危險的！不要走"
+        },
+        {
+          "index": 10,
+          "text": "不去！難道坐在這裡等死嗎？走開"
+        },
+        {
+          "index": 11,
+          "text": "我叫你們走開"
+        },
+        {
+          "index": 12,
+          "text": "不要走"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "託皇上鴻福，風向轉變",
+          "note": "「托」改為「託」，書面語中表示「依靠、由於」時慣用「託」。"
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "護駕"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿燦？",
-      "subtitle_2": "如霜",
-      "subtitle_3": "你怎麼來到這裡的？",
-      "subtitle_4": "怎麼來？就說來話長",
-      "subtitle_5": "昨天晚上我未吃夜宵就臨夜起程",
-      "subtitle_6": "攀過金山嶺",
-      "subtitle_7": "到今天早上已經身在萬里長城",
-      "subtitle_8": "我們停了半個時辰吃早飯",
-      "subtitle_9": "我還小個便",
-      "subtitle_10": "是嗎？　　是",
-      "subtitle_11": "我本來想找蕃薯吃",
-      "subtitle_12": "誰知道只是饅頭",
-      "subtitle_13": "你知道的，饅頭根本不合我胃口",
-      "subtitle_14": "微臣救駕來遲，望皇上恕罪",
-      "subtitle_15": "保護皇上",
-      "subtitle_16": "是"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你這個叛賊",
-      "subtitle_2": "捉住他"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "皇上"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "狗皇帝，把你的江山交給我",
-      "subtitle_2": "你說甚麼？"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "是你？",
-      "subtitle_2": "是我！蘇乞兒",
-      "subtitle_3": "蘇乞兒？你不是在乞丐窩裡睡覺嗎",
-      "subtitle_4": "是！你說起都有點睏"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "睡羅漢？",
-      "subtitle_2": "失禮！你披頭散髮的樣子都蠻像乞丐",
-      "subtitle_3": "有沒有興趣加入我們丐幫？",
-      "subtitle_4": "想不到你這條臭死魚都可以復活",
-      "subtitle_5": "是！這都是拜你所賜"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "你已出全力？我還沒出力"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "蠢蛋！普天之下除了降龍十八掌",
-      "subtitle_2": "甚麼武功我都不放在眼內"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "降龍十八掌第七式",
-      "subtitle_2": "飛龍在天",
-      "subtitle_3": "神龍擺尾",
-      "subtitle_4": "烏龍偷心",
-      "subtitle_5": "雙龍出海，戰龍在田",
-      "subtitle_6": "龍飛鳳舞，伏虎降龍⋯",
-      "subtitle_7": "⋯縮龍成寸，龍蛇混雜",
-      "subtitle_8": "龍的傳人龍鳳呈祥⋯",
-      "subtitle_9": "⋯龍馬精神，望夫成龍⋯",
-      "subtitle_10": "打完收工"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "怎麼得十七掌？太可惜了",
-      "subtitle_2": "如果你學會第十八掌",
-      "subtitle_3": "就一定可以打贏我",
-      "subtitle_4": "不過你沒有這個機會"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿燦！"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "我想到了，原來頭十七掌融合一起",
-      "subtitle_2": "就是第十八掌",
-      "subtitle_3": "我實在太聰明了"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "第十八掌－殺龍有悔"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿燦，你沒事吧？",
-      "subtitle_2": "你看我的姿勢，說有事沒有？",
-      "subtitle_3": "你的姿勢是很帥",
-      "subtitle_4": "可是你的樣子很有問題",
-      "subtitle_5": "傻瓜！我沒事",
-      "subtitle_6": "今天晚上洞房都沒問題",
-      "subtitle_7": "這麼厲害"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "阿燦⋯你沒事吧",
-      "subtitle_2": "趙無極呢",
-      "subtitle_3": "到處都是",
-      "subtitle_4": "到處都是？",
-      "subtitle_5": "他已經化為煙塵",
-      "subtitle_6": "化為煙塵咁沙塵？挑！",
-      "subtitle_7": "報告幫主",
-      "subtitle_8": "趙無極的人馬都給我們捉住"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "辛苦了各位兄弟"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "如霜",
-      "subtitle_2": "你記不記得我們之間還有一個協議",
-      "subtitle_3": "記得！一人之下！萬人之上",
-      "subtitle_4": "蓋世武功！狀元之才",
-      "subtitle_5": "可惜我始終都當不成狀元",
-      "subtitle_6": "是！不過我不喜歡狀元",
-      "subtitle_7": "我喜歡乞丐嘛",
-      "subtitle_8": "你先！我稍後跟上"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "僧格林參，你竟不分青紅皂白",
-      "subtitle_2": "你引狼入室",
-      "subtitle_3": "朕現在貶你為小乞丐",
-      "subtitle_4": "你當乞丐很好，看你的樣很有天分",
-      "subtitle_5": "明天到城隍廟報到",
-      "subtitle_6": "有事報我的名字就行",
-      "subtitle_7": "多謝幫主，多謝幫主關照",
-      "subtitle_8": "蘇燦，你有甚麼要求？",
-      "subtitle_9": "你真沒話跟朕說？"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "護駕"
+        }
+      ]
     },
     "answer": {
-      "revised_4": "你當乞丐很好，看你的樣子很有天分",
-      "note_4": "「樣」補全為「樣子」，符合常用說法，屬明顯缺字。"
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦？"
+        },
+        {
+          "index": 2,
+          "text": "如霜"
+        },
+        {
+          "index": 3,
+          "text": "你怎麼來到這裡的？"
+        },
+        {
+          "index": 4,
+          "text": "怎麼來？就說來話長"
+        },
+        {
+          "index": 5,
+          "text": "昨天晚上我未吃夜宵就臨夜起程"
+        },
+        {
+          "index": 6,
+          "text": "攀過金山嶺"
+        },
+        {
+          "index": 7,
+          "text": "到今天早上已經身在萬里長城"
+        },
+        {
+          "index": 8,
+          "text": "我們停了半個時辰吃早飯"
+        },
+        {
+          "index": 9,
+          "text": "我還小個便"
+        },
+        {
+          "index": 10,
+          "text": "是嗎？　　是"
+        },
+        {
+          "index": 11,
+          "text": "我本來想找蕃薯吃"
+        },
+        {
+          "index": 12,
+          "text": "誰知道只是饅頭"
+        },
+        {
+          "index": 13,
+          "text": "你知道的，饅頭根本不合我胃口"
+        },
+        {
+          "index": 14,
+          "text": "微臣救駕來遲，望皇上恕罪"
+        },
+        {
+          "index": 15,
+          "text": "保護皇上"
+        },
+        {
+          "index": 16,
+          "text": "是"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你這個叛賊"
+        },
+        {
+          "index": 2,
+          "text": "捉住他"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "皇上"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "狗皇帝，把你的江山交給我"
+        },
+        {
+          "index": 2,
+          "text": "你說甚麼？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "是你？"
+        },
+        {
+          "index": 2,
+          "text": "是我！蘇乞兒"
+        },
+        {
+          "index": 3,
+          "text": "蘇乞兒？你不是在乞丐窩裡睡覺嗎"
+        },
+        {
+          "index": 4,
+          "text": "是！你說起都有點睏"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "睡羅漢？"
+        },
+        {
+          "index": 2,
+          "text": "失禮！你披頭散髮的樣子都蠻像乞丐"
+        },
+        {
+          "index": 3,
+          "text": "有沒有興趣加入我們丐幫？"
+        },
+        {
+          "index": 4,
+          "text": "想不到你這條臭死魚都可以復活"
+        },
+        {
+          "index": 5,
+          "text": "是！這都是拜你所賜"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "你已出全力？我還沒出力"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "蠢蛋！普天之下除了降龍十八掌"
+        },
+        {
+          "index": 2,
+          "text": "甚麼武功我都不放在眼內"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "降龍十八掌第七式"
+        },
+        {
+          "index": 2,
+          "text": "飛龍在天"
+        },
+        {
+          "index": 3,
+          "text": "神龍擺尾"
+        },
+        {
+          "index": 4,
+          "text": "烏龍偷心"
+        },
+        {
+          "index": 5,
+          "text": "雙龍出海，戰龍在田"
+        },
+        {
+          "index": 6,
+          "text": "龍飛鳳舞，伏虎降龍⋯"
+        },
+        {
+          "index": 7,
+          "text": "⋯縮龍成寸，龍蛇混雜"
+        },
+        {
+          "index": 8,
+          "text": "龍的傳人龍鳳呈祥⋯"
+        },
+        {
+          "index": 9,
+          "text": "⋯龍馬精神，望夫成龍⋯"
+        },
+        {
+          "index": 10,
+          "text": "打完收工"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "怎麼得十七掌？太可惜了"
+        },
+        {
+          "index": 2,
+          "text": "如果你學會第十八掌"
+        },
+        {
+          "index": 3,
+          "text": "就一定可以打贏我"
+        },
+        {
+          "index": 4,
+          "text": "不過你沒有這個機會"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦！"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "我想到了，原來頭十七掌融合一起"
+        },
+        {
+          "index": 2,
+          "text": "就是第十八掌"
+        },
+        {
+          "index": 3,
+          "text": "我實在太聰明了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "第十八掌－殺龍有悔"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦，你沒事吧？"
+        },
+        {
+          "index": 2,
+          "text": "你看我的姿勢，說有事沒有？"
+        },
+        {
+          "index": 3,
+          "text": "你的姿勢是很帥"
+        },
+        {
+          "index": 4,
+          "text": "可是你的樣子很有問題"
+        },
+        {
+          "index": 5,
+          "text": "傻瓜！我沒事"
+        },
+        {
+          "index": 6,
+          "text": "今天晚上洞房都沒問題"
+        },
+        {
+          "index": 7,
+          "text": "這麼厲害"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "阿燦⋯你沒事吧"
+        },
+        {
+          "index": 2,
+          "text": "趙無極呢"
+        },
+        {
+          "index": 3,
+          "text": "到處都是"
+        },
+        {
+          "index": 4,
+          "text": "到處都是？"
+        },
+        {
+          "index": 5,
+          "text": "他已經化為煙塵"
+        },
+        {
+          "index": 6,
+          "text": "化為煙塵咁沙塵？挑！"
+        },
+        {
+          "index": 7,
+          "text": "報告幫主"
+        },
+        {
+          "index": 8,
+          "text": "趙無極的人馬都給我們捉住"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "辛苦了各位兄弟"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "如霜"
+        },
+        {
+          "index": 2,
+          "text": "你記不記得我們之間還有一個協議"
+        },
+        {
+          "index": 3,
+          "text": "記得！一人之下！萬人之上"
+        },
+        {
+          "index": 4,
+          "text": "蓋世武功！狀元之才"
+        },
+        {
+          "index": 5,
+          "text": "可惜我始終都當不成狀元"
+        },
+        {
+          "index": 6,
+          "text": "是！不過我不喜歡狀元"
+        },
+        {
+          "index": 7,
+          "text": "我喜歡乞丐嘛"
+        },
+        {
+          "index": 8,
+          "text": "你先！我稍後跟上"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "僧格林參，你竟不分青紅皂白"
+        },
+        {
+          "index": 2,
+          "text": "你引狼入室"
+        },
+        {
+          "index": 3,
+          "text": "朕現在貶你為小乞丐"
+        },
+        {
+          "index": 4,
+          "text": "你當乞丐很好，看你的樣很有天分"
+        },
+        {
+          "index": 5,
+          "text": "明天到城隍廟報到"
+        },
+        {
+          "index": 6,
+          "text": "有事報我的名字就行"
+        },
+        {
+          "index": 7,
+          "text": "多謝幫主，多謝幫主關照"
+        },
+        {
+          "index": 8,
+          "text": "蘇燦，你有甚麼要求？"
+        },
+        {
+          "index": 9,
+          "text": "你真沒話跟朕說？"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "你當乞丐很好，看你的樣子很有天分",
+          "note": "「樣」補全為「樣子」，符合常用說法，屬明顯缺字。"
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "有甚麼好說呢？走",
-      "subtitle_2": "抱我起來",
-      "subtitle_3": "蘇英雄！蘇英雄",
-      "subtitle_4": "放下來",
-      "subtitle_5": "你別以為救過朕",
-      "subtitle_6": "你對朕不敬，朕一樣會殺了你",
-      "subtitle_7": "你要殺我就不會這樣跟我說話",
-      "subtitle_8": "不要動，否則還礙眼",
-      "subtitle_9": "其實我跟你沒醪沒轕",
-      "subtitle_10": "真沒甚麼好談",
-      "subtitle_11": "你丐幫弟子幾千萬",
-      "subtitle_12": "你一天不解散，朕怎麼安心？",
-      "subtitle_13": "丐幫有多少弟子不是由我決定",
-      "subtitle_14": "而是由你決定",
-      "subtitle_15": "我？",
-      "subtitle_16": "如果你真的英明神武，令到國泰民安",
-      "subtitle_17": "誰會願意當乞丐？",
-      "subtitle_18": "有道理，有道理　　好自為之吧",
-      "subtitle_19": "不過",
-      "subtitle_20": "你總該給朕一點面子，讓朕好下台",
-      "subtitle_21": "好",
-      "subtitle_22": "皇上吉祥",
-      "subtitle_23": "萬歲萬萬歲　　平身"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "有甚麼好說呢？走"
+        },
+        {
+          "index": 2,
+          "text": "抱我起來"
+        },
+        {
+          "index": 3,
+          "text": "蘇英雄！蘇英雄"
+        },
+        {
+          "index": 4,
+          "text": "放下來"
+        },
+        {
+          "index": 5,
+          "text": "你別以為救過朕"
+        },
+        {
+          "index": 6,
+          "text": "你對朕不敬，朕一樣會殺了你"
+        },
+        {
+          "index": 7,
+          "text": "你要殺我就不會這樣跟我說話"
+        },
+        {
+          "index": 8,
+          "text": "不要動，否則還礙眼"
+        },
+        {
+          "index": 9,
+          "text": "其實我跟你沒醪沒轕"
+        },
+        {
+          "index": 10,
+          "text": "真沒甚麼好談"
+        },
+        {
+          "index": 11,
+          "text": "你丐幫弟子幾千萬"
+        },
+        {
+          "index": 12,
+          "text": "你一天不解散，朕怎麼安心？"
+        },
+        {
+          "index": 13,
+          "text": "丐幫有多少弟子不是由我決定"
+        },
+        {
+          "index": 14,
+          "text": "而是由你決定"
+        },
+        {
+          "index": 15,
+          "text": "我？"
+        },
+        {
+          "index": 16,
+          "text": "如果你真的英明神武，令到國泰民安"
+        },
+        {
+          "index": 17,
+          "text": "誰會願意當乞丐？"
+        },
+        {
+          "index": 18,
+          "text": "有道理，有道理　　好自為之吧"
+        },
+        {
+          "index": 19,
+          "text": "不過"
+        },
+        {
+          "index": 20,
+          "text": "你總該給朕一點面子，讓朕好下台"
+        },
+        {
+          "index": 21,
+          "text": "好"
+        },
+        {
+          "index": 22,
+          "text": "皇上吉祥"
+        },
+        {
+          "index": 23,
+          "text": "萬歲萬萬歲　　平身"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "兄弟！認得我嗎？",
-      "subtitle_2": "化成灰也認得你！臭乞丐",
-      "subtitle_3": "揹著女兒，博取同情？",
-      "subtitle_4": "是！施捨點吧",
-      "subtitle_5": "乞丐就是不給！快滾",
-      "subtitle_6": "不給不行",
-      "subtitle_7": "應份的！兄弟",
-      "subtitle_8": "奉旨乞食？有沒有攪錯？",
-      "subtitle_9": "沒有攪錯！爽手點！",
-      "subtitle_10": "怕了你",
-      "subtitle_11": "先別走",
-      "subtitle_12": "又怎麼？",
-      "subtitle_13": "還有一家大小的！給多點",
-      "subtitle_14": "添多少？",
-      "subtitle_15": "沒有一千都給八百"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "兄弟！認得我嗎？"
+        },
+        {
+          "index": 2,
+          "text": "化成灰也認得你！臭乞丐"
+        },
+        {
+          "index": 3,
+          "text": "揹著女兒，博取同情？"
+        },
+        {
+          "index": 4,
+          "text": "是！施捨點吧"
+        },
+        {
+          "index": 5,
+          "text": "乞丐就是不給！快滾"
+        },
+        {
+          "index": 6,
+          "text": "不給不行"
+        },
+        {
+          "index": 7,
+          "text": "應份的！兄弟"
+        },
+        {
+          "index": 8,
+          "text": "奉旨乞食？有沒有攪錯？"
+        },
+        {
+          "index": 9,
+          "text": "沒有攪錯！爽手點！"
+        },
+        {
+          "index": 10,
+          "text": "怕了你"
+        },
+        {
+          "index": 11,
+          "text": "先別走"
+        },
+        {
+          "index": 12,
+          "text": "又怎麼？"
+        },
+        {
+          "index": 13,
+          "text": "還有一家大小的！給多點"
+        },
+        {
+          "index": 14,
+          "text": "添多少？"
+        },
+        {
+          "index": 15,
+          "text": "沒有一千都給八百"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "還不快謝謝人家？",
-      "subtitle_2": "謝謝",
-      "subtitle_3": "快點吃吧",
-      "subtitle_4": "跟住我⋯走吧⋯"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "還不快謝謝人家？"
+        },
+        {
+          "index": 2,
+          "text": "謝謝"
+        },
+        {
+          "index": 3,
+          "text": "快點吃吧"
+        },
+        {
+          "index": 4,
+          "text": "跟住我⋯走吧⋯"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   }
 ]

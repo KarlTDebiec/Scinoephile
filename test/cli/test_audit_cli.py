@@ -59,8 +59,10 @@ def test_audit_cli_stdout_outfile_and_validation(
         json.dumps(
             [
                 {
-                    "query": {"subtitle_1": "錯"},
-                    "answer": {"revised_1": "正", "note_1": "修正。"},
+                    "query": {"subtitles": [{"index": 1, "text": "錯"}]},
+                    "answer": {
+                        "revisions": [{"index": 1, "text": "正", "note": "修正。"}]
+                    },
                 }
             ],
             ensure_ascii=False,

@@ -25,42 +25,53 @@ from scinoephile.optimization.persistence.test_cases.sync import (
 )
 
 _LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
-    input_pfx="zimu_",
-    output_pfx="xiugai_",
-    note_pfx="beizhu_",
+    subtitles="zimu",
+    revisions="xiugai",
+    index="xuhao",
+    text="wenben",
+    note="beizhu",
 )
 """Review prompt using localized correspondence field names."""
 
 _ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
-    input_pfx="source_",
-    output_pfx="correction_",
-    note_pfx="explanation_",
+    subtitles="sources",
+    revisions="corrections",
+    index="position",
+    text="content",
+    note="explanation",
 )
 """Review prompt using an alternative correspondence schema."""
 
 
 def test_normalization_makes_prompt_field_aliases_share_identity():
     """Equivalent field aliases should normalize to one SQL identity."""
-    localized_cls = ReviewManager.get_test_case_cls(
-        size=1,
-        prompt=_LOCALIZED_REVIEW_PROMPT,
-    )
-    alternative_cls = ReviewManager.get_test_case_cls(
-        size=1,
-        prompt=_ALTERNATIVE_REVIEW_PROMPT,
-    )
+    localized_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
+    alternative_cls = ReviewManager.get_test_case_cls(_ALTERNATIVE_REVIEW_PROMPT)
     localized = localized_cls.model_validate(
         {
-            "query": {"zimu_1": "original"},
-            "answer": {"xiugai_1": "corrected", "beizhu_1": "typo"},
+            "query": {"zimu": [{"xuhao": 1, "wenben": "original"}]},
+            "answer": {
+                "xiugai": [
+                    {
+                        "xuhao": 1,
+                        "wenben": "corrected",
+                        "beizhu": "typo",
+                    }
+                ]
+            },
         }
     )
     alternative = alternative_cls.model_validate(
         {
-            "query": {"source_1": "original"},
+            "query": {"sources": [{"position": 1, "content": "original"}]},
             "answer": {
-                "correction_1": "corrected",
-                "explanation_1": "typo",
+                "corrections": [
+                    {
+                        "position": 1,
+                        "content": "corrected",
+                        "explanation": "typo",
+                    }
+                ]
             },
         }
     )
@@ -73,10 +84,11 @@ def test_normalization_makes_prompt_field_aliases_share_identity():
         ReviewManager,
     )
 
-    assert localized_persisted.query == {"subtitle_1": "original"}
+    assert localized_persisted.query == {
+        "subtitles": [{"index": 1, "text": "original"}]
+    }
     assert localized_persisted.answer == {
-        "revised_1": "corrected",
-        "note_1": "typo",
+        "revisions": [{"index": 1, "text": "corrected", "note": "typo"}]
     }
     assert localized_persisted.test_case_id == alternative_persisted.test_case_id
 
@@ -290,16 +302,19 @@ def test_sync_loads_canonical_repository_data(tmp_path: Path):
     )
 
     assert len(loaded) == len(raw_data)
-    assert all(
-        all(field.startswith("subtitle_") for field in test_case.query)
-        for test_case in loaded
-    )
-    assert all(
-        all(field.startswith(("revised_", "note_")) for field in test_case.answer)
-        for test_case in loaded
-    )
-    raw_subtitles = {item["query"]["subtitle_1"] for item in raw_data}
-    assert {test_case.query["subtitle_1"] for test_case in loaded} == raw_subtitles
+    assert all(set(test_case.query) == {"subtitles"} for test_case in loaded)
+    assert all(set(test_case.answer) == {"revisions"} for test_case in loaded)
+    raw_subtitles = {item["query"]["subtitles"][0]["text"] for item in raw_data}
+    loaded_subtitles: set[str] = set()
+    for test_case in loaded:
+        subtitles = test_case.query["subtitles"]
+        assert isinstance(subtitles, list)
+        first_subtitle = subtitles[0]
+        assert isinstance(first_subtitle, dict)
+        text = first_subtitle["text"]
+        assert isinstance(text, str)
+        loaded_subtitles.add(text)
+    assert loaded_subtitles == raw_subtitles
 
 
 def test_sync_round_trips_unbounded_lists(tmp_path: Path):

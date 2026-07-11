@@ -16,20 +16,30 @@ from scinoephile.llms.review import ReviewManager, ReviewPrompt
 
 _LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
     language=Language.zho_hans,
-    input_pfx="zimu_",
-    output_pfx="xiugai_",
-    note_pfx="beizhu_",
+    subtitles="zimu",
+    revisions="xiugai",
+    index="xuhao",
+    text="wenben",
+    note="beizhu",
 )
 """Review prompt using localized correspondence field names."""
 
 
 def test_json_uses_base_prompt_fields(tmp_path: Path):
     """JSON should persist base fields and load them into a concrete prompt."""
-    test_case_cls = ReviewManager.get_test_case_cls(1, _LOCALIZED_REVIEW_PROMPT)
+    test_case_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
     test_case = test_case_cls.model_validate(
         {
-            "query": {"zimu_1": "original"},
-            "answer": {"xiugai_1": "corrected", "beizhu_1": "typo"},
+            "query": {"zimu": [{"xuhao": 1, "wenben": "original"}]},
+            "answer": {
+                "xiugai": [
+                    {
+                        "xuhao": 1,
+                        "wenben": "corrected",
+                        "beizhu": "typo",
+                    }
+                ]
+            },
             "verified": True,
         }
     )
@@ -39,8 +49,10 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
 
     assert json.loads(output_path.read_text(encoding="utf-8")) == [
         {
-            "query": {"subtitle_1": "original"},
-            "answer": {"revised_1": "corrected", "note_1": "typo"},
+            "query": {"subtitles": [{"index": 1, "text": "original"}]},
+            "answer": {
+                "revisions": [{"index": 1, "text": "corrected", "note": "typo"}]
+            },
             "difficulty": 1,
             "verified": True,
         }
@@ -50,9 +62,10 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
         ReviewManager,
         _LOCALIZED_REVIEW_PROMPT,
     )
-    assert loaded[0].query.model_dump() == {"zimu_1": "original"}
+    assert loaded[0].query.model_dump(by_alias=True) == {
+        "zimu": [{"xuhao": 1, "wenben": "original"}]
+    }
     assert loaded[0].answer is not None
-    assert loaded[0].answer.model_dump() == {
-        "xiugai_1": "corrected",
-        "beizhu_1": "typo",
+    assert loaded[0].answer.model_dump(by_alias=True) == {
+        "xiugai": [{"xuhao": 1, "wenben": "corrected", "beizhu": "typo"}]
     }

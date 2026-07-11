@@ -1,2392 +1,6422 @@
 [
   {
     "query": {
-      "subtitle_1": "♪ Hey, let's go ♪",
-      "subtitle_2": "♪ Hey, let's go ♪",
-      "subtitle_3": "♪ I'm happy as can be ♪",
-      "subtitle_4": "♪ Let's go walking\nYou and me ♪",
-      "subtitle_5": "♪ Ready, set\nCome on, let's go ♪",
-      "subtitle_6": "♪ Over the hill\nAcross the field ♪",
-      "subtitle_7": "♪ Through the tunnel we'll go ♪",
-      "subtitle_8": "♪ We'll run across the bridge ♪",
-      "subtitle_9": "♪ And down the bumpy gravel road ♪",
-      "subtitle_10": "♪ Right beneath the spider's web ♪",
-      "subtitle_11": "♪ Ready, set, let's go ♪"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "♪ Hey, let's go ♪",
-      "subtitle_2": "♪ Hey, let's go ♪",
-      "subtitle_3": "♪ I'm happy as can be ♪",
-      "subtitle_4": "♪ Let's go walking\nYou and me ♪",
-      "subtitle_5": "♪ Ready, set\nCome on, let's go ♪",
-      "subtitle_6": "♪ The foxes and the badgers, too ♪",
-      "subtitle_7": "♪ All come out to play ♪",
-      "subtitle_8": "♪ They all want to explore ♪",
-      "subtitle_9": "♪ The deep and wonderful woods all day ♪",
-      "subtitle_10": "♪ Look at all my many friends ♪",
-      "subtitle_11": "♪ Ready, set, let's go ♪",
-      "subtitle_12": "♪ Look at all my many friends ♪",
-      "subtitle_13": "♪ Ready, set, let's go ♪"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(ENGINE RUMBLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)",
-      "subtitle_2": "- Hey Dad, want some caramel?\n- Thanks. How you doing back there?",
-      "subtitle_3": "- Fine.\n- Are you tired? Oop!",
-      "subtitle_4": "- Mmm-mmm.\n- We're almost there."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei, hide."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Whoops. I thought\nthat was a policeman.",
-      "subtitle_2": "Hi!",
-      "subtitle_3": "(BOTH LAUGHING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hello there. Are your parents around?\nWe're your new neighbors.",
-      "subtitle_2": "Great. Thanks.",
-      "subtitle_3": "Hello! Hi, we're the Kusakabes!\nWe're moving in down the street.",
-      "subtitle_4": "Why don't you and your\nfamily stop by sometime?",
-      "subtitle_5": "MAN: Okay, Sure. Good to meet you.",
-      "subtitle_6": "Uh!",
-      "subtitle_7": "Hey, thanks a lot."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "♪ Hey, let's go ♪"
+        },
+        {
+          "index": 2,
+          "text": "♪ Hey, let's go ♪"
+        },
+        {
+          "index": 3,
+          "text": "♪ I'm happy as can be ♪"
+        },
+        {
+          "index": 4,
+          "text": "♪ Let's go walking\nYou and me ♪"
+        },
+        {
+          "index": 5,
+          "text": "♪ Ready, set\nCome on, let's go ♪"
+        },
+        {
+          "index": 6,
+          "text": "♪ Over the hill\nAcross the field ♪"
+        },
+        {
+          "index": 7,
+          "text": "♪ Through the tunnel we'll go ♪"
+        },
+        {
+          "index": 8,
+          "text": "♪ We'll run across the bridge ♪"
+        },
+        {
+          "index": 9,
+          "text": "♪ And down the bumpy gravel road ♪"
+        },
+        {
+          "index": 10,
+          "text": "♪ Right beneath the spider's web ♪"
+        },
+        {
+          "index": 11,
+          "text": "♪ Ready, set, let's go ♪"
+        }
+      ]
     },
     "answer": {
-      "revised_5": "MAN: Okay, sure. Good to meet you.",
-      "note_5": "Changed 'Sure' to lowercase 'sure' after the comma for correct punctuation."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "♪ Hey, let's go ♪"
+        },
+        {
+          "index": 2,
+          "text": "♪ Hey, let's go ♪"
+        },
+        {
+          "index": 3,
+          "text": "♪ I'm happy as can be ♪"
+        },
+        {
+          "index": 4,
+          "text": "♪ Let's go walking\nYou and me ♪"
+        },
+        {
+          "index": 5,
+          "text": "♪ Ready, set\nCome on, let's go ♪"
+        },
+        {
+          "index": 6,
+          "text": "♪ The foxes and the badgers, too ♪"
+        },
+        {
+          "index": 7,
+          "text": "♪ All come out to play ♪"
+        },
+        {
+          "index": 8,
+          "text": "♪ They all want to explore ♪"
+        },
+        {
+          "index": 9,
+          "text": "♪ The deep and wonderful woods all day ♪"
+        },
+        {
+          "index": 10,
+          "text": "♪ Look at all my many friends ♪"
+        },
+        {
+          "index": 11,
+          "text": "♪ Ready, set, let's go ♪"
+        },
+        {
+          "index": 12,
+          "text": "♪ Look at all my many friends ♪"
+        },
+        {
+          "index": 13,
+          "text": "♪ Ready, set, let's go ♪"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(ENGINE RUMBLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 2,
+          "text": "- Hey Dad, want some caramel?\n- Thanks. How you doing back there?"
+        },
+        {
+          "index": 3,
+          "text": "- Fine.\n- Are you tired? Oop!"
+        },
+        {
+          "index": 4,
+          "text": "- Mmm-mmm.\n- We're almost there."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei, hide."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Whoops. I thought\nthat was a policeman."
+        },
+        {
+          "index": 2,
+          "text": "Hi!"
+        },
+        {
+          "index": 3,
+          "text": "(BOTH LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello there. Are your parents around?\nWe're your new neighbors."
+        },
+        {
+          "index": 2,
+          "text": "Great. Thanks."
+        },
+        {
+          "index": 3,
+          "text": "Hello! Hi, we're the Kusakabes!\nWe're moving in down the street."
+        },
+        {
+          "index": 4,
+          "text": "Why don't you and your\nfamily stop by sometime?"
+        },
+        {
+          "index": 5,
+          "text": "MAN: Okay, Sure. Good to meet you."
+        },
+        {
+          "index": 6,
+          "text": "Uh!"
+        },
+        {
+          "index": 7,
+          "text": "Hey, thanks a lot."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "MAN: Okay, sure. Good to meet you.",
+          "note": "Changed 'Sure' to lowercase 'sure' after the comma for correct punctuation."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(WATER RUNNING)"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(WATER RUNNING)"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "This is it, girls.",
-      "subtitle_2": "(GRUNTING)",
-      "subtitle_3": "- Wait up!\n- Here you go.",
-      "subtitle_4": "Mei, look at this bridge.",
-      "subtitle_5": "A bridge?"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "This is it, girls."
+        },
+        {
+          "index": 2,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 3,
+          "text": "- Wait up!\n- Here you go."
+        },
+        {
+          "index": 4,
+          "text": "Mei, look at this bridge."
+        },
+        {
+          "index": 5,
+          "text": "A bridge?"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "There's a fish! Oh, look!\nThere's another one!",
-      "subtitle_2": "So, how do you like the new place?",
-      "subtitle_3": "Dad, it's perfect.",
-      "subtitle_4": "Look at this. A tunnel of trees.",
-      "subtitle_5": "Oh, wow! Look!",
-      "subtitle_6": "(GIGGLING)",
-      "subtitle_7": "Dad, hurry!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "There's a fish! Oh, look!\nThere's another one!"
+        },
+        {
+          "index": 2,
+          "text": "So, how do you like the new place?"
+        },
+        {
+          "index": 3,
+          "text": "Dad, it's perfect."
+        },
+        {
+          "index": 4,
+          "text": "Look at this. A tunnel of trees."
+        },
+        {
+          "index": 5,
+          "text": "Oh, wow! Look!"
+        },
+        {
+          "index": 6,
+          "text": "(GIGGLING)"
+        },
+        {
+          "index": 7,
+          "text": "Dad, hurry!"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Wow! It's creepy.",
-      "subtitle_2": "Creepy!",
-      "subtitle_3": "- It looks like it could be haunted.\n- What, haunted?",
-      "subtitle_4": "(CREAKING)",
-      "subtitle_5": "Whoa.",
-      "subtitle_6": "(GRUNTS) Whoa.",
-      "subtitle_7": "Look. It's rotten.",
-      "subtitle_8": "(BOTH LAUGHING)",
-      "subtitle_9": "(GRUNTING)",
-      "subtitle_10": "(SCREAMS)",
-      "subtitle_11": "(LAUGHING)",
-      "subtitle_12": "- It's collapsing!\n- It's collapsing!",
-      "subtitle_13": "(BOTH LAUGHING)",
-      "subtitle_14": "(WHOOPING)",
-      "subtitle_15": "(BOTH LAUGHING)",
-      "subtitle_16": "(GASPS)",
-      "subtitle_17": "- Mei, look at that.\n- Huh?",
-      "subtitle_18": "Look."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Wow! It's creepy."
+        },
+        {
+          "index": 2,
+          "text": "Creepy!"
+        },
+        {
+          "index": 3,
+          "text": "- It looks like it could be haunted.\n- What, haunted?"
+        },
+        {
+          "index": 4,
+          "text": "(CREAKING)"
+        },
+        {
+          "index": 5,
+          "text": "Whoa."
+        },
+        {
+          "index": 6,
+          "text": "(GRUNTS) Whoa."
+        },
+        {
+          "index": 7,
+          "text": "Look. It's rotten."
+        },
+        {
+          "index": 8,
+          "text": "(BOTH LAUGHING)"
+        },
+        {
+          "index": 9,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 10,
+          "text": "(SCREAMS)"
+        },
+        {
+          "index": 11,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 12,
+          "text": "- It's collapsing!\n- It's collapsing!"
+        },
+        {
+          "index": 13,
+          "text": "(BOTH LAUGHING)"
+        },
+        {
+          "index": 14,
+          "text": "(WHOOPING)"
+        },
+        {
+          "index": 15,
+          "text": "(BOTH LAUGHING)"
+        },
+        {
+          "index": 16,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 17,
+          "text": "- Mei, look at that.\n- Huh?"
+        },
+        {
+          "index": 18,
+          "text": "Look."
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "- Wow! It's huge, isn't it?\n- Ah-choo!",
-      "subtitle_2": "(LAUGHING)",
-      "subtitle_3": "(DOORS SLIDING)",
-      "subtitle_4": "Dad, what's that big tree?",
-      "subtitle_5": "Uh, that's a camphor tree.",
-      "subtitle_6": "- A camphor tree.\n- Camphor tree!",
-      "subtitle_7": "Don't forget to take your shoes off, girls.",
-      "subtitle_8": "Huh?"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Wow! It's huge, isn't it?\n- Ah-choo!"
+        },
+        {
+          "index": 2,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 3,
+          "text": "(DOORS SLIDING)"
+        },
+        {
+          "index": 4,
+          "text": "Dad, what's that big tree?"
+        },
+        {
+          "index": 5,
+          "text": "Uh, that's a camphor tree."
+        },
+        {
+          "index": 6,
+          "text": "- A camphor tree.\n- Camphor tree!"
+        },
+        {
+          "index": 7,
+          "text": "Don't forget to take your shoes off, girls."
+        },
+        {
+          "index": 8,
+          "text": "Huh?"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Whoa!",
-      "subtitle_2": "An acorn.",
-      "subtitle_3": "Let me see.",
-      "subtitle_4": "Another one!",
-      "subtitle_5": "(GRUNTING)",
-      "subtitle_6": "(GASPS)",
-      "subtitle_7": "Here's one.",
-      "subtitle_8": "(GASPS)"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Whoa!"
+        },
+        {
+          "index": 2,
+          "text": "An acorn."
+        },
+        {
+          "index": 3,
+          "text": "Let me see."
+        },
+        {
+          "index": 4,
+          "text": "Another one!"
+        },
+        {
+          "index": 5,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 6,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 7,
+          "text": "Here's one."
+        },
+        {
+          "index": 8,
+          "text": "(GASPS)"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Out of the way, Mei.\nI can't close the door with you there.",
-      "subtitle_2": "Acorns.",
-      "subtitle_3": "Dad, acorns are falling from the ceiling.",
-      "subtitle_4": "Falling from the ceiling.",
-      "subtitle_5": "Hmm."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Out of the way, Mei.\nI can't close the door with you there."
+        },
+        {
+          "index": 2,
+          "text": "Acorns."
+        },
+        {
+          "index": 3,
+          "text": "Dad, acorns are falling from the ceiling."
+        },
+        {
+          "index": 4,
+          "text": "Falling from the ceiling."
+        },
+        {
+          "index": 5,
+          "text": "Hmm."
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Maybe squirrels live here.",
-      "subtitle_2": "- Squirrels?\n- Squirrels?",
-      "subtitle_3": "I think rats eat acorns.\nMaybe they're rats.",
-      "subtitle_4": "- No! Squirrels are better!\n- Ew!",
-      "subtitle_5": "Mister, where do you want your radio?",
-      "subtitle_6": "Oh, right, the radio.\nIn here's good, I guess.",
-      "subtitle_7": "- Satsuki, open the back of the house?\n- Okay.",
-      "subtitle_8": "- Can you find the back door?\n- Of course!",
-      "subtitle_9": "(GIGGLING)",
-      "subtitle_10": "Come on!",
-      "subtitle_11": "Hey, wait for me!",
-      "subtitle_12": "Well, hurry it up, then."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Maybe squirrels live here."
+        },
+        {
+          "index": 2,
+          "text": "- Squirrels?\n- Squirrels?"
+        },
+        {
+          "index": 3,
+          "text": "I think rats eat acorns.\nMaybe they're rats."
+        },
+        {
+          "index": 4,
+          "text": "- No! Squirrels are better!\n- Ew!"
+        },
+        {
+          "index": 5,
+          "text": "Mister, where do you want your radio?"
+        },
+        {
+          "index": 6,
+          "text": "Oh, right, the radio.\nIn here's good, I guess."
+        },
+        {
+          "index": 7,
+          "text": "- Satsuki, open the back of the house?\n- Okay."
+        },
+        {
+          "index": 8,
+          "text": "- Can you find the back door?\n- Of course!"
+        },
+        {
+          "index": 9,
+          "text": "(GIGGLING)"
+        },
+        {
+          "index": 10,
+          "text": "Come on!"
+        },
+        {
+          "index": 11,
+          "text": "Hey, wait for me!"
+        },
+        {
+          "index": 12,
+          "text": "Well, hurry it up, then."
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "few_shot": true,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(GASPING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(WHIMPERING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(ROARING)",
-      "subtitle_2": "(SCREAMING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Let's go.\n- Hmph!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- The bath.\n- Yep."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I think they're gone.",
-      "subtitle_2": "(GASPS)",
-      "subtitle_3": "Hey, you found the bath.",
-      "subtitle_4": "Dad, something's running around in here.",
-      "subtitle_5": "- More squirrels?\n- I don't think so.",
-      "subtitle_6": "They're not bugs or mice, either.\nThey were black, and they were all over the place.",
-      "subtitle_7": "Hmm. Let's have a look."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Ah.\n- So?",
-      "subtitle_2": "It was probably just some soot gremlins.",
-      "subtitle_3": "What do you mean, “gremlins”?\nLike the ones in my book?",
-      "subtitle_4": "Well, it could be ghosts,",
-      "subtitle_5": "but ghosts don't usually like\nto come out on nice days like this.",
-      "subtitle_6": "Normally, you can't see soot gremlins,\nbut every once in a while,",
-      "subtitle_7": "when you go from a bright place to\na dark one, you can catch a glimpse of them.",
-      "subtitle_8": "So that's it.",
-      "subtitle_9": "Come out, come out…",
-      "subtitle_10": "BOTH: Wherever you are!",
-      "subtitle_11": "BOTH: Come out, come out,\nwherever you are!",
-      "subtitle_12": "(WHOOSHING)",
-      "subtitle_13": "(LAUGHING)",
-      "subtitle_14": "Hey, I need your help.\nIt looks like somebody's hidden",
-      "subtitle_15": "the stairs to the top floor of the house.",
-      "subtitle_16": "What?",
-      "subtitle_17": "Can you find the stairs and open\nall the windows up there?",
-      "subtitle_18": "Yeah!",
-      "subtitle_19": "Wait for me!",
-      "subtitle_20": "(GRUNTING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Nope.",
-      "subtitle_2": "The toilet!",
-      "subtitle_3": "Not here.",
-      "subtitle_4": "- Nothing here.\n- Nothing here.",
-      "subtitle_5": "- Nope.\n- Nope.",
-      "subtitle_6": "(LAUGHING)",
-      "subtitle_7": "Ahh!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Nope.",
-      "subtitle_2": "Nope. Hey!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(CREAKING)",
-      "subtitle_2": "Mei, I found the stairs."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)",
-      "subtitle_2": "It's pitch-black.",
-      "subtitle_3": "Maybe it's the soot gremlins."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "An acorn."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Come out, come out, wherever you are!",
-      "subtitle_2": "(RUSTLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hmph."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "BOTH: Ahh!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "We know you're in here, soot gremlins.",
-      "subtitle_2": "Come on out.",
-      "subtitle_3": "(GASPS)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hey!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Huh?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "KUSAKABE: (GRUNTS) Okay, lift.",
-      "subtitle_2": "Dad, come here! There's definitely\nsomething weird in this house!",
-      "subtitle_3": "That's great.",
-      "subtitle_4": "I've always wanted to live in a haunted\nhouse ever since I was a little boy.",
-      "subtitle_5": "BOTH: Oh!",
-      "subtitle_6": "Ahh!",
-      "subtitle_7": "(CRASH)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SHRIEKS)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I caught one! Satsuki, look!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Ah!\n- Oof!",
-      "subtitle_2": "Hi.",
-      "subtitle_3": "(SHRIEKS)",
-      "subtitle_4": "Mei?",
-      "subtitle_5": "(PANTING)",
-      "subtitle_6": "Oh.",
-      "subtitle_7": "Whoa. Hey!",
-      "subtitle_8": "(LAUGHING)",
-      "subtitle_9": "What a ball of energy!",
-      "subtitle_10": "This is our neighbor.\nShe takes care of this house.",
-      "subtitle_11": "She said you can call her\n“Granny” if you'd like.",
-      "subtitle_12": "I'm Satsuki, and that's Mei.\nNice to meet you.",
-      "subtitle_13": "Well, it's nice to meet you, too.",
-      "subtitle_14": "What nice manners you have.",
-      "subtitle_15": "I'm sorry I didn't have time",
-      "subtitle_16": "to clean up more before you got here.",
-      "subtitle_17": "KUSAKABE: No, it's fine.",
-      "subtitle_18": "GRANNY: We've been busy\nin the rice fields,",
-      "subtitle_19": "but I did manage to keep the place\nwell-dusted, as you can see.",
-      "subtitle_20": "Mei, your hands are filthy.\nWhat on earth did you do?",
-      "subtitle_21": "I caught a soot gremlin, but he got away.",
-      "subtitle_22": "Ahh! Your feet!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)",
-      "subtitle_2": "Mine are black, too!",
-      "subtitle_3": "Ah…"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "You've got soot sprites in your house.",
-      "subtitle_2": "Soot sprites? The black puff balls?\nAbout this big?",
-      "subtitle_3": "They scurry everywhere\nwhen you enter a room?",
-      "subtitle_4": "That's right.",
-      "subtitle_5": "They live in old, empty houses",
-      "subtitle_6": "and run all over the place,\ncovering everything with dirt.",
-      "subtitle_7": "I used to be able to see them\nwhen I was your age.",
-      "subtitle_8": "So you've seen them, too.\nThat's very interesting.",
-      "subtitle_9": "So they're a kind of ghost, then?",
-      "subtitle_10": "Don't worry, dear.\nThey're nothing to be afraid of.",
-      "subtitle_11": "If they decide you're nice people,\nthey won't harm you,",
-      "subtitle_12": "and after a while, they'll just go away.",
-      "subtitle_13": "I bet they're up in the rafters right now,",
-      "subtitle_14": "having a talk about whether\nor not they should move out.",
-      "subtitle_15": "(JABBERING)",
-      "subtitle_16": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave.",
-      "subtitle_17": "What if a huge one\ncame chasing after you?",
-      "subtitle_18": "So what? I'm not afraid.",
-      "subtitle_19": "Right. Then you can go to the bathroom",
-      "subtitle_20": "by yourself in the middle of the night.",
-      "subtitle_21": "(LAUGHING)",
-      "subtitle_22": "Come on, girls.",
-      "subtitle_23": "Let's get to work.\nWho'd like to fetch some water for the pump?",
-      "subtitle_24": "I'll go get it.",
-      "subtitle_25": "I'll go, too!",
-      "subtitle_26": "(LAUGHING)",
-      "subtitle_27": "Mei, wait there, okay?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Did you catch a fish?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GRUNTING)",
-      "subtitle_2": "(SQUEALING)",
-      "subtitle_3": "Granny, the pump's working!",
-      "subtitle_4": "Keep pumping!",
-      "subtitle_5": "Don't stop until the water gets cold.",
-      "subtitle_6": "Okay.",
-      "subtitle_7": "(LAUGHING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Oh. Hello again. Can I help you?",
-      "subtitle_2": "Eh… My… mom said\nto give this to Granny.",
-      "subtitle_3": "Oh. What is it?",
-      "subtitle_4": "- Mmm.\n- Hmm?",
-      "subtitle_5": "Mmm! Eh…",
-      "subtitle_6": "Hey, wait! What is this?",
-      "subtitle_7": "Is that Kanta?",
-      "subtitle_8": "Hey, you in there!",
-      "subtitle_9": "- Your house is haunted!\n- Kanta!",
-      "subtitle_10": "Mmm.",
-      "subtitle_11": "(MEI GIGGLES)",
-      "subtitle_12": "(LAUGHING)",
-      "subtitle_13": "Satsuki, I acted just\nlike that when I was a boy.",
-      "subtitle_14": "I hate boys, but I'm glad he brought\nthis cake you made.",
-      "subtitle_15": "It's great, Granny.",
-      "subtitle_16": "(KUSAKABE LAUGHS)",
-      "subtitle_17": "Eat all you like.",
-      "subtitle_18": "SATSUKI: Thanks, moving man!",
-      "subtitle_19": "MEI: Thanks, moving man!",
-      "subtitle_20": "Thanks for everything, Granny.",
-      "subtitle_21": "- Good-bye, Granny!\n- Good-bye, Granny!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(CHOPPING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(WOOD CLATTERING)",
-      "subtitle_2": "(LEAVES RUSTLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(WIND HOWLING)",
-      "subtitle_2": "(SCREAMING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(WIND WHISTLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(CREAKING)",
-      "subtitle_2": "(POTS RATTLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Dad, this house is too old.\nI think it's gonna fall down.",
-      "subtitle_2": "(LAUGHING)",
-      "subtitle_3": "That would be a problem,\nsince we just moved in here.",
-      "subtitle_4": "(LOUD CRASH)",
-      "subtitle_5": "Huh?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SHUTTERS RATTLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(CLOCK TICKING)",
-      "subtitle_2": "(HOOTING)",
-      "subtitle_3": "(GASPS)",
-      "subtitle_4": "(HOOTING CONTINUES)",
-      "subtitle_5": "(LAUGHING)",
-      "subtitle_6": "Everybody, try laughing.\nThen whatever scares you will go away.",
-      "subtitle_7": "(LAUGHING)",
-      "subtitle_8": "But, Dad, I'm not scared.",
-      "subtitle_9": "(LAUGHING)",
-      "subtitle_10": "What? I'm not scared.",
-      "subtitle_11": "(LAUGHING)",
-      "subtitle_12": "(ROARING)",
-      "subtitle_13": "(SHOUTING)",
-      "subtitle_14": "(LAUGHING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "BOTH: One, two, one, two, one, two.",
-      "subtitle_2": "That's it. Stamp that dirt out, girls.\nThat's it."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Okay. That's all the chores.",
-      "subtitle_2": "- You're done.\n- BOTH: Yay!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Ready? Hold on!",
-      "subtitle_2": "Who-o-oa!",
-      "subtitle_3": "(GIRLS SHRIEKING)",
-      "subtitle_4": "KUSAKABE: Whoo-ooo!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "SATSUKI: Granny!",
-      "subtitle_2": "GIRLS: Hi, Granny!\nKUSAKABE: Good afternoon!",
-      "subtitle_3": "Hello there, Kusakabes!\nWhere are you headed?",
-      "subtitle_4": "We're going to visit Mom at the hospital!",
-      "subtitle_5": "That's good! Say hi!",
-      "subtitle_6": "Tell her I hope she's feeling better.",
-      "subtitle_7": "SATSUKI: We will!",
-      "subtitle_8": "- Mmm.\n- Mmm."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hey, this way. Whoa!",
-      "subtitle_2": "(GIRLS GIGGLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hey, Dad. There it is."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(DOOR OPENS)",
-      "subtitle_2": "- Good afternoon, ma'am.\n- Hello, dear.",
-      "subtitle_3": "- Mommy!\n- Hi, Mei. It's so good to see you.",
-      "subtitle_4": "Daddy kept getting lost\nthe whole way here, Mom.",
-      "subtitle_5": "Oh, he did? No school?",
-      "subtitle_6": "No, it's a rice-planting day.",
-      "subtitle_7": "Oh, is that so?",
-      "subtitle_8": "Hey, Mom, Dad's talking to the doctor.",
-      "subtitle_9": "I am so happy to see you girls.",
-      "subtitle_10": "So how do you like it in the country?\nHave you settled in?",
-      "subtitle_11": "- Yeah.\n- Hmm?",
-      "subtitle_12": "Mei's scared…",
-      "subtitle_13": "- A haunted house?\n- Mmm-hmm.",
-      "subtitle_14": "Mommy, do you like haunted houses?",
-      "subtitle_15": "Of course. I'll have to get better soon\nso I can meet some ghosts.",
-      "subtitle_16": "- See that, Mei?\n- Mmm-hmm.",
-      "subtitle_17": "Mei was worried that you wouldn't\ncome home if the house was haunted.",
-      "subtitle_18": "- Do you two like it?\n- Yeah!",
-      "subtitle_19": "I'm not scared at all.",
-      "subtitle_20": "(LAUGHS)",
-      "subtitle_21": "Oh, what cute hair.\nDid you do this, Satsuki?",
-      "subtitle_22": "- Mmm-hmm.\n- It's very nice, huh, Mei?",
-      "subtitle_23": "- What a lucky girl you are.\n- Yeah, but she yells at me a lot.",
-      "subtitle_24": "- That's because you never sit still.\n- Let's see your hair, Satsuki.",
-      "subtitle_25": "You sure it isn't a little too short?",
-      "subtitle_26": "No, I like it this way, Mom.",
-      "subtitle_27": "- Brush my hair! Brush mine!\n- Wait your turn, Mei.",
-      "subtitle_28": "Your hair will never cooperate.",
-      "subtitle_29": "It's exactly like my hair\nwhen I was your age.",
-      "subtitle_30": "Do you think it will\nstart cooperating soon?",
-      "subtitle_31": "I want it to look like yours.",
-      "subtitle_32": "(CHUCKLES)",
-      "subtitle_33": "I think it will.",
-      "subtitle_34": "You and I are a lot alike, Satsuki."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(INAUDIBLE)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Mom looked great, didn't she, Dad?\n- Yeah, she did,",
-      "subtitle_2": "her doctor said she should be able\nto come home real soon.",
-      "subtitle_3": "- So she'll be home tomorrow?\n- There she goes again with tomorrow.",
-      "subtitle_4": "Well, I think tomorrow might be a bit soon.",
-      "subtitle_5": "Mom said she was gonna sleep\nin my bed with me.",
-      "subtitle_6": "I thought you weren't scared\nto sleep alone.",
-      "subtitle_7": "Can't you sleep by yourself?",
-      "subtitle_8": "She's the one who's scared, not me.",
-      "subtitle_9": "(BOTH LAUGHING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hey, Dad! Look, it's morning!",
-      "subtitle_2": "(GROANING)",
-      "subtitle_3": "- Umph!\n- Hey, wake up!",
-      "subtitle_4": "(GROANING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Sorry. I overslept again.\n- I have to take lunch to school today.",
-      "subtitle_2": "Oh, no. I forgot all about that.",
-      "subtitle_3": "That's okay. I'm making\nlunch for everyone.",
-      "subtitle_4": "- Hey, it's burning!\n- I'm coming. Just a minute.",
-      "subtitle_5": "I'm making this one for you, Mei.",
-      "subtitle_6": "I get one?",
-      "subtitle_7": "Mei, sit down and eat.",
-      "subtitle_8": "There you go. Wrap it up\nso it stays fresh. Okay?",
-      "subtitle_9": "(SIGHS)",
-      "subtitle_10": "- Satsuki!\n- That's Michiko.",
-      "subtitle_11": "Hi!",
-      "subtitle_12": "So, you made a friend already, did you?",
-      "subtitle_13": "- Satsuki, time for school!\n- She's walking to school with me.",
-      "subtitle_14": "(SLURPING)",
-      "subtitle_15": "I gotta go.",
-      "subtitle_16": "(DISHES CLATTERING)",
-      "subtitle_17": "See you later!",
-      "subtitle_18": "BOTH: Have a nice day!",
-      "subtitle_19": "Hi, Michiko.",
-      "subtitle_20": "- Hi. Ready for school?\n- Yep.",
-      "subtitle_21": "(CHILDREN TALKING)",
-      "subtitle_22": "(BIRDS CHIRPING)",
-      "subtitle_23": "(YAWNING)",
-      "subtitle_24": "Hey, Dad.",
-      "subtitle_25": "Do I look like a big girl?",
-      "subtitle_26": "You do. Are you going somewhere?",
-      "subtitle_27": "I'm just off to run some errands."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Dad, is it lunchtime yet?",
-      "subtitle_2": "What? We just ate breakfast."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Dad, you be the flower shop. Okay?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hey, tadpoles."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GIGGLES)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "What a stupid bucket.",
-      "subtitle_2": "Huh?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Acorn.",
-      "subtitle_2": "Ha!",
-      "subtitle_3": "(GIGGLES)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GIGGLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(LAUGHING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(QUICK STEPS)",
-      "subtitle_2": "Ha!",
-      "subtitle_3": "(GRUNTING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(RIPPING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hey!",
-      "subtitle_2": "(LAUGHING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Bleh!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Ahh!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hey!",
-      "subtitle_2": "(GIGGLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Ahh! Ahh!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GRUNTING)",
-      "subtitle_2": "(SCREAMING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SNORING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SNORING CONTINUES)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)",
-      "subtitle_2": "(LAUGHING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Whoa!",
-      "subtitle_2": "(LAUGHING)",
-      "subtitle_3": "(GROANING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)",
-      "subtitle_2": "(SNORING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(MOANING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GIGGLES)",
-      "subtitle_2": "(SNORING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(LAUGHING)",
-      "subtitle_2": "(SNUFFLING)",
-      "subtitle_3": "Ahh…",
-      "subtitle_4": "Ah-choo!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(MEI GRUNTING)",
-      "subtitle_2": "(SNORING RESUMES)",
-      "subtitle_3": "(MOANING)",
-      "subtitle_4": "(CHUCKLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Who are you? A great big soot gremlin?",
-      "subtitle_2": "(GRUMBLING)",
-      "subtitle_3": "(ROARING)",
-      "subtitle_4": "(LAUGHING)",
-      "subtitle_5": "(ROARING)",
-      "subtitle_6": "(LAUGHING)",
-      "subtitle_7": "To-to-ro!",
-      "subtitle_8": "(INHALES)",
-      "subtitle_9": "Totoro?",
-      "subtitle_10": "Is that what your name is? Totoro?",
-      "subtitle_11": "(GRUMBLING) Totoro.",
-      "subtitle_12": "Yep, that's your name, all right.",
-      "subtitle_13": "Mmm. Totoro.",
-      "subtitle_14": "(MOANING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(YAWNING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SNORING)",
-      "subtitle_2": "(MOANING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(PLOP)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Bye.\n- See you later!",
-      "subtitle_2": "- I'm home!\n- Hi there.",
-      "subtitle_3": "- Wow. Is it that late already?\n- Where's Mei?",
-      "subtitle_4": "- Did she like her lunch box?\n- We haven't eaten.",
-      "subtitle_5": "She's running around\nwith that lunch box.",
-      "subtitle_6": "Mei!",
-      "subtitle_7": "Mei!",
-      "subtitle_8": "Mei?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)",
-      "subtitle_2": "Hey, Dad! Come here!",
-      "subtitle_3": "I found Mei's hat!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei! Mei!",
-      "subtitle_2": "(MOANING)",
-      "subtitle_3": "Hmm? Hmm.",
-      "subtitle_4": "- Hey, Mei, wake up!\n- Huh?",
-      "subtitle_5": "What do you think you're doing,\nsleeping out here?",
-      "subtitle_6": "Totoro?",
-      "subtitle_7": "Totoro?",
-      "subtitle_8": "Where's Totoro?",
-      "subtitle_9": "Maybe you were dreaming.",
-      "subtitle_10": "- No, I saw Totoro.\n- Totoro?",
-      "subtitle_11": "You mean a troll,\nlike the one in your storybook?",
-      "subtitle_12": "Mmm-hmm. But he called hisself Totoro.",
-      "subtitle_13": "He was furry, with a great big mouth.",
-      "subtitle_14": "There was a little one, and a bigger one,",
-      "subtitle_15": "and a huge one that kept falling asleep.",
-      "subtitle_16": "(SIGHS)",
-      "subtitle_17": "(TWIGS SNAPPING)",
-      "subtitle_18": "There you are.",
-      "subtitle_19": "(PANTING)",
-      "subtitle_20": "Wow. This would make\na great secret hiding place.",
-      "subtitle_21": "Dad, Mei said that\nshe saw a Totoro here.",
-      "subtitle_22": "- A Totoro?\n- Mmm-hmm.",
-      "subtitle_23": "This way!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPING)"
+        }
+      ]
     },
     "answer": {
-      "revised_12": "Mmm-hmm. But he called himself Totoro.",
-      "note_12": "Corrected 'hisself' to 'himself'."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(WHIMPERING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(ROARING)"
+        },
+        {
+          "index": 2,
+          "text": "(SCREAMING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Let's go.\n- Hmph!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- The bath.\n- Yep."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I think they're gone."
+        },
+        {
+          "index": 2,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 3,
+          "text": "Hey, you found the bath."
+        },
+        {
+          "index": 4,
+          "text": "Dad, something's running around in here."
+        },
+        {
+          "index": 5,
+          "text": "- More squirrels?\n- I don't think so."
+        },
+        {
+          "index": 6,
+          "text": "They're not bugs or mice, either.\nThey were black, and they were all over the place."
+        },
+        {
+          "index": 7,
+          "text": "Hmm. Let's have a look."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Ah.\n- So?"
+        },
+        {
+          "index": 2,
+          "text": "It was probably just some soot gremlins."
+        },
+        {
+          "index": 3,
+          "text": "What do you mean, “gremlins”?\nLike the ones in my book?"
+        },
+        {
+          "index": 4,
+          "text": "Well, it could be ghosts,"
+        },
+        {
+          "index": 5,
+          "text": "but ghosts don't usually like\nto come out on nice days like this."
+        },
+        {
+          "index": 6,
+          "text": "Normally, you can't see soot gremlins,\nbut every once in a while,"
+        },
+        {
+          "index": 7,
+          "text": "when you go from a bright place to\na dark one, you can catch a glimpse of them."
+        },
+        {
+          "index": 8,
+          "text": "So that's it."
+        },
+        {
+          "index": 9,
+          "text": "Come out, come out…"
+        },
+        {
+          "index": 10,
+          "text": "BOTH: Wherever you are!"
+        },
+        {
+          "index": 11,
+          "text": "BOTH: Come out, come out,\nwherever you are!"
+        },
+        {
+          "index": 12,
+          "text": "(WHOOSHING)"
+        },
+        {
+          "index": 13,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 14,
+          "text": "Hey, I need your help.\nIt looks like somebody's hidden"
+        },
+        {
+          "index": 15,
+          "text": "the stairs to the top floor of the house."
+        },
+        {
+          "index": 16,
+          "text": "What?"
+        },
+        {
+          "index": 17,
+          "text": "Can you find the stairs and open\nall the windows up there?"
+        },
+        {
+          "index": 18,
+          "text": "Yeah!"
+        },
+        {
+          "index": 19,
+          "text": "Wait for me!"
+        },
+        {
+          "index": 20,
+          "text": "(GRUNTING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Nope."
+        },
+        {
+          "index": 2,
+          "text": "The toilet!"
+        },
+        {
+          "index": 3,
+          "text": "Not here."
+        },
+        {
+          "index": 4,
+          "text": "- Nothing here.\n- Nothing here."
+        },
+        {
+          "index": 5,
+          "text": "- Nope.\n- Nope."
+        },
+        {
+          "index": 6,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 7,
+          "text": "Ahh!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Nope."
+        },
+        {
+          "index": 2,
+          "text": "Nope. Hey!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(CREAKING)"
+        },
+        {
+          "index": 2,
+          "text": "Mei, I found the stairs."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 2,
+          "text": "It's pitch-black."
+        },
+        {
+          "index": 3,
+          "text": "Maybe it's the soot gremlins."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "An acorn."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Come out, come out, wherever you are!"
+        },
+        {
+          "index": 2,
+          "text": "(RUSTLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hmph."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "BOTH: Ahh!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "We know you're in here, soot gremlins."
+        },
+        {
+          "index": 2,
+          "text": "Come on out."
+        },
+        {
+          "index": 3,
+          "text": "(GASPS)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Huh?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "KUSAKABE: (GRUNTS) Okay, lift."
+        },
+        {
+          "index": 2,
+          "text": "Dad, come here! There's definitely\nsomething weird in this house!"
+        },
+        {
+          "index": 3,
+          "text": "That's great."
+        },
+        {
+          "index": 4,
+          "text": "I've always wanted to live in a haunted\nhouse ever since I was a little boy."
+        },
+        {
+          "index": 5,
+          "text": "BOTH: Oh!"
+        },
+        {
+          "index": 6,
+          "text": "Ahh!"
+        },
+        {
+          "index": 7,
+          "text": "(CRASH)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SHRIEKS)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I caught one! Satsuki, look!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Ah!\n- Oof!"
+        },
+        {
+          "index": 2,
+          "text": "Hi."
+        },
+        {
+          "index": 3,
+          "text": "(SHRIEKS)"
+        },
+        {
+          "index": 4,
+          "text": "Mei?"
+        },
+        {
+          "index": 5,
+          "text": "(PANTING)"
+        },
+        {
+          "index": 6,
+          "text": "Oh."
+        },
+        {
+          "index": 7,
+          "text": "Whoa. Hey!"
+        },
+        {
+          "index": 8,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 9,
+          "text": "What a ball of energy!"
+        },
+        {
+          "index": 10,
+          "text": "This is our neighbor.\nShe takes care of this house."
+        },
+        {
+          "index": 11,
+          "text": "She said you can call her\n“Granny” if you'd like."
+        },
+        {
+          "index": 12,
+          "text": "I'm Satsuki, and that's Mei.\nNice to meet you."
+        },
+        {
+          "index": 13,
+          "text": "Well, it's nice to meet you, too."
+        },
+        {
+          "index": 14,
+          "text": "What nice manners you have."
+        },
+        {
+          "index": 15,
+          "text": "I'm sorry I didn't have time"
+        },
+        {
+          "index": 16,
+          "text": "to clean up more before you got here."
+        },
+        {
+          "index": 17,
+          "text": "KUSAKABE: No, it's fine."
+        },
+        {
+          "index": 18,
+          "text": "GRANNY: We've been busy\nin the rice fields,"
+        },
+        {
+          "index": 19,
+          "text": "but I did manage to keep the place\nwell-dusted, as you can see."
+        },
+        {
+          "index": 20,
+          "text": "Mei, your hands are filthy.\nWhat on earth did you do?"
+        },
+        {
+          "index": 21,
+          "text": "I caught a soot gremlin, but he got away."
+        },
+        {
+          "index": 22,
+          "text": "Ahh! Your feet!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 2,
+          "text": "Mine are black, too!"
+        },
+        {
+          "index": 3,
+          "text": "Ah…"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You've got soot sprites in your house."
+        },
+        {
+          "index": 2,
+          "text": "Soot sprites? The black puff balls?\nAbout this big?"
+        },
+        {
+          "index": 3,
+          "text": "They scurry everywhere\nwhen you enter a room?"
+        },
+        {
+          "index": 4,
+          "text": "That's right."
+        },
+        {
+          "index": 5,
+          "text": "They live in old, empty houses"
+        },
+        {
+          "index": 6,
+          "text": "and run all over the place,\ncovering everything with dirt."
+        },
+        {
+          "index": 7,
+          "text": "I used to be able to see them\nwhen I was your age."
+        },
+        {
+          "index": 8,
+          "text": "So you've seen them, too.\nThat's very interesting."
+        },
+        {
+          "index": 9,
+          "text": "So they're a kind of ghost, then?"
+        },
+        {
+          "index": 10,
+          "text": "Don't worry, dear.\nThey're nothing to be afraid of."
+        },
+        {
+          "index": 11,
+          "text": "If they decide you're nice people,\nthey won't harm you,"
+        },
+        {
+          "index": 12,
+          "text": "and after a while, they'll just go away."
+        },
+        {
+          "index": 13,
+          "text": "I bet they're up in the rafters right now,"
+        },
+        {
+          "index": 14,
+          "text": "having a talk about whether\nor not they should move out."
+        },
+        {
+          "index": 15,
+          "text": "(JABBERING)"
+        },
+        {
+          "index": 16,
+          "text": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave."
+        },
+        {
+          "index": 17,
+          "text": "What if a huge one\ncame chasing after you?"
+        },
+        {
+          "index": 18,
+          "text": "So what? I'm not afraid."
+        },
+        {
+          "index": 19,
+          "text": "Right. Then you can go to the bathroom"
+        },
+        {
+          "index": 20,
+          "text": "by yourself in the middle of the night."
+        },
+        {
+          "index": 21,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 22,
+          "text": "Come on, girls."
+        },
+        {
+          "index": 23,
+          "text": "Let's get to work.\nWho'd like to fetch some water for the pump?"
+        },
+        {
+          "index": 24,
+          "text": "I'll go get it."
+        },
+        {
+          "index": 25,
+          "text": "I'll go, too!"
+        },
+        {
+          "index": 26,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 27,
+          "text": "Mei, wait there, okay?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Did you catch a fish?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 2,
+          "text": "(SQUEALING)"
+        },
+        {
+          "index": 3,
+          "text": "Granny, the pump's working!"
+        },
+        {
+          "index": 4,
+          "text": "Keep pumping!"
+        },
+        {
+          "index": 5,
+          "text": "Don't stop until the water gets cold."
+        },
+        {
+          "index": 6,
+          "text": "Okay."
+        },
+        {
+          "index": 7,
+          "text": "(LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Oh. Hello again. Can I help you?"
+        },
+        {
+          "index": 2,
+          "text": "Eh… My… mom said\nto give this to Granny."
+        },
+        {
+          "index": 3,
+          "text": "Oh. What is it?"
+        },
+        {
+          "index": 4,
+          "text": "- Mmm.\n- Hmm?"
+        },
+        {
+          "index": 5,
+          "text": "Mmm! Eh…"
+        },
+        {
+          "index": 6,
+          "text": "Hey, wait! What is this?"
+        },
+        {
+          "index": 7,
+          "text": "Is that Kanta?"
+        },
+        {
+          "index": 8,
+          "text": "Hey, you in there!"
+        },
+        {
+          "index": 9,
+          "text": "- Your house is haunted!\n- Kanta!"
+        },
+        {
+          "index": 10,
+          "text": "Mmm."
+        },
+        {
+          "index": 11,
+          "text": "(MEI GIGGLES)"
+        },
+        {
+          "index": 12,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 13,
+          "text": "Satsuki, I acted just\nlike that when I was a boy."
+        },
+        {
+          "index": 14,
+          "text": "I hate boys, but I'm glad he brought\nthis cake you made."
+        },
+        {
+          "index": 15,
+          "text": "It's great, Granny."
+        },
+        {
+          "index": 16,
+          "text": "(KUSAKABE LAUGHS)"
+        },
+        {
+          "index": 17,
+          "text": "Eat all you like."
+        },
+        {
+          "index": 18,
+          "text": "SATSUKI: Thanks, moving man!"
+        },
+        {
+          "index": 19,
+          "text": "MEI: Thanks, moving man!"
+        },
+        {
+          "index": 20,
+          "text": "Thanks for everything, Granny."
+        },
+        {
+          "index": 21,
+          "text": "- Good-bye, Granny!\n- Good-bye, Granny!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(CHOPPING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(WOOD CLATTERING)"
+        },
+        {
+          "index": 2,
+          "text": "(LEAVES RUSTLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(WIND HOWLING)"
+        },
+        {
+          "index": 2,
+          "text": "(SCREAMING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(WIND WHISTLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(CREAKING)"
+        },
+        {
+          "index": 2,
+          "text": "(POTS RATTLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Dad, this house is too old.\nI think it's gonna fall down."
+        },
+        {
+          "index": 2,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 3,
+          "text": "That would be a problem,\nsince we just moved in here."
+        },
+        {
+          "index": 4,
+          "text": "(LOUD CRASH)"
+        },
+        {
+          "index": 5,
+          "text": "Huh?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SHUTTERS RATTLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(CLOCK TICKING)"
+        },
+        {
+          "index": 2,
+          "text": "(HOOTING)"
+        },
+        {
+          "index": 3,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 4,
+          "text": "(HOOTING CONTINUES)"
+        },
+        {
+          "index": 5,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 6,
+          "text": "Everybody, try laughing.\nThen whatever scares you will go away."
+        },
+        {
+          "index": 7,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 8,
+          "text": "But, Dad, I'm not scared."
+        },
+        {
+          "index": 9,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 10,
+          "text": "What? I'm not scared."
+        },
+        {
+          "index": 11,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 12,
+          "text": "(ROARING)"
+        },
+        {
+          "index": 13,
+          "text": "(SHOUTING)"
+        },
+        {
+          "index": 14,
+          "text": "(LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "BOTH: One, two, one, two, one, two."
+        },
+        {
+          "index": 2,
+          "text": "That's it. Stamp that dirt out, girls.\nThat's it."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Okay. That's all the chores."
+        },
+        {
+          "index": 2,
+          "text": "- You're done.\n- BOTH: Yay!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Ready? Hold on!"
+        },
+        {
+          "index": 2,
+          "text": "Who-o-oa!"
+        },
+        {
+          "index": 3,
+          "text": "(GIRLS SHRIEKING)"
+        },
+        {
+          "index": 4,
+          "text": "KUSAKABE: Whoo-ooo!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "SATSUKI: Granny!"
+        },
+        {
+          "index": 2,
+          "text": "GIRLS: Hi, Granny!\nKUSAKABE: Good afternoon!"
+        },
+        {
+          "index": 3,
+          "text": "Hello there, Kusakabes!\nWhere are you headed?"
+        },
+        {
+          "index": 4,
+          "text": "We're going to visit Mom at the hospital!"
+        },
+        {
+          "index": 5,
+          "text": "That's good! Say hi!"
+        },
+        {
+          "index": 6,
+          "text": "Tell her I hope she's feeling better."
+        },
+        {
+          "index": 7,
+          "text": "SATSUKI: We will!"
+        },
+        {
+          "index": 8,
+          "text": "- Mmm.\n- Mmm."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey, this way. Whoa!"
+        },
+        {
+          "index": 2,
+          "text": "(GIRLS GIGGLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey, Dad. There it is."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(DOOR OPENS)"
+        },
+        {
+          "index": 2,
+          "text": "- Good afternoon, ma'am.\n- Hello, dear."
+        },
+        {
+          "index": 3,
+          "text": "- Mommy!\n- Hi, Mei. It's so good to see you."
+        },
+        {
+          "index": 4,
+          "text": "Daddy kept getting lost\nthe whole way here, Mom."
+        },
+        {
+          "index": 5,
+          "text": "Oh, he did? No school?"
+        },
+        {
+          "index": 6,
+          "text": "No, it's a rice-planting day."
+        },
+        {
+          "index": 7,
+          "text": "Oh, is that so?"
+        },
+        {
+          "index": 8,
+          "text": "Hey, Mom, Dad's talking to the doctor."
+        },
+        {
+          "index": 9,
+          "text": "I am so happy to see you girls."
+        },
+        {
+          "index": 10,
+          "text": "So how do you like it in the country?\nHave you settled in?"
+        },
+        {
+          "index": 11,
+          "text": "- Yeah.\n- Hmm?"
+        },
+        {
+          "index": 12,
+          "text": "Mei's scared…"
+        },
+        {
+          "index": 13,
+          "text": "- A haunted house?\n- Mmm-hmm."
+        },
+        {
+          "index": 14,
+          "text": "Mommy, do you like haunted houses?"
+        },
+        {
+          "index": 15,
+          "text": "Of course. I'll have to get better soon\nso I can meet some ghosts."
+        },
+        {
+          "index": 16,
+          "text": "- See that, Mei?\n- Mmm-hmm."
+        },
+        {
+          "index": 17,
+          "text": "Mei was worried that you wouldn't\ncome home if the house was haunted."
+        },
+        {
+          "index": 18,
+          "text": "- Do you two like it?\n- Yeah!"
+        },
+        {
+          "index": 19,
+          "text": "I'm not scared at all."
+        },
+        {
+          "index": 20,
+          "text": "(LAUGHS)"
+        },
+        {
+          "index": 21,
+          "text": "Oh, what cute hair.\nDid you do this, Satsuki?"
+        },
+        {
+          "index": 22,
+          "text": "- Mmm-hmm.\n- It's very nice, huh, Mei?"
+        },
+        {
+          "index": 23,
+          "text": "- What a lucky girl you are.\n- Yeah, but she yells at me a lot."
+        },
+        {
+          "index": 24,
+          "text": "- That's because you never sit still.\n- Let's see your hair, Satsuki."
+        },
+        {
+          "index": 25,
+          "text": "You sure it isn't a little too short?"
+        },
+        {
+          "index": 26,
+          "text": "No, I like it this way, Mom."
+        },
+        {
+          "index": 27,
+          "text": "- Brush my hair! Brush mine!\n- Wait your turn, Mei."
+        },
+        {
+          "index": 28,
+          "text": "Your hair will never cooperate."
+        },
+        {
+          "index": 29,
+          "text": "It's exactly like my hair\nwhen I was your age."
+        },
+        {
+          "index": 30,
+          "text": "Do you think it will\nstart cooperating soon?"
+        },
+        {
+          "index": 31,
+          "text": "I want it to look like yours."
+        },
+        {
+          "index": 32,
+          "text": "(CHUCKLES)"
+        },
+        {
+          "index": 33,
+          "text": "I think it will."
+        },
+        {
+          "index": 34,
+          "text": "You and I are a lot alike, Satsuki."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(INAUDIBLE)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Mom looked great, didn't she, Dad?\n- Yeah, she did,"
+        },
+        {
+          "index": 2,
+          "text": "her doctor said she should be able\nto come home real soon."
+        },
+        {
+          "index": 3,
+          "text": "- So she'll be home tomorrow?\n- There she goes again with tomorrow."
+        },
+        {
+          "index": 4,
+          "text": "Well, I think tomorrow might be a bit soon."
+        },
+        {
+          "index": 5,
+          "text": "Mom said she was gonna sleep\nin my bed with me."
+        },
+        {
+          "index": 6,
+          "text": "I thought you weren't scared\nto sleep alone."
+        },
+        {
+          "index": 7,
+          "text": "Can't you sleep by yourself?"
+        },
+        {
+          "index": 8,
+          "text": "She's the one who's scared, not me."
+        },
+        {
+          "index": 9,
+          "text": "(BOTH LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey, Dad! Look, it's morning!"
+        },
+        {
+          "index": 2,
+          "text": "(GROANING)"
+        },
+        {
+          "index": 3,
+          "text": "- Umph!\n- Hey, wake up!"
+        },
+        {
+          "index": 4,
+          "text": "(GROANING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Sorry. I overslept again.\n- I have to take lunch to school today."
+        },
+        {
+          "index": 2,
+          "text": "Oh, no. I forgot all about that."
+        },
+        {
+          "index": 3,
+          "text": "That's okay. I'm making\nlunch for everyone."
+        },
+        {
+          "index": 4,
+          "text": "- Hey, it's burning!\n- I'm coming. Just a minute."
+        },
+        {
+          "index": 5,
+          "text": "I'm making this one for you, Mei."
+        },
+        {
+          "index": 6,
+          "text": "I get one?"
+        },
+        {
+          "index": 7,
+          "text": "Mei, sit down and eat."
+        },
+        {
+          "index": 8,
+          "text": "There you go. Wrap it up\nso it stays fresh. Okay?"
+        },
+        {
+          "index": 9,
+          "text": "(SIGHS)"
+        },
+        {
+          "index": 10,
+          "text": "- Satsuki!\n- That's Michiko."
+        },
+        {
+          "index": 11,
+          "text": "Hi!"
+        },
+        {
+          "index": 12,
+          "text": "So, you made a friend already, did you?"
+        },
+        {
+          "index": 13,
+          "text": "- Satsuki, time for school!\n- She's walking to school with me."
+        },
+        {
+          "index": 14,
+          "text": "(SLURPING)"
+        },
+        {
+          "index": 15,
+          "text": "I gotta go."
+        },
+        {
+          "index": 16,
+          "text": "(DISHES CLATTERING)"
+        },
+        {
+          "index": 17,
+          "text": "See you later!"
+        },
+        {
+          "index": 18,
+          "text": "BOTH: Have a nice day!"
+        },
+        {
+          "index": 19,
+          "text": "Hi, Michiko."
+        },
+        {
+          "index": 20,
+          "text": "- Hi. Ready for school?\n- Yep."
+        },
+        {
+          "index": 21,
+          "text": "(CHILDREN TALKING)"
+        },
+        {
+          "index": 22,
+          "text": "(BIRDS CHIRPING)"
+        },
+        {
+          "index": 23,
+          "text": "(YAWNING)"
+        },
+        {
+          "index": 24,
+          "text": "Hey, Dad."
+        },
+        {
+          "index": 25,
+          "text": "Do I look like a big girl?"
+        },
+        {
+          "index": 26,
+          "text": "You do. Are you going somewhere?"
+        },
+        {
+          "index": 27,
+          "text": "I'm just off to run some errands."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Dad, is it lunchtime yet?"
+        },
+        {
+          "index": 2,
+          "text": "What? We just ate breakfast."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Dad, you be the flower shop. Okay?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey, tadpoles."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GIGGLES)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What a stupid bucket."
+        },
+        {
+          "index": 2,
+          "text": "Huh?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Acorn."
+        },
+        {
+          "index": 2,
+          "text": "Ha!"
+        },
+        {
+          "index": 3,
+          "text": "(GIGGLES)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GIGGLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(QUICK STEPS)"
+        },
+        {
+          "index": 2,
+          "text": "Ha!"
+        },
+        {
+          "index": 3,
+          "text": "(GRUNTING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(RIPPING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey!"
+        },
+        {
+          "index": 2,
+          "text": "(LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bleh!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Ahh!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hey!"
+        },
+        {
+          "index": 2,
+          "text": "(GIGGLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Ahh! Ahh!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 2,
+          "text": "(SCREAMING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SNORING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SNORING CONTINUES)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 2,
+          "text": "(LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Whoa!"
+        },
+        {
+          "index": 2,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 3,
+          "text": "(GROANING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 2,
+          "text": "(SNORING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(MOANING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GIGGLES)"
+        },
+        {
+          "index": 2,
+          "text": "(SNORING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 2,
+          "text": "(SNUFFLING)"
+        },
+        {
+          "index": 3,
+          "text": "Ahh…"
+        },
+        {
+          "index": 4,
+          "text": "Ah-choo!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(MEI GRUNTING)"
+        },
+        {
+          "index": 2,
+          "text": "(SNORING RESUMES)"
+        },
+        {
+          "index": 3,
+          "text": "(MOANING)"
+        },
+        {
+          "index": 4,
+          "text": "(CHUCKLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Who are you? A great big soot gremlin?"
+        },
+        {
+          "index": 2,
+          "text": "(GRUMBLING)"
+        },
+        {
+          "index": 3,
+          "text": "(ROARING)"
+        },
+        {
+          "index": 4,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 5,
+          "text": "(ROARING)"
+        },
+        {
+          "index": 6,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 7,
+          "text": "To-to-ro!"
+        },
+        {
+          "index": 8,
+          "text": "(INHALES)"
+        },
+        {
+          "index": 9,
+          "text": "Totoro?"
+        },
+        {
+          "index": 10,
+          "text": "Is that what your name is? Totoro?"
+        },
+        {
+          "index": 11,
+          "text": "(GRUMBLING) Totoro."
+        },
+        {
+          "index": 12,
+          "text": "Yep, that's your name, all right."
+        },
+        {
+          "index": 13,
+          "text": "Mmm. Totoro."
+        },
+        {
+          "index": 14,
+          "text": "(MOANING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(YAWNING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SNORING)"
+        },
+        {
+          "index": 2,
+          "text": "(MOANING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(PLOP)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Bye.\n- See you later!"
+        },
+        {
+          "index": 2,
+          "text": "- I'm home!\n- Hi there."
+        },
+        {
+          "index": 3,
+          "text": "- Wow. Is it that late already?\n- Where's Mei?"
+        },
+        {
+          "index": 4,
+          "text": "- Did she like her lunch box?\n- We haven't eaten."
+        },
+        {
+          "index": 5,
+          "text": "She's running around\nwith that lunch box."
+        },
+        {
+          "index": 6,
+          "text": "Mei!"
+        },
+        {
+          "index": 7,
+          "text": "Mei!"
+        },
+        {
+          "index": 8,
+          "text": "Mei?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 2,
+          "text": "Hey, Dad! Come here!"
+        },
+        {
+          "index": 3,
+          "text": "I found Mei's hat!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei! Mei!"
+        },
+        {
+          "index": 2,
+          "text": "(MOANING)"
+        },
+        {
+          "index": 3,
+          "text": "Hmm? Hmm."
+        },
+        {
+          "index": 4,
+          "text": "- Hey, Mei, wake up!\n- Huh?"
+        },
+        {
+          "index": 5,
+          "text": "What do you think you're doing,\nsleeping out here?"
+        },
+        {
+          "index": 6,
+          "text": "Totoro?"
+        },
+        {
+          "index": 7,
+          "text": "Totoro?"
+        },
+        {
+          "index": 8,
+          "text": "Where's Totoro?"
+        },
+        {
+          "index": 9,
+          "text": "Maybe you were dreaming."
+        },
+        {
+          "index": 10,
+          "text": "- No, I saw Totoro.\n- Totoro?"
+        },
+        {
+          "index": 11,
+          "text": "You mean a troll,\nlike the one in your storybook?"
+        },
+        {
+          "index": 12,
+          "text": "Mmm-hmm. But he called hisself Totoro."
+        },
+        {
+          "index": 13,
+          "text": "He was furry, with a great big mouth."
+        },
+        {
+          "index": 14,
+          "text": "There was a little one, and a bigger one,"
+        },
+        {
+          "index": 15,
+          "text": "and a huge one that kept falling asleep."
+        },
+        {
+          "index": 16,
+          "text": "(SIGHS)"
+        },
+        {
+          "index": 17,
+          "text": "(TWIGS SNAPPING)"
+        },
+        {
+          "index": 18,
+          "text": "There you are."
+        },
+        {
+          "index": 19,
+          "text": "(PANTING)"
+        },
+        {
+          "index": 20,
+          "text": "Wow. This would make\na great secret hiding place."
+        },
+        {
+          "index": 21,
+          "text": "Dad, Mei said that\nshe saw a Totoro here."
+        },
+        {
+          "index": 22,
+          "text": "- A Totoro?\n- Mmm-hmm."
+        },
+        {
+          "index": 23,
+          "text": "This way!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 12,
+          "text": "Mmm-hmm. But he called himself Totoro.",
+          "note": "Corrected 'hisself' to 'himself'."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(LAUGHING)",
-      "subtitle_2": "(BREATHING HEAVY)",
-      "subtitle_3": "Hey, wait up!",
-      "subtitle_4": "Huh?",
-      "subtitle_5": "- Here?\n- Mmm-mmm.",
-      "subtitle_6": "Last time the tunnel led to Totoro's tree.",
-      "subtitle_7": "I didn't see another path to take.",
-      "subtitle_8": "Hey, where are you going?",
-      "subtitle_9": "SATSUKI: Mei, come back!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 2,
+          "text": "(BREATHING HEAVY)"
+        },
+        {
+          "index": 3,
+          "text": "Hey, wait up!"
+        },
+        {
+          "index": 4,
+          "text": "Huh?"
+        },
+        {
+          "index": 5,
+          "text": "- Here?\n- Mmm-mmm."
+        },
+        {
+          "index": 6,
+          "text": "Last time the tunnel led to Totoro's tree."
+        },
+        {
+          "index": 7,
+          "text": "I didn't see another path to take."
+        },
+        {
+          "index": 8,
+          "text": "Hey, where are you going?"
+        },
+        {
+          "index": 9,
+          "text": "SATSUKI: Mei, come back!"
+        }
+      ]
     },
     "answer": {
-      "revised_2": "(BREATHING HEAVILY)",
-      "note_2": "Corrected 'HEAVY' to 'HEAVILY' for proper adverb usage."
+      "revisions": [
+        {
+          "index": 2,
+          "text": "(BREATHING HEAVILY)",
+          "note": "Corrected 'HEAVY' to 'HEAVILY' for proper adverb usage."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(LAUGHING)",
-      "subtitle_2": "Quit laughing! I really did see Totoro!",
-      "subtitle_3": "I'm not lying.",
-      "subtitle_4": "Mmm."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei?",
-      "subtitle_2": "It's not a lie, Dad.",
-      "subtitle_3": "Hmm. Don't worry, Mei.",
-      "subtitle_4": "Satsuki and I believe you,\nand I bet you I know what happened.",
-      "subtitle_5": "You must have met one of\nthe spirits of the forest.",
-      "subtitle_6": "That means you're a very lucky girl.",
-      "subtitle_7": "But you can't always see the spirits.",
-      "subtitle_8": "You can only see them\nwhen they want you to.",
-      "subtitle_9": "Let's give the forest\nspirits a proper greeting.",
-      "subtitle_10": "- A greeting?\n- Of course. Come on. Let's go."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)",
-      "subtitle_2": "Oh, Mei, you're getting heavy.",
-      "subtitle_3": "Dad, there's that big camphor tree.",
-      "subtitle_4": "It's incredible."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "That's it!",
-      "subtitle_2": "SATSUKI: That's Totoro's tree?\nMEI: Yeah!",
-      "subtitle_3": "Come on, Dad! Can't you go any faster?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Whoa."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Totoro's hole is gone.",
-      "subtitle_2": "- Are you sure it was here?\n- Mmm-hmm.",
-      "subtitle_3": "Dad, she says the hole disappeared.",
-      "subtitle_4": "Then right now, the forest\nspirits don't want to be seen.",
-      "subtitle_5": "But, Dad, I want to see them, too.",
-      "subtitle_6": "Maybe you will, if you're lucky.",
-      "subtitle_7": "Mmm. Magnificent tree.",
-      "subtitle_8": "It's been around since long ago,",
-      "subtitle_9": "back in the time when trees\nand people used to be friends."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "When I saw this tree, I knew this would\nbe a good place for our family to live.",
-      "subtitle_2": "And I think it will make\nyour mother feel right at home.",
-      "subtitle_3": "So, let's give this tree a nice\ngreeting and go eat our lunch.",
-      "subtitle_4": "Then I want to write a letter to Mom\nand tell her all about this.",
-      "subtitle_5": "- I will, too!\n- Attention!",
-      "subtitle_6": "Thank you for watching over Mei\nand making us feel so welcome here.",
-      "subtitle_7": "ALL: Please continue to look after us.",
-      "subtitle_8": "- Last one home's a rotten egg!\n- Hey, no fair!",
-      "subtitle_9": "MEI: Wait!",
-      "subtitle_10": "- Uh!\n- SATSUKI: Hurry it up!",
-      "subtitle_11": "Wait for me!",
-      "subtitle_12": "SATSUKI: Dear Mom:\nWe had an exciting day today.",
-      "subtitle_13": "Mei met a big forest spirit called Totoro.",
-      "subtitle_14": "I hope I'll be able\nto see him someday, too."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(ROOSTER CROWING)",
-      "subtitle_2": "(CLUCKING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "WOMAN: Kanta, hurry up,\nor you'll be late for school.",
-      "subtitle_2": "Yeah.",
-      "subtitle_3": "(CHILDREN LAUGHING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(WHISPERING)",
-      "subtitle_2": "(GIGGLING)",
-      "subtitle_3": "(THUNK)",
-      "subtitle_4": "Back to work."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Oh."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei?",
-      "subtitle_2": "Miss Hara!",
-      "subtitle_3": "Yes, Satsuki?",
-      "subtitle_4": "Uh, my sister's here.",
-      "subtitle_5": "CHILDREN: Her sister?",
-      "subtitle_6": "(CLAMORING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Granny, what's wrong?\n- I don't know.",
-      "subtitle_2": "She said she wouldn't stop crying\nunless I brought her to you.",
-      "subtitle_3": "She said that? Mei, be reasonable.",
-      "subtitle_4": "You know you had to stay with Granny.",
-      "subtitle_5": "I have school and Dad's\nteaching at the university.",
-      "subtitle_6": "I only have two more hours\nof school to go.",
-      "subtitle_7": "Can't you just stay\nwith Granny until then?",
-      "subtitle_8": "She's been so good up till now.\nWeren't you, Mei?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SIGHS)",
-      "subtitle_2": "Well, I'll talk to my teacher\nand see what we can do."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(LAUGHING)",
-      "subtitle_2": "Satsuki's mom is in the hospital,",
-      "subtitle_3": "so her sister Mei is going\nto stay with us today, okay, class?",
-      "subtitle_4": "- Let's make her feel welcome.\n- ALL: Yes, ma'am."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- What are you drawing, Mei?\n- It's a big Totoro.",
-      "subtitle_2": "Shh. Mei, try to keep quiet, will you?",
-      "subtitle_3": "Mmm-hmm.",
-      "subtitle_4": "(SIGHS)",
-      "subtitle_5": "(BELL RINGING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "CHILDREN: Bye, Mei!",
-      "subtitle_2": "MICHIKO: Come again soon!",
-      "subtitle_3": "I have to skip our club meeting, Michiko.",
-      "subtitle_4": "I'll let everyone know. Bye!",
-      "subtitle_5": "Hurry up, Mei. It's gonna rain.",
-      "subtitle_6": "Okay."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Ah! Here it comes!\n- Here it comes!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SPLAT)",
-      "subtitle_2": "(GASPS)",
-      "subtitle_3": "Come on."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I didn't even cry. That's good, huh?",
-      "subtitle_2": "Hmm.",
-      "subtitle_3": "Yeah, but we're not home yet.",
-      "subtitle_4": "We'd like to share your roof\nfor a while, sir, if you don't mind."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Mmm.\n- Huh?",
-      "subtitle_2": "- Don't you…\n- Mmm. Mmm!",
-      "subtitle_3": "Mmm!",
-      "subtitle_4": "Hey!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- That was lucky, wasn't it?\n- Mmm-hmm.",
-      "subtitle_2": "- MEI: This umbrella has holes.\n- Hmm."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(EATING)",
-      "subtitle_2": "(CLOCK CHIMING)",
-      "subtitle_3": "Dad left his umbrella here.",
-      "subtitle_4": "- I better take it to him.\n- I wanna go, too."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 2,
+          "text": "Quit laughing! I really did see Totoro!"
+        },
+        {
+          "index": 3,
+          "text": "I'm not lying."
+        },
+        {
+          "index": 4,
+          "text": "Mmm."
+        }
+      ]
     },
     "answer": {
-      "revised_4": "- I'd better take it to him.\n- I wanna go, too.",
-      "note_4": "Changed 'I better' to 'I'd better' for grammatical correctness."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei?"
+        },
+        {
+          "index": 2,
+          "text": "It's not a lie, Dad."
+        },
+        {
+          "index": 3,
+          "text": "Hmm. Don't worry, Mei."
+        },
+        {
+          "index": 4,
+          "text": "Satsuki and I believe you,\nand I bet you I know what happened."
+        },
+        {
+          "index": 5,
+          "text": "You must have met one of\nthe spirits of the forest."
+        },
+        {
+          "index": 6,
+          "text": "That means you're a very lucky girl."
+        },
+        {
+          "index": 7,
+          "text": "But you can't always see the spirits."
+        },
+        {
+          "index": 8,
+          "text": "You can only see them\nwhen they want you to."
+        },
+        {
+          "index": 9,
+          "text": "Let's give the forest\nspirits a proper greeting."
+        },
+        {
+          "index": 10,
+          "text": "- A greeting?\n- Of course. Come on. Let's go."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 2,
+          "text": "Oh, Mei, you're getting heavy."
+        },
+        {
+          "index": 3,
+          "text": "Dad, there's that big camphor tree."
+        },
+        {
+          "index": 4,
+          "text": "It's incredible."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "That's it!"
+        },
+        {
+          "index": 2,
+          "text": "SATSUKI: That's Totoro's tree?\nMEI: Yeah!"
+        },
+        {
+          "index": 3,
+          "text": "Come on, Dad! Can't you go any faster?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Whoa."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Totoro's hole is gone."
+        },
+        {
+          "index": 2,
+          "text": "- Are you sure it was here?\n- Mmm-hmm."
+        },
+        {
+          "index": 3,
+          "text": "Dad, she says the hole disappeared."
+        },
+        {
+          "index": 4,
+          "text": "Then right now, the forest\nspirits don't want to be seen."
+        },
+        {
+          "index": 5,
+          "text": "But, Dad, I want to see them, too."
+        },
+        {
+          "index": 6,
+          "text": "Maybe you will, if you're lucky."
+        },
+        {
+          "index": 7,
+          "text": "Mmm. Magnificent tree."
+        },
+        {
+          "index": 8,
+          "text": "It's been around since long ago,"
+        },
+        {
+          "index": 9,
+          "text": "back in the time when trees\nand people used to be friends."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "When I saw this tree, I knew this would\nbe a good place for our family to live."
+        },
+        {
+          "index": 2,
+          "text": "And I think it will make\nyour mother feel right at home."
+        },
+        {
+          "index": 3,
+          "text": "So, let's give this tree a nice\ngreeting and go eat our lunch."
+        },
+        {
+          "index": 4,
+          "text": "Then I want to write a letter to Mom\nand tell her all about this."
+        },
+        {
+          "index": 5,
+          "text": "- I will, too!\n- Attention!"
+        },
+        {
+          "index": 6,
+          "text": "Thank you for watching over Mei\nand making us feel so welcome here."
+        },
+        {
+          "index": 7,
+          "text": "ALL: Please continue to look after us."
+        },
+        {
+          "index": 8,
+          "text": "- Last one home's a rotten egg!\n- Hey, no fair!"
+        },
+        {
+          "index": 9,
+          "text": "MEI: Wait!"
+        },
+        {
+          "index": 10,
+          "text": "- Uh!\n- SATSUKI: Hurry it up!"
+        },
+        {
+          "index": 11,
+          "text": "Wait for me!"
+        },
+        {
+          "index": 12,
+          "text": "SATSUKI: Dear Mom:\nWe had an exciting day today."
+        },
+        {
+          "index": 13,
+          "text": "Mei met a big forest spirit called Totoro."
+        },
+        {
+          "index": 14,
+          "text": "I hope I'll be able\nto see him someday, too."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(ROOSTER CROWING)"
+        },
+        {
+          "index": 2,
+          "text": "(CLUCKING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "WOMAN: Kanta, hurry up,\nor you'll be late for school."
+        },
+        {
+          "index": 2,
+          "text": "Yeah."
+        },
+        {
+          "index": 3,
+          "text": "(CHILDREN LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(WHISPERING)"
+        },
+        {
+          "index": 2,
+          "text": "(GIGGLING)"
+        },
+        {
+          "index": 3,
+          "text": "(THUNK)"
+        },
+        {
+          "index": 4,
+          "text": "Back to work."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Oh."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei?"
+        },
+        {
+          "index": 2,
+          "text": "Miss Hara!"
+        },
+        {
+          "index": 3,
+          "text": "Yes, Satsuki?"
+        },
+        {
+          "index": 4,
+          "text": "Uh, my sister's here."
+        },
+        {
+          "index": 5,
+          "text": "CHILDREN: Her sister?"
+        },
+        {
+          "index": 6,
+          "text": "(CLAMORING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Granny, what's wrong?\n- I don't know."
+        },
+        {
+          "index": 2,
+          "text": "She said she wouldn't stop crying\nunless I brought her to you."
+        },
+        {
+          "index": 3,
+          "text": "She said that? Mei, be reasonable."
+        },
+        {
+          "index": 4,
+          "text": "You know you had to stay with Granny."
+        },
+        {
+          "index": 5,
+          "text": "I have school and Dad's\nteaching at the university."
+        },
+        {
+          "index": 6,
+          "text": "I only have two more hours\nof school to go."
+        },
+        {
+          "index": 7,
+          "text": "Can't you just stay\nwith Granny until then?"
+        },
+        {
+          "index": 8,
+          "text": "She's been so good up till now.\nWeren't you, Mei?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SIGHS)"
+        },
+        {
+          "index": 2,
+          "text": "Well, I'll talk to my teacher\nand see what we can do."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 2,
+          "text": "Satsuki's mom is in the hospital,"
+        },
+        {
+          "index": 3,
+          "text": "so her sister Mei is going\nto stay with us today, okay, class?"
+        },
+        {
+          "index": 4,
+          "text": "- Let's make her feel welcome.\n- ALL: Yes, ma'am."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- What are you drawing, Mei?\n- It's a big Totoro."
+        },
+        {
+          "index": 2,
+          "text": "Shh. Mei, try to keep quiet, will you?"
+        },
+        {
+          "index": 3,
+          "text": "Mmm-hmm."
+        },
+        {
+          "index": 4,
+          "text": "(SIGHS)"
+        },
+        {
+          "index": 5,
+          "text": "(BELL RINGING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "CHILDREN: Bye, Mei!"
+        },
+        {
+          "index": 2,
+          "text": "MICHIKO: Come again soon!"
+        },
+        {
+          "index": 3,
+          "text": "I have to skip our club meeting, Michiko."
+        },
+        {
+          "index": 4,
+          "text": "I'll let everyone know. Bye!"
+        },
+        {
+          "index": 5,
+          "text": "Hurry up, Mei. It's gonna rain."
+        },
+        {
+          "index": 6,
+          "text": "Okay."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Ah! Here it comes!\n- Here it comes!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SPLAT)"
+        },
+        {
+          "index": 2,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 3,
+          "text": "Come on."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I didn't even cry. That's good, huh?"
+        },
+        {
+          "index": 2,
+          "text": "Hmm."
+        },
+        {
+          "index": 3,
+          "text": "Yeah, but we're not home yet."
+        },
+        {
+          "index": 4,
+          "text": "We'd like to share your roof\nfor a while, sir, if you don't mind."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Mmm.\n- Huh?"
+        },
+        {
+          "index": 2,
+          "text": "- Don't you…\n- Mmm. Mmm!"
+        },
+        {
+          "index": 3,
+          "text": "Mmm!"
+        },
+        {
+          "index": 4,
+          "text": "Hey!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- That was lucky, wasn't it?\n- Mmm-hmm."
+        },
+        {
+          "index": 2,
+          "text": "- MEI: This umbrella has holes.\n- Hmm."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(EATING)"
+        },
+        {
+          "index": 2,
+          "text": "(CLOCK CHIMING)"
+        },
+        {
+          "index": 3,
+          "text": "Dad left his umbrella here."
+        },
+        {
+          "index": 4,
+          "text": "- I better take it to him.\n- I wanna go, too."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "- I'd better take it to him.\n- I wanna go, too.",
+          "note": "Changed 'I better' to 'I'd better' for grammatical correctness."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "What? I left it.",
-      "subtitle_2": "(SIGHS)",
-      "subtitle_3": "What kind of fool forgets his umbrella\nat school when it's raining?",
-      "subtitle_4": "- Hey!\n- I bet you were swinging it around",
-      "subtitle_5": "and you broke it.",
-      "subtitle_6": "No, I didn't."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)",
-      "subtitle_2": "Ahh."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hello! Is anyone home?",
-      "subtitle_2": "Oh, Satsuki and Mei. Come in. Granny!",
-      "subtitle_3": "Thanks for watching Mei today.",
-      "subtitle_4": "Sorry we couldn't keep her happy.",
-      "subtitle_5": "Oh. I wanted to give back this\numbrella that Kanta lent us.",
-      "subtitle_6": "What? He lent you this?\nOh, my. Look how beat up it is.",
-      "subtitle_7": "Mei was walking home\nfrom school with me.",
-      "subtitle_8": "So, it was really nice of him\nto help us out. Tell him thank you.",
-      "subtitle_9": "- He must have been drenched.\n- That's okay.",
-      "subtitle_10": "Kanta is such a dirty kid.\nHe can always use a good drenching.",
-      "subtitle_11": "Are you off to meet\nyour dad at the bus stop?",
-      "subtitle_12": "- SATSUKI: Yes, he forgot his umbrella.\n- Such good kids.",
-      "subtitle_13": "- Bye, girls.\n- SATSUKI: Bye!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GIGGLING)",
-      "subtitle_2": "(IMITATESAIRPLANE)",
-      "subtitle_3": "- Who was at the door, Kanta?\n- Beats me."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What? I left it."
+        },
+        {
+          "index": 2,
+          "text": "(SIGHS)"
+        },
+        {
+          "index": 3,
+          "text": "What kind of fool forgets his umbrella\nat school when it's raining?"
+        },
+        {
+          "index": 4,
+          "text": "- Hey!\n- I bet you were swinging it around"
+        },
+        {
+          "index": 5,
+          "text": "and you broke it."
+        },
+        {
+          "index": 6,
+          "text": "No, I didn't."
+        }
+      ]
     },
     "answer": {
-      "revised_2": "(IMITATES AIRPLANE)",
-      "note_2": "Regenerated from expected reviewed fixture."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 2,
+          "text": "Ahh."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello! Is anyone home?"
+        },
+        {
+          "index": 2,
+          "text": "Oh, Satsuki and Mei. Come in. Granny!"
+        },
+        {
+          "index": 3,
+          "text": "Thanks for watching Mei today."
+        },
+        {
+          "index": 4,
+          "text": "Sorry we couldn't keep her happy."
+        },
+        {
+          "index": 5,
+          "text": "Oh. I wanted to give back this\numbrella that Kanta lent us."
+        },
+        {
+          "index": 6,
+          "text": "What? He lent you this?\nOh, my. Look how beat up it is."
+        },
+        {
+          "index": 7,
+          "text": "Mei was walking home\nfrom school with me."
+        },
+        {
+          "index": 8,
+          "text": "So, it was really nice of him\nto help us out. Tell him thank you."
+        },
+        {
+          "index": 9,
+          "text": "- He must have been drenched.\n- That's okay."
+        },
+        {
+          "index": 10,
+          "text": "Kanta is such a dirty kid.\nHe can always use a good drenching."
+        },
+        {
+          "index": 11,
+          "text": "Are you off to meet\nyour dad at the bus stop?"
+        },
+        {
+          "index": 12,
+          "text": "- SATSUKI: Yes, he forgot his umbrella.\n- Such good kids."
+        },
+        {
+          "index": 13,
+          "text": "- Bye, girls.\n- SATSUKI: Bye!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GIGGLING)"
+        },
+        {
+          "index": 2,
+          "text": "(IMITATESAIRPLANE)"
+        },
+        {
+          "index": 3,
+          "text": "- Who was at the door, Kanta?\n- Beats me."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "(IMITATES AIRPLANE)",
+          "note": "Regenerated from expected reviewed fixture."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(GASPS) There's the bus, Mei!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Are you getting on?",
-      "subtitle_2": "Drive on."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Satsuki, Dad wasn't on the bus.",
-      "subtitle_2": "He'll be on the next one for sure.",
-      "subtitle_3": "Do you want to go back\nto Granny's and wait there?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(WATER DRIPPING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "What's the matter?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SQUEAKING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SIGHS)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "What is it, Mei? Are you sleepy?",
-      "subtitle_2": "I knew this would happen.\nDon't you want to wait at Granny's?",
-      "subtitle_3": "Mmm-mmm.",
-      "subtitle_4": "It's okay, Mei. He'll be here soon."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SIGHS)",
-      "subtitle_2": "That bus sure is late, huh?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Here.",
-      "subtitle_2": "(GRUNTS)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(MOANING)",
-      "subtitle_2": "(GRUNTING)",
-      "subtitle_3": "(FOOTSTEPS)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(PLINKING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Totoro?",
-      "subtitle_2": "(PLINK)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GRUMBLING)",
-      "subtitle_2": "Oh, wait a minute."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Here. Try this.",
-      "subtitle_2": "Hurry. Mei's slipping."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GRUNTS)",
-      "subtitle_2": "Hold it over your head. Like this."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SPLASH)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SPLASHING)",
-      "subtitle_2": "(GRUMBLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SPLASHING)",
-      "subtitle_2": "(BELLOWING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(THUD)",
-      "subtitle_2": "(SHRIEKS)",
-      "subtitle_3": "(DOUSING)",
-      "subtitle_4": "(ROARING)",
-      "subtitle_5": "(GASPS)",
-      "subtitle_6": "Oh.",
-      "subtitle_7": "Here comes the bus.",
-      "subtitle_8": "BOTH: Huh?",
-      "subtitle_9": "(WIND WHISTLING)",
-      "subtitle_10": "(YOWLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(MEOWING)",
-      "subtitle_2": "(GASPING)",
-      "subtitle_3": "(HUMMING)",
-      "subtitle_4": "(BELLOWING)",
-      "subtitle_5": "(WIND WHISTLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Well, Mei, so much for\nbringing Dad his umbrella."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Hi. Sorry I'm late.\n- WOMAN: Drive on.",
-      "subtitle_2": "My train was delayed,\nso I had to wait for the next bus.",
-      "subtitle_3": "Were you worried?",
-      "subtitle_4": "Totoro came back, Dad! I saw him!",
-      "subtitle_5": "We saw a cat bus, too!",
-      "subtitle_6": "- What?\n- It was huge!",
-      "subtitle_7": "With eyes like this.",
-      "subtitle_8": "- It was great!\n- It was great!",
-      "subtitle_9": "(LAUGHING)",
-      "subtitle_10": "I saw Totoro! I saw him!",
-      "subtitle_11": "I saw him, too!",
-      "subtitle_12": "(GIRLS LAUGHING)",
-      "subtitle_13": "(CROAKING)",
-      "subtitle_14": "(INSECTS CHIRPING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Hey, Dad, pick us up.\n- Come on, Dad.",
-      "subtitle_2": "(GRUNTING)",
-      "subtitle_3": "(ALL LAUGHING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "SATSUKI: Dear Mom:",
-      "subtitle_2": "We had such a weird,\nmysterious, spectacular day.",
-      "subtitle_3": "My heart is still pounding.",
-      "subtitle_4": "Totoro gave us a wonderful present.",
-      "subtitle_5": "It was wrapped in a bamboo leaf",
-      "subtitle_6": "and tied with a ribbon made of grass.",
-      "subtitle_7": "As soon as we got home, we opened it.",
-      "subtitle_8": "It was filled with acorns.",
-      "subtitle_9": "(GASP)",
-      "subtitle_10": "Ahh.",
-      "subtitle_11": "(CHUCKLING)",
-      "subtitle_12": "\"We wanted to grow a beautiful\nforest with the acorns,",
-      "subtitle_13": "“ so we planted them\nin your garden out back, but…”",
-      "subtitle_14": "SATSUKI: … they just won't grow.\nMei watches them",
-      "subtitle_15": "all day, every day,",
-      "subtitle_16": "waiting for them to sprout,",
-      "subtitle_17": "it's starting to make her crabby.",
-      "subtitle_18": "Here's a picture of Mei as a crab.",
-      "subtitle_19": "(CHUCKLING)",
-      "subtitle_20": "Summer vacation is almost here,",
-      "subtitle_21": "and I can't wait to play\noutside with you.",
-      "subtitle_22": "Please get well soon. Love, Satsuki.",
-      "subtitle_23": "(GIRLS LAUGHING)",
-      "subtitle_24": "Get ready, and… up!",
-      "subtitle_25": "(SHRIEKING)",
-      "subtitle_26": "(LAUGHING)",
-      "subtitle_27": "- Lights out, girls.\n- MEI: Wait, Dad.",
-      "subtitle_28": "Do you think that\nthey'll sprout tomorrow?",
-      "subtitle_29": "I don't know.",
-      "subtitle_30": "You should ask the Totoro.\nHe would know.",
-      "subtitle_31": "Good night, girls.",
-      "subtitle_32": "(CRICKETS CHIRPING)"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS) There's the bus, Mei!"
+        }
+      ]
     },
     "answer": {
-      "revised_12": "“We wanted to grow a beautiful\nforest with the acorns,",
-      "note_12": "Changed the opening straight quote to a left double quote.",
-      "revised_13": "so we planted them\nin your garden out back, but…”",
-      "note_13": "Removed the extra opening quote on the continuation subtitle and kept the closing right double quote."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Are you getting on?"
+        },
+        {
+          "index": 2,
+          "text": "Drive on."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Satsuki, Dad wasn't on the bus."
+        },
+        {
+          "index": 2,
+          "text": "He'll be on the next one for sure."
+        },
+        {
+          "index": 3,
+          "text": "Do you want to go back\nto Granny's and wait there?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(WATER DRIPPING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What's the matter?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SQUEAKING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SIGHS)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What is it, Mei? Are you sleepy?"
+        },
+        {
+          "index": 2,
+          "text": "I knew this would happen.\nDon't you want to wait at Granny's?"
+        },
+        {
+          "index": 3,
+          "text": "Mmm-mmm."
+        },
+        {
+          "index": 4,
+          "text": "It's okay, Mei. He'll be here soon."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SIGHS)"
+        },
+        {
+          "index": 2,
+          "text": "That bus sure is late, huh?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Here."
+        },
+        {
+          "index": 2,
+          "text": "(GRUNTS)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(MOANING)"
+        },
+        {
+          "index": 2,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 3,
+          "text": "(FOOTSTEPS)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(PLINKING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Totoro?"
+        },
+        {
+          "index": 2,
+          "text": "(PLINK)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GRUMBLING)"
+        },
+        {
+          "index": 2,
+          "text": "Oh, wait a minute."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Here. Try this."
+        },
+        {
+          "index": 2,
+          "text": "Hurry. Mei's slipping."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GRUNTS)"
+        },
+        {
+          "index": 2,
+          "text": "Hold it over your head. Like this."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SPLASH)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SPLASHING)"
+        },
+        {
+          "index": 2,
+          "text": "(GRUMBLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SPLASHING)"
+        },
+        {
+          "index": 2,
+          "text": "(BELLOWING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(THUD)"
+        },
+        {
+          "index": 2,
+          "text": "(SHRIEKS)"
+        },
+        {
+          "index": 3,
+          "text": "(DOUSING)"
+        },
+        {
+          "index": 4,
+          "text": "(ROARING)"
+        },
+        {
+          "index": 5,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 6,
+          "text": "Oh."
+        },
+        {
+          "index": 7,
+          "text": "Here comes the bus."
+        },
+        {
+          "index": 8,
+          "text": "BOTH: Huh?"
+        },
+        {
+          "index": 9,
+          "text": "(WIND WHISTLING)"
+        },
+        {
+          "index": 10,
+          "text": "(YOWLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(MEOWING)"
+        },
+        {
+          "index": 2,
+          "text": "(GASPING)"
+        },
+        {
+          "index": 3,
+          "text": "(HUMMING)"
+        },
+        {
+          "index": 4,
+          "text": "(BELLOWING)"
+        },
+        {
+          "index": 5,
+          "text": "(WIND WHISTLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Well, Mei, so much for\nbringing Dad his umbrella."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Hi. Sorry I'm late.\n- WOMAN: Drive on."
+        },
+        {
+          "index": 2,
+          "text": "My train was delayed,\nso I had to wait for the next bus."
+        },
+        {
+          "index": 3,
+          "text": "Were you worried?"
+        },
+        {
+          "index": 4,
+          "text": "Totoro came back, Dad! I saw him!"
+        },
+        {
+          "index": 5,
+          "text": "We saw a cat bus, too!"
+        },
+        {
+          "index": 6,
+          "text": "- What?\n- It was huge!"
+        },
+        {
+          "index": 7,
+          "text": "With eyes like this."
+        },
+        {
+          "index": 8,
+          "text": "- It was great!\n- It was great!"
+        },
+        {
+          "index": 9,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 10,
+          "text": "I saw Totoro! I saw him!"
+        },
+        {
+          "index": 11,
+          "text": "I saw him, too!"
+        },
+        {
+          "index": 12,
+          "text": "(GIRLS LAUGHING)"
+        },
+        {
+          "index": 13,
+          "text": "(CROAKING)"
+        },
+        {
+          "index": 14,
+          "text": "(INSECTS CHIRPING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Hey, Dad, pick us up.\n- Come on, Dad."
+        },
+        {
+          "index": 2,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 3,
+          "text": "(ALL LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "SATSUKI: Dear Mom:"
+        },
+        {
+          "index": 2,
+          "text": "We had such a weird,\nmysterious, spectacular day."
+        },
+        {
+          "index": 3,
+          "text": "My heart is still pounding."
+        },
+        {
+          "index": 4,
+          "text": "Totoro gave us a wonderful present."
+        },
+        {
+          "index": 5,
+          "text": "It was wrapped in a bamboo leaf"
+        },
+        {
+          "index": 6,
+          "text": "and tied with a ribbon made of grass."
+        },
+        {
+          "index": 7,
+          "text": "As soon as we got home, we opened it."
+        },
+        {
+          "index": 8,
+          "text": "It was filled with acorns."
+        },
+        {
+          "index": 9,
+          "text": "(GASP)"
+        },
+        {
+          "index": 10,
+          "text": "Ahh."
+        },
+        {
+          "index": 11,
+          "text": "(CHUCKLING)"
+        },
+        {
+          "index": 12,
+          "text": "\"We wanted to grow a beautiful\nforest with the acorns,"
+        },
+        {
+          "index": 13,
+          "text": "“ so we planted them\nin your garden out back, but…”"
+        },
+        {
+          "index": 14,
+          "text": "SATSUKI: … they just won't grow.\nMei watches them"
+        },
+        {
+          "index": 15,
+          "text": "all day, every day,"
+        },
+        {
+          "index": 16,
+          "text": "waiting for them to sprout,"
+        },
+        {
+          "index": 17,
+          "text": "it's starting to make her crabby."
+        },
+        {
+          "index": 18,
+          "text": "Here's a picture of Mei as a crab."
+        },
+        {
+          "index": 19,
+          "text": "(CHUCKLING)"
+        },
+        {
+          "index": 20,
+          "text": "Summer vacation is almost here,"
+        },
+        {
+          "index": 21,
+          "text": "and I can't wait to play\noutside with you."
+        },
+        {
+          "index": 22,
+          "text": "Please get well soon. Love, Satsuki."
+        },
+        {
+          "index": 23,
+          "text": "(GIRLS LAUGHING)"
+        },
+        {
+          "index": 24,
+          "text": "Get ready, and… up!"
+        },
+        {
+          "index": 25,
+          "text": "(SHRIEKING)"
+        },
+        {
+          "index": 26,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 27,
+          "text": "- Lights out, girls.\n- MEI: Wait, Dad."
+        },
+        {
+          "index": 28,
+          "text": "Do you think that\nthey'll sprout tomorrow?"
+        },
+        {
+          "index": 29,
+          "text": "I don't know."
+        },
+        {
+          "index": 30,
+          "text": "You should ask the Totoro.\nHe would know."
+        },
+        {
+          "index": 31,
+          "text": "Good night, girls."
+        },
+        {
+          "index": 32,
+          "text": "(CRICKETS CHIRPING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 12,
+          "text": "“We wanted to grow a beautiful\nforest with the acorns,",
+          "note": "Changed the opening straight quote to a left double quote."
+        },
+        {
+          "index": 13,
+          "text": "so we planted them\nin your garden out back, but…”",
+          "note": "Removed the extra opening quote on the continuation subtitle and kept the closing right double quote."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(BUZZING OF INSECTS)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei.",
-      "subtitle_2": "(GROANING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "That's where we planted the acorns."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GRUNTING)",
-      "subtitle_2": "(GIGGLING)",
-      "subtitle_3": "(GRUNTING)",
-      "subtitle_4": "(POP)",
-      "subtitle_5": "(GASPING)",
-      "subtitle_6": "(TOTORO GRUNTING)",
-      "subtitle_7": "(POP)",
-      "subtitle_8": "(GRUNTING)",
-      "subtitle_9": "(POPPING)",
-      "subtitle_10": "(GASPING)",
-      "subtitle_11": "(ALL GRUNTING)",
-      "subtitle_12": "ALL: Ahh!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "GIRLS: Yay! We did it! We did it!",
-      "subtitle_2": "GIRLS: Yay!",
-      "subtitle_3": "(BELLOWING)",
-      "subtitle_4": "(HUMMING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SQUEALING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GRUMBLING)",
-      "subtitle_2": "(GASP)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(WHIRRING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(ROARING)",
-      "subtitle_2": "(GIRLS ROARING)",
-      "subtitle_3": "(ROARING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GRUMBLING)",
-      "subtitle_2": "Mei, we're the wind!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(INHALES)",
-      "subtitle_2": "(INSTRUMENT PLAYS)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SECOND INSTRUMENT PLAYS)",
-      "subtitle_2": "(ALL MAKING MUSIC)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mmm…",
-      "subtitle_2": "(GASPS)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GROANS)",
-      "subtitle_2": "Where'd the tree go?",
-      "subtitle_3": "- Ahh!\n- Ahh!",
-      "subtitle_4": "They're growing! We did it!",
-      "subtitle_5": "We did it!",
-      "subtitle_6": "(LAUGHING)",
-      "subtitle_7": "SATSUKI: I thought it was a dream!\nMEI: But it wasn't!",
-      "subtitle_8": "BOTH: I thought it was a dream!\nWe did it!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mr. Kusakabe? Telegram!",
-      "subtitle_2": "Mr. Kusakabe?",
-      "subtitle_3": "A telegram for you.",
-      "subtitle_4": "Huh. No one's home."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(TRAMPLING)",
-      "subtitle_2": "MEI: Granny!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I'm over here.",
-      "subtitle_2": "This one's ready to eat.",
-      "subtitle_3": "(GRUNTING)",
-      "subtitle_4": "(SNAP)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "What about this one, Granny?",
-      "subtitle_2": "Try it.",
-      "subtitle_3": "(GRUNTING)",
-      "subtitle_4": "(SNAP)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Wow, Granny. Your garden\nis just like a market.",
-      "subtitle_2": "We've picked enough,\nhaven't we? Let's take a rest."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mmm. Nice and cold.",
-      "subtitle_2": "Mark, get set, go!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "It's delicious.",
-      "subtitle_2": "I'm glad you like it.\nThey're very good for you.",
-      "subtitle_3": "They've soaked up lots\nof vitamins and sunshine.",
-      "subtitle_4": "- Would they help Mom get better?\n- Of course they would.",
-      "subtitle_5": "If your mom eats my vegetables,\nI bet she'd get well right away.",
-      "subtitle_6": "That's great, Granny.\nMom's coming home on Saturday.",
-      "subtitle_7": "She's going to sleep with me in my bed.",
-      "subtitle_8": "Oh, good! She's finally\nleaving the hospital, is she?",
-      "subtitle_9": "No. The doctor wants her to get used to\nthe new house a little at a time.",
-      "subtitle_10": "- She goes back on Monday.\n- Is that so?",
-      "subtitle_11": "We'll feed her lots of\nmy vegetables while she's here.",
-      "subtitle_12": "I'll give her the corn that I picked.\nThat will make her better.",
-      "subtitle_13": "- I bet that will do her wonders.\n- Yep."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Here. The postman\nleft us your telegram.",
-      "subtitle_2": "A telegram?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "What should I do with it, Granny?\nDad won't be home till evening.",
-      "subtitle_2": "Better open it. Might be an emergency.",
-      "subtitle_3": "Mmm-hmm.",
-      "subtitle_4": "“Please contact Shichikokuyama.”",
-      "subtitle_5": "Shichikokuyama!\nIt's from Mom's hospital!",
-      "subtitle_6": "Something must have happened to her.",
-      "subtitle_7": "We have to get to the hospital\nright away, Granny.",
-      "subtitle_8": "Okay. Calm down. First, we need to get\nin touch with your father.",
-      "subtitle_9": "I know his phone number at the\nuniversity, but we don't have a phone.",
-      "subtitle_10": "Kanta, take Satsuki to your uncle's\nhouse and let her use the phone.",
-      "subtitle_11": "Mmm-hmm."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei, you need to stay here with me!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei, go back and stay with Granny!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Uh!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hello? I'd like to place\na long-distance call, please.",
-      "subtitle_2": "It's to my dad at Tokyo 31-13-82.",
-      "subtitle_3": "Right.",
-      "subtitle_4": "Now, that's a nice girl, eh, Kanta?",
-      "subtitle_5": "(RINGS)",
-      "subtitle_6": "Hello?",
-      "subtitle_7": "Yes.",
-      "subtitle_8": "Hello? I need to speak to my dad\nin the archaeology department.",
-      "subtitle_9": "I mean, I need to speak\nto Mr. Kusakabe.",
-      "subtitle_10": "My name is Satsuki Kusakabe."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Hello, Dad? Is that you? It's Satsuki.",
-      "subtitle_2": "- Satsuki, what's wrong?\n- We got a telegram.",
-      "subtitle_3": "You're supposed to call Mom's\ndoctor at the hospital.",
-      "subtitle_4": "What? The hospital?",
-      "subtitle_5": "Okay. I'll call them right away.",
-      "subtitle_6": "Did something happen to her, Dad?\nDo you think she's okay?",
-      "subtitle_7": "Let's not worry.",
-      "subtitle_8": "I'll call the hospital, and then\nI'll call you right back. Okay?",
-      "subtitle_9": "- Yeah.\n- Just wait by the phone.",
-      "subtitle_10": "- Mmm-hmm.\n- I need to hang up now. Okay?",
-      "subtitle_11": "Excuse me, is it okay if I wait here?\nMy dad says he's going to call me back.",
-      "subtitle_12": "Of course. Make yourself at home."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Satsuki!",
-      "subtitle_2": "(PANTING)",
-      "subtitle_3": "(BLEATING)",
-      "subtitle_4": "Back off! Don't touch my corn!",
-      "subtitle_5": "It's for my mommy!",
-      "subtitle_6": "(BLEATING)",
-      "subtitle_7": "Too bad! She needs it\nto make her better.",
-      "subtitle_8": "(BLEATING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei, the doctor said\nthat Mom's not doing well.",
-      "subtitle_2": "So she doesn't get\nto come home this weekend.",
-      "subtitle_3": "No fair!",
-      "subtitle_4": "It can't be helped, Mei.",
-      "subtitle_5": "What if she came home early,\nand it made her even worse?",
-      "subtitle_6": "It's not fair!",
-      "subtitle_7": "Mei, we just have to wait a little longer.",
-      "subtitle_8": "- No!\n- You want her to die, Mei?",
-      "subtitle_9": "- Is that what you want?\n- No!",
-      "subtitle_10": "You're such a baby! Just grow up!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(SNIFFLING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Come on, Mei.",
-      "subtitle_2": "(CRYING)",
-      "subtitle_3": "She's so mean!",
-      "subtitle_4": "(CRYING)"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Come on, girls.\nLet's put the laundry away.",
-      "subtitle_2": "Oh, don't be sad. Granny's here to help."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Don't worry. Your father is\ngoing to stop by the hospital.",
-      "subtitle_2": "The doctors say your mom\njust has a cold.",
-      "subtitle_3": "She should be home next Saturday."
-    },
-    "answer": {},
-    "verified": true
-  },
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(BUZZING OF INSECTS)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei."
+        },
+        {
+          "index": 2,
+          "text": "(GROANING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "That's where we planted the acorns."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
   {
-    "query": {
-      "subtitle_1": "This is just like last time.",
-      "subtitle_2": "They said Mom just had a little cold,\nshe'd be home in a few days.",
-      "subtitle_3": "Granny, what will we do if she dies?",
-      "subtitle_4": "Satsuki!",
-      "subtitle_5": "Maybe she's dead already.",
-      "subtitle_6": "(CRYING)",
-      "subtitle_7": "Now, don't say that, sweetheart.",
-      "subtitle_8": "How could she ever leave\nsuch sweet girls like you?",
-      "subtitle_9": "Oh, don't cry.",
-      "subtitle_10": "Don't cry. It's all right.",
-      "subtitle_11": "I'll stay here until your father\ncomes home. Okay? Okay?"
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 2,
+          "text": "(GIGGLING)"
+        },
+        {
+          "index": 3,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 4,
+          "text": "(POP)"
+        },
+        {
+          "index": 5,
+          "text": "(GASPING)"
+        },
+        {
+          "index": 6,
+          "text": "(TOTORO GRUNTING)"
+        },
+        {
+          "index": 7,
+          "text": "(POP)"
+        },
+        {
+          "index": 8,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 9,
+          "text": "(POPPING)"
+        },
+        {
+          "index": 10,
+          "text": "(GASPING)"
+        },
+        {
+          "index": 11,
+          "text": "(ALL GRUNTING)"
+        },
+        {
+          "index": 12,
+          "text": "ALL: Ahh!"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mei!"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "- Did she come back?\n- No.",
-      "subtitle_2": "- She wasn't at the bus stop?\n- No.",
-      "subtitle_3": "Let's think.",
-      "subtitle_4": "Do you know anywhere else\nshe might have gone?",
-      "subtitle_5": "I yelled at her this morning.\nShe wanted Mom to come home.",
-      "subtitle_6": "Granny, I bet she went to see Mom\nat the hospital!",
-      "subtitle_7": "You think she'd try\nto walk to the hospital?",
-      "subtitle_8": "Why, that's a three-hour walk\neven for grown-ups.",
-      "subtitle_9": "I'll go look.",
-      "subtitle_10": "Kanta! Hurry! Run on home\nand get your father!",
-      "subtitle_11": "Mei's disappeared, and we need\nall the help we can get!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "GIRLS: Yay! We did it! We did it!"
+        },
+        {
+          "index": 2,
+          "text": "GIRLS: Yay!"
+        },
+        {
+          "index": 3,
+          "text": "(BELLOWING)"
+        },
+        {
+          "index": 4,
+          "text": "(HUMMING)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I shouldn't have yelled at her.\nThis is all my fault."
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Excuse me, mister! Hello!",
-      "subtitle_2": "- Yeah?\n- I'm looking for my sister.",
-      "subtitle_3": "Did you happen to see\na little girl pass this way?",
-      "subtitle_4": "Let's see. Uh, a little girl?",
-      "subtitle_5": "Mmm, I don't think so.\nI would have noticed.",
-      "subtitle_6": "I'll try the other road."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SQUEALING)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "MAN: Are you sure that this\nis the way she came?",
-      "subtitle_2": "I don't know."
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Mei!",
-      "subtitle_2": "(HEAVY BREATHING)"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GRUMBLING)"
+        },
+        {
+          "index": 2,
+          "text": "(GASP)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(PANTING)"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(CAR APPROACHING)"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(WHIRRING)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Stop! Please, stop!",
-      "subtitle_2": "- Oh! Are you crazy?\n- I'm looking for my little sister.",
-      "subtitle_3": "Have you seen a girl walking this way?",
-      "subtitle_4": "Is she lost?",
-      "subtitle_5": "I think she's trying to walk to the\nhospital. She's only four years old.",
-      "subtitle_6": "Oh. I didn't see her. Did you?",
-      "subtitle_7": "No. We just came from the hospital,",
-      "subtitle_8": "and there was no sign of\na little girl on the road.",
-      "subtitle_9": "Okay. Thanks.",
-      "subtitle_10": "- Wait. Where'd you say you're from?\n- From Matsugo.",
-      "subtitle_11": "Matsugo! Ho!",
-      "subtitle_12": "A four-year-old couldn't walk this far.",
-      "subtitle_13": "(ENGINE STARTS)",
-      "subtitle_14": "MAN: Good luck. I hope you find her."
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Satsuki!",
-      "subtitle_2": "Kanta!",
-      "subtitle_3": "- Find her?\n- No.",
-      "subtitle_4": "- I guess you didn't, either.\n- Mmm-mmm.",
-      "subtitle_5": "My dad's got a bunch of\npeople looking for her.",
-      "subtitle_6": "I could ride my bike\nto the hospital for you.",
-      "subtitle_7": "- You should go back home.\n- Check all around.",
-      "subtitle_8": "I'm sure that Mei got lost\non her way to the hospital, okay?",
-      "subtitle_9": "A little while ago,\nthey found a sandal in the pond."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(ROARING)"
+        },
+        {
+          "index": 2,
+          "text": "(GIRLS ROARING)"
+        },
+        {
+          "index": 3,
+          "text": "(ROARING)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(GASPS)",
-      "subtitle_2": "They don't know for sure\nit's Mei's sandal!"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(BREATHING HARD)"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GRUMBLING)"
+        },
+        {
+          "index": 2,
+          "text": "Mei, we're the wind!"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Did you find her yet?"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "MAN: We'll check the irrigation ditch.",
-      "subtitle_2": "(PEOPLE CHATTERING)",
-      "subtitle_3": "MAN: On the far end.",
-      "subtitle_4": "(CHANTING)",
-      "subtitle_5": "It's much deeper over there.\nYou should try there first!",
-      "subtitle_6": "MAN: Are there more poles?"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(INHALES)"
+        },
+        {
+          "index": 2,
+          "text": "(INSTRUMENT PLAYS)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(CHANTING)",
-      "subtitle_2": "(CLAMORING)",
-      "subtitle_3": "Huh?",
-      "subtitle_4": "WOMAN: It's Satsuki."
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Here. Is this Mei's?"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SECOND INSTRUMENT PLAYS)"
+        },
+        {
+          "index": 2,
+          "text": "(ALL MAKING MUSIC)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- It's not hers.\n- Oh!",
-      "subtitle_2": "(SIGHS)",
-      "subtitle_3": "Ohh…",
-      "subtitle_4": "(SIGHS)",
-      "subtitle_5": "Oh, thank goodness.",
-      "subtitle_6": "I was positively certain\nthat sandal belonged to Mei.",
-      "subtitle_7": "All right. Granny just got carried away.",
-      "subtitle_8": "Hey! It's not her sandal!"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "All right everyone, I know you've spent\na lot of time here already,",
-      "subtitle_2": "but we still need your help."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mmm…"
+        },
+        {
+          "index": 2,
+          "text": "(GASPS)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Satsuki!"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Please.",
-      "subtitle_2": "(PANTING)",
-      "subtitle_3": "Let me in to see Totoro. Mei's lost.",
-      "subtitle_4": "It's getting dark,\nand she's out there all alone.",
-      "subtitle_5": "Please let me in to see him.\nIt's an emergency."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GROANS)"
+        },
+        {
+          "index": 2,
+          "text": "Where'd the tree go?"
+        },
+        {
+          "index": 3,
+          "text": "- Ahh!\n- Ahh!"
+        },
+        {
+          "index": 4,
+          "text": "They're growing! We did it!"
+        },
+        {
+          "index": 5,
+          "text": "We did it!"
+        },
+        {
+          "index": 6,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 7,
+          "text": "SATSUKI: I thought it was a dream!\nMEI: But it wasn't!"
+        },
+        {
+          "index": 8,
+          "text": "BOTH: I thought it was a dream!\nWe did it!"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(THUDDING)",
-      "subtitle_2": "(SCREAMING)",
-      "subtitle_3": "(THUDDING)",
-      "subtitle_4": "(GASPS)",
-      "subtitle_5": "Totoro!",
-      "subtitle_6": "Totoro, Mei's lost. I looked everywhere\nfor her, but I couldn't find her.",
-      "subtitle_7": "Please help me. I have to find her.",
-      "subtitle_8": "I'm sure she's scared\nhalf to death by now.",
-      "subtitle_9": "I don't know where else to turn.",
-      "subtitle_10": "(SOBBING)"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(ROARING)"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mr. Kusakabe? Telegram!"
+        },
+        {
+          "index": 2,
+          "text": "Mr. Kusakabe?"
+        },
+        {
+          "index": 3,
+          "text": "A telegram for you."
+        },
+        {
+          "index": 4,
+          "text": "Huh. No one's home."
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(INHALES DEEPLY)",
-      "subtitle_2": "(ROARING)"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(YOWLING)"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(TRAMPLING)"
+        },
+        {
+          "index": 2,
+          "text": "MEI: Granny!"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "No one else can see it, can they?"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "FOREST-SWAMP",
-      "subtitle_2": "CEMETERY-SHRINE",
-      "subtitle_3": "MEI",
-      "subtitle_4": "- Mei.\n- Mei!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm over here."
+        },
+        {
+          "index": 2,
+          "text": "This one's ready to eat."
+        },
+        {
+          "index": 3,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 4,
+          "text": "(SNAP)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(LAUGHING)",
-      "subtitle_2": "GRANNY: Mei!",
-      "subtitle_3": "(GASP)",
-      "subtitle_4": "Mei!"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "The trees are parting!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What about this one, Granny?"
+        },
+        {
+          "index": 2,
+          "text": "Try it."
+        },
+        {
+          "index": 3,
+          "text": "(GRUNTING)"
+        },
+        {
+          "index": 4,
+          "text": "(SNAP)"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "(BARKING)"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "(SIGHS)",
-      "subtitle_2": "SATSUKI: Mei!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Wow, Granny. Your garden\nis just like a market."
+        },
+        {
+          "index": 2,
+          "text": "We've picked enough,\nhaven't we? Let's take a rest."
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Satsuki!",
-      "subtitle_2": "- Where are you?\n- Mei!"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "- Mei!\n- Satsuki!",
-      "subtitle_2": "- Oh! You're okay.\n- I'm sorry.",
-      "subtitle_3": "Were you trying to take your\ncorn to Mom at the hospital?",
-      "subtitle_4": "Mmm-hmm.",
-      "subtitle_5": "(YOWLING)",
-      "subtitle_6": "HOSPITAL",
-      "subtitle_7": "You're going to take us to the hospital?",
-      "subtitle_8": "Thank you!",
-      "subtitle_9": "(LAUGHING)"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mmm. Nice and cold."
+        },
+        {
+          "index": 2,
+          "text": "Mark, get set, go!"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I'm sorry. I don't know why\nthe hospital sent a telegram.",
-      "subtitle_2": "It's just a cold.",
-      "subtitle_3": "I hope it didn't upset the girls too much.\nI've caused them enough grief already.",
-      "subtitle_4": "When they see you're all right,\nthey'll be fine.",
-      "subtitle_5": "We'll just wait a little\nlonger for a weekend together.",
-      "subtitle_6": "Don't worry. We've made it this far.",
-      "subtitle_7": "The girls act so strong, but I think\nit's been harder than they let on.",
-      "subtitle_8": "Especially Satsuki.",
-      "subtitle_9": "- She tries to act so adult.\n- That's true.",
-      "subtitle_10": "I can't wait until I get better.",
-      "subtitle_11": "When I get home, I'm going\nto spoil those girls rotten.",
-      "subtitle_12": "(LAUGHING)",
-      "subtitle_13": "(INAUDIBLE)"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Look at Mom. She's laughing.",
-      "subtitle_2": "- Everything must be okay.\n- Yeah."
-    },
-    "answer": {},
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "It's delicious."
+        },
+        {
+          "index": 2,
+          "text": "I'm glad you like it.\nThey're very good for you."
+        },
+        {
+          "index": 3,
+          "text": "They've soaked up lots\nof vitamins and sunshine."
+        },
+        {
+          "index": 4,
+          "text": "- Would they help Mom get better?\n- Of course they would."
+        },
+        {
+          "index": 5,
+          "text": "If your mom eats my vegetables,\nI bet she'd get well right away."
+        },
+        {
+          "index": 6,
+          "text": "That's great, Granny.\nMom's coming home on Saturday."
+        },
+        {
+          "index": 7,
+          "text": "She's going to sleep with me in my bed."
+        },
+        {
+          "index": 8,
+          "text": "Oh, good! She's finally\nleaving the hospital, is she?"
+        },
+        {
+          "index": 9,
+          "text": "No. The doctor wants her to get used to\nthe new house a little at a time."
+        },
+        {
+          "index": 10,
+          "text": "- She goes back on Monday.\n- Is that so?"
+        },
+        {
+          "index": 11,
+          "text": "We'll feed her lots of\nmy vegetables while she's here."
+        },
+        {
+          "index": 12,
+          "text": "I'll give her the corn that I picked.\nThat will make her better."
+        },
+        {
+          "index": 13,
+          "text": "- I bet that will do her wonders.\n- Yep."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "I'm going to hurry up and get well!",
-      "subtitle_2": "That's the spirit. Huh?"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Here. The postman\nleft us your telegram."
+        },
+        {
+          "index": 2,
+          "text": "A telegram?"
+        }
+      ]
     },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Who left this?",
-      "subtitle_2": "(GASPS)",
-      "subtitle_3": "What is it?",
-      "subtitle_4": "I thought I saw Satsuki and Mei\nsmiling at us from up in that tree.",
-      "subtitle_5": "It sounds crazy, but maybe you did.",
-      "subtitle_6": "- Look at this.\n- “For Mommy.”",
-      "subtitle_7": "♪ Totoro, Totoro ♪",
-      "subtitle_8": "♪ Totoro, Totoro ♪"
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "♪ Who leaves the seeds ♪",
-      "subtitle_2": "♪ For you to find ♪",
-      "subtitle_3": "♪ Follow them and you will see ♪",
-      "subtitle_4": "♪ A treasure there ♪",
-      "subtitle_5": "♪ Then plant the seeds ♪",
-      "subtitle_6": "♪ And help them grow ♪",
-      "subtitle_7": "♪ It may seem like a dream ♪",
-      "subtitle_8": "♪ Things are not what they seem ♪",
-      "subtitle_9": "♪ Now begins a new adventure ♪",
-      "subtitle_10": "♪ For you ♪",
-      "subtitle_11": "♪ And you'll be with Totoro ♪",
-      "subtitle_12": "♪ Totoro ♪",
-      "subtitle_13": "♪ Totoro, Totoro ♪",
-      "subtitle_14": "♪ Living in the forest trees ♪",
-      "subtitle_15": "♪ For such a very, very long time ♪",
-      "subtitle_16": "♪ There you'll be with Totoro, Totoro ♪",
-      "subtitle_17": "♪ Totoro, Totoro ♪",
-      "subtitle_18": "♪ You only see him\nWhen you're very young ♪",
-      "subtitle_19": "♪ A magical adventure for you ♪",
-      "subtitle_20": "♪ It's magic for you ♪",
-      "subtitle_21": "♪ Rain tumbles down ♪",
-      "subtitle_22": "♪ The bus is late ♪",
-      "subtitle_23": "♪ Suddenly, a furry white giant ♪",
-      "subtitle_24": "♪ Is by your side ♪",
-      "subtitle_25": "♪ Don't be afraid ♪",
-      "subtitle_26": "♪ Just open wide ♪",
-      "subtitle_27": "♪ Your umbrella for him ♪",
-      "subtitle_28": "♪ Watch him play in the rain ♪",
-      "subtitle_29": "♪ Now begins a new adventure ♪",
-      "subtitle_30": "♪ For you ♪",
-      "subtitle_31": "♪ And you'll be with Totoro ♪",
-      "subtitle_32": "♪ Totoro ♪",
-      "subtitle_33": "♪ Totoro, Totoro ♪",
-      "subtitle_34": "♪ And on a moonlit night ♪",
-      "subtitle_35": "♪ He plays a magic flute in the sky ♪",
-      "subtitle_36": "♪ There you'll be with Totoro ♪",
-      "subtitle_37": "♪ Totoro ♪",
-      "subtitle_38": "♪ Totoro, Totoro ♪",
-      "subtitle_39": "♪ You only see him\nWhen you're very young ♪",
-      "subtitle_40": "♪ A magical adventure for you ♪",
-      "subtitle_41": "♪ It's magic for you ♪"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "What should I do with it, Granny?\nDad won't be home till evening."
+        },
+        {
+          "index": 2,
+          "text": "Better open it. Might be an emergency."
+        },
+        {
+          "index": 3,
+          "text": "Mmm-hmm."
+        },
+        {
+          "index": 4,
+          "text": "“Please contact Shichikokuyama.”"
+        },
+        {
+          "index": 5,
+          "text": "Shichikokuyama!\nIt's from Mom's hospital!"
+        },
+        {
+          "index": 6,
+          "text": "Something must have happened to her."
+        },
+        {
+          "index": 7,
+          "text": "We have to get to the hospital\nright away, Granny."
+        },
+        {
+          "index": 8,
+          "text": "Okay. Calm down. First, we need to get\nin touch with your father."
+        },
+        {
+          "index": 9,
+          "text": "I know his phone number at the\nuniversity, but we don't have a phone."
+        },
+        {
+          "index": 10,
+          "text": "Kanta, take Satsuki to your uncle's\nhouse and let her use the phone."
+        },
+        {
+          "index": 11,
+          "text": "Mmm-hmm."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei, you need to stay here with me!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei, go back and stay with Granny!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Uh!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello? I'd like to place\na long-distance call, please."
+        },
+        {
+          "index": 2,
+          "text": "It's to my dad at Tokyo 31-13-82."
+        },
+        {
+          "index": 3,
+          "text": "Right."
+        },
+        {
+          "index": 4,
+          "text": "Now, that's a nice girl, eh, Kanta?"
+        },
+        {
+          "index": 5,
+          "text": "(RINGS)"
+        },
+        {
+          "index": 6,
+          "text": "Hello?"
+        },
+        {
+          "index": 7,
+          "text": "Yes."
+        },
+        {
+          "index": 8,
+          "text": "Hello? I need to speak to my dad\nin the archaeology department."
+        },
+        {
+          "index": 9,
+          "text": "I mean, I need to speak\nto Mr. Kusakabe."
+        },
+        {
+          "index": 10,
+          "text": "My name is Satsuki Kusakabe."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Hello, Dad? Is that you? It's Satsuki."
+        },
+        {
+          "index": 2,
+          "text": "- Satsuki, what's wrong?\n- We got a telegram."
+        },
+        {
+          "index": 3,
+          "text": "You're supposed to call Mom's\ndoctor at the hospital."
+        },
+        {
+          "index": 4,
+          "text": "What? The hospital?"
+        },
+        {
+          "index": 5,
+          "text": "Okay. I'll call them right away."
+        },
+        {
+          "index": 6,
+          "text": "Did something happen to her, Dad?\nDo you think she's okay?"
+        },
+        {
+          "index": 7,
+          "text": "Let's not worry."
+        },
+        {
+          "index": 8,
+          "text": "I'll call the hospital, and then\nI'll call you right back. Okay?"
+        },
+        {
+          "index": 9,
+          "text": "- Yeah.\n- Just wait by the phone."
+        },
+        {
+          "index": 10,
+          "text": "- Mmm-hmm.\n- I need to hang up now. Okay?"
+        },
+        {
+          "index": 11,
+          "text": "Excuse me, is it okay if I wait here?\nMy dad says he's going to call me back."
+        },
+        {
+          "index": 12,
+          "text": "Of course. Make yourself at home."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Satsuki!"
+        },
+        {
+          "index": 2,
+          "text": "(PANTING)"
+        },
+        {
+          "index": 3,
+          "text": "(BLEATING)"
+        },
+        {
+          "index": 4,
+          "text": "Back off! Don't touch my corn!"
+        },
+        {
+          "index": 5,
+          "text": "It's for my mommy!"
+        },
+        {
+          "index": 6,
+          "text": "(BLEATING)"
+        },
+        {
+          "index": 7,
+          "text": "Too bad! She needs it\nto make her better."
+        },
+        {
+          "index": 8,
+          "text": "(BLEATING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei, the doctor said\nthat Mom's not doing well."
+        },
+        {
+          "index": 2,
+          "text": "So she doesn't get\nto come home this weekend."
+        },
+        {
+          "index": 3,
+          "text": "No fair!"
+        },
+        {
+          "index": 4,
+          "text": "It can't be helped, Mei."
+        },
+        {
+          "index": 5,
+          "text": "What if she came home early,\nand it made her even worse?"
+        },
+        {
+          "index": 6,
+          "text": "It's not fair!"
+        },
+        {
+          "index": 7,
+          "text": "Mei, we just have to wait a little longer."
+        },
+        {
+          "index": 8,
+          "text": "- No!\n- You want her to die, Mei?"
+        },
+        {
+          "index": 9,
+          "text": "- Is that what you want?\n- No!"
+        },
+        {
+          "index": 10,
+          "text": "You're such a baby! Just grow up!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SNIFFLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Come on, Mei."
+        },
+        {
+          "index": 2,
+          "text": "(CRYING)"
+        },
+        {
+          "index": 3,
+          "text": "She's so mean!"
+        },
+        {
+          "index": 4,
+          "text": "(CRYING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Come on, girls.\nLet's put the laundry away."
+        },
+        {
+          "index": 2,
+          "text": "Oh, don't be sad. Granny's here to help."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Don't worry. Your father is\ngoing to stop by the hospital."
+        },
+        {
+          "index": 2,
+          "text": "The doctors say your mom\njust has a cold."
+        },
+        {
+          "index": 3,
+          "text": "She should be home next Saturday."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "This is just like last time."
+        },
+        {
+          "index": 2,
+          "text": "They said Mom just had a little cold,\nshe'd be home in a few days."
+        },
+        {
+          "index": 3,
+          "text": "Granny, what will we do if she dies?"
+        },
+        {
+          "index": 4,
+          "text": "Satsuki!"
+        },
+        {
+          "index": 5,
+          "text": "Maybe she's dead already."
+        },
+        {
+          "index": 6,
+          "text": "(CRYING)"
+        },
+        {
+          "index": 7,
+          "text": "Now, don't say that, sweetheart."
+        },
+        {
+          "index": 8,
+          "text": "How could she ever leave\nsuch sweet girls like you?"
+        },
+        {
+          "index": 9,
+          "text": "Oh, don't cry."
+        },
+        {
+          "index": 10,
+          "text": "Don't cry. It's all right."
+        },
+        {
+          "index": 11,
+          "text": "I'll stay here until your father\ncomes home. Okay? Okay?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Did she come back?\n- No."
+        },
+        {
+          "index": 2,
+          "text": "- She wasn't at the bus stop?\n- No."
+        },
+        {
+          "index": 3,
+          "text": "Let's think."
+        },
+        {
+          "index": 4,
+          "text": "Do you know anywhere else\nshe might have gone?"
+        },
+        {
+          "index": 5,
+          "text": "I yelled at her this morning.\nShe wanted Mom to come home."
+        },
+        {
+          "index": 6,
+          "text": "Granny, I bet she went to see Mom\nat the hospital!"
+        },
+        {
+          "index": 7,
+          "text": "You think she'd try\nto walk to the hospital?"
+        },
+        {
+          "index": 8,
+          "text": "Why, that's a three-hour walk\neven for grown-ups."
+        },
+        {
+          "index": 9,
+          "text": "I'll go look."
+        },
+        {
+          "index": 10,
+          "text": "Kanta! Hurry! Run on home\nand get your father!"
+        },
+        {
+          "index": 11,
+          "text": "Mei's disappeared, and we need\nall the help we can get!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I shouldn't have yelled at her.\nThis is all my fault."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Excuse me, mister! Hello!"
+        },
+        {
+          "index": 2,
+          "text": "- Yeah?\n- I'm looking for my sister."
+        },
+        {
+          "index": 3,
+          "text": "Did you happen to see\na little girl pass this way?"
+        },
+        {
+          "index": 4,
+          "text": "Let's see. Uh, a little girl?"
+        },
+        {
+          "index": 5,
+          "text": "Mmm, I don't think so.\nI would have noticed."
+        },
+        {
+          "index": 6,
+          "text": "I'll try the other road."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "MAN: Are you sure that this\nis the way she came?"
+        },
+        {
+          "index": 2,
+          "text": "I don't know."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mei!"
+        },
+        {
+          "index": 2,
+          "text": "(HEAVY BREATHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(PANTING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(CAR APPROACHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Stop! Please, stop!"
+        },
+        {
+          "index": 2,
+          "text": "- Oh! Are you crazy?\n- I'm looking for my little sister."
+        },
+        {
+          "index": 3,
+          "text": "Have you seen a girl walking this way?"
+        },
+        {
+          "index": 4,
+          "text": "Is she lost?"
+        },
+        {
+          "index": 5,
+          "text": "I think she's trying to walk to the\nhospital. She's only four years old."
+        },
+        {
+          "index": 6,
+          "text": "Oh. I didn't see her. Did you?"
+        },
+        {
+          "index": 7,
+          "text": "No. We just came from the hospital,"
+        },
+        {
+          "index": 8,
+          "text": "and there was no sign of\na little girl on the road."
+        },
+        {
+          "index": 9,
+          "text": "Okay. Thanks."
+        },
+        {
+          "index": 10,
+          "text": "- Wait. Where'd you say you're from?\n- From Matsugo."
+        },
+        {
+          "index": 11,
+          "text": "Matsugo! Ho!"
+        },
+        {
+          "index": 12,
+          "text": "A four-year-old couldn't walk this far."
+        },
+        {
+          "index": 13,
+          "text": "(ENGINE STARTS)"
+        },
+        {
+          "index": 14,
+          "text": "MAN: Good luck. I hope you find her."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Satsuki!"
+        },
+        {
+          "index": 2,
+          "text": "Kanta!"
+        },
+        {
+          "index": 3,
+          "text": "- Find her?\n- No."
+        },
+        {
+          "index": 4,
+          "text": "- I guess you didn't, either.\n- Mmm-mmm."
+        },
+        {
+          "index": 5,
+          "text": "My dad's got a bunch of\npeople looking for her."
+        },
+        {
+          "index": 6,
+          "text": "I could ride my bike\nto the hospital for you."
+        },
+        {
+          "index": 7,
+          "text": "- You should go back home.\n- Check all around."
+        },
+        {
+          "index": 8,
+          "text": "I'm sure that Mei got lost\non her way to the hospital, okay?"
+        },
+        {
+          "index": 9,
+          "text": "A little while ago,\nthey found a sandal in the pond."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 2,
+          "text": "They don't know for sure\nit's Mei's sandal!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(BREATHING HARD)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Did you find her yet?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "MAN: We'll check the irrigation ditch."
+        },
+        {
+          "index": 2,
+          "text": "(PEOPLE CHATTERING)"
+        },
+        {
+          "index": 3,
+          "text": "MAN: On the far end."
+        },
+        {
+          "index": 4,
+          "text": "(CHANTING)"
+        },
+        {
+          "index": 5,
+          "text": "It's much deeper over there.\nYou should try there first!"
+        },
+        {
+          "index": 6,
+          "text": "MAN: Are there more poles?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(CHANTING)"
+        },
+        {
+          "index": 2,
+          "text": "(CLAMORING)"
+        },
+        {
+          "index": 3,
+          "text": "Huh?"
+        },
+        {
+          "index": 4,
+          "text": "WOMAN: It's Satsuki."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Here. Is this Mei's?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- It's not hers.\n- Oh!"
+        },
+        {
+          "index": 2,
+          "text": "(SIGHS)"
+        },
+        {
+          "index": 3,
+          "text": "Ohh…"
+        },
+        {
+          "index": 4,
+          "text": "(SIGHS)"
+        },
+        {
+          "index": 5,
+          "text": "Oh, thank goodness."
+        },
+        {
+          "index": 6,
+          "text": "I was positively certain\nthat sandal belonged to Mei."
+        },
+        {
+          "index": 7,
+          "text": "All right. Granny just got carried away."
+        },
+        {
+          "index": 8,
+          "text": "Hey! It's not her sandal!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "All right everyone, I know you've spent\na lot of time here already,"
+        },
+        {
+          "index": 2,
+          "text": "but we still need your help."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Satsuki!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Please."
+        },
+        {
+          "index": 2,
+          "text": "(PANTING)"
+        },
+        {
+          "index": 3,
+          "text": "Let me in to see Totoro. Mei's lost."
+        },
+        {
+          "index": 4,
+          "text": "It's getting dark,\nand she's out there all alone."
+        },
+        {
+          "index": 5,
+          "text": "Please let me in to see him.\nIt's an emergency."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(THUDDING)"
+        },
+        {
+          "index": 2,
+          "text": "(SCREAMING)"
+        },
+        {
+          "index": 3,
+          "text": "(THUDDING)"
+        },
+        {
+          "index": 4,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 5,
+          "text": "Totoro!"
+        },
+        {
+          "index": 6,
+          "text": "Totoro, Mei's lost. I looked everywhere\nfor her, but I couldn't find her."
+        },
+        {
+          "index": 7,
+          "text": "Please help me. I have to find her."
+        },
+        {
+          "index": 8,
+          "text": "I'm sure she's scared\nhalf to death by now."
+        },
+        {
+          "index": 9,
+          "text": "I don't know where else to turn."
+        },
+        {
+          "index": 10,
+          "text": "(SOBBING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(ROARING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(INHALES DEEPLY)"
+        },
+        {
+          "index": 2,
+          "text": "(ROARING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(YOWLING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No one else can see it, can they?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "FOREST-SWAMP"
+        },
+        {
+          "index": 2,
+          "text": "CEMETERY-SHRINE"
+        },
+        {
+          "index": 3,
+          "text": "MEI"
+        },
+        {
+          "index": 4,
+          "text": "- Mei.\n- Mei!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 2,
+          "text": "GRANNY: Mei!"
+        },
+        {
+          "index": 3,
+          "text": "(GASP)"
+        },
+        {
+          "index": 4,
+          "text": "Mei!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The trees are parting!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(BARKING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "(SIGHS)"
+        },
+        {
+          "index": 2,
+          "text": "SATSUKI: Mei!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Satsuki!"
+        },
+        {
+          "index": 2,
+          "text": "- Where are you?\n- Mei!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Mei!\n- Satsuki!"
+        },
+        {
+          "index": 2,
+          "text": "- Oh! You're okay.\n- I'm sorry."
+        },
+        {
+          "index": 3,
+          "text": "Were you trying to take your\ncorn to Mom at the hospital?"
+        },
+        {
+          "index": 4,
+          "text": "Mmm-hmm."
+        },
+        {
+          "index": 5,
+          "text": "(YOWLING)"
+        },
+        {
+          "index": 6,
+          "text": "HOSPITAL"
+        },
+        {
+          "index": 7,
+          "text": "You're going to take us to the hospital?"
+        },
+        {
+          "index": 8,
+          "text": "Thank you!"
+        },
+        {
+          "index": 9,
+          "text": "(LAUGHING)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm sorry. I don't know why\nthe hospital sent a telegram."
+        },
+        {
+          "index": 2,
+          "text": "It's just a cold."
+        },
+        {
+          "index": 3,
+          "text": "I hope it didn't upset the girls too much.\nI've caused them enough grief already."
+        },
+        {
+          "index": 4,
+          "text": "When they see you're all right,\nthey'll be fine."
+        },
+        {
+          "index": 5,
+          "text": "We'll just wait a little\nlonger for a weekend together."
+        },
+        {
+          "index": 6,
+          "text": "Don't worry. We've made it this far."
+        },
+        {
+          "index": 7,
+          "text": "The girls act so strong, but I think\nit's been harder than they let on."
+        },
+        {
+          "index": 8,
+          "text": "Especially Satsuki."
+        },
+        {
+          "index": 9,
+          "text": "- She tries to act so adult.\n- That's true."
+        },
+        {
+          "index": 10,
+          "text": "I can't wait until I get better."
+        },
+        {
+          "index": 11,
+          "text": "When I get home, I'm going\nto spoil those girls rotten."
+        },
+        {
+          "index": 12,
+          "text": "(LAUGHING)"
+        },
+        {
+          "index": 13,
+          "text": "(INAUDIBLE)"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Look at Mom. She's laughing."
+        },
+        {
+          "index": 2,
+          "text": "- Everything must be okay.\n- Yeah."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I'm going to hurry up and get well!"
+        },
+        {
+          "index": 2,
+          "text": "That's the spirit. Huh?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Who left this?"
+        },
+        {
+          "index": 2,
+          "text": "(GASPS)"
+        },
+        {
+          "index": 3,
+          "text": "What is it?"
+        },
+        {
+          "index": 4,
+          "text": "I thought I saw Satsuki and Mei\nsmiling at us from up in that tree."
+        },
+        {
+          "index": 5,
+          "text": "It sounds crazy, but maybe you did."
+        },
+        {
+          "index": 6,
+          "text": "- Look at this.\n- “For Mommy.”"
+        },
+        {
+          "index": 7,
+          "text": "♪ Totoro, Totoro ♪"
+        },
+        {
+          "index": 8,
+          "text": "♪ Totoro, Totoro ♪"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "♪ Who leaves the seeds ♪"
+        },
+        {
+          "index": 2,
+          "text": "♪ For you to find ♪"
+        },
+        {
+          "index": 3,
+          "text": "♪ Follow them and you will see ♪"
+        },
+        {
+          "index": 4,
+          "text": "♪ A treasure there ♪"
+        },
+        {
+          "index": 5,
+          "text": "♪ Then plant the seeds ♪"
+        },
+        {
+          "index": 6,
+          "text": "♪ And help them grow ♪"
+        },
+        {
+          "index": 7,
+          "text": "♪ It may seem like a dream ♪"
+        },
+        {
+          "index": 8,
+          "text": "♪ Things are not what they seem ♪"
+        },
+        {
+          "index": 9,
+          "text": "♪ Now begins a new adventure ♪"
+        },
+        {
+          "index": 10,
+          "text": "♪ For you ♪"
+        },
+        {
+          "index": 11,
+          "text": "♪ And you'll be with Totoro ♪"
+        },
+        {
+          "index": 12,
+          "text": "♪ Totoro ♪"
+        },
+        {
+          "index": 13,
+          "text": "♪ Totoro, Totoro ♪"
+        },
+        {
+          "index": 14,
+          "text": "♪ Living in the forest trees ♪"
+        },
+        {
+          "index": 15,
+          "text": "♪ For such a very, very long time ♪"
+        },
+        {
+          "index": 16,
+          "text": "♪ There you'll be with Totoro, Totoro ♪"
+        },
+        {
+          "index": 17,
+          "text": "♪ Totoro, Totoro ♪"
+        },
+        {
+          "index": 18,
+          "text": "♪ You only see him\nWhen you're very young ♪"
+        },
+        {
+          "index": 19,
+          "text": "♪ A magical adventure for you ♪"
+        },
+        {
+          "index": 20,
+          "text": "♪ It's magic for you ♪"
+        },
+        {
+          "index": 21,
+          "text": "♪ Rain tumbles down ♪"
+        },
+        {
+          "index": 22,
+          "text": "♪ The bus is late ♪"
+        },
+        {
+          "index": 23,
+          "text": "♪ Suddenly, a furry white giant ♪"
+        },
+        {
+          "index": 24,
+          "text": "♪ Is by your side ♪"
+        },
+        {
+          "index": 25,
+          "text": "♪ Don't be afraid ♪"
+        },
+        {
+          "index": 26,
+          "text": "♪ Just open wide ♪"
+        },
+        {
+          "index": 27,
+          "text": "♪ Your umbrella for him ♪"
+        },
+        {
+          "index": 28,
+          "text": "♪ Watch him play in the rain ♪"
+        },
+        {
+          "index": 29,
+          "text": "♪ Now begins a new adventure ♪"
+        },
+        {
+          "index": 30,
+          "text": "♪ For you ♪"
+        },
+        {
+          "index": 31,
+          "text": "♪ And you'll be with Totoro ♪"
+        },
+        {
+          "index": 32,
+          "text": "♪ Totoro ♪"
+        },
+        {
+          "index": 33,
+          "text": "♪ Totoro, Totoro ♪"
+        },
+        {
+          "index": 34,
+          "text": "♪ And on a moonlit night ♪"
+        },
+        {
+          "index": 35,
+          "text": "♪ He plays a magic flute in the sky ♪"
+        },
+        {
+          "index": 36,
+          "text": "♪ There you'll be with Totoro ♪"
+        },
+        {
+          "index": 37,
+          "text": "♪ Totoro ♪"
+        },
+        {
+          "index": 38,
+          "text": "♪ Totoro, Totoro ♪"
+        },
+        {
+          "index": 39,
+          "text": "♪ You only see him\nWhen you're very young ♪"
+        },
+        {
+          "index": 40,
+          "text": "♪ A magical adventure for you ♪"
+        },
+        {
+          "index": 41,
+          "text": "♪ It's magic for you ♪"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
     },
-    "answer": {},
     "verified": true
   }
 ]

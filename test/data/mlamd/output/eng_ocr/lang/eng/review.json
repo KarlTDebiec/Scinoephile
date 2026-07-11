@@ -1,1025 +1,892 @@
 [
   {
     "query": {
-      "subtitle_1": "When Mrs. McBing was in labour…",
-      "subtitle_2": "A pan appeared in the sky.",
-      "subtitle_3": "It flied along Garden Street…",
-      "subtitle_4": "Turned left, and stopped\nat the Beefball King.",
-      "subtitle_5": "Correction:",
-      "subtitle_6": "It first arrived at the Market Building…",
-      "subtitle_7": "Lingered a bit…Correction:",
-      "subtitle_8": "It flied over the railway, turned right…",
-      "subtitle_9": "And headed directly for the Bazaar.",
-      "subtitle_10": "It flied on…",
-      "subtitle_11": "At last coming into the maternity ward.",
-      "subtitle_12": "There, on the right hand side of\nMrs. McBing.",
-      "subtitle_13": "Correction: Left hand side.",
-      "subtitle_14": "The pan stayed.",
-      "subtitle_15": "Mrs. McBing,\nconvinced that this was a miracle,",
-      "subtitle_16": "Made a wish…",
-      "subtitle_17": "Thinking of her soon-to-be-born son.",
-      "subtitle_18": "Please make him\na clever and smart boy!",
-      "subtitle_19": "The pan didn't seem to hear her words.",
-      "subtitle_20": "So Mrs. McBing amended her wish:",
-      "subtitle_21": "Or make him a smart businessman?",
-      "subtitle_22": "Or maybe…",
-      "subtitle_23": "Or make him really handsome.",
-      "subtitle_24": "As handsome as Chow Yun Fat or\nTony Leung!",
-      "subtitle_25": "The pan didn't respond.",
-      "subtitle_26": "Mrs. McBing, in panic…",
-      "subtitle_27": "Made a final amendment:",
-      "subtitle_28": "Her boy needed not to be\nsmart or handsome",
-      "subtitle_29": "As long as luck be with him!",
-      "subtitle_30": "It's nice to depend on oneself…",
-      "subtitle_31": "But luck is essential still.",
-      "subtitle_32": "Of course Chow and Leung are\nlucky guys…",
-      "subtitle_33": "But then they are smart too!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "When Mrs. McBing was in labour…"
+        },
+        {
+          "index": 2,
+          "text": "A pan appeared in the sky."
+        },
+        {
+          "index": 3,
+          "text": "It flied along Garden Street…"
+        },
+        {
+          "index": 4,
+          "text": "Turned left, and stopped\nat the Beefball King."
+        },
+        {
+          "index": 5,
+          "text": "Correction:"
+        },
+        {
+          "index": 6,
+          "text": "It first arrived at the Market Building…"
+        },
+        {
+          "index": 7,
+          "text": "Lingered a bit…Correction:"
+        },
+        {
+          "index": 8,
+          "text": "It flied over the railway, turned right…"
+        },
+        {
+          "index": 9,
+          "text": "And headed directly for the Bazaar."
+        },
+        {
+          "index": 10,
+          "text": "It flied on…"
+        },
+        {
+          "index": 11,
+          "text": "At last coming into the maternity ward."
+        },
+        {
+          "index": 12,
+          "text": "There, on the right hand side of\nMrs. McBing."
+        },
+        {
+          "index": 13,
+          "text": "Correction: Left hand side."
+        },
+        {
+          "index": 14,
+          "text": "The pan stayed."
+        },
+        {
+          "index": 15,
+          "text": "Mrs. McBing,\nconvinced that this was a miracle,"
+        },
+        {
+          "index": 16,
+          "text": "Made a wish…"
+        },
+        {
+          "index": 17,
+          "text": "Thinking of her soon-to-be-born son."
+        },
+        {
+          "index": 18,
+          "text": "Please make him\na clever and smart boy!"
+        },
+        {
+          "index": 19,
+          "text": "The pan didn't seem to hear her words."
+        },
+        {
+          "index": 20,
+          "text": "So Mrs. McBing amended her wish:"
+        },
+        {
+          "index": 21,
+          "text": "Or make him a smart businessman?"
+        },
+        {
+          "index": 22,
+          "text": "Or maybe…"
+        },
+        {
+          "index": 23,
+          "text": "Or make him really handsome."
+        },
+        {
+          "index": 24,
+          "text": "As handsome as Chow Yun Fat or\nTony Leung!"
+        },
+        {
+          "index": 25,
+          "text": "The pan didn't respond."
+        },
+        {
+          "index": 26,
+          "text": "Mrs. McBing, in panic…"
+        },
+        {
+          "index": 27,
+          "text": "Made a final amendment:"
+        },
+        {
+          "index": 28,
+          "text": "Her boy needed not to be\nsmart or handsome"
+        },
+        {
+          "index": 29,
+          "text": "As long as luck be with him!"
+        },
+        {
+          "index": 30,
+          "text": "It's nice to depend on oneself…"
+        },
+        {
+          "index": 31,
+          "text": "But luck is essential still."
+        },
+        {
+          "index": 32,
+          "text": "Of course Chow and Leung are\nlucky guys…"
+        },
+        {
+          "index": 33,
+          "text": "But then they are smart too!"
+        }
+      ]
     },
     "answer": {
-      "revised_3": "It flew along Garden Street…",
-      "note_3": "Corrected 'flied' to 'flew'.",
-      "revised_4": "Turned left, and stopped\nat the Beef ball King.",
-      "note_4": "Separated 'Beefball' into 'Beef ball' to correct the compound noun spelling.",
-      "revised_7": "Lingered a bit… Correction:",
-      "note_7": "Added a space after the ellipsis before 'Correction:' for clarity and consistency.",
-      "revised_8": "It flew over the railway, turned right…",
-      "note_8": "Corrected 'flied' to 'flew'.",
-      "revised_10": "It flew on…",
-      "note_10": "Corrected 'flied' to 'flew'."
+      "revisions": [
+        {
+          "index": 3,
+          "text": "It flew along Garden Street…",
+          "note": "Corrected 'flied' to 'flew'."
+        },
+        {
+          "index": 4,
+          "text": "Turned left, and stopped\nat the Beef ball King.",
+          "note": "Separated 'Beefball' into 'Beef ball' to correct the compound noun spelling."
+        },
+        {
+          "index": 7,
+          "text": "Lingered a bit… Correction:",
+          "note": "Added a space after the ellipsis before 'Correction:' for clarity and consistency."
+        },
+        {
+          "index": 8,
+          "text": "It flew over the railway, turned right…",
+          "note": "Corrected 'flied' to 'flew'."
+        },
+        {
+          "index": 10,
+          "text": "It flew on…",
+          "note": "Corrected 'flied' to 'flew'."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Finally, the pan dropped to the floor…",
-      "subtitle_2": "Mrs. McBing,\nbelieving her wish granted…",
-      "subtitle_3": "Thought that was magnificent!",
-      "subtitle_4": "But what had the pan granted her?",
-      "subtitle_5": "A smart boy? A lucky boy?",
-      "subtitle_6": "Or a Chow look-alike?",
-      "subtitle_7": "To commemorate this, Mrs. McBing …",
-      "subtitle_8": "Decided to name her son McNificient.",
-      "subtitle_9": "No! It's better to be humble!",
-      "subtitle_10": "I'll name him McDull!",
-      "subtitle_11": "Dear all…",
-      "subtitle_12": "I am the boy, no more McNificient…",
-      "subtitle_13": "I'm McDull!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Finally, the pan dropped to the floor…"
+        },
+        {
+          "index": 2,
+          "text": "Mrs. McBing,\nbelieving her wish granted…"
+        },
+        {
+          "index": 3,
+          "text": "Thought that was magnificent!"
+        },
+        {
+          "index": 4,
+          "text": "But what had the pan granted her?"
+        },
+        {
+          "index": 5,
+          "text": "A smart boy? A lucky boy?"
+        },
+        {
+          "index": 6,
+          "text": "Or a Chow look-alike?"
+        },
+        {
+          "index": 7,
+          "text": "To commemorate this, Mrs. McBing …"
+        },
+        {
+          "index": 8,
+          "text": "Decided to name her son McNificient."
+        },
+        {
+          "index": 9,
+          "text": "No! It's better to be humble!"
+        },
+        {
+          "index": 10,
+          "text": "I'll name him McDull!"
+        },
+        {
+          "index": 11,
+          "text": "Dear all…"
+        },
+        {
+          "index": 12,
+          "text": "I am the boy, no more McNificient…"
+        },
+        {
+          "index": 13,
+          "text": "I'm McDull!"
+        }
+      ]
     },
     "answer": {
-      "revised_7": "To commemorate this, Mrs. McBing…",
-      "note_7": "Removed the extra space before the ellipsis after 'McBing' for correct punctuation spacing."
+      "revisions": [
+        {
+          "index": 7,
+          "text": "To commemorate this, Mrs. McBing…",
+          "note": "Removed the extra space before the ellipsis after 'McBing' for correct punctuation spacing."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "“My School”",
-      "subtitle_2": "Oh dear,",
-      "subtitle_3": "your calves have grown strong.",
-      "subtitle_4": "I've been desperately…",
-      "subtitle_5": "looking for a school!",
-      "subtitle_6": "Why not try the one…",
-      "subtitle_7": "at the Emporium?",
-      "subtitle_8": "The Spring Flower Kindergarten?",
-      "subtitle_9": "Yeah! The one at the junction… …",
-      "subtitle_10": "Right next to Silver City Food Mall.",
-      "subtitle_11": "The Spring Flower Kindergarten!",
-      "subtitle_12": "Only 10 minutes walk from\nthe MTR Station!",
-      "subtitle_13": "Spring Flower Kindergarten,\ngood environment…",
-      "subtitle_14": "With white teachers for English class!",
-      "subtitle_15": "White teachers for English class?",
-      "subtitle_16": "Yeah!",
-      "subtitle_17": "Spring Flower offer white teachers!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“My School”"
+        },
+        {
+          "index": 2,
+          "text": "Oh dear,"
+        },
+        {
+          "index": 3,
+          "text": "your calves have grown strong."
+        },
+        {
+          "index": 4,
+          "text": "I've been desperately…"
+        },
+        {
+          "index": 5,
+          "text": "looking for a school!"
+        },
+        {
+          "index": 6,
+          "text": "Why not try the one…"
+        },
+        {
+          "index": 7,
+          "text": "at the Emporium?"
+        },
+        {
+          "index": 8,
+          "text": "The Spring Flower Kindergarten?"
+        },
+        {
+          "index": 9,
+          "text": "Yeah! The one at the junction… …"
+        },
+        {
+          "index": 10,
+          "text": "Right next to Silver City Food Mall."
+        },
+        {
+          "index": 11,
+          "text": "The Spring Flower Kindergarten!"
+        },
+        {
+          "index": 12,
+          "text": "Only 10 minutes walk from\nthe MTR Station!"
+        },
+        {
+          "index": 13,
+          "text": "Spring Flower Kindergarten,\ngood environment…"
+        },
+        {
+          "index": 14,
+          "text": "With white teachers for English class!"
+        },
+        {
+          "index": 15,
+          "text": "White teachers for English class?"
+        },
+        {
+          "index": 16,
+          "text": "Yeah!"
+        },
+        {
+          "index": 17,
+          "text": "Spring Flower offer white teachers!"
+        }
+      ]
     },
     "answer": {
-      "revised_9": "Yeah! The one at the junction…",
-      "note_9": "Removed the duplicated ellipsis to correct the punctuation.",
-      "revised_17": "Spring Flower offers white teachers!",
-      "note_17": "Corrected verb agreement from 'offer' to 'offers' to match singular subject 'Spring Flower'."
+      "revisions": [
+        {
+          "index": 9,
+          "text": "Yeah! The one at the junction…",
+          "note": "Removed the duplicated ellipsis to correct the punctuation."
+        },
+        {
+          "index": 17,
+          "text": "Spring Flower offers white teachers!",
+          "note": "Corrected verb agreement from 'offer' to 'offers' to match singular subject 'Spring Flower'."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "“We are all happy children…”",
-      "subtitle_2": "“We sing everyday!”",
-      "subtitle_3": "“We learn as we grow…”",
-      "subtitle_4": "“We are the flowers of spring!”",
-      "subtitle_5": "This piggy kid in a rabbit outfit…",
-      "subtitle_6": "Who doesn't look the least\nlike Chow or Leung…",
-      "subtitle_7": "That's me, McDull.",
-      "subtitle_8": "This is my kindergarten.",
-      "subtitle_9": "The headmaster came from\nthe countryside…",
-      "subtitle_10": "As a result, he speaks with an accent.",
-      "subtitle_11": "For many years…",
-      "subtitle_12": "I had difficulty hearing him.",
-      "subtitle_13": "- Tart!    - Tart!",
-      "subtitle_14": "- Duck dumpling!    - Duck dumpling!",
-      "subtitle_15": "- The 97 Rule…    - The 97 Rule…",
-      "subtitle_16": "Shall be replaced by the 98 Rule!",
-      "subtitle_17": "Shall be replaced by the 98 Rule!",
-      "subtitle_18": "Good, children!",
-      "subtitle_19": "We are sharing an important issue…",
-      "subtitle_20": "this morning:",
-      "subtitle_21": "Children, have you handed in\nthe school fee?",
-      "subtitle_22": "Yes!",
-      "subtitle_23": "Great! Now move to class."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "You might conclude that\nthis is a shabby school.",
-      "subtitle_2": "But, for me and my mates…",
-      "subtitle_3": "This is the most beautiful paradise!",
-      "subtitle_4": "…Also, there is Miss Chan.",
-      "subtitle_5": "Who adores us in\nher absent-minded way.",
-      "subtitle_6": "Also, she is a Faye Wong wannabe.",
-      "subtitle_7": "Actually, Kelly Chan will do!",
-      "subtitle_8": "Roll call now.",
-      "subtitle_9": "- McMug!    - Present!",
-      "subtitle_10": "- Fai!    - Present!",
-      "subtitle_11": "- Goosie!    - Present!",
-      "subtitle_12": "- Darby!    - Present!",
-      "subtitle_13": "- May!    - Present!",
-      "subtitle_14": "- June!    - Present!",
-      "subtitle_15": "- May!    - Present!",
-      "subtitle_16": "- McMug!    - Present!",
-      "subtitle_17": "May!",
-      "subtitle_18": "Miss Chan, I've been called twice!",
-      "subtitle_19": "Oops!",
-      "subtitle_20": "Good morning, sir!",
-      "subtitle_21": "Good day, sir!",
-      "subtitle_22": "Back to roll call.",
-      "subtitle_23": "- Fai!    - Present!",
-      "subtitle_24": "- Fai!    - Present!",
-      "subtitle_25": "- Darby!    - Present!",
-      "subtitle_26": "- May!    - Present!",
-      "subtitle_27": "- McMug!    - Present!",
-      "subtitle_28": "- Goosie!    - Present!",
-      "subtitle_29": "- Goosie!    - Present!",
-      "subtitle_30": "Have I missed anyone?",
-      "subtitle_31": "McDull!",
-      "subtitle_32": "McDull!",
-      "subtitle_33": "McDull!",
-      "subtitle_34": "McDull!",
-      "subtitle_35": "Hey, I don't understand…",
-      "subtitle_36": "I keep feeling that…",
-      "subtitle_37": "Someone is calling me.",
-      "subtitle_38": "Don't think that I've been daydreaming.",
-      "subtitle_39": "I was contemplating something academic:",
-      "subtitle_40": "How does this universe work?",
-      "subtitle_41": "I mean, I ate 6 oranges that morning…",
-      "subtitle_42": "And my stomach wouldn't stop.",
-      "subtitle_43": "Then I ate 3 bananas this morning.",
-      "subtitle_44": "Again my stomach wouldn't stop…",
-      "subtitle_45": "It just wouldn't stop!",
-      "subtitle_46": "How are these two things related?",
-      "subtitle_47": "There are so many things that\nI don't understand.",
-      "subtitle_48": "But I am not afraid.",
-      "subtitle_49": "One day, when I finish kindergarten…",
-      "subtitle_50": "I shall move up…",
-      "subtitle_51": "And get my degree.",
-      "subtitle_52": "When I graduate from university, I know…",
-      "subtitle_53": "I shall understand everything!",
-      "subtitle_54": "And then …",
-      "subtitle_55": "I will buy my mother a house!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Our headmaster runs a teastand…",
-      "subtitle_2": "Which we kids frequent after class.",
-      "subtitle_3": "- Fishball noodle, please.\n- No noodle left.",
-      "subtitle_4": "- Fishball rice noodle then.\n- No fishball left.",
-      "subtitle_5": "- Chicken wing noodle then.\n- No noodle left.",
-      "subtitle_6": "- How about fishball congee?\n- No fishball left.",
-      "subtitle_7": "Nothing left today?",
-      "subtitle_8": "- How about beef noodle?\n- No noodle left.",
-      "subtitle_9": "Again?",
-      "subtitle_10": "- Fried chicken wing with fishball…\n- No fishball left.",
-      "subtitle_11": "Hey, fishball and noodle are both gone…",
-      "subtitle_12": "You can't combine them with other things.",
-      "subtitle_13": "Can't combine them?",
-      "subtitle_14": "- A bowl of fishball then.\n- No fishball left.",
-      "subtitle_15": "- A bowl of noodle?\n- No noodle left.",
-      "subtitle_16": "By now…",
-      "subtitle_17": "you can probably tell how smart I am.",
-      "subtitle_18": "Nothing worried me, all things were fine.",
-      "subtitle_19": "No fishball left? Let's get some noodle.",
-      "subtitle_20": "Shoot, Dull!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“We are all happy children…”"
+        },
+        {
+          "index": 2,
+          "text": "“We sing everyday!”"
+        },
+        {
+          "index": 3,
+          "text": "“We learn as we grow…”"
+        },
+        {
+          "index": 4,
+          "text": "“We are the flowers of spring!”"
+        },
+        {
+          "index": 5,
+          "text": "This piggy kid in a rabbit outfit…"
+        },
+        {
+          "index": 6,
+          "text": "Who doesn't look the least\nlike Chow or Leung…"
+        },
+        {
+          "index": 7,
+          "text": "That's me, McDull."
+        },
+        {
+          "index": 8,
+          "text": "This is my kindergarten."
+        },
+        {
+          "index": 9,
+          "text": "The headmaster came from\nthe countryside…"
+        },
+        {
+          "index": 10,
+          "text": "As a result, he speaks with an accent."
+        },
+        {
+          "index": 11,
+          "text": "For many years…"
+        },
+        {
+          "index": 12,
+          "text": "I had difficulty hearing him."
+        },
+        {
+          "index": 13,
+          "text": "- Tart!    - Tart!"
+        },
+        {
+          "index": 14,
+          "text": "- Duck dumpling!    - Duck dumpling!"
+        },
+        {
+          "index": 15,
+          "text": "- The 97 Rule…    - The 97 Rule…"
+        },
+        {
+          "index": 16,
+          "text": "Shall be replaced by the 98 Rule!"
+        },
+        {
+          "index": 17,
+          "text": "Shall be replaced by the 98 Rule!"
+        },
+        {
+          "index": 18,
+          "text": "Good, children!"
+        },
+        {
+          "index": 19,
+          "text": "We are sharing an important issue…"
+        },
+        {
+          "index": 20,
+          "text": "this morning:"
+        },
+        {
+          "index": 21,
+          "text": "Children, have you handed in\nthe school fee?"
+        },
+        {
+          "index": 22,
+          "text": "Yes!"
+        },
+        {
+          "index": 23,
+          "text": "Great! Now move to class."
+        }
+      ]
     },
     "answer": {
-      "revised_1": "Our headmaster runs a tea stand…",
-      "note_1": "Corrected the misspelling 'teastand' to 'tea stand'."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You might conclude that\nthis is a shabby school."
+        },
+        {
+          "index": 2,
+          "text": "But, for me and my mates…"
+        },
+        {
+          "index": 3,
+          "text": "This is the most beautiful paradise!"
+        },
+        {
+          "index": 4,
+          "text": "…Also, there is Miss Chan."
+        },
+        {
+          "index": 5,
+          "text": "Who adores us in\nher absent-minded way."
+        },
+        {
+          "index": 6,
+          "text": "Also, she is a Faye Wong wannabe."
+        },
+        {
+          "index": 7,
+          "text": "Actually, Kelly Chan will do!"
+        },
+        {
+          "index": 8,
+          "text": "Roll call now."
+        },
+        {
+          "index": 9,
+          "text": "- McMug!    - Present!"
+        },
+        {
+          "index": 10,
+          "text": "- Fai!    - Present!"
+        },
+        {
+          "index": 11,
+          "text": "- Goosie!    - Present!"
+        },
+        {
+          "index": 12,
+          "text": "- Darby!    - Present!"
+        },
+        {
+          "index": 13,
+          "text": "- May!    - Present!"
+        },
+        {
+          "index": 14,
+          "text": "- June!    - Present!"
+        },
+        {
+          "index": 15,
+          "text": "- May!    - Present!"
+        },
+        {
+          "index": 16,
+          "text": "- McMug!    - Present!"
+        },
+        {
+          "index": 17,
+          "text": "May!"
+        },
+        {
+          "index": 18,
+          "text": "Miss Chan, I've been called twice!"
+        },
+        {
+          "index": 19,
+          "text": "Oops!"
+        },
+        {
+          "index": 20,
+          "text": "Good morning, sir!"
+        },
+        {
+          "index": 21,
+          "text": "Good day, sir!"
+        },
+        {
+          "index": 22,
+          "text": "Back to roll call."
+        },
+        {
+          "index": 23,
+          "text": "- Fai!    - Present!"
+        },
+        {
+          "index": 24,
+          "text": "- Fai!    - Present!"
+        },
+        {
+          "index": 25,
+          "text": "- Darby!    - Present!"
+        },
+        {
+          "index": 26,
+          "text": "- May!    - Present!"
+        },
+        {
+          "index": 27,
+          "text": "- McMug!    - Present!"
+        },
+        {
+          "index": 28,
+          "text": "- Goosie!    - Present!"
+        },
+        {
+          "index": 29,
+          "text": "- Goosie!    - Present!"
+        },
+        {
+          "index": 30,
+          "text": "Have I missed anyone?"
+        },
+        {
+          "index": 31,
+          "text": "McDull!"
+        },
+        {
+          "index": 32,
+          "text": "McDull!"
+        },
+        {
+          "index": 33,
+          "text": "McDull!"
+        },
+        {
+          "index": 34,
+          "text": "McDull!"
+        },
+        {
+          "index": 35,
+          "text": "Hey, I don't understand…"
+        },
+        {
+          "index": 36,
+          "text": "I keep feeling that…"
+        },
+        {
+          "index": 37,
+          "text": "Someone is calling me."
+        },
+        {
+          "index": 38,
+          "text": "Don't think that I've been daydreaming."
+        },
+        {
+          "index": 39,
+          "text": "I was contemplating something academic:"
+        },
+        {
+          "index": 40,
+          "text": "How does this universe work?"
+        },
+        {
+          "index": 41,
+          "text": "I mean, I ate 6 oranges that morning…"
+        },
+        {
+          "index": 42,
+          "text": "And my stomach wouldn't stop."
+        },
+        {
+          "index": 43,
+          "text": "Then I ate 3 bananas this morning."
+        },
+        {
+          "index": 44,
+          "text": "Again my stomach wouldn't stop…"
+        },
+        {
+          "index": 45,
+          "text": "It just wouldn't stop!"
+        },
+        {
+          "index": 46,
+          "text": "How are these two things related?"
+        },
+        {
+          "index": 47,
+          "text": "There are so many things that\nI don't understand."
+        },
+        {
+          "index": 48,
+          "text": "But I am not afraid."
+        },
+        {
+          "index": 49,
+          "text": "One day, when I finish kindergarten…"
+        },
+        {
+          "index": 50,
+          "text": "I shall move up…"
+        },
+        {
+          "index": 51,
+          "text": "And get my degree."
+        },
+        {
+          "index": 52,
+          "text": "When I graduate from university, I know…"
+        },
+        {
+          "index": 53,
+          "text": "I shall understand everything!"
+        },
+        {
+          "index": 54,
+          "text": "And then …"
+        },
+        {
+          "index": 55,
+          "text": "I will buy my mother a house!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Our headmaster runs a teastand…"
+        },
+        {
+          "index": 2,
+          "text": "Which we kids frequent after class."
+        },
+        {
+          "index": 3,
+          "text": "- Fishball noodle, please.\n- No noodle left."
+        },
+        {
+          "index": 4,
+          "text": "- Fishball rice noodle then.\n- No fishball left."
+        },
+        {
+          "index": 5,
+          "text": "- Chicken wing noodle then.\n- No noodle left."
+        },
+        {
+          "index": 6,
+          "text": "- How about fishball congee?\n- No fishball left."
+        },
+        {
+          "index": 7,
+          "text": "Nothing left today?"
+        },
+        {
+          "index": 8,
+          "text": "- How about beef noodle?\n- No noodle left."
+        },
+        {
+          "index": 9,
+          "text": "Again?"
+        },
+        {
+          "index": 10,
+          "text": "- Fried chicken wing with fishball…\n- No fishball left."
+        },
+        {
+          "index": 11,
+          "text": "Hey, fishball and noodle are both gone…"
+        },
+        {
+          "index": 12,
+          "text": "You can't combine them with other things."
+        },
+        {
+          "index": 13,
+          "text": "Can't combine them?"
+        },
+        {
+          "index": 14,
+          "text": "- A bowl of fishball then.\n- No fishball left."
+        },
+        {
+          "index": 15,
+          "text": "- A bowl of noodle?\n- No noodle left."
+        },
+        {
+          "index": 16,
+          "text": "By now…"
+        },
+        {
+          "index": 17,
+          "text": "you can probably tell how smart I am."
+        },
+        {
+          "index": 18,
+          "text": "Nothing worried me, all things were fine."
+        },
+        {
+          "index": 19,
+          "text": "No fishball left? Let's get some noodle."
+        },
+        {
+          "index": 20,
+          "text": "Shoot, Dull!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "Our headmaster runs a tea stand…",
+          "note": "Corrected the misspelling 'teastand' to 'tea stand'."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Watching myself grow and grow…",
-      "subtitle_2": "Everyday…",
-      "subtitle_3": "I feel full of strength!",
-      "subtitle_4": "The world is beautiful!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Watching myself grow and grow…"
+        },
+        {
+          "index": 2,
+          "text": "Everyday…"
+        },
+        {
+          "index": 3,
+          "text": "I feel full of strength!"
+        },
+        {
+          "index": 4,
+          "text": "The world is beautiful!"
+        }
+      ]
     },
     "answer": {
-      "revised_2": "Every day…",
-      "note_2": "Corrected 'Everyday…' to 'Every day…' ('everyday' is an adjective; 'every day' is correct here)."
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Every day…",
+          "note": "Corrected 'Everyday…' to 'Every day…' ('everyday' is an adjective; 'every day' is correct here)."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "There is a song Miss Chan loves…",
-      "subtitle_2": "Which I always want to learn…",
-      "subtitle_3": "But it just comes out different.",
-      "subtitle_4": "You mean\n“All Things Bright and Beautiful”?",
-      "subtitle_5": "Yes, all are fine!",
-      "subtitle_6": "All things on earth…",
-      "subtitle_7": "They are fine!!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "“My Mother”"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "1,2,3,4,5,6,7…",
-      "subtitle_2": "No pain no gain!",
-      "subtitle_3": "Monday till Sunday… No pain no gain!",
-      "subtitle_4": "The middleaged swine is Mrs. McBing,",
-      "subtitle_5": "my mother…",
-      "subtitle_6": "A brilliant woman…",
-      "subtitle_7": "carrying the world!"
-    },
-    "answer": {
-      "revised_1": "1, 2, 3, 4, 5, 6, 7…",
-      "note_1": "Added spaces after commas for correct number formatting.",
-      "revised_4": "The middle-aged swine is Mrs. McBing,",
-      "note_4": "Corrected 'middleaged' to 'middle-aged'."
-    },
-    "difficulty": 1,
-    "few_shot": true,
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Yes, she is really something.",
-      "subtitle_2": "She works in insurance,\nreal estate and trading.",
-      "subtitle_3": "At the height of IT,\nshe even sets up her cooking site…",
-      "subtitle_4": "www.MrsMcBing.com",
-      "subtitle_5": "Offering brilliant dishes.",
-      "subtitle_6": "Welcome to“Mrs. Mc Can Cook”.",
-      "subtitle_7": "Today we're doing a simple dish,",
-      "subtitle_8": "Paper Chicken.",
-      "subtitle_9": "Kids at home would love it.",
-      "subtitle_10": "The ingredient: a chicken bun.",
-      "subtitle_11": "Slowly, we tear the paper away\nfrom the bun",
-      "subtitle_12": "Now we have a bun paper.",
-      "subtitle_13": "Turn the paper over like this…",
-      "subtitle_14": "Voila! Simple, isn't it?",
-      "subtitle_15": "Thank you, everyone!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "There is a song Miss Chan loves…"
+        },
+        {
+          "index": 2,
+          "text": "Which I always want to learn…"
+        },
+        {
+          "index": 3,
+          "text": "But it just comes out different."
+        },
+        {
+          "index": 4,
+          "text": "You mean\n“All Things Bright and Beautiful”?"
+        },
+        {
+          "index": 5,
+          "text": "Yes, all are fine!"
+        },
+        {
+          "index": 6,
+          "text": "All things on earth…"
+        },
+        {
+          "index": 7,
+          "text": "They are fine!!"
+        }
+      ]
     },
     "answer": {
-      "revised_6": "Welcome to “Mrs. Mc Can Cook”.",
-      "note_6": "Added a space after 'to' before the opening quotation mark."
+      "revisions": []
     },
-    "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "How time flies since last episode!",
-      "subtitle_2": "Now we shall do a Paper Bun.",
-      "subtitle_3": "The ingredient takes only a paper.",
-      "subtitle_4": "Do it like this…",
-      "subtitle_5": "And we have a Paper Bun.",
-      "subtitle_6": "Isn't this a lovely bun?"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“My Mother”"
+        }
+      ]
     },
     "answer": {
-      "revised_1": "How time flies since the last episode!",
-      "note_1": "Added 'the' before 'last episode' for correct phrasing.",
-      "revised_3": "The ingredient takes only a piece of paper.",
-      "note_3": "Changed 'a paper' to 'a piece of paper' to correct the noun phrase."
+      "revisions": []
     },
-    "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "A novelty today for everyone:",
-      "subtitle_2": "Chicken Bun Paper Bunning a Bun.",
-      "subtitle_3": "First, unwrap the chicken\nfrom the paper.",
-      "subtitle_4": "Now we have a paper and\na piece of chicken.",
-      "subtitle_5": "Use the bun paper to wrap up\nthe chicken like this…",
-      "subtitle_6": "And then wrap it like this…",
-      "subtitle_7": "The delicious Chicken Bun Paper\nBunning a Bun!",
-      "subtitle_8": "Such a simple dish!",
-      "subtitle_9": "See if the chicken is good!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Kids are bound to love…",
-      "subtitle_2": "today's dish…",
-      "subtitle_3": "Bunning a Chicken Bun Paper…",
-      "subtitle_4": "Bunning the Paper Chicken.",
-      "subtitle_5": "It takes simple work.",
-      "subtitle_6": "Use the chicken bun to bun…",
-      "subtitle_7": "the chicken bun…",
-      "subtitle_8": "Then use the chicken bun paper to…",
-      "subtitle_9": "bun and bun…",
-      "subtitle_10": "Paper, bun, bun, paper, bun…",
-      "subtitle_11": "Paper, chicken, bun, bun, chicken…",
-      "subtitle_12": "But my mother has her tender side.",
-      "subtitle_13": "Every night,\nshe tells me a story before sleep.",
-      "subtitle_14": "Once upon a time, a boy lied. One day…",
-      "subtitle_15": "He died.",
-      "subtitle_16": "Once upon a time, a boy studied hard.",
-      "subtitle_17": "He grew up and got rich.",
-      "subtitle_18": "Once upon a time, a boy was naughty.\nOne day…",
-      "subtitle_19": "He twisted his ankle.",
-      "subtitle_20": "Mother, I want to sleep."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Once upon a time, a boy slept a lot.\nNext day…",
-      "subtitle_2": "He died.",
-      "subtitle_3": "That is my mother's direct approach.",
-      "subtitle_4": "Her love for me is direct.",
-      "subtitle_5": "Her expectation of me is direct.",
-      "subtitle_6": "For her, it is always…",
-      "subtitle_7": "“no pain no gain”."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "But there are things that\nsimply cannot be gained.",
-      "subtitle_2": "Days come and go.",
-      "subtitle_3": "Talking about Chow look-alike…",
-      "subtitle_4": "You still think it's going happen?",
-      "subtitle_5": "When it comes to luck…",
-      "subtitle_6": "The lottery numbers that\nmother obliges to draw…",
-      "subtitle_7": "Failed even to bring her one cent!",
-      "subtitle_8": "As for being smart…",
-      "subtitle_9": "I did try hard, but then…",
-      "subtitle_10": "But then, I still have dreams.",
-      "subtitle_11": "“My Ideal World”",
-      "subtitle_12": "Maldives, a world outside our world.",
-      "subtitle_13": "The sky blue, clouds white,\nthe trees tall and water bright.",
-      "subtitle_14": "The colourful world of the tropical sea.",
-      "subtitle_15": "The primitive ocean of primitive energy.",
-      "subtitle_16": "Experience a world that\nknows no boundary!",
-      "subtitle_17": "Enjoy a trip to your ideal world.",
-      "subtitle_18": "Brilliant Touring Agency,\nlicense no. 350999",
-      "subtitle_19": "Mother, you know where Maldives is?",
-      "subtitle_20": "Far.",
-      "subtitle_21": "How far?",
-      "subtitle_22": "You need to fly there.",
-      "subtitle_23": "Mother will you take me there?",
-      "subtitle_24": "One day when I am rich.",
-      "subtitle_25": "When will you get rich?",
-      "subtitle_26": "Soon…",
-      "subtitle_27": "In my dream!"
-    },
-    "answer": {},
-    "few_shot": true,
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Good morning, sir!",
-      "subtitle_2": "Good day, sir!",
-      "subtitle_3": "Where is your favourite place?",
-      "subtitle_4": "My favourite place is Japan.",
-      "subtitle_5": "They have Disneyland and\nHello Kitty Land.",
-      "subtitle_6": "I bought my hairpin there.",
-      "subtitle_7": "My favourite place is Canada.",
-      "subtitle_8": "Grandma and my uncles live there.",
-      "subtitle_9": "My favourite place is Bangkok.",
-      "subtitle_10": "They have water sports and\nshark's fin soup.",
-      "subtitle_11": "My favourite place is that…",
-      "subtitle_12": "What's-it's name.",
-      "subtitle_13": "They have Fun World and Food Mall.",
-      "subtitle_14": "Their chicken rice fills you up.",
-      "subtitle_15": "Right, that's Silver City Centre.",
-      "subtitle_16": "They serve huge bowls of rice.",
-      "subtitle_17": "As for the place I most want to go, wow!",
-      "subtitle_18": "There, the sky is blue,\nclouds white, the trees tall…",
-      "subtitle_19": "It is a world outside our world."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "1,2,3,4,5,6,7…"
+        },
+        {
+          "index": 2,
+          "text": "No pain no gain!"
+        },
+        {
+          "index": 3,
+          "text": "Monday till Sunday… No pain no gain!"
+        },
+        {
+          "index": 4,
+          "text": "The middleaged swine is Mrs. McBing,"
+        },
+        {
+          "index": 5,
+          "text": "my mother…"
+        },
+        {
+          "index": 6,
+          "text": "A brilliant woman…"
+        },
+        {
+          "index": 7,
+          "text": "carrying the world!"
+        }
+      ]
     },
     "answer": {
-      "revised_12": "What's-its-name.",
-      "note_12": "Corrected 'What's-it's name.' to 'What's-its-name.' to fix the possessive error and match the intended phrase."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Rise and shine, kiddo.",
-      "subtitle_2": "Oh?",
-      "subtitle_3": "Mother!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Take some medicine and he'll be fine.",
-      "subtitle_2": "Will he not what after the medicine?",
-      "subtitle_3": "No!",
-      "subtitle_4": "Need he not what for the medicine?",
-      "subtitle_5": "No! I'll give him a shot.",
-      "subtitle_6": "A shot?",
-      "subtitle_7": "He's scared of shots.",
-      "subtitle_8": "Is he scared of dying?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "How are you doing? Take the medicine.",
-      "subtitle_2": "Mother I don't want medicine.",
-      "subtitle_3": "Please mother, no.",
-      "subtitle_4": "I don't want the strawberry drink!",
-      "subtitle_5": "You won't get well without the medicine.",
-      "subtitle_6": "Sweetie, we will go to Maldives once\nyou get well.",
-      "subtitle_7": "Really?",
-      "subtitle_8": "Has mother ever lied before?",
-      "subtitle_9": "Now, drink up."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Yes, Maldives!",
-      "subtitle_2": "Maldives!",
-      "subtitle_3": "Maldives!",
-      "subtitle_4": "Maldives!",
-      "subtitle_5": "Mother, when will we go?",
-      "subtitle_6": "I will book the ticket once you get well.",
-      "subtitle_7": "Come on, drink up!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Look, mother!",
-      "subtitle_2": "Mother, I am well!",
-      "subtitle_3": "I've taken all the medicine.",
-      "subtitle_4": "But you've taken everything edible\nat home.",
-      "subtitle_5": "You see, the whole bottle was filled…",
-      "subtitle_6": "And I gulped it down bit by bit…",
-      "subtitle_7": "I did it!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Now I am a good boy!",
-      "subtitle_2": "Now I am not sick!",
-      "subtitle_3": "Mother…",
-      "subtitle_4": "What?",
-      "subtitle_5": "When are we going to Maldives?",
-      "subtitle_6": "Maldives?",
-      "subtitle_7": "You said we would go once I get well.",
-      "subtitle_8": "Maldives, where the trees tall and\nwater bright…",
-      "subtitle_9": "The world outside our world!",
-      "subtitle_10": "Those words have flare.",
-      "subtitle_11": "I am happy for you.",
-      "subtitle_12": "Mother, you promised…",
-      "subtitle_13": "We'd go to Maldives once I get well.",
-      "subtitle_14": "I meant once I get rich.",
-      "subtitle_15": "No, that wasn't what you mean.",
-      "subtitle_16": "You said we'd go once I get well.",
-      "subtitle_17": "You promised!",
-      "subtitle_18": "Now stop crying.",
-      "subtitle_19": "We will go to Maldives.",
-      "subtitle_20": "- Really?    - Yes.",
-      "subtitle_21": "When?",
-      "subtitle_22": "Once I get rich.",
-      "subtitle_23": "But you are rich.",
-      "subtitle_24": "Sure, sure, I am rich.",
-      "subtitle_25": "We will go next week, ok?",
-      "subtitle_26": "Bravo!"
-    },
-    "answer": {
-      "revised_10": "Those words have flair.",
-      "note_10": "Corrected 'flare' to 'flair' (correct word for style or panache).",
-      "revised_15": "No, that wasn't what you meant.",
-      "note_15": "Corrected 'mean' to 'meant' for correct tense.",
-      "revised_25": "We will go next week, OK?",
-      "note_25": "Capitalized 'ok' to 'OK' for standard usage."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "This is McDull.",
-      "subtitle_2": "Hey, I'm leaving tomorrow.",
-      "subtitle_3": "- Yes…    - Is that right?",
-      "subtitle_4": "The food on board is horrible?",
-      "subtitle_5": "Be it so!",
-      "subtitle_6": "We couldn't bring our own food, right?",
-      "subtitle_7": "Still chatting away?",
-      "subtitle_8": "You need to pack.",
-      "subtitle_9": "Tell them I'm going to Maldives tomorrow.",
-      "subtitle_10": "Where the trees tall and water bright…",
-      "subtitle_11": "Hey, you!",
-      "subtitle_12": "Coming!",
-      "subtitle_13": "I need to pack now. Talk to you later.",
-      "subtitle_14": "See you!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Mother, do I need to bring\nmy birth certificate?",
-      "subtitle_2": "I guess so.",
-      "subtitle_3": "And school report?",
-      "subtitle_4": "We don't need that.",
-      "subtitle_5": "Wow, I'm saved!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I found it!",
-      "subtitle_2": "I found my birth certificate!",
-      "subtitle_3": "Mother, you keep it and don't lose it…",
-      "subtitle_4": "Or else we're stuck."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Leave on the morning, return at night.",
-      "subtitle_2": "Mother said that'd make things worthy.",
-      "subtitle_3": "Hence…",
-      "subtitle_4": "The most beautiful day\nin my childhood experience…",
-      "subtitle_5": "Passed.",
-      "subtitle_6": "Do you think paper is\na good chicken wrapper?",
-      "subtitle_7": "Maybe.",
-      "subtitle_8": "If only for one small piece."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "- Goodnight, mother!    - Goodnight!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "The Hong Kong…",
-      "subtitle_2": "windsurfing athlete San San Li…",
-      "subtitle_3": "Has just won the first gold medal\nin Hong Kong history!",
-      "subtitle_4": "San San, when confirmed her winning…",
-      "subtitle_5": "Told reporters that her result…",
-      "subtitle_6": "Help proves that\nHong Kong athletes are horrible…",
-      "subtitle_7": "Excuse me, it should be“honourable”.",
-      "subtitle_8": "Hong Kong athletes\nare honourable athletes.",
-      "subtitle_9": "End of special report."
-    },
-    "answer": {
-      "revised_7": "Excuse me, it should be “honourable”.",
-      "note_7": "Added a space after 'be' before the opening quotation mark."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Then, mother seemed inspired.",
-      "subtitle_2": "Handsome, lucky, smart…",
-      "subtitle_3": "So much for those plans.",
-      "subtitle_4": "Now how about something physical?",
-      "subtitle_5": "“Looking for Logan”",
-      "subtitle_6": "And so, while one dream lingers on…",
-      "subtitle_7": "Another one begins.",
-      "subtitle_8": "“aka: How Does a Calf Become a Calf?”",
-      "subtitle_9": "It's about the Calf!",
-      "subtitle_10": "I know it is not easy.",
-      "subtitle_11": "I know it is not easy to find Logan.",
-      "subtitle_12": "I know it is not easy for him to take me in."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "No matter how difficult this is…",
-      "subtitle_2": "Logan will be my master!",
-      "subtitle_3": "I shall get an Olympic medal!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Cheung Chau!",
-      "subtitle_2": "You raised San San,\nnow you will raise me!",
-      "subtitle_3": "When I receive my Olympic medal…",
-      "subtitle_4": "I shall tell the world:",
-      "subtitle_5": "HK athletes are honourable athletes!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Cheung Chau, I finally make it here."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I must kiss this holy land!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Kiddo, this is Lamma Island.",
-      "subtitle_2": "Lamma Island?\nWhere Chow Yun Fat grew up?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I came into hiding on this island…",
-      "subtitle_2": "To stay away from the paparazzi.",
-      "subtitle_3": "And so many kids came to seek me out.",
-      "subtitle_4": "So I came to live here.",
-      "subtitle_5": "You want me to be your master?",
-      "subtitle_6": "Forget it!",
-      "subtitle_7": "You city kids are all spoiled…",
-      "subtitle_8": "Good for nothing!",
-      "subtitle_9": "You want to get an Olympic medal too?",
-      "subtitle_10": "Dream on!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Kiddo, look!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "This calf…",
-      "subtitle_2": "So thick, so strong!",
-      "subtitle_3": "And so muscular!",
-      "subtitle_4": "With steely veins running down…",
-      "subtitle_5": "Hair sticking out like wire…",
-      "subtitle_6": "And those tough toenails!",
-      "subtitle_7": "How many hills must it travel…",
-      "subtitle_8": "How many seas must it pass…",
-      "subtitle_9": "How much pain must it bear…",
-      "subtitle_10": "Before a calf becomes a calf?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I shall have this calf!",
-      "subtitle_2": "Master!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Can I take a pee?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Whenever I sing this song, I need to pee.",
-      "subtitle_2": "Taking a pee first would not help.",
-      "subtitle_3": "But I must sing it now.",
-      "subtitle_4": "With this song, I hope…",
-      "subtitle_5": "Logan will think better of me.",
-      "subtitle_6": "Logan will be my master!",
-      "subtitle_7": "The song goes like this…",
-      "subtitle_8": "“Big bun, have two more…”",
-      "subtitle_9": "“Big bun, have two more…”",
-      "subtitle_10": "“Forget about indigestion.”",
-      "subtitle_11": "“Big bun, have two more…”",
-      "subtitle_12": "“Big bun, have two more…”",
-      "subtitle_13": "“Forget about indigestion.”",
-      "subtitle_14": "“Big bun, have two more…”",
-      "subtitle_15": "“Big bun, have two more…”",
-      "subtitle_16": "“Forget about indigestion.”",
-      "subtitle_17": "“Eat the bun, grow a calf…”",
-      "subtitle_18": "“Respect my mother.”",
-      "subtitle_19": "“Eat the bun, toughen my calf…”",
-      "subtitle_20": "“Serve my country.”",
-      "subtitle_21": "“Big bun, have two more…”",
-      "subtitle_22": "“Big bun, have two more…”",
-      "subtitle_23": "“Forget about indigestion.”",
-      "subtitle_24": "“Big bun, have two more…”",
-      "subtitle_25": "“Big bun, have two more…”",
-      "subtitle_26": "“Forget about indigestion.”"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Logan looks strange after the song.",
-      "subtitle_2": "I must grab my chance.",
-      "subtitle_3": "Master! Please be my master!",
-      "subtitle_4": "Or let me kneel here forever!",
-      "subtitle_5": "Get up…",
-      "subtitle_6": "Thank you master!",
-      "subtitle_7": "Silly, help me get up.",
-      "subtitle_8": "My calf has gone numb!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I tell mother what happened today.",
-      "subtitle_2": "She won't say a word…",
-      "subtitle_3": "But starts to defreeze a chicken.",
-      "subtitle_4": "At dinner,\nmother offers 3 glasses of wine…",
-      "subtitle_5": "Oranges and the chicken to\nthe ancestral tablet.",
-      "subtitle_6": "Mother then tells me to kneel down.",
-      "subtitle_7": "She mumbles something when…",
-      "subtitle_8": "We pay our respect to our ancestor.",
-      "subtitle_9": "As mother pours the wine on the floor…",
-      "subtitle_10": "She says in her solemn, tender voice:",
-      "subtitle_11": "Be good,",
-      "subtitle_12": "learn with the master and\nhonour the ancestor."
-    },
-    "answer": {
-      "revised_3": "But starts to defrost a chicken.",
-      "note_3": "Corrected 'defreeze' to 'defrost', which is the correct verb for thawing food."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "In honour of my master,\nmother throws a banquet.",
-      "subtitle_2": "As I am the last disciple of the master…",
-      "subtitle_3": "Everyone on Cheung Chau comes.",
-      "subtitle_4": "San San's lover thinks…",
-      "subtitle_5": "I have a nice thick back.",
-      "subtitle_6": "San San is in training and couldn't come.",
-      "subtitle_7": "All my mates are there too…",
-      "subtitle_8": "Bringing school report,\nmedals and big buns.",
-      "subtitle_9": "They hope Logan will take them in also.",
-      "subtitle_10": "After the soup, the ceremony begins.",
-      "subtitle_11": "Mother pours a cup of tea and\nI offer it to the master.",
-      "subtitle_12": "After all the hardship looking for Logan…",
-      "subtitle_13": "Now I can windsurf together with\nSan San!",
-      "subtitle_14": "I offer the tea to Logan…",
-      "subtitle_15": "He drinks the tea and\nbecomes my master.",
-      "subtitle_16": "All the guests look happy.",
-      "subtitle_17": "And everyone from\nCheung Chau applauds.",
-      "subtitle_18": "Thank you for honouring me!",
-      "subtitle_19": "In my life, I have two skills that\nI'm proud of.",
-      "subtitle_20": "One is windsurfing.",
-      "subtitle_21": "That I have passed onto San San.",
-      "subtitle_22": "The other, I shall pass onto\nmy new disciple…",
-      "subtitle_23": "Let him show the world…",
-      "subtitle_24": "what a marvelous skill that is!",
-      "subtitle_25": "Can you tell us what skill is that?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "That is…",
-      "subtitle_2": "Bun snatching!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Bun snatching?",
-      "subtitle_2": "“Bun Snatching”,\nfor our uninformed audience…",
-      "subtitle_3": "Is a unique Cheung Chau tradition.",
-      "subtitle_4": "Each year, in the forth month,",
-      "subtitle_5": "Cheung Chau people…",
-      "subtitle_6": "Set up 3 stacks of bun to celebrate.",
-      "subtitle_7": "Stacks of bun?",
-      "subtitle_8": "Literally speaking…",
-      "subtitle_9": "A stack of bun is a stack of many buns!",
-      "subtitle_10": "Each stack coming up to 6, 7 storeys.",
-      "subtitle_11": "Imagine how high that is.",
-      "subtitle_12": "Bun snatching is to snatch those buns!",
-      "subtitle_13": "When the time comes,",
-      "subtitle_14": "hundreds of youth would rush up…",
-      "subtitle_15": "The higher the bun you snatch,\nthe more blessed you are.",
-      "subtitle_16": "And the more praises you get.",
-      "subtitle_17": "In 1978, 2 stacks tumbled down,\nhurting many.",
-      "subtitle_18": "“Bun Snatching” was thus banned!",
-      "subtitle_19": "And the unique tradition is lost."
-    },
-    "answer": {
-      "revised_4": "Each year, in the fourth month,",
-      "note_4": "Corrected 'forth' to 'fourth' (the ordinal number for the month)."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "The Olympic medal…\nit has slipped away.",
-      "subtitle_2": "Every Saturday,\nI'd take a ferry to Cheung Chau…",
-      "subtitle_3": "To practice bun snatching.",
-      "subtitle_4": "A game with no medal,\nno competitor, no competition…",
-      "subtitle_5": "A game nobody knows of.",
-      "subtitle_6": "A game with no bun to snatch!",
-      "subtitle_7": "All I do is to go to the master's home…",
-      "subtitle_8": "And crawl around the shelf.",
-      "subtitle_9": "My win!",
-      "subtitle_10": "Keep going, lazy bone!",
-      "subtitle_11": "One day, San San arrives!",
-      "subtitle_12": "San San, my idol!",
-      "subtitle_13": "Seeing San San…",
-      "subtitle_14": "Makes me forget all these weeks'\nhard work.",
-      "subtitle_15": "San San!",
-      "subtitle_16": "San yourself! Work!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "You hear me?",
-      "subtitle_2": "So San San leaves without seeing me.",
-      "subtitle_3": "In despair, I crawl up the shelf.",
-      "subtitle_4": "I have had a lot of things said to me…",
-      "subtitle_5": "But“San yourself”…",
-      "subtitle_6": "hurts like never before.",
-      "subtitle_7": "I… I…",
-      "subtitle_8": "I am quitting!"
-    },
-    "answer": {
-      "revised_5": "But “San yourself”…",
-      "note_5": "Added a space between 'But' and the opening quotation mark for correct spacing."
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Today is the first time\nI sit down with Logan.",
-      "subtitle_2": "He must be around 50,",
-      "subtitle_3": "with a baby face.",
-      "subtitle_4": "Fresh from the oven!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "This thing…",
-      "subtitle_2": "What does it look like?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Dull… he's not a bad student.",
-      "subtitle_2": "Logan then proceeds to tell me a lot…",
-      "subtitle_3": "His ambition, his expectation of Dull.",
-      "subtitle_4": "He says he'll teach all he knows to Dull.",
-      "subtitle_5": "The more he talks,\nthe more excited he gets.",
-      "subtitle_6": "He tells me windsurfing\nis not his strongest.",
-      "subtitle_7": "His strongest is really bun snatching…",
-      "subtitle_8": "Something combining Fist,",
-      "subtitle_9": "ritual and gymnastic.",
-      "subtitle_10": "He says bun snatching is\nhis lifelong achievement.",
-      "subtitle_11": "Move your feet!",
-      "subtitle_12": "Look!",
-      "subtitle_13": "This calf… so thick, so strong!",
-      "subtitle_14": "And so muscular!",
-      "subtitle_15": "With steely veins running down…",
-      "subtitle_16": "Hair sticking out like wire…",
-      "subtitle_17": "And those tough toenails!",
-      "subtitle_18": "How many hills must it travel…",
-      "subtitle_19": "How many seas must it pass…",
-      "subtitle_20": "How much pain must it bear…",
-      "subtitle_21": "Before a calf becomes a calf?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "My son…",
-      "subtitle_2": "Your son, he will get this calf.",
-      "subtitle_3": "I have no idea why would Dull need…",
-      "subtitle_4": "such a calf.",
-      "subtitle_5": "But, looking at those steely veins…",
-      "subtitle_6": "I am reminded of Dull's pa, Bing."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "The electronic dictionary\ncannot be found.",
-      "subtitle_2": "Where could it be?",
-      "subtitle_3": "Could it be that…?"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "So mother has been using the dictionary?",
-      "subtitle_2": "But why is she writing in English?",
-      "subtitle_3": "The letter is short.",
-      "subtitle_4": "Mother must have translated it\nword by word.",
-      "subtitle_5": "I use the machine to turn it back\ninto Chinese.",
-      "subtitle_6": "It is addressed to\nthe Olympic Committee Chairman.",
-      "subtitle_7": "“Dear Chairman:”",
-      "subtitle_8": "“How are you? I am fine.”",
-      "subtitle_9": "“You like bun? I like bun!”",
-      "subtitle_10": "“We Hong Kong people here love bun.”",
-      "subtitle_11": "“Buns of all sort.”",
-      "subtitle_12": "\"Dear friend,",
-      "subtitle_13": "it is important to snatch buns.\"",
-      "subtitle_14": "“It is a game, no joke.”",
-      "subtitle_15": "“One needs energy,\nand many night congee.”",
-      "subtitle_16": "“In my stupid opinion…”",
-      "subtitle_17": "“Snatching bun is an Olympic game.”",
-      "subtitle_18": "“Let athletes all over the world snatch!”",
-      "subtitle_19": "“And there will be peace.”",
-      "subtitle_20": "“Do you have children?”",
-      "subtitle_21": "“I have a boy, Dull.”",
-      "subtitle_22": "She's talking about me!",
-      "subtitle_23": "“He is a good boy.”",
-      "subtitle_24": "“He knows how to snatch buns.”",
-      "subtitle_25": "“One day,\nI can see him snatching buns…”",
-      "subtitle_26": "“Ending up snatching\nan Olympic medal.”",
-      "subtitle_27": "“That is the biggest comfort\na mother can get.”",
-      "subtitle_28": "“Let the world know\nthe talent of your children.”",
-      "subtitle_29": "“Parents will do anything for that.”",
-      "subtitle_30": "“That is why I write you this sudden letter.”",
-      "subtitle_31": "“Although you don't know\nhumble things like me.”",
-      "subtitle_32": "“But my boy is big, very big.”",
-      "subtitle_33": "“One day, you will know him too.”",
-      "subtitle_34": "“Thank you for your cooperation.”",
-      "subtitle_35": "“Yours faithfully, Mrs. Mc”"
-    },
-    "answer": {
-      "revised_12": "“Dear friend,",
-      "note_12": "Changed the opening straight quote to a left double quote.",
-      "revised_13": "it is important to snatch buns.”",
-      "note_13": "Changed the closing straight quote to a right double quote."
+      "revisions": [
+        {
+          "index": 1,
+          "text": "1, 2, 3, 4, 5, 6, 7…",
+          "note": "Added spaces after commas for correct number formatting."
+        },
+        {
+          "index": 4,
+          "text": "The middle-aged swine is Mrs. McBing,",
+          "note": "Corrected 'middleaged' to 'middle-aged'."
+        }
+      ]
     },
     "difficulty": 1,
     "few_shot": true,
@@ -1027,511 +894,3911 @@
   },
   {
     "query": {
-      "subtitle_1": "After reading mother's letter…",
-      "subtitle_2": "I go back to Cheung Chau to practice.",
-      "subtitle_3": "Not because of San San.",
-      "subtitle_4": "I don't know why I want to snatch a bun.",
-      "subtitle_5": "And I don't think it will ever become\nan Olympic item.",
-      "subtitle_6": "But I keep learning.",
-      "subtitle_7": "Because I love my mother.",
-      "subtitle_8": "Master thinks my crawling has passed.",
-      "subtitle_9": "Now I'll learn the\n“12 Bun Snatching Hands”.",
-      "subtitle_10": "Master says these 12 hands,",
-      "subtitle_11": "in its prime…",
-      "subtitle_12": "Was much admired by Butcher Lin!",
-      "subtitle_13": "Later, I learn from McMug…",
-      "subtitle_14": "Butcher Lin was a disciple of\nthe great Kung Fu king.",
-      "subtitle_15": "I don't know much about Kung Fu kings…",
-      "subtitle_16": "But I must be the ultimate pork…",
-      "subtitle_17": "The pork that struts about",
-      "subtitle_18": "with buns in hands.",
-      "subtitle_19": "My mind boggles as I practice, after all…",
-      "subtitle_20": "I am not a fan of bun snatching.",
-      "subtitle_21": "I am only doing this for mother.",
-      "subtitle_22": "Hence I hang on…",
-      "subtitle_23": "Step by step, claw by claw…",
-      "subtitle_24": "I make it pass\nthe“12 Bun Snatching Hands”."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Yes, she is really something."
+        },
+        {
+          "index": 2,
+          "text": "She works in insurance,\nreal estate and trading."
+        },
+        {
+          "index": 3,
+          "text": "At the height of IT,\nshe even sets up her cooking site…"
+        },
+        {
+          "index": 4,
+          "text": "www.MrsMcBing.com"
+        },
+        {
+          "index": 5,
+          "text": "Offering brilliant dishes."
+        },
+        {
+          "index": 6,
+          "text": "Welcome to“Mrs. Mc Can Cook”."
+        },
+        {
+          "index": 7,
+          "text": "Today we're doing a simple dish,"
+        },
+        {
+          "index": 8,
+          "text": "Paper Chicken."
+        },
+        {
+          "index": 9,
+          "text": "Kids at home would love it."
+        },
+        {
+          "index": 10,
+          "text": "The ingredient: a chicken bun."
+        },
+        {
+          "index": 11,
+          "text": "Slowly, we tear the paper away\nfrom the bun"
+        },
+        {
+          "index": 12,
+          "text": "Now we have a bun paper."
+        },
+        {
+          "index": 13,
+          "text": "Turn the paper over like this…"
+        },
+        {
+          "index": 14,
+          "text": "Voila! Simple, isn't it?"
+        },
+        {
+          "index": 15,
+          "text": "Thank you, everyone!"
+        }
+      ]
     },
     "answer": {
-      "revised_12": "was much admired by Butcher Lin!",
-      "note_12": "Changed capital 'W' in 'Was' to lowercase for correct sentence case continuation.",
-      "revised_24": "I make it past\nthe “12 Bun Snatching Hands”.",
-      "note_24": "Corrected 'pass' to 'past' for correct usage in context; added a space after 'the' before the opening quotation mark."
+      "revisions": [
+        {
+          "index": 6,
+          "text": "Welcome to “Mrs. Mc Can Cook”.",
+          "note": "Added a space after 'to' before the opening quotation mark."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "“There is no deformity,\nbut saves us from a dream”",
-      "subtitle_2": "This is Dull.",
-      "subtitle_3": "Dull the big guy, not Dull the boy.",
-      "subtitle_4": "The two Dulls have different voices,\nand then…",
-      "subtitle_5": "Dull the boy's world is still filled\nwith fantasy…",
-      "subtitle_6": "Filled with hopes.",
-      "subtitle_7": "Hope… Disappointment…",
-      "subtitle_8": "Hope…",
-      "subtitle_9": "Disappointment.",
-      "subtitle_10": "On and on, he became Dull the big guy.",
-      "subtitle_11": "But I shall tell more about Dull the boy.",
-      "subtitle_12": "Dull the boy hoped a lot.",
-      "subtitle_13": "He hoped there WAS a Santa Claus.",
-      "subtitle_14": "And he hoped to eat a Christmas turkey.",
-      "subtitle_15": "Right, I haven't eaten any turkey then.",
-      "subtitle_16": "Everything about turkey…",
-      "subtitle_17": "The sparkling tinkling Christmas tree…",
-      "subtitle_18": "Like stars falling from the sky…",
-      "subtitle_19": "Coming down by the fireplace.",
-      "subtitle_20": "Each slice of meat looks purer than snow.",
-      "subtitle_21": "Right in front of us…",
-      "subtitle_22": "The aroma attacks our soul…",
-      "subtitle_23": "Waking even the guardian angels.",
-      "subtitle_24": "Who float around the aromatic and\nholy dish…",
-      "subtitle_25": "Floating in the Christmas night, floating…",
-      "subtitle_26": "All this about turkey was\nonly my imagination.",
-      "subtitle_27": "I had never eaten a turkey.",
-      "subtitle_28": "I had never even smelt one.",
-      "subtitle_29": "Mother claimed turkey was too big.",
-      "subtitle_30": "The two of us would never finish it.",
-      "subtitle_31": "One Christmas we celebrated with\nroast duck.",
-      "subtitle_32": "I was really, really disappointed.",
-      "subtitle_33": "Another year,\nshe bought a mini-oven at 60% off…",
-      "subtitle_34": "At a closedown sale.",
-      "subtitle_35": "Thanks to the oven…",
-      "subtitle_36": "Mother decided one day…",
-      "subtitle_37": "We would go shopping for a turkey.",
-      "subtitle_38": "On the way home, with turkey in hand…",
-      "subtitle_39": "That was the happiest moment in my life.",
-      "subtitle_40": "The turkey was ready.",
-      "subtitle_41": "Following mother,\nwith salt on both hands…",
-      "subtitle_42": "I rubbed the turkey's thick chest.",
-      "subtitle_43": "When sewing up…",
-      "subtitle_44": "Some of the stuffing…",
-      "subtitle_45": "leaked out.",
-      "subtitle_46": "I cried: the turkey's stomach won't stop!",
-      "subtitle_47": "We managed to stuff the turkey\ninto the oven.",
-      "subtitle_48": "24th, December",
-      "subtitle_49": "Rising smoke stirred the stars with\na crunchy smell.",
-      "subtitle_50": "The oven hummed. Hummed.",
-      "subtitle_51": "It was like early blessing from the angels."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Such a beautiful night!",
-      "subtitle_2": "Mother and me sat at the seafront.",
-      "subtitle_3": "Lights shimmered on the sea.",
-      "subtitle_4": "Beautiful and gentle.",
-      "subtitle_5": "So beautiful!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How time flies since last episode!"
+        },
+        {
+          "index": 2,
+          "text": "Now we shall do a Paper Bun."
+        },
+        {
+          "index": 3,
+          "text": "The ingredient takes only a paper."
+        },
+        {
+          "index": 4,
+          "text": "Do it like this…"
+        },
+        {
+          "index": 5,
+          "text": "And we have a Paper Bun."
+        },
+        {
+          "index": 6,
+          "text": "Isn't this a lovely bun?"
+        }
+      ]
     },
     "answer": {
-      "revised_2": "Mother and I sat at the seafront.",
-      "note_2": "Replaced 'me' with 'I' for correct grammar: 'Mother and I sat at the seafront.'"
+      "revisions": [
+        {
+          "index": 1,
+          "text": "How time flies since the last episode!",
+          "note": "Added 'the' before 'last episode' for correct phrasing."
+        },
+        {
+          "index": 3,
+          "text": "The ingredient takes only a piece of paper.",
+          "note": "Changed 'a paper' to 'a piece of paper' to correct the noun phrase."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "I had never tasted anything so strong.",
-      "subtitle_2": "Cup noodles or roast duck\nwere not as strong.",
-      "subtitle_3": "The taste embedded\nevery single taste bud…",
-      "subtitle_4": "Then exploded.",
-      "subtitle_5": "Like everything tonight…",
-      "subtitle_6": "Most beautiful, brilliant, and tender."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "A novelty today for everyone:"
+        },
+        {
+          "index": 2,
+          "text": "Chicken Bun Paper Bunning a Bun."
+        },
+        {
+          "index": 3,
+          "text": "First, unwrap the chicken\nfrom the paper."
+        },
+        {
+          "index": 4,
+          "text": "Now we have a paper and\na piece of chicken."
+        },
+        {
+          "index": 5,
+          "text": "Use the bun paper to wrap up\nthe chicken like this…"
+        },
+        {
+          "index": 6,
+          "text": "And then wrap it like this…"
+        },
+        {
+          "index": 7,
+          "text": "The delicious Chicken Bun Paper\nBunning a Bun!"
+        },
+        {
+          "index": 8,
+          "text": "Such a simple dish!"
+        },
+        {
+          "index": 9,
+          "text": "See if the chicken is good!"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "I woke up late the next day.",
-      "subtitle_2": "The sweetness was still there\nafter washing.",
-      "subtitle_3": "As we had a late breakfast…",
-      "subtitle_4": "There was only corn soup for lunch.",
-      "subtitle_5": "I idly found diced turkey…",
-      "subtitle_6": "in the soup.",
-      "subtitle_7": "That night finally came the long awaited…",
-      "subtitle_8": "Christmas turkey dinner!",
-      "subtitle_9": "Slices of meat,\naccompanied by guard and potato…",
-      "subtitle_10": "Were dressed with soy sauce.",
-      "subtitle_11": "It was an exciting,\nsatisfactory moment for us.",
-      "subtitle_12": "The following week,",
-      "subtitle_13": "turkey sandwich for breakfast.",
-      "subtitle_14": "Sunday,",
-      "subtitle_15": "I boldly suggested eating out.",
-      "subtitle_16": "Mother said I was ungrateful…",
-      "subtitle_17": "But took me out anyway.",
-      "subtitle_18": "Then mother got inspired again.",
-      "subtitle_19": "What was left of the turkey was sliced…",
-      "subtitle_20": "With me helping out at times.",
-      "subtitle_21": "It was not easy to get rid of…",
-      "subtitle_22": "the turkey's smell.",
-      "subtitle_23": "Fried noodle with sliced turkey, yummy.",
-      "subtitle_24": "Steaming chestnut bowl with\nsliced turkey.",
-      "subtitle_25": "Peanut congee with turkey bone.",
-      "subtitle_26": "Paper turkey bun.",
-      "subtitle_27": "Paper turkey paper bun.",
-      "subtitle_28": "Turkey pete with bread.",
-      "subtitle_29": "I shouldn't have said anything about\nthe turkey's stomach.",
-      "subtitle_30": "Came Dragon Boat Festival,\nwhen I dug into the dumpling…",
-      "subtitle_31": "And found more pieces of turkey…",
-      "subtitle_32": "I lost it. I cried.",
-      "subtitle_33": "Oh please!",
-      "subtitle_34": "When mother finally disposed of\nthe turkey…",
-      "subtitle_35": "It was already half year later.",
-      "subtitle_36": "My beautiful dream ended with\nmy nightmare.",
-      "subtitle_37": "Later, I learned that…",
-      "subtitle_38": "A serving turkey needs only be raised…",
-      "subtitle_39": "For a few months.",
-      "subtitle_40": "The time the turkey spent with us…",
-      "subtitle_41": "Was in fact longer than its life.",
-      "subtitle_42": "I realized also, with turkey…",
-      "subtitle_43": "Taking the first bite is all it matters.",
-      "subtitle_44": "Afterwards,\nit is just“be over and done with it”.",
-      "subtitle_45": "I am no philosopher.",
-      "subtitle_46": "I could not come up with any profundity.",
-      "subtitle_47": "But, such thoughts…",
-      "subtitle_48": "After I grew up…",
-      "subtitle_49": "On days unrelated to Christmas…",
-      "subtitle_50": "Did come up again a couple of times.",
-      "subtitle_51": "Once, it was at my wedding.",
-      "subtitle_52": "Once…",
-      "subtitle_53": "It was at my mother's cremation.",
-      "subtitle_54": "That day, I was looking at\nthe smoke rising up.",
-      "subtitle_55": "Suddenly, the smell of\nthe turkey returned.",
-      "subtitle_56": "I regretted I made mother\nthrew the turkey away."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kids are bound to love…"
+        },
+        {
+          "index": 2,
+          "text": "today's dish…"
+        },
+        {
+          "index": 3,
+          "text": "Bunning a Chicken Bun Paper…"
+        },
+        {
+          "index": 4,
+          "text": "Bunning the Paper Chicken."
+        },
+        {
+          "index": 5,
+          "text": "It takes simple work."
+        },
+        {
+          "index": 6,
+          "text": "Use the chicken bun to bun…"
+        },
+        {
+          "index": 7,
+          "text": "the chicken bun…"
+        },
+        {
+          "index": 8,
+          "text": "Then use the chicken bun paper to…"
+        },
+        {
+          "index": 9,
+          "text": "bun and bun…"
+        },
+        {
+          "index": 10,
+          "text": "Paper, bun, bun, paper, bun…"
+        },
+        {
+          "index": 11,
+          "text": "Paper, chicken, bun, bun, chicken…"
+        },
+        {
+          "index": 12,
+          "text": "But my mother has her tender side."
+        },
+        {
+          "index": 13,
+          "text": "Every night,\nshe tells me a story before sleep."
+        },
+        {
+          "index": 14,
+          "text": "Once upon a time, a boy lied. One day…"
+        },
+        {
+          "index": 15,
+          "text": "He died."
+        },
+        {
+          "index": 16,
+          "text": "Once upon a time, a boy studied hard."
+        },
+        {
+          "index": 17,
+          "text": "He grew up and got rich."
+        },
+        {
+          "index": 18,
+          "text": "Once upon a time, a boy was naughty.\nOne day…"
+        },
+        {
+          "index": 19,
+          "text": "He twisted his ankle."
+        },
+        {
+          "index": 20,
+          "text": "Mother, I want to sleep."
+        }
+      ]
     },
     "answer": {
-      "revised_9": "Slices of meat,\naccompanied by gourd and potato…",
-      "note_9": "Corrected 'guard' to 'gourd', which fits the food context.",
-      "revised_10": "were dressed with soy sauce.",
-      "note_10": "Lowercased 'Were' to 'were' to continue the sentence from the previous line.",
-      "revised_20": "with me helping out at times.",
-      "note_20": "Lowercased 'With' to 'with' to continue the sentence from the previous line.",
-      "revised_28": "Turkey pâté with bread.",
-      "note_28": "Corrected 'pete' to 'pâté', the correct word for a turkey spread.",
-      "revised_35": "It was already half a year later.",
-      "note_35": "Inserted 'a' in 'half a year' for correct expression.",
-      "revised_38": "A serving turkey needs only to be raised…",
-      "note_38": "Inserted 'to' in 'needs only to be raised' for correct grammar.",
-      "revised_39": "for a few months.",
-      "note_39": "Lowercased 'For' to 'for' to continue the sentence from the previous line.",
-      "revised_41": "was in fact longer than its life.",
-      "note_41": "Lowercased 'Was' to 'was' to continue the sentence from the previous line.",
-      "revised_43": "taking the first bite is all that matters.",
-      "note_43": "Lowercased 'Taking' to continue the sentence and inserted 'that' for correct idiom 'all that matters.'",
-      "revised_44": "Afterwards,\nit is just “be over and done with it”.",
-      "note_44": "Inserted a space before the opening quotation mark for proper spacing.",
-      "revised_56": "I regretted I made mother\nthrow the turkey away.",
-      "note_56": "Changed 'threw' to 'throw' to match the infinitive form after 'made.'"
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Once upon a time, a boy slept a lot.\nNext day…"
+        },
+        {
+          "index": 2,
+          "text": "He died."
+        },
+        {
+          "index": 3,
+          "text": "That is my mother's direct approach."
+        },
+        {
+          "index": 4,
+          "text": "Her love for me is direct."
+        },
+        {
+          "index": 5,
+          "text": "Her expectation of me is direct."
+        },
+        {
+          "index": 6,
+          "text": "For her, it is always…"
+        },
+        {
+          "index": 7,
+          "text": "“no pain no gain”."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "But there are things that\nsimply cannot be gained."
+        },
+        {
+          "index": 2,
+          "text": "Days come and go."
+        },
+        {
+          "index": 3,
+          "text": "Talking about Chow look-alike…"
+        },
+        {
+          "index": 4,
+          "text": "You still think it's going happen?"
+        },
+        {
+          "index": 5,
+          "text": "When it comes to luck…"
+        },
+        {
+          "index": 6,
+          "text": "The lottery numbers that\nmother obliges to draw…"
+        },
+        {
+          "index": 7,
+          "text": "Failed even to bring her one cent!"
+        },
+        {
+          "index": 8,
+          "text": "As for being smart…"
+        },
+        {
+          "index": 9,
+          "text": "I did try hard, but then…"
+        },
+        {
+          "index": 10,
+          "text": "But then, I still have dreams."
+        },
+        {
+          "index": 11,
+          "text": "“My Ideal World”"
+        },
+        {
+          "index": 12,
+          "text": "Maldives, a world outside our world."
+        },
+        {
+          "index": 13,
+          "text": "The sky blue, clouds white,\nthe trees tall and water bright."
+        },
+        {
+          "index": 14,
+          "text": "The colourful world of the tropical sea."
+        },
+        {
+          "index": 15,
+          "text": "The primitive ocean of primitive energy."
+        },
+        {
+          "index": 16,
+          "text": "Experience a world that\nknows no boundary!"
+        },
+        {
+          "index": 17,
+          "text": "Enjoy a trip to your ideal world."
+        },
+        {
+          "index": 18,
+          "text": "Brilliant Touring Agency,\nlicense no. 350999"
+        },
+        {
+          "index": 19,
+          "text": "Mother, you know where Maldives is?"
+        },
+        {
+          "index": 20,
+          "text": "Far."
+        },
+        {
+          "index": 21,
+          "text": "How far?"
+        },
+        {
+          "index": 22,
+          "text": "You need to fly there."
+        },
+        {
+          "index": 23,
+          "text": "Mother will you take me there?"
+        },
+        {
+          "index": 24,
+          "text": "One day when I am rich."
+        },
+        {
+          "index": 25,
+          "text": "When will you get rich?"
+        },
+        {
+          "index": 26,
+          "text": "Soon…"
+        },
+        {
+          "index": 27,
+          "text": "In my dream!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Good morning, sir!"
+        },
+        {
+          "index": 2,
+          "text": "Good day, sir!"
+        },
+        {
+          "index": 3,
+          "text": "Where is your favourite place?"
+        },
+        {
+          "index": 4,
+          "text": "My favourite place is Japan."
+        },
+        {
+          "index": 5,
+          "text": "They have Disneyland and\nHello Kitty Land."
+        },
+        {
+          "index": 6,
+          "text": "I bought my hairpin there."
+        },
+        {
+          "index": 7,
+          "text": "My favourite place is Canada."
+        },
+        {
+          "index": 8,
+          "text": "Grandma and my uncles live there."
+        },
+        {
+          "index": 9,
+          "text": "My favourite place is Bangkok."
+        },
+        {
+          "index": 10,
+          "text": "They have water sports and\nshark's fin soup."
+        },
+        {
+          "index": 11,
+          "text": "My favourite place is that…"
+        },
+        {
+          "index": 12,
+          "text": "What's-it's name."
+        },
+        {
+          "index": 13,
+          "text": "They have Fun World and Food Mall."
+        },
+        {
+          "index": 14,
+          "text": "Their chicken rice fills you up."
+        },
+        {
+          "index": 15,
+          "text": "Right, that's Silver City Centre."
+        },
+        {
+          "index": 16,
+          "text": "They serve huge bowls of rice."
+        },
+        {
+          "index": 17,
+          "text": "As for the place I most want to go, wow!"
+        },
+        {
+          "index": 18,
+          "text": "There, the sky is blue,\nclouds white, the trees tall…"
+        },
+        {
+          "index": 19,
+          "text": "It is a world outside our world."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 12,
+          "text": "What's-its-name.",
+          "note": "Corrected 'What's-it's name.' to 'What's-its-name.' to fix the possessive error and match the intended phrase."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "“Special Report”"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Rise and shine, kiddo."
+        },
+        {
+          "index": 2,
+          "text": "Oh?"
+        },
+        {
+          "index": 3,
+          "text": "Mother!"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "'Special Report\"",
-      "subtitle_2": "Olympic medal winner San San Li\nwill compete again…",
-      "subtitle_3": "To prove to the world that…",
-      "subtitle_4": "HK athletes are horrible.",
-      "subtitle_5": "Also…",
-      "subtitle_6": "The local federation…",
-      "subtitle_7": "officially announced today:",
-      "subtitle_8": "HK will apply to host the Asian Games.",
-      "subtitle_9": "Response from\nall sides has been enthusiastic.",
-      "subtitle_10": "Among them,\nthe Bamboo Game Association…",
-      "subtitle_11": "Is proposing Mahjong for official game.",
-      "subtitle_12": "While Tearoom Serving Groups…",
-      "subtitle_13": "have vowed…",
-      "subtitle_14": "To campaign for“Tart Throwing”.",
-      "subtitle_15": "As for the Cold Cut and\nRoasting Association…",
-      "subtitle_16": "They believe…",
-      "subtitle_17": "“Duck Hanging”\nwould make an ideal addition.",
-      "subtitle_18": "More interesting,\nCIC Insurance is joining force with…",
-      "subtitle_19": "Children from…",
-      "subtitle_20": "Spring Flower Primary School…",
-      "subtitle_21": "In support of…",
-      "subtitle_22": "“Bun Snatching”…",
-      "subtitle_23": "A game thought extinct."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Take some medicine and he'll be fine."
+        },
+        {
+          "index": 2,
+          "text": "Will he not what after the medicine?"
+        },
+        {
+          "index": 3,
+          "text": "No!"
+        },
+        {
+          "index": 4,
+          "text": "Need he not what for the medicine?"
+        },
+        {
+          "index": 5,
+          "text": "No! I'll give him a shot."
+        },
+        {
+          "index": 6,
+          "text": "A shot?"
+        },
+        {
+          "index": 7,
+          "text": "He's scared of shots."
+        },
+        {
+          "index": 8,
+          "text": "Is he scared of dying?"
+        }
+      ]
     },
     "answer": {
-      "revised_1": "“Special Report”",
-      "note_1": "Corrected quotation marks.",
-      "revised_11": "is proposing Mahjong for official game.",
-      "note_11": "Lowercased 'Is' to continue the sentence from the previous line.",
-      "revised_14": "To campaign for “Tart Throwing”.",
-      "note_14": "Added a space between 'for' and the opening quote, and corrected the opening quote style."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "How are you doing? Take the medicine."
+        },
+        {
+          "index": 2,
+          "text": "Mother I don't want medicine."
+        },
+        {
+          "index": 3,
+          "text": "Please mother, no."
+        },
+        {
+          "index": 4,
+          "text": "I don't want the strawberry drink!"
+        },
+        {
+          "index": 5,
+          "text": "You won't get well without the medicine."
+        },
+        {
+          "index": 6,
+          "text": "Sweetie, we will go to Maldives once\nyou get well."
+        },
+        {
+          "index": 7,
+          "text": "Really?"
+        },
+        {
+          "index": 8,
+          "text": "Has mother ever lied before?"
+        },
+        {
+          "index": 9,
+          "text": "Now, drink up."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Yes, Maldives!"
+        },
+        {
+          "index": 2,
+          "text": "Maldives!"
+        },
+        {
+          "index": 3,
+          "text": "Maldives!"
+        },
+        {
+          "index": 4,
+          "text": "Maldives!"
+        },
+        {
+          "index": 5,
+          "text": "Mother, when will we go?"
+        },
+        {
+          "index": 6,
+          "text": "I will book the ticket once you get well."
+        },
+        {
+          "index": 7,
+          "text": "Come on, drink up!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Look, mother!"
+        },
+        {
+          "index": 2,
+          "text": "Mother, I am well!"
+        },
+        {
+          "index": 3,
+          "text": "I've taken all the medicine."
+        },
+        {
+          "index": 4,
+          "text": "But you've taken everything edible\nat home."
+        },
+        {
+          "index": 5,
+          "text": "You see, the whole bottle was filled…"
+        },
+        {
+          "index": 6,
+          "text": "And I gulped it down bit by bit…"
+        },
+        {
+          "index": 7,
+          "text": "I did it!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Now I am a good boy!"
+        },
+        {
+          "index": 2,
+          "text": "Now I am not sick!"
+        },
+        {
+          "index": 3,
+          "text": "Mother…"
+        },
+        {
+          "index": 4,
+          "text": "What?"
+        },
+        {
+          "index": 5,
+          "text": "When are we going to Maldives?"
+        },
+        {
+          "index": 6,
+          "text": "Maldives?"
+        },
+        {
+          "index": 7,
+          "text": "You said we would go once I get well."
+        },
+        {
+          "index": 8,
+          "text": "Maldives, where the trees tall and\nwater bright…"
+        },
+        {
+          "index": 9,
+          "text": "The world outside our world!"
+        },
+        {
+          "index": 10,
+          "text": "Those words have flare."
+        },
+        {
+          "index": 11,
+          "text": "I am happy for you."
+        },
+        {
+          "index": 12,
+          "text": "Mother, you promised…"
+        },
+        {
+          "index": 13,
+          "text": "We'd go to Maldives once I get well."
+        },
+        {
+          "index": 14,
+          "text": "I meant once I get rich."
+        },
+        {
+          "index": 15,
+          "text": "No, that wasn't what you mean."
+        },
+        {
+          "index": 16,
+          "text": "You said we'd go once I get well."
+        },
+        {
+          "index": 17,
+          "text": "You promised!"
+        },
+        {
+          "index": 18,
+          "text": "Now stop crying."
+        },
+        {
+          "index": 19,
+          "text": "We will go to Maldives."
+        },
+        {
+          "index": 20,
+          "text": "- Really?    - Yes."
+        },
+        {
+          "index": 21,
+          "text": "When?"
+        },
+        {
+          "index": 22,
+          "text": "Once I get rich."
+        },
+        {
+          "index": 23,
+          "text": "But you are rich."
+        },
+        {
+          "index": 24,
+          "text": "Sure, sure, I am rich."
+        },
+        {
+          "index": 25,
+          "text": "We will go next week, ok?"
+        },
+        {
+          "index": 26,
+          "text": "Bravo!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 10,
+          "text": "Those words have flair.",
+          "note": "Corrected 'flare' to 'flair' (correct word for style or panache)."
+        },
+        {
+          "index": 15,
+          "text": "No, that wasn't what you meant.",
+          "note": "Corrected 'mean' to 'meant' for correct tense."
+        },
+        {
+          "index": 25,
+          "text": "We will go next week, OK?",
+          "note": "Capitalized 'ok' to 'OK' for standard usage."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "In the end…",
-      "subtitle_2": "Nothing came of anything.",
-      "subtitle_3": "“Tart Throwing”\nwas chosen as the highlight.",
-      "subtitle_4": "As for the official slogan…",
-      "subtitle_5": "“HK, One Big Tart” was a logical choice.",
-      "subtitle_6": "Then San San Li lost.",
-      "subtitle_7": "And the hosting right of\nthe Asian Games…",
-      "subtitle_8": "Went to a place Hong Kong people\nhave never heard of.",
-      "subtitle_9": "Tearoom workers,\nthose aspiring athletes…",
-      "subtitle_10": "Went back to where\nthey used to throw their tarts.",
-      "subtitle_11": "Everything went on as usual."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "This is McDull."
+        },
+        {
+          "index": 2,
+          "text": "Hey, I'm leaving tomorrow."
+        },
+        {
+          "index": 3,
+          "text": "- Yes…    - Is that right?"
+        },
+        {
+          "index": 4,
+          "text": "The food on board is horrible?"
+        },
+        {
+          "index": 5,
+          "text": "Be it so!"
+        },
+        {
+          "index": 6,
+          "text": "We couldn't bring our own food, right?"
+        },
+        {
+          "index": 7,
+          "text": "Still chatting away?"
+        },
+        {
+          "index": 8,
+          "text": "You need to pack."
+        },
+        {
+          "index": 9,
+          "text": "Tell them I'm going to Maldives tomorrow."
+        },
+        {
+          "index": 10,
+          "text": "Where the trees tall and water bright…"
+        },
+        {
+          "index": 11,
+          "text": "Hey, you!"
+        },
+        {
+          "index": 12,
+          "text": "Coming!"
+        },
+        {
+          "index": 13,
+          "text": "I need to pack now. Talk to you later."
+        },
+        {
+          "index": 14,
+          "text": "See you!"
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "In secondary school,\nI stopped practicing the 12 hands.",
-      "subtitle_2": "Sometimes, when I went out with mother…",
-      "subtitle_3": "I'd still snatch a bun for her.",
-      "subtitle_4": "Then they stopped selling buns.",
-      "subtitle_5": "Carts were replaced by ordering sheet.",
-      "subtitle_6": "Everything came to nothing."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Mother, do I need to bring\nmy birth certificate?"
+        },
+        {
+          "index": 2,
+          "text": "I guess so."
+        },
+        {
+          "index": 3,
+          "text": "And school report?"
+        },
+        {
+          "index": 4,
+          "text": "We don't need that."
+        },
+        {
+          "index": 5,
+          "text": "Wow, I'm saved!"
+        }
+      ]
     },
     "answer": {
-      "revised_5": "Carts were replaced by ordering sheets.",
-      "note_5": "Changed 'ordering sheet' to 'ordering sheets' for correct plural form."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I found it!"
+        },
+        {
+          "index": 2,
+          "text": "I found my birth certificate!"
+        },
+        {
+          "index": 3,
+          "text": "Mother, you keep it and don't lose it…"
+        },
+        {
+          "index": 4,
+          "text": "Or else we're stuck."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Leave on the morning, return at night."
+        },
+        {
+          "index": 2,
+          "text": "Mother said that'd make things worthy."
+        },
+        {
+          "index": 3,
+          "text": "Hence…"
+        },
+        {
+          "index": 4,
+          "text": "The most beautiful day\nin my childhood experience…"
+        },
+        {
+          "index": 5,
+          "text": "Passed."
+        },
+        {
+          "index": 6,
+          "text": "Do you think paper is\na good chicken wrapper?"
+        },
+        {
+          "index": 7,
+          "text": "Maybe."
+        },
+        {
+          "index": 8,
+          "text": "If only for one small piece."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "- Goodnight, mother!    - Goodnight!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The Hong Kong…"
+        },
+        {
+          "index": 2,
+          "text": "windsurfing athlete San San Li…"
+        },
+        {
+          "index": 3,
+          "text": "Has just won the first gold medal\nin Hong Kong history!"
+        },
+        {
+          "index": 4,
+          "text": "San San, when confirmed her winning…"
+        },
+        {
+          "index": 5,
+          "text": "Told reporters that her result…"
+        },
+        {
+          "index": 6,
+          "text": "Help proves that\nHong Kong athletes are horrible…"
+        },
+        {
+          "index": 7,
+          "text": "Excuse me, it should be“honourable”."
+        },
+        {
+          "index": 8,
+          "text": "Hong Kong athletes\nare honourable athletes."
+        },
+        {
+          "index": 9,
+          "text": "End of special report."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 7,
+          "text": "Excuse me, it should be “honourable”.",
+          "note": "Added a space after 'be' before the opening quotation mark."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "At times, I'd go to Cheung Chau\nfor barbecue.",
-      "subtitle_2": "The master looked older…",
-      "subtitle_3": "Each time I saw him."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Then, mother seemed inspired."
+        },
+        {
+          "index": 2,
+          "text": "Handsome, lucky, smart…"
+        },
+        {
+          "index": 3,
+          "text": "So much for those plans."
+        },
+        {
+          "index": 4,
+          "text": "Now how about something physical?"
+        },
+        {
+          "index": 5,
+          "text": "“Looking for Logan”"
+        },
+        {
+          "index": 6,
+          "text": "And so, while one dream lingers on…"
+        },
+        {
+          "index": 7,
+          "text": "Another one begins."
+        },
+        {
+          "index": 8,
+          "text": "“aka: How Does a Calf Become a Calf?”"
+        },
+        {
+          "index": 9,
+          "text": "It's about the Calf!"
+        },
+        {
+          "index": 10,
+          "text": "I know it is not easy."
+        },
+        {
+          "index": 11,
+          "text": "I know it is not easy to find Logan."
+        },
+        {
+          "index": 12,
+          "text": "I know it is not easy for him to take me in."
+        }
+      ]
     },
-    "answer": {},
+    "answer": {
+      "revisions": []
+    },
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "For environmental reason…",
-      "subtitle_2": "They'd changed to snatch plastic buns.",
-      "subtitle_3": "Master thought they stunk."
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "No matter how difficult this is…"
+        },
+        {
+          "index": 2,
+          "text": "Logan will be my master!"
+        },
+        {
+          "index": 3,
+          "text": "I shall get an Olympic medal!"
+        }
+      ]
     },
     "answer": {
-      "revised_1": "For environmental reasons…",
-      "note_1": "Changed 'reason' to 'reasons' for correct usage in this context."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Cheung Chau!"
+        },
+        {
+          "index": 2,
+          "text": "You raised San San,\nnow you will raise me!"
+        },
+        {
+          "index": 3,
+          "text": "When I receive my Olympic medal…"
+        },
+        {
+          "index": 4,
+          "text": "I shall tell the world:"
+        },
+        {
+          "index": 5,
+          "text": "HK athletes are honourable athletes!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Cheung Chau, I finally make it here."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I must kiss this holy land!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kiddo, this is Lamma Island."
+        },
+        {
+          "index": 2,
+          "text": "Lamma Island?\nWhere Chow Yun Fat grew up?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I came into hiding on this island…"
+        },
+        {
+          "index": 2,
+          "text": "To stay away from the paparazzi."
+        },
+        {
+          "index": 3,
+          "text": "And so many kids came to seek me out."
+        },
+        {
+          "index": 4,
+          "text": "So I came to live here."
+        },
+        {
+          "index": 5,
+          "text": "You want me to be your master?"
+        },
+        {
+          "index": 6,
+          "text": "Forget it!"
+        },
+        {
+          "index": 7,
+          "text": "You city kids are all spoiled…"
+        },
+        {
+          "index": 8,
+          "text": "Good for nothing!"
+        },
+        {
+          "index": 9,
+          "text": "You want to get an Olympic medal too?"
+        },
+        {
+          "index": 10,
+          "text": "Dream on!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Kiddo, look!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "This calf…"
+        },
+        {
+          "index": 2,
+          "text": "So thick, so strong!"
+        },
+        {
+          "index": 3,
+          "text": "And so muscular!"
+        },
+        {
+          "index": 4,
+          "text": "With steely veins running down…"
+        },
+        {
+          "index": 5,
+          "text": "Hair sticking out like wire…"
+        },
+        {
+          "index": 6,
+          "text": "And those tough toenails!"
+        },
+        {
+          "index": 7,
+          "text": "How many hills must it travel…"
+        },
+        {
+          "index": 8,
+          "text": "How many seas must it pass…"
+        },
+        {
+          "index": 9,
+          "text": "How much pain must it bear…"
+        },
+        {
+          "index": 10,
+          "text": "Before a calf becomes a calf?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I shall have this calf!"
+        },
+        {
+          "index": 2,
+          "text": "Master!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Can I take a pee?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Whenever I sing this song, I need to pee."
+        },
+        {
+          "index": 2,
+          "text": "Taking a pee first would not help."
+        },
+        {
+          "index": 3,
+          "text": "But I must sing it now."
+        },
+        {
+          "index": 4,
+          "text": "With this song, I hope…"
+        },
+        {
+          "index": 5,
+          "text": "Logan will think better of me."
+        },
+        {
+          "index": 6,
+          "text": "Logan will be my master!"
+        },
+        {
+          "index": 7,
+          "text": "The song goes like this…"
+        },
+        {
+          "index": 8,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 9,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 10,
+          "text": "“Forget about indigestion.”"
+        },
+        {
+          "index": 11,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 12,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 13,
+          "text": "“Forget about indigestion.”"
+        },
+        {
+          "index": 14,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 15,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 16,
+          "text": "“Forget about indigestion.”"
+        },
+        {
+          "index": 17,
+          "text": "“Eat the bun, grow a calf…”"
+        },
+        {
+          "index": 18,
+          "text": "“Respect my mother.”"
+        },
+        {
+          "index": 19,
+          "text": "“Eat the bun, toughen my calf…”"
+        },
+        {
+          "index": 20,
+          "text": "“Serve my country.”"
+        },
+        {
+          "index": 21,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 22,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 23,
+          "text": "“Forget about indigestion.”"
+        },
+        {
+          "index": 24,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 25,
+          "text": "“Big bun, have two more…”"
+        },
+        {
+          "index": 26,
+          "text": "“Forget about indigestion.”"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Logan looks strange after the song."
+        },
+        {
+          "index": 2,
+          "text": "I must grab my chance."
+        },
+        {
+          "index": 3,
+          "text": "Master! Please be my master!"
+        },
+        {
+          "index": 4,
+          "text": "Or let me kneel here forever!"
+        },
+        {
+          "index": 5,
+          "text": "Get up…"
+        },
+        {
+          "index": 6,
+          "text": "Thank you master!"
+        },
+        {
+          "index": 7,
+          "text": "Silly, help me get up."
+        },
+        {
+          "index": 8,
+          "text": "My calf has gone numb!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I tell mother what happened today."
+        },
+        {
+          "index": 2,
+          "text": "She won't say a word…"
+        },
+        {
+          "index": 3,
+          "text": "But starts to defreeze a chicken."
+        },
+        {
+          "index": 4,
+          "text": "At dinner,\nmother offers 3 glasses of wine…"
+        },
+        {
+          "index": 5,
+          "text": "Oranges and the chicken to\nthe ancestral tablet."
+        },
+        {
+          "index": 6,
+          "text": "Mother then tells me to kneel down."
+        },
+        {
+          "index": 7,
+          "text": "She mumbles something when…"
+        },
+        {
+          "index": 8,
+          "text": "We pay our respect to our ancestor."
+        },
+        {
+          "index": 9,
+          "text": "As mother pours the wine on the floor…"
+        },
+        {
+          "index": 10,
+          "text": "She says in her solemn, tender voice:"
+        },
+        {
+          "index": 11,
+          "text": "Be good,"
+        },
+        {
+          "index": 12,
+          "text": "learn with the master and\nhonour the ancestor."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "But starts to defrost a chicken.",
+          "note": "Corrected 'defreeze' to 'defrost', which is the correct verb for thawing food."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "On Cheung Chau\nwas a Cheung Po Tsai Cave.",
-      "subtitle_2": "Where legend claimed\nthe pirate hid his treasure.",
-      "subtitle_3": "As I was the one who could crawl…",
-      "subtitle_4": "My mates said I should take a look and\nmaybe get rich.",
-      "subtitle_5": "So I crawled along the dark and\nnarrow cave.",
-      "subtitle_6": "Crawling.",
-      "subtitle_7": "There was nothing but a box.",
-      "subtitle_8": "I opened the box…",
-      "subtitle_9": "Inside, there was an unfinished bun.",
-      "subtitle_10": "Maybe the pirate didn't get to finish it.",
-      "subtitle_11": "“Eating 6 buns last night…”",
-      "subtitle_12": "“Still left me hungry.”",
-      "subtitle_13": "“Eating 1½lb white bread last night… ”",
-      "subtitle_14": "“Still left me hungry.”",
-      "subtitle_15": "“Excelled 6 sets of steps\nwhen I was young…”",
-      "subtitle_16": "“Still left me empty.”",
-      "subtitle_17": "“Brought up San San\nwhen I am old! Still…”",
-      "subtitle_18": "Bun in hand, I suddenly realized…",
-      "subtitle_19": "There are things that cannot be forced.",
-      "subtitle_20": "A no is a no.",
-      "subtitle_21": "No fishball, no noodle, no Maldives…",
-      "subtitle_22": "No medal, no pirate's treasure.",
-      "subtitle_23": "And the pirate took no bite.",
-      "subtitle_24": "Stupid is not funny.",
-      "subtitle_25": "Stupid leads to failure…",
-      "subtitle_26": "To disappointment.",
-      "subtitle_27": "Disappointed is not funny.",
-      "subtitle_28": "Fatness is not funny too.",
-      "subtitle_29": "Fatness is not powerful.",
-      "subtitle_30": "Power doesn't mean yes.",
-      "subtitle_31": "Bun in hand, I suddenly thought…",
-      "subtitle_32": "Growing up, facing this sordid world…",
-      "subtitle_33": "This not so dreamy, not so funny world…",
-      "subtitle_34": "What shall I be?"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "In honour of my master,\nmother throws a banquet."
+        },
+        {
+          "index": 2,
+          "text": "As I am the last disciple of the master…"
+        },
+        {
+          "index": 3,
+          "text": "Everyone on Cheung Chau comes."
+        },
+        {
+          "index": 4,
+          "text": "San San's lover thinks…"
+        },
+        {
+          "index": 5,
+          "text": "I have a nice thick back."
+        },
+        {
+          "index": 6,
+          "text": "San San is in training and couldn't come."
+        },
+        {
+          "index": 7,
+          "text": "All my mates are there too…"
+        },
+        {
+          "index": 8,
+          "text": "Bringing school report,\nmedals and big buns."
+        },
+        {
+          "index": 9,
+          "text": "They hope Logan will take them in also."
+        },
+        {
+          "index": 10,
+          "text": "After the soup, the ceremony begins."
+        },
+        {
+          "index": 11,
+          "text": "Mother pours a cup of tea and\nI offer it to the master."
+        },
+        {
+          "index": 12,
+          "text": "After all the hardship looking for Logan…"
+        },
+        {
+          "index": 13,
+          "text": "Now I can windsurf together with\nSan San!"
+        },
+        {
+          "index": 14,
+          "text": "I offer the tea to Logan…"
+        },
+        {
+          "index": 15,
+          "text": "He drinks the tea and\nbecomes my master."
+        },
+        {
+          "index": 16,
+          "text": "All the guests look happy."
+        },
+        {
+          "index": 17,
+          "text": "And everyone from\nCheung Chau applauds."
+        },
+        {
+          "index": 18,
+          "text": "Thank you for honouring me!"
+        },
+        {
+          "index": 19,
+          "text": "In my life, I have two skills that\nI'm proud of."
+        },
+        {
+          "index": 20,
+          "text": "One is windsurfing."
+        },
+        {
+          "index": 21,
+          "text": "That I have passed onto San San."
+        },
+        {
+          "index": 22,
+          "text": "The other, I shall pass onto\nmy new disciple…"
+        },
+        {
+          "index": 23,
+          "text": "Let him show the world…"
+        },
+        {
+          "index": 24,
+          "text": "what a marvelous skill that is!"
+        },
+        {
+          "index": 25,
+          "text": "Can you tell us what skill is that?"
+        }
+      ]
     },
     "answer": {
-      "revised_13": "“Eating 1½lb white bread last night…”",
-      "note_13": "Removed the extra space before the closing quotation mark for consistency."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "That is…"
+        },
+        {
+          "index": 2,
+          "text": "Bun snatching!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Bun snatching?"
+        },
+        {
+          "index": 2,
+          "text": "“Bun Snatching”,\nfor our uninformed audience…"
+        },
+        {
+          "index": 3,
+          "text": "Is a unique Cheung Chau tradition."
+        },
+        {
+          "index": 4,
+          "text": "Each year, in the forth month,"
+        },
+        {
+          "index": 5,
+          "text": "Cheung Chau people…"
+        },
+        {
+          "index": 6,
+          "text": "Set up 3 stacks of bun to celebrate."
+        },
+        {
+          "index": 7,
+          "text": "Stacks of bun?"
+        },
+        {
+          "index": 8,
+          "text": "Literally speaking…"
+        },
+        {
+          "index": 9,
+          "text": "A stack of bun is a stack of many buns!"
+        },
+        {
+          "index": 10,
+          "text": "Each stack coming up to 6, 7 storeys."
+        },
+        {
+          "index": 11,
+          "text": "Imagine how high that is."
+        },
+        {
+          "index": 12,
+          "text": "Bun snatching is to snatch those buns!"
+        },
+        {
+          "index": 13,
+          "text": "When the time comes,"
+        },
+        {
+          "index": 14,
+          "text": "hundreds of youth would rush up…"
+        },
+        {
+          "index": 15,
+          "text": "The higher the bun you snatch,\nthe more blessed you are."
+        },
+        {
+          "index": 16,
+          "text": "And the more praises you get."
+        },
+        {
+          "index": 17,
+          "text": "In 1978, 2 stacks tumbled down,\nhurting many."
+        },
+        {
+          "index": 18,
+          "text": "“Bun Snatching” was thus banned!"
+        },
+        {
+          "index": 19,
+          "text": "And the unique tradition is lost."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "Each year, in the fourth month,",
+          "note": "Corrected 'forth' to 'fourth' (the ordinal number for the month)."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "“…Nothing shall be done!”"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "“I Have Grown Up”"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "“Fat, Still”",
-      "subtitle_2": "“Powerful”",
-      "subtitle_3": ""
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Right, I am McDull the big guy.",
-      "subtitle_2": "Fat, with raw power.",
-      "subtitle_3": "Not doing too well.",
-      "subtitle_4": "Negative property.",
-      "subtitle_5": "With a pair of really thick calves.",
-      "subtitle_6": "Very muscular…",
-      "subtitle_7": "With steely veins running down.",
-      "subtitle_8": "As for the toenails…",
-      "subtitle_9": "I got bored one time and stared at it…",
-      "subtitle_10": "They're tough, no kidding!",
-      "subtitle_11": "Yes, the story ends here.",
-      "subtitle_12": "This is a try.",
-      "subtitle_13": "Error… Try…",
-      "subtitle_14": "No guarantee that one would make it.",
-      "subtitle_15": "In the end…",
-      "subtitle_16": "Zero gain? Not really.",
-      "subtitle_17": "I have my calves.",
-      "subtitle_18": "But, standing here like this…",
-      "subtitle_19": "When the waves hit…",
-      "subtitle_20": "I feel great.",
-      "subtitle_21": "You see, smart guys like me\ndon't really know…",
-      "subtitle_22": "How to make a lesson out of\nhis own story.",
-      "subtitle_23": "With calves in water…",
-      "subtitle_24": "When the wind blows, I'd think…",
-      "subtitle_25": "If mother could see me like this…",
-      "subtitle_26": "She'd be happy."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "I've come up with a lesson!",
-      "subtitle_2": "Mother got inspired after\nher dot com failed.",
-      "subtitle_3": "She published a cookbook.",
-      "subtitle_4": "The last recipe was“Roast Chicken”.",
-      "subtitle_5": "A simple dish no less.",
-      "subtitle_6": "“Roast Chicken”.",
-      "subtitle_7": "Ingredient: chicken.",
-      "subtitle_8": "Method: roast the chicken.",
-      "subtitle_9": "That way, you have a roast chicken.",
-      "subtitle_10": "There was a remark in the cookbook:",
-      "subtitle_11": "If you want a delicious chicken…",
-      "subtitle_12": "A chicken that wouldn't upset you…",
-      "subtitle_13": "The secret is: please, roast it well!",
-      "subtitle_14": "Thank you!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The Olympic medal…\nit has slipped away."
+        },
+        {
+          "index": 2,
+          "text": "Every Saturday,\nI'd take a ferry to Cheung Chau…"
+        },
+        {
+          "index": 3,
+          "text": "To practice bun snatching."
+        },
+        {
+          "index": 4,
+          "text": "A game with no medal,\nno competitor, no competition…"
+        },
+        {
+          "index": 5,
+          "text": "A game nobody knows of."
+        },
+        {
+          "index": 6,
+          "text": "A game with no bun to snatch!"
+        },
+        {
+          "index": 7,
+          "text": "All I do is to go to the master's home…"
+        },
+        {
+          "index": 8,
+          "text": "And crawl around the shelf."
+        },
+        {
+          "index": 9,
+          "text": "My win!"
+        },
+        {
+          "index": 10,
+          "text": "Keep going, lazy bone!"
+        },
+        {
+          "index": 11,
+          "text": "One day, San San arrives!"
+        },
+        {
+          "index": 12,
+          "text": "San San, my idol!"
+        },
+        {
+          "index": 13,
+          "text": "Seeing San San…"
+        },
+        {
+          "index": 14,
+          "text": "Makes me forget all these weeks'\nhard work."
+        },
+        {
+          "index": 15,
+          "text": "San San!"
+        },
+        {
+          "index": 16,
+          "text": "San yourself! Work!"
+        }
+      ]
     },
     "answer": {
-      "revised_4": "The last recipe was “Roast Chicken”.",
-      "note_4": "Added a space between 'was' and the opening quotation mark for correct spacing."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "You hear me?"
+        },
+        {
+          "index": 2,
+          "text": "So San San leaves without seeing me."
+        },
+        {
+          "index": 3,
+          "text": "In despair, I crawl up the shelf."
+        },
+        {
+          "index": 4,
+          "text": "I have had a lot of things said to me…"
+        },
+        {
+          "index": 5,
+          "text": "But“San yourself”…"
+        },
+        {
+          "index": 6,
+          "text": "hurts like never before."
+        },
+        {
+          "index": 7,
+          "text": "I… I…"
+        },
+        {
+          "index": 8,
+          "text": "I am quitting!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "But “San yourself”…",
+          "note": "Added a space between 'But' and the opening quotation mark for correct spacing."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "One Regular, please.",
-      "subtitle_2": "What's a Regular?",
-      "subtitle_3": "The same as Special.",
-      "subtitle_4": "What's a Special?",
-      "subtitle_5": "Same as Quickie.",
-      "subtitle_6": "What's a Quickie?",
-      "subtitle_7": "A Quickie is a Lunch.",
-      "subtitle_8": "What's for Lunch?",
-      "subtitle_9": "The same as Supper.",
-      "subtitle_10": "What's for Supper?",
-      "subtitle_11": "Same as Regular.",
-      "subtitle_12": "We'll have the Regular.",
-      "subtitle_13": "Our Regular today is fantastic!"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Sorry, Regular is gone.",
-      "subtitle_2": "We can have the Special.",
-      "subtitle_3": "What's a Special?",
-      "subtitle_4": "A Special is a Lunch.",
-      "subtitle_5": "What's for Lunch?",
-      "subtitle_6": "What you get for Supper.",
-      "subtitle_7": "What's for Supper?",
-      "subtitle_8": "Same as Quickie.",
-      "subtitle_9": "What's for Quickie?",
-      "subtitle_10": "A Quickie is a Regular.",
-      "subtitle_11": "But you said Regular is gone!",
-      "subtitle_12": "Regular sure is gone.\nHow about the Special?",
-      "subtitle_13": "It's the Special, then.",
-      "subtitle_14": "Sorry, Special is gone.",
-      "subtitle_15": "Mother, let's have the Quickie.",
-      "subtitle_16": "What's for Quickie?",
-      "subtitle_17": "A Quickie is a Regular.",
-      "subtitle_18": "What's for Regular?",
-      "subtitle_19": "A Regular is a Lunch.",
-      "subtitle_20": "What's for Lunch?",
-      "subtitle_21": "Same as Supper.",
-      "subtitle_22": "And Supper?",
-      "subtitle_23": "Supper is like Special.",
-      "subtitle_24": "But you said the Special is gone.",
-      "subtitle_25": "The Special sure is gone.\nTry Quickie. It's the same.",
-      "subtitle_26": "We'll have Quickie."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Sorry, Quickie is gone.",
-      "subtitle_2": "This is too much!\nIs there anything we can eat here?",
-      "subtitle_3": "Try the Lunch. It's fantastic!",
-      "subtitle_4": "How so?",
-      "subtitle_5": "It's like the Supper.",
-      "subtitle_6": "What about the Supper?",
-      "subtitle_7": "It's like the Regular.",
-      "subtitle_8": "And what about the Regular?",
-      "subtitle_9": "The Regular is gone. Isn't that fantastic?",
-      "subtitle_10": "Great! We'll have Lunch."
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "subtitle_1": "Sorry, Lunch is gone.",
-      "subtitle_2": "Try our Supper. It's all the same.",
-      "subtitle_3": "I'm not having supper\nunder board daylight!",
-      "subtitle_4": "What's in a name?\nIt's the same as Lunch.",
-      "subtitle_5": "Great! Whatever you say!\nAnd make it quick!",
-      "subtitle_6": "You want it quick? Try Quickie!"
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Today is the first time\nI sit down with Logan."
+        },
+        {
+          "index": 2,
+          "text": "He must be around 50,"
+        },
+        {
+          "index": 3,
+          "text": "with a baby face."
+        },
+        {
+          "index": 4,
+          "text": "Fresh from the oven!"
+        }
+      ]
     },
     "answer": {
-      "revised_3": "I'm not having supper\nunder broad daylight!",
-      "note_3": "Corrected 'board daylight' to 'broad daylight'."
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "This thing…"
+        },
+        {
+          "index": 2,
+          "text": "What does it look like?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Dull… he's not a bad student."
+        },
+        {
+          "index": 2,
+          "text": "Logan then proceeds to tell me a lot…"
+        },
+        {
+          "index": 3,
+          "text": "His ambition, his expectation of Dull."
+        },
+        {
+          "index": 4,
+          "text": "He says he'll teach all he knows to Dull."
+        },
+        {
+          "index": 5,
+          "text": "The more he talks,\nthe more excited he gets."
+        },
+        {
+          "index": 6,
+          "text": "He tells me windsurfing\nis not his strongest."
+        },
+        {
+          "index": 7,
+          "text": "His strongest is really bun snatching…"
+        },
+        {
+          "index": 8,
+          "text": "Something combining Fist,"
+        },
+        {
+          "index": 9,
+          "text": "ritual and gymnastic."
+        },
+        {
+          "index": 10,
+          "text": "He says bun snatching is\nhis lifelong achievement."
+        },
+        {
+          "index": 11,
+          "text": "Move your feet!"
+        },
+        {
+          "index": 12,
+          "text": "Look!"
+        },
+        {
+          "index": 13,
+          "text": "This calf… so thick, so strong!"
+        },
+        {
+          "index": 14,
+          "text": "And so muscular!"
+        },
+        {
+          "index": 15,
+          "text": "With steely veins running down…"
+        },
+        {
+          "index": 16,
+          "text": "Hair sticking out like wire…"
+        },
+        {
+          "index": 17,
+          "text": "And those tough toenails!"
+        },
+        {
+          "index": 18,
+          "text": "How many hills must it travel…"
+        },
+        {
+          "index": 19,
+          "text": "How many seas must it pass…"
+        },
+        {
+          "index": 20,
+          "text": "How much pain must it bear…"
+        },
+        {
+          "index": 21,
+          "text": "Before a calf becomes a calf?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "My son…"
+        },
+        {
+          "index": 2,
+          "text": "Your son, he will get this calf."
+        },
+        {
+          "index": 3,
+          "text": "I have no idea why would Dull need…"
+        },
+        {
+          "index": 4,
+          "text": "such a calf."
+        },
+        {
+          "index": 5,
+          "text": "But, looking at those steely veins…"
+        },
+        {
+          "index": 6,
+          "text": "I am reminded of Dull's pa, Bing."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "The electronic dictionary\ncannot be found."
+        },
+        {
+          "index": 2,
+          "text": "Where could it be?"
+        },
+        {
+          "index": 3,
+          "text": "Could it be that…?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "So mother has been using the dictionary?"
+        },
+        {
+          "index": 2,
+          "text": "But why is she writing in English?"
+        },
+        {
+          "index": 3,
+          "text": "The letter is short."
+        },
+        {
+          "index": 4,
+          "text": "Mother must have translated it\nword by word."
+        },
+        {
+          "index": 5,
+          "text": "I use the machine to turn it back\ninto Chinese."
+        },
+        {
+          "index": 6,
+          "text": "It is addressed to\nthe Olympic Committee Chairman."
+        },
+        {
+          "index": 7,
+          "text": "“Dear Chairman:”"
+        },
+        {
+          "index": 8,
+          "text": "“How are you? I am fine.”"
+        },
+        {
+          "index": 9,
+          "text": "“You like bun? I like bun!”"
+        },
+        {
+          "index": 10,
+          "text": "“We Hong Kong people here love bun.”"
+        },
+        {
+          "index": 11,
+          "text": "“Buns of all sort.”"
+        },
+        {
+          "index": 12,
+          "text": "\"Dear friend,"
+        },
+        {
+          "index": 13,
+          "text": "it is important to snatch buns.\""
+        },
+        {
+          "index": 14,
+          "text": "“It is a game, no joke.”"
+        },
+        {
+          "index": 15,
+          "text": "“One needs energy,\nand many night congee.”"
+        },
+        {
+          "index": 16,
+          "text": "“In my stupid opinion…”"
+        },
+        {
+          "index": 17,
+          "text": "“Snatching bun is an Olympic game.”"
+        },
+        {
+          "index": 18,
+          "text": "“Let athletes all over the world snatch!”"
+        },
+        {
+          "index": 19,
+          "text": "“And there will be peace.”"
+        },
+        {
+          "index": 20,
+          "text": "“Do you have children?”"
+        },
+        {
+          "index": 21,
+          "text": "“I have a boy, Dull.”"
+        },
+        {
+          "index": 22,
+          "text": "She's talking about me!"
+        },
+        {
+          "index": 23,
+          "text": "“He is a good boy.”"
+        },
+        {
+          "index": 24,
+          "text": "“He knows how to snatch buns.”"
+        },
+        {
+          "index": 25,
+          "text": "“One day,\nI can see him snatching buns…”"
+        },
+        {
+          "index": 26,
+          "text": "“Ending up snatching\nan Olympic medal.”"
+        },
+        {
+          "index": 27,
+          "text": "“That is the biggest comfort\na mother can get.”"
+        },
+        {
+          "index": 28,
+          "text": "“Let the world know\nthe talent of your children.”"
+        },
+        {
+          "index": 29,
+          "text": "“Parents will do anything for that.”"
+        },
+        {
+          "index": 30,
+          "text": "“That is why I write you this sudden letter.”"
+        },
+        {
+          "index": 31,
+          "text": "“Although you don't know\nhumble things like me.”"
+        },
+        {
+          "index": 32,
+          "text": "“But my boy is big, very big.”"
+        },
+        {
+          "index": 33,
+          "text": "“One day, you will know him too.”"
+        },
+        {
+          "index": 34,
+          "text": "“Thank you for your cooperation.”"
+        },
+        {
+          "index": 35,
+          "text": "“Yours faithfully, Mrs. Mc”"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 12,
+          "text": "“Dear friend,",
+          "note": "Changed the opening straight quote to a left double quote."
+        },
+        {
+          "index": 13,
+          "text": "it is important to snatch buns.”",
+          "note": "Changed the closing straight quote to a right double quote."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "few_shot": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "After reading mother's letter…"
+        },
+        {
+          "index": 2,
+          "text": "I go back to Cheung Chau to practice."
+        },
+        {
+          "index": 3,
+          "text": "Not because of San San."
+        },
+        {
+          "index": 4,
+          "text": "I don't know why I want to snatch a bun."
+        },
+        {
+          "index": 5,
+          "text": "And I don't think it will ever become\nan Olympic item."
+        },
+        {
+          "index": 6,
+          "text": "But I keep learning."
+        },
+        {
+          "index": 7,
+          "text": "Because I love my mother."
+        },
+        {
+          "index": 8,
+          "text": "Master thinks my crawling has passed."
+        },
+        {
+          "index": 9,
+          "text": "Now I'll learn the\n“12 Bun Snatching Hands”."
+        },
+        {
+          "index": 10,
+          "text": "Master says these 12 hands,"
+        },
+        {
+          "index": 11,
+          "text": "in its prime…"
+        },
+        {
+          "index": 12,
+          "text": "Was much admired by Butcher Lin!"
+        },
+        {
+          "index": 13,
+          "text": "Later, I learn from McMug…"
+        },
+        {
+          "index": 14,
+          "text": "Butcher Lin was a disciple of\nthe great Kung Fu king."
+        },
+        {
+          "index": 15,
+          "text": "I don't know much about Kung Fu kings…"
+        },
+        {
+          "index": 16,
+          "text": "But I must be the ultimate pork…"
+        },
+        {
+          "index": 17,
+          "text": "The pork that struts about"
+        },
+        {
+          "index": 18,
+          "text": "with buns in hands."
+        },
+        {
+          "index": 19,
+          "text": "My mind boggles as I practice, after all…"
+        },
+        {
+          "index": 20,
+          "text": "I am not a fan of bun snatching."
+        },
+        {
+          "index": 21,
+          "text": "I am only doing this for mother."
+        },
+        {
+          "index": 22,
+          "text": "Hence I hang on…"
+        },
+        {
+          "index": 23,
+          "text": "Step by step, claw by claw…"
+        },
+        {
+          "index": 24,
+          "text": "I make it pass\nthe“12 Bun Snatching Hands”."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 12,
+          "text": "was much admired by Butcher Lin!",
+          "note": "Changed capital 'W' in 'Was' to lowercase for correct sentence case continuation."
+        },
+        {
+          "index": 24,
+          "text": "I make it past\nthe “12 Bun Snatching Hands”.",
+          "note": "Corrected 'pass' to 'past' for correct usage in context; added a space after 'the' before the opening quotation mark."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“There is no deformity,\nbut saves us from a dream”"
+        },
+        {
+          "index": 2,
+          "text": "This is Dull."
+        },
+        {
+          "index": 3,
+          "text": "Dull the big guy, not Dull the boy."
+        },
+        {
+          "index": 4,
+          "text": "The two Dulls have different voices,\nand then…"
+        },
+        {
+          "index": 5,
+          "text": "Dull the boy's world is still filled\nwith fantasy…"
+        },
+        {
+          "index": 6,
+          "text": "Filled with hopes."
+        },
+        {
+          "index": 7,
+          "text": "Hope… Disappointment…"
+        },
+        {
+          "index": 8,
+          "text": "Hope…"
+        },
+        {
+          "index": 9,
+          "text": "Disappointment."
+        },
+        {
+          "index": 10,
+          "text": "On and on, he became Dull the big guy."
+        },
+        {
+          "index": 11,
+          "text": "But I shall tell more about Dull the boy."
+        },
+        {
+          "index": 12,
+          "text": "Dull the boy hoped a lot."
+        },
+        {
+          "index": 13,
+          "text": "He hoped there WAS a Santa Claus."
+        },
+        {
+          "index": 14,
+          "text": "And he hoped to eat a Christmas turkey."
+        },
+        {
+          "index": 15,
+          "text": "Right, I haven't eaten any turkey then."
+        },
+        {
+          "index": 16,
+          "text": "Everything about turkey…"
+        },
+        {
+          "index": 17,
+          "text": "The sparkling tinkling Christmas tree…"
+        },
+        {
+          "index": 18,
+          "text": "Like stars falling from the sky…"
+        },
+        {
+          "index": 19,
+          "text": "Coming down by the fireplace."
+        },
+        {
+          "index": 20,
+          "text": "Each slice of meat looks purer than snow."
+        },
+        {
+          "index": 21,
+          "text": "Right in front of us…"
+        },
+        {
+          "index": 22,
+          "text": "The aroma attacks our soul…"
+        },
+        {
+          "index": 23,
+          "text": "Waking even the guardian angels."
+        },
+        {
+          "index": 24,
+          "text": "Who float around the aromatic and\nholy dish…"
+        },
+        {
+          "index": 25,
+          "text": "Floating in the Christmas night, floating…"
+        },
+        {
+          "index": 26,
+          "text": "All this about turkey was\nonly my imagination."
+        },
+        {
+          "index": 27,
+          "text": "I had never eaten a turkey."
+        },
+        {
+          "index": 28,
+          "text": "I had never even smelt one."
+        },
+        {
+          "index": 29,
+          "text": "Mother claimed turkey was too big."
+        },
+        {
+          "index": 30,
+          "text": "The two of us would never finish it."
+        },
+        {
+          "index": 31,
+          "text": "One Christmas we celebrated with\nroast duck."
+        },
+        {
+          "index": 32,
+          "text": "I was really, really disappointed."
+        },
+        {
+          "index": 33,
+          "text": "Another year,\nshe bought a mini-oven at 60% off…"
+        },
+        {
+          "index": 34,
+          "text": "At a closedown sale."
+        },
+        {
+          "index": 35,
+          "text": "Thanks to the oven…"
+        },
+        {
+          "index": 36,
+          "text": "Mother decided one day…"
+        },
+        {
+          "index": 37,
+          "text": "We would go shopping for a turkey."
+        },
+        {
+          "index": 38,
+          "text": "On the way home, with turkey in hand…"
+        },
+        {
+          "index": 39,
+          "text": "That was the happiest moment in my life."
+        },
+        {
+          "index": 40,
+          "text": "The turkey was ready."
+        },
+        {
+          "index": 41,
+          "text": "Following mother,\nwith salt on both hands…"
+        },
+        {
+          "index": 42,
+          "text": "I rubbed the turkey's thick chest."
+        },
+        {
+          "index": 43,
+          "text": "When sewing up…"
+        },
+        {
+          "index": 44,
+          "text": "Some of the stuffing…"
+        },
+        {
+          "index": 45,
+          "text": "leaked out."
+        },
+        {
+          "index": 46,
+          "text": "I cried: the turkey's stomach won't stop!"
+        },
+        {
+          "index": 47,
+          "text": "We managed to stuff the turkey\ninto the oven."
+        },
+        {
+          "index": 48,
+          "text": "24th, December"
+        },
+        {
+          "index": 49,
+          "text": "Rising smoke stirred the stars with\na crunchy smell."
+        },
+        {
+          "index": 50,
+          "text": "The oven hummed. Hummed."
+        },
+        {
+          "index": 51,
+          "text": "It was like early blessing from the angels."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Such a beautiful night!"
+        },
+        {
+          "index": 2,
+          "text": "Mother and me sat at the seafront."
+        },
+        {
+          "index": 3,
+          "text": "Lights shimmered on the sea."
+        },
+        {
+          "index": 4,
+          "text": "Beautiful and gentle."
+        },
+        {
+          "index": 5,
+          "text": "So beautiful!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "Mother and I sat at the seafront.",
+          "note": "Replaced 'me' with 'I' for correct grammar: 'Mother and I sat at the seafront.'"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I had never tasted anything so strong."
+        },
+        {
+          "index": 2,
+          "text": "Cup noodles or roast duck\nwere not as strong."
+        },
+        {
+          "index": 3,
+          "text": "The taste embedded\nevery single taste bud…"
+        },
+        {
+          "index": 4,
+          "text": "Then exploded."
+        },
+        {
+          "index": 5,
+          "text": "Like everything tonight…"
+        },
+        {
+          "index": 6,
+          "text": "Most beautiful, brilliant, and tender."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I woke up late the next day."
+        },
+        {
+          "index": 2,
+          "text": "The sweetness was still there\nafter washing."
+        },
+        {
+          "index": 3,
+          "text": "As we had a late breakfast…"
+        },
+        {
+          "index": 4,
+          "text": "There was only corn soup for lunch."
+        },
+        {
+          "index": 5,
+          "text": "I idly found diced turkey…"
+        },
+        {
+          "index": 6,
+          "text": "in the soup."
+        },
+        {
+          "index": 7,
+          "text": "That night finally came the long awaited…"
+        },
+        {
+          "index": 8,
+          "text": "Christmas turkey dinner!"
+        },
+        {
+          "index": 9,
+          "text": "Slices of meat,\naccompanied by guard and potato…"
+        },
+        {
+          "index": 10,
+          "text": "Were dressed with soy sauce."
+        },
+        {
+          "index": 11,
+          "text": "It was an exciting,\nsatisfactory moment for us."
+        },
+        {
+          "index": 12,
+          "text": "The following week,"
+        },
+        {
+          "index": 13,
+          "text": "turkey sandwich for breakfast."
+        },
+        {
+          "index": 14,
+          "text": "Sunday,"
+        },
+        {
+          "index": 15,
+          "text": "I boldly suggested eating out."
+        },
+        {
+          "index": 16,
+          "text": "Mother said I was ungrateful…"
+        },
+        {
+          "index": 17,
+          "text": "But took me out anyway."
+        },
+        {
+          "index": 18,
+          "text": "Then mother got inspired again."
+        },
+        {
+          "index": 19,
+          "text": "What was left of the turkey was sliced…"
+        },
+        {
+          "index": 20,
+          "text": "With me helping out at times."
+        },
+        {
+          "index": 21,
+          "text": "It was not easy to get rid of…"
+        },
+        {
+          "index": 22,
+          "text": "the turkey's smell."
+        },
+        {
+          "index": 23,
+          "text": "Fried noodle with sliced turkey, yummy."
+        },
+        {
+          "index": 24,
+          "text": "Steaming chestnut bowl with\nsliced turkey."
+        },
+        {
+          "index": 25,
+          "text": "Peanut congee with turkey bone."
+        },
+        {
+          "index": 26,
+          "text": "Paper turkey bun."
+        },
+        {
+          "index": 27,
+          "text": "Paper turkey paper bun."
+        },
+        {
+          "index": 28,
+          "text": "Turkey pete with bread."
+        },
+        {
+          "index": 29,
+          "text": "I shouldn't have said anything about\nthe turkey's stomach."
+        },
+        {
+          "index": 30,
+          "text": "Came Dragon Boat Festival,\nwhen I dug into the dumpling…"
+        },
+        {
+          "index": 31,
+          "text": "And found more pieces of turkey…"
+        },
+        {
+          "index": 32,
+          "text": "I lost it. I cried."
+        },
+        {
+          "index": 33,
+          "text": "Oh please!"
+        },
+        {
+          "index": 34,
+          "text": "When mother finally disposed of\nthe turkey…"
+        },
+        {
+          "index": 35,
+          "text": "It was already half year later."
+        },
+        {
+          "index": 36,
+          "text": "My beautiful dream ended with\nmy nightmare."
+        },
+        {
+          "index": 37,
+          "text": "Later, I learned that…"
+        },
+        {
+          "index": 38,
+          "text": "A serving turkey needs only be raised…"
+        },
+        {
+          "index": 39,
+          "text": "For a few months."
+        },
+        {
+          "index": 40,
+          "text": "The time the turkey spent with us…"
+        },
+        {
+          "index": 41,
+          "text": "Was in fact longer than its life."
+        },
+        {
+          "index": 42,
+          "text": "I realized also, with turkey…"
+        },
+        {
+          "index": 43,
+          "text": "Taking the first bite is all it matters."
+        },
+        {
+          "index": 44,
+          "text": "Afterwards,\nit is just“be over and done with it”."
+        },
+        {
+          "index": 45,
+          "text": "I am no philosopher."
+        },
+        {
+          "index": 46,
+          "text": "I could not come up with any profundity."
+        },
+        {
+          "index": 47,
+          "text": "But, such thoughts…"
+        },
+        {
+          "index": 48,
+          "text": "After I grew up…"
+        },
+        {
+          "index": 49,
+          "text": "On days unrelated to Christmas…"
+        },
+        {
+          "index": 50,
+          "text": "Did come up again a couple of times."
+        },
+        {
+          "index": 51,
+          "text": "Once, it was at my wedding."
+        },
+        {
+          "index": 52,
+          "text": "Once…"
+        },
+        {
+          "index": 53,
+          "text": "It was at my mother's cremation."
+        },
+        {
+          "index": 54,
+          "text": "That day, I was looking at\nthe smoke rising up."
+        },
+        {
+          "index": 55,
+          "text": "Suddenly, the smell of\nthe turkey returned."
+        },
+        {
+          "index": 56,
+          "text": "I regretted I made mother\nthrew the turkey away."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 9,
+          "text": "Slices of meat,\naccompanied by gourd and potato…",
+          "note": "Corrected 'guard' to 'gourd', which fits the food context."
+        },
+        {
+          "index": 10,
+          "text": "were dressed with soy sauce.",
+          "note": "Lowercased 'Were' to 'were' to continue the sentence from the previous line."
+        },
+        {
+          "index": 20,
+          "text": "with me helping out at times.",
+          "note": "Lowercased 'With' to 'with' to continue the sentence from the previous line."
+        },
+        {
+          "index": 28,
+          "text": "Turkey pâté with bread.",
+          "note": "Corrected 'pete' to 'pâté', the correct word for a turkey spread."
+        },
+        {
+          "index": 35,
+          "text": "It was already half a year later.",
+          "note": "Inserted 'a' in 'half a year' for correct expression."
+        },
+        {
+          "index": 38,
+          "text": "A serving turkey needs only to be raised…",
+          "note": "Inserted 'to' in 'needs only to be raised' for correct grammar."
+        },
+        {
+          "index": 39,
+          "text": "for a few months.",
+          "note": "Lowercased 'For' to 'for' to continue the sentence from the previous line."
+        },
+        {
+          "index": 41,
+          "text": "was in fact longer than its life.",
+          "note": "Lowercased 'Was' to 'was' to continue the sentence from the previous line."
+        },
+        {
+          "index": 43,
+          "text": "taking the first bite is all that matters.",
+          "note": "Lowercased 'Taking' to continue the sentence and inserted 'that' for correct idiom 'all that matters.'"
+        },
+        {
+          "index": 44,
+          "text": "Afterwards,\nit is just “be over and done with it”.",
+          "note": "Inserted a space before the opening quotation mark for proper spacing."
+        },
+        {
+          "index": 56,
+          "text": "I regretted I made mother\nthrow the turkey away.",
+          "note": "Changed 'threw' to 'throw' to match the infinitive form after 'made.'"
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“Special Report”"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "'Special Report\""
+        },
+        {
+          "index": 2,
+          "text": "Olympic medal winner San San Li\nwill compete again…"
+        },
+        {
+          "index": 3,
+          "text": "To prove to the world that…"
+        },
+        {
+          "index": 4,
+          "text": "HK athletes are horrible."
+        },
+        {
+          "index": 5,
+          "text": "Also…"
+        },
+        {
+          "index": 6,
+          "text": "The local federation…"
+        },
+        {
+          "index": 7,
+          "text": "officially announced today:"
+        },
+        {
+          "index": 8,
+          "text": "HK will apply to host the Asian Games."
+        },
+        {
+          "index": 9,
+          "text": "Response from\nall sides has been enthusiastic."
+        },
+        {
+          "index": 10,
+          "text": "Among them,\nthe Bamboo Game Association…"
+        },
+        {
+          "index": 11,
+          "text": "Is proposing Mahjong for official game."
+        },
+        {
+          "index": 12,
+          "text": "While Tearoom Serving Groups…"
+        },
+        {
+          "index": 13,
+          "text": "have vowed…"
+        },
+        {
+          "index": 14,
+          "text": "To campaign for“Tart Throwing”."
+        },
+        {
+          "index": 15,
+          "text": "As for the Cold Cut and\nRoasting Association…"
+        },
+        {
+          "index": 16,
+          "text": "They believe…"
+        },
+        {
+          "index": 17,
+          "text": "“Duck Hanging”\nwould make an ideal addition."
+        },
+        {
+          "index": 18,
+          "text": "More interesting,\nCIC Insurance is joining force with…"
+        },
+        {
+          "index": 19,
+          "text": "Children from…"
+        },
+        {
+          "index": 20,
+          "text": "Spring Flower Primary School…"
+        },
+        {
+          "index": 21,
+          "text": "In support of…"
+        },
+        {
+          "index": 22,
+          "text": "“Bun Snatching”…"
+        },
+        {
+          "index": 23,
+          "text": "A game thought extinct."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "“Special Report”",
+          "note": "Corrected quotation marks."
+        },
+        {
+          "index": 11,
+          "text": "is proposing Mahjong for official game.",
+          "note": "Lowercased 'Is' to continue the sentence from the previous line."
+        },
+        {
+          "index": 14,
+          "text": "To campaign for “Tart Throwing”.",
+          "note": "Added a space between 'for' and the opening quote, and corrected the opening quote style."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "In the end…"
+        },
+        {
+          "index": 2,
+          "text": "Nothing came of anything."
+        },
+        {
+          "index": 3,
+          "text": "“Tart Throwing”\nwas chosen as the highlight."
+        },
+        {
+          "index": 4,
+          "text": "As for the official slogan…"
+        },
+        {
+          "index": 5,
+          "text": "“HK, One Big Tart” was a logical choice."
+        },
+        {
+          "index": 6,
+          "text": "Then San San Li lost."
+        },
+        {
+          "index": 7,
+          "text": "And the hosting right of\nthe Asian Games…"
+        },
+        {
+          "index": 8,
+          "text": "Went to a place Hong Kong people\nhave never heard of."
+        },
+        {
+          "index": 9,
+          "text": "Tearoom workers,\nthose aspiring athletes…"
+        },
+        {
+          "index": 10,
+          "text": "Went back to where\nthey used to throw their tarts."
+        },
+        {
+          "index": 11,
+          "text": "Everything went on as usual."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "In secondary school,\nI stopped practicing the 12 hands."
+        },
+        {
+          "index": 2,
+          "text": "Sometimes, when I went out with mother…"
+        },
+        {
+          "index": 3,
+          "text": "I'd still snatch a bun for her."
+        },
+        {
+          "index": 4,
+          "text": "Then they stopped selling buns."
+        },
+        {
+          "index": 5,
+          "text": "Carts were replaced by ordering sheet."
+        },
+        {
+          "index": 6,
+          "text": "Everything came to nothing."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 5,
+          "text": "Carts were replaced by ordering sheets.",
+          "note": "Changed 'ordering sheet' to 'ordering sheets' for correct plural form."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "At times, I'd go to Cheung Chau\nfor barbecue."
+        },
+        {
+          "index": 2,
+          "text": "The master looked older…"
+        },
+        {
+          "index": 3,
+          "text": "Each time I saw him."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "For environmental reason…"
+        },
+        {
+          "index": 2,
+          "text": "They'd changed to snatch plastic buns."
+        },
+        {
+          "index": 3,
+          "text": "Master thought they stunk."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "For environmental reasons…",
+          "note": "Changed 'reason' to 'reasons' for correct usage in this context."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "On Cheung Chau\nwas a Cheung Po Tsai Cave."
+        },
+        {
+          "index": 2,
+          "text": "Where legend claimed\nthe pirate hid his treasure."
+        },
+        {
+          "index": 3,
+          "text": "As I was the one who could crawl…"
+        },
+        {
+          "index": 4,
+          "text": "My mates said I should take a look and\nmaybe get rich."
+        },
+        {
+          "index": 5,
+          "text": "So I crawled along the dark and\nnarrow cave."
+        },
+        {
+          "index": 6,
+          "text": "Crawling."
+        },
+        {
+          "index": 7,
+          "text": "There was nothing but a box."
+        },
+        {
+          "index": 8,
+          "text": "I opened the box…"
+        },
+        {
+          "index": 9,
+          "text": "Inside, there was an unfinished bun."
+        },
+        {
+          "index": 10,
+          "text": "Maybe the pirate didn't get to finish it."
+        },
+        {
+          "index": 11,
+          "text": "“Eating 6 buns last night…”"
+        },
+        {
+          "index": 12,
+          "text": "“Still left me hungry.”"
+        },
+        {
+          "index": 13,
+          "text": "“Eating 1½lb white bread last night… ”"
+        },
+        {
+          "index": 14,
+          "text": "“Still left me hungry.”"
+        },
+        {
+          "index": 15,
+          "text": "“Excelled 6 sets of steps\nwhen I was young…”"
+        },
+        {
+          "index": 16,
+          "text": "“Still left me empty.”"
+        },
+        {
+          "index": 17,
+          "text": "“Brought up San San\nwhen I am old! Still…”"
+        },
+        {
+          "index": 18,
+          "text": "Bun in hand, I suddenly realized…"
+        },
+        {
+          "index": 19,
+          "text": "There are things that cannot be forced."
+        },
+        {
+          "index": 20,
+          "text": "A no is a no."
+        },
+        {
+          "index": 21,
+          "text": "No fishball, no noodle, no Maldives…"
+        },
+        {
+          "index": 22,
+          "text": "No medal, no pirate's treasure."
+        },
+        {
+          "index": 23,
+          "text": "And the pirate took no bite."
+        },
+        {
+          "index": 24,
+          "text": "Stupid is not funny."
+        },
+        {
+          "index": 25,
+          "text": "Stupid leads to failure…"
+        },
+        {
+          "index": 26,
+          "text": "To disappointment."
+        },
+        {
+          "index": 27,
+          "text": "Disappointed is not funny."
+        },
+        {
+          "index": 28,
+          "text": "Fatness is not funny too."
+        },
+        {
+          "index": 29,
+          "text": "Fatness is not powerful."
+        },
+        {
+          "index": 30,
+          "text": "Power doesn't mean yes."
+        },
+        {
+          "index": 31,
+          "text": "Bun in hand, I suddenly thought…"
+        },
+        {
+          "index": 32,
+          "text": "Growing up, facing this sordid world…"
+        },
+        {
+          "index": 33,
+          "text": "This not so dreamy, not so funny world…"
+        },
+        {
+          "index": 34,
+          "text": "What shall I be?"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 13,
+          "text": "“Eating 1½lb white bread last night…”",
+          "note": "Removed the extra space before the closing quotation mark for consistency."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“…Nothing shall be done!”"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“I Have Grown Up”"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "“Fat, Still”"
+        },
+        {
+          "index": 2,
+          "text": "“Powerful”"
+        },
+        {
+          "index": 3,
+          "text": ""
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Right, I am McDull the big guy."
+        },
+        {
+          "index": 2,
+          "text": "Fat, with raw power."
+        },
+        {
+          "index": 3,
+          "text": "Not doing too well."
+        },
+        {
+          "index": 4,
+          "text": "Negative property."
+        },
+        {
+          "index": 5,
+          "text": "With a pair of really thick calves."
+        },
+        {
+          "index": 6,
+          "text": "Very muscular…"
+        },
+        {
+          "index": 7,
+          "text": "With steely veins running down."
+        },
+        {
+          "index": 8,
+          "text": "As for the toenails…"
+        },
+        {
+          "index": 9,
+          "text": "I got bored one time and stared at it…"
+        },
+        {
+          "index": 10,
+          "text": "They're tough, no kidding!"
+        },
+        {
+          "index": 11,
+          "text": "Yes, the story ends here."
+        },
+        {
+          "index": 12,
+          "text": "This is a try."
+        },
+        {
+          "index": 13,
+          "text": "Error… Try…"
+        },
+        {
+          "index": 14,
+          "text": "No guarantee that one would make it."
+        },
+        {
+          "index": 15,
+          "text": "In the end…"
+        },
+        {
+          "index": 16,
+          "text": "Zero gain? Not really."
+        },
+        {
+          "index": 17,
+          "text": "I have my calves."
+        },
+        {
+          "index": 18,
+          "text": "But, standing here like this…"
+        },
+        {
+          "index": 19,
+          "text": "When the waves hit…"
+        },
+        {
+          "index": 20,
+          "text": "I feel great."
+        },
+        {
+          "index": 21,
+          "text": "You see, smart guys like me\ndon't really know…"
+        },
+        {
+          "index": 22,
+          "text": "How to make a lesson out of\nhis own story."
+        },
+        {
+          "index": 23,
+          "text": "With calves in water…"
+        },
+        {
+          "index": 24,
+          "text": "When the wind blows, I'd think…"
+        },
+        {
+          "index": 25,
+          "text": "If mother could see me like this…"
+        },
+        {
+          "index": 26,
+          "text": "She'd be happy."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "I've come up with a lesson!"
+        },
+        {
+          "index": 2,
+          "text": "Mother got inspired after\nher dot com failed."
+        },
+        {
+          "index": 3,
+          "text": "She published a cookbook."
+        },
+        {
+          "index": 4,
+          "text": "The last recipe was“Roast Chicken”."
+        },
+        {
+          "index": 5,
+          "text": "A simple dish no less."
+        },
+        {
+          "index": 6,
+          "text": "“Roast Chicken”."
+        },
+        {
+          "index": 7,
+          "text": "Ingredient: chicken."
+        },
+        {
+          "index": 8,
+          "text": "Method: roast the chicken."
+        },
+        {
+          "index": 9,
+          "text": "That way, you have a roast chicken."
+        },
+        {
+          "index": 10,
+          "text": "There was a remark in the cookbook:"
+        },
+        {
+          "index": 11,
+          "text": "If you want a delicious chicken…"
+        },
+        {
+          "index": 12,
+          "text": "A chicken that wouldn't upset you…"
+        },
+        {
+          "index": 13,
+          "text": "The secret is: please, roast it well!"
+        },
+        {
+          "index": 14,
+          "text": "Thank you!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "The last recipe was “Roast Chicken”.",
+          "note": "Added a space between 'was' and the opening quotation mark for correct spacing."
+        }
+      ]
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "One Regular, please."
+        },
+        {
+          "index": 2,
+          "text": "What's a Regular?"
+        },
+        {
+          "index": 3,
+          "text": "The same as Special."
+        },
+        {
+          "index": 4,
+          "text": "What's a Special?"
+        },
+        {
+          "index": 5,
+          "text": "Same as Quickie."
+        },
+        {
+          "index": 6,
+          "text": "What's a Quickie?"
+        },
+        {
+          "index": 7,
+          "text": "A Quickie is a Lunch."
+        },
+        {
+          "index": 8,
+          "text": "What's for Lunch?"
+        },
+        {
+          "index": 9,
+          "text": "The same as Supper."
+        },
+        {
+          "index": 10,
+          "text": "What's for Supper?"
+        },
+        {
+          "index": 11,
+          "text": "Same as Regular."
+        },
+        {
+          "index": 12,
+          "text": "We'll have the Regular."
+        },
+        {
+          "index": 13,
+          "text": "Our Regular today is fantastic!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sorry, Regular is gone."
+        },
+        {
+          "index": 2,
+          "text": "We can have the Special."
+        },
+        {
+          "index": 3,
+          "text": "What's a Special?"
+        },
+        {
+          "index": 4,
+          "text": "A Special is a Lunch."
+        },
+        {
+          "index": 5,
+          "text": "What's for Lunch?"
+        },
+        {
+          "index": 6,
+          "text": "What you get for Supper."
+        },
+        {
+          "index": 7,
+          "text": "What's for Supper?"
+        },
+        {
+          "index": 8,
+          "text": "Same as Quickie."
+        },
+        {
+          "index": 9,
+          "text": "What's for Quickie?"
+        },
+        {
+          "index": 10,
+          "text": "A Quickie is a Regular."
+        },
+        {
+          "index": 11,
+          "text": "But you said Regular is gone!"
+        },
+        {
+          "index": 12,
+          "text": "Regular sure is gone.\nHow about the Special?"
+        },
+        {
+          "index": 13,
+          "text": "It's the Special, then."
+        },
+        {
+          "index": 14,
+          "text": "Sorry, Special is gone."
+        },
+        {
+          "index": 15,
+          "text": "Mother, let's have the Quickie."
+        },
+        {
+          "index": 16,
+          "text": "What's for Quickie?"
+        },
+        {
+          "index": 17,
+          "text": "A Quickie is a Regular."
+        },
+        {
+          "index": 18,
+          "text": "What's for Regular?"
+        },
+        {
+          "index": 19,
+          "text": "A Regular is a Lunch."
+        },
+        {
+          "index": 20,
+          "text": "What's for Lunch?"
+        },
+        {
+          "index": 21,
+          "text": "Same as Supper."
+        },
+        {
+          "index": 22,
+          "text": "And Supper?"
+        },
+        {
+          "index": 23,
+          "text": "Supper is like Special."
+        },
+        {
+          "index": 24,
+          "text": "But you said the Special is gone."
+        },
+        {
+          "index": 25,
+          "text": "The Special sure is gone.\nTry Quickie. It's the same."
+        },
+        {
+          "index": 26,
+          "text": "We'll have Quickie."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sorry, Quickie is gone."
+        },
+        {
+          "index": 2,
+          "text": "This is too much!\nIs there anything we can eat here?"
+        },
+        {
+          "index": 3,
+          "text": "Try the Lunch. It's fantastic!"
+        },
+        {
+          "index": 4,
+          "text": "How so?"
+        },
+        {
+          "index": 5,
+          "text": "It's like the Supper."
+        },
+        {
+          "index": 6,
+          "text": "What about the Supper?"
+        },
+        {
+          "index": 7,
+          "text": "It's like the Regular."
+        },
+        {
+          "index": 8,
+          "text": "And what about the Regular?"
+        },
+        {
+          "index": 9,
+          "text": "The Regular is gone. Isn't that fantastic?"
+        },
+        {
+          "index": 10,
+          "text": "Great! We'll have Lunch."
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "subtitles": [
+        {
+          "index": 1,
+          "text": "Sorry, Lunch is gone."
+        },
+        {
+          "index": 2,
+          "text": "Try our Supper. It's all the same."
+        },
+        {
+          "index": 3,
+          "text": "I'm not having supper\nunder board daylight!"
+        },
+        {
+          "index": 4,
+          "text": "What's in a name?\nIt's the same as Lunch."
+        },
+        {
+          "index": 5,
+          "text": "Great! Whatever you say!\nAnd make it quick!"
+        },
+        {
+          "index": 6,
+          "text": "You want it quick? Try Quickie!"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "I'm not having supper\nunder broad daylight!",
+          "note": "Corrected 'board daylight' to 'broad daylight'."
+        }
+      ]
     },
     "difficulty": 1,
     "verified": true

@@ -62,12 +62,9 @@ ReviewPromptEng = ReviewPrompt(
     **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         You are responsible for proofreading English subtitles.
-        For each subtitle, you are to provide revised subtitle only if revisions are
-        necessary.
-        If revisions are needed, return the full revised subtitle, and a note describing
-        the changes made.
-        If no revisions are needed, return an empty string for the revised subtitle and
-        its note.
+        Return a revision only for a subtitle that requires changes. Each revision must
+        include the subtitle's index, its full revised text, and a note describing the
+        changes made. If no revisions are needed, return an empty revisions list.
         Make changes only when necessary to correct typographical errors.
 
         Do not add stylistic changes or improve phrasing.
@@ -79,27 +76,12 @@ ReviewPromptEng = ReviewPrompt(
         Do not remove subtitle markup such as italics ('{\\i1}' and '{\\i0}').
 
         Do not remove newlines ('\\n')."""),
-    input_pfx="subtitle_",
-    input_desc_tpl="Subtitle {idx}",
-    output_pfx="revised_",
-    output_desc_tpl=(
-        "Subtitle {idx} revised, or an empty string if no revision is necessary."
+    subtitles_desc="English subtitles to review, in order.",
+    revisions_desc=(
+        "Revised English subtitles; include only subtitles that require revision."
     ),
-    note_desc_tpl=(
-        "Note concerning revisions to subtitle {idx}, or an empty string if no "
-        "revision is necessary."
-    ),
-    output_unmodified_err_tpl=(
-        "Answer's revised text {idx} is not modified relative to query's text {idx}, "
-        "if no revision is needed an empty string must be provided."
-    ),
-    note_missing_err_tpl=(
-        "Answer's text {idx} is modified relative to query's text {idx}, but no note "
-        "is provided, if revision is needed a note must be provided."
-    ),
-    output_missing_err_tpl=(
-        "Answer's text {idx} is not modified relative to query's text {idx}, but a "
-        "note is provided, if no revisions are needed an empty string must be provided."
-    ),
+    subtitle_text_desc="English subtitle text to review.",
+    revision_text_desc="Full revised English subtitle text.",
+    note_desc="Note explaining the English subtitle revision.",
 )
 """LLM correspondence text for English review."""

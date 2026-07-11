@@ -1,0 +1,162 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Tests for list-shaped review LLM models."""
+
+from __future__ import annotations
+
+import json
+from unittest.mock import Mock
+
+from pydantic import ValidationError
+from pytest import raises
+
+from scinoephile.core import Language
+from scinoephile.core.llms import LLMProvider, Queryer
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
+
+_LOCALIZED_PROMPT = ReviewPrompt(
+    language=Language.zho_hant,
+    subtitles="zimu",
+    revisions="xiugai",
+    index="xuhao",
+    text="wenben",
+    note="beizhu",
+)
+"""Review prompt with Chinese correspondence field names."""
+
+
+def test_prompt_aliases_are_used_for_llm_correspondence():
+    """Generated schemas and JSON should use prompt-specific aliases."""
+    test_case_cls = ReviewManager.get_test_case_cls(_LOCALIZED_PROMPT)
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "zimu": [
+                    {"xuhao": 1, "wenben": "原文一"},
+                    {"xuhao": 2, "wenben": "原文二"},
+                ]
+            },
+            "answer": {
+                "xiugai": [
+                    {
+                        "xuhao": 2,
+                        "wenben": "修改二",
+                        "beizhu": "修正錯字",
+                    }
+                ]
+            },
+        }
+    )
+
+    assert test_case.query.model_dump(by_alias=True) == {
+        "zimu": [
+            {"xuhao": 1, "wenben": "原文一"},
+            {"xuhao": 2, "wenben": "原文二"},
+        ]
+    }
+    assert test_case.answer is not None
+    assert test_case.answer.model_dump(by_alias=True) == {
+        "xiugai": [{"xuhao": 2, "wenben": "修改二", "beizhu": "修正錯字"}]
+    }
+    assert set(test_case_cls.query_cls.model_json_schema()["properties"]) == {"zimu"}
+    assert set(test_case_cls.answer_cls.model_json_schema()["properties"]) == {"xiugai"}
+
+
+def test_queryer_corresponds_using_prompt_aliases():
+    """Queryer should send aliased queries and request aliased answers."""
+    test_case_cls = ReviewManager.get_test_case_cls(_LOCALIZED_PROMPT)
+    test_case = test_case_cls.model_validate(
+        {"query": {"subtitles": [{"index": 1, "text": "原文"}]}}
+    )
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"xiugai": []}'
+    queryer = Queryer(_LOCALIZED_PROMPT, provider=provider, max_attempts=1)
+
+    result = queryer(test_case)
+
+    assert result.answer is not None
+    messages = provider.chat_completion.call_args.args[0]
+    assert json.loads(messages[1]["content"]) == {
+        "zimu": [{"xuhao": 1, "wenben": "原文"}]
+    }
+    assert '"xiugai"' in messages[0]["content"]
+    assert '"xuhao"' in messages[0]["content"]
+    assert '"wenben"' in messages[0]["content"]
+    assert '"beizhu"' in messages[0]["content"]
+
+
+def test_query_requires_consecutive_ordered_indexes():
+    """Query subtitle indexes should be consecutive, ordered, and one-based."""
+    query_cls = ReviewManager.get_query_cls(ReviewManager.base_prompt)
+
+    with raises(ValidationError, match="consecutive, ordered, and begin at 1"):
+        query_cls.model_validate(
+            {
+                "subtitles": [
+                    {"index": 1, "text": "one"},
+                    {"index": 3, "text": "three"},
+                ]
+            }
+        )
+
+
+def test_answer_requires_unique_ordered_revision_indexes():
+    """Answer revision indexes should be unique and ordered."""
+    answer_cls = ReviewManager.get_answer_cls(ReviewManager.base_prompt)
+
+    with raises(ValidationError, match="unique and in ascending order"):
+        answer_cls.model_validate(
+            {
+                "revisions": [
+                    {"index": 2, "text": "two", "note": "second"},
+                    {"index": 1, "text": "one", "note": "first"},
+                ]
+            }
+        )
+
+
+def test_test_case_rejects_missing_and_unmodified_revision_indexes():
+    """Revisions should target and modify query subtitles."""
+    test_case_cls = ReviewManager.get_test_case_cls(ReviewManager.base_prompt)
+    query = {"subtitles": [{"index": 1, "text": "original"}]}
+
+    with raises(ValidationError, match="does not correspond to a query subtitle"):
+        test_case_cls.model_validate(
+            {
+                "query": query,
+                "answer": {
+                    "revisions": [{"index": 2, "text": "changed", "note": "typo"}]
+                },
+            }
+        )
+    with raises(ValidationError, match="unchanged subtitles must be omitted"):
+        test_case_cls.model_validate(
+            {
+                "query": query,
+                "answer": {
+                    "revisions": [{"index": 1, "text": "original", "note": "unchanged"}]
+                },
+            }
+        )
+
+
+def test_revisions_raise_minimum_difficulty():
+    """A nonempty revisions list should require difficulty one."""
+    test_case_cls = ReviewManager.get_test_case_cls(ReviewManager.base_prompt)
+    unchanged = test_case_cls.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "original"}]},
+            "answer": {"revisions": []},
+        }
+    )
+    changed = test_case_cls.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "original"}]},
+            "answer": {
+                "revisions": [{"index": 1, "text": "corrected", "note": "typo"}]
+            },
+        }
+    )
+
+    assert unchanged.difficulty == 0
+    assert changed.difficulty == 1

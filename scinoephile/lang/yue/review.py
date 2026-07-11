@@ -80,23 +80,25 @@ ReviewPromptYueHant = ReviewPrompt(
         只修正排版、錯別字、OCR 或轉寫造成嘅明顯錯誤。
         唔好潤色、改寫、改動語氣或用詞，亦唔好根據上下文改劇情。
         如果原句本身已經係合理嘅粵語講法，請保持原文不變。
-        對每條字幕，只有喺需要修改時先提供修訂後嘅完整字幕。
-        若需要修改，請返回完整修訂後字幕，並給出說明修改內容嘅備註。
-        若唔需要修改，修訂後字幕同備註都返回空字符串。"""),
-    input_pfx="zimu_",
-    input_desc_tpl="第 {idx} 條粵文字幕",
-    output_pfx="xiugai_",
-    output_desc_tpl="第 {idx} 條修改後嘅粵文字幕",
-    note_pfx="beizhu_",
-    note_desc_tpl="關於第 {idx} 條粵文字幕修改嘅備註說明",
-    output_unmodified_err_tpl=(
-        "第 {idx} 條答案嘅修改文本同查詢文本相同。如果唔需要修改，應提供空字符串。"
-    ),
-    note_missing_err_tpl=(
-        "第 {idx} 條答案嘅文本已被修改，但未提供備註。如需修改，必須附帶備註說明。"
-    ),
-    output_missing_err_tpl=(
-        "第 {idx} 條答案嘅文本未修改，但提供咗備註。如果唔需要修改，應提供空字符串。"
+        只有喺字幕需要修改時先加入一項修改。每項修改必須包含字幕序號、
+        修訂後嘅完整文本，同埋說明修改內容嘅備註。
+        如果全部字幕都唔需要修改，請返回空嘅修改列表。"""),
+    subtitles="zimu",
+    subtitles_desc="按順序排列、需要校對嘅粵文字幕",
+    revisions="xiugai",
+    revisions_desc="需要修改嘅粵文字幕；唔需要修改嘅字幕唔好包括喺內",
+    index="xuhao",
+    index_desc="由 1 開始嘅字幕序號",
+    text="wenben",
+    subtitle_text_desc="需要校對嘅粵文字幕文本",
+    revision_text_desc="修改後嘅完整粵文字幕文本",
+    note="beizhu",
+    note_desc="關於粵文字幕修改嘅備註說明",
+    subtitle_indices_err="查詢字幕序號必須由 1 開始、連續並按順序排列。",
+    revision_indices_err="答案修改序號必須唯一並按升序排列。",
+    revision_index_missing_err_tpl="答案修改序號 {idx} 喺查詢字幕中不存在。",
+    revision_unmodified_err_tpl=(
+        "答案修改 {idx} 同查詢字幕 {idx} 相同；唔需要修改嘅字幕必須從修改列表省略。"
     ),
 )
 """LLM correspondence text for traditional written Cantonese review."""

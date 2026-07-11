@@ -110,7 +110,7 @@ class Queryer:
 
         # Query provider
         query_prompt = json.dumps(
-            test_case.query.model_dump(), indent=4, ensure_ascii=False
+            test_case.query.model_dump(by_alias=True), indent=4, ensure_ascii=False
         )
         messages = [
             {"role": "system", "content": system_prompt},
@@ -213,11 +213,15 @@ class Queryer:
                 continue
             few_shot += f"\n\n{self.prompt.few_shot_query_intro}\n"
             few_shot += json.dumps(
-                test_case.query.model_dump(), indent=4, ensure_ascii=False
+                test_case.query.model_dump(by_alias=True),
+                indent=4,
+                ensure_ascii=False,
             )
             few_shot += f"\n{self.prompt.few_shot_answer_intro}\n"
             few_shot += json.dumps(
-                test_case.answer.model_dump(), indent=4, ensure_ascii=False
+                test_case.answer.model_dump(by_alias=True),
+                indent=4,
+                ensure_ascii=False,
             )
         return few_shot
 
@@ -266,7 +270,7 @@ class Queryer:
             cached test case if available, else None
         """
         query_prompt = json.dumps(
-            test_case.query.model_dump(), indent=4, ensure_ascii=False
+            test_case.query.model_dump(by_alias=True), indent=4, ensure_ascii=False
         )
         cache_path = self._get_cache_path(
             system_prompt,
@@ -304,7 +308,7 @@ class Queryer:
         Returns:
             system prompt for the given answer class
         """
-        schema = answer_cls.model_json_schema()
+        schema = answer_cls.model_json_schema(by_alias=True)
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
 
         system_prompt = self.prompt.base_system_prompt
