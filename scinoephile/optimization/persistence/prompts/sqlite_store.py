@@ -15,9 +15,9 @@ from sqlalchemy.engine import Connection, RowMapping
 from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.optimization.persistence.sqlite import (
-    _OptimizationSqliteStore,
-    load_json_object,
-    serialize_json_object,
+    OptimizationSqliteStore,
+    deserialize_json,
+    serialize_json,
 )
 
 from .id import get_prompt_id
@@ -28,7 +28,7 @@ __all__ = ["PromptSqliteStore"]
 logger = getLogger(__name__)
 
 
-class PromptSqliteStore(_OptimizationSqliteStore):
+class PromptSqliteStore(OptimizationSqliteStore):
     """SQLite persistence and lookup for prompts by alias."""
 
     _metadata = MetaData()
@@ -123,7 +123,7 @@ class PromptSqliteStore(_OptimizationSqliteStore):
                     prompt_id=prompt.prompt_id,
                     operation=prompt.operation,
                     language=prompt.language.tag,
-                    attributes_json=serialize_json_object(dict(prompt.attributes)),
+                    attributes_json=serialize_json(dict(prompt.attributes)),
                 )
                 connection.execute(
                     statement.on_conflict_do_update(
@@ -180,7 +180,7 @@ class PromptSqliteStore(_OptimizationSqliteStore):
             ScinoephileError: if persisted content is invalid
         """
         prompt_id = str(row["prompt_id"])
-        loaded_attributes = load_json_object(
+        loaded_attributes = deserialize_json(
             row["attributes_json"],
             "Persisted prompt attributes",
         )

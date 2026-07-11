@@ -100,14 +100,18 @@ def test_store_round_trips_normalized_json(tmp_path: Path):
     assert source_columns == {"source_path", "test_case_id"}
 
 
-def test_store_does_not_create_parent_dir_on_init(tmp_path: Path):
-    """Initializing a store should not create parent directories."""
+def test_store_defers_parent_dir_creation_until_schema_creation(tmp_path: Path):
+    """Initializing and reading should not create parent directories."""
     database_path = tmp_path / "missing/test_cases.sqlite"
     store = TestCaseSqliteStore(database_path)
 
     assert not database_path.parent.exists()
     assert store.get_test_case("missing") is None
     assert not database_path.parent.exists()
+
+    store.create_schema()
+
+    assert database_path.is_file()
 
 
 def test_store_keeps_sql_owned_metadata_when_source_is_removed(tmp_path: Path):

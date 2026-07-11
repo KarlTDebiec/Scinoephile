@@ -27,9 +27,9 @@ from sqlalchemy.engine import Connection, RowMapping
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.llms import Manager
 from scinoephile.optimization.persistence.sqlite import (
-    _OptimizationSqliteStore,
-    load_json_object,
-    serialize_json_object,
+    OptimizationSqliteStore,
+    deserialize_json,
+    serialize_json,
 )
 
 from .id import get_test_case_id
@@ -40,7 +40,7 @@ __all__ = ["TestCaseSqliteStore"]
 logger = getLogger(__name__)
 
 
-class TestCaseSqliteStore(_OptimizationSqliteStore):
+class TestCaseSqliteStore(OptimizationSqliteStore):
     """Normalized SQLite persistence and lookup for test cases."""
 
     __test__ = False
@@ -270,8 +270,8 @@ class TestCaseSqliteStore(_OptimizationSqliteStore):
             difficulty=int(row["difficulty"]),
             few_shot=bool(row["prompt"]),
             verified=bool(row["verified"]),
-            query=load_json_object(row["query_json"], "Persisted test case query"),
-            answer=load_json_object(row["answer_json"], "Persisted test case answer"),
+            query=deserialize_json(row["query_json"], "Persisted test case query"),
+            answer=deserialize_json(row["answer_json"], "Persisted test case answer"),
             source_paths=self._get_source_paths(connection, test_case_id),
         )
 
@@ -325,8 +325,8 @@ class TestCaseSqliteStore(_OptimizationSqliteStore):
                         difficulty=test_case.difficulty,
                         prompt=test_case.few_shot,
                         verified=test_case.verified,
-                        query_json=serialize_json_object(test_case.query),
-                        answer_json=serialize_json_object(test_case.answer),
+                        query_json=serialize_json(test_case.query),
+                        answer_json=serialize_json(test_case.answer),
                     )
                     .on_conflict_do_nothing(
                         index_elements=[self._test_cases.c.test_case_id]
