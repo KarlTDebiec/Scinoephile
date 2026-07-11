@@ -4,6 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * prompt
+* models
 * manager
 * processor
 """
@@ -11,11 +12,19 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import PairwiseReviewManager
+from .models import (
+    PairwiseReviewAnswer,
+    PairwiseReviewQuery,
+    PairwiseReviewTestCase,
+)
 from .processor import PairwiseReviewProcessor
 from .prompt import PairwiseReviewPrompt
 
 __all__ = [
+    "PairwiseReviewAnswer",
     "PairwiseReviewManager",
     "PairwiseReviewProcessor",
     "PairwiseReviewPrompt",
+    "PairwiseReviewQuery",
+    "PairwiseReviewTestCase",
 ]

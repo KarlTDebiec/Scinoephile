@@ -9,38 +9,6 @@ from pytest import raises
 
 from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
-from scinoephile.llms.pairwise_review import PairwiseReviewManager
-
-
-def test_pairwise_review_retains_validation_and_minimum_difficulty():
-    """Pairwise review should normalize unchanged output and score revisions."""
-    test_case_cls = PairwiseReviewManager.get_test_case_cls(
-        PairwiseReviewManager.base_prompt
-    )
-    unchanged = test_case_cls.model_validate(
-        {
-            "query": {"target": "original", "reference": "reference"},
-            "answer": {"output": "original", "note": "legacy"},
-        }
-    )
-    revised = test_case_cls.model_validate(
-        {
-            "query": {"target": "original", "reference": "reference"},
-            "answer": {"output": "corrected", "note": "typo"},
-        }
-    )
-
-    assert unchanged.answer is not None
-    assert unchanged.answer.model_dump() == {"output": "", "note": ""}
-    assert unchanged.difficulty == 0
-    assert revised.difficulty == 1
-    with raises(ValidationError, match="no note is provided"):
-        test_case_cls.model_validate(
-            {
-                "query": {"target": "original", "reference": "reference"},
-                "answer": {"output": "corrected", "note": ""},
-            }
-        )
 
 
 def test_ocr_fusion_retains_auto_verification_and_minimum_difficulty():

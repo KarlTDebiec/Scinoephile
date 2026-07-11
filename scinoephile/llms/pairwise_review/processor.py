@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import cast
 
 import numpy as np
 
@@ -16,6 +17,7 @@ from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.core.text import replace_control_characters
 
 from .manager import PairwiseReviewManager
+from .models import PairwiseReviewAnswer
 from .prompt import PairwiseReviewPrompt
 
 __all__ = ["PairwiseReviewProcessor"]
@@ -81,15 +83,16 @@ class PairwiseReviewProcessor(Processor):
                 reference_text = reference_subtitle.text_with_newline.strip()
                 output_text = ""
                 if target_text != reference_text:
-                    query = query_cls(
-                        **{
-                            self.prompt.target: target_text,
-                            self.prompt.reference: reference_text,
+                    query = query_cls.model_validate(
+                        {
+                            "target": target_text,
+                            "reference": reference_text,
                         }
                     )
                     test_case = test_case_cls(query=query)
                     test_case = self.queryer(test_case)
-                    output_text = getattr(test_case.answer, self.prompt.output)
+                    answer = cast(PairwiseReviewAnswer, test_case.answer)
+                    output_text = answer.output
 
                 if output_text == "�":
                     continue
