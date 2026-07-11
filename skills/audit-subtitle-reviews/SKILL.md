@@ -115,6 +115,8 @@ Inspect every displayed row for incorrect edits, missed parallel corrections,
 script leakage, lexical errors, OCR errors, punctuation, and whitespace. Treat
 JSON notes as context rather than proof that an edit is correct.
 
-For a large report, write it under `local/` with `--outfile`, inspect the whole
-file, and return a link plus counts and actionable findings. Return raw Markdown
-inline when the user explicitly requests the complete report.
+Always show the complete raw Markdown report inline in the final response. Do
+not replace it with a summary, findings, or a file link, and do not wrap it in a
+code fence. Counts, actionable findings, and a link may accompany the report.
+For a large report, also write it under `local/` with `--outfile` to inspect the
+whole file before pasting its complete contents into the response.
