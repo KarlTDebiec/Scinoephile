@@ -144,7 +144,7 @@ def _normalize_test_case(
     Raises:
         ScinoephileError: if the payload contains fields outside the prompt schema
     """
-    test_case_cls = manager_cls.get_test_case_cls_from_data(data)
+    test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
     test_case = test_case_cls.model_validate(data, strict=True, extra="forbid")
     return PersistedTestCase.from_test_case(
         test_case,

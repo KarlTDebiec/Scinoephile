@@ -36,6 +36,8 @@ class GuidedReviewManager(Manager):
     """Stable operation identifier used in persistence and CLIs."""
     base_prompt: ClassVar[GuidedReviewPrompt] = GuidedReviewPrompt()
     """Base prompt defining persisted test-case field names."""
+    test_case_base_cls: ClassVar[type[TestCase]] = GuidedReviewTestCase
+    """Static test-case model defining guided review's semantic shape."""
 
     @classmethod
     @cache
@@ -231,34 +233,6 @@ class GuidedReviewManager(Manager):
             __module__=GuidedReviewQuery.__module__,
             **fields,
         )
-
-    @classmethod
-    @cache
-    def get_test_case_cls(cls, prompt: GuidedReviewPrompt) -> type[TestCase]:
-        """Get concrete test-case class for a prompt-independent list shape.
-
-        Arguments:
-            prompt: text and field aliases for LLM correspondence
-        Returns:
-            test-case model class
-        """
-        query_cls = cls.get_query_cls(prompt)
-        answer_cls = cls.get_answer_cls(prompt)
-        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt)
-        validators = cls.get_test_case_validators()
-        model = create_model(
-            get_model_name("GuidedReviewTestCase", prompt.name),
-            __base__=GuidedReviewTestCase,
-            __module__=GuidedReviewTestCase.__module__,
-            __validators__=validators,
-            **fields,
-        )
-        model.query_cls = cast(type[GuidedReviewQuery], query_cls)
-        model.answer_cls = cast(type[GuidedReviewAnswer], answer_cls)
-        model.prompt = prompt
-        setattr(model, "get_auto_verified", cls.get_auto_verified)
-        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
-        return model
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:

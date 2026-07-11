@@ -106,17 +106,6 @@ class DelineationManager(Manager):
         model.prompt = prompt
         return model
 
-    @classmethod
-    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
-        """Get concrete test case class for canonical serialized data.
-
-        Arguments:
-            data: data from JSON
-        Returns:
-            test case model class
-        """
-        return cls.get_test_case_cls(cls.base_prompt)
-
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:
         """Get minimum difficulty based on the test case properties.

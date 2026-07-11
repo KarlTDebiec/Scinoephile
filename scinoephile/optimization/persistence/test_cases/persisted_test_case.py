@@ -54,8 +54,7 @@ class PersistedTestCase:
         """
         if test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")
-        base_test_case_cls = manager_cls.get_test_case_cls_with_prompt(
-            type(test_case),
+        base_test_case_cls = manager_cls.get_test_case_cls(
             manager_cls.base_prompt,
         )
         base_test_case = remap_test_case(test_case, base_test_case_cls)

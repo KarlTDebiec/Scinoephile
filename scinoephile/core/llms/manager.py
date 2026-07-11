@@ -26,6 +26,8 @@ class Manager(ABC):
     """Stable operation identifier used in persistence and CLIs."""
     base_prompt: ClassVar[Prompt]
     """Base prompt defining persisted test-case field names."""
+    test_case_base_cls: ClassVar[type[TestCase]] = TestCase
+    """Static test-case model defining the operation's semantic shape."""
 
     @classmethod
     def get_query_cls(cls, prompt: Prompt) -> type[Query]:
@@ -65,9 +67,9 @@ class Manager(ABC):
         validators = cls.get_test_case_validators()
 
         model = create_model(
-            get_model_name(TestCase.__name__, prompt.name),
-            __base__=TestCase,
-            __module__=TestCase.__module__,
+            get_model_name(cls.test_case_base_cls.__name__, prompt.name),
+            __base__=cls.test_case_base_cls,
+            __module__=cls.test_case_base_cls.__module__,
             __validators__=validators,
             **fields,
         )
@@ -77,33 +79,6 @@ class Manager(ABC):
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model
-
-    @classmethod
-    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
-        """Get concrete test case class for canonical serialized data.
-
-        Arguments:
-            data: data from JSON
-        Returns:
-            test case class
-        """
-        return cls.get_test_case_cls(cls.base_prompt)
-
-    @classmethod
-    def get_test_case_cls_with_prompt(
-        cls,
-        test_case_cls: type[TestCase],
-        prompt: Prompt,
-    ) -> type[TestCase]:
-        """Get an equivalently shaped test-case class for another prompt.
-
-        Arguments:
-            test_case_cls: test-case class whose shape should be preserved
-            prompt: prompt whose correspondence fields should be used
-        Returns:
-            equivalently shaped test-case class
-        """
-        return cls.get_test_case_cls(prompt=prompt)
 
     @classmethod
     def get_test_case_fields(
