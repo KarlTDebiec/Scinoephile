@@ -96,19 +96,22 @@ EngYueGuidedTranslationPrompt = GuidedTranslationPrompt(
         meaning while preserving established names and terms from the English
         reference.
 
-        Output only the generated English subtitle text in each answer field. Do not
-        include notes, explanations, labels, alternate translations, bracketed
-        commentary, or any text outside the subtitle itself. Preserve subtitle markup
-        only when it is appropriate for the generated English subtitle.
+        Output only the generated English subtitle text in each output item's text
+        field. Do not include notes, explanations, labels, alternate translations,
+        bracketed commentary, or any text outside the subtitle itself. Preserve
+        subtitle markup only when it is appropriate for the generated English
+        subtitle.
         """),
-    src_1_pfx="yuewen_",
-    src_1_desc_tpl="Written Cantonese subtitle {idx} to translate",
-    src_2_pfx="eng_reference_",
-    src_2_desc_tpl="Original English reference subtitle {idx} from the same block",
-    output_pfx="eng_",
-    output_desc_tpl=(
-        "Generated English subtitle {idx} corresponding to written Cantonese "
-        "subtitle {idx}"
+    subtitles="yuewen",
+    subtitles_desc="Written Cantonese subtitles to translate, in order",
+    guides="eng_reference",
+    guides_desc="Original English reference subtitles from the same block, in order",
+    outputs="eng",
+    outputs_desc="Generated English subtitles corresponding to the input subtitles",
+    subtitle_text_desc="Written Cantonese subtitle to translate",
+    guide_text_desc="Original English reference subtitle from the same block",
+    output_text_desc=(
+        "Generated English subtitle corresponding to a written Cantonese subtitle"
     ),
 )
 """Text for guided translation of English from written Cantonese."""

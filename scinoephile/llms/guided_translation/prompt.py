@@ -16,24 +16,64 @@ class GuidedTranslationPrompt(Prompt):
     """Text for guided translation blocks."""
 
     # Query fields
-    src_1_pfx: str = "source_one_"
-    """Prefix for source one fields in query."""
+    subtitles: str = "subtitles"
+    """Name of subtitles field in query."""
 
-    src_1_desc_tpl: str = "Subtitle {idx} text from source one"
-    """Description template for source one fields in query."""
+    subtitles_desc: str = "Source-language subtitles to translate, in order."
+    """Description of subtitles field in query."""
 
-    src_2_pfx: str = "source_two_"
-    """Prefix for source two fields in query."""
+    guides: str = "guides"
+    """Name of guides field in query."""
 
-    src_2_desc_tpl: str = "Subtitle {idx} text from source two"
-    """Description template for source two fields in query."""
+    guides_desc: str = "Target-language guide subtitles from the same block."
+    """Description of guides field in query."""
 
     # Answer fields
-    output_pfx: str = "output_"
-    """Prefix for output fields in answer."""
+    outputs: str = "outputs"
+    """Name of outputs field in answer."""
 
-    output_desc_tpl: str = "Subtitle {idx} generated for source one subtitle {idx}"
-    """Description template for output fields in answer."""
+    outputs_desc: str = "Translated outputs corresponding to query subtitles."
+    """Description of outputs field in answer."""
+
+    # Subtitle fields
+    index: str = "index"
+    """Name of index field in subtitle, guide, and output items."""
+
+    index_desc: str = "One-based subtitle index."
+    """Description of index field in subtitle, guide, and output items."""
+
+    text: str = "text"
+    """Name of text field in subtitle, guide, and output items."""
+
+    subtitle_text_desc: str = "Source-language subtitle text to translate."
+    """Description of text field in subtitle items."""
+
+    guide_text_desc: str = "Target-language guide subtitle text."
+    """Description of text field in guide items."""
+
+    output_text_desc: str = "Translated subtitle text."
+    """Description of text field in output items."""
+
+    # Validation errors
+    guide_indices_err: str = (
+        "Query guide indexes must be consecutive, ordered, and begin at 1."
+    )
+    """Error when query guide indexes are invalid."""
+
+    subtitle_indices_err: str = (
+        "Query subtitle indexes must be consecutive, ordered, and begin at 1."
+    )
+    """Error when query subtitle indexes are invalid."""
+
+    output_indices_err: str = (
+        "Answer output indexes must be consecutive, ordered, and begin at 1."
+    )
+    """Error when answer output indexes are invalid."""
+
+    output_correspondence_err: str = (
+        "Answer output indexes must correspond exactly to query subtitle indexes."
+    )
+    """Error when answer outputs do not correspond to query subtitles."""
 
     # Dictionary tool
     dictionary_tool_name: str = ""
@@ -42,27 +82,3 @@ class GuidedTranslationPrompt(Prompt):
     """Description of dictionary lookup tool."""
     dictionary_tool_query_description: str = ""
     """Description of dictionary lookup query."""
-
-    def output(self, idx: int) -> str:
-        """Name of output field in answer."""
-        return f"{self.output_pfx}{idx}"
-
-    def output_desc(self, idx: int) -> str:
-        """Description of output subtitle field in answer."""
-        return self.output_desc_tpl.format(idx=idx)
-
-    def src_1(self, idx: int) -> str:
-        """Name of source one field in query."""
-        return f"{self.src_1_pfx}{idx}"
-
-    def src_1_desc(self, idx: int) -> str:
-        """Description of source one field in query."""
-        return self.src_1_desc_tpl.format(idx=idx)
-
-    def src_2(self, idx: int) -> str:
-        """Name of source two field in query."""
-        return f"{self.src_2_pfx}{idx}"
-
-    def src_2_desc(self, idx: int) -> str:
-        """Description of source two field in query."""
-        return self.src_2_desc_tpl.format(idx=idx)

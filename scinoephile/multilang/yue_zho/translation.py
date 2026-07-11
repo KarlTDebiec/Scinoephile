@@ -108,15 +108,25 @@ YueZhoGuidedTranslationPromptYueHant = GuidedTranslationPrompt(
         如果中文字幕同既有粵文字幕有分別，要優先按中文字幕意思翻譯，同時保留
         已經建立好嘅名詞同稱呼。
 
-        輸出內容只可以係生成嘅粵文字幕正文。絕對唔好附加英文、備註、解釋、標籤、
-        替代譯文、方括號內容、括號內容，或者任何字幕以外嘅説明。
+        每個輸出項目嘅文本欄只可以係生成嘅粵文字幕正文。絕對唔好附加英文、備註、
+        解釋、標籤、替代譯文、方括號內容、括號內容，或者任何字幕以外嘅説明。
         """),
-    src_1_pfx="zhongwen_",
-    src_1_desc_tpl="要翻譯成粵文嘅中文字幕 {idx}",
-    src_2_pfx="yuewen_reference_",
-    src_2_desc_tpl="同一段場景嘅既有粵文參考字幕 {idx}",
-    output_pfx="yuewen_",
-    output_desc_tpl="字幕 {idx} 對應嘅粵文譯文",
+    subtitles="zhongwen",
+    subtitles_desc="按順序排列、要翻譯成粵文嘅中文字幕",
+    guides="yuewen_reference",
+    guides_desc="同一段場景嘅既有粵文參考字幕",
+    outputs="yuewen",
+    outputs_desc="同查詢中文字幕逐一對應嘅粵文譯文",
+    index="xuhao",
+    index_desc="由 1 開始嘅字幕序號",
+    text="wenben",
+    subtitle_text_desc="要翻譯成粵文嘅中文字幕文本",
+    guide_text_desc="同一段場景嘅既有粵文參考字幕文本",
+    output_text_desc="同查詢中文字幕對應嘅粵文譯文文本",
+    guide_indices_err="查詢參考字幕序號必須由 1 開始、連續並按順序排列。",
+    subtitle_indices_err="查詢字幕序號必須由 1 開始、連續並按順序排列。",
+    output_indices_err="答案輸出序號必須由 1 開始、連續並按順序排列。",
+    output_correspondence_err="答案輸出序號必須同查詢字幕序號完全對應。",
 )
 """Text for traditional guided written Cantonese translation from Chinese."""
 
