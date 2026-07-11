@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import ClassVar
 
 from scinoephile.core import Language
 from scinoephile.core.llms.utils import (
@@ -13,6 +14,15 @@ from scinoephile.core.llms.utils import (
     save_test_cases_to_json,
 )
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
+
+_BASE_REVIEW_PROMPT = ReviewPrompt(
+    subtitles="base_subtitles",
+    revisions="base_revisions",
+    index="base_index",
+    text="base_text",
+    note="base_note",
+)
+"""Review prompt whose aliases intentionally differ from semantic field names."""
 
 _LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
     language=Language.zho_hans,
@@ -25,9 +35,20 @@ _LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
 """Review prompt using localized correspondence field names."""
 
 
+class _AliasedBaseReviewManager(ReviewManager):
+    """Review manager with distinct semantic, base, and localized field names."""
+
+    operation: ClassVar[str] = "aliased-base-review"
+    """Stable operation identifier used in persistence."""
+    base_prompt: ClassVar[ReviewPrompt] = _BASE_REVIEW_PROMPT
+    """Prompt defining intentionally distinct persisted field names."""
+
+
 def test_json_uses_base_prompt_fields(tmp_path: Path):
     """JSON should persist base fields and load them into a concrete prompt."""
-    test_case_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
+    test_case_cls = _AliasedBaseReviewManager.get_test_case_cls(
+        _LOCALIZED_REVIEW_PROMPT
+    )
     test_case = test_case_cls.model_validate(
         {
             "query": {"zimu": [{"xuhao": 1, "wenben": "original"}]},
@@ -45,13 +66,19 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
     )
     output_path = tmp_path / "test_cases.json"
 
-    save_test_cases_to_json(output_path, [test_case], ReviewManager)
+    save_test_cases_to_json(output_path, [test_case], _AliasedBaseReviewManager)
 
     assert json.loads(output_path.read_text(encoding="utf-8")) == [
         {
-            "query": {"subtitles": [{"index": 1, "text": "original"}]},
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
             "answer": {
-                "revisions": [{"index": 1, "text": "corrected", "note": "typo"}]
+                "base_revisions": [
+                    {
+                        "base_index": 1,
+                        "base_text": "corrected",
+                        "base_note": "typo",
+                    }
+                ]
             },
             "difficulty": 1,
             "verified": True,
@@ -59,7 +86,7 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
     ]
     loaded = load_test_cases_from_json(
         output_path,
-        ReviewManager,
+        _AliasedBaseReviewManager,
         _LOCALIZED_REVIEW_PROMPT,
     )
     assert loaded[0].query.model_dump(by_alias=True) == {
