@@ -109,19 +109,21 @@ def _is_credential_name(name: str) -> bool:
     Returns:
         whether the name denotes credential material
     """
-    normalized_name = name.casefold().replace("-", "_")
-    if normalized_name in {"api_key", "authorization"}:
+    compact_name = "".join(
+        character for character in name.casefold() if character.isalnum()
+    )
+    if compact_name == "authorization":
         return True
-    if normalized_name.endswith("_api_key"):
-        return True
-    final_part = normalized_name.rsplit("_", maxsplit=1)[-1]
-    return final_part in {
-        "credential",
-        "credentials",
-        "password",
-        "secret",
-        "token",
-    }
+    return compact_name.endswith(
+        (
+            "apikey",
+            "credential",
+            "credentials",
+            "password",
+            "secret",
+            "token",
+        )
+    )
 
 
 def _validate_base_url(base_url: str | None):
