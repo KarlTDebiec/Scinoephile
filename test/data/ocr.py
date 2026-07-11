@@ -11,12 +11,11 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
-from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.yue.romanization import get_yue_romanized
-from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.workflows.flattening import flatten_series
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
 from scinoephile.workflows.review import review_series
 
@@ -142,10 +141,7 @@ def _flatten(
         return Series.load(path)
 
     # Run and save
-    if language is Language.eng:
-        flatten = get_eng_flattened(series)
-    else:
-        flatten = get_zho_flattened(series)
+    flatten = flatten_series(series, language=language)
     flatten.save(path, exist_ok=True)
     return flatten
 
