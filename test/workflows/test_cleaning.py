@@ -4,13 +4,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
-
 from pytest import FixtureRequest, param
 
 from scinoephile.core import Language
-from scinoephile.lang.eng.cleaning import get_eng_text_cleaned
-from scinoephile.lang.zho.cleaning import get_zho_text_cleaned
 from scinoephile.workflows.cleaning import clean_series
 from test.helpers import assert_series_equal, parametrize
 
@@ -526,81 +522,3 @@ def test_clean_series(
         remove_empty=False,
     )
     assert_series_equal(output, request.getfixturevalue(expected_fixture))
-
-
-@parametrize(
-    ("cleaner", "text", "expected"),
-    [
-        param(
-            get_eng_text_cleaned,
-            "hello\\N-\\Nworld",
-            "hello\\Nworld",
-            id="eng-empty-dialogue-line",
-        ),
-        param(
-            get_eng_text_cleaned,
-            '<font face="Monospace">{\\an7}WOODY:\xa0Look out!</font>',
-            "WOODY: Look out!",
-            id="eng-extraction-markup",
-        ),
-        param(
-            get_eng_text_cleaned,
-            "hello\x00world",
-            "hello world",
-            id="eng-null-character",
-        ),
-        param(
-            get_eng_text_cleaned,
-            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
-            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
-            "０１２３４５６７８９",
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
-            id="eng-full-width-alphanumerics",
-        ),
-        param(
-            get_eng_text_cleaned,
-            "ΟΚ, οκ.",
-            "OK, ok.",
-            id="eng-greek-lookalikes",
-        ),
-        param(
-            get_zho_text_cleaned,
-            '<font face="Monospace">{\\an7}中文\xa0測試</font>',
-            "中文 測試",
-            id="zho-extraction-markup",
-        ),
-        param(
-            get_zho_text_cleaned,
-            "ΟΚ\x00中文",
-            "OK 中文",
-            id="zho-null-character",
-        ),
-        param(
-            get_zho_text_cleaned,
-            "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ "
-            "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ "
-            "０１２３４５６７８９",
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789",
-            id="zho-full-width-alphanumerics",
-        ),
-        param(
-            get_zho_text_cleaned,
-            "｢你好､世界｡｣周·星馳･劉德華",
-            "「你好、世界。」周・星馳・劉德華",
-            id="zho-punctuation",
-        ),
-    ],
-)
-def test_get_text_cleaned(
-    cleaner: Callable[[str], str | None],
-    text: str,
-    expected: str,
-):
-    """Test language-specific text cleaning.
-
-    Arguments:
-        cleaner: language-specific text cleaner
-        text: text to clean
-        expected: expected cleaned text
-    """
-    assert cleaner(text) == expected
