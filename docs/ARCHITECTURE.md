@@ -42,8 +42,8 @@ intended to keep dependencies flowing toward earlier layers:
     utilities.
 - **`media`**: media-file probing, subtitle extraction helpers, subtitle cache
   analysis, and visual offset estimation.
-- **`optimization`**: prompt optimization operations and persisted test-case
-  synchronization built on `core` and `llms`.
+- **`optimization`**: prompt optimization operations and prompt and test-case
+  persistence built on `core` and `llms`.
 - **`lang`**: language-specific subtitle operations (English, standard Chinese,
   written Cantonese, etc.).
 - **`audio`, `dictionaries`, and `web`**: audio representation and transcription
@@ -78,6 +78,12 @@ keeping their language and operation-specific fields explicit.
 Only generated Pydantic query, answer, and test-case models are represented by
 runtime classes. Managers cache those model classes using the immutable prompt
 value, whose stable content-addressed name is used in generated model names.
+
+Optimization persistence stores each prompt alias with its content-addressed
+identifier, language, and complete set of string fields. Prompt and test-case
+SQLite stores own and create their tables independently; both table groups may
+coexist in one SQLite file without a global schema version or migration
+contract.
 
 ## Command Line Interface
 
@@ -134,6 +140,7 @@ surface (commands and subcommands) is:
       - `prune`: remove stale cached files
       - `stats`: inspect cache size and entry counts
     - `optimization`
+      - `sync-prompts`: synchronize registered prompts
       - `sync-test-cases`: synchronize persisted prompt-optimization test cases
   - `translate`: translate subtitles between supported languages
   - `yue`
