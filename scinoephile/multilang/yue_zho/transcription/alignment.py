@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pprint import pformat
+from typing import cast
 
 import numpy as np
 
@@ -20,13 +21,14 @@ from scinoephile.core.synchronization import (
     get_sync_overlap_matrix,
 )
 from scinoephile.llms.delineation import DelineationManager
+from scinoephile.llms.punctuation import PunctuationPrompt
 
 from .delineation import (
     YueDelineationVsZhoPromptYueHans,
 )
 from .punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
     YueZhoPunctuationManager,
+    YueZhoPunctuationTestCase,
 )
 
 __all__ = ["Alignment"]
@@ -216,11 +218,16 @@ class Alignment:
         test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
         return test_case
 
-    def get_punctuation_test_case(self, sg_idx: int) -> TestCase | None:
+    def get_punctuation_test_case(
+        self,
+        sg_idx: int,
+        prompt: PunctuationPrompt,
+    ) -> YueZhoPunctuationTestCase | None:
         """Get punctuation query for a sync group.
 
         Arguments:
-            sg_idx: Index of sync group
+            sg_idx: index of sync group
+            prompt: text and field aliases for LLM correspondence
         Returns:
             test case, or None if there are no written Cantonese subs to punctuate
         """
@@ -249,12 +256,12 @@ class Alignment:
         yws = [self.yuewen[i].text for i in yw_idxs]
 
         # Return punctuate query
-        prompt = YuePunctuationVsZhoPromptYueHans
         test_case_cls = YueZhoPunctuationManager.get_test_case_cls(prompt=prompt)
-        query_kwargs = {
-            prompt.src_2: zw,
-            prompt.src_1: yws,
-        }
-        # noinspection PyArgumentList
-        test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
-        return test_case
+        query = test_case_cls.query_cls.model_validate(
+            {
+                "subtitles": yws,
+                "guide": zw,
+            }
+        )
+        test_case = test_case_cls(query=query)
+        return cast(YueZhoPunctuationTestCase, test_case)

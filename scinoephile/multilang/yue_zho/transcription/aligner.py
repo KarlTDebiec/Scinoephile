@@ -7,6 +7,7 @@ from __future__ import annotations
 from copy import deepcopy
 from logging import getLogger
 from pathlib import Path
+from typing import cast
 
 from pydantic import ValidationError
 
@@ -280,6 +281,7 @@ class Aligner:
 
         nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
         nascent_sg = []
+        punctuation_prompt = cast(PunctuationPrompt, self.punctuation_queryer.prompt)
         for sg_idx in range(len(alignment.sync_groups)):
             # Get sync group
             sg = alignment.sync_groups[sg_idx]
@@ -307,7 +309,10 @@ class Aligner:
                 continue
 
             # Query for written Cantonese punctuation
-            test_case = alignment.get_punctuation_test_case(sg_idx)
+            test_case = alignment.get_punctuation_test_case(
+                sg_idx,
+                punctuation_prompt,
+            )
             if test_case is None:
                 logger.info(
                     f"Skipping sync group {sg_idx} with no written Cantonese subtitles"
@@ -324,8 +329,9 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            prompt: PunctuationPrompt = getattr(test_case, "prompt")
-            yuewen_punctuated = getattr(test_case.answer, prompt.output, None)
+            yuewen_punctuated = None
+            if test_case.answer is not None:
+                yuewen_punctuated = test_case.answer.output
             yw = get_sub_merged(yws, text=yuewen_punctuated)
             yw.start = zw.start
             yw.end = zw.end
