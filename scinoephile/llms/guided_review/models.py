@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar, Self
 
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import Field, model_validator
 
 from scinoephile.core.llms import (
     AnnotatedTestCaseSubtitle,
@@ -30,8 +30,6 @@ _BASE_PROMPT = GuidedReviewPrompt()
 
 class GuidedReviewQuery(Query):
     """Target and guide subtitles for guided review."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[GuidedReviewPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""
@@ -59,8 +57,6 @@ class GuidedReviewQuery(Query):
 
 class GuidedReviewAnswer(Answer):
     """Sparse revisions for guided-review targets that require changes."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[GuidedReviewPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""

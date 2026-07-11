@@ -35,6 +35,8 @@ class GapTranslationManager(Manager):
     """Stable operation identifier used in persistence and CLIs."""
     base_prompt: ClassVar[GapTranslationPrompt] = GapTranslationPrompt()
     """Base prompt defining persisted test-case field names."""
+    test_case_base_cls: ClassVar[type[TestCase]] = GapTranslationTestCase
+    """Static test-case model defining gap translation's semantic shape."""
 
     @classmethod
     @cache
@@ -220,34 +222,6 @@ class GapTranslationManager(Manager):
             __module__=GapTranslationQuery.__module__,
             **fields,
         )
-
-    @classmethod
-    @cache
-    def get_test_case_cls(cls, prompt: GapTranslationPrompt) -> type[TestCase]:
-        """Get test-case class for a prompt-independent list shape.
-
-        Arguments:
-            prompt: text and field aliases for LLM correspondence
-        Returns:
-            test-case model class
-        """
-        query_cls = cls.get_query_cls(prompt)
-        answer_cls = cls.get_answer_cls(prompt)
-        fields = cls.get_test_case_fields(query_cls, answer_cls, prompt)
-        validators = cls.get_test_case_validators()
-        model = create_model(
-            get_model_name("GapTranslationTestCase", prompt.name),
-            __base__=GapTranslationTestCase,
-            __module__=GapTranslationTestCase.__module__,
-            __validators__=validators,
-            **fields,
-        )
-        model.query_cls = cast(type[GapTranslationQuery], query_cls)
-        model.answer_cls = cast(type[GapTranslationAnswer], answer_cls)
-        model.prompt = prompt
-        setattr(model, "get_auto_verified", cls.get_auto_verified)
-        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
-        return model
 
     @staticmethod
     def validate_test_case(model: TestCase) -> TestCase:

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar, Self
 
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import Field, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase, TestCaseSubtitle
 
@@ -33,8 +33,6 @@ class TranslationOutput(TestCaseSubtitle):
 class TranslationQuery(Query):
     """Subtitles to translate."""
 
-    model_config = ConfigDict(validate_by_name=True)
-
     prompt: ClassVar[TranslationPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""
     subtitles: list[TestCaseSubtitle] = Field(min_length=1)
@@ -51,8 +49,6 @@ class TranslationQuery(Query):
 
 class TranslationAnswer(Answer):
     """Translated subtitles."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[TranslationPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""

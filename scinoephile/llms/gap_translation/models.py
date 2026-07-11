@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar, Self
 
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import Field, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase, TestCaseSubtitle
 
@@ -32,8 +32,6 @@ class GapTranslationSubtitle(TestCaseSubtitle):
 
 class GapTranslationQuery(Query):
     """Sparse targets and complete guides for gap translation."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[GapTranslationPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""
@@ -67,8 +65,6 @@ class GapTranslationQuery(Query):
 
 class GapTranslationAnswer(Answer):
     """Translations for every missing target index."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[GapTranslationPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""

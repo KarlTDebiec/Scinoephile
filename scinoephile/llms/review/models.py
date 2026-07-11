@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar, Self
 
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import Field, model_validator
 
 from scinoephile.core.llms import (
     AnnotatedTestCaseSubtitle,
@@ -31,8 +31,6 @@ _BASE_PROMPT = ReviewPrompt()
 class ReviewQuery(Query):
     """Subtitles to review."""
 
-    model_config = ConfigDict(validate_by_name=True)
-
     prompt: ClassVar[ReviewPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""
     subtitles: list[TestCaseSubtitle] = Field(min_length=1)
@@ -49,8 +47,6 @@ class ReviewQuery(Query):
 
 class ReviewAnswer(Answer):
     """Sparse revisions for subtitles that require changes."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[ReviewPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""

@@ -9,7 +9,7 @@ from typing import Any, ClassVar
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Answer, Manager, Query, TestCase
+from scinoephile.core.llms import Answer, Manager, Query
 from scinoephile.core.llms.models import get_model_name
 
 from .prompt import PunctuationPrompt
@@ -98,17 +98,6 @@ class PunctuationManager(Manager):
         )
         model.prompt = prompt
         return model
-
-    @classmethod
-    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
-        """Get concrete test case class for canonical serialized data.
-
-        Arguments:
-            data: data from JSON
-        Returns:
-            test case model class
-        """
-        return cls.get_test_case_cls(cls.base_prompt)
 
     @staticmethod
     def validate_query(model: Query) -> Query:
