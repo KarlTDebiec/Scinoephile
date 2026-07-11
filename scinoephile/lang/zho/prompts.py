@@ -20,11 +20,6 @@ ZHO_HANT_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
         "你之前的回覆不是有效的 JSON，或未符合預期的模式要求。錯誤詳情："
     ),
     "answer_invalid_post": "請重新嘗試，並僅返回一個符合該模式要求的有效 JSON 對象。",
-    "difficulty_description": "Difficulty level of the test case, used for filtering.",
-    "few_shot_description": "Whether to include test case in few-shot examples.",
-    "verified_description": (
-        "Whether to include test case in the verified answers cache."
-    ),
     "test_case_invalid_pre": (
         "你之前的回覆是符合答案模式的有效 JSON，但不適用於當前的特定查詢。錯誤詳情："
     ),

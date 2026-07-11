@@ -33,12 +33,6 @@ class PromptLocalizationFields(TypedDict):
     """Text preceding answer validation errors."""
     answer_invalid_post: str
     """Text following answer validation errors."""
-    difficulty_description: str
-    """Description of 'difficulty' field."""
-    few_shot_description: str
-    """Description of 'few_shot' field."""
-    verified_description: str
-    """Description of 'verified' field."""
     test_case_invalid_pre: str
     """Text preceding test case validation errors."""
     test_case_invalid_post: str
@@ -69,18 +63,6 @@ class Prompt:
     """Text preceding answer validation errors."""
     answer_invalid_post: str = ""
     """Text following answer validation errors."""
-
-    # Test case field descriptions
-    difficulty_description: str = (
-        "Difficulty level of the test case, used for filtering."
-    )
-    """Description of 'difficulty' field."""
-    few_shot_description: str = "Whether to include test case in few-shot examples."
-    """Description of 'few_shot' field."""
-    verified_description: str = (
-        "Whether to include test case in the verified answers cache."
-    )
-    """Description of 'verified' field."""
 
     # Test case validation errors
     test_case_invalid_pre: str = ""

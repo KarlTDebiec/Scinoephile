@@ -134,3 +134,35 @@ def test_punctuation_factory_uses_static_fields_with_prompt_aliases():
         "source_two": "Hello",
     }
     assert test_case.answer.model_dump(by_alias=True) == {"result": "Hello"}
+
+
+def test_generated_test_case_inherits_stable_metadata_schema():
+    """Generated test cases should preserve metadata order and field schemas."""
+    test_case_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
+    schema = test_case_cls.model_json_schema(by_alias=True)
+
+    assert list(schema["properties"]) == [
+        "query",
+        "answer",
+        "difficulty",
+        "few_shot",
+        "verified",
+    ]
+    assert schema["properties"]["difficulty"] == {
+        "default": 0,
+        "description": "Difficulty level of the test case, used for filtering.",
+        "title": "Difficulty",
+        "type": "integer",
+    }
+    assert schema["properties"]["few_shot"] == {
+        "default": False,
+        "description": "Whether to include test case in few-shot examples.",
+        "title": "Few Shot",
+        "type": "boolean",
+    }
+    assert schema["properties"]["verified"] == {
+        "default": False,
+        "description": "Whether to include test case in the verified answers cache.",
+        "title": "Verified",
+        "type": "boolean",
+    }

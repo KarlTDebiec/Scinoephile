@@ -8,7 +8,7 @@ import json
 from abc import ABC
 from typing import ClassVar, Self
 
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, Field, model_validator
 
 from .answer import Answer
 from .prompt import Prompt
@@ -33,11 +33,20 @@ class TestCase(BaseModel, ABC):
     """Query data for the test case."""
     answer: Answer | None = None
     """Answer data for the test case."""
-    difficulty: int = 0
+    difficulty: int = Field(
+        0,
+        description="Difficulty level of the test case, used for filtering.",
+    )
     """Difficulty level for filtering and prioritization."""
-    few_shot: bool = False
+    few_shot: bool = Field(
+        False,
+        description="Whether to include test case in few-shot examples.",
+    )
     """Whether the test case is included as a few-shot example."""
-    verified: bool = False
+    verified: bool = Field(
+        False,
+        description="Whether to include test case in the verified answers cache.",
+    )
     """Whether the test case answer has been verified."""
 
     def __str__(self) -> str:
