@@ -30,15 +30,16 @@ EngZhoYueGuidedTranslationPrompt = replace(
             meaning while preserving established names and terms from the English
             reference.
 
-            Output only the generated English subtitle text in each answer field. Do
-            not include notes, explanations, labels, alternate translations, bracketed
-            commentary, or any text outside the subtitle itself. Preserve subtitle
-            markup only when it is appropriate for the generated English subtitle.
+            Output only the generated English subtitle text in each output item's text
+            field. Do not include notes, explanations, labels, alternate translations,
+            bracketed commentary, or any text outside the subtitle itself. Preserve
+            subtitle markup only when it is appropriate for the generated English
+            subtitle.
             """),
-    src_1_desc_tpl="Chinese subtitle {idx} of Cantonese/Yue source to translate",
-    output_desc_tpl=(
-        "Generated English subtitle {idx} corresponding to Chinese subtitle {idx} "
-        "of Cantonese/Yue source"
+    subtitle_text_desc="Chinese subtitle of Cantonese/Yue source to translate",
+    output_text_desc=(
+        "Generated English subtitle corresponding to a Chinese subtitle of "
+        "Cantonese/Yue source"
     ),
 )
 """Text for guided English translation from Chinese subtitles of Yue source."""

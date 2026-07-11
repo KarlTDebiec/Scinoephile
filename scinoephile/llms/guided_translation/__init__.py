@@ -4,6 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * prompt
+* models
 * manager
 * processor
 """
@@ -11,11 +12,21 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .manager import GuidedTranslationManager
+from .models import (
+    GuidedTranslationAnswer,
+    GuidedTranslationQuery,
+    GuidedTranslationSubtitle,
+    GuidedTranslationTestCase,
+)
 from .processor import GuidedTranslationProcessor
 from .prompt import GuidedTranslationPrompt
 
 __all__ = [
+    "GuidedTranslationAnswer",
     "GuidedTranslationManager",
     "GuidedTranslationProcessor",
     "GuidedTranslationPrompt",
+    "GuidedTranslationQuery",
+    "GuidedTranslationSubtitle",
+    "GuidedTranslationTestCase",
 ]

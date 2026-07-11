@@ -1,32 +1,35 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for guided translation LLM classes."""
+"""Factories for prompt-specific guided-translation LLM classes."""
 
 from __future__ import annotations
 
-import re
 from functools import cache
 from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import (
     Answer,
     Manager,
-    Prompt,
     Query,
     TestCase,
 )
 from scinoephile.core.llms.models import get_model_name
 
+from .models import (
+    GuidedTranslationAnswer,
+    GuidedTranslationQuery,
+    GuidedTranslationSubtitle,
+    GuidedTranslationTestCase,
+)
 from .prompt import GuidedTranslationPrompt
 
 __all__ = ["GuidedTranslationManager"]
 
 
 class GuidedTranslationManager(Manager):
-    """Factories for guided translation LLM classes."""
+    """Factories for prompt-specific guided-translation LLM classes."""
 
     operation: ClassVar[str] = "guided-translation"
     """Stable operation identifier used in persistence and CLIs."""
@@ -35,187 +38,216 @@ class GuidedTranslationManager(Manager):
 
     @classmethod
     @cache
-    def get_answer_cls(
-        cls,
-        source_one_size: int,
-        source_two_size: int,
-        prompt: GuidedTranslationPrompt,
-    ) -> type[Answer]:
-        """Get concrete answer class with provided configuration.
+    def get_answer_cls(cls, prompt: GuidedTranslationPrompt) -> type[Answer]:
+        """Get concrete answer class with prompt-specific JSON field aliases.
 
         Arguments:
-            source_one_size: number of subtitles in source one
-            source_two_size: number of subtitles in source two
-            prompt: text for LLM correspondence
+            prompt: text and field aliases for LLM correspondence
         Returns:
             answer model class
         """
-        cls._validate_sizes(source_one_size, source_two_size)
-
-        name = get_model_name(
-            "GuidedTranslationAnswer",
-            f"{source_one_size}_{source_two_size}_{prompt.name}",
-        )
-        fields: dict[str, Any] = {}
-        for idx in range(source_one_size):
-            key = prompt.output(idx + 1)
-            description = prompt.output_desc(idx + 1)
-            fields[key] = (str, Field(..., description=description))
-
+        output_cls = cls.get_output_cls(prompt)
+        fields: dict[str, Any] = {
+            "outputs": (
+                list[output_cls],  # ty: ignore[invalid-type-form]
+                Field(
+                    ...,
+                    alias=prompt.outputs,
+                    description=prompt.outputs_desc,
+                    min_length=1,
+                ),
+            ),
+        }
         model = create_model(
-            name,
-            __base__=Answer,
-            __module__=Answer.__module__,
+            get_model_name("GuidedTranslationAnswer", prompt.name),
+            __base__=GuidedTranslationAnswer,
+            __module__=GuidedTranslationAnswer.__module__,
             **fields,
         )
         model.prompt = prompt
-        setattr(model, "source_one_size", source_one_size)
-        setattr(model, "source_two_size", source_two_size)
         return model
 
     @classmethod
     @cache
-    def get_query_cls(
+    def get_guide_cls(
         cls,
-        source_one_size: int,
-        source_two_size: int,
         prompt: GuidedTranslationPrompt,
-    ) -> type[Query]:
-        """Get concrete query class with provided configuration.
+    ) -> type[GuidedTranslationSubtitle]:
+        """Get guide-item class with prompt-specific JSON field aliases.
 
         Arguments:
-            source_one_size: number of subtitles in source one
-            source_two_size: number of subtitles in source two
-            prompt: text for LLM correspondence
+            prompt: text and field aliases for LLM correspondence
+        Returns:
+            guide-item model class
+        """
+        fields: dict[str, Any] = {
+            "index": (
+                int,
+                Field(
+                    ...,
+                    alias=prompt.index,
+                    description=prompt.index_desc,
+                    ge=1,
+                ),
+            ),
+            "text": (
+                str,
+                Field(
+                    ...,
+                    alias=prompt.text,
+                    description=prompt.guide_text_desc,
+                ),
+            ),
+        }
+        return create_model(
+            get_model_name("GuidedTranslationGuide", prompt.name),
+            __base__=GuidedTranslationSubtitle,
+            __module__=GuidedTranslationQuery.__module__,
+            **fields,
+        )
+
+    @classmethod
+    @cache
+    def get_output_cls(
+        cls,
+        prompt: GuidedTranslationPrompt,
+    ) -> type[GuidedTranslationSubtitle]:
+        """Get output-item class with prompt-specific JSON field aliases.
+
+        Arguments:
+            prompt: text and field aliases for LLM correspondence
+        Returns:
+            output-item model class
+        """
+        fields: dict[str, Any] = {
+            "index": (
+                int,
+                Field(
+                    ...,
+                    alias=prompt.index,
+                    description=prompt.index_desc,
+                    ge=1,
+                ),
+            ),
+            "text": (
+                str,
+                Field(
+                    ...,
+                    alias=prompt.text,
+                    description=prompt.output_text_desc,
+                ),
+            ),
+        }
+        return create_model(
+            get_model_name("GuidedTranslationOutput", prompt.name),
+            __base__=GuidedTranslationSubtitle,
+            __module__=GuidedTranslationAnswer.__module__,
+            **fields,
+        )
+
+    @classmethod
+    @cache
+    def get_query_cls(cls, prompt: GuidedTranslationPrompt) -> type[Query]:
+        """Get concrete query class with prompt-specific JSON field aliases.
+
+        Arguments:
+            prompt: text and field aliases for LLM correspondence
         Returns:
             query model class
         """
-        cls._validate_sizes(source_one_size, source_two_size)
-
-        name = get_model_name(
-            "GuidedTranslationQuery",
-            f"{source_one_size}_{source_two_size}_{prompt.name}",
-        )
-        fields: dict[str, Any] = {}
-        for idx in range(source_one_size):
-            key = prompt.src_1(idx + 1)
-            description = prompt.src_1_desc(idx + 1)
-            fields[key] = (str, Field(..., description=description))
-        for idx in range(source_two_size):
-            key = prompt.src_2(idx + 1)
-            description = prompt.src_2_desc(idx + 1)
-            fields[key] = (str, Field(..., description=description))
-
+        subtitle_cls = cls.get_subtitle_cls(prompt)
+        guide_cls = cls.get_guide_cls(prompt)
+        fields: dict[str, Any] = {
+            "subtitles": (
+                list[subtitle_cls],  # ty: ignore[invalid-type-form]
+                Field(
+                    ...,
+                    alias=prompt.subtitles,
+                    description=prompt.subtitles_desc,
+                    min_length=1,
+                ),
+            ),
+            "guides": (
+                list[guide_cls],  # ty: ignore[invalid-type-form]
+                Field(
+                    ...,
+                    alias=prompt.guides,
+                    description=prompt.guides_desc,
+                ),
+            ),
+        }
         model = create_model(
-            name,
-            __base__=Query,
-            __module__=Query.__module__,
+            get_model_name("GuidedTranslationQuery", prompt.name),
+            __base__=GuidedTranslationQuery,
+            __module__=GuidedTranslationQuery.__module__,
             **fields,
         )
         model.prompt = prompt
-        setattr(model, "source_one_size", source_one_size)
-        setattr(model, "source_two_size", source_two_size)
         return model
 
     @classmethod
     @cache
-    def get_test_case_cls(
+    def get_subtitle_cls(
         cls,
-        source_one_size: int,
-        source_two_size: int,
         prompt: GuidedTranslationPrompt,
-    ) -> type[TestCase]:
-        """Get concrete test case class with provided configuration.
+    ) -> type[GuidedTranslationSubtitle]:
+        """Get subtitle-item class with prompt-specific JSON field aliases.
 
         Arguments:
-            source_one_size: number of subtitles in source one
-            source_two_size: number of subtitles in source two
-            prompt: text for LLM correspondence
+            prompt: text and field aliases for LLM correspondence
         Returns:
-            test case model class
+            subtitle-item model class
         """
-        cls._validate_sizes(source_one_size, source_two_size)
-
-        name = get_model_name(
-            "GuidedTranslationTestCase",
-            f"{source_one_size}_{source_two_size}_{prompt.name}",
+        fields: dict[str, Any] = {
+            "index": (
+                int,
+                Field(
+                    ...,
+                    alias=prompt.index,
+                    description=prompt.index_desc,
+                    ge=1,
+                ),
+            ),
+            "text": (
+                str,
+                Field(
+                    ...,
+                    alias=prompt.text,
+                    description=prompt.subtitle_text_desc,
+                ),
+            ),
+        }
+        return create_model(
+            get_model_name("GuidedTranslationSubtitle", prompt.name),
+            __base__=GuidedTranslationSubtitle,
+            __module__=GuidedTranslationQuery.__module__,
+            **fields,
         )
-        query_cls = cls.get_query_cls(source_one_size, source_two_size, prompt)
-        answer_cls = cls.get_answer_cls(source_one_size, source_two_size, prompt)
+
+    @classmethod
+    @cache
+    def get_test_case_cls(cls, prompt: GuidedTranslationPrompt) -> type[TestCase]:
+        """Get concrete test-case class for a prompt-independent list shape.
+
+        Arguments:
+            prompt: text and field aliases for LLM correspondence
+        Returns:
+            test-case model class
+        """
+        query_cls = cls.get_query_cls(prompt)
+        answer_cls = cls.get_answer_cls(prompt)
         fields = cls.get_test_case_fields(query_cls, answer_cls, prompt)
         validators = cls.get_test_case_validators()
-
         model = create_model(
-            name,
-            __base__=TestCase,
-            __module__=TestCase.__module__,
+            get_model_name("GuidedTranslationTestCase", prompt.name),
+            __base__=GuidedTranslationTestCase,
+            __module__=GuidedTranslationTestCase.__module__,
             __validators__=validators,
             **fields,
         )
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
+        model.query_cls = cast(type[GuidedTranslationQuery], query_cls)
+        model.answer_cls = cast(type[GuidedTranslationAnswer], answer_cls)
         model.prompt = prompt
-        setattr(model, "source_one_size", source_one_size)
-        setattr(model, "source_two_size", source_two_size)
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model
-
-    @classmethod
-    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
-        """Get concrete test case class for canonical serialized data.
-
-        Arguments:
-            data: data from JSON
-        Returns:
-            test case model class
-        """
-        prompt = cls.base_prompt
-        source_one_pattern = re.compile(rf"^{re.escape(prompt.src_1_pfx)}\d+$")
-        source_two_pattern = re.compile(rf"^{re.escape(prompt.src_2_pfx)}\d+$")
-        source_one_size = sum(
-            1 for field in data["query"] if source_one_pattern.match(field)
-        )
-        source_two_size = sum(
-            1 for field in data["query"] if source_two_pattern.match(field)
-        )
-        return cls.get_test_case_cls(
-            source_one_size=source_one_size,
-            source_two_size=source_two_size,
-            prompt=prompt,
-        )
-
-    @classmethod
-    def get_test_case_cls_with_prompt(
-        cls,
-        test_case_cls: type[TestCase],
-        prompt: Prompt,
-    ) -> type[TestCase]:
-        """Get an equivalently sized test-case class for another prompt.
-
-        Arguments:
-            test_case_cls: test-case class whose sizes should be preserved
-            prompt: prompt whose correspondence fields should be used
-        Returns:
-            equivalently sized test-case class
-        """
-        source_one_size: int = getattr(test_case_cls, "source_one_size")
-        source_two_size: int = getattr(test_case_cls, "source_two_size")
-        return cls.get_test_case_cls(
-            source_one_size=source_one_size,
-            source_two_size=source_two_size,
-            prompt=cast(GuidedTranslationPrompt, prompt),
-        )
-
-    @staticmethod
-    def _validate_sizes(source_one_size: int, source_two_size: int):
-        """Validate dynamic model sizes.
-
-        Arguments:
-            source_one_size: number of subtitles in source one
-            source_two_size: number of subtitles in source two
-        """
-        if source_one_size < 1:
-            raise ScinoephileError("Source one size must be at least 1.")
-        if source_two_size < 0:
-            raise ScinoephileError("Source two size must not be negative.")

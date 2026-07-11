@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import cast
 
 from scinoephile.core.llms import Processor
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -12,6 +13,7 @@ from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 
 from .manager import GuidedTranslationManager
+from .models import GuidedTranslationAnswer
 from .prompt import GuidedTranslationPrompt
 
 __all__ = ["GuidedTranslationProcessor"]
@@ -57,28 +59,36 @@ class GuidedTranslationProcessor(Processor):
                 output_series_to_concatenate[blk_idx] = Series()
                 continue
 
-            test_case_cls = GuidedTranslationManager.get_test_case_cls(
-                source_one_size=len(one_blk),
-                source_two_size=len(two_blk),
-                prompt=self.prompt,
-            )
+            test_case_cls = GuidedTranslationManager.get_test_case_cls(self.prompt)
             query_cls = test_case_cls.query_cls
-            query_kwargs: dict[str, str] = {}
-            for sub_idx, sub in enumerate(one_blk.events, 1):
-                key = self.prompt.src_1(sub_idx)
-                query_kwargs[key] = sub.text_with_newline.strip()
-            for sub_idx, sub in enumerate(two_blk.events, 1):
-                key = self.prompt.src_2(sub_idx)
-                query_kwargs[key] = sub.text_with_newline.strip()
-
-            query = query_cls(**query_kwargs)
+            query = query_cls.model_validate(
+                {
+                    "subtitles": [
+                        {
+                            "index": idx,
+                            "text": subtitle.text_with_newline.strip(),
+                        }
+                        for idx, subtitle in enumerate(one_blk.events, 1)
+                    ],
+                    "guides": [
+                        {
+                            "index": idx,
+                            "text": guide.text_with_newline.strip(),
+                        }
+                        for idx, guide in enumerate(two_blk.events, 1)
+                    ],
+                }
+            )
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
+            answer = cast(GuidedTranslationAnswer, test_case.answer)
+            output_text_by_index = {
+                output.index: output.text for output in answer.outputs
+            }
             output_series = Series()
             for sub_idx, sub in enumerate(one_blk.events, 1):
-                output_key = self.prompt.output(sub_idx)
-                output = getattr(test_case.answer, output_key)
+                output = output_text_by_index[sub_idx]
                 output_series.append(
                     Subtitle(start=sub.start, end=sub.end, text=output)
                 )

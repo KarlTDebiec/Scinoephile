@@ -105,15 +105,25 @@ ZhoEngGuidedTranslationPromptZhoHant = GuidedTranslationPrompt(
         如果英文字幕和既有中文字幕有差異，要優先按英文意思翻譯，同時保留
         已經建立好的名詞和稱呼。
 
-        輸出內容只能是生成的中文字幕正文。不要附加英文、備註、解釋、標籤、
-        替代譯文、方括號內容、括號內容，或任何字幕以外的說明。
+        每個輸出項目的文本欄只能是生成的中文字幕正文。不要附加英文、備註、解釋、
+        標籤、替代譯文、方括號內容、括號內容，或任何字幕以外的說明。
         """),
-    src_1_pfx="eng_",
-    src_1_desc_tpl="要翻譯成標準中文的英文字幕 {idx}",
-    src_2_pfx="zhongwen_reference_",
-    src_2_desc_tpl="同一段場景的既有標準中文參考字幕 {idx}",
-    output_pfx="zhongwen_",
-    output_desc_tpl="字幕 {idx} 對應的標準中文譯文",
+    subtitles="eng",
+    subtitles_desc="按順序排列、要翻譯成標準中文的英文字幕",
+    guides="zhongwen_reference",
+    guides_desc="同一段場景的既有標準中文參考字幕",
+    outputs="zhongwen",
+    outputs_desc="和查詢英文字幕逐一對應的標準中文譯文",
+    index="xuhao",
+    index_desc="從 1 開始的字幕序號",
+    text="wenben",
+    subtitle_text_desc="要翻譯成標準中文的英文字幕文本",
+    guide_text_desc="同一段場景的既有標準中文參考字幕文本",
+    output_text_desc="和查詢英文字幕對應的標準中文譯文文本",
+    guide_indices_err="查詢參考字幕序號必須從 1 開始、連續並按順序排列。",
+    subtitle_indices_err="查詢字幕序號必須從 1 開始、連續並按順序排列。",
+    output_indices_err="答案輸出序號必須從 1 開始、連續並按順序排列。",
+    output_correspondence_err="答案輸出序號必須與查詢字幕序號完全對應。",
 )
 """Text for traditional guided standard Chinese translation from English."""
 
