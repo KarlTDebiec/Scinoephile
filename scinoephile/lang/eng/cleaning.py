@@ -5,36 +5,10 @@
 from __future__ import annotations
 
 import re
-from copy import deepcopy
 
-from scinoephile.core.subtitles import Series
 from scinoephile.core.text import normalize_text
 
-__all__ = [
-    "get_eng_cleaned",
-    "get_eng_text_cleaned",
-]
-
-
-def get_eng_cleaned(series: Series, remove_empty: bool = True) -> Series:
-    """Get English series cleaned.
-
-    Arguments:
-        series: Series to clean
-        remove_empty: whether to remove subtitles with empty text
-    Returns:
-        cleaned Series
-    """
-    series = deepcopy(series)
-    new_events = []
-    for event in series:
-        raw_text = (event.text or "").strip()
-        text = get_eng_text_cleaned(raw_text)
-        if text or not remove_empty:
-            event.text = text if text is not None else ""
-            new_events.append(event)
-    series.events = new_events
-    return series
+__all__ = ["get_eng_text_cleaned"]
 
 
 def get_eng_text_cleaned(text: str) -> str | None:

@@ -1,81 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.lang.yue.get_yue_romanized."""
+"""Tests of written Cantonese text romanization."""
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, param
-
 from scinoephile.lang.yue.romanization import (
     get_yue_char_romanized,
-    get_yue_romanized,
     get_yue_text_romanized,
 )
-from test.helpers import assert_series_equal, parametrize
-
-
-@parametrize(
-    ("series_fixture", "expected_fixture"),
-    [
-        param(
-            "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten",
-            "acopopb_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize",
-            id="acopopb-yue-hans",
-        ),
-        param(
-            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
-            "acopopb_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
-            id="acopopb-yue-hant",
-        ),
-        param(
-            "acoptc_yue_hans_ocr_fuse_clean_validate_review_flatten",
-            "acoptc_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize",
-            id="acoptc-yue-hans",
-        ),
-        param(
-            "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
-            "acoptc_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
-            id="acoptc-yue-hant",
-        ),
-        param(
-            "kob_yue_hans_clean_review_flatten_timewarp",
-            "kob_yue_hans_clean_review_flatten_timewarp_romanize",
-            id="kob-yue-hans-srt",
-        ),
-        param(
-            "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
-            "kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize",
-            id="kob-yue-hant-srt",
-        ),
-        param(
-            "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten",
-            "tmm_yue_hans_ocr_fuse_clean_validate_review_flatten_romanize",
-            id="tmm-yue-hans",
-        ),
-        param(
-            "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
-            "tmm_yue_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
-            id="tmm-yue-hant",
-        ),
-    ],
-)
-def test_get_yue_romanized(
-    request: FixtureRequest,
-    series_fixture: str,
-    expected_fixture: str,
-):
-    """Test get_yue_romanized against expected romanized outputs.
-
-    Arguments:
-        request: pytest request for fixture lookup
-        series_fixture: Fixture name for input series
-        expected_fixture: Fixture name for expected output series
-    """
-    output = get_yue_romanized(
-        request.getfixturevalue(series_fixture),
-        append=True,
-    )
-    assert_series_equal(output, request.getfixturevalue(expected_fixture))
+from test.helpers import parametrize
 
 
 @parametrize(

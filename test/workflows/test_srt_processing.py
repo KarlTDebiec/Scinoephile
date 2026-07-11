@@ -109,24 +109,41 @@ class _PatchedSrtPipeline:
         self.reviewed_text_calls: list[list[str]] = []
         self.timewarp_text_calls: list[list[str]] = []
         self.timewarp_kw_calls: list[dict[str, object]] = []
+        self.clean_language_calls: list[Language] = []
         self.cleaned_text_calls: list[list[str]] = []
+        self.flatten_language_calls: list[Language] = []
         self.flattened_text_calls: list[list[str]] = []
         self.converted_text_calls: list[list[str]] = []
         self.convert_config_calls: list[OpenCCConfig] = []
         self.romanized_text_calls: list[list[str]] = []
+        self.romanize_language_calls: list[Language] = []
         self.romanize_append_calls: list[bool] = []
 
         for name in [
-            "get_eng_cleaned",
-            "get_eng_flattened",
+            "clean_series",
+            "flatten_series",
             "get_series_timewarped",
-            "get_yue_romanized",
-            "get_zho_cleaned",
             "get_zho_converted",
-            "get_zho_flattened",
+            "romanize_series",
             "review_series",
         ]:
             monkeypatch.setattr(f"{SRT_PROCESSING_MODULE}.{name}", getattr(self, name))
+
+    def clean_series(self, series: Series, *, language: Language) -> Series:
+        """Fake language-aware cleaning.
+
+        Arguments:
+            series: subtitle series to clean
+            language: language selected by the workflow
+        Returns:
+            cleaned subtitle series
+        """
+        self.calls.append("clean")
+        self.clean_language_calls.append(language)
+        self.cleaned_text_calls.append(_series_texts(series))
+        if language is Language.eng:
+            return get_text_series("eng cleaned")
+        return get_text_series("yue cleaned")
 
     def review_series(
         self,
@@ -160,29 +177,21 @@ class _PatchedSrtPipeline:
             return get_text_series("eng reviewed")
         return get_text_series(f"yue reviewed {len(self.reviewed_text_calls)}")
 
-    def get_eng_cleaned(self, series: Series) -> Series:
-        """Fake English cleaning.
-
-        Arguments:
-            series: subtitle series to clean
-        Returns:
-            cleaned subtitle series
-        """
-        self.calls.append("clean")
-        self.cleaned_text_calls.append(_series_texts(series))
-        return get_text_series("eng cleaned")
-
-    def get_eng_flattened(self, series: Series) -> Series:
-        """Fake English flattening.
+    def flatten_series(self, series: Series, *, language: Language) -> Series:
+        """Fake language-aware flattening.
 
         Arguments:
             series: subtitle series to flatten
+            language: subtitle language
         Returns:
             flattened subtitle series
         """
         self.calls.append("flatten")
+        self.flatten_language_calls.append(language)
         self.flattened_text_calls.append(_series_texts(series))
-        return get_text_series("eng flattened")
+        if language is Language.eng:
+            return get_text_series("eng flattened")
+        return get_text_series("yue flattened")
 
     def get_series_timewarped(
         self,
@@ -207,31 +216,27 @@ class _PatchedSrtPipeline:
             return get_text_series("eng timewarped")
         return get_text_series("yue timewarped")
 
-    def get_yue_romanized(self, series: Series, append: bool = True) -> Series:
-        """Fake Yue romanization.
+    def romanize_series(
+        self,
+        series: Series,
+        *,
+        language: Language,
+        append: bool = True,
+    ) -> Series:
+        """Fake romanization.
 
         Arguments:
             series: subtitle series to romanize
+            language: language selected by the workflow
             append: whether romanization should be appended
         Returns:
             romanized subtitle series
         """
         self.calls.append("romanize")
         self.romanized_text_calls.append(_series_texts(series))
+        self.romanize_language_calls.append(language)
         self.romanize_append_calls.append(append)
         return get_text_series("yue romanized")
-
-    def get_zho_cleaned(self, series: Series) -> Series:
-        """Fake Chinese cleaning.
-
-        Arguments:
-            series: subtitle series to clean
-        Returns:
-            cleaned subtitle series
-        """
-        self.calls.append("clean")
-        self.cleaned_text_calls.append(_series_texts(series))
-        return get_text_series("yue cleaned")
 
     def get_zho_converted(self, series: Series, config: OpenCCConfig) -> Series:
         """Fake Chinese script conversion.
@@ -246,18 +251,6 @@ class _PatchedSrtPipeline:
         self.converted_text_calls.append(_series_texts(series))
         self.convert_config_calls.append(config)
         return get_text_series("yue simplified")
-
-    def get_zho_flattened(self, series: Series) -> Series:
-        """Fake Chinese flattening.
-
-        Arguments:
-            series: subtitle series to flatten
-        Returns:
-            flattened subtitle series
-        """
-        self.calls.append("flatten")
-        self.flattened_text_calls.append(_series_texts(series))
-        return get_text_series("yue flattened")
 
 
 def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
@@ -279,11 +272,11 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
         _write_series(output_dir_path / f"{output_name}.srt", f"existing {output_name}")
 
     for name in [
+        "clean_series",
         "review_series",
         "get_series_timewarped",
-        "get_zho_cleaned",
-        "get_zho_flattened",
-        "get_yue_romanized",
+        "flatten_series",
+        "romanize_series",
     ]:
         monkeypatch.setattr(f"{SRT_PROCESSING_MODULE}.{name}", _raise_unexpected_call)
 
@@ -340,8 +333,10 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
         output_dir_path / "lang" / "yue" / "review.json"
     ]
     assert pipeline.review_auto_verify_calls == [True]
+    assert pipeline.clean_language_calls == [Language.yue_hans]
     assert pipeline.cleaned_text_calls == [["source"]]
     assert pipeline.reviewed_text_calls == [["yue cleaned"]]
+    assert pipeline.flatten_language_calls == [Language.yue_hans]
     assert pipeline.flattened_text_calls == [["yue reviewed 1"]]
     assert pipeline.timewarp_text_calls == [["yue flattened"]]
     assert pipeline.timewarp_kw_calls == [
@@ -353,6 +348,7 @@ def test_yue_srt_workflow_reviews_before_timewarp_and_populates_outputs(
         }
     ]
     assert pipeline.romanized_text_calls == [["yue timewarped"]]
+    assert pipeline.romanize_language_calls == [Language.yue_hans]
     assert pipeline.romanize_append_calls == [True]
     assert result.output_paths == _output_paths(output_dir_path, YUE_HANS_OUTPUT_NAMES)
 
@@ -402,13 +398,16 @@ def test_traditional_yue_srt_workflow_simplifies_reviews_and_romanizes(
         output_dir_path / "lang" / "yue" / "review.json",
         output_dir_path / "lang" / "yue" / "simplify_review.json",
     ]
+    assert pipeline.clean_language_calls == [Language.yue_hant]
     assert pipeline.convert_config_calls == [OpenCCConfig.t2s]
     assert pipeline.cleaned_text_calls == [["source"]]
     assert pipeline.reviewed_text_calls == [["yue cleaned"], ["yue simplified"]]
+    assert pipeline.flatten_language_calls == [Language.yue_hant]
     assert pipeline.flattened_text_calls == [["yue reviewed 1"]]
     assert pipeline.timewarp_text_calls == [["yue flattened"]]
     assert pipeline.converted_text_calls == [["yue timewarped"]]
     assert pipeline.romanized_text_calls == [["yue reviewed 2"]]
+    assert pipeline.romanize_language_calls == [Language.yue_hant]
     assert result.output_paths == _output_paths(output_dir_path, YUE_HANT_OUTPUT_NAMES)
     assert "clean_review_flatten_timewarp_romanize" not in result.output_paths
 
@@ -450,6 +449,7 @@ def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
         output_dir_path / "lang" / "eng" / "review.json"
     ]
     assert pipeline.review_auto_verify_calls == [True]
+    assert pipeline.clean_language_calls == [Language.eng]
     assert pipeline.timewarp_text_calls == [["eng flattened"]]
     assert pipeline.timewarp_kw_calls == [
         {
@@ -461,6 +461,7 @@ def test_eng_srt_workflow_reviews_before_timewarp_and_populates_outputs(
     ]
     assert pipeline.cleaned_text_calls == [["source"]]
     assert pipeline.reviewed_text_calls == [["eng cleaned"]]
+    assert pipeline.flatten_language_calls == [Language.eng]
     assert pipeline.flattened_text_calls == [["eng reviewed"]]
     assert result.output_paths == _output_paths(output_dir_path, BASE_OUTPUT_NAMES)
     assert _series_texts(
