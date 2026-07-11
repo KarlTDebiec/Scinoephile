@@ -11,6 +11,7 @@ import scinoephile.multilang.review.pairwise as pairwise_review
 import scinoephile.multilang.translation.gap as gap_translation
 import scinoephile.multilang.translation.guided as guided_translation
 import scinoephile.multilang.translation.standard as translation
+from scinoephile.core import Language
 from scinoephile.core.llms import Manager, Prompt
 from scinoephile.lang import ocr_fusion, review
 from scinoephile.llms.delineation import DelineationManager
@@ -48,73 +49,366 @@ class PromptSpec:
 
 
 PROMPT_SPECS: dict[str, PromptSpec] = {
-    **{
-        f"review-{language.tag.lower()}": PromptSpec(
-            manager_cls=ReviewManager,
-            prompt=prompt,
-        )
-        for language, prompt in review._PROMPTS.items()
-    },
-    **{
-        f"ocr-fusion-{language.tag.lower()}": PromptSpec(
-            manager_cls=OcrFusionManager,
-            prompt=prompt,
-        )
-        for language, prompt in ocr_fusion._PROMPTS.items()
-    },
-    **{
-        f"guided-review-{language.tag.lower()}-vs-{guide_language.tag.lower()}": (
-            PromptSpec(
-                manager_cls=GuidedReviewManager,
-                prompt=prompt,
-            )
-        )
-        for (language, guide_language), prompt in guided_review._PROMPTS.items()
-    },
-    **{
-        f"pairwise-review-{language.tag.lower()}-vs-"
-        f"{reference_language.tag.lower()}": PromptSpec(
-            manager_cls=PairwiseReviewManager,
-            prompt=prompt,
-        )
-        for (
-            language,
-            reference_language,
-        ), prompt in pairwise_review._PROMPTS.items()
-    },
-    **{
-        f"translation-{source_language.tag.lower()}-to-"
-        f"{target_language.tag.lower()}": PromptSpec(
-            manager_cls=TranslationManager,
-            prompt=prompt,
-        )
-        for (
-            source_language,
-            target_language,
-        ), prompt in translation._PROMPTS.items()
-    },
-    **{
-        f"gap-translation-{source_language.tag.lower()}-to-"
-        f"{target_language.tag.lower()}": PromptSpec(
-            manager_cls=GapTranslationManager,
-            prompt=prompt,
-        )
-        for (
-            source_language,
-            target_language,
-        ), prompt in gap_translation._PROMPTS.items()
-    },
-    **{
-        f"guided-translation-{source_language.tag.lower()}-to-"
-        f"{target_language.tag.lower()}": PromptSpec(
-            manager_cls=GuidedTranslationManager,
-            prompt=prompt,
-        )
-        for (
-            source_language,
-            target_language,
-        ), prompt in guided_translation._PROMPTS.items()
-    },
+    "review-eng": PromptSpec(
+        manager_cls=ReviewManager,
+        prompt=review._PROMPTS[Language.eng],
+    ),
+    "review-yue-hans": PromptSpec(
+        manager_cls=ReviewManager,
+        prompt=review._PROMPTS[Language.yue_hans],
+    ),
+    "review-yue-hant": PromptSpec(
+        manager_cls=ReviewManager,
+        prompt=review._PROMPTS[Language.yue_hant],
+    ),
+    "review-zho-hans": PromptSpec(
+        manager_cls=ReviewManager,
+        prompt=review._PROMPTS[Language.zho_hans],
+    ),
+    "review-zho-hant": PromptSpec(
+        manager_cls=ReviewManager,
+        prompt=review._PROMPTS[Language.zho_hant],
+    ),
+    "ocr-fusion-eng": PromptSpec(
+        manager_cls=OcrFusionManager,
+        prompt=ocr_fusion._PROMPTS[Language.eng],
+    ),
+    "ocr-fusion-yue-hans": PromptSpec(
+        manager_cls=OcrFusionManager,
+        prompt=ocr_fusion._PROMPTS[Language.yue_hans],
+    ),
+    "ocr-fusion-yue-hant": PromptSpec(
+        manager_cls=OcrFusionManager,
+        prompt=ocr_fusion._PROMPTS[Language.yue_hant],
+    ),
+    "ocr-fusion-zho-hans": PromptSpec(
+        manager_cls=OcrFusionManager,
+        prompt=ocr_fusion._PROMPTS[Language.zho_hans],
+    ),
+    "ocr-fusion-zho-hant": PromptSpec(
+        manager_cls=OcrFusionManager,
+        prompt=ocr_fusion._PROMPTS[Language.zho_hant],
+    ),
+    "guided-review-eng-vs-yue-hans": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.eng, Language.yue_hans)],
+    ),
+    "guided-review-eng-vs-yue-hant": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.eng, Language.yue_hant)],
+    ),
+    "guided-review-eng-vs-zho-hans": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.eng, Language.zho_hans)],
+    ),
+    "guided-review-eng-vs-zho-hant": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.eng, Language.zho_hant)],
+    ),
+    "guided-review-yue-hans-vs-eng": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.yue_hans, Language.eng)],
+    ),
+    "guided-review-yue-hans-vs-zho-hans": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.yue_hans, Language.zho_hans)],
+    ),
+    "guided-review-yue-hans-vs-zho-hant": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.yue_hans, Language.zho_hant)],
+    ),
+    "guided-review-yue-hant-vs-eng": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.yue_hant, Language.eng)],
+    ),
+    "guided-review-yue-hant-vs-zho-hans": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.yue_hant, Language.zho_hans)],
+    ),
+    "guided-review-yue-hant-vs-zho-hant": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.yue_hant, Language.zho_hant)],
+    ),
+    "guided-review-zho-hans-vs-eng": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.zho_hans, Language.eng)],
+    ),
+    "guided-review-zho-hans-vs-yue-hans": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.zho_hans, Language.yue_hans)],
+    ),
+    "guided-review-zho-hans-vs-yue-hant": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.zho_hans, Language.yue_hant)],
+    ),
+    "guided-review-zho-hant-vs-eng": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.zho_hant, Language.eng)],
+    ),
+    "guided-review-zho-hant-vs-yue-hans": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.zho_hant, Language.yue_hans)],
+    ),
+    "guided-review-zho-hant-vs-yue-hant": PromptSpec(
+        manager_cls=GuidedReviewManager,
+        prompt=guided_review._PROMPTS[(Language.zho_hant, Language.yue_hant)],
+    ),
+    "pairwise-review-eng-vs-yue-hans": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.eng, Language.yue_hans)],
+    ),
+    "pairwise-review-eng-vs-yue-hant": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.eng, Language.yue_hant)],
+    ),
+    "pairwise-review-eng-vs-zho-hans": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.eng, Language.zho_hans)],
+    ),
+    "pairwise-review-eng-vs-zho-hant": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.eng, Language.zho_hant)],
+    ),
+    "pairwise-review-yue-hans-vs-eng": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.yue_hans, Language.eng)],
+    ),
+    "pairwise-review-yue-hans-vs-zho-hans": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.yue_hans, Language.zho_hans)],
+    ),
+    "pairwise-review-yue-hans-vs-zho-hant": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.yue_hans, Language.zho_hant)],
+    ),
+    "pairwise-review-yue-hant-vs-eng": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.yue_hant, Language.eng)],
+    ),
+    "pairwise-review-yue-hant-vs-zho-hans": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.yue_hant, Language.zho_hans)],
+    ),
+    "pairwise-review-yue-hant-vs-zho-hant": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.yue_hant, Language.zho_hant)],
+    ),
+    "pairwise-review-zho-hans-vs-eng": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.zho_hans, Language.eng)],
+    ),
+    "pairwise-review-zho-hans-vs-yue-hans": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.zho_hans, Language.yue_hans)],
+    ),
+    "pairwise-review-zho-hans-vs-yue-hant": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.zho_hans, Language.yue_hant)],
+    ),
+    "pairwise-review-zho-hant-vs-eng": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.zho_hant, Language.eng)],
+    ),
+    "pairwise-review-zho-hant-vs-yue-hans": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.zho_hant, Language.yue_hans)],
+    ),
+    "pairwise-review-zho-hant-vs-yue-hant": PromptSpec(
+        manager_cls=PairwiseReviewManager,
+        prompt=pairwise_review._PROMPTS[(Language.zho_hant, Language.yue_hant)],
+    ),
+    "translation-yue-hans-to-eng": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.yue_hans, Language.eng)],
+    ),
+    "translation-yue-hant-to-eng": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.yue_hant, Language.eng)],
+    ),
+    "translation-zho-hans-to-eng": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.zho_hans, Language.eng)],
+    ),
+    "translation-zho-hant-to-eng": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.zho_hant, Language.eng)],
+    ),
+    "translation-eng-to-yue-hans": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.eng, Language.yue_hans)],
+    ),
+    "translation-eng-to-yue-hant": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.eng, Language.yue_hant)],
+    ),
+    "translation-zho-hans-to-yue-hans": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.zho_hans, Language.yue_hans)],
+    ),
+    "translation-zho-hant-to-yue-hans": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.zho_hant, Language.yue_hans)],
+    ),
+    "translation-zho-hans-to-yue-hant": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.zho_hans, Language.yue_hant)],
+    ),
+    "translation-zho-hant-to-yue-hant": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.zho_hant, Language.yue_hant)],
+    ),
+    "translation-eng-to-zho-hans": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.eng, Language.zho_hans)],
+    ),
+    "translation-eng-to-zho-hant": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.eng, Language.zho_hant)],
+    ),
+    "translation-yue-hans-to-zho-hans": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.yue_hans, Language.zho_hans)],
+    ),
+    "translation-yue-hant-to-zho-hans": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.yue_hant, Language.zho_hans)],
+    ),
+    "translation-yue-hans-to-zho-hant": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.yue_hans, Language.zho_hant)],
+    ),
+    "translation-yue-hant-to-zho-hant": PromptSpec(
+        manager_cls=TranslationManager,
+        prompt=translation._PROMPTS[(Language.yue_hant, Language.zho_hant)],
+    ),
+    "gap-translation-yue-hans-to-eng": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.yue_hans, Language.eng)],
+    ),
+    "gap-translation-yue-hant-to-eng": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.yue_hant, Language.eng)],
+    ),
+    "gap-translation-zho-hans-to-eng": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.zho_hans, Language.eng)],
+    ),
+    "gap-translation-zho-hant-to-eng": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.zho_hant, Language.eng)],
+    ),
+    "gap-translation-eng-to-yue-hans": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.eng, Language.yue_hans)],
+    ),
+    "gap-translation-eng-to-yue-hant": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.eng, Language.yue_hant)],
+    ),
+    "gap-translation-zho-hans-to-yue-hans": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.zho_hans, Language.yue_hans)],
+    ),
+    "gap-translation-zho-hant-to-yue-hans": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.zho_hant, Language.yue_hans)],
+    ),
+    "gap-translation-zho-hans-to-yue-hant": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.zho_hans, Language.yue_hant)],
+    ),
+    "gap-translation-zho-hant-to-yue-hant": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.zho_hant, Language.yue_hant)],
+    ),
+    "gap-translation-eng-to-zho-hans": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.eng, Language.zho_hans)],
+    ),
+    "gap-translation-eng-to-zho-hant": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.eng, Language.zho_hant)],
+    ),
+    "gap-translation-yue-hans-to-zho-hans": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.yue_hans, Language.zho_hans)],
+    ),
+    "gap-translation-yue-hant-to-zho-hans": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.yue_hant, Language.zho_hans)],
+    ),
+    "gap-translation-yue-hans-to-zho-hant": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.yue_hans, Language.zho_hant)],
+    ),
+    "gap-translation-yue-hant-to-zho-hant": PromptSpec(
+        manager_cls=GapTranslationManager,
+        prompt=gap_translation._PROMPTS[(Language.yue_hant, Language.zho_hant)],
+    ),
+    "guided-translation-yue-hans-to-eng": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.yue_hans, Language.eng)],
+    ),
+    "guided-translation-yue-hant-to-eng": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.yue_hant, Language.eng)],
+    ),
+    "guided-translation-zho-hans-to-eng": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.zho_hans, Language.eng)],
+    ),
+    "guided-translation-zho-hant-to-eng": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.zho_hant, Language.eng)],
+    ),
+    "guided-translation-eng-to-yue-hans": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.eng, Language.yue_hans)],
+    ),
+    "guided-translation-eng-to-yue-hant": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.eng, Language.yue_hant)],
+    ),
+    "guided-translation-zho-hans-to-yue-hans": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.zho_hans, Language.yue_hans)],
+    ),
+    "guided-translation-zho-hant-to-yue-hans": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.zho_hant, Language.yue_hans)],
+    ),
+    "guided-translation-zho-hans-to-yue-hant": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.zho_hans, Language.yue_hant)],
+    ),
+    "guided-translation-zho-hant-to-yue-hant": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.zho_hant, Language.yue_hant)],
+    ),
+    "guided-translation-eng-to-zho-hans": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.eng, Language.zho_hans)],
+    ),
+    "guided-translation-eng-to-zho-hant": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.eng, Language.zho_hant)],
+    ),
+    "guided-translation-yue-hans-to-zho-hans": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.yue_hans, Language.zho_hans)],
+    ),
+    "guided-translation-yue-hant-to-zho-hans": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.yue_hant, Language.zho_hans)],
+    ),
+    "guided-translation-yue-hans-to-zho-hant": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.yue_hans, Language.zho_hant)],
+    ),
+    "guided-translation-yue-hant-to-zho-hant": PromptSpec(
+        manager_cls=GuidedTranslationManager,
+        prompt=guided_translation._PROMPTS[(Language.yue_hant, Language.zho_hant)],
+    ),
     "delineation-yue-hans-vs-zho": PromptSpec(
         manager_cls=DelineationManager,
         prompt=YueDelineationVsZhoPromptYueHans,
