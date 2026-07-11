@@ -19,13 +19,18 @@ from scinoephile.audio.subtitles import (
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, Query, Queryer, TestCase
+from scinoephile.core.llms import Queryer
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
-from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
+from scinoephile.llms.delineation import (
+    DelineationAnswer,
+    DelineationManager,
+    DelineationPrompt,
+    DelineationQuery,
+)
 from scinoephile.llms.punctuation import PunctuationPrompt
 
 from .alignment import Alignment
@@ -108,9 +113,13 @@ class Aligner:
         Arguments:
             alignment: Nascent alignment
         """
+        delineation_prompt = cast(DelineationPrompt, self.delineation_queryer.prompt)
         for sg_1_idx in range(len(alignment.sync_groups) - 1):
             # Run query
-            test_case = alignment.get_delineation_test_case(sg_1_idx)
+            test_case = alignment.get_delineation_test_case(
+                sg_1_idx,
+                delineation_prompt,
+            )
             if test_case is None:
                 logger.info(
                     f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} "
@@ -119,7 +128,7 @@ class Aligner:
                 continue
             # TODO: try/except and return original written Cantonese on error
             # (not yet encountered).
-            test_case: TestCase = self.delineation_queryer(test_case)
+            test_case = self.delineation_queryer(test_case)
 
             # If there is no change, continue
             query = test_case.query
@@ -128,10 +137,7 @@ class Aligner:
                 message = "Delineation query returned no answer."
                 logger.error(message)
                 raise ScinoephileError(message)
-            prompt: DelineationPrompt = getattr(test_case, "prompt")
-            yuewen_1_shifted = getattr(answer, prompt.src_2_sub_1_shifted, None)
-            yuewen_2_shifted = getattr(answer, prompt.src_2_sub_2_shifted, None)
-            if yuewen_1_shifted == "" and yuewen_2_shifted == "":
+            if answer.output_one == "" and answer.output_two == "":
                 continue
             if self._delineate_one(alignment, sg_1_idx, query, answer):
                 return True
@@ -141,8 +147,8 @@ class Aligner:
         self,
         alignment: Alignment,
         sg_1_idx: int,
-        query: Query,
-        answer: Answer,
+        query: DelineationQuery,
+        answer: DelineationAnswer,
     ) -> bool:
         """Delineate text between one sync-group pair when LLM output requires it.
 
@@ -172,13 +178,12 @@ class Aligner:
         sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get written Cantonese
-        prompt: DelineationPrompt = getattr(query, "prompt")
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
-        yw_1 = getattr(query, prompt.src_2_sub_1, "")
-        yw_2 = getattr(query, prompt.src_2_sub_2, "")
-        yw_1_shifted = getattr(answer, prompt.src_2_sub_1_shifted, "")
-        yw_2_shifted = getattr(answer, prompt.src_2_sub_2_shifted, "")
+        yw_1 = query.target_one
+        yw_2 = query.target_two
+        yw_1_shifted = answer.output_one
+        yw_2_shifted = answer.output_two
 
         # Shift written Cantonese
         nascent_sg = deepcopy(alignment.sync_groups)

@@ -4,15 +4,20 @@
 
 Package hierarchy (modules may import from any above):
 * prompt
+* models
 * manager
 """
 
 from __future__ import annotations
 
 from .manager import DelineationManager
+from .models import DelineationAnswer, DelineationQuery, DelineationTestCase
 from .prompt import DelineationPrompt
 
 __all__ = [
+    "DelineationAnswer",
     "DelineationManager",
     "DelineationPrompt",
+    "DelineationQuery",
+    "DelineationTestCase",
 ]
