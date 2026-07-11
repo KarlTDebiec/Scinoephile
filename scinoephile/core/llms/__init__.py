@@ -3,7 +3,7 @@
 """Core code related to interactions with LLMs.
 
 Package hierarchy (modules may import from any above):
-* models / prompt / tool
+* models / prompt / test_case_subtitle / tool
 * answer / query / tool_box
 * llm_provider / test_case
 * manager / openai_provider_base / queryer / test_case_mapping
@@ -22,10 +22,12 @@ from .prompt import Prompt, PromptLocalizationFields
 from .query import Query
 from .queryer import Queryer
 from .test_case import TestCase
+from .test_case_subtitle import AnnotatedTestCaseSubtitle, TestCaseSubtitle
 from .tool import Tool
 from .tool_box import ToolBox
 
 __all__ = [
+    "AnnotatedTestCaseSubtitle",
     "Answer",
     "ChatCompletionKwargs",
     "LLMProvider",
@@ -38,6 +40,7 @@ __all__ = [
     "Query",
     "Queryer",
     "TestCase",
+    "TestCaseSubtitle",
     "Tool",
     "ToolBox",
 ]

@@ -15,8 +15,6 @@ from .manager import ReviewManager
 from .models import (
     ReviewAnswer,
     ReviewQuery,
-    ReviewRevision,
-    ReviewSubtitle,
     ReviewTestCase,
 )
 from .processor import ReviewProcessor
@@ -28,7 +26,5 @@ __all__ = [
     "ReviewProcessor",
     "ReviewPrompt",
     "ReviewQuery",
-    "ReviewRevision",
-    "ReviewSubtitle",
     "ReviewTestCase",
 ]

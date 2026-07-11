@@ -9,14 +9,19 @@ from typing import Any, ClassVar, cast
 
 from pydantic import Field, create_model
 
-from scinoephile.core.llms import Answer, Manager, Query, TestCase
+from scinoephile.core.llms import (
+    AnnotatedTestCaseSubtitle,
+    Answer,
+    Manager,
+    Query,
+    TestCase,
+    TestCaseSubtitle,
+)
 from scinoephile.core.llms.models import get_model_name
 
 from .models import (
     ReviewAnswer,
     ReviewQuery,
-    ReviewRevision,
-    ReviewSubtitle,
     ReviewTestCase,
 )
 from .prompt import ReviewPrompt
@@ -95,7 +100,10 @@ class ReviewManager(Manager):
 
     @classmethod
     @cache
-    def get_revision_cls(cls, prompt: ReviewPrompt) -> type[ReviewRevision]:
+    def get_revision_cls(
+        cls,
+        prompt: ReviewPrompt,
+    ) -> type[AnnotatedTestCaseSubtitle]:
         """Get revision class with prompt-specific JSON field aliases.
 
         Arguments:
@@ -136,14 +144,14 @@ class ReviewManager(Manager):
         }
         return create_model(
             get_model_name("ReviewRevision", prompt.name),
-            __base__=ReviewRevision,
-            __module__=ReviewRevision.__module__,
+            __base__=AnnotatedTestCaseSubtitle,
+            __module__=ReviewAnswer.__module__,
             **fields,
         )
 
     @classmethod
     @cache
-    def get_subtitle_cls(cls, prompt: ReviewPrompt) -> type[ReviewSubtitle]:
+    def get_subtitle_cls(cls, prompt: ReviewPrompt) -> type[TestCaseSubtitle]:
         """Get subtitle class with prompt-specific JSON field aliases.
 
         Arguments:
@@ -173,8 +181,8 @@ class ReviewManager(Manager):
         }
         return create_model(
             get_model_name("ReviewSubtitle", prompt.name),
-            __base__=ReviewSubtitle,
-            __module__=ReviewSubtitle.__module__,
+            __base__=TestCaseSubtitle,
+            __module__=ReviewQuery.__module__,
             **fields,
         )
 
@@ -199,8 +207,8 @@ class ReviewManager(Manager):
             __validators__=validators,
             **fields,
         )
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
+        model.query_cls = cast(type[ReviewQuery], query_cls)
+        model.answer_cls = cast(type[ReviewAnswer], answer_cls)
         model.prompt = prompt
         setattr(model, "get_auto_verified", cls.get_auto_verified)
         setattr(model, "get_min_difficulty", cls.get_min_difficulty)
