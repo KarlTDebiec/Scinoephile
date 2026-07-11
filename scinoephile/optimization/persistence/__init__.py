@@ -4,5 +4,5 @@
 
 Package hierarchy (modules may import from any above):
 * sqlite
-* prompts / test_cases
+* models / prompts / test_cases
 """
