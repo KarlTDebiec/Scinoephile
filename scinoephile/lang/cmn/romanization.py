@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from copy import deepcopy
 from functools import cache
 from warnings import catch_warnings, simplefilter
 
@@ -22,13 +21,11 @@ from scinoephile.core.romanization import (
     join_romanized_tokens,
     normalize_romanized_punctuation,
 )
-from scinoephile.core.subtitles import Series
 from scinoephile.core.text import RE_HANZI
 
 __all__ = [
     "get_cmn_char_romanized",
     "get_cmn_pinyin_query_strings",
-    "get_cmn_romanized",
     "get_cmn_text_romanized",
     "is_accented_pinyin",
     "is_numbered_pinyin",
@@ -94,26 +91,6 @@ def get_cmn_pinyin_query_strings(text: str) -> list[str]:
             query_strings.add(query_string.replace("v", "u:"))
 
     return sorted(query_strings)
-
-
-def get_cmn_romanized(series: Series, append: bool = True) -> Series:
-    """Get the Mandarin pinyin romanization of Hanzi series.
-
-    Arguments:
-        series: Series for which to get Mandarin pinyin romanization
-        append: Whether to append romanization to original text
-    Returns:
-        Mandarin pinyin romanization of series
-    """
-    series = deepcopy(series)
-    for event in series:
-        romanized = get_cmn_text_romanized(event.text)
-        if append:
-            if romanized:
-                event.text = f"{event.text}\\N{romanized}"
-        else:
-            event.text = romanized
-    return series
 
 
 def is_accented_pinyin(text: str) -> bool:

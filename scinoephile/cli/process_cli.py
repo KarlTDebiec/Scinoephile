@@ -26,16 +26,14 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.cmn.romanization import get_cmn_romanized
-from scinoephile.lang.eng.flattening import get_eng_flattened
-from scinoephile.lang.yue.romanization import get_yue_romanized
-from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_converted,
 )
 from scinoephile.workflows.cleaning import clean_series
+from scinoephile.workflows.flattening import flatten_series
 from scinoephile.workflows.helpers import resolve_language
+from scinoephile.workflows.romanization import romanize_series
 
 __all__ = ["ProcessCli"]
 
@@ -223,15 +221,13 @@ class ProcessCli(ScinoephileCliBase):
         if resolved_convert is not None:
             series = get_zho_converted(series, resolved_convert)
         if flatten:
-            if resolved_language.is_chinese:
-                series = get_zho_flattened(series)
-            else:
-                series = get_eng_flattened(series)
+            series = flatten_series(series, language=resolved_language)
         if romanize:
-            if resolved_language.is_cantonese:
-                series = get_yue_romanized(series, append=True)
-            else:
-                series = get_cmn_romanized(series, append=True)
+            series = romanize_series(
+                series,
+                language=resolved_language,
+                append=True,
+            )
         if offset:
             series.shift(ms=offset)
 
