@@ -8,6 +8,21 @@ description: Audit Scinoephile English, standard Chinese, or Cantonese subtitle 
 Run commands from the repository root. Discover the available artifacts before
 choosing a workflow; do not infer the workflow from language alone.
 
+## Mandatory final output
+
+If this skill runs an audit, paste the **entire interpreted Markdown report
+inline in the final response**. This is a non-negotiable completion requirement.
+
+- Tool-call output, commentary, a summary, counts, findings, and a local file do
+  not count as showing the report.
+- A file link may supplement the inline report but must never replace it.
+- Never omit or truncate rows, even when the report is long.
+- Never wrap the report in a code fence.
+- Before responding, read the saved report from beginning to end and paste its
+  complete contents into the final response.
+- Do not say the audit or skill run is complete unless the complete report is
+  present in that same final response.
+
 ## Protect source data
 
 - Never edit files under `test/data/<dataset>/input/`.
@@ -138,8 +153,5 @@ review, using that stage's script. Reserve later simplification reviews for
 conversion-specific cleanup; move any generally applicable correction back to
 the initial review and regenerate every downstream artifact.
 
-Always show the complete raw Markdown report inline in the final response. Do
-not replace it with a summary, findings, or a file link, and do not wrap it in a
-code fence. Counts, actionable findings, and a link may accompany the report.
-For a large report, also write it under `local/` with `--outfile` to inspect the
-whole file before pasting its complete contents into the response.
+For a large report, also write it under `local/` with `--outfile` so it can be
+read completely before satisfying the mandatory final-output contract above.
