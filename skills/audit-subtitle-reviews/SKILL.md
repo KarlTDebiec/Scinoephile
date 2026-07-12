@@ -128,9 +128,10 @@ about normalization, output stages, or preserved formatting. For example:
 `OK; 搞 is the idiomatic verb in 怎么搞的; 搅 is a likely error.`
 
 Review stages must preserve the source punctuation and whitespace exactly.
-Treat punctuation-only or whitespace-only revisions as invalid. When correcting
-review data, remove those revisions; when a revision also corrects text, retain
-the text correction while restoring the source punctuation and whitespace.
+Never add, remove, replace, or reposition punctuation or whitespace during
+review, even when a punctuation change seems natural. Treat such revisions as
+invalid. When a revision also corrects text, retain the text correction while
+restoring the source punctuation and whitespace exactly.
 Assign every correction to the earliest review stage where it applies. Put OCR,
 lexical, grammatical, semantic, and proper-name corrections in the initial
 review, using that stage's script. Reserve later simplification reviews for

@@ -1684,7 +1684,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 8,
+          "text": "以後沒有化妝不要四處走，知道嗎？",
+          "note": "Apply this correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -3160,13 +3166,7 @@
       ]
     },
     "answer": {
-      "revisions": [
-        {
-          "index": 2,
-          "text": "蘇察哈爾燦兩父子罪犯欺君，理應問斬",
-          "note": "Apply this language correction during traditional review."
-        }
-      ]
+      "revisions": []
     },
     "verified": true
   },
@@ -3707,11 +3707,6 @@
         {
           "index": 19,
           "text": "她早就向我透露很欣賞你",
-          "note": "Apply this language correction during traditional review."
-        },
-        {
-          "index": 20,
-          "text": "會有這回事嗎？",
           "note": "Apply this language correction during traditional review."
         }
       ]
@@ -6249,13 +6244,7 @@
       ]
     },
     "answer": {
-      "revisions": [
-        {
-          "index": 3,
-          "text": "想不到你學會睡夢羅漢拳了",
-          "note": "Apply this language correction during traditional review."
-        }
-      ]
+      "revisions": []
     },
     "verified": true
   },
@@ -6741,13 +6730,7 @@
       ]
     },
     "answer": {
-      "revisions": [
-        {
-          "index": 11,
-          "text": "我現在死定了？放心去吧",
-          "note": "Apply this language correction during traditional review."
-        }
-      ]
+      "revisions": []
     },
     "verified": true
   },
@@ -7405,13 +7388,7 @@
       ]
     },
     "answer": {
-      "revisions": [
-        {
-          "index": 8,
-          "text": "趙無極的人馬都給我們捉住了",
-          "note": "Apply this language correction during traditional review."
-        }
-      ]
+      "revisions": []
     },
     "verified": true
   },
@@ -7729,13 +7706,7 @@
       ]
     },
     "answer": {
-      "revisions": [
-        {
-          "index": 4,
-          "text": "跟著我⋯走吧⋯",
-          "note": "Apply this language correction during traditional review."
-        }
-      ]
+      "revisions": []
     },
     "verified": true
   }
