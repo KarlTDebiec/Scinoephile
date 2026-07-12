@@ -33,7 +33,7 @@
   {
     "query": {
       "target": "師爺，少爺寫乜嘢呀？",
-      "reference": "师爷，少爷写的是甚么？"
+      "reference": "师爷，少爷写的是什么？"
     },
     "answer": {
       "output": "師爺，少爺寫乜嘢呀？",
@@ -496,7 +496,7 @@
   {
     "query": {
       "target": "做咩呀，老爺？",
-      "reference": "老爷，甚么事？"
+      "reference": "老爷，什么事？"
     },
     "answer": {
       "output": "做咩呀，老爺？",
@@ -939,7 +939,7 @@
   {
     "query": {
       "target": "少爺，什麼金魚還是木魚?",
-      "reference": "少爷，甚么金鱼、木鱼？"
+      "reference": "少爷，什么金鱼、木鱼？"
     },
     "answer": {
       "output": "少爺，什麼金魚還是木魚?",
@@ -1022,7 +1022,7 @@
   {
     "query": {
       "target": "有什麼特別",
-      "reference": "没甚么特别"
+      "reference": "没什么特别"
     },
     "answer": {
       "output": "有什麼特別",
@@ -1032,7 +1032,7 @@
   {
     "query": {
       "target": "修勇，什麼事？",
-      "reference": "苏翁，甚么事？"
+      "reference": "苏翁，什么事？"
     },
     "answer": {
       "output": "苏翁，什麼事？",
@@ -1054,7 +1054,7 @@
   {
     "query": {
       "target": "什麼?",
-      "reference": "甚么？"
+      "reference": "什么？"
     },
     "answer": {
       "output": "什麼?",
@@ -1336,7 +1336,7 @@
   {
     "query": {
       "target": "沒什麼意見吧？",
-      "reference": "有甚么意见吗？"
+      "reference": "有什么意见吗？"
     },
     "answer": {
       "output": "冇乜嘢意见吧？",
@@ -2034,7 +2034,7 @@
   {
     "query": {
       "target": "什麼？說啊",
-      "reference": "还有甚么？说吧"
+      "reference": "还有什么？说吧"
     },
     "answer": {
       "output": "什麼？說啊",
@@ -2507,7 +2507,7 @@
   {
     "query": {
       "target": "沒但是,那十萬兩我已經帶進袋裡",
-      "reference": "但是甚么，十万两我已拿了"
+      "reference": "但是什么，十万两我已拿了"
     },
     "answer": {
       "output": "冇但系，嗰十萬両我已經袋咗入袋",
@@ -2869,7 +2869,7 @@
   {
     "query": {
       "target": "證人？係",
-      "reference": "证人？对"
+      "reference": "证人？　　对"
     },
     "answer": {
       "output": "證人？係",
@@ -3193,7 +3193,7 @@
   {
     "query": {
       "target": "你講乜嘢啊？",
-      "reference": "你胡说甚么？"
+      "reference": "你胡说什么？"
     },
     "answer": {
       "output": "你講乜嘢啊？",
@@ -3710,7 +3710,7 @@
   {
     "query": {
       "target": "小心呀，細路哥怕乜嘢呢？",
-      "reference": "小孩子怕甚么呢？"
+      "reference": "小孩子怕什么呢？"
     },
     "answer": {
       "output": "小心呀，細路哥怕乜嘢呢？",
@@ -4273,7 +4273,7 @@
   {
     "query": {
       "target": "預備咩未？贏講嘅話，乜你唔知咩",
-      "reference": "准备甚么？我赢定了，你不知道吗"
+      "reference": "准备什么？我赢定了，你不知道吗"
     },
     "answer": {
       "output": "預備咩未？贏梗嘅話，乜你唔知咩",
@@ -4709,7 +4709,7 @@
   {
     "query": {
       "target": "咁又唔係咁過？",
-      "reference": "话不是这样说　　甚么？"
+      "reference": "话不是这样说　　什么？"
     },
     "answer": {
       "output": "咁又唔係咁㗎喎？",
@@ -4836,7 +4836,7 @@
   {
     "query": {
       "target": "蝦，乜蝦啊？",
-      "reference": "甚么？"
+      "reference": "什么？"
     },
     "answer": {
       "output": "蝦，乜蝦啊？",
@@ -4898,7 +4898,7 @@
   {
     "query": {
       "target": "點解啊？",
-      "reference": "怎么？为甚么你突然间看好他"
+      "reference": "怎么？为什么你突然间看好他"
     },
     "answer": {
       "output": "點解啊？",
@@ -4982,7 +4982,7 @@
   {
     "query": {
       "target": "咦，點解你唔落住？",
-      "reference": "为甚么你不下注？"
+      "reference": "为什么你不下注？"
     },
     "answer": {
       "output": "咦，點解你唔落注？",
@@ -4993,7 +4993,7 @@
   {
     "query": {
       "target": "我落住嚟做乜嘢啫？嗰個我仔嚟",
-      "reference": "我下注干甚么？他是我的儿子"
+      "reference": "我下注干什么？他是我的儿子"
     },
     "answer": {
       "output": "我落注嚟做乜嘢啫？嗰个我仔嚟",
@@ -5015,7 +5015,7 @@
   {
     "query": {
       "target": "睇流做咩啊？",
-      "reference": "少分析了甚么？"
+      "reference": "少分析了什么？"
     },
     "answer": {
       "output": "睇流做咩啊？",
@@ -5035,7 +5035,7 @@
   {
     "query": {
       "target": "我都知道，係主考？",
-      "reference": "主考到？"
+      "reference": "主考到"
     },
     "answer": {
       "output": "我都知道，係主角？",
@@ -5078,7 +5078,7 @@
   {
     "query": {
       "target": "有乜問題？",
-      "reference": "有甚么问题？"
+      "reference": "有什么问题？"
     },
     "answer": {
       "output": "有乜問題？",
@@ -5142,7 +5142,7 @@
   {
     "query": {
       "target": "鬚襯把上冇箭！畢多勝",
-      "reference": "苏灿靶上没有箭！博达多胜"
+      "reference": "苏灿靶上没有箭！博达尔多胜"
     },
     "answer": {
       "output": "苏灿靶上冇箭！博达多胜",
@@ -5315,7 +5315,7 @@
   {
     "query": {
       "target": "瞓醒未呀，靚仔你",
-      "reference": "小子，你睡醒了吗"
+      "reference": "小子你睡醒了吗"
     },
     "answer": {
       "output": "瞓醒未呀，靚仔你",
@@ -5482,7 +5482,7 @@
   {
     "query": {
       "target": "博大已多三局兩勝，係金科冇狀元",
-      "reference": "搏打两多三局两胜，是今科武状元"
+      "reference": "博达尔多三局两胜，是今科武状元"
     },
     "answer": {
       "output": "搏打以多三局兩勝，係今科武狀元",
@@ -5503,7 +5503,7 @@
   {
     "query": {
       "target": "做乜呀？",
-      "reference": "甚么事？"
+      "reference": "什么事？"
     },
     "answer": {
       "output": "做乜呀？",
@@ -5987,7 +5987,7 @@
   {
     "query": {
       "target": "蘇察哈爾產兩父子罪犯欺君，理應問斬",
-      "reference": "苏察哈爾燦两父子罪犯欺君理应问斩"
+      "reference": "苏察哈尔灿两父子罪犯欺君理应问斩"
     },
     "answer": {
       "output": "蘇察哈爾燦兩父子罪犯欺君，理應問斬",
@@ -6093,7 +6093,7 @@
   {
     "query": {
       "target": "全部依足晒基本法例辦事",
-      "reference": "全都是依足基本法律办事"
+      "reference": "全都是依足基本法例办事"
     },
     "answer": {
       "output": "全部依足晒基本法律辦事",
@@ -6916,7 +6916,7 @@
   {
     "query": {
       "target": "有這種事?",
-      "reference": "会有这回事吗？"
+      "reference": "会有这回事？"
     },
     "answer": {
       "output": "有這種事?",
@@ -8154,7 +8154,7 @@
   {
     "query": {
       "target": "什麼？",
-      "reference": "甚么？"
+      "reference": "什么？"
     },
     "answer": {
       "output": "什麼？",
@@ -8417,7 +8417,7 @@
   {
     "query": {
       "target": "阿爹！做乜嘢？",
-      "reference": "阿爹！怎么呢？"
+      "reference": "阿爹！怎么呢"
     },
     "answer": {
       "output": "阿爹！做乜嘢？",
@@ -8585,7 +8585,7 @@
   {
     "query": {
       "target": "咩啊？",
-      "reference": "甚么？"
+      "reference": "什么？"
     },
     "answer": {
       "output": "咩啊？",
@@ -8627,7 +8627,7 @@
   {
     "query": {
       "target": "阿爹幾十歲好閒嘅啫",
-      "reference": "阿爹年纪大没甚么大不了"
+      "reference": "阿爹年纪大没什么大不了"
     },
     "answer": {
       "output": "阿爹幾十歲好閒嘅啫",
@@ -8742,7 +8742,7 @@
   {
     "query": {
       "target": "乜玉獅啊？玉牌嚟啊",
-      "reference": "甚么肉丝？是肉排"
+      "reference": "什么肉丝？是肉排"
     },
     "answer": {
       "output": "乜肉丝啊？肉排嚟啊",
@@ -9056,7 +9056,7 @@
   {
     "query": {
       "target": "有就拿來！來⋯做甚麼?",
-      "reference": "有就拿来！来⋯干甚么？"
+      "reference": "有就拿来！来⋯　　干什么？"
     },
     "answer": {
       "output": "有就拿來！來⋯做甚麼?",
@@ -9066,7 +9066,7 @@
   {
     "query": {
       "target": "新蒸豆嘛？當然要來來試試,可以的",
-      "reference": "干甚么？过新年当然要利利是是"
+      "reference": "干什么？过新年当然要利利是是"
     },
     "answer": {
       "output": "过新年嘛？当然要利利是是，佢嘅",
@@ -9098,7 +9098,7 @@
   {
     "query": {
       "target": "青春美麗　謝謝",
-      "reference": "你就青春美丽　谢谢"
+      "reference": "你就青春美丽　　谢谢"
     },
     "answer": {
       "output": "你就青春美麗　謝謝",
@@ -9522,7 +9522,7 @@
   {
     "query": {
       "target": "呢拳咪幾咁有力？",
-      "reference": "这一拳蛮有力吗？"
+      "reference": "这一拳蛮有力吗"
     },
     "answer": {
       "output": "呢拳咪幾咁有力？",
@@ -9709,7 +9709,7 @@
   {
     "query": {
       "target": "喂喂，有冇嘢食呀？",
-      "reference": "有没有东西吃？没有"
+      "reference": "有没有东西吃？　　没有"
     },
     "answer": {
       "output": "喂喂，有冇嘢食呀？",
@@ -9965,7 +9965,7 @@
   {
     "query": {
       "target": "我冇咗啲咩？",
-      "reference": "我失去了甚么？"
+      "reference": "我失去了什么？"
     },
     "answer": {
       "output": "我冇咗啲咩？",
@@ -10027,7 +10027,7 @@
   {
     "query": {
       "target": "做乞衣有乜唔好呀？",
-      "reference": "做乞丐有甚么不好？"
+      "reference": "做乞丐有什么不好？"
     },
     "answer": {
       "output": "做乞衣有乜唔好呀？",
@@ -10047,7 +10047,7 @@
   {
     "query": {
       "target": "你都可以一樣嘅啫？",
-      "reference": "你也可以一样吗？"
+      "reference": "你也可以一样吗"
     },
     "answer": {
       "output": "你都可以一樣嘅啫？",
@@ -10057,7 +10057,7 @@
   {
     "query": {
       "target": "你講呀，你想要乜嘢？我成全你",
-      "reference": "你说，你想要甚么？我成全你"
+      "reference": "你说，你想要什么？我成全你"
     },
     "answer": {
       "output": "你講呀，你想要乜嘢？我成全你",
@@ -10201,7 +10201,7 @@
   {
     "query": {
       "target": "我唔理你係邊個，我唔想再同你講嘢",
-      "reference": "我不管你是甚么人，我不想再跟你说"
+      "reference": "我不管你是什么人，我不想再跟你说"
     },
     "answer": {
       "output": "我唔理你係邊个，我唔想再同你讲嘢",
@@ -10685,7 +10685,7 @@
   {
     "query": {
       "target": "怎麼樣?你沒事吧? 姐姐呢?",
-      "reference": "没事吗？ 姐姐呢？"
+      "reference": "没事吗？　　姐姐呢？"
     },
     "answer": {
       "output": "怎麼樣?你冇事吧? 姐姐呢?",
@@ -10929,7 +10929,7 @@
   {
     "query": {
       "target": "你打贏有咩用呀？",
-      "reference": "你打赢我们有甚么用？"
+      "reference": "你打赢我们有什么用？"
     },
     "answer": {
       "output": "你打赢有咩用呀？",
@@ -10961,7 +10961,7 @@
   {
     "query": {
       "target": "打狗棍咋係嘛！係？",
-      "reference": "打狗棒！是吗？"
+      "reference": "打狗棒！是吗"
     },
     "answer": {
       "output": "打狗棍咋係嘛！係？",
@@ -11013,7 +11013,7 @@
   {
     "query": {
       "target": "打斷我哋嘅珍寶之母，我哋殺咗佢！",
-      "reference": "他打断我们镇帮之宝！我们杀了他！"
+      "reference": "他打断我们镇帮之宝！我们杀了他"
     },
     "answer": {
       "output": "打斷我哋嘅鎮幫之寶，我哋殺咗佢！",
@@ -11359,7 +11359,7 @@
   {
     "query": {
       "target": "莫大叔！我兒子幾叻呀？",
-      "reference": "莫大叔！我儿子有一套吗？"
+      "reference": "莫大叔！我儿子有一套吗"
     },
     "answer": {
       "output": "莫大叔！我兒子幾叻呀？",
@@ -11369,7 +11369,7 @@
   {
     "query": {
       "target": "想不到你學識睡夢流汗",
-      "reference": "想不到你学会睡梦罗汉拳了"
+      "reference": "想不到你学会睡梦罗汉拳"
     },
     "answer": {
       "output": "想不到你學識睡夢羅漢拳",
@@ -11667,7 +11667,7 @@
   {
     "query": {
       "target": "冇得點算嘅！",
-      "reference": "没甚么法子了！"
+      "reference": "没什么法子了！"
     },
     "answer": {
       "output": "冇得点算嘅！",
@@ -11917,7 +11917,7 @@
   {
     "query": {
       "target": "係咩人馬？",
-      "reference": "甚么人马？"
+      "reference": "什么人马？"
     },
     "answer": {
       "output": "係咩人馬？",
@@ -11959,7 +11959,7 @@
   {
     "query": {
       "target": "蘇燦、哈爾燦，你搞乜鬼？",
-      "reference": "苏察哈尔灿，你搅甚么鬼？"
+      "reference": "苏察哈尔灿，你搅什么鬼？"
     },
     "answer": {
       "output": "蘇燦、察哈爾燦，你搞乜鬼？",
@@ -12066,7 +12066,7 @@
   {
     "query": {
       "target": "掌路，是",
-      "reference": "长老，在"
+      "reference": "长老　　在"
     },
     "answer": {
       "output": "长老，喺",
@@ -12148,7 +12148,7 @@
   {
     "query": {
       "target": "家我死緊嘅？放心佢",
-      "reference": "我现在死定了？放心去吧"
+      "reference": "我现在死定了？放心去"
     },
     "answer": {
       "output": "𠵱家我死緊嘅？放心去啦",
@@ -12213,7 +12213,7 @@
   {
     "query": {
       "target": "未唱完㗎喎，等我走咗你先唱，好啊",
-      "reference": "等我走了你再才唱，好的吗"
+      "reference": "等我走了你再才唱　　好的"
     },
     "answer": {
       "output": "未唱完㗎喎，等我走咗你先唱，好啊",
@@ -12234,7 +12234,7 @@
   {
     "query": {
       "target": "準備祈倫煙，是",
-      "reference": "准备麒麟烟，是"
+      "reference": "准备麒麟烟　　是"
     },
     "answer": {
       "output": "準備麒麟煙，係",
@@ -12625,7 +12625,7 @@
   {
     "query": {
       "target": "係",
-      "reference": "是吗？是"
+      "reference": "是吗？　　是"
     },
     "answer": {
       "output": "係",
@@ -12729,7 +12729,7 @@
   {
     "query": {
       "target": "講嘢啊？",
-      "reference": "你说甚么？"
+      "reference": "你说什么？"
     },
     "answer": {
       "output": "講嘢啊？",
@@ -12760,7 +12760,7 @@
   {
     "query": {
       "target": "素乞衣呀？素乞衣，你唔係乞衣鬥到瞓覺㗎咩？",
-      "reference": "苏乞儿？你不是在乞丐窝里睡觉吗？"
+      "reference": "苏乞儿？你不是在乞丐窝里睡觉吗"
     },
     "answer": {
       "output": "苏乞儿呀？苏乞儿，你唔係乞衣竇度瞓覺㗎咩？",
@@ -12856,7 +12856,7 @@
   {
     "query": {
       "target": "咩武功我都唔放在眼內",
-      "reference": "甚么武功我都不放在眼内"
+      "reference": "什么武功我都不放在眼内"
     },
     "answer": {
       "output": "咩武功我都唔放在眼內",
@@ -13193,7 +13193,7 @@
   {
     "query": {
       "target": "招木槿的人馬都被我們抓住了",
-      "reference": "赵无极的人马都给我们捉住了"
+      "reference": "赵无极的人马都给我们捉住"
     },
     "answer": {
       "output": "赵无极的人马都畀我哋抓住咗",
@@ -13362,7 +13362,7 @@
   {
     "query": {
       "target": "蘇燦，你有啲咩要求？",
-      "reference": "苏灿，你有甚么要求？"
+      "reference": "苏灿，你有什么要求？"
     },
     "answer": {
       "output": "蘇燦，你有啲咩要求？",
@@ -13383,7 +13383,7 @@
   {
     "query": {
       "target": "有冇好講？走",
-      "reference": "有甚么好说呢？走"
+      "reference": "有什么好说呢？走"
     },
     "answer": {
       "output": "有冇好讲？走",
@@ -13467,7 +13467,7 @@
   {
     "query": {
       "target": "其實我同你冇疙瘩冇癢",
-      "reference": "其实我跟你没醪没葛"
+      "reference": "其实我跟你没醪没轕"
     },
     "answer": {
       "output": "其實我同你冇葛藤冇㾗",
@@ -13478,7 +13478,7 @@
   {
     "query": {
       "target": "真係冇乜好傾㗎咋喎",
-      "reference": "真没甚么好谈"
+      "reference": "真没什么好谈"
     },
     "answer": {
       "output": "真係冇乜好傾㗎咋喎",

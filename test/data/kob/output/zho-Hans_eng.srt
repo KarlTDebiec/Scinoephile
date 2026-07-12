@@ -15,7 +15,7 @@ The towel, young master
 
 4
 00:02:37,074 --> 00:02:38,367
-师爷，少爷写的是甚么？
+师爷，少爷写的是什么？
 What did he write?
 
 5
@@ -240,7 +240,7 @@ Come over here
 
 49
 00:04:30,854 --> 00:04:32,022
-老爷，甚么事？
+老爷，什么事？
 What's the matter?
 
 50
@@ -455,7 +455,7 @@ What are they? Goldfish, or cooked fish?
 
 92
 00:06:38,148 --> 00:06:39,941
-少爷，甚么金鱼、木鱼？
+少爷，什么金鱼、木鱼？
 What does that mean?
 
 93
@@ -495,12 +495,12 @@ I won't mind, every woman is just the same
 
 100
 00:06:55,790 --> 00:06:57,000
-没甚么特别
+没什么特别
 Nothing special
 
 101
 00:07:02,255 --> 00:07:04,090
-苏翁，甚么事？
+苏翁，什么事？
 Mr So, what's the matter?
 
 102
@@ -510,7 +510,7 @@ I am attacked
 
 103
 00:07:05,967 --> 00:07:06,676
-甚么？
+什么？
 What?
 
 104
@@ -650,7 +650,7 @@ I am sorry, I am damn sorry
 
 131
 00:08:11,491 --> 00:08:12,659
-有甚么意见吗？
+有什么意见吗？
 Don't you have any objection?
 
 132
@@ -1000,7 +1000,7 @@ By the way…
 
 201
 00:11:50,168 --> 00:11:52,003
-还有甚么？说吧
+还有什么？说吧
 What else? Go ahead
 
 202
@@ -1230,7 +1230,7 @@ But…
 
 247
 00:14:03,551 --> 00:14:06,054
-但是甚么，十万两我已拿了
+但是什么，十万两我已拿了
 Stop, I have taken his money, 100,000 taels you know?
 
 248
@@ -1420,7 +1420,7 @@ That's good, I want a witness
 
 285
 00:15:41,232 --> 00:15:42,567
-证人？对
+证人？　　对
 - Witness?    - Yes
 
 286
@@ -1595,7 +1595,7 @@ Are you fond of him?
 
 320
 00:19:05,061 --> 00:19:06,312
-你胡说甚么？
+你胡说什么？
 What did you say?
 
 321
@@ -1870,7 +1870,7 @@ Please leave me a cloth
 
 375
 00:21:28,579 --> 00:21:30,498
-小孩子怕甚么呢？
+小孩子怕什么呢？
 You are only a kid, you don't need this
 
 376
@@ -2050,7 +2050,7 @@ Hurry up!
 
 411
 00:25:32,322 --> 00:25:34,700
-甚么事⋯甚么事？
+什么事⋯什么事？
 What's the matter?
 
 412
@@ -2165,7 +2165,7 @@ for your examination?
 
 434
 00:26:35,761 --> 00:26:38,514
-准备甚么？我赢定了，你不知道吗
+准备什么？我赢定了，你不知道吗
 What should I prepare? I must win, don't you know that?
 
 435
@@ -2380,7 +2380,7 @@ It's meaningless to be the champion of weight lifting
 
 477
 00:31:56,164 --> 00:31:57,624
-话不是这样说　　甚么？
+话不是这样说　　什么？
 - You shouldn't put it that way    - What?
 
 478
@@ -2440,7 +2440,7 @@ But he has worked very hard
 
 489
 00:32:21,731 --> 00:32:23,233
-甚么？
+什么？
 What?
 
 490
@@ -2470,7 +2470,7 @@ Why not 2 million taels?
 
 495
 00:32:36,413 --> 00:32:38,415
-怎么？为甚么你突然间看好他
+怎么？为什么你突然间看好他
 What? Why are you so optimistic about Chan?
 
 496
@@ -2515,12 +2515,12 @@ How generous!
 
 504
 00:32:52,596 --> 00:32:53,555
-为甚么你不下注？
+为什么你不下注？
 Why don't you bet?
 
 505
 00:32:53,597 --> 00:32:56,349
-我下注干甚么？他是我的儿子
+我下注干什么？他是我的儿子
 Why should I bet? He is my son
 
 506
@@ -2530,7 +2530,7 @@ Shit, I miss one thing out of my calculation
 
 507
 00:33:00,770 --> 00:33:01,480
-少分析了甚么？
+少分析了什么？
 What?
 
 508
@@ -2540,7 +2540,7 @@ The blood
 
 509
 00:33:04,900 --> 00:33:07,027
-主考到？
+主考到
 Here comes the Examiner
 
 510
@@ -2560,7 +2560,7 @@ Seng-ko-lin-ch'in?!
 
 513
 00:33:20,790 --> 00:33:21,750
-有甚么问题？
+有什么问题？
 What's the problem?
 
 514
@@ -2590,7 +2590,7 @@ I do think so
 
 519
 00:34:15,720 --> 00:34:19,391
-苏灿靶上没有箭！博达多胜
+苏灿靶上没有箭！博达尔多胜
 So's arrow isn't on the target, Po won this section
 
 520
@@ -2670,7 +2670,7 @@ How can you use such a dirty stance?
 
 535
 00:37:33,543 --> 00:37:35,253
-小子，你睡醒了吗
+小子你睡醒了吗
 Have you woken?
 
 536
@@ -2680,7 +2680,7 @@ Bravo! He won
 
 537
 00:37:38,256 --> 00:37:39,799
-喝茶！喝茶！
+喝茶！喝茶
 Have some tea
 
 538
@@ -2760,7 +2760,7 @@ You shameless
 
 553
 00:38:11,748 --> 00:38:16,711
-搏打两多三局两胜，是今科武状元
+博达尔多三局两胜，是今科武状元
 Po is the Scholar of Martial Arts
 
 554
@@ -2770,7 +2770,7 @@ I did win! Objection
 
 555
 00:38:36,773 --> 00:38:37,524
-甚么事？
+什么事？
 What are you doing?
 
 556
@@ -3030,7 +3030,7 @@ He is the Secretary for Justice
 
 607
 00:41:29,529 --> 00:41:33,533
-苏察哈爾燦两父子罪犯欺君理应问斩
+苏察哈尔灿两父子罪犯欺君理应问斩
 So's family should be sentenced to death
 
 608
@@ -3080,7 +3080,7 @@ I am fair
 
 617
 00:42:02,895 --> 00:42:05,440
-全都是依足基本法律办事
+全都是依足基本法例办事
 I judge it from the Law Book
 
 618
@@ -3295,7 +3295,7 @@ Keep on laughing
 
 660
 00:44:16,487 --> 00:44:20,116
-孩儿，你刚才有没有留点银票傍身？
+孩儿，你刚才有没有留点银票傍身
 Son. Have you kept any money?
 
 661
@@ -3575,7 +3575,7 @@ She always admires you
 
 716
 00:46:23,489 --> 00:46:24,240
-会有这回事吗？
+会有这回事？
 Really?
 
 717
@@ -3750,7 +3750,7 @@ What do you want?
 
 751
 00:48:04,173 --> 00:48:05,800
-不行，都搬不动，让我来吧
+不行，都搬不动　　让我来吧
 - No, we can't move it    - Let me do it
 
 752
@@ -3990,7 +3990,7 @@ your legs and hands have not been totally recovered
 
 799
 00:51:14,196 --> 00:51:17,116
-哈尔叔，来⋯
+哈尔叔　　来⋯
 - Mr. Ha Yee    - Coming
 
 800
@@ -4225,7 +4225,7 @@ Little kid!
 
 846
 00:54:54,625 --> 00:54:55,167
-甚么？
+什么？
 What?
 
 847
@@ -4355,7 +4355,7 @@ he wouldn't be that poor if it were not for you
 
 872
 00:56:47,529 --> 00:56:49,823
-阿爹！怎么呢？
+阿爹！怎么呢
 Dad, what are you doing?
 
 873
@@ -4435,7 +4435,7 @@ Sir, I will let your dad go if you eat the dog's rice now
 
 888
 00:57:39,122 --> 00:57:39,873
-甚么？
+什么？
 What's the matter?
 
 889
@@ -4455,7 +4455,7 @@ You can't face the others if you eat this
 
 892
 00:57:56,348 --> 00:57:58,100
-阿爹年纪大没甚么大不了
+阿爹年纪大没什么大不了
 Let's forget about me
 
 893
@@ -4510,7 +4510,7 @@ There is a slice of meat here
 
 903
 00:58:37,389 --> 00:58:40,058
-甚么肉丝？是肉排
+什么肉丝？是肉排
 It's pork chop!
 
 904
@@ -4670,12 +4670,12 @@ Yes!
 
 935
 01:00:16,780 --> 01:00:18,573
-有就拿来！来⋯干甚么？
+有就拿来！来⋯　　干什么？
 - Give them to me, come on    - What for?
 
 936
 01:00:19,282 --> 01:00:22,828
-干甚么？过新年当然要利利是是
+干什么？过新年当然要利利是是
 It's new year, you should receive a red packet
 
 937
@@ -4690,7 +4690,7 @@ Good year!
 
 939
 01:00:25,705 --> 01:00:27,207
-你就青春美丽　谢谢
+你就青春美丽　　谢谢
 - Wish you ever beauty    - Thank you
 
 940
@@ -4895,7 +4895,7 @@ Come on, beat me
 
 980
 01:02:20,445 --> 01:02:21,905
-这一拳蛮有力吗？
+这一拳蛮有力吗
 See, that was powerful
 
 981
@@ -4995,7 +4995,7 @@ Congratulations
 
 1000
 01:04:11,639 --> 01:04:13,099
-有没有东西吃？没有
+有没有东西吃？　　没有
 - Is there anything to eat?    - No
 
 1001
@@ -5120,7 +5120,7 @@ even if you have money again
 
 1025
 01:05:24,754 --> 01:05:25,547
-我失去了甚么？
+我失去了什么？
 What did I lose?
 
 1026
@@ -5150,7 +5150,7 @@ I am the most senior one among the beggars
 
 1031
 01:05:41,604 --> 01:05:42,814
-做乞丐有甚么不好？
+做乞丐有什么不好？
 It's good to be a beggar
 
 1032
@@ -5160,12 +5160,12 @@ You can do everything you want
 
 1033
 01:05:45,150 --> 01:05:46,151
-你也可以一样吗？
+你也可以一样吗
 You can do the same
 
 1034
 01:05:46,401 --> 01:05:49,279
-你说，你想要甚么？我成全你
+你说，你想要什么？我成全你
 Tell me, what do you want? I will make your wish come true
 
 1035
@@ -5245,7 +5245,7 @@ That is beggar
 
 1050
 01:06:34,532 --> 01:06:36,576
-我不管你是甚么人，我不想再跟你说
+我不管你是什么人，我不想再跟你说
 I won't care who you are, I just want to stop the conversation
 
 1051
@@ -5495,7 +5495,7 @@ I think you won't come back
 
 1100
 01:11:31,621 --> 01:11:33,289
-没事吗？ 姐姐呢？
+没事吗？　　姐姐呢？
 - How is it?    - Where is sister?
 
 1101
@@ -5610,7 +5610,7 @@ I won
 
 1123
 01:15:21,058 --> 01:15:22,143
-你打赢我们有甚么用？
+你打赢我们有什么用？
 What is the use for defeating us?
 
 1124
@@ -5625,7 +5625,7 @@ You are not qualified to be the leader of us
 
 1126
 01:15:28,733 --> 01:15:30,067
-打狗棒！是吗？
+打狗棒！是吗
 “Dog Hitting Waddy”?
 
 1127
@@ -5655,7 +5655,7 @@ He broke the waddy!
 
 1132
 01:15:50,129 --> 01:15:52,965
-他打断我们镇帮之宝！我们杀了他！
+他打断我们镇帮之宝！我们杀了他
 He broke the treasure of our Association, let's kill him!
 
 1133
@@ -5830,12 +5830,12 @@ Bravo…
 
 1167
 01:17:38,154 --> 01:17:40,781
-莫大叔！我儿子有一套吗？
+莫大叔！我儿子有一套吗
 Uncle Mok, my son is really great!
 
 1168
 01:17:42,908 --> 01:17:44,952
-想不到你学会睡梦罗汉拳了
+想不到你学会睡梦罗汉拳
 I can't guess you have learnt the “Sleeping Disciple's Fists”?!
 
 1169
@@ -5968,7 +5968,7 @@ But Uncle Mok is dead, what'll we do now?
 
 1196
 01:19:38,190 --> 01:19:39,024
-没甚么法子了！
+没什么法子了！
 Just go ahead
 
 1197
@@ -6129,7 +6129,7 @@ Sir, there are many people coming from the forest
 
 1229
 01:23:02,728 --> 01:23:03,729
-甚么人马？
+什么人马？
 Who are they?
 
 1230
@@ -6169,7 +6169,7 @@ Damn you beggars
 
 1237
 01:24:28,647 --> 01:24:30,774
-苏察哈尔灿，你搅甚么鬼？
+苏察哈尔灿，你搅什么鬼？
 So Chan, what are you doing?
 
 1238
@@ -6224,7 +6224,7 @@ Chan, how can we fight with them?
 
 1248
 01:25:00,178 --> 01:25:01,179
-长老，在
+长老　　在
 - Senior    - Yes
 
 1249
@@ -6269,7 +6269,7 @@ Master, don't worry
 
 1257
 01:25:13,400 --> 01:25:14,943
-我现在死定了？放心去吧
+我现在死定了？放心去
 Am I going to die?
 
 1258
@@ -6304,7 +6304,7 @@ I haven't finished
 
 1264
 01:25:28,665 --> 01:25:30,000
-等我走了你再才唱，好的吗
+等我走了你再才唱　　好的
 - Go on after I've left    - Sure
 
 1265
@@ -6314,7 +6314,7 @@ There is smoke ahead, someone must have alarmed them.
 
 1266
 01:25:47,601 --> 01:25:48,894
-准备麒麟烟，是
+准备麒麟烟　　是
 - Get ready the Unicom Smoke.    - Yes.
 
 1267
@@ -6514,7 +6514,7 @@ I pissed once
 
 1306
 01:30:10,155 --> 01:30:10,822
-是吗？是
+是吗？　　是
 - Really?    - Yes
 
 1307
@@ -6569,7 +6569,7 @@ You bastard, give your kingdom to me
 
 1317
 01:30:40,977 --> 01:30:42,270
-你说甚么？
+你说什么？
 What are you telling him?
 
 1318
@@ -6584,7 +6584,7 @@ Yes, I am Beggar So
 
 1320
 01:30:48,485 --> 01:30:51,488
-苏乞儿？你不是在乞丐窝里睡觉吗？
+苏乞儿？你不是在乞丐窝里睡觉吗
 Why don't you sleep in your hut?
 
 1321
@@ -6629,7 +6629,7 @@ Fool, only the “Dragon Suppressing Stances” scare me
 
 1329
 01:32:13,028 --> 01:32:14,904
-甚么武功我都不放在眼内
+什么武功我都不放在眼内
 I won't give a damn to any other stances
 
 1330
@@ -6799,7 +6799,7 @@ Master
 
 1363
 01:35:30,725 --> 01:35:32,393
-赵无极的人马都给我们捉住了
+赵无极的人马都给我们捉住
 Chiu's fellows have all been caught by us
 
 1364
@@ -6884,7 +6884,7 @@ Thank you, thank you master
 
 1380
 01:36:33,037 --> 01:36:36,124
-苏灿，你有甚么要求？
+苏灿，你有什么要求？
 So Chan, what do you want as reward?
 
 1381
@@ -6894,7 +6894,7 @@ Don't you have anything to tell me?
 
 1382
 01:36:44,215 --> 01:36:46,175
-有甚么好说呢？走
+有什么好说呢？走
 Nothing special, let's go
 
 1383
@@ -6934,12 +6934,12 @@ Don't move, it'll attract their attention
 
 1390
 01:37:05,528 --> 01:37:07,322
-其实我跟你没醪没葛
+其实我跟你没醪没轕
 Actually we have no relation,
 
 1391
 01:37:07,322 --> 01:37:08,990
-真没甚么好谈
+真没什么好谈
 we have nothing to chat about
 
 1392
@@ -7099,5 +7099,5 @@ Hurry up
 
 1423
 01:38:25,900 --> 01:38:28,486
-跟着我⋯走吧⋯
+跟住我⋯走吧⋯
 Follow me… go…
