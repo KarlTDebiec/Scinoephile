@@ -450,6 +450,34 @@ def test_queryer_cache_is_namespaced_by_provider_model(tmp_path):
     assert len(provider_two.calls) == 1
 
 
+def test_queryer_cache_is_namespaced_by_test_case_class(tmp_path):
+    """Test compatible test-case classes do not share cached answers."""
+    provider_one = _RecordingProvider('{"output":"one"}')
+    queryer_one = Queryer(
+        _TestCase,
+        provider=provider_one,
+        cache_dir_path=tmp_path,
+        max_attempts=1,
+    )
+    test_case = _TestCase(query=_Query(text="input"))
+
+    result_one = queryer_one(test_case)
+
+    provider_two = _RecordingProvider('{"output":"two"}')
+    queryer_two = Queryer(
+        _CompatibleTestCase,
+        provider=provider_two,
+        cache_dir_path=tmp_path,
+        max_attempts=1,
+    )
+    result_two = queryer_two(test_case)
+
+    assert result_one.answer == _Answer(output="one")
+    assert result_two.answer == _Answer(output="two")
+    assert len(provider_one.calls) == 1
+    assert len(provider_two.calls) == 1
+
+
 def test_queryer_cache_is_namespaced_by_provider_implementation(tmp_path):
     """Test different provider implementations have different cache paths."""
     queryer_one = Queryer(
