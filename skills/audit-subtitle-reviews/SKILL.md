@@ -113,7 +113,10 @@ Read the relevant language policy before assessing rows:
 
 Inspect every displayed row for incorrect edits, missed parallel corrections,
 script leakage, lexical errors, OCR errors, punctuation, and whitespace. Treat
-JSON notes as context rather than proof that an edit is correct.
+automatic JSON-backed notes only as context, not as proof that an edit is
+correct. Before presenting the report, replace every `Notes` cell—including
+populated and blank cells—with your own concise interpretation of the row in
+English. Do not translate, preserve, quote, or merely restate an automatic note.
 
 Always show the complete raw Markdown report inline in the final response. Do
 not replace it with a summary, findings, or a file link, and do not wrap it in a

@@ -7,7 +7,8 @@
 - Compare parallel scripts for asymmetric lexical, OCR, punctuation, and
   whitespace corrections. Prefer correcting the corresponding initial review
   rather than relying on simplification cleanup.
-- Preserve useful JSON notes in reports. Independently assess suspicious edits
-  and fill blank notes with a concise judgment; do not use placeholders.
+- Treat JSON notes only as context. Replace every report note, populated or
+  blank, with an independent, concise English interpretation of the row. Do not
+  translate or restate the automatic note, and do not use placeholders.
 - Flag self-contradictory notes, incorrect proper-name changes, and any edit that
   introduces Hant characters into a simplified stage.

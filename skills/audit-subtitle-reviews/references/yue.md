@@ -13,5 +13,6 @@
   `--characters 喇啦啰` with the default changed-row filter for particles.
 - Compare parallel scripts for asymmetric lexical, OCR, punctuation, whitespace,
   and Mandarinization corrections.
-- Treat JSON notes only as context. Replace each report note with an independent,
-  concise assessment; do not merely restate the JSON or use placeholders.
+- Treat JSON notes only as context. Replace every report note, populated or
+  blank, with an independent, concise English interpretation of the row. Do not
+  translate or restate the automatic note, and do not use placeholders.
