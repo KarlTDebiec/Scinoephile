@@ -10,7 +10,6 @@ from pydantic import JsonValue
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.llms import Manager, TestCase
-from scinoephile.core.llms.test_case_mapping import remap_test_case
 
 from .id import get_test_case_id
 
@@ -54,15 +53,16 @@ class PersistedTestCase:
         """
         if test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")
-        base_test_case_cls = manager_cls.get_test_case_cls_with_prompt(
-            type(test_case),
+        base_test_case_cls = manager_cls.get_test_case_cls(
             manager_cls.base_prompt,
         )
-        base_test_case = remap_test_case(test_case, base_test_case_cls)
-        query = base_test_case.query.model_dump(mode="json")
+        base_test_case = base_test_case_cls.model_validate(
+            test_case.model_dump(mode="json")
+        )
+        query = base_test_case.query.model_dump(mode="json", by_alias=True)
         if base_test_case.answer is None:
             raise ScinoephileError("Optimization test cases must include an answer.")
-        answer = base_test_case.answer.model_dump(mode="json")
+        answer = base_test_case.answer.model_dump(mode="json", by_alias=True)
         test_case_id = get_test_case_id(query, answer, manager_cls)
         return cls(
             test_case_id=test_case_id,

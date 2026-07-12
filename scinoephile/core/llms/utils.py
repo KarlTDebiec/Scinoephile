@@ -11,7 +11,6 @@ from pathlib import Path
 from .manager import Manager
 from .prompt import Prompt
 from .test_case import TestCase
-from .test_case_mapping import remap_test_case
 
 __all__ = [
     "load_test_cases_from_json",
@@ -36,18 +35,17 @@ def load_test_cases_from_json(
     with open(input_path, encoding="utf-8") as f:
         raw_test_cases: list[dict] = json.load(f)
 
+    base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
+    test_case_cls = manager_cls.get_test_case_cls(prompt)
     test_cases: list[TestCase] = []
     for test_case_data in raw_test_cases:
-        base_test_case_cls = manager_cls.get_test_case_cls_from_data(test_case_data)
         base_test_case = base_test_case_cls.model_validate(
             test_case_data,
             extra="forbid",
         )
-        test_case_cls = manager_cls.get_test_case_cls_with_prompt(
-            base_test_case_cls,
-            prompt,
+        test_cases.append(
+            test_case_cls.model_validate(base_test_case.model_dump(mode="json"))
         )
-        test_cases.append(remap_test_case(base_test_case, test_case_cls))
 
     return test_cases
 
@@ -64,14 +62,19 @@ def save_test_cases_to_json(
         test_cases: test cases to save
         manager_cls: manager class used to construct test case models
     """
+    base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
     data = []
     for test_case in test_cases:
-        base_test_case_cls = manager_cls.get_test_case_cls_with_prompt(
-            type(test_case),
-            manager_cls.base_prompt,
+        base_test_case = base_test_case_cls.model_validate(
+            test_case.model_dump(mode="json")
         )
-        base_test_case = remap_test_case(test_case, base_test_case_cls)
-        data.append(base_test_case.model_dump(mode="json", exclude_defaults=True))
+        data.append(
+            base_test_case.model_dump(
+                mode="json",
+                by_alias=True,
+                exclude_defaults=True,
+            )
+        )
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, "w", encoding="utf-8") as f:

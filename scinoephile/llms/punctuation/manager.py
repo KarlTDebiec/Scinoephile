@@ -7,11 +7,12 @@ from __future__ import annotations
 from functools import cache
 from typing import Any, ClassVar
 
-from pydantic import Field, create_model, model_validator
+from pydantic import Field, create_model
 
 from scinoephile.core.llms import Answer, Manager, Query, TestCase
 from scinoephile.core.llms.models import get_model_name
 
+from .models import PunctuationAnswer, PunctuationQuery, PunctuationTestCase
 from .prompt import PunctuationPrompt
 
 __all__ = ["PunctuationManager"]
@@ -24,45 +25,8 @@ class PunctuationManager(Manager):
     """Stable operation identifier used in persistence and CLIs."""
     base_prompt: ClassVar[PunctuationPrompt] = PunctuationPrompt()
     """Base prompt defining persisted test-case field names."""
-
-    @classmethod
-    @cache
-    def get_query_cls(
-        cls,
-        prompt: PunctuationPrompt,
-    ) -> type[Query]:
-        """Get concrete query class with provided configuration.
-
-        Arguments:
-            prompt: text for LLM correspondence
-        Returns:
-            query model class
-        """
-        name = get_model_name("PunctuationQuery", prompt.name)
-        fields: dict[str, Any] = {
-            prompt.src_1: (
-                list[str],
-                Field(..., description=prompt.src_1_desc),
-            ),
-            prompt.src_2: (
-                str,
-                Field(..., description=prompt.src_2_desc),
-            ),
-        }
-
-        validators: dict[str, Any] = {
-            "validate_query": model_validator(mode="after")(cls.validate_query),
-        }
-
-        model = create_model(
-            name,
-            __base__=Query,
-            __module__=Query.__module__,
-            __validators__=validators,
-            **fields,
-        )
-        model.prompt = prompt
-        return model
+    test_case_base_cls: ClassVar[type[TestCase]] = PunctuationTestCase
+    """Static test-case model defining punctuation's semantic shape."""
 
     @classmethod
     @cache
@@ -70,75 +34,68 @@ class PunctuationManager(Manager):
         cls,
         prompt: PunctuationPrompt,
     ) -> type[Answer]:
-        """Get concrete answer class with provided configuration.
+        """Get concrete answer class with prompt-specific JSON field aliases.
 
         Arguments:
-            prompt: text for LLM correspondence
+            prompt: text and field aliases for LLM correspondence
         Returns:
             answer model class
         """
-        name = get_model_name("PunctuationAnswer", prompt.name)
         fields: dict[str, Any] = {
-            prompt.output: (
+            "output": (
                 str,
-                Field(..., description=prompt.output_desc),
+                Field(
+                    ...,
+                    alias=prompt.output,
+                    description=prompt.output_desc,
+                ),
             ),
         }
-
-        validators: dict[str, Any] = {
-            "validate_answer": model_validator(mode="after")(cls.validate_answer),
-        }
-
         model = create_model(
-            name,
-            __base__=Answer,
-            __module__=Answer.__module__,
-            __validators__=validators,
+            get_model_name("PunctuationAnswer", prompt.name),
+            __base__=PunctuationAnswer,
+            __module__=PunctuationAnswer.__module__,
             **fields,
         )
         model.prompt = prompt
         return model
 
     @classmethod
-    def get_test_case_cls_from_data(cls, data: dict) -> type[TestCase]:
-        """Get concrete test case class for canonical serialized data.
+    @cache
+    def get_query_cls(
+        cls,
+        prompt: PunctuationPrompt,
+    ) -> type[Query]:
+        """Get concrete query class with prompt-specific JSON field aliases.
 
         Arguments:
-            data: data from JSON
+            prompt: text and field aliases for LLM correspondence
         Returns:
-            test case model class
+            query model class
         """
-        return cls.get_test_case_cls(cls.base_prompt)
-
-    @staticmethod
-    def validate_query(model: Query) -> Query:
-        """Ensure query is internally valid.
-
-        Arguments:
-            model: query to validate
-        Returns:
-            validated query
-        """
-        prompt: PunctuationPrompt = getattr(model, "prompt")
-        source_one = getattr(model, prompt.src_1, None)
-        source_two = getattr(model, prompt.src_2, None)
-        if not source_one:
-            raise ValueError(prompt.src_1_missing_err)
-        if not source_two:
-            raise ValueError(prompt.src_2_missing_err)
-        return model
-
-    @staticmethod
-    def validate_answer(model: Answer) -> Answer:
-        """Ensure answer is internally valid.
-
-        Arguments:
-            model: answer to validate
-        Returns:
-            validated answer
-        """
-        prompt: PunctuationPrompt = getattr(model, "prompt")
-        output = getattr(model, prompt.output, None)
-        if not output:
-            raise ValueError(prompt.output_missing_err)
+        fields: dict[str, Any] = {
+            "subtitles": (
+                list[str],
+                Field(
+                    ...,
+                    alias=prompt.src_1,
+                    description=prompt.src_1_desc,
+                ),
+            ),
+            "guide": (
+                str,
+                Field(
+                    ...,
+                    alias=prompt.src_2,
+                    description=prompt.src_2_desc,
+                ),
+            ),
+        }
+        model = create_model(
+            get_model_name("PunctuationQuery", prompt.name),
+            __base__=PunctuationQuery,
+            __module__=PunctuationQuery.__module__,
+            **fields,
+        )
+        model.prompt = prompt
         return model

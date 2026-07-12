@@ -1,0 +1,168 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Tests for shared LLM manager class factories."""
+
+from __future__ import annotations
+
+from scinoephile.llms.punctuation import (
+    PunctuationManager,
+    PunctuationPrompt,
+    PunctuationTestCase,
+)
+from scinoephile.llms.review import ReviewManager, ReviewPrompt, ReviewTestCase
+
+_LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
+    subtitles="zimu",
+    revisions="xiugai",
+    index="xuhao",
+    text="wenben",
+    note="beizhu",
+)
+"""Review prompt using localized correspondence field names."""
+
+_ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
+    subtitles="sources",
+    revisions="corrections",
+    index="position",
+    text="content",
+    note="explanation",
+)
+"""Review prompt using alternative correspondence field names."""
+
+_LOCALIZED_PUNCTUATION_PROMPT = PunctuationPrompt(
+    src_1="source_one",
+    src_2="source_two",
+    output="result",
+)
+"""Punctuation prompt using non-default correspondence field names."""
+
+
+def test_static_shape_factory_caches_and_isolates_prompt_aliases():
+    """Static-shape classes should be cached without sharing prompt aliases."""
+    localized_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
+    alternative_cls = ReviewManager.get_test_case_cls(_ALTERNATIVE_REVIEW_PROMPT)
+
+    assert ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT) is localized_cls
+    assert localized_cls is not alternative_cls
+    assert issubclass(localized_cls, ReviewTestCase)
+    assert localized_cls.query_cls.model_fields["subtitles"].alias == "zimu"
+    assert alternative_cls.query_cls.model_fields["subtitles"].alias == "sources"
+
+    test_case = localized_cls.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "original"}]},
+            "answer": {
+                "revisions": [{"index": 1, "text": "corrected", "note": "typo"}]
+            },
+        }
+    )
+    assert test_case.query.model_dump(by_alias=True) == {
+        "zimu": [{"xuhao": 1, "wenben": "original"}]
+    }
+    assert test_case.answer is not None
+    assert test_case.answer.model_dump(by_alias=True) == {
+        "xiugai": [{"xuhao": 1, "wenben": "corrected", "beizhu": "typo"}]
+    }
+
+
+def test_prompt_specific_classes_revalidate_by_semantic_field_name():
+    """Equivalent prompt classes should revalidate without positional mapping."""
+    localized_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
+    alternative_cls = ReviewManager.get_test_case_cls(_ALTERNATIVE_REVIEW_PROMPT)
+    localized = localized_cls.model_validate(
+        {
+            "query": {"zimu": [{"xuhao": 1, "wenben": "original"}]},
+            "answer": {
+                "xiugai": [
+                    {
+                        "xuhao": 1,
+                        "wenben": "corrected",
+                        "beizhu": "typo",
+                    }
+                ]
+            },
+        }
+    )
+
+    alternative = alternative_cls.model_validate(localized.model_dump(mode="json"))
+
+    assert alternative.model_dump(mode="json") == localized.model_dump(mode="json")
+    assert alternative.query.model_dump(by_alias=True) == {
+        "sources": [{"position": 1, "content": "original"}]
+    }
+    assert alternative.answer is not None
+    assert alternative.answer.model_dump(by_alias=True) == {
+        "corrections": [
+            {
+                "position": 1,
+                "content": "corrected",
+                "explanation": "typo",
+            }
+        ]
+    }
+
+
+def test_punctuation_factory_uses_static_fields_with_prompt_aliases():
+    """Punctuation models should use semantic fields and prompt aliases."""
+    test_case_cls = PunctuationManager.get_test_case_cls(_LOCALIZED_PUNCTUATION_PROMPT)
+
+    assert (
+        PunctuationManager.get_test_case_cls(_LOCALIZED_PUNCTUATION_PROMPT)
+        is test_case_cls
+    )
+    assert issubclass(test_case_cls, PunctuationTestCase)
+    assert set(test_case_cls.query_cls.model_fields) == {"subtitles", "guide"}
+    assert test_case_cls.query_cls.model_fields["subtitles"].alias == "source_one"
+    assert test_case_cls.query_cls.model_fields["guide"].alias == "source_two"
+    assert set(test_case_cls.answer_cls.model_fields) == {"output"}
+    assert test_case_cls.answer_cls.model_fields["output"].alias == "result"
+
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {"subtitles": ["Hello"], "guide": "Hello"},
+            "answer": {"output": "Hello"},
+        }
+    )
+    assert test_case.query.model_dump() == {
+        "subtitles": ["Hello"],
+        "guide": "Hello",
+    }
+    assert test_case.answer is not None
+    assert test_case.answer.model_dump() == {"output": "Hello"}
+    assert test_case.query.model_dump(by_alias=True) == {
+        "source_one": ["Hello"],
+        "source_two": "Hello",
+    }
+    assert test_case.answer.model_dump(by_alias=True) == {"result": "Hello"}
+
+
+def test_generated_test_case_inherits_stable_metadata_schema():
+    """Generated test cases should preserve metadata order and field schemas."""
+    test_case_cls = ReviewManager.get_test_case_cls(_LOCALIZED_REVIEW_PROMPT)
+    schema = test_case_cls.model_json_schema(by_alias=True)
+
+    assert list(schema["properties"]) == [
+        "query",
+        "answer",
+        "difficulty",
+        "few_shot",
+        "verified",
+    ]
+    assert schema["properties"]["difficulty"] == {
+        "default": 0,
+        "description": "Difficulty level of the test case, used for filtering.",
+        "title": "Difficulty",
+        "type": "integer",
+    }
+    assert schema["properties"]["few_shot"] == {
+        "default": False,
+        "description": "Whether to include test case in few-shot examples.",
+        "title": "Few Shot",
+        "type": "boolean",
+    }
+    assert schema["properties"]["verified"] == {
+        "default": False,
+        "description": "Whether to include test case in the verified answers cache.",
+        "title": "Verified",
+        "type": "boolean",
+    }

@@ -6,9 +6,9 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from typing import ClassVar
+from typing import ClassVar, Self
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 
 from .answer import Answer
 from .prompt import Prompt
@@ -33,16 +33,35 @@ class TestCase(BaseModel, ABC):
     """Query data for the test case."""
     answer: Answer | None = None
     """Answer data for the test case."""
-    difficulty: int = 0
+    difficulty: int = Field(
+        0,
+        description="Difficulty level of the test case, used for filtering.",
+    )
     """Difficulty level for filtering and prioritization."""
-    few_shot: bool = False
+    few_shot: bool = Field(
+        False,
+        description="Whether to include test case in few-shot examples.",
+    )
     """Whether the test case is included as a few-shot example."""
-    verified: bool = False
+    verified: bool = Field(
+        False,
+        description="Whether to include test case in the verified answers cache.",
+    )
     """Whether the test case answer has been verified."""
 
     def __str__(self) -> str:
         """String representation."""
         return json.dumps(self.model_dump(), indent=2, ensure_ascii=False)
+
+    @model_validator(mode="after")
+    def enforce_min_difficulty(self) -> Self:
+        """Ensure difficulty is at least the model-defined minimum.
+
+        Returns:
+            validated test case
+        """
+        self.difficulty = max(self.difficulty, self.get_min_difficulty())
+        return self
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified.

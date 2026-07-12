@@ -5,6 +5,9 @@
 from __future__ import annotations
 
 from functools import partial
+from typing import ClassVar, Self
+
+from pydantic import model_validator
 
 from scinoephile.core import Language
 from scinoephile.core.llms import TestCase
@@ -15,12 +18,17 @@ from scinoephile.core.text import (
 )
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
-from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
+from scinoephile.llms.punctuation import (
+    PunctuationManager,
+    PunctuationPrompt,
+    PunctuationTestCase,
+)
 
 __all__ = [
     "YuePunctuationVsZhoPromptYueHans",
     "YuePunctuationVsZhoPromptYueHant",
     "YueZhoPunctuationManager",
+    "YueZhoPunctuationTestCase",
 ]
 
 
@@ -62,53 +70,48 @@ YuePunctuationVsZhoPromptYueHans = YuePunctuationVsZhoPromptYueHant.transformed(
 """Text for simplified written Cantonese/standard Chinese punctuation."""
 
 
-class YueZhoPunctuationManager(PunctuationManager):
-    """Factories for written Cantonese/standard Chinese punctuation LLM classes."""
+class YueZhoPunctuationTestCase(PunctuationTestCase):
+    """Written Cantonese punctuation guided by standard Chinese."""
 
-    @staticmethod
-    def get_min_difficulty(model: TestCase) -> int:
-        """Get minimum difficulty based on the test case properties.
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty from output and guide punctuation.
 
-        Arguments:
-            model: test case to inspect
         Returns:
             minimum difficulty
         """
-        prompt: PunctuationPrompt = getattr(model, "prompt")
-        min_difficulty = PunctuationManager.get_min_difficulty(model)
-        if model.answer is None:
+        min_difficulty = super().get_min_difficulty()
+        if self.answer is None:
             return min_difficulty
 
-        zhongwen = getattr(model.query, prompt.src_2, "")
-        yuewen_punctuated = getattr(model.answer, prompt.output, "")
-        if remove_non_punc_and_whitespace(yuewen_punctuated):
+        if remove_non_punc_and_whitespace(self.answer.output):
             min_difficulty = max(min_difficulty, 1)
-        if remove_non_punc_and_whitespace(zhongwen) != remove_non_punc_and_whitespace(
-            yuewen_punctuated
-        ):
+        if remove_non_punc_and_whitespace(
+            self.query.guide
+        ) != remove_non_punc_and_whitespace(self.answer.output):
             min_difficulty = max(min_difficulty, 2)
         return min_difficulty
 
-    @staticmethod
-    def validate_test_case(model: TestCase) -> TestCase:
+    @model_validator(mode="after")
+    def validate_output_characters(self) -> Self:
         """Ensure query and answer together are valid.
 
-        Arguments:
-            model: test case to validate
         Returns:
             validated test case
         """
-        prompt: PunctuationPrompt = getattr(model, "prompt")
-        if model.answer is None:
-            return model
-
-        yuewen_to_punctuate = getattr(model.query, prompt.src_1, None) or []
-        yuewen_punctuated = getattr(model.answer, prompt.output, None) or ""
+        if self.answer is None:
+            return self
 
         expected = "".join(
-            remove_punc_and_whitespace(subtitle) for subtitle in yuewen_to_punctuate
+            remove_punc_and_whitespace(subtitle) for subtitle in self.query.subtitles
         )
-        received = remove_punc_and_whitespace(yuewen_punctuated)
+        received = remove_punc_and_whitespace(self.answer.output)
         if expected != received:
-            raise ValueError(prompt.src_1_chars_changed_err(expected, received))
-        return model
+            raise ValueError(self.prompt.src_1_chars_changed_err(expected, received))
+        return self
+
+
+class YueZhoPunctuationManager(PunctuationManager):
+    """Factories for written Cantonese/standard Chinese punctuation LLM classes."""
+
+    test_case_base_cls: ClassVar[type[TestCase]] = YueZhoPunctuationTestCase
+    """Static test-case model defining Yue/Zho punctuation semantics."""

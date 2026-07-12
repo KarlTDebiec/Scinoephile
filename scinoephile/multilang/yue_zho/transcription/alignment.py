@@ -5,12 +5,12 @@
 from __future__ import annotations
 
 from pprint import pformat
+from typing import cast
 
 import numpy as np
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import TestCase
 from scinoephile.core.pairs import get_pair_strings
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import (
@@ -19,14 +19,16 @@ from scinoephile.core.synchronization import (
     get_sync_groups_string,
     get_sync_overlap_matrix,
 )
-from scinoephile.llms.delineation import DelineationManager
-
-from .delineation import (
-    YueDelineationVsZhoPromptYueHans,
+from scinoephile.llms.delineation import (
+    DelineationManager,
+    DelineationPrompt,
+    DelineationTestCase,
 )
+from scinoephile.llms.punctuation import PunctuationPrompt
+
 from .punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
     YueZhoPunctuationManager,
+    YueZhoPunctuationTestCase,
 )
 
 __all__ = ["Alignment"]
@@ -143,13 +145,18 @@ class Alignment:
         zw_idxs = set([zw_idx for sg in self.sync_groups for zw_idx in sg[0]])
         return zw_idxs == set(range(len(self.zhongwen)))
 
-    def get_delineation_test_case(self, sg_1_idx: int) -> TestCase | None:
+    def get_delineation_test_case(
+        self,
+        sg_1_idx: int,
+        prompt: DelineationPrompt,
+    ) -> DelineationTestCase | None:
         """Get delineation query for a sync group index.
 
         Arguments:
-            sg_1_idx: Index of sync group 1
+            sg_1_idx: index of sync group 1
+            prompt: text and field aliases for LLM correspondence
         Returns:
-            Query, or None if there are no written Cantonese subs to shift
+            test case, or None if there are no written Cantonese subs to shift
         """
         # Get sync group 1
         if sg_1_idx < 0 or sg_1_idx >= len(self.sync_groups):
@@ -204,23 +211,28 @@ class Alignment:
         # Return
         if len(yw_1) == 0 and len(yw_2) == 0:
             return None
-        prompt = YueDelineationVsZhoPromptYueHans
         test_case_cls = DelineationManager.get_test_case_cls(prompt=prompt)
-        query_kwargs = {
-            prompt.src_1_sub_1: zw_1,
-            prompt.src_2_sub_1: yw_1,
-            prompt.src_1_sub_2: zw_2,
-            prompt.src_2_sub_2: yw_2,
-        }
-        # noinspection PyArgumentList
-        test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
-        return test_case
+        query = test_case_cls.query_cls.model_validate(
+            {
+                "reference_one": zw_1,
+                "reference_two": zw_2,
+                "target_one": yw_1,
+                "target_two": yw_2,
+            }
+        )
+        test_case = test_case_cls(query=query)
+        return cast(DelineationTestCase, test_case)
 
-    def get_punctuation_test_case(self, sg_idx: int) -> TestCase | None:
+    def get_punctuation_test_case(
+        self,
+        sg_idx: int,
+        prompt: PunctuationPrompt,
+    ) -> YueZhoPunctuationTestCase | None:
         """Get punctuation query for a sync group.
 
         Arguments:
-            sg_idx: Index of sync group
+            sg_idx: index of sync group
+            prompt: text and field aliases for LLM correspondence
         Returns:
             test case, or None if there are no written Cantonese subs to punctuate
         """
@@ -249,12 +261,12 @@ class Alignment:
         yws = [self.yuewen[i].text for i in yw_idxs]
 
         # Return punctuate query
-        prompt = YuePunctuationVsZhoPromptYueHans
         test_case_cls = YueZhoPunctuationManager.get_test_case_cls(prompt=prompt)
-        query_kwargs = {
-            prompt.src_2: zw,
-            prompt.src_1: yws,
-        }
-        # noinspection PyArgumentList
-        test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
-        return test_case
+        query = test_case_cls.query_cls.model_validate(
+            {
+                "subtitles": yws,
+                "guide": zw,
+            }
+        )
+        test_case = test_case_cls(query=query)
+        return cast(YueZhoPunctuationTestCase, test_case)

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar, Self
 
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import Field, model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase, TestCaseSubtitle
 
@@ -32,8 +32,6 @@ class GapTranslationSubtitle(TestCaseSubtitle):
 
 class GapTranslationQuery(Query):
     """Sparse targets and complete guides for gap translation."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[GapTranslationPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""
@@ -68,8 +66,6 @@ class GapTranslationQuery(Query):
 class GapTranslationAnswer(Answer):
     """Translations for every missing target index."""
 
-    model_config = ConfigDict(validate_by_name=True)
-
     prompt: ClassVar[GapTranslationPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""
     outputs: list[GapTranslationSubtitle]
@@ -97,3 +93,24 @@ class GapTranslationTestCase(TestCase):
     """Sparse targets and complete guides."""
     answer: GapTranslationAnswer | None = None
     """Translations for target gaps, if available."""
+
+    @model_validator(mode="after")
+    def validate_output_correspondence(self) -> Self:
+        """Ensure outputs exactly fill the guide indexes absent from targets.
+
+        Returns:
+            validated test case
+        """
+        if self.answer is None:
+            return self
+
+        target_indexes = {target.index for target in self.query.targets}
+        expected_output_indexes = [
+            guide.index
+            for guide in self.query.guides
+            if guide.index not in target_indexes
+        ]
+        output_indexes = [output.index for output in self.answer.outputs]
+        if output_indexes != expected_output_indexes:
+            raise ValueError(self.prompt.output_indices_mismatch_err)
+        return self

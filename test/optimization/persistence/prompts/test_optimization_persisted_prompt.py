@@ -19,12 +19,9 @@ from scinoephile.optimization.persistence.prompts import PersistedPrompt
 
 _ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT = replace(
     ReviewPromptEng,
-    difficulty_description="Different difficulty description.",
     few_shot_answer_intro="Different example answer:",
-    few_shot_description="Different few-shot flag description.",
     few_shot_intro="Different examples:",
     few_shot_query_intro="Different example query:",
-    verified_description="Different verified description.",
 )
 """English review prompt with different few-shot-only text."""
 
@@ -42,12 +39,13 @@ def test_conversion_includes_all_string_fields():
     assert baseline.prompt_id != alternative.prompt_id
     assert baseline.language == Language.eng
     assert alternative_attributes["few_shot_intro"] == "Different examples:"
-    assert alternative_attributes["difficulty_description"] == (
-        "Different difficulty description."
+    assert alternative_attributes["few_shot_query_intro"] == "Different example query:"
+    assert alternative_attributes["few_shot_answer_intro"] == (
+        "Different example answer:"
     )
-    assert alternative_attributes["verified_description"] == (
-        "Different verified description."
-    )
+    assert "difficulty_description" not in alternative_attributes
+    assert "few_shot_description" not in alternative_attributes
+    assert "verified_description" not in alternative_attributes
 
 
 def test_conversion_includes_operation_and_tool_attributes():

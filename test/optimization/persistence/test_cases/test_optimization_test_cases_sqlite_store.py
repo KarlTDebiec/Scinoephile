@@ -59,6 +59,7 @@ def test_store_round_trips_normalized_json(tmp_path: Path):
     store = TestCaseSqliteStore(database_path)
     test_case = get_test_case(
         difficulty=1,
+        few_shot=True,
         verified=True,
         query={
             "items": ["one", "two", {"nested": True}],
@@ -76,11 +77,13 @@ def test_store_round_trips_normalized_json(tmp_path: Path):
     loaded = store.get_test_case(test_case.test_case_id)
     assert loaded is not None
     assert loaded.operation == "translation"
+    assert loaded.few_shot
     assert loaded.query == test_case.query
     assert loaded.answer == test_case.answer
     assert loaded.source_paths == ("x.json",)
 
     with closing(sqlite3.connect(database_path)) as connection:
+        few_shot = connection.execute("SELECT few_shot FROM test_cases").fetchone()[0]
         columns = {
             str(row[1]) for row in connection.execute("PRAGMA table_info(test_cases)")
         }
@@ -92,12 +95,13 @@ def test_store_round_trips_normalized_json(tmp_path: Path):
         "answer_json",
         "difficulty",
         "operation",
-        "prompt",
+        "few_shot",
         "query_json",
         "test_case_id",
         "verified",
     }
     assert source_columns == {"source_path", "test_case_id"}
+    assert few_shot == 1
 
 
 def test_store_defers_parent_dir_creation_until_schema_creation(tmp_path: Path):

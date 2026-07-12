@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest.mock import Mock
 
 from pydantic import ValidationError
-from pytest import raises
+from pytest import mark, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, Queryer
@@ -22,6 +22,7 @@ from scinoephile.llms.guided_review import (
     GuidedReviewManager,
     GuidedReviewProcessor,
     GuidedReviewPrompt,
+    GuidedReviewTestCase,
 )
 
 _LOCALIZED_PROMPT = GuidedReviewPrompt(
@@ -162,11 +163,18 @@ def test_answer_requires_sparse_ordered_annotated_revisions():
         answer_cls.model_validate({"revisions": [{"index": 1, "text": "revision"}]})
 
 
-def test_test_case_rejects_missing_and_unmodified_revision_indexes():
+@mark.parametrize(
+    "test_case_cls",
+    [
+        GuidedReviewTestCase,
+        GuidedReviewManager.get_test_case_cls(GuidedReviewManager.base_prompt),
+    ],
+    ids=["static", "generated"],
+)
+def test_test_case_rejects_missing_and_unmodified_revision_indexes(
+    test_case_cls: type[GuidedReviewTestCase],
+):
     """Revisions should target and modify query target subtitles."""
-    test_case_cls = GuidedReviewManager.get_test_case_cls(
-        GuidedReviewManager.base_prompt
-    )
     query = {
         "targets": [{"index": 1, "text": "original"}],
         "guides": [{"index": 1, "text": "guide"}],
@@ -190,6 +198,31 @@ def test_test_case_rejects_missing_and_unmodified_revision_indexes():
                 },
             }
         )
+
+
+@mark.parametrize(
+    "test_case_cls",
+    [
+        GuidedReviewTestCase,
+        GuidedReviewManager.get_test_case_cls(GuidedReviewManager.base_prompt),
+    ],
+    ids=["static", "generated"],
+)
+def test_revisions_raise_minimum_difficulty(
+    test_case_cls: type[GuidedReviewTestCase],
+):
+    """A nonempty revisions list should require difficulty one."""
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "original"}],
+                "guides": [],
+            },
+            "answer": {"revisions": [{"index": 1, "text": "revised", "note": "typo"}]},
+        }
+    )
+
+    assert test_case.difficulty == 1
 
 
 def test_list_cardinality_does_not_change_model_class():

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar, Self
 
-from pydantic import ConfigDict, Field, model_validator
+from pydantic import Field, model_validator
 
 from scinoephile.core.llms import (
     AnnotatedTestCaseSubtitle,
@@ -31,8 +31,6 @@ _BASE_PROMPT = ReviewPrompt()
 class ReviewQuery(Query):
     """Subtitles to review."""
 
-    model_config = ConfigDict(validate_by_name=True)
-
     prompt: ClassVar[ReviewPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""
     subtitles: list[TestCaseSubtitle] = Field(min_length=1)
@@ -49,8 +47,6 @@ class ReviewQuery(Query):
 
 class ReviewAnswer(Answer):
     """Sparse revisions for subtitles that require changes."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[ReviewPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""
@@ -79,3 +75,35 @@ class ReviewTestCase(TestCase):
     """Subtitles to review."""
     answer: ReviewAnswer | None = None
     """Sparse subtitle revisions, if available."""
+
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty based on whether any subtitle is revised.
+
+        Returns:
+            minimum difficulty
+        """
+        min_difficulty = super().get_min_difficulty()
+        if self.answer is not None and self.answer.revisions:
+            min_difficulty = max(min_difficulty, 1)
+        return min_difficulty
+
+    @model_validator(mode="after")
+    def validate_revision_correspondence(self) -> Self:
+        """Ensure every answer revision changes a query subtitle.
+
+        Returns:
+            validated test case
+        """
+        if self.answer is None:
+            return self
+
+        query_text_by_index = {
+            subtitle.index: subtitle.text for subtitle in self.query.subtitles
+        }
+        for revision in self.answer.revisions:
+            input_text = query_text_by_index.get(revision.index)
+            if input_text is None:
+                raise ValueError(self.prompt.revision_index_missing_err(revision.index))
+            if revision.text == input_text:
+                raise ValueError(self.prompt.revision_unmodified_err(revision.index))
+        return self

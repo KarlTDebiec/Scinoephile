@@ -8,7 +8,7 @@ import json
 from abc import ABC
 from typing import ClassVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from .prompt import Prompt
 
@@ -17,6 +17,8 @@ __all__ = ["Answer"]
 
 class Answer(BaseModel, ABC):
     """ABC for LLM answers."""
+
+    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[Prompt]
     """Text for LLM correspondence."""

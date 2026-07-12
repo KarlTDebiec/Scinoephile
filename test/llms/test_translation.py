@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest.mock import Mock
 
 from pydantic import ValidationError
-from pytest import raises
+from pytest import mark, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, Queryer
@@ -22,6 +22,7 @@ from scinoephile.llms.translation import (
     TranslationManager,
     TranslationProcessor,
     TranslationPrompt,
+    TranslationTestCase,
 )
 
 _LOCALIZED_PROMPT = TranslationPrompt(
@@ -124,10 +125,18 @@ def test_query_and_answer_require_nonempty_consecutive_indexes():
         )
 
 
-def test_answer_indexes_must_correspond_to_query_indexes():
+@mark.parametrize(
+    "test_case_cls",
+    [
+        TranslationTestCase,
+        TranslationManager.get_test_case_cls(TranslationManager.base_prompt),
+    ],
+    ids=["static", "generated"],
+)
+def test_answer_indexes_must_correspond_to_query_indexes(
+    test_case_cls: type[TranslationTestCase],
+):
     """Every query subtitle should have exactly one corresponding output."""
-    test_case_cls = TranslationManager.get_test_case_cls(TranslationManager.base_prompt)
-
     with raises(ValidationError, match="correspond exactly"):
         test_case_cls.model_validate(
             {

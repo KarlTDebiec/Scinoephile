@@ -4,15 +4,20 @@
 
 Package hierarchy (modules may import from any above):
 * prompt
+* models
 * manager
 """
 
 from __future__ import annotations
 
 from .manager import PunctuationManager
+from .models import PunctuationAnswer, PunctuationQuery, PunctuationTestCase
 from .prompt import PunctuationPrompt
 
 __all__ = [
+    "PunctuationAnswer",
     "PunctuationManager",
     "PunctuationPrompt",
+    "PunctuationQuery",
+    "PunctuationTestCase",
 ]
