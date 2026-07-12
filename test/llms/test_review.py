@@ -16,6 +16,7 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, Queryer
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.lang.zho.review import ReviewPromptZhoHant
 from scinoephile.llms.review import (
     ReviewAnswer,
     ReviewManager,
@@ -112,6 +113,90 @@ def test_queryer_rejects_type_coercion_at_llm_boundary():
     answer = cast(ReviewAnswer, result.answer)
     assert answer.revisions[0].index == 1
     assert provider.chat_completion.call_count == 2
+
+
+def test_queryer_localizes_answer_validation_retry():
+    """Structural answer retries should not include English validation text."""
+    test_case_cls = ReviewManager.get_test_case_cls(ReviewPromptZhoHant)
+    test_case = test_case_cls.model_validate(
+        {"query": {"subtitles": [{"index": 1, "text": "原文"}]}}
+    )
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.side_effect = [
+        '{"xiugai": [{"xuhao": "1", "wenben": "修改", "beizhu": "修正"}]}',
+        '{"xiugai": [{"xuhao": 1, "wenben": "修改", "beizhu": "修正"}]}',
+    ]
+    queryer = Queryer(test_case_cls, provider=provider, max_attempts=2)
+
+    queryer(test_case)
+
+    messages = provider.chat_completion.call_args_list[1].args[0]
+    assert messages[-1]["content"] == (
+        f"{ReviewPromptZhoHant.answer_invalid_pre}\n"
+        f"{ReviewPromptZhoHant.answer_invalid_post}"
+    )
+
+
+def test_queryer_includes_localized_answer_validation_details():
+    """Answer retries should retain prompt-authored validation details."""
+    test_case_cls = ReviewManager.get_test_case_cls(ReviewPromptZhoHant)
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "subtitles": [
+                    {"index": 1, "text": "原文一"},
+                    {"index": 2, "text": "原文二"},
+                ]
+            }
+        }
+    )
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.side_effect = [
+        (
+            '{"xiugai": ['
+            '{"xuhao": 2, "wenben": "修改二", "beizhu": "修正"},'
+            '{"xuhao": 1, "wenben": "修改一", "beizhu": "修正"}'
+            "]}"
+        ),
+        '{"xiugai": []}',
+    ]
+    queryer = Queryer(test_case_cls, provider=provider, max_attempts=2)
+
+    queryer(test_case)
+
+    messages = provider.chat_completion.call_args_list[1].args[0]
+    assert messages[-1]["content"] == "\n".join(
+        (
+            ReviewPromptZhoHant.answer_invalid_pre,
+            ReviewPromptZhoHant.revision_indices_err,
+            ReviewPromptZhoHant.answer_invalid_post,
+        )
+    )
+
+
+def test_queryer_localizes_test_case_validation_retry():
+    """Query-specific retries should use the prompt's localized error text."""
+    test_case_cls = ReviewManager.get_test_case_cls(ReviewPromptZhoHant)
+    test_case = test_case_cls.model_validate(
+        {"query": {"subtitles": [{"index": 1, "text": "原文"}]}}
+    )
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.side_effect = [
+        '{"xiugai": [{"xuhao": 2, "wenben": "修改", "beizhu": "修正"}]}',
+        '{"xiugai": []}',
+    ]
+    queryer = Queryer(test_case_cls, provider=provider, max_attempts=2)
+
+    queryer(test_case)
+
+    messages = provider.chat_completion.call_args_list[1].args[0]
+    assert messages[-1]["content"] == "\n".join(
+        (
+            ReviewPromptZhoHant.test_case_invalid_pre,
+            ReviewPromptZhoHant.revision_index_missing_err(2),
+            ReviewPromptZhoHant.test_case_invalid_post,
+        )
+    )
 
 
 def test_partial_processing_preserves_unencountered_test_cases(tmp_path: Path):

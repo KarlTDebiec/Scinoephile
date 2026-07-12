@@ -17,7 +17,7 @@ ENG_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
     "few_shot_answer_intro": "Expected answer:",
     "answer_invalid_pre": (
         "Your previous response was not valid JSON or did not match the expected "
-        "schema. Error details:"
+        "schema."
     ),
     "answer_invalid_post": (
         "Please try again and respond only with a valid JSON object matching the "

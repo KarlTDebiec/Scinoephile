@@ -9,6 +9,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, ValidationInfo, model_validator
+from pydantic_core import PydanticCustomError
 
 __all__ = [
     "LLMModel",
@@ -86,7 +87,11 @@ class LLMModel(BaseModel):
                 f"{field_name!r} (use {alias!r})"
                 for field_name, alias in noncanonical_fields
             )
-            raise ValueError(f"JSON input must use field aliases: {replacements}.")
+            raise PydanticCustomError(
+                "llm_alias_only",
+                "JSON input must use field aliases: {replacements}.",
+                {"replacements": replacements},
+            )
 
         return value
 

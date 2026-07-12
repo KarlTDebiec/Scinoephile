@@ -87,7 +87,7 @@ class Queryer[TTestCase: TestCase]:
         self.system_prompt = self.prompt.base_system_prompt
         """System prompt shared by all queries executed by this instance."""
         if self.additional_context:
-            self.system_prompt += f"\n\nAdditional context:\n{self.additional_context}"
+            self.system_prompt += f"\n\n{self.additional_context}"
         self.system_prompt += self.get_few_shot_test_cases_str()
 
     def __call__(self, test_case: TestCase) -> TTestCase:
@@ -150,14 +150,17 @@ class Queryer[TTestCase: TestCase]:
                 )
                 if attempt == self.max_attempts:
                     raise
+                validation_errors = self._get_prompt_validation_errors(exc)
                 messages.append({"role": "assistant", "content": content})
                 messages.append(
                     {
                         "role": "user",
-                        "content": (
-                            f"{self.prompt.answer_invalid_pre}\n"
-                            f"{'\n'.join(e['msg'] for e in exc.errors())}\n"
-                            f"{self.prompt.answer_invalid_post}"
+                        "content": "\n".join(
+                            (
+                                self.prompt.answer_invalid_pre,
+                                *validation_errors,
+                                self.prompt.answer_invalid_post,
+                            )
                         ),
                     }
                 )
@@ -183,14 +186,17 @@ class Queryer[TTestCase: TestCase]:
                 )
                 if attempt == self.max_attempts:
                     raise
+                validation_errors = self._get_prompt_validation_errors(exc)
                 messages.append({"role": "assistant", "content": content})
                 messages.append(
                     {
                         "role": "user",
-                        "content": (
-                            f"{self.prompt.test_case_invalid_pre}\n"
-                            f"{'\n'.join(e['msg'] for e in exc.errors())}\n"
-                            f"{self.prompt.test_case_invalid_post}"
+                        "content": "\n".join(
+                            (
+                                self.prompt.test_case_invalid_pre,
+                                *validation_errors,
+                                self.prompt.test_case_invalid_post,
+                            )
                         ),
                     }
                 )
@@ -388,3 +394,22 @@ class Queryer[TTestCase: TestCase]:
             message = str(error.get("msg"))
             lines.append(f"{location}: {message}" if location else message)
         return "\n".join(lines)
+
+    @staticmethod
+    def _get_prompt_validation_errors(exc: ValidationError) -> list[str]:
+        """Get prompt-authored validation errors suitable for LLM correspondence.
+
+        Arguments:
+            exc: validation error
+        Returns:
+            prompt-authored validation error messages
+        """
+        validation_errors: list[str] = []
+        for error in exc.errors():
+            context = error.get("ctx")
+            if context is None:
+                continue
+            cause = context.get("error")
+            if isinstance(cause, ValueError):
+                validation_errors.append(str(cause))
+        return validation_errors
