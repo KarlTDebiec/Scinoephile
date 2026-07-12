@@ -99,9 +99,9 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     test_case_directory_path: Path | None
     """directory where encountered transcription test cases are persisted."""
     delineation_test_cases: list[TestCase] | None
-    """preloaded delineation test cases used to seed the transcriber."""
+    """preloaded delineation test cases available to the transcriber."""
     punctuation_test_cases: list[TestCase] | None
-    """preloaded punctuation test cases used to seed the transcriber."""
+    """preloaded punctuation test cases available to the transcriber."""
 
 
 def get_yue_transcribed_vs_zho(

@@ -50,7 +50,7 @@ class TranslationProcessor(Processor):
                 break
 
             # Query LLM
-            test_case_cls = TranslationManager.get_test_case_cls(self.prompt)
+            test_case_cls = self.test_case_cls
             query_cls = test_case_cls.query_cls
             query = query_cls.model_validate(
                 {

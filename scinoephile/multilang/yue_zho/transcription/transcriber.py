@@ -26,11 +26,12 @@ from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.delineation import DelineationPrompt
+from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.punctuation import PunctuationPrompt
 
 from .aligner import Aligner
+from .punctuation import YueZhoPunctuationManager
 
 __all__ = [
     "DEFAULT_YUE_WHISPER_MODEL_NAME",
@@ -117,16 +118,14 @@ class YueTranscriber:
         if vad_mode in (VADMode.AUTO, VADMode.OFF):
             self.no_vad_transcriber = self._get_whisper_transcriber(use_vad=False)
         self.delineation_queryer = Queryer(
-            delineation_prompt,
-            few_shot_test_cases=[tc for tc in delineation_test_cases if tc.few_shot],
+            DelineationManager.get_test_case_cls(delineation_prompt),
             verified_test_cases=[tc for tc in delineation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
             additional_context=additional_context,
         )
         self.punctuation_queryer = Queryer(
-            punctuation_prompt,
-            few_shot_test_cases=[tc for tc in punctuation_test_cases if tc.few_shot],
+            YueZhoPunctuationManager.get_test_case_cls(punctuation_prompt),
             verified_test_cases=[tc for tc in punctuation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),

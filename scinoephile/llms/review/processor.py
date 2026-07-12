@@ -52,7 +52,7 @@ class ReviewProcessor(Processor):
                 break
 
             # Query LLM
-            test_case_cls = ReviewManager.get_test_case_cls(self.prompt)
+            test_case_cls = self.test_case_cls
             query_cls = test_case_cls.query_cls
             query = query_cls.model_validate(
                 {

@@ -100,7 +100,7 @@ def test_queryer_corresponds_using_prompt_aliases():
     provider.chat_completion.return_value = (
         '{"shuchu": [{"xuhao": 2, "wenben": "翻譯"}]}'
     )
-    queryer = Queryer(_LOCALIZED_PROMPT, provider=provider, max_attempts=1)
+    queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
 
     result = queryer(test_case)
 

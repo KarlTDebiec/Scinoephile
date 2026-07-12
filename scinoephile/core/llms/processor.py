@@ -52,6 +52,8 @@ class Processor(ABC):
 
     prompt: Prompt
     """Text for LLM correspondence."""
+    test_case_cls: type[TestCase]
+    """Test-case class for the configured prompt."""
 
     def __init__(
         self,
@@ -80,6 +82,7 @@ class Processor(ABC):
         self.prompt = prompt
         if self.manager_cls is None:
             raise ValueError("manager_cls must be set on Processor subclasses.")
+        self.test_case_cls = self.manager_cls.get_test_case_cls(self.prompt)
 
         if test_cases is None:
             test_cases = []
@@ -100,8 +103,7 @@ class Processor(ABC):
         """Whether to remove persisted cases not encountered in the current run."""
 
         self.queryer = Queryer(
-            self.prompt,
-            few_shot_test_cases=[tc for tc in test_cases if tc.few_shot],
+            self.test_case_cls,
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),

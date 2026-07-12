@@ -69,7 +69,7 @@ class GapTranslationProcessor(Processor):
                 continue
 
             # Query LLM
-            test_case_cls = GapTranslationManager.get_test_case_cls(self.prompt)
+            test_case_cls = self.test_case_cls
             query_cls = test_case_cls.query_cls
             targets: list[dict[str, int | str]] = []
             guides: list[dict[str, int | str]] = []

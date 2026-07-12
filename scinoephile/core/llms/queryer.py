@@ -10,16 +10,13 @@ from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
-from typing import cast
 
 from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
 
-from .answer import Answer
 from .llm_provider import LLMProvider
-from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
 from .tool_box import ToolBox
@@ -29,13 +26,12 @@ __all__ = ["Queryer"]
 logger = getLogger(__name__)
 
 
-class Queryer:
-    """Execute LLM queries using a prompt and provider."""
+class Queryer[TTestCase: TestCase]:
+    """Execute LLM queries using one test-case class."""
 
     def __init__(
         self,
-        prompt: Prompt,
-        few_shot_test_cases: list[TestCase] | None = None,
+        test_case_cls: type[TTestCase],
         verified_test_cases: list[TestCase] | None = None,
         *,
         provider: LLMProvider,
@@ -48,8 +44,7 @@ class Queryer:
         """Initialize.
 
         Arguments:
-            prompt: text for LLM correspondence
-            few_shot_test_cases: test cases included as few-shot examples
+            test_case_cls: class defining queries, verified answers, and prompt text
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
             provider: provider to use for queries
@@ -59,19 +54,23 @@ class Queryer:
             auto_verify: automatically mark test cases as verified if no changes
             tool_box: available tools and handlers
         """
-        self.prompt = prompt
+        self.test_case_cls = test_case_cls
+        """Class defining queries, answers, and prompt text."""
+        self.prompt = test_case_cls.prompt
         """Text for LLM correspondence."""
         self.provider = provider
 
+        self.verified_test_cases = self._get_verified_test_cases(
+            verified_test_cases or []
+        )
+        """Test cases whose answers are verified for which LLM will not be queried."""
         self.few_shot_test_cases = {
-            tc.query.key: tc for tc in few_shot_test_cases or []
+            key: test_case
+            for key, test_case in self.verified_test_cases.items()
+            if test_case.few_shot
         }
         """Test cases included as few-shot examples."""
-        self.verified_test_cases = {
-            tc.query.key: tc for tc in verified_test_cases or []
-        }
-        """Test cases whose answers are verified for which LLM will not be queried."""
-        self.encountered_test_cases: dict[tuple, TestCase] = {}
+        self.encountered_test_cases: dict[tuple, TTestCase] = {}
         """Test cases actually encountered."""
 
         self.cache_dir_path = None
@@ -88,7 +87,7 @@ class Queryer:
         self.tool_box = tool_box or ToolBox()
         """Available tools and handlers."""
 
-    def __call__[TTestCase: TestCase](self, test_case: TTestCase) -> TTestCase:
+    def __call__(self, test_case: TestCase) -> TTestCase:
         """Query LLM.
 
         Arguments:
@@ -96,12 +95,14 @@ class Queryer:
         Returns:
             test case including LLM's answer
         """
+        test_case = self.test_case_cls.model_validate(test_case.model_dump(mode="json"))
+
         # Load from verified if available
         if verified_test_case := self._get_verified_test_case(test_case.query):
-            return cast(TTestCase, verified_test_case)
+            return verified_test_case
 
         # Load from cache if available
-        system_prompt = self._get_system_prompt(test_case.answer_cls)
+        system_prompt = self._get_system_prompt()
         tools_json = self.tool_box.to_json()
         if cached_test_case := self._get_cached_test_case(
             system_prompt, tools_json, test_case
@@ -120,7 +121,7 @@ class Queryer:
             # Get answer from provider
             try:
                 content = self.provider.chat_completion(
-                    messages, test_case.answer_cls, self.tool_box
+                    messages, self.test_case_cls.answer_cls, self.tool_box
                 )
             except ScinoephileError as exc:
                 logger.error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
@@ -130,7 +131,7 @@ class Queryer:
 
             # Validate answer
             try:
-                answer = test_case.answer_cls.model_validate_json(content)
+                answer = self.test_case_cls.answer_cls.model_validate_json(content)
             except ValidationError as exc:
                 logger.error(
                     f"Query:\n{test_case.query}\n"
@@ -154,8 +155,13 @@ class Queryer:
 
             # Validate test case
             try:
-                test_case = type(test_case).model_validate(
-                    {**test_case.model_dump(), "answer": answer, "verified": False}
+                test_case = self.test_case_cls.model_validate(
+                    {
+                        **test_case.model_dump(),
+                        "answer": answer,
+                        "few_shot": False,
+                        "verified": False,
+                    }
                 )
                 if self.auto_verify and test_case.get_auto_verified():
                     test_case.verified = True
@@ -231,11 +237,19 @@ class Queryer:
         Arguments:
             test_case: test case to log
         """
-        key = test_case.query.key
-        test_case.few_shot = test_case.few_shot or key in self.few_shot_test_cases
-        test_case.verified = test_case.verified or key in self.verified_test_cases
-        self.encountered_test_cases[key] = test_case
-        logger.debug(f"Logged test case: {test_case.query.key_str}")
+        normalized = self.test_case_cls.model_validate(
+            test_case.model_dump(mode="json")
+        )
+        key = normalized.query.key
+        normalized = self.test_case_cls.model_validate(
+            {
+                **normalized.model_dump(mode="json"),
+                "few_shot": normalized.few_shot or key in self.few_shot_test_cases,
+                "verified": normalized.verified or key in self.verified_test_cases,
+            }
+        )
+        self.encountered_test_cases[key] = normalized
+        logger.debug(f"Logged test case: {normalized.query.key_str}")
 
     @cache
     def _get_cache_path(
@@ -257,7 +271,7 @@ class Queryer:
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
-    def _get_cached_test_case[TTestCase: TestCase](
+    def _get_cached_test_case(
         self, system_prompt: str, tools_json: str, test_case: TTestCase
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
@@ -285,7 +299,7 @@ class Queryer:
             contents = f.read()
         try:
             content = json.loads(contents)
-            test_case = type(test_case).model_validate(content)
+            test_case = self.test_case_cls.model_validate(content)
             if self.auto_verify and test_case.get_auto_verified():
                 test_case.verified = True
             self.log_encountered_test_case(test_case)
@@ -300,15 +314,13 @@ class Queryer:
             logger.info(f"Deleted invalid cache file: {cache_path}")
         return None
 
-    def _get_system_prompt(self, answer_cls: type[Answer]) -> str:
-        """Get system prompt for the given answer class.
+    def _get_system_prompt(self) -> str:
+        """Get system prompt for the bound answer class.
 
-        Arguments:
-            answer_cls: class of answer
         Returns:
-            system prompt for the given answer class
+            system prompt for the bound answer class
         """
-        schema = answer_cls.model_json_schema(by_alias=True)
+        schema = self.test_case_cls.answer_cls.model_json_schema(by_alias=True)
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
 
         system_prompt = self.prompt.base_system_prompt
@@ -319,7 +331,7 @@ class Queryer:
 
         return system_prompt
 
-    def _get_verified_test_case(self, query: Query) -> TestCase | None:
+    def _get_verified_test_case(self, query: Query) -> TTestCase | None:
         """Get verified test case for the given query if available.
 
         Arguments:
@@ -329,9 +341,56 @@ class Queryer:
         """
         if test_case := self.verified_test_cases.get(query.key):
             self.log_encountered_test_case(test_case)
+            test_case = self.encountered_test_cases[query.key]
             logger.info(f"Loaded from verified log: {query.key_str}")
             return test_case
         return None
+
+    def _get_verified_test_cases(
+        self,
+        test_cases: list[TestCase],
+    ) -> dict[tuple, TTestCase]:
+        """Snapshot, validate, and merge verified test cases.
+
+        Arguments:
+            test_cases: verified test cases to prepare
+        Returns:
+            verified test cases keyed by query
+        """
+        verified_test_cases: dict[tuple, TTestCase] = {}
+        for test_case in test_cases:
+            normalized = self.test_case_cls.model_validate(
+                test_case.model_dump(mode="json")
+            )
+            if not normalized.verified:
+                raise ValueError("Queryer test cases must be verified.")
+            if normalized.answer is None:
+                raise ValueError("Verified test cases must include an answer.")
+            key = normalized.query.key
+            existing = verified_test_cases.get(key)
+            if existing is None:
+                verified_test_cases[key] = normalized
+                continue
+            existing_answer = existing.answer
+            normalized_answer = normalized.answer
+            if existing_answer is None or normalized_answer is None:
+                raise ValueError("Verified test cases must include an answer.")
+            if existing_answer.model_dump(mode="json") != normalized_answer.model_dump(
+                mode="json"
+            ):
+                raise ValueError(
+                    "Conflicting verified answers for query "
+                    f"{normalized.query.key_str}."
+                )
+            verified_test_cases[key] = self.test_case_cls.model_validate(
+                {
+                    **existing.model_dump(mode="json"),
+                    "difficulty": max(existing.difficulty, normalized.difficulty),
+                    "few_shot": existing.few_shot or normalized.few_shot,
+                    "verified": existing.verified or normalized.verified,
+                }
+            )
+        return verified_test_cases
 
     @staticmethod
     def _format_validation_errors(exc: ValidationError) -> str:

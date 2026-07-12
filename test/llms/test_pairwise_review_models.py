@@ -160,9 +160,9 @@ def test_queryer_corresponds_using_prompt_aliases():
     )
     provider = Mock(spec=LLMProvider)
     provider.chat_completion.return_value = '{"shuchu": "修改", "beizhu": "修正錯字"}'
-    queryer = Queryer(_LOCALIZED_PROMPT, provider=provider, max_attempts=1)
+    queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
 
-    result = queryer(test_case)
+    result = cast(PairwiseReviewTestCase, queryer(test_case))
 
     assert result.answer is not None
     assert result.answer.output == "修改"
