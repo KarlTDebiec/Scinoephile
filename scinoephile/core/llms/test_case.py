@@ -8,16 +8,17 @@ import json
 from abc import ABC
 from typing import ClassVar, Self
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import Field, model_validator
 
 from .answer import Answer
+from .models import LLMModel
 from .prompt import Prompt
 from .query import Query
 
 __all__ = ["TestCase"]
 
 
-class TestCase(BaseModel, ABC):
+class TestCase(LLMModel, ABC):
     """ABC for LLM test cases."""
 
     __test__ = False

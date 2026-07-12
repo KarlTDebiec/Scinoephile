@@ -75,8 +75,8 @@ def test_generated_models_preserve_aliases_and_llm_schemas():
     query_cls = OcrFusionManager.get_query_cls(_LOCALIZED_PROMPT)
     answer_cls = OcrFusionManager.get_answer_cls(_LOCALIZED_PROMPT)
 
-    query = query_cls(source_one="來源一", source_two="來源二")
-    answer = answer_cls(output="融合結果", note="融合說明")
+    query = query_cls.model_validate({"source_one": "來源一", "source_two": "來源二"})
+    answer = answer_cls.model_validate({"output": "融合結果", "note": "融合說明"})
 
     assert tuple(query_cls.model_fields) == ("source_one", "source_two")
     assert tuple(answer_cls.model_fields) == ("output", "note")
@@ -90,6 +90,7 @@ def test_generated_models_preserve_aliases_and_llm_schemas():
     query_schema = query_cls.model_json_schema(by_alias=True)
     answer_schema = answer_cls.model_json_schema(by_alias=True)
     assert query_schema == {
+        "additionalProperties": False,
         "properties": {
             "yilai": {
                 "description": "來源一字幕",
@@ -107,6 +108,7 @@ def test_generated_models_preserve_aliases_and_llm_schemas():
         "type": "object",
     }
     assert answer_schema == {
+        "additionalProperties": False,
         "properties": {
             "jieguo": {
                 "description": "融合後字幕",

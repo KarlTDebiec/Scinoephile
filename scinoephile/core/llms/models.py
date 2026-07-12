@@ -5,12 +5,58 @@
 from __future__ import annotations
 
 import hashlib
+from collections.abc import Mapping
 from typing import Any
 
+from pydantic import BaseModel, ConfigDict, ValidationInfo, model_validator
+
 __all__ = [
+    "LLMModel",
     "get_model_name",
     "make_hashable",
 ]
+
+
+class LLMModel(BaseModel):
+    """Base model for LLM queries, answers, and test cases."""
+
+    model_config = ConfigDict(extra="forbid", validate_by_name=True)
+
+    @model_validator(mode="before")
+    @classmethod
+    def require_aliases_at_json_boundaries(
+        cls,
+        value: object,
+        info: ValidationInfo,
+    ) -> object:
+        """Reject semantic field names at alias-only JSON boundaries.
+
+        Arguments:
+            value: value to validate
+            info: Pydantic validation context
+        Returns:
+            value after canonical field-name validation
+        """
+        if not info.context or not info.context.get("alias_only"):
+            return value
+        if not isinstance(value, Mapping):
+            return value
+
+        noncanonical_fields = [
+            (field_name, field.alias)
+            for field_name, field in cls.model_fields.items()
+            if field.alias is not None
+            and field.alias != field_name
+            and field_name in value
+        ]
+        if noncanonical_fields:
+            replacements = ", ".join(
+                f"{field_name!r} (use {alias!r})"
+                for field_name, alias in noncanonical_fields
+            )
+            raise ValueError(f"JSON input must use field aliases: {replacements}.")
+
+        return value
 
 
 def get_model_name(base_name: str, suffix: str) -> str:

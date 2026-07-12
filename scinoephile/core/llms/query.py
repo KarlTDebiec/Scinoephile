@@ -8,18 +8,14 @@ import json
 from abc import ABC
 from typing import ClassVar
 
-from pydantic import BaseModel, ConfigDict
-
-from .models import make_hashable
+from .models import LLMModel, make_hashable
 from .prompt import Prompt
 
 __all__ = ["Query"]
 
 
-class Query(BaseModel, ABC):
+class Query(LLMModel, ABC):
     """ABC for LLM queries."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     prompt: ClassVar[Prompt]
     """Text for LLM correspondence."""
