@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from unittest.mock import Mock
 
 from pydantic import ValidationError
@@ -12,7 +13,14 @@ from pytest import mark, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, Queryer
-from scinoephile.llms.review import ReviewManager, ReviewPrompt, ReviewTestCase
+from scinoephile.core.llms.utils import save_test_cases_to_json
+from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.llms.review import (
+    ReviewManager,
+    ReviewProcessor,
+    ReviewPrompt,
+    ReviewTestCase,
+)
 
 _LOCALIZED_PROMPT = ReviewPrompt(
     language=Language.zho_hant,
@@ -84,6 +92,56 @@ def test_queryer_corresponds_using_prompt_aliases():
     assert '"xuhao"' in messages[0]["content"]
     assert '"wenben"' in messages[0]["content"]
     assert '"beizhu"' in messages[0]["content"]
+
+
+def test_partial_processing_preserves_unencountered_test_cases(tmp_path: Path):
+    """Stopping before processing should not erase persisted test cases."""
+    test_case_cls = ReviewManager.get_test_case_cls(ReviewManager.base_prompt)
+    existing_test_case = test_case_cls.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "existing"}]},
+            "answer": {"revisions": []},
+            "verified": True,
+        }
+    )
+    test_case_path = tmp_path / "review.json"
+    save_test_cases_to_json(test_case_path, [existing_test_case], ReviewManager)
+    original_contents = test_case_path.read_bytes()
+    processor = ReviewProcessor(
+        ReviewManager.base_prompt,
+        test_case_path=test_case_path,
+        provider=Mock(spec=LLMProvider),
+    )
+    series = Series(events=[Subtitle(start=0, end=1000, text="existing")])
+
+    processor.process(series, stop_at_idx=0)
+
+    assert test_case_path.read_bytes() == original_contents
+
+
+def test_partial_processing_prunes_only_when_requested(tmp_path: Path):
+    """Explicit pruning should remove cases not encountered in the current run."""
+    test_case_cls = ReviewManager.get_test_case_cls(ReviewManager.base_prompt)
+    existing_test_case = test_case_cls.model_validate(
+        {
+            "query": {"subtitles": [{"index": 1, "text": "existing"}]},
+            "answer": {"revisions": []},
+            "verified": True,
+        }
+    )
+    test_case_path = tmp_path / "review.json"
+    save_test_cases_to_json(test_case_path, [existing_test_case], ReviewManager)
+    processor = ReviewProcessor(
+        ReviewManager.base_prompt,
+        test_case_path=test_case_path,
+        provider=Mock(spec=LLMProvider),
+        prune_test_cases=True,
+    )
+    series = Series(events=[Subtitle(start=0, end=1000, text="existing")])
+
+    processor.process(series, stop_at_idx=0)
+
+    assert json.loads(test_case_path.read_text(encoding="utf-8")) == []
 
 
 def test_query_requires_consecutive_ordered_indexes():

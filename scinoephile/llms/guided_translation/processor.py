@@ -8,7 +8,6 @@ from logging import getLogger
 from typing import cast
 
 from scinoephile.core.llms import Processor
-from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 
@@ -96,12 +95,7 @@ class GuidedTranslationProcessor(Processor):
             logger.info(f"Block {blk_idx}:\n{output_series.to_simple_string()}")
             output_series_to_concatenate[blk_idx] = output_series
 
-        if self.test_case_path is not None:
-            save_test_cases_to_json(
-                self.test_case_path,
-                self.queryer.encountered_test_cases.values(),
-                self.manager_cls,
-            )
+        self.save_test_cases()
 
         output_series_blocks = [
             series for series in output_series_to_concatenate if series is not None

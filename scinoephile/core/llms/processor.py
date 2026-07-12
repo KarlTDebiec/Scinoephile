@@ -17,7 +17,7 @@ from .prompt import Prompt
 from .queryer import Queryer
 from .test_case import TestCase
 from .tool_box import ToolBox
-from .utils import load_test_cases_from_json
+from .utils import load_test_cases_from_json, save_test_cases_to_json
 
 __all__ = [
     "Processor",
@@ -34,8 +34,11 @@ class ProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
     """Whether generated test cases should be marked verified."""
 
+    prune_test_cases: bool
+    """Whether to remove persisted test cases not encountered in the current run."""
+
     test_case_path: Path | None
-    """Path where encountered test cases are persisted."""
+    """Path where test cases are persisted."""
 
     tool_box: ToolBox | None
     """Available tools and handlers."""
@@ -59,6 +62,7 @@ class Processor(ABC):
         provider: LLMProvider,
         additional_context: str | None = None,
         auto_verify: bool = False,
+        prune_test_cases: bool = False,
         tool_box: ToolBox | None = None,
     ):
         """Initialize.
@@ -70,6 +74,7 @@ class Processor(ABC):
             provider: provider to use for queries
             additional_context: additional context to include in the system prompt
             auto_verify: automatically verify test cases if they meet selected criteria
+            prune_test_cases: remove persisted cases not encountered in this run
             tool_box: available tools and handlers
         """
         self.prompt = prompt
@@ -91,6 +96,8 @@ class Processor(ABC):
                 )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
+        self.prune_test_cases = prune_test_cases
+        """Whether to remove persisted cases not encountered in the current run."""
 
         self.queryer = Queryer(
             self.prompt,
@@ -103,3 +110,14 @@ class Processor(ABC):
             tool_box=tool_box,
         )
         """LLM queryer."""
+
+    def save_test_cases(self):
+        """Persist encountered test cases while retaining unencountered cases."""
+        if self.test_case_path is None or self.manager_cls is None:
+            return
+        save_test_cases_to_json(
+            self.test_case_path,
+            self.queryer.encountered_test_cases.values(),
+            self.manager_cls,
+            prune=self.prune_test_cases,
+        )

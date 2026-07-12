@@ -8,7 +8,6 @@ from logging import getLogger
 from typing import cast
 
 from scinoephile.core.llms import Processor
-from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.text import replace_control_characters
@@ -104,12 +103,7 @@ class GuidedReviewProcessor(Processor):
             logger.info(f"Block {block_idx}:\n{output_block.to_simple_string()}")
             output_blocks[block_idx] = output_block
 
-        if self.test_case_path is not None:
-            save_test_cases_to_json(
-                self.test_case_path,
-                self.queryer.encountered_test_cases.values(),
-                self.manager_cls,
-            )
+        self.save_test_cases()
 
         processed_blocks = [block for block in output_blocks if block is not None]
         if processed_blocks:
