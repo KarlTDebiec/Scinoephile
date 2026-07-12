@@ -159,6 +159,35 @@ def test_queryer_corresponds_using_prompt_aliases():
     assert '"shuchu_er"' in messages[0]["content"]
 
 
+@mark.parametrize(
+    "answer",
+    [
+        {"output_one": "甲乙"},
+        {"shuchu_yii": "甲乙"},
+    ],
+    ids=["semantic-name", "misspelled-alias"],
+)
+def test_queryer_rejects_noncanonical_answer_fields(answer: dict[str, str]):
+    """LLM answers should contain only the localized schema's field aliases."""
+    test_case_cls = DelineationManager.get_test_case_cls(_LOCALIZED_PROMPT)
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "reference_one": "參考一",
+                "reference_two": "參考二",
+                "target_one": "甲",
+                "target_two": "乙",
+            }
+        }
+    )
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = json.dumps(answer, ensure_ascii=False)
+    queryer = Queryer(test_case_cls, provider=provider, max_attempts=1)
+
+    with raises(ValidationError):
+        queryer(test_case)
+
+
 def test_static_models_validate_target_presence_and_boundary_shifts():
     """Static models should validate targets, shifts, characters, and difficulty."""
     query = {

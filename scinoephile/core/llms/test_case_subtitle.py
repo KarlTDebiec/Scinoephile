@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import Field
+
+from .models import LLMModel
 
 __all__ = [
     "AnnotatedTestCaseSubtitle",
@@ -12,10 +14,8 @@ __all__ = [
 ]
 
 
-class TestCaseSubtitle(BaseModel):
+class TestCaseSubtitle(LLMModel):
     """Indexed subtitle text in an LLM test case."""
-
-    model_config = ConfigDict(validate_by_name=True)
 
     index: int = Field(ge=1)
     """One-based subtitle index."""

@@ -22,6 +22,8 @@ def test_test_case_subtitle_requires_positive_index():
     assert subtitle.model_dump() == {"index": 1, "text": "subtitle"}
     with raises(ValidationError, match="greater than or equal to 1"):
         Subtitle(index=0, text="subtitle")
+    with raises(ValidationError, match="Extra inputs are not permitted"):
+        Subtitle.model_validate({"index": 1, "text": "subtitle", "unexpected": True})
 
 
 def test_annotated_test_case_subtitle_includes_note():

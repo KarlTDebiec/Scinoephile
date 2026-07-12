@@ -92,7 +92,9 @@ class OcrFusionProcessor(Processor):
             # Query LLM
             test_case_cls = self.test_case_cls
             query_cls = test_case_cls.query_cls
-            query = query_cls(source_one=text_one, source_two=text_two)
+            query = query_cls.model_validate(
+                {"source_one": text_one, "source_two": text_two}
+            )
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 

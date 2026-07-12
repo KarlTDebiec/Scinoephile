@@ -9,7 +9,8 @@ from pathlib import Path
 from typing import ClassVar
 from unittest.mock import patch
 
-from pytest import raises
+from pydantic import ValidationError
+from pytest import mark, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms.utils import (
@@ -127,6 +128,60 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
     assert loaded[0].answer.model_dump(by_alias=True) == {
         "xiugai": [{"xuhao": 1, "wenben": "corrected", "beizhu": "typo"}]
     }
+
+
+@mark.parametrize(
+    "test_case_data",
+    [
+        {"query": {"subtitles": [{"index": 1, "text": "original"}]}},
+        {"query": {"zimu": [{"xuhao": 1, "wenben": "original"}]}},
+        {
+            "query": {
+                "base_subtitles": [
+                    {
+                        "base_index": 1,
+                        "base_text": "original",
+                        "unexpected": True,
+                    }
+                ]
+            }
+        },
+        {
+            "query": {
+                "base_subtitles": [{"base_index": 1, "base_text": "original"}],
+                "unexpected": True,
+            }
+        },
+        {
+            "query": {"base_subtitles": [{"base_index": 1, "base_text": "original"}]},
+            "unexpected": True,
+        },
+    ],
+    ids=[
+        "semantic-fields",
+        "localized-fields",
+        "unknown-subtitle-field",
+        "unknown-query-field",
+        "unknown-test-case-field",
+    ],
+)
+def test_json_loading_rejects_non_base_fields(
+    tmp_path: Path,
+    test_case_data: dict,
+):
+    """Repository JSON should contain only base prompt aliases."""
+    input_path = tmp_path / "test_cases.json"
+    input_path.write_text(
+        json.dumps([test_case_data], ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    with raises(ValidationError):
+        load_test_cases_from_json(
+            input_path,
+            _AliasedBaseReviewManager,
+            _LOCALIZED_REVIEW_PROMPT,
+        )
 
 
 def test_save_preserves_existing_cases_unless_pruning(tmp_path: Path):

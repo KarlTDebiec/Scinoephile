@@ -43,7 +43,10 @@ def load_test_cases_from_json(
     for test_case_data in raw_test_cases:
         base_test_case = base_test_case_cls.model_validate(
             test_case_data,
+            by_alias=True,
+            by_name=False,
             extra="forbid",
+            context={"alias_only": True},
         )
         test_cases.append(
             test_case_cls.model_validate(base_test_case.model_dump(mode="json"))

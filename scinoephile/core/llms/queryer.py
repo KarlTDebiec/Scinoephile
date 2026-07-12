@@ -130,7 +130,13 @@ class Queryer[TTestCase: TestCase]:
 
             # Validate answer
             try:
-                answer = self.test_case_cls.answer_cls.model_validate_json(content)
+                answer = self.test_case_cls.answer_cls.model_validate_json(
+                    content,
+                    by_alias=True,
+                    by_name=False,
+                    extra="forbid",
+                    context={"alias_only": True},
+                )
             except ValidationError as exc:
                 logger.error(
                     f"Query:\n{test_case.query}\n"
