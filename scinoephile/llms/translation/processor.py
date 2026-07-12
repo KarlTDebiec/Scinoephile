@@ -8,7 +8,6 @@ from logging import getLogger
 from typing import cast
 
 from scinoephile.core.llms import Processor
-from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.text import replace_control_characters
 
@@ -87,13 +86,7 @@ class TranslationProcessor(Processor):
             )
             output_series_to_concatenate[block_idx] = output_series
 
-        # Log test cases
-        if self.test_case_path is not None:
-            save_test_cases_to_json(
-                self.test_case_path,
-                self.queryer.encountered_test_cases.values(),
-                self.manager_cls,
-            )
+        self.save_test_cases()
 
         # Organize and return
         output_series_blocks = [

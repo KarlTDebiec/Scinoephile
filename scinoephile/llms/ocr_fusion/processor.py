@@ -9,7 +9,6 @@ from typing import cast
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Processor
-from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import are_series_one_to_one
 
@@ -105,13 +104,7 @@ class OcrFusionProcessor(Processor):
             )
             output_subtitles.append(sub)
 
-        # Log test cases
-        if self.test_case_path is not None:
-            save_test_cases_to_json(
-                self.test_case_path,
-                self.queryer.encountered_test_cases.values(),
-                self.manager_cls,
-            )
+        self.save_test_cases()
 
         # Organize and return
         return Series(events=output_subtitles)

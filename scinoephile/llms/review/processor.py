@@ -8,7 +8,6 @@ from logging import getLogger
 from typing import cast
 
 from scinoephile.core.llms import Processor
-from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.text import replace_control_characters
 
@@ -90,12 +89,7 @@ class ReviewProcessor(Processor):
             )
             output_series_to_concatenate[block_idx] = output_series
 
-        if self.test_case_path is not None:
-            save_test_cases_to_json(
-                self.test_case_path,
-                self.queryer.encountered_test_cases.values(),
-                self.manager_cls,
-            )
+        self.save_test_cases()
 
         output_series_blocks = [
             series for series in output_series_to_concatenate if series is not None
