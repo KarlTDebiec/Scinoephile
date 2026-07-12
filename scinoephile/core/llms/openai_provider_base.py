@@ -12,7 +12,7 @@ from typing import Any, Unpack, cast
 
 from openai import OpenAI, OpenAIError
 from openai.types.chat import ChatCompletionMessageFunctionToolCall
-from pydantic import JsonValue
+from pydantic import JsonValue, ValidationError
 
 from scinoephile.core import ScinoephileError
 
@@ -184,6 +184,11 @@ class OpenAIProviderBase(LLMProvider):
             raise ScinoephileError(
                 f"OpenAI-compatible API error ({exc_code=}, {exc_type=} {exc_param=}): "
                 f"{exc}"
+            ) from exc
+        except ValidationError as exc:
+            raise ScinoephileError(
+                "OpenAI-compatible API returned content that failed structured "
+                "response validation."
             ) from exc
 
     def _build_openai_tools(self, tool_box: ToolBox) -> list[dict[str, object]]:

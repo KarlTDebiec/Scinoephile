@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import cast
 from unittest.mock import Mock
 
 from pydantic import ValidationError
@@ -16,6 +17,7 @@ from scinoephile.core.llms import LLMProvider, Queryer
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.review import (
+    ReviewAnswer,
     ReviewManager,
     ReviewProcessor,
     ReviewPrompt,
@@ -89,6 +91,27 @@ def test_queryer_corresponds_using_prompt_aliases():
     assert json.loads(messages[1]["content"]) == {
         "zimu": [{"xuhao": 1, "wenben": "原文"}]
     }
+
+
+def test_queryer_rejects_type_coercion_at_llm_boundary():
+    """Queryer should retry answers whose values require type coercion."""
+    test_case_cls = ReviewManager.get_test_case_cls(_LOCALIZED_PROMPT)
+    test_case = test_case_cls.model_validate(
+        {"query": {"subtitles": [{"index": 1, "text": "原文"}]}}
+    )
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.side_effect = [
+        '{"xiugai": [{"xuhao": "1", "wenben": "修改", "beizhu": "修正"}]}',
+        '{"xiugai": [{"xuhao": 1, "wenben": "修改", "beizhu": "修正"}]}',
+    ]
+    queryer = Queryer(test_case_cls, provider=provider, max_attempts=2)
+
+    result = queryer(test_case)
+
+    assert result.answer is not None
+    answer = cast(ReviewAnswer, result.answer)
+    assert answer.revisions[0].index == 1
+    assert provider.chat_completion.call_count == 2
 
 
 def test_partial_processing_preserves_unencountered_test_cases(tmp_path: Path):

@@ -8,10 +8,13 @@ import json
 from collections.abc import Callable
 from types import SimpleNamespace
 from typing import Any, cast
+from unittest.mock import Mock
 
 from openai import OpenAI
+from pydantic import ValidationError
 from pytest import raises
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, OpenAIProviderBase
 from scinoephile.core.llms.tool import Tool
 from scinoephile.core.llms.tool_box import ToolBox
@@ -216,6 +219,21 @@ def test_model_override_updates_provider_model():
     )
 
     assert cast(str, client.calls[0]["model"]) == "override-model"
+
+
+def test_structured_response_validation_error_is_wrapped():
+    """Test client-side structured validation failures become domain errors."""
+    client = Mock()
+    with raises(ValidationError) as exc_info:
+        _Answer.model_validate({})
+    client.beta.chat.completions.parse.side_effect = exc_info.value
+    provider = _DummyProvider(client=cast(OpenAI, client))
+
+    with raises(ScinoephileError, match="failed structured response validation"):
+        provider.chat_completion(
+            messages=[{"role": "user", "content": "hi"}],
+            response_format=_Answer,
+        )
 
 
 def test_cache_identity_contains_nonsecret_effective_configuration():
