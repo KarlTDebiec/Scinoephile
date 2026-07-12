@@ -128,6 +128,11 @@ Review stages must preserve the source punctuation and whitespace exactly.
 Treat punctuation-only or whitespace-only revisions as invalid. When correcting
 review data, remove those revisions; when a revision also corrects text, retain
 the text correction while restoring the source punctuation and whitespace.
+Assign every correction to the earliest review stage where it applies. Put OCR,
+lexical, grammatical, semantic, and proper-name corrections in the initial
+review, using that stage's script. Reserve later simplification reviews for
+conversion-specific cleanup; move any generally applicable correction back to
+the initial review and regenerate every downstream artifact.
 
 Always show the complete raw Markdown report inline in the final response. Do
 not replace it with a summary, findings, or a file link, and do not wrap it in a
