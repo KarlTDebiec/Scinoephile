@@ -7,14 +7,16 @@ from __future__ import annotations
 from collections.abc import Generator
 from contextlib import contextmanager
 from logging import getLogger
-from os import remove
+from os import fsync, remove
 from pathlib import Path
 from shutil import move, rmtree
 from tempfile import NamedTemporaryFile, mkdtemp
+from typing import TextIO, cast
 
 __all__ = [
     "get_temp_directory_path",
     "get_temp_file_path",
+    "open_atomic_text_file",
     "rename_preexisting_output_path",
 ]
 
@@ -62,6 +64,44 @@ def get_temp_file_path(suffix: str | None = None) -> Generator[Path]:
                     f"temp_file_path encountered PermissionException '{exc}'; "
                     f"temporary file {temp_file_path}, will not be removed."
                 )
+
+
+@contextmanager
+def open_atomic_text_file(
+    output_path: Path,
+    *,
+    encoding: str = "utf-8",
+) -> Generator[TextIO]:
+    """Open a temporary text file that atomically replaces an output on success.
+
+    The temporary file is created beside the output so replacement remains on the
+    same filesystem. It is flushed and synchronized before replacement, and removed
+    if writing fails.
+
+    Arguments:
+        output_path: path to replace after writing succeeds
+        encoding: text encoding
+    Returns:
+        writable temporary text file
+    """
+    temp_file = NamedTemporaryFile(
+        "w",
+        delete=False,
+        dir=output_path.parent,
+        encoding=encoding,
+        prefix=f".{output_path.name}.",
+        suffix=".tmp",
+    )
+    temp_path = Path(temp_file.name)
+    try:
+        with temp_file:
+            yield cast(TextIO, temp_file)
+            temp_file.flush()
+            fsync(temp_file.fileno())
+        temp_path.replace(output_path)
+    except BaseException:
+        temp_path.unlink(missing_ok=True)
+        raise
 
 
 def rename_preexisting_output_path(output_path: Path):

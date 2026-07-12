@@ -5,10 +5,10 @@
 from __future__ import annotations
 
 import json
-import os
 from collections.abc import Iterable
 from pathlib import Path
-from tempfile import NamedTemporaryFile
+
+from scinoephile.common.file import open_atomic_text_file
 
 from .manager import Manager
 from .prompt import Prompt
@@ -98,21 +98,5 @@ def save_test_cases_to_json(
         )
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    temp_file = NamedTemporaryFile(
-        "w",
-        delete=False,
-        dir=output_path.parent,
-        encoding="utf-8",
-        prefix=f".{output_path.name}.",
-        suffix=".tmp",
-    )
-    temp_path = Path(temp_file.name)
-    try:
-        with temp_file:
-            json.dump(data, temp_file, ensure_ascii=False, indent=2)
-            temp_file.flush()
-            os.fsync(temp_file.fileno())
-        temp_path.replace(output_path)
-    except BaseException:
-        temp_path.unlink(missing_ok=True)
-        raise
+    with open_atomic_text_file(output_path) as temp_file:
+        json.dump(data, temp_file, ensure_ascii=False, indent=2)
