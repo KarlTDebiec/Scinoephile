@@ -117,6 +117,12 @@ automatic JSON-backed notes only as context, not as proof that an edit is
 correct. Before presenting the report, replace every `Notes` cell—including
 populated and blank cells—with your own concise interpretation of the row in
 English. Do not translate, preserve, quote, or merely restate an automatic note.
+Keep each note to one terse verdict and only the essential reason. Begin accepted
+edits with `OK;`, rejected edits with `Incorrect;`, and uncertain edits with
+`Check;`. Prefer arrow notation for simple substitutions and omit boilerplate
+about normalization, output stages, or preserved formatting. For example:
+`OK; 甚么 -> 什么.`, `OK; 著 -> 着.`, and
+`OK; 搞 is the idiomatic verb in 怎么搞的; 搅 is a likely error.`
 
 Review stages must preserve the source punctuation and whitespace exactly.
 Treat punctuation-only or whitespace-only revisions as invalid. When correcting
