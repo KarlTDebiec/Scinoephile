@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import gc
+import json
 from functools import cache
 from typing import Any, Unpack
 from unittest.mock import Mock
@@ -224,6 +225,7 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
 
     messages = provider.calls[0]
     system_message = messages[0]["content"]
+    assert system_message == queryer.system_prompt
     assert "Additional context:\nUse canonical names." in system_message
     assert system_message.index("Additional context:") < system_message.index(
         _PROMPT.few_shot_intro
@@ -448,6 +450,41 @@ def test_queryer_cache_is_namespaced_by_provider_model(tmp_path):
     assert result_two.answer == _Answer(output="two")
     assert len(provider_one.calls) == 1
     assert len(provider_two.calls) == 1
+
+
+def test_queryer_cache_stores_only_answer_and_preserves_current_metadata(tmp_path):
+    """Test cached answers are attached to the current normalized test case."""
+    provider = _RecordingProvider('{"output":"cached"}')
+    queryer = Queryer(
+        _TestCase,
+        provider=provider,
+        cache_dir_path=tmp_path,
+        max_attempts=1,
+    )
+
+    first = queryer(_TestCase(query=_Query(text="input")))
+
+    cache_paths = list(tmp_path.glob("*.json"))
+    assert len(cache_paths) == 1
+    assert json.loads(cache_paths[0].read_text(encoding="utf-8")) == {
+        "output": "cached"
+    }
+
+    current = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="stale"),
+        difficulty=4,
+        few_shot=True,
+        verified=True,
+    )
+    second = queryer(current)
+
+    assert first.answer == _Answer(output="cached")
+    assert second.answer == _Answer(output="cached")
+    assert second.difficulty == 4
+    assert second.few_shot is False
+    assert second.verified is False
+    assert len(provider.calls) == 1
 
 
 def test_queryer_cache_is_namespaced_by_test_case_class(tmp_path):
