@@ -5,17 +5,15 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar
-
-from pydantic import Field, create_model
+from typing import ClassVar
 
 from scinoephile.core.llms import (
     Answer,
     Manager,
+    PromptModelField,
     Query,
     TestCase,
 )
-from scinoephile.core.llms.models import get_model_name
 
 from .models import (
     GuidedTranslationAnswer,
@@ -33,7 +31,7 @@ class GuidedTranslationManager(Manager):
 
     operation: ClassVar[str] = "guided-translation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[GuidedTranslationPrompt] = GuidedTranslationPrompt()
+    base_prompt: ClassVar[GuidedTranslationPrompt] = GuidedTranslationTestCase.prompt
     """Base prompt defining persisted test-case field names."""
     test_case_base_cls: ClassVar[type[TestCase]] = GuidedTranslationTestCase
     """Static test-case model defining guided translation's semantic shape."""
@@ -49,25 +47,17 @@ class GuidedTranslationManager(Manager):
             answer model class
         """
         output_cls = cls.get_output_cls(prompt)
-        fields: dict[str, Any] = {
-            "outputs": (
-                list[output_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GuidedTranslationAnswer,
+            prompt,
+            {
+                "outputs": PromptModelField(
                     alias=prompt.outputs,
+                    annotation=list[output_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.outputs_desc,
-                    min_length=1,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("GuidedTranslationAnswer", prompt.name),
-            __base__=GuidedTranslationAnswer,
-            __module__=GuidedTranslationAnswer.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
@@ -82,30 +72,20 @@ class GuidedTranslationManager(Manager):
         Returns:
             guide-item model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GuidedTranslationSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.guide_text_desc,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("GuidedTranslationGuide", prompt.name),
-            __base__=GuidedTranslationSubtitle,
-            __module__=GuidedTranslationQuery.__module__,
-            **fields,
+            },
+            name="GuidedTranslationGuide",
         )
 
     @classmethod
@@ -121,30 +101,20 @@ class GuidedTranslationManager(Manager):
         Returns:
             output-item model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GuidedTranslationSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.output_text_desc,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("GuidedTranslationOutput", prompt.name),
-            __base__=GuidedTranslationSubtitle,
-            __module__=GuidedTranslationAnswer.__module__,
-            **fields,
+            },
+            name="GuidedTranslationOutput",
         )
 
     @classmethod
@@ -159,33 +129,22 @@ class GuidedTranslationManager(Manager):
         """
         subtitle_cls = cls.get_subtitle_cls(prompt)
         guide_cls = cls.get_guide_cls(prompt)
-        fields: dict[str, Any] = {
-            "subtitles": (
-                list[subtitle_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GuidedTranslationQuery,
+            prompt,
+            {
+                "subtitles": PromptModelField(
                     alias=prompt.subtitles,
+                    annotation=list[subtitle_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.subtitles_desc,
-                    min_length=1,
                 ),
-            ),
-            "guides": (
-                list[guide_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+                "guides": PromptModelField(
                     alias=prompt.guides,
+                    annotation=list[guide_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.guides_desc,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("GuidedTranslationQuery", prompt.name),
-            __base__=GuidedTranslationQuery,
-            __module__=GuidedTranslationQuery.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
@@ -200,28 +159,17 @@ class GuidedTranslationManager(Manager):
         Returns:
             subtitle-item model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GuidedTranslationSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.subtitle_text_desc,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("GuidedTranslationSubtitle", prompt.name),
-            __base__=GuidedTranslationSubtitle,
-            __module__=GuidedTranslationQuery.__module__,
-            **fields,
+            },
         )

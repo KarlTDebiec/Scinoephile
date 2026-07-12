@@ -5,25 +5,19 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar
-
-from pydantic import Field, create_model
+from typing import ClassVar
 
 from scinoephile.core.llms import (
     AnnotatedTestCaseSubtitle,
     Answer,
     Manager,
+    PromptModelField,
     Query,
     TestCase,
     TestCaseSubtitle,
 )
-from scinoephile.core.llms.models import get_model_name
 
-from .models import (
-    ReviewAnswer,
-    ReviewQuery,
-    ReviewTestCase,
-)
+from .models import ReviewAnswer, ReviewQuery, ReviewTestCase
 from .prompt import ReviewPrompt
 
 __all__ = ["ReviewManager"]
@@ -34,7 +28,7 @@ class ReviewManager(Manager):
 
     operation: ClassVar[str] = "review"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[ReviewPrompt] = ReviewPrompt()
+    base_prompt: ClassVar[ReviewPrompt] = ReviewTestCase.prompt
     """Base prompt defining persisted test-case field names."""
     test_case_base_cls: ClassVar[type[TestCase]] = ReviewTestCase
     """Static test-case model defining review's semantic shape."""
@@ -50,24 +44,17 @@ class ReviewManager(Manager):
             answer model class
         """
         revision_cls = cls.get_revision_cls(prompt)
-        fields: dict[str, Any] = {
-            "revisions": (
-                list[revision_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            ReviewAnswer,
+            prompt,
+            {
+                "revisions": PromptModelField(
                     alias=prompt.revisions,
+                    annotation=list[revision_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.revisions_desc,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("ReviewAnswer", prompt.name),
-            __base__=ReviewAnswer,
-            __module__=ReviewAnswer.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
@@ -80,25 +67,17 @@ class ReviewManager(Manager):
             query model class
         """
         subtitle_cls = cls.get_subtitle_cls(prompt)
-        fields: dict[str, Any] = {
-            "subtitles": (
-                list[subtitle_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            ReviewQuery,
+            prompt,
+            {
+                "subtitles": PromptModelField(
                     alias=prompt.subtitles,
+                    annotation=list[subtitle_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.subtitles_desc,
-                    min_length=1,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("ReviewQuery", prompt.name),
-            __base__=ReviewQuery,
-            __module__=ReviewQuery.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
@@ -113,42 +92,25 @@ class ReviewManager(Manager):
         Returns:
             revision model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            AnnotatedTestCaseSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.revision_text_desc,
-                    min_length=1,
-                    max_length=1000,
                 ),
-            ),
-            "note": (
-                str,
-                Field(
-                    ...,
+                "note": PromptModelField(
                     alias=prompt.note,
                     description=prompt.note_desc,
-                    min_length=1,
-                    max_length=1000,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("ReviewRevision", prompt.name),
-            __base__=AnnotatedTestCaseSubtitle,
-            __module__=ReviewAnswer.__module__,
-            **fields,
+            },
+            module=ReviewAnswer.__module__,
+            name="ReviewRevision",
         )
 
     @classmethod
@@ -161,29 +123,19 @@ class ReviewManager(Manager):
         Returns:
             subtitle model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            TestCaseSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.subtitle_text_desc,
-                    max_length=1000,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("ReviewSubtitle", prompt.name),
-            __base__=TestCaseSubtitle,
-            __module__=ReviewQuery.__module__,
-            **fields,
+            },
+            module=ReviewQuery.__module__,
+            name="ReviewSubtitle",
         )

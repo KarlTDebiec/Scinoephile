@@ -5,12 +5,15 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar
+from typing import ClassVar
 
-from pydantic import Field, create_model
-
-from scinoephile.core.llms import Answer, Manager, Query, TestCase
-from scinoephile.core.llms.models import get_model_name
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    PromptModelField,
+    Query,
+    TestCase,
+)
 
 from .models import OcrFusionAnswer, OcrFusionQuery, OcrFusionTestCase
 from .prompt import OcrFusionPrompt
@@ -23,7 +26,7 @@ class OcrFusionManager(Manager):
 
     operation: ClassVar[str] = "ocr-fusion"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[OcrFusionPrompt] = OcrFusionPrompt()
+    base_prompt: ClassVar[OcrFusionPrompt] = OcrFusionTestCase.prompt
     """Base prompt defining persisted test-case field names."""
     test_case_base_cls: ClassVar[type[TestCase]] = OcrFusionTestCase
     """Static test-case model defining OCR fusion's semantic shape."""
@@ -38,26 +41,22 @@ class OcrFusionManager(Manager):
         Returns:
             answer model class
         """
-        name = get_model_name(Answer.__name__, prompt.name)
-        fields: dict[str, Any] = {
-            "output": (
-                str,
-                Field(..., alias=prompt.output, description=prompt.output_desc),
-            ),
-            "note": (
-                str,
-                Field(..., alias=prompt.note, description=prompt.note_desc),
-            ),
-        }
-
-        model = create_model(
-            name,
-            __base__=OcrFusionAnswer,
-            __module__=Answer.__module__,
-            **fields,
+        return cls.create_prompt_model(
+            OcrFusionAnswer,
+            prompt,
+            {
+                "output": PromptModelField(
+                    alias=prompt.output,
+                    description=prompt.output_desc,
+                ),
+                "note": PromptModelField(
+                    alias=prompt.note,
+                    description=prompt.note_desc,
+                ),
+            },
+            module=Answer.__module__,
+            name=Answer.__name__,
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
@@ -69,23 +68,19 @@ class OcrFusionManager(Manager):
         Returns:
             query model class
         """
-        name = get_model_name(Query.__name__, prompt.name)
-        fields: dict[str, Any] = {
-            "source_one": (
-                str,
-                Field(..., alias=prompt.src_1, description=prompt.src_1_desc),
-            ),
-            "source_two": (
-                str,
-                Field(..., alias=prompt.src_2, description=prompt.src_2_desc),
-            ),
-        }
-
-        model = create_model(
-            name,
-            __base__=OcrFusionQuery,
-            __module__=Query.__module__,
-            **fields,
+        return cls.create_prompt_model(
+            OcrFusionQuery,
+            prompt,
+            {
+                "source_one": PromptModelField(
+                    alias=prompt.src_1,
+                    description=prompt.src_1_desc,
+                ),
+                "source_two": PromptModelField(
+                    alias=prompt.src_2,
+                    description=prompt.src_2_desc,
+                ),
+            },
+            module=Query.__module__,
+            name=Query.__name__,
         )
-        model.prompt = prompt
-        return model

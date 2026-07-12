@@ -5,12 +5,15 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar
+from typing import ClassVar
 
-from pydantic import Field, create_model
-
-from scinoephile.core.llms import Answer, Manager, Query, TestCase
-from scinoephile.core.llms.models import get_model_name
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    PromptModelField,
+    Query,
+    TestCase,
+)
 
 from .models import DelineationAnswer, DelineationQuery, DelineationTestCase
 from .prompt import DelineationPrompt
@@ -23,7 +26,7 @@ class DelineationManager(Manager):
 
     operation: ClassVar[str] = "delineation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[DelineationPrompt] = DelineationPrompt()
+    base_prompt: ClassVar[DelineationPrompt] = DelineationTestCase.prompt
     """Base prompt defining persisted test-case field names."""
     test_case_base_cls: ClassVar[type[TestCase]] = DelineationTestCase
     """Static test-case model defining delineation's semantic shape."""
@@ -41,32 +44,20 @@ class DelineationManager(Manager):
         Returns:
             answer model class
         """
-        fields: dict[str, Any] = {
-            "output_one": (
-                str,
-                Field(
-                    "",
+        return cls.create_prompt_model(
+            DelineationAnswer,
+            prompt,
+            {
+                "output_one": PromptModelField(
                     alias=prompt.src_2_sub_1_shifted,
                     description=prompt.src_2_sub_1_shifted_desc,
                 ),
-            ),
-            "output_two": (
-                str,
-                Field(
-                    "",
+                "output_two": PromptModelField(
                     alias=prompt.src_2_sub_2_shifted,
                     description=prompt.src_2_sub_2_shifted_desc,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("DelineationAnswer", prompt.name),
-            __base__=DelineationAnswer,
-            __module__=DelineationAnswer.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
@@ -81,45 +72,25 @@ class DelineationManager(Manager):
         Returns:
             query model class
         """
-        fields: dict[str, Any] = {
-            "reference_one": (
-                str,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            DelineationQuery,
+            prompt,
+            {
+                "reference_one": PromptModelField(
                     alias=prompt.src_1_sub_1,
                     description=prompt.src_1_sub_1_desc,
                 ),
-            ),
-            "reference_two": (
-                str,
-                Field(
-                    ...,
+                "reference_two": PromptModelField(
                     alias=prompt.src_1_sub_2,
                     description=prompt.src_1_sub_2_desc,
                 ),
-            ),
-            "target_one": (
-                str,
-                Field(
-                    "",
+                "target_one": PromptModelField(
                     alias=prompt.src_2_sub_1,
                     description=prompt.src_2_sub_1_desc,
                 ),
-            ),
-            "target_two": (
-                str,
-                Field(
-                    "",
+                "target_two": PromptModelField(
                     alias=prompt.src_2_sub_2,
                     description=prompt.src_2_sub_2_desc,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("DelineationQuery", prompt.name),
-            __base__=DelineationQuery,
-            __module__=DelineationQuery.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model

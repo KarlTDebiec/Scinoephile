@@ -5,17 +5,15 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar
-
-from pydantic import Field, create_model
+from typing import ClassVar
 
 from scinoephile.core.llms import (
     Answer,
     Manager,
+    PromptModelField,
     Query,
     TestCase,
 )
-from scinoephile.core.llms.models import get_model_name
 
 from .models import (
     GapTranslationAnswer,
@@ -33,7 +31,7 @@ class GapTranslationManager(Manager):
 
     operation: ClassVar[str] = "gap-translation"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[GapTranslationPrompt] = GapTranslationPrompt()
+    base_prompt: ClassVar[GapTranslationPrompt] = GapTranslationTestCase.prompt
     """Base prompt defining persisted test-case field names."""
     test_case_base_cls: ClassVar[type[TestCase]] = GapTranslationTestCase
     """Static test-case model defining gap translation's semantic shape."""
@@ -49,29 +47,23 @@ class GapTranslationManager(Manager):
             answer model class
         """
         output_cls = cls.get_output_cls(prompt)
-        fields: dict[str, Any] = {
-            "outputs": (
-                list[output_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GapTranslationAnswer,
+            prompt,
+            {
+                "outputs": PromptModelField(
                     alias=prompt.outputs,
+                    annotation=list[output_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.outputs_desc,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("GapTranslationAnswer", prompt.name),
-            __base__=GapTranslationAnswer,
-            __module__=GapTranslationAnswer.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
     def get_guide_cls(
-        cls, prompt: GapTranslationPrompt
+        cls,
+        prompt: GapTranslationPrompt,
     ) -> type[GapTranslationSubtitle]:
         """Get guide class with prompt-specific JSON field aliases.
 
@@ -80,30 +72,20 @@ class GapTranslationManager(Manager):
         Returns:
             guide model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GapTranslationSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.guide_text_desc,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("GapTranslationGuide", prompt.name),
-            __base__=GapTranslationSubtitle,
-            __module__=GapTranslationQuery.__module__,
-            **fields,
+            },
+            name="GapTranslationGuide",
         )
 
     @classmethod
@@ -119,30 +101,20 @@ class GapTranslationManager(Manager):
         Returns:
             output model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GapTranslationSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.output_text_desc,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("GapTranslationOutput", prompt.name),
-            __base__=GapTranslationSubtitle,
-            __module__=GapTranslationAnswer.__module__,
-            **fields,
+            },
+            name="GapTranslationOutput",
         )
 
     @classmethod
@@ -157,38 +129,28 @@ class GapTranslationManager(Manager):
         """
         target_cls = cls.get_target_cls(prompt)
         guide_cls = cls.get_guide_cls(prompt)
-        fields: dict[str, Any] = {
-            "targets": (
-                list[target_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GapTranslationQuery,
+            prompt,
+            {
+                "targets": PromptModelField(
                     alias=prompt.targets,
+                    annotation=list[target_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.targets_desc,
                 ),
-            ),
-            "guides": (
-                list[guide_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+                "guides": PromptModelField(
                     alias=prompt.guides,
+                    annotation=list[guide_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.guides_desc,
-                    min_length=1,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("GapTranslationQuery", prompt.name),
-            __base__=GapTranslationQuery,
-            __module__=GapTranslationQuery.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
     def get_target_cls(
-        cls, prompt: GapTranslationPrompt
+        cls,
+        prompt: GapTranslationPrompt,
     ) -> type[GapTranslationSubtitle]:
         """Get target class with prompt-specific JSON field aliases.
 
@@ -197,28 +159,18 @@ class GapTranslationManager(Manager):
         Returns:
             target model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GapTranslationSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.target_text_desc,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("GapTranslationTarget", prompt.name),
-            __base__=GapTranslationSubtitle,
-            __module__=GapTranslationQuery.__module__,
-            **fields,
+            },
+            name="GapTranslationTarget",
         )

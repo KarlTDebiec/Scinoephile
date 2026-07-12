@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
-from .manager import Manager
+from .manager import Manager, PromptModelField
 from .openai_provider_base import OpenAIProviderBase
 from .processor import Processor, ProcessorKwargs
 from .prompt import Prompt, PromptLocalizationFields
@@ -37,6 +37,7 @@ __all__ = [
     "ProcessorKwargs",
     "Prompt",
     "PromptLocalizationFields",
+    "PromptModelField",
     "Query",
     "Queryer",
     "TestCase",
