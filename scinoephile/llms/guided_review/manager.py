@@ -5,25 +5,19 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar
-
-from pydantic import Field, create_model
+from typing import ClassVar
 
 from scinoephile.core.llms import (
     AnnotatedTestCaseSubtitle,
     Answer,
     Manager,
+    PromptModelField,
     Query,
     TestCase,
     TestCaseSubtitle,
 )
-from scinoephile.core.llms.models import get_model_name
 
-from .models import (
-    GuidedReviewAnswer,
-    GuidedReviewQuery,
-    GuidedReviewTestCase,
-)
+from .models import GuidedReviewAnswer, GuidedReviewQuery, GuidedReviewTestCase
 from .prompt import GuidedReviewPrompt
 
 __all__ = ["GuidedReviewManager"]
@@ -34,7 +28,7 @@ class GuidedReviewManager(Manager):
 
     operation: ClassVar[str] = "guided-review"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[GuidedReviewPrompt] = GuidedReviewPrompt()
+    base_prompt: ClassVar[GuidedReviewPrompt] = GuidedReviewTestCase.prompt
     """Base prompt defining persisted test-case field names."""
     test_case_base_cls: ClassVar[type[TestCase]] = GuidedReviewTestCase
     """Static test-case model defining guided review's semantic shape."""
@@ -50,24 +44,17 @@ class GuidedReviewManager(Manager):
             answer model class
         """
         revision_cls = cls.get_revision_cls(prompt)
-        fields: dict[str, Any] = {
-            "revisions": (
-                list[revision_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GuidedReviewAnswer,
+            prompt,
+            {
+                "revisions": PromptModelField(
                     alias=prompt.revisions,
+                    annotation=list[revision_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.revisions_desc,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("GuidedReviewAnswer", prompt.name),
-            __base__=GuidedReviewAnswer,
-            __module__=GuidedReviewAnswer.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
@@ -79,31 +66,21 @@ class GuidedReviewManager(Manager):
         Returns:
             guide model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            TestCaseSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.guide_text_desc,
-                    max_length=1000,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("GuidedReviewGuide", prompt.name),
-            __base__=TestCaseSubtitle,
-            __module__=GuidedReviewQuery.__module__,
-            **fields,
+            },
+            module=GuidedReviewQuery.__module__,
+            name="GuidedReviewGuide",
         )
 
     @classmethod
@@ -118,33 +95,22 @@ class GuidedReviewManager(Manager):
         """
         target_cls = cls.get_target_cls(prompt)
         guide_cls = cls.get_guide_cls(prompt)
-        fields: dict[str, Any] = {
-            "targets": (
-                list[target_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            GuidedReviewQuery,
+            prompt,
+            {
+                "targets": PromptModelField(
                     alias=prompt.targets,
+                    annotation=list[target_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.targets_desc,
-                    min_length=1,
                 ),
-            ),
-            "guides": (
-                list[guide_cls],  # ty: ignore[invalid-type-form]
-                Field(
-                    ...,
+                "guides": PromptModelField(
                     alias=prompt.guides,
+                    annotation=list[guide_cls],  # ty: ignore[invalid-type-form]
                     description=prompt.guides_desc,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("GuidedReviewQuery", prompt.name),
-            __base__=GuidedReviewQuery,
-            __module__=GuidedReviewQuery.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
@@ -159,42 +125,25 @@ class GuidedReviewManager(Manager):
         Returns:
             revision model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            AnnotatedTestCaseSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.revision_text_desc,
-                    min_length=1,
-                    max_length=1000,
                 ),
-            ),
-            "note": (
-                str,
-                Field(
-                    ...,
+                "note": PromptModelField(
                     alias=prompt.note,
                     description=prompt.note_desc,
-                    min_length=1,
-                    max_length=1000,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("GuidedReviewRevision", prompt.name),
-            __base__=AnnotatedTestCaseSubtitle,
-            __module__=GuidedReviewAnswer.__module__,
-            **fields,
+            },
+            module=GuidedReviewAnswer.__module__,
+            name="GuidedReviewRevision",
         )
 
     @classmethod
@@ -207,29 +156,19 @@ class GuidedReviewManager(Manager):
         Returns:
             target model class
         """
-        fields: dict[str, Any] = {
-            "index": (
-                int,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            TestCaseSubtitle,
+            prompt,
+            {
+                "index": PromptModelField(
                     alias=prompt.index,
                     description=prompt.index_desc,
-                    ge=1,
                 ),
-            ),
-            "text": (
-                str,
-                Field(
-                    ...,
+                "text": PromptModelField(
                     alias=prompt.text,
                     description=prompt.target_text_desc,
-                    max_length=1000,
                 ),
-            ),
-        }
-        return create_model(
-            get_model_name("GuidedReviewTarget", prompt.name),
-            __base__=TestCaseSubtitle,
-            __module__=GuidedReviewQuery.__module__,
-            **fields,
+            },
+            module=GuidedReviewQuery.__module__,
+            name="GuidedReviewTarget",
         )

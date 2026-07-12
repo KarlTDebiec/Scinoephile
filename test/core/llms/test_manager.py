@@ -4,18 +4,25 @@
 
 from __future__ import annotations
 
-from pytest import raises
+from pytest import mark, raises
 
+from scinoephile.core.llms import Manager
+from scinoephile.llms.delineation import DelineationManager
+from scinoephile.llms.gap_translation import GapTranslationManager
+from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.guided_translation import (
     GuidedTranslationManager,
     GuidedTranslationPrompt,
 )
+from scinoephile.llms.ocr_fusion import OcrFusionManager
+from scinoephile.llms.pairwise_review import PairwiseReviewManager
 from scinoephile.llms.punctuation import (
     PunctuationManager,
     PunctuationPrompt,
     PunctuationTestCase,
 )
 from scinoephile.llms.review import ReviewManager, ReviewPrompt, ReviewTestCase
+from scinoephile.llms.translation import TranslationManager
 
 _LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
     subtitles="zimu",
@@ -41,6 +48,25 @@ _LOCALIZED_PUNCTUATION_PROMPT = PunctuationPrompt(
     output="result",
 )
 """Punctuation prompt using non-default correspondence field names."""
+
+_MANAGER_CLASSES: list[type[Manager]] = [
+    DelineationManager,
+    GapTranslationManager,
+    GuidedReviewManager,
+    GuidedTranslationManager,
+    OcrFusionManager,
+    PairwiseReviewManager,
+    PunctuationManager,
+    ReviewManager,
+    TranslationManager,
+]
+"""Manager classes for every LLM correspondence shape."""
+
+
+@mark.parametrize("manager_cls", _MANAGER_CLASSES)
+def test_manager_reuses_static_test_case_prompt(manager_cls: type[Manager]):
+    """Each manager should reuse its semantic test-case model's prompt."""
+    assert manager_cls.base_prompt is manager_cls.test_case_base_cls.prompt
 
 
 def test_static_shape_factory_caches_and_isolates_prompt_aliases():

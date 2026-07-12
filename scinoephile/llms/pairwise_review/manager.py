@@ -5,18 +5,17 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar
+from typing import ClassVar
 
-from pydantic import Field, create_model
-
-from scinoephile.core.llms import Answer, Manager, Query, TestCase
-from scinoephile.core.llms.models import get_model_name
-
-from .models import (
-    PairwiseReviewAnswer,
-    PairwiseReviewQuery,
-    PairwiseReviewTestCase,
+from scinoephile.core.llms import (
+    Answer,
+    Manager,
+    PromptModelField,
+    Query,
+    TestCase,
 )
+
+from .models import PairwiseReviewAnswer, PairwiseReviewQuery, PairwiseReviewTestCase
 from .prompt import PairwiseReviewPrompt
 
 __all__ = ["PairwiseReviewManager"]
@@ -27,7 +26,7 @@ class PairwiseReviewManager(Manager):
 
     operation: ClassVar[str] = "pairwise-review"
     """Stable operation identifier used in persistence and CLIs."""
-    base_prompt: ClassVar[PairwiseReviewPrompt] = PairwiseReviewPrompt()
+    base_prompt: ClassVar[PairwiseReviewPrompt] = PairwiseReviewTestCase.prompt
     """Base prompt defining persisted test-case field names."""
     test_case_base_cls: ClassVar[type[TestCase]] = PairwiseReviewTestCase
     """Static test-case model defining pairwise review's semantic shape."""
@@ -45,34 +44,20 @@ class PairwiseReviewManager(Manager):
         Returns:
             answer model class
         """
-        fields: dict[str, Any] = {
-            "output": (
-                str,
-                Field(
-                    "",
+        return cls.create_prompt_model(
+            PairwiseReviewAnswer,
+            prompt,
+            {
+                "output": PromptModelField(
                     alias=prompt.output,
                     description=prompt.output_desc,
-                    max_length=1000,
                 ),
-            ),
-            "note": (
-                str,
-                Field(
-                    "",
+                "note": PromptModelField(
                     alias=prompt.note,
                     description=prompt.note_desc,
-                    max_length=1000,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("PairwiseReviewAnswer", prompt.name),
-            __base__=PairwiseReviewAnswer,
-            __module__=PairwiseReviewAnswer.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
 
     @classmethod
     @cache
@@ -87,31 +72,17 @@ class PairwiseReviewManager(Manager):
         Returns:
             query model class
         """
-        fields: dict[str, Any] = {
-            "target": (
-                str,
-                Field(
-                    ...,
+        return cls.create_prompt_model(
+            PairwiseReviewQuery,
+            prompt,
+            {
+                "target": PromptModelField(
                     alias=prompt.target,
                     description=prompt.target_desc,
-                    max_length=1000,
                 ),
-            ),
-            "reference": (
-                str,
-                Field(
-                    ...,
+                "reference": PromptModelField(
                     alias=prompt.reference,
                     description=prompt.reference_desc,
-                    max_length=1000,
                 ),
-            ),
-        }
-        model = create_model(
-            get_model_name("PairwiseReviewQuery", prompt.name),
-            __base__=PairwiseReviewQuery,
-            __module__=PairwiseReviewQuery.__module__,
-            **fields,
+            },
         )
-        model.prompt = prompt
-        return model
