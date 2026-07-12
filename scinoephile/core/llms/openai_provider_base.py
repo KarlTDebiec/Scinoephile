@@ -111,7 +111,7 @@ class OpenAIProviderBase(LLMProvider):
     def chat_completion(
         self,
         messages: list[dict[str, Any]],
-        response_format: type[Answer] | None = None,
+        response_format: type[Answer],
         tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
@@ -119,7 +119,7 @@ class OpenAIProviderBase(LLMProvider):
 
         Arguments:
             messages: messages to send
-            response_format: response format
+            response_format: structured response format
             tool_box: available tools and handlers
             **kwargs: additional keyword arguments
         Returns:
@@ -140,7 +140,7 @@ class OpenAIProviderBase(LLMProvider):
             max_tool_rounds = 8
             for _ in range(max_tool_rounds):
                 # Query provider
-                completion = self._query(messages, response_format, request_kwargs)
+                completion = self._query(messages, request_kwargs)
                 message = completion.choices[0].message
                 tool_calls = cast(
                     list[ChatCompletionMessageFunctionToolCall],
@@ -210,29 +210,21 @@ class OpenAIProviderBase(LLMProvider):
     def _query(
         self,
         messages: list[dict[str, Any]],
-        response_format: type[Answer] | None,
         request_kwargs: dict[str, Any],
     ) -> Any:
         """Query provider for completion.
 
         Arguments:
             messages: messages to send
-            response_format: structured response format, if any
             request_kwargs: OpenAI SDK request keyword arguments
         Returns:
             completion response object
         """
-        if response_format:
-            return self.sync_client.beta.chat.completions.parse(
-                messages=messages,  # ty:ignore[invalid-argument-type]
-                model=self.model,
-                **request_kwargs,
-            )
-        return self.sync_client.chat.completions.create(
-            messages=messages,
+        return self.sync_client.beta.chat.completions.parse(
+            messages=messages,  # ty:ignore[invalid-argument-type]
             model=self.model,
             **request_kwargs,
-        )  # ty:ignore[no-matching-overload]
+        )
 
     @staticmethod
     def _call_tool(
@@ -286,7 +278,7 @@ class OpenAIProviderBase(LLMProvider):
 
     @staticmethod
     def _build_request_kwargs(
-        response_format: type[Answer] | None,
+        response_format: type[Answer],
         openai_tools: list[dict[str, object]] | None,
         kwargs: Mapping[str, Any],
     ) -> dict[str, Any]:
@@ -300,8 +292,7 @@ class OpenAIProviderBase(LLMProvider):
             request kwargs for the OpenAI SDK call
         """
         request_kwargs: dict[str, Any] = dict(kwargs)
-        if response_format:
-            request_kwargs["response_format"] = response_format
+        request_kwargs["response_format"] = response_format
         if openai_tools is not None:
             request_kwargs.setdefault("tool_choice", "auto")
             request_kwargs.setdefault("parallel_tool_calls", False)

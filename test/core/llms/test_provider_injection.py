@@ -31,7 +31,6 @@ from scinoephile.core.llms.tool_box import ToolBox
 _PROMPT = Prompt(
     language=Language.eng,
     base_system_prompt="System prompt",
-    schema_intro="Schema",
     few_shot_intro="Few shot",
     few_shot_query_intro="Query",
     few_shot_answer_intro="Answer",
@@ -153,6 +152,7 @@ class _RecordingProvider(LLMProvider):
             base_url: base URL identity for cache namespacing
         """
         self.calls: list[list[dict[str, Any]]] = []
+        self.response_formats: list[type[Answer]] = []
         self.response = response
         self.model = model
         self.base_url = base_url
@@ -169,13 +169,14 @@ class _RecordingProvider(LLMProvider):
     def chat_completion(
         self,
         messages: list[dict[str, Any]],
-        response_format: type[Answer] | None = None,
+        response_format: type[Answer],
         tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Record messages and return a fixed completion response."""
-        _ = (response_format, tool_box, kwargs)
+        _ = (tool_box, kwargs)
         self.calls.append(messages)
+        self.response_formats.append(response_format)
         return self.response
 
 
@@ -194,6 +195,8 @@ def test_queryer_uses_injected_provider():
     assert output_test_case.answer is not None
     assert output_test_case.answer.output == "done"
     assert len(provider.calls) == 1
+    assert provider.response_formats == [_Answer]
+    assert queryer.system_prompt == _PROMPT.base_system_prompt
 
 
 def test_queryer_requires_injected_provider():

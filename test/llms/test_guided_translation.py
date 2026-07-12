@@ -164,7 +164,8 @@ def test_processor_maps_indexed_outputs_to_subtitle_timing():
             Subtitle(start=1000, end=2000, text="譯文二"),
         ]
     )
-    messages = provider.chat_completion.call_args.args[0]
+    messages, answer_cls, _ = provider.chat_completion.call_args.args
+    assert answer_cls is processor.queryer.test_case_cls.answer_cls
     assert json.loads(messages[1]["content"]) == {
         "zimu": [
             {"xuhao": 1, "wenben": "原文一"},
@@ -172,9 +173,6 @@ def test_processor_maps_indexed_outputs_to_subtitle_timing():
         ],
         "cankao": [{"xuhao": 1, "wenben": "參考"}],
     }
-    assert '"shuchu"' in messages[0]["content"]
-    assert '"xuhao"' in messages[0]["content"]
-    assert '"wenben"' in messages[0]["content"]
 
 
 def test_persistence_uses_base_prompt_field_names(tmp_path: Path):

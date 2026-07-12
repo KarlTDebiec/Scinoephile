@@ -21,8 +21,6 @@ __all__ = [
 class PromptLocalizationFields(TypedDict):
     """Shared localization fields accepted by all prompt types."""
 
-    schema_intro: str
-    """Text preceding schema description."""
     few_shot_intro: str
     """Text preceding few-shot examples."""
     few_shot_query_intro: str
@@ -49,8 +47,6 @@ class Prompt:
     # Prompt
     base_system_prompt: str = ""
     """Base system prompt."""
-    schema_intro: str = ""
-    """Text preceding schema description."""
     few_shot_intro: str = ""
     """Text preceding few-shot examples."""
     few_shot_query_intro: str = ""

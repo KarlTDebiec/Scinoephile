@@ -83,6 +83,10 @@ cardinality in model data, such as indexed subtitle lists, rather than in genera
 class fields. The prompt's stable content-addressed name is used in generated model
 names.
 
+LLM providers require a structured answer model for every completion. The provider's
+structured response format is the authoritative answer schema; system prompts do not
+duplicate that schema as text.
+
 Optimization persistence stores each prompt alias with its content-addressed
 identifier, language, and complete set of string fields. Prompt and test-case
 SQLite stores own and create their tables independently. Model persistence uses

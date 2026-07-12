@@ -97,12 +97,12 @@ def test_queryer_corresponds_using_prompt_aliases():
 
     assert result.answer is not None
     assert result.answer.model_dump() == {"output": "原文"}
-    messages = provider.chat_completion.call_args.args[0]
+    messages, answer_cls, _ = provider.chat_completion.call_args.args
+    assert answer_cls is test_case_cls.answer_cls
     assert json.loads(messages[1]["content"]) == {
         "zimu": ["原文"],
         "cankao": "參考",
     }
-    assert '"jieguo"' in messages[0]["content"]
 
 
 def test_query_and_answer_require_nonempty_fields():

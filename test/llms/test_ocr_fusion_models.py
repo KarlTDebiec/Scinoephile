@@ -237,13 +237,12 @@ def test_queryer_corresponds_using_prompt_aliases():
         "output": "來源一",
         "note": "採用來源一",
     }
-    messages = provider.chat_completion.call_args.args[0]
+    messages, answer_cls, _ = provider.chat_completion.call_args.args
+    assert answer_cls is test_case_cls.answer_cls
     assert json.loads(messages[1]["content"]) == {
         "yilai": "來源一",
         "erlai": "來源二",
     }
-    assert '"jieguo"' in messages[0]["content"]
-    assert '"shuoming"' in messages[0]["content"]
 
 
 def test_processor_uses_semantic_fields_at_runtime():

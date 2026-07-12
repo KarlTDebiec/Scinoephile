@@ -62,7 +62,7 @@ class LLMProvider(ABC):
     def chat_completion(
         self,
         messages: list[dict[str, Any]],
-        response_format: type[Answer] | None = None,
+        response_format: type[Answer],
         tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
@@ -70,7 +70,7 @@ class LLMProvider(ABC):
 
         Arguments:
             messages: messages to send
-            response_format: response format
+            response_format: structured response format
             tool_box: available tools
             **kwargs: provider-specific keyword arguments
         Returns:

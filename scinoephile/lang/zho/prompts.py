@@ -12,7 +12,6 @@ __all__ = ["ZHO_HANT_PROMPT_FIELDS"]
 
 
 ZHO_HANT_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
-    "schema_intro": "你的回覆必須是一個具有以下結構的 JSON 對象：",
     "few_shot_intro": "下面是一些查詢及其預期答案的示例：",
     "few_shot_query_intro": "示例查詢：",
     "few_shot_answer_intro": "預期答案：",
