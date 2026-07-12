@@ -118,6 +118,11 @@ correct. Before presenting the report, replace every `Notes` cell—including
 populated and blank cells—with your own concise interpretation of the row in
 English. Do not translate, preserve, quote, or merely restate an automatic note.
 
+Review stages must preserve the source punctuation and whitespace exactly.
+Treat punctuation-only or whitespace-only revisions as invalid. When correcting
+review data, remove those revisions; when a revision also corrects text, retain
+the text correction while restoring the source punctuation and whitespace.
+
 Always show the complete raw Markdown report inline in the final response. Do
 not replace it with a summary, findings, or a file link, and do not wrap it in a
 code fence. Counts, actionable findings, and a link may accompany the report.
