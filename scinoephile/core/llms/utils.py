@@ -7,6 +7,9 @@ from __future__ import annotations
 import json
 from collections.abc import Iterable
 from pathlib import Path
+from typing import cast
+
+from pydantic import TypeAdapter
 
 from scinoephile.common.file import open_atomic_text_file
 
@@ -34,23 +37,35 @@ def load_test_cases_from_json(
     Returns:
         list of test cases
     """
-    with open(input_path, encoding="utf-8") as f:
-        raw_test_cases: list[dict] = json.load(f)
-
+    # Prepare prompt-specific test-case classes
     base_test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
     test_case_cls = manager_cls.get_test_case_cls(prompt)
+
+    # Load serialized test cases
+    with open(input_path, encoding="utf-8") as input_file:
+        raw_test_cases: object = json.load(input_file)
+
+    # Validate using the base-prompt schema
+    base_test_case_list_type = (
+        list[base_test_case_cls]  # ty: ignore[invalid-type-form]
+    )
+    base_test_case_adapter = TypeAdapter(base_test_case_list_type)
+    validated_base_test_cases = base_test_case_adapter.validate_python(
+        raw_test_cases,
+        by_alias=True,
+        by_name=False,
+        strict=True,
+        extra="forbid",
+        context={"alias_only": True},
+    )
+    base_test_cases = cast("list[TestCase]", validated_base_test_cases)
+
+    # Convert to the requested prompt schema
     test_cases: list[TestCase] = []
-    for test_case_data in raw_test_cases:
-        base_test_case = base_test_case_cls.model_validate(
-            test_case_data,
-            by_alias=True,
-            by_name=False,
-            extra="forbid",
-            context={"alias_only": True},
-        )
-        test_cases.append(
-            test_case_cls.model_validate(base_test_case.model_dump(mode="json"))
-        )
+    for base_test_case in base_test_cases:
+        test_case_data = base_test_case.model_dump(mode="json")
+        test_case = test_case_cls.model_validate(test_case_data)
+        test_cases.append(test_case)
 
     return test_cases
 
