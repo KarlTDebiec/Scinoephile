@@ -53,7 +53,7 @@ class Processor(ABC):
     prompt: Prompt
     """Text for LLM correspondence."""
     test_case_cls: type[TestCase]
-    """Test-case contract for the configured prompt."""
+    """Test-case class for the configured prompt."""
 
     def __init__(
         self,

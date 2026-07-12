@@ -27,7 +27,7 @@ logger = getLogger(__name__)
 
 
 class Queryer[TTestCase: TestCase]:
-    """Execute LLM queries for one test-case contract."""
+    """Execute LLM queries using one test-case class."""
 
     def __init__(
         self,
@@ -44,7 +44,7 @@ class Queryer[TTestCase: TestCase]:
         """Initialize.
 
         Arguments:
-            test_case_cls: test-case contract for all queries and verified answers
+            test_case_cls: class defining queries, verified answers, and prompt text
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
             provider: provider to use for queries
@@ -55,7 +55,7 @@ class Queryer[TTestCase: TestCase]:
             tool_box: available tools and handlers
         """
         self.test_case_cls = test_case_cls
-        """Test-case contract for queries, answers, and prompt text."""
+        """Class defining queries, answers, and prompt text."""
         self.prompt = test_case_cls.prompt
         """Text for LLM correspondence."""
         self.provider = provider

@@ -64,14 +64,14 @@ class _TestCase(TestCase):
 
 
 class _IncompatibleAnswer(Answer):
-    """Incompatible answer fixture for contract tests."""
+    """Incompatible answer fixture for test-case class tests."""
 
     note: str
     """Answer note."""
 
 
 class _CompatibleTestCase(TestCase):
-    """Alternate compatible test-case fixture for contract tests."""
+    """Alternate compatible test-case fixture for class validation tests."""
 
     query: _Query
     """Query fixture."""
@@ -80,7 +80,7 @@ class _CompatibleTestCase(TestCase):
 
 
 class _IncompatibleTestCase(TestCase):
-    """Incompatible test-case fixture for contract tests."""
+    """Incompatible test-case fixture for class validation tests."""
 
     query: _Query
     """Query fixture."""
@@ -256,8 +256,8 @@ def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
     assert encountered_test_case.verified is True
 
 
-def test_queryer_rejects_verified_test_case_from_incompatible_contract():
-    """Test verified answers must conform to the bound test-case contract."""
+def test_queryer_rejects_verified_test_case_from_incompatible_class():
+    """Test verified answers must conform to the configured test-case class."""
     provider = Mock(spec=LLMProvider)
     incompatible = _IncompatibleTestCase(
         query=_Query(text="input"),
@@ -269,8 +269,8 @@ def test_queryer_rejects_verified_test_case_from_incompatible_contract():
         Queryer(_TestCase, verified_test_cases=[incompatible], provider=provider)
 
 
-def test_queryer_normalizes_compatible_test_case_into_bound_contract():
-    """Test compatible inputs are returned using the bound test-case class."""
+def test_queryer_normalizes_input_into_configured_test_case_class():
+    """Test compatible inputs are returned using the configured test-case class."""
     provider = Mock(spec=LLMProvider)
     verified = _TestCase(
         query=_Query(text="input"),
