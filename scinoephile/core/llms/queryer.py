@@ -271,13 +271,19 @@ class Queryer[TTestCase: TestCase]:
         if self.cache_dir_path is None:
             return None
 
-        provider_identity_json = json.dumps(
-            self.provider.cache_identity,
+        cache_identity_json = json.dumps(
+            {
+                "provider": self.provider.cache_identity,
+                "test_case": {
+                    "module": self.test_case_cls.__module__,
+                    "qualname": self.test_case_cls.__qualname__,
+                },
+            },
             ensure_ascii=True,
             separators=(",", ":"),
             sort_keys=True,
         )
-        prompt_str = provider_identity_json + system_prompt + tools_json + query_prompt
+        prompt_str = cache_identity_json + system_prompt + tools_json + query_prompt
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 

@@ -4,6 +4,12 @@
 
 from __future__ import annotations
 
+from pytest import raises
+
+from scinoephile.llms.guided_translation import (
+    GuidedTranslationManager,
+    GuidedTranslationPrompt,
+)
 from scinoephile.llms.punctuation import (
     PunctuationManager,
     PunctuationPrompt,
@@ -166,3 +172,29 @@ def test_generated_test_case_inherits_stable_metadata_schema():
         "title": "Verified",
         "type": "boolean",
     }
+
+
+def test_prompt_specific_factory_allows_aliases_reused_across_objects():
+    """Query and answer objects may independently use the same alias."""
+    prompt = ReviewPrompt(subtitles="items", revisions="items")
+
+    test_case_cls = ReviewManager.get_test_case_cls(prompt)
+
+    assert test_case_cls.query_cls.model_fields["subtitles"].alias == "items"
+    assert test_case_cls.answer_cls.model_fields["revisions"].alias == "items"
+
+
+def test_prompt_specific_factory_rejects_blank_aliases():
+    """Generated JSON object field aliases must not be blank."""
+    prompt = ReviewPrompt(index=" ")
+
+    with raises(ValueError, match="must have a nonblank alias"):
+        ReviewManager.get_test_case_cls(prompt)
+
+
+def test_prompt_specific_factory_rejects_duplicate_aliases():
+    """Generated JSON object field aliases must be unique."""
+    prompt = GuidedTranslationPrompt(subtitles="items", guides="items")
+
+    with raises(ValueError, match="field aliases must be unique"):
+        GuidedTranslationManager.get_test_case_cls(prompt)
