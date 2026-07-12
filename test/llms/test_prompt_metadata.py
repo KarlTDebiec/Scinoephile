@@ -31,6 +31,7 @@ def test_registered_prompt_model_and_cache_identities_change_once(
 ):
     """Removing metadata should change prompt, model, system, and cache identities."""
     provider = Mock(spec=LLMProvider)
+    provider.cache_identity = {"implementation": "test.provider"}
 
     for manager_cls, prompt in _get_registered_prompts():
         legacy_prompt = _get_legacy_prompt(prompt)

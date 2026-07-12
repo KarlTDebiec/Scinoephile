@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
+import gc
 from functools import cache
 from typing import Any, Unpack
 from unittest.mock import Mock
+from weakref import ref
 
-from pydantic import ValidationError
+from pydantic import JsonValue, ValidationError
 from pytest import raises
 
 from scinoephile.core import Language
@@ -135,14 +137,33 @@ class _Processor(Processor):
 class _RecordingProvider(LLMProvider):
     """Recording provider fixture."""
 
-    def __init__(self, response: str = '{"output":"done"}'):
+    def __init__(
+        self,
+        response: str = '{"output":"done"}',
+        *,
+        model: str = "test-model",
+        base_url: str | None = None,
+    ):
         """Initialize.
 
         Arguments:
             response: completion response to return
+            model: model identity for cache namespacing
+            base_url: base URL identity for cache namespacing
         """
         self.calls: list[list[dict[str, Any]]] = []
         self.response = response
+        self.model = model
+        self.base_url = base_url
+
+    @property
+    def cache_identity(self) -> dict[str, JsonValue]:
+        """Stable provider configuration for cache namespacing."""
+        return {
+            **super().cache_identity,
+            "model": self.model,
+            "base_url": self.base_url,
+        }
 
     def chat_completion(
         self,
@@ -155,6 +176,10 @@ class _RecordingProvider(LLMProvider):
         _ = (response_format, tool_box, kwargs)
         self.calls.append(messages)
         return self.response
+
+
+class _AlternateRecordingProvider(_RecordingProvider):
+    """Alternate provider implementation for cache identity tests."""
 
 
 def test_queryer_uses_injected_provider():
@@ -395,6 +420,102 @@ def test_queryer_snapshots_verified_test_cases():
     stored = queryer.verified_test_cases[verified.query.key]
     assert stored.answer is not None
     assert stored.answer.output == "original"
+
+
+def test_queryer_cache_is_namespaced_by_provider_model(tmp_path):
+    """Test one provider model cannot load another model's cached answer."""
+    provider_one = _RecordingProvider('{"output":"one"}', model="model-one")
+    queryer_one = Queryer(
+        _TestCase,
+        provider=provider_one,
+        cache_dir_path=tmp_path,
+        max_attempts=1,
+    )
+    test_case = _TestCase(query=_Query(text="input"))
+
+    result_one = queryer_one(test_case)
+
+    provider_two = _RecordingProvider('{"output":"two"}', model="model-two")
+    queryer_two = Queryer(
+        _TestCase,
+        provider=provider_two,
+        cache_dir_path=tmp_path,
+        max_attempts=1,
+    )
+    result_two = queryer_two(test_case)
+
+    assert result_one.answer == _Answer(output="one")
+    assert result_two.answer == _Answer(output="two")
+    assert len(provider_one.calls) == 1
+    assert len(provider_two.calls) == 1
+
+
+def test_queryer_cache_is_namespaced_by_provider_implementation(tmp_path):
+    """Test different provider implementations have different cache paths."""
+    queryer_one = Queryer(
+        _TestCase,
+        provider=_RecordingProvider(),
+        cache_dir_path=tmp_path,
+    )
+    queryer_two = Queryer(
+        _TestCase,
+        provider=_AlternateRecordingProvider(),
+        cache_dir_path=tmp_path,
+    )
+
+    cache_path_one = queryer_one._get_cache_path("system", "tools", "query")
+    cache_path_two = queryer_two._get_cache_path("system", "tools", "query")
+
+    assert cache_path_one is not None
+    assert cache_path_two is not None
+    assert cache_path_one != cache_path_two
+
+
+def test_queryer_cache_is_namespaced_by_provider_base_url(tmp_path):
+    """Test OpenAI-compatible endpoints do not share cached answers."""
+    provider_one = _RecordingProvider(
+        '{"output":"one"}',
+        base_url="https://one.example/v1",
+    )
+    provider_two = _RecordingProvider(
+        '{"output":"two"}',
+        base_url="https://two.example/v1",
+    )
+    test_case = _TestCase(query=_Query(text="input"))
+
+    result_one = Queryer(
+        _TestCase,
+        provider=provider_one,
+        cache_dir_path=tmp_path,
+        max_attempts=1,
+    )(test_case)
+    result_two = Queryer(
+        _TestCase,
+        provider=provider_two,
+        cache_dir_path=tmp_path,
+        max_attempts=1,
+    )(test_case)
+
+    assert result_one.answer == _Answer(output="one")
+    assert result_two.answer == _Answer(output="two")
+    assert len(provider_one.calls) == 1
+    assert len(provider_two.calls) == 1
+
+
+def test_cache_path_does_not_retain_queryer(tmp_path):
+    """Test calculating a cache path does not retain the Queryer instance."""
+    queryer = Queryer(
+        _TestCase,
+        provider=_RecordingProvider(),
+        cache_dir_path=tmp_path,
+    )
+    queryer_ref = ref(queryer)
+    assert queryer._get_cache_path("system", "tools", "query") is not None
+
+    del queryer
+    gc.collect()
+
+    assert queryer_ref() is None
 
 
 def test_processor_passes_injected_provider_to_queryer():

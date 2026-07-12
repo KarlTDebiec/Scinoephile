@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
@@ -251,7 +250,6 @@ class Queryer[TTestCase: TestCase]:
         self.encountered_test_cases[key] = normalized
         logger.debug(f"Logged test case: {normalized.query.key_str}")
 
-    @cache
     def _get_cache_path(
         self, system_prompt: str, tools_json: str, query_prompt: str
     ) -> Path | None:
@@ -267,7 +265,13 @@ class Queryer[TTestCase: TestCase]:
         if self.cache_dir_path is None:
             return None
 
-        prompt_str = system_prompt + tools_json + query_prompt
+        provider_identity_json = json.dumps(
+            self.provider.cache_identity,
+            ensure_ascii=True,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        prompt_str = provider_identity_json + system_prompt + tools_json + query_prompt
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
