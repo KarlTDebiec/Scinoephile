@@ -396,7 +396,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 5,
+          "text": "打賞個救命錢　　怎麼搞的，死乞丐！",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -1678,7 +1684,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 8,
+          "text": "以後沒有化妝不要四處走，知道嗎？",
+          "note": "Apply this correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -1956,7 +1968,18 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 18,
+          "text": "怡紅院金牌清倌人如霜姑娘",
+          "note": "Apply this language correction during traditional review."
+        },
+        {
+          "index": 53,
+          "text": "否則我到京城哪有荔枝吃？",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -2256,7 +2279,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 1,
+          "text": "留力而已",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -2506,7 +2535,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 2,
+          "text": "僧格林沁？",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -2556,7 +2591,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 1,
+          "text": "有沒有搞錯！你老祖！要把戲？",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -2947,7 +2988,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 4,
+          "text": "僧格林沁，今科武狀元是誰？",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -3201,7 +3248,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 18,
+          "text": "我想你要認真地學寫字了",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -3427,7 +3480,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 29,
+          "text": "我哪裡像乞丐？",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -3507,7 +3566,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 6,
+          "text": "不需要討哪裡有錢呢？",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -3633,7 +3698,18 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 12,
+          "text": "原來你這兩個臭東西想騙我",
+          "note": "Apply this language correction during traditional review."
+        },
+        {
+          "index": 19,
+          "text": "她早就向我透露很欣賞你",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -3812,7 +3888,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 9,
+          "text": "這次你沒有這勝券在握",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -4242,7 +4324,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 4,
+          "text": "好冷？糟糕了！你身體好燙",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -5398,7 +5486,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 1,
+          "text": "年輕人，我們夢中相見",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -6094,7 +6188,13 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 17,
+          "text": "這個年輕人！雖然資歷低",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
@@ -6849,6 +6949,11 @@
           "index": 2,
           "text": "託皇上鴻福，風向轉變",
           "note": "「托」改為「託」，書面語中表示「依靠、由於」時慣用「託」。"
+        },
+        {
+          "index": 4,
+          "text": "四圍營和左右護衛情況怎麼樣？",
+          "note": "Apply this language correction during traditional review."
         }
       ]
     },
@@ -7564,7 +7669,18 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 8,
+          "text": "奉旨乞食？有沒有搞錯？",
+          "note": "Apply this language correction during traditional review."
+        },
+        {
+          "index": 9,
+          "text": "沒有搞錯！爽手點！",
+          "note": "Apply this language correction during traditional review."
+        }
+      ]
     },
     "verified": true
   },
