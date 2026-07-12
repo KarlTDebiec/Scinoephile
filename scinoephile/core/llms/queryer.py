@@ -32,7 +32,6 @@ class Queryer[TTestCase: TestCase]:
     def __init__(
         self,
         test_case_cls: type[TTestCase],
-        few_shot_test_cases: list[TestCase] | None = None,
         verified_test_cases: list[TestCase] | None = None,
         *,
         provider: LLMProvider,
@@ -45,8 +44,7 @@ class Queryer[TTestCase: TestCase]:
         """Initialize.
 
         Arguments:
-            test_case_cls: test-case contract for all queries and seed answers
-            few_shot_test_cases: test cases included as few-shot examples
+            test_case_cls: test-case contract for all queries and verified answers
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
             provider: provider to use for queries
@@ -62,29 +60,16 @@ class Queryer[TTestCase: TestCase]:
         """Text for LLM correspondence."""
         self.provider = provider
 
-        seed_test_cases: dict[tuple, TTestCase] = {}
-        self._add_seed_test_cases(
-            seed_test_cases,
-            few_shot_test_cases or [],
-            few_shot=True,
+        self.verified_test_cases = self._get_verified_test_cases(
+            verified_test_cases or []
         )
-        self._add_seed_test_cases(
-            seed_test_cases,
-            verified_test_cases or [],
-            verified=True,
-        )
+        """Test cases whose answers are verified for which LLM will not be queried."""
         self.few_shot_test_cases = {
             key: test_case
-            for key, test_case in seed_test_cases.items()
+            for key, test_case in self.verified_test_cases.items()
             if test_case.few_shot
         }
         """Test cases included as few-shot examples."""
-        self.verified_test_cases = {
-            key: test_case
-            for key, test_case in seed_test_cases.items()
-            if test_case.verified
-        }
-        """Test cases whose answers are verified for which LLM will not be queried."""
         self.encountered_test_cases: dict[tuple, TTestCase] = {}
         """Test cases actually encountered."""
 
@@ -171,7 +156,12 @@ class Queryer[TTestCase: TestCase]:
             # Validate test case
             try:
                 test_case = self.test_case_cls.model_validate(
-                    {**test_case.model_dump(), "answer": answer, "verified": False}
+                    {
+                        **test_case.model_dump(),
+                        "answer": answer,
+                        "few_shot": False,
+                        "verified": False,
+                    }
                 )
                 if self.auto_verify and test_case.get_auto_verified():
                     test_case.verified = True
@@ -356,55 +346,43 @@ class Queryer[TTestCase: TestCase]:
             return test_case
         return None
 
-    def _add_seed_test_cases(
+    def _get_verified_test_cases(
         self,
-        seed_test_cases: dict[tuple, TTestCase],
         test_cases: list[TestCase],
-        *,
-        few_shot: bool = False,
-        verified: bool = False,
-    ):
-        """Snapshot and merge seed test cases.
+    ) -> dict[tuple, TTestCase]:
+        """Snapshot, validate, and merge verified test cases.
 
         Arguments:
-            seed_test_cases: normalized test cases accumulated so far
-            test_cases: test cases to add
-            few_shot: mark added test cases as few-shot examples
-            verified: mark added test cases as verified answers
+            test_cases: verified test cases to prepare
+        Returns:
+            verified test cases keyed by query
         """
+        verified_test_cases: dict[tuple, TTestCase] = {}
         for test_case in test_cases:
             normalized = self.test_case_cls.model_validate(
                 test_case.model_dump(mode="json")
             )
+            if not normalized.verified:
+                raise ValueError("Queryer test cases must be verified.")
             if normalized.answer is None:
-                raise ValueError(
-                    "Few-shot and verified test cases must include an answer."
-                )
-            normalized = self.test_case_cls.model_validate(
-                {
-                    **normalized.model_dump(mode="json"),
-                    "few_shot": normalized.few_shot or few_shot,
-                    "verified": normalized.verified or verified,
-                }
-            )
+                raise ValueError("Verified test cases must include an answer.")
             key = normalized.query.key
-            existing = seed_test_cases.get(key)
+            existing = verified_test_cases.get(key)
             if existing is None:
-                seed_test_cases[key] = normalized
+                verified_test_cases[key] = normalized
                 continue
             existing_answer = existing.answer
             normalized_answer = normalized.answer
             if existing_answer is None or normalized_answer is None:
-                raise ValueError(
-                    "Few-shot and verified test cases must include an answer."
-                )
+                raise ValueError("Verified test cases must include an answer.")
             if existing_answer.model_dump(mode="json") != normalized_answer.model_dump(
                 mode="json"
             ):
                 raise ValueError(
-                    f"Conflicting seed answers for query {normalized.query.key_str}."
+                    "Conflicting verified answers for query "
+                    f"{normalized.query.key_str}."
                 )
-            seed_test_cases[key] = self.test_case_cls.model_validate(
+            verified_test_cases[key] = self.test_case_cls.model_validate(
                 {
                     **existing.model_dump(mode="json"),
                     "difficulty": max(existing.difficulty, normalized.difficulty),
@@ -412,6 +390,7 @@ class Queryer[TTestCase: TestCase]:
                     "verified": existing.verified or normalized.verified,
                 }
             )
+        return verified_test_cases
 
     @staticmethod
     def _format_validation_errors(exc: ValidationError) -> str:
