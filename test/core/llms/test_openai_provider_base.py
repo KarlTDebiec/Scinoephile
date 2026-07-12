@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable
 from types import SimpleNamespace
 from typing import Any, cast
@@ -184,6 +185,31 @@ def test_model_override_updates_provider_model():
     )
 
     assert cast(str, client.calls[0]["model"]) == "override-model"
+
+
+def test_cache_identity_contains_nonsecret_effective_configuration():
+    """Test cache identity captures behavior without exposing credentials."""
+    provider = _DummyProvider(
+        api_key="super-secret",
+        base_url="https://example.invalid/v1/",
+        model="override-model",
+    )
+
+    assert provider.cache_identity == {
+        "implementation": f"{_DummyProvider.__module__}.{_DummyProvider.__qualname__}",
+        "model": "override-model",
+        "base_url": "https://example.invalid/v1",
+        "use_strict_tools": True,
+    }
+    assert "super-secret" not in json.dumps(provider.cache_identity)
+
+
+def test_cache_identity_uses_effective_sdk_base_url(monkeypatch):
+    """Test cache identity honors the SDK's base URL environment override."""
+    monkeypatch.setenv("OPENAI_BASE_URL", "https://environment.invalid/v1/")
+    provider = _DummyProvider(api_key="super-secret")
+
+    assert provider.cache_identity["base_url"] == ("https://environment.invalid/v1")
 
 
 def test_build_openai_tools_enables_strict_tools_by_default():

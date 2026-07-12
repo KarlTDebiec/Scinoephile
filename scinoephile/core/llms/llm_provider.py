@@ -7,6 +7,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any, TypedDict, Unpack
 
+from pydantic import JsonValue
+
 from .answer import Answer
 from .tool_box import ToolBox
 
@@ -46,6 +48,15 @@ class ChatCompletionKwargs(TypedDict, total=False):
 
 class LLMProvider(ABC):
     """ABC for LLM providers."""
+
+    @property
+    def cache_identity(self) -> dict[str, JsonValue]:
+        """Stable, non-secret configuration affecting completion behavior.
+
+        Configurable provider implementations must extend this identity with all
+        behavior-affecting settings while excluding credentials.
+        """
+        return {"implementation": f"{type(self).__module__}.{type(self).__qualname__}"}
 
     @abstractmethod
     def chat_completion(

@@ -12,6 +12,7 @@ from typing import Any, Unpack, cast
 
 from openai import OpenAI, OpenAIError
 from openai.types.chat import ChatCompletionMessageFunctionToolCall
+from pydantic import JsonValue
 
 from scinoephile.core import ScinoephileError
 
@@ -67,6 +68,33 @@ class OpenAIProviderBase(LLMProvider):
         if self.api_key_env_var_name is None:
             return None
         return os.environ.get(self.api_key_env_var_name)
+
+    @property
+    def cache_identity(self) -> dict[str, JsonValue]:
+        """Stable, non-secret OpenAI-compatible provider configuration."""
+        identity = super().cache_identity
+        base_url = None
+        if self._sync_client is not None:
+            client_base_url = getattr(self._sync_client, "base_url", None)
+            if client_base_url is not None:
+                base_url = str(client_base_url)
+        if base_url is None:
+            base_url = self.base_url
+        if base_url is None:
+            base_url = os.environ.get(
+                "OPENAI_BASE_URL",
+                "https://api.openai.com/v1",
+            )
+        if base_url is not None:
+            base_url = base_url.rstrip("/")
+        identity.update(
+            {
+                "model": self.model,
+                "base_url": base_url,
+                "use_strict_tools": self.use_strict_tools,
+            }
+        )
+        return identity
 
     @property
     def sync_client(self) -> OpenAI:
