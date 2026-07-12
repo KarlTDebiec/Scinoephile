@@ -103,6 +103,9 @@ also includes final discrepancies; use `--filter discrepancies` for those only.
 Use `--filter all` for every subtitle. Add `--characters` for occurrence checks;
 simplified and traditional variants are added automatically. Use inclusive
 1-indexed bounds with `--first-index` and `--last-index`.
+Do not generate or present a separate character-focused report by default. Use
+one only when the user requests it or a specific suspected conversion gap needs
+investigation.
 
 Read the relevant language policy before assessing rows:
 

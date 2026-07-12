@@ -2,8 +2,9 @@
 
 - Check script consistency: Hant stages should remain traditional and reviewed
   simplified stages should contain no unintended traditional characters.
-- Check `著/着` and `甚/什` occurrences when relevant. Use
-  `--filter all --characters 著 着 甚 什` for a complete occurrence audit.
+- Check `著/着` and `甚/什` within the main audit. Use a separate
+  `--filter all --characters 著 着 甚 什` report only when requested or when
+  investigating a suspected missed conversion.
 - Compare parallel scripts for asymmetric lexical, OCR, punctuation, and
   whitespace corrections. Prefer correcting the corresponding initial review
   rather than relying on simplification cleanup.
