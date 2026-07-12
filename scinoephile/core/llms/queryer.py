@@ -138,6 +138,7 @@ class Queryer[TTestCase: TestCase]:
                     content,
                     by_alias=True,
                     by_name=False,
+                    strict=True,
                     extra="forbid",
                     context={"alias_only": True},
                 )

@@ -14,7 +14,7 @@ from weakref import ref
 from pydantic import JsonValue, ValidationError
 from pytest import raises
 
-from scinoephile.core import Language
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import (
     Answer,
     LLMProvider,
@@ -197,6 +197,21 @@ def test_queryer_uses_injected_provider():
     assert len(provider.calls) == 1
     assert provider.response_formats == [_Answer]
     assert queryer.system_prompt == _PROMPT.base_system_prompt
+
+
+def test_queryer_retries_provider_errors():
+    """Test transient provider errors use the configured attempt count."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.side_effect = [
+        ScinoephileError("invalid structured content"),
+        '{"output":"done"}',
+    ]
+    queryer = Queryer(_TestCase, provider=provider, max_attempts=2)
+
+    result = queryer(_TestCase(query=_Query(text="input")))
+
+    assert result.answer == _Answer(output="done")
+    assert provider.chat_completion.call_count == 2
 
 
 def test_queryer_requires_injected_provider():
