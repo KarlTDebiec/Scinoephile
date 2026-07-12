@@ -110,7 +110,7 @@ class Queryer[TTestCase: TestCase]:
         Returns:
             test case including LLM's answer
         """
-        test_case = self._normalize_test_case(test_case)
+        test_case = self.test_case_cls.model_validate(test_case.model_dump(mode="json"))
 
         # Load from verified if available
         if verified_test_case := self._get_verified_test_case(test_case.query):
@@ -247,7 +247,9 @@ class Queryer[TTestCase: TestCase]:
         Arguments:
             test_case: test case to log
         """
-        normalized = self._normalize_test_case(test_case)
+        normalized = self.test_case_cls.model_validate(
+            test_case.model_dump(mode="json")
+        )
         key = normalized.query.key
         normalized = self.test_case_cls.model_validate(
             {
@@ -348,8 +350,8 @@ class Queryer[TTestCase: TestCase]:
             verified test case if available, else None
         """
         if test_case := self.verified_test_cases.get(query.key):
-            test_case = self._normalize_test_case(test_case)
             self.log_encountered_test_case(test_case)
+            test_case = self.encountered_test_cases[query.key]
             logger.info(f"Loaded from verified log: {query.key_str}")
             return test_case
         return None
@@ -362,7 +364,7 @@ class Queryer[TTestCase: TestCase]:
         few_shot: bool = False,
         verified: bool = False,
     ):
-        """Normalize and merge seed test cases.
+        """Snapshot and merge seed test cases.
 
         Arguments:
             seed_test_cases: normalized test cases accumulated so far
@@ -371,7 +373,9 @@ class Queryer[TTestCase: TestCase]:
             verified: mark added test cases as verified answers
         """
         for test_case in test_cases:
-            normalized = self._normalize_test_case(test_case)
+            normalized = self.test_case_cls.model_validate(
+                test_case.model_dump(mode="json")
+            )
             if normalized.answer is None:
                 raise ValueError(
                     "Few-shot and verified test cases must include an answer."
@@ -408,16 +412,6 @@ class Queryer[TTestCase: TestCase]:
                     "verified": existing.verified or normalized.verified,
                 }
             )
-
-    def _normalize_test_case(self, test_case: TestCase) -> TTestCase:
-        """Snapshot and revalidate a test case into the bound contract.
-
-        Arguments:
-            test_case: test case to normalize
-        Returns:
-            independent test case conforming to the bound contract
-        """
-        return self.test_case_cls.model_validate(test_case.model_dump(mode="json"))
 
     @staticmethod
     def _format_validation_errors(exc: ValidationError) -> str:
