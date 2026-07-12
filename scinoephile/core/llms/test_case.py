@@ -64,8 +64,8 @@ class TestCase(BaseModel, ABC):
         return self
 
     @model_validator(mode="after")
-    def require_reusable_answer(self) -> Self:
-        """Ensure reusable test cases include an answer.
+    def require_answer(self) -> Self:
+        """Ensure few-shot and verified test cases include an answer.
 
         Returns:
             validated test case

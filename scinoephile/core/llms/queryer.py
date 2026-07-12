@@ -45,7 +45,7 @@ class Queryer[TTestCase: TestCase]:
         """Initialize.
 
         Arguments:
-            test_case_cls: test-case contract for all queries and reusable answers
+            test_case_cls: test-case contract for all queries and seed answers
             few_shot_test_cases: test cases included as few-shot examples
             verified_test_cases: test cases whose answers are verified and for which
               LLM need not be queried
@@ -362,7 +362,7 @@ class Queryer[TTestCase: TestCase]:
         few_shot: bool = False,
         verified: bool = False,
     ):
-        """Normalize and merge reusable test cases.
+        """Normalize and merge seed test cases.
 
         Arguments:
             seed_test_cases: normalized test cases accumulated so far
@@ -398,8 +398,7 @@ class Queryer[TTestCase: TestCase]:
                 mode="json"
             ):
                 raise ValueError(
-                    "Conflicting reusable answers for query "
-                    f"{normalized.query.key_str}."
+                    f"Conflicting seed answers for query {normalized.query.key_str}."
                 )
             seed_test_cases[key] = self.test_case_cls.model_validate(
                 {

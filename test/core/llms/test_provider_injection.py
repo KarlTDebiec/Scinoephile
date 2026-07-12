@@ -255,8 +255,8 @@ def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
     assert encountered_test_case.verified is True
 
 
-def test_queryer_rejects_reusable_test_case_from_incompatible_contract():
-    """Test reusable answers must conform to the bound test-case contract."""
+def test_queryer_rejects_seed_from_incompatible_contract():
+    """Test seed answers must conform to the bound test-case contract."""
     provider = Mock(spec=LLMProvider)
     incompatible = _IncompatibleTestCase(
         query=_Query(text="input"),
@@ -285,7 +285,7 @@ def test_queryer_normalizes_compatible_test_case_into_bound_contract():
     provider.chat_completion.assert_not_called()
 
 
-def test_queryer_requires_answers_for_reusable_test_cases():
+def test_queryer_requires_answers_for_seed_test_cases():
     """Test few-shot and verified inputs cannot omit their answers."""
     provider = Mock(spec=LLMProvider)
     incomplete = _TestCase.model_construct(
@@ -298,13 +298,13 @@ def test_queryer_requires_answers_for_reusable_test_cases():
         Queryer(_TestCase, verified_test_cases=[incomplete], provider=provider)
 
 
-def test_test_case_requires_answer_when_marked_reusable():
-    """Test reusable metadata requires an answer during model validation."""
+def test_test_case_requires_answer_when_few_shot():
+    """Test few-shot metadata requires an answer during model validation."""
     with raises(ValidationError, match="must include an answer"):
         _TestCase(query=_Query(text="input"), few_shot=True)
 
 
-def test_queryer_merges_identical_reusable_duplicates():
+def test_queryer_merges_identical_seed_duplicates():
     """Test identical duplicate answers merge their metadata."""
     provider = Mock(spec=LLMProvider)
     few_shot = _TestCase(
@@ -332,7 +332,7 @@ def test_queryer_merges_identical_reusable_duplicates():
     assert merged.verified is True
 
 
-def test_queryer_rejects_conflicting_reusable_duplicates():
+def test_queryer_rejects_conflicting_seed_duplicates():
     """Test duplicate queries cannot silently choose one of two answers."""
     provider = Mock(spec=LLMProvider)
     first = _TestCase(
@@ -344,7 +344,7 @@ def test_queryer_rejects_conflicting_reusable_duplicates():
         answer=_Answer(output="second"),
     )
 
-    with raises(ValueError, match="Conflicting reusable answers"):
+    with raises(ValueError, match="Conflicting seed answers"):
         Queryer(
             _TestCase,
             verified_test_cases=[first, second],
@@ -352,7 +352,7 @@ def test_queryer_rejects_conflicting_reusable_duplicates():
         )
 
 
-def test_queryer_snapshots_reusable_test_cases():
+def test_queryer_snapshots_seed_test_cases():
     """Test later mutation of caller-owned seeds does not alter queryer state."""
     provider = Mock(spec=LLMProvider)
     verified = _TestCase(
