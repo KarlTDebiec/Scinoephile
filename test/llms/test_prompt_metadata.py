@@ -54,8 +54,8 @@ def test_registered_prompt_model_and_cache_identities_change_once(
         legacy_answer_schema = legacy_test_case_cls.answer_cls.model_json_schema(
             by_alias=True
         )
-        system_prompt = queryer._get_system_prompt()
-        legacy_system_prompt = legacy_queryer._get_system_prompt()
+        system_prompt = queryer.system_prompt
+        legacy_system_prompt = legacy_queryer.system_prompt
 
         assert system_prompt != legacy_system_prompt
         assert _get_system_prompt_prefix(system_prompt, answer_schema) == (

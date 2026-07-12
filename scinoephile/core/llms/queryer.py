@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-from json import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
 
@@ -85,6 +84,8 @@ class Queryer[TTestCase: TestCase]:
         """Automatically verify test cases if they meet selected criteria."""
         self.tool_box = tool_box or ToolBox()
         """Available tools and handlers."""
+        self.system_prompt = self._build_system_prompt()
+        """System prompt shared by all queries executed by this instance."""
 
     def __call__(self, test_case: TestCase) -> TTestCase:
         """Query LLM.
@@ -101,20 +102,20 @@ class Queryer[TTestCase: TestCase]:
             return verified_test_case
 
         # Load from cache if available
-        system_prompt = self._get_system_prompt()
+        query_json = test_case.query.model_dump_json(by_alias=True, indent=4)
         tools_json = self.tool_box.to_json()
-        if cached_test_case := self._get_cached_test_case(
-            system_prompt, tools_json, test_case
-        ):
+        cache_path = self._get_cache_path(
+            self.system_prompt,
+            tools_json,
+            query_json,
+        )
+        if cached_test_case := self._get_cached_test_case(test_case, cache_path):
             return cached_test_case
 
         # Query provider
-        query_prompt = json.dumps(
-            test_case.query.model_dump(by_alias=True), indent=4, ensure_ascii=False
-        )
         messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": query_prompt},
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": query_json},
         ]
         for attempt in range(1, self.max_attempts + 1):
             # Get answer from provider
@@ -144,14 +145,14 @@ class Queryer[TTestCase: TestCase]:
                     f"Validation errors:\n{self._format_validation_errors(exc)}"
                 )
                 if attempt == self.max_attempts:
-                    raise exc
+                    raise
                 messages.append({"role": "assistant", "content": content})
                 messages.append(
                     {
                         "role": "user",
                         "content": (
                             f"{self.prompt.answer_invalid_pre}\n"
-                            f"{'\n'.join([e['msg'] for e in exc.errors()])}\n"
+                            f"{'\n'.join(e['msg'] for e in exc.errors())}\n"
                             f"{self.prompt.answer_invalid_post}"
                         ),
                     }
@@ -177,14 +178,14 @@ class Queryer[TTestCase: TestCase]:
                     f"Validation errors:\n{self._format_validation_errors(exc)}"
                 )
                 if attempt == self.max_attempts:
-                    raise exc
+                    raise
                 messages.append({"role": "assistant", "content": content})
                 messages.append(
                     {
                         "role": "user",
                         "content": (
                             f"{self.prompt.test_case_invalid_pre}\n"
-                            f"{'\n'.join([e['msg'] for e in exc.errors()])}\n"
+                            f"{'\n'.join(e['msg'] for e in exc.errors())}\n"
                             f"{self.prompt.test_case_invalid_post}"
                         ),
                     }
@@ -198,14 +199,13 @@ class Queryer[TTestCase: TestCase]:
         self.log_encountered_test_case(test_case)
 
         # Update cache
-        if cache_path := self._get_cache_path(system_prompt, tools_json, query_prompt):
-            contents = json.dumps(
-                test_case.model_dump(exclude_defaults=True),
-                ensure_ascii=False,
+        if cache_path is not None:
+            contents = test_case.answer.model_dump_json(
+                exclude_defaults=True,
                 indent=2,
             )
-            with open(cache_path, mode="w", encoding="utf-8") as f:
-                f.write(contents)
+            with open(cache_path, mode="w", encoding="utf-8") as cache_file:
+                cache_file.write(contents)
             logger.debug(f"Saved to cache: {cache_path}")
 
         return test_case
@@ -216,23 +216,16 @@ class Queryer[TTestCase: TestCase]:
             return ""
         few_shot = f"\n\n{self.prompt.few_shot_intro}"
         for test_case in self.few_shot_test_cases.values():
-            if test_case.answer is None:
-                logger.warning(
-                    f"Few-shot test case {test_case.query.key_str} has no answer; "
-                    "skipping."
-                )
-                continue
+            assert test_case.answer is not None
             few_shot += f"\n\n{self.prompt.few_shot_query_intro}\n"
-            few_shot += json.dumps(
-                test_case.query.model_dump(by_alias=True),
+            few_shot += test_case.query.model_dump_json(
+                by_alias=True,
                 indent=4,
-                ensure_ascii=False,
             )
             few_shot += f"\n{self.prompt.few_shot_answer_intro}\n"
-            few_shot += json.dumps(
-                test_case.answer.model_dump(by_alias=True),
+            few_shot += test_case.answer.model_dump_json(
+                by_alias=True,
                 indent=4,
-                ensure_ascii=False,
             )
         return few_shot
 
@@ -246,25 +239,37 @@ class Queryer[TTestCase: TestCase]:
             test_case.model_dump(mode="json")
         )
         key = normalized.query.key
-        normalized = self.test_case_cls.model_validate(
-            {
-                **normalized.model_dump(mode="json"),
-                "few_shot": normalized.few_shot or key in self.few_shot_test_cases,
-                "verified": normalized.verified or key in self.verified_test_cases,
-            }
-        )
+        normalized.few_shot |= key in self.few_shot_test_cases
+        normalized.verified |= key in self.verified_test_cases
         self.encountered_test_cases[key] = normalized
         logger.debug(f"Logged test case: {normalized.query.key_str}")
 
+    def _build_system_prompt(self) -> str:
+        """Build the system prompt for the bound answer class.
+
+        Returns:
+            system prompt for the bound answer class
+        """
+        schema = self.test_case_cls.answer_cls.model_json_schema(by_alias=True)
+        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
+
+        system_prompt = self.prompt.base_system_prompt
+        if self.additional_context:
+            system_prompt += f"\n\nAdditional context:\n{self.additional_context}"
+        system_prompt += self.get_few_shot_test_cases_str()
+        system_prompt += f"\n\n{self.prompt.schema_intro}\n{schema_json}\n"
+
+        return system_prompt
+
     def _get_cache_path(
-        self, system_prompt: str, tools_json: str, query_prompt: str
+        self, system_prompt: str, tools_json: str, query_json: str
     ) -> Path | None:
         """Get cache path based on hash of prompts.
 
         Arguments:
             system_prompt: system prompt used for the query
             tools_json: JSON representation of configured tools
-            query_prompt: query prompt used for the query
+            query_json: JSON representation of the query
         Returns:
             Path to cache file
         """
@@ -283,69 +288,52 @@ class Queryer[TTestCase: TestCase]:
             separators=(",", ":"),
             sort_keys=True,
         )
-        prompt_str = cache_identity_json + system_prompt + tools_json + query_prompt
+        prompt_str = cache_identity_json + system_prompt + tools_json + query_json
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
     def _get_cached_test_case(
-        self, system_prompt: str, tools_json: str, test_case: TTestCase
+        self,
+        test_case: TTestCase,
+        cache_path: Path | None,
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
         Arguments:
-            system_prompt: system prompt used for the query
-            tools_json: JSON representation of configured tools
             test_case: test case containing query for which to get cached version
+            cache_path: path to the cached answer, if caching is enabled
         Returns:
             cached test case if available, else None
         """
-        query_prompt = json.dumps(
-            test_case.query.model_dump(by_alias=True), indent=4, ensure_ascii=False
-        )
-        cache_path = self._get_cache_path(
-            system_prompt,
-            tools_json,
-            query_prompt,
-        )
         if cache_path is None:
             return None
         if not cache_path.exists():
             return None
-        with open(cache_path, encoding="utf-8") as f:
-            contents = f.read()
+        with open(cache_path, encoding="utf-8") as cache_file:
+            contents = cache_file.read()
         try:
-            content = json.loads(contents)
-            test_case = self.test_case_cls.model_validate(content)
+            answer = self.test_case_cls.answer_cls.model_validate_json(contents)
+            test_case = self.test_case_cls.model_validate(
+                {
+                    **test_case.model_dump(mode="json"),
+                    "answer": answer,
+                    "few_shot": False,
+                    "verified": False,
+                }
+            )
             if self.auto_verify and test_case.get_auto_verified():
                 test_case.verified = True
             self.log_encountered_test_case(test_case)
             logger.info(f"Loaded from cache: {test_case.query.key_str}")
             cache_path.touch()
             return test_case
-        except (AttributeError, JSONDecodeError, ValidationError) as exc:
+        except ValidationError as exc:
             logger.error(
                 f"Cache content for query {test_case.query.key_str} is invalid: {exc}"
             )
             cache_path.unlink()
             logger.info(f"Deleted invalid cache file: {cache_path}")
         return None
-
-    def _get_system_prompt(self) -> str:
-        """Get system prompt for the bound answer class.
-
-        Returns:
-            system prompt for the bound answer class
-        """
-        schema = self.test_case_cls.answer_cls.model_json_schema(by_alias=True)
-        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
-
-        system_prompt = self.prompt.base_system_prompt
-        if self.additional_context:
-            system_prompt += f"\n\nAdditional context:\n{self.additional_context}"
-        system_prompt += self.get_few_shot_test_cases_str()
-        system_prompt += f"\n\n{self.prompt.schema_intro}\n{schema_json}\n"
-
-        return system_prompt
 
     def _get_verified_test_case(self, query: Query) -> TTestCase | None:
         """Get verified test case for the given query if available.
@@ -387,25 +375,15 @@ class Queryer[TTestCase: TestCase]:
             if existing is None:
                 verified_test_cases[key] = normalized
                 continue
-            existing_answer = existing.answer
-            normalized_answer = normalized.answer
-            if existing_answer is None or normalized_answer is None:
-                raise ValueError("Verified test cases must include an answer.")
-            if existing_answer.model_dump(mode="json") != normalized_answer.model_dump(
-                mode="json"
-            ):
+            assert existing.answer is not None
+            if existing.answer != normalized.answer:
                 raise ValueError(
                     "Conflicting verified answers for query "
                     f"{normalized.query.key_str}."
                 )
-            verified_test_cases[key] = self.test_case_cls.model_validate(
-                {
-                    **existing.model_dump(mode="json"),
-                    "difficulty": max(existing.difficulty, normalized.difficulty),
-                    "few_shot": existing.few_shot or normalized.few_shot,
-                    "verified": existing.verified or normalized.verified,
-                }
-            )
+            existing.difficulty = max(existing.difficulty, normalized.difficulty)
+            existing.few_shot |= normalized.few_shot
+            existing.verified |= normalized.verified
         return verified_test_cases
 
     @staticmethod
