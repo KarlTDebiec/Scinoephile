@@ -47,16 +47,14 @@ def test_registered_prompt_model_and_cache_identities_change_once(
             != legacy_test_case_cls.answer_cls.__name__
         )
 
-        queryer = Queryer(prompt, provider=provider)
-        legacy_queryer = Queryer(legacy_prompt, provider=provider)
+        queryer = Queryer(test_case_cls, provider=provider)
+        legacy_queryer = Queryer(legacy_test_case_cls, provider=provider)
         answer_schema = test_case_cls.answer_cls.model_json_schema(by_alias=True)
         legacy_answer_schema = legacy_test_case_cls.answer_cls.model_json_schema(
             by_alias=True
         )
-        system_prompt = queryer._get_system_prompt(test_case_cls.answer_cls)
-        legacy_system_prompt = legacy_queryer._get_system_prompt(
-            legacy_test_case_cls.answer_cls
-        )
+        system_prompt = queryer._get_system_prompt()
+        legacy_system_prompt = legacy_queryer._get_system_prompt()
 
         assert system_prompt != legacy_system_prompt
         assert _get_system_prompt_prefix(system_prompt, answer_schema) == (

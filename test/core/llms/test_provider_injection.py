@@ -8,6 +8,7 @@ from functools import cache
 from typing import Any, Unpack
 from unittest.mock import Mock
 
+from pydantic import ValidationError
 from pytest import raises
 
 from scinoephile.core import Language
@@ -62,11 +63,43 @@ class _TestCase(TestCase):
     """Optional answer fixture."""
 
 
+class _IncompatibleAnswer(Answer):
+    """Incompatible answer fixture for contract tests."""
+
+    note: str
+    """Answer note."""
+
+
+class _CompatibleTestCase(TestCase):
+    """Alternate compatible test-case fixture for contract tests."""
+
+    query: _Query
+    """Query fixture."""
+    answer: _Answer | None = None
+    """Optional answer fixture."""
+
+
+class _IncompatibleTestCase(TestCase):
+    """Incompatible test-case fixture for contract tests."""
+
+    query: _Query
+    """Query fixture."""
+    answer: _IncompatibleAnswer | None = None
+    """Optional incompatible answer fixture."""
+
+
 _Query.prompt = _PROMPT
 _Answer.prompt = _PROMPT
 _TestCase.query_cls = _Query
 _TestCase.answer_cls = _Answer
 _TestCase.prompt = _PROMPT
+_CompatibleTestCase.query_cls = _Query
+_CompatibleTestCase.answer_cls = _Answer
+_CompatibleTestCase.prompt = _PROMPT
+_IncompatibleAnswer.prompt = _PROMPT
+_IncompatibleTestCase.query_cls = _Query
+_IncompatibleTestCase.answer_cls = _IncompatibleAnswer
+_IncompatibleTestCase.prompt = _PROMPT
 
 
 class _Manager(Manager):
@@ -127,7 +160,7 @@ class _RecordingProvider(LLMProvider):
 def test_queryer_uses_injected_provider():
     """Test queryer uses the injected provider for completions."""
     provider = _RecordingProvider()
-    queryer = Queryer(_PROMPT, provider=provider, max_attempts=1)
+    queryer = Queryer(_TestCase, provider=provider, max_attempts=1)
 
     test_case = _TestCase(query=_Query(text="input"))
     output_test_case = queryer(test_case)
@@ -141,7 +174,7 @@ def test_queryer_requires_injected_provider():
     """Test queryer no longer constructs concrete providers by default."""
     queryer_type: Any = Queryer
     with raises(TypeError):
-        queryer_type(_PROMPT)
+        queryer_type(_TestCase)
 
 
 def test_queryer_includes_additional_context_before_few_shot_prompt():
@@ -153,7 +186,7 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
         few_shot=True,
     )
     queryer = Queryer(
-        _PROMPT,
+        _TestCase,
         additional_context="Use canonical names.",
         few_shot_test_cases=[few_shot_test_case],
         provider=provider,
@@ -174,7 +207,7 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
 def test_queryer_preserves_existing_encountered_test_case_metadata():
     """Test queryer preserves existing few-shot and verified metadata."""
     provider = Mock(spec=LLMProvider)
-    queryer = Queryer(_PROMPT, provider=provider)
+    queryer = Queryer(_TestCase, provider=provider)
     test_case = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="done"),
@@ -193,7 +226,7 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
     """Test queryer clears stale verified metadata after generating an answer."""
     provider = Mock(spec=LLMProvider)
     provider.chat_completion.return_value = '{"output":"new"}'
-    queryer = Queryer(_PROMPT, provider=provider, max_attempts=1)
+    queryer = Queryer(_TestCase, provider=provider, max_attempts=1)
     test_case = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="old"),
@@ -214,12 +247,126 @@ def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
     provider = Mock(spec=LLMProvider)
     provider.chat_completion.return_value = '{"output":"done"}'
     monkeypatch.setattr(_TestCase, "get_auto_verified", lambda self: True)
-    queryer = Queryer(_PROMPT, provider=provider, max_attempts=1, auto_verify=True)
+    queryer = Queryer(_TestCase, provider=provider, max_attempts=1, auto_verify=True)
 
     test_case = queryer(_TestCase(query=_Query(text="input")))
 
     encountered_test_case = queryer.encountered_test_cases[test_case.query.key]
     assert encountered_test_case.verified is True
+
+
+def test_queryer_rejects_reusable_test_case_from_incompatible_contract():
+    """Test reusable answers must conform to the bound test-case contract."""
+    provider = Mock(spec=LLMProvider)
+    incompatible = _IncompatibleTestCase(
+        query=_Query(text="input"),
+        answer=_IncompatibleAnswer(note="reviewed"),
+        verified=True,
+    )
+
+    with raises(ValidationError):
+        Queryer(_TestCase, verified_test_cases=[incompatible], provider=provider)
+
+
+def test_queryer_normalizes_compatible_test_case_into_bound_contract():
+    """Test compatible inputs are returned using the bound test-case class."""
+    provider = Mock(spec=LLMProvider)
+    verified = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="done"),
+        verified=True,
+    )
+    queryer = Queryer(_TestCase, verified_test_cases=[verified], provider=provider)
+
+    result = queryer(_CompatibleTestCase(query=_Query(text="input")))
+
+    assert type(result) is _TestCase
+    assert result.answer == _Answer(output="done")
+    provider.chat_completion.assert_not_called()
+
+
+def test_queryer_requires_answers_for_reusable_test_cases():
+    """Test few-shot and verified inputs cannot omit their answers."""
+    provider = Mock(spec=LLMProvider)
+    incomplete = _TestCase.model_construct(
+        query=_Query(text="input"),
+        answer=None,
+        verified=True,
+    )
+
+    with raises(ValidationError):
+        Queryer(_TestCase, verified_test_cases=[incomplete], provider=provider)
+
+
+def test_test_case_requires_answer_when_marked_reusable():
+    """Test reusable metadata requires an answer during model validation."""
+    with raises(ValidationError, match="must include an answer"):
+        _TestCase(query=_Query(text="input"), few_shot=True)
+
+
+def test_queryer_merges_identical_reusable_duplicates():
+    """Test identical duplicate answers merge their metadata."""
+    provider = Mock(spec=LLMProvider)
+    few_shot = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="done"),
+        difficulty=1,
+    )
+    verified = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="done"),
+        difficulty=3,
+    )
+
+    queryer = Queryer(
+        _TestCase,
+        few_shot_test_cases=[few_shot],
+        verified_test_cases=[verified],
+        provider=provider,
+    )
+
+    merged = queryer.verified_test_cases[verified.query.key]
+    assert merged is queryer.few_shot_test_cases[few_shot.query.key]
+    assert merged.difficulty == 3
+    assert merged.few_shot is True
+    assert merged.verified is True
+
+
+def test_queryer_rejects_conflicting_reusable_duplicates():
+    """Test duplicate queries cannot silently choose one of two answers."""
+    provider = Mock(spec=LLMProvider)
+    first = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="first"),
+    )
+    second = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="second"),
+    )
+
+    with raises(ValueError, match="Conflicting reusable answers"):
+        Queryer(
+            _TestCase,
+            verified_test_cases=[first, second],
+            provider=provider,
+        )
+
+
+def test_queryer_snapshots_reusable_test_cases():
+    """Test later mutation of caller-owned seeds does not alter queryer state."""
+    provider = Mock(spec=LLMProvider)
+    verified = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="original"),
+    )
+    queryer = Queryer(_TestCase, verified_test_cases=[verified], provider=provider)
+
+    assert verified.answer is not None
+    verified.answer.output = "mutated"
+
+    stored = queryer.verified_test_cases[verified.query.key]
+    assert stored.answer is not None
+    assert stored.answer.output == "original"
 
 
 def test_processor_passes_injected_provider_to_queryer():

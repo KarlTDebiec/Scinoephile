@@ -60,7 +60,7 @@ class PairwiseReviewProcessor(Processor):
         elif stop_at_idx < 0:
             raise ValueError("stop_at_idx must be greater than or equal to 0")
 
-        test_case_cls = PairwiseReviewManager.get_test_case_cls(self.prompt)
+        test_case_cls = self.test_case_cls
         query_cls = test_case_cls.query_cls
         for block_idx, (target_block, reference_block) in enumerate(block_pairs):
             if block_idx >= stop_at_idx:

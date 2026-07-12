@@ -66,7 +66,7 @@ class GuidedReviewProcessor(Processor):
                 output_blocks[block_idx] = output_block
                 continue
 
-            test_case_cls = GuidedReviewManager.get_test_case_cls(self.prompt)
+            test_case_cls = self.test_case_cls
             query_cls = test_case_cls.query_cls
             query = query_cls.model_validate(
                 {

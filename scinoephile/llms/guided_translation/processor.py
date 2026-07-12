@@ -58,7 +58,7 @@ class GuidedTranslationProcessor(Processor):
                 output_series_to_concatenate[blk_idx] = Series()
                 continue
 
-            test_case_cls = GuidedTranslationManager.get_test_case_cls(self.prompt)
+            test_case_cls = self.test_case_cls
             query_cls = test_case_cls.query_cls
             query = query_cls.model_validate(
                 {
