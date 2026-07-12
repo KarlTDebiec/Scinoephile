@@ -12,7 +12,7 @@ from typing import Any, cast
 from openai import OpenAI
 from pytest import raises
 
-from scinoephile.core.llms import OpenAIProviderBase
+from scinoephile.core.llms import Answer, OpenAIProviderBase
 from scinoephile.core.llms.tool import Tool
 from scinoephile.core.llms.tool_box import ToolBox
 
@@ -22,6 +22,13 @@ class _DummyProvider(OpenAIProviderBase):
 
     model = "dummy-model"
     """Dummy model name."""
+
+
+class _Answer(Answer):
+    """Structured answer fixture."""
+
+    output: str
+    """Answer output."""
 
 
 class _ToolCallFunction:
@@ -92,6 +99,7 @@ class _DummyClient:
     def __init__(self):
         """Initialize dummy client state and completion surface."""
         self.calls: list[dict[str, object]] = []
+        self.parse_calls = 0
         self._round = 0
 
         def create(
@@ -121,9 +129,27 @@ class _DummyClient:
                 )
             return _Completion(_Message(content="done", tool_calls=[]))
 
+        def parse(
+            *,
+            messages: list[dict[str, object]],
+            model: str,
+            **kwargs: Any,
+        ) -> _Completion:
+            """Parse one structured dummy chat completion.
+
+            Arguments:
+                messages: OpenAI chat messages
+                model: model name
+                **kwargs: additional completion keyword arguments
+            Returns:
+                dummy completion
+            """
+            self.parse_calls += 1
+            return create(messages=messages, model=model, **kwargs)
+
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=create))
         self.beta = SimpleNamespace(
-            chat=SimpleNamespace(completions=SimpleNamespace(parse=None))
+            chat=SimpleNamespace(completions=SimpleNamespace(parse=parse))
         )
 
 
@@ -163,11 +189,15 @@ def test_tool_call_loop_runs_handler_and_returns_final_text():
 
     result = provider.chat_completion(
         messages=[{"role": "user", "content": "hi"}],
+        response_format=_Answer,
         tool_box=_get_tool_box(handler),
     )
 
     assert result == "done"
+    assert client.parse_calls == 2
     assert len(client.calls) == 2
+    first_call_kwargs = cast(dict[str, object], client.calls[0]["kwargs"])
+    assert first_call_kwargs["response_format"] is _Answer
     second_call_messages = cast(list[dict[str, object]], client.calls[1]["messages"])
     assert second_call_messages[1]["reasoning_content"] == (
         "Need tool output before answering."
@@ -181,6 +211,7 @@ def test_model_override_updates_provider_model():
 
     provider.chat_completion(
         messages=[{"role": "user", "content": "hi"}],
+        response_format=_Answer,
         tool_box=_get_tool_box(lambda args: args),
     )
 

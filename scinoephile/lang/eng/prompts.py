@@ -12,7 +12,6 @@ __all__ = ["ENG_PROMPT_FIELDS"]
 
 
 ENG_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
-    "schema_intro": "Your response must be a JSON object with the following structure:",
     "few_shot_intro": "Here are some examples of queries and expected answers:",
     "few_shot_query_intro": "Example query:",
     "few_shot_answer_intro": "Expected answer:",

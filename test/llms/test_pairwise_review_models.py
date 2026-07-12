@@ -173,9 +173,6 @@ def test_queryer_corresponds_using_prompt_aliases():
         "mubiao": "原文",
         "cankao": "參考",
     }
-    assert f'"title": "{answer_cls.__name__}"' in messages[0]["content"]
-    assert '"shuchu"' in messages[0]["content"]
-    assert '"beizhu"' in messages[0]["content"]
 
 
 @mark.parametrize(

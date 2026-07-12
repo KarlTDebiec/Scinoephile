@@ -84,8 +84,11 @@ class Queryer[TTestCase: TestCase]:
         """Automatically verify test cases if they meet selected criteria."""
         self.tool_box = tool_box or ToolBox()
         """Available tools and handlers."""
-        self.system_prompt = self._build_system_prompt()
+        self.system_prompt = self.prompt.base_system_prompt
         """System prompt shared by all queries executed by this instance."""
+        if self.additional_context:
+            self.system_prompt += f"\n\nAdditional context:\n{self.additional_context}"
+        self.system_prompt += self.get_few_shot_test_cases_str()
 
     def __call__(self, test_case: TestCase) -> TTestCase:
         """Query LLM.
@@ -243,23 +246,6 @@ class Queryer[TTestCase: TestCase]:
         normalized.verified |= key in self.verified_test_cases
         self.encountered_test_cases[key] = normalized
         logger.debug(f"Logged test case: {normalized.query.key_str}")
-
-    def _build_system_prompt(self) -> str:
-        """Build the system prompt for the bound answer class.
-
-        Returns:
-            system prompt for the bound answer class
-        """
-        schema = self.test_case_cls.answer_cls.model_json_schema(by_alias=True)
-        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
-
-        system_prompt = self.prompt.base_system_prompt
-        if self.additional_context:
-            system_prompt += f"\n\nAdditional context:\n{self.additional_context}"
-        system_prompt += self.get_few_shot_test_cases_str()
-        system_prompt += f"\n\n{self.prompt.schema_intro}\n{schema_json}\n"
-
-        return system_prompt
 
     def _get_cache_path(
         self, system_prompt: str, tools_json: str, query_json: str

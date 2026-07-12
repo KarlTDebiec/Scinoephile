@@ -148,15 +148,14 @@ def test_queryer_corresponds_using_prompt_aliases():
         "output_one": "甲乙",
         "output_two": "",
     }
-    messages = provider.chat_completion.call_args.args[0]
+    messages, answer_cls, _ = provider.chat_completion.call_args.args
+    assert answer_cls is test_case_cls.answer_cls
     assert json.loads(messages[1]["content"]) == {
         "cankao_yi": "參考一",
         "cankao_er": "參考二",
         "mubiao_yi": "甲",
         "mubiao_er": "乙",
     }
-    assert '"shuchu_yi"' in messages[0]["content"]
-    assert '"shuchu_er"' in messages[0]["content"]
 
 
 @mark.parametrize(

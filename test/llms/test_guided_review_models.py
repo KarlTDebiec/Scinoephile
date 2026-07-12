@@ -98,15 +98,12 @@ def test_queryer_corresponds_using_prompt_aliases():
     result = queryer(test_case)
 
     assert result.answer is not None
-    messages = provider.chat_completion.call_args.args[0]
+    messages, answer_cls, _ = provider.chat_completion.call_args.args
+    assert answer_cls is test_case_cls.answer_cls
     assert json.loads(messages[1]["content"]) == {
         "mubiao": [{"xuhao": 1, "wenben": "原文"}],
         "zhinan": [{"xuhao": 1, "wenben": "參考"}],
     }
-    assert '"xiugai"' in messages[0]["content"]
-    assert '"xuhao"' in messages[0]["content"]
-    assert '"wenben"' in messages[0]["content"]
-    assert '"beizhu"' in messages[0]["content"]
 
 
 def test_query_lists_require_items_and_consecutive_ordered_indexes():

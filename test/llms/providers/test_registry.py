@@ -10,7 +10,7 @@ from unittest.mock import Mock
 from pytest import fixture, raises
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, LLMProvider
+from scinoephile.core.llms import Answer, LLMProvider, OpenAIProviderBase
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.llms.providers import registry as provider_registry
@@ -123,6 +123,12 @@ def test_get_provider_names_returns_registered_provider_names():
     assert "openai" in provider_names
 
 
+def test_built_in_providers_use_structured_openai_base():
+    """Test built-in providers share the structured completion implementation."""
+    assert isinstance(get_provider("deepseek"), OpenAIProviderBase)
+    assert isinstance(get_provider("openai"), OpenAIProviderBase)
+
+
 def test_get_provider_raises_for_unknown_provider():
     """Test provider lookup fails for unknown provider names."""
     with raises(ScinoephileError):
@@ -149,7 +155,7 @@ class _DummyProvider(LLMProvider):
     def chat_completion(
         self,
         messages: list[dict[str, Any]],
-        response_format: type[Answer] | None = None,
+        response_format: type[Answer],
         tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:

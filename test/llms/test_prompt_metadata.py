@@ -29,7 +29,7 @@ _LEGACY_TEST_CASE_PROMPT_FIELDS: Final = {
 def test_registered_prompt_model_and_cache_identities_change_once(
     tmp_path: Path,
 ):
-    """Removing metadata should change prompt, model, system, and cache identities."""
+    """Removing metadata should change prompt, model, and cache identities."""
     provider = Mock(spec=LLMProvider)
     provider.cache_identity = {"implementation": "test.provider"}
 
@@ -50,17 +50,10 @@ def test_registered_prompt_model_and_cache_identities_change_once(
 
         queryer = Queryer(test_case_cls, provider=provider)
         legacy_queryer = Queryer(legacy_test_case_cls, provider=provider)
-        answer_schema = test_case_cls.answer_cls.model_json_schema(by_alias=True)
-        legacy_answer_schema = legacy_test_case_cls.answer_cls.model_json_schema(
-            by_alias=True
-        )
         system_prompt = queryer.system_prompt
         legacy_system_prompt = legacy_queryer.system_prompt
 
-        assert system_prompt != legacy_system_prompt
-        assert _get_system_prompt_prefix(system_prompt, answer_schema) == (
-            _get_system_prompt_prefix(legacy_system_prompt, legacy_answer_schema)
-        )
+        assert system_prompt == legacy_system_prompt
 
         queryer.cache_dir_path = tmp_path
         legacy_queryer.cache_dir_path = tmp_path
@@ -177,23 +170,6 @@ def _get_registered_prompts() -> list[tuple[type[Manager], Prompt]]:
         prompt_pairs,
         key=lambda pair: (pair[0].operation, pair[1].name),
     )
-
-
-def _get_system_prompt_prefix(
-    system_prompt: str,
-    answer_schema: dict[str, Any],
-) -> str:
-    """Get system prompt text preceding its answer schema.
-
-    Arguments:
-        system_prompt: full system prompt
-        answer_schema: answer schema appended to the system prompt
-    Returns:
-        system prompt text preceding the schema
-    """
-    schema_suffix = f"{json.dumps(answer_schema, indent=4, ensure_ascii=False)}\n"
-    assert system_prompt.endswith(schema_suffix)
-    return system_prompt.removesuffix(schema_suffix)
 
 
 def _normalize_schema_identifiers(schema: dict[str, Any]) -> dict[str, Any]:
