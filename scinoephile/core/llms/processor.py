@@ -53,7 +53,7 @@ class Processor(ABC):
     prompt: Prompt
     """Text for LLM correspondence."""
     test_case_cls: type[TestCase]
-    """Test-case contract for the configured prompt."""
+    """Test-case class for the configured prompt."""
 
     def __init__(
         self,
@@ -104,7 +104,6 @@ class Processor(ABC):
 
         self.queryer = Queryer(
             self.test_case_cls,
-            few_shot_test_cases=[tc for tc in test_cases if tc.few_shot],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),

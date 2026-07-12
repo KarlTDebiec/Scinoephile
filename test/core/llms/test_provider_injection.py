@@ -66,14 +66,14 @@ class _TestCase(TestCase):
 
 
 class _IncompatibleAnswer(Answer):
-    """Incompatible answer fixture for contract tests."""
+    """Incompatible answer fixture for test-case class tests."""
 
     note: str
     """Answer note."""
 
 
 class _CompatibleTestCase(TestCase):
-    """Alternate compatible test-case fixture for contract tests."""
+    """Alternate compatible test-case fixture for class validation tests."""
 
     query: _Query
     """Query fixture."""
@@ -82,7 +82,7 @@ class _CompatibleTestCase(TestCase):
 
 
 class _IncompatibleTestCase(TestCase):
-    """Incompatible test-case fixture for contract tests."""
+    """Incompatible test-case fixture for class validation tests."""
 
     query: _Query
     """Query fixture."""
@@ -209,11 +209,12 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
         query=_Query(text="example"),
         answer=_Answer(output="example output"),
         few_shot=True,
+        verified=True,
     )
     queryer = Queryer(
         _TestCase,
         additional_context="Use canonical names.",
-        few_shot_test_cases=[few_shot_test_case],
+        verified_test_cases=[few_shot_test_case],
         provider=provider,
         max_attempts=1,
     )
@@ -263,7 +264,7 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
 
     assert output_test_case.answer is not None
     assert output_test_case.answer.output == "new"
-    assert output_test_case.few_shot is True
+    assert output_test_case.few_shot is False
     assert output_test_case.verified is False
 
 
@@ -280,8 +281,8 @@ def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
     assert encountered_test_case.verified is True
 
 
-def test_queryer_rejects_reusable_test_case_from_incompatible_contract():
-    """Test reusable answers must conform to the bound test-case contract."""
+def test_queryer_rejects_verified_test_case_from_incompatible_class():
+    """Test verified answers must conform to the configured test-case class."""
     provider = Mock(spec=LLMProvider)
     incompatible = _IncompatibleTestCase(
         query=_Query(text="input"),
@@ -293,8 +294,8 @@ def test_queryer_rejects_reusable_test_case_from_incompatible_contract():
         Queryer(_TestCase, verified_test_cases=[incompatible], provider=provider)
 
 
-def test_queryer_normalizes_compatible_test_case_into_bound_contract():
-    """Test compatible inputs are returned using the bound test-case class."""
+def test_queryer_normalizes_input_into_configured_test_case_class():
+    """Test compatible inputs are returned using the configured test-case class."""
     provider = Mock(spec=LLMProvider)
     verified = _TestCase(
         query=_Query(text="input"),
@@ -310,8 +311,8 @@ def test_queryer_normalizes_compatible_test_case_into_bound_contract():
     provider.chat_completion.assert_not_called()
 
 
-def test_queryer_requires_answers_for_reusable_test_cases():
-    """Test few-shot and verified inputs cannot omit their answers."""
+def test_queryer_requires_answers_for_verified_test_cases():
+    """Test verified inputs cannot omit their answers."""
     provider = Mock(spec=LLMProvider)
     incomplete = _TestCase.model_construct(
         query=_Query(text="input"),
@@ -323,30 +324,54 @@ def test_queryer_requires_answers_for_reusable_test_cases():
         Queryer(_TestCase, verified_test_cases=[incomplete], provider=provider)
 
 
-def test_test_case_requires_answer_when_marked_reusable():
-    """Test reusable metadata requires an answer during model validation."""
+def test_queryer_requires_test_cases_to_be_verified():
+    """Test Queryer rejects unverified test cases."""
+    provider = Mock(spec=LLMProvider)
+    unverified = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="done"),
+    )
+
+    with raises(ValueError, match="must be verified"):
+        Queryer(_TestCase, verified_test_cases=[unverified], provider=provider)
+
+
+def test_test_case_requires_answer_when_verified():
+    """Test verified metadata requires an answer during model validation."""
     with raises(ValidationError, match="must include an answer"):
-        _TestCase(query=_Query(text="input"), few_shot=True)
+        _TestCase(query=_Query(text="input"), verified=True)
 
 
-def test_queryer_merges_identical_reusable_duplicates():
+def test_test_case_requires_few_shot_to_be_verified():
+    """Test few-shot metadata requires verified metadata."""
+    with raises(ValidationError, match="must be verified"):
+        _TestCase(
+            query=_Query(text="input"),
+            answer=_Answer(output="done"),
+            few_shot=True,
+        )
+
+
+def test_queryer_merges_identical_verified_duplicates():
     """Test identical duplicate answers merge their metadata."""
     provider = Mock(spec=LLMProvider)
     few_shot = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="done"),
         difficulty=1,
+        few_shot=True,
+        verified=True,
     )
     verified = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="done"),
         difficulty=3,
+        verified=True,
     )
 
     queryer = Queryer(
         _TestCase,
-        few_shot_test_cases=[few_shot],
-        verified_test_cases=[verified],
+        verified_test_cases=[few_shot, verified],
         provider=provider,
     )
 
@@ -357,19 +382,21 @@ def test_queryer_merges_identical_reusable_duplicates():
     assert merged.verified is True
 
 
-def test_queryer_rejects_conflicting_reusable_duplicates():
+def test_queryer_rejects_conflicting_verified_duplicates():
     """Test duplicate queries cannot silently choose one of two answers."""
     provider = Mock(spec=LLMProvider)
     first = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="first"),
+        verified=True,
     )
     second = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="second"),
+        verified=True,
     )
 
-    with raises(ValueError, match="Conflicting reusable answers"):
+    with raises(ValueError, match="Conflicting verified answers"):
         Queryer(
             _TestCase,
             verified_test_cases=[first, second],
@@ -377,12 +404,13 @@ def test_queryer_rejects_conflicting_reusable_duplicates():
         )
 
 
-def test_queryer_snapshots_reusable_test_cases():
-    """Test later mutation of caller-owned seeds does not alter queryer state."""
+def test_queryer_snapshots_verified_test_cases():
+    """Test later mutation of caller-owned cases does not alter queryer state."""
     provider = Mock(spec=LLMProvider)
     verified = _TestCase(
         query=_Query(text="input"),
         answer=_Answer(output="original"),
+        verified=True,
     )
     queryer = Queryer(_TestCase, verified_test_cases=[verified], provider=provider)
 

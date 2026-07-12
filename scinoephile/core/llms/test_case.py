@@ -64,14 +64,25 @@ class TestCase(BaseModel, ABC):
         return self
 
     @model_validator(mode="after")
-    def require_reusable_answer(self) -> Self:
-        """Ensure reusable test cases include an answer.
+    def require_answer(self) -> Self:
+        """Ensure verified test cases include an answer.
 
         Returns:
             validated test case
         """
-        if self.answer is None and (self.few_shot or self.verified):
-            raise ValueError("Few-shot and verified test cases must include an answer.")
+        if self.answer is None and self.verified:
+            raise ValueError("Verified test cases must include an answer.")
+        return self
+
+    @model_validator(mode="after")
+    def require_few_shot_verification(self) -> Self:
+        """Ensure few-shot test cases are verified.
+
+        Returns:
+            validated test case
+        """
+        if self.few_shot and not self.verified:
+            raise ValueError("Few-shot test cases must be verified.")
         return self
 
     def get_auto_verified(self) -> bool:
