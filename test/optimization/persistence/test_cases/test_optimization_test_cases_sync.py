@@ -171,6 +171,32 @@ def test_sync_rejects_fields_outside_test_case_schema(tmp_path: Path):
             )
 
 
+def test_sync_requires_base_prompt_aliases(tmp_path: Path):
+    """Optimization sync should use the shared base-alias-only JSON boundary."""
+    source_path = tmp_path / "source.json"
+    source_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "original"}]},
+                    "answer": {
+                        "revisions": [{"index": 1, "text": "corrected", "note": "typo"}]
+                    },
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    with raises(ScinoephileError, match="JSON input must use field aliases"):
+        sync_test_cases(
+            [source_path],
+            tmp_path / "test_cases.sqlite",
+            _AliasedBaseReviewManager,
+            dry_run=False,
+        )
+
+
 def test_sync_inserts_and_removes_provenance_by_source_path(
     tmp_path: Path,
     monkeypatch,

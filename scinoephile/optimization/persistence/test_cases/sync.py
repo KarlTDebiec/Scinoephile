@@ -4,16 +4,13 @@
 
 from __future__ import annotations
 
-import json
 from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import cast
-
-from pydantic import ValidationError
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.llms import Manager
+from scinoephile.core.llms.utils import load_test_cases_from_json
 
 from .persisted_test_case import PersistedTestCase
 from .sqlite_store import TestCaseSqliteStore
@@ -95,58 +92,16 @@ def _load_test_cases(
         ScinoephileError: if the file cannot be loaded or contains an invalid case
     """
     try:
-        with open(input_path, encoding="utf-8") as input_file:
-            data = json.load(input_file)
-    except (OSError, json.JSONDecodeError) as exc:
+        test_cases = load_test_cases_from_json(
+            input_path,
+            manager_cls,
+            manager_cls.base_prompt,
+        )
+        return [
+            PersistedTestCase.from_test_case(test_case, manager_cls)
+            for test_case in test_cases
+        ]
+    except (OSError, ScinoephileError, TypeError, ValueError) as exc:
         raise ScinoephileError(
             f"Unable to load optimization test cases from {input_path}: {exc}"
         ) from exc
-    if not isinstance(data, list):
-        raise ScinoephileError(
-            f"Optimization test-case file {input_path} must contain a JSON array."
-        )
-
-    test_cases: list[PersistedTestCase] = []
-    for index, item in enumerate(data, start=1):
-        try:
-            if not isinstance(item, dict):
-                raise ScinoephileError("Each optimization test case must be an object.")
-            item_dict = cast("dict[str, object]", item)
-            test_case = _normalize_test_case(
-                item_dict,
-                manager_cls,
-            )
-        except (
-            AttributeError,
-            KeyError,
-            ScinoephileError,
-            TypeError,
-            ValidationError,
-        ) as exc:
-            raise ScinoephileError(
-                f"Invalid optimization test case {index} in {input_path}: {exc}"
-            ) from exc
-        test_cases.append(test_case)
-    return test_cases
-
-
-def _normalize_test_case(
-    data: dict[str, object],
-    manager_cls: type[Manager],
-) -> PersistedTestCase:
-    """Validate one test case using its operation's base prompt field names.
-
-    Arguments:
-        data: serialized test case
-        manager_cls: manager defining the operation and base prompt
-    Returns:
-        test case using base-prompt field names
-    Raises:
-        ScinoephileError: if the payload contains fields outside the prompt schema
-    """
-    test_case_cls = manager_cls.get_test_case_cls(manager_cls.base_prompt)
-    test_case = test_case_cls.model_validate(data, strict=True, extra="forbid")
-    return PersistedTestCase.from_test_case(
-        test_case,
-        manager_cls,
-    )

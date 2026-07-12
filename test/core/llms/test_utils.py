@@ -184,6 +184,42 @@ def test_json_loading_rejects_non_base_fields(
         )
 
 
+@mark.parametrize(
+    "test_case_data",
+    [
+        {"query": []},
+        {"query": {"base_subtitles": "not a list"}},
+        {"query": {"base_subtitles": [{"base_index": "1", "base_text": "original"}]}},
+    ],
+    ids=["non-object-query", "non-list-subtitles", "coerced-index"],
+)
+def test_json_loading_is_strict(tmp_path: Path, test_case_data: dict):
+    """Repository JSON should reject values requiring type coercion."""
+    input_path = tmp_path / "test_cases.json"
+    input_path.write_text(json.dumps([test_case_data]), encoding="utf-8")
+
+    with raises(ValidationError):
+        load_test_cases_from_json(
+            input_path,
+            _AliasedBaseReviewManager,
+            _LOCALIZED_REVIEW_PROMPT,
+        )
+
+
+@mark.parametrize("contents", [{}, ["not an object"]])
+def test_json_loading_requires_an_array_of_objects(tmp_path: Path, contents: object):
+    """Repository test-case files should contain an array of objects."""
+    input_path = tmp_path / "test_cases.json"
+    input_path.write_text(json.dumps(contents), encoding="utf-8")
+
+    with raises(ValidationError):
+        load_test_cases_from_json(
+            input_path,
+            _AliasedBaseReviewManager,
+            _LOCALIZED_REVIEW_PROMPT,
+        )
+
+
 def test_save_preserves_existing_cases_unless_pruning(tmp_path: Path):
     """Saving a partial run should retain unencountered persisted cases."""
     output_path = tmp_path / "test_cases.json"
