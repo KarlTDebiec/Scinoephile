@@ -7,27 +7,28 @@ and how the command-line interface maps onto the core implementation.
 
 Scinoephile documents the intended package hierarchy in
 `scinoephile/__init__.py`. Modules may import from packages listed above them in
-that hierarchy:
+that hierarchy. The hierarchy block in that file is authoritative; the list
+below describes package responsibilities in the same order:
 
 - `scinoephile.common`: general-purpose utilities; may not import from other
   Scinoephile packages
 - `scinoephile.core`: core subtitle-domain logic; may import from `common`
 - `analysis`, `image`, and `llms`: domain packages that may import from `common`
   and `core`
-- `scinoephile.media` and `scinoephile.optimization`: media tooling and prompt
-  optimization infrastructure built on the lower layers
+- `scinoephile.media`: media tooling built on the lower layers
 - `scinoephile.lang`: language-specific subtitle operations that may import from
   the packages above
 - `audio`, `dictionaries`, and `web`: audio, dictionary, and web UI packages
   that may import from the packages above
 - `multilang`: cross-language operations that may import from the packages above
-- `scinoephile.workflows`: reusable workflow orchestration that may import from
-  the packages above
+- `optimization` and `workflows`: prompt optimization infrastructure and reusable
+  workflow orchestration that may import from the packages above
 - `scinoephile.cli`: user-facing command-line wrappers that may import from any
   package listed above it
 
-This layering is enforced socially (by convention and code review) and is
-intended to keep dependencies flowing toward earlier layers:
+This layering is enforced automatically by `test/test_module_hierarchy.py` and
+through code review. It is intended to keep dependencies flowing toward earlier
+layers:
 
 - **`common`**: utilities shared everywhere; should remain dependency-free
   within the `scinoephile` package.
@@ -57,13 +58,26 @@ intended to keep dependencies flowing toward earlier layers:
 ### `__init__.py` files document local hierarchy
 
 In addition to the top-level hierarchy in `scinoephile/__init__.py`, each
-package’s `__init__.py` documents its **internal hierarchy** using the same rule
-of thumb: modules may import from modules listed “above” them in that package’s
-hierarchy comment. This serves two purposes:
+package’s `__init__.py` is the source of truth for its **internal hierarchy**.
+Every package containing child modules or packages must list each child exactly
+once. Each bullet is a dependency level: entries separated by `/` are independent
+peers, and a child may import only from children on earlier bullets. Sibling import
+cycles are prohibited.
+
+Declared levels express architectural policy rather than a compact description of
+the imports that happen to exist today. A child may remain on a later level even
+when it does not currently import from an earlier level. Removing an import does
+not require rearranging the hierarchy, and adding an import does not authorize
+rearranging it. Hierarchy changes are deliberate architectural changes and should
+be explained explicitly during review.
+
+`test/test_module_hierarchy.py` verifies that declarations are complete, rejects
+duplicate or unknown children, and rejects imports that violate the declared
+direction. The declarations serve two purposes:
 
 - **Documentation**: a fast, local reference for where new code should live.
-- **Dependency hygiene**: a place to notice and resolve sibling dependency
-  cycles (cycles should be called out explicitly and grouped together).
+- **Dependency hygiene**: an enforced boundary that prevents sibling dependency
+  cycles and upward imports.
 
 ### Immutable prompt values
 

@@ -5,69 +5,47 @@
 from __future__ import annotations
 
 import ast
-from collections import defaultdict
-from functools import cache
 from pathlib import Path
 
 from scinoephile.common import package_root
 
 
-def test_module_hierarchy_docs_match_imports():
-    """Test package hierarchy docs match the compact import hierarchy."""
+def test_declared_module_hierarchy_may_be_stricter_than_import_graph(tmp_path: Path):
+    """Test declared hierarchy need not be compacted to current imports."""
+    package_dir_path = tmp_path / "example"
+    package_dir_path.mkdir()
+    init_path = package_dir_path / "__init__.py"
+    init_path.write_text(
+        '"""Example package.\n\n'
+        "Package hierarchy (modules may import from any above):\n"
+        "* foundation\n"
+        "* feature\n"
+        '"""\n',
+        encoding="utf-8",
+    )
+    (package_dir_path / "feature.py").write_text(
+        '"""Feature module with no current dependency on foundation."""\n',
+        encoding="utf-8",
+    )
+    (package_dir_path / "foundation.py").write_text(
+        '"""Foundation module."""\n',
+        encoding="utf-8",
+    )
+
+    assert (
+        get_module_hierarchy_violations(
+            init_path,
+            package_parent_path=tmp_path,
+        )
+        == []
+    )
+
+
+def test_module_hierarchy_docs_are_authoritative():
+    """Test package imports comply with declared module hierarchies."""
     violations: list[str] = []
     for init_path in sorted(package_root.rglob("__init__.py")):
-        package_dir_path = init_path.parent
-        child_names = get_child_names(package_dir_path)
-        if len(child_names) < 2:
-            continue
-
-        package_dotted = get_package_dotted(package_dir_path)
-        documented_levels = get_documented_levels(init_path)
-        if documented_levels is None:
-            violations.append(
-                f"{init_path.relative_to(package_root.parent)}: missing hierarchy block"
-            )
-            continue
-
-        documented_violations = get_documented_level_violations(
-            init_path=init_path,
-            child_names=child_names,
-            documented_levels=documented_levels,
-        )
-        violations.extend(documented_violations)
-        if documented_violations:
-            continue
-
-        edges = get_sibling_import_edges(
-            package_dir_path=package_dir_path,
-            package_dotted=package_dotted,
-            child_names=child_names,
-        )
-        documented_level_by_child = {
-            child_name: level
-            for level, level_child_names in documented_levels.items()
-            for child_name in level_child_names
-        }
-        violations.extend(
-            get_import_order_violations(
-                init_path=init_path,
-                documented_level_by_child=documented_level_by_child,
-                edges=edges,
-            )
-        )
-        cycle_violations = get_cycle_violations(init_path=init_path, edges=edges)
-        violations.extend(cycle_violations)
-        if cycle_violations:
-            continue
-
-        expected_levels = get_compact_levels(edges)
-        if documented_levels != expected_levels:
-            violations.append(
-                f"{init_path.relative_to(package_root.parent)}: "
-                "hierarchy is not compact\n"
-                f"  documented: {format_levels(documented_levels)}\n"
-                f"  expected:   {format_levels(expected_levels)}"
-            )
+        violations.extend(get_module_hierarchy_violations(init_path))
 
     assert not violations, "\n\n".join(violations)
 
@@ -107,6 +85,23 @@ def test_resolve_import_from_modules_includes_relative_package_aliases():
     ]
 
 
+def test_single_child_package_requires_hierarchy(tmp_path: Path):
+    """Test packages with one child still require a hierarchy declaration."""
+    package_dir_path = tmp_path / "example"
+    package_dir_path.mkdir()
+    init_path = package_dir_path / "__init__.py"
+    init_path.write_text('"""Example package."""\n', encoding="utf-8")
+    (package_dir_path / "child.py").write_text(
+        '"""Child module."""\n',
+        encoding="utf-8",
+    )
+
+    assert get_module_hierarchy_violations(
+        init_path,
+        package_parent_path=tmp_path,
+    ) == ["example/__init__.py: missing hierarchy block"]
+
+
 def get_child_names(package_dir_path: Path) -> list[str]:
     """Get direct child module and package names.
 
@@ -126,15 +121,20 @@ def get_child_names(package_dir_path: Path) -> list[str]:
     return sorted(child_names)
 
 
-def get_package_dotted(package_dir_path: Path) -> str:
+def get_package_dotted(
+    package_dir_path: Path,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> str:
     """Get dotted package name for a package directory.
 
     Arguments:
         package_dir_path: package directory path
+        package_parent_path: parent path from which the package name begins
     Returns:
         dotted package name
     """
-    return ".".join(package_dir_path.relative_to(package_root.parent).parts)
+    return ".".join(package_dir_path.relative_to(package_parent_path).parts)
 
 
 def get_documented_levels(init_path: Path) -> dict[int, list[str]] | None:
@@ -310,6 +310,62 @@ def get_imported_modules(file_path: Path, root_package_parts: list[str]) -> list
     return imported_modules
 
 
+def get_module_hierarchy_violations(
+    init_path: Path,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get violations of one package's declared module hierarchy.
+
+    Arguments:
+        init_path: package `__init__.py` path
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    package_dir_path = init_path.parent
+    child_names = get_child_names(package_dir_path)
+    if not child_names:
+        return []
+
+    documented_levels = get_documented_levels(init_path)
+    if documented_levels is None:
+        return [
+            f"{init_path.relative_to(package_parent_path)}: missing hierarchy block"
+        ]
+
+    violations = get_documented_level_violations(
+        init_path=init_path,
+        child_names=child_names,
+        documented_levels=documented_levels,
+    )
+    if violations:
+        return violations
+
+    edges = get_sibling_import_edges(
+        package_dir_path=package_dir_path,
+        package_dotted=get_package_dotted(
+            package_dir_path,
+            package_parent_path=package_parent_path,
+        ),
+        child_names=child_names,
+    )
+    documented_level_by_child = {
+        child_name: level
+        for level, level_child_names in documented_levels.items()
+        for child_name in level_child_names
+    }
+    violations.extend(
+        get_import_order_violations(
+            init_path=init_path,
+            documented_level_by_child=documented_level_by_child,
+            edges=edges,
+        )
+    )
+    violations.extend(get_cycle_violations(init_path=init_path, edges=edges))
+    return violations
+
+
 def resolve_import_from_modules(
     file_path: Path,
     node: ast.ImportFrom,
@@ -432,50 +488,3 @@ def get_cycle_violations(init_path: Path, edges: dict[str, set[str]]) -> list[st
         f"import cycle: {' -> '.join(cycle)}"
         for cycle in sorted(cycles)
     ]
-
-
-def get_compact_levels(edges: dict[str, set[str]]) -> dict[int, list[str]]:
-    """Get the compact hierarchy levels for an acyclic import graph.
-
-    Arguments:
-        edges: sibling import edges
-    Returns:
-        compact dependency levels
-    """
-
-    @cache
-    def get_level(child_name: str) -> int:
-        """Get compact dependency level for one child.
-
-        Arguments:
-            child_name: child module or package name
-        Returns:
-            compact dependency level
-        """
-        imported_names = edges[child_name]
-        if imported_names:
-            level = 1 + max(
-                get_level(imported_name) for imported_name in imported_names
-            )
-        else:
-            level = 1
-        return level
-
-    levels: dict[int, list[str]] = defaultdict(list)
-    for child_name in sorted(edges):
-        levels[get_level(child_name)].append(child_name)
-    return dict(sorted(levels.items()))
-
-
-def format_levels(levels: dict[int, list[str]]) -> str:
-    """Format hierarchy levels for assertion output.
-
-    Arguments:
-        levels: hierarchy levels
-    Returns:
-        formatted hierarchy levels
-    """
-    return "; ".join(
-        f"L{level}: {' / '.join(child_names)}"
-        for level, child_names in sorted(levels.items())
-    )
