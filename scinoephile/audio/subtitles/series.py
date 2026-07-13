@@ -176,10 +176,8 @@ class AudioSeries(Series):
             new sliced series
         """
         audio = self.audio[self.events[start].start : self.events[end - 1].end]
-        sliced = type(self)(audio=audio)
-        sliced.events = [
-            self.event_class(**event.as_dict()) for event in self.events[start:end]
-        ]
+        sliced = self._copy_with_events(self.events[start:end])
+        sliced.audio = audio
         return sliced
 
     @classmethod

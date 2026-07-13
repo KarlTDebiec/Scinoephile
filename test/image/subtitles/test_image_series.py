@@ -192,6 +192,34 @@ def test_copy_text_from_rejects_length_mismatch():
         image_series.copy_text_from(text_series)
 
 
+def test_image_series_blocks_preserve_image_subtitle_payloads():
+    """Test image series blocks retain images and bounding boxes."""
+    first = ImageSubtitle(
+        start=0,
+        end=1000,
+        img=Image.new("LA", (2, 2), (0, 255)),
+        bboxes=[Bbox(0, 1, 2, 3)],
+    )
+    second = ImageSubtitle(
+        start=5000,
+        end=6000,
+        img=Image.new("LA", (3, 3), (128, 255)),
+        bboxes=[Bbox(1, 2, 3, 4)],
+    )
+    series = ImageSeries(events=[first, second])
+
+    blocks = series.blocks
+
+    assert len(blocks) == 2
+    assert all(type(block) is ImageSeries for block in blocks)
+    assert blocks[0].events[0] is not first
+    assert blocks[0].events[0].img.tobytes() == first.img.tobytes()
+    assert blocks[0].events[0].bboxes == first.bboxes
+    assert blocks[1].events[0] is not second
+    assert blocks[1].events[0].img.tobytes() == second.img.tobytes()
+    assert blocks[1].events[0].bboxes == second.bboxes
+
+
 def test_save_html(tiny_image_series: ImageSeries):
     """Test saving HTML image subtitles.
 

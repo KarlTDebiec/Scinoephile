@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
+from copy import copy, deepcopy
 from logging import getLogger
 from os import PathLike
 from typing import Any, Self, cast, override
@@ -179,11 +180,7 @@ class Series(SSAFile):
         Returns:
             sliced series
         """
-        sliced = type(self)()
-        sliced.events = [
-            self.event_class(**event.as_dict()) for event in self.events[start:end]
-        ]
-        return sliced
+        return self._copy_with_events(self.events[start:end])
 
     def to_simple_string(
         self, start: int | None = None, duration: int | None = None
@@ -342,6 +339,24 @@ class Series(SSAFile):
         block_indexes.append((start, len(series)))
 
         return block_indexes
+
+    def _copy_with_events(self, events: Sequence[Subtitle]) -> Self:
+        """Copy this series with a selected collection of events.
+
+        Arguments:
+            events: events to include in the copied series
+        Returns:
+            copied series
+        """
+        copied = copy(self)
+        copied.__dict__ = {
+            name: deepcopy(value)
+            for name, value in self.__dict__.items()
+            if name not in {"events", "_blocks"}
+        }
+        copied.events = [deepcopy(event) for event in events]
+        copied._blocks = None
+        return copied
 
     def _init_blocks(self):
         """Initialize blocks."""

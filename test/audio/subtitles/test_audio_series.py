@@ -11,7 +11,7 @@ from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 from pytest import raises
 
-from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.core import ScinoephileError
 
 
@@ -75,3 +75,26 @@ def test_audio_series_save_wraps_output_path_errors(tmp_path: Path):
         series.save(output_path)
 
     assert isinstance(excinfo.value.__cause__, OSError)
+
+
+def test_audio_series_slice_preserves_audio_subtitle_payloads():
+    """Test audio series slicing retains series and subtitle audio."""
+    event_audio = AudioSegment.silent(duration=1000)
+    series = AudioSeries(
+        audio=AudioSegment.silent(duration=4000),
+        events=[
+            AudioSubtitle(
+                start=1000,
+                end=2000,
+                text="Text",
+                audio=event_audio,
+            )
+        ],
+    )
+
+    sliced = series.slice(0, 1)
+
+    assert type(sliced) is AudioSeries
+    assert len(sliced.audio) == 1000
+    assert sliced.events[0] is not series.events[0]
+    assert len(sliced.events[0].audio) == len(event_audio)
