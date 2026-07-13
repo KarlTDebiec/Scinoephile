@@ -127,7 +127,10 @@ def _from_ffprobe_subtitle_stream(
 
     subtitle_count = stream.get("nb_read_packets")
     if isinstance(subtitle_count, int | str):
-        subtitle_count = int(subtitle_count)
+        try:
+            subtitle_count = int(subtitle_count)
+        except ValueError:
+            subtitle_count = None
     else:
         subtitle_count = None
 
