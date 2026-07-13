@@ -6,8 +6,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+from contextlib import ExitStack
 from logging import getLogger
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import ffmpeg
 
@@ -59,31 +61,49 @@ def cache_subtitles(
     # Extract subtitle streams
     if missing:
         input_stream = ffmpeg.input(str(infile_path))
-        output_streams = []
-        for stream, stream_path in missing:
-            if not stream_path.parent.exists():
-                stream_path.parent.mkdir(parents=True)
-                logger.info(f"Created cache directory: {stream_path.parent}")
-            output_streams.append(
-                input_stream.output(
-                    str(stream_path),
-                    **{
-                        "map": f"0:{stream.index}",
-                        "c:s": stream.output_codec,
-                    },
+        with ExitStack() as stack:
+            staged_paths: list[tuple[Path, Path]] = []
+            output_streams = []
+            for stream, stream_path in missing:
+                if not stream_path.parent.exists():
+                    stream_path.parent.mkdir(parents=True)
+                    logger.info(f"Created cache directory: {stream_path.parent}")
+                staging_dir_path = Path(
+                    stack.enter_context(
+                        TemporaryDirectory(
+                            dir=stream_path.parent,
+                            prefix=f".{stream_path.name}-",
+                        )
+                    )
                 )
-            )
-        try:
-            ffmpeg.merge_outputs(*output_streams).run(
-                quiet=False,
-                overwrite_output=True,
-            )
-        except ffmpeg.Error as exc:
-            raise ScinoephileError(
-                f"Could not cache subtitle streams from {infile_path}"
-            ) from exc
-        for _, stream_path in missing:
-            logger.info(f"Saved subtitle stream to cache: {stream_path}")
+                staging_path = staging_dir_path / stream_path.name
+                staged_paths.append((staging_path, stream_path))
+                output_streams.append(
+                    input_stream.output(
+                        str(staging_path),
+                        **{
+                            "map": f"0:{stream.index}",
+                            "c:s": stream.output_codec,
+                        },
+                    )
+                )
+            try:
+                ffmpeg.merge_outputs(*output_streams).run(
+                    quiet=False,
+                    overwrite_output=True,
+                )
+            except ffmpeg.Error as exc:
+                raise ScinoephileError(
+                    f"Could not cache subtitle streams from {infile_path}"
+                ) from exc
+
+            if any(not staging_path.is_file() for staging_path, _ in staged_paths):
+                raise ScinoephileError(
+                    f"Could not cache subtitle streams from {infile_path}"
+                )
+            for staging_path, stream_path in staged_paths:
+                staging_path.replace(stream_path)
+                logger.info(f"Saved subtitle stream to cache: {stream_path}")
 
     # Render cached SUP subtitle streams to image directories when requested
     if render_images:
