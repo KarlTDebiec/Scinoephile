@@ -10,6 +10,7 @@ Module hierarchy (modules may import from any above):
 * lang
 * audio / dictionaries / web
 * multilang
-* optimization / workflows
+* optimization
+* workflows
 * cli
 """
