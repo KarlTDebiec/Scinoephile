@@ -6,6 +6,8 @@ from __future__ import annotations
 
 import re
 from collections import Counter
+from collections.abc import Sequence
+from copy import deepcopy
 from html import escape, unescape
 from logging import getLogger
 from os import PathLike
@@ -24,7 +26,7 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.bboxes import get_bboxes
 from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 from scinoephile.image.drawing import convert_rgba_img_to_la
@@ -271,6 +273,25 @@ class ImageSeries(Series):
             f"{cls.__name__}'s path must be path to a directory containing one "
             "index.html file and N png files, or a .sup file."
         )
+
+    @override
+    def _copy_with_events(self, events: Sequence[Subtitle]) -> Self:
+        """Copy this image series with a selected collection of events.
+
+        Arguments:
+            events: events to include in the copied series
+        Returns:
+            copied image series
+        """
+        image_events: list[ImageSubtitle] = []
+        for event in events:
+            if not isinstance(event, ImageSubtitle):
+                raise TypeError("ImageSeries events must be ImageSubtitle instances")
+            image_events.append(deepcopy(event))
+
+        copied = type(self)(events=image_events)
+        self._copy_metadata_to(copied)
+        return copied
 
     @override
     def _init_blocks(self):

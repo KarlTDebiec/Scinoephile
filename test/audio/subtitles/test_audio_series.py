@@ -91,6 +91,7 @@ def test_audio_series_slice_preserves_audio_subtitle_payloads():
             )
         ],
     )
+    series.info["Title"] = "Example"
 
     sliced = series.slice(0, 1)
 
@@ -98,3 +99,16 @@ def test_audio_series_slice_preserves_audio_subtitle_payloads():
     assert len(sliced.audio) == 1000
     assert sliced.events[0] is not series.events[0]
     assert len(sliced.events[0].audio) == len(event_audio)
+    assert sliced.info == series.info
+    assert sliced.info is not series.info
+
+
+def test_audio_series_slice_supports_empty_ranges():
+    """Test audio series slicing can produce an empty series."""
+    series = AudioSeries(audio=AudioSegment.silent(duration=1000))
+
+    sliced = series.slice(0, 0)
+
+    assert type(sliced) is AudioSeries
+    assert len(sliced) == 0
+    assert len(sliced.audio) == 0

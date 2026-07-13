@@ -5,6 +5,8 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Sequence
+from copy import deepcopy
 from logging import getLogger
 from os import PathLike
 from pathlib import Path
@@ -23,7 +25,7 @@ from scinoephile.common.validation import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import AudioStream
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.media.probe import get_streams
 
 from .subtitle import AudioSubtitle
@@ -164,21 +166,6 @@ class AudioSeries(Series):
                 f"Unable to save {type(self).__name__} to {path}: {exc}"
             ) from exc
         logger.info(f"Saved series to {validated_output_path}")
-
-    @override
-    def slice(self, start: int, end: int) -> Self:
-        """Slice series.
-
-        Arguments:
-            start: start index
-            end: end index
-        Returns:
-            new sliced series
-        """
-        audio = self.audio[self.events[start].start : self.events[end - 1].end]
-        sliced = self._copy_with_events(self.events[start:end])
-        sliced.audio = audio
-        return sliced
 
     @classmethod
     @override
@@ -386,6 +373,29 @@ class AudioSeries(Series):
                 f"Could not extract audio stream {audio_track} from "
                 f"{video_input_path} to {audio_output_path}"
             ) from exc
+
+    @override
+    def _copy_with_events(self, events: Sequence[Subtitle]) -> Self:
+        """Copy this audio series with a selected collection of events.
+
+        Arguments:
+            events: events to include in the copied series
+        Returns:
+            copied audio series
+        """
+        audio_events: list[AudioSubtitle] = []
+        for event in events:
+            if not isinstance(event, AudioSubtitle):
+                raise TypeError("AudioSeries events must be AudioSubtitle instances")
+            audio_events.append(deepcopy(event))
+
+        if events:
+            audio = self.audio[events[0].start : events[-1].end]
+        else:
+            audio = self.audio[0:0]
+        copied = type(self)(audio=audio, events=audio_events)
+        self._copy_metadata_to(copied)
+        return copied
 
     @staticmethod
     def _get_audio_stream(media_path: Path, stream_index: int | None) -> AudioStream:

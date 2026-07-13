@@ -207,6 +207,7 @@ def test_image_series_blocks_preserve_image_subtitle_payloads():
         bboxes=[Bbox(1, 2, 3, 4)],
     )
     series = ImageSeries(events=[first, second])
+    series.info["Title"] = "Example"
 
     blocks = series.blocks
 
@@ -215,6 +216,8 @@ def test_image_series_blocks_preserve_image_subtitle_payloads():
     assert blocks[0].events[0] is not first
     assert blocks[0].events[0].img.tobytes() == first.img.tobytes()
     assert blocks[0].events[0].bboxes == first.bboxes
+    assert blocks[0].info == series.info
+    assert blocks[0].info is not series.info
     assert blocks[1].events[0] is not second
     assert blocks[1].events[0].img.tobytes() == second.img.tobytes()
     assert blocks[1].events[0].bboxes == second.bboxes
