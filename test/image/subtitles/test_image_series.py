@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from unittest.mock import patch
 
 from PIL import Image
 from pytest import FixtureRequest, param, raises
@@ -193,6 +194,66 @@ def test_save_html(tiny_image_series: ImageSeries):
 
         png_files = sorted(output_path.glob("*.png"))
         assert len(png_files) == len(tiny_image_series)
+
+
+def test_save_html_preserves_unrelated_directory_contents(
+    tiny_image_series: ImageSeries,
+    tmp_path: Path,
+):
+    """Test saving HTML preserves unrelated files and nested directories.
+
+    Arguments:
+        tiny_image_series: small image subtitle series
+        tmp_path: pytest temporary directory path
+    """
+    output_dir_path = tmp_path / "image_subtitles"
+    nested_dir_path = output_dir_path / "notes"
+    nested_dir_path.mkdir(parents=True)
+    note_path = nested_dir_path / "readme.txt"
+    note_path.write_text("keep me", encoding="utf-8")
+    metadata_path = output_dir_path / "metadata.json"
+    metadata_path.write_text("{}", encoding="utf-8")
+
+    tiny_image_series.save(output_dir_path)
+
+    assert note_path.read_text(encoding="utf-8") == "keep me"
+    assert metadata_path.read_text(encoding="utf-8") == "{}"
+    assert (output_dir_path / "index.html").exists()
+    assert len(list(output_dir_path.glob("*.png"))) == len(tiny_image_series)
+
+
+def test_save_html_preserves_existing_output_when_staging_fails(
+    tiny_image_series: ImageSeries,
+    tmp_path: Path,
+):
+    """Test a staging failure leaves existing managed output unchanged.
+
+    Arguments:
+        tiny_image_series: small image subtitle series
+        tmp_path: pytest temporary directory path
+    """
+    output_dir_path = tmp_path / "image_subtitles"
+    output_dir_path.mkdir()
+    index_path = output_dir_path / "index.html"
+    first_image_path = output_dir_path / "0001.png"
+    second_image_path = output_dir_path / "0002.png"
+    index_path.write_text("old index", encoding="utf-8")
+    first_image_path.write_bytes(b"old first image")
+    second_image_path.write_bytes(b"old second image")
+
+    with (
+        patch.object(
+            tiny_image_series.events[1].img,
+            "save",
+            side_effect=OSError("image write failed"),
+        ),
+        raises(ScinoephileError, match="image write failed"),
+    ):
+        tiny_image_series.save(output_dir_path)
+
+    assert index_path.read_text(encoding="utf-8") == "old index"
+    assert first_image_path.read_bytes() == b"old first image"
+    assert second_image_path.read_bytes() == b"old second image"
 
 
 def test_load_html_accepts_subtitle_number_anchor(tiny_image_series: ImageSeries):

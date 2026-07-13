@@ -10,6 +10,7 @@ from html import escape, unescape
 from logging import getLogger
 from os import PathLike
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Any, Self, override
 
 import numpy as np
@@ -332,25 +333,35 @@ class ImageSeries(Series):
             encoding: output file encoding
             errors: encoding error handling
         """
-        # Prepare empty directory, deleting existing files if needed
-        if dir_path.exists() and dir_path.is_dir():
-            for file in dir_path.iterdir():
-                file.unlink()
-            logger.info(f"Deleted {dir_path}")
-        else:
-            dir_path.mkdir(parents=True)
-            logger.info(f"Created directory {dir_path}")
+        # Stage the complete managed output before changing the destination
+        with TemporaryDirectory(
+            dir=dir_path.parent,
+            prefix=f".{dir_path.name}.",
+        ) as staging_dir_name:
+            staging_dir_path = Path(staging_dir_name)
+            image_paths = []
+            for i, event in enumerate(self, 1):
+                image_path = staging_dir_path / f"{i:04d}.png"
+                event.img.save(image_path)
+                image_paths.append(image_path)
+            self.save_html_index(
+                staging_dir_path,
+                encoding=encoding,
+                errors=errors,
+            )
 
-        # Save images
-        image_paths = []
-        for i, event in enumerate(self, 1):
-            outfile_path = dir_path / f"{i:04d}.png"
-            event.img.save(outfile_path)
-            image_paths.append(outfile_path)
-        logger.info(f"Saved images to {dir_path}")
+            # Reject conflicting directories before replacing any managed files
+            staged_paths = [*image_paths, staging_dir_path / "index.html"]
+            for staged_path in staged_paths:
+                output_path = dir_path / staged_path.name
+                if output_path.is_dir():
+                    raise IsADirectoryError(f"{output_path} is a directory")
 
-        # Save HTML index
-        self.save_html_index(dir_path, encoding=encoding, errors=errors)
+            # Replace images first and the index last, preserving unrelated entries
+            for image_path in image_paths:
+                image_path.replace(dir_path / image_path.name)
+            (staging_dir_path / "index.html").replace(dir_path / "index.html")
+        logger.info(f"Saved images and HTML to {dir_path}")
 
     @classmethod
     def _load_html(
