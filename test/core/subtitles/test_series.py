@@ -26,6 +26,42 @@ def test_series_round_trips_srt():
     assert_series_equal(output, series)
 
 
+def test_series_blocks_refresh_after_event_list_mutation():
+    """Test cached blocks refresh after inherited list mutations."""
+    series = Series(events=[Subtitle(start=0, end=1000, text="First")])
+    initial_blocks = series.blocks
+
+    series.append(Subtitle(start=5000, end=6000, text="Second"))
+    refreshed_blocks = series.blocks
+
+    assert refreshed_blocks is not initial_blocks
+    assert len(refreshed_blocks) == 2
+    assert [block.events[0].text for block in refreshed_blocks] == [
+        "First",
+        "Second",
+    ]
+
+
+def test_series_blocks_refresh_after_direct_event_mutation():
+    """Test cached blocks refresh after direct event field mutations."""
+    series = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="First"),
+            Subtitle(start=5000, end=6000, text="Second"),
+        ]
+    )
+    initial_blocks = series.blocks
+
+    series.events[1].start = 1500
+    series.events[1].end = 2500
+    series.events[1].text = "Changed"
+    refreshed_blocks = series.blocks
+
+    assert refreshed_blocks is not initial_blocks
+    assert len(refreshed_blocks) == 1
+    assert [event.text for event in refreshed_blocks[0]] == ["First", "Changed"]
+
+
 def test_series_load_wraps_input_path_errors(tmp_path: Path):
     """Test subtitle loading path errors are user-facing.
 

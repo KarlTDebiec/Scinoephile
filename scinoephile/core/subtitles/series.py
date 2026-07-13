@@ -44,6 +44,7 @@ class Series(SSAFile):
         if events is not None:
             self.events = events
         self._blocks: list[Series] | None = None
+        self._blocks_signature: tuple[tuple[int, str], ...] | None = None
 
     def __eq__(self, other: object) -> bool:
         """Whether this series is equal to another.
@@ -116,12 +117,15 @@ class Series(SSAFile):
         super().__setattr__(name, value)
         if name == "events" and hasattr(self, "_blocks"):
             self._blocks = None
+            self._blocks_signature = None
 
     @property
     def blocks(self) -> list[Series]:
         """List of blocks in the series."""
-        if self._blocks is None:
+        signature = self._get_blocks_signature()
+        if self._blocks is None or self._blocks_signature != signature:
             self._init_blocks()
+            self._blocks_signature = signature
         assert self._blocks is not None
         return self._blocks
 
@@ -133,6 +137,7 @@ class Series(SSAFile):
             blocks: List of blocks in the series
         """
         self._blocks = blocks
+        self._blocks_signature = self._get_blocks_signature()
 
     @override
     def save(
@@ -369,6 +374,10 @@ class Series(SSAFile):
         copied = Series(events=[deepcopy(event) for event in events])
         self._copy_metadata_to(copied)
         return copied
+
+    def _get_blocks_signature(self) -> tuple[tuple[int, str], ...]:
+        """Get event identity and SSA state used to detect block mutations."""
+        return tuple((id(event), repr(event.as_dict())) for event in self.events)
 
     def _init_blocks(self):
         """Initialize blocks."""

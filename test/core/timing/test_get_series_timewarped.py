@@ -4,9 +4,10 @@
 
 from __future__ import annotations
 
-from pytest import FixtureRequest, param
+from pytest import FixtureRequest, param, raises
 
-from scinoephile.core.subtitles import Series
+from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.timing import get_series_timewarped
 from test.helpers import assert_series_equal, parametrize
 
@@ -76,3 +77,77 @@ def test_get_series_timewarped(
         two_end_idx=two_end_idx,
     )
     assert_series_equal(output, expected)
+
+
+@parametrize(
+    "kwargs, label",
+    [
+        param({"one_start_idx": 0}, "source one start", id="source-one-start"),
+        param({"one_end_idx": 0}, "source one end", id="source-one-end"),
+        param({"two_start_idx": 0}, "source two start", id="source-two-start"),
+        param({"two_end_idx": 0}, "source two end", id="source-two-end"),
+    ],
+)
+def test_get_series_timewarped_rejects_zero_indexes(
+    kwargs: dict[str, int],
+    label: str,
+):
+    """Test explicit zero indexes are rejected instead of defaulted.
+
+    Arguments:
+        kwargs: timewarp index override
+        label: expected index label in the error message
+    """
+    source_one = _get_series()
+    source_two = _get_series()
+
+    with raises(
+        ScinoephileError,
+        match=f"Invalid {label} index 0",
+    ):
+        get_series_timewarped(source_one, source_two, **kwargs)
+
+
+@parametrize(
+    "kwargs, label",
+    [
+        param(
+            {"one_start_idx": 2, "one_end_idx": 1},
+            "source one",
+            id="source-one",
+        ),
+        param(
+            {"two_start_idx": 2, "two_end_idx": 1},
+            "source two",
+            id="source-two",
+        ),
+    ],
+)
+def test_get_series_timewarped_rejects_reversed_ranges(
+    kwargs: dict[str, int],
+    label: str,
+):
+    """Test timewarp anchor ranges must be ordered from start to end.
+
+    Arguments:
+        kwargs: timewarp index overrides
+        label: expected range label in the error message
+    """
+    source_one = _get_series()
+    source_two = _get_series()
+
+    with raises(
+        ScinoephileError,
+        match=f"Invalid {label} range 2-1",
+    ):
+        get_series_timewarped(source_one, source_two, **kwargs)
+
+
+def _get_series() -> Series:
+    """Get a small series for timewarp validation tests."""
+    return Series(
+        events=[
+            Subtitle(start=0, end=1000, text="First"),
+            Subtitle(start=2000, end=3000, text="Second"),
+        ]
+    )
