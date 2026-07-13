@@ -8,7 +8,7 @@ from collections.abc import Collection, Iterable
 from logging import getLogger
 from os import PathLike
 from os.path import defpath, expanduser, expandvars
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from platform import system
 from shutil import which
 from typing import Any, TypeAliasType, get_args, overload
@@ -22,6 +22,7 @@ from .exceptions import (
 )
 
 __all__ = [
+    "val_child_path",
     "val_executable",
     "val_float",
     "val_input_dir_path",
@@ -35,6 +36,49 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+
+def val_child_path(
+    parent_dir_path: Path | str | PathLike[Any],
+    child_name: str,
+) -> Path:
+    """Validate that a child name resolves within a parent directory.
+
+    Arguments:
+        parent_dir_path: parent directory path
+        child_name: proposed child name
+    Returns:
+        resolved child path
+    Raises:
+        ValueError: If the name is not a single contained filename
+    """
+    posix_path = PurePosixPath(child_name)
+    windows_path = PureWindowsPath(child_name)
+    if (
+        not child_name
+        or child_name in {".", ".."}
+        or posix_path.name != child_name
+        or windows_path.name != child_name
+    ):
+        raise ValueError(
+            f"Child name must be a single contained filename: {child_name!r}"
+        )
+
+    try:
+        resolved_parent_dir_path = Path(
+            expandvars(expanduser(str(parent_dir_path)))
+        ).resolve()
+        child_path = (resolved_parent_dir_path / child_name).resolve()
+        child_path.relative_to(resolved_parent_dir_path)
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise ValueError(
+            f"Child name must be a single contained filename: {child_name!r}"
+        ) from exc
+    if child_path == resolved_parent_dir_path:
+        raise ValueError(
+            f"Child name must be a single contained filename: {child_name!r}"
+        )
+    return child_path
 
 
 def val_executable(

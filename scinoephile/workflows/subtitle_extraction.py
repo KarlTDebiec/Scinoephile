@@ -7,10 +7,11 @@ from __future__ import annotations
 from collections.abc import Sequence
 from dataclasses import dataclass
 from logging import getLogger
-from pathlib import Path, PurePosixPath, PureWindowsPath
+from pathlib import Path
 from shutil import copy2
 
 from scinoephile.common.described_enum import DescribedEnum
+from scinoephile.common.validation import val_child_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
@@ -133,7 +134,7 @@ def extract_subtitles(
     outputs = []
     streams_to_extract = []
     for stream in streams:
-        outfile_path = _get_output_path(
+        outfile_path = _get_subtitle_output_path(
             output_dir_path,
             stream.outfile_filename,
         )
@@ -321,7 +322,7 @@ def _extract_sup_file(
     outfile_name = infile_path.name
     if stream.language is not None and "-" in stream.language:
         outfile_name = f"{stream.language}{infile_path.suffix}"
-    outfile_path = _get_output_path(output_dir_path, outfile_name)
+    outfile_path = _get_subtitle_output_path(output_dir_path, outfile_name)
 
     # Copy the SUP file and report its output status
     status = _copy_sup_file(
@@ -381,7 +382,7 @@ def _copy_sup_file(
     return SubtitleExtractionOutputStatus.CREATED
 
 
-def _get_output_path(output_dir_path: Path, outfile_name: str) -> Path:
+def _get_subtitle_output_path(output_dir_path: Path, outfile_name: str) -> Path:
     """Build a contained subtitle output path.
 
     Arguments:
@@ -392,21 +393,12 @@ def _get_output_path(output_dir_path: Path, outfile_name: str) -> Path:
     Raises:
         ScinoephileError: if the filename could escape the output directory
     """
-    posix_name = PurePosixPath(outfile_name)
-    windows_name = PureWindowsPath(outfile_name)
-    if posix_name.name != outfile_name or windows_name.name != outfile_name:
-        raise ScinoephileError(
-            f"Unsafe subtitle output filename from stream metadata: {outfile_name!r}"
-        )
-
-    outfile_path = output_dir_path / outfile_name
     try:
-        outfile_path.resolve().relative_to(output_dir_path.resolve())
-    except (OSError, RuntimeError, ValueError) as exc:
+        return val_child_path(output_dir_path, outfile_name)
+    except ValueError as exc:
         raise ScinoephileError(
             f"Unsafe subtitle output filename from stream metadata: {outfile_name!r}"
         ) from exc
-    return outfile_path
 
 
 def _extract_sup_image_series(
