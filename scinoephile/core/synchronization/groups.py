@@ -55,7 +55,7 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
         corresponding to subtitles in series two.
     """
     if len(one) == 0:
-        return []
+        return [([], [j]) for j in range(len(two))]
     if len(two) == 0:
         return [([i], []) for i in range(len(one))]
 

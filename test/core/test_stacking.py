@@ -16,6 +16,24 @@ from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import assert_series_equal, parametrize
 
 
+def test_get_stacked_series_preserves_nonempty_series_when_other_is_empty():
+    """Test stacking keeps subtitles when either input series is empty."""
+    empty = Series()
+    populated = Series(
+        events=[
+            Subtitle(start=1000, end=2000, text="A"),
+            Subtitle(start=3000, end=4000, text="B"),
+        ]
+    )
+
+    for one, two in [(empty, populated), (populated, empty)]:
+        output = get_stacked_series(one, two)
+        assert [(event.start, event.end, event.text) for event in output.events] == [
+            (1000, 2000, "A"),
+            (3000, 4000, "B"),
+        ]
+
+
 def test_get_stacked_series_does_not_overlap_union_timing():
     """Test stack never emits overlapping subtitles when inputs do not overlap."""
     one = Series(
