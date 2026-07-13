@@ -375,6 +375,39 @@ def test_processor_maps_targets_and_outputs_by_index():
     provider.chat_completion.assert_not_called()
 
 
+def test_processor_honors_zero_stop_index():
+    """A zero stop index should process no gap-translation blocks."""
+    provider = Mock(spec=LLMProvider)
+    processor = GapTranslationProcessor(
+        GapTranslationManager.base_prompt,
+        provider=provider,
+    )
+    source_one = Series(events=[Subtitle(start=0, end=100, text="existing one")])
+    source_two = Series(
+        events=[
+            Subtitle(start=0, end=100, text="guide one"),
+            Subtitle(start=100, end=200, text="guide two"),
+        ]
+    )
+
+    output = processor.process(source_one, source_two, stop_at_idx=0)
+
+    assert len(output) == 0
+    provider.chat_completion.assert_not_called()
+
+
+def test_processor_rejects_negative_stop_index():
+    """A negative stop index should be rejected."""
+    processor = GapTranslationProcessor(
+        GapTranslationManager.base_prompt,
+        provider=Mock(spec=LLMProvider),
+    )
+    source = Series(events=[Subtitle(start=0, end=100, text="subtitle")])
+
+    with raises(ValueError, match="greater than or equal to 0"):
+        processor.process(source, source, stop_at_idx=-1)
+
+
 def test_repository_json_fixtures_load():
     """All repository gap-translation fixtures should use the canonical list shape."""
     fixture_paths = sorted(

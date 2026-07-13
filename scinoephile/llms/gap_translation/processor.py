@@ -34,7 +34,7 @@ class GapTranslationProcessor(Processor):
     manager_cls = GapTranslationManager
     """Manager class used to construct test case models."""
 
-    def process(
+    def process(  # noqa: PLR0912, PLR0915
         self,
         source_one: Series,
         source_two: Series,
@@ -51,8 +51,11 @@ class GapTranslationProcessor(Processor):
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
-        stop_at_idx = stop_at_idx or len(block_pairs)
-        for blk_idx, (one_blk, two_blk) in enumerate(block_pairs[:stop_at_idx]):
+        if stop_at_idx is None:
+            stop_at_idx = len(block_pairs)
+        elif stop_at_idx < 0:
+            raise ValueError("stop_at_idx must be greater than or equal to 0")
+        for blk_idx, (one_blk, two_blk) in enumerate(block_pairs):
             if blk_idx >= stop_at_idx:
                 break
 
@@ -118,8 +121,12 @@ class GapTranslationProcessor(Processor):
 
         self.save_test_cases()
 
-        output_series = get_concatenated_series(
-            [s for s in output_series_to_concatenate if s is not None]
-        )
+        output_series_blocks = [
+            series for series in output_series_to_concatenate if series is not None
+        ]
+        if output_series_blocks:
+            output_series = get_concatenated_series(output_series_blocks)
+        else:
+            output_series = Series()
         logger.info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

@@ -51,7 +51,10 @@ class OcrFusionProcessor(Processor):
 
         # Process subtitles
         output_subtitles = []
-        stop_at_idx = stop_at_idx or len(source_one)
+        if stop_at_idx is None:
+            stop_at_idx = len(source_one)
+        elif stop_at_idx < 0:
+            raise ValueError("stop_at_idx must be greater than or equal to 0")
         for sub_idx, (sub_one, sub_two) in enumerate(
             zip(source_one.events, source_two.events)
         ):
