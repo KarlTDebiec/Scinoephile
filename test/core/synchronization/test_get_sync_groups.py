@@ -11,6 +11,21 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import get_sync_groups
 
 
+def test_get_sync_groups_preserves_subtitles_when_other_series_is_empty():
+    """Test empty-series handling preserves every subtitle from the other series."""
+    empty = Series()
+    populated = Series(
+        events=[
+            Subtitle(start=0, end=100, text="A"),
+            Subtitle(start=200, end=300, text="B"),
+        ]
+    )
+
+    assert get_sync_groups(empty, populated) == [([], [0]), ([], [1])]
+    assert get_sync_groups(populated, empty) == [([0], []), ([1], [])]
+    assert get_sync_groups(empty, empty) == []
+
+
 def test_get_sync_groups_exceeds_max_cutoff():
     """Test that get_sync_groups raises error when max_cutoff is exceeded.
 
