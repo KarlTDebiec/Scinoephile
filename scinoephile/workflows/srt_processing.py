@@ -16,10 +16,10 @@ from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.llms.review import ReviewPrompt
-from scinoephile.workflows.review import review_series
 
 from .cleaning import clean_series
 from .flattening import flatten_series
+from .review import review_series
 from .romanization import romanize_series
 
 __all__ = [

@@ -16,8 +16,17 @@
   files that contain only a module docstring do not need it.
 * For imports within the same directory, use relative imports (for example,
   `from .foo import bar`).
-* Do not use relative imports for imports from parent or sibling directories
-  (for example, `from ..foo import bar` or `from .. import foo`).
+* For imports from parent or sibling directories, use the absolute path to the
+  concrete module or package that owns the name. Do not use relative imports
+  across directories (for example, `from ..foo import bar` or
+  `from .sibling_package import bar`).
+* Public names may be imported from another package's `__init__.py` facade when
+  they are listed in that package's `__all__`.
+* Within a package subtree, do not import a name re-exported by one of the
+  module's own ancestor package facades. Import from the concrete module that
+  owns the name so internal dependencies remain visible (for example, use
+  `from scinoephile.core.exceptions import ScinoephileError` within
+  `scinoephile.core.llms`, not `from scinoephile.core import ScinoephileError`).
 * Use `if TYPE_CHECKING:` blocks only when necessary to avoid circular imports.
 * Allow `ruff` to manage import sorting.
 

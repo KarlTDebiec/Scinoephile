@@ -6,8 +6,9 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+from scinoephile.core.subtitles import Series
+
 from .exceptions import ScinoephileError
-from .subtitles import Series
 
 __all__ = [
     "get_block_pairs_by_pause",

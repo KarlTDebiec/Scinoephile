@@ -50,6 +50,111 @@ def test_module_hierarchy_docs_are_authoritative():
     assert not violations, "\n\n".join(violations)
 
 
+def test_module_import_style_rules(tmp_path: Path):
+    """Test import style distinguishes modules, packages, and facades."""
+    package_dir_path = tmp_path / "example"
+    fixture_sources = {
+        "__init__.py": "",
+        "shared.py": 'value = "shared"\n',
+        "core/__init__.py": (
+            "from .errors import PublicError\n\n"
+            "class HiddenError(Exception):\n"
+            "    pass\n\n"
+            '__all__ = ["PublicError"]\n'
+        ),
+        "core/errors.py": (
+            'class PublicError(Exception):\n    pass\n\n__all__ = ["PublicError"]\n'
+        ),
+        "core/llms/__init__.py": "",
+        "feature/__init__.py": "",
+        "feature/prompts.py": "FIELDS = {}\n",
+        "feature/sibling/__init__.py": (
+            'class Sibling:\n    pass\n\n__all__ = ["Sibling"]\n'
+        ),
+    }
+    for relative_path, source in fixture_sources.items():
+        file_path = package_dir_path / relative_path
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        file_path.write_text(source, encoding="utf-8")
+
+    cases = [
+        ("feature/local_relative.py", "from .prompts import FIELDS\n", None),
+        (
+            "feature/local_absolute.py",
+            "from example.feature.prompts import FIELDS\n",
+            "same-directory modules must use relative imports",
+        ),
+        (
+            "feature/local_absolute_plain.py",
+            "import example.feature.prompts\n",
+            "same-directory modules must use relative imports",
+        ),
+        ("feature/parent_absolute.py", "from example.shared import value\n", None),
+        ("feature/parent_absolute_plain.py", "import example.shared\n", None),
+        (
+            "feature/parent_relative.py",
+            "from ..shared import value\n",
+            "relative imports may not cross package directories",
+        ),
+        (
+            "feature/sibling_absolute.py",
+            "from example.feature.sibling import Sibling\n",
+            None,
+        ),
+        (
+            "feature/sibling_relative.py",
+            "from .sibling import Sibling\n",
+            "relative imports may not cross package directories",
+        ),
+        (
+            "feature/public_facade.py",
+            "from example.core import PublicError\n",
+            None,
+        ),
+        (
+            "feature/private_facade.py",
+            "from example.core import HiddenError\n",
+            "package facade imports must name exports listed in __all__",
+        ),
+        (
+            "core/llms/concrete.py",
+            "from example.core.errors import PublicError\n",
+            None,
+        ),
+        (
+            "core/llms/ancestor_facade.py",
+            "from example.core import PublicError\n",
+            "own ancestor package facades may not be used internally",
+        ),
+        (
+            "core/llms/ancestor_facade_plain.py",
+            "import example.core\n",
+            "own ancestor package facades may not be used internally",
+        ),
+    ]
+    for relative_path, source, expected_reason in cases:
+        file_path = package_dir_path / relative_path
+        file_path.write_text(source, encoding="utf-8")
+        violations = get_import_style_violations(
+            file_path,
+            package_parent_path=tmp_path,
+        )
+        if expected_reason is None:
+            assert violations == []
+        else:
+            assert len(violations) == 1
+            assert expected_reason in violations[0]
+
+
+def test_module_imports_follow_style_rules():
+    """Test package imports make their concrete dependencies visible."""
+    violations: list[str] = []
+    for file_path in sorted(package_root.rglob("*.py")):
+        violations.extend(get_import_style_violations(file_path))
+
+    assert not violations, "\n".join(violations)
+
+
 def test_resolve_import_from_modules_includes_absolute_package_aliases():
     """Test import-from package aliases resolve as candidate modules."""
     node = ast.parse("from scinoephile.core import llms, media").body[0]
@@ -308,6 +413,344 @@ def get_imported_modules(file_path: Path, root_package_parts: list[str]) -> list
                 )
             )
     return imported_modules
+
+
+def format_import_style_violation(
+    file_path: Path,
+    node: ast.Import | ast.ImportFrom,
+    reason: str,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> str:
+    """Format one package import style violation.
+
+    Arguments:
+        file_path: Python file path
+        node: import node
+        reason: violation reason
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        formatted violation description
+    """
+    return (
+        f"{file_path.relative_to(package_parent_path)}:{node.lineno}: {reason}: "
+        f"{ast.unparse(node)}"
+    )
+
+
+def get_absolute_import_from_style_violations(
+    file_path: Path,
+    node: ast.ImportFrom,
+    current_package_parts: list[str],
+    root_package_name: str,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get style violations from one absolute import-from statement.
+
+    Arguments:
+        file_path: Python file path
+        node: absolute import-from node
+        current_package_parts: dotted parts of the importing package
+        root_package_name: source root package name
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    module_name = node.module
+    if module_name is None or not (
+        module_name == root_package_name
+        or module_name.startswith(f"{root_package_name}.")
+    ):
+        return []
+
+    target_path = get_module_source_path(
+        module_name,
+        package_parent_path=package_parent_path,
+    )
+    if target_path is None:
+        return []
+    if target_path.name != "__init__.py" and target_path.parent == file_path.parent:
+        return [
+            format_import_style_violation(
+                file_path,
+                node,
+                "same-directory modules must use relative imports",
+                package_parent_path=package_parent_path,
+            )
+        ]
+    if target_path.name != "__init__.py":
+        return []
+
+    target_module_parts = module_name.split(".")
+    target_is_ancestor = (
+        target_module_parts == current_package_parts[: len(target_module_parts)]
+    )
+    package_exports = get_package_exports(target_path)
+    violations: list[str] = []
+    for alias in node.names:
+        child_target_path = get_module_source_path(
+            f"{module_name}.{alias.name}",
+            package_parent_path=package_parent_path,
+        )
+        if child_target_path is not None:
+            if (
+                child_target_path.name != "__init__.py"
+                and child_target_path.parent == file_path.parent
+            ):
+                violations.append(
+                    format_import_style_violation(
+                        file_path,
+                        node,
+                        "same-directory modules must use relative imports",
+                        package_parent_path=package_parent_path,
+                    )
+                )
+            continue
+        if target_is_ancestor:
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "own ancestor package facades may not be used internally",
+                    package_parent_path=package_parent_path,
+                )
+            )
+        elif package_exports is None or alias.name not in package_exports:
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "package facade imports must name exports listed in __all__",
+                    package_parent_path=package_parent_path,
+                )
+            )
+    return violations
+
+
+def get_absolute_import_style_violations(
+    file_path: Path,
+    node: ast.Import,
+    current_package_parts: list[str],
+    root_package_name: str,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get style violations from one absolute import statement.
+
+    Arguments:
+        file_path: Python file path
+        node: absolute import node
+        current_package_parts: dotted parts of the importing package
+        root_package_name: source root package name
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    violations: list[str] = []
+    for alias in node.names:
+        if not (
+            alias.name == root_package_name
+            or alias.name.startswith(f"{root_package_name}.")
+        ):
+            continue
+
+        target_path = get_module_source_path(
+            alias.name,
+            package_parent_path=package_parent_path,
+        )
+        if target_path is None:
+            continue
+        if target_path.name != "__init__.py" and target_path.parent == file_path.parent:
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "same-directory modules must use relative imports",
+                    package_parent_path=package_parent_path,
+                )
+            )
+            continue
+
+        target_module_parts = alias.name.split(".")
+        if (
+            target_path.name == "__init__.py"
+            and target_module_parts
+            == (current_package_parts[: len(target_module_parts)])
+        ):
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "own ancestor package facades may not be used internally",
+                    package_parent_path=package_parent_path,
+                )
+            )
+    return violations
+
+
+def get_import_style_violations(
+    file_path: Path,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get violations of package import style rules in one Python file.
+
+    Arguments:
+        file_path: Python file path
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    relative_path = file_path.relative_to(package_parent_path)
+    current_package_parts = list(relative_path.parent.parts)
+    root_package_name = current_package_parts[0]
+    tree = ast.parse(file_path.read_text(encoding="utf-8"))
+    violations: list[str] = []
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            violations.extend(
+                get_absolute_import_style_violations(
+                    file_path,
+                    node,
+                    current_package_parts,
+                    root_package_name,
+                    package_parent_path=package_parent_path,
+                )
+            )
+            continue
+
+        if isinstance(node, ast.ImportFrom):
+            if node.level:
+                violations.extend(
+                    get_relative_import_style_violations(
+                        file_path,
+                        node,
+                        current_package_parts,
+                        package_parent_path=package_parent_path,
+                    )
+                )
+            else:
+                violations.extend(
+                    get_absolute_import_from_style_violations(
+                        file_path,
+                        node,
+                        current_package_parts,
+                        root_package_name,
+                        package_parent_path=package_parent_path,
+                    )
+                )
+    return violations
+
+
+def get_relative_import_style_violations(
+    file_path: Path,
+    node: ast.ImportFrom,
+    current_package_parts: list[str],
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> list[str]:
+    """Get style violations from one relative import-from statement.
+
+    Arguments:
+        file_path: Python file path
+        node: relative import-from node
+        current_package_parts: dotted parts of the importing package
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        violation descriptions
+    """
+    current_package_name = ".".join(current_package_parts)
+    target_paths: list[Path | None]
+    if node.level == 1 and node.module:
+        target_paths = [
+            get_module_source_path(
+                f"{current_package_name}.{node.module}",
+                package_parent_path=package_parent_path,
+            )
+        ]
+    elif node.level == 1:
+        target_paths = [
+            get_module_source_path(
+                f"{current_package_name}.{alias.name}",
+                package_parent_path=package_parent_path,
+            )
+            for alias in node.names
+            if alias.name != "*"
+        ]
+    else:
+        target_paths = []
+
+    if target_paths and all(
+        target_path is not None
+        and target_path.name != "__init__.py"
+        and target_path.parent == file_path.parent
+        for target_path in target_paths
+    ):
+        return []
+    return [
+        format_import_style_violation(
+            file_path,
+            node,
+            "relative imports may not cross package directories",
+            package_parent_path=package_parent_path,
+        )
+    ]
+
+
+def get_module_source_path(
+    module_name: str,
+    *,
+    package_parent_path: Path = package_root.parent,
+) -> Path | None:
+    """Get the source path for an importable module or package.
+
+    Arguments:
+        module_name: absolute dotted module name
+        package_parent_path: parent path from which the package name begins
+    Returns:
+        module file or package `__init__.py` path, if present
+    """
+    target_path = package_parent_path.joinpath(*module_name.split("."))
+    module_path = target_path.with_suffix(".py")
+    if module_path.exists():
+        return module_path
+
+    init_path = target_path / "__init__.py"
+    if init_path.exists():
+        return init_path
+    return None
+
+
+def get_package_exports(init_path: Path) -> set[str] | None:
+    """Get literal public exports declared by a package.
+
+    Arguments:
+        init_path: package `__init__.py` path
+    Returns:
+        public export names, or None if no literal `__all__` is declared
+    """
+    tree = ast.parse(init_path.read_text(encoding="utf-8"))
+    for node in tree.body:
+        if not isinstance(node, ast.Assign):
+            continue
+        if not any(
+            isinstance(target, ast.Name) and target.id == "__all__"
+            for target in node.targets
+        ):
+            continue
+        if not isinstance(node.value, (ast.List, ast.Tuple, ast.Set)):
+            return None
+        exports: set[str] = set()
+        for element in node.value.elts:
+            if not isinstance(element, ast.Constant) or not isinstance(
+                element.value, str
+            ):
+                return None
+            exports.add(element.value)
+        return exports
+    return None
 
 
 def get_module_hierarchy_violations(

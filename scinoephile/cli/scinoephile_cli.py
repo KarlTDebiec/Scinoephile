@@ -7,21 +7,21 @@ from __future__ import annotations
 from argparse import SUPPRESS, ArgumentParser
 from typing import Any
 
+from scinoephile.cli.audit import AuditCli
+from scinoephile.cli.dictionary import DictionaryCli
+from scinoephile.cli.media import MediaCli
+from scinoephile.cli.multi import MultiCli
+from scinoephile.cli.ocr import OcrCli
+from scinoephile.cli.utility import UtilityCli
+from scinoephile.cli.yue import YueCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name
 from scinoephile.common.cli import ListAllCommandsAction
 from scinoephile.core.cli import ScinoephileCliBase
 
-from .audit import AuditCli
-from .dictionary import DictionaryCli
-from .media import MediaCli
-from .multi import MultiCli
-from .ocr import OcrCli
 from .process_cli import ProcessCli
 from .proofread_cli import ProofreadCli
 from .translate_cli import TranslateCli
-from .utility import UtilityCli
-from .yue import YueCli
 
 __all__ = ["ScinoephileCli"]
 

@@ -10,10 +10,11 @@ from pprint import pformat
 
 import numpy as np
 
+from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
+from scinoephile.core.synchronization import SyncGroup, get_sync_groups
+
 from .exceptions import ScinoephileError
 from .pairs import get_block_pairs_by_pause, get_pair_strings
-from .subtitles import Series, Subtitle, get_concatenated_series
-from .synchronization import SyncGroup, get_sync_groups
 
 __all__ = [
     "StackTimingMode",

@@ -14,7 +14,7 @@ from openai import OpenAI, OpenAIError
 from openai.types.chat import ChatCompletionMessageFunctionToolCall
 from pydantic import JsonValue, ValidationError
 
-from scinoephile.core import ScinoephileError
+from scinoephile.core.exceptions import ScinoephileError
 
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
