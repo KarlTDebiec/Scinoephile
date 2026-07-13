@@ -86,9 +86,20 @@ def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
     input_stream = Mock()
-    input_stream.output.return_value = Mock()
+
+    def write_partial_output(outfile_path: str, **_: object) -> Mock:
+        """Write a partial ffmpeg output before extraction fails."""
+        Path(outfile_path).write_bytes(b"partial")
+        return Mock()
+
+    input_stream.output.side_effect = write_partial_output
     merged_stream = Mock()
     merged_stream.run.side_effect = ffmpeg.Error("ffmpeg", b"", b"failed")
+    stream_path = get_subtitle_cache_path(
+        infile_path,
+        stream,
+        cache_dir_path=tmp_path / "cache",
+    )
 
     with (
         patch(
@@ -106,6 +117,9 @@ def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
             [stream],
             cache_dir_path=tmp_path / "cache",
         )
+
+    assert not stream_path.exists()
+    assert list(stream_path.parent.glob(f".{stream_path.name}-*")) == []
 
 
 def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
@@ -186,7 +200,7 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
     input_stream = _RecordingFfmpegInput()
     merged_streams: list[_RecordingMergedFfmpegStream] = []
 
-    def merge_outputs(*outputs: object) -> _RecordingMergedFfmpegStream:
+    def merge_outputs(*outputs: Path) -> _RecordingMergedFfmpegStream:
         """Record merged ffmpeg outputs."""
         merged_stream = _RecordingMergedFfmpegStream(list(outputs))
         merged_streams.append(merged_stream)
@@ -218,15 +232,23 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path):
         streams[1],
         cache_dir_path=tmp_path / "cache",
     )
-    assert set(input_stream.output_calls) == {
-        (str(first_stream_path), "0:2", "subrip"),
-        (str(second_stream_path), "0:3", "subrip"),
+    assert {
+        (Path(path).name, mapping, codec)
+        for path, mapping, codec in input_stream.output_calls
+    } == {
+        (first_stream_path.name, "0:2", "subrip"),
+        (second_stream_path.name, "0:3", "subrip"),
+    }
+    assert {Path(path).parent.parent for path, _, _ in input_stream.output_calls} == {
+        first_stream_path.parent,
+        second_stream_path.parent,
     }
     assert len(merged_streams) == 1
     assert len(merged_streams[0].outputs) == 2
     assert merged_streams[0].run_count == 1
-    assert first_stream_path.parent.exists()
-    assert second_stream_path.parent.exists()
+    assert first_stream_path.read_bytes() == b"cached"
+    assert second_stream_path.read_bytes() == b"cached"
+    assert all(not Path(path).exists() for path, _, _ in input_stream.output_calls)
 
 
 class _RecordingFfmpegInput:
@@ -236,7 +258,7 @@ class _RecordingFfmpegInput:
         """Initialize."""
         self.output_calls: list[tuple[str, str, str]] = []
 
-    def output(self, outfile_path: str, **kwargs: object) -> object:
+    def output(self, outfile_path: str, **kwargs: object) -> Path:
         """Record an ffmpeg output stream.
 
         Arguments:
@@ -246,13 +268,13 @@ class _RecordingFfmpegInput:
             fake output stream
         """
         self.output_calls.append((outfile_path, str(kwargs["map"]), str(kwargs["c:s"])))
-        return object()
+        return Path(outfile_path)
 
 
 class _RecordingMergedFfmpegStream:
     """Recording fake for merged ffmpeg output streams."""
 
-    def __init__(self, outputs: list[object]):
+    def __init__(self, outputs: list[Path]):
         """Initialize.
 
         Arguments:
@@ -269,3 +291,5 @@ class _RecordingMergedFfmpegStream:
         """
         _ = kwargs
         self.run_count += 1
+        for output in self.outputs:
+            output.write_bytes(b"cached")
