@@ -113,8 +113,10 @@ class ImageSeries(Series):
     @override
     def blocks(self) -> list[ImageSeries]:
         """List of blocks in the series."""
-        if self._blocks is None:
+        signature = self._get_blocks_signature()
+        if self._blocks is None or self._blocks_signature != signature:
             self._init_blocks()
+            self._blocks_signature = signature
         assert self._blocks is not None
         return self._blocks
 
@@ -127,6 +129,7 @@ class ImageSeries(Series):
             blocks: List of blocks in the series
         """
         self._blocks = blocks
+        self._blocks_signature = self._get_blocks_signature()
 
     def copy_text_from(self, source: Series):
         """Copy subtitle text from a source series into this image series.
