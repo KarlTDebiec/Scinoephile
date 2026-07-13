@@ -7,7 +7,26 @@ from __future__ import annotations
 from PIL import Image
 
 from scinoephile.image.bbox import Bbox
-from scinoephile.image.drawing import get_img_with_bboxes
+from scinoephile.image.drawing import convert_rgba_img_to_la, get_img_with_bboxes
+
+
+def test_convert_rgba_img_to_la_converts_grayscale_rgba_image():
+    """Test grayscale RGBA images are returned in LA mode."""
+    img = Image.new("RGBA", (2, 2), (64, 64, 64, 128))
+
+    result = convert_rgba_img_to_la(img)
+
+    assert result.mode == "LA"
+    assert result.getpixel((0, 0)) == (64, 128)
+
+
+def test_convert_rgba_img_to_la_preserves_color_rgba_image():
+    """Test color RGBA images are returned unchanged."""
+    img = Image.new("RGBA", (2, 2), (64, 32, 16, 128))
+
+    result = convert_rgba_img_to_la(img)
+
+    assert result is img
 
 
 def test_get_img_with_bboxes_draws_second_outline_pixel_outside():

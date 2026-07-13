@@ -25,20 +25,20 @@ __all__ = [
 ]
 
 
-def convert_rgba_img_to_la(img: Image.Image) -> tuple[Image.Image, bool]:
+def convert_rgba_img_to_la(img: Image.Image) -> Image.Image:
     """Convert RGBA images with grayscale color channels to LA.
 
     Arguments:
         img: Image to convert
     Returns:
-        Image and whether it was converted
+        converted image, or the original image when conversion is not applicable
     """
     if img.mode != "RGBA":
-        return img, False
+        return img
     arr = np.array(img)
     if np.all(arr[:, :, 0] == arr[:, :, 1]) and np.all(arr[:, :, 1] == arr[:, :, 2]):
-        return img.convert("LA"), True
-    return img, False
+        return img.convert("LA")
+    return img
 
 
 def get_img_with_bboxes(
