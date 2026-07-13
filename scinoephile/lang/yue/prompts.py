@@ -15,9 +15,7 @@ YUE_HANT_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
     "few_shot_intro": "下面係一啲查詢同埋佢哋預期答案嘅例子：",
     "few_shot_query_intro": "例子查詢：",
     "few_shot_answer_intro": "預期答案：",
-    "answer_invalid_pre": (
-        "你之前嘅回覆唔係有效嘅 JSON，或者未符合預期嘅模式要求。錯誤詳情："
-    ),
+    "answer_invalid_pre": "你之前嘅回覆唔係有效嘅 JSON，或者未符合預期嘅模式要求。",
     "answer_invalid_post": (
         "請你再試一次，並且淨係返返一個符合該模式要求嘅有效 JSON 物件。"
     ),

@@ -244,8 +244,9 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
     messages = provider.calls[0]
     system_message = messages[0]["content"]
     assert system_message == queryer.system_prompt
-    assert "Additional context:\nUse canonical names." in system_message
-    assert system_message.index("Additional context:") < system_message.index(
+    assert "Additional context:" not in system_message
+    assert "\n\nUse canonical names." in system_message
+    assert system_message.index("Use canonical names.") < system_message.index(
         _PROMPT.few_shot_intro
     )
 

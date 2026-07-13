@@ -128,7 +128,15 @@ class Manager(ABC):
             prompt: text for LLM correspondence
         Returns:
             test case model class
+        Raises:
+            TypeError: prompt type does not match this manager
         """
+        expected_prompt_cls = type(cls.base_prompt)
+        if not isinstance(prompt, expected_prompt_cls):
+            raise TypeError(
+                f"{cls.__name__} requires {expected_prompt_cls.__name__}; "
+                f"got {type(prompt).__name__}."
+            )
         query_cls = cls.get_query_cls(prompt)
         answer_cls = cls.get_answer_cls(prompt)
         model = cls.create_prompt_model(

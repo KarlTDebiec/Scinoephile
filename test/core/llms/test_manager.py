@@ -22,7 +22,7 @@ from scinoephile.llms.punctuation import (
     PunctuationTestCase,
 )
 from scinoephile.llms.review import ReviewManager, ReviewPrompt, ReviewTestCase
-from scinoephile.llms.translation import TranslationManager
+from scinoephile.llms.translation import TranslationManager, TranslationPrompt
 
 _LOCALIZED_REVIEW_PROMPT = ReviewPrompt(
     subtitles="zimu",
@@ -67,6 +67,15 @@ _MANAGER_CLASSES: list[type[Manager]] = [
 def test_manager_reuses_static_test_case_prompt(manager_cls: type[Manager]):
     """Each manager should reuse its semantic test-case model's prompt."""
     assert manager_cls.base_prompt is manager_cls.test_case_base_cls.prompt
+
+
+def test_manager_rejects_incompatible_prompt_type():
+    """Managers should reject prompts belonging to another operation."""
+    with raises(
+        TypeError,
+        match="ReviewManager requires ReviewPrompt; got TranslationPrompt",
+    ):
+        ReviewManager.get_test_case_cls(TranslationPrompt())
 
 
 def test_static_shape_factory_caches_and_isolates_prompt_aliases():

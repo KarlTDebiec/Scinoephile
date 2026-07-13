@@ -28,9 +28,9 @@ class PromptLocalizationFields(TypedDict):
     few_shot_answer_intro: str
     """Text preceding each few-shot expected answer."""
     answer_invalid_pre: str
-    """Text preceding answer validation errors."""
+    """Text introducing an invalid-answer retry."""
     answer_invalid_post: str
-    """Text following answer validation errors."""
+    """Text concluding an invalid-answer retry."""
     test_case_invalid_pre: str
     """Text preceding test case validation errors."""
     test_case_invalid_post: str
@@ -56,9 +56,9 @@ class Prompt:
 
     # Answer validation errors
     answer_invalid_pre: str = ""
-    """Text preceding answer validation errors."""
+    """Text introducing an invalid-answer retry."""
     answer_invalid_post: str = ""
-    """Text following answer validation errors."""
+    """Text concluding an invalid-answer retry."""
 
     # Test case validation errors
     test_case_invalid_pre: str = ""
