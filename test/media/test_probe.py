@@ -44,6 +44,34 @@ def test_get_subtitle_streams(tmp_path: Path):
     assert stream.subtitle_count == 123
 
 
+def test_get_subtitle_streams_accepts_unknown_packet_count(tmp_path: Path):
+    """Test ffprobe's N/A packet count is treated as unknown.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with patch(
+        "scinoephile.media.probe.ffmpeg.probe",
+        return_value={
+            "streams": [
+                {
+                    "index": 2,
+                    "codec_type": "subtitle",
+                    "codec_name": "subrip",
+                    "nb_read_packets": "N/A",
+                },
+            ],
+        },
+    ):
+        streams = get_subtitle_streams(infile_path)
+
+    assert len(streams) == 1
+    assert streams[0].subtitle_count is None
+
+
 def test_get_streams_returns_all_typed_streams(tmp_path: Path):
     """Test media stream probing returns all typed stream models."""
     infile_path = tmp_path / "video.mkv"
