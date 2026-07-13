@@ -21,8 +21,10 @@ below describes package responsibilities in the same order:
 - `audio`, `dictionaries`, and `web`: audio, dictionary, and web UI packages
   that may import from the packages above
 - `multilang`: cross-language operations that may import from the packages above
-- `optimization` and `workflows`: prompt optimization infrastructure and reusable
-  workflow orchestration that may import from the packages above
+- `optimization`: prompt optimization infrastructure that may import from the
+  packages above
+- `workflows`: reusable workflow orchestration that may import from the packages
+  above, including `optimization`
 - `scinoephile.cli`: user-facing command-line wrappers that may import from any
   package listed above it
 
@@ -43,15 +45,15 @@ layers:
     utilities.
 - **`media`**: media-file probing, subtitle extraction helpers, subtitle cache
   analysis, and visual offset estimation.
-- **`optimization`**: prompt optimization operations and prompt and test-case
-  persistence built on `core` and `llms`.
 - **`lang`**: language-specific subtitle operations (English, standard Chinese,
   written Cantonese, etc.).
 - **`audio`, `dictionaries`, and `web`**: audio representation and transcription
   tooling, dictionary lookup/build logic, and web interfaces.
 - **`multilang`**: pair-specific cross-language operations.
+- **`optimization`**: prompt optimization operations and prompt and test-case
+  persistence built on the preceding domain packages.
 - **`workflows`**: reusable end-to-end orchestration that coordinates multiple
-  domain packages, including `multilang`.
+  domain packages, including `multilang` and `optimization`.
 - **`cli`**: thin wrappers around lower layers; argument parsing, validation,
   and user-facing orchestration.
 
