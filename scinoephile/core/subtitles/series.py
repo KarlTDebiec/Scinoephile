@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
+from copy import deepcopy
 from logging import getLogger
 from os import PathLike
 from typing import Any, Self, cast, override
@@ -184,11 +185,7 @@ class Series(SSAFile):
         Returns:
             sliced series
         """
-        sliced = type(self)()
-        sliced.events = [
-            self.event_class(**event.as_dict()) for event in self.events[start:end]
-        ]
-        return sliced
+        return self._copy_with_events(self.events[start:end])
 
     def to_simple_string(
         self, start: int | None = None, duration: int | None = None
@@ -347,6 +344,36 @@ class Series(SSAFile):
         block_indexes.append((start, len(series)))
 
         return block_indexes
+
+    def _copy_metadata_to(self, copied: Series):
+        """Copy pysubs2 series metadata to another series.
+
+        Arguments:
+            copied: series to receive the copied metadata
+        """
+        copied.styles = deepcopy(self.styles)
+        copied.info = deepcopy(self.info)
+        copied.aegisub_project = deepcopy(self.aegisub_project)
+        copied.fonts_opaque = deepcopy(self.fonts_opaque)
+        copied.graphics_opaque = deepcopy(self.graphics_opaque)
+        copied.fps = self.fps
+        copied.format = self.format
+
+    def _copy_with_events(self, events: Sequence[Subtitle]) -> Self:
+        """Copy this series with a selected collection of events.
+
+        Arguments:
+            events: events to include in the copied series
+        Returns:
+            copied series
+        """
+        if type(self) is not Series:
+            raise NotImplementedError(
+                f"{type(self).__name__} must implement _copy_with_events()"
+            )
+        copied = Series(events=[deepcopy(event) for event in events])
+        self._copy_metadata_to(copied)
+        return copied
 
     def _get_blocks_signature(self) -> tuple[tuple[int, str], ...]:
         """Get event identity and SSA state used to detect block mutations."""

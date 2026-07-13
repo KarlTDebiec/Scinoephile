@@ -105,6 +105,37 @@ def test_series_save_wraps_output_path_errors(tmp_path: Path):
     assert isinstance(excinfo.value.__cause__, OSError)
 
 
+def test_series_slice_preserves_metadata_and_copies_events():
+    """Test slicing preserves series metadata and independently copies events."""
+    series = Series(
+        events=[
+            Subtitle(start=1000, end=2000, text="First"),
+            Subtitle(start=3000, end=4000, text="Second"),
+        ]
+    )
+    series.info["Title"] = "Example"
+    series.format = "ass"
+    series.fps = 23.976
+    series.fonts_opaque["font.ttf"] = ["encoded font"]
+
+    sliced = series.slice(1, 2)
+
+    assert type(sliced) is Series
+    assert sliced.events == [series.events[1]]
+    assert sliced.events[0] is not series.events[1]
+    assert sliced.styles == series.styles
+    assert sliced.styles is not series.styles
+    assert sliced.info == series.info
+    assert sliced.info is not series.info
+    assert sliced.format == series.format
+    assert sliced.fps == series.fps
+    assert sliced.fonts_opaque == series.fonts_opaque
+    assert sliced.fonts_opaque is not series.fonts_opaque
+
+    sliced.events[0].text = "Changed"
+    assert series.events[1].text == "Second"
+
+
 def test_series_to_string_wraps_serializer_errors():
     """Test subtitle string serialization errors are user-facing."""
     series = Series(events=[Subtitle(start=1000, end=2000, text="Text")])
