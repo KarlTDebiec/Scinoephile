@@ -17,6 +17,7 @@ import numpy as np
 from PIL import Image
 
 from scinoephile.common.validation import (
+    val_child_path,
     val_input_dir_path,
     val_input_file_or_dir_path,
     val_output_dir_path,
@@ -142,7 +143,7 @@ class ImageSeries(Series):
 
     def save_html_index(
         self,
-        dir_path: str | PathLike[Any],
+        dir_path: str | PathLike[str],
         encoding: str = "utf-8",
         errors: str | None = None,
     ):
@@ -181,7 +182,7 @@ class ImageSeries(Series):
     @override
     def save(
         self,
-        path: str | PathLike[Any],
+        path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
@@ -233,7 +234,7 @@ class ImageSeries(Series):
     @override
     def load(
         cls,
-        path: str | PathLike[Any],
+        path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
@@ -480,7 +481,7 @@ class ImageSeries(Series):
                     f"Subtitle anchor index {anchor_index} does not match {index}."
                 )
             image_name = match.group("img")
-            image_path = dir_path / image_name
+            image_path = val_child_path(dir_path, image_name)
             raw_text = match.group("text") or ""
             text = unescape(raw_text.replace("<br />", "\n")).replace("\n", "\\N")
             events.append(

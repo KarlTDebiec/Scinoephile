@@ -93,6 +93,32 @@ def test_load_html(
         assert event.img.size[1] > 0
 
 
+def test_load_html_rejects_image_path_outside_directory(tmp_path: Path):
+    """Test HTML image paths cannot escape the subtitle directory.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    input_dir_path = tmp_path / "subtitles"
+    input_dir_path.mkdir()
+    outside_path = tmp_path / "outside.png"
+    Image.new("RGBA", (2, 2), (255, 255, 255, 255)).save(outside_path)
+    html_text = ImageSeries.format_html_entry(
+        index=1,
+        start=0,
+        end=1000,
+        image_name="../outside.png",
+        text="",
+    )
+    (input_dir_path / "index.html").write_text(html_text, encoding="utf-8")
+
+    with raises(
+        ScinoephileError,
+        match="Unable to load ImageSeries.*single contained filename",
+    ):
+        ImageSeries.load(input_dir_path)
+
+
 def test_load_rejects_unsupported_input_file(tmp_path: Path):
     """Test unsupported image subtitle input files raise user-facing errors.
 
