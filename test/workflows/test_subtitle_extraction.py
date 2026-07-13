@@ -233,6 +233,42 @@ def test_extract_subtitles_reports_overwritten_outputs(tmp_path: Path):
     assert outfile_path.read_text(encoding="utf-8") == "replacement"
 
 
+def test_extract_subtitles_rejects_unsafe_stream_language(tmp_path: Path):
+    """Test stream metadata cannot escape the subtitle output directory.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
+
+    with (
+        patch(
+            "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
+            return_value=[
+                SubtitleStream(
+                    index=2,
+                    language="eng-../../../escaped",
+                    codec_name="subrip",
+                ),
+            ],
+        ),
+        patch(
+            "scinoephile.workflows.subtitle_extraction.cache_subtitles"
+        ) as cache_subtitles,
+        raises(ScinoephileError, match="Unsafe subtitle output filename"),
+    ):
+        extract_subtitles(
+            infile_path=infile_path,
+            languages=["eng"],
+            output_dir_path=output_dir_path,
+        )
+
+    cache_subtitles.assert_not_called()
+    assert not (tmp_path / "escaped-2.srt").exists()
+
+
 def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
     """Test subtitle extraction workflow converts SUP streams to image directories.
 
@@ -471,6 +507,38 @@ def test_extract_subtitles_skips_sup_file_with_nonmatching_language(tmp_path: Pa
         )
 
     assert result.outputs == []
+
+
+def test_extract_subtitles_rejects_unsafe_sup_language(tmp_path: Path):
+    """Test SUP stream metadata cannot escape the subtitle output directory.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "source.sup"
+    infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
+
+    with (
+        patch(
+            "scinoephile.workflows.subtitle_extraction.get_subtitle_streams",
+            return_value=[
+                SubtitleStream(
+                    index=0,
+                    language="eng-../../../escaped",
+                    codec_name="hdmv_pgs_subtitle",
+                ),
+            ],
+        ),
+        raises(ScinoephileError, match="Unsafe subtitle output filename"),
+    ):
+        extract_subtitles(
+            infile_path=infile_path,
+            languages=["eng"],
+            output_dir_path=output_dir_path,
+        )
+
+    assert not (tmp_path / "escaped.sup").exists()
 
 
 def test_extract_subtitles_rejects_sup_file_without_subtitle_streams(tmp_path: Path):

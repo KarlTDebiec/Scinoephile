@@ -11,6 +11,7 @@ from pathlib import Path
 from shutil import copy2
 
 from scinoephile.common.described_enum import DescribedEnum
+from scinoephile.common.validation import val_child_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
@@ -133,7 +134,10 @@ def extract_subtitles(
     outputs = []
     streams_to_extract = []
     for stream in streams:
-        outfile_path = output_dir_path / stream.outfile_filename
+        outfile_path = _get_subtitle_output_path(
+            output_dir_path,
+            stream.outfile_filename,
+        )
         status = _get_stream_file_status(outfile_path, overwrite=overwrite)
         outputs.append(
             SubtitleExtractionOutput(
@@ -318,7 +322,7 @@ def _extract_sup_file(
     outfile_name = infile_path.name
     if stream.language is not None and "-" in stream.language:
         outfile_name = f"{stream.language}{infile_path.suffix}"
-    outfile_path = output_dir_path / outfile_name
+    outfile_path = _get_subtitle_output_path(output_dir_path, outfile_name)
 
     # Copy the SUP file and report its output status
     status = _copy_sup_file(
@@ -376,6 +380,25 @@ def _copy_sup_file(
     if not outfile_is_infile:
         copy2(infile_path, outfile_path)
     return SubtitleExtractionOutputStatus.CREATED
+
+
+def _get_subtitle_output_path(output_dir_path: Path, outfile_name: str) -> Path:
+    """Build a contained subtitle output path.
+
+    Arguments:
+        output_dir_path: subtitle output directory
+        outfile_name: proposed subtitle output filename
+    Returns:
+        contained subtitle output path
+    Raises:
+        ScinoephileError: if the filename could escape the output directory
+    """
+    try:
+        return val_child_path(output_dir_path, outfile_name)
+    except ValueError as exc:
+        raise ScinoephileError(
+            f"Unsafe subtitle output filename from stream metadata: {outfile_name!r}"
+        ) from exc
 
 
 def _extract_sup_image_series(
