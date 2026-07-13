@@ -392,10 +392,7 @@ class ImageSeries(Series):
         for html_event in html_events:
             with Image.open(html_event["path"]) as opened:
                 img = opened.copy()
-            img, converted = convert_rgba_img_to_la(img)
-            if converted:
-                img.save(html_event["path"])
-                logger.info(f"Converted {html_event['path']} to LA and resaved")
+            img, _ = convert_rgba_img_to_la(img)
             events.append(
                 cls.event_class(
                     start=html_event["start"],

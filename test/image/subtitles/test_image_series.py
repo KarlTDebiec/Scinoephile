@@ -93,6 +93,34 @@ def test_load_html(
         assert event.img.size[1] > 0
 
 
+def test_load_html_does_not_modify_source_images(tmp_path: Path):
+    """Test loading normalizes images in memory without rewriting input files.
+
+    Arguments:
+        tmp_path: pytest temporary directory path
+    """
+    input_dir_path = tmp_path / "subtitles"
+    input_dir_path.mkdir()
+    image_path = input_dir_path / "0001.png"
+    Image.new("RGBA", (2, 2), (64, 64, 64, 128)).save(image_path)
+    original_image_bytes = image_path.read_bytes()
+    html_text = ImageSeries.format_html_entry(
+        index=1,
+        start=0,
+        end=1000,
+        image_name=image_path.name,
+        text="Text",
+    )
+    (input_dir_path / "index.html").write_text(html_text, encoding="utf-8")
+
+    series = ImageSeries.load(input_dir_path)
+
+    assert series.events[0].img.mode == "LA"
+    assert image_path.read_bytes() == original_image_bytes
+    with Image.open(image_path) as source_image:
+        assert source_image.mode == "RGBA"
+
+
 def test_load_html_rejects_image_path_outside_directory(tmp_path: Path):
     """Test HTML image paths cannot escape the subtitle directory.
 
