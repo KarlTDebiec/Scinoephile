@@ -41,7 +41,10 @@ class TranslationProcessor(Processor):
         """
         # Process subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
-        stop_at_idx = stop_at_idx or len(series.blocks)
+        if stop_at_idx is None:
+            stop_at_idx = len(series.blocks)
+        elif stop_at_idx < 0:
+            raise ValueError("stop_at_idx must be greater than or equal to 0")
 
         # Track indices for logging
         current_idx = 0

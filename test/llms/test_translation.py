@@ -239,3 +239,28 @@ def test_processor_uses_indexed_subtitles_and_outputs():
         "translated two",
     ]
     provider.chat_completion.assert_not_called()
+
+
+def test_processor_honors_zero_stop_index():
+    """A zero stop index should process no translation blocks."""
+    provider = Mock(spec=LLMProvider)
+    processor = TranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
+    block = Series([Subtitle(start=0, end=1000, text="original")])
+    series = Series(list(block.events))
+    series.blocks = [block]
+
+    output = processor.process(series, stop_at_idx=0)
+
+    assert len(output) == 0
+    provider.chat_completion.assert_not_called()
+
+
+def test_processor_rejects_negative_stop_index():
+    """A negative stop index should be rejected."""
+    processor = TranslationProcessor(
+        _LOCALIZED_PROMPT,
+        provider=Mock(spec=LLMProvider),
+    )
+
+    with raises(ValueError, match="greater than or equal to 0"):
+        processor.process(Series(), stop_at_idx=-1)

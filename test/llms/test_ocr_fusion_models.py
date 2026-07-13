@@ -266,6 +266,31 @@ def test_processor_uses_semantic_fields_at_runtime():
     }
 
 
+def test_processor_honors_zero_stop_index():
+    """A zero stop index should process no OCR-fusion subtitles."""
+    provider = Mock(spec=LLMProvider)
+    processor = OcrFusionProcessor(_LOCALIZED_PROMPT, provider=provider)
+    source_one = Series([Subtitle(start=0, end=1000, text="來源一")])
+    source_two = Series([Subtitle(start=0, end=1000, text="來源二")])
+
+    output = processor.process(source_one, source_two, stop_at_idx=0)
+
+    assert len(output) == 0
+    provider.chat_completion.assert_not_called()
+
+
+def test_processor_rejects_negative_stop_index():
+    """A negative stop index should be rejected."""
+    processor = OcrFusionProcessor(
+        _LOCALIZED_PROMPT,
+        provider=Mock(spec=LLMProvider),
+    )
+    source = Series([Subtitle(start=0, end=1000, text="subtitle")])
+
+    with raises(ValueError, match="greater than or equal to 0"):
+        processor.process(source, source, stop_at_idx=-1)
+
+
 def test_json_persistence_uses_base_prompt_aliases(tmp_path: Path):
     """JSON should retain base one/two fields across localized round trips."""
     test_case_cls = OcrFusionManager.get_test_case_cls(_LOCALIZED_PROMPT)
