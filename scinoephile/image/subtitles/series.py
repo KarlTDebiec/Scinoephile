@@ -142,7 +142,7 @@ class ImageSeries(Series):
 
     def save_html_index(
         self,
-        dir_path: str | PathLike[Any],
+        dir_path: str | PathLike[str],
         encoding: str = "utf-8",
         errors: str | None = None,
     ):
@@ -181,7 +181,7 @@ class ImageSeries(Series):
     @override
     def save(
         self,
-        path: str | PathLike[Any],
+        path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
@@ -233,7 +233,7 @@ class ImageSeries(Series):
     @override
     def load(
         cls,
-        path: str | PathLike[Any],
+        path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
