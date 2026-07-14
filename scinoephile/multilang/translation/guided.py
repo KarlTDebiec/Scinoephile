@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
+from types import MappingProxyType
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
@@ -39,7 +41,10 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueGuidedTranslationPromptZhoHant,
 )
 
-__all__ = ["get_guided_translator"]
+__all__ = [
+    "DEFAULT_PROMPTS",
+    "get_guided_translator",
+]
 
 _ENG_YUE_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default written Cantonese-to-English guided translation JSON paths."""
@@ -79,24 +84,52 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
 }
 """Guided translation JSON paths keyed by exact source and target languages."""
 
-_PROMPTS: dict[tuple[Language, Language], GuidedTranslationPrompt] = {
-    (Language.yue_hans, Language.eng): EngYueGuidedTranslationPrompt,
-    (Language.yue_hant, Language.eng): EngYueGuidedTranslationPrompt,
-    (Language.zho_hans, Language.eng): EngZhoGuidedTranslationPrompt,
-    (Language.zho_hant, Language.eng): EngZhoGuidedTranslationPrompt,
-    (Language.eng, Language.yue_hans): YueEngGuidedTranslationPromptYueHans,
-    (Language.eng, Language.yue_hant): YueEngGuidedTranslationPromptYueHant,
-    (Language.zho_hans, Language.yue_hans): YueZhoGuidedTranslationPromptYueHans,
-    (Language.zho_hant, Language.yue_hans): YueZhoGuidedTranslationPromptYueHans,
-    (Language.zho_hans, Language.yue_hant): YueZhoGuidedTranslationPromptYueHant,
-    (Language.zho_hant, Language.yue_hant): YueZhoGuidedTranslationPromptYueHant,
-    (Language.eng, Language.zho_hans): ZhoEngGuidedTranslationPromptZhoHans,
-    (Language.eng, Language.zho_hant): ZhoEngGuidedTranslationPromptZhoHant,
-    (Language.yue_hans, Language.zho_hans): ZhoYueGuidedTranslationPromptZhoHans,
-    (Language.yue_hant, Language.zho_hans): ZhoYueGuidedTranslationPromptZhoHans,
-    (Language.yue_hans, Language.zho_hant): ZhoYueGuidedTranslationPromptZhoHant,
-    (Language.yue_hant, Language.zho_hant): ZhoYueGuidedTranslationPromptZhoHant,
-}
+DEFAULT_PROMPTS: Mapping[tuple[Language, Language], GuidedTranslationPrompt] = (
+    MappingProxyType(
+        {
+            (Language.yue_hans, Language.eng): EngYueGuidedTranslationPrompt,
+            (Language.yue_hant, Language.eng): EngYueGuidedTranslationPrompt,
+            (Language.zho_hans, Language.eng): EngZhoGuidedTranslationPrompt,
+            (Language.zho_hant, Language.eng): EngZhoGuidedTranslationPrompt,
+            (Language.eng, Language.yue_hans): YueEngGuidedTranslationPromptYueHans,
+            (Language.eng, Language.yue_hant): YueEngGuidedTranslationPromptYueHant,
+            (
+                Language.zho_hans,
+                Language.yue_hans,
+            ): YueZhoGuidedTranslationPromptYueHans,
+            (
+                Language.zho_hant,
+                Language.yue_hans,
+            ): YueZhoGuidedTranslationPromptYueHans,
+            (
+                Language.zho_hans,
+                Language.yue_hant,
+            ): YueZhoGuidedTranslationPromptYueHant,
+            (
+                Language.zho_hant,
+                Language.yue_hant,
+            ): YueZhoGuidedTranslationPromptYueHant,
+            (Language.eng, Language.zho_hans): ZhoEngGuidedTranslationPromptZhoHans,
+            (Language.eng, Language.zho_hant): ZhoEngGuidedTranslationPromptZhoHant,
+            (
+                Language.yue_hans,
+                Language.zho_hans,
+            ): ZhoYueGuidedTranslationPromptZhoHans,
+            (
+                Language.yue_hant,
+                Language.zho_hans,
+            ): ZhoYueGuidedTranslationPromptZhoHans,
+            (
+                Language.yue_hans,
+                Language.zho_hant,
+            ): ZhoYueGuidedTranslationPromptZhoHant,
+            (
+                Language.yue_hant,
+                Language.zho_hant,
+            ): ZhoYueGuidedTranslationPromptZhoHant,
+        }
+    )
+)
 """Guided translation prompts keyed by exact source and target languages."""
 
 
@@ -123,14 +156,14 @@ def get_guided_translator(
         ScinoephileError: if guided translation does not support the language pair
     """
     key = (source_language, target_language)
-    if key not in _PROMPTS:
+    if key not in DEFAULT_PROMPTS:
         raise ScinoephileError(
             "Guided translation does not support language pair "
             f"{source_language.tag} -> {target_language.tag}"
         )
 
     if prompt is None:
-        prompt = _PROMPTS[key]
+        prompt = DEFAULT_PROMPTS[key]
     if test_cases is None:
         json_paths = _JSON_PATHS[key]
         test_cases = list(

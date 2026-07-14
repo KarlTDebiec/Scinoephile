@@ -15,6 +15,17 @@ Authored prompts may reuse typed language-specific field dictionaries while
 keeping language and operation-specific fields explicit. Each prompt has a stable
 content-addressed name.
 
+## Catalog composition
+
+Prompt-owning modules in `lang` and `multilang` expose their defaults through
+read-only `DEFAULT_PROMPTS` mappings. The application catalog in
+`workflows.prompt_catalog` assigns stable aliases and pairs each prompt with the
+manager defining its operation. It rejects duplicate aliases during composition.
+
+The `optimization` package owns the prompt specification, supported-operation
+registry, and persistence operations. Callers pass an application catalog into
+those operations; the package does not discover or import concrete domain prompts.
+
 ## Structured models
 
 Operation-specific Pydantic query, answer, and test-case models define stable

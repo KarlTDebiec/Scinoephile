@@ -45,9 +45,9 @@ authoritative hierarchy declaration above for ordering.
 | `llms` | Prompt types, providers, structured correspondence, and model-facing processing |
 | `media` | Media probing, subtitle extraction, cache analysis, and visual offset estimation |
 | `multilang` | Cross-language and language-pair operations |
-| `optimization` | Prompt optimization composition and persistence |
+| `optimization` | Prompt optimization contracts, operation registry, and persistence |
 | `web` | Web interfaces for interactive operations |
-| `workflows` | Reusable end-to-end orchestration across domain packages |
+| `workflows` | Reusable end-to-end orchestration and application composition |
 
 ## Public APIs and internal dependencies
 

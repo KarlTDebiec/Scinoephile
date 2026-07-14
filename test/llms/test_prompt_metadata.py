@@ -12,7 +12,7 @@ from typing import Any, Final, cast
 from unittest.mock import Mock
 
 from scinoephile.core.llms import LLMProvider, Manager, Prompt, Queryer
-from scinoephile.optimization.prompt_specs import PROMPT_SPECS
+from scinoephile.workflows.prompt_catalog import PROMPT_SPECS
 
 _LEGACY_TEST_CASE_PROMPT_FIELDS: Final = {
     "difficulty_description": (
