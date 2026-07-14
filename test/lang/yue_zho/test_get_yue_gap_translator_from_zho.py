@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.multilang.yue_zho.translation."""
+"""Tests of scinoephile.lang.yue_zho.translation."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pytest import FixtureRequest, param
 
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
-from scinoephile.multilang.translation.gap import get_gap_translator
+from scinoephile.lang.translation.gap import get_gap_translator
 from test.data.kob import get_kob_yue_from_zho_gap_translation_test_cases
 from test.data.mlamd import get_mlamd_yue_from_zho_gap_translation_test_cases
 from test.helpers import assert_series_equal, parametrize

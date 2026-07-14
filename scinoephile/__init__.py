@@ -7,9 +7,9 @@ Package hierarchy (modules may import from any above):
 * core
 * analysis / image / llms
 * media
+* audio
 * lang
-* audio / dictionaries / web
-* multilang
+* dictionaries / web
 * optimization
 * workflows
 * cli

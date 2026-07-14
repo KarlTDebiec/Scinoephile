@@ -11,20 +11,20 @@ from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.transcription.processor import DemucsMode, VADMode
-from scinoephile.multilang.yue_zho.review import (
+from scinoephile.lang.transcription.processor import DemucsMode, VADMode
+from scinoephile.lang.yue_zho.review import (
     YueZhoGuidedReviewPromptYueHans,
     YueZhoGuidedReviewPromptYueHant,
     YueZhoPairwiseReviewPromptYueHans,
     YueZhoPairwiseReviewPromptYueHant,
 )
-from scinoephile.multilang.yue_zho.transcription import (
+from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHans,
     YueZhoPunctuationPromptYueHant,
 )
-from scinoephile.multilang.yue_zho.translation import (
+from scinoephile.lang.yue_zho.translation import (
     YueZhoGapTranslationPromptYueHans,
     YueZhoGapTranslationPromptYueHant,
 )

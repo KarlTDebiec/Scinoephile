@@ -7,7 +7,7 @@ from __future__ import annotations
 from dataclasses import replace
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.multilang.eng_zho.translation import (
+from scinoephile.lang.eng_zho.translation import (
     EngZhoGuidedTranslationPrompt,
 )
 

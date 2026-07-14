@@ -10,14 +10,14 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.delineation import DelineationPrompt
-from scinoephile.llms.punctuation import PunctuationPrompt
-from scinoephile.multilang.transcription.guided import get_guided_transcriber
-from scinoephile.multilang.transcription.processor import (
+from scinoephile.lang.transcription.guided import get_guided_transcriber
+from scinoephile.lang.transcription.processor import (
     DemucsMode,
     GuidedTranscriptionProcessor,
     VADMode,
 )
+from scinoephile.llms.delineation import DelineationPrompt
+from scinoephile.llms.punctuation import PunctuationPrompt
 
 from .helpers import resolve_language
 

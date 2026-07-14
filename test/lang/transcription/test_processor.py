@@ -13,9 +13,9 @@ from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.audio.transcription import TranscribedSegment
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.multilang.transcription.aligner import TranscriptionAligner
-from scinoephile.multilang.transcription.alignment import TranscriptionAlignment
-from scinoephile.multilang.transcription.processor import (
+from scinoephile.lang.transcription.aligner import TranscriptionAligner
+from scinoephile.lang.transcription.alignment import TranscriptionAlignment
+from scinoephile.lang.transcription.processor import (
     GuidedTranscriptionProcessor,
     VADMode,
 )

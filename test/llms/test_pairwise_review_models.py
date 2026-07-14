@@ -47,22 +47,22 @@ _LOCALIZED_PROMPT = PairwiseReviewPrompt(
 
 _FIXTURES = [
     (
-        "kob/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/cuda.json",
+        "kob/output/yue-Hans_transcribe/lang/yue_zho/pairwise_review/cuda.json",
         2486,
         1120,
     ),
     (
-        "kob/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/mps.json",
+        "kob/output/yue-Hans_transcribe/lang/yue_zho/pairwise_review/mps.json",
         1309,
         632,
     ),
     (
-        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/cuda.json",
+        "mlamd/output/yue-Hans_transcribe/lang/yue_zho/pairwise_review/cuda.json",
         808,
         516,
     ),
     (
-        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/mps.json",
+        "mlamd/output/yue-Hans_transcribe/lang/yue_zho/pairwise_review/mps.json",
         802,
         511,
     ),

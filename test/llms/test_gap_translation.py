@@ -412,7 +412,7 @@ def test_repository_json_fixtures_load():
     """All repository gap-translation fixtures should use the canonical list shape."""
     fixture_paths = sorted(
         (common.package_root.parent / "test/data").glob(
-            "*/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/*.json"
+            "*/output/yue-Hans_transcribe/lang/yue_zho/gap_translation/*.json"
         )
     )
 

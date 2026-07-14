@@ -29,23 +29,23 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ("*/output/*/lang/*/review.json", ReviewManager),
     ("*/output/*/lang/*/simplify_review.json", ReviewManager),
     (
-        "*/output/*/multilang/yue_zho/gap_translation/*.json",
+        "*/output/*/lang/yue_zho/gap_translation/*.json",
         GapTranslationManager,
     ),
     (
-        "*/output/*/multilang/yue_zho/guided_review/*.json",
+        "*/output/*/lang/yue_zho/guided_review/*.json",
         GuidedReviewManager,
     ),
     (
-        "*/output/*/multilang/yue_zho/pairwise_review/*.json",
+        "*/output/*/lang/yue_zho/pairwise_review/*.json",
         PairwiseReviewManager,
     ),
     (
-        "*/output/*/multilang/yue_zho/transcription/delineation/*.json",
+        "*/output/*/lang/yue_zho/transcription/delineation/*.json",
         DelineationManager,
     ),
     (
-        "*/output/*/multilang/yue_zho/transcription/punctuation/*.json",
+        "*/output/*/lang/yue_zho/transcription/punctuation/*.json",
         PunctuationManager,
     ),
 )

@@ -10,11 +10,11 @@ from pytest import raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.lang.eng.review import ReviewPromptEng
-from scinoephile.llms.review import ReviewManager
-from scinoephile.llms.translation import TranslationManager
-from scinoephile.multilang.yue_eng.translation import (
+from scinoephile.lang.yue_eng.translation import (
     YueEngTranslationPromptYueHans,
 )
+from scinoephile.llms.review import ReviewManager
+from scinoephile.llms.translation import TranslationManager
 from scinoephile.optimization.persistence.prompts import PersistedPrompt
 
 _ALTERNATIVE_FEW_SHOT_REVIEW_PROMPT = replace(

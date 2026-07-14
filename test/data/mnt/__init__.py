@@ -149,7 +149,7 @@ def get_mnt_eng_zho_guided_translation_test_cases(
     Returns:
         test cases
     """
-    path = output_dir / "yue_eng/multilang/eng_zho/guided_translation.json"
+    path = output_dir / "yue_eng/lang/eng_zho/guided_translation.json"
     return load_test_cases_from_json(
         path, GuidedTranslationManager, prompt=prompt, **kwargs
     )

@@ -12,7 +12,7 @@ from pytest import FixtureRequest, param
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.eng.review import ReviewPromptEng
-from scinoephile.lang.review import get_reviewer
+from scinoephile.lang.review.standard import get_reviewer
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms.review import ReviewPrompt

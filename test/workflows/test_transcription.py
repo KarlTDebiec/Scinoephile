@@ -11,7 +11,7 @@ from pydub import AudioSegment
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.multilang.transcription.processor import GuidedTranscriptionProcessor
+from scinoephile.lang.transcription.processor import GuidedTranscriptionProcessor
 from scinoephile.workflows.transcription import transcribe_series_guided
 
 

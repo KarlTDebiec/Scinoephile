@@ -12,11 +12,11 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
-from scinoephile.multilang.review.guided import get_guided_reviewer
-from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
-from scinoephile.multilang.transcription.guided import get_guided_transcriber
-from scinoephile.multilang.transcription.processor import VADMode
-from scinoephile.multilang.translation.gap import get_gap_translator
+from scinoephile.lang.review.guided import get_guided_reviewer
+from scinoephile.lang.review.pairwise import get_pairwise_reviewer
+from scinoephile.lang.transcription.guided import get_guided_transcriber
+from scinoephile.lang.transcription.processor import VADMode
+from scinoephile.lang.translation.gap import get_gap_translator
 from scinoephile.workflows.review import review_series_guided, review_series_pairwise
 from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
@@ -79,7 +79,7 @@ if "yue-Hans_transcribe" in actions:
         Language.zho_hans,
         vad_mode=VADMode.ON,
         test_case_dir_path=(
-            output_path / "yue-Hans_transcribe" / "multilang/yue_zho/transcription"
+            output_path / "yue-Hans_transcribe" / "lang/yue_zho/transcription"
         ),
         delineation_test_cases=get_mlamd_yue_delineation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
@@ -101,7 +101,7 @@ if "yue-Hans_transcribe" in actions:
         Language.zho_hans,
         test_case_path=output_path
         / "yue-Hans_transcribe"
-        / "multilang"
+        / "lang"
         / "yue_zho"
         / "pairwise_review"
         / f"{get_torch_device()}.json",
@@ -121,7 +121,7 @@ if "yue-Hans_transcribe" in actions:
         Language.yue_hans,
         test_case_path=output_path
         / "yue-Hans_transcribe"
-        / "multilang"
+        / "lang"
         / "yue_zho"
         / "gap_translation"
         / f"{get_torch_device()}.json",
@@ -145,7 +145,7 @@ if "yue-Hans_transcribe" in actions:
         Language.zho_hans,
         test_case_path=output_path
         / "yue-Hans_transcribe"
-        / "multilang"
+        / "lang"
         / "yue_zho"
         / "guided_review"
         / f"{get_torch_device()}.json",

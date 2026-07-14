@@ -16,7 +16,7 @@ Follow this workflow to keep test fixtures aligned with the files on disk.
     fixtures. Do not add SUP fixtures for other datasets.
 - For each dataset, list the contents of other directories under `test/data/<dataset>` recursively.
   - These contain data related to "actions" taken on inputs, such as proofreading.
-  - Example directories of interest include `lang/` and `multilang/`.
+  - Example directories of interest include `lang/`.
   - `.json` files are of interest.
 - For each dataset, list `test/data/<dataset>/output` contents.
   - `.srt` and `_image` directories are of interest.
