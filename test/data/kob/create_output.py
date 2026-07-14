@@ -33,7 +33,7 @@ yue_hans_path = output_path / "yue-Hans"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
 
-transcription_stop_at_idx: int | None = 10
+transcription_stop_at_idx: int | None = 20
 yue_hant_transcribe_srt_path = yue_hant_transcribe_path / "transcribe.srt"
 if transcription_stop_at_idx is not None:
     yue_hant_transcribe_srt_path = (

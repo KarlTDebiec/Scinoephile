@@ -178,12 +178,19 @@ def get_arg_groups_by_name(
 
     action_groups = parser._action_groups  # noqa pylint: disable=protected-access
     additional_groups = {}
+    optional_groups = {}
+    additional_help_groups = {}
     remaining_groups = action_groups[:]
     action_groups.clear()
     for ag in remaining_groups:
         if ag.title in ["options", "optional arguments"]:
             ag.title = optional_arguments_name
+            optional_groups[ag.title] = ag
+            continue
         if ag.title == "positional arguments" and not ag._group_actions:
+            continue
+        if ag.title == "additional help":
+            additional_help_groups[ag.title] = ag
             continue
         if ag.title:
             additional_groups[ag.title] = ag
@@ -201,9 +208,16 @@ def get_arg_groups_by_name(
 
     action_groups.extend(leading_groups.values())
     action_groups.extend(additional_groups.values())
+    action_groups.extend(optional_groups.values())
+    action_groups.extend(additional_help_groups.values())
     action_groups.extend(trailing_groups.values())
 
-    return {**specified_groups, **additional_groups}
+    return {
+        **specified_groups,
+        **additional_groups,
+        **optional_groups,
+        **additional_help_groups,
+    }
 
 
 def get_validator[T](function: Callable[..., T], **kwargs: Any) -> Callable[[Any], T]:
