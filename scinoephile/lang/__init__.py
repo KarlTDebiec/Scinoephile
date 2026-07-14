@@ -2,9 +2,7 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Language-specific code for scinoephile.
 
-This module may import from: common, core, image, llms
-
-Hierarchy within module (lower may import from higher)::
+Package hierarchy (modules may import from any above):
 * cmn / eng / zho
 * yue
 * id / ocr_fusion / review

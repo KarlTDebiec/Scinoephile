@@ -2,14 +2,6 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Prompt optimization and related persistence.
 
-This module may import from:
-- common
-- core
-- analysis / image / llms
-- lang
-- audio / dictionaries
-- multilang
-
 Package hierarchy (modules may import from any above):
 * operations / prompt_specs
 * persistence

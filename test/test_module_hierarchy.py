@@ -9,6 +9,8 @@ from pathlib import Path
 
 from scinoephile.common import package_root
 
+_HIERARCHY_HEADER = "Package hierarchy (modules may import from any above):"
+
 
 def test_declared_module_hierarchy_may_be_stricter_than_import_graph(tmp_path: Path):
     """Test declared hierarchy need not be compacted to current imports."""
@@ -39,6 +41,26 @@ def test_declared_module_hierarchy_may_be_stricter_than_import_graph(tmp_path: P
         )
         == []
     )
+
+
+def test_hierarchy_declarations_require_standard_heading(tmp_path: Path):
+    """Test incidental hierarchy prose is not parsed as a declaration."""
+    package_dir_path = tmp_path / "example"
+    package_dir_path.mkdir()
+    init_path = package_dir_path / "__init__.py"
+    init_path.write_text(
+        '"""Example package.\n\nHierarchy notes:\n* child\n"""\n',
+        encoding="utf-8",
+    )
+    (package_dir_path / "child.py").write_text(
+        '"""Child module."""\n',
+        encoding="utf-8",
+    )
+
+    assert get_module_hierarchy_violations(
+        init_path,
+        package_parent_path=tmp_path,
+    ) == ["example/__init__.py: missing hierarchy block"]
 
 
 def test_module_hierarchy_docs_are_authoritative():
@@ -291,7 +313,7 @@ def get_documented_levels(init_path: Path) -> dict[int, list[str]] | None:
     for line in docstring.splitlines():
         stripped_line = line.strip()
         if not hierarchy_seen:
-            if "hierarchy" in stripped_line.lower():
+            if stripped_line == _HIERARCHY_HEADER:
                 hierarchy_seen = True
             continue
 

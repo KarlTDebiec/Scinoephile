@@ -2,9 +2,7 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Code that involves multiple languages.
 
-This module may import from: common, core, dictionaries, lang, audio, llms
-
-Hierarchy within module (lower may import from higher):
+Package hierarchy (modules may import from any above):
 * eng_yue / eng_zho / yue_eng / yue_zho / zho_eng / zho_yue
 * review / translation
 """
