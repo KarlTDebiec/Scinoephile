@@ -44,29 +44,29 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
         read-only prompt specifications keyed by stable alias
     """
     prompt_spec_groups = (
-        _get_monolingual_prompt_specs(ReviewManager, review.DEFAULT_PROMPTS),
-        _get_monolingual_prompt_specs(OcrFusionManager, ocr_fusion.DEFAULT_PROMPTS),
-        _get_pair_prompt_specs(
+        _build_monolingual_prompt_specs(ReviewManager, review.DEFAULT_PROMPTS),
+        _build_monolingual_prompt_specs(OcrFusionManager, ocr_fusion.DEFAULT_PROMPTS),
+        _build_pair_prompt_specs(
             GuidedReviewManager,
             guided_review.DEFAULT_PROMPTS,
             separator="vs",
         ),
-        _get_pair_prompt_specs(
+        _build_pair_prompt_specs(
             PairwiseReviewManager,
             pairwise_review.DEFAULT_PROMPTS,
             separator="vs",
         ),
-        _get_pair_prompt_specs(
+        _build_pair_prompt_specs(
             TranslationManager,
             translation.DEFAULT_PROMPTS,
             separator="to",
         ),
-        _get_pair_prompt_specs(
+        _build_pair_prompt_specs(
             GapTranslationManager,
             gap_translation.DEFAULT_PROMPTS,
             separator="to",
         ),
-        _get_pair_prompt_specs(
+        _build_pair_prompt_specs(
             GuidedTranslationManager,
             guided_translation.DEFAULT_PROMPTS,
             separator="to",
@@ -101,11 +101,11 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
     return MappingProxyType(dict(sorted(prompt_specs.items())))
 
 
-def _get_monolingual_prompt_specs(
+def _build_monolingual_prompt_specs(
     manager_cls: type[Manager],
     prompts: Mapping[Language, Prompt],
 ) -> dict[str, PromptSpec]:
-    """Get prompt specifications for a monolingual operation.
+    """Build prompt specifications for a monolingual operation.
 
     Arguments:
         manager_cls: manager defining the operation
@@ -122,13 +122,13 @@ def _get_monolingual_prompt_specs(
     }
 
 
-def _get_pair_prompt_specs(
+def _build_pair_prompt_specs(
     manager_cls: type[Manager],
     prompts: Mapping[tuple[Language, Language], Prompt],
     *,
     separator: str,
 ) -> dict[str, PromptSpec]:
-    """Get prompt specifications for a language-pair operation.
+    """Build prompt specifications for a language-pair operation.
 
     Arguments:
         manager_cls: manager defining the operation
