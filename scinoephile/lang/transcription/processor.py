@@ -38,6 +38,9 @@ TranscribedSegmentSplitter = Callable[
 
 logger = getLogger(__name__)
 
+_MAX_COMPRESSION_RATIO = 2.4
+"""Maximum Whisper compression ratio accepted from automatic VAD."""
+
 
 class DemucsMode(StrEnum):
     """Demucs preprocessing modes for transcription."""
@@ -289,10 +292,23 @@ class GuidedTranscriptionProcessor:
         Arguments:
             segments: transcribed segments to inspect
         Returns:
-            whether the segments contain nonempty text with word timings
+            whether the segments contain plausible nonempty text with word timings
         """
-        if not any(segment.text.strip() for segment in segments):
-            return False
-        return not any(
-            segment.text.strip() and not segment.words for segment in segments
-        )
+        has_text = False
+        for segment in segments:
+            if not segment.text.strip():
+                continue
+            has_text = True
+            if not segment.words:
+                return False
+            if (
+                segment.compression_ratio is not None
+                and segment.compression_ratio > _MAX_COMPRESSION_RATIO
+            ):
+                logger.warning(
+                    f"Rejecting repetitive Whisper segment {segment.id} with "
+                    f"compression ratio {segment.compression_ratio:.2f} "
+                    f"(maximum {_MAX_COMPRESSION_RATIO:.2f})"
+                )
+                return False
+        return has_text

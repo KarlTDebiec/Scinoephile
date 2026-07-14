@@ -22,6 +22,12 @@ def test_get_char_type_handles_unnamed_control_char() -> None:
         get_char_type("\x00")
 
 
+def test_get_char_type_rejects_combining_character() -> None:
+    """Combining characters cannot be represented by the two-width model."""
+    with raises(ScinoephileError, match="COMBINING ACUTE ACCENT"):
+        get_char_type("\u0301")
+
+
 @parametrize("char", ["Ｋ", "Ａ", "１", "ｋ"])
 def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
     """Fullwidth Latin forms are classified as full-width characters."""
@@ -32,6 +38,12 @@ def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
 def test_get_char_type_handles_japanese_wide_characters(char: str) -> None:
     """Japanese wide characters are classified as full-width characters."""
     assert get_char_type(char) == "full"
+
+
+@parametrize("char", ["A", "é", "Ω", "Ж", "ع", "ｱ"])
+def test_get_char_type_handles_half_width_characters(char: str) -> None:
+    """Printable non-wide characters are classified as half-width characters."""
+    assert get_char_type(char) == "half"
 
 
 @parametrize(

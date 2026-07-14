@@ -1,13 +1,15 @@
 ---
 name: audit-transcription-delineation
-description: Audit Scinoephile transcription delineation logs by matching JSON reference pairs to their guide SRT subtitle indexes and reviewing input/output target boundary shifts. Use when inspecting transcription delineation mps.json or cuda.json files, identifying incorrect shifts or no-shift answers, or distinguishing model errors from guide-subtitle and transcription errors.
+description: Audit Scinoephile transcription delineation logs by matching JSON reference pairs to their guide SRT subtitle indexes and judging whether target boundary shifts or no-shift answers align fixed target text appropriately. Use when inspecting transcription delineation mps.json or cuda.json files or identifying incorrect boundary decisions. Do not assess transcription accuracy.
 ---
 
 # Audit Transcription Delineation
 
 Run commands from the repository root. A delineation audit assesses whether
 target text was divided appropriately across each pair of adjacent guide
-subtitles; it does not assess punctuation or rewrite transcription text.
+subtitles. Treat the provided target text as fixed input, even when it appears
+incorrect. Do not assess or comment on transcription accuracy, punctuation,
+wording, or character choice; those are reviewed later in a separate workflow.
 
 ## Mandatory final output
 
@@ -48,10 +50,10 @@ subtitle numbers. The CLI matches each logged reference pair to consecutive
 guide subtitles and rejects absent or ambiguous matches rather than displaying
 misleading indexes.
 
-An official target-language subtitle track may be consulted as secondary
-evidence when available, but it is not an input to the CLI and does not belong
-in the report as a separate column. Its timing, wording, or segmentation need
-not match the transcription exactly.
+An official target-language subtitle track may be consulted only to determine
+which utterance owns text near a boundary. It is not an input to the CLI and
+does not belong in the report as a separate column. Never use it to evaluate or
+comment on the accuracy of the target transcription.
 
 ## Generate the report
 
@@ -98,6 +100,12 @@ must remain unchanged. Assess whether the output divides the target speech more
 faithfully between the meanings and utterances represented by the two guide
 subtitles.
 
+Judge only alignment. Ignore misspellings, mistranscriptions, Mandarinisms,
+punctuation, omissions, repetitions, and other defects in the target text except
+as fixed evidence for deciding which side of the boundary owns each phrase. Do
+not mention these defects in Notes. Leave Notes blank when the shift or no-shift
+answer is appropriate.
+
 Use semantic and discourse alignment rather than literal word matching:
 
 - Keep a phrase together when splitting it would damage its meaning or grammar.
@@ -111,22 +119,17 @@ Use semantic and discourse alignment rather than literal word matching:
 - Flag a shift that makes alignment worse, and flag a no-shift answer when a
   clear phrase belongs on the other side of the boundary.
 
-Classify notes precisely:
+Classify alignment notes precisely:
 
 - **Delineation error:** the model chose the wrong boundary or failed to shift a
   clearly misplaced phrase.
-- **Guide issue:** the reference pair itself is wrongly segmented, mistranslated,
-  or missing material, so it is unreliable evidence for the target boundary.
-- **Transcription issue:** the target wording appears wrong, but the boundary
-  decision is reasonable for the provided target text. Record this separately;
-  delineation must not rewrite it.
-- **Uncertain:** audio or broader context is needed to distinguish plausible
-  boundaries.
+- **Uncertain:** the appropriateness of the boundary cannot be determined from
+  the provided target text, guide pair, and available context.
 
 After reviewing every row, fill the saved report's `Notes` cells wherever you
-have an observation. Begin each note with `Delineation error;`, `Guide issue;`,
-`Transcription issue;`, or `Uncertain;`, followed by a concise explanation.
-Leave the cell blank when the row needs no note. Paste the entire interpreted
-report inline without adding a separate findings list. Do not claim the audit
-is complete until every row has been reviewed and the complete report is
-present in the final response.
+have an alignment observation. Begin each note with `Delineation error;` or
+`Uncertain;`, followed by a concise explanation focused only on boundary
+ownership. Leave the cell blank when the row needs no note. Paste the entire
+interpreted report inline without adding a separate findings list. Do not claim
+the audit is complete until every row has been reviewed and the complete report
+is present in the final response.
