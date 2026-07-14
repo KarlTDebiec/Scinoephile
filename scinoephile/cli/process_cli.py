@@ -10,11 +10,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.conversion import (
-    CONVERSION_LOCALIZATIONS,
-    add_opencc_convert_auto_argument,
-)
-from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -34,6 +29,12 @@ from scinoephile.workflows.cleaning import clean_series
 from scinoephile.workflows.flattening import flatten_series
 from scinoephile.workflows.helpers import resolve_language
 from scinoephile.workflows.romanization import romanize_series
+
+from .helpers.conversion import (
+    CONVERSION_LOCALIZATIONS,
+    add_opencc_convert_auto_argument,
+)
+from .helpers.io import read_series, write_series
 
 __all__ = ["ProcessCli"]
 

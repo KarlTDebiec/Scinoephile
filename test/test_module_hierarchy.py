@@ -69,8 +69,13 @@ def test_module_import_style_rules(tmp_path: Path):
         "feature/__init__.py": "",
         "feature/prompts.py": "FIELDS = {}\n",
         "feature/sibling/__init__.py": (
-            'class Sibling:\n    pass\n\n__all__ = ["Sibling"]\n'
+            "class HiddenSibling:\n"
+            "    pass\n\n"
+            "class Sibling:\n"
+            "    pass\n\n"
+            '__all__ = ["Sibling"]\n'
         ),
+        "feature/sibling/models.py": "MODEL = object()\n",
     }
     for relative_path, source in fixture_sources.items():
         file_path = package_dir_path / relative_path
@@ -82,29 +87,54 @@ def test_module_import_style_rules(tmp_path: Path):
         (
             "feature/local_absolute.py",
             "from example.feature.prompts import FIELDS\n",
-            "same-directory modules must use relative imports",
+            "imports rooted in the current package must be relative",
         ),
         (
             "feature/local_absolute_plain.py",
             "import example.feature.prompts\n",
-            "same-directory modules must use relative imports",
+            "imports rooted in the current package must be relative",
         ),
         ("feature/parent_absolute.py", "from example.shared import value\n", None),
         ("feature/parent_absolute_plain.py", "import example.shared\n", None),
         (
             "feature/parent_relative.py",
             "from ..shared import value\n",
-            "relative imports may not cross package directories",
+            "relative imports may not climb to parent packages",
         ),
         (
             "feature/sibling_absolute.py",
             "from example.feature.sibling import Sibling\n",
-            None,
+            "imports rooted in the current package must be relative",
         ),
         (
             "feature/sibling_relative.py",
             "from .sibling import Sibling\n",
-            "relative imports may not cross package directories",
+            None,
+        ),
+        (
+            "feature/sibling_module_relative.py",
+            "from .sibling.models import MODEL\n",
+            None,
+        ),
+        (
+            "feature/sibling_module_absolute.py",
+            "from example.feature.sibling.models import MODEL\n",
+            "imports rooted in the current package must be relative",
+        ),
+        (
+            "feature/sibling_private_relative.py",
+            "from .sibling import HiddenSibling\n",
+            "package facade imports must name exports listed in __all__",
+        ),
+        (
+            "feature/child_alias_relative.py",
+            "from . import sibling\n",
+            None,
+        ),
+        (
+            "feature/child_alias_absolute.py",
+            "from example.feature import sibling\n",
+            "imports rooted in the current package must be relative",
         ),
         (
             "feature/public_facade.py",
@@ -464,21 +494,23 @@ def get_absolute_import_from_style_violations(
     ):
         return []
 
+    current_package_name = ".".join(current_package_parts)
+    if module_name.startswith(f"{current_package_name}."):
+        return [
+            format_import_style_violation(
+                file_path,
+                node,
+                "imports rooted in the current package must be relative",
+                package_parent_path=package_parent_path,
+            )
+        ]
+
     target_path = get_module_source_path(
         module_name,
         package_parent_path=package_parent_path,
     )
     if target_path is None:
         return []
-    if target_path.name != "__init__.py" and target_path.parent == file_path.parent:
-        return [
-            format_import_style_violation(
-                file_path,
-                node,
-                "same-directory modules must use relative imports",
-                package_parent_path=package_parent_path,
-            )
-        ]
     if target_path.name != "__init__.py":
         return []
 
@@ -494,15 +526,12 @@ def get_absolute_import_from_style_violations(
             package_parent_path=package_parent_path,
         )
         if child_target_path is not None:
-            if (
-                child_target_path.name != "__init__.py"
-                and child_target_path.parent == file_path.parent
-            ):
+            if module_name == current_package_name:
                 violations.append(
                     format_import_style_violation(
                         file_path,
                         node,
-                        "same-directory modules must use relative imports",
+                        "imports rooted in the current package must be relative",
                         package_parent_path=package_parent_path,
                     )
                 )
@@ -548,6 +577,7 @@ def get_absolute_import_style_violations(
         violation descriptions
     """
     violations: list[str] = []
+    current_package_name = ".".join(current_package_parts)
     for alias in node.names:
         if not (
             alias.name == root_package_name
@@ -555,21 +585,22 @@ def get_absolute_import_style_violations(
         ):
             continue
 
+        if alias.name.startswith(f"{current_package_name}."):
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "imports rooted in the current package must be relative",
+                    package_parent_path=package_parent_path,
+                )
+            )
+            continue
+
         target_path = get_module_source_path(
             alias.name,
             package_parent_path=package_parent_path,
         )
         if target_path is None:
-            continue
-        if target_path.name != "__init__.py" and target_path.parent == file_path.parent:
-            violations.append(
-                format_import_style_violation(
-                    file_path,
-                    node,
-                    "same-directory modules must use relative imports",
-                    package_parent_path=package_parent_path,
-                )
-            )
             continue
 
         target_module_parts = alias.name.split(".")
@@ -662,41 +693,47 @@ def get_relative_import_style_violations(
         violation descriptions
     """
     current_package_name = ".".join(current_package_parts)
-    target_paths: list[Path | None]
-    if node.level == 1 and node.module:
-        target_paths = [
-            get_module_source_path(
-                f"{current_package_name}.{node.module}",
+    if node.level != 1:
+        return [
+            format_import_style_violation(
+                file_path,
+                node,
+                "relative imports may not climb to parent packages",
                 package_parent_path=package_parent_path,
             )
         ]
-    elif node.level == 1:
-        target_paths = [
-            get_module_source_path(
-                f"{current_package_name}.{alias.name}",
-                package_parent_path=package_parent_path,
-            )
-            for alias in node.names
-            if alias.name != "*"
-        ]
-    else:
-        target_paths = []
 
-    if target_paths and all(
-        target_path is not None
-        and target_path.name != "__init__.py"
-        and target_path.parent == file_path.parent
-        for target_path in target_paths
-    ):
-        return []
-    return [
-        format_import_style_violation(
-            file_path,
-            node,
-            "relative imports may not cross package directories",
+    target_module_name = current_package_name
+    if node.module:
+        target_module_name = f"{target_module_name}.{node.module}"
+    target_path = get_module_source_path(
+        target_module_name,
+        package_parent_path=package_parent_path,
+    )
+    package_exports: set[str] | None = None
+    if target_path is not None and target_path.name == "__init__.py":
+        package_exports = get_package_exports(target_path)
+
+    violations: list[str] = []
+    for alias in node.names:
+        child_target_path = get_module_source_path(
+            f"{target_module_name}.{alias.name}",
             package_parent_path=package_parent_path,
         )
-    ]
+        if child_target_path is not None:
+            continue
+        if target_path is None or target_path.name != "__init__.py":
+            continue
+        if package_exports is None or alias.name not in package_exports:
+            violations.append(
+                format_import_style_violation(
+                    file_path,
+                    node,
+                    "package facade imports must name exports listed in __all__",
+                    package_parent_path=package_parent_path,
+                )
+            )
+    return violations
 
 
 def get_module_source_path(

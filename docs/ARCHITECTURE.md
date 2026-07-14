@@ -76,10 +76,10 @@ be explained explicitly during review.
 `test/test_module_hierarchy.py` verifies that declarations are complete, rejects
 duplicate or unknown children, and rejects imports that violate the declared
 direction. It also enforces import forms that keep those dependencies visible:
-same-directory modules use relative imports, imports across directories use
-absolute concrete paths, package-facade imports name public exports, and modules
-do not reach internal siblings through their own ancestor package facades. The
-declarations serve two purposes:
+imports rooted in a module's containing package use single-dot relative imports,
+imports that climb out of it use absolute concrete paths, package-facade imports
+name public exports, and modules do not reach internal siblings through their own
+ancestor package facades. The declarations serve two purposes:
 
 - **Documentation**: a fast, local reference for where new code should live.
 - **Dependency hygiene**: an enforced boundary that prevents sibling dependency

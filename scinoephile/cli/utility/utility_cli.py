@@ -7,10 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Any
 
-from scinoephile.cli.utility.cache import CacheCli
-from scinoephile.cli.utility.optimization import OptimizationCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
+
+from .cache import CacheCli
+from .optimization import OptimizationCli
 
 __all__ = ["UtilityCli"]
 

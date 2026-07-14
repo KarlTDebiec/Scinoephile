@@ -8,11 +8,12 @@ from pathlib import Path
 from typing import Literal, cast
 
 from scinoephile.core.dictionaries import DictionaryDefinition, DictionaryEntry
-from scinoephile.dictionaries.cuhk import CuhkDictionaryService
-from scinoephile.dictionaries.gzzj import GzzjDictionaryService
-from scinoephile.dictionaries.kaifangcidian import KaifangcidianDictionaryService
-from scinoephile.dictionaries.unihan import UnihanDictionaryService
-from scinoephile.dictionaries.wiktionary import WiktionaryDictionaryService
+
+from .cuhk import CuhkDictionaryService
+from .gzzj import GzzjDictionaryService
+from .kaifangcidian import KaifangcidianDictionaryService
+from .unihan import UnihanDictionaryService
+from .wiktionary import WiktionaryDictionaryService
 
 __all__ = [
     "AVAILABLE_DICTIONARY_NAMES",
