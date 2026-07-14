@@ -15,7 +15,10 @@ from scinoephile.lang.transcription.processor import DemucsMode, VADMode
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
-from test.data.transcription import process_transcription
+from test.data.transcription import (
+    get_reference_for_guide_blocks,
+    process_transcription,
+)
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -28,6 +31,15 @@ zho_hant_ocr_path = output_path / "zho-Hant_ocr"
 yue_hant_path = output_path / "yue-Hant"
 yue_hans_path = output_path / "yue-Hans"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
+zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
+
+transcription_stop_at_idx: int | None = 10
+yue_hant_transcribe_srt_path = yue_hant_transcribe_path / "transcribe.srt"
+if transcription_stop_at_idx is not None:
+    yue_hant_transcribe_srt_path = (
+        yue_hant_transcribe_path
+        / f"transcribe_first_{transcription_stop_at_idx}_blocks.srt"
+    )
 
 actions = {
     # "eng_ocr",
@@ -38,7 +50,7 @@ actions = {
     # "zho-Hans_eng",
     # "yue-Hans_eng",
     "yue-Hant_transcribe",
-    # "yue-Hant_diff",
+    "yue-Hant_diff",
 }
 
 if "eng_ocr" in actions:
@@ -84,12 +96,14 @@ if "yue-Hans_eng" in actions:
 if "yue-Hant_transcribe" in actions:
     process_transcription(
         title_root,
-        zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        zho_hant_guide_path,
         language=Language.yue_hant,
         guide_language=Language.zho_hant,
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
         output_dir_path=yue_hant_transcribe_path,
+        transcribe_path=yue_hant_transcribe_srt_path,
         name="KOB yue-Hant transcription",
+        stop_at_idx=transcription_stop_at_idx,
         transcription_kw={
             "delineation_test_cases": [],
             "demucs_mode": DemucsMode.ON,
@@ -99,9 +113,14 @@ if "yue-Hant_transcribe" in actions:
         overwrite_srt=False,
     )
 if "yue-Hant_diff" in actions:
-    yue_hant_transcribe = Series.load(yue_hant_transcribe_path / "transcribe.srt")
+    yue_hant_transcribe = Series.load(yue_hant_transcribe_srt_path)
     yue_hant_reference = Series.load(
         yue_hant_path / "clean_review_flatten_timewarp.srt"
+    )
+    yue_hant_reference = get_reference_for_guide_blocks(
+        yue_hant_reference,
+        Series.load(zho_hant_guide_path),
+        transcription_stop_at_idx,
     )
     diff = SeriesDiff(
         yue_hant_transcribe,

@@ -16,9 +16,42 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS
 from scinoephile.workflows.transcription import transcribe_series_guided
 
-__all__ = ["process_transcription"]
+__all__ = [
+    "get_reference_for_guide_blocks",
+    "process_transcription",
+]
 
 logger = getLogger(__name__)
+
+
+def get_reference_for_guide_blocks(
+    reference: Series,
+    guide: Series,
+    stop_at_idx: int | None,
+) -> Series:
+    """Limit an evaluation reference to a prefix of guide blocks.
+
+    Arguments:
+        reference: evaluation reference to limit
+        guide: guide whose block boundaries define the processed prefix
+        stop_at_idx: exclusive guide block index, or None for the full reference
+    Returns:
+        reference covering only the processed guide block prefix
+    Raises:
+        ValueError: if stop_at_idx is negative
+    """
+    if stop_at_idx is None:
+        return reference
+    if stop_at_idx < 0:
+        raise ValueError("stop_at_idx must be greater than or equal to 0")
+
+    guide_blocks = guide.blocks[:stop_at_idx]
+    if not guide_blocks:
+        return type(reference)()
+    end_time = guide_blocks[-1].events[-1].end
+    return type(reference)(
+        events=[event for event in reference if event.start < end_time]
+    )
 
 
 def process_transcription(
@@ -30,9 +63,11 @@ def process_transcription(
     reference_path: Path,
     name: str | None = None,
     output_dir_path: Path | None = None,
+    transcribe_path: Path | None = None,
     audio_source_path: Path | None = None,
     media_path: Path | None = None,
     stream_index: int | None = None,
+    stop_at_idx: int | None = None,
     overwrite_srt: bool = False,
     transcription_kw: dict[str, Any] | None = None,
 ) -> Series:
@@ -47,10 +82,13 @@ def process_transcription(
         name: label included in the CER log
         output_dir_path: directory where pipeline outputs are written; defaults to
           `title_root_path/output/{language.tag}_transcribe`
+        transcribe_path: transcription output path; defaults to
+          `output_dir_path/transcribe.srt`
         audio_source_path: optional existing wav file to copy into the output
         media_path: optional media path used to generate staged audio if missing
         stream_index: media stream index used when generating staged audio, or None
           to use the first audio stream
+        stop_at_idx: exclusive block index at which to stop processing
         overwrite_srt: whether to overwrite staged and transcribed subtitles
         transcription_kw: additional keyword arguments for
           `transcribe_series_guided`
@@ -64,6 +102,8 @@ def process_transcription(
     if output_dir_path is None:
         output_dir_path = title_root_path / "output" / f"{language.tag}_transcribe"
     output_dir_path.mkdir(parents=True, exist_ok=True)
+    if transcribe_path is None:
+        transcribe_path = output_dir_path / "transcribe.srt"
 
     reference = Series.load(reference_path)
     guide = Series.load(guide_path)
@@ -94,7 +134,6 @@ def process_transcription(
     audio = AudioSeries.load(audio_dir_path)
 
     # Transcribe, delineate, and punctuate
-    transcribe_path = output_dir_path / "transcribe.srt"
     if transcribe_path.exists() and not overwrite_srt:
         transcribe = Series.load(transcribe_path)
     else:
@@ -110,10 +149,17 @@ def process_transcription(
             guide,
             language=language,
             reference_language=guide_language,
+            stop_at_idx=stop_at_idx,
             **transcription_kw,
         )
         transcribe.save(transcribe_path, exist_ok=True)
 
-    logger.info(f"{name} CER:\n{SeriesCER(reference, transcribe)}")
+    evaluation_reference = get_reference_for_guide_blocks(
+        reference,
+        guide,
+        stop_at_idx,
+    )
+
+    logger.info(f"{name} CER:\n{SeriesCER(evaluation_reference, transcribe)}")
     logger.info(f"Saved transcription output under {output_dir_path}")
     return transcribe

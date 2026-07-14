@@ -145,6 +145,28 @@ def test_line_cer(reference: str, candidate: str, expected: SeriesCERResult):
     assert result.reference_length == expected.reference_length
 
 
+def test_line_cer_string_includes_percentages():
+    """Line-level CER output should include percentages of reference length."""
+    result = LineCER("abc", "axc")
+
+    assert str(result) == (
+        "CER: 0.3333333333333333\n"
+        "Correct: 2 (66.67%)\n"
+        "Substitutions: 1 (33.33%)\n"
+        "Insertions: 0 (0.00%)\n"
+        "Deletions: 0 (0.00%)\n"
+        "Reference length: 3"
+    )
+
+
+def test_line_cer_string_uses_na_for_empty_reference():
+    """CER component percentages should be undefined for an empty reference."""
+    result = LineCER("", "abc")
+
+    assert "Correct: 0 (N/A)" in str(result)
+    assert "Insertions: 3 (N/A)" in str(result)
+
+
 @parametrize(
     ("reference", "candidate"),
     [
@@ -163,6 +185,20 @@ def test_series_cer_ignores_separator_only_line_wrapping(
     assert result.substitutions == 0
     assert result.insertions == 0
     assert result.deletions == 0
+
+
+def test_series_cer_string_includes_percentages():
+    """Series-level CER output should include percentages of reference length."""
+    result = SeriesCER(get_text_series("abc"), get_text_series("axc"))
+
+    assert str(result) == (
+        "CER: 0.3333333333333333\n"
+        "Correct: 2 (66.67%)\n"
+        "Substitutions: 1 (33.33%)\n"
+        "Insertions: 0 (0.00%)\n"
+        "Deletions: 0 (0.00%)\n"
+        "Reference length: 3"
+    )
 
 
 @parametrize(
