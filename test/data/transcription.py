@@ -20,12 +20,10 @@ from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.multilang.review.guided import get_guided_reviewer
 from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
+from scinoephile.multilang.transcription.guided import get_guided_transcriber
 from scinoephile.multilang.translation.gap import get_gap_translator
-from scinoephile.multilang.yue_zho.transcription import (
-    get_yue_transcribed_vs_zho,
-    get_yue_vs_zho_transcriber,
-)
 from scinoephile.workflows.review import review_series_guided, review_series_pairwise
+from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
 
 __all__ = ["process_yue_hans_transcription"]
@@ -72,7 +70,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         stream_index: media stream index of audio stream used when generating audio,
           or None to use the first audio stream
         overwrite_srt: whether to overwrite subtitle outputs
-        transcriber_kw: additional keyword arguments for get_yue_vs_zho_transcriber
+        transcriber_kw: additional keyword arguments for get_guided_transcriber
         pairwise_reviewer_kw: additional keyword arguments for get_pairwise_reviewer
         translator_kw: additional keyword arguments for get_gap_translator
         guided_reviewer_kw: additional keyword arguments for
@@ -141,14 +139,20 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         if transcriber_kw is None:
             transcriber_kw = {}
         transcriber_kw.setdefault(
-            "test_case_directory_path",
+            "test_case_dir_path",
             transcription_test_case_dir_path,
         )
-        transcriber = get_yue_vs_zho_transcriber(
+        transcriber = get_guided_transcriber(
+            Language.yue_hans,
+            Language.zho_hans,
             **transcriber_kw,
         )
-        transcribe = get_yue_transcribed_vs_zho(
-            yue_hans_audio, zho, transcriber=transcriber
+        transcribe = transcribe_series_guided(
+            yue_hans_audio,
+            zho,
+            language=Language.yue_hans,
+            reference_language=Language.zho_hans,
+            transcriber=transcriber,
         )
         transcribe.save(transcribe_path, exist_ok=True)
 

@@ -25,27 +25,19 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.file import get_temp_file_path
+from scinoephile.core import Language
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.llms.punctuation import PunctuationPrompt
-from scinoephile.multilang.yue_zho.transcription import (
-    DEFAULT_YUE_WHISPER_MODEL_NAME,
+from scinoephile.multilang.transcription.processor import (
     DemucsMode,
     VADMode,
-    get_yue_transcribed_vs_zho,
-    get_yue_vs_zho_transcriber,
 )
-from scinoephile.multilang.yue_zho.transcription.delineation import (
-    YueDelineationVsZhoPromptYueHans,
-    YueDelineationVsZhoPromptYueHant,
+from scinoephile.multilang.yue_zho.transcription import (
+    DEFAULT_YUE_WHISPER_MODEL_NAME,
 )
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
-    YuePunctuationVsZhoPromptYueHant,
-)
+from scinoephile.workflows.transcription import transcribe_series_guided
 
 __all__ = ["YueTranscribeVsZhoCli"]
 
@@ -235,21 +227,6 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         return "transcribe-vs-zho"
 
     @classmethod
-    def _get_transcription_prompts(
-        cls, script: str
-    ) -> tuple[DelineationPrompt, PunctuationPrompt]:
-        """Get transcription prompts for the selected script.
-
-        Arguments:
-            script: selected script identifier
-        Returns:
-            delineation and punctuation prompts
-        """
-        if script == "traditional":
-            return YueDelineationVsZhoPromptYueHant, YuePunctuationVsZhoPromptYueHant
-        return YueDelineationVsZhoPromptYueHans, YuePunctuationVsZhoPromptYueHans
-
-    @classmethod
     def _main(
         cls,
         *,
@@ -310,24 +287,22 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Perform operations
-        delineation_prompt, punctuation_prompt = cls._get_transcription_prompts(script)
         additional_context = read_llm_additional_context(
             parser, llm_args.additional_context_file_path
         )
         provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
-        transcriber = get_yue_vs_zho_transcriber(
+        language = Language.yue_hans
+        if script == "traditional":
+            language = Language.yue_hant
+        yuewen = transcribe_series_guided(
+            yuewen,
+            zhongwen,
+            language=language,
             model_name=whisper_model_name,
             demucs_mode=demucs,
             vad_mode=vad,
             provider=provider,
-            delineation_prompt=delineation_prompt,
-            punctuation_prompt=punctuation_prompt,
             additional_context=additional_context,
-        )
-        yuewen = get_yue_transcribed_vs_zho(
-            yuewen=yuewen,
-            zhongwen=zhongwen,
-            transcriber=transcriber,
         )
 
         # Write outputs

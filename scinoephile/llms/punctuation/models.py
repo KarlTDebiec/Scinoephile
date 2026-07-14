@@ -9,6 +9,10 @@ from typing import ClassVar, Self
 from pydantic import model_validator
 
 from scinoephile.core.llms import Answer, Query, TestCase
+from scinoephile.core.text import (
+    remove_non_punc_and_whitespace,
+    remove_punc_and_whitespace,
+)
 
 from .prompt import PunctuationPrompt
 
@@ -71,3 +75,39 @@ class PunctuationTestCase(TestCase):
     """Subtitle lines and their punctuation guide."""
     answer: PunctuationAnswer | None = None
     """Combined and punctuated subtitle text, if available."""
+
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty from output and guide punctuation.
+
+        Returns:
+            minimum difficulty
+        """
+        min_difficulty = super().get_min_difficulty()
+        if self.answer is None:
+            return min_difficulty
+
+        if remove_non_punc_and_whitespace(self.answer.output):
+            min_difficulty = max(min_difficulty, 1)
+        if remove_non_punc_and_whitespace(
+            self.query.guide
+        ) != remove_non_punc_and_whitespace(self.answer.output):
+            min_difficulty = max(min_difficulty, 2)
+        return min_difficulty
+
+    @model_validator(mode="after")
+    def validate_output_characters(self) -> Self:
+        """Ensure punctuation does not change subtitle characters.
+
+        Returns:
+            validated test case
+        """
+        if self.answer is None:
+            return self
+
+        expected = "".join(
+            remove_punc_and_whitespace(subtitle) for subtitle in self.query.subtitles
+        )
+        received = remove_punc_and_whitespace(self.answer.output)
+        if expected != received:
+            raise ValueError(self.prompt.src_1_chars_changed_err(expected, received))
+        return self

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Written Cantonese/standard Chinese transcription delineation."""
+"""Prompts for transcribing written Cantonese using standard Chinese references."""
 
 from __future__ import annotations
 
@@ -9,13 +9,22 @@ from functools import partial
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.delineation import DelineationPrompt
+from scinoephile.llms.punctuation import PunctuationPrompt
 
 __all__ = [
+    "DEFAULT_YUE_WHISPER_MODEL_NAME",
     "YueDelineationVsZhoPromptYueHans",
     "YueDelineationVsZhoPromptYueHant",
+    "YuePunctuationVsZhoPromptYueHans",
+    "YuePunctuationVsZhoPromptYueHant",
 ]
+
+
+DEFAULT_YUE_WHISPER_MODEL_NAME = "khleeloo/whisper-large-v3-cantonese"
+"""Default Whisper model name for written Cantonese transcription."""
 
 
 YueDelineationVsZhoPromptYueHant = DelineationPrompt(
@@ -62,3 +71,40 @@ YueDelineationVsZhoPromptYueHans = YueDelineationVsZhoPromptYueHant.transformed(
     partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
 )
 """Text for LLM correspondence for simplified written Cantonese delineation."""
+
+YuePunctuationVsZhoPromptYueHant = PunctuationPrompt(
+    language=Language.yue_hant,
+    **YUE_HANT_PROMPT_FIELDS,
+    base_system_prompt=dedent_and_compact("""
+        你負責將廣東話口語嘅粵文字幕同對應嘅中文字幕對齊。
+        你會收到一條中文字幕，以及同一條字幕對應嘅多行粵文轉寫。
+        多行粵文代表口語停頓拆開嘅行。
+        你嘅主要任務係為粵文補上標點同空格。
+        請先將所有粵文行整理成一行，再參考中文字幕補上標點同空格。
+        必須包含所有粵文字，整理成一行。
+        唔好從中文字幕拷貝漢字。
+        只可以調整粵文嘅標點同空格以配合中文字幕。
+        除咗標點同空格之外唔好改任何粵文內容。"""),
+    src_1="yuewen_to_punctuate",
+    src_1_desc="要整理同加標點嘅粵文字幕行",
+    src_2="zhongwen",
+    src_2_desc="對應嘅中文字幕",
+    src_1_missing_err="查詢必須包含要整理同加標點嘅粵文字幕行。",
+    src_2_missing_err="查詢必須包含對應嘅中文字幕。",
+    output="yuewen_punctuated",
+    output_desc="整理同加標點後嘅粵文字幕",
+    output_missing_err="答案必須包含整理同加標點後嘅粵文字幕。",
+    src_1_chars_changed_err_tpl=(
+        "Answer's written Cantonese subtitle stripped of punctuation and whitespace "
+        "does not match query's written Cantonese subtitle concatenated:\n"
+        "Expected: {expected}\n"
+        "Received: {received}"
+    ),
+)
+"""Text for traditional written Cantonese/standard Chinese punctuation."""
+
+YuePunctuationVsZhoPromptYueHans = YuePunctuationVsZhoPromptYueHant.transformed(
+    Language.yue_hans,
+    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
+)
+"""Text for simplified written Cantonese/standard Chinese punctuation."""

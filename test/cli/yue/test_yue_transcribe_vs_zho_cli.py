@@ -14,17 +14,9 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
-from scinoephile.core import ScinoephileError
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.delineation import DelineationPrompt
-from scinoephile.llms.punctuation import PunctuationPrompt
 from scinoephile.multilang.yue_zho.transcription import DEFAULT_YUE_WHISPER_MODEL_NAME
-from scinoephile.multilang.yue_zho.transcription.delineation import (
-    YueDelineationVsZhoPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YuePunctuationVsZhoPromptYueHant,
-)
 from test.helpers import (
     assert_series_equal,
     test_data_root,
@@ -87,19 +79,16 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
             return_value=yuewen_audio_series,
         ):
             with patch(
-                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
-                return_value="transcriber",
+                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli."
+                "transcribe_series_guided",
+                return_value=expected_series,
             ):
-                with patch(
-                    "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
-                    return_value=expected_series,
-                ):
-                    run_cli_with_args(
-                        YueTranscribeVsZhoCli,
-                        f"--media-infile {media_infile_path} "
-                        f"--zho-infile {zhongwen_infile_path} "
-                        f"--stream-index 1 -o {outfile_path}",
-                    )
+                run_cli_with_args(
+                    YueTranscribeVsZhoCli,
+                    f"--media-infile {media_infile_path} "
+                    f"--zho-infile {zhongwen_infile_path} "
+                    f"--stream-index 1 -o {outfile_path}",
+                )
         output_series = Series.load(outfile_path)
 
     assert_series_equal(output_series, expected_series)
@@ -121,19 +110,15 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
         return_value=yuewen_audio_series,
     ):
         with patch(
-            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
-            return_value="transcriber",
+            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.transcribe_series_guided",
+            return_value=expected_series,
         ):
-            with patch(
-                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
-                return_value=expected_series,
-            ):
-                with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
-                    run_cli_with_args(
-                        YueTranscribeVsZhoCli,
-                        f"--media-infile {media_infile_path} "
-                        f"--zho-infile {zhongwen_infile_path}",
-                    )
+            with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
+                run_cli_with_args(
+                    YueTranscribeVsZhoCli,
+                    f"--media-infile {media_infile_path} "
+                    f"--zho-infile {zhongwen_infile_path}",
+                )
 
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
     assert_series_equal(output_series, expected_series)
@@ -151,8 +136,8 @@ def test_yue_transcribe_vs_zho_cli_rejects_removed_convert_flag():
         )
 
 
-def test_yue_transcribe_vs_zho_cli_uses_selected_prompt_script():
-    """Test written Cantonese CLI uses prompts for the selected script."""
+def test_yue_transcribe_vs_zho_cli_uses_selected_transcription_script():
+    """Test written Cantonese CLI uses the selected transcription script."""
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
@@ -161,44 +146,42 @@ def test_yue_transcribe_vs_zho_cli_uses_selected_prompt_script():
     )
     yuewen_audio_series = Mock(spec=AudioSeries)
 
-    def get_transcriber(
+    def transcribe(
+        audio_series: AudioSeries,
+        reference_series: Series,
         *,
+        language: Language,
         model_name: str,
         demucs_mode: object,
         vad_mode: object,
         provider: object,
-        delineation_prompt: DelineationPrompt,
-        punctuation_prompt: PunctuationPrompt,
         additional_context: str | None,
-    ) -> str:
-        """Validate prompt script options passed by the CLI."""
+    ) -> Series:
+        """Validate transcription options passed by the CLI."""
+        assert audio_series is yuewen_audio_series
+        assert isinstance(reference_series, Series)
+        assert language is Language.yue_hant
         assert model_name == DEFAULT_YUE_WHISPER_MODEL_NAME
         assert demucs_mode is not None
         assert vad_mode is not None
         assert provider is not None
-        assert delineation_prompt is YueDelineationVsZhoPromptYueHant
-        assert punctuation_prompt is YuePunctuationVsZhoPromptYueHant
         assert additional_context is None
-        return "transcriber"
+        return expected_series
 
     with patch(
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
         return_value=yuewen_audio_series,
     ):
         with patch(
-            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
-            side_effect=get_transcriber,
+            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.transcribe_series_guided",
+            side_effect=transcribe,
         ):
-            with patch(
-                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
-                return_value=expected_series,
-            ):
-                run_cli_with_args(
-                    YueTranscribeVsZhoCli,
-                    f"--media-infile {media_infile_path} "
-                    f"--zho-infile {zhongwen_infile_path} "
-                    "--script traditional",
-                )
+            run_cli_with_args(
+                YueTranscribeVsZhoCli,
+                f"--media-infile {media_infile_path} "
+                f"--zho-infile {zhongwen_infile_path} "
+                "--script traditional",
+            )
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
@@ -281,16 +264,15 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
         subtitle_paths.append(subtitle_path)
         return yuewen_audio_series
 
-    def get_transcribed_vs_zho(
-        *,
-        yuewen: AudioSeries,
-        zhongwen: Series,
-        transcriber: str,
+    def transcribe(
+        audio_series: AudioSeries,
+        reference_series: Series,
+        **kwargs: object,
     ) -> Series:
         """Record transcription inputs."""
-        assert transcriber == "transcriber"
-        yuewen_inputs.append(yuewen)
-        zhongwen_inputs.append(zhongwen)
+        assert kwargs["language"] is Language.yue_hans
+        yuewen_inputs.append(audio_series)
+        zhongwen_inputs.append(reference_series)
         return expected_series
 
     with patch("scinoephile.cli.helpers.io.stdin", stdin_stream):
@@ -299,18 +281,15 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
             side_effect=load_from_media,
         ):
             with patch(
-                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
-                return_value="transcriber",
+                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli."
+                "transcribe_series_guided",
+                side_effect=transcribe,
             ):
-                with patch(
-                    "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
-                    side_effect=get_transcribed_vs_zho,
-                ):
-                    with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
-                        run_cli_with_args(
-                            YueTranscribeVsZhoCli,
-                            f"--media-infile {media_infile_path} --zho-infile -",
-                        )
+                with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
+                    run_cli_with_args(
+                        YueTranscribeVsZhoCli,
+                        f"--media-infile {media_infile_path} --zho-infile -",
+                    )
 
     assert yuewen_inputs == [yuewen_audio_series]
     assert_series_equal(zhongwen_inputs[0], Series.load(zhongwen_infile_path))

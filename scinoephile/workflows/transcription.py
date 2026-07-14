@@ -1,0 +1,101 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Workflow for reference-guided audio transcription."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.core import Language
+from scinoephile.core.llms import LLMProvider, TestCase
+from scinoephile.core.subtitles import Series
+from scinoephile.llms.delineation import DelineationPrompt
+from scinoephile.llms.punctuation import PunctuationPrompt
+from scinoephile.multilang.transcription.guided import get_guided_transcriber
+from scinoephile.multilang.transcription.processor import (
+    DemucsMode,
+    GuidedTranscriptionProcessor,
+    TranscribedSegmentSplitter,
+    VADMode,
+)
+
+from .helpers import resolve_language
+
+__all__ = ["transcribe_series_guided"]
+
+
+def transcribe_series_guided(
+    audio_series: AudioSeries,
+    reference_series: Series,
+    *,
+    language: Language,
+    reference_language: Language | None = None,
+    model_name: str | None = None,
+    whisper_language: str | None = None,
+    demucs_mode: DemucsMode = DemucsMode.OFF,
+    vad_mode: VADMode = VADMode.AUTO,
+    provider: LLMProvider | None = None,
+    additional_context: str | None = None,
+    delineation_prompt: DelineationPrompt | None = None,
+    punctuation_prompt: PunctuationPrompt | None = None,
+    test_case_dir_path: Path | None = None,
+    delineation_test_cases: list[TestCase] | None = None,
+    punctuation_test_cases: list[TestCase] | None = None,
+    segment_splitter: TranscribedSegmentSplitter | None = None,
+    transcriber: GuidedTranscriptionProcessor | None = None,
+    stop_at_idx: int | None = None,
+) -> AudioSeries:
+    """Transcribe audio using reference subtitles.
+
+    Arguments:
+        audio_series: audio divided into subtitle-timed blocks
+        reference_series: reference subtitles corresponding to audio blocks
+        language: transcription language
+        reference_language: explicit reference language, or None to detect it
+        model_name: Whisper model override
+        whisper_language: Whisper language-code override
+        demucs_mode: Demucs preprocessing mode
+        vad_mode: Whisper VAD mode
+        provider: provider to use for LLM queries
+        additional_context: additional context to include in LLM prompts
+        delineation_prompt: delineation prompt override
+        punctuation_prompt: punctuation prompt override
+        test_case_dir_path: directory where encountered test cases are written
+        delineation_test_cases: preloaded delineation test cases
+        punctuation_test_cases: preloaded punctuation test cases
+        segment_splitter: Whisper segment-splitting strategy override
+        transcriber: guided transcription processor, or None to construct one
+        stop_at_idx: exclusive block index at which to stop processing
+    Returns:
+        transcribed and reference-aligned audio subtitle series
+    Raises:
+        ScinoephileError: if the reference language cannot be resolved or the pair is
+            unsupported
+    """
+    resolved_reference_language = resolve_language(
+        reference_series,
+        reference_language,
+    )
+    if transcriber is None:
+        transcriber = get_guided_transcriber(
+            language,
+            resolved_reference_language,
+            model_name=model_name,
+            whisper_language=whisper_language,
+            demucs_mode=demucs_mode,
+            vad_mode=vad_mode,
+            provider=provider,
+            additional_context=additional_context,
+            delineation_prompt=delineation_prompt,
+            punctuation_prompt=punctuation_prompt,
+            test_case_dir_path=test_case_dir_path,
+            delineation_test_cases=delineation_test_cases,
+            punctuation_test_cases=punctuation_test_cases,
+            segment_splitter=segment_splitter,
+        )
+    return transcriber.process(
+        audio_series,
+        reference_series,
+        stop_at_idx=stop_at_idx,
+    )

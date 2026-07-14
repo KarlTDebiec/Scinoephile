@@ -22,7 +22,7 @@ from scinoephile.llms.delineation import (
     DelineationPrompt,
     DelineationTestCase,
 )
-from scinoephile.multilang.yue_zho.transcription.delineation import (
+from scinoephile.multilang.yue_zho.transcription import (
     YueDelineationVsZhoPromptYueHans,
 )
 from scinoephile.optimization.persistence.test_cases import PersistedTestCase

@@ -1,51 +1,46 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Class for reviewing and refining Cantonese transcriptions."""
+"""Reference-guided audio transcription processor."""
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from enum import StrEnum
 from logging import getLogger
-from pathlib import Path
 
 from pydub import AudioSegment
 
-from scinoephile.audio.subtitles import (
-    AudioSeries,
-    get_series_from_segments,
-)
+from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
     DemucsSeparator,
     TranscribedSegment,
     WhisperTranscriber,
-    get_segment_split_on_whitespace,
 )
-from scinoephile.common.validation import val_input_dir_path
-from scinoephile.core.llms import LLMProvider, Queryer, TestCase
+from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
-from scinoephile.llms.providers.registry import get_provider
-from scinoephile.llms.punctuation import PunctuationPrompt
 
-from .aligner import Aligner
-from .punctuation import YueZhoPunctuationManager
+from .aligner import TranscriptionAligner
 
 __all__ = [
-    "DEFAULT_YUE_WHISPER_MODEL_NAME",
     "DemucsMode",
+    "GuidedTranscriptionProcessor",
+    "TranscribedSegmentSplitter",
     "VADMode",
-    "YueTranscriber",
 ]
 
-DEFAULT_YUE_WHISPER_MODEL_NAME = "khleeloo/whisper-large-v3-cantonese"
-"""Default Whisper model name for written Cantonese transcription."""
+
+TranscribedSegmentSplitter = Callable[
+    [TranscribedSegment],
+    list[TranscribedSegment],
+]
+"""Callable that splits one transcribed segment into zero or more segments."""
 
 logger = getLogger(__name__)
 
 
 class DemucsMode(StrEnum):
-    """Demucs preprocessing modes for written Cantonese transcription."""
+    """Demucs preprocessing modes for transcription."""
 
     ON = "on"
     """Run Demucs preprocessing."""
@@ -54,7 +49,7 @@ class DemucsMode(StrEnum):
 
 
 class VADMode(StrEnum):
-    """Whisper voice activity detection modes for written Cantonese transcription."""
+    """Whisper voice activity detection modes for transcription."""
 
     AUTO = "auto"
     """Use VAD automatically when needed."""
@@ -64,43 +59,42 @@ class VADMode(StrEnum):
     """Never use VAD."""
 
 
-class YueTranscriber:
-    """Class for transcribing and aligning written Cantonese audio."""
+class GuidedTranscriptionProcessor:
+    """Transcribe audio and align it with reference subtitles."""
 
     def __init__(
         self,
         *,
-        model_name: str = DEFAULT_YUE_WHISPER_MODEL_NAME,
+        language: Language,
+        reference_language: Language,
+        model_name: str,
+        whisper_language: str,
+        aligner: TranscriptionAligner,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
-        provider: LLMProvider | None = None,
-        additional_context: str | None = None,
-        delineation_prompt: DelineationPrompt,
-        punctuation_prompt: PunctuationPrompt,
-        test_case_directory_path: Path,
-        delineation_test_cases: list[TestCase],
-        punctuation_test_cases: list[TestCase],
+        segment_splitter: TranscribedSegmentSplitter | None = None,
     ):
         """Initialize.
 
         Arguments:
+            language: transcription language
+            reference_language: reference subtitle language
             model_name: Whisper model name used for transcription
-            demucs_mode: Demucs preprocessing mode for transcription
-            vad_mode: Whisper VAD mode for transcription
-            provider: provider to use for LLM queryers
-            additional_context: additional context to include in LLM prompts
-            delineation_prompt: prompt for block-boundary delineation
-            punctuation_prompt: prompt for line punctuation
-            test_case_directory_path: path to directory containing test cases
-            delineation_test_cases: delineation test cases
-            punctuation_test_cases: punctuation test cases
+            whisper_language: language code passed to Whisper
+            aligner: transcription aligner
+            demucs_mode: Demucs preprocessing mode
+            vad_mode: Whisper VAD mode
+            segment_splitter: optional strategy for splitting Whisper segments
         """
-        self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
+        self.language = language
+        self.reference_language = reference_language
         self.model_name = model_name
-        self.vad_mode = vad_mode
+        self.whisper_language = whisper_language
+        self.aligner = aligner
         self.demucs_mode = demucs_mode
-        if provider is None:
-            provider = get_provider()
+        self.vad_mode = vad_mode
+        self.segment_splitter = segment_splitter
+
         self.demucs_separator = None
         if demucs_mode == DemucsMode.ON:
             self.demucs_separator = DemucsSeparator(
@@ -112,96 +106,90 @@ class YueTranscriber:
         self.no_vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.OFF):
             self.no_vad_transcriber = self._get_whisper_transcriber(use_vad=False)
-        self.delineation_queryer = Queryer(
-            DelineationManager.get_test_case_cls(delineation_prompt),
-            verified_test_cases=[tc for tc in delineation_test_cases if tc.verified],
-            provider=provider,
-            cache_dir_path=get_runtime_cache_dir_path("llm"),
-            additional_context=additional_context,
-        )
-        self.punctuation_queryer = Queryer(
-            YueZhoPunctuationManager.get_test_case_cls(punctuation_prompt),
-            verified_test_cases=[tc for tc in punctuation_test_cases if tc.verified],
-            provider=provider,
-            cache_dir_path=get_runtime_cache_dir_path("llm"),
-            additional_context=additional_context,
-        )
-        self.aligner = Aligner(
-            delineation_queryer=self.delineation_queryer,
-            punctuation_queryer=self.punctuation_queryer,
-            test_case_dir_path=self.test_case_directory_path,
-        )
 
-    def process_all_blocks(
+    def process(
         self,
-        yuewen: AudioSeries,
-        zhongwen: Series,
+        audio_series: AudioSeries,
+        reference_series: Series,
         stop_at_idx: int | None = None,
     ) -> AudioSeries:
-        """Process all blocks of audio, transcribing and aligning them with subtitles.
+        """Transcribe all audio blocks and align them with reference subtitles.
 
         Arguments:
-            yuewen: nascent written Cantonese subtitles
-            zhongwen: corresponding standard Chinese subtitles
-            stop_at_idx: stop after processing this block index
+            audio_series: audio divided into subtitle-timed blocks
+            reference_series: reference subtitles corresponding to audio blocks
+            stop_at_idx: exclusive block index at which to stop processing
+        Returns:
+            transcribed and aligned audio subtitle series
+        Raises:
+            ScinoephileError: if audio and reference block counts differ
+            ValueError: if stop_at_idx is negative
         """
-        all_yuewen_block_series: list | None = [None] * len(yuewen.blocks)
-
-        # Run all blocks
+        audio_blocks = audio_series.blocks
+        reference_blocks = reference_series.blocks
+        if len(audio_blocks) != len(reference_blocks):
+            raise ScinoephileError(
+                f"Audio has {len(audio_blocks)} blocks but reference subtitles have "
+                f"{len(reference_blocks)} blocks."
+            )
         if stop_at_idx is None:
-            stop_at_idx = len(yuewen.blocks) - 1
-        for block_idx in range(stop_at_idx + 1):
-            yuewen_block = yuewen.blocks[block_idx]
-            zhongwen_block = zhongwen.blocks[block_idx]
-            yuewen_block_series = self.process_block(yuewen_block, zhongwen_block)
-            logger.info(f"BLOCK {block_idx}:")
-            logger.info(f"中文:\n{zhongwen_block.to_simple_string()}")
-            logger.info(f"粤文:\n{yuewen_block_series.to_simple_string()}")
-            all_yuewen_block_series[block_idx] = yuewen_block_series
+            stop_at_idx = len(audio_blocks)
+        elif stop_at_idx < 0:
+            raise ValueError("stop_at_idx must be greater than or equal to 0")
 
-        # Concatenate and return
-        all_events = []
-        for block_series in all_yuewen_block_series:
-            if block_series is not None:
-                all_events.extend(block_series.events)
-        all_events.sort(key=lambda event: event.start)
-        yuewen_series = AudioSeries(audio=yuewen.audio, events=all_events)
-        logger.info(f"Concatenated Series:\n{yuewen_series.to_simple_string()}")
-        return yuewen_series
+        output_events = []
+        for block_idx, (audio_block, reference_block) in enumerate(
+            zip(audio_blocks, reference_blocks, strict=True)
+        ):
+            if block_idx >= stop_at_idx:
+                break
+            output_block = self.process_block(audio_block, reference_block)
+            logger.info(
+                f"BLOCK {block_idx}:\n"
+                f"REFERENCE ({self.reference_language.tag}):\n"
+                f"{reference_block.to_simple_string()}\n"
+                f"TRANSCRIPTION ({self.language.tag}):\n"
+                f"{output_block.to_simple_string()}"
+            )
+            output_events.extend(output_block.events)
+
+        output_events.sort(key=lambda event: event.start)
+        output = AudioSeries(audio=audio_series.audio, events=output_events)
+        logger.info(f"Concatenated Series:\n{output.to_simple_string()}")
+        return output
 
     def process_block(
         self,
-        yuewen_block: AudioSeries,
-        zhongwen_block: Series,
+        audio_block: AudioSeries,
+        reference_block: Series,
     ) -> AudioSeries:
-        """Process a single block of audio, transcribing and aligning it with subtitles.
+        """Transcribe and align a single audio block.
 
         Arguments:
-            yuewen_block: nascent written Cantonese block
-            zhongwen_block: corresponding standard Chinese block
+            audio_block: audio block to transcribe
+            reference_block: corresponding reference subtitle block
+        Returns:
+            transcribed and aligned audio subtitle block
         """
-        # Transcribe audio
-        segments = self._transcribe_block_audio(yuewen_block.audio)
+        segments = self._transcribe_block_audio(audio_block.audio)
+        if self.segment_splitter is None:
+            split_segments = segments
+        else:
+            split_segments = []
+            for segment in segments:
+                split_segments.extend(self.segment_splitter(segment))
 
-        # Split segments based on pauses
-        split_segments = []
-        for segment in segments:
-            split_segments.extend(get_segment_split_on_whitespace(segment))
-
-        # Merge segments into a series
-        yuewen_block_series = get_series_from_segments(
+        offset = audio_block.buffered_start
+        if offset is None:
+            offset = audio_block[0].start
+        transcription_block = get_series_from_segments(
             split_segments,
-            audio=yuewen_block.audio,
-            offset=yuewen_block[0].start,
+            audio=audio_block.audio,
+            offset=offset,
         )
-
-        # Sync segments with the corresponding standard Chinese subtitles
-        alignment = self.aligner.align(zhongwen_block, yuewen_block_series)
-        yuewen_block_series = alignment.yuewen
-
+        alignment = self.aligner.align(reference_block, transcription_block)
         self.aligner.update_all_test_cases()
-
-        return yuewen_block_series
+        return alignment.transcription
 
     def _get_cached_block_transcription(
         self, cache_audio: AudioSegment
@@ -232,19 +220,19 @@ class YueTranscriber:
                 cached_segments
             ):
                 return cached_segments
-
         return None
 
     def _get_whisper_transcriber(self, use_vad: bool) -> WhisperTranscriber:
         """Build a Whisper transcriber for the requested VAD setting.
 
         Arguments:
-            use_vad: whether Whisper VAD is enabled for transcription
+            use_vad: whether Whisper VAD is enabled
         Returns:
             configured Whisper transcriber
         """
         return WhisperTranscriber(
             model_name=self.model_name,
+            language=self.whisper_language,
             cache_dir_path=get_runtime_cache_dir_path("whisper"),
             use_demucs=self.demucs_mode == DemucsMode.ON,
             use_vad=use_vad,
@@ -301,11 +289,10 @@ class YueTranscriber:
         Arguments:
             segments: transcribed segments to inspect
         Returns:
-            whether the segments contain non-empty text with word timings
+            whether the segments contain nonempty text with word timings
         """
         if not any(segment.text.strip() for segment in segments):
             return False
-
         return not any(
             segment.text.strip() and not segment.words for segment in segments
         )

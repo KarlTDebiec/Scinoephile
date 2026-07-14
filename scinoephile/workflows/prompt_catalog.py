@@ -24,11 +24,9 @@ from scinoephile.llms.pairwise_review import PairwiseReviewManager
 from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
-from scinoephile.multilang.yue_zho.transcription.delineation import (
+from scinoephile.multilang.yue_zho.transcription import (
     YueDelineationVsZhoPromptYueHans,
     YueDelineationVsZhoPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
     YuePunctuationVsZhoPromptYueHant,
 )

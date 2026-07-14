@@ -20,10 +20,8 @@ from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
 from scinoephile.llms.pairwise_review import PairwiseReviewManager
+from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueZhoPunctuationManager,
-)
 from test.helpers import test_data_root
 
 _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
@@ -48,7 +46,7 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
     ),
     (
         "*/output/*/multilang/yue_zho/transcription/punctuation/*.json",
-        YueZhoPunctuationManager,
+        PunctuationManager,
     ),
 )
 

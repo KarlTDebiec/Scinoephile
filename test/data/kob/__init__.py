@@ -33,18 +33,15 @@ from scinoephile.llms.pairwise_review import (
     PairwiseReviewManager,
     PairwiseReviewPrompt,
 )
-from scinoephile.llms.punctuation import PunctuationPrompt
+from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from scinoephile.multilang.yue_zho.review import (
     YueZhoGuidedReviewPromptYueHans,
     YueZhoPairwiseReviewPromptYueHans,
 )
-from scinoephile.multilang.yue_zho.transcription.delineation import (
+from scinoephile.multilang.yue_zho.transcription import (
     YueDelineationVsZhoPromptYueHans,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
-    YueZhoPunctuationManager,
 )
 from scinoephile.multilang.yue_zho.translation import (
     YueZhoGapTranslationPromptYueHans,
@@ -319,9 +316,7 @@ def get_kob_yue_punctuation_test_cases(
         / "punctuation"
         / f"{get_torch_device()}.json"
     )
-    return load_test_cases_from_json(
-        path, YueZhoPunctuationManager, prompt=prompt, **kwargs
-    )
+    return load_test_cases_from_json(path, PunctuationManager, prompt=prompt, **kwargs)
 
 
 @cache
