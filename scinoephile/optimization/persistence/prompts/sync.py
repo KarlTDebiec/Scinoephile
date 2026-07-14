@@ -8,7 +8,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
-from scinoephile.optimization.prompt_specs import PromptSpec
+from scinoephile.optimization.prompt_spec import PromptSpec
 
 from .persisted_prompt import PersistedPrompt
 from .sqlite_store import PromptSqliteStore

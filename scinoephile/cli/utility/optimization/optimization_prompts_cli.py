@@ -14,7 +14,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.optimization.persistence.prompts.sync import sync_prompts
-from scinoephile.optimization.prompt_specs import PROMPT_SPECS
+from scinoephile.workflows.prompt_catalog import PROMPT_SPECS
 
 __all__ = ["OptimizationSyncPromptsCli"]
 

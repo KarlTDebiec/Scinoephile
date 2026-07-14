@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
+from types import MappingProxyType
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
@@ -17,7 +19,10 @@ from .eng.review import ReviewPromptEng
 from .yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from .zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 
-__all__ = ["get_reviewer"]
+__all__ = [
+    "DEFAULT_PROMPTS",
+    "get_reviewer",
+]
 
 _ENG_REVIEW_JSON_PATHS = (
     Path("kob/output/eng_ocr/lang/eng/review.json"),
@@ -68,13 +73,15 @@ _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
 }
 """Review JSON paths keyed by language."""
 
-_PROMPTS: dict[Language, ReviewPrompt] = {
-    Language.eng: ReviewPromptEng,
-    Language.yue_hans: ReviewPromptYueHans,
-    Language.yue_hant: ReviewPromptYueHant,
-    Language.zho_hans: ReviewPromptZhoHans,
-    Language.zho_hant: ReviewPromptZhoHant,
-}
+DEFAULT_PROMPTS: Mapping[Language, ReviewPrompt] = MappingProxyType(
+    {
+        Language.eng: ReviewPromptEng,
+        Language.yue_hans: ReviewPromptYueHans,
+        Language.yue_hant: ReviewPromptYueHant,
+        Language.zho_hans: ReviewPromptZhoHans,
+        Language.zho_hant: ReviewPromptZhoHant,
+    }
+)
 """Review prompts keyed by language."""
 
 
@@ -98,11 +105,11 @@ def get_reviewer(
     Raises:
         ScinoephileError: if review does not support the language
     """
-    if language not in _PROMPTS:
+    if language not in DEFAULT_PROMPTS:
         raise ScinoephileError(f"Review does not support language {language.tag}")
 
     if prompt is None:
-        prompt = _PROMPTS[language]
+        prompt = DEFAULT_PROMPTS[language]
     if test_cases is None:
         json_paths = _JSON_PATHS[language]
         test_cases = list(load_default_test_cases(ReviewManager, prompt, json_paths))

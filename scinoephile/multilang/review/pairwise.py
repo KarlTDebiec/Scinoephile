@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
+from types import MappingProxyType
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
@@ -35,7 +37,10 @@ from scinoephile.multilang.zho_yue.review import (
     ZhoYuePairwiseReviewPromptZhoHant,
 )
 
-__all__ = ["get_pairwise_reviewer"]
+__all__ = [
+    "DEFAULT_PROMPTS",
+    "get_pairwise_reviewer",
+]
 
 _YUE_ZHO_JSON_PATHS = (
     Path(
@@ -46,24 +51,28 @@ _YUE_ZHO_JSON_PATHS = (
 )
 """Default written Cantonese/Chinese pairwise-review JSON paths."""
 
-_PROMPTS: dict[tuple[Language, Language], PairwiseReviewPrompt] = {
-    (Language.eng, Language.yue_hans): EngYuePairwiseReviewPrompt,
-    (Language.eng, Language.yue_hant): EngYuePairwiseReviewPrompt,
-    (Language.eng, Language.zho_hans): EngZhoPairwiseReviewPrompt,
-    (Language.eng, Language.zho_hant): EngZhoPairwiseReviewPrompt,
-    (Language.yue_hans, Language.eng): YueEngPairwiseReviewPromptYueHans,
-    (Language.yue_hans, Language.zho_hans): YueZhoPairwiseReviewPromptYueHans,
-    (Language.yue_hans, Language.zho_hant): YueZhoPairwiseReviewPromptYueHans,
-    (Language.yue_hant, Language.eng): YueEngPairwiseReviewPromptYueHant,
-    (Language.yue_hant, Language.zho_hans): YueZhoPairwiseReviewPromptYueHant,
-    (Language.yue_hant, Language.zho_hant): YueZhoPairwiseReviewPromptYueHant,
-    (Language.zho_hans, Language.eng): ZhoEngPairwiseReviewPromptZhoHans,
-    (Language.zho_hans, Language.yue_hans): ZhoYuePairwiseReviewPromptZhoHans,
-    (Language.zho_hans, Language.yue_hant): ZhoYuePairwiseReviewPromptZhoHans,
-    (Language.zho_hant, Language.eng): ZhoEngPairwiseReviewPromptZhoHant,
-    (Language.zho_hant, Language.yue_hans): ZhoYuePairwiseReviewPromptZhoHant,
-    (Language.zho_hant, Language.yue_hant): ZhoYuePairwiseReviewPromptZhoHant,
-}
+DEFAULT_PROMPTS: Mapping[tuple[Language, Language], PairwiseReviewPrompt] = (
+    MappingProxyType(
+        {
+            (Language.eng, Language.yue_hans): EngYuePairwiseReviewPrompt,
+            (Language.eng, Language.yue_hant): EngYuePairwiseReviewPrompt,
+            (Language.eng, Language.zho_hans): EngZhoPairwiseReviewPrompt,
+            (Language.eng, Language.zho_hant): EngZhoPairwiseReviewPrompt,
+            (Language.yue_hans, Language.eng): YueEngPairwiseReviewPromptYueHans,
+            (Language.yue_hans, Language.zho_hans): YueZhoPairwiseReviewPromptYueHans,
+            (Language.yue_hans, Language.zho_hant): YueZhoPairwiseReviewPromptYueHans,
+            (Language.yue_hant, Language.eng): YueEngPairwiseReviewPromptYueHant,
+            (Language.yue_hant, Language.zho_hans): YueZhoPairwiseReviewPromptYueHant,
+            (Language.yue_hant, Language.zho_hant): YueZhoPairwiseReviewPromptYueHant,
+            (Language.zho_hans, Language.eng): ZhoEngPairwiseReviewPromptZhoHans,
+            (Language.zho_hans, Language.yue_hans): ZhoYuePairwiseReviewPromptZhoHans,
+            (Language.zho_hans, Language.yue_hant): ZhoYuePairwiseReviewPromptZhoHans,
+            (Language.zho_hant, Language.eng): ZhoEngPairwiseReviewPromptZhoHant,
+            (Language.zho_hant, Language.yue_hans): ZhoYuePairwiseReviewPromptZhoHant,
+            (Language.zho_hant, Language.yue_hant): ZhoYuePairwiseReviewPromptZhoHant,
+        }
+    )
+)
 """Pairwise review prompts keyed by reviewed and reference languages."""
 
 _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
@@ -110,13 +119,13 @@ def get_pairwise_reviewer(
         ScinoephileError: if pairwise review does not support the language pair
     """
     key = (language, reference_language)
-    if key not in _PROMPTS:
+    if key not in DEFAULT_PROMPTS:
         raise ScinoephileError(
             "Pairwise review does not support language pair "
             f"{language.tag} <- {reference_language.tag}"
         )
     if prompt is None:
-        prompt = _PROMPTS[key]
+        prompt = DEFAULT_PROMPTS[key]
     if test_cases is None:
         test_cases = list(
             load_default_test_cases(PairwiseReviewManager, prompt, _JSON_PATHS[key])

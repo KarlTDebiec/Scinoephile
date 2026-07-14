@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
+from types import MappingProxyType
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
@@ -39,7 +41,10 @@ from scinoephile.multilang.zho_yue.translation import (
     ZhoYueGapTranslationPromptZhoHant,
 )
 
-__all__ = ["get_gap_translator"]
+__all__ = [
+    "DEFAULT_PROMPTS",
+    "get_gap_translator",
+]
 
 _ENG_YUE_GAP_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default written Cantonese-to-English gap translation JSON paths."""
@@ -85,24 +90,28 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
 }
 """Gap translation JSON paths keyed by exact source and target languages."""
 
-_PROMPTS: dict[tuple[Language, Language], GapTranslationPrompt] = {
-    (Language.yue_hans, Language.eng): EngYueGapTranslationPrompt,
-    (Language.yue_hant, Language.eng): EngYueGapTranslationPrompt,
-    (Language.zho_hans, Language.eng): EngZhoGapTranslationPrompt,
-    (Language.zho_hant, Language.eng): EngZhoGapTranslationPrompt,
-    (Language.eng, Language.yue_hans): YueEngGapTranslationPromptYueHans,
-    (Language.eng, Language.yue_hant): YueEngGapTranslationPromptYueHant,
-    (Language.zho_hans, Language.yue_hans): YueZhoGapTranslationPromptYueHans,
-    (Language.zho_hant, Language.yue_hans): YueZhoGapTranslationPromptYueHans,
-    (Language.zho_hans, Language.yue_hant): YueZhoGapTranslationPromptYueHant,
-    (Language.zho_hant, Language.yue_hant): YueZhoGapTranslationPromptYueHant,
-    (Language.eng, Language.zho_hans): ZhoEngGapTranslationPromptZhoHans,
-    (Language.eng, Language.zho_hant): ZhoEngGapTranslationPromptZhoHant,
-    (Language.yue_hans, Language.zho_hans): ZhoYueGapTranslationPromptZhoHans,
-    (Language.yue_hant, Language.zho_hans): ZhoYueGapTranslationPromptZhoHans,
-    (Language.yue_hans, Language.zho_hant): ZhoYueGapTranslationPromptZhoHant,
-    (Language.yue_hant, Language.zho_hant): ZhoYueGapTranslationPromptZhoHant,
-}
+DEFAULT_PROMPTS: Mapping[tuple[Language, Language], GapTranslationPrompt] = (
+    MappingProxyType(
+        {
+            (Language.yue_hans, Language.eng): EngYueGapTranslationPrompt,
+            (Language.yue_hant, Language.eng): EngYueGapTranslationPrompt,
+            (Language.zho_hans, Language.eng): EngZhoGapTranslationPrompt,
+            (Language.zho_hant, Language.eng): EngZhoGapTranslationPrompt,
+            (Language.eng, Language.yue_hans): YueEngGapTranslationPromptYueHans,
+            (Language.eng, Language.yue_hant): YueEngGapTranslationPromptYueHant,
+            (Language.zho_hans, Language.yue_hans): YueZhoGapTranslationPromptYueHans,
+            (Language.zho_hant, Language.yue_hans): YueZhoGapTranslationPromptYueHans,
+            (Language.zho_hans, Language.yue_hant): YueZhoGapTranslationPromptYueHant,
+            (Language.zho_hant, Language.yue_hant): YueZhoGapTranslationPromptYueHant,
+            (Language.eng, Language.zho_hans): ZhoEngGapTranslationPromptZhoHans,
+            (Language.eng, Language.zho_hant): ZhoEngGapTranslationPromptZhoHant,
+            (Language.yue_hans, Language.zho_hans): ZhoYueGapTranslationPromptZhoHans,
+            (Language.yue_hant, Language.zho_hans): ZhoYueGapTranslationPromptZhoHans,
+            (Language.yue_hans, Language.zho_hant): ZhoYueGapTranslationPromptZhoHant,
+            (Language.yue_hant, Language.zho_hant): ZhoYueGapTranslationPromptZhoHant,
+        }
+    )
+)
 """Gap translation prompts keyed by exact source and target languages."""
 
 
@@ -129,14 +138,14 @@ def get_gap_translator(
         ScinoephileError: if gap translation does not support the language pair
     """
     key = (source_language, target_language)
-    if key not in _PROMPTS:
+    if key not in DEFAULT_PROMPTS:
         raise ScinoephileError(
             "Gap translation does not support language pair "
             f"{source_language.tag} -> {target_language.tag}"
         )
 
     if prompt is None:
-        prompt = _PROMPTS[key]
+        prompt = DEFAULT_PROMPTS[key]
     if test_cases is None:
         json_paths = _JSON_PATHS[key]
         test_cases = list(

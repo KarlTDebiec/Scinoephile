@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
+from types import MappingProxyType
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
@@ -35,7 +37,10 @@ from scinoephile.multilang.zho_yue.review import (
     ZhoYueGuidedReviewPromptZhoHant,
 )
 
-__all__ = ["get_guided_reviewer"]
+__all__ = [
+    "DEFAULT_PROMPTS",
+    "get_guided_reviewer",
+]
 
 _YUE_ZHO_JSON_PATHS = (
     Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/guided_review/cuda.json"),
@@ -44,24 +49,28 @@ _YUE_ZHO_JSON_PATHS = (
 )
 """Default written Cantonese/Chinese guided-review JSON paths."""
 
-_PROMPTS: dict[tuple[Language, Language], GuidedReviewPrompt] = {
-    (Language.eng, Language.yue_hans): EngYueGuidedReviewPrompt,
-    (Language.eng, Language.yue_hant): EngYueGuidedReviewPrompt,
-    (Language.eng, Language.zho_hans): EngZhoGuidedReviewPrompt,
-    (Language.eng, Language.zho_hant): EngZhoGuidedReviewPrompt,
-    (Language.yue_hans, Language.eng): YueEngGuidedReviewPromptYueHans,
-    (Language.yue_hans, Language.zho_hans): YueZhoGuidedReviewPromptYueHans,
-    (Language.yue_hans, Language.zho_hant): YueZhoGuidedReviewPromptYueHans,
-    (Language.yue_hant, Language.eng): YueEngGuidedReviewPromptYueHant,
-    (Language.yue_hant, Language.zho_hans): YueZhoGuidedReviewPromptYueHant,
-    (Language.yue_hant, Language.zho_hant): YueZhoGuidedReviewPromptYueHant,
-    (Language.zho_hans, Language.eng): ZhoEngGuidedReviewPromptZhoHans,
-    (Language.zho_hans, Language.yue_hans): ZhoYueGuidedReviewPromptZhoHans,
-    (Language.zho_hans, Language.yue_hant): ZhoYueGuidedReviewPromptZhoHans,
-    (Language.zho_hant, Language.eng): ZhoEngGuidedReviewPromptZhoHant,
-    (Language.zho_hant, Language.yue_hans): ZhoYueGuidedReviewPromptZhoHant,
-    (Language.zho_hant, Language.yue_hant): ZhoYueGuidedReviewPromptZhoHant,
-}
+DEFAULT_PROMPTS: Mapping[tuple[Language, Language], GuidedReviewPrompt] = (
+    MappingProxyType(
+        {
+            (Language.eng, Language.yue_hans): EngYueGuidedReviewPrompt,
+            (Language.eng, Language.yue_hant): EngYueGuidedReviewPrompt,
+            (Language.eng, Language.zho_hans): EngZhoGuidedReviewPrompt,
+            (Language.eng, Language.zho_hant): EngZhoGuidedReviewPrompt,
+            (Language.yue_hans, Language.eng): YueEngGuidedReviewPromptYueHans,
+            (Language.yue_hans, Language.zho_hans): YueZhoGuidedReviewPromptYueHans,
+            (Language.yue_hans, Language.zho_hant): YueZhoGuidedReviewPromptYueHans,
+            (Language.yue_hant, Language.eng): YueEngGuidedReviewPromptYueHant,
+            (Language.yue_hant, Language.zho_hans): YueZhoGuidedReviewPromptYueHant,
+            (Language.yue_hant, Language.zho_hant): YueZhoGuidedReviewPromptYueHant,
+            (Language.zho_hans, Language.eng): ZhoEngGuidedReviewPromptZhoHans,
+            (Language.zho_hans, Language.yue_hans): ZhoYueGuidedReviewPromptZhoHans,
+            (Language.zho_hans, Language.yue_hant): ZhoYueGuidedReviewPromptZhoHans,
+            (Language.zho_hant, Language.eng): ZhoEngGuidedReviewPromptZhoHant,
+            (Language.zho_hant, Language.yue_hans): ZhoYueGuidedReviewPromptZhoHant,
+            (Language.zho_hant, Language.yue_hant): ZhoYueGuidedReviewPromptZhoHant,
+        }
+    )
+)
 """Guided review prompts keyed by reviewed and guide languages."""
 
 _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
@@ -71,7 +80,7 @@ _JSON_PATHS: dict[tuple[Language, Language], tuple[Path, ...]] = {
         and key[1] in (Language.zho_hans, Language.zho_hant)
         else ()
     )
-    for key in _PROMPTS
+    for key in DEFAULT_PROMPTS
 }
 """Guided review JSON paths keyed by reviewed and guide languages."""
 
@@ -99,13 +108,13 @@ def get_guided_reviewer(
         ScinoephileError: if guided review does not support the language pair
     """
     key = (language, guide_language)
-    if key not in _PROMPTS:
+    if key not in DEFAULT_PROMPTS:
         raise ScinoephileError(
             "Guided review does not support language pair "
             f"{language.tag} <- {guide_language.tag}"
         )
     if prompt is None:
-        prompt = _PROMPTS[key]
+        prompt = DEFAULT_PROMPTS[key]
     if test_cases is None:
         test_cases = list(
             load_default_test_cases(GuidedReviewManager, prompt, _JSON_PATHS[key])

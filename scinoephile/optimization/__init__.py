@@ -3,6 +3,6 @@
 """Prompt optimization and related persistence.
 
 Package hierarchy (modules may import from any above):
-* operations / prompt_specs
+* operations / prompt_spec
 * persistence
 """

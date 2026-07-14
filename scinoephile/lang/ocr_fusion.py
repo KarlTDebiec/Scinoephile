@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
+from types import MappingProxyType
 from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
@@ -21,7 +23,10 @@ from .eng.ocr_fusion import OcrFusionPromptEng
 from .yue.ocr_fusion import OcrFusionPromptYueHans, OcrFusionPromptYueHant
 from .zho.ocr_fusion import OcrFusionPromptZhoHans, OcrFusionPromptZhoHant
 
-__all__ = ["get_ocr_fuser"]
+__all__ = [
+    "DEFAULT_PROMPTS",
+    "get_ocr_fuser",
+]
 
 _ENG_OCR_FUSION_JSON_PATHS = (
     Path("kob/output/eng_ocr/lang/eng/ocr_fusion.json"),
@@ -69,13 +74,15 @@ _JSON_PATHS: dict[Language, tuple[Path, ...]] = {
 }
 """OCR fusion JSON paths keyed by language."""
 
-_PROMPTS: dict[Language, OcrFusionPrompt] = {
-    Language.eng: OcrFusionPromptEng,
-    Language.yue_hans: OcrFusionPromptYueHans,
-    Language.yue_hant: OcrFusionPromptYueHant,
-    Language.zho_hans: OcrFusionPromptZhoHans,
-    Language.zho_hant: OcrFusionPromptZhoHant,
-}
+DEFAULT_PROMPTS: Mapping[Language, OcrFusionPrompt] = MappingProxyType(
+    {
+        Language.eng: OcrFusionPromptEng,
+        Language.yue_hans: OcrFusionPromptYueHans,
+        Language.yue_hant: OcrFusionPromptYueHant,
+        Language.zho_hans: OcrFusionPromptZhoHans,
+        Language.zho_hant: OcrFusionPromptZhoHant,
+    }
+)
 """OCR fusion prompts keyed by language."""
 
 
@@ -99,11 +106,11 @@ def get_ocr_fuser(
     Raises:
         ScinoephileError: if OCR fusion does not support the language
     """
-    if language not in _PROMPTS:
+    if language not in DEFAULT_PROMPTS:
         raise ScinoephileError(f"OCR fusion does not support language {language.tag}")
 
     if prompt is None:
-        prompt = _PROMPTS[language]
+        prompt = DEFAULT_PROMPTS[language]
     if test_cases is None:
         json_paths = _JSON_PATHS[language]
         test_cases = list(load_default_test_cases(OcrFusionManager, prompt, json_paths))
