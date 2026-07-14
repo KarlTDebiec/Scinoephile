@@ -19,10 +19,10 @@ from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 from scinoephile.multilang.yue_zho.transcription import (
     DEFAULT_YUE_WHISPER_MODEL_NAME,
-    YueDelineationVsZhoPromptYueHans,
-    YueDelineationVsZhoPromptYueHant,
-    YuePunctuationVsZhoPromptYueHans,
-    YuePunctuationVsZhoPromptYueHant,
+    YueZhoDelineationPromptYueHans,
+    YueZhoDelineationPromptYueHant,
+    YueZhoPunctuationPromptYueHans,
+    YueZhoPunctuationPromptYueHant,
 )
 
 from .aligner import TranscriptionAligner
@@ -98,8 +98,8 @@ DEFAULT_SPECS: Mapping[
         ): GuidedTranscriptionSpec(
             model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
             whisper_language="yue",
-            delineation_prompt=YueDelineationVsZhoPromptYueHans,
-            punctuation_prompt=YuePunctuationVsZhoPromptYueHans,
+            delineation_prompt=YueZhoDelineationPromptYueHans,
+            punctuation_prompt=YueZhoPunctuationPromptYueHans,
             test_case_dir_path=Path("multilang/yue_zho/transcription"),
             delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
             punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
@@ -111,8 +111,8 @@ DEFAULT_SPECS: Mapping[
         ): GuidedTranscriptionSpec(
             model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
             whisper_language="yue",
-            delineation_prompt=YueDelineationVsZhoPromptYueHans,
-            punctuation_prompt=YuePunctuationVsZhoPromptYueHans,
+            delineation_prompt=YueZhoDelineationPromptYueHans,
+            punctuation_prompt=YueZhoPunctuationPromptYueHans,
             test_case_dir_path=Path("multilang/yue_zho/transcription"),
             delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
             punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
@@ -124,8 +124,8 @@ DEFAULT_SPECS: Mapping[
         ): GuidedTranscriptionSpec(
             model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
             whisper_language="yue",
-            delineation_prompt=YueDelineationVsZhoPromptYueHant,
-            punctuation_prompt=YuePunctuationVsZhoPromptYueHant,
+            delineation_prompt=YueZhoDelineationPromptYueHant,
+            punctuation_prompt=YueZhoPunctuationPromptYueHant,
             test_case_dir_path=Path("multilang/yue_zho/transcription"),
             delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
             punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
@@ -137,8 +137,8 @@ DEFAULT_SPECS: Mapping[
         ): GuidedTranscriptionSpec(
             model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
             whisper_language="yue",
-            delineation_prompt=YueDelineationVsZhoPromptYueHant,
-            punctuation_prompt=YuePunctuationVsZhoPromptYueHant,
+            delineation_prompt=YueZhoDelineationPromptYueHant,
+            punctuation_prompt=YueZhoPunctuationPromptYueHant,
             test_case_dir_path=Path("multilang/yue_zho/transcription"),
             delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
             punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,

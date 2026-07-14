@@ -16,8 +16,8 @@ from scinoephile.multilang.transcription.guided import (
     get_guided_transcriber,
 )
 from scinoephile.multilang.yue_zho.transcription import (
-    YueDelineationVsZhoPromptYueHant,
-    YuePunctuationVsZhoPromptYueHant,
+    YueZhoDelineationPromptYueHant,
+    YueZhoPunctuationPromptYueHant,
 )
 
 
@@ -52,10 +52,10 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
     assert transcriber.aligner.delineation_queryer.prompt is (
-        YueDelineationVsZhoPromptYueHant
+        YueZhoDelineationPromptYueHant
     )
     assert transcriber.aligner.punctuation_queryer.prompt is (
-        YuePunctuationVsZhoPromptYueHant
+        YueZhoPunctuationPromptYueHant
     )
     assert transcriber.vad_transcriber is not None
     assert transcriber.vad_transcriber.language == "yue"

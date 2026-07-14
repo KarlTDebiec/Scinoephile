@@ -43,8 +43,8 @@ from scinoephile.multilang.yue_zho.review import (
     YueZhoPairwiseReviewPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.transcription import (
-    YueDelineationVsZhoPromptYueHans,
-    YuePunctuationVsZhoPromptYueHans,
+    YueZhoDelineationPromptYueHans,
+    YueZhoPunctuationPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.translation import (
     YueZhoGapTranslationPromptYueHans,
@@ -174,7 +174,7 @@ def get_mlamd_eng_review_test_cases(
 
 @cache
 def get_mlamd_yue_delineation_test_cases(
-    prompt: DelineationPrompt = YueDelineationVsZhoPromptYueHans,
+    prompt: DelineationPrompt = YueZhoDelineationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD yue-Hans delineation test cases.
@@ -225,7 +225,7 @@ def get_mlamd_yue_from_zho_gap_translation_test_cases(
 
 @cache
 def get_mlamd_yue_punctuation_test_cases(
-    prompt: PunctuationPrompt = YuePunctuationVsZhoPromptYueHans,
+    prompt: PunctuationPrompt = YueZhoPunctuationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD yue-Hans punctuation test cases.

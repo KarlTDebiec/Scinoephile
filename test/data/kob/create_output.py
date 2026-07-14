@@ -19,10 +19,10 @@ from scinoephile.multilang.yue_zho.review import (
     YueZhoPairwiseReviewPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription import (
-    YueDelineationVsZhoPromptYueHans,
-    YueDelineationVsZhoPromptYueHant,
-    YuePunctuationVsZhoPromptYueHans,
-    YuePunctuationVsZhoPromptYueHant,
+    YueZhoDelineationPromptYueHans,
+    YueZhoDelineationPromptYueHant,
+    YueZhoPunctuationPromptYueHans,
+    YueZhoPunctuationPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.translation import (
     YueZhoGapTranslationPromptYueHans,
@@ -117,8 +117,8 @@ if "yue-Hans_transcribe" in actions:
             "model_name": "khleeloo/whisper-large-v3-cantonese",
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
-            "delineation_prompt": YueDelineationVsZhoPromptYueHans,
-            "punctuation_prompt": YuePunctuationVsZhoPromptYueHans,
+            "delineation_prompt": YueZhoDelineationPromptYueHans,
+            "punctuation_prompt": YueZhoPunctuationPromptYueHans,
         },
         pairwise_reviewer_kw={"prompt": YueZhoPairwiseReviewPromptYueHans},
         translator_kw={"prompt": YueZhoGapTranslationPromptYueHans},
@@ -137,8 +137,8 @@ if "yue-Hans_transcribe" in actions:
             "model_name": "khleeloo/whisper-large-v3-cantonese",
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
-            "delineation_prompt": YueDelineationVsZhoPromptYueHant,
-            "punctuation_prompt": YuePunctuationVsZhoPromptYueHant,
+            "delineation_prompt": YueZhoDelineationPromptYueHant,
+            "punctuation_prompt": YueZhoPunctuationPromptYueHant,
         },
         pairwise_reviewer_kw={"prompt": YueZhoPairwiseReviewPromptYueHant},
         translator_kw={"prompt": YueZhoGapTranslationPromptYueHant},

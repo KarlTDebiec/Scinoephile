@@ -25,10 +25,10 @@ from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
 from scinoephile.multilang.yue_zho.transcription import (
-    YueDelineationVsZhoPromptYueHans,
-    YueDelineationVsZhoPromptYueHant,
-    YuePunctuationVsZhoPromptYueHans,
-    YuePunctuationVsZhoPromptYueHant,
+    YueZhoDelineationPromptYueHans,
+    YueZhoDelineationPromptYueHant,
+    YueZhoPunctuationPromptYueHans,
+    YueZhoPunctuationPromptYueHant,
 )
 from scinoephile.optimization.prompt_spec import PromptSpec
 
@@ -72,19 +72,19 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
         {
             "delineation-yue-hans-vs-zho": PromptSpec(
                 manager_cls=DelineationManager,
-                prompt=YueDelineationVsZhoPromptYueHans,
+                prompt=YueZhoDelineationPromptYueHans,
             ),
             "delineation-yue-hant-vs-zho": PromptSpec(
                 manager_cls=DelineationManager,
-                prompt=YueDelineationVsZhoPromptYueHant,
+                prompt=YueZhoDelineationPromptYueHant,
             ),
             "punctuation-yue-hans-vs-zho": PromptSpec(
                 manager_cls=PunctuationManager,
-                prompt=YuePunctuationVsZhoPromptYueHans,
+                prompt=YueZhoPunctuationPromptYueHans,
             ),
             "punctuation-yue-hant-vs-zho": PromptSpec(
                 manager_cls=PunctuationManager,
-                prompt=YuePunctuationVsZhoPromptYueHant,
+                prompt=YueZhoPunctuationPromptYueHant,
             ),
         },
     )

@@ -16,10 +16,10 @@ from scinoephile.llms.punctuation import PunctuationPrompt
 
 __all__ = [
     "DEFAULT_YUE_WHISPER_MODEL_NAME",
-    "YueDelineationVsZhoPromptYueHans",
-    "YueDelineationVsZhoPromptYueHant",
-    "YuePunctuationVsZhoPromptYueHans",
-    "YuePunctuationVsZhoPromptYueHant",
+    "YueZhoDelineationPromptYueHans",
+    "YueZhoDelineationPromptYueHant",
+    "YueZhoPunctuationPromptYueHans",
+    "YueZhoPunctuationPromptYueHant",
 ]
 
 
@@ -27,7 +27,7 @@ DEFAULT_YUE_WHISPER_MODEL_NAME = "khleeloo/whisper-large-v3-cantonese"
 """Default Whisper model name for written Cantonese transcription."""
 
 
-YueDelineationVsZhoPromptYueHant = DelineationPrompt(
+YueZhoDelineationPromptYueHant = DelineationPrompt(
     language=Language.yue_hant,
     **ENG_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
@@ -66,13 +66,13 @@ YueDelineationVsZhoPromptYueHant = DelineationPrompt(
 )
 """Text for LLM correspondence for traditional written Cantonese delineation."""
 
-YueDelineationVsZhoPromptYueHans = YueDelineationVsZhoPromptYueHant.transformed(
+YueZhoDelineationPromptYueHans = YueZhoDelineationPromptYueHant.transformed(
     Language.yue_hans,
     partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
 )
 """Text for LLM correspondence for simplified written Cantonese delineation."""
 
-YuePunctuationVsZhoPromptYueHant = PunctuationPrompt(
+YueZhoPunctuationPromptYueHant = PunctuationPrompt(
     language=Language.yue_hant,
     **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
@@ -103,7 +103,7 @@ YuePunctuationVsZhoPromptYueHant = PunctuationPrompt(
 )
 """Text for traditional written Cantonese/standard Chinese punctuation."""
 
-YuePunctuationVsZhoPromptYueHans = YuePunctuationVsZhoPromptYueHant.transformed(
+YueZhoPunctuationPromptYueHans = YueZhoPunctuationPromptYueHant.transformed(
     Language.yue_hans,
     partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
 )

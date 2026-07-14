@@ -40,8 +40,8 @@ from scinoephile.multilang.yue_zho.review import (
     YueZhoPairwiseReviewPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.transcription import (
-    YueDelineationVsZhoPromptYueHans,
-    YuePunctuationVsZhoPromptYueHans,
+    YueZhoDelineationPromptYueHans,
+    YueZhoPunctuationPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.translation import (
     YueZhoGapTranslationPromptYueHans,
@@ -185,7 +185,7 @@ def get_kob_eng_review_test_cases(
 
 @cache
 def get_kob_yue_delineation_test_cases(
-    prompt: DelineationPrompt = YueDelineationVsZhoPromptYueHans,
+    prompt: DelineationPrompt = YueZhoDelineationPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hans delineation test cases.
@@ -296,7 +296,7 @@ def get_kob_yue_hant_simplify_review_test_cases(
 
 @cache
 def get_kob_yue_punctuation_test_cases(
-    prompt: PunctuationPrompt = YuePunctuationVsZhoPromptYueHans,
+    prompt: PunctuationPrompt = YueZhoPunctuationPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB yue-Hans punctuation test cases.

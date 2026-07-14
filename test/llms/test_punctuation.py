@@ -23,7 +23,7 @@ from scinoephile.llms.punctuation import (
     PunctuationTestCase,
 )
 from scinoephile.multilang.yue_zho.transcription import (
-    YuePunctuationVsZhoPromptYueHans,
+    YueZhoPunctuationPromptYueHans,
 )
 from scinoephile.optimization.persistence.test_cases import PersistedTestCase
 from test.helpers import test_data_root
@@ -119,9 +119,7 @@ def test_query_and_answer_require_nonempty_fields():
 
 def test_validation_and_minimum_difficulty_are_static():
     """Punctuation semantics should live on the static test-case model."""
-    test_case_cls = PunctuationManager.get_test_case_cls(
-        YuePunctuationVsZhoPromptYueHans
-    )
+    test_case_cls = PunctuationManager.get_test_case_cls(YueZhoPunctuationPromptYueHans)
     plain = test_case_cls.model_validate(
         {
             "query": {"subtitles": ["你好"], "guide": "你好"},
@@ -226,7 +224,7 @@ def test_tracked_fixture_round_trips_without_migration(
     test_cases = load_test_cases_from_json(
         input_path,
         PunctuationManager,
-        YuePunctuationVsZhoPromptYueHans,
+        YueZhoPunctuationPromptYueHans,
     )
     output_path = tmp_path / input_path.name
 

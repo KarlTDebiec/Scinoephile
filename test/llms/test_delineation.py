@@ -23,7 +23,7 @@ from scinoephile.llms.delineation import (
     DelineationTestCase,
 )
 from scinoephile.multilang.yue_zho.transcription import (
-    YueDelineationVsZhoPromptYueHans,
+    YueZhoDelineationPromptYueHans,
 )
 from scinoephile.optimization.persistence.test_cases import PersistedTestCase
 from test.helpers import test_data_root
@@ -359,7 +359,7 @@ def test_tracked_fixture_round_trips_without_migration(
     test_cases = load_test_cases_from_json(
         input_path,
         DelineationManager,
-        YueDelineationVsZhoPromptYueHans,
+        YueZhoDelineationPromptYueHans,
     )
     output_path = tmp_path / input_path.name
 
@@ -367,7 +367,7 @@ def test_tracked_fixture_round_trips_without_migration(
     reloaded = load_test_cases_from_json(
         output_path,
         DelineationManager,
-        YueDelineationVsZhoPromptYueHans,
+        YueZhoDelineationPromptYueHans,
     )
 
     assert json.loads(output_path.read_text(encoding="utf-8")) == raw_data
