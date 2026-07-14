@@ -10,13 +10,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.helpers.io import read_series, write_series
-from scinoephile.cli.helpers.llms import (
-    LLM_LOCALIZATIONS,
-    LlmArguments,
-    add_llm_provider_args,
-    read_llm_additional_context,
-)
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -32,6 +25,14 @@ from scinoephile.workflows.review import (
     review_series,
     review_series_guided,
     review_series_pairwise,
+)
+
+from .helpers.io import read_series, write_series
+from .helpers.llms import (
+    LLM_LOCALIZATIONS,
+    LlmArguments,
+    add_llm_provider_args,
+    read_llm_additional_context,
 )
 
 __all__ = ["ProofreadCli"]

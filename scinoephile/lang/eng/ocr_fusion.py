@@ -6,8 +6,9 @@ from __future__ import annotations
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
 from scinoephile.llms.ocr_fusion import OcrFusionPrompt
+
+from .prompts import ENG_PROMPT_FIELDS
 
 __all__ = ["OcrFusionPromptEng"]
 

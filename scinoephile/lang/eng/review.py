@@ -6,10 +6,11 @@ from __future__ import annotations
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
 from scinoephile.llms.guided_review import GuidedReviewPrompt
 from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
 from scinoephile.llms.review import ReviewPrompt
+
+from .prompts import ENG_PROMPT_FIELDS
 
 __all__ = [
     "GuidedReviewPromptEng",

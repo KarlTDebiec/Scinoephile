@@ -11,13 +11,6 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Any
 
-from scinoephile.cli.helpers.io import read_series, write_series
-from scinoephile.cli.helpers.llms import (
-    LLM_LOCALIZATIONS,
-    LlmArguments,
-    add_llm_provider_args,
-    read_llm_additional_context,
-)
 from scinoephile.common.argument_parsing import (
     enum_arg,
     enum_metavar,
@@ -33,6 +26,14 @@ from scinoephile.workflows.translation import (
     translate_series,
     translate_series_gaps,
     translate_series_guided,
+)
+
+from .helpers.io import read_series, write_series
+from .helpers.llms import (
+    LLM_LOCALIZATIONS,
+    LlmArguments,
+    add_llm_provider_args,
+    read_llm_additional_context,
 )
 
 __all__ = ["TranslateCli"]

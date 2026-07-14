@@ -9,15 +9,6 @@ from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
-from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
-from scinoephile.lang.yue.ocr_fusion import (
-    OcrFusionPromptYueHans,
-    OcrFusionPromptYueHant,
-)
-from scinoephile.lang.zho.ocr_fusion import (
-    OcrFusionPromptZhoHans,
-    OcrFusionPromptZhoHant,
-)
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.ocr_fusion import (
     OcrFusionManager,
@@ -25,6 +16,10 @@ from scinoephile.llms.ocr_fusion import (
     OcrFusionPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
+
+from .eng.ocr_fusion import OcrFusionPromptEng
+from .yue.ocr_fusion import OcrFusionPromptYueHans, OcrFusionPromptYueHant
+from .zho.ocr_fusion import OcrFusionPromptZhoHans, OcrFusionPromptZhoHant
 
 __all__ = ["get_ocr_fuser"]
 

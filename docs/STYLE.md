@@ -14,10 +14,19 @@
 * Include `from __future__ import annotations` in Python modules that contain
   imports, exports, type annotations, functions, or classes. Pure package marker
   files that contain only a module docstring do not need it.
-* For imports within the same directory, use relative imports (for example,
-  `from .foo import bar`).
-* Do not use relative imports for imports from parent or sibling directories
-  (for example, `from ..foo import bar` or `from .. import foo`).
+* Use single-dot relative imports for imports rooted in the module's containing
+  package, including its modules and child packages (for example,
+  `from .foo import bar` or `from .child.foo import bar`).
+* Use the absolute path to the concrete module or package for imports that must
+  climb to a parent package or reach one of its other children. Do not use
+  multi-dot relative imports (for example, `from ..foo import bar`).
+* Public names may be imported from another package's `__init__.py` facade when
+  they are listed in that package's `__all__`.
+* Within a package subtree, do not import a name re-exported by one of the
+  module's own ancestor package facades. Import from the concrete module that
+  owns the name so internal dependencies remain visible (for example, use
+  `from scinoephile.core.exceptions import ScinoephileError` within
+  `scinoephile.core.llms`, not `from scinoephile.core import ScinoephileError`).
 * Use `if TYPE_CHECKING:` blocks only when necessary to avoid circular imports.
 * Allow `ruff` to manage import sorting.
 
