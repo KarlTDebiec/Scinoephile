@@ -87,6 +87,31 @@ class GuidedTranscriptionSpec:
     """Strategy for splitting raw Whisper segments."""
 
 
+_YUE_HANS_SPEC = GuidedTranscriptionSpec(
+    model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
+    whisper_language="yue",
+    delineation_prompt=YueZhoDelineationPromptYueHans,
+    punctuation_prompt=YueZhoPunctuationPromptYueHans,
+    test_case_dir_path=Path("multilang/yue_zho/transcription"),
+    delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
+    punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
+    segment_splitter=get_segment_split_on_whitespace,
+)
+"""Guided transcription specification for simplified written Cantonese."""
+
+_YUE_HANT_SPEC = GuidedTranscriptionSpec(
+    model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
+    whisper_language="yue",
+    delineation_prompt=YueZhoDelineationPromptYueHant,
+    punctuation_prompt=YueZhoPunctuationPromptYueHant,
+    test_case_dir_path=Path("multilang/yue_zho/transcription"),
+    delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
+    punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
+    segment_splitter=get_segment_split_on_whitespace,
+)
+"""Guided transcription specification for traditional written Cantonese."""
+
+
 DEFAULT_SPECS: Mapping[
     tuple[Language, Language],
     GuidedTranscriptionSpec,
@@ -95,55 +120,19 @@ DEFAULT_SPECS: Mapping[
         (
             Language.yue_hans,
             Language.zho_hans,
-        ): GuidedTranscriptionSpec(
-            model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
-            whisper_language="yue",
-            delineation_prompt=YueZhoDelineationPromptYueHans,
-            punctuation_prompt=YueZhoPunctuationPromptYueHans,
-            test_case_dir_path=Path("multilang/yue_zho/transcription"),
-            delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
-            punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
-            segment_splitter=get_segment_split_on_whitespace,
-        ),
+        ): _YUE_HANS_SPEC,
         (
             Language.yue_hans,
             Language.zho_hant,
-        ): GuidedTranscriptionSpec(
-            model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
-            whisper_language="yue",
-            delineation_prompt=YueZhoDelineationPromptYueHans,
-            punctuation_prompt=YueZhoPunctuationPromptYueHans,
-            test_case_dir_path=Path("multilang/yue_zho/transcription"),
-            delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
-            punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
-            segment_splitter=get_segment_split_on_whitespace,
-        ),
+        ): _YUE_HANS_SPEC,
         (
             Language.yue_hant,
             Language.zho_hans,
-        ): GuidedTranscriptionSpec(
-            model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
-            whisper_language="yue",
-            delineation_prompt=YueZhoDelineationPromptYueHant,
-            punctuation_prompt=YueZhoPunctuationPromptYueHant,
-            test_case_dir_path=Path("multilang/yue_zho/transcription"),
-            delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
-            punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
-            segment_splitter=get_segment_split_on_whitespace,
-        ),
+        ): _YUE_HANT_SPEC,
         (
             Language.yue_hant,
             Language.zho_hant,
-        ): GuidedTranscriptionSpec(
-            model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
-            whisper_language="yue",
-            delineation_prompt=YueZhoDelineationPromptYueHant,
-            punctuation_prompt=YueZhoPunctuationPromptYueHant,
-            test_case_dir_path=Path("multilang/yue_zho/transcription"),
-            delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
-            punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
-            segment_splitter=get_segment_split_on_whitespace,
-        ),
+        ): _YUE_HANT_SPEC,
     }
 )
 """Guided transcription specifications keyed by transcription and reference language."""
@@ -154,7 +143,6 @@ def get_guided_transcriber(
     reference_language: Language,
     *,
     model_name: str | None = None,
-    whisper_language: str | None = None,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
@@ -164,7 +152,6 @@ def get_guided_transcriber(
     test_case_dir_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
-    segment_splitter: TranscribedSegmentSplitter | None = None,
 ) -> GuidedTranscriptionProcessor:
     """Get a guided transcriber for a supported language pair.
 
@@ -172,7 +159,6 @@ def get_guided_transcriber(
         language: transcription language
         reference_language: reference subtitle language
         model_name: Whisper model override
-        whisper_language: Whisper language-code override
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
         provider: provider to use for LLM queries
@@ -182,7 +168,6 @@ def get_guided_transcriber(
         test_case_dir_path: directory where encountered test cases are written
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
-        segment_splitter: Whisper segment-splitting strategy override
     Returns:
         configured guided transcription processor
     Raises:
@@ -198,14 +183,10 @@ def get_guided_transcriber(
 
     if model_name is None:
         model_name = spec.model_name
-    if whisper_language is None:
-        whisper_language = spec.whisper_language
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
         punctuation_prompt = spec.punctuation_prompt
-    if segment_splitter is None:
-        segment_splitter = spec.segment_splitter
     if test_case_dir_path is None:
         test_case_dir_path = get_runtime_cache_dir_path("test_cases")
         test_case_dir_path /= spec.test_case_dir_path
@@ -258,9 +239,9 @@ def get_guided_transcriber(
         language=language,
         reference_language=reference_language,
         model_name=model_name,
-        whisper_language=whisper_language,
+        whisper_language=spec.whisper_language,
         aligner=aligner,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
-        segment_splitter=segment_splitter,
+        segment_splitter=spec.segment_splitter,
     )

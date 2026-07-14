@@ -16,7 +16,6 @@ from scinoephile.multilang.transcription.guided import get_guided_transcriber
 from scinoephile.multilang.transcription.processor import (
     DemucsMode,
     GuidedTranscriptionProcessor,
-    TranscribedSegmentSplitter,
     VADMode,
 )
 
@@ -32,7 +31,6 @@ def transcribe_series_guided(
     language: Language,
     reference_language: Language | None = None,
     model_name: str | None = None,
-    whisper_language: str | None = None,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
@@ -42,7 +40,6 @@ def transcribe_series_guided(
     test_case_dir_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
-    segment_splitter: TranscribedSegmentSplitter | None = None,
     transcriber: GuidedTranscriptionProcessor | None = None,
     stop_at_idx: int | None = None,
 ) -> AudioSeries:
@@ -54,7 +51,6 @@ def transcribe_series_guided(
         language: transcription language
         reference_language: explicit reference language, or None to detect it
         model_name: Whisper model override
-        whisper_language: Whisper language-code override
         demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
         provider: provider to use for LLM queries
@@ -64,7 +60,6 @@ def transcribe_series_guided(
         test_case_dir_path: directory where encountered test cases are written
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
-        segment_splitter: Whisper segment-splitting strategy override
         transcriber: guided transcription processor, or None to construct one
         stop_at_idx: exclusive block index at which to stop processing
     Returns:
@@ -82,7 +77,6 @@ def transcribe_series_guided(
             language,
             resolved_reference_language,
             model_name=model_name,
-            whisper_language=whisper_language,
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             provider=provider,
@@ -92,7 +86,6 @@ def transcribe_series_guided(
             test_case_dir_path=test_case_dir_path,
             delineation_test_cases=delineation_test_cases,
             punctuation_test_cases=punctuation_test_cases,
-            segment_splitter=segment_splitter,
         )
     return transcriber.process(
         audio_series,

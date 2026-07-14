@@ -8,7 +8,7 @@ from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from unittest.mock import Mock, patch
 
-from pytest import raises
+from pytest import fixture, mark, raises
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
@@ -19,6 +19,24 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.multilang.transcription.processor import DemucsMode, VADMode
 from test.helpers import assert_series_equal, test_data_root
+
+_MEDIA_INFILE_PATH = "/tmp/test_media.mp4"
+_REFERENCE_INFILE_PATH = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+
+
+@fixture
+def audio_series() -> Mock:
+    """Get a mock audio subtitle series."""
+    return Mock(spec=AudioSeries)
+
+
+@fixture
+def expected_series() -> Series:
+    """Get the expected transcribed subtitle series."""
+    return Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
 
 
 def test_transcribe_cli_is_top_level_command():
@@ -65,16 +83,16 @@ def test_transcribe_cli_defers_whisper_model_default_to_registry():
     assert whisper_model_action.default is None
 
 
-def test_transcribe_cli_writes_file():
-    """Test generic transcription CLI writes file output."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
-    media_infile_path = "/tmp/test_media.mp4"
-    expected_series = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
-        format_="srt",
-    )
-    audio_series = Mock(spec=AudioSeries)
+def test_transcribe_cli_writes_file(
+    audio_series: Mock,
+    expected_series: Series,
+):
+    """Test generic transcription CLI writes file output.
 
+    Arguments:
+        audio_series: mock audio subtitle series
+        expected_series: expected transcribed subtitle series
+    """
     with get_temp_file_path(".srt") as outfile_path:
         with patch(
             "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media",
@@ -86,8 +104,8 @@ def test_transcribe_cli_writes_file():
             ):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{media_infile_path} "
-                    f"--reference-infile {reference_infile_path} "
+                    f"{_MEDIA_INFILE_PATH} "
+                    f"--reference-infile {_REFERENCE_INFILE_PATH} "
                     f"--language yue-Hans --stream-index 1 -o {outfile_path}",
                 )
         output_series = Series.load(outfile_path)
@@ -95,15 +113,16 @@ def test_transcribe_cli_writes_file():
     assert_series_equal(output_series, expected_series)
 
 
-def test_transcribe_cli_writes_stdout():
-    """Test generic transcription CLI writes stdout output."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
-    media_infile_path = "/tmp/test_media.mp4"
-    expected_series = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
-        format_="srt",
-    )
-    audio_series = Mock(spec=AudioSeries)
+def test_transcribe_cli_writes_stdout(
+    audio_series: Mock,
+    expected_series: Series,
+):
+    """Test generic transcription CLI writes stdout output.
+
+    Arguments:
+        audio_series: mock audio subtitle series
+        expected_series: expected transcribed subtitle series
+    """
     stdout_stream = StringIO()
 
     with patch(
@@ -117,8 +136,8 @@ def test_transcribe_cli_writes_stdout():
             with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"{media_infile_path} "
-                    f"--reference-infile {reference_infile_path} "
+                    f"{_MEDIA_INFILE_PATH} "
+                    f"--reference-infile {_REFERENCE_INFILE_PATH} "
                     "--language yue-Hans",
                 )
 
@@ -126,15 +145,16 @@ def test_transcribe_cli_writes_stdout():
     assert_series_equal(output_series, expected_series)
 
 
-def test_transcribe_cli_passes_generic_configuration():
-    """Test transcription CLI passes generic language and model configuration."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
-    media_infile_path = "/tmp/test_media.mp4"
-    expected_series = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
-        format_="srt",
-    )
-    audio_series = Mock(spec=AudioSeries)
+def test_transcribe_cli_passes_generic_configuration(
+    audio_series: Mock,
+    expected_series: Series,
+):
+    """Test transcription CLI passes generic language and model configuration.
+
+    Arguments:
+        audio_series: mock audio subtitle series
+        expected_series: expected transcribed subtitle series
+    """
 
     def transcribe(
         input_audio_series: AudioSeries,
@@ -170,29 +190,48 @@ def test_transcribe_cli_passes_generic_configuration():
         ):
             run_cli_with_args(
                 TranscribeCli,
-                f"{media_infile_path} "
-                f"--reference-infile {reference_infile_path} "
+                f"{_MEDIA_INFILE_PATH} "
+                f"--reference-infile {_REFERENCE_INFILE_PATH} "
                 "--language yue-Hant --reference-language zho-Hans "
                 "--whisper-model custom/whisper --demucs on --vad off",
             )
 
 
-def test_transcribe_cli_rejects_negative_stream_index():
-    """Test transcription CLI rejects negative stream indexes."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+@mark.parametrize(
+    "args",
+    (
+        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        "--language yue-Hans --stream-index -1",
+        f"{_MEDIA_INFILE_PATH} --reference-infile /tmp/missing.srt --language yue-Hans",
+        f"/tmp/missing.mp4 --reference-infile {_REFERENCE_INFILE_PATH} "
+        "--language yue-Hans",
+        "- --reference-infile - --language yue-Hans",
+        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        "--language yue-Hans --overwrite",
+        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        "--language yue-Hans --script traditional",
+    ),
+    ids=(
+        "negative stream index",
+        "missing reference infile",
+        "missing media infile",
+        "two stdin infiles",
+        "overwrite without outfile",
+        "language-specific option",
+    ),
+)
+def test_transcribe_cli_rejects_invalid_arguments(args: str):
+    """Test transcription CLI rejects invalid arguments.
 
+    Arguments:
+        args: invalid CLI argument string
+    """
     with raises(SystemExit, match="2"):
-        run_cli_with_args(
-            TranscribeCli,
-            f"/tmp/test_media.mp4 --reference-infile {reference_infile_path} "
-            "--language yue-Hans --stream-index -1",
-        )
+        run_cli_with_args(TranscribeCli, args)
 
 
 def test_transcribe_cli_stream_errors_are_user_facing():
     """Test transcription CLI surfaces stream-selection errors."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
-
     with patch(
         "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media",
         side_effect=ScinoephileError("No stream index 7 found"),
@@ -200,16 +239,17 @@ def test_transcribe_cli_stream_errors_are_user_facing():
         with raises(SystemExit, match="2"):
             run_cli_with_args(
                 TranscribeCli,
-                f"/tmp/test_media.mp4 --reference-infile {reference_infile_path} "
+                f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
                 "--language yue-Hans --stream-index 7",
             )
 
 
-def test_transcribe_cli_workflow_errors_are_user_facing():
-    """Test transcription CLI surfaces unsupported language-pair errors."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
-    audio_series = Mock(spec=AudioSeries)
+def test_transcribe_cli_workflow_errors_are_user_facing(audio_series: Mock):
+    """Test transcription CLI surfaces unsupported language-pair errors.
 
+    Arguments:
+        audio_series: mock audio subtitle series
+    """
     with patch(
         "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media",
         return_value=audio_series,
@@ -221,42 +261,23 @@ def test_transcribe_cli_workflow_errors_are_user_facing():
             with raises(SystemExit, match="2"):
                 run_cli_with_args(
                     TranscribeCli,
-                    f"/tmp/test_media.mp4 --reference-infile {reference_infile_path} "
+                    f"{_MEDIA_INFILE_PATH} "
+                    f"--reference-infile {_REFERENCE_INFILE_PATH} "
                     "--language eng",
                 )
 
 
-def test_transcribe_cli_rejects_missing_reference_infile():
-    """Test transcription CLI surfaces missing reference subtitle infiles."""
-    with raises(SystemExit, match="2"):
-        run_cli_with_args(
-            TranscribeCli,
-            "/tmp/test_media.mp4 --reference-infile /tmp/missing.srt "
-            "--language yue-Hans",
-        )
+def test_transcribe_cli_allows_stdin_reference_infile(
+    audio_series: Mock,
+    expected_series: Series,
+):
+    """Test transcription CLI allows stdin reference subtitle input.
 
-
-def test_transcribe_cli_rejects_missing_media_infile():
-    """Test transcription CLI surfaces missing media infiles."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
-
-    with raises(SystemExit, match="2"):
-        run_cli_with_args(
-            TranscribeCli,
-            f"/tmp/missing.mp4 --reference-infile {reference_infile_path} "
-            "--language yue-Hans",
-        )
-
-
-def test_transcribe_cli_allows_stdin_reference_infile():
-    """Test transcription CLI allows stdin reference subtitle input."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
-    expected_series = Series.from_string(
-        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
-        format_="srt",
-    )
-    audio_series = Mock(spec=AudioSeries)
-    stdin_stream = StringIO(reference_infile_path.read_text(encoding="utf-8"))
+    Arguments:
+        audio_series: mock audio subtitle series
+        expected_series: expected transcribed subtitle series
+    """
+    stdin_stream = StringIO(_REFERENCE_INFILE_PATH.read_text(encoding="utf-8"))
     stdout_stream = StringIO()
     subtitle_paths: list[object] = []
 
@@ -267,7 +288,7 @@ def test_transcribe_cli_allows_stdin_reference_infile():
         stream_index: int | None,
     ) -> AudioSeries:
         """Record media loading inputs."""
-        assert media_path == "/tmp/test_media.mp4"
+        assert media_path == _MEDIA_INFILE_PATH
         assert stream_index is None
         subtitle_paths.append(subtitle_path)
         return audio_series
@@ -284,42 +305,10 @@ def test_transcribe_cli_allows_stdin_reference_infile():
                 with patch("scinoephile.cli.helpers.io.stdout", stdout_stream):
                     run_cli_with_args(
                         TranscribeCli,
-                        "/tmp/test_media.mp4 --reference-infile - --language yue-Hans",
+                        f"{_MEDIA_INFILE_PATH} "
+                        "--reference-infile - --language yue-Hans",
                     )
 
     assert subtitle_paths != ["-"]
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
     assert_series_equal(output_series, expected_series)
-
-
-def test_transcribe_cli_rejects_two_stdin_infiles():
-    """Test transcription CLI rejects stdin for both inputs."""
-    with raises(SystemExit, match="2"):
-        run_cli_with_args(
-            TranscribeCli,
-            "- --reference-infile - --language yue-Hans",
-        )
-
-
-def test_transcribe_cli_rejects_overwrite_without_outfile():
-    """Test transcription CLI rejects overwrite when writing to stdout."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
-
-    with raises(SystemExit, match="2"):
-        run_cli_with_args(
-            TranscribeCli,
-            f"/tmp/test_media.mp4 --reference-infile {reference_infile_path} "
-            "--language yue-Hans --overwrite",
-        )
-
-
-def test_transcribe_cli_rejects_language_specific_options():
-    """Test generic transcription CLI rejects former Yue-specific options."""
-    reference_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
-
-    with raises(SystemExit, match="2"):
-        run_cli_with_args(
-            TranscribeCli,
-            f"/tmp/test_media.mp4 --reference-infile {reference_infile_path} "
-            "--language yue-Hans --script traditional",
-        )

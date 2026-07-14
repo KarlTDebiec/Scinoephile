@@ -100,15 +100,6 @@ class TranscriptionAlignment:
         return reference_idxs == set(range(len(self.reference)))
 
     @property
-    def scaled_overlap(self) -> np.ndarray:
-        """Scaled overlap matrix between reference and transcribed subtitles."""
-        scaled_overlap = self.overlap.copy()
-        column_maxes = scaled_overlap.max(axis=0)
-        column_maxes[column_maxes == 0] = 1
-        scaled_overlap /= column_maxes
-        return scaled_overlap
-
-    @property
     def sync_groups(self) -> list[SyncGroup]:
         """Sync groups between reference and transcribed subtitles."""
         if self._sync_groups_override is not None:
@@ -117,8 +108,9 @@ class TranscriptionAlignment:
         nascent_sync_groups: list[SyncGroup] = [
             ([idx], []) for idx in range(len(self.reference))
         ]
+        overlap = self.overlap
         for transcription_idx in range(len(self.transcription)):
-            sync_group_idx = int(np.argmax(self.overlap[:, transcription_idx]))
+            sync_group_idx = int(np.argmax(overlap[:, transcription_idx]))
             nascent_sync_groups[sync_group_idx][1].append(transcription_idx)
         return nascent_sync_groups
 
