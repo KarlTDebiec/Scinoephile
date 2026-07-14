@@ -10,18 +10,13 @@ from types import MappingProxyType
 import scinoephile.lang.review.guided as guided_review
 import scinoephile.lang.review.pairwise as pairwise_review
 import scinoephile.lang.review.standard as review
+import scinoephile.lang.transcription.guided as guided_transcription
 import scinoephile.lang.translation.gap as gap_translation
 import scinoephile.lang.translation.guided as guided_translation
 import scinoephile.lang.translation.standard as translation
 from scinoephile.core import Language
 from scinoephile.core.llms import Manager, Prompt
 from scinoephile.lang import ocr_fusion
-from scinoephile.lang.yue_zho.transcription import (
-    YueZhoDelineationPromptYueHans,
-    YueZhoDelineationPromptYueHant,
-    YueZhoPunctuationPromptYueHans,
-    YueZhoPunctuationPromptYueHant,
-)
 from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
@@ -70,24 +65,7 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
             guided_translation.DEFAULT_PROMPTS,
             separator="to",
         ),
-        {
-            "delineation-yue-hans-vs-zho": PromptSpec(
-                manager_cls=DelineationManager,
-                prompt=YueZhoDelineationPromptYueHans,
-            ),
-            "delineation-yue-hant-vs-zho": PromptSpec(
-                manager_cls=DelineationManager,
-                prompt=YueZhoDelineationPromptYueHant,
-            ),
-            "punctuation-yue-hans-vs-zho": PromptSpec(
-                manager_cls=PunctuationManager,
-                prompt=YueZhoPunctuationPromptYueHans,
-            ),
-            "punctuation-yue-hant-vs-zho": PromptSpec(
-                manager_cls=PunctuationManager,
-                prompt=YueZhoPunctuationPromptYueHant,
-            ),
-        },
+        _build_transcription_prompt_specs(guided_transcription.DEFAULT_SPECS),
     )
 
     prompt_specs: dict[str, PromptSpec] = {}
@@ -146,6 +124,42 @@ def _build_pair_prompt_specs(
         )
         for (first_language, second_language), prompt in prompts.items()
     }
+
+
+def _build_transcription_prompt_specs(
+    specs: Mapping[
+        tuple[Language, Language],
+        guided_transcription.GuidedTranscriptionSpec,
+    ],
+) -> dict[str, PromptSpec]:
+    """Build prompt specifications for guided transcription.
+
+    Reference-script variants that share a prompt use one stable language-code alias.
+
+    Arguments:
+        specs: guided transcription specifications keyed by language pair
+    Returns:
+        prompt specifications keyed by stable alias
+    Raises:
+        ValueError: if one alias resolves to conflicting prompts
+    """
+    prompt_specs: dict[str, PromptSpec] = {}
+    for (language, reference_language), spec in specs.items():
+        reference_code = reference_language.tag.partition("-")[0].lower()
+        for manager_cls, prompt in (
+            (DelineationManager, spec.delineation_prompt),
+            (PunctuationManager, spec.punctuation_prompt),
+        ):
+            alias = (
+                f"{manager_cls.operation}-{language.tag.lower()}-vs-{reference_code}"
+            )
+            prompt_spec = PromptSpec(manager_cls=manager_cls, prompt=prompt)
+            if alias in prompt_specs and prompt_specs[alias] != prompt_spec:
+                raise ValueError(
+                    f"Conflicting guided transcription prompt alias: {alias}"
+                )
+            prompt_specs[alias] = prompt_spec
+    return prompt_specs
 
 
 PROMPT_SPECS: Mapping[str, PromptSpec] = _build_prompt_specs()

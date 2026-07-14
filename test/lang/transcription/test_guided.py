@@ -37,6 +37,10 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)]
         is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hant)]
     )
+    assert (
+        DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
+        is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)].language_spec
+    )
     mutable_specs = cast(dict, DEFAULT_SPECS)
     with raises(TypeError):
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[

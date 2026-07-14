@@ -18,7 +18,7 @@ content-addressed name.
 ## Catalog composition
 
 Prompt-owning modules in `lang` expose their defaults through read-only
-`DEFAULT_PROMPTS` mappings. The application catalog in
+`DEFAULT_PROMPTS` or `DEFAULT_SPECS` mappings. The application catalog in
 `workflows.prompt_catalog` assigns stable aliases and pairs each prompt with the
 manager defining its operation. It rejects duplicate aliases during composition.
 

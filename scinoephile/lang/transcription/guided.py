@@ -14,7 +14,6 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.yue_zho.transcription import (
-    DEFAULT_YUE_WHISPER_MODEL_NAME,
     YueZhoDelineationPromptYueHans,
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHans,
@@ -36,6 +35,7 @@ from .processor import (
 __all__ = [
     "DEFAULT_SPECS",
     "GuidedTranscriptionSpec",
+    "TranscriptionLanguageSpec",
     "get_guided_transcriber",
 ]
 
@@ -66,13 +66,31 @@ _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class GuidedTranscriptionSpec:
-    """Configuration for one transcription/reference language pair."""
+class TranscriptionLanguageSpec:
+    """Configuration for one transcription language."""
 
     model_name: str
     """Default Whisper model name."""
     whisper_language: str
     """Language code passed to Whisper."""
+    segment_splitter: TranscribedSegmentSplitter | None = None
+    """Strategy for splitting raw Whisper segments."""
+
+
+_YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
+    model_name="khleeloo/whisper-large-v3-cantonese",
+    whisper_language="yue",
+    segment_splitter=get_segment_split_on_whitespace,
+)
+"""Transcription-language specification for written Cantonese."""
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class GuidedTranscriptionSpec:
+    """Configuration for one transcription/reference language pair."""
+
+    language_spec: TranscriptionLanguageSpec
+    """Configuration for the transcription language."""
     delineation_prompt: DelineationPrompt
     """Prompt for moving transcription text between reference subtitles."""
     punctuation_prompt: PunctuationPrompt
@@ -83,31 +101,25 @@ class GuidedTranscriptionSpec:
     """Bundled delineation test-case JSON paths."""
     punctuation_json_paths: tuple[Path, ...] = ()
     """Bundled punctuation test-case JSON paths."""
-    segment_splitter: TranscribedSegmentSplitter | None = None
-    """Strategy for splitting raw Whisper segments."""
 
 
 _YUE_HANS_SPEC = GuidedTranscriptionSpec(
-    model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
-    whisper_language="yue",
+    language_spec=_YUE_LANGUAGE_SPEC,
     delineation_prompt=YueZhoDelineationPromptYueHans,
     punctuation_prompt=YueZhoPunctuationPromptYueHans,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
     delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
     punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
-    segment_splitter=get_segment_split_on_whitespace,
 )
 """Guided transcription specification for simplified written Cantonese."""
 
 _YUE_HANT_SPEC = GuidedTranscriptionSpec(
-    model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
-    whisper_language="yue",
+    language_spec=_YUE_LANGUAGE_SPEC,
     delineation_prompt=YueZhoDelineationPromptYueHant,
     punctuation_prompt=YueZhoPunctuationPromptYueHant,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
     delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
     punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
-    segment_splitter=get_segment_split_on_whitespace,
 )
 """Guided transcription specification for traditional written Cantonese."""
 
@@ -180,9 +192,10 @@ def get_guided_transcriber(
             f"{language.tag} <- {reference_language.tag}"
         )
     spec = DEFAULT_SPECS[key]
+    language_spec = spec.language_spec
 
     if model_name is None:
-        model_name = spec.model_name
+        model_name = language_spec.model_name
     if delineation_prompt is None:
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
@@ -239,9 +252,9 @@ def get_guided_transcriber(
         language=language,
         reference_language=reference_language,
         model_name=model_name,
-        whisper_language=spec.whisper_language,
+        whisper_language=language_spec.whisper_language,
         aligner=aligner,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
-        segment_splitter=spec.segment_splitter,
+        segment_splitter=language_spec.segment_splitter,
     )

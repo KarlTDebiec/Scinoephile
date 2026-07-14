@@ -10,6 +10,7 @@ from types import MappingProxyType
 import scinoephile.lang.review.guided as guided_review
 import scinoephile.lang.review.pairwise as pairwise_review
 import scinoephile.lang.review.standard as review
+import scinoephile.lang.transcription.guided as guided_transcription
 import scinoephile.lang.translation.gap as gap_translation
 import scinoephile.lang.translation.guided as guided_translation
 import scinoephile.lang.translation.standard as translation
@@ -35,6 +36,7 @@ def test_prompt_catalog_and_domain_mappings_are_read_only():
         translation.DEFAULT_PROMPTS,
         ocr_fusion.DEFAULT_PROMPTS,
         review.DEFAULT_PROMPTS,
+        guided_transcription.DEFAULT_SPECS,
     )
 
     assert all(isinstance(mapping, MappingProxyType) for mapping in mappings)
@@ -50,6 +52,19 @@ def test_prompt_catalog_is_stable_and_manager_compatible():
             prompt_spec.manager_cls,
         )
         assert isinstance(persisted.language, Language)
+
+
+def test_prompt_catalog_contains_registered_transcription_prompts():
+    """Each guided transcription spec should contribute its prompts to the catalog."""
+    for (
+        language,
+        reference_language,
+    ), spec in guided_transcription.DEFAULT_SPECS.items():
+        reference_code = reference_language.tag.partition("-")[0].lower()
+        delineation_alias = f"delineation-{language.tag.lower()}-vs-{reference_code}"
+        punctuation_alias = f"punctuation-{language.tag.lower()}-vs-{reference_code}"
+        assert PROMPT_SPECS[delineation_alias].prompt is spec.delineation_prompt
+        assert PROMPT_SPECS[punctuation_alias].prompt is spec.punctuation_prompt
 
 
 def test_prompt_catalog_synchronizes(tmp_path: Path):

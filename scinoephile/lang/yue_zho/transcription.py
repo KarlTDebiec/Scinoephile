@@ -15,17 +15,11 @@ from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
 
 __all__ = [
-    "DEFAULT_YUE_WHISPER_MODEL_NAME",
     "YueZhoDelineationPromptYueHans",
     "YueZhoDelineationPromptYueHant",
     "YueZhoPunctuationPromptYueHans",
     "YueZhoPunctuationPromptYueHant",
 ]
-
-
-DEFAULT_YUE_WHISPER_MODEL_NAME = "khleeloo/whisper-large-v3-cantonese"
-"""Default Whisper model name for written Cantonese transcription."""
-
 
 YueZhoDelineationPromptYueHant = DelineationPrompt(
     language=Language.yue_hant,
