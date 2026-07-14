@@ -53,6 +53,23 @@ def test_line_diff_get_stacked_str_full_width_punctuation_placeholder():
     assert rendered.splitlines()[2] == "　"
 
 
+def test_line_diff_get_stacked_str_hiragana_placeholder():
+    """Test hiragana uses an ideographic placeholder."""
+    msg = LineDiff(
+        kind=LineDiffKind.EDIT,
+        one_lbl="one",
+        two_lbl="two",
+        one_idxs=(0,),
+        two_idxs=(0,),
+        one_texts=("で",),
+        two_texts=("",),
+    )
+
+    rendered = msg.get_stacked_str(color=False)
+
+    assert rendered.splitlines()[2] == "　"
+
+
 def test_line_diff_get_stacked_str_insert_uses_public_insert_side():
     """Test insert rendering uses the inserted side of a public `LineDiff`."""
     msg = LineDiff(

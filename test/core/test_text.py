@@ -28,6 +28,12 @@ def test_get_char_type_handles_fullwidth_latin_forms(char: str) -> None:
     assert get_char_type(char) == "full"
 
 
+@parametrize("char", ["で", "ア"])
+def test_get_char_type_handles_japanese_wide_characters(char: str) -> None:
+    """Japanese wide characters are classified as full-width characters."""
+    assert get_char_type(char) == "full"
+
+
 @parametrize(
     ("text", "expected"),
     [

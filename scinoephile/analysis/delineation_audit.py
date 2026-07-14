@@ -54,7 +54,7 @@ def audit_delineation(
         pair = (reference[index].text, reference[index + 1].text)
         pair_indexes[pair].append(index)
 
-    row_lines: list[str] = []
+    rows: list[tuple[int, str]] = []
     shifts = 0
     no_shifts = 0
     unanswered = 0
@@ -63,43 +63,32 @@ def audit_delineation(
         query = test_case.query
         pair = (query.reference_one, query.reference_two)
         matches = pair_indexes.get(pair, [])
-        if not matches:
-            raise ScinoephileError(
-                "Unable to audit transcription delineation: "
-                f"test case {test_case_index} reference pair was not found in "
-                "reference subtitles"
-            )
-        if len(matches) > 1:
-            starts = ", ".join(str(index + 1) for index in matches)
-            raise ScinoephileError(
-                "Unable to audit transcription delineation: "
-                f"test case {test_case_index} reference pair is ambiguous; "
-                f"it begins at subtitle indexes {starts}"
-            )
-
-        index = matches[0]
+        index = _get_pair_index(
+            matches,
+            test_case_index=test_case_index,
+            first_index=first_index,
+            last_index=last_index,
+        )
+        if index is None:
+            continue
         first_subtitle_index = index + 1
         second_subtitle_index = index + 2
-        if first_index is not None and first_subtitle_index < first_index:
-            continue
-        if last_index is not None and second_subtitle_index > last_index:
-            continue
         logged_cases += 1
 
-        boundary_shifted = False
-        if test_case.answer is None:
+        input_target = (query.target_one, query.target_two)
+        answer = test_case.answer
+        if answer is None:
             output = "(unanswered)"
             unanswered += 1
-        elif test_case.answer.output_one or test_case.answer.output_two:
-            output = _format_pair(
-                test_case.answer.output_one,
-                test_case.answer.output_two,
-            )
+            boundary_shifted = False
+        elif answer.output_one or answer.output_two:
+            output = _format_pair(answer.output_one, answer.output_two)
             shifts += 1
             boundary_shifted = True
         else:
-            output = _format_pair(query.target_one, query.target_two)
+            output = "—"
             no_shifts += 1
+            boundary_shifted = False
 
         if row_filter is DelineationAuditFilter.changes and not boundary_shifted:
             continue
@@ -107,10 +96,18 @@ def audit_delineation(
         cells = (
             f"{first_subtitle_index}\n{second_subtitle_index}",
             _format_pair(query.reference_one, query.reference_two),
-            _format_pair(query.target_one, query.target_two),
+            _format_pair(*input_target),
             output,
+            "",
         )
-        row_lines.append(f"| {' | '.join(_escape_cell(cell) for cell in cells)} |")
+        rows.append(
+            (
+                first_subtitle_index,
+                f"| {' | '.join(_escape_cell(cell) for cell in cells)} |",
+            )
+        )
+
+    rows.sort(key=lambda item: item[0])
 
     lines = [
         "# Transcription Delineation Audit",
@@ -128,16 +125,16 @@ def audit_delineation(
         lines.append(range_summary)
     lines.extend(
         (
-            f"- table rows: {len(row_lines)}",
+            f"- table rows: {len(rows)}",
             "",
             "## Audit Table",
             "",
             (
                 "| Subtitle indexes | Reference subtitles | Input target subtitles | "
-                "Output target subtitles |"
+                "Output target subtitles | Notes |"
             ),
-            "|---:|---|---|---|",
-            *row_lines,
+            "|---:|---|---|---|---|",
+            *(row for _, row in rows),
         )
     )
     return "\n".join(lines) + "\n"
@@ -185,3 +182,47 @@ def _format_subtitle_range(
     if last_index is None:
         return f"- subtitle range: 1-indexed numbers from {first_index}"
     return f"- subtitle range: 1-indexed numbers {first_index} through {last_index}"
+
+
+def _get_pair_index(
+    matches: Sequence[int],
+    *,
+    test_case_index: int,
+    first_index: int | None,
+    last_index: int | None,
+) -> int | None:
+    """Get a unique reference-pair index within the requested range.
+
+    Arguments:
+        matches: zero-indexed reference-pair matches
+        test_case_index: one-indexed test case number for error messages
+        first_index: first included 1-indexed subtitle number
+        last_index: last included 1-indexed subtitle number
+    Returns:
+        unique zero-indexed pair index, or None if all matches are outside the range
+    Raises:
+        ScinoephileError: if the pair is absent or ambiguous within the range
+    """
+    if not matches:
+        raise ScinoephileError(
+            "Unable to audit transcription delineation: "
+            f"test case {test_case_index} reference pair was not found in "
+            "reference subtitles"
+        )
+
+    matches_in_range = [
+        index
+        for index in matches
+        if (first_index is None or index + 1 >= first_index)
+        and (last_index is None or index + 2 <= last_index)
+    ]
+    if not matches_in_range:
+        return None
+    if len(matches_in_range) > 1:
+        starts = ", ".join(str(index + 1) for index in matches_in_range)
+        raise ScinoephileError(
+            "Unable to audit transcription delineation: "
+            f"test case {test_case_index} reference pair is ambiguous; "
+            f"it begins at subtitle indexes {starts}"
+        )
+    return matches_in_range[0]

@@ -11,7 +11,7 @@ subtitles; it does not assess punctuation or rewrite transcription text.
 
 ## Mandatory final output
 
-If this skill runs an audit, paste the **entire four-column Markdown report
+If this skill runs an audit, paste the **entire five-column Markdown report
 inline in the final response**. This is a non-negotiable completion requirement.
 
 - Tool-call output, commentary, counts, findings, and a local file do not count
@@ -19,11 +19,12 @@ inline in the final response**. This is a non-negotiable completion requirement.
 - A file link may supplement the inline report but must never replace it.
 - Never omit or truncate rows, even when the report is long.
 - Never wrap the report in a code fence.
-- Keep the generated table at exactly these columns: `Subtitle indexes`,
-  `Reference subtitles`, `Input target subtitles`, and
-  `Output target subtitles`.
-- Put audit findings after the complete report rather than adding a table
-  column.
+- Keep the table at exactly these columns: `Subtitle indexes`, `Reference
+  subtitles`, `Input target subtitles`, `Output target subtitles`, and `Notes`.
+- Before responding, fill each row's `Notes` cell with your concise audit note
+  when you have one. Leave it blank when the row needs no note.
+- Do not add a separate findings section; keep each observation beside the row
+  it describes.
 
 ## Protect source data
 
@@ -49,8 +50,8 @@ misleading indexes.
 
 An official target-language subtitle track may be consulted as secondary
 evidence when available, but it is not an input to the CLI and does not belong
-in the four-column report. Its timing, wording, or segmentation need not match
-the transcription exactly.
+in the report as a separate column. Its timing, wording, or segmentation need
+not match the transcription exactly.
 
 ## Generate the report
 
@@ -83,9 +84,11 @@ requested range. Omit either bound for an open-ended range. The default
 complete audit must use `all`, because `changes` cannot reveal missed shifts.
 
 Each table cell stacks the first and second subtitle with `<br>`. A blank line
-is displayed as `—`. An empty JSON answer (`{}`) means no boundary shift was
-made, so the output column repeats the input pair. Preserve repeated logged
-cases: they may record successive decisions for the same subtitle boundary.
+is displayed as `—`. Sort rows by their matched subtitle indexes. Preserve the
+original log order among repeated cases for the same boundary because they may
+record successive decisions. An empty JSON answer (`{}`) means no boundary
+shift was made; display `—` in the output cell instead of repeating the input
+pair. The CLI leaves `Notes` cells blank for interpretation during the audit.
 
 ## Audit every row
 
@@ -108,7 +111,7 @@ Use semantic and discourse alignment rather than literal word matching:
 - Flag a shift that makes alignment worse, and flag a no-shift answer when a
   clear phrase belongs on the other side of the boundary.
 
-Classify problems precisely:
+Classify notes precisely:
 
 - **Delineation error:** the model chose the wrong boundary or failed to shift a
   clearly misplaced phrase.
@@ -120,9 +123,10 @@ Classify problems precisely:
 - **Uncertain:** audio or broader context is needed to distinguish plausible
   boundaries.
 
-After the complete report, add a concise `## Findings` section. List only
-incorrect or uncertain rows, keyed by their displayed subtitle index pair, and
-label each as `Delineation error`, `Guide issue`, `Transcription issue`, or
-`Uncertain`. If no rows need attention, say that all displayed decisions look
-reasonable. Do not claim the audit is complete until every row has been
-reviewed and the complete report is present in the final response.
+After reviewing every row, fill the saved report's `Notes` cells wherever you
+have an observation. Begin each note with `Delineation error;`, `Guide issue;`,
+`Transcription issue;`, or `Uncertain;`, followed by a concise explanation.
+Leave the cell blank when the row needs no note. Paste the entire interpreted
+report inline without adding a separate findings list. Do not claim the audit
+is complete until every row has been reviewed and the complete report is
+present in the final response.

@@ -12,6 +12,7 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.processor import DemucsMode, VADMode
+from test.data.kob import get_kob_yue_hant_delineation_test_cases
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
@@ -33,7 +34,7 @@ yue_hans_path = output_path / "yue-Hans"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
 
-transcription_stop_at_idx: int | None = 20
+transcription_stop_at_idx: int | None = 70
 yue_hant_transcribe_srt_path = yue_hant_transcribe_path / "transcribe.srt"
 if transcription_stop_at_idx is not None:
     yue_hant_transcribe_srt_path = (
@@ -105,7 +106,7 @@ if "yue-Hant_transcribe" in actions:
         name="KOB yue-Hant transcription",
         stop_at_idx=transcription_stop_at_idx,
         transcription_kw={
-            "delineation_test_cases": [],
+            "delineation_test_cases": get_kob_yue_hant_delineation_test_cases(),
             "demucs_mode": DemucsMode.ON,
             "punctuation_test_cases": [],
             "vad_mode": VADMode.AUTO,

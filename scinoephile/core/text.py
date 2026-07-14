@@ -296,25 +296,8 @@ def get_char_type(char: str) -> str:
     if char in punctuation:
         return "punc"
 
-    # Check if character is full-width (CJK)
-    if any(
-        [
-            "\u4e00" <= char <= "\u9fff",  # CJK Unified Ideographs
-            "\u3400" <= char <= "\u4dbf",  # CJK Unified Ideographs Extension A
-            "\uf900" <= char <= "\ufaff",  # CJK Compatibility Ideographs
-            "\U00020000" <= char <= "\U0002a6df",  # CJK Unified Ideographs Ext B
-            "\U0002a700" <= char <= "\U0002b73f",  # CJK Unified Ideographs Ext C
-            "\U0002b740" <= char <= "\U0002b81f",  # CJK Unified Ideographs Ext D
-            "\U0002b820" <= char <= "\U0002ceaf",  # CJK Unified Ideographs Ext E
-            "\U0002ceb0" <= char <= "\U0002ebef",  # CJK Unified Ideographs Ext F
-            "\U0002ebf0" <= char <= "\U0002ee5d",  # CJK Unified Ideographs Ext I
-            "\U00030000" <= char <= "\U0003134a",  # CJK Unified Ideographs Ext G
-            "\U00031350" <= char <= "\U000323af",  # CJK Unified Ideographs Ext H
-            "\u3000" <= char <= "\u303f",  # CJK Symbols and Punctuation
-            "\uff01" <= char <= "\uff60",  # Fullwidth ASCII variants
-            "\uffe0" <= char <= "\uffe6",  # Fullwidth symbol variants
-        ]
-    ):
+    # Check Unicode characters with wide or full-width display properties
+    if unicodedata.east_asian_width(char) in {"F", "W"}:
         return "full"
 
     # Check if character is half-width (Western)

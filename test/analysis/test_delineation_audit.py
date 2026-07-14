@@ -50,10 +50,43 @@ def test_audit_delineation_formats_shift_and_no_shift_rows():
     assert "- unanswered cases: 0" in report
     assert (
         "| Subtitle indexes | Reference subtitles | Input target subtitles | "
-        "Output target subtitles |"
+        "Output target subtitles | Notes |"
     ) in report
-    assert "| 1<br>2 | 參\\|考一<br>參考二 | 甲乙<br>丙 | 甲<br>乙丙 |" in report
-    assert "| 2<br>3 | 參考二<br>參考三 | 丁<br>— | 丁<br>— |" in report
+    assert "| 1<br>2 | 參\\|考一<br>參考二 | 甲乙<br>丙 | 甲<br>乙丙 |  |" in report
+    assert "| 2<br>3 | 參考二<br>參考三 | 丁<br>— | — |  |" in report
+
+
+def test_audit_delineation_sorts_rows_and_omits_unchanged_output():
+    """Test rows are index-sorted and unchanged output is omitted."""
+    reference = _get_series("參考一", "參考二", "參考三")
+    test_cases = (
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="參考二",
+                reference_two="參考三",
+                target_one="丙",
+                target_two="丁",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="參考一",
+                reference_two="參考二",
+                target_one="甲",
+                target_two="乙",
+            ),
+            answer=DelineationAnswer(),
+        ),
+    )
+
+    report = audit_delineation(reference, test_cases)
+
+    first_row = "| 1<br>2 | 參考一<br>參考二 | 甲<br>乙 | — |  |"
+    second_row = "| 2<br>3 | 參考二<br>參考三 | 丙<br>丁 | — |  |"
+    assert report.index(first_row) < report.index(second_row)
+    assert "- boundary shifts: 0" in report
+    assert "- no-shift answers: 2" in report
 
 
 def test_audit_delineation_formats_unanswered_case():
@@ -69,7 +102,7 @@ def test_audit_delineation_formats_unanswered_case():
     report = audit_delineation(_get_series("參考一", "參考二"), (test_case,))
 
     assert "- unanswered cases: 1" in report
-    assert "| 1<br>2 | 參考一<br>參考二 | 甲<br>— | (unanswered) |" in report
+    assert "| 1<br>2 | 參考一<br>參考二 | 甲<br>— | (unanswered) |  |" in report
 
 
 def test_audit_delineation_filters_rows_and_subtitle_range():
@@ -151,6 +184,36 @@ def test_audit_delineation_rejects_ambiguous_reference_pair():
             _get_series("參考一", "參考二", "參考一", "參考二"),
             (test_case,),
         )
+
+
+def test_audit_delineation_scopes_ambiguity_to_subtitle_range():
+    """Test repeated pairs are resolved only within the requested range."""
+    reference = _get_series("參考一", "參考二", "參考一", "參考二")
+    test_case = DelineationTestCase(
+        query=DelineationQuery(
+            reference_one="參考一",
+            reference_two="參考二",
+            target_one="甲",
+        ),
+        answer=DelineationAnswer(),
+    )
+
+    first_report = audit_delineation(
+        reference,
+        (test_case,),
+        first_index=1,
+        last_index=2,
+    )
+    excluded_report = audit_delineation(
+        reference,
+        (test_case,),
+        first_index=5,
+        last_index=6,
+    )
+
+    assert "| 1<br>2 |" in first_report
+    assert "- logged cases: 0" in excluded_report
+    assert "- table rows: 0" in excluded_report
 
 
 def _get_series(*texts: str) -> Series:

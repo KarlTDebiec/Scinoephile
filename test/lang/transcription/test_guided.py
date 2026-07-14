@@ -15,10 +15,12 @@ from scinoephile.lang.transcription.guided import (
     DEFAULT_SPECS,
     get_guided_transcriber,
 )
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHant,
 )
+from scinoephile.llms.delineation import DelineationManager
 
 
 def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
@@ -77,7 +79,54 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert (tmp_path / "punctuation").is_dir()
 
 
+def test_get_guided_transcriber_uses_verified_cases_without_few_shot(tmp_path):
+    """Test verified cases bypass the provider without entering the prompt."""
+    test_case_cls = DelineationManager.get_test_case_cls(YueZhoDelineationPromptYueHant)
+    verified_test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "reference_one": "參考一",
+                "reference_two": "參考二",
+                "target_one": "目標一",
+                "target_two": "目標二",
+            },
+            "answer": {},
+            "verified": True,
+        }
+    )
+    provider = Mock(spec=LLMProvider)
+    transcriber = get_guided_transcriber(
+        Language.yue_hant,
+        Language.zho_hant,
+        provider=provider,
+        test_case_dir_path=tmp_path,
+        delineation_test_cases=[verified_test_case],
+        punctuation_test_cases=[],
+    )
+    queryer = transcriber.aligner.delineation_queryer
+    pending_test_case = test_case_cls.model_validate(
+        {"query": verified_test_case.query.model_dump()}
+    )
+
+    result = queryer(pending_test_case)
+
+    assert result.answer == verified_test_case.answer
+    assert result.verified is True
+    assert queryer.few_shot_test_cases == {}
+    provider.chat_completion.assert_not_called()
+
+
 def test_get_guided_transcriber_rejects_unsupported_language_pair():
     """Test factory rejects language pairs absent from the registry."""
     with raises(ScinoephileError, match="eng <- zho-Hans"):
         get_guided_transcriber(Language.eng, Language.zho_hans)
+
+
+def test_transcription_prompts_use_yue_hant_correspondence_fields():
+    """Test Yue-Hant transcription prompts use Yue-Hant shared text."""
+    for prompt in (
+        YueZhoDelineationPromptYueHant,
+        YueZhoPunctuationPromptYueHant,
+    ):
+        for field_name, expected in YUE_HANT_PROMPT_FIELDS.items():
+            assert getattr(prompt, field_name) == expected
