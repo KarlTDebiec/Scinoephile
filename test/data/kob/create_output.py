@@ -11,7 +11,6 @@ from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.review import (
     YueZhoGuidedReviewPromptYueHans,
     YueZhoGuidedReviewPromptYueHant,
@@ -120,7 +119,6 @@ if "yue-Hans_transcribe" in actions:
             "model_name": "khleeloo/whisper-large-v3-cantonese",
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
-            "convert": OpenCCConfig.hk2s,
             "delineation_prompt": YueDelineationVsZhoPromptYueHans,
             "punctuation_prompt": YuePunctuationVsZhoPromptYueHans,
         },
@@ -141,7 +139,6 @@ if "yue-Hans_transcribe" in actions:
             "model_name": "khleeloo/whisper-large-v3-cantonese",
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
-            "convert": OpenCCConfig.s2hk,
             "delineation_prompt": YueDelineationVsZhoPromptYueHant,
             "punctuation_prompt": YuePunctuationVsZhoPromptYueHant,
         },

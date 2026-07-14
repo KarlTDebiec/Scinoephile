@@ -18,7 +18,6 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
 from scinoephile.llms.providers.registry import get_provider
@@ -90,8 +89,6 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """Whisper VAD mode for transcription."""
     provider: LLMProvider | None
     """provider to use for queries."""
-    convert: OpenCCConfig | None
-    """OpenCC configuration used for transcribed text conversion."""
     delineation_prompt: DelineationPrompt
     """prompt used for alignment delineation."""
     punctuation_prompt: PunctuationPrompt
@@ -108,7 +105,6 @@ def get_yue_transcribed_vs_zho(
     yuewen: AudioSeries,
     zhongwen: Series,
     transcriber: YueTranscriber | None = None,
-    convert: OpenCCConfig | None = None,
     **kwargs: Unpack[YueZhoTranscriptionKwargs],
 ) -> AudioSeries:
     """Get initial written Cantonese transcription aligned to standard Chinese.
@@ -117,13 +113,12 @@ def get_yue_transcribed_vs_zho(
         yuewen: nascent written Cantonese audio subtitle series
         zhongwen: standard Chinese subtitle series
         transcriber: transcriber to use
-        convert: OpenCC configuration used for transcribed text conversion
         **kwargs: additional keyword arguments for YueTranscriber.process_all_blocks
     Returns:
         transcribed written Cantonese subtitle series
     """
     if transcriber is None:
-        transcriber = get_yue_vs_zho_transcriber(convert=convert)
+        transcriber = get_yue_vs_zho_transcriber()
     return transcriber.process_all_blocks(yuewen, zhongwen, **kwargs)
 
 
@@ -132,7 +127,6 @@ def get_yue_vs_zho_transcriber(
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
-    convert: OpenCCConfig | None = None,
     additional_context: str | None = None,
     delineation_prompt: DelineationPrompt = (YueDelineationVsZhoPromptYueHans),
     punctuation_prompt: PunctuationPrompt = (YuePunctuationVsZhoPromptYueHans),
@@ -147,7 +141,6 @@ def get_yue_vs_zho_transcriber(
         demucs_mode: Demucs preprocessing mode for transcription
         vad_mode: Whisper VAD mode for transcription
         provider: provider to use for queries
-        convert: OpenCC configuration used for transcribed text conversion
         additional_context: additional context to include in LLM prompts
         delineation_prompt: prompt for alignment delineation
         punctuation_prompt: prompt for transcription punctuation
@@ -182,7 +175,6 @@ def get_yue_vs_zho_transcriber(
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
         provider=provider,
-        convert=convert,
         additional_context=additional_context,
         delineation_prompt=delineation_prompt,
         punctuation_prompt=punctuation_prompt,

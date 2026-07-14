@@ -19,13 +19,11 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     WhisperTranscriber,
     get_segment_split_on_whitespace,
-    get_segment_zho_converted,
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.punctuation import PunctuationPrompt
@@ -76,7 +74,6 @@ class YueTranscriber:
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
         provider: LLMProvider | None = None,
-        convert: OpenCCConfig | None = None,
         additional_context: str | None = None,
         delineation_prompt: DelineationPrompt,
         punctuation_prompt: PunctuationPrompt,
@@ -91,7 +88,6 @@ class YueTranscriber:
             demucs_mode: Demucs preprocessing mode for transcription
             vad_mode: Whisper VAD mode for transcription
             provider: provider to use for LLM queryers
-            convert: OpenCC configuration used to convert transcribed text
             additional_context: additional context to include in LLM prompts
             delineation_prompt: prompt for block-boundary delineation
             punctuation_prompt: prompt for line punctuation
@@ -103,7 +99,6 @@ class YueTranscriber:
         self.model_name = model_name
         self.vad_mode = vad_mode
         self.demucs_mode = demucs_mode
-        self.convert = convert
         if provider is None:
             provider = get_provider()
         self.demucs_separator = None
@@ -193,17 +188,9 @@ class YueTranscriber:
         for segment in segments:
             split_segments.extend(get_segment_split_on_whitespace(segment))
 
-        # Convert transcribed text, if applicable
-        converted_segments = split_segments
-        if self.convert is not None:
-            converted_segments = [
-                get_segment_zho_converted(segment, self.convert)
-                for segment in split_segments
-            ]
-
         # Merge segments into a series
         yuewen_block_series = get_series_from_segments(
-            converted_segments,
+            split_segments,
             audio=yuewen_block.audio,
             offset=yuewen_block[0].start,
         )

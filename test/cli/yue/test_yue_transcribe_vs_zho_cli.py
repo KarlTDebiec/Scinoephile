@@ -16,7 +16,6 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.punctuation import PunctuationPrompt
 from scinoephile.multilang.yue_zho.transcription import DEFAULT_YUE_WHISPER_MODEL_NAME
@@ -47,11 +46,7 @@ def test_yue_transcribe_vs_zho_help_lists_transcription_options():
     assert stderr.getvalue() == ""
     assert "--script {simplified,traditional}" in help_text
     assert "script used for transcription prompts" in help_text
-    assert "--convert CONVERT" in normalized_help_text
-    assert (
-        "convert Chinese characters with an OpenCC code such as s2t, t2s, or s2hk"
-        in normalized_help_text
-    )
+    assert "--convert" not in normalized_help_text
     assert "--demucs {on,off}" in help_text
     assert "Demucs vocal-separation mode" in help_text
     assert "options: on, off;" in help_text
@@ -144,20 +139,20 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
     assert_series_equal(output_series, expected_series)
 
 
-def test_yue_transcribe_vs_zho_cli_rejects_bare_convert_flag():
-    """Test written Cantonese CLI requires an explicit conversion config."""
+def test_yue_transcribe_vs_zho_cli_rejects_removed_convert_flag():
+    """Test written Cantonese CLI rejects the removed conversion option."""
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     with raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
-            f"--zho-infile {zhongwen_infile_path} --convert",
+            f"--zho-infile {zhongwen_infile_path} --convert hk2s",
         )
 
 
-def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
-    """Test written Cantonese CLI keeps prompt script separate from conversion."""
+def test_yue_transcribe_vs_zho_cli_uses_selected_prompt_script():
+    """Test written Cantonese CLI uses prompts for the selected script."""
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
@@ -172,17 +167,15 @@ def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
         demucs_mode: object,
         vad_mode: object,
         provider: object,
-        convert: OpenCCConfig | None,
         delineation_prompt: DelineationPrompt,
         punctuation_prompt: PunctuationPrompt,
         additional_context: str | None,
     ) -> str:
-        """Validate script and conversion options passed by the CLI."""
+        """Validate prompt script options passed by the CLI."""
         assert model_name == DEFAULT_YUE_WHISPER_MODEL_NAME
         assert demucs_mode is not None
         assert vad_mode is not None
         assert provider is not None
-        assert convert == OpenCCConfig.hk2s
         assert delineation_prompt is YueDelineationVsZhoPromptYueHant
         assert punctuation_prompt is YuePunctuationVsZhoPromptYueHant
         assert additional_context is None
@@ -204,7 +197,7 @@ def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
                     f"--zho-infile {zhongwen_infile_path} "
-                    "--script traditional --convert hk2s",
+                    "--script traditional",
                 )
 
 

@@ -8,10 +8,6 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.cli.helpers.conversion import (
-    CONVERSION_LOCALIZATIONS,
-    add_opencc_convert_argument,
-)
 from scinoephile.cli.helpers.io import read_series, write_series
 from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
@@ -32,7 +28,6 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.delineation import DelineationPrompt
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.punctuation import PunctuationPrompt
@@ -131,7 +126,6 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
     """Transcribe subtitles from audio and revise using standard Chinese text."""
 
     localizations = merge_localizations(
-        CONVERSION_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS,
     )
@@ -205,9 +199,6 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 "Whisper model identifier used for transcription (default: %(default)s)"
             ),
         )
-        add_opencc_convert_argument(
-            arg_groups["operation arguments"], arg_groups["additional help"]
-        )
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
@@ -267,7 +258,6 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         zho_infile_path: Path | str,
         stream_index: int | None,
         script: str,
-        convert: OpenCCConfig | None,
         llm_args: LlmArguments,
         demucs: DemucsMode,
         vad: VADMode,
@@ -330,7 +320,6 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             demucs_mode=demucs,
             vad_mode=vad,
             provider=provider,
-            convert=convert,
             delineation_prompt=delineation_prompt,
             punctuation_prompt=punctuation_prompt,
             additional_context=additional_context,
