@@ -2,9 +2,7 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Code related to interactions with LLMs.
 
-This module may import from: common, core
-
-Hierarchy within module, where lower entries may import from higher entries:
+Package hierarchy (modules may import from any above):
 * delineation / gap_translation / guided_review / guided_translation / ocr_fusion
   / pairwise_review / providers / punctuation / review / translation
 
