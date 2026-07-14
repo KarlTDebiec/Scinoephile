@@ -178,8 +178,9 @@ def get_arg_groups_by_name(
 
     action_groups = parser._action_groups  # noqa pylint: disable=protected-access
     additional_groups = {}
-    while len(action_groups) > 0:
-        ag = action_groups.pop()
+    remaining_groups = action_groups[:]
+    action_groups.clear()
+    for ag in remaining_groups:
         if ag.title in ["options", "optional arguments"]:
             ag.title = optional_arguments_name
         if ag.title == "positional arguments" and not ag._group_actions:

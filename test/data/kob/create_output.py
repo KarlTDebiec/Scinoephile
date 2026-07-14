@@ -114,13 +114,23 @@ if "yue-Hant_transcribe" in actions:
     )
 if "yue-Hant_diff" in actions:
     yue_hant_transcribe = Series.load(yue_hant_transcribe_srt_path)
+    zho_hant_guide = Series.load(zho_hant_guide_path)
     yue_hant_reference = Series.load(
         yue_hant_path / "clean_review_flatten_timewarp.srt"
     )
     yue_hant_reference = get_reference_for_guide_blocks(
         yue_hant_reference,
-        Series.load(zho_hant_guide_path),
+        zho_hant_guide,
         transcription_stop_at_idx,
+    )
+    zho_hant_guide_by_timing = {
+        (subtitle.start, subtitle.end): subtitle for subtitle in zho_hant_guide
+    }
+    aligned_zho_hant_guide = Series(
+        events=[
+            zho_hant_guide_by_timing[(subtitle.start, subtitle.end)]
+            for subtitle in yue_hant_transcribe
+        ]
     )
     diff = SeriesDiff(
         yue_hant_transcribe,
@@ -128,5 +138,10 @@ if "yue-Hant_diff" in actions:
         one_lbl="TRANSCRIBE",
         two_lbl="REFERENCE",
     )
-    print(diff.get_stacked_str(include_equal=True))
+    print(
+        diff.get_stacked_str(
+            three=aligned_zho_hant_guide,
+            include_equal=True,
+        )
+    )
     print(SeriesCER(yue_hant_reference, yue_hant_transcribe))

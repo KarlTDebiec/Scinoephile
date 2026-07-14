@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for subtitle review audits."""
+"""Command-line interface for subtitle audits."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
+from .audit_delineation_cli import AuditDelineationCli
 from .audit_review_cli import AuditReviewCli
 from .audit_review_dual_cli import AuditReviewDualCli
 from .audit_review_trad_cli import AuditReviewTradCli
@@ -18,17 +19,17 @@ __all__ = ["AuditCli"]
 
 AUDIT_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "audit subtitle review workflows": "审核字幕校对工作流",
+        "audit subtitle workflows": "审核字幕工作流",
     },
     "zh-hant": {
-        "audit subtitle review workflows": "稽核字幕校對工作流程",
+        "audit subtitle workflows": "稽核字幕工作流程",
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
 class AuditCli(ScinoephileCliBase):
-    """Audit subtitle review workflows."""
+    """Audit subtitle workflows."""
 
     localizations = AUDIT_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
@@ -58,6 +59,7 @@ class AuditCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
+            AuditDelineationCli.name(): AuditDelineationCli,
             AuditReviewCli.name(): AuditReviewCli,
             AuditReviewDualCli.name(): AuditReviewDualCli,
             AuditReviewTradCli.name(): AuditReviewTradCli,

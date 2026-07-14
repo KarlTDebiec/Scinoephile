@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of the subtitle review audit CLI."""
+"""Tests of the subtitle audit CLI."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from pathlib import Path
 from pytest import CaptureFixture, mark, raises
 
 from scinoephile.cli.audit import AuditCli
+from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
@@ -111,10 +112,76 @@ def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
+        "delineation": AuditDelineationCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
     }
+
+
+def test_audit_delineation_cli_stdout_and_outfile(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test delineation audit output to stdout and a file.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    reference_path = tmp_path / "reference.srt"
+    _write_srt(reference_path, ("參考一", "參考二"))
+    json_path = tmp_path / "delineation.json"
+    json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "src_1_sub_1": "參考一",
+                        "src_1_sub_2": "參考二",
+                        "src_2_sub_1": "甲乙",
+                        "src_2_sub_2": "丙",
+                    },
+                    "answer": {
+                        "src_2_sub_1_shifted": "甲",
+                        "src_2_sub_2_shifted": "乙丙",
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    arguments = f"--reference {reference_path} --json {json_path}"
+
+    run_cli_with_args(
+        AuditDelineationCli,
+        f"{arguments} --first-index 1 --last-index 2 --filter changes",
+    )
+    stdout = capsys.readouterr().out
+    assert stdout.startswith("# Transcription Delineation Audit\n")
+    assert "- row filter: changes" in stdout
+    assert "- subtitle range: 1-indexed numbers 1 through 2" in stdout
+    assert "| 1<br>2 | 參考一<br>參考二 | 甲乙<br>丙 | 甲<br>乙丙 |" in stdout
+
+    outfile_path = tmp_path / "audit.md"
+    run_cli_with_args(
+        AuditDelineationCli,
+        f"{arguments} --outfile {outfile_path}",
+    )
+    assert capsys.readouterr().out == ""
+    assert outfile_path.read_text(encoding="utf-8").startswith(
+        "# Transcription Delineation Audit\n"
+    )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditDelineationCli,
+            f"{arguments} --first-index 2 --last-index 1",
+        )
+    assert "--first-index must be less than or equal to --last-index" in (
+        capsys.readouterr().err
+    )
 
 
 def test_audit_review_cli_detects_language(tmp_path: Path, capsys: CaptureFixture):

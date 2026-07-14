@@ -66,6 +66,8 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
         """
         arg_groups = get_arg_groups_by_name(
             parser,
+            "input arguments",
+            "operation arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
