@@ -120,13 +120,13 @@ def test_transcription_imports_without_optional_runtime_dependencies():
             WhisperTranscriber,
             get_segment_split_at_idx,
         )
-        from scinoephile.cli.yue.yue_cli import YueCli
+        from scinoephile.cli.transcribe_cli import TranscribeCli
 
         WhisperTranscriber()
         assert DemucsSeparator.__name__ == "DemucsSeparator"
         assert TranscribedSegment.__name__ == "TranscribedSegment"
         assert get_segment_split_at_idx.__name__ == "get_segment_split_at_idx"
-        assert "transcribe-vs-zho" in YueCli.subcommands()
+        assert TranscribeCli.name() == "transcribe"
         """
     )
     env = os.environ.copy()
