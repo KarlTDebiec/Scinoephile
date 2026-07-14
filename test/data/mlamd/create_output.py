@@ -12,7 +12,6 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
-from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.review.guided import get_guided_reviewer
 from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
 from scinoephile.multilang.translation.gap import get_gap_translator
@@ -79,7 +78,6 @@ if "yue-Hans_transcribe" in actions:
     yue_hans = AudioSeries.load(audio_path)
     transcriber = get_yue_vs_zho_transcriber(
         vad_mode=VADMode.ON,
-        convert=OpenCCConfig.hk2s,
         test_case_directory_path=output_path
         / "yue-Hans_transcribe"
         / "multilang/yue_zho",
