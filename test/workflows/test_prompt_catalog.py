@@ -36,7 +36,6 @@ def test_prompt_catalog_and_domain_mappings_are_read_only():
         translation.DEFAULT_PROMPTS,
         ocr_fusion.DEFAULT_PROMPTS,
         review.DEFAULT_PROMPTS,
-        guided_transcription.DEFAULT_LANGUAGE_SPECS,
         guided_transcription.DEFAULT_SPECS,
     )
 

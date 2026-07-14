@@ -33,7 +33,6 @@ from .processor import (
 )
 
 __all__ = [
-    "DEFAULT_LANGUAGE_SPECS",
     "DEFAULT_SPECS",
     "GuidedTranscriptionSpec",
     "TranscriptionLanguageSpec",
@@ -86,19 +85,12 @@ _YUE_LANGUAGE_SPEC = TranscriptionLanguageSpec(
 """Transcription-language specification for written Cantonese."""
 
 
-DEFAULT_LANGUAGE_SPECS: Mapping[Language, TranscriptionLanguageSpec] = MappingProxyType(
-    {
-        Language.yue_hans: _YUE_LANGUAGE_SPEC,
-        Language.yue_hant: _YUE_LANGUAGE_SPEC,
-    }
-)
-"""Transcription-language specifications keyed by output language."""
-
-
 @dataclass(frozen=True, slots=True, kw_only=True)
 class GuidedTranscriptionSpec:
     """Configuration for one transcription/reference language pair."""
 
+    language_spec: TranscriptionLanguageSpec
+    """Configuration for the transcription language."""
     delineation_prompt: DelineationPrompt
     """Prompt for moving transcription text between reference subtitles."""
     punctuation_prompt: PunctuationPrompt
@@ -112,6 +104,7 @@ class GuidedTranscriptionSpec:
 
 
 _YUE_HANS_SPEC = GuidedTranscriptionSpec(
+    language_spec=_YUE_LANGUAGE_SPEC,
     delineation_prompt=YueZhoDelineationPromptYueHans,
     punctuation_prompt=YueZhoPunctuationPromptYueHans,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
@@ -121,6 +114,7 @@ _YUE_HANS_SPEC = GuidedTranscriptionSpec(
 """Guided transcription specification for simplified written Cantonese."""
 
 _YUE_HANT_SPEC = GuidedTranscriptionSpec(
+    language_spec=_YUE_LANGUAGE_SPEC,
     delineation_prompt=YueZhoDelineationPromptYueHant,
     punctuation_prompt=YueZhoPunctuationPromptYueHant,
     test_case_dir_path=Path("lang/yue_zho/transcription"),
@@ -198,7 +192,7 @@ def get_guided_transcriber(
             f"{language.tag} <- {reference_language.tag}"
         )
     spec = DEFAULT_SPECS[key]
-    language_spec = DEFAULT_LANGUAGE_SPECS[language]
+    language_spec = spec.language_spec
 
     if model_name is None:
         model_name = language_spec.model_name

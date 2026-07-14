@@ -146,21 +146,15 @@ def _build_transcription_prompt_specs(
     prompt_specs: dict[str, PromptSpec] = {}
     for (language, reference_language), spec in specs.items():
         reference_code = reference_language.tag.partition("-")[0].lower()
-        entries = (
-            (
-                f"{DelineationManager.operation}-{language.tag.lower()}-"
-                f"vs-{reference_code}",
-                PromptSpec(DelineationManager, spec.delineation_prompt),
-            ),
-            (
-                f"{PunctuationManager.operation}-{language.tag.lower()}-"
-                f"vs-{reference_code}",
-                PromptSpec(PunctuationManager, spec.punctuation_prompt),
-            ),
-        )
-        for alias, prompt_spec in entries:
-            existing_prompt_spec = prompt_specs.get(alias)
-            if existing_prompt_spec is not None and existing_prompt_spec != prompt_spec:
+        for manager_cls, prompt in (
+            (DelineationManager, spec.delineation_prompt),
+            (PunctuationManager, spec.punctuation_prompt),
+        ):
+            alias = (
+                f"{manager_cls.operation}-{language.tag.lower()}-vs-{reference_code}"
+            )
+            prompt_spec = PromptSpec(manager_cls=manager_cls, prompt=prompt)
+            if alias in prompt_specs and prompt_specs[alias] != prompt_spec:
                 raise ValueError(
                     f"Conflicting guided transcription prompt alias: {alias}"
                 )

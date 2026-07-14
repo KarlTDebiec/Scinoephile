@@ -12,7 +12,6 @@ from pytest import raises
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.transcription.guided import (
-    DEFAULT_LANGUAGE_SPECS,
     DEFAULT_SPECS,
     get_guided_transcriber,
 )
@@ -24,18 +23,12 @@ from scinoephile.lang.yue_zho.transcription import (
 
 def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
     """Test default specs cover both scripts for target and reference Chinese."""
-    assert set(DEFAULT_LANGUAGE_SPECS) == {Language.yue_hans, Language.yue_hant}
-    assert (
-        DEFAULT_LANGUAGE_SPECS[Language.yue_hans]
-        is DEFAULT_LANGUAGE_SPECS[Language.yue_hant]
-    )
     assert set(DEFAULT_SPECS) == {
         (Language.yue_hans, Language.zho_hans),
         (Language.yue_hans, Language.zho_hant),
         (Language.yue_hant, Language.zho_hans),
         (Language.yue_hant, Language.zho_hant),
     }
-    assert {language for language, _ in DEFAULT_SPECS} <= DEFAULT_LANGUAGE_SPECS.keys()
     assert (
         DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)]
         is DEFAULT_SPECS[(Language.yue_hans, Language.zho_hant)]
@@ -44,14 +37,15 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)]
         is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hant)]
     )
+    assert (
+        DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
+        is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)].language_spec
+    )
     mutable_specs = cast(dict, DEFAULT_SPECS)
     with raises(TypeError):
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[
             (Language.yue_hans, Language.zho_hans)
         ]
-    mutable_language_specs = cast(dict, DEFAULT_LANGUAGE_SPECS)
-    with raises(TypeError):
-        mutable_language_specs[Language.eng] = DEFAULT_LANGUAGE_SPECS[Language.yue_hans]
 
 
 def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path):
