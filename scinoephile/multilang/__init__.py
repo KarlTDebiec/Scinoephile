@@ -4,5 +4,5 @@
 
 Package hierarchy (modules may import from any above):
 * eng_yue / eng_zho / yue_eng / yue_zho / zho_eng / zho_yue
-* review / translation
+* review / transcription / translation
 """

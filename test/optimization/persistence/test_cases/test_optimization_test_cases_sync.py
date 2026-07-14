@@ -412,16 +412,17 @@ def test_sync_loads_canonical_repository_data(tmp_path: Path):
 
 def test_sync_round_trips_unbounded_lists(tmp_path: Path):
     """JSON list payloads should not have a persistence width limit."""
+    lines = [f"line {idx}" for idx in range(36)]
     source_path = tmp_path / "source.json"
     source_path.write_text(
         json.dumps(
             [
                 {
                     "query": {
-                        "one": [f"line {idx}" for idx in range(36)],
+                        "one": lines,
                         "two": "reference",
                     },
-                    "answer": {"output": "output"},
+                    "answer": {"output": "".join(lines)},
                 }
             ]
         ),

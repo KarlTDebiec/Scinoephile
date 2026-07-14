@@ -20,11 +20,10 @@ from scinoephile.core.llms.utils import (
 from scinoephile.llms.punctuation import (
     PunctuationManager,
     PunctuationPrompt,
+    PunctuationTestCase,
 )
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
-    YueZhoPunctuationManager,
-    YueZhoPunctuationTestCase,
+from scinoephile.multilang.yue_zho.transcription import (
+    YueZhoPunctuationPromptYueHans,
 )
 from scinoephile.optimization.persistence.test_cases import PersistedTestCase
 from test.helpers import test_data_root
@@ -118,11 +117,9 @@ def test_query_and_answer_require_nonempty_fields():
         answer_cls.model_validate({"output": ""})
 
 
-def test_yue_zho_validation_and_minimum_difficulty_are_static():
-    """Yue/Zho punctuation semantics should live on the static test-case model."""
-    test_case_cls = YueZhoPunctuationManager.get_test_case_cls(
-        YuePunctuationVsZhoPromptYueHans
-    )
+def test_validation_and_minimum_difficulty_are_static():
+    """Punctuation semantics should live on the static test-case model."""
+    test_case_cls = PunctuationManager.get_test_case_cls(YueZhoPunctuationPromptYueHans)
     plain = test_case_cls.model_validate(
         {
             "query": {"subtitles": ["你好"], "guide": "你好"},
@@ -141,7 +138,7 @@ def test_yue_zho_validation_and_minimum_difficulty_are_static():
             "answer": {"output": "你，好"},
         }
     )
-    direct = YueZhoPunctuationTestCase.model_validate(
+    direct = PunctuationTestCase.model_validate(
         {
             "query": {"subtitles": ["你好"], "guide": "你好"},
             "answer": {"output": "你，好"},
@@ -226,15 +223,15 @@ def test_tracked_fixture_round_trips_without_migration(
     raw_data = json.loads(input_path.read_text(encoding="utf-8"))
     test_cases = load_test_cases_from_json(
         input_path,
-        YueZhoPunctuationManager,
-        YuePunctuationVsZhoPromptYueHans,
+        PunctuationManager,
+        YueZhoPunctuationPromptYueHans,
     )
     output_path = tmp_path / input_path.name
 
     save_test_cases_to_json(
         output_path,
         test_cases,
-        YueZhoPunctuationManager,
+        PunctuationManager,
     )
 
     assert json.loads(output_path.read_text(encoding="utf-8")) == raw_data

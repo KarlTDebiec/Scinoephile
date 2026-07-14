@@ -14,13 +14,11 @@ from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.multilang.review.guided import get_guided_reviewer
 from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
+from scinoephile.multilang.transcription.guided import get_guided_transcriber
+from scinoephile.multilang.transcription.processor import VADMode
 from scinoephile.multilang.translation.gap import get_gap_translator
-from scinoephile.multilang.yue_zho.transcription import (
-    VADMode,
-    get_yue_transcribed_vs_zho,
-    get_yue_vs_zho_transcriber,
-)
 from scinoephile.workflows.review import review_series_guided, review_series_pairwise
+from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
 from test.data.mlamd import (
     get_mlamd_yue_delineation_test_cases,
@@ -76,15 +74,23 @@ if "yue-Hans_transcribe" in actions:
 
     # Transcribe
     yue_hans = AudioSeries.load(audio_path)
-    transcriber = get_yue_vs_zho_transcriber(
+    transcriber = get_guided_transcriber(
+        Language.yue_hans,
+        Language.zho_hans,
         vad_mode=VADMode.ON,
-        test_case_directory_path=output_path
-        / "yue-Hans_transcribe"
-        / "multilang/yue_zho",
+        test_case_dir_path=(
+            output_path / "yue-Hans_transcribe" / "multilang/yue_zho/transcription"
+        ),
         delineation_test_cases=get_mlamd_yue_delineation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
     )
-    yue_hans = get_yue_transcribed_vs_zho(yue_hans, zho_hans, transcriber=transcriber)
+    yue_hans = transcribe_series_guided(
+        yue_hans,
+        zho_hans,
+        language=Language.yue_hans,
+        reference_language=Language.zho_hans,
+        transcriber=transcriber,
+    )
     outfile_path = output_path / "yue-Hans_transcribe" / "transcribe.srt"
     yue_hans.save(outfile_path)
 

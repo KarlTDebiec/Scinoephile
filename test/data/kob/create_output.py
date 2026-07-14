@@ -11,20 +11,18 @@ from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
+from scinoephile.multilang.transcription.processor import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.review import (
     YueZhoGuidedReviewPromptYueHans,
     YueZhoGuidedReviewPromptYueHant,
     YueZhoPairwiseReviewPromptYueHans,
     YueZhoPairwiseReviewPromptYueHant,
 )
-from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
-from scinoephile.multilang.yue_zho.transcription.delineation import (
-    YueDelineationVsZhoPromptYueHans,
-    YueDelineationVsZhoPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YuePunctuationVsZhoPromptYueHans,
-    YuePunctuationVsZhoPromptYueHant,
+from scinoephile.multilang.yue_zho.transcription import (
+    YueZhoDelineationPromptYueHans,
+    YueZhoDelineationPromptYueHant,
+    YueZhoPunctuationPromptYueHans,
+    YueZhoPunctuationPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.translation import (
     YueZhoGapTranslationPromptYueHans,
@@ -119,8 +117,8 @@ if "yue-Hans_transcribe" in actions:
             "model_name": "khleeloo/whisper-large-v3-cantonese",
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
-            "delineation_prompt": YueDelineationVsZhoPromptYueHans,
-            "punctuation_prompt": YuePunctuationVsZhoPromptYueHans,
+            "delineation_prompt": YueZhoDelineationPromptYueHans,
+            "punctuation_prompt": YueZhoPunctuationPromptYueHans,
         },
         pairwise_reviewer_kw={"prompt": YueZhoPairwiseReviewPromptYueHans},
         translator_kw={"prompt": YueZhoGapTranslationPromptYueHans},
@@ -139,8 +137,8 @@ if "yue-Hans_transcribe" in actions:
             "model_name": "khleeloo/whisper-large-v3-cantonese",
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
-            "delineation_prompt": YueDelineationVsZhoPromptYueHant,
-            "punctuation_prompt": YuePunctuationVsZhoPromptYueHant,
+            "delineation_prompt": YueZhoDelineationPromptYueHant,
+            "punctuation_prompt": YueZhoPunctuationPromptYueHant,
         },
         pairwise_reviewer_kw={"prompt": YueZhoPairwiseReviewPromptYueHant},
         translator_kw={"prompt": YueZhoGapTranslationPromptYueHant},

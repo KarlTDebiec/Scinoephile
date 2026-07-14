@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for delineation test cases used during Yue/Zho alignment."""
+"""Tests for delineation test cases used during transcription alignment."""
 
 from __future__ import annotations
 
@@ -12,8 +12,8 @@ from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.core.llms import Queryer
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.delineation import DelineationPrompt, DelineationTestCase
-from scinoephile.multilang.yue_zho.transcription.aligner import Aligner
-from scinoephile.multilang.yue_zho.transcription.alignment import Alignment
+from scinoephile.multilang.transcription.aligner import TranscriptionAligner
+from scinoephile.multilang.transcription.alignment import TranscriptionAlignment
 
 _LOCALIZED_PROMPT = DelineationPrompt(
     src_1_sub_1="cankao_yi",
@@ -26,22 +26,22 @@ _LOCALIZED_PROMPT = DelineationPrompt(
 """Delineation prompt using non-default correspondence field names."""
 
 
-def _get_alignment() -> Alignment:
+def _get_alignment() -> TranscriptionAlignment:
     """Get a two-group alignment that can shift target text."""
-    zhongwen = Series(
+    reference = Series(
         events=[
             Subtitle(start=0, end=1000, text="參考一"),
             Subtitle(start=1000, end=2000, text="參考二"),
         ],
     )
-    yuewen = AudioSeries(
+    transcription = AudioSeries(
         audio=AudioSegment.silent(duration=2000),
         events=[
             AudioSubtitle(start=0, end=1000, text="甲"),
             AudioSubtitle(start=1000, end=2000, text="乙"),
         ],
     )
-    alignment = Alignment(zhongwen, yuewen)
+    alignment = TranscriptionAlignment(reference, transcription)
     alignment._sync_groups_override = [([0], [0]), ([1], [1])]
     return alignment
 
@@ -85,7 +85,7 @@ def test_aligner_uses_queryer_prompt_and_semantic_shift_output():
         )
 
     delineation_queryer.side_effect = add_answer
-    aligner = Aligner(
+    aligner = TranscriptionAligner(
         delineation_queryer=delineation_queryer,
         punctuation_queryer=Mock(spec=Queryer),
     )

@@ -19,9 +19,9 @@ from .multi import MultiCli
 from .ocr import OcrCli
 from .process_cli import ProcessCli
 from .proofread_cli import ProofreadCli
+from .transcribe_cli import TranscribeCli
 from .translate_cli import TranslateCli
 from .utility import UtilityCli
-from .yue import YueCli
 
 __all__ = ["ScinoephileCli"]
 
@@ -42,7 +42,6 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "process subtitles": "处理字幕",
         "proofread subtitles using an LLM": "使用大语言模型校对字幕",
         "recognize text from image-based subtitles": "识别图像字幕中的文本",
-        "run written Cantonese subtitle workflows": "运行书面粤语字幕工作流",
         "run utility commands": "运行实用工具命令",
         (
             "Scinoephile is an application for working with Chinese, English, "
@@ -57,6 +56,7 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "translate subtitles between supported languages": (
             "在受支持的语言之间翻译字幕"
         ),
+        "transcribe audio using reference subtitles": "使用参考字幕转写音频",
         "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
     },
     "zh-hant": {
@@ -75,7 +75,6 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "process subtitles": "處理字幕",
         "proofread subtitles using an LLM": "使用大型語言模型校對字幕",
         "recognize text from image-based subtitles": "識別影像字幕中的文字",
-        "run written Cantonese subtitle workflows": "執行書面粵語字幕工作流程",
         "run utility commands": "執行實用工具命令",
         (
             "Scinoephile is an application for working with Chinese, English, "
@@ -88,6 +87,7 @@ SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "將兩個序列堆疊為上下行字幕"
         ),
         "translate subtitles between supported languages": ("在支援的語言之間翻譯字幕"),
+        "transcribe audio using reference subtitles": "使用參考字幕轉寫音訊",
         "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
     },
 }
@@ -151,9 +151,9 @@ class ScinoephileCli(ScinoephileCliBase):
             OcrCli.name(): OcrCli,
             ProcessCli.name(): ProcessCli,
             ProofreadCli.name(): ProofreadCli,
+            TranscribeCli.name(): TranscribeCli,
             TranslateCli.name(): TranslateCli,
             UtilityCli.name(): UtilityCli,
-            YueCli.name(): YueCli,
         }
 
     @classmethod
