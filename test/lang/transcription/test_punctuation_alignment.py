@@ -12,10 +12,10 @@ from pytest import MonkeyPatch
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.core.llms import Queryer
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.lang.transcription import aligner as aligner_module
+from scinoephile.lang.transcription.aligner import TranscriptionAligner
+from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.llms.punctuation import PunctuationPrompt, PunctuationTestCase
-from scinoephile.multilang.transcription import aligner as aligner_module
-from scinoephile.multilang.transcription.aligner import TranscriptionAligner
-from scinoephile.multilang.transcription.alignment import TranscriptionAlignment
 
 _LOCALIZED_PROMPT = PunctuationPrompt(
     src_1="zimu",

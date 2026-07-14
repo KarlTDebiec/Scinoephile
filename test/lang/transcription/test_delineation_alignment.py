@@ -11,9 +11,9 @@ from pydub import AudioSegment
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.core.llms import Queryer
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.lang.transcription.aligner import TranscriptionAligner
+from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.llms.delineation import DelineationPrompt, DelineationTestCase
-from scinoephile.multilang.transcription.aligner import TranscriptionAligner
-from scinoephile.multilang.transcription.alignment import TranscriptionAlignment
 
 _LOCALIZED_PROMPT = DelineationPrompt(
     src_1_sub_1="cankao_yi",

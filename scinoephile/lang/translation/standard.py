@@ -11,30 +11,30 @@ from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
+from scinoephile.lang.eng_yue.translation import EngYueTranslationPrompt
+from scinoephile.lang.eng_zho.translation import EngZhoTranslationPrompt
+from scinoephile.lang.yue_eng.translation import (
+    YueEngTranslationPromptYueHans,
+    YueEngTranslationPromptYueHant,
+)
+from scinoephile.lang.yue_zho.translation import (
+    YueZhoTranslationPromptYueHans,
+    YueZhoTranslationPromptYueHant,
+)
+from scinoephile.lang.zho_eng.translation import (
+    ZhoEngTranslationPromptZhoHans,
+    ZhoEngTranslationPromptZhoHant,
+)
+from scinoephile.lang.zho_yue.translation import (
+    ZhoYueTranslationPromptZhoHans,
+    ZhoYueTranslationPromptZhoHant,
+)
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.translation import (
     TranslationManager,
     TranslationProcessor,
     TranslationPrompt,
-)
-from scinoephile.multilang.eng_yue.translation import EngYueTranslationPrompt
-from scinoephile.multilang.eng_zho.translation import EngZhoTranslationPrompt
-from scinoephile.multilang.yue_eng.translation import (
-    YueEngTranslationPromptYueHans,
-    YueEngTranslationPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    YueZhoTranslationPromptYueHans,
-    YueZhoTranslationPromptYueHant,
-)
-from scinoephile.multilang.zho_eng.translation import (
-    ZhoEngTranslationPromptZhoHans,
-    ZhoEngTranslationPromptZhoHant,
-)
-from scinoephile.multilang.zho_yue.translation import (
-    ZhoYueTranslationPromptZhoHans,
-    ZhoYueTranslationPromptZhoHant,
 )
 
 __all__ = [

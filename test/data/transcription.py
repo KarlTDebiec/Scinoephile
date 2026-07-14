@@ -18,10 +18,10 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.review.guided import get_guided_reviewer
-from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
-from scinoephile.multilang.transcription.guided import get_guided_transcriber
-from scinoephile.multilang.translation.gap import get_gap_translator
+from scinoephile.lang.review.guided import get_guided_reviewer
+from scinoephile.lang.review.pairwise import get_pairwise_reviewer
+from scinoephile.lang.transcription.guided import get_guided_transcriber
+from scinoephile.lang.translation.gap import get_gap_translator
 from scinoephile.workflows.review import review_series_guided, review_series_pairwise
 from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
@@ -88,7 +88,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     reference = Series.load(reference_path)
 
     device = get_torch_device()
-    test_case_dir_path = yue_hans_transcribe_dir_path / "multilang/yue_zho"
+    test_case_dir_path = yue_hans_transcribe_dir_path / "lang/yue_zho"
 
     # Ensure test-case directories exist (some constructors validate as "input dirs")
     transcription_test_case_dir_path = test_case_dir_path / "transcription"

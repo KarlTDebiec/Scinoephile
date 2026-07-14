@@ -13,17 +13,17 @@ from scinoephile.audio.transcription import get_segment_split_on_whitespace
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
-from scinoephile.llms.providers.registry import get_provider
-from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
-from scinoephile.multilang.yue_zho.transcription import (
+from scinoephile.lang.yue_zho.transcription import (
     DEFAULT_YUE_WHISPER_MODEL_NAME,
     YueZhoDelineationPromptYueHans,
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHans,
     YueZhoPunctuationPromptYueHant,
 )
+from scinoephile.llms import load_default_test_cases
+from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
+from scinoephile.llms.providers.registry import get_provider
+from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 
 from .aligner import TranscriptionAligner
 from .processor import (
@@ -42,11 +42,11 @@ __all__ = [
 
 _YUE_ZHO_DELINEATION_JSON_PATHS = (
     Path(
-        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
+        "mlamd/output/yue-Hans_transcribe/lang/yue_zho/transcription/"
         "delineation/cuda.json"
     ),
     Path(
-        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
+        "mlamd/output/yue-Hans_transcribe/lang/yue_zho/transcription/"
         "delineation/mps.json"
     ),
 )
@@ -54,11 +54,11 @@ _YUE_ZHO_DELINEATION_JSON_PATHS = (
 
 _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
     Path(
-        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
+        "mlamd/output/yue-Hans_transcribe/lang/yue_zho/transcription/"
         "punctuation/cuda.json"
     ),
     Path(
-        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/"
+        "mlamd/output/yue-Hans_transcribe/lang/yue_zho/transcription/"
         "punctuation/mps.json"
     ),
 )
@@ -92,7 +92,7 @@ _YUE_HANS_SPEC = GuidedTranscriptionSpec(
     whisper_language="yue",
     delineation_prompt=YueZhoDelineationPromptYueHans,
     punctuation_prompt=YueZhoPunctuationPromptYueHans,
-    test_case_dir_path=Path("multilang/yue_zho/transcription"),
+    test_case_dir_path=Path("lang/yue_zho/transcription"),
     delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
     punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
     segment_splitter=get_segment_split_on_whitespace,
@@ -104,7 +104,7 @@ _YUE_HANT_SPEC = GuidedTranscriptionSpec(
     whisper_language="yue",
     delineation_prompt=YueZhoDelineationPromptYueHant,
     punctuation_prompt=YueZhoPunctuationPromptYueHant,
-    test_case_dir_path=Path("multilang/yue_zho/transcription"),
+    test_case_dir_path=Path("lang/yue_zho/transcription"),
     delineation_json_paths=_YUE_ZHO_DELINEATION_JSON_PATHS,
     punctuation_json_paths=_YUE_ZHO_PUNCTUATION_JSON_PATHS,
     segment_splitter=get_segment_split_on_whitespace,

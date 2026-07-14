@@ -17,13 +17,13 @@ from scinoephile.core.llms.utils import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.lang.yue_zho.transcription import (
+    YueZhoDelineationPromptYueHans,
+)
 from scinoephile.llms.delineation import (
     DelineationManager,
     DelineationPrompt,
     DelineationTestCase,
-)
-from scinoephile.multilang.yue_zho.transcription import (
-    YueZhoDelineationPromptYueHans,
 )
 from scinoephile.optimization.persistence.test_cases import PersistedTestCase
 from test.helpers import test_data_root
@@ -52,9 +52,7 @@ _LOCALIZED_PROMPT = DelineationPrompt(
 
 _DELINEATION_PATHS = tuple(
     sorted(
-        test_data_root.glob(
-            "*/output/*/multilang/yue_zho/transcription/delineation/*.json"
-        )
+        test_data_root.glob("*/output/*/lang/yue_zho/transcription/delineation/*.json")
     )
 )
 """Tracked delineation test-case JSON paths."""

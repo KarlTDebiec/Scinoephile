@@ -11,6 +11,24 @@ from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
+from scinoephile.lang.eng_yue.review import EngYuePairwiseReviewPrompt
+from scinoephile.lang.eng_zho.review import EngZhoPairwiseReviewPrompt
+from scinoephile.lang.yue_eng.review import (
+    YueEngPairwiseReviewPromptYueHans,
+    YueEngPairwiseReviewPromptYueHant,
+)
+from scinoephile.lang.yue_zho.review import (
+    YueZhoPairwiseReviewPromptYueHans,
+    YueZhoPairwiseReviewPromptYueHant,
+)
+from scinoephile.lang.zho_eng.review import (
+    ZhoEngPairwiseReviewPromptZhoHans,
+    ZhoEngPairwiseReviewPromptZhoHant,
+)
+from scinoephile.lang.zho_yue.review import (
+    ZhoYuePairwiseReviewPromptZhoHans,
+    ZhoYuePairwiseReviewPromptZhoHant,
+)
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.pairwise_review import (
     PairwiseReviewManager,
@@ -18,24 +36,6 @@ from scinoephile.llms.pairwise_review import (
     PairwiseReviewPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.multilang.eng_yue.review import EngYuePairwiseReviewPrompt
-from scinoephile.multilang.eng_zho.review import EngZhoPairwiseReviewPrompt
-from scinoephile.multilang.yue_eng.review import (
-    YueEngPairwiseReviewPromptYueHans,
-    YueEngPairwiseReviewPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.review import (
-    YueZhoPairwiseReviewPromptYueHans,
-    YueZhoPairwiseReviewPromptYueHant,
-)
-from scinoephile.multilang.zho_eng.review import (
-    ZhoEngPairwiseReviewPromptZhoHans,
-    ZhoEngPairwiseReviewPromptZhoHant,
-)
-from scinoephile.multilang.zho_yue.review import (
-    ZhoYuePairwiseReviewPromptZhoHans,
-    ZhoYuePairwiseReviewPromptZhoHant,
-)
 
 __all__ = [
     "DEFAULT_PROMPTS",
@@ -43,11 +43,9 @@ __all__ = [
 ]
 
 _YUE_ZHO_JSON_PATHS = (
-    Path(
-        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/cuda.json"
-    ),
-    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/cpu.json"),
-    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/pairwise_review/mps.json"),
+    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/pairwise_review/cuda.json"),
+    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/pairwise_review/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/pairwise_review/mps.json"),
 )
 """Default written Cantonese/Chinese pairwise-review JSON paths."""
 

@@ -41,10 +41,9 @@ authoritative hierarchy declaration above for ordering.
 | `core` | Stable subtitle-domain primitives, timing, synchronization, caching, and shared CLI support |
 | `dictionaries` | Dictionary lookup, parsing, and cache construction |
 | `image` | Image subtitle representations, drawing, OCR, and OCR validation |
-| `lang` | Language-specific subtitle operations |
+| `lang` | Language-specific, cross-language, and language-pair subtitle operations |
 | `llms` | Prompt types, providers, structured correspondence, and model-facing processing |
 | `media` | Media probing, subtitle extraction, cache analysis, and visual offset estimation |
-| `multilang` | Cross-language and language-pair operations |
 | `optimization` | Prompt optimization contracts, operation registry, and persistence |
 | `web` | Web interfaces for interactive operations |
 | `workflows` | Reusable end-to-end orchestration and application composition |

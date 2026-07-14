@@ -7,13 +7,14 @@ from __future__ import annotations
 from pathlib import Path
 from types import MappingProxyType
 
-import scinoephile.multilang.review.guided as guided_review
-import scinoephile.multilang.review.pairwise as pairwise_review
-import scinoephile.multilang.translation.gap as gap_translation
-import scinoephile.multilang.translation.guided as guided_translation
-import scinoephile.multilang.translation.standard as translation
+import scinoephile.lang.review.guided as guided_review
+import scinoephile.lang.review.pairwise as pairwise_review
+import scinoephile.lang.review.standard as review
+import scinoephile.lang.translation.gap as gap_translation
+import scinoephile.lang.translation.guided as guided_translation
+import scinoephile.lang.translation.standard as translation
 from scinoephile.core import Language
-from scinoephile.lang import ocr_fusion, review
+from scinoephile.lang import ocr_fusion
 from scinoephile.optimization.operations import OPERATIONS
 from scinoephile.optimization.persistence.prompts import (
     PersistedPrompt,

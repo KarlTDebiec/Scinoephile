@@ -9,15 +9,15 @@ from typing import Unpack
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.review import get_reviewer
+from scinoephile.lang.review.guided import get_guided_reviewer
+from scinoephile.lang.review.pairwise import get_pairwise_reviewer
+from scinoephile.lang.review.standard import get_reviewer
 from scinoephile.llms.guided_review import GuidedReviewProcessor, GuidedReviewPrompt
 from scinoephile.llms.pairwise_review import (
     PairwiseReviewProcessor,
     PairwiseReviewPrompt,
 )
 from scinoephile.llms.review import ReviewProcessor, ReviewPrompt
-from scinoephile.multilang.review.guided import get_guided_reviewer
-from scinoephile.multilang.review.pairwise import get_pairwise_reviewer
 
 from .helpers import resolve_language
 

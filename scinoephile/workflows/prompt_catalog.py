@@ -7,14 +7,21 @@ from __future__ import annotations
 from collections.abc import Mapping
 from types import MappingProxyType
 
-import scinoephile.multilang.review.guided as guided_review
-import scinoephile.multilang.review.pairwise as pairwise_review
-import scinoephile.multilang.translation.gap as gap_translation
-import scinoephile.multilang.translation.guided as guided_translation
-import scinoephile.multilang.translation.standard as translation
+import scinoephile.lang.review.guided as guided_review
+import scinoephile.lang.review.pairwise as pairwise_review
+import scinoephile.lang.review.standard as review
+import scinoephile.lang.translation.gap as gap_translation
+import scinoephile.lang.translation.guided as guided_translation
+import scinoephile.lang.translation.standard as translation
 from scinoephile.core import Language
 from scinoephile.core.llms import Manager, Prompt
-from scinoephile.lang import ocr_fusion, review
+from scinoephile.lang import ocr_fusion
+from scinoephile.lang.yue_zho.transcription import (
+    YueZhoDelineationPromptYueHans,
+    YueZhoDelineationPromptYueHant,
+    YueZhoPunctuationPromptYueHans,
+    YueZhoPunctuationPromptYueHant,
+)
 from scinoephile.llms.delineation import DelineationManager
 from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
@@ -24,12 +31,6 @@ from scinoephile.llms.pairwise_review import PairwiseReviewManager
 from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
-from scinoephile.multilang.yue_zho.transcription import (
-    YueZhoDelineationPromptYueHans,
-    YueZhoDelineationPromptYueHant,
-    YueZhoPunctuationPromptYueHans,
-    YueZhoPunctuationPromptYueHant,
-)
 from scinoephile.optimization.prompt_spec import PromptSpec
 
 __all__ = ["PROMPT_SPECS"]

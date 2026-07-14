@@ -3,5 +3,5 @@
 """Code for reviewing subtitles using reference-language subtitles.
 
 Package hierarchy (modules may import from any above):
-* guided / pairwise
+* guided / pairwise / standard
 """

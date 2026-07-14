@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.core import Language
-from scinoephile.lang.review import DEFAULT_PROMPTS
+from scinoephile.lang.review.standard import DEFAULT_PROMPTS
 from scinoephile.llms.review import ReviewManager
 from scinoephile.optimization.persistence.prompts import PromptSqliteStore
 from scinoephile.optimization.persistence.prompts.sync import sync_prompts

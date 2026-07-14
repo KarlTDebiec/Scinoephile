@@ -10,8 +10,8 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.stacking import get_stacked_series
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.translation.guided import get_guided_translator
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.multilang.translation.guided import get_guided_translator
 from scinoephile.workflows.cleaning import clean_series
 from scinoephile.workflows.flattening import flatten_series
 from scinoephile.workflows.translation import translate_series_guided
@@ -78,9 +78,7 @@ if "yue_eng" in actions:
         Language.zho_hant,
         Language.eng,
         prompt=EngZhoYueGuidedTranslationPrompt,
-        test_case_path=(
-            output_path / "yue_eng/multilang/eng_zho/guided_translation.json"
-        ),
+        test_case_path=(output_path / "yue_eng/lang/eng_zho/guided_translation.json"),
         additional_context=additional_context,
         auto_verify=True,
     )

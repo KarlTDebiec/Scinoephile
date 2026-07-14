@@ -24,11 +24,11 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.llms.providers.registry import get_provider
-from scinoephile.multilang.transcription.processor import (
+from scinoephile.lang.transcription.processor import (
     DemucsMode,
     VADMode,
 )
+from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.transcription import transcribe_series_guided
 
 from .helpers.io import read_series, write_series

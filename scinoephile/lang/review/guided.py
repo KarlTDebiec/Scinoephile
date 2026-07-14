@@ -11,6 +11,24 @@ from typing import Unpack
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
+from scinoephile.lang.eng_yue.review import EngYueGuidedReviewPrompt
+from scinoephile.lang.eng_zho.review import EngZhoGuidedReviewPrompt
+from scinoephile.lang.yue_eng.review import (
+    YueEngGuidedReviewPromptYueHans,
+    YueEngGuidedReviewPromptYueHant,
+)
+from scinoephile.lang.yue_zho.review import (
+    YueZhoGuidedReviewPromptYueHans,
+    YueZhoGuidedReviewPromptYueHant,
+)
+from scinoephile.lang.zho_eng.review import (
+    ZhoEngGuidedReviewPromptZhoHans,
+    ZhoEngGuidedReviewPromptZhoHant,
+)
+from scinoephile.lang.zho_yue.review import (
+    ZhoYueGuidedReviewPromptZhoHans,
+    ZhoYueGuidedReviewPromptZhoHant,
+)
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.guided_review import (
     GuidedReviewManager,
@@ -18,24 +36,6 @@ from scinoephile.llms.guided_review import (
     GuidedReviewPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.multilang.eng_yue.review import EngYueGuidedReviewPrompt
-from scinoephile.multilang.eng_zho.review import EngZhoGuidedReviewPrompt
-from scinoephile.multilang.yue_eng.review import (
-    YueEngGuidedReviewPromptYueHans,
-    YueEngGuidedReviewPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.review import (
-    YueZhoGuidedReviewPromptYueHans,
-    YueZhoGuidedReviewPromptYueHant,
-)
-from scinoephile.multilang.zho_eng.review import (
-    ZhoEngGuidedReviewPromptZhoHans,
-    ZhoEngGuidedReviewPromptZhoHant,
-)
-from scinoephile.multilang.zho_yue.review import (
-    ZhoYueGuidedReviewPromptZhoHans,
-    ZhoYueGuidedReviewPromptZhoHant,
-)
 
 __all__ = [
     "DEFAULT_PROMPTS",
@@ -43,9 +43,9 @@ __all__ = [
 ]
 
 _YUE_ZHO_JSON_PATHS = (
-    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/guided_review/cuda.json"),
-    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/guided_review/cpu.json"),
-    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/guided_review/mps.json"),
+    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/guided_review/cuda.json"),
+    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/guided_review/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/guided_review/mps.json"),
 )
 """Default written Cantonese/Chinese guided-review JSON paths."""
 

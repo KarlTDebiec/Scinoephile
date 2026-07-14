@@ -20,6 +20,17 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
+from scinoephile.lang.yue_zho.review import (
+    YueZhoGuidedReviewPromptYueHans,
+    YueZhoPairwiseReviewPromptYueHans,
+)
+from scinoephile.lang.yue_zho.transcription import (
+    YueZhoDelineationPromptYueHans,
+    YueZhoPunctuationPromptYueHans,
+)
+from scinoephile.lang.yue_zho.translation import (
+    YueZhoGapTranslationPromptYueHans,
+)
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
@@ -35,17 +46,6 @@ from scinoephile.llms.pairwise_review import (
 )
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
-from scinoephile.multilang.yue_zho.review import (
-    YueZhoGuidedReviewPromptYueHans,
-    YueZhoPairwiseReviewPromptYueHans,
-)
-from scinoephile.multilang.yue_zho.transcription import (
-    YueZhoDelineationPromptYueHans,
-    YueZhoPunctuationPromptYueHans,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    YueZhoGapTranslationPromptYueHans,
-)
 from test.helpers import SeriesCERResult, test_data_root
 
 __all__ = [
@@ -199,7 +199,7 @@ def get_kob_yue_delineation_test_cases(
     path = (
         output_dir
         / "yue-Hans_transcribe"
-        / "multilang"
+        / "lang"
         / "yue_zho"
         / "transcription"
         / "delineation"
@@ -224,7 +224,7 @@ def get_kob_yue_from_zho_gap_translation_test_cases(
     path = (
         output_dir
         / "yue-Hans_transcribe"
-        / "multilang"
+        / "lang"
         / "yue_zho"
         / "gap_translation"
         / f"{get_torch_device()}.json"
@@ -310,7 +310,7 @@ def get_kob_yue_punctuation_test_cases(
     path = (
         output_dir
         / "yue-Hans_transcribe"
-        / "multilang"
+        / "lang"
         / "yue_zho"
         / "transcription"
         / "punctuation"
@@ -335,7 +335,7 @@ def get_kob_yue_vs_zho_guided_review_test_cases(
     path = (
         output_dir
         / "yue-Hans_transcribe"
-        / "multilang"
+        / "lang"
         / "yue_zho"
         / "guided_review"
         / f"{get_torch_device()}.json"
@@ -359,7 +359,7 @@ def get_kob_yue_vs_zho_pairwise_review_test_cases(
     path = (
         output_dir
         / "yue-Hans_transcribe"
-        / "multilang"
+        / "lang"
         / "yue_zho"
         / "pairwise_review"
         / f"{get_torch_device()}.json"

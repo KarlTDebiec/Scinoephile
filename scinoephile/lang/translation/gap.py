@@ -15,6 +15,24 @@ from scinoephile.core.llms import (
     ProcessorKwargs,
     TestCase,
 )
+from scinoephile.lang.eng_yue.translation import EngYueGapTranslationPrompt
+from scinoephile.lang.eng_zho.translation import EngZhoGapTranslationPrompt
+from scinoephile.lang.yue_eng.translation import (
+    YueEngGapTranslationPromptYueHans,
+    YueEngGapTranslationPromptYueHant,
+)
+from scinoephile.lang.yue_zho.translation import (
+    YueZhoGapTranslationPromptYueHans,
+    YueZhoGapTranslationPromptYueHant,
+)
+from scinoephile.lang.zho_eng.translation import (
+    ZhoEngGapTranslationPromptZhoHans,
+    ZhoEngGapTranslationPromptZhoHant,
+)
+from scinoephile.lang.zho_yue.translation import (
+    ZhoYueGapTranslationPromptZhoHans,
+    ZhoYueGapTranslationPromptZhoHant,
+)
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.gap_translation import (
     GapTranslationManager,
@@ -22,24 +40,6 @@ from scinoephile.llms.gap_translation import (
     GapTranslationPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.multilang.eng_yue.translation import EngYueGapTranslationPrompt
-from scinoephile.multilang.eng_zho.translation import EngZhoGapTranslationPrompt
-from scinoephile.multilang.yue_eng.translation import (
-    YueEngGapTranslationPromptYueHans,
-    YueEngGapTranslationPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    YueZhoGapTranslationPromptYueHans,
-    YueZhoGapTranslationPromptYueHant,
-)
-from scinoephile.multilang.zho_eng.translation import (
-    ZhoEngGapTranslationPromptZhoHans,
-    ZhoEngGapTranslationPromptZhoHant,
-)
-from scinoephile.multilang.zho_yue.translation import (
-    ZhoYueGapTranslationPromptZhoHans,
-    ZhoYueGapTranslationPromptZhoHant,
-)
 
 __all__ = [
     "DEFAULT_PROMPTS",
@@ -56,11 +56,9 @@ _YUE_ENG_GAP_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 """Default English-to-written Cantonese gap translation JSON paths."""
 
 _YUE_ZHO_GAP_TRANSLATION_JSON_PATHS = (
-    Path(
-        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cuda.json"
-    ),
-    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cpu.json"),
-    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/mps.json"),
+    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/gap_translation/cuda.json"),
+    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/gap_translation/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/lang/yue_zho/gap_translation/mps.json"),
 )
 """Default standard Chinese-to-written Cantonese gap translation JSON paths."""
 

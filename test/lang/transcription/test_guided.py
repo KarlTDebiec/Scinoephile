@@ -11,11 +11,11 @@ from pytest import raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
-from scinoephile.multilang.transcription.guided import (
+from scinoephile.lang.transcription.guided import (
     DEFAULT_SPECS,
     get_guided_transcriber,
 )
-from scinoephile.multilang.yue_zho.transcription import (
+from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHant,
 )

@@ -9,6 +9,9 @@ from typing import Unpack
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.translation.gap import get_gap_translator
+from scinoephile.lang.translation.guided import get_guided_translator
+from scinoephile.lang.translation.standard import get_translator
 from scinoephile.llms.gap_translation import (
     GapTranslationProcessor,
     GapTranslationPrompt,
@@ -18,9 +21,6 @@ from scinoephile.llms.guided_translation import (
     GuidedTranslationPrompt,
 )
 from scinoephile.llms.translation import TranslationProcessor, TranslationPrompt
-from scinoephile.multilang.translation.gap import get_gap_translator
-from scinoephile.multilang.translation.guided import get_guided_translator
-from scinoephile.multilang.translation.standard import get_translator
 
 from .helpers import resolve_language
 

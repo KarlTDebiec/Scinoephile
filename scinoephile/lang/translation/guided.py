@@ -15,6 +15,24 @@ from scinoephile.core.llms import (
     ProcessorKwargs,
     TestCase,
 )
+from scinoephile.lang.eng_yue.translation import EngYueGuidedTranslationPrompt
+from scinoephile.lang.eng_zho.translation import EngZhoGuidedTranslationPrompt
+from scinoephile.lang.yue_eng.translation import (
+    YueEngGuidedTranslationPromptYueHans,
+    YueEngGuidedTranslationPromptYueHant,
+)
+from scinoephile.lang.yue_zho.translation import (
+    YueZhoGuidedTranslationPromptYueHans,
+    YueZhoGuidedTranslationPromptYueHant,
+)
+from scinoephile.lang.zho_eng.translation import (
+    ZhoEngGuidedTranslationPromptZhoHans,
+    ZhoEngGuidedTranslationPromptZhoHant,
+)
+from scinoephile.lang.zho_yue.translation import (
+    ZhoYueGuidedTranslationPromptZhoHans,
+    ZhoYueGuidedTranslationPromptZhoHant,
+)
 from scinoephile.llms import load_default_test_cases
 from scinoephile.llms.guided_translation import (
     GuidedTranslationManager,
@@ -22,24 +40,6 @@ from scinoephile.llms.guided_translation import (
     GuidedTranslationPrompt,
 )
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.multilang.eng_yue.translation import EngYueGuidedTranslationPrompt
-from scinoephile.multilang.eng_zho.translation import EngZhoGuidedTranslationPrompt
-from scinoephile.multilang.yue_eng.translation import (
-    YueEngGuidedTranslationPromptYueHans,
-    YueEngGuidedTranslationPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    YueZhoGuidedTranslationPromptYueHans,
-    YueZhoGuidedTranslationPromptYueHant,
-)
-from scinoephile.multilang.zho_eng.translation import (
-    ZhoEngGuidedTranslationPromptZhoHans,
-    ZhoEngGuidedTranslationPromptZhoHant,
-)
-from scinoephile.multilang.zho_yue.translation import (
-    ZhoYueGuidedTranslationPromptZhoHans,
-    ZhoYueGuidedTranslationPromptZhoHant,
-)
 
 __all__ = [
     "DEFAULT_PROMPTS",
