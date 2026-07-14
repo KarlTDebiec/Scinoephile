@@ -6,12 +6,10 @@ from __future__ import annotations
 
 from typing import Final
 
-from scinoephile.core.llms import PromptLocalizationFields
-
 __all__ = ["YUE_HANT_PROMPT_FIELDS"]
 
 
-YUE_HANT_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
+YUE_HANT_PROMPT_FIELDS: Final = {
     "few_shot_intro": "下面係一啲查詢同埋佢哋預期答案嘅例子：",
     "few_shot_query_intro": "例子查詢：",
     "few_shot_answer_intro": "預期答案：",

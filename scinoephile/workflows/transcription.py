@@ -68,10 +68,7 @@ def transcribe_series_guided(
         ScinoephileError: if the reference language cannot be resolved or the pair is
             unsupported
     """
-    resolved_reference_language = resolve_language(
-        reference_series,
-        reference_language,
-    )
+    resolved_reference_language = resolve_language(reference_series, reference_language)
     if transcriber is None:
         transcriber = get_guided_transcriber(
             language,

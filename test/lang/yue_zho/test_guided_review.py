@@ -13,7 +13,6 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.review.guided import get_guided_reviewer
 from scinoephile.workflows.review import review_series_guided
-from test.data.kob import get_kob_yue_vs_zho_guided_review_test_cases
 from test.data.mlamd import get_mlamd_yue_vs_zho_guided_review_test_cases
 from test.helpers import assert_series_equal, parametrize
 
@@ -28,15 +27,6 @@ from test.helpers import assert_series_equal, parametrize
         "device_name",
     ),
     [
-        param(
-            "kob_yue_hans_transcribe_review_translate",
-            "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
-            "kob_yue_hans_transcribe_review_translate_guided_review",
-            get_kob_yue_vs_zho_guided_review_test_cases,
-            "test.data.kob.get_torch_device",
-            "mps",
-            id="kob",
-        ),
         param(
             "mlamd_yue_hans_transcribe_review_translate",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",

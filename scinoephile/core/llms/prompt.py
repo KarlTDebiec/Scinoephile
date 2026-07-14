@@ -8,33 +8,11 @@ import hashlib
 import json
 from collections.abc import Callable
 from dataclasses import dataclass, fields, replace
-from typing import Self, TypedDict
+from typing import Self
 
 from scinoephile.core.language import Language
 
-__all__ = [
-    "Prompt",
-    "PromptLocalizationFields",
-]
-
-
-class PromptLocalizationFields(TypedDict):
-    """Shared localization fields accepted by all prompt types."""
-
-    few_shot_intro: str
-    """Text preceding few-shot examples."""
-    few_shot_query_intro: str
-    """Text preceding each few-shot example query."""
-    few_shot_answer_intro: str
-    """Text preceding each few-shot expected answer."""
-    answer_invalid_pre: str
-    """Text introducing an invalid-answer retry."""
-    answer_invalid_post: str
-    """Text concluding an invalid-answer retry."""
-    test_case_invalid_pre: str
-    """Text preceding test case validation errors."""
-    test_case_invalid_post: str
-    """Text following test case validation errors."""
+__all__ = ["Prompt"]
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
