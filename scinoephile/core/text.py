@@ -296,24 +296,17 @@ def get_char_type(char: str) -> str:
     if char in punctuation:
         return "punc"
 
+    # Reject control, format, and combining characters unsupported by this model
+    if unicodedata.category(char).startswith(("C", "M")):
+        name = unicodedata.name(char, "<unnamed>")
+        raise ScinoephileError(f"Unrecognized char type for {char!r} of name {name}")
+
     # Check Unicode characters with wide or full-width display properties
     if unicodedata.east_asian_width(char) in {"F", "W"}:
         return "full"
 
-    # Check if character is half-width (Western)
-    if any(
-        [
-            "\u0020" <= char <= "\u007f",  # Basic Latin
-            "\u00a0" <= char <= "\u00ff",  # Latin-1 Supplement
-            "\u0100" <= char <= "\u017f",  # Latin Extended-A
-            "\u0180" <= char <= "\u024f",  # Latin Extended-B
-        ]
-    ):
-        return "half"
-
-    # Raise exception if character type is not recognized
-    name = unicodedata.name(char, "<unnamed>")
-    raise ScinoephileError(f"Unrecognized char type for {char!r} of name {name}")
+    # Treat narrow, half-width, neutral, and ambiguous characters as half-width
+    return "half"
 
 
 def is_full_width_char(char: str) -> bool:
