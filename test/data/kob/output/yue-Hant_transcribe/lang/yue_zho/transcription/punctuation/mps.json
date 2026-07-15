@@ -855,1047 +855,6 @@
   },
   {
     "query": {
-      "ref_sub": "少爺！準備好了",
-      "target_subs": [
-        "少爺",
-        "準備好喇"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "少爺！準備好喇"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "辛苦了！少爺",
-      "target_subs": [
-        "辛苦啦",
-        "少爺"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "辛苦啦！少爺"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "少爺！擦個汗吧",
-      "target_subs": [
-        "會寒啦",
-        "少爺"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "會寒啦，少爺！"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "師爺，少爺寫的是甚麼？",
-      "target_subs": [
-        "師爺",
-        "少爺寫乜嘢呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "師爺，少爺寫乜嘢呀？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "好棒！原來少爺會寫自己的名字",
-      "target_subs": [
-        "嘩",
-        "好靚呀",
-        "原來少爺識寫自己個名喎"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "嘩，好靚呀！原來少爺識寫自己個名喎。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "對呀",
-      "target_subs": [
-        "係呀",
-        "要"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "係呀，要"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "好字！龍飛鳳舞，蘇察哈爾燦",
-      "target_subs": [
-        "好字呀",
-        "龍飛鳳舞",
-        "蘇擦蝦耳鏟"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "好字呀！龍飛鳳舞，蘇擦蝦耳鏟"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "你唸反了，老爺",
-      "target_subs": [
-        "調轉咗呀",
-        "老爺"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "調轉咗呀，老爺"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "好小子，但是別驕傲，知道嗎？",
-      "target_subs": [
-        "叻仔",
-        "但事無驕",
-        "知咩"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "叻仔，但事無驕，知咩？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "爹，我們蘇察哈爾家",
-      "target_subs": [
-        "爹爹",
-        "我哋蘇擦蝦耳家"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "爹爹，我哋蘇擦蝦耳家"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "現在可不同，我的兒子你的孫兒阿燦",
-      "target_subs": [
-        "而家唔係啦",
-        "我個仔你佢孫阿燦呢"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "而家唔係啦，我個仔，你佢孫，阿燦呢？"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "爹，這可是非同少可",
-      "target_subs": [
-        "爹",
-        "呢一步非同小可"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "爹，呢一步非同小可"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "少爺，你真是要好好地學習寫字",
-      "target_subs": [
-        "少爺",
-        "你真係要好啲學寫字"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "少爺，你真係要好啲學寫字"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "阿燦，先把它裱起來",
-      "target_subs": [
-        "我傻",
-        "擦呀擦",
-        "我睇表起佢好"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我傻，擦呀擦，我睇表起佢好。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "師爺，把它掛在最當眼的地方",
-      "target_subs": [
-        "師爺",
-        "你攞佢有咁多眼掛咁多眼"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "師爺，你攞佢，有咁多眼掛咁多眼。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "這樣吧，師爺",
-      "target_subs": [
-        "咁唔係呀師爺"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "咁唔係呀，師爺"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "你先揹著它簪花掛紅，遊行威風一下",
-      "target_subs": [
-        "你揹住佢參夫阿國",
-        "和友鄰皆威下先"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你揹住佢參夫阿國，和友鄰皆威下先。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "阿燦，來⋯坐⋯",
-      "target_subs": [
-        "擦呀擦",
-        "嚟嚟",
-        "坐…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "擦呀擦，嚟嚟⋯坐…"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "你這麼爭氣，我也很安慰",
-      "target_subs": [
-        "見你咁生性",
-        "我都好安慰"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "見你咁生性，我都好安慰"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "你聽我說，爹是有名的敗家兒",
-      "target_subs": [
-        "你聽我講",
-        "爹呢書名係二世祖"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你聽我講，爹呢，書名係二世祖。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "說難聽一點，日後我兩腳一伸",
-      "target_subs": [
-        "好話唔好聽",
-        "但係爹兩個嘢硬呢"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "好話唔好聽，但係爹兩個嘢硬呢。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "你個王八蛋，怎麼到這裡來討飯？",
-      "target_subs": [
-        "你真係全部都靠自己喇"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你真係全部都靠自己喇。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "十萬兩一張，省一點花啊",
-      "target_subs": [
-        "成十萬兩一張",
-        "省得洗呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "成十萬兩一張，省得洗呀"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "茂利，把我的西洋帽拿來",
-      "target_subs": [
-        "茂利",
-        "攞我頂西洋帽過嚟"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "茂利，攞我頂西洋帽過嚟。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "你去哪，阿燦？",
-      "target_subs": [
-        "去邊呀",
-        "燦"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "去邊呀，燦？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "你貴庚？",
-      "target_subs": [
-        "你跪跟呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你跪跟呀？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "廿五歲大壽，早點到",
-      "target_subs": [
-        "廿五歲大壽嘛",
-        "早啲到呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "廿五歲大壽嘛，早啲到呀。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "乞丐會那麼有錢？我也想當",
-      "target_subs": [
-        "你咁",
-        "乞兒會咁有錢",
-        "我都想做"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你咁乞兒會咁有錢？我都想做。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "那壽頭真是⋯",
-      "target_subs": [
-        "個瘦頭硬事嘅真係"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "個瘦頭，硬事嘅，真係⋯"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "過來，過來",
-      "target_subs": [
-        "過嚟…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "過嚟……"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "老爺，甚麼事？",
-      "target_subs": [
-        "做咩呀",
-        "老爺"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "做咩呀，老爺？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "那臭小子的壽帖真威風",
-      "target_subs": [
-        "個衰仔擺大壽",
-        "打張簽都嫁細個人嘅"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "個衰仔擺大壽，打張簽都嫁細個人嘅。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "他日老爺做大壽，要比他威風",
-      "target_subs": [
-        "但係老爺擺大壽呢",
-        "要嫁細個佢",
-        "你老…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "但係老爺擺大壽呢，要嫁細個佢，你老…"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "皇爺，你覺得廣東大戲怎樣？",
-      "target_subs": [
-        "王爺",
-        "你覺得廣東嘅大戲點"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "王爺，你覺得廣東嘅大戲點？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "地方戲曲，當然不及京戲",
-      "target_subs": [
-        "地方戲曲當然畀唔上驚喜"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "地方戲曲，當然畀唔上驚喜"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "打賞⋯打賞",
-      "target_subs": [
-        "打賞…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "打賞…"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "我家破人亡、貧病老弱",
-      "target_subs": [
-        "我家善人,",
-        "貧病老陽",
-        "死人塌樓,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我家善人、貧病老陽，死人塌樓。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "無親無故、妻離子散",
-      "target_subs": [
-        "妻離子散",
-        "我這麼可惡,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "妻離子散，我這麼可惡。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "打賞個救命錢　　怎麼搞的，死乞丐！",
-      "target_subs": [
-        "師兄我點人錢",
-        "打錯了,",
-        "死乞丐"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "師兄，我點人錢打錯了，死乞丐！"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "你個王八蛋，怎麼到這裏來討飯？",
-      "target_subs": [
-        "打你個混蛋,",
-        "又不嫁",
-        "黑色黑道來這裡,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "打你個混蛋，又不嫁黑色黑道來這裡？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "我打⋯",
-      "target_subs": [
-        "我打…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我打…"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "打賞　　是，少爺",
-      "target_subs": [
-        "打賞",
-        "是,",
-        "少爺"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "打賞，是，少爺"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "這樣也有打賞？",
-      "target_subs": [
-        "怎麼搞的?",
-        "有錢就走"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "怎麼搞的？有錢就走。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "吃飯看戲宵夜嫖妓，我包",
-      "target_subs": [
-        "吃飯",
-        "看你少爺直落叫雞,",
-        "我包"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "吃飯、看你少爺直落叫雞，我包"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "你包？",
-      "target_subs": [
-        "包?"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "包？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "不可以嗎？",
-      "target_subs": [
-        "催?"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "催？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "可以，可以",
-      "target_subs": [
-        "不催…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "不催…"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "大爺進我間房吧⋯　　請你跟我來",
-      "target_subs": [
-        "催我來",
-        "催我來"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "催我來⋯⋯催我來"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "是⋯",
-      "target_subs": [
-        "喂,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "喂⋯"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "你好嗎，鴇母？",
-      "target_subs": [
-        "怎麼樣?龜婆"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "怎麼樣？龜婆？"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "你真壞，有名字你不叫，叫我鴇母",
-      "target_subs": [
-        "很壞,",
-        "你沒名叫龜婆"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "很壞，你沒名叫龜婆。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "大家坦白一點不好嗎？",
-      "target_subs": [
-        "大家坦白點不好嗎?"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "大家坦白點，不好嗎？"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "你的帽子像披麻帶孝似的",
-      "target_subs": [
-        "你耳頂沒有",
-        "像麻大孝那樣,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你耳頂沒有，像麻大孝那樣。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "你老爸死了嗎？",
-      "target_subs": [
-        "死老爸"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "死老爸？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "這樣說大家才開心嘛",
-      "target_subs": [
-        "這麼說話才開心,",
-        "大家"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "這麼說話才開心，大家"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "那就有勞皇爺在皇上面前",
-      "target_subs": [
-        "今次有六王爺",
-        "在皇上面前"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "今次有六王爺，在皇上面前。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "大戲做完了，請用毛巾",
-      "target_subs": [
-        "大喜做完了,",
-        "請用毛巾"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "大喜做完了，請用毛巾"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "蘇翁來了⋯",
-      "target_subs": [
-        "蘇翁來了…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "蘇翁來了…"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "蘇翁，恭喜發財",
-      "target_subs": [
-        "蘇翁,",
-        "恭喜發財,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "蘇翁，恭喜發財"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "這邊⋯這邊",
-      "target_subs": [
-        "這邊…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "這邊…"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "蘇翁，今天是你的好日子，很高興吧",
-      "target_subs": [
-        "蘇翁,",
-        "今天你好日子,",
-        "開心死你了"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "蘇翁，今天你好日子，開心死你了？"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "我們有幾位新來的姑娘，保證你滿意",
-      "target_subs": [
-        "我們有幾位新姑娘包你滿意"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我們有幾位新姑娘，包你滿意"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "金魚還是木魚？",
-      "target_subs": [
-        "金魚還是木魚?"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "金魚還是木魚？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "少爺，甚麼金魚、木魚？",
-      "target_subs": [
-        "少爺,",
-        "什麼金魚還是木魚?"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "少爺，什麼金魚還是木魚？"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "傻瓜，金魚只可以看",
-      "target_subs": [
-        "傻子,",
-        "金魚只用來看,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "傻子，金魚只用來看"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "你們還不過來待候客人⋯",
-      "target_subs": [
-        "幾個木魚還不過來招呼客人"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "幾個木魚，還不過來招呼客人⋯"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "蘇翁，今天是你的大日子",
-      "target_subs": [
-        "蘇翁,",
-        "今天你是自大"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "蘇翁，今天你是自大。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "你想要怎樣的女人，你說就成",
-      "target_subs": [
-        "你想要什麼女人,",
-        "你開聲就行了"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你想要什麼女人，你開聲就行了。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "隨便，女人都是一樣的",
-      "target_subs": [
-        "無所謂,",
-        "女人個個都一樣,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "無所謂，女人個個都一樣。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "蘇翁，甚麼事？",
-      "target_subs": [
-        "修勇,",
-        "什麼事?"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "修勇，什麼事？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "甚麼？",
-      "target_subs": [
-        "什麼?"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "什麼？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "誰膽敢挑你？讓我打她的咀",
-      "target_subs": [
-        "誰這麼大膽挑你,",
-        "讓我掌他的嘴"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "誰這麼大膽挑你？讓我掌他的嘴。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "誘惑中帶有煞氣，這種眼神我沒見過",
-      "target_subs": [
-        "有惑還帶有殺氣",
-        "這隻眼神我沒見過"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "有惑，還帶有殺氣。這隻眼神我沒見過。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "究竟是何方神聖？",
-      "target_subs": [
-        "究竟是何方神聖?"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "究竟是何方神聖？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "趙大人有沒有興趣和她擺房？",
-      "target_subs": [
-        "不知道趙大人有沒有興趣和他拜訪呢"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "不知道，趙大人有沒有興趣和他拜訪呢？"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "怎麼樣，皇爺？",
-      "target_subs": [
-        "怎麼樣?王爺"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "怎麼樣，王爺？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "大家自己人，何必客氣呢？",
-      "target_subs": [
-        "大格自己人,",
-        "又何必客氣呢?"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "大格自己人，又何必客氣呢？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "趙先生，請隨便",
-      "target_subs": [
-        "趙先生請隨便"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "趙先生，請隨便"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "如霜，快點下來見趙大人",
-      "target_subs": [
-        "如霜呀,",
-        "快點下來見下趙大人啦"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "如霜呀，快點下來見下趙大人啦。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "姐姐，就是他",
-      "target_subs": [
-        "是她,",
-        "你姐姐,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "是她，你姐姐。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "我知道，鎮定點",
-      "target_subs": [
-        "我知道,",
-        "鎮定啲,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我知道，鎮定啲"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
       "ref_sub": "失陪　　趙大人",
       "target_subs": [
         "但"
@@ -1903,32 +862,6 @@
     },
     "answer": {
       "target_sub_punctuated": "但"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "小女子如霜，拜見趙大人",
-      "target_subs": [
-        "小女子如霜,",
-        "拜見趙大人"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "小女子如霜，拜見趙大人"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "趙大人，那今晚⋯",
-      "target_subs": [
-        "趙大人,",
-        "那…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "趙大人，那…"
     },
     "difficulty": 2
   },
@@ -1948,56 +881,6 @@
   },
   {
     "query": {
-      "ref_sub": "各位⋯真不好意思",
-      "target_subs": [
-        "這麼多位",
-        "真不好意思,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "這麼多位⋯真不好意思"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "有甚麼意見嗎？",
-      "target_subs": [
-        "沒什麼意見吧"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "沒什麼意見吧？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "讓我來⋯讓我說句公道話",
-      "target_subs": [
-        "讓我來…讓我講講你們公道的話"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "讓我來……讓我講講你們公道的話。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "千萬不要傷和氣，對不對？",
-      "target_subs": [
-        "千萬不要傷了和氣",
-        "聽聽…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "千萬不要傷了和氣，聽聽…"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
       "ref_sub": "我有一顆朝廷大內的定風珠，無價寶",
       "target_subs": [
         "我有粒朝廷大內的定封珠,",
@@ -2006,121 +889,6 @@
     },
     "answer": {
       "target_sub_punctuated": "我有粒朝廷大內的定封珠，無價的。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "趙大人，我回房間等你",
-      "target_subs": [
-        "趙大人呀",
-        "我返房等你喇",
-        "喂"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "趙大人呀，我返房等你喇，喂。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "這顆珠值十萬兩嗎？",
-      "target_subs": [
-        "呢粒珠淨唔淨十萬兩呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "呢粒珠淨唔淨十萬兩呀？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "十萬兩你還嫌少嗎，姑娘？",
-      "target_subs": [
-        "十萬兩銀通姑娘你都重嚴少"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "十萬兩銀通，姑娘，你都重嚴少？"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "我也喜歡銀兩，只是不喜歡你",
-      "target_subs": [
-        "我一樣鍾意銀兩",
-        "不過唔鍾意你啫嘛"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我一樣鍾意銀兩，不過唔鍾意你啫嘛。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "夠坦白，我真的非常喜歡",
-      "target_subs": [
-        "夠坦白",
-        "我真係喜歡佢非常"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "夠坦白，我真係喜歡佢非常。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "蘇翁⋯",
-      "target_subs": [
-        "騷擁呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "騷擁呀⋯"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "如霜姑娘看不上我，是我該死",
-      "target_subs": [
-        "如雙姑娘睇我唔上眼係我",
-        "抵死咋"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "如雙姑娘睇我唔上眼，係我抵死咋。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "放心，我還有很多很漂亮的姑娘",
-      "target_subs": [
-        "你放心呀",
-        "我哋做好多好靚好省嘅姑娘㗎"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你放心呀，我哋做好多好靚好省嘅姑娘㗎。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "鴇母，那今晚就倚仗你了",
-      "target_subs": [
-        "龜婆",
-        "咁今晚我就靠晒你喇"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "龜婆，咁今晚我就靠晒你喇。"
     },
     "difficulty": 2
   },
@@ -11947,5 +10715,1276 @@
       "target_sub_punctuated": "跟住我行⋯行呀⋯"
     },
     "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "少爺！準備好了",
+      "target_subs": [
+        "少爺",
+        "準備好喇"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "少爺！準備好喇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "辛苦了！少爺",
+      "target_subs": [
+        "辛苦啦",
+        "少爺"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "辛苦啦！少爺"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "少爺！擦個汗吧",
+      "target_subs": [
+        "會寒啦",
+        "少爺"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "會寒啦，少爺！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "師爺，少爺寫的是甚麼？",
+      "target_subs": [
+        "師爺",
+        "少爺寫乜嘢呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "師爺，少爺寫乜嘢呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "好棒！原來少爺會寫自己的名字",
+      "target_subs": [
+        "嘩",
+        "好靚呀",
+        "原來少爺識寫自己個名喎"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "嘩，好靚呀！原來少爺識寫自己個名喎！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "對呀",
+      "target_subs": [
+        "係呀",
+        "要"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "係呀，要。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "好字！龍飛鳳舞，蘇察哈爾燦",
+      "target_subs": [
+        "好字呀",
+        "龍飛鳳舞",
+        "蘇擦蝦耳鏟"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "好字呀！龍飛鳳舞，蘇擦蝦耳鏟"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "你唸反了，老爺",
+      "target_subs": [
+        "調轉咗呀",
+        "老爺"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "調轉咗呀，老爺"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "好小子，但是別驕傲，知道嗎？",
+      "target_subs": [
+        "叻仔",
+        "但事無驕",
+        "知咩"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "叻仔，但事無驕，知咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "爹，我們蘇察哈爾家",
+      "target_subs": [
+        "爹爹",
+        "我哋蘇擦蝦耳家"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "爹爹，我哋蘇擦蝦耳家"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "現在可不同，我的兒子你的孫兒阿燦",
+      "target_subs": [
+        "而家唔係啦",
+        "我個仔你佢孫阿燦呢"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "而家唔係啦，我個仔，你佢孫，阿燦呢。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "爹，這可是非同少可",
+      "target_subs": [
+        "爹",
+        "呢一步非同小可"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "爹，呢一步非同小可"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "少爺，你真是要好好地學習寫字",
+      "target_subs": [
+        "少爺",
+        "你真係要好啲學寫字"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "少爺，你真係要好啲學寫字"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "阿燦，先把它裱起來",
+      "target_subs": [
+        "我傻",
+        "擦呀擦",
+        "我睇表起佢好"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我傻，擦呀擦，我睇表起佢好。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "師爺，把它掛在最當眼的地方",
+      "target_subs": [
+        "師爺",
+        "你攞佢有咁多眼掛咁多眼"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "師爺，你攞佢，有咁多眼，掛咁多眼。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "這樣吧，師爺",
+      "target_subs": [
+        "咁唔係呀師爺"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "咁，唔係呀，師爺"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你先揹著它簪花掛紅，遊行威風一下",
+      "target_subs": [
+        "你揹住佢參夫阿國",
+        "和友鄰皆威下先"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你揹住佢參夫阿國，和友鄰皆威下先。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "阿燦，來⋯坐⋯",
+      "target_subs": [
+        "擦呀擦",
+        "嚟嚟",
+        "坐…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "擦呀擦，嚟嚟⋯坐⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "你這麼爭氣，我也很安慰",
+      "target_subs": [
+        "見你咁生性",
+        "我都好安慰"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "見你咁生性，我都好安慰。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你聽我說，爹是有名的敗家兒",
+      "target_subs": [
+        "你聽我講",
+        "爹呢書名係二世祖"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你聽我講，爹呢書名係二世祖。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "說難聽一點，日後我兩腳一伸",
+      "target_subs": [
+        "好話唔好聽",
+        "但係爹兩個嘢硬呢"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "好話唔好聽，但係爹兩個嘢硬呢。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你個王八蛋，怎麼到這裡來討飯？",
+      "target_subs": [
+        "你真係全部都靠自己喇"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你真係全部都靠自己喇？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "十萬兩一張，省一點花啊",
+      "target_subs": [
+        "成十萬兩一張",
+        "省得洗呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "成十萬兩一張，省得洗呀。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "茂利，把我的西洋帽拿來",
+      "target_subs": [
+        "茂利",
+        "攞我頂西洋帽過嚟"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "茂利，攞我頂西洋帽過嚟。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你去哪，阿燦？",
+      "target_subs": [
+        "去邊呀",
+        "燦"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "去邊呀，燦？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "你貴庚？",
+      "target_subs": [
+        "你跪跟呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你跪跟呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "廿五歲大壽，早點到",
+      "target_subs": [
+        "廿五歲大壽嘛",
+        "早啲到呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "廿五歲大壽嘛，早啲到呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "乞丐會那麼有錢？我也想當",
+      "target_subs": [
+        "你咁",
+        "乞兒會咁有錢",
+        "我都想做"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你咁乞兒會咁有錢？我都想做"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "那壽頭真是⋯",
+      "target_subs": [
+        "個瘦頭硬事嘅真係"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "個瘦頭硬事嘅，真係⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "過來，過來",
+      "target_subs": [
+        "過嚟…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "過嚟…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "老爺，甚麼事？",
+      "target_subs": [
+        "做咩呀",
+        "老爺"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "做咩呀，老爺？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "那臭小子的壽帖真威風",
+      "target_subs": [
+        "個衰仔擺大壽",
+        "打張簽都嫁細個人嘅"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "個衰仔擺大壽，打張簽都嫁細個人嘅。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "他日老爺做大壽，要比他威風",
+      "target_subs": [
+        "但係老爺擺大壽呢",
+        "要嫁細個佢",
+        "你老…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "但係老爺擺大壽呢，要嫁細個佢，你老…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "皇爺，你覺得廣東大戲怎樣？",
+      "target_subs": [
+        "王爺",
+        "你覺得廣東嘅大戲點"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "王爺，你覺得廣東嘅大戲點？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "地方戲曲，當然不及京戲",
+      "target_subs": [
+        "地方戲曲當然畀唔上驚喜"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "地方戲曲，當然畀唔上驚喜"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "打賞⋯打賞",
+      "target_subs": [
+        "打賞…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "打賞…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "我家破人亡、貧病老弱",
+      "target_subs": [
+        "我家善人,",
+        "貧病老陽",
+        "死人塌樓,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我家善人、貧病老陽、死人塌樓。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "無親無故、妻離子散",
+      "target_subs": [
+        "妻離子散",
+        "我這麼可惡,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "妻離子散，我這麼可惡。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "打賞個救命錢　　怎麼搞的，死乞丐！",
+      "target_subs": [
+        "師兄我點人錢",
+        "打錯了,",
+        "死乞丐"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "師兄，我點人錢打錯了，死乞丐！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你個王八蛋，怎麼到這裏來討飯？",
+      "target_subs": [
+        "打你個混蛋,",
+        "又不嫁",
+        "黑色黑道來這裡,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "打你個混蛋，又不嫁黑色黑道來這裡？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "我打⋯",
+      "target_subs": [
+        "我打…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我打…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "打賞　　是，少爺",
+      "target_subs": [
+        "打賞",
+        "是,",
+        "少爺"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "打賞　　是，少爺"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "這樣也有打賞？",
+      "target_subs": [
+        "怎麼搞的?",
+        "有錢就走"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "怎麼搞的？有錢就走？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "吃飯看戲宵夜嫖妓，我包",
+      "target_subs": [
+        "吃飯",
+        "看你少爺直落叫雞,",
+        "我包"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "吃飯，看你少爺直落叫雞，我包"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你包？",
+      "target_subs": [
+        "包?"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "包？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "不可以嗎？",
+      "target_subs": [
+        "催?"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "催？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "可以，可以",
+      "target_subs": [
+        "不催…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "不催…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "大爺進我間房吧⋯　　請你跟我來",
+      "target_subs": [
+        "催我來",
+        "催我來"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "催我來⋯ 催我來。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "是⋯",
+      "target_subs": [
+        "喂,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "喂⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "你好嗎，鴇母？",
+      "target_subs": [
+        "怎麼樣?龜婆"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "怎麼樣？龜婆？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你真壞，有名字你不叫，叫我鴇母",
+      "target_subs": [
+        "很壞,",
+        "你沒名叫龜婆"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "很壞，你沒名叫龜婆。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "大家坦白一點不好嗎？",
+      "target_subs": [
+        "大家坦白點不好嗎?"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "大家坦白點，不好嗎？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你的帽子像披麻帶孝似的",
+      "target_subs": [
+        "你耳頂沒有",
+        "像麻大孝那樣,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你耳頂沒有，像麻大孝那樣。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你老爸死了嗎？",
+      "target_subs": [
+        "死老爸"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "死老爸？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "這樣說大家才開心嘛",
+      "target_subs": [
+        "這麼說話才開心,",
+        "大家"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "這麼說話才開心，大家。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "那就有勞皇爺在皇上面前",
+      "target_subs": [
+        "今次有六王爺",
+        "在皇上面前"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "今次有六王爺，在皇上面前"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "大戲做完了，請用毛巾",
+      "target_subs": [
+        "大喜做完了,",
+        "請用毛巾"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "大喜做完了，請用毛巾"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "蘇翁來了⋯",
+      "target_subs": [
+        "蘇翁來了…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "蘇翁來了…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "蘇翁，恭喜發財",
+      "target_subs": [
+        "蘇翁,",
+        "恭喜發財,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "蘇翁，恭喜發財。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "這邊⋯這邊",
+      "target_subs": [
+        "這邊…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "這邊…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "蘇翁，今天是你的好日子，很高興吧",
+      "target_subs": [
+        "蘇翁,",
+        "今天你好日子,",
+        "開心死你了"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "蘇翁，今天你好日子，開心死你了。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "我們有幾位新來的姑娘，保證你滿意",
+      "target_subs": [
+        "我們有幾位新姑娘包你滿意"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我們有幾位新姑娘，包你滿意。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "金魚還是木魚？",
+      "target_subs": [
+        "金魚還是木魚?"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "金魚還是木魚？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "少爺，甚麼金魚、木魚？",
+      "target_subs": [
+        "少爺,",
+        "什麼金魚還是木魚?"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "少爺，什麼金魚還是木魚？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "傻瓜，金魚只可以看",
+      "target_subs": [
+        "傻子,",
+        "金魚只用來看,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "傻子，金魚只用來看。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你們還不過來待候客人⋯",
+      "target_subs": [
+        "幾個木魚還不過來招呼客人"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "幾個木魚，還不過來招呼客人⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "蘇翁，今天是你的大日子",
+      "target_subs": [
+        "蘇翁,",
+        "今天你是自大"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "蘇翁，今天你是自大。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "你想要怎樣的女人，你說就成",
+      "target_subs": [
+        "你想要什麼女人,",
+        "你開聲就行了"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你想要什麼女人，你開聲就行了。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "隨便，女人都是一樣的",
+      "target_subs": [
+        "無所謂,",
+        "女人個個都一樣,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "無所謂，女人個個都一樣。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "蘇翁，甚麼事？",
+      "target_subs": [
+        "修勇,",
+        "什麼事?"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "修勇，什麼事？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "甚麼？",
+      "target_subs": [
+        "什麼?"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "什麼？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "誰膽敢挑你？讓我打她的咀",
+      "target_subs": [
+        "誰這麼大膽挑你,",
+        "讓我掌他的嘴"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "誰這麼大膽挑你？讓我掌他的嘴。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "誘惑中帶有煞氣，這種眼神我沒見過",
+      "target_subs": [
+        "有惑還帶有殺氣",
+        "這隻眼神我沒見過"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "有惑還帶有殺氣，這隻眼神我沒見過。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "究竟是何方神聖？",
+      "target_subs": [
+        "究竟是何方神聖?"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "究竟是何方神聖？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "趙大人有沒有興趣和她擺房？",
+      "target_subs": [
+        "不知道趙大人有沒有興趣和他拜訪呢"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "不知道趙大人有沒有興趣和他拜訪呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "怎麼樣，皇爺？",
+      "target_subs": [
+        "怎麼樣?王爺"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "怎麼樣，王爺？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "大家自己人，何必客氣呢？",
+      "target_subs": [
+        "大格自己人,",
+        "又何必客氣呢?"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "大格自己人，又何必客氣呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "趙先生，請隨便",
+      "target_subs": [
+        "趙先生請隨便"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "趙先生，請隨便"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "如霜，快點下來見趙大人",
+      "target_subs": [
+        "如霜呀,",
+        "快點下來見下趙大人啦"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "如霜呀，快點下來見下趙大人啦。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "姐姐，就是他",
+      "target_subs": [
+        "是她,",
+        "你姐姐,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "是她，你姐姐。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "我知道，鎮定點",
+      "target_subs": [
+        "我知道,",
+        "鎮定啲,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我知道，鎮定啲"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "小女子如霜，拜見趙大人",
+      "target_subs": [
+        "小女子如霜,",
+        "拜見趙大人"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "小女子如霜，拜見趙大人"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "趙大人，那今晚⋯",
+      "target_subs": [
+        "趙大人,",
+        "那…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "趙大人，那…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "沒空招呼你",
+      "target_subs": [
+        "不有空,",
+        "招呼你"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "不有空，招呼你"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "各位⋯真不好意思",
+      "target_subs": [
+        "這麼多位",
+        "真不好意思,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "這麼多位⋯真不好意思"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "有甚麼意見嗎？",
+      "target_subs": [
+        "沒什麼意見吧"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "沒什麼意見吧？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "讓我來⋯讓我說句公道話",
+      "target_subs": [
+        "讓我來…讓我講講你們公道的話"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "讓我來……，讓我講講你們公道的話。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "千萬不要傷和氣，對不對？",
+      "target_subs": [
+        "千萬不要傷了和氣",
+        "聽聽…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "千萬不要傷了和氣，聽聽…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "我有一顆朝廷大內的定風珠，無價寶",
+      "target_subs": [
+        "了",
+        "我有粒朝廷大內的定封珠,",
+        "無價的"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "了，我有粒朝廷大內的定封珠，無價的。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "趙大人，我回房間等你",
+      "target_subs": [
+        "趙大人呀",
+        "我返房等你喇",
+        "喂"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "趙大人呀，我返房等你喇，喂！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "這顆珠值十萬兩嗎？",
+      "target_subs": [
+        "呢粒珠淨唔淨十萬兩呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "呢粒珠淨唔淨十萬兩呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "十萬兩你還嫌少嗎，姑娘？",
+      "target_subs": [
+        "十萬兩銀通姑娘你都重嚴少"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "十萬兩銀通，姑娘，你都重嚴少？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "我也喜歡銀兩，只是不喜歡你",
+      "target_subs": [
+        "我一樣鍾意銀兩",
+        "不過唔鍾意你啫嘛"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我一樣鍾意銀兩，不過唔鍾意你啫嘛。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "夠坦白，我真的非常喜歡",
+      "target_subs": [
+        "夠坦白",
+        "我真係喜歡佢非常"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "夠坦白，我真係喜歡佢非常。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "蘇翁⋯",
+      "target_subs": [
+        "騷擁呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "騷擁呀⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "如霜姑娘看不上我，是我該死",
+      "target_subs": [
+        "如雙姑娘睇我唔上眼係我",
+        "抵死咋"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "如雙姑娘睇我唔上眼，係我抵死咋"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub": "放心，我還有很多很漂亮的姑娘",
+      "target_subs": [
+        "你放心呀",
+        "我哋做好多好靚好省嘅姑娘㗎"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你放心呀，我哋做好多好靚好省嘅姑娘㗎。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "鴇母，那今晚就倚仗你了",
+      "target_subs": [
+        "龜婆",
+        "咁今晚我就靠晒你喇"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "龜婆，咁今晚我就靠晒你喇。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "大膽！放肆",
+      "target_subs": [
+        "係"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "係"
+    },
+    "difficulty": 2
   }
 ]

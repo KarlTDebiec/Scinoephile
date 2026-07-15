@@ -35,7 +35,7 @@ yue_hans_path = output_path / "yue-Hans"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
 
-transcription_stop_at_idx: int | None = None
+transcription_stop_at_idx: int | None = 20
 yue_hant_transcribe_srt_path = yue_hant_transcribe_path / "transcribe.srt"
 if transcription_stop_at_idx is not None:
     yue_hant_transcribe_srt_path = (
@@ -54,9 +54,9 @@ actions = {
     # "yue-Hant",
     # "zho-Hans_eng",
     # "yue-Hans_eng",
-    # "yue-Hant_transcribe",
-    "yue-Hant_guided_review",
-    "yue-Hant_diff",
+    "yue-Hant_transcribe",
+    # "yue-Hant_guided_review",
+    # "yue-Hant_diff",
 }
 
 if "eng_ocr" in actions:
@@ -116,7 +116,7 @@ if "yue-Hant_transcribe" in actions:
             "punctuation_test_cases": [],
             "vad_mode": VADMode.AUTO,
         },
-        overwrite_srt=False,
+        overwrite_srt=True,
     )
 if "yue-Hant_guided_review" in actions:
     process_transcription_guided_review(

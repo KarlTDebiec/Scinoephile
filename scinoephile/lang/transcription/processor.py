@@ -211,7 +211,7 @@ class GuidedTranscriptionProcessor:
                 break
             output_block = self.process_block(audio_block, reference_block)
             logger.info(
-                f"BLOCK {block_idx}:\n"
+                f"BLOCK {block_idx + 1}:\n"
                 f"REFERENCE ({self.reference_language.tag}):\n"
                 f"{reference_block.to_simple_string()}\n"
                 f"TRANSCRIPTION ({self.language.tag}):\n"

@@ -13,7 +13,7 @@ wording, or character choice; those are reviewed later in a separate workflow.
 
 ## Mandatory final output
 
-If this skill runs an audit, paste the **entire five-column Markdown report
+If this skill runs an audit, paste the **entire six-column Markdown report
 inline in the final response**. This is a non-negotiable completion requirement.
 
 - Tool-call output, commentary, counts, findings, and a local file do not count
@@ -21,10 +21,12 @@ inline in the final response**. This is a non-negotiable completion requirement.
 - A file link may supplement the inline report but must never replace it.
 - Never omit or truncate rows, even when the report is long.
 - Never wrap the report in a code fence.
-- Keep the table at exactly these columns: `Subtitle indexes`, `Reference
-  subtitles`, `Input target subtitles`, `Output target subtitles`, and `Notes`.
+- Keep the table at exactly these columns: `Indexes`, `Reference`, `Input`,
+  `Output`, `Notes`, and `Verified`.
 - Before responding, fill each row's `Notes` cell with your concise audit note
   when you have one. Leave it blank when the row needs no note.
+- Preserve the generated `Verified` cell: `✓` means the JSON test case is
+  verified, and an empty cell means it is not verified.
 - Do not add a separate findings section; keep each observation beside the row
   it describes.
 
@@ -89,7 +91,7 @@ Each table cell stacks the first and second subtitle with `<br>`. A blank line
 is displayed as `—`. Sort rows by their matched subtitle indexes. Preserve the
 original log order among repeated cases for the same boundary because they may
 record successive decisions. An empty JSON answer (`{}`) means no boundary
-shift was made; display `—` in the output cell instead of repeating the input
+shift was made; leave the output cell blank instead of repeating the input
 pair. The CLI leaves `Notes` cells blank for interpretation during the audit.
 
 ## Audit every row

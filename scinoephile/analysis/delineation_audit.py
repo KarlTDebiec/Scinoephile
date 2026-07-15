@@ -86,7 +86,7 @@ def audit_delineation(
             shifts += 1
             boundary_shifted = True
         else:
-            output = "—"
+            output = ""
             no_shifts += 1
             boundary_shifted = False
 
@@ -99,6 +99,7 @@ def audit_delineation(
             _format_pair(*input_target),
             output,
             "",
+            "✓" if test_case.verified else "",
         )
         rows.append(
             (
@@ -129,11 +130,8 @@ def audit_delineation(
             "",
             "## Audit Table",
             "",
-            (
-                "| Subtitle indexes | Reference subtitles | Input target subtitles | "
-                "Output target subtitles | Notes |"
-            ),
-            "|---:|---|---|---|---|",
+            "| Indexes | Reference | Input | Output | Notes | Verified |",
+            "|---:|---|---|---|---|:---:|",
             *(row for _, row in rows),
         )
     )
