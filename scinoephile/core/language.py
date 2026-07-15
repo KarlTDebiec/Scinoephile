@@ -89,6 +89,11 @@ class Language(DescribedEnum):
         )
 
     @property
+    def language(self) -> str:
+        """Language component of the complete code."""
+        return self.code.partition("-")[0]
+
+    @property
     def script(self) -> ChineseScript | None:
         """Chinese script implied by this language, if any."""
         if self in (Language.yue_hans, Language.zho_hans):
@@ -96,8 +101,3 @@ class Language(DescribedEnum):
         if self in (Language.yue_hant, Language.zho_hant):
             return "traditional"
         return None
-
-    @property
-    def tag(self) -> str:
-        """Language tag."""
-        return self.value

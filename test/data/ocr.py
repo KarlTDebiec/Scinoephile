@@ -57,8 +57,8 @@ def process_ocr(
         processed series
     """
     # Validate and configure
-    input_dir_path = title_root_path / "input" / f"{language.tag}_ocr"
-    output_dir_path = title_root_path / "output" / f"{language.tag}_ocr"
+    input_dir_path = title_root_path / "input" / f"{language.code}_ocr"
+    output_dir_path = title_root_path / "output" / f"{language.code}_ocr"
     overwrite = overwrite or overwrite_srt or overwrite_img or force_validation
 
     # Load, OCR, and validate series
@@ -101,7 +101,7 @@ def process_ocr(
         else:
             simplify_reviewer_kw["prompt"] = ReviewPromptZhoHans
         simplify_reviewer_kw["test_case_path"] = (
-            output_dir_path / "lang" / language.tag[:3] / "simplify_review.json"
+            output_dir_path / "lang" / language.language / "simplify_review.json"
         )
         simplify_review = _review(
             review_path,
@@ -183,7 +183,7 @@ def _ocr(
     fuser_kw = dict(fuser_kw or {})
     fuser_kw.setdefault(
         "test_case_path",
-        output_dir_path / "lang" / language.tag[:3] / "ocr_fusion.json",
+        output_dir_path / "lang" / language.language / "ocr_fusion.json",
     )
     fuser_kw.setdefault("auto_verify", True)
     workflow_kw: dict[str, Any] = {
@@ -239,7 +239,7 @@ def _review(
     reviewer_kw = dict(reviewer_kw or {})
     reviewer_kw.setdefault(
         "test_case_path",
-        path.parent / "lang" / language.tag[:3] / "review.json",
+        path.parent / "lang" / language.language / "review.json",
     )
     reviewer_kw.setdefault("auto_verify", True)
 

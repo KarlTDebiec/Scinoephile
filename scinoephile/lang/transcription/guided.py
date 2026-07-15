@@ -189,7 +189,7 @@ def get_guided_transcriber(
     if key not in DEFAULT_SPECS:
         raise ScinoephileError(
             "Guided transcription does not support language pair "
-            f"{language.tag} <- {reference_language.tag}"
+            f"{language.code} <- {reference_language.code}"
         )
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec

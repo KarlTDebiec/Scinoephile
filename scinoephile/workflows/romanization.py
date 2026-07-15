@@ -42,7 +42,7 @@ def romanize_series(
         romanize_text = get_cmn_text_romanized
     else:
         raise ScinoephileError(
-            f"Romanization does not support language {resolved_language.tag}"
+            f"Romanization does not support language {resolved_language.code}"
         )
 
     romanized_series = deepcopy(series)

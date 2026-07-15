@@ -91,7 +91,7 @@ def _build_monolingual_prompt_specs(
         prompt specifications keyed by stable alias
     """
     return {
-        f"{manager_cls.operation}-{language.tag.lower()}": PromptSpec(
+        f"{manager_cls.operation}-{language.code.lower()}": PromptSpec(
             manager_cls=manager_cls,
             prompt=prompt,
         )
@@ -116,8 +116,8 @@ def _build_pair_prompt_specs(
     """
     return {
         (
-            f"{manager_cls.operation}-{first_language.tag.lower()}-"
-            f"{separator}-{second_language.tag.lower()}"
+            f"{manager_cls.operation}-{first_language.code.lower()}-"
+            f"{separator}-{second_language.code.lower()}"
         ): PromptSpec(
             manager_cls=manager_cls,
             prompt=prompt,
@@ -145,13 +145,13 @@ def _build_transcription_prompt_specs(
     """
     prompt_specs: dict[str, PromptSpec] = {}
     for (language, reference_language), spec in specs.items():
-        reference_code = reference_language.tag.partition("-")[0].lower()
+        reference_code = reference_language.language.lower()
         for manager_cls, prompt in (
             (DelineationManager, spec.delineation_prompt),
             (PunctuationManager, spec.punctuation_prompt),
         ):
             alias = (
-                f"{manager_cls.operation}-{language.tag.lower()}-vs-{reference_code}"
+                f"{manager_cls.operation}-{language.code.lower()}-vs-{reference_code}"
             )
             prompt_spec = PromptSpec(manager_cls=manager_cls, prompt=prompt)
             if alias in prompt_specs and prompt_specs[alias] != prompt_spec:

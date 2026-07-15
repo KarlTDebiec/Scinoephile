@@ -30,9 +30,9 @@ def resolve_language(series: Series, explicit_language: Language | None) -> Lang
     if explicit_language is not None:
         if detected_language is not None and detected_language is not explicit_language:
             logger.warning(
-                f"Explicit language {explicit_language.tag} does not "
-                f"match detected language {detected_language.tag}; "
-                f"using {explicit_language.tag}"
+                f"Explicit language {explicit_language.code} does not "
+                f"match detected language {detected_language.code}; "
+                f"using {explicit_language.code}"
             )
         return explicit_language
     if detected_language is None:

@@ -144,7 +144,7 @@ def _get_legacy_prompt_name(prompt: Prompt) -> str:
     payload_json = json.dumps(
         {
             "fields": prompt_fields,
-            "language": prompt.language.tag,
+            "language": prompt.language.code,
             "type": type(prompt).__name__,
         },
         ensure_ascii=False,
@@ -152,7 +152,7 @@ def _get_legacy_prompt_name(prompt: Prompt) -> str:
         sort_keys=True,
     )
     digest = hashlib.sha256(payload_json.encode()).hexdigest()[:12]
-    language_name = prompt.language.tag.replace("-", "_")
+    language_name = prompt.language.code.replace("-", "_")
     return f"{type(prompt).__name__}_{language_name}_{digest}"
 
 

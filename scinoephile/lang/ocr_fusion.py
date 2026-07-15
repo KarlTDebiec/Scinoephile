@@ -107,7 +107,7 @@ def get_ocr_fuser(
         ScinoephileError: if OCR fusion does not support the language
     """
     if language not in DEFAULT_PROMPTS:
-        raise ScinoephileError(f"OCR fusion does not support language {language.tag}")
+        raise ScinoephileError(f"OCR fusion does not support language {language.code}")
 
     if prompt is None:
         prompt = DEFAULT_PROMPTS[language]
