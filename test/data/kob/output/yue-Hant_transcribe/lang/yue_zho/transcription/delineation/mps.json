@@ -7953,16 +7953,6 @@
   },
   {
     "query": {
-      "ref_sub_1": "還有甚麼？說吧",
-      "ref_sub_2": "今天是清太祖皇后葉赫拿拉氏的忌辰",
-      "target_sub_1": "什麼?說啊",
-      "target_sub_2": "今天是現清太祖皇后葉克拿拉氏的忌辰"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
       "ref_sub_1": "走開⋯",
       "ref_sub_2": "誰敢欺負我的兒子，我就射誰",
       "target_sub_1": "呀",
@@ -8073,6 +8063,16 @@
       "target_sub_2_shifted": "係洋文嚟嘅蝦即係有鬥心噉解"
     },
     "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "還有甚麼？說吧",
+      "ref_sub_2": "今天是清太祖皇后葉赫拿拉氏的忌辰",
+      "target_sub_1": "還有什麼?說啊",
+      "target_sub_2": "今天是現清太祖皇后葉克拿拉氏的忌辰"
+    },
+    "answer": {},
     "verified": true
   },
   {
@@ -10034,7 +10034,8 @@
       "target_sub_1_shifted": "還有…還有",
       "target_sub_2_shifted": "什麼?說啊"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10057,17 +10058,15 @@
       "target_sub_1": "還有…還有",
       "target_sub_2": "什麼?說啊"
     },
-    "answer": {
-      "target_sub_1_shifted": "還有…",
-      "target_sub_2_shifted": "還有什麼?說啊"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "ref_sub_1": "還有甚麼？說吧",
       "ref_sub_2": "今天是清太祖皇后葉赫拿拉氏的忌辰",
-      "target_sub_1": "還有什麼?說啊",
+      "target_sub_1": "什麼?說啊",
       "target_sub_2": "今天是現清太祖皇后葉克拿拉氏的忌辰"
     },
     "answer": {},

@@ -7663,31 +7663,6 @@
   },
   {
     "query": {
-      "ref_sub": "還有⋯還有",
-      "target_subs": [
-        "還有…",
-        "還有"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "還有⋯還有"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "還有甚麼？說吧",
-      "target_subs": [
-        "什麼?說啊"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "什麼？說啊"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
       "ref_sub": "我有一顆朝廷大內的定風珠，無價寶",
       "target_subs": [
         "了",
@@ -7904,6 +7879,31 @@
       "target_sub_punctuated": "蝦嘅蝦，乜蝦啊？"
     },
     "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "還有⋯還有",
+      "target_subs": [
+        "還有…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "還有…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "ref_sub": "還有甚麼？說吧",
+      "target_subs": [
+        "還有",
+        "什麼?說啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "還有什麼？說啊"
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -9483,24 +9483,24 @@
     "query": {
       "ref_sub": "還有⋯還有",
       "target_subs": [
-        "還有…"
+        "還有…",
+        "還有"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "還有…"
+      "target_sub_punctuated": "還有⋯還有"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub": "還有甚麼？說吧",
       "target_subs": [
-        "還有",
         "什麼?說啊"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "還有什麼？說啊"
+      "target_sub_punctuated": "什麼？說啊"
     },
     "difficulty": 1
   },
