@@ -296,41 +296,17 @@ def get_char_type(char: str) -> str:
     if char in punctuation:
         return "punc"
 
-    # Check if character is full-width (CJK)
-    if any(
-        [
-            "\u4e00" <= char <= "\u9fff",  # CJK Unified Ideographs
-            "\u3400" <= char <= "\u4dbf",  # CJK Unified Ideographs Extension A
-            "\uf900" <= char <= "\ufaff",  # CJK Compatibility Ideographs
-            "\U00020000" <= char <= "\U0002a6df",  # CJK Unified Ideographs Ext B
-            "\U0002a700" <= char <= "\U0002b73f",  # CJK Unified Ideographs Ext C
-            "\U0002b740" <= char <= "\U0002b81f",  # CJK Unified Ideographs Ext D
-            "\U0002b820" <= char <= "\U0002ceaf",  # CJK Unified Ideographs Ext E
-            "\U0002ceb0" <= char <= "\U0002ebef",  # CJK Unified Ideographs Ext F
-            "\U0002ebf0" <= char <= "\U0002ee5d",  # CJK Unified Ideographs Ext I
-            "\U00030000" <= char <= "\U0003134a",  # CJK Unified Ideographs Ext G
-            "\U00031350" <= char <= "\U000323af",  # CJK Unified Ideographs Ext H
-            "\u3000" <= char <= "\u303f",  # CJK Symbols and Punctuation
-            "\uff01" <= char <= "\uff60",  # Fullwidth ASCII variants
-            "\uffe0" <= char <= "\uffe6",  # Fullwidth symbol variants
-        ]
-    ):
+    # Reject control, format, and combining characters unsupported by this model
+    if unicodedata.category(char).startswith(("C", "M")):
+        name = unicodedata.name(char, "<unnamed>")
+        raise ScinoephileError(f"Unrecognized char type for {char!r} of name {name}")
+
+    # Check Unicode characters with wide or full-width display properties
+    if unicodedata.east_asian_width(char) in {"F", "W"}:
         return "full"
 
-    # Check if character is half-width (Western)
-    if any(
-        [
-            "\u0020" <= char <= "\u007f",  # Basic Latin
-            "\u00a0" <= char <= "\u00ff",  # Latin-1 Supplement
-            "\u0100" <= char <= "\u017f",  # Latin Extended-A
-            "\u0180" <= char <= "\u024f",  # Latin Extended-B
-        ]
-    ):
-        return "half"
-
-    # Raise exception if character type is not recognized
-    name = unicodedata.name(char, "<unnamed>")
-    raise ScinoephileError(f"Unrecognized char type for {char!r} of name {name}")
+    # Treat narrow, half-width, neutral, and ambiguous characters as half-width
+    return "half"
 
 
 def is_full_width_char(char: str) -> bool:
