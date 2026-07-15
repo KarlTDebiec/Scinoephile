@@ -209,7 +209,7 @@ class ProcessCli(ScinoephileCliBase):
         if isinstance(convert, OpenCCConfig):
             resolved_convert = convert
         elif convert:
-            if resolved_language.script == "simplified":
+            if resolved_language.script == "Hans":
                 resolved_convert = OpenCCConfig.s2t
             else:
                 resolved_convert = OpenCCConfig.t2s

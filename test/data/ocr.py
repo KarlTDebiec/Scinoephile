@@ -82,12 +82,12 @@ def process_ocr(
     flatten_path = output_dir_path / "fuse_clean_validate_review_flatten.srt"
     flatten = _flatten(flatten_path, language, review, overwrite)
 
-    if language.script == "simplified":
+    if language.script == "Hans":
         romanize_path = (
             output_dir_path / "fuse_clean_validate_review_flatten_romanize.srt"
         )
         _romanize(romanize_path, language, flatten, overwrite)
-    elif language.script == "traditional":
+    elif language.script == "Hant":
         simplify_path = (
             output_dir_path / "fuse_clean_validate_review_flatten_simplify.srt"
         )

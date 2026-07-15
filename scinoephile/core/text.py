@@ -43,7 +43,7 @@ __all__ = [
 ]
 
 
-type ChineseScript = Literal["simplified", "traditional"]
+type ChineseScript = Literal["Hans", "Hant"]
 """Chinese script supported by text processing helpers."""
 
 
