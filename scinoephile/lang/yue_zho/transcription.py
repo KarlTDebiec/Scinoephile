@@ -8,7 +8,6 @@ from functools import partial
 
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import ENG_PROMPT_FIELDS
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.delineation import DelineationPrompt
@@ -23,7 +22,7 @@ __all__ = [
 
 YueZhoDelineationPromptYueHant = DelineationPrompt(
     language=Language.yue_hant,
-    **ENG_PROMPT_FIELDS,
+    **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
         你負責將廣東話口語嘅粵文字幕同對應嘅中文字幕對齊。
         你會收到一條中文字幕 (zhongwen_1) 同一條初步粵文字幕 (yuewen_1)，
@@ -89,10 +88,10 @@ YueZhoPunctuationPromptYueHant = PunctuationPrompt(
     output_desc="整理同加標點後嘅粵文字幕",
     output_missing_err="答案必須包含整理同加標點後嘅粵文字幕。",
     src_1_chars_changed_err_tpl=(
-        "Answer's written Cantonese subtitle stripped of punctuation and whitespace "
-        "does not match query's written Cantonese subtitle concatenated:\n"
-        "Expected: {expected}\n"
-        "Received: {received}"
+        "回答嘅 yuewen_punctuated 移除標點同空格後，同查詢入面拼埋嘅 "
+        "yuewen_to_punctuate 唔一致：\n"
+        "期望: {expected}\n"
+        "收到: {received}"
     ),
 )
 """Text for traditional written Cantonese/standard Chinese punctuation."""
