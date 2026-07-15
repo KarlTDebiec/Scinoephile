@@ -24,9 +24,6 @@ from scinoephile.lang.yue.romanization import is_accented_yale as is_accented_ya
 from scinoephile.lang.yue.romanization import (
     is_numbered_jyutping as is_numbered_jyutping_fn,
 )
-from scinoephile.lang.zho.script.analysis import (
-    get_zho_script_analysis,
-)
 from scinoephile.lang.zho.script.analysis import is_simplified as is_simplified_fn
 from scinoephile.lang.zho.script.analysis import is_traditional as is_traditional_fn
 
@@ -36,9 +33,6 @@ MIN_ENGLISH_WORDS = 2
 """Minimum number of English-looking words needed for text classification."""
 MIN_ENGLISH_WORD_LENGTH = 4
 """Minimum English-looking word length needed for short text classification."""
-MIN_SCRIPT_ONLY_CHINESE_CHARACTERS = 2
-"""Minimum script-specific characters needed for script-only Chinese detection."""
-
 CANTONESE_MARKERS = frozenset(
     {
         "佢",
@@ -50,9 +44,11 @@ CANTONESE_MARKERS = frozenset(
         "咗",
         "咩",
         "哋",
+        "呀",
         "唔",
         "啱",
         "啲",
+        "啦",
         "喇",
         "喎",
         "喺",
@@ -60,6 +56,7 @@ CANTONESE_MARKERS = frozenset(
         "嘅",
         "嘢",
         "嚟",
+        "㗎",
         "乜",
         "畀",
         "睇",
@@ -188,17 +185,7 @@ class LanguageId:
 
         if standard_count > cantonese_count:
             return standard_language
-
-        if cantonese_count > 0:
-            return None
-
-        analysis = get_zho_script_analysis(text)
-        script_count = analysis.simplified_count
-        if standard_language is Language.zho_hant:
-            script_count = analysis.traditional_count
-        if script_count < MIN_SCRIPT_ONLY_CHINESE_CHARACTERS:
-            return None
-        return standard_language
+        return None
 
     @staticmethod
     def _get_language(
