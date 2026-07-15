@@ -41,7 +41,7 @@ actions = {
     # "zho-Hans_eng",
     # "yue-Hans_eng",
     "yue-Hant_transcribe",
-    # "yue-Hant_diff",
+    "yue-Hant_diff",
 }
 
 if "eng_ocr" in actions:
@@ -90,7 +90,7 @@ if "yue-Hant_transcribe" in actions:
         zho_hant_guide_path,
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
         output_dir_path=yue_hant_transcribe_path,
-        stop_at_idx=60,
+        stop_at_idx=10,
         overwrite=True,
     )
 if "yue-Hant_diff" in actions:
@@ -104,7 +104,7 @@ if "yue-Hant_diff" in actions:
     yue_hant_reference = get_reference_for_guide_blocks(
         yue_hant_reference,
         zho_hant_guide,
-        20,
+        10,
     )
     zho_hant_guide_by_timing = {
         (subtitle.start, subtitle.end): subtitle for subtitle in zho_hant_guide

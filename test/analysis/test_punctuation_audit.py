@@ -145,6 +145,59 @@ def test_audit_punctuation_resolves_repeated_reference_from_context():
     assert "| 4 | 重複 | 同 |" not in report
 
 
+def test_audit_punctuation_resolves_repeated_reference_before_range_filtering():
+    """Test a range cannot force a repeated case onto the wrong subtitle."""
+    reference = _get_series("前一", "重複", "中間", "之前", "重複", "之後")
+    target = _get_series("甲", "同", "乙", "前", "同", "後")
+    test_cases = (
+        PunctuationTestCase(
+            query=PunctuationQuery(guide="之前", subtitles=["前"]),
+            answer=PunctuationAnswer(output="前"),
+        ),
+        PunctuationTestCase(
+            query=PunctuationQuery(guide="重複", subtitles=["同"]),
+            answer=PunctuationAnswer(output="同"),
+        ),
+        PunctuationTestCase(
+            query=PunctuationQuery(guide="之後", subtitles=["後"]),
+            answer=PunctuationAnswer(output="後"),
+        ),
+    )
+
+    report = audit_punctuation(
+        reference,
+        target,
+        test_cases,
+        first_index=1,
+        last_index=2,
+    )
+
+    assert "- logged cases: 0" in report
+    assert "- table rows: 0" in report
+    assert "| 2 | 重複 | 同 |" not in report
+
+
+def test_audit_punctuation_ignores_ambiguity_outside_range():
+    """Test repeated references wholly outside the range need not be resolved."""
+    reference = _get_series("範圍內", "重複", "重複")
+    target = _get_series("乙", "甲", "甲")
+    test_case = PunctuationTestCase(
+        query=PunctuationQuery(guide="重複", subtitles=["甲"]),
+        answer=PunctuationAnswer(output="甲"),
+    )
+
+    report = audit_punctuation(
+        reference,
+        target,
+        (test_case,),
+        first_index=1,
+        last_index=1,
+    )
+
+    assert "- logged cases: 0" in report
+    assert "- table rows: 0" in report
+
+
 def test_audit_punctuation_rejects_unmatched_reference():
     """Test a logged reference absent from the series cannot be indexed."""
     test_case = PunctuationTestCase(

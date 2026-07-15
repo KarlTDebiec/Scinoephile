@@ -74,8 +74,6 @@ def audit_punctuation(
         reference_indexes_by_text,
         target_text_by_reference_index,
         test_cases,
-        first_index=first_index,
-        last_index=last_index,
     )
 
     rows: list[tuple[int, int, str]] = []
@@ -87,11 +85,21 @@ def audit_punctuation(
         candidates = candidate_indexes_by_case[test_case_index - 1]
         if not candidates:
             continue
+        if not any(
+            (first_index is None or candidate + 1 >= first_index)
+            and (last_index is None or candidate + 1 <= last_index)
+            for candidate in candidates
+        ):
+            continue
         index = _get_case_index(
             candidates,
             direct_indexes,
             test_case_index=test_case_index,
         )
+        if (first_index is not None and index + 1 < first_index) or (
+            last_index is not None and index + 1 > last_index
+        ):
+            continue
 
         logged_cases += 1
         row, result = _format_case_row(test_case, index)
@@ -213,9 +221,6 @@ def _get_case_indexes(
     reference_indexes_by_text: dict[str, list[int]],
     target_text_by_reference_index: dict[int, str],
     test_cases: Sequence[PunctuationTestCase],
-    *,
-    first_index: int | None,
-    last_index: int | None,
 ) -> tuple[list[list[int]], list[int | None]]:
     """Get candidate and directly resolved reference indexes for all cases.
 
@@ -223,8 +228,6 @@ def _get_case_indexes(
         reference_indexes_by_text: reference positions keyed by subtitle text
         target_text_by_reference_index: target text aligned to reference positions
         test_cases: logged punctuation test cases
-        first_index: first 1-indexed reference subtitle number to include
-        last_index: last 1-indexed reference subtitle number to include
     Returns:
         candidate indexes and directly resolved indexes for each case
     Raises:
@@ -239,12 +242,7 @@ def _get_case_indexes(
                 "Unable to audit transcription punctuation: "
                 f"test case {test_case_index} reference subtitle was not found"
             )
-        candidates = [
-            index
-            for index in matches
-            if (first_index is None or index + 1 >= first_index)
-            and (last_index is None or index + 1 <= last_index)
-        ]
+        candidates = list(matches)
         candidate_indexes_by_case.append(candidates)
 
         direct_index = None

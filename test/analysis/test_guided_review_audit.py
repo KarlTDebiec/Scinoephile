@@ -51,10 +51,10 @@ def test_audit_guided_review_formats_and_sorts_subtitles():
     assert "unanswered subtitles" not in report
     assert "- verified subtitles: 1" in report
     assert "- unverified subtitles: 2" in report
-    assert "| Subtitle | Guide | Target / revision | Notes |" in report
-    first_row = "| 1 | 參考一 | 甲\\|乙 |  |"
-    second_row = "| 2 | 參考一 | 丙<br>修訂丙 |  |"
-    third_row = "| 3 | 參考二 | 丁 |  |"
+    assert "| Index | Guide | Target / revision | Notes | Verified |" in report
+    first_row = "| 1 | 參考一 | 甲\\|乙 |  |  |"
+    second_row = "| 2 | 參考一 | 丙<br>修訂丙 |  |  |"
+    third_row = "| 3 | 參考二 | 丁 |  | ✓ |"
     assert report.index(first_row) < report.index(second_row) < report.index(third_row)
 
 
@@ -117,22 +117,182 @@ def test_audit_guided_review_filters_rows_and_target_range():
 
     assert "- row filter: changes" in changed_report
     assert "- table rows: 1" in changed_report
-    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |" in changed_report
+    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |  |" in changed_report
     assert "- row filter: unverified" in unverified_report
     assert "- table rows: 2" in unverified_report
-    assert "| 1 | 參考一 | 甲\\|乙 |  |" in unverified_report
-    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |" in unverified_report
+    assert "| 1 | 參考一 | 甲\\|乙 |  |  |" in unverified_report
+    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |  |" in unverified_report
     assert "- subtitles: 1" in ranged_report
     assert "- target subtitle range: 3 through 3" in ranged_report
     assert "- table rows: 1" in ranged_report
-    assert "| 3 | 參考二 | 丁 |  |" in ranged_report
+    assert "| 3 | 參考二 | 丁 |  | ✓ |" in ranged_report
     assert "- subtitles: 1" in second_report
     assert "- target subtitle range: 2 through 2" in second_report
-    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |" in second_report
+    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |  |" in second_report
 
 
-def test_audit_guided_review_rejects_unmatched_case():
-    """Test a logged case absent from the input blocks cannot be indexed."""
+def test_audit_guided_review_uses_latest_case_per_subtitle():
+    """Test repeated logged cases emit only their latest decision."""
+    target = Series(events=[Subtitle(start=0, end=1000, text="原文")])
+    guide = Series(events=[Subtitle(start=0, end=1000, text="參考")])
+    revised_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "原文"}],
+                "guides": [{"index": 1, "text": "參考"}],
+            },
+            "answer": {
+                "revisions": [{"index": 1, "text": "舊修訂", "note": "old correction"}]
+            },
+        }
+    )
+    unchanged_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": revised_case.query.model_dump(),
+            "answer": {"revisions": []},
+            "verified": True,
+        }
+    )
+
+    report = audit_guided_review(target, guide, (revised_case, unchanged_case))
+
+    assert "- subtitles: 1" in report
+    assert "- revised subtitles: 0" in report
+    assert "- unchanged subtitles: 1" in report
+    assert "- verified subtitles: 1" in report
+    assert "- table rows: 1" in report
+    assert "舊修訂" not in report
+    assert "| 1 | 參考 | 原文 |  | ✓ |" in report
+
+
+def test_audit_guided_review_matches_after_punctuation_changes():
+    """Test source punctuation changes do not obscure the reviewed input."""
+    target = Series(events=[Subtitle(start=0, end=1000, text="原文！")])
+    guide = Series(events=[Subtitle(start=0, end=1000, text="參考")])
+    test_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "原文。"}],
+                "guides": [{"index": 1, "text": "參考"}],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+
+    report = audit_guided_review(target, guide, (test_case,))
+
+    assert "| 1 | 參考 | 原文。 |  |  |" in report
+
+
+def test_audit_guided_review_allows_unaffected_range_before_changed_segmentation():
+    """Test a range before later segmentation drift remains auditable."""
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="甲"),
+            Subtitle(start=1100, end=2000, text="乙丙"),
+        ]
+    )
+    guide = Series(events=[Subtitle(start=0, end=2000, text="參考")])
+    test_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [
+                    {"index": 1, "text": "甲"},
+                    {"index": 2, "text": "乙"},
+                    {"index": 3, "text": "丙"},
+                ],
+                "guides": [{"index": 1, "text": "參考"}],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+
+    report = audit_guided_review(
+        target,
+        guide,
+        (test_case,),
+        first_index=1,
+        last_index=1,
+    )
+
+    assert "- table rows: 1" in report
+    assert "| 1 | 參考 | 甲 |  |  |" in report
+
+
+def test_audit_guided_review_rejects_selected_changed_segmentation():
+    """Test selected rows cannot use stale target segmentation."""
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="甲"),
+            Subtitle(start=1100, end=2000, text="乙丙"),
+        ]
+    )
+    guide = Series(events=[Subtitle(start=0, end=2000, text="參考")])
+    test_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [
+                    {"index": 1, "text": "甲"},
+                    {"index": 2, "text": "乙"},
+                    {"index": 3, "text": "丙"},
+                ],
+                "guides": [{"index": 1, "text": "參考"}],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+
+    with raises(
+        ScinoephileError, match="segmentation no longer matches subtitle index 2"
+    ):
+        audit_guided_review(
+            target,
+            guide,
+            (test_case,),
+            first_index=2,
+            last_index=2,
+        )
+
+
+def test_audit_guided_review_ignores_unmatched_case_outside_range():
+    """Test changed later block grouping does not prevent a partial audit."""
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="甲"),
+            Subtitle(start=6000, end=7000, text="乙"),
+        ]
+    )
+    guide = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="參考一"),
+            Subtitle(start=6000, end=6500, text="參考二"),
+            Subtitle(start=6500, end=7000, text="新增參考"),
+        ]
+    )
+    test_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "乙"}],
+                "guides": [{"index": 1, "text": "參考二"}],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+
+    report = audit_guided_review(
+        target,
+        guide,
+        (test_case,),
+        first_index=1,
+        last_index=1,
+    )
+
+    assert "- subtitles: 0" in report
+    assert "- table rows: 0" in report
+
+
+def test_audit_guided_review_rejects_changed_selected_target():
+    """Test a selected target changed beyond punctuation cannot be indexed."""
     target = Series(events=[Subtitle(start=0, end=1000, text="原文")])
     guide = Series(events=[Subtitle(start=0, end=1000, text="參考")])
     test_case = GuidedReviewTestCase.model_validate(
@@ -144,7 +304,9 @@ def test_audit_guided_review_rejects_unmatched_case():
         }
     )
 
-    with raises(ScinoephileError, match="test case 1 was not found"):
+    with raises(
+        ScinoephileError, match="segmentation no longer matches subtitle index 1"
+    ):
         audit_guided_review(target, guide, (test_case,))
 
 

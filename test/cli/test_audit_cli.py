@@ -172,7 +172,7 @@ def test_audit_guided_review_cli_stdout_and_outfile(
     assert "- row filter: changes" in stdout
     assert "- target subtitle range: 1 through 1" in stdout
     assert "- subtitles: 1" in stdout
-    assert "| 1 | 參考 | 原文<br>修訂 |  |" in stdout
+    assert "| 1 | 參考 | 原文<br>修訂 |  |  |" in stdout
 
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(

@@ -13,6 +13,7 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups
+from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.guided_review import GuidedReviewTestCase
 
 __all__ = [
@@ -30,11 +31,27 @@ class _GuidedReviewBlock:
     target_indexes: tuple[int, ...]
     """One-based target subtitle indexes in the block."""
     target_texts: tuple[str, ...]
-    """Target subtitle texts in the block."""
+    """Current target subtitle texts in the block."""
     guide_texts: tuple[str, ...]
     """Guide subtitle texts in the block."""
     aligned_guide_texts: tuple[tuple[str, ...], ...]
     """Timing-aligned guide texts for each target subtitle."""
+
+
+@dataclass(frozen=True, kw_only=True)
+class _GuidedReviewRow:
+    """One final per-subtitle guided-review audit row."""
+
+    subtitle_index: int
+    """One-based target subtitle index."""
+    test_case_index: int
+    """One-based position of the source test case in the JSON."""
+    markdown: str
+    """Formatted Markdown table row."""
+    revised: bool
+    """Whether the answer revised this subtitle."""
+    verified: bool
+    """Whether the source test case is verified."""
 
 
 class GuidedReviewAuditFilter(StrEnum):
@@ -74,19 +91,25 @@ def audit_guided_review(
         ScinoephileError: if a logged case cannot be matched uniquely to source data
     """
     blocks_by_key = _get_blocks_by_key(target, guide)
-    rows: list[tuple[int, int, str]] = []
-    revised_subtitles = 0
-    unchanged_subtitles = 0
-    verified_subtitles = 0
-    unverified_subtitles = 0
-    subtitles = 0
+    rows_by_subtitle_index: dict[int, _GuidedReviewRow] = {}
 
     for test_case_index, test_case in enumerate(test_cases, 1):
-        block = _get_test_case_block(
-            test_case,
-            blocks_by_key,
-            test_case_index=test_case_index,
-        )
+        try:
+            block = _get_test_case_block(
+                test_case,
+                blocks_by_key,
+                test_case_index=test_case_index,
+            )
+        except ScinoephileError:
+            if _is_test_case_outside_range(
+                test_case,
+                target,
+                guide,
+                first_index=first_index,
+                last_index=last_index,
+            ):
+                continue
+            raise
         answer = test_case.answer
         revisions_by_index = (
             {revision.index: revision for revision in answer.revisions}
@@ -94,12 +117,20 @@ def audit_guided_review(
             else {}
         )
 
-        for local_index, (subtitle_index, target_text, guide_texts) in enumerate(
+        _validate_selected_targets(
+            test_case,
+            block,
+            first_index=first_index,
+            last_index=last_index,
+            test_case_index=test_case_index,
+        )
+
+        for local_index, (subtitle_index, query_target, guide_texts) in enumerate(
             zip(
                 block.target_indexes,
-                block.target_texts,
+                test_case.query.targets,
                 block.aligned_guide_texts,
-                strict=True,
+                strict=False,
             ),
             1,
         ):
@@ -108,41 +139,42 @@ def audit_guided_review(
             ):
                 continue
 
-            subtitles += 1
             revision = revisions_by_index.get(local_index)
-            if revision is None:
-                unchanged_subtitles += 1
-            else:
-                revised_subtitles += 1
-            if test_case.verified:
-                verified_subtitles += 1
-            else:
-                unverified_subtitles += 1
 
-            if (row_filter is GuidedReviewAuditFilter.changes and revision is None) or (
-                row_filter is GuidedReviewAuditFilter.unverified and test_case.verified
-            ):
-                continue
-
-            target_revision = target_text
+            target_revision = query_target.text
             if revision is not None:
-                target_revision = f"{target_text}\n{revision.text}"
+                target_revision = f"{query_target.text}\n{revision.text}"
 
             cells = (
                 str(subtitle_index),
                 _format_texts(guide_texts),
                 target_revision,
                 "",
+                "✓" if test_case.verified else "",
             )
-            rows.append(
-                (
-                    subtitle_index,
-                    test_case_index,
-                    f"| {' | '.join(_escape_cell(cell) for cell in cells)} |",
-                )
+            rows_by_subtitle_index[subtitle_index] = _GuidedReviewRow(
+                subtitle_index=subtitle_index,
+                test_case_index=test_case_index,
+                markdown=f"| {' | '.join(_escape_cell(cell) for cell in cells)} |",
+                revised=revision is not None,
+                verified=test_case.verified,
             )
 
-    rows.sort(key=lambda item: (item[0], item[1]))
+    all_rows = sorted(
+        rows_by_subtitle_index.values(),
+        key=lambda row: (row.subtitle_index, row.test_case_index),
+    )
+    revised_subtitles = sum(row.revised for row in all_rows)
+    verified_subtitles = sum(row.verified for row in all_rows)
+    rows = [
+        row
+        for row in all_rows
+        if not (row_filter is GuidedReviewAuditFilter.changes and not row.revised)
+        and not (row_filter is GuidedReviewAuditFilter.unverified and row.verified)
+    ]
+    subtitles = len(all_rows)
+    unchanged_subtitles = subtitles - revised_subtitles
+    unverified_subtitles = subtitles - verified_subtitles
     lines = [
         "# Guided Subtitle Review Audit",
         "",
@@ -164,9 +196,9 @@ def audit_guided_review(
             "",
             "## Audit Table",
             "",
-            "| Subtitle | Guide | Target / revision | Notes |",
-            "|---:|---|---|---|",
-            *(row for _, _, row in rows),
+            "| Index | Guide | Target / revision | Notes | Verified |",
+            "|---:|---|---|---|:---:|",
+            *(row.markdown for row in rows),
         )
     )
     return "\n".join(lines) + "\n"
@@ -256,7 +288,8 @@ def _get_blocks_by_key(
             group_guide_texts = tuple(guide_texts[index] for index in guide_group)
             for target_index in target_group:
                 aligned_guide_texts[target_index] = group_guide_texts
-        blocks_by_key[(target_texts, guide_texts)].append(
+        key = (_normalize_texts(target_texts), guide_texts)
+        blocks_by_key[key].append(
             _GuidedReviewBlock(
                 block_number=block_number,
                 target_indexes=target_indexes,
@@ -289,16 +322,23 @@ def _get_test_case_block(
         ScinoephileError: if the test case has no unique matching block
     """
     key = (
-        tuple(target.text for target in test_case.query.targets),
+        _normalize_texts(tuple(target.text for target in test_case.query.targets)),
         tuple(guide.text for guide in test_case.query.guides),
     )
     matches = blocks_by_key.get(key, [])
     if not matches:
-        raise ScinoephileError(
-            "Unable to audit guided review: "
-            f"test case {test_case_index} was not found in the target and guide "
-            "subtitle blocks"
-        )
+        matches = [
+            block
+            for keyed_blocks in blocks_by_key.values()
+            for block in keyed_blocks
+            if block.guide_texts == key[1]
+        ]
+        if not matches:
+            raise ScinoephileError(
+                "Unable to audit guided review: "
+                f"test case {test_case_index} was not found in the target and guide "
+                "subtitle blocks"
+            )
     if len(matches) > 1:
         block_numbers = ", ".join(str(match.block_number) for match in matches)
         raise ScinoephileError(
@@ -307,3 +347,112 @@ def _get_test_case_block(
             f"{block_numbers}"
         )
     return matches[0]
+
+
+def _validate_selected_targets(
+    test_case: GuidedReviewTestCase,
+    block: _GuidedReviewBlock,
+    *,
+    first_index: int | None,
+    last_index: int | None,
+    test_case_index: int,
+):
+    """Validate selected logged targets against the current target block.
+
+    This permits an audit of an unaffected prefix after later upstream
+    delineation changes while rejecting selected rows whose indexing changed.
+
+    Arguments:
+        test_case: guided-review test case to validate
+        block: current target and guide block matched to the case
+        first_index: first included target subtitle number
+        last_index: last included target subtitle number
+        test_case_index: one-based test case position used in errors
+    Raises:
+        ScinoephileError: if selected logged targets no longer match current indexes
+    """
+    query_targets = tuple(target.text for target in test_case.query.targets)
+    selected_positions = [
+        position
+        for position, subtitle_index in enumerate(block.target_indexes)
+        if (first_index is None or subtitle_index >= first_index)
+        and (last_index is None or subtitle_index <= last_index)
+    ]
+    if not selected_positions:
+        return
+
+    for position in selected_positions:
+        if position >= len(query_targets) or _normalize_texts(
+            (query_targets[position],)
+        ) != _normalize_texts((block.target_texts[position],)):
+            subtitle_index = block.target_indexes[position]
+            raise ScinoephileError(
+                "Unable to audit guided review: "
+                f"test case {test_case_index} target segmentation no longer "
+                f"matches subtitle index {subtitle_index}"
+            )
+
+    includes_block_end = last_index is None or last_index >= block.target_indexes[-1]
+    if len(query_targets) != len(block.target_texts) and includes_block_end:
+        raise ScinoephileError(
+            "Unable to audit guided review: "
+            f"test case {test_case_index} target block length changed from "
+            f"{len(query_targets)} to {len(block.target_texts)} subtitles"
+        )
+
+
+def _normalize_texts(texts: tuple[str, ...]) -> tuple[str, ...]:
+    """Normalize target texts for matching across punctuation-only changes.
+
+    Arguments:
+        texts: target subtitle texts
+    Returns:
+        texts without punctuation or whitespace
+    """
+    return tuple(remove_punc_and_whitespace(text) for text in texts)
+
+
+def _is_test_case_outside_range(
+    test_case: GuidedReviewTestCase,
+    target: Series,
+    guide: Series,
+    *,
+    first_index: int | None,
+    last_index: int | None,
+) -> bool:
+    """Check whether an unmatched case is provably outside a bounded range.
+
+    Later upstream changes can alter block grouping outside the requested audit
+    range. Match the logged guide sequence directly by text and timing so those
+    irrelevant cases do not prevent a partial audit.
+
+    Arguments:
+        test_case: unmatched guided-review test case
+        target: current target subtitle series
+        guide: current guide subtitle series
+        first_index: first included target subtitle number
+        last_index: last included target subtitle number
+    Returns:
+        whether every matching guide sequence lies outside the target time range
+    """
+    if first_index is None and last_index is None:
+        return False
+
+    selected_start = target[first_index - 1].start if first_index is not None else 0
+    selected_end = (
+        target[last_index - 1].end if last_index is not None else target[-1].end
+    )
+    query_guides = tuple(item.text for item in test_case.query.guides)
+    guide_texts = tuple(subtitle.text_with_newline.strip() for subtitle in guide)
+    starts = [
+        index
+        for index in range(len(guide_texts) - len(query_guides) + 1)
+        if guide_texts[index : index + len(query_guides)] == query_guides
+    ]
+    if not starts:
+        return False
+    return all(
+        guide[start + len(query_guides) - 1].end < selected_start
+        or guide[start].start > selected_end
+        for start in starts
+    )

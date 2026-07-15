@@ -10,24 +10,26 @@ the cleaned transcription. The dataset workflow chains this stage after
 transcription and cleaning, but its decisions remain separate from transcription
 generation, delineation, punctuation, and gap translation.
 
-## Mandatory final output
+## Required report file
 
-If this skill runs an audit, paste the **entire interpreted Markdown report
-inline in the final response**.
+Always save the complete five-column Markdown report under `local/`. After
+auditing every row, add each concise audit note directly to that file's `Notes`
+cell. Do not leave notes only in commentary, tool output, or the final response.
 
-- Tool output, a summary, counts, findings, and a local file do not replace the
-  inline report.
-- Never omit or truncate rows, even when the report is long.
-- Never wrap the report in a code fence.
-- Keep the table at exactly these columns: `Subtitle`, `Guide`,
-  `Target / revision`, and `Notes`.
+- Keep the table at exactly these columns: `Index`, `Guide`,
+  `Target / revision`, `Notes`, and `Verified`.
 - In `Target / revision`, show the input target first and stack the proposed
   revision beneath it. Show only the target when no revision was proposed.
 - Replace the model-provided JSON note with your own independent interpretation
   in `Notes`; never copy or lightly paraphrase the model's explanation.
 - Write an independent note for every proposed revision. For an unchanged
   target, leave `Notes` blank when the no-revision decision is appropriate.
+- Preserve the generated `Verified` cell: `✓` means the JSON test case is
+  verified, and an empty cell means it is not verified.
 - Keep observations beside their rows rather than adding a findings section.
+- Validate the saved report after adding notes, then provide a clickable link
+  to it in the final response. Do not paste the table inline unless the user
+  explicitly requests it.
 
 ## Protect source data
 
@@ -67,18 +69,9 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit guided-review \
   --guide <guide.srt> \
   --json <guided-review.json> \
   --first-index <first> \
-  --last-index <last>
-```
-
-For a large report, also save it below `local/` and read it completely before
-responding:
-
-```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit guided-review \
-  --target <target.srt> \
-  --guide <guide.srt> \
-  --json <guided-review.json> \
-  --outfile local/<dataset>_guided_review_audit.md
+  --last-index <last> \
+  --filter all \
+  --outfile local/<dataset>_guided_review_audit_<first>-<last>.md
 ```
 
 Use `--filter all` for a complete audit, including no-revision answers that may
@@ -125,6 +118,8 @@ Use concise English audit notes beginning with one of these labels:
 
 Every proposed revision receives a note, including appropriate revisions.
 Leave `Notes` blank only when an unchanged target was appropriately left alone.
+Read the saved report from beginning to end, write all notes into its table,
+and confirm that every generated row has been independently audited.
 
 ## Correct and verify cases
 
@@ -144,4 +139,4 @@ the generated SRT:
 After corrections, regenerate `transcribe_clean_review.srt` and downstream
 outputs through the dataset workflow, then rerun the audit over the corrected
 range. Confirm the JSON remains canonical and the report contains the expected
-decisions before presenting the complete interpreted report.
+decisions before linking the complete interpreted report.
