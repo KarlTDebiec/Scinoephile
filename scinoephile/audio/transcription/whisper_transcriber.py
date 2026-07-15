@@ -41,7 +41,7 @@ class WhisperTranscriber:
         cache_dir_path: Path | None = None,
         use_demucs: bool = False,
         use_vad: bool = True,
-        temperature: float | tuple[float, ...] = 0.0,
+        temperature: float | Sequence[float] = 0.0,
         condition_on_previous_text: bool = True,
     ):
         """Initialize.
@@ -366,7 +366,7 @@ class WhisperTranscriber:
             f"vad-{'on' if self.use_vad else 'off'}"
         )
         if self.temperature != 0.0 or not self.condition_on_previous_text:
-            if isinstance(self.temperature, tuple):
+            if isinstance(self.temperature, Sequence):
                 temperature_key = ",".join(
                     f"{temperature:g}" for temperature in self.temperature
                 )
