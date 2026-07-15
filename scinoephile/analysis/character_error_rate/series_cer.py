@@ -49,12 +49,24 @@ class SeriesCER:
         Returns:
             formatted character error rate summary
         """
+        if self.reference_length == 0:
+            correct_percentage = "N/A"
+            substitutions_percentage = "N/A"
+            insertions_percentage = "N/A"
+            deletions_percentage = "N/A"
+        else:
+            correct_percentage = f"{self.correct / self.reference_length:.2%}"
+            substitutions_percentage = (
+                f"{self.substitutions / self.reference_length:.2%}"
+            )
+            insertions_percentage = f"{self.insertions / self.reference_length:.2%}"
+            deletions_percentage = f"{self.deletions / self.reference_length:.2%}"
         return (
             f"CER: {self.cer}\n"
-            f"Correct: {self.correct}\n"
-            f"Substitutions: {self.substitutions}\n"
-            f"Insertions: {self.insertions}\n"
-            f"Deletions: {self.deletions}\n"
+            f"Correct: {self.correct} ({correct_percentage})\n"
+            f"Substitutions: {self.substitutions} ({substitutions_percentage})\n"
+            f"Insertions: {self.insertions} ({insertions_percentage})\n"
+            f"Deletions: {self.deletions} ({deletions_percentage})\n"
             f"Reference length: {self.reference_length}"
         )
 
