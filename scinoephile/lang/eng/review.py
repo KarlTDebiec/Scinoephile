@@ -31,7 +31,8 @@ GuidedReviewPromptEng = GuidedReviewPrompt(
         Do not improve style, grammar, tone, or phrasing unless the target is clearly
         erroneous. Include a revision only when a target subtitle requires a change.
         Each revision must include the target's index, its full revised text, and a
-        short note. If no revisions are needed, return an empty revisions list."""),
+        short English note. If no revisions are needed, return an empty revisions
+        list."""),
     targets="english",
     targets_desc="English target subtitles to review, in order.",
     guides="references",
@@ -43,7 +44,7 @@ GuidedReviewPromptEng = GuidedReviewPrompt(
     target_text_desc="English target subtitle text to review.",
     guide_text_desc="Reference subtitle text.",
     revision_text_desc="Full revised English target subtitle text.",
-    note_desc="Note explaining the English target subtitle revision.",
+    note_desc="English note explaining the target subtitle revision.",
 )
 """LLM correspondence text for guided review of English subtitles."""
 
@@ -55,14 +56,15 @@ PairwiseReviewPromptEng = PairwiseReviewPrompt(
         which may be in another language. Correct only clear transcription, spelling,
         or name errors supported by the reference. Do not translate the reference or
         rewrite correct English to mirror its wording. If a revision is necessary,
-        return the full revised English subtitle and a short note. If no revision is
-        necessary, return empty strings. Return "�" only when the English subtitle has
-        no corresponding content and should be removed."""),
+        return the full revised English subtitle and a short English note. If no
+        revision is necessary, return empty strings. Return "�" only when the English
+        subtitle has no corresponding content and should be removed."""),
     target="english",
     target_desc="English subtitle to review",
     reference="reference",
     reference_desc="Corresponding reference subtitle",
     output="revised_english",
+    note_desc="English note explaining the revision, or an empty string",
 )
 """LLM correspondence text for pairwise review of English subtitles."""
 
@@ -72,8 +74,9 @@ ReviewPromptEng = ReviewPrompt(
     base_system_prompt=dedent_and_compact("""
         You are responsible for proofreading English subtitles.
         Return a revision only for a subtitle that requires changes. Each revision must
-        include the subtitle's index, its full revised text, and a note describing the
-        changes made. If no revisions are needed, return an empty revisions list.
+        include the subtitle's index, its full revised text, and an English note
+        describing the changes made. If no revisions are needed, return an empty
+        revisions list.
         Make changes only when necessary to correct typographical errors.
 
         Do not add stylistic changes or improve phrasing.
@@ -91,6 +94,6 @@ ReviewPromptEng = ReviewPrompt(
     ),
     subtitle_text_desc="English subtitle text to review.",
     revision_text_desc="Full revised English subtitle text.",
-    note_desc="Note explaining the English subtitle revision.",
+    note_desc="English note explaining the subtitle revision.",
 )
 """LLM correspondence text for English review."""
