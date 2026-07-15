@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import builtins
+import hashlib
 import os
 import sys
 from collections.abc import Mapping, Sequence
@@ -12,6 +13,7 @@ from pathlib import Path
 from textwrap import dedent
 from unittest.mock import Mock
 
+from pydub import AudioSegment
 from pytest import MonkeyPatch, importorskip, raises
 
 from scinoephile.audio.transcription import get_segment_split_at_idx
@@ -39,6 +41,8 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
         ("use_vad", True, False),
         ("model_name", "model/one", "model/two"),
         ("use_demucs", True, False),
+        ("temperature", 0.0, (0.0, 0.2, 0.4)),
+        ("condition_on_previous_text", True, False),
     ],
 )
 def test_get_cache_path_separates_configuration(
@@ -74,6 +78,40 @@ def test_get_cache_path_separates_configuration(
     assert first_cache_path.parent == tmp_path
     assert second_cache_path.parent == tmp_path
     assert first_cache_path != second_cache_path
+
+
+def test_get_cache_path_preserves_default_decoding_identity(tmp_path: Path):
+    """Test default decoding continues to use legacy Whisper cache keys."""
+    audio = Mock(raw_data=b"audio")
+    transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+    )
+    audio_sha256 = hashlib.sha256(audio.raw_data).hexdigest()
+    cache_key = f"{audio_sha256}_custom/model_yue_demucs-off_vad-on"
+    expected_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
+
+    assert transcriber._get_cache_path(audio) == tmp_path / f"{expected_sha256}.json"
+
+
+def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch):
+    """Test Whisper receives configured defensive decoding options."""
+    whisper = Mock()
+    whisper.transcribe.return_value = {"segments": []}
+    temperatures = (0.0, 0.2, 0.4)
+    transcriber = WhisperTranscriber(
+        model_name="custom/model",
+        temperature=temperatures,
+        condition_on_previous_text=False,
+    )
+    transcriber._model = Mock()
+    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
+    audio = AudioSegment.silent(duration=1000)
+
+    assert transcriber(audio) == []
+    whisper.transcribe.assert_called_once()
+    assert whisper.transcribe.call_args.kwargs["temperature"] == temperatures
+    assert whisper.transcribe.call_args.kwargs["condition_on_previous_text"] is False
 
 
 @parametrize(
