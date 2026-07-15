@@ -35,7 +35,8 @@
       "target_sub_1": "讓我來…讓我講講你們公道的話",
       "target_sub_2": "只要你們誰出得多過十萬兩銀票那"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -48,7 +49,8 @@
       "target_sub_1_shifted": "只要你們誰出得多過十萬兩銀票",
       "target_sub_2_shifted": "那如霜姑娘就陪誰"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -57,7 +59,8 @@
       "target_sub_1": "佢非常騷擁呀",
       "target_sub_2": "冇相干"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -66,7 +69,8 @@
       "target_sub_1": "黃州將軍呀",
       "target_sub_2": "邊個獸頭"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -78,74 +82,8 @@
     "answer": {
       "target_sub_2_shifted": "邊個獸頭欺我仔我蛋邊個"
     },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "是的⋯是的",
-      "ref_sub_2": "七姑娘⋯　　將就一下⋯",
-      "target_sub_1": "是的…",
-      "target_sub_2": "蘇姑娘掌握一下吧"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "來了，老爺",
-      "ref_sub_2": "少爺上京赴考，我們搬家",
-      "target_sub_1": "係咪",
-      "target_sub_2": "少爺上京訪南家搬"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "小孩子怕甚麼呢？",
-      "ref_sub_2": "我不小了",
-      "target_sub_1": "細路哥怕乜嘢呢",
-      "target_sub_2": "唔細㗎喇我"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "小看我？",
-      "ref_sub_2": "總有一天比你大",
-      "target_sub_1": "家下睇小木係咪",
-      "target_sub_2": "錢小姐大過你嘅"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "屋那麼大，何時才搬妥",
-      "ref_sub_2": "請大家賣力點，好不好",
-      "target_sub_1": "咁大家摸下幾時先搬得完啦",
-      "target_sub_2": "唔該大家落力啲啦好唔好呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "推到那邊⋯推到那邊",
-      "ref_sub_2": "小心點⋯小心我的荔枝",
-      "target_sub_1": "家陣去推佢過去推佢",
-      "target_sub_2": "好聲呀好聲呀睇住我啲荔枝呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "那二百萬兩可否酌量減一點？",
-      "ref_sub_2": "人情歸人情，數目一定要分明",
-      "target_sub_1": "佢二百萬兩係咪可以著量減啲啊哎",
-      "target_sub_2": "人情還人情均真啲好"
-    },
-    "answer": {
-      "target_sub_1_shifted": "佢二百萬兩係咪可以著量減啲啊",
-      "target_sub_2_shifted": "哎人情還人情均真啲好"
-    },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -154,7 +92,8 @@
       "target_sub_1": "啊全部滿分就晉級嘅點同",
       "target_sub_2": "家陣考狀元嘅你估做孤零啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -167,32 +106,10 @@
   },
   {
     "query": {
-      "ref_sub_1": "他是博達爾多的叔叔",
-      "ref_sub_2": "開始",
-      "target_sub_1": "佢係博達爾多嘅阿蘇嚟嘎嘛係啊",
-      "target_sub_2": "啊開始啊"
-    },
-    "answer": {
-      "target_sub_1_shifted": "佢係博達爾多嘅阿蘇嚟嘎嘛係啊啊",
-      "target_sub_2_shifted": "開始啊"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
       "ref_sub_1": "祝你好運",
       "ref_sub_2": "這當然要用臀啦！還有別處可用嗎？",
       "target_sub_1": "嗰度嘅best",
       "target_sub_2": "嗰度就梗用個pack嘅啦仲有第二次咩係咪"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "例上沒有說明不準用暗器",
-      "ref_sub_2": "你先掉下來，這個回合判博達爾多勝",
-      "target_sub_1": "吖嘛黎尚武嗰名唔准用鴨氣",
-      "target_sub_2": "你先跌落地呢個回合判莫達以多勝吓"
     },
     "answer": {}
   },
@@ -389,7 +306,8 @@
       "target_sub_1": "但",
       "target_sub_2": "如霜姑娘到啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -398,7 +316,8 @@
       "target_sub_1": "擺房不有空,招呼你",
       "target_sub_2": "這麼多位真不好意思,"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -411,7 +330,8 @@
       "target_sub_1_shifted": "是是不是?我就是來…",
       "target_sub_2_shifted": "來抓你可以啊"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -420,249 +340,8 @@
       "target_sub_1": "了不收了?",
       "target_sub_2": "大事化少,小事化無"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "莫大叔，酒菜已經加了斷腸散",
-      "ref_sub_2": "好！趙無極暗算我們幫主",
-      "target_sub_1": "莫大叔呀啲酒菜已經落到斷腸散喇好",
-      "target_sub_2": "照冒極佢暗算我哋幫主"
-    },
-    "answer": {
-      "target_sub_1_shifted": "莫大叔呀啲酒菜已經落到斷腸散喇",
-      "target_sub_2_shifted": "好照冒極佢暗算我哋幫主"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "好！趙無極暗算我們幫主",
-      "ref_sub_2": "和太平天國的幾名將領",
-      "target_sub_1": "好照冒極佢暗算我哋幫主",
-      "target_sub_2": "同埋太平天國幾個將領"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "和太平天國的幾名將領",
-      "ref_sub_2": "還嫁禍給我們丐幫",
-      "target_sub_1": "同埋太平天國幾個將領",
-      "target_sub_2": "仲嫁禍畀我哋丐幫"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "還嫁禍給我們丐幫",
-      "ref_sub_2": "弄得江湖上的兄弟",
-      "target_sub_1": "仲嫁禍畀我哋丐幫",
-      "target_sub_2": "搞到江湖上面嘅兄弟"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "弄得江湖上的兄弟",
-      "ref_sub_2": "人人也瞧不起我們",
-      "target_sub_1": "搞到江湖上面嘅兄弟",
-      "target_sub_2": "個個都睇我哋唔起"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "人人也瞧不起我們",
-      "ref_sub_2": "說我們投靠了朝廷",
-      "target_sub_1": "個個都睇我哋唔起",
-      "target_sub_2": "話我哋投靠咗朝廷"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "說我們投靠了朝廷",
-      "ref_sub_2": "這個仇今天可以報了",
-      "target_sub_1": "話我哋投靠咗朝廷",
-      "target_sub_2": "呢個仇今日可以報啦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "這個仇今天可以報了",
-      "ref_sub_2": "他們的先天罡氣很厲害",
-      "target_sub_1": "呢個仇今日可以報啦",
-      "target_sub_2": "佢嘅先天剛氣好厲害"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "他們的先天罡氣很厲害",
-      "ref_sub_2": "你們待會見他沒上當，千萬別出手",
-      "target_sub_1": "佢嘅先天剛氣好厲害",
-      "target_sub_2": "你哋一陣見佢未上當千萬唔好出手"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你們待會見他沒上當，千萬別出手",
-      "ref_sub_2": "因為湊合我們幾個也不是他的對手",
-      "target_sub_1": "你哋一陣見佢未上當千萬唔好出手",
-      "target_sub_2": "因為我哋幾個加埋都未必係佢對手"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "因為湊合我們幾個也不是他的對手",
-      "ref_sub_2": "我會盡量誘他到床邊",
-      "target_sub_1": "因為我哋幾個加埋都未必係佢對手",
-      "target_sub_2": "我會盡量引佢埋床㗎喇"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我會盡量誘他到床邊",
-      "ref_sub_2": "長老，有人來",
-      "target_sub_1": "我會盡量引佢埋床㗎喇",
-      "target_sub_2": "長老係呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "長老，有人來",
-      "ref_sub_2": "大家準備⋯",
-      "target_sub_1": "長老係呀",
-      "target_sub_2": "大家準備"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "如霜姑娘，我們又見面了",
-      "ref_sub_2": "怎麼是你？趙大爺呢？",
-      "target_sub_1": "余霜姑娘,我們又見面了",
-      "target_sub_2": "怎麼會是你?天余趙大爺呢?"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "怎麼是你？趙大爺呢？",
-      "ref_sub_2": "趙大爺的定風珠",
-      "target_sub_1": "怎麼會是你?天余趙大爺呢?",
-      "target_sub_2": "哥哥趙大爺一定瘋豬"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "趙大爺的定風珠",
-      "ref_sub_2": "給蘇翁一打就變成珍珠粉末",
-      "target_sub_1": "哥哥趙大爺一定瘋豬",
-      "target_sub_2": "被蘇勇一打,被珍珠滿"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "給蘇翁一打就變成珍珠粉末",
-      "ref_sub_2": "我沖水喝了",
-      "target_sub_1": "被蘇勇一打,被珍珠滿",
-      "target_sub_2": "我還沖水喝了"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我沖水喝了",
-      "ref_sub_2": "你不要看蘇翁的頭髮像掃帚",
-      "target_sub_1": "我還沖水喝了",
-      "target_sub_2": "你們蘇媽頭髮像素靶一樣"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你不要看蘇翁的頭髮像掃帚",
-      "ref_sub_2": "其實他為人很有情趣",
-      "target_sub_1": "你們蘇媽頭髮像素靶一樣",
-      "target_sub_2": "實在她很有情趣"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "其實他為人很有情趣",
-      "ref_sub_2": "但是⋯",
-      "target_sub_1": "實在她很有情趣",
-      "target_sub_2": "但是…"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "但是⋯",
-      "ref_sub_2": "但是甚麼，十萬兩我已拿了",
-      "target_sub_1": "但是…",
-      "target_sub_2": "沒但是,那十萬兩我已經帶進袋裡"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "但是甚麼，十萬兩我已拿了",
-      "ref_sub_2": "我不會還給他的",
-      "target_sub_1": "沒但是,那十萬兩我已經帶進袋裡",
-      "target_sub_2": "想拿回來就很難了"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我不會還給他的",
-      "ref_sub_2": "說到蘇翁的為人⋯",
-      "target_sub_1": "想拿回來就很難了",
-      "target_sub_2": "說到蘇勇這份人…"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "說到蘇翁的為人⋯",
-      "ref_sub_2": "廢話少說，鴇母",
-      "target_sub_1": "說到蘇勇這份人…",
-      "target_sub_2": "廢話可以少說了,閨婆"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "廢話少說，鴇母",
-      "ref_sub_2": "你先出去",
-      "target_sub_1": "廢話可以少說了,閨婆",
-      "target_sub_2": "你先出去吧"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你先出去",
-      "ref_sub_2": "是的⋯是的",
-      "target_sub_1": "你先出去吧",
-      "target_sub_2": "是的…"
-    },
-    "answer": {
-      "target_sub_1_shifted": "你先出去",
-      "target_sub_2_shifted": "吧是的…"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -671,921 +350,8 @@
       "target_sub_1": "吧是的…",
       "target_sub_2": "蘇姑娘掌握一下吧"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "這個是誰？",
-      "ref_sub_2": "我不知道",
-      "target_sub_1": "呢個邊個嚟㗎",
-      "target_sub_2": "我唔知呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我不知道",
-      "ref_sub_2": "姑娘，首先有個好消息",
-      "target_sub_1": "我唔知呀",
-      "target_sub_2": "姑娘首先有個好消息"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "姑娘，首先有個好消息",
-      "ref_sub_2": "我很喜歡你",
-      "target_sub_1": "姑娘首先有個好消息",
-      "target_sub_2": "我好喜歡你"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我很喜歡你",
-      "ref_sub_2": "這對我來說是一個壞消息",
-      "target_sub_1": "我好喜歡你",
-      "target_sub_2": "呢個對於我嚟講係壞消息喎"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "這對我來說是一個壞消息",
-      "ref_sub_2": "我早知道你會這樣說",
-      "target_sub_1": "呢個對於我嚟講係壞消息喎",
-      "target_sub_2": "我早知你會咁講㗎喇"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我早知道你會這樣說",
-      "ref_sub_2": "閒話休提",
-      "target_sub_1": "我早知你會咁講㗎喇",
-      "target_sub_2": "難話優題"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "閒話休提",
-      "ref_sub_2": "我願意出一百顆珍珠",
-      "target_sub_1": "難話優題",
-      "target_sub_2": "我願意出一百粒珍珠"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我願意出一百顆珍珠",
-      "ref_sub_2": "希望如霜姑娘今晚能夠陪我把酒談歡",
-      "target_sub_1": "我願意出一百粒珍珠",
-      "target_sub_2": "希望如霜姑娘今晚能夠陪我把酒談歡"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "希望如霜姑娘今晚能夠陪我把酒談歡",
-      "ref_sub_2": "我不想跟你多說",
-      "target_sub_1": "希望如霜姑娘今晚能夠陪我把酒談歡",
-      "target_sub_2": "我唔想同你多講"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我不想跟你多說",
-      "ref_sub_2": "請你出去",
-      "target_sub_1": "我唔想同你多講",
-      "target_sub_2": "請你出去"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "請你出去",
-      "ref_sub_2": "我果然沒選錯人",
-      "target_sub_1": "請你出去",
-      "target_sub_2": "我果然冇揀錯人好"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我果然沒選錯人",
-      "ref_sub_2": "好，我先飲為敬",
-      "target_sub_1": "我果然冇揀錯人好",
-      "target_sub_2": "我就先飲為敬"
-    },
-    "answer": {
-      "target_sub_1_shifted": "我果然冇揀錯人",
-      "target_sub_2_shifted": "好我就先飲為敬"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "好，我先飲為敬",
-      "ref_sub_2": "不要喝⋯",
-      "target_sub_1": "好我就先飲為敬",
-      "target_sub_2": "唔好飲咩"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "實在讓我太感意外",
-      "ref_sub_2": "姑娘",
-      "target_sub_1": "實在太令我意外"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "放手",
-      "ref_sub_2": "原來你會武功",
-      "target_sub_2": "你居然識武功"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "原來你會武功",
-      "ref_sub_2": "不，我根本就不會武功",
-      "target_sub_1": "你居然識武功",
-      "target_sub_2": "唔係我根本就唔識武功呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "不，我根本就不會武功",
-      "ref_sub_2": "我求求你別再纏著我",
-      "target_sub_1": "唔係我根本就唔識武功呀",
-      "target_sub_2": "我求你唔好再纏住我啦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我求求你別再纏著我",
-      "ref_sub_2": "我不會陪你",
-      "target_sub_1": "我求你唔好再纏住我啦",
-      "target_sub_2": "我唔會陪你㗎"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我不會陪你",
-      "ref_sub_2": "如霜，從來沒有人這樣對我",
-      "target_sub_1": "我唔會陪你㗎",
-      "target_sub_2": "余雙從來冇人噉對我㗎"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "如霜，從來沒有人這樣對我",
-      "ref_sub_2": "我發覺我已經愛上了你",
-      "target_sub_1": "余雙從來冇人噉對我㗎",
-      "target_sub_2": "我發覺我竟已愛上咗你"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我發覺我已經愛上了你",
-      "ref_sub_2": "你說甚麼？",
-      "target_sub_1": "我發覺我竟已愛上咗你",
-      "target_sub_2": "咩話"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你說甚麼？",
-      "ref_sub_2": "我說，我已經愛上了你",
-      "target_sub_1": "咩話",
-      "target_sub_2": "我話我竟已愛上咗你"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我說，我已經愛上了你",
-      "ref_sub_2": "你沒有弄錯吧？",
-      "target_sub_1": "我話我竟已愛上咗你",
-      "target_sub_2": "你有乜搞錯呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你沒有弄錯吧？",
-      "ref_sub_2": "絕對沒有！我決定要娶你",
-      "target_sub_1": "你有乜搞錯呀",
-      "target_sub_2": "絕對冇我決定要娶你"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "絕對沒有！我決定要娶你",
-      "ref_sub_2": "你有神經病",
-      "target_sub_1": "絕對冇我決定要娶你",
-      "target_sub_2": "你咪痴線㗎"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你有神經病",
-      "ref_sub_2": "不是吧",
-      "target_sub_1": "你咪痴線㗎",
-      "target_sub_2": "唔係呀嘛"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "不是吧",
-      "ref_sub_2": "原來有人藏在這裡",
-      "target_sub_1": "唔係呀嘛",
-      "target_sub_2": "原來有人躲埋喺度咩"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "正好，我正想找個證人",
-      "ref_sub_2": "證人？　　對",
-      "target_sub_1": "啱啦我正想揾個證人",
-      "target_sub_2": "證人係"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "證人？　　對",
-      "ref_sub_2": "我就對著你的寶劍發誓",
-      "target_sub_1": "證人係",
-      "target_sub_2": "我就當住你把寶劍發誓"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我就對著你的寶劍發誓",
-      "ref_sub_2": "我是真心要娶如霜姑娘為妻",
-      "target_sub_1": "我就當住你把寶劍發誓",
-      "target_sub_2": "我係真心要娶余霜姑娘為妻"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我是真心要娶如霜姑娘為妻",
-      "ref_sub_2": "若然有半句假話，天打雷劈",
-      "target_sub_1": "我係真心要娶余霜姑娘為妻",
-      "target_sub_2": "若然有半句假話天打雷劈"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "若然有半句假話，天打雷劈",
-      "ref_sub_2": "姐姐，我真的替你興奮⋯",
-      "target_sub_1": "若然有半句假話天打雷劈",
-      "target_sub_2": "姐姐我真係等你興奮"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "姐姐，我真的替你興奮⋯",
-      "ref_sub_2": "唏！",
-      "target_sub_1": "姐姐我真係等你興奮",
-      "target_sub_2": "喂"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "唏！",
-      "ref_sub_2": "你以為當我丈夫那麼容易嗎",
-      "target_sub_1": "喂",
-      "target_sub_2": "你估做我丈夫咁容易嘅咩"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你以為當我丈夫那麼容易嗎",
-      "ref_sub_2": "要怎樣才可以當你丈夫呢？",
-      "target_sub_1": "你估做我丈夫咁容易嘅咩",
-      "target_sub_2": "咁要點先可以做你丈夫呢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "要怎樣才可以當你丈夫呢？",
-      "ref_sub_2": "我要他武功蓋世，狀元之才",
-      "target_sub_1": "咁要點先可以做你丈夫呢",
-      "target_sub_2": "我要佢武功蓋世狀元之才"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我要他武功蓋世，狀元之才",
-      "ref_sub_2": "一人之下，萬人之上",
-      "target_sub_1": "我要佢武功蓋世狀元之才",
-      "target_sub_2": "億人之下萬人之上"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "一人之下，萬人之上",
-      "ref_sub_2": "那你是否做得到？",
-      "target_sub_1": "億人之下萬人之上",
-      "target_sub_2": "咁你做唔做得到啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "那你是否做得到？",
-      "ref_sub_2": "讓我想一想",
-      "target_sub_1": "咁你做唔做得到啊",
-      "target_sub_2": "畀我諗諗"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "做得到",
-      "ref_sub_2": "好",
-      "target_sub_1": "做得到",
-      "target_sub_2": "好"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "好",
-      "ref_sub_2": "待你做得到的時候，才回來找我",
-      "target_sub_1": "好",
-      "target_sub_2": "咁等你做得到嗰陣先要返嚟揾我啦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "待你做得到的時候，才回來找我",
-      "ref_sub_2": "既然如此，我想我們要先定婚期",
-      "target_sub_1": "咁等你做得到嗰陣先要返嚟揾我啦",
-      "target_sub_2": "咦既然係噉我諗我哋要先定分期"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "既然如此，我想我們要先定婚期",
-      "ref_sub_2": "因為做狀元對我來說易如反掌",
-      "target_sub_1": "咦既然係噉我諗我哋要先定分期",
-      "target_sub_2": "因為做狀元對我嚟講易如反掌"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "因為做狀元對我來說易如反掌",
-      "ref_sub_2": "好！那也應該給我時間作考慮",
-      "target_sub_1": "因為做狀元對我嚟講易如反掌",
-      "target_sub_2": "好咁都應該畀啲時間我考慮下吧"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "好！那也應該給我時間作考慮",
-      "ref_sub_2": "沒問題，我就在外面的花園等待答覆",
-      "target_sub_1": "好咁都應該畀啲時間我考慮下吧",
-      "target_sub_2": "冇問題我就喺出面花園等你答覆"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "沒問題，我就在外面的花園等待答覆",
-      "ref_sub_2": "不見不散",
-      "target_sub_1": "冇問題我就喺出面花園等你答覆",
-      "target_sub_2": "百見不散"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "大人，半炷香的時間剛剛好",
-      "ref_sub_2": "現在路上很安全，請上路",
-      "target_sub_1": "大人搬煮香嘅時間啱啱好",
-      "target_sub_2": "而家條路好安全請上路"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "現在路上很安全，請上路",
-      "ref_sub_2": "好！非常好",
-      "target_sub_1": "而家條路好安全請上路",
-      "target_sub_2": "好非常好"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "好！非常好",
-      "ref_sub_2": "起轎！",
-      "target_sub_1": "好非常好",
-      "target_sub_2": "起橋"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "糟糕！我們來晚了",
-      "ref_sub_2": "都是那個人礙事！",
-      "target_sub_1": "閉我哋來遲咗",
-      "target_sub_2": "一日都係嗰個騎下仔女事"
-    },
-    "answer": {
-      "target_sub_1_shifted": "閉我哋來遲咗一日",
-      "target_sub_2_shifted": "都係嗰個騎下仔女事"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "姐姐⋯姐姐",
-      "ref_sub_2": "甚麼事？",
-      "target_sub_1": "姐姐姐姐啊",
-      "target_sub_2": "咩事啊"
-    },
-    "answer": {
-      "target_sub_1_shifted": "姐姐姐姐",
-      "target_sub_2_shifted": "啊咩事啊"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "甚麼事？",
-      "ref_sub_2": "那個神經病還在",
-      "target_sub_1": "啊咩事啊",
-      "target_sub_2": "個痴線佬仲喺度喎"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "那個神經病還在",
-      "ref_sub_2": "不如殺了他",
-      "target_sub_1": "個痴線佬仲喺度喎",
-      "target_sub_2": "不如殺咗佢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "不如殺了他",
-      "ref_sub_2": "算吧！他不是有心阻礙我們",
-      "target_sub_1": "不如殺咗佢",
-      "target_sub_2": "算啦佢咪有心阻我哋嘅"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "算吧！他不是有心阻礙我們",
-      "ref_sub_2": "由他吧",
-      "target_sub_1": "算啦佢咪有心阻我哋嘅",
-      "target_sub_2": "由佢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你不是喜歡他吧？",
-      "ref_sub_2": "你胡說甚麼？",
-      "target_sub_1": "你唔係鍾意阻佢係嘛",
-      "target_sub_2": "你講乜嘢啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你胡說甚麼？",
-      "ref_sub_2": "趙無極一日不死",
-      "target_sub_1": "你講乜嘢啊",
-      "target_sub_2": "趙無極一係未死"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "趙無極一日不死",
-      "ref_sub_2": "我也不會想這些事",
-      "target_sub_1": "趙無極一係未死",
-      "target_sub_2": "我點都唔會諗呢啲嘢㗎喇"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我也不會想這些事",
-      "ref_sub_2": "何況是他",
-      "target_sub_1": "我點都唔會諗呢啲嘢㗎喇",
-      "target_sub_2": "何況係佢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "何況是他",
-      "ref_sub_2": "趙無極武功很高",
-      "target_sub_1": "何況係佢",
-      "target_sub_2": "趙無極好好打嘅喎"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "趙無極武功很高",
-      "ref_sub_2": "莫大叔說不會降龍十八掌便打不過他",
-      "target_sub_1": "趙無極好好打嘅喎",
-      "target_sub_2": "莫大叔話唔識學能十八掌都打佢唔贏嘅"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "莫大叔說不會降龍十八掌便打不過他",
-      "ref_sub_2": "那我豈不是嫁不出嗎？",
-      "target_sub_1": "莫大叔話唔識學能十八掌都打佢唔贏嘅",
-      "target_sub_2": "噉我唔使假"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "那我豈不是嫁不出嗎？",
-      "ref_sub_2": "行吧！別發情",
-      "target_sub_1": "噉我唔使假",
-      "target_sub_2": "行啦發口呢你"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "何方妖孽？竟敢來嚇我？",
-      "ref_sub_2": "蘇翁，我是鴇母⋯",
-      "target_sub_1": "何方擁孽夠膽出來欺騙本少爺",
-      "target_sub_2": "素勇我係閨婆呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "蘇翁，我是鴇母⋯",
-      "ref_sub_2": "你是鴇母？",
-      "target_sub_1": "素勇我係閨婆呀",
-      "target_sub_2": "你係閨婆"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你是鴇母？",
-      "ref_sub_2": "是的",
-      "target_sub_1": "你係閨婆",
-      "target_sub_2": "係呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "是的",
-      "ref_sub_2": "胸部那麼平，你的奶子呢？",
-      "target_sub_1": "係呀",
-      "target_sub_2": "個胸咁平嘅你對奶呢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "胸部那麼平，你的奶子呢？",
-      "ref_sub_2": "那麼早，還未睡醒⋯",
-      "target_sub_1": "個胸咁平嘅你對奶呢",
-      "target_sub_2": "咁未起身吖嘛"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "那麼早，還未睡醒⋯",
-      "ref_sub_2": "這次沒有把你打死，算是你走運",
-      "target_sub_1": "咁未起身吖嘛",
-      "target_sub_2": "呢鑊打你唔死算你大命"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "這次沒有把你打死，算是你走運",
-      "ref_sub_2": "以後沒有化妝不要四處走，知道嗎？",
-      "target_sub_1": "呢鑊打你唔死算你大命",
-      "target_sub_2": "以後未化妝唔好事為限呀知咪"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "以後沒有化妝不要四處走，知道嗎？",
-      "ref_sub_2": "不會了，不會了",
-      "target_sub_1": "以後未化妝唔好事為限呀知咪",
-      "target_sub_2": "唔會啦唔會啦係"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "不會了，不會了",
-      "ref_sub_2": "你不用等如霜姑娘了，她已經走了⋯",
-      "target_sub_1": "唔會啦唔會啦係",
-      "target_sub_2": "你唔好等余霜姑娘喇佢走咗喇"
-    },
-    "answer": {
-      "target_sub_1_shifted": "唔會啦唔會啦",
-      "target_sub_2_shifted": "係你唔好等余霜姑娘喇佢走咗喇"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "你不用等如霜姑娘了，她已經走了⋯",
-      "ref_sub_2": "走了？",
-      "target_sub_1": "係你唔好等余霜姑娘喇佢走咗喇",
-      "target_sub_2": "走咗"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "那究竟如霜姑娘去了哪裡？",
-      "ref_sub_2": "聽說，她⋯她去了京城",
-      "target_sub_1": "咁究竟如霜姑娘去咗邊",
-      "target_sub_2": "聽講話佢佢去咗京城呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "聽說，她⋯她去了京城",
-      "ref_sub_2": "京城？",
-      "target_sub_1": "聽講話佢佢去咗京城呀",
-      "target_sub_2": "京城"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "京城？",
-      "ref_sub_2": "男兒為國家⋯",
-      "target_sub_1": "京城",
-      "target_sub_2": "南宜為國家"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "男兒為國家⋯",
-      "ref_sub_2": "⋯辮子怎樣戴⋯",
-      "target_sub_1": "南宜為國家",
-      "target_sub_2": "條邊冇掟掛"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "⋯辮子怎樣戴⋯",
-      "ref_sub_2": "揮啊！揮啊！",
-      "target_sub_1": "條邊冇掟掛",
-      "target_sub_2": "聖殼聖殼"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "揮啊！揮啊！",
-      "ref_sub_2": "我拉長它又彈它⋯",
-      "target_sub_1": "聖殼聖殼",
-      "target_sub_2": "我蚊牆又但下呢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我拉長它又彈它⋯",
-      "ref_sub_2": "阿爹",
-      "target_sub_1": "我蚊牆又但下呢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "阿爹",
-      "ref_sub_2": "我決定上京考文武狀元",
-      "target_sub_2": "我決定上京口文武狀元"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我決定上京考文武狀元",
-      "ref_sub_2": "阿燦",
-      "target_sub_1": "我決定上京口文武狀元",
-      "target_sub_2": "阿蟲"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "阿燦",
-      "ref_sub_2": "爹等你說這句話，等了二十五年",
-      "target_sub_1": "阿蟲",
-      "target_sub_2": "阿爹等你講呢句說話"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "爹等你說這句話，等了二十五年",
-      "ref_sub_2": "為了蘇察哈爾家，你應該這樣做",
-      "target_sub_1": "阿爹等你講呢句說話",
-      "target_sub_2": "等你廿五年為咗鬚賊蝦耳間你應該咁做"
-    },
-    "answer": {
-      "target_sub_1_shifted": "阿爹等你講呢句說話等你廿五年",
-      "target_sub_2_shifted": "為咗鬚賊蝦耳間你應該咁做"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "阿燦",
-      "ref_sub_2": "爹等你說這句話，等了二十五年",
-      "target_sub_1": "阿蟲",
-      "target_sub_2": "阿爹等你講呢句說話等你廿五年"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "爹等你說這句話，等了二十五年",
-      "ref_sub_2": "為了蘇察哈爾家，你應該這樣做",
-      "target_sub_1": "阿爹等你講呢句說話等你廿五年",
-      "target_sub_2": "為咗鬚賊蝦耳間你應該咁做"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "為了蘇察哈爾家，你應該這樣做",
-      "ref_sub_2": "別誤會，我這樣做並不是為誰",
-      "target_sub_1": "為咗鬚賊蝦耳間你應該咁做",
-      "target_sub_2": "唔好嘞咁仲唔係為咗任何人"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "別誤會，我這樣做並不是為誰",
-      "ref_sub_2": "只是為了一個女人",
-      "target_sub_1": "唔好嘞咁仲唔係為咗任何人",
-      "target_sub_2": "只係為咗個女仔啫"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "只是為了一個女人",
-      "ref_sub_2": "英雄",
-      "target_sub_1": "只係為咗個女仔啫",
-      "target_sub_2": "英雄"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "英雄",
-      "ref_sub_2": "為妞死，為妞亡，為妞上京考狀元",
-      "target_sub_1": "英雄",
-      "target_sub_2": "為女死為女亡為女上京考狀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "為妞死，為妞亡，為妞上京考狀元",
-      "ref_sub_2": "何家女子？",
-      "target_sub_1": "為女死為女亡為女上京考狀",
-      "target_sub_2": "何家女子"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "何家女子？",
-      "ref_sub_2": "怡紅院金牌清倌人如霜姑娘",
-      "target_sub_1": "何家女子",
-      "target_sub_2": "而紅院金牌清官人如霜姑娘"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "怡紅院金牌清倌人如霜姑娘",
-      "ref_sub_2": "妓女？",
-      "target_sub_1": "而紅院金牌清官人如霜姑娘",
-      "target_sub_2": "隻雞乜嘢唔妥"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "妓女？",
-      "ref_sub_2": "有何不妥？",
-      "target_sub_1": "隻雞乜嘢唔妥"
-    },
-    "answer": {
-      "target_sub_1_shifted": "隻雞",
-      "target_sub_2_shifted": "乜嘢唔妥"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "有何不妥？",
-      "ref_sub_2": "品味與別不同，真是能人所不能",
-      "target_sub_1": "乜嘢唔妥",
-      "target_sub_2": "品味與別不同真係能人所不能"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "品味與別不同，真是能人所不能",
-      "ref_sub_2": "阿爹欽佩你",
-      "target_sub_1": "品味與別不同真係能人所不能",
-      "target_sub_2": "阿爹一唔陪你"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "阿爹欽佩你",
-      "ref_sub_2": "我陪你上京",
-      "target_sub_1": "阿爹一唔陪你",
-      "target_sub_2": "我陪你上京"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我陪你上京",
-      "ref_sub_2": "二，三，四，五，六",
-      "target_sub_1": "我陪你上京",
-      "target_sub_2": "二三正六"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "二，三，四，五，六",
-      "ref_sub_2": "來了，老爺",
-      "target_sub_1": "二三正六",
-      "target_sub_2": "係咪"
-    },
-    "answer": {
-      "target_sub_1_shifted": "二三正",
-      "target_sub_2_shifted": "六係咪"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1594,47 +360,8 @@
       "target_sub_1": "六係咪",
       "target_sub_2": "少爺上京訪南家搬"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "少爺上京赴考，我們搬家",
-      "ref_sub_2": "你們不要追了",
-      "target_sub_1": "少爺上京訪南家搬",
-      "target_sub_2": "阿爹你哋唔好追啦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你們不要追了",
-      "ref_sub_2": "這些雞不帶了，京城多的是",
-      "target_sub_1": "阿爹你哋唔好追啦",
-      "target_sub_2": "啲雞都會"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "這些雞不帶了，京城多的是",
-      "ref_sub_2": "你這個笨蛋小心點",
-      "target_sub_1": "啲雞都會",
-      "target_sub_2": "唔好聲呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你這個笨蛋小心點",
-      "ref_sub_2": "弄花了我的東西，我不會放過你",
-      "target_sub_1": "唔好聲呀",
-      "target_sub_2": "你揮返我啲嘢我打到佢屁股開返"
-    },
-    "answer": {
-      "target_sub_1_shifted": "唔好聲呀你",
-      "target_sub_2_shifted": "揮返我啲嘢我打到佢屁股開返"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1643,20 +370,8 @@
       "target_sub_1": "揮返我啲嘢我打到佢屁股開返",
       "target_sub_2": "小心啲搬"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "小心點",
-      "ref_sub_2": "老爹，早",
-      "target_sub_1": "小心啲搬",
-      "target_sub_2": "阿爹早晨"
-    },
-    "answer": {
-      "target_sub_1_shifted": "小心啲",
-      "target_sub_2_shifted": "搬阿爹早晨"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1665,47 +380,8 @@
       "target_sub_1": "搬阿爹早晨",
       "target_sub_2": "早晨"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "早",
-      "ref_sub_2": "真的全部都搬走？",
-      "target_sub_1": "早晨",
-      "target_sub_2": "真係乜都搬走晒"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "真的全部都搬走？",
-      "ref_sub_2": "當然",
-      "target_sub_1": "真係乜都搬走晒",
-      "target_sub_2": "當然啦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "當然",
-      "ref_sub_2": "留件衣服給我穿啊",
-      "target_sub_1": "當然啦",
-      "target_sub_2": "留返件衫就好小心呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "留件衣服給我穿啊",
-      "ref_sub_2": "小孩子怕甚麼呢？",
-      "target_sub_1": "留返件衫就好小心呀",
-      "target_sub_2": "細路哥怕乜嘢呢"
-    },
-    "answer": {
-      "target_sub_1_shifted": "留返件衫就好",
-      "target_sub_2_shifted": "小心呀細路哥怕乜嘢呢"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1714,25 +390,8 @@
       "target_sub_1": "小心呀細路哥怕乜嘢呢",
       "target_sub_2": "唔細㗎喇我"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我不小了",
-      "ref_sub_2": "呸！比我大嗎？",
-      "target_sub_1": "唔細㗎喇我",
-      "target_sub_2": "呸大得我咩家下"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "呸！比我大嗎？",
-      "ref_sub_2": "小看我？",
-      "target_sub_1": "呸大得我咩家下",
-      "target_sub_2": "睇小木係咪"
-    },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1741,29 +400,8 @@
       "target_sub_1": "睇小木係咪",
       "target_sub_2": "錢小姐大過你嘅"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "總有一天比你大",
-      "ref_sub_2": "有誰願意脫下衣服來給我穿一下",
-      "target_sub_1": "錢小姐大過你嘅",
-      "target_sub_2": "後期邊個把啲鎚鑿敷落嚟掩住"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "有誰願意脫下衣服來給我穿一下",
-      "ref_sub_2": "沒眼看",
-      "target_sub_1": "後期邊個把啲鎚鑿敷落嚟掩住",
-      "target_sub_2": "帶啲鎚鑿鑿敷嘅事"
-    },
-    "answer": {
-      "target_sub_1_shifted": "後期邊個把啲鎚鑿敷落嚟",
-      "target_sub_2_shifted": "掩住帶啲鎚鑿鑿敷嘅事"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1772,20 +410,8 @@
       "target_sub_1": "掩住帶啲鎚鑿鑿敷嘅事",
       "target_sub_2": "你哋企晒到做乜嘢咁你搬佢走"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你們站著幹嘛？還不把它搬走",
-      "ref_sub_2": "屋那麼大，何時才搬妥",
-      "target_sub_1": "你哋企晒到做乜嘢咁你搬佢走",
-      "target_sub_2": "咁大家摸下幾時先搬得完啦"
-    },
-    "answer": {
-      "target_sub_1_shifted": "你哋企晒到做乜嘢咁你搬佢走咁",
-      "target_sub_2_shifted": "大家摸下幾時先搬得完啦"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1794,79 +420,8 @@
       "target_sub_1": "大家摸下幾時先搬得完啦",
       "target_sub_2": "唔該大家落力啲啦好唔好呀"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "請大家賣力點，好不好",
-      "ref_sub_2": "數三聲！一，二，三，推",
-      "target_sub_1": "唔該大家落力啲啦好唔好呀",
-      "target_sub_2": "數三聲啦一二三推"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "數三聲！一，二，三，推",
-      "ref_sub_2": "推⋯",
-      "target_sub_1": "數三聲啦一二三推",
-      "target_sub_2": "推推推啦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "推⋯",
-      "ref_sub_2": "小心推",
-      "target_sub_1": "推推推啦",
-      "target_sub_2": "好聲推呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "小心推",
-      "ref_sub_2": "綁牢一點⋯綁牢一點",
-      "target_sub_1": "好聲推呀",
-      "target_sub_2": "綁穩啲綁穩啲呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "綁牢一點⋯綁牢一點",
-      "ref_sub_2": "老爺，樹也要搬？",
-      "target_sub_1": "綁穩啲綁穩啲呀",
-      "target_sub_2": "老爺樹都搬"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "老爺，樹也要搬？",
-      "ref_sub_2": "當然",
-      "target_sub_1": "老爺樹都搬",
-      "target_sub_2": "梗係啦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "當然",
-      "ref_sub_2": "否則我到京城哪有荔枝吃？",
-      "target_sub_1": "梗係啦",
-      "target_sub_2": "唔係我上到京城邊有荔枝食嘅家陣"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "否則我到京城哪有荔枝吃？",
-      "ref_sub_2": "推到那邊⋯推到那邊",
-      "target_sub_1": "唔係我上到京城邊有荔枝食嘅家陣",
-      "target_sub_2": "去推佢過去推佢"
-    },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1875,145 +430,8 @@
       "target_sub_1": "去推佢過去推佢",
       "target_sub_2": "好聲呀好聲呀睇住我啲荔枝呀"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "小心點⋯小心我的荔枝",
-      "ref_sub_2": "小心我的荔枝，笨蛋",
-      "target_sub_1": "好聲呀好聲呀睇住我啲荔枝呀",
-      "target_sub_2": "睇住我啲荔枝呀瘦頭瘦頭瘦頭"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "小心我的荔枝，笨蛋",
-      "ref_sub_2": "趙無極這趟協助微臣",
-      "target_sub_1": "睇住我啲荔枝呀瘦頭瘦頭瘦頭",
-      "target_sub_2": "趙無極今次協助尾臣"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "趙無極這趟協助微臣",
-      "ref_sub_2": "到廣西剿平長毛餘孽立功不少",
-      "target_sub_1": "趙無極今次協助尾臣",
-      "target_sub_2": "喺廣西剿平長毛餘葉立功不少"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "到廣西剿平長毛餘孽立功不少",
-      "ref_sub_2": "微臣特意帶他來見皇上",
-      "target_sub_1": "喺廣西剿平長毛餘葉立功不少",
-      "target_sub_2": "尾臣特意帶佢嚟見皇上"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "微臣特意帶他來見皇上",
-      "ref_sub_2": "好！朕現在賜你為都察院副左都御史",
-      "target_sub_1": "尾臣特意帶佢嚟見皇上",
-      "target_sub_2": "好朕而家賜你為刀賊院副佐都如是"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "好！朕現在賜你為都察院副左都御史",
-      "ref_sub_2": "希望你日後好好為大清效力",
-      "target_sub_1": "好朕而家賜你為刀賊院副佐都如是",
-      "target_sub_2": "希望你日後好好為大清盡力"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "希望你日後好好為大清效力",
-      "ref_sub_2": "謝主龍恩",
-      "target_sub_1": "希望你日後好好為大清盡力",
-      "target_sub_2": "謝主隆恩"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "謝主龍恩",
-      "ref_sub_2": "皇上，趙先生一身奇技異術",
-      "target_sub_1": "謝主隆恩",
-      "target_sub_2": "皇上趙先生一身奇技異術"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "皇上，趙先生一身奇技異術",
-      "ref_sub_2": "不如請他示範一下，讓皇上開開眼界",
-      "target_sub_1": "皇上趙先生一身奇技異術",
-      "target_sub_2": "不如請佢展示下畀皇上開下眼界"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "不如請他示範一下，讓皇上開開眼界",
-      "ref_sub_2": "異術？",
-      "target_sub_1": "不如請佢展示下畀皇上開下眼界",
-      "target_sub_2": "異術"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "異術？",
-      "ref_sub_2": "趙先生，你就示範給朕看",
-      "target_sub_1": "異術",
-      "target_sub_2": "趙先生你就展示畀朕睇下"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "趙先生，你就示範給朕看",
-      "ref_sub_2": "是",
-      "target_sub_1": "趙先生你就展示畀朕睇下",
-      "target_sub_2": "係"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "大驚小怪！退下",
-      "ref_sub_2": "是",
-      "target_sub_1": "眼睛小敗去呀",
-      "target_sub_2": "去"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "微臣大膽，讓皇上受驚",
-      "ref_sub_2": "如果這個女人是真的就好了",
-      "target_sub_1": "未神大膽令皇上受驚",
-      "target_sub_2": "如果呢個女仔係真嘅就可惡"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "如果這個女人是真的就好了",
-      "ref_sub_2": "站好！快點",
-      "target_sub_1": "如果呢個女仔係真嘅就可惡"
-    },
-    "answer": {
-      "target_sub_1_shifted": "如果呢個女仔係真嘅就",
-      "target_sub_2_shifted": "可惡"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2021,113 +439,8 @@
       "ref_sub_2": "甚麼事⋯甚麼事？",
       "target_sub_1": "可惡"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "甚麼事⋯甚麼事？",
-      "ref_sub_2": "來⋯進去",
-      "target_sub_2": "入去入去呀"
-    },
-    "answer": {
-      "target_sub_1_shifted": "入去",
-      "target_sub_2_shifted": "入去呀"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "甚麼事？",
-      "ref_sub_2": "躲進去",
-      "target_sub_1": "進去吧",
-      "target_sub_2": "進去吧"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "躲進去",
-      "ref_sub_2": "準備好了，少爺",
-      "target_sub_1": "進去吧",
-      "target_sub_2": "準備好喇少爺"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "準備好了，少爺",
-      "ref_sub_2": "來",
-      "target_sub_1": "準備好喇少爺",
-      "target_sub_2": "嚟"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "來",
-      "ref_sub_2": "全部站好別再動",
-      "target_sub_1": "嚟",
-      "target_sub_2": "全部企定唔好郁喇"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "那麼香？你是飄紅",
-      "ref_sub_2": "少爺你很棒，我喜歡",
-      "target_sub_1": "咁香你係飄紅",
-      "target_sub_2": "你好靚啊我鍾意啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "少爺你很棒，我喜歡",
-      "ref_sub_2": "靠攏一點",
-      "target_sub_1": "你好靚啊我鍾意啊",
-      "target_sub_2": "快啲"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "靠攏一點",
-      "ref_sub_2": "那麼大？一定是小小",
-      "target_sub_1": "快啲",
-      "target_sub_2": "咁大一定係少少"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "那麼大？一定是小小",
-      "ref_sub_2": "少爺你很壞，這樣說人家",
-      "target_sub_1": "咁大一定係少少",
-      "target_sub_2": "啊你好衰噶咁咪話你咗"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "少爺你很壞，這樣說人家",
-      "ref_sub_2": "你是大嘛",
-      "target_sub_1": "啊你好衰噶咁咪話你咗",
-      "target_sub_2": "噉你係吖嘛下陣嗯"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你是大嘛",
-      "ref_sub_2": "懷孕的也有？騙不倒我",
-      "target_sub_1": "噉你係吖嘛下陣嗯",
-      "target_sub_2": "大肚婆都有呃我唔到嘅"
-    },
-    "answer": {
-      "target_sub_1_shifted": "噉你係吖嘛",
-      "target_sub_2_shifted": "下陣嗯大肚婆都有呃我唔到嘅"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2136,20 +449,8 @@
       "target_sub_1": "下陣嗯大肚婆都有呃我唔到嘅",
       "target_sub_2": "你係阿爹咦"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你是爹",
-      "ref_sub_2": "你很壞！這樣也給你猜中",
-      "target_sub_1": "你係阿爹咦",
-      "target_sub_2": "好衰嘅咁都畀你估到"
-    },
-    "answer": {
-      "target_sub_1_shifted": "你係阿爹",
-      "target_sub_2_shifted": "咦好衰嘅咁都畀你估到"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2158,65 +459,8 @@
       "target_sub_1": "咦好衰嘅咁都畀你估到",
       "target_sub_2": "叻仔叻仔"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "聰明，聰明",
-      "ref_sub_2": "阿爹還想作弄你一下，好棒好棒",
-      "target_sub_1": "叻仔叻仔",
-      "target_sub_2": "阿爹仲諗整菇嚟添好嘢好嘢好嘢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "阿爹還想作弄你一下，好棒好棒",
-      "ref_sub_2": "好了好了，少爺明早要考試",
-      "target_sub_1": "阿爹仲諗整菇嚟添好嘢好嘢好嘢",
-      "target_sub_2": "好嘞好嘞少爺聽知考試"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "好了好了，少爺明早要考試",
-      "ref_sub_2": "別玩得太瘋",
-      "target_sub_1": "好嘞好嘞少爺聽知考試",
-      "target_sub_2": "唔好玩咁顛"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "別玩得太瘋",
-      "ref_sub_2": "出去，出去",
-      "target_sub_1": "唔好玩咁顛",
-      "target_sub_2": "出返去出返去"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "出去，出去",
-      "ref_sub_2": "阿燦，你明天考試",
-      "target_sub_1": "出返去出返去",
-      "target_sub_2": "阿燦啊你聽日考試囉"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "阿燦，你明天考試",
-      "ref_sub_2": "準備好了沒有？",
-      "target_sub_1": "阿燦啊你聽日考試囉",
-      "target_sub_2": "啲嘢預備好晒未"
-    },
-    "answer": {
-      "target_sub_1_shifted": "阿燦啊你聽日考試",
-      "target_sub_2_shifted": "囉啲嘢預備好晒未"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2225,190 +469,8 @@
       "target_sub_1": "囉啲嘢預備好晒未",
       "target_sub_2": "預備咩未贏講嘅話乜你唔知咩"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "準備甚麼？我贏定了，你不知道嗎",
-      "ref_sub_2": "知道",
-      "target_sub_1": "預備咩未贏講嘅話乜你唔知咩",
-      "target_sub_2": "知呀你噉態度呢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "知道",
-      "ref_sub_2": "你這樣的態度，我就有信心",
-      "target_sub_1": "知呀你噉態度呢",
-      "target_sub_2": "我就有晒信心啦"
-    },
-    "answer": {
-      "target_sub_1_shifted": "知呀",
-      "target_sub_2_shifted": "你噉態度呢我就有晒信心啦"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "你這樣的態度，我就有信心",
-      "ref_sub_2": "阿燦，這位是鄭世伯",
-      "target_sub_1": "你噉態度呢我就有晒信心啦",
-      "target_sub_2": "阿燦啊呢位呢就鄭世伯"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "阿燦，這位是鄭世伯",
-      "ref_sub_2": "明天鄭世伯做主考",
-      "target_sub_1": "阿燦啊呢位呢就鄭世伯",
-      "target_sub_2": "聽日鄭世伯就主考"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "明天鄭世伯做主考",
-      "ref_sub_2": "你來打個招呼",
-      "target_sub_1": "聽日鄭世伯就主考",
-      "target_sub_2": "你嚟打個招呼"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你來打個招呼",
-      "ref_sub_2": "鄭世伯，招呼不週",
-      "target_sub_1": "你嚟打個招呼",
-      "target_sub_2": "鄭世伯招呼唔到嗸嗸嗸嗸"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "鄭世伯，招呼不週",
-      "ref_sub_2": "你看",
-      "target_sub_1": "鄭世伯招呼唔到嗸嗸嗸嗸",
-      "target_sub_2": "嗸嗸嗸吖"
-    },
-    "answer": {
-      "target_sub_1_shifted": "鄭世伯招呼唔到",
-      "target_sub_2_shifted": "嗸嗸嗸嗸嗸嗸嗸吖"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "你看",
-      "ref_sub_2": "我的兒子是否狀元臉？",
-      "target_sub_1": "嗸嗸嗸嗸嗸嗸嗸吖",
-      "target_sub_2": "我仔係咪成個狀元噉格局啊吓"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我的兒子是否狀元臉？",
-      "ref_sub_2": "要看他的造化了",
-      "target_sub_1": "我仔係咪成個狀元噉格局啊吓",
-      "target_sub_2": "睇佢做法啦喂"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "要看他的造化了",
-      "ref_sub_2": "老鄭，你給我的考卷",
-      "target_sub_1": "睇佢做法啦喂",
-      "target_sub_2": "老鄭你畀我啲試卷呢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "老鄭，你給我的考卷",
-      "ref_sub_2": "我已經找人在做",
-      "target_sub_1": "老鄭你畀我啲試卷呢",
-      "target_sub_2": "我就已經搵人做緊㗎喇"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我已經找人在做",
-      "ref_sub_2": "不會改了吧？",
-      "target_sub_1": "我就已經搵人做緊㗎喇",
-      "target_sub_2": "唔會改啦嘛"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "不會改了吧？",
-      "ref_sub_2": "考卷方面是沒問題了",
-      "target_sub_1": "唔會改啦嘛",
-      "target_sub_2": "試卷我可以同佢換㗎啫"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "考卷方面是沒問題了",
-      "ref_sub_2": "至於臨場考弓箭、騎馬",
-      "target_sub_1": "試卷我可以同佢換㗎啫",
-      "target_sub_2": "至於到時考弓箭騎馬"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "至於臨場考弓箭、騎馬",
-      "ref_sub_2": "舉石、搏擊、兵器",
-      "target_sub_1": "至於到時考弓箭騎馬",
-      "target_sub_2": "舉石搏擊同兵器呢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "舉石、搏擊、兵器",
-      "ref_sub_2": "就全靠他自己",
-      "target_sub_1": "舉石搏擊同兵器呢",
-      "target_sub_2": "就只依殺佢自己啦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "就全靠他自己",
-      "ref_sub_2": "這一點你放心",
-      "target_sub_1": "就只依殺佢自己啦",
-      "target_sub_2": "呢層你放心"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "這一點你放心",
-      "ref_sub_2": "我的兒子十八般武藝樣樣精通",
-      "target_sub_1": "呢層你放心",
-      "target_sub_2": "我仔十八般武藝見見皆精喂"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我的兒子十八般武藝樣樣精通",
-      "ref_sub_2": "那二百萬兩可否酌量減一點？",
-      "target_sub_1": "我仔十八般武藝見見皆精喂",
-      "target_sub_2": "佢二百萬兩係咪可以著量減啲啊哎"
-    },
-    "answer": {
-      "target_sub_1_shifted": "我仔十八般武藝見見皆精",
-      "target_sub_2_shifted": "喂佢二百萬兩係咪可以著量減啲啊哎"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2417,194 +479,8 @@
       "target_sub_1": "喂佢二百萬兩係咪可以著量減啲啊哎",
       "target_sub_2": "人情還人情均真啲好"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "決定佈個雁行陣，馬隊前駐中鋒營",
-      "ref_sub_2": "弓隊側翼，槍隊殿後",
-      "target_sub_1": "一於步個硬行陣馬隊纏住中風營",
-      "target_sub_2": "攻隊側翼槍隊墊後"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "留力而已",
-      "ref_sub_2": "無恥？無恥你娘",
-      "target_sub_1": "劉力啫",
-      "target_sub_2": "冇錢呀指你好冇"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "武狀元決賽現在開始",
-      "ref_sub_2": "今天武狀元之爭",
-      "target_sub_1": "武藏元決賽現在開始",
-      "target_sub_2": "今日嘅武藏元之爭"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "今天武狀元之爭",
-      "ref_sub_2": "是由蒙古的博達爾多⋯",
-      "target_sub_1": "今日嘅武藏元之爭",
-      "target_sub_2": "係由蒙古嘅博達爾多"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "是由蒙古的博達爾多⋯",
-      "ref_sub_2": "好⋯好",
-      "target_sub_1": "係由蒙古嘅博達爾多"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "好⋯好",
-      "ref_sub_2": "⋯對廣東的蘇察哈爾燦",
-      "target_sub_2": "對廣東嘅蘇刷哈爾燦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "⋯對廣東的蘇察哈爾燦",
-      "ref_sub_2": "最後三分鐘",
-      "target_sub_1": "對廣東嘅蘇刷哈爾燦",
-      "target_sub_2": "最後三分鐘"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "最後三分鐘",
-      "ref_sub_2": "蘇察哈爾燦一賠十，博達爾多一賠一",
-      "target_sub_1": "最後三分鐘",
-      "target_sub_2": "蘇刷哈爾燦一賠十博達爾多一賠一"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "蘇察哈爾燦一賠十，博達爾多一賠一",
-      "ref_sub_2": "有沒有攪錯，賠率怎麼差那麼多？",
-      "target_sub_1": "蘇刷哈爾燦一賠十博達爾多一賠一",
-      "target_sub_2": "喂有冇搞錯啊啲賠率爭咁遠嘅"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "有沒有攪錯，賠率怎麼差那麼多？",
-      "ref_sub_2": "一個是一賠十，一個是一賠一",
-      "target_sub_1": "喂有冇搞錯啊啲賠率爭咁遠嘅",
-      "target_sub_2": "一個一賠十一個一賠一"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "一個是一賠十，一個是一賠一",
-      "ref_sub_2": "對蘇燦那麼沒信心！",
-      "target_sub_1": "一個一賠十一個一賠一",
-      "target_sub_2": "嘩咁睇唔好蘇刷啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "對蘇燦那麼沒信心！",
-      "ref_sub_2": "沒辦法，蘇燦在舉重項目棄權",
-      "target_sub_1": "嘩咁睇唔好蘇刷啊",
-      "target_sub_2": "咁係啊嘛蘇刷呢舉重項目呢就棄權嘅"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "沒辦法，蘇燦在舉重項目棄權",
-      "ref_sub_2": "你看，博達爾多",
-      "target_sub_1": "咁係啊嘛蘇刷呢舉重項目呢就棄權嘅",
-      "target_sub_2": "你睇下人哋博達爾多啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你看，博達爾多",
-      "ref_sub_2": "全部是滿分進級，怎麼比呢？",
-      "target_sub_1": "你睇下人哋博達爾多啊",
-      "target_sub_2": "全部滿分就晉級嘅點同"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "全部是滿分進級，怎麼比呢？",
-      "ref_sub_2": "現在是考狀元，又不是當苦力",
-      "target_sub_1": "全部滿分就晉級嘅點同",
-      "target_sub_2": "家陣考狀元嘅你估做孤零啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "現在是考狀元，又不是當苦力",
-      "ref_sub_2": "舉重了得又有何用！",
-      "target_sub_1": "家陣考狀元嘅你估做孤零啊",
-      "target_sub_2": "舉重咁靚托賊咩"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "舉重了得又有何用！",
-      "ref_sub_2": "話不是這樣說　　甚麼？",
-      "target_sub_1": "舉重咁靚托賊咩",
-      "target_sub_2": "咁又唔係咁過"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "話不是這樣說　　甚麼？",
-      "ref_sub_2": "這位同僚有見識",
-      "target_sub_1": "咁又唔係咁過",
-      "target_sub_2": "啲同年有見地"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "這位同僚有見識",
-      "ref_sub_2": "我鑽研了這場比賽很久",
-      "target_sub_1": "啲同年有見地",
-      "target_sub_2": "我住完咗呢場賽事好耐"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我鑽研了這場比賽很久",
-      "ref_sub_2": "也覺得個賠率有點古怪",
-      "target_sub_1": "我住完咗呢場賽事好耐",
-      "target_sub_2": "覺得佢賠率有啲古怪係咩"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "也覺得個賠率有點古怪",
-      "ref_sub_2": "這個博達爾多外型俊朗，渾身有力",
-      "target_sub_1": "覺得佢賠率有啲古怪係咩",
-      "target_sub_2": "佢博達爾多外形晉朗運身上力"
-    },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2613,176 +489,8 @@
       "target_sub_1": "佢博達爾多外形晉朗運身上力",
       "target_sub_2": "但係未出賽行圈嘅頸有白汗"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "但是未出賽行圈頸部就已經有白汗",
-      "ref_sub_2": "我猜可能是虛火",
-      "target_sub_1": "但係未出賽行圈嘅頸有白汗",
-      "target_sub_2": "我諗落可能虛火嚟嘅"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我猜可能是虛火",
-      "ref_sub_2": "是嗎？",
-      "target_sub_1": "我諗落可能虛火嚟嘅",
-      "target_sub_2": "係睇"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "是嗎？",
-      "ref_sub_2": "但是這個蘇察哈爾燦",
-      "target_sub_1": "係睇",
-      "target_sub_2": "但係呢個蘇刷蝦耳撐係唔同"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "但是這個蘇察哈爾燦",
-      "ref_sub_2": "怎樣？怎樣？",
-      "target_sub_1": "但係呢個蘇刷蝦耳撐係唔同",
-      "target_sub_2": "點呀點呀"
-    },
-    "answer": {
-      "target_sub_1_shifted": "但係呢個蘇刷蝦耳撐",
-      "target_sub_2_shifted": "係唔同點呀點呀"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "怎樣？怎樣？",
-      "ref_sub_2": "雖然沿途低著頭",
-      "target_sub_1": "係唔同點呀點呀",
-      "target_sub_2": "雖然圓圖頭嘚嘚"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "雖然沿途低著頭",
-      "ref_sub_2": "但是能進入決賽是很困難的",
-      "target_sub_1": "雖然圓圖頭嘚嘚",
-      "target_sub_2": "但係老實對我決賽都係好嘅蝦嘅"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "但是能進入決賽是很困難的",
-      "ref_sub_2": "甚麼？",
-      "target_sub_1": "但係老實對我決賽都係好嘅蝦嘅",
-      "target_sub_2": "蝦乜蝦啊係"
-    },
-    "answer": {
-      "target_sub_1_shifted": "但係老實對我決賽都係好嘅",
-      "target_sub_2_shifted": "蝦嘅蝦乜蝦啊係"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "甚麼？",
-      "ref_sub_2": "是洋文！即是有鬥心",
-      "target_sub_1": "蝦嘅蝦乜蝦啊係",
-      "target_sub_2": "洋文嚟嘅蝦即係有鬥心噉解"
-    },
-    "answer": {
-      "target_sub_1_shifted": "蝦嘅蝦乜蝦啊",
-      "target_sub_2_shifted": "係洋文嚟嘅蝦即係有鬥心噉解"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "是洋文！即是有鬥心",
-      "ref_sub_2": "所以我準備全押",
-      "target_sub_1": "係洋文嚟嘅蝦即係有鬥心噉解",
-      "target_sub_2": "所以我諗住瞓身"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "所以我準備全押",
-      "ref_sub_2": "是嗎？那你打算押多少？",
-      "target_sub_1": "所以我諗住瞓身",
-      "target_sub_2": "係啊喂咁你打算買幾多啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "是嗎？那你打算押多少？",
-      "ref_sub_2": "八十萬兩！",
-      "target_sub_1": "係啊喂咁你打算買幾多啊",
-      "target_sub_2": "八十萬兩"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "八十萬兩！",
-      "ref_sub_2": "八十萬兩那麼少？買夠二百萬兩嘛",
-      "target_sub_1": "八十萬兩",
-      "target_sub_2": "八十萬兩咁少賣夠二百萬兩噉"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "八十萬兩那麼少？買夠二百萬兩嘛",
-      "ref_sub_2": "怎麼？為甚麼你突然間看好他",
-      "target_sub_1": "八十萬兩咁少賣夠二百萬兩噉",
-      "target_sub_2": "點解啊點解你突然間睇得咁好"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "怎麼？為甚麼你突然間看好他",
-      "ref_sub_2": "我看你分析得那麼清楚",
-      "target_sub_1": "點解啊點解你突然間睇得咁好",
-      "target_sub_2": "我見你分析得咁清楚"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我看你分析得那麼清楚",
-      "ref_sub_2": "給你說說",
-      "target_sub_1": "我見你分析得咁清楚",
-      "target_sub_2": "畀你嘎巴嘎巴"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "給你說說",
-      "ref_sub_2": "我都覺得蘇燦像贏定的",
-      "target_sub_1": "畀你嘎巴嘎巴",
-      "target_sub_2": "我覺得蘇刷好似贏緊噉嘅嗨"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我都覺得蘇燦像贏定的",
-      "ref_sub_2": "過來過來",
-      "target_sub_1": "我覺得蘇刷好似贏緊噉嘅嗨",
-      "target_sub_2": "過嚟過嚟"
-    },
-    "answer": {
-      "target_sub_1_shifted": "我覺得蘇刷好似贏緊噉嘅",
-      "target_sub_2_shifted": "嗨過嚟過嚟"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2791,119 +499,8 @@
       "target_sub_1": "嗨過嚟過嚟",
       "target_sub_2": "我瞓兩次身"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我第二次全押",
-      "ref_sub_2": "是嗎？",
-      "target_sub_1": "我瞓兩次身",
-      "target_sub_2": "係"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "是嗎？",
-      "ref_sub_2": "二百萬兩",
-      "target_sub_1": "係",
-      "target_sub_2": "二百萬兩係"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "二百萬兩",
-      "ref_sub_2": "豪氣！豪氣",
-      "target_sub_1": "二百萬兩係",
-      "target_sub_2": "豪氣豪氣"
-    },
-    "answer": {
-      "target_sub_1_shifted": "二百萬兩",
-      "target_sub_2_shifted": "係豪氣豪氣"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "豪氣！豪氣",
-      "ref_sub_2": "為甚麼你不下注？",
-      "target_sub_1": "係豪氣豪氣",
-      "target_sub_2": "點解你唔落住"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "為甚麼你不下注？",
-      "ref_sub_2": "我下注幹甚麼？他是我的兒子",
-      "target_sub_1": "點解你唔落住",
-      "target_sub_2": "咦我落住嚟做乜嘢啫嗰個我仔嚟噉啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我下注幹甚麼？他是我的兒子",
-      "ref_sub_2": "糟了！我少分析了這個",
-      "target_sub_1": "咦我落住嚟做乜嘢啫嗰個我仔嚟噉啊",
-      "target_sub_2": "衰喇閉睇流一樣添"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "糟了！我少分析了這個",
-      "ref_sub_2": "少分析了甚麼？",
-      "target_sub_1": "衰喇閉睇流一樣添",
-      "target_sub_2": "睇流做咩啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "少分析了甚麼？",
-      "ref_sub_2": "血統",
-      "target_sub_1": "睇流做咩啊",
-      "target_sub_2": "血統啊我都知道係"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "血統",
-      "ref_sub_2": "主考到",
-      "target_sub_1": "血統啊我都知道係",
-      "target_sub_2": "主考"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "主考到",
-      "ref_sub_2": "不是老鄭主考嗎？",
-      "target_sub_1": "主考",
-      "target_sub_2": "咪唔係老井主考咩"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "請坐",
-      "ref_sub_2": "僧格林沁？",
-      "target_sub_1": "請坐",
-      "target_sub_2": "增價淋衫啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "僧格林沁？",
-      "ref_sub_2": "有甚麼問題？",
-      "target_sub_1": "增價淋衫啊",
-      "target_sub_2": "有乜問題要嘗"
-    },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2933,331 +530,10 @@
   },
   {
     "query": {
-      "ref_sub_1": "靶都射穿了！至少都多加兩分",
-      "ref_sub_2": "照道理是！照道理是",
-      "target_sub_1": "嘩把都射住埋最少都揀到兩分呀",
-      "target_sub_2": "照介係嘅照介係嘅"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "照道理是！照道理是",
-      "ref_sub_2": "蘇燦靶上沒有箭！博達爾多勝",
-      "target_sub_1": "照介係嘅照介係嘅",
-      "target_sub_2": "鬚襯把上冇箭畢多勝"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "考生上馬！準備下一回合",
-      "ref_sub_2": "趙先生",
-      "target_sub_1": "考生上馬準備下一回合哼教師先生",
-      "target_sub_2": "教師先生"
-    },
-    "answer": {
-      "target_sub_1_shifted": "考生上馬準備下一回合哼",
-      "target_sub_2_shifted": "教師先生教師先生"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "你拿著這套袖箭！必要時有用",
-      "ref_sub_2": "第二回合開始",
-      "target_sub_1": "你攞住呢套奏折必要時有用",
-      "target_sub_2": "第二回合開始"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "兵器都動了手腳？",
-      "ref_sub_2": "太黑暗了！退票不賭行不行？",
-      "target_sub_1": "冰氣都做埋手腳",
-      "target_sub_2": "太黑暗啦退飛唔到都唔得呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "追回一局了",
-      "ref_sub_2": "你的票撕了沒有",
-      "target_sub_1": "吓?吹返谷吹返谷啊喂",
-      "target_sub_2": "張飛明咩噶"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你的票撕了沒有",
-      "ref_sub_2": "沒有",
-      "target_sub_1": "張飛明咩噶",
-      "target_sub_2": "黑咩咩咩咩"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "重新開始，讓你一手一腳",
-      "ref_sub_2": "免你說我欺負你",
-      "target_sub_1": "又頭再打個羊你單手單腳",
-      "target_sub_2": "廢時話我欺下你呀哈哈哈哈"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你用這骯髒的手段來取得勝利？",
-      "ref_sub_2": "小子你睡醒了嗎",
-      "target_sub_1": "噉嘅嗱咋招你都想贏",
-      "target_sub_2": "瞓醒未呀靚仔你"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "小子你睡醒了嗎",
-      "ref_sub_2": "好棒呀！贏了",
-      "target_sub_1": "瞓醒未呀靚仔你",
-      "target_sub_2": "耶"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "好棒呀！贏了",
-      "ref_sub_2": "喝茶！喝茶",
-      "target_sub_1": "耶"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "喝茶！喝茶",
-      "ref_sub_2": "祝你好運",
-      "target_sub_2": "嗰度嘅best"
-    },
-    "answer": {
-      "target_sub_1_shifted": "嗰度嘅",
-      "target_sub_2_shifted": "best"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub_1": "祝你好運",
-      "ref_sub_2": "這當然要用臀啦！還有別處可用嗎？",
-      "target_sub_1": "best",
-      "target_sub_2": "嗰度就梗用個pack嘅啦仲有第二次咩係咪"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "這當然要用臀啦！還有別處可用嗎？",
-      "ref_sub_2": "是洋文",
-      "target_sub_1": "嗰度就梗用個pack嘅啦仲有第二次咩係咪",
-      "target_sub_2": "係洋文嚟㗎"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "是洋文",
-      "ref_sub_2": "洋文",
-      "target_sub_1": "係洋文嚟㗎",
-      "target_sub_2": "洋文吖嘛"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "洋文",
-      "ref_sub_2": "例上沒有說明不準用暗器",
-      "target_sub_1": "洋文吖嘛",
-      "target_sub_2": "黎尚武嗰名唔准用鴨氣"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
       "ref_sub_1": "例上沒有說明不準用暗器",
       "ref_sub_2": "你先掉下來，這個回合判博達爾多勝",
       "target_sub_1": "黎尚武嗰名唔准用鴨氣",
       "target_sub_2": "你先跌落地呢個回合判莫達以多勝吓"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "你個短命的老鄭，竟敢騙我",
-      "ref_sub_2": "以後不要給我看見你",
-      "target_sub_1": "你家唔家賊老隻啊逼我窮殘放我治療啊",
-      "target_sub_2": "你以後唔會畀我見到你"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "以後不要給我看見你",
-      "ref_sub_2": "見一次打一次",
-      "target_sub_1": "你以後唔會畀我見到你",
-      "target_sub_2": "見一鑊打鑊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "見一次打一次",
-      "ref_sub_2": "不用了！你以後都不會見到他",
-      "target_sub_1": "見一鑊打鑊",
-      "target_sub_2": "唔使啦你以後都見唔到佢啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "不用了！你以後都不會見到他",
-      "ref_sub_2": "為甚麼？",
-      "target_sub_1": "唔使啦你以後都見唔到佢啊",
-      "target_sub_2": "點解啊"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "為甚麼？",
-      "ref_sub_2": "我現在就去劈他",
-      "target_sub_1": "點解啊",
-      "target_sub_2": "我而家就去劈佢"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我現在就去劈他",
-      "ref_sub_2": "我那裡有二百萬輸？",
-      "target_sub_1": "我而家就去劈佢",
-      "target_sub_2": "我邊有二百萬輸啊嗱"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "我那裡有二百萬輸？",
-      "ref_sub_2": "只是說說而已",
-      "target_sub_1": "我邊有二百萬輸啊嗱",
-      "target_sub_2": "講下啫"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "只是說說而已",
-      "ref_sub_2": "卑鄙無恥",
-      "target_sub_1": "講下啫",
-      "target_sub_2": "卑鄙無恥"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "卑鄙無恥",
-      "ref_sub_2": "博達爾多三局兩勝，是今科武狀元",
-      "target_sub_1": "卑鄙無恥",
-      "target_sub_2": "博大已多三局兩勝係金科冇狀元"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "博達爾多三局兩勝，是今科武狀元",
-      "ref_sub_2": "明明是我贏！我抗議",
-      "target_sub_1": "博大已多三局兩勝係金科冇狀元",
-      "target_sub_2": "係我係我抗議"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "甚麼事？",
-      "ref_sub_2": "鏢有毒",
-      "target_sub_1": "做乜呀",
-      "target_sub_2": "指標有毒呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "鏢有毒",
-      "ref_sub_2": "報應來了！死得好",
-      "target_sub_1": "指標有毒呀",
-      "target_sub_2": "報應呀抵死呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "報應來了！死得好",
-      "ref_sub_2": "這枝有毒的鏢是他自己的",
-      "target_sub_1": "報應呀抵死呀",
-      "target_sub_2": "指標有毒都係佢自己嘅啫"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "這枝有毒的鏢是他自己的",
-      "ref_sub_2": "他死了，我兒子就當狀元？",
-      "target_sub_1": "指標有毒都係佢自己嘅啫",
-      "target_sub_2": "家陣佢死咗我仔咪做緊狀元"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "他死了，我兒子就當狀元？",
-      "ref_sub_2": "那我現在不是發財了嗎？",
-      "target_sub_1": "家陣佢死咗我仔咪做緊狀元",
-      "target_sub_2": "咁呢次我個法"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "那我現在不是發財了嗎？",
-      "ref_sub_2": "對⋯",
-      "target_sub_1": "咁呢次我個法",
-      "target_sub_2": "係呀係呀"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "對⋯",
-      "ref_sub_2": "你⋯你⋯",
-      "target_sub_1": "係呀係呀",
-      "target_sub_2": "你你"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "光宗耀祖了⋯",
-      "ref_sub_2": "有眼光",
-      "target_sub_1": "講中要早啦講中要早",
-      "target_sub_2": "有眼哥"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "有眼光",
-      "ref_sub_2": "大人，皇上說要親自欽點",
-      "target_sub_1": "有眼哥",
-      "target_sub_2": "精武大人皇上話要親自音點"
     },
     "answer": {}
   },
@@ -5277,7 +2553,8 @@
       "target_sub_1": "為愧世武功,天下無敵",
       "target_sub_2": "益人之下,萬人之上"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -5326,7 +2603,8 @@
       "target_sub_1": "咦我想我們要先定分歧",
       "target_sub_2": "因為做狀元對我來說易如反掌混蛋"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10632,7 +7910,8 @@
       "target_sub_1": "我知道,鎮定啲,",
       "target_sub_2": "行但"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10640,7 +7919,8 @@
       "ref_sub_2": "失陪　　趙大人",
       "target_sub_1": "行但"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10648,7 +7928,8 @@
       "ref_sub_2": "如霜姑娘到",
       "target_sub_2": "如霜姑娘到啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10657,15 +7938,8 @@
       "target_sub_1": "如霜姑娘到啦",
       "target_sub_2": "小女子如霜,拜見趙大人"
     },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "走開⋯",
-      "ref_sub_2": "誰敢欺負我的兒子，我就射誰",
-      "target_sub_2": "邊個獸頭欺我仔我蛋邊個"
-    },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10674,7 +7948,8 @@
       "target_sub_1": "佢又幾銀性㗎佢夠唔夠資格呀",
       "target_sub_2": "老爺係佢哋呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -10683,7 +7958,122 @@
       "target_sub_1": "什麼?說啊",
       "target_sub_2": "今天是現清太祖皇后葉克拿拉氏的忌辰"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "走開⋯",
+      "ref_sub_2": "誰敢欺負我的兒子，我就射誰",
+      "target_sub_1": "呀",
+      "target_sub_2": "邊個獸頭欺我仔我蛋邊個"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "甚麼事？",
+      "ref_sub_2": "那個神經病還在",
+      "target_sub_1": "啊咩事啊",
+      "target_sub_2": "個痴線佬仲喺度喎"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你不用等如霜姑娘了，她已經走了⋯",
+      "ref_sub_2": "走了？",
+      "target_sub_1": "係你唔好等余霜姑娘喇佢走咗喇",
+      "target_sub_2": "走咗"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "阿爹",
+      "ref_sub_2": "我決定上京考文武狀元",
+      "target_sub_1": "呢",
+      "target_sub_2": "我決定上京口文武狀元"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "早",
+      "ref_sub_2": "真的全部都搬走？",
+      "target_sub_1": "晨早晨",
+      "target_sub_2": "真係乜都搬走晒"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "沒眼看",
+      "ref_sub_2": "你們站著幹嘛？還不把它搬走",
+      "target_sub_1": "鎚鑿鑿敷嘅事",
+      "target_sub_2": "你哋企晒到做乜嘢咁你搬佢走"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "站好！快點",
+      "ref_sub_2": "甚麼事⋯甚麼事？",
+      "target_sub_1": "就可惡"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "躲進去",
+      "ref_sub_2": "準備好了，少爺",
+      "target_sub_1": "進去吧",
+      "target_sub_2": "準備好喇少爺"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "怎樣？怎樣？",
+      "ref_sub_2": "雖然沿途低著頭",
+      "target_sub_1": "係唔同點呀點呀",
+      "target_sub_2": "雖然圓圖頭嘚嘚"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "雖然沿途低著頭",
+      "ref_sub_2": "但是能進入決賽是很困難的",
+      "target_sub_1": "點呀點呀雖然圓圖頭嘚嘚",
+      "target_sub_2": "但係老實對我決賽都係好嘅蝦嘅"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "甚麼？",
+      "ref_sub_2": "是洋文！即是有鬥心",
+      "target_sub_1": "蝦嘅蝦乜蝦啊係",
+      "target_sub_2": "洋文嚟嘅蝦即係有鬥心噉解"
+    },
+    "answer": {
+      "target_sub_1_shifted": "蝦嘅蝦乜蝦啊",
+      "target_sub_2_shifted": "係洋文嚟嘅蝦即係有鬥心噉解"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11728,7 +9118,8 @@
       "target_sub_1": "修勇,什麼事?",
       "target_sub_2": "我被人挑了什麼?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11740,7 +9131,8 @@
       "target_sub_1_shifted": "我被人挑了",
       "target_sub_2_shifted": "什麼?"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11749,7 +9141,8 @@
       "target_sub_1": "什麼?",
       "target_sub_2": "誰這麼大膽挑你,讓我掌他的嘴"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11758,7 +9151,8 @@
       "target_sub_1": "誰這麼大膽挑你,讓我掌他的嘴",
       "target_sub_2": "不是用嘴,是用眼"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11770,7 +9164,8 @@
       "target_sub_1_shifted": "不是用嘴,",
       "target_sub_2_shifted": "是用眼"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11779,7 +9174,8 @@
       "target_sub_1": "是用眼",
       "target_sub_2": "有惑還帶有殺氣這隻眼神我沒見過"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11788,7 +9184,8 @@
       "target_sub_1": "有惑還帶有殺氣這隻眼神我沒見過",
       "target_sub_2": "究竟是何方神聖?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11797,7 +9194,8 @@
       "target_sub_1": "究竟是何方神聖?",
       "target_sub_2": "這位如霜姑娘你客串的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11806,7 +9204,8 @@
       "target_sub_1": "這位如霜姑娘你客串的",
       "target_sub_2": "不知道趙大人有沒有興趣和他拜訪呢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11815,7 +9214,8 @@
       "target_sub_1": "不知道趙大人有沒有興趣和他拜訪呢",
       "target_sub_2": "你應該先問問王爺吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11824,7 +9224,8 @@
       "target_sub_1": "你應該先問問王爺吧",
       "target_sub_2": "怎麼樣?王爺"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11833,7 +9234,8 @@
       "target_sub_1": "怎麼樣?王爺",
       "target_sub_2": "大格自己人,又何必客氣呢?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11842,7 +9244,8 @@
       "target_sub_1": "大格自己人,又何必客氣呢?",
       "target_sub_2": "趙先生請隨便"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11851,7 +9254,8 @@
       "target_sub_1": "趙先生請隨便",
       "target_sub_2": "那我就卻之不恭,"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11860,7 +9264,8 @@
       "target_sub_1": "那我就卻之不恭,",
       "target_sub_2": "拜訪"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11869,7 +9274,8 @@
       "target_sub_1": "拜訪",
       "target_sub_2": "如霜呀,快點下來見下趙大人啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11878,7 +9284,8 @@
       "target_sub_1": "如霜呀,快點下來見下趙大人啦",
       "target_sub_2": "是她,你姐姐,"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11887,7 +9294,8 @@
       "target_sub_1": "是她,你姐姐,",
       "target_sub_2": "曬爹嗰個就係她"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11896,7 +9304,8 @@
       "target_sub_1": "曬爹嗰個就係她",
       "target_sub_2": "我知道,鎮定啲,"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11905,7 +9314,8 @@
       "target_sub_1": "我知道,鎮定啲,",
       "target_sub_2": "行"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11914,7 +9324,8 @@
       "target_sub_1": "行",
       "target_sub_2": "但如霜姑娘到啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11925,7 +9336,8 @@
     "answer": {
       "target_sub_2_shifted": "但如霜姑娘到啦"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -11934,7 +9346,8 @@
       "target_sub_1": "但如霜姑娘到啦",
       "target_sub_2": "小女子如霜,拜見趙大人"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11943,7 +9356,8 @@
       "target_sub_1": "果然美人",
       "target_sub_2": "趙大人,那…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11952,7 +9366,8 @@
       "target_sub_1": "趙大人,那…",
       "target_sub_2": "銀票十萬兩"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11961,7 +9376,8 @@
       "target_sub_1": "銀票十萬兩",
       "target_sub_2": "如霜姑娘今晚要陪我們少爺擺房"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11981,7 +9397,8 @@
       "target_sub_1": "不有空,招呼你",
       "target_sub_2": "這麼多位真不好意思,"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11990,7 +9407,8 @@
       "target_sub_1": "這麼多位真不好意思,",
       "target_sub_2": "沒什麼意見吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -11999,7 +9417,8 @@
       "target_sub_1": "沒什麼意見吧",
       "target_sub_2": "讓我來…讓我講講你們公道的話"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12008,7 +9427,8 @@
       "target_sub_1": "讓我來…讓我講講你們公道的話",
       "target_sub_2": "只要你們誰出得多過十萬兩銀票"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12017,7 +9437,8 @@
       "target_sub_1": "只要你們誰出得多過十萬兩銀票",
       "target_sub_2": "那如霜姑娘就陪誰"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12026,7 +9447,8 @@
       "target_sub_1": "那如霜姑娘就陪誰",
       "target_sub_2": "千萬不要傷了和氣聽聽…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12035,7 +9457,8 @@
       "target_sub_1": "千萬不要傷了和氣聽聽…",
       "target_sub_2": "這位朋友也很肯花錢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12044,7 +9467,8 @@
       "target_sub_1": "這位朋友也很肯花錢",
       "target_sub_2": "銀票實在太普通了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12053,11 +9477,9 @@
       "target_sub_1": "銀票實在太普通了",
       "target_sub_2": "我有粒朝廷大內的定封珠,無價的"
     },
-    "answer": {
-      "target_sub_1_shifted": "銀票實在太普通",
-      "target_sub_2_shifted": "了我有粒朝廷大內的定封珠,無價的"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12066,7 +9488,8 @@
       "target_sub_1": "我都係鍾意珍珠多啲",
       "target_sub_2": "趙大人呀我返房等你喇喂"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12075,7 +9498,8 @@
       "target_sub_1": "趙大人呀我返房等你喇喂",
       "target_sub_2": "呢粒珠淨唔淨十萬兩呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12084,7 +9508,8 @@
       "target_sub_1": "呢粒珠淨唔淨十萬兩呀",
       "target_sub_2": "十萬兩銀通姑娘你都重嚴少"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12093,7 +9518,8 @@
       "target_sub_1": "十萬兩銀通姑娘你都重嚴少",
       "target_sub_2": "我一樣鍾意銀兩不過唔鍾意你啫嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12102,7 +9528,8 @@
       "target_sub_1": "夠坦白我真係喜歡佢非常",
       "target_sub_2": "騷擁呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12111,7 +9538,8 @@
       "target_sub_1": "騷擁呀",
       "target_sub_2": "冇相干"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12120,7 +9548,8 @@
       "target_sub_1": "冇相干",
       "target_sub_2": "一定係我今日頂帽唔多襯嘅髮型"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12129,7 +9558,8 @@
       "target_sub_1": "一定係我今日頂帽唔多襯嘅髮型",
       "target_sub_2": "如雙姑娘睇我唔上眼係我抵死咋"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12138,7 +9568,8 @@
       "target_sub_1": "如雙姑娘睇我唔上眼係我抵死咋",
       "target_sub_2": "你明白咁就好啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12147,7 +9578,8 @@
       "target_sub_1": "你明白咁就好啦",
       "target_sub_2": "你放心呀我哋做好多好靚好省嘅姑娘㗎"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12156,7 +9588,8 @@
       "target_sub_1": "你放心呀我哋做好多好靚好省嘅姑娘㗎",
       "target_sub_2": "龜婆咁今晚我就靠晒你喇"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12164,7 +9597,8 @@
       "ref_sub_2": "這與我無關",
       "target_sub_1": "龜婆咁今晚我就靠晒你喇"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12172,11 +9606,9 @@
       "ref_sub_2": "大膽！放肆",
       "target_sub_2": "放肆係"
     },
-    "answer": {
-      "target_sub_1_shifted": "放肆",
-      "target_sub_2_shifted": "係"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12185,7 +9617,8 @@
       "target_sub_1": "螳螂拳?幾似樣啊",
       "target_sub_2": "周鶴哦哦哦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12194,7 +9627,8 @@
       "target_sub_1": "先",
       "target_sub_2": "學準"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12203,7 +9637,8 @@
       "target_sub_1": "學準",
       "target_sub_2": "撲掣"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12212,7 +9647,8 @@
       "target_sub_1": "螳螂點救老虎砌呀何況我加埋隻殼",
       "target_sub_2": "虎殼相形我都識"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12221,7 +9657,8 @@
       "target_sub_1": "虎殼相形我都識",
       "target_sub_2": "噉你就試下我隻螳螂吖"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12229,7 +9666,8 @@
       "ref_sub_2": "我的螳螂拳再破你的虎鶴雙形",
       "target_sub_2": "我螳螂拳再破你虎殼雙形嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12238,7 +9676,8 @@
       "target_sub_1": "我螳螂拳再破你虎殼雙形嘛",
       "target_sub_2": "嘩原來唔係虎殼雙形"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12247,7 +9686,8 @@
       "target_sub_1": "嘩原來唔係虎殼雙形",
       "target_sub_2": "係恐獎開屏"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12256,7 +9696,8 @@
       "target_sub_1": "係恐獎開屏",
       "target_sub_2": "唔怪你咁嘢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12265,7 +9706,8 @@
       "target_sub_1": "身形幾快呀",
       "target_sub_2": "睇嚟你似樣啲嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12274,7 +9716,8 @@
       "target_sub_1": "睇嚟你似樣啲嘛",
       "target_sub_2": "後生仔物至天高地厚"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12282,20 +9725,18 @@
       "ref_sub_2": "走開⋯",
       "target_sub_1": "黃州將軍呀"
     },
-    "answer": {
-      "target_sub_1_shifted": "黃州將軍",
-      "target_sub_2_shifted": "呀"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "ref_sub_1": "走開⋯",
       "ref_sub_2": "誰敢欺負我的兒子，我就射誰",
-      "target_sub_1": "呀",
       "target_sub_2": "邊個獸頭欺我仔我蛋邊個"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12304,7 +9745,8 @@
       "target_sub_1": "邊個獸頭欺我仔我蛋邊個",
       "target_sub_2": "老爺"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12313,7 +9755,8 @@
       "target_sub_1": "老爺",
       "target_sub_2": "唔使驚呀誰欺你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12322,7 +9765,8 @@
       "target_sub_1": "唔使驚呀誰欺你",
       "target_sub_2": "係我欺緊人啫"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12331,7 +9775,8 @@
       "target_sub_1": "係我欺緊人啫",
       "target_sub_2": "死你欺"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12344,7 +9789,8 @@
       "target_sub_1_shifted": "死你欺佢",
       "target_sub_2_shifted": "又幾銀性㗎佢夠唔夠資格呀"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12353,7 +9799,8 @@
       "target_sub_1": "又幾銀性㗎佢夠唔夠資格呀",
       "target_sub_2": "老爺係佢哋呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12362,7 +9809,8 @@
       "target_sub_1": "老爺係佢哋呀",
       "target_sub_2": "邊個"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12371,7 +9819,8 @@
       "target_sub_1": "邊個",
       "target_sub_2": "睇下你咪知啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12380,7 +9829,8 @@
       "target_sub_1": "睇下你咪知啦",
       "target_sub_2": "鐵帽子王"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12389,7 +9839,8 @@
       "target_sub_1": "鐵帽子王",
       "target_sub_2": "送我禮"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12398,7 +9849,8 @@
       "target_sub_1": "送我禮",
       "target_sub_2": "阿燦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12407,7 +9859,8 @@
       "target_sub_1": "阿燦",
       "target_sub_2": "人家送咗咁厚禮唔好再欺佢啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12416,7 +9869,8 @@
       "target_sub_1": "人家送咗咁厚禮唔好再欺佢啦",
       "target_sub_2": "拿去打相畀啲佢啲貓來老爺"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12425,7 +9879,8 @@
       "target_sub_1": "拿去打相畀啲佢啲貓來老爺",
       "target_sub_2": "個頁牌上面寫住鐵帽子王爭格林森呀嗨"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12434,7 +9889,8 @@
       "target_sub_1": "王爺的令牌你都敢搶?",
       "target_sub_2": "搶他"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12443,7 +9899,8 @@
       "target_sub_1": "搶他",
       "target_sub_2": "等等…根據大清律例"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12452,7 +9909,8 @@
       "target_sub_1": "等等…根據大清律例",
       "target_sub_2": "身為朝廷命官,不得嫖妓"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12461,7 +9919,8 @@
       "target_sub_1": "身為朝廷命官,不得嫖妓",
       "target_sub_2": "你身在怡紅院"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12470,7 +9929,8 @@
       "target_sub_1": "你身在怡紅院",
       "target_sub_2": "知犯犯法該當何罪"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12479,7 +9939,8 @@
       "target_sub_1": "知犯犯法該當何罪",
       "target_sub_2": "那你呢?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12488,7 +9949,8 @@
       "target_sub_1": "那你呢?",
       "target_sub_2": "是不是說我?是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12497,7 +9959,8 @@
       "target_sub_1": "是不是說我?是",
       "target_sub_2": "是不是?我就是來…來抓你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12510,7 +9973,8 @@
       "target_sub_1_shifted": "是不是?我就是來…",
       "target_sub_2_shifted": "來抓你可以啊"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12523,7 +9987,8 @@
       "target_sub_1_shifted": "來抓你",
       "target_sub_2_shifted": "可以啊抓他啊"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12532,7 +9997,8 @@
       "target_sub_1": "可以啊抓他啊",
       "target_sub_2": "我身為廣州將軍"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12541,7 +10007,8 @@
       "target_sub_1": "我身為廣州將軍",
       "target_sub_2": "當然要來抓你這種害群之馬還有…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12553,7 +10020,8 @@
       "target_sub_1_shifted": "當然要來抓你這種害群之馬",
       "target_sub_2_shifted": "還有…"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12579,7 +10047,8 @@
       "target_sub_1_shifted": "當然要來抓你這種害群之馬",
       "target_sub_2_shifted": "還有…還有"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12601,7 +10070,8 @@
       "target_sub_1": "還有什麼?說啊",
       "target_sub_2": "今天是現清太祖皇后葉克拿拉氏的忌辰"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12610,7 +10080,8 @@
       "target_sub_1": "今天是現清太祖皇后葉克拿拉氏的忌辰",
       "target_sub_2": "身為軍官最佳等"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12619,7 +10090,8 @@
       "target_sub_1": "身為軍官最佳等",
       "target_sub_2": "可以問斬他"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12628,11 +10100,9 @@
       "target_sub_1": "可以問斬他",
       "target_sub_2": "你斬他…"
     },
-    "answer": {
-      "target_sub_1_shifted": "可以問斬",
-      "target_sub_2_shifted": "他你斬他…"
-    },
-    "difficulty": 1
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -12641,7 +10111,8 @@
       "target_sub_1": "根據大清律",
       "target_sub_2": "任何人不分辨,一樣要問斬"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12650,7 +10121,8 @@
       "target_sub_1": "任何人不分辨,一樣要問斬",
       "target_sub_2": "那你豈不是…"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12659,7 +10131,8 @@
       "target_sub_1": "那你豈不是…",
       "target_sub_2": "還想不想看?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12668,7 +10141,8 @@
       "target_sub_1": "還想不想看?",
       "target_sub_2": "多多都有,笨蛋"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12677,7 +10151,8 @@
       "target_sub_1": "多多都有,笨蛋",
       "target_sub_2": "別多說了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12686,7 +10161,8 @@
       "target_sub_1": "別多說了",
       "target_sub_2": "當然了,"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12695,7 +10171,8 @@
       "target_sub_1": "當然了,",
       "target_sub_2": "蘇張芬帶你去你這麼開心的地方吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12704,7 +10181,8 @@
       "target_sub_1": "蘇張芬帶你去你這麼開心的地方吧",
       "target_sub_2": "我今晚沒玩過"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12713,7 +10191,8 @@
       "target_sub_1": "我今晚沒玩過",
       "target_sub_2": "王爺,"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12722,7 +10201,8 @@
       "target_sub_1": "王爺,",
       "target_sub_2": "想不到在這裡被無賴打擾你的雅興"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12731,7 +10211,8 @@
       "target_sub_1": "想不到在這裡被無賴打擾你的雅興",
       "target_sub_2": "小人安排不就"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12740,7 +10221,8 @@
       "target_sub_1": "小人安排不就",
       "target_sub_2": "不關你的事,"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12749,7 +10231,8 @@
       "target_sub_1": "不關你的事,",
       "target_sub_2": "我們走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12758,7 +10241,8 @@
       "target_sub_1": "我們走",
       "target_sub_2": "王爺…王爺,這個玩不起,見不收了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12767,7 +10251,8 @@
       "target_sub_1": "王爺…王爺,這個玩不起,見不收了",
       "target_sub_2": "不收了?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12776,7 +10261,8 @@
       "target_sub_1": "不收了?",
       "target_sub_2": "大事化少,小事化無"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12784,6 +10270,3030 @@
       "ref_sub_2": "少爺，你的帽子",
       "target_sub_1": "大事化少,小事化無",
       "target_sub_2": "少爺,你的帽子"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "莫大叔，酒菜已經加了斷腸散",
+      "ref_sub_2": "好！趙無極暗算我們幫主",
+      "target_sub_1": "莫大叔呀啲酒菜已經落到斷腸散喇好",
+      "target_sub_2": "照冒極佢暗算我哋幫主"
+    },
+    "answer": {
+      "target_sub_1_shifted": "莫大叔呀啲酒菜已經落到斷腸散喇",
+      "target_sub_2_shifted": "好照冒極佢暗算我哋幫主"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "好！趙無極暗算我們幫主",
+      "ref_sub_2": "和太平天國的幾名將領",
+      "target_sub_1": "好照冒極佢暗算我哋幫主",
+      "target_sub_2": "同埋太平天國幾個將領"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "和太平天國的幾名將領",
+      "ref_sub_2": "還嫁禍給我們丐幫",
+      "target_sub_1": "同埋太平天國幾個將領",
+      "target_sub_2": "仲嫁禍畀我哋丐幫"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "還嫁禍給我們丐幫",
+      "ref_sub_2": "弄得江湖上的兄弟",
+      "target_sub_1": "仲嫁禍畀我哋丐幫",
+      "target_sub_2": "搞到江湖上面嘅兄弟"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "弄得江湖上的兄弟",
+      "ref_sub_2": "人人也瞧不起我們",
+      "target_sub_1": "搞到江湖上面嘅兄弟",
+      "target_sub_2": "個個都睇我哋唔起"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "人人也瞧不起我們",
+      "ref_sub_2": "說我們投靠了朝廷",
+      "target_sub_1": "個個都睇我哋唔起",
+      "target_sub_2": "話我哋投靠咗朝廷"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "說我們投靠了朝廷",
+      "ref_sub_2": "這個仇今天可以報了",
+      "target_sub_1": "話我哋投靠咗朝廷",
+      "target_sub_2": "呢個仇今日可以報啦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這個仇今天可以報了",
+      "ref_sub_2": "他們的先天罡氣很厲害",
+      "target_sub_1": "呢個仇今日可以報啦",
+      "target_sub_2": "佢嘅先天剛氣好厲害"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "他們的先天罡氣很厲害",
+      "ref_sub_2": "你們待會見他沒上當，千萬別出手",
+      "target_sub_1": "佢嘅先天剛氣好厲害",
+      "target_sub_2": "你哋一陣見佢未上當千萬唔好出手"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你們待會見他沒上當，千萬別出手",
+      "ref_sub_2": "因為湊合我們幾個也不是他的對手",
+      "target_sub_1": "你哋一陣見佢未上當千萬唔好出手",
+      "target_sub_2": "因為我哋幾個加埋都未必係佢對手"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "因為湊合我們幾個也不是他的對手",
+      "ref_sub_2": "我會盡量誘他到床邊",
+      "target_sub_1": "因為我哋幾個加埋都未必係佢對手",
+      "target_sub_2": "我會盡量引佢埋床㗎喇"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我會盡量誘他到床邊",
+      "ref_sub_2": "長老，有人來",
+      "target_sub_1": "我會盡量引佢埋床㗎喇",
+      "target_sub_2": "長老係呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "長老，有人來",
+      "ref_sub_2": "大家準備⋯",
+      "target_sub_1": "長老係呀",
+      "target_sub_2": "大家準備"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "如霜姑娘，我們又見面了",
+      "ref_sub_2": "怎麼是你？趙大爺呢？",
+      "target_sub_1": "余霜姑娘,我們又見面了",
+      "target_sub_2": "怎麼會是你?天余趙大爺呢?"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "怎麼是你？趙大爺呢？",
+      "ref_sub_2": "趙大爺的定風珠",
+      "target_sub_1": "怎麼會是你?天余趙大爺呢?",
+      "target_sub_2": "哥哥趙大爺一定瘋豬"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "趙大爺的定風珠",
+      "ref_sub_2": "給蘇翁一打就變成珍珠粉末",
+      "target_sub_1": "哥哥趙大爺一定瘋豬",
+      "target_sub_2": "被蘇勇一打,被珍珠滿"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "給蘇翁一打就變成珍珠粉末",
+      "ref_sub_2": "我沖水喝了",
+      "target_sub_1": "被蘇勇一打,被珍珠滿",
+      "target_sub_2": "我還沖水喝了"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我沖水喝了",
+      "ref_sub_2": "你不要看蘇翁的頭髮像掃帚",
+      "target_sub_1": "我還沖水喝了",
+      "target_sub_2": "你們蘇媽頭髮像素靶一樣"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你不要看蘇翁的頭髮像掃帚",
+      "ref_sub_2": "其實他為人很有情趣",
+      "target_sub_1": "你們蘇媽頭髮像素靶一樣",
+      "target_sub_2": "實在她很有情趣"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "其實他為人很有情趣",
+      "ref_sub_2": "但是⋯",
+      "target_sub_1": "實在她很有情趣",
+      "target_sub_2": "但是…"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "但是⋯",
+      "ref_sub_2": "但是甚麼，十萬兩我已拿了",
+      "target_sub_1": "但是…",
+      "target_sub_2": "沒但是,那十萬兩我已經帶進袋裡"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "但是甚麼，十萬兩我已拿了",
+      "ref_sub_2": "我不會還給他的",
+      "target_sub_1": "沒但是,那十萬兩我已經帶進袋裡",
+      "target_sub_2": "想拿回來就很難了"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我不會還給他的",
+      "ref_sub_2": "說到蘇翁的為人⋯",
+      "target_sub_1": "想拿回來就很難了",
+      "target_sub_2": "說到蘇勇這份人…"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "說到蘇翁的為人⋯",
+      "ref_sub_2": "廢話少說，鴇母",
+      "target_sub_1": "說到蘇勇這份人…",
+      "target_sub_2": "廢話可以少說了,閨婆"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "廢話少說，鴇母",
+      "ref_sub_2": "你先出去",
+      "target_sub_1": "廢話可以少說了,閨婆",
+      "target_sub_2": "你先出去吧"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你先出去",
+      "ref_sub_2": "是的⋯是的",
+      "target_sub_1": "你先出去吧",
+      "target_sub_2": "是的…"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "是的⋯是的",
+      "ref_sub_2": "七姑娘⋯　　將就一下⋯",
+      "target_sub_1": "是的…",
+      "target_sub_2": "蘇姑娘掌握一下吧"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這個是誰？",
+      "ref_sub_2": "我不知道",
+      "target_sub_1": "呢個邊個嚟㗎",
+      "target_sub_2": "我唔知呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我不知道",
+      "ref_sub_2": "姑娘，首先有個好消息",
+      "target_sub_1": "我唔知呀",
+      "target_sub_2": "姑娘首先有個好消息"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "姑娘，首先有個好消息",
+      "ref_sub_2": "我很喜歡你",
+      "target_sub_1": "姑娘首先有個好消息",
+      "target_sub_2": "我好喜歡你"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我很喜歡你",
+      "ref_sub_2": "這對我來說是一個壞消息",
+      "target_sub_1": "我好喜歡你",
+      "target_sub_2": "呢個對於我嚟講係壞消息喎"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這對我來說是一個壞消息",
+      "ref_sub_2": "我早知道你會這樣說",
+      "target_sub_1": "呢個對於我嚟講係壞消息喎",
+      "target_sub_2": "我早知你會咁講㗎喇"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我早知道你會這樣說",
+      "ref_sub_2": "閒話休提",
+      "target_sub_1": "我早知你會咁講㗎喇",
+      "target_sub_2": "難話優題"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "閒話休提",
+      "ref_sub_2": "我願意出一百顆珍珠",
+      "target_sub_1": "難話優題",
+      "target_sub_2": "我願意出一百粒珍珠"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我願意出一百顆珍珠",
+      "ref_sub_2": "希望如霜姑娘今晚能夠陪我把酒談歡",
+      "target_sub_1": "我願意出一百粒珍珠",
+      "target_sub_2": "希望如霜姑娘今晚能夠陪我把酒談歡"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "希望如霜姑娘今晚能夠陪我把酒談歡",
+      "ref_sub_2": "我不想跟你多說",
+      "target_sub_1": "希望如霜姑娘今晚能夠陪我把酒談歡",
+      "target_sub_2": "我唔想同你多講"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我不想跟你多說",
+      "ref_sub_2": "請你出去",
+      "target_sub_1": "我唔想同你多講",
+      "target_sub_2": "請你出去"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "請你出去",
+      "ref_sub_2": "我果然沒選錯人",
+      "target_sub_1": "請你出去",
+      "target_sub_2": "我果然冇揀錯人好"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我果然沒選錯人",
+      "ref_sub_2": "好，我先飲為敬",
+      "target_sub_1": "我果然冇揀錯人好",
+      "target_sub_2": "我就先飲為敬"
+    },
+    "answer": {
+      "target_sub_1_shifted": "我果然冇揀錯人",
+      "target_sub_2_shifted": "好我就先飲為敬"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "好，我先飲為敬",
+      "ref_sub_2": "不要喝⋯",
+      "target_sub_1": "好我就先飲為敬",
+      "target_sub_2": "唔好飲咩"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "實在讓我太感意外",
+      "ref_sub_2": "姑娘",
+      "target_sub_1": "實在太令我意外"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "放手",
+      "ref_sub_2": "原來你會武功",
+      "target_sub_2": "你居然識武功"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "原來你會武功",
+      "ref_sub_2": "不，我根本就不會武功",
+      "target_sub_1": "你居然識武功",
+      "target_sub_2": "唔係我根本就唔識武功呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "不，我根本就不會武功",
+      "ref_sub_2": "我求求你別再纏著我",
+      "target_sub_1": "唔係我根本就唔識武功呀",
+      "target_sub_2": "我求你唔好再纏住我啦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我求求你別再纏著我",
+      "ref_sub_2": "我不會陪你",
+      "target_sub_1": "我求你唔好再纏住我啦",
+      "target_sub_2": "我唔會陪你㗎"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我不會陪你",
+      "ref_sub_2": "如霜，從來沒有人這樣對我",
+      "target_sub_1": "我唔會陪你㗎",
+      "target_sub_2": "余雙從來冇人噉對我㗎"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "如霜，從來沒有人這樣對我",
+      "ref_sub_2": "我發覺我已經愛上了你",
+      "target_sub_1": "余雙從來冇人噉對我㗎",
+      "target_sub_2": "我發覺我竟已愛上咗你"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我發覺我已經愛上了你",
+      "ref_sub_2": "你說甚麼？",
+      "target_sub_1": "我發覺我竟已愛上咗你",
+      "target_sub_2": "咩話"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你說甚麼？",
+      "ref_sub_2": "我說，我已經愛上了你",
+      "target_sub_1": "咩話",
+      "target_sub_2": "我話我竟已愛上咗你"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我說，我已經愛上了你",
+      "ref_sub_2": "你沒有弄錯吧？",
+      "target_sub_1": "我話我竟已愛上咗你",
+      "target_sub_2": "你有乜搞錯呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你沒有弄錯吧？",
+      "ref_sub_2": "絕對沒有！我決定要娶你",
+      "target_sub_1": "你有乜搞錯呀",
+      "target_sub_2": "絕對冇我決定要娶你"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "絕對沒有！我決定要娶你",
+      "ref_sub_2": "你有神經病",
+      "target_sub_1": "絕對冇我決定要娶你",
+      "target_sub_2": "你咪痴線㗎"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你有神經病",
+      "ref_sub_2": "不是吧",
+      "target_sub_1": "你咪痴線㗎",
+      "target_sub_2": "唔係呀嘛"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "不是吧",
+      "ref_sub_2": "原來有人藏在這裡",
+      "target_sub_1": "唔係呀嘛",
+      "target_sub_2": "原來有人躲埋喺度咩"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "正好，我正想找個證人",
+      "ref_sub_2": "證人？　　對",
+      "target_sub_1": "啱啦我正想揾個證人",
+      "target_sub_2": "證人係"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "證人？　　對",
+      "ref_sub_2": "我就對著你的寶劍發誓",
+      "target_sub_1": "證人係",
+      "target_sub_2": "我就當住你把寶劍發誓"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我就對著你的寶劍發誓",
+      "ref_sub_2": "我是真心要娶如霜姑娘為妻",
+      "target_sub_1": "我就當住你把寶劍發誓",
+      "target_sub_2": "我係真心要娶余霜姑娘為妻"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我是真心要娶如霜姑娘為妻",
+      "ref_sub_2": "若然有半句假話，天打雷劈",
+      "target_sub_1": "我係真心要娶余霜姑娘為妻",
+      "target_sub_2": "若然有半句假話天打雷劈"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "若然有半句假話，天打雷劈",
+      "ref_sub_2": "姐姐，我真的替你興奮⋯",
+      "target_sub_1": "若然有半句假話天打雷劈",
+      "target_sub_2": "姐姐我真係等你興奮"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "姐姐，我真的替你興奮⋯",
+      "ref_sub_2": "唏！",
+      "target_sub_1": "姐姐我真係等你興奮",
+      "target_sub_2": "喂"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "唏！",
+      "ref_sub_2": "你以為當我丈夫那麼容易嗎",
+      "target_sub_1": "喂",
+      "target_sub_2": "你估做我丈夫咁容易嘅咩"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你以為當我丈夫那麼容易嗎",
+      "ref_sub_2": "要怎樣才可以當你丈夫呢？",
+      "target_sub_1": "你估做我丈夫咁容易嘅咩",
+      "target_sub_2": "咁要點先可以做你丈夫呢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "要怎樣才可以當你丈夫呢？",
+      "ref_sub_2": "我要他武功蓋世，狀元之才",
+      "target_sub_1": "咁要點先可以做你丈夫呢",
+      "target_sub_2": "我要佢武功蓋世狀元之才"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我要他武功蓋世，狀元之才",
+      "ref_sub_2": "一人之下，萬人之上",
+      "target_sub_1": "我要佢武功蓋世狀元之才",
+      "target_sub_2": "億人之下萬人之上"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "一人之下，萬人之上",
+      "ref_sub_2": "那你是否做得到？",
+      "target_sub_1": "億人之下萬人之上",
+      "target_sub_2": "咁你做唔做得到啊"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "那你是否做得到？",
+      "ref_sub_2": "讓我想一想",
+      "target_sub_1": "咁你做唔做得到啊",
+      "target_sub_2": "畀我諗諗"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "做得到",
+      "ref_sub_2": "好",
+      "target_sub_1": "做得到",
+      "target_sub_2": "好"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "好",
+      "ref_sub_2": "待你做得到的時候，才回來找我",
+      "target_sub_1": "好",
+      "target_sub_2": "咁等你做得到嗰陣先要返嚟揾我啦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "待你做得到的時候，才回來找我",
+      "ref_sub_2": "既然如此，我想我們要先定婚期",
+      "target_sub_1": "咁等你做得到嗰陣先要返嚟揾我啦",
+      "target_sub_2": "咦既然係噉我諗我哋要先定分期"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "既然如此，我想我們要先定婚期",
+      "ref_sub_2": "因為做狀元對我來說易如反掌",
+      "target_sub_1": "咦既然係噉我諗我哋要先定分期",
+      "target_sub_2": "因為做狀元對我嚟講易如反掌"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "因為做狀元對我來說易如反掌",
+      "ref_sub_2": "好！那也應該給我時間作考慮",
+      "target_sub_1": "因為做狀元對我嚟講易如反掌",
+      "target_sub_2": "好咁都應該畀啲時間我考慮下吧"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "好！那也應該給我時間作考慮",
+      "ref_sub_2": "沒問題，我就在外面的花園等待答覆",
+      "target_sub_1": "好咁都應該畀啲時間我考慮下吧",
+      "target_sub_2": "冇問題我就喺出面花園等你答覆"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "沒問題，我就在外面的花園等待答覆",
+      "ref_sub_2": "不見不散",
+      "target_sub_1": "冇問題我就喺出面花園等你答覆",
+      "target_sub_2": "百見不散"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "大人，半炷香的時間剛剛好",
+      "ref_sub_2": "現在路上很安全，請上路",
+      "target_sub_1": "大人搬煮香嘅時間啱啱好",
+      "target_sub_2": "而家條路好安全請上路"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "現在路上很安全，請上路",
+      "ref_sub_2": "好！非常好",
+      "target_sub_1": "而家條路好安全請上路",
+      "target_sub_2": "好非常好"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "好！非常好",
+      "ref_sub_2": "起轎！",
+      "target_sub_1": "好非常好",
+      "target_sub_2": "起橋"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "糟糕！我們來晚了",
+      "ref_sub_2": "都是那個人礙事！",
+      "target_sub_1": "閉我哋來遲咗",
+      "target_sub_2": "一日都係嗰個騎下仔女事"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "姐姐⋯姐姐",
+      "ref_sub_2": "甚麼事？",
+      "target_sub_1": "姐姐姐姐啊",
+      "target_sub_2": "咩事啊"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "甚麼事？",
+      "ref_sub_2": "那個神經病還在",
+      "target_sub_1": "咩事啊",
+      "target_sub_2": "個痴線佬仲喺度喎"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "那個神經病還在",
+      "ref_sub_2": "不如殺了他",
+      "target_sub_1": "個痴線佬仲喺度喎",
+      "target_sub_2": "不如殺咗佢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "不如殺了他",
+      "ref_sub_2": "算吧！他不是有心阻礙我們",
+      "target_sub_1": "不如殺咗佢",
+      "target_sub_2": "算啦佢咪有心阻我哋嘅"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "算吧！他不是有心阻礙我們",
+      "ref_sub_2": "由他吧",
+      "target_sub_1": "算啦佢咪有心阻我哋嘅",
+      "target_sub_2": "由佢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你不是喜歡他吧？",
+      "ref_sub_2": "你胡說甚麼？",
+      "target_sub_1": "你唔係鍾意阻佢係嘛",
+      "target_sub_2": "你講乜嘢啊"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你胡說甚麼？",
+      "ref_sub_2": "趙無極一日不死",
+      "target_sub_1": "你講乜嘢啊",
+      "target_sub_2": "趙無極一係未死"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "趙無極一日不死",
+      "ref_sub_2": "我也不會想這些事",
+      "target_sub_1": "趙無極一係未死",
+      "target_sub_2": "我點都唔會諗呢啲嘢㗎喇"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我也不會想這些事",
+      "ref_sub_2": "何況是他",
+      "target_sub_1": "我點都唔會諗呢啲嘢㗎喇",
+      "target_sub_2": "何況係佢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "何況是他",
+      "ref_sub_2": "趙無極武功很高",
+      "target_sub_1": "何況係佢",
+      "target_sub_2": "趙無極好好打嘅喎"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "趙無極武功很高",
+      "ref_sub_2": "莫大叔說不會降龍十八掌便打不過他",
+      "target_sub_1": "趙無極好好打嘅喎",
+      "target_sub_2": "莫大叔話唔識學能十八掌都打佢唔贏嘅"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "莫大叔說不會降龍十八掌便打不過他",
+      "ref_sub_2": "那我豈不是嫁不出嗎？",
+      "target_sub_1": "莫大叔話唔識學能十八掌都打佢唔贏嘅",
+      "target_sub_2": "噉我唔使假"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "那我豈不是嫁不出嗎？",
+      "ref_sub_2": "行吧！別發情",
+      "target_sub_1": "噉我唔使假",
+      "target_sub_2": "行啦發口呢你"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "何方妖孽？竟敢來嚇我？",
+      "ref_sub_2": "蘇翁，我是鴇母⋯",
+      "target_sub_1": "何方擁孽夠膽出來欺騙本少爺",
+      "target_sub_2": "素勇我係閨婆呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "蘇翁，我是鴇母⋯",
+      "ref_sub_2": "你是鴇母？",
+      "target_sub_1": "素勇我係閨婆呀",
+      "target_sub_2": "你係閨婆"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你是鴇母？",
+      "ref_sub_2": "是的",
+      "target_sub_1": "你係閨婆",
+      "target_sub_2": "係呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "是的",
+      "ref_sub_2": "胸部那麼平，你的奶子呢？",
+      "target_sub_1": "係呀",
+      "target_sub_2": "個胸咁平嘅你對奶呢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "胸部那麼平，你的奶子呢？",
+      "ref_sub_2": "那麼早，還未睡醒⋯",
+      "target_sub_1": "個胸咁平嘅你對奶呢",
+      "target_sub_2": "咁未起身吖嘛"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "那麼早，還未睡醒⋯",
+      "ref_sub_2": "這次沒有把你打死，算是你走運",
+      "target_sub_1": "咁未起身吖嘛",
+      "target_sub_2": "呢鑊打你唔死算你大命"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這次沒有把你打死，算是你走運",
+      "ref_sub_2": "以後沒有化妝不要四處走，知道嗎？",
+      "target_sub_1": "呢鑊打你唔死算你大命",
+      "target_sub_2": "以後未化妝唔好事為限呀知咪"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "以後沒有化妝不要四處走，知道嗎？",
+      "ref_sub_2": "不會了，不會了",
+      "target_sub_1": "以後未化妝唔好事為限呀知咪",
+      "target_sub_2": "唔會啦唔會啦係"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "不會了，不會了",
+      "ref_sub_2": "你不用等如霜姑娘了，她已經走了⋯",
+      "target_sub_1": "唔會啦唔會啦係",
+      "target_sub_2": "你唔好等余霜姑娘喇佢走咗喇"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你不用等如霜姑娘了，她已經走了⋯",
+      "ref_sub_2": "走了？",
+      "target_sub_1": "你唔好等余霜姑娘喇佢走咗喇",
+      "target_sub_2": "走咗"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "那究竟如霜姑娘去了哪裡？",
+      "ref_sub_2": "聽說，她⋯她去了京城",
+      "target_sub_1": "咁究竟如霜姑娘去咗邊",
+      "target_sub_2": "聽講話佢佢去咗京城呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "聽說，她⋯她去了京城",
+      "ref_sub_2": "京城？",
+      "target_sub_1": "聽講話佢佢去咗京城呀",
+      "target_sub_2": "京城"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "京城？",
+      "ref_sub_2": "男兒為國家⋯",
+      "target_sub_1": "京城",
+      "target_sub_2": "南宜為國家"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "男兒為國家⋯",
+      "ref_sub_2": "⋯辮子怎樣戴⋯",
+      "target_sub_1": "南宜為國家",
+      "target_sub_2": "條邊冇掟掛"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "⋯辮子怎樣戴⋯",
+      "ref_sub_2": "揮啊！揮啊！",
+      "target_sub_1": "條邊冇掟掛",
+      "target_sub_2": "聖殼聖殼"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "揮啊！揮啊！",
+      "ref_sub_2": "我拉長它又彈它⋯",
+      "target_sub_1": "聖殼聖殼",
+      "target_sub_2": "我蚊牆又但下呢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我拉長它又彈它⋯",
+      "ref_sub_2": "阿爹",
+      "target_sub_1": "我蚊牆又但下呢"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "阿爹",
+      "ref_sub_2": "我決定上京考文武狀元",
+      "target_sub_2": "我決定上京口文武狀元"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我決定上京考文武狀元",
+      "ref_sub_2": "阿燦",
+      "target_sub_1": "我決定上京口文武狀元",
+      "target_sub_2": "阿蟲"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "阿燦",
+      "ref_sub_2": "爹等你說這句話，等了二十五年",
+      "target_sub_1": "阿蟲",
+      "target_sub_2": "阿爹等你講呢句說話"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "爹等你說這句話，等了二十五年",
+      "ref_sub_2": "為了蘇察哈爾家，你應該這樣做",
+      "target_sub_1": "阿爹等你講呢句說話",
+      "target_sub_2": "等你廿五年為咗鬚賊蝦耳間你應該咁做"
+    },
+    "answer": {
+      "target_sub_1_shifted": "阿爹等你講呢句說話等你廿五年",
+      "target_sub_2_shifted": "為咗鬚賊蝦耳間你應該咁做"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "阿燦",
+      "ref_sub_2": "爹等你說這句話，等了二十五年",
+      "target_sub_1": "阿蟲",
+      "target_sub_2": "阿爹等你講呢句說話等你廿五年"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "爹等你說這句話，等了二十五年",
+      "ref_sub_2": "為了蘇察哈爾家，你應該這樣做",
+      "target_sub_1": "阿爹等你講呢句說話等你廿五年",
+      "target_sub_2": "為咗鬚賊蝦耳間你應該咁做"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "為了蘇察哈爾家，你應該這樣做",
+      "ref_sub_2": "別誤會，我這樣做並不是為誰",
+      "target_sub_1": "為咗鬚賊蝦耳間你應該咁做",
+      "target_sub_2": "唔好嘞咁仲唔係為咗任何人"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "別誤會，我這樣做並不是為誰",
+      "ref_sub_2": "只是為了一個女人",
+      "target_sub_1": "唔好嘞咁仲唔係為咗任何人",
+      "target_sub_2": "只係為咗個女仔啫"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "只是為了一個女人",
+      "ref_sub_2": "英雄",
+      "target_sub_1": "只係為咗個女仔啫",
+      "target_sub_2": "英雄"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "英雄",
+      "ref_sub_2": "為妞死，為妞亡，為妞上京考狀元",
+      "target_sub_1": "英雄",
+      "target_sub_2": "為女死為女亡為女上京考狀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "為妞死，為妞亡，為妞上京考狀元",
+      "ref_sub_2": "何家女子？",
+      "target_sub_1": "為女死為女亡為女上京考狀",
+      "target_sub_2": "何家女子"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "何家女子？",
+      "ref_sub_2": "怡紅院金牌清倌人如霜姑娘",
+      "target_sub_1": "何家女子",
+      "target_sub_2": "而紅院金牌清官人如霜姑娘"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "怡紅院金牌清倌人如霜姑娘",
+      "ref_sub_2": "妓女？",
+      "target_sub_1": "而紅院金牌清官人如霜姑娘",
+      "target_sub_2": "隻雞乜嘢唔妥"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "妓女？",
+      "ref_sub_2": "有何不妥？",
+      "target_sub_1": "隻雞乜嘢唔妥"
+    },
+    "answer": {
+      "target_sub_1_shifted": "隻雞",
+      "target_sub_2_shifted": "乜嘢唔妥"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "有何不妥？",
+      "ref_sub_2": "品味與別不同，真是能人所不能",
+      "target_sub_1": "乜嘢唔妥",
+      "target_sub_2": "品味與別不同真係能人所不能"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "品味與別不同，真是能人所不能",
+      "ref_sub_2": "阿爹欽佩你",
+      "target_sub_1": "品味與別不同真係能人所不能",
+      "target_sub_2": "阿爹一唔陪你"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "阿爹欽佩你",
+      "ref_sub_2": "我陪你上京",
+      "target_sub_1": "阿爹一唔陪你",
+      "target_sub_2": "我陪你上京"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我陪你上京",
+      "ref_sub_2": "二，三，四，五，六",
+      "target_sub_1": "我陪你上京",
+      "target_sub_2": "二三正六"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "二，三，四，五，六",
+      "ref_sub_2": "來了，老爺",
+      "target_sub_1": "二三正六",
+      "target_sub_2": "係咪"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "來了，老爺",
+      "ref_sub_2": "少爺上京赴考，我們搬家",
+      "target_sub_1": "係咪",
+      "target_sub_2": "少爺上京訪南家搬"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "少爺上京赴考，我們搬家",
+      "ref_sub_2": "你們不要追了",
+      "target_sub_1": "少爺上京訪南家搬",
+      "target_sub_2": "阿爹你哋唔好追啦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你們不要追了",
+      "ref_sub_2": "這些雞不帶了，京城多的是",
+      "target_sub_1": "阿爹你哋唔好追啦",
+      "target_sub_2": "啲雞都會"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這些雞不帶了，京城多的是",
+      "ref_sub_2": "你這個笨蛋小心點",
+      "target_sub_1": "啲雞都會",
+      "target_sub_2": "唔好聲呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你這個笨蛋小心點",
+      "ref_sub_2": "弄花了我的東西，我不會放過你",
+      "target_sub_1": "唔好聲呀",
+      "target_sub_2": "你揮返我啲嘢我打到佢屁股開返"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "弄花了我的東西，我不會放過你",
+      "ref_sub_2": "小心點",
+      "target_sub_1": "你揮返我啲嘢我打到佢屁股開返",
+      "target_sub_2": "小心啲搬"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "小心點",
+      "ref_sub_2": "老爹，早",
+      "target_sub_1": "小心啲搬",
+      "target_sub_2": "阿爹早晨"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "老爹，早",
+      "ref_sub_2": "早",
+      "target_sub_1": "阿爹早晨",
+      "target_sub_2": "早晨"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "早",
+      "ref_sub_2": "真的全部都搬走？",
+      "target_sub_1": "早晨",
+      "target_sub_2": "真係乜都搬走晒"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "真的全部都搬走？",
+      "ref_sub_2": "當然",
+      "target_sub_1": "真係乜都搬走晒",
+      "target_sub_2": "當然啦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "當然",
+      "ref_sub_2": "留件衣服給我穿啊",
+      "target_sub_1": "當然啦",
+      "target_sub_2": "留返件衫就好小心呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "留件衣服給我穿啊",
+      "ref_sub_2": "小孩子怕甚麼呢？",
+      "target_sub_1": "留返件衫就好小心呀",
+      "target_sub_2": "細路哥怕乜嘢呢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "小孩子怕甚麼呢？",
+      "ref_sub_2": "我不小了",
+      "target_sub_1": "細路哥怕乜嘢呢",
+      "target_sub_2": "唔細㗎喇我"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我不小了",
+      "ref_sub_2": "呸！比我大嗎？",
+      "target_sub_1": "唔細㗎喇我",
+      "target_sub_2": "呸大得我咩家下"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "呸！比我大嗎？",
+      "ref_sub_2": "小看我？",
+      "target_sub_1": "呸大得我咩家下",
+      "target_sub_2": "睇小木係咪"
+    },
+    "answer": {
+      "target_sub_1_shifted": "呸大得我咩",
+      "target_sub_2_shifted": "家下睇小木係咪"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "小看我？",
+      "ref_sub_2": "總有一天比你大",
+      "target_sub_1": "家下睇小木係咪",
+      "target_sub_2": "錢小姐大過你嘅"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "總有一天比你大",
+      "ref_sub_2": "有誰願意脫下衣服來給我穿一下",
+      "target_sub_1": "錢小姐大過你嘅",
+      "target_sub_2": "後期邊個把啲鎚鑿敷落嚟掩住"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "有誰願意脫下衣服來給我穿一下",
+      "ref_sub_2": "沒眼看",
+      "target_sub_1": "後期邊個把啲鎚鑿敷落嚟掩住",
+      "target_sub_2": "帶啲鎚鑿鑿敷嘅事"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "沒眼看",
+      "ref_sub_2": "你們站著幹嘛？還不把它搬走",
+      "target_sub_1": "帶啲鎚鑿鑿敷嘅事",
+      "target_sub_2": "你哋企晒到做乜嘢咁你搬佢走"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "你們站著幹嘛？還不把它搬走",
+      "ref_sub_2": "屋那麼大，何時才搬妥",
+      "target_sub_1": "你哋企晒到做乜嘢咁你搬佢走",
+      "target_sub_2": "咁大家摸下幾時先搬得完啦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "屋那麼大，何時才搬妥",
+      "ref_sub_2": "請大家賣力點，好不好",
+      "target_sub_1": "咁大家摸下幾時先搬得完啦",
+      "target_sub_2": "唔該大家落力啲啦好唔好呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "請大家賣力點，好不好",
+      "ref_sub_2": "數三聲！一，二，三，推",
+      "target_sub_1": "唔該大家落力啲啦好唔好呀",
+      "target_sub_2": "數三聲啦一二三推"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "數三聲！一，二，三，推",
+      "ref_sub_2": "推⋯",
+      "target_sub_1": "數三聲啦一二三推",
+      "target_sub_2": "推推推啦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "推⋯",
+      "ref_sub_2": "小心推",
+      "target_sub_1": "推推推啦",
+      "target_sub_2": "好聲推呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "小心推",
+      "ref_sub_2": "綁牢一點⋯綁牢一點",
+      "target_sub_1": "好聲推呀",
+      "target_sub_2": "綁穩啲綁穩啲呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "綁牢一點⋯綁牢一點",
+      "ref_sub_2": "老爺，樹也要搬？",
+      "target_sub_1": "綁穩啲綁穩啲呀",
+      "target_sub_2": "老爺樹都搬"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "老爺，樹也要搬？",
+      "ref_sub_2": "當然",
+      "target_sub_1": "老爺樹都搬",
+      "target_sub_2": "梗係啦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "當然",
+      "ref_sub_2": "否則我到京城哪有荔枝吃？",
+      "target_sub_1": "梗係啦",
+      "target_sub_2": "唔係我上到京城邊有荔枝食嘅家陣"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "否則我到京城哪有荔枝吃？",
+      "ref_sub_2": "推到那邊⋯推到那邊",
+      "target_sub_1": "唔係我上到京城邊有荔枝食嘅家陣",
+      "target_sub_2": "去推佢過去推佢"
+    },
+    "answer": {
+      "target_sub_1_shifted": "唔係我上到京城邊有荔枝食嘅",
+      "target_sub_2_shifted": "家陣去推佢過去推佢"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "推到那邊⋯推到那邊",
+      "ref_sub_2": "小心點⋯小心我的荔枝",
+      "target_sub_1": "家陣去推佢過去推佢",
+      "target_sub_2": "好聲呀好聲呀睇住我啲荔枝呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "小心點⋯小心我的荔枝",
+      "ref_sub_2": "小心我的荔枝，笨蛋",
+      "target_sub_1": "好聲呀好聲呀睇住我啲荔枝呀",
+      "target_sub_2": "睇住我啲荔枝呀瘦頭瘦頭瘦頭"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "小心我的荔枝，笨蛋",
+      "ref_sub_2": "趙無極這趟協助微臣",
+      "target_sub_1": "睇住我啲荔枝呀瘦頭瘦頭瘦頭",
+      "target_sub_2": "趙無極今次協助尾臣"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "趙無極這趟協助微臣",
+      "ref_sub_2": "到廣西剿平長毛餘孽立功不少",
+      "target_sub_1": "趙無極今次協助尾臣",
+      "target_sub_2": "喺廣西剿平長毛餘葉立功不少"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "到廣西剿平長毛餘孽立功不少",
+      "ref_sub_2": "微臣特意帶他來見皇上",
+      "target_sub_1": "喺廣西剿平長毛餘葉立功不少",
+      "target_sub_2": "尾臣特意帶佢嚟見皇上"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "微臣特意帶他來見皇上",
+      "ref_sub_2": "好！朕現在賜你為都察院副左都御史",
+      "target_sub_1": "尾臣特意帶佢嚟見皇上",
+      "target_sub_2": "好朕而家賜你為刀賊院副佐都如是"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "好！朕現在賜你為都察院副左都御史",
+      "ref_sub_2": "希望你日後好好為大清效力",
+      "target_sub_1": "好朕而家賜你為刀賊院副佐都如是",
+      "target_sub_2": "希望你日後好好為大清盡力"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "希望你日後好好為大清效力",
+      "ref_sub_2": "謝主龍恩",
+      "target_sub_1": "希望你日後好好為大清盡力",
+      "target_sub_2": "謝主隆恩"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "謝主龍恩",
+      "ref_sub_2": "皇上，趙先生一身奇技異術",
+      "target_sub_1": "謝主隆恩",
+      "target_sub_2": "皇上趙先生一身奇技異術"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "皇上，趙先生一身奇技異術",
+      "ref_sub_2": "不如請他示範一下，讓皇上開開眼界",
+      "target_sub_1": "皇上趙先生一身奇技異術",
+      "target_sub_2": "不如請佢展示下畀皇上開下眼界"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "不如請他示範一下，讓皇上開開眼界",
+      "ref_sub_2": "異術？",
+      "target_sub_1": "不如請佢展示下畀皇上開下眼界",
+      "target_sub_2": "異術"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "異術？",
+      "ref_sub_2": "趙先生，你就示範給朕看",
+      "target_sub_1": "異術",
+      "target_sub_2": "趙先生你就展示畀朕睇下"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "趙先生，你就示範給朕看",
+      "ref_sub_2": "是",
+      "target_sub_1": "趙先生你就展示畀朕睇下",
+      "target_sub_2": "係"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "大驚小怪！退下",
+      "ref_sub_2": "是",
+      "target_sub_1": "眼睛小敗去呀",
+      "target_sub_2": "去"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "微臣大膽，讓皇上受驚",
+      "ref_sub_2": "如果這個女人是真的就好了",
+      "target_sub_1": "未神大膽令皇上受驚",
+      "target_sub_2": "如果呢個女仔係真嘅就可惡"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "如果這個女人是真的就好了",
+      "ref_sub_2": "站好！快點",
+      "target_sub_1": "如果呢個女仔係真嘅就可惡"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "甚麼事⋯甚麼事？",
+      "ref_sub_2": "來⋯進去",
+      "target_sub_2": "入去入去呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "甚麼事？",
+      "ref_sub_2": "躲進去",
+      "target_sub_1": "進去吧",
+      "target_sub_2": "進去吧"
+    },
+    "answer": {
+      "target_sub_2_shifted": "進去吧進去吧"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "躲進去",
+      "ref_sub_2": "準備好了，少爺",
+      "target_sub_1": "進去吧進去吧",
+      "target_sub_2": "準備好喇少爺"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "準備好了，少爺",
+      "ref_sub_2": "來",
+      "target_sub_1": "準備好喇少爺",
+      "target_sub_2": "嚟"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "來",
+      "ref_sub_2": "全部站好別再動",
+      "target_sub_1": "嚟",
+      "target_sub_2": "全部企定唔好郁喇"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "那麼香？你是飄紅",
+      "ref_sub_2": "少爺你很棒，我喜歡",
+      "target_sub_1": "咁香你係飄紅",
+      "target_sub_2": "你好靚啊我鍾意啊"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "少爺你很棒，我喜歡",
+      "ref_sub_2": "靠攏一點",
+      "target_sub_1": "你好靚啊我鍾意啊",
+      "target_sub_2": "快啲"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "靠攏一點",
+      "ref_sub_2": "那麼大？一定是小小",
+      "target_sub_1": "快啲",
+      "target_sub_2": "咁大一定係少少"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "那麼大？一定是小小",
+      "ref_sub_2": "少爺你很壞，這樣說人家",
+      "target_sub_1": "咁大一定係少少",
+      "target_sub_2": "啊你好衰噶咁咪話你咗"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "少爺你很壞，這樣說人家",
+      "ref_sub_2": "你是大嘛",
+      "target_sub_1": "啊你好衰噶咁咪話你咗",
+      "target_sub_2": "噉你係吖嘛下陣嗯"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你是大嘛",
+      "ref_sub_2": "懷孕的也有？騙不倒我",
+      "target_sub_1": "噉你係吖嘛下陣嗯",
+      "target_sub_2": "大肚婆都有呃我唔到嘅"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "懷孕的也有？騙不倒我",
+      "ref_sub_2": "你是爹",
+      "target_sub_1": "大肚婆都有呃我唔到嘅",
+      "target_sub_2": "你係阿爹咦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你是爹",
+      "ref_sub_2": "你很壞！這樣也給你猜中",
+      "target_sub_1": "你係阿爹咦",
+      "target_sub_2": "好衰嘅咁都畀你估到"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你很壞！這樣也給你猜中",
+      "ref_sub_2": "聰明，聰明",
+      "target_sub_1": "好衰嘅咁都畀你估到",
+      "target_sub_2": "叻仔叻仔"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "聰明，聰明",
+      "ref_sub_2": "阿爹還想作弄你一下，好棒好棒",
+      "target_sub_1": "叻仔叻仔",
+      "target_sub_2": "阿爹仲諗整菇嚟添好嘢好嘢好嘢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "阿爹還想作弄你一下，好棒好棒",
+      "ref_sub_2": "好了好了，少爺明早要考試",
+      "target_sub_1": "阿爹仲諗整菇嚟添好嘢好嘢好嘢",
+      "target_sub_2": "好嘞好嘞少爺聽知考試"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "好了好了，少爺明早要考試",
+      "ref_sub_2": "別玩得太瘋",
+      "target_sub_1": "好嘞好嘞少爺聽知考試",
+      "target_sub_2": "唔好玩咁顛"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "別玩得太瘋",
+      "ref_sub_2": "出去，出去",
+      "target_sub_1": "唔好玩咁顛",
+      "target_sub_2": "出返去出返去"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "出去，出去",
+      "ref_sub_2": "阿燦，你明天考試",
+      "target_sub_1": "出返去出返去",
+      "target_sub_2": "阿燦啊你聽日考試囉"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "阿燦，你明天考試",
+      "ref_sub_2": "準備好了沒有？",
+      "target_sub_1": "阿燦啊你聽日考試囉",
+      "target_sub_2": "啲嘢預備好晒未"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "準備好了沒有？",
+      "ref_sub_2": "準備甚麼？我贏定了，你不知道嗎",
+      "target_sub_1": "啲嘢預備好晒未",
+      "target_sub_2": "預備咩未贏講嘅話乜你唔知咩"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "準備甚麼？我贏定了，你不知道嗎",
+      "ref_sub_2": "知道",
+      "target_sub_1": "預備咩未贏講嘅話乜你唔知咩",
+      "target_sub_2": "知呀你噉態度呢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "知道",
+      "ref_sub_2": "你這樣的態度，我就有信心",
+      "target_sub_1": "知呀你噉態度呢",
+      "target_sub_2": "我就有晒信心啦"
+    },
+    "answer": {
+      "target_sub_1_shifted": "知呀",
+      "target_sub_2_shifted": "你噉態度呢我就有晒信心啦"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你這樣的態度，我就有信心",
+      "ref_sub_2": "阿燦，這位是鄭世伯",
+      "target_sub_1": "你噉態度呢我就有晒信心啦",
+      "target_sub_2": "阿燦啊呢位呢就鄭世伯"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "阿燦，這位是鄭世伯",
+      "ref_sub_2": "明天鄭世伯做主考",
+      "target_sub_1": "阿燦啊呢位呢就鄭世伯",
+      "target_sub_2": "聽日鄭世伯就主考"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "明天鄭世伯做主考",
+      "ref_sub_2": "你來打個招呼",
+      "target_sub_1": "聽日鄭世伯就主考",
+      "target_sub_2": "你嚟打個招呼"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你來打個招呼",
+      "ref_sub_2": "鄭世伯，招呼不週",
+      "target_sub_1": "你嚟打個招呼",
+      "target_sub_2": "鄭世伯招呼唔到嗸嗸嗸嗸"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "鄭世伯，招呼不週",
+      "ref_sub_2": "你看",
+      "target_sub_1": "鄭世伯招呼唔到嗸嗸嗸嗸",
+      "target_sub_2": "嗸嗸嗸吖"
+    },
+    "answer": {
+      "target_sub_1_shifted": "鄭世伯招呼唔到",
+      "target_sub_2_shifted": "嗸嗸嗸嗸嗸嗸嗸吖"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你看",
+      "ref_sub_2": "我的兒子是否狀元臉？",
+      "target_sub_1": "嗸嗸嗸嗸嗸嗸嗸吖",
+      "target_sub_2": "我仔係咪成個狀元噉格局啊吓"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我的兒子是否狀元臉？",
+      "ref_sub_2": "要看他的造化了",
+      "target_sub_1": "我仔係咪成個狀元噉格局啊吓",
+      "target_sub_2": "睇佢做法啦喂"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "要看他的造化了",
+      "ref_sub_2": "老鄭，你給我的考卷",
+      "target_sub_1": "睇佢做法啦喂",
+      "target_sub_2": "老鄭你畀我啲試卷呢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "老鄭，你給我的考卷",
+      "ref_sub_2": "我已經找人在做",
+      "target_sub_1": "老鄭你畀我啲試卷呢",
+      "target_sub_2": "我就已經搵人做緊㗎喇"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我已經找人在做",
+      "ref_sub_2": "不會改了吧？",
+      "target_sub_1": "我就已經搵人做緊㗎喇",
+      "target_sub_2": "唔會改啦嘛"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "不會改了吧？",
+      "ref_sub_2": "考卷方面是沒問題了",
+      "target_sub_1": "唔會改啦嘛",
+      "target_sub_2": "試卷我可以同佢換㗎啫"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "考卷方面是沒問題了",
+      "ref_sub_2": "至於臨場考弓箭、騎馬",
+      "target_sub_1": "試卷我可以同佢換㗎啫",
+      "target_sub_2": "至於到時考弓箭騎馬"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "至於臨場考弓箭、騎馬",
+      "ref_sub_2": "舉石、搏擊、兵器",
+      "target_sub_1": "至於到時考弓箭騎馬",
+      "target_sub_2": "舉石搏擊同兵器呢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "舉石、搏擊、兵器",
+      "ref_sub_2": "就全靠他自己",
+      "target_sub_1": "舉石搏擊同兵器呢",
+      "target_sub_2": "就只依殺佢自己啦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "就全靠他自己",
+      "ref_sub_2": "這一點你放心",
+      "target_sub_1": "就只依殺佢自己啦",
+      "target_sub_2": "呢層你放心"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這一點你放心",
+      "ref_sub_2": "我的兒子十八般武藝樣樣精通",
+      "target_sub_1": "呢層你放心",
+      "target_sub_2": "我仔十八般武藝見見皆精喂"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我的兒子十八般武藝樣樣精通",
+      "ref_sub_2": "那二百萬兩可否酌量減一點？",
+      "target_sub_1": "我仔十八般武藝見見皆精喂",
+      "target_sub_2": "佢二百萬兩係咪可以著量減啲啊哎"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "那二百萬兩可否酌量減一點？",
+      "ref_sub_2": "人情歸人情，數目一定要分明",
+      "target_sub_1": "佢二百萬兩係咪可以著量減啲啊哎",
+      "target_sub_2": "人情還人情均真啲好"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "決定佈個雁行陣，馬隊前駐中鋒營",
+      "ref_sub_2": "弓隊側翼，槍隊殿後",
+      "target_sub_1": "一於步個硬行陣馬隊纏住中風營",
+      "target_sub_2": "攻隊側翼槍隊墊後"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "留力而已",
+      "ref_sub_2": "無恥？無恥你娘",
+      "target_sub_1": "劉力啫",
+      "target_sub_2": "冇錢呀指你好冇"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "武狀元決賽現在開始",
+      "ref_sub_2": "今天武狀元之爭",
+      "target_sub_1": "武藏元決賽現在開始",
+      "target_sub_2": "今日嘅武藏元之爭"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "今天武狀元之爭",
+      "ref_sub_2": "是由蒙古的博達爾多⋯",
+      "target_sub_1": "今日嘅武藏元之爭",
+      "target_sub_2": "係由蒙古嘅博達爾多"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "是由蒙古的博達爾多⋯",
+      "ref_sub_2": "好⋯好",
+      "target_sub_1": "係由蒙古嘅博達爾多"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "好⋯好",
+      "ref_sub_2": "⋯對廣東的蘇察哈爾燦",
+      "target_sub_2": "對廣東嘅蘇刷哈爾燦"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "⋯對廣東的蘇察哈爾燦",
+      "ref_sub_2": "最後三分鐘",
+      "target_sub_1": "對廣東嘅蘇刷哈爾燦",
+      "target_sub_2": "最後三分鐘"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "最後三分鐘",
+      "ref_sub_2": "蘇察哈爾燦一賠十，博達爾多一賠一",
+      "target_sub_1": "最後三分鐘",
+      "target_sub_2": "蘇刷哈爾燦一賠十博達爾多一賠一"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "蘇察哈爾燦一賠十，博達爾多一賠一",
+      "ref_sub_2": "有沒有攪錯，賠率怎麼差那麼多？",
+      "target_sub_1": "蘇刷哈爾燦一賠十博達爾多一賠一",
+      "target_sub_2": "喂有冇搞錯啊啲賠率爭咁遠嘅"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "有沒有攪錯，賠率怎麼差那麼多？",
+      "ref_sub_2": "一個是一賠十，一個是一賠一",
+      "target_sub_1": "喂有冇搞錯啊啲賠率爭咁遠嘅",
+      "target_sub_2": "一個一賠十一個一賠一"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "一個是一賠十，一個是一賠一",
+      "ref_sub_2": "對蘇燦那麼沒信心！",
+      "target_sub_1": "一個一賠十一個一賠一",
+      "target_sub_2": "嘩咁睇唔好蘇刷啊"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "對蘇燦那麼沒信心！",
+      "ref_sub_2": "沒辦法，蘇燦在舉重項目棄權",
+      "target_sub_1": "嘩咁睇唔好蘇刷啊",
+      "target_sub_2": "咁係啊嘛蘇刷呢舉重項目呢就棄權嘅"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "沒辦法，蘇燦在舉重項目棄權",
+      "ref_sub_2": "你看，博達爾多",
+      "target_sub_1": "咁係啊嘛蘇刷呢舉重項目呢就棄權嘅",
+      "target_sub_2": "你睇下人哋博達爾多啊"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "你看，博達爾多",
+      "ref_sub_2": "全部是滿分進級，怎麼比呢？",
+      "target_sub_1": "你睇下人哋博達爾多啊",
+      "target_sub_2": "全部滿分就晉級嘅點同"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "全部是滿分進級，怎麼比呢？",
+      "ref_sub_2": "現在是考狀元，又不是當苦力",
+      "target_sub_1": "全部滿分就晉級嘅點同",
+      "target_sub_2": "家陣考狀元嘅你估做孤零啊"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "現在是考狀元，又不是當苦力",
+      "ref_sub_2": "舉重了得又有何用！",
+      "target_sub_1": "家陣考狀元嘅你估做孤零啊",
+      "target_sub_2": "舉重咁靚托賊咩"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "舉重了得又有何用！",
+      "ref_sub_2": "話不是這樣說　　甚麼？",
+      "target_sub_1": "舉重咁靚托賊咩",
+      "target_sub_2": "咁又唔係咁過"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "話不是這樣說　　甚麼？",
+      "ref_sub_2": "這位同僚有見識",
+      "target_sub_1": "咁又唔係咁過",
+      "target_sub_2": "啲同年有見地"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這位同僚有見識",
+      "ref_sub_2": "我鑽研了這場比賽很久",
+      "target_sub_1": "啲同年有見地",
+      "target_sub_2": "我住完咗呢場賽事好耐"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我鑽研了這場比賽很久",
+      "ref_sub_2": "也覺得個賠率有點古怪",
+      "target_sub_1": "我住完咗呢場賽事好耐",
+      "target_sub_2": "覺得佢賠率有啲古怪係咩"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "也覺得個賠率有點古怪",
+      "ref_sub_2": "這個博達爾多外型俊朗，渾身有力",
+      "target_sub_1": "覺得佢賠率有啲古怪係咩",
+      "target_sub_2": "佢博達爾多外形晉朗運身上力"
+    },
+    "answer": {
+      "target_sub_1_shifted": "覺得佢賠率有啲古怪",
+      "target_sub_2_shifted": "係咩佢博達爾多外形晉朗運身上力"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這個博達爾多外型俊朗，渾身有力",
+      "ref_sub_2": "但是未出賽行圈頸部就已經有白汗",
+      "target_sub_1": "係咩佢博達爾多外形晉朗運身上力",
+      "target_sub_2": "但係未出賽行圈嘅頸有白汗"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "但是未出賽行圈頸部就已經有白汗",
+      "ref_sub_2": "我猜可能是虛火",
+      "target_sub_1": "但係未出賽行圈嘅頸有白汗",
+      "target_sub_2": "我諗落可能虛火嚟嘅"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我猜可能是虛火",
+      "ref_sub_2": "是嗎？",
+      "target_sub_1": "我諗落可能虛火嚟嘅",
+      "target_sub_2": "係睇"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "是嗎？",
+      "ref_sub_2": "但是這個蘇察哈爾燦",
+      "target_sub_1": "係睇",
+      "target_sub_2": "但係呢個蘇刷蝦耳撐係唔同"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "但是這個蘇察哈爾燦",
+      "ref_sub_2": "怎樣？怎樣？",
+      "target_sub_1": "但係呢個蘇刷蝦耳撐係唔同",
+      "target_sub_2": "點呀點呀"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "怎樣？怎樣？",
+      "ref_sub_2": "雖然沿途低著頭",
+      "target_sub_1": "點呀點呀",
+      "target_sub_2": "雖然圓圖頭嘚嘚"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "雖然沿途低著頭",
+      "ref_sub_2": "但是能進入決賽是很困難的",
+      "target_sub_1": "雖然圓圖頭嘚嘚",
+      "target_sub_2": "但係老實對我決賽都係好嘅蝦嘅"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "但是能進入決賽是很困難的",
+      "ref_sub_2": "甚麼？",
+      "target_sub_1": "但係老實對我決賽都係好嘅蝦嘅",
+      "target_sub_2": "蝦乜蝦啊係"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "甚麼？",
+      "ref_sub_2": "是洋文！即是有鬥心",
+      "target_sub_1": "蝦乜蝦啊係",
+      "target_sub_2": "洋文嚟嘅蝦即係有鬥心噉解"
+    },
+    "answer": {
+      "target_sub_1_shifted": "蝦乜蝦啊",
+      "target_sub_2_shifted": "係洋文嚟嘅蝦即係有鬥心噉解"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub_1": "是洋文！即是有鬥心",
+      "ref_sub_2": "所以我準備全押",
+      "target_sub_1": "係洋文嚟嘅蝦即係有鬥心噉解",
+      "target_sub_2": "所以我諗住瞓身"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "所以我準備全押",
+      "ref_sub_2": "是嗎？那你打算押多少？",
+      "target_sub_1": "所以我諗住瞓身",
+      "target_sub_2": "係啊喂咁你打算買幾多啊"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "是嗎？那你打算押多少？",
+      "ref_sub_2": "八十萬兩！",
+      "target_sub_1": "係啊喂咁你打算買幾多啊",
+      "target_sub_2": "八十萬兩"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "八十萬兩！",
+      "ref_sub_2": "八十萬兩那麼少？買夠二百萬兩嘛",
+      "target_sub_1": "八十萬兩",
+      "target_sub_2": "八十萬兩咁少賣夠二百萬兩噉"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "八十萬兩那麼少？買夠二百萬兩嘛",
+      "ref_sub_2": "怎麼？為甚麼你突然間看好他",
+      "target_sub_1": "八十萬兩咁少賣夠二百萬兩噉",
+      "target_sub_2": "點解啊點解你突然間睇得咁好"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "怎麼？為甚麼你突然間看好他",
+      "ref_sub_2": "我看你分析得那麼清楚",
+      "target_sub_1": "點解啊點解你突然間睇得咁好",
+      "target_sub_2": "我見你分析得咁清楚"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我看你分析得那麼清楚",
+      "ref_sub_2": "給你說說",
+      "target_sub_1": "我見你分析得咁清楚",
+      "target_sub_2": "畀你嘎巴嘎巴"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "給你說說",
+      "ref_sub_2": "我都覺得蘇燦像贏定的",
+      "target_sub_1": "畀你嘎巴嘎巴",
+      "target_sub_2": "我覺得蘇刷好似贏緊噉嘅嗨"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我都覺得蘇燦像贏定的",
+      "ref_sub_2": "過來過來",
+      "target_sub_1": "我覺得蘇刷好似贏緊噉嘅嗨",
+      "target_sub_2": "過嚟過嚟"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "過來過來",
+      "ref_sub_2": "我第二次全押",
+      "target_sub_1": "過嚟過嚟",
+      "target_sub_2": "我瞓兩次身"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "我第二次全押",
+      "ref_sub_2": "是嗎？",
+      "target_sub_1": "我瞓兩次身",
+      "target_sub_2": "係"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "是嗎？",
+      "ref_sub_2": "二百萬兩",
+      "target_sub_1": "係",
+      "target_sub_2": "二百萬兩係"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "二百萬兩",
+      "ref_sub_2": "豪氣！豪氣",
+      "target_sub_1": "二百萬兩係",
+      "target_sub_2": "豪氣豪氣"
+    },
+    "answer": {
+      "target_sub_1_shifted": "二百萬兩",
+      "target_sub_2_shifted": "係豪氣豪氣"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub_1": "豪氣！豪氣",
+      "ref_sub_2": "為甚麼你不下注？",
+      "target_sub_1": "係豪氣豪氣",
+      "target_sub_2": "點解你唔落住"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "為甚麼你不下注？",
+      "ref_sub_2": "我下注幹甚麼？他是我的兒子",
+      "target_sub_1": "點解你唔落住",
+      "target_sub_2": "咦我落住嚟做乜嘢啫嗰個我仔嚟噉啊"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "我下注幹甚麼？他是我的兒子",
+      "ref_sub_2": "糟了！我少分析了這個",
+      "target_sub_1": "咦我落住嚟做乜嘢啫嗰個我仔嚟噉啊",
+      "target_sub_2": "衰喇閉睇流一樣添"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "糟了！我少分析了這個",
+      "ref_sub_2": "少分析了甚麼？",
+      "target_sub_1": "衰喇閉睇流一樣添",
+      "target_sub_2": "睇流做咩啊"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "少分析了甚麼？",
+      "ref_sub_2": "血統",
+      "target_sub_1": "睇流做咩啊",
+      "target_sub_2": "血統啊我都知道係"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "血統",
+      "ref_sub_2": "主考到",
+      "target_sub_1": "血統啊我都知道係",
+      "target_sub_2": "主考"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "主考到",
+      "ref_sub_2": "不是老鄭主考嗎？",
+      "target_sub_1": "主考",
+      "target_sub_2": "咪唔係老井主考咩"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "請坐",
+      "ref_sub_2": "僧格林沁？",
+      "target_sub_1": "請坐",
+      "target_sub_2": "增價淋衫啊"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "僧格林沁？",
+      "ref_sub_2": "有甚麼問題？",
+      "target_sub_1": "增價淋衫啊",
+      "target_sub_2": "有乜問題要嘗"
+    },
+    "answer": {
+      "target_sub_1_shifted": "增價淋衫",
+      "target_sub_2_shifted": "啊有乜問題要嘗"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub_1": "有甚麼問題？",
+      "ref_sub_2": "他是博達爾多的叔叔",
+      "target_sub_1": "啊有乜問題要嘗",
+      "target_sub_2": "佢係博達爾多嘅阿蘇嚟嘎嘛係啊"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "他是博達爾多的叔叔",
+      "ref_sub_2": "開始",
+      "target_sub_1": "佢係博達爾多嘅阿蘇嚟嘎嘛係啊",
+      "target_sub_2": "啊開始啊"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "靶都射穿了！至少都多加兩分",
+      "ref_sub_2": "照道理是！照道理是",
+      "target_sub_1": "嘩把都射住埋最少都揀到兩分呀",
+      "target_sub_2": "照介係嘅照介係嘅"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "照道理是！照道理是",
+      "ref_sub_2": "蘇燦靶上沒有箭！博達爾多勝",
+      "target_sub_1": "照介係嘅照介係嘅",
+      "target_sub_2": "鬚襯把上冇箭畢多勝"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "考生上馬！準備下一回合",
+      "ref_sub_2": "趙先生",
+      "target_sub_1": "考生上馬準備下一回合哼教師先生",
+      "target_sub_2": "教師先生"
+    },
+    "answer": {
+      "target_sub_1_shifted": "考生上馬準備下一回合",
+      "target_sub_2_shifted": "哼教師先生教師先生"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub_1": "你拿著這套袖箭！必要時有用",
+      "ref_sub_2": "第二回合開始",
+      "target_sub_1": "你攞住呢套奏折必要時有用",
+      "target_sub_2": "第二回合開始"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "兵器都動了手腳？",
+      "ref_sub_2": "太黑暗了！退票不賭行不行？",
+      "target_sub_1": "冰氣都做埋手腳",
+      "target_sub_2": "太黑暗啦退飛唔到都唔得呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "追回一局了",
+      "ref_sub_2": "你的票撕了沒有",
+      "target_sub_1": "吓?吹返谷吹返谷啊喂",
+      "target_sub_2": "張飛明咩噶"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "你的票撕了沒有",
+      "ref_sub_2": "沒有",
+      "target_sub_1": "張飛明咩噶",
+      "target_sub_2": "黑咩咩咩咩"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "重新開始，讓你一手一腳",
+      "ref_sub_2": "免你說我欺負你",
+      "target_sub_1": "又頭再打個羊你單手單腳",
+      "target_sub_2": "廢時話我欺下你呀哈哈哈哈"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "你用這骯髒的手段來取得勝利？",
+      "ref_sub_2": "小子你睡醒了嗎",
+      "target_sub_1": "噉嘅嗱咋招你都想贏",
+      "target_sub_2": "瞓醒未呀靚仔你"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "小子你睡醒了嗎",
+      "ref_sub_2": "好棒呀！贏了",
+      "target_sub_1": "瞓醒未呀靚仔你",
+      "target_sub_2": "耶"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "好棒呀！贏了",
+      "ref_sub_2": "喝茶！喝茶",
+      "target_sub_1": "耶"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "喝茶！喝茶",
+      "ref_sub_2": "祝你好運",
+      "target_sub_2": "嗰度嘅best"
+    },
+    "answer": {
+      "target_sub_1_shifted": "嗰度嘅",
+      "target_sub_2_shifted": "best"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub_1": "祝你好運",
+      "ref_sub_2": "這當然要用臀啦！還有別處可用嗎？",
+      "target_sub_1": "best",
+      "target_sub_2": "嗰度就梗用個pack嘅啦仲有第二次咩係咪"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "這當然要用臀啦！還有別處可用嗎？",
+      "ref_sub_2": "是洋文",
+      "target_sub_1": "嗰度就梗用個pack嘅啦仲有第二次咩係咪",
+      "target_sub_2": "係洋文嚟㗎"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "是洋文",
+      "ref_sub_2": "洋文",
+      "target_sub_1": "係洋文嚟㗎",
+      "target_sub_2": "洋文吖嘛"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "洋文",
+      "ref_sub_2": "例上沒有說明不準用暗器",
+      "target_sub_1": "洋文吖嘛",
+      "target_sub_2": "黎尚武嗰名唔准用鴨氣"
+    },
+    "answer": {
+      "target_sub_1_shifted": "洋文",
+      "target_sub_2_shifted": "吖嘛黎尚武嗰名唔准用鴨氣"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "ref_sub_1": "例上沒有說明不準用暗器",
+      "ref_sub_2": "你先掉下來，這個回合判博達爾多勝",
+      "target_sub_1": "吖嘛黎尚武嗰名唔准用鴨氣",
+      "target_sub_2": "你先跌落地呢個回合判莫達以多勝吓"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "你個短命的老鄭，竟敢騙我",
+      "ref_sub_2": "以後不要給我看見你",
+      "target_sub_1": "你家唔家賊老隻啊逼我窮殘放我治療啊",
+      "target_sub_2": "你以後唔會畀我見到你"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "以後不要給我看見你",
+      "ref_sub_2": "見一次打一次",
+      "target_sub_1": "你以後唔會畀我見到你",
+      "target_sub_2": "見一鑊打鑊"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "見一次打一次",
+      "ref_sub_2": "不用了！你以後都不會見到他",
+      "target_sub_1": "見一鑊打鑊",
+      "target_sub_2": "唔使啦你以後都見唔到佢啊"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "不用了！你以後都不會見到他",
+      "ref_sub_2": "為甚麼？",
+      "target_sub_1": "唔使啦你以後都見唔到佢啊",
+      "target_sub_2": "點解啊"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "為甚麼？",
+      "ref_sub_2": "我現在就去劈他",
+      "target_sub_1": "點解啊",
+      "target_sub_2": "我而家就去劈佢"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "我現在就去劈他",
+      "ref_sub_2": "我那裡有二百萬輸？",
+      "target_sub_1": "我而家就去劈佢",
+      "target_sub_2": "我邊有二百萬輸啊嗱"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "我那裡有二百萬輸？",
+      "ref_sub_2": "只是說說而已",
+      "target_sub_1": "我邊有二百萬輸啊嗱",
+      "target_sub_2": "講下啫"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "只是說說而已",
+      "ref_sub_2": "卑鄙無恥",
+      "target_sub_1": "講下啫",
+      "target_sub_2": "卑鄙無恥"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "卑鄙無恥",
+      "ref_sub_2": "博達爾多三局兩勝，是今科武狀元",
+      "target_sub_1": "卑鄙無恥",
+      "target_sub_2": "博大已多三局兩勝係金科冇狀元"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "博達爾多三局兩勝，是今科武狀元",
+      "ref_sub_2": "明明是我贏！我抗議",
+      "target_sub_1": "博大已多三局兩勝係金科冇狀元",
+      "target_sub_2": "係我係我抗議"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "甚麼事？",
+      "ref_sub_2": "鏢有毒",
+      "target_sub_1": "做乜呀",
+      "target_sub_2": "指標有毒呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "鏢有毒",
+      "ref_sub_2": "報應來了！死得好",
+      "target_sub_1": "指標有毒呀",
+      "target_sub_2": "報應呀抵死呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "報應來了！死得好",
+      "ref_sub_2": "這枝有毒的鏢是他自己的",
+      "target_sub_1": "報應呀抵死呀",
+      "target_sub_2": "指標有毒都係佢自己嘅啫"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "這枝有毒的鏢是他自己的",
+      "ref_sub_2": "他死了，我兒子就當狀元？",
+      "target_sub_1": "指標有毒都係佢自己嘅啫",
+      "target_sub_2": "家陣佢死咗我仔咪做緊狀元"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "他死了，我兒子就當狀元？",
+      "ref_sub_2": "那我現在不是發財了嗎？",
+      "target_sub_1": "家陣佢死咗我仔咪做緊狀元",
+      "target_sub_2": "咁呢次我個法"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "那我現在不是發財了嗎？",
+      "ref_sub_2": "對⋯",
+      "target_sub_1": "咁呢次我個法",
+      "target_sub_2": "係呀係呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "對⋯",
+      "ref_sub_2": "你⋯你⋯",
+      "target_sub_1": "係呀係呀",
+      "target_sub_2": "你你"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "光宗耀祖了⋯",
+      "ref_sub_2": "有眼光",
+      "target_sub_1": "講中要早啦講中要早",
+      "target_sub_2": "有眼哥"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "有眼光",
+      "ref_sub_2": "大人，皇上說要親自欽點",
+      "target_sub_1": "有眼哥",
+      "target_sub_2": "精武大人皇上話要親自音點"
     },
     "answer": {}
   }

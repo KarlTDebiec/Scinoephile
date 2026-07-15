@@ -90,7 +90,7 @@ if "yue-Hant_transcribe" in actions:
         zho_hant_guide_path,
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
         output_dir_path=yue_hant_transcribe_path,
-        stop_at_idx=20,
+        stop_at_idx=60,
         overwrite=True,
     )
 if "yue-Hant_diff" in actions:

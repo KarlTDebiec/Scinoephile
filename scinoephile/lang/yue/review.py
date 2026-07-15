@@ -35,7 +35,7 @@ GuidedReviewPromptYueHant = GuidedReviewPrompt(
         唔好翻譯參考字幕，亦唔好為咗貼近參考字幕而改寫本來正確嘅粵文。
         唔好潤色或者改動語氣、文法、助詞、量詞同措辭。
         只有確實需要修改嘅粵文字幕先加入修改列表。每項修改必須包含字幕序號、
-        完整修訂後文本同英文備註。如果全部字幕都唔需要修改，請返回空嘅修改列表。"""),
+        完整修訂後文本同粵文備註。如果全部字幕都唔需要修改，請返回空嘅修改列表。"""),
     targets="yuewen",
     targets_desc="按順序排列、需要審核嘅粵文字幕",
     guides="cankao",
@@ -49,7 +49,7 @@ GuidedReviewPromptYueHant = GuidedReviewPrompt(
     guide_text_desc="參考字幕文本",
     revision_text_desc="修改後嘅完整粵文字幕文本",
     note="beizhu",
-    note_desc="關於粵文字幕修改嘅英文備註",
+    note_desc="關於粵文字幕修改嘅粵文備註",
     target_indices_err="查詢目標字幕序號必須由 1 開始、連續並按順序排列。",
     guide_indices_err="查詢參考字幕序號必須由 1 開始、連續並按順序排列。",
     revision_indices_err="答案修改序號必須唯一並按升序排列。",
@@ -73,7 +73,7 @@ PairwiseReviewPromptYueHant = PairwiseReviewPrompt(
         將一條粵文字幕同一條對應嘅參考字幕作比較校對；參考字幕可以係另一種語言。
         只修正參考字幕足以證實嘅明顯聽錯字、寫錯字或者名稱錯誤。
         唔好翻譯參考字幕，亦唔好改寫本來正確嘅粵文去配合參考字幕嘅措辭。
-        如果需要修改，回傳完整修訂後粵文同英文備註；如果唔需要修改，兩者都回傳空字串。
+        如果需要修改，回傳完整修訂後粵文同粵文備註；如果唔需要修改，兩者都回傳空字串。
         只有當粵文完全冇對應內容而且應該刪除時，先回傳 "�"。"""),
     target="yuewen",
     target_desc="要校對嘅粵文字幕",
@@ -81,6 +81,7 @@ PairwiseReviewPromptYueHant = PairwiseReviewPrompt(
     reference_desc="對應嘅參考字幕",
     output="xiugai",
     note="beizhu",
+    note_desc="改動説明（粵文）；如果唔需要修改請回傳空字串",
 )
 """LLM correspondence text for pairwise review of traditional Cantonese."""
 
@@ -99,7 +100,7 @@ ReviewPromptYueHant = ReviewPrompt(
         唔好潤色、改寫、改動語氣或用詞，亦唔好根據上下文改劇情。
         如果原句本身已經係合理嘅粵語講法，請保持原文不變。
         只有喺字幕需要修改時先加入一項修改。每項修改必須包含字幕序號、
-        修訂後嘅完整文本，同埋說明修改內容嘅備註。
+        修訂後嘅完整文本，同埋說明修改內容嘅粵文備註。
         如果全部字幕都唔需要修改，請返回空嘅修改列表。"""),
     subtitles="zimu",
     subtitles_desc="按順序排列、需要校對嘅粵文字幕",
@@ -111,7 +112,7 @@ ReviewPromptYueHant = ReviewPrompt(
     subtitle_text_desc="需要校對嘅粵文字幕文本",
     revision_text_desc="修改後嘅完整粵文字幕文本",
     note="beizhu",
-    note_desc="關於粵文字幕修改嘅備註說明",
+    note_desc="關於粵文字幕修改嘅粵文備註說明",
     subtitle_indices_err="查詢字幕序號必須由 1 開始、連續並按順序排列。",
     revision_indices_err="答案修改序號必須唯一並按升序排列。",
     revision_index_missing_err_tpl="答案修改序號 {idx} 喺查詢字幕中不存在。",

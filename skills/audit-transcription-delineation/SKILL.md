@@ -11,24 +11,22 @@ subtitles. Treat the provided target text as fixed input, even when it appears
 incorrect. Do not assess or comment on transcription accuracy, punctuation,
 wording, or character choice; those are reviewed later in a separate workflow.
 
-## Mandatory final output
+## Required report file
 
-If this skill runs an audit, paste the **entire six-column Markdown report
-inline in the final response**. This is a non-negotiable completion requirement.
+Always save the complete six-column Markdown report under `local/`. After
+auditing every row, add each concise audit note directly to that file's `Notes`
+cell. Do not leave notes only in commentary, tool output, or the final response.
 
-- Tool-call output, commentary, counts, findings, and a local file do not count
-  as showing the report.
-- A file link may supplement the inline report but must never replace it.
-- Never omit or truncate rows, even when the report is long.
-- Never wrap the report in a code fence.
 - Keep the table at exactly these columns: `Indexes`, `Reference`, `Input`,
   `Output`, `Notes`, and `Verified`.
-- Before responding, fill each row's `Notes` cell with your concise audit note
-  when you have one. Leave it blank when the row needs no note.
+- Leave `Notes` blank when a row needs no note.
 - Preserve the generated `Verified` cell: `✓` means the JSON test case is
   verified, and an empty cell means it is not verified.
 - Do not add a separate findings section; keep each observation beside the row
   it describes.
+- Validate the saved report after adding notes, then provide a clickable link
+  to it in the final response. Do not paste the table inline unless the user
+  explicitly requests it.
 
 ## Protect source data
 
@@ -66,16 +64,9 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit delineation \
   --reference <guide.srt> \
   --json <delineation.json> \
   --first-index <first> \
-  --last-index <last>
-```
-
-For a large report, also save it under `local/` so it can be read completely:
-
-```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit delineation \
-  --reference <guide.srt> \
-  --json <delineation.json> \
-  --outfile local/<dataset>_delineation_audit.md
+  --last-index <last> \
+  --filter all \
+  --outfile local/<dataset>_delineation_audit_<first>-<last>.md
 ```
 
 On PowerShell, configure UTF-8 as directed by the repository `AGENTS.md` before
@@ -131,7 +122,7 @@ Classify alignment notes precisely:
 After reviewing every row, fill the saved report's `Notes` cells wherever you
 have an alignment observation. Begin each note with `Delineation error;` or
 `Uncertain;`, followed by a concise explanation focused only on boundary
-ownership. Leave the cell blank when the row needs no note. Paste the entire
-interpreted report inline without adding a separate findings list. Do not claim
-the audit is complete until every row has been reviewed and the complete report
-is present in the final response.
+ownership. Leave the cell blank when the row needs no note. Validate that the
+edited file retains every generated row and the exact six-column shape. Do not
+claim the audit is complete until every row has been reviewed, all notes have
+been written to the saved report, and its link is ready for the final response.
