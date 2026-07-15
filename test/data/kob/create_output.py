@@ -91,8 +91,6 @@ if "yue-Hant_transcribe" in actions:
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
         output_dir_path=yue_hant_transcribe_path,
         stop_at_idx=20,
-        reviewer_kw={"test_cases": []},
-        translator_kw={"test_cases": []},
         overwrite=True,
     )
 if "yue-Hant_diff" in actions:

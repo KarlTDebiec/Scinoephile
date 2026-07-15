@@ -725,7 +725,6 @@
     "answer": {
       "revisions": []
     },
-    "few_shot": true,
     "verified": true
   },
   {
@@ -8394,7 +8393,7 @@
         {
           "index": 5,
           "text": "好嘢！嚇得我吖！咁都好啲",
-          "note": "Corrected 啊 to 吖."
+          "note": "Changed the sentence-final particle from \"啊\" to the Cantonese colloquial character \"吖\" for a more accurate Cantonese transcription."
         }
       ]
     },

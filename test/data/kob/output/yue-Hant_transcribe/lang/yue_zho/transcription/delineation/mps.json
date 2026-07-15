@@ -10627,9 +10627,34 @@
   },
   {
     "query": {
+      "ref_sub_1": "我知道，鎮定點",
+      "ref_sub_2": "走吧",
+      "target_sub_1": "我知道,鎮定啲,",
+      "target_sub_2": "行但"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "走吧",
+      "ref_sub_2": "失陪　　趙大人",
+      "target_sub_1": "行但"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "ref_sub_1": "失陪　　趙大人",
+      "ref_sub_2": "如霜姑娘到",
+      "target_sub_2": "如霜姑娘到啦"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
       "ref_sub_1": "如霜姑娘到",
       "ref_sub_2": "小女子如霜，拜見趙大人",
-      "target_sub_1": "但如霜姑娘到啦",
+      "target_sub_1": "如霜姑娘到啦",
       "target_sub_2": "小女子如霜,拜見趙大人"
     },
     "answer": {}
@@ -10638,7 +10663,6 @@
     "query": {
       "ref_sub_1": "走開⋯",
       "ref_sub_2": "誰敢欺負我的兒子，我就射誰",
-      "target_sub_1": "呀",
       "target_sub_2": "邊個獸頭欺我仔我蛋邊個"
     },
     "answer": {}
@@ -10647,7 +10671,7 @@
     "query": {
       "ref_sub_1": "他有多少家財？他夠不夠資格",
       "ref_sub_2": "老爺！是他們",
-      "target_sub_1": "又幾銀性㗎佢夠唔夠資格呀",
+      "target_sub_1": "佢又幾銀性㗎佢夠唔夠資格呀",
       "target_sub_2": "老爺係佢哋呀"
     },
     "answer": {}
@@ -10656,7 +10680,7 @@
     "query": {
       "ref_sub_1": "還有甚麼？說吧",
       "ref_sub_2": "今天是清太祖皇后葉赫拿拉氏的忌辰",
-      "target_sub_1": "還有什麼?說啊",
+      "target_sub_1": "什麼?說啊",
       "target_sub_2": "今天是現清太祖皇后葉克拿拉氏的忌辰"
     },
     "answer": {}
@@ -11899,41 +11923,15 @@
       "target_sub_1": "但如霜姑娘到啦"
     },
     "answer": {
-      "target_sub_1_shifted": "但",
-      "target_sub_2_shifted": "如霜姑娘到啦"
+      "target_sub_2_shifted": "但如霜姑娘到啦"
     },
     "difficulty": 1
   },
   {
     "query": {
-      "ref_sub_1": "我知道，鎮定點",
-      "ref_sub_2": "走吧",
-      "target_sub_1": "我知道,鎮定啲,",
-      "target_sub_2": "行但"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "走吧",
-      "ref_sub_2": "失陪　　趙大人",
-      "target_sub_1": "行但"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "ref_sub_1": "失陪　　趙大人",
-      "ref_sub_2": "如霜姑娘到",
-      "target_sub_2": "如霜姑娘到啦"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
       "ref_sub_1": "如霜姑娘到",
       "ref_sub_2": "小女子如霜，拜見趙大人",
-      "target_sub_1": "如霜姑娘到啦",
+      "target_sub_1": "但如霜姑娘到啦",
       "target_sub_2": "小女子如霜,拜見趙大人"
     },
     "answer": {}
@@ -12055,7 +12053,11 @@
       "target_sub_1": "銀票實在太普通了",
       "target_sub_2": "我有粒朝廷大內的定封珠,無價的"
     },
-    "answer": {}
+    "answer": {
+      "target_sub_1_shifted": "銀票實在太普通",
+      "target_sub_2_shifted": "了我有粒朝廷大內的定封珠,無價的"
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -12170,7 +12172,11 @@
       "ref_sub_2": "大膽！放肆",
       "target_sub_2": "放肆係"
     },
-    "answer": {}
+    "answer": {
+      "target_sub_1_shifted": "放肆",
+      "target_sub_2_shifted": "係"
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -12276,12 +12282,17 @@
       "ref_sub_2": "走開⋯",
       "target_sub_1": "黃州將軍呀"
     },
-    "answer": {}
+    "answer": {
+      "target_sub_1_shifted": "黃州將軍",
+      "target_sub_2_shifted": "呀"
+    },
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub_1": "走開⋯",
       "ref_sub_2": "誰敢欺負我的兒子，我就射誰",
+      "target_sub_1": "呀",
       "target_sub_2": "邊個獸頭欺我仔我蛋邊個"
     },
     "answer": {}
@@ -12329,13 +12340,17 @@
       "target_sub_1": "死你欺",
       "target_sub_2": "佢又幾銀性㗎佢夠唔夠資格呀"
     },
-    "answer": {}
+    "answer": {
+      "target_sub_1_shifted": "死你欺佢",
+      "target_sub_2_shifted": "又幾銀性㗎佢夠唔夠資格呀"
+    },
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub_1": "他有多少家財？他夠不夠資格",
       "ref_sub_2": "老爺！是他們",
-      "target_sub_1": "佢又幾銀性㗎佢夠唔夠資格呀",
+      "target_sub_1": "又幾銀性㗎佢夠唔夠資格呀",
       "target_sub_2": "老爺係佢哋呀"
     },
     "answer": {}
@@ -12573,13 +12588,17 @@
       "target_sub_1": "還有…還有",
       "target_sub_2": "什麼?說啊"
     },
-    "answer": {}
+    "answer": {
+      "target_sub_1_shifted": "還有…",
+      "target_sub_2_shifted": "還有什麼?說啊"
+    },
+    "difficulty": 1
   },
   {
     "query": {
       "ref_sub_1": "還有甚麼？說吧",
       "ref_sub_2": "今天是清太祖皇后葉赫拿拉氏的忌辰",
-      "target_sub_1": "什麼?說啊",
+      "target_sub_1": "還有什麼?說啊",
       "target_sub_2": "今天是現清太祖皇后葉克拿拉氏的忌辰"
     },
     "answer": {}
