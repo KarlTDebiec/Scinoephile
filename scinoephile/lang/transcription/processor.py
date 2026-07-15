@@ -9,6 +9,7 @@ from enum import StrEnum
 from logging import getLogger
 
 from pydub import AudioSegment
+from pydub.effects import normalize
 
 from scinoephile.audio.subtitles import AudioSeries, get_series_from_segments
 from scinoephile.audio.transcription import (
@@ -41,11 +42,26 @@ logger = getLogger(__name__)
 _AUDIO_END_TOLERANCE_SECONDS = 1.0
 """Maximum accepted Whisper timestamp extension beyond the source audio."""
 
+_EXPECTED_TAIL_TOLERANCE_SECONDS = 1.0
+"""Gap before the final guided subtitle that triggers focused recovery."""
+
 _MAX_COMPRESSION_RATIO = 2.4
 """Maximum Whisper compression ratio accepted for guided alignment."""
 
 _RECOVERY_TEMPERATURES = (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
 """Whisper temperature schedule used after standard decoding fails."""
+
+_TAIL_RECOVERY_CONTEXT_SECONDS = 3.0
+"""Audio retained before the final guided subtitle during focused recovery."""
+
+_TAIL_RECOVERY_HEADROOM_DB = 1.0
+"""Peak headroom used when normalizing focused tail audio."""
+
+_TAIL_RECOVERY_MAX_NO_SPEECH_PROBABILITY = 0.6
+"""Maximum no-speech probability accepted from focused tail recovery."""
+
+_TAIL_RECOVERY_MAX_SECONDS_PER_CHARACTER = 1.5
+"""Maximum duration per character accepted from focused tail recovery."""
 
 
 class DemucsMode(StrEnum):
@@ -129,6 +145,11 @@ class GuidedTranscriptionProcessor:
             temperature=_RECOVERY_TEMPERATURES,
             condition_on_previous_text=False,
         )
+        self.tail_recovery_transcriber = self._get_whisper_transcriber(
+            use_demucs=False,
+            use_vad=False,
+            condition_on_previous_text=False,
+        )
 
     def process(
         self,
@@ -194,7 +215,17 @@ class GuidedTranscriptionProcessor:
         Returns:
             transcribed and aligned audio subtitle block
         """
-        segments = self._transcribe_block_audio(audio_block.audio)
+        offset = audio_block.buffered_start
+        if offset is None:
+            offset = audio_block[0].start
+        expected_last_start = max(
+            0.0,
+            (reference_block[-1].start - offset) / 1000,
+        )
+        segments = self._transcribe_block_audio(
+            audio_block.audio,
+            expected_last_start=expected_last_start,
+        )
         if self.segment_splitter is None:
             split_segments = segments
         else:
@@ -202,9 +233,6 @@ class GuidedTranscriptionProcessor:
             for segment in segments:
                 split_segments.extend(self.segment_splitter(segment))
 
-        offset = audio_block.buffered_start
-        if offset is None:
-            offset = audio_block[0].start
         transcription_block = get_series_from_segments(
             split_segments,
             audio=audio_block.audio,
@@ -280,11 +308,17 @@ class GuidedTranscriptionProcessor:
             condition_on_previous_text=condition_on_previous_text,
         )
 
-    def _transcribe_block_audio(self, audio: AudioSegment) -> list[TranscribedSegment]:
+    def _transcribe_block_audio(
+        self,
+        audio: AudioSegment,
+        *,
+        expected_last_start: float | None = None,
+    ) -> list[TranscribedSegment]:
         """Transcribe one block of audio with the configured VAD behavior.
 
         Arguments:
             audio: block audio to transcribe
+            expected_last_start: expected start of the final guided subtitle
         Returns:
             transcribed segments
         Raises:
@@ -296,37 +330,42 @@ class GuidedTranscriptionProcessor:
             cache_audio,
             audio_duration=audio_duration,
         )
-        if segments is not None:
-            return segments
+        if segments is None:
+            if self.demucs_mode == DemucsMode.ON:
+                assert self.demucs_separator is not None
+                logger.info("Applying Demucs vocal separation before transcription")
+                audio = self.demucs_separator(audio)
 
-        if self.demucs_mode == DemucsMode.ON:
-            assert self.demucs_separator is not None
-            logger.info("Applying Demucs vocal separation before transcription")
-            audio = self.demucs_separator(audio)
+            for transcriber in self._get_standard_transcribers():
+                segments = self._transcribe_with_candidate(
+                    transcriber,
+                    audio,
+                    cache_audio=cache_audio,
+                    audio_duration=audio_duration,
+                )
+                if segments is not None:
+                    break
 
-        for transcriber in self._get_standard_transcribers():
-            segments = self._transcribe_with_candidate(
-                transcriber,
-                audio,
-                cache_audio=cache_audio,
-                audio_duration=audio_duration,
-            )
-            if segments is not None:
-                return segments
-
-        logger.info("Retrying block transcription with defensive Whisper decoding")
-        segments = self._transcribe_with_candidate(
-            self.recovery_transcriber,
-            audio,
-            cache_audio=cache_audio,
-            audio_duration=audio_duration,
-        )
+            if segments is None:
+                logger.info(
+                    "Retrying block transcription with defensive Whisper decoding"
+                )
+                segments = self._transcribe_with_candidate(
+                    self.recovery_transcriber,
+                    audio,
+                    cache_audio=cache_audio,
+                    audio_duration=audio_duration,
+                )
         if segments is None:
             raise ScinoephileError(
                 "Whisper produced no usable transcription after all configured "
                 "recovery attempts."
             )
-        return segments
+        return self._transcribe_with_focused_tail_recovery(
+            segments,
+            cache_audio,
+            expected_last_start=expected_last_start,
+        )
 
     def _transcribe_with_candidate(
         self,
@@ -364,6 +403,157 @@ class GuidedTranscriptionProcessor:
         ):
             return segments
         return None
+
+    def _transcribe_with_focused_tail_recovery(
+        self,
+        segments: list[TranscribedSegment],
+        audio: AudioSegment,
+        *,
+        expected_last_start: float | None,
+    ) -> list[TranscribedSegment]:
+        """Attempt focused recovery for possible speech near a guide-only tail.
+
+        Arguments:
+            segments: valid full-block transcription
+            audio: original block audio
+            expected_last_start: expected start of the final guided subtitle
+        Returns:
+            valid base transcription with any credible recovered tail appended
+        """
+        if expected_last_start is None:
+            return segments
+
+        last_word_end = max(
+            word.end for segment in segments for word in (segment.words or [])
+        )
+        if last_word_end + _EXPECTED_TAIL_TOLERANCE_SECONDS >= expected_last_start:
+            return segments
+
+        tail_start = max(
+            last_word_end,
+            expected_last_start - _TAIL_RECOVERY_CONTEXT_SECONDS,
+        )
+        tail_start_ms = round(tail_start * 1000)
+        tail_audio = audio[tail_start_ms:]
+        if len(tail_audio) == 0 or tail_audio.rms == 0:
+            logger.info(
+                f"Keeping valid base Whisper transcription ending at "
+                f"{last_word_end:.2f}s; focused tail audio is silent"
+            )
+            return segments
+
+        logger.info(
+            f"Attempting focused Whisper recovery from {tail_start:.2f}s after "
+            f"transcription ended at {last_word_end:.2f}s before final guided "
+            f"subtitle begins at {expected_last_start:.2f}s"
+        )
+        normalized_tail_audio = normalize(
+            tail_audio,
+            headroom=_TAIL_RECOVERY_HEADROOM_DB,
+        )
+        tail_segments = None
+        recovery_failed_with_assertion = False
+        try:
+            candidate_tail_segments = self.tail_recovery_transcriber(
+                normalized_tail_audio
+            )
+        except AssertionError as exc:
+            recovery_failed_with_assertion = True
+            logger.warning(
+                f"Keeping valid base Whisper transcription after focused tail "
+                f"recovery failed with an assertion: {exc}"
+            )
+        else:
+            if self._segments_are_usable(
+                candidate_tail_segments,
+                audio_duration=len(normalized_tail_audio) / 1000,
+            ):
+                tail_segments = candidate_tail_segments
+        if tail_segments is None:
+            if not recovery_failed_with_assertion:
+                logger.info(
+                    f"Keeping valid base Whisper transcription ending at "
+                    f"{last_word_end:.2f}s after unusable focused tail recovery"
+                )
+            return segments
+
+        recovered_segments = self._get_credible_tail_segments(
+            tail_segments,
+            tail_start=tail_start,
+            first_segment_id=max(segment.id for segment in segments) + 1,
+        )
+
+        if not recovered_segments:
+            logger.info(
+                f"Keeping valid base Whisper transcription ending at "
+                f"{last_word_end:.2f}s; focused tail recovery found no credible "
+                "speech"
+            )
+            return segments
+
+        logger.info(
+            f"Recovered {len(recovered_segments)} credible Whisper segment(s) "
+            "from the focused tail"
+        )
+        return [*segments, *recovered_segments]
+
+    @staticmethod
+    def _get_credible_tail_segments(
+        tail_segments: list[TranscribedSegment],
+        *,
+        tail_start: float,
+        first_segment_id: int,
+    ) -> list[TranscribedSegment]:
+        """Filter and shift credible segments from focused tail recovery.
+
+        Arguments:
+            tail_segments: transcription relative to the focused tail audio
+            tail_start: focused tail start relative to the block audio
+            first_segment_id: identifier assigned to the first recovered segment
+        Returns:
+            credible recovered segments shifted relative to the block audio
+        """
+        recovered_segments = []
+        next_segment_id = first_segment_id
+        for tail_segment in tail_segments:
+            if (
+                tail_segment.no_speech_prob is not None
+                and tail_segment.no_speech_prob
+                > _TAIL_RECOVERY_MAX_NO_SPEECH_PROBABILITY
+            ):
+                continue
+            shifted_words = []
+            for word in tail_segment.words or []:
+                text = word.text.strip()
+                if text and (
+                    (word.end - word.start) / len(text)
+                    > _TAIL_RECOVERY_MAX_SECONDS_PER_CHARACTER
+                ):
+                    continue
+                shifted_words.append(
+                    word.model_copy(
+                        update={
+                            "start": word.start + tail_start,
+                            "end": word.end + tail_start,
+                        }
+                    )
+                )
+            if not any(word.text.strip() for word in shifted_words):
+                continue
+            recovered_segments.append(
+                tail_segment.model_copy(
+                    update={
+                        "id": next_segment_id,
+                        "start": shifted_words[0].start,
+                        "end": shifted_words[-1].end,
+                        "text": "".join(word.text for word in shifted_words),
+                        "words": shifted_words,
+                    },
+                    deep=True,
+                )
+            )
+            next_segment_id += 1
+        return recovered_segments
 
     @staticmethod
     def _segments_are_usable(
