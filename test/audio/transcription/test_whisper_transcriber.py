@@ -94,6 +94,25 @@ def test_get_cache_path_preserves_default_decoding_identity(tmp_path: Path):
     assert transcriber._get_cache_path(audio) == tmp_path / f"{expected_sha256}.json"
 
 
+def test_get_cache_path_accepts_list_temperature_schedule(tmp_path: Path):
+    """Test list and tuple temperature schedules use the same cache key."""
+    audio = Mock(raw_data=b"audio")
+    list_transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+        temperature=[0.0, 0.2, 0.4],
+    )
+    tuple_transcriber = WhisperTranscriber(
+        cache_dir_path=tmp_path,
+        model_name="custom/model",
+        temperature=(0.0, 0.2, 0.4),
+    )
+
+    assert list_transcriber._get_cache_path(audio) == tuple_transcriber._get_cache_path(
+        audio
+    )
+
+
 def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch):
     """Test Whisper receives configured defensive decoding options."""
     whisper = Mock()

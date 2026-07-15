@@ -41,7 +41,7 @@ class WhisperTranscriber:
         cache_dir_path: Path | None = None,
         use_demucs: bool = False,
         use_vad: bool = True,
-        temperature: float | tuple[float, ...] = 0.0,
+        temperature: float | Sequence[float] = 0.0,
         condition_on_previous_text: bool = True,
     ):
         """Initialize.
@@ -320,7 +320,7 @@ class WhisperTranscriber:
     def _get_huggingface_repo_validation() -> tuple[type[Exception], Any]:
         """Import HuggingFace repo validation helpers on demand."""
         try:
-            from huggingface_hub.utils import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+            from huggingface_hub.utils import (  # noqa: E501, PLC0415
                 HFValidationError,
                 validate_repo_id,
             )
@@ -332,7 +332,7 @@ class WhisperTranscriber:
     def _get_snapshot_download() -> Any:
         """Import HuggingFace snapshot downloader on demand."""
         try:
-            from huggingface_hub import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from huggingface_hub import (  # noqa: PLC0415
                 snapshot_download,
             )
         except ImportError as exc:
@@ -343,7 +343,7 @@ class WhisperTranscriber:
     def _get_whisper_module() -> Any:
         """Import whisper-timestamped on demand."""
         try:
-            import whisper_timestamped as whisper  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+            import whisper_timestamped as whisper  # noqa: E501, PLC0415
         except ImportError as exc:
             raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
         return whisper
@@ -366,7 +366,7 @@ class WhisperTranscriber:
             f"vad-{'on' if self.use_vad else 'off'}"
         )
         if self.temperature != 0.0 or not self.condition_on_previous_text:
-            if isinstance(self.temperature, tuple):
+            if isinstance(self.temperature, Sequence):
                 temperature_key = ",".join(
                     f"{temperature:g}" for temperature in self.temperature
                 )

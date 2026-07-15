@@ -146,7 +146,7 @@ def test_line_cer(reference: str, candidate: str, expected: SeriesCERResult):
 
 
 def test_line_cer_string_includes_percentages():
-    """Line-level CER output should include percentages of reference length."""
+    """Test line-level CER output includes percentages of reference length."""
     result = LineCER("abc", "axc")
 
     assert str(result) == (
@@ -160,11 +160,17 @@ def test_line_cer_string_includes_percentages():
 
 
 def test_line_cer_string_uses_na_for_empty_reference():
-    """CER component percentages should be undefined for an empty reference."""
+    """Test line-level CER component percentages require a reference."""
     result = LineCER("", "abc")
 
-    assert "Correct: 0 (N/A)" in str(result)
-    assert "Insertions: 3 (N/A)" in str(result)
+    assert str(result) == (
+        "CER: inf\n"
+        "Correct: 0 (N/A)\n"
+        "Substitutions: 0 (N/A)\n"
+        "Insertions: 3 (N/A)\n"
+        "Deletions: 0 (N/A)\n"
+        "Reference length: 0"
+    )
 
 
 @parametrize(
@@ -188,7 +194,7 @@ def test_series_cer_ignores_separator_only_line_wrapping(
 
 
 def test_series_cer_string_includes_percentages():
-    """Series-level CER output should include percentages of reference length."""
+    """Test series-level CER output includes percentages of reference length."""
     result = SeriesCER(get_text_series("abc"), get_text_series("axc"))
 
     assert str(result) == (
@@ -198,6 +204,20 @@ def test_series_cer_string_includes_percentages():
         "Insertions: 0 (0.00%)\n"
         "Deletions: 0 (0.00%)\n"
         "Reference length: 3"
+    )
+
+
+def test_series_cer_string_uses_na_for_empty_reference():
+    """Test series-level CER component percentages require a reference."""
+    result = SeriesCER(get_text_series(), get_text_series("abc"))
+
+    assert str(result) == (
+        "CER: inf\n"
+        "Correct: 0 (N/A)\n"
+        "Substitutions: 0 (N/A)\n"
+        "Insertions: 3 (N/A)\n"
+        "Deletions: 0 (N/A)\n"
+        "Reference length: 0"
     )
 
 
