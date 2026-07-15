@@ -11,6 +11,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .audit_delineation_cli import AuditDelineationCli
+from .audit_guided_review_cli import AuditGuidedReviewCli
 from .audit_review_cli import AuditReviewCli
 from .audit_review_dual_cli import AuditReviewDualCli
 from .audit_review_trad_cli import AuditReviewTradCli
@@ -60,6 +61,7 @@ class AuditCli(ScinoephileCliBase):
         """
         return {
             AuditDelineationCli.name(): AuditDelineationCli,
+            AuditGuidedReviewCli.name(): AuditGuidedReviewCli,
             AuditReviewCli.name(): AuditReviewCli,
             AuditReviewDualCli.name(): AuditReviewDualCli,
             AuditReviewTradCli.name(): AuditReviewTradCli,

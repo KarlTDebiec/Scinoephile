@@ -49,12 +49,12 @@ class DelineationManager(Manager):
             prompt,
             {
                 "output_one": PromptModelField(
-                    alias=prompt.src_2_sub_1_shifted,
-                    description=prompt.src_2_sub_1_shifted_desc,
+                    alias=prompt.target_sub_1_shifted,
+                    description=prompt.target_sub_1_shifted_desc,
                 ),
                 "output_two": PromptModelField(
-                    alias=prompt.src_2_sub_2_shifted,
-                    description=prompt.src_2_sub_2_shifted_desc,
+                    alias=prompt.target_sub_2_shifted,
+                    description=prompt.target_sub_2_shifted_desc,
                 ),
             },
         )
@@ -77,20 +77,20 @@ class DelineationManager(Manager):
             prompt,
             {
                 "reference_one": PromptModelField(
-                    alias=prompt.src_1_sub_1,
-                    description=prompt.src_1_sub_1_desc,
+                    alias=prompt.ref_sub_1,
+                    description=prompt.ref_sub_1_desc,
                 ),
                 "reference_two": PromptModelField(
-                    alias=prompt.src_1_sub_2,
-                    description=prompt.src_1_sub_2_desc,
+                    alias=prompt.ref_sub_2,
+                    description=prompt.ref_sub_2_desc,
                 ),
                 "target_one": PromptModelField(
-                    alias=prompt.src_2_sub_1,
-                    description=prompt.src_2_sub_1_desc,
+                    alias=prompt.target_sub_1,
+                    description=prompt.target_sub_1_desc,
                 ),
                 "target_two": PromptModelField(
-                    alias=prompt.src_2_sub_2,
-                    description=prompt.src_2_sub_2_desc,
+                    alias=prompt.target_sub_2,
+                    description=prompt.target_sub_2_desc,
                 ),
             },
         )

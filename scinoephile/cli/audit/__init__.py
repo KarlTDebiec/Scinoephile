@@ -3,7 +3,7 @@
 """Command-line interfaces for subtitle audits.
 
 Package hierarchy (modules may import from any above):
-* audit_delineation_cli / audit_workflow_cli_base
+* audit_delineation_cli / audit_guided_review_cli / audit_workflow_cli_base
 * audit_review_cli / audit_review_dual_cli / audit_review_trad_cli
 * audit_cli
 """

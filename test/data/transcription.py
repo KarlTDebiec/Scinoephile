@@ -12,13 +12,16 @@ from typing import Any
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language, ScinoephileError
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS
+from scinoephile.workflows.review import review_series_guided
 from scinoephile.workflows.transcription import transcribe_series_guided
 
 __all__ = [
     "get_reference_for_guide_blocks",
     "process_transcription",
+    "process_transcription_guided_review",
 ]
 
 logger = getLogger(__name__)
@@ -163,3 +166,79 @@ def process_transcription(
     logger.info(f"{name} CER:\n{SeriesCER(evaluation_reference, transcribe)}")
     logger.info(f"Saved transcription output under {output_dir_path}")
     return transcribe
+
+
+def process_transcription_guided_review(
+    transcribe_path: Path,
+    guide_path: Path,
+    *,
+    language: Language,
+    guide_language: Language,
+    reference_path: Path,
+    name: str | None = None,
+    guided_review_path: Path | None = None,
+    stop_at_idx: int | None = None,
+    overwrite_srt: bool = False,
+    reviewer_kw: dict[str, Any] | None = None,
+) -> Series:
+    """Review a completed transcription in guide-aligned blocks.
+
+    This is a separate downstream stage from initial transcription, delineation,
+    and punctuation.
+
+    Arguments:
+        transcribe_path: initial transcription output to review
+        guide_path: guide subtitles providing block-level context
+        language: transcription language
+        guide_language: guide subtitle language
+        reference_path: expected transcription used only to compute CER
+        name: label included in the CER log
+        guided_review_path: guided-review output path; defaults to the transcription
+          filename with `_guided_review` appended to its stem
+        stop_at_idx: exclusive review block index at which to stop processing
+        overwrite_srt: whether to overwrite an existing guided-review output
+        reviewer_kw: additional keyword arguments for `review_series_guided`
+    Returns:
+        guided block-reviewed transcription
+    """
+    if name is None:
+        name = f"{language.tag} transcription guided review"
+    if guided_review_path is None:
+        guided_review_path = transcribe_path.with_name(
+            f"{transcribe_path.stem}_guided_review{transcribe_path.suffix}"
+        )
+
+    reference = Series.load(reference_path)
+    guide = Series.load(guide_path)
+    if guided_review_path.exists() and not overwrite_srt:
+        guided_review = Series.load(guided_review_path)
+    else:
+        transcribe = Series.load(transcribe_path)
+        reviewer_kw = dict(reviewer_kw or {})
+        language_pair_name = f"{language.tag[:3]}_{guide_language.tag[:3]}"
+        reviewer_kw.setdefault(
+            "test_case_path",
+            transcribe_path.parent
+            / "lang"
+            / language_pair_name
+            / "guided_review"
+            / f"{get_torch_device()}.json",
+        )
+        guided_review = review_series_guided(
+            transcribe,
+            guide,
+            language=language,
+            guide_language=guide_language,
+            stop_at_idx=stop_at_idx,
+            **reviewer_kw,
+        )
+        guided_review.save(guided_review_path, exist_ok=True)
+
+    evaluation_reference = get_reference_for_guide_blocks(
+        reference,
+        guide,
+        stop_at_idx,
+    )
+    logger.info(f"{name} CER:\n{SeriesCER(evaluation_reference, guided_review)}")
+    logger.info(f"Saved guided-review output to {guided_review_path}")
+    return guided_review

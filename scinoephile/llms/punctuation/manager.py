@@ -49,8 +49,8 @@ class PunctuationManager(Manager):
             prompt,
             {
                 "output": PromptModelField(
-                    alias=prompt.output,
-                    description=prompt.output_desc,
+                    alias=prompt.target_sub_punctuated,
+                    description=prompt.target_sub_punctuated_desc,
                 ),
             },
         )
@@ -72,13 +72,13 @@ class PunctuationManager(Manager):
             PunctuationQuery,
             prompt,
             {
-                "subtitles": PromptModelField(
-                    alias=prompt.src_1,
-                    description=prompt.src_1_desc,
-                ),
                 "guide": PromptModelField(
-                    alias=prompt.src_2,
-                    description=prompt.src_2_desc,
+                    alias=prompt.ref_sub,
+                    description=prompt.ref_sub_desc,
+                ),
+                "subtitles": PromptModelField(
+                    alias=prompt.target_subs,
+                    description=prompt.target_subs_desc,
                 ),
             },
         )

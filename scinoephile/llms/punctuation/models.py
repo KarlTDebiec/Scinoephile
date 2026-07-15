@@ -31,18 +31,18 @@ class PunctuationQuery(Query):
 
     prompt: ClassVar[PunctuationPrompt] = _BASE_PROMPT
     """Text and field aliases for LLM correspondence."""
-    subtitles: list[str]
-    """Subtitle lines to combine and punctuate, in order."""
     guide: str
     """Guide subtitle whose punctuation informs the output."""
+    subtitles: list[str]
+    """Subtitle lines to combine and punctuate, in order."""
 
     @model_validator(mode="after")
     def validate_required_fields(self) -> Self:
         """Ensure subtitle lines and their guide are nonempty."""
-        if not self.subtitles:
-            raise ValueError(self.prompt.src_1_missing_err)
         if not self.guide:
-            raise ValueError(self.prompt.src_2_missing_err)
+            raise ValueError(self.prompt.ref_sub_missing_err)
+        if not self.subtitles:
+            raise ValueError(self.prompt.target_subs_missing_err)
         return self
 
 
@@ -58,7 +58,7 @@ class PunctuationAnswer(Answer):
     def validate_output(self) -> Self:
         """Ensure output text is nonempty."""
         if not self.output:
-            raise ValueError(self.prompt.output_missing_err)
+            raise ValueError(self.prompt.target_sub_punctuated_missing_err)
         return self
 
 
@@ -109,5 +109,5 @@ class PunctuationTestCase(TestCase):
         )
         received = remove_punc_and_whitespace(self.answer.output)
         if expected != received:
-            raise ValueError(self.prompt.src_1_chars_changed_err(expected, received))
+            raise ValueError(self.prompt.target_chars_changed_err(expected, received))
         return self

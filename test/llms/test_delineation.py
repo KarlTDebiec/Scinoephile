@@ -30,21 +30,21 @@ from test.helpers import test_data_root
 
 _LOCALIZED_PROMPT = DelineationPrompt(
     language=Language.zho_hant,
-    src_1_sub_1="cankao_yi",
-    src_1_sub_1_desc="第一條參考字幕",
-    src_1_sub_2="cankao_er",
-    src_1_sub_2_desc="第二條參考字幕",
-    src_2_sub_1="mubiao_yi",
-    src_2_sub_1_desc="第一條初始目標字幕",
-    src_2_sub_2="mubiao_er",
-    src_2_sub_2_desc="第二條初始目標字幕",
-    src_2_sub_1_sub_2_missing_err="查詢至少要有一條目標字幕。",
-    src_2_sub_1_shifted="shuchu_yi",
-    src_2_sub_1_shifted_desc="第一條調整後目標字幕",
-    src_2_sub_2_shifted="shuchu_er",
-    src_2_sub_2_shifted_desc="第二條調整後目標字幕",
-    src_2_sub_1_sub_2_unchanged_err="調整後目標字幕不可原樣重複。",
-    src_2_chars_changed_err_tpl=(
+    ref_sub_1="cankao_yi",
+    ref_sub_1_desc="第一條參考字幕",
+    ref_sub_2="cankao_er",
+    ref_sub_2_desc="第二條參考字幕",
+    target_sub_1="mubiao_yi",
+    target_sub_1_desc="第一條初始目標字幕",
+    target_sub_2="mubiao_er",
+    target_sub_2_desc="第二條初始目標字幕",
+    target_subs_missing_err="查詢至少要有一條目標字幕。",
+    target_sub_1_shifted="shuchu_yi",
+    target_sub_1_shifted_desc="第一條調整後目標字幕",
+    target_sub_2_shifted="shuchu_er",
+    target_sub_2_shifted_desc="第二條調整後目標字幕",
+    target_subs_unchanged_err="調整後目標字幕不可原樣重複。",
+    target_chars_changed_err_tpl=(
         "調整後目標字幕字元不一致：\n期望：{expected}\n收到：{received}"
     ),
 )
@@ -209,7 +209,7 @@ def test_static_models_validate_target_presence_and_boundary_shifts():
     assert explicitly_difficult.difficulty == 3
     with raises(
         ValidationError,
-        match=DelineationManager.base_prompt.src_2_sub_1_sub_2_missing_err,
+        match=DelineationManager.base_prompt.target_subs_missing_err,
     ):
         DelineationTestCase.model_validate(
             {
@@ -221,7 +221,7 @@ def test_static_models_validate_target_presence_and_boundary_shifts():
         )
     with raises(
         ValidationError,
-        match=DelineationManager.base_prompt.src_2_sub_1_sub_2_unchanged_err,
+        match=DelineationManager.base_prompt.target_subs_unchanged_err,
     ):
         DelineationTestCase.model_validate(
             {
@@ -250,7 +250,7 @@ def test_generated_models_use_prompt_specific_validation_errors():
 
     with raises(
         ValidationError,
-        match=_LOCALIZED_PROMPT.src_2_sub_1_sub_2_missing_err,
+        match=_LOCALIZED_PROMPT.target_subs_missing_err,
     ):
         test_case_cls.model_validate(
             {
@@ -262,7 +262,7 @@ def test_generated_models_use_prompt_specific_validation_errors():
         )
     with raises(
         ValidationError,
-        match=_LOCALIZED_PROMPT.src_2_sub_1_sub_2_unchanged_err,
+        match=_LOCALIZED_PROMPT.target_subs_unchanged_err,
     ):
         test_case_cls.model_validate(
             {
@@ -300,25 +300,25 @@ def test_persistence_uses_base_prompt_aliases_and_omits_defaults(tmp_path: Path)
     assert json.loads(output_path.read_text(encoding="utf-8")) == [
         {
             "query": {
-                "src_1_sub_1": "參考一",
-                "src_1_sub_2": "參考二",
-                "src_2_sub_1": "甲",
+                "ref_sub_1": "參考一",
+                "ref_sub_2": "參考二",
+                "target_sub_1": "甲",
             },
-            "answer": {"src_2_sub_2_shifted": "甲"},
+            "answer": {"target_sub_2_shifted": "甲"},
             "difficulty": 1,
             "verified": True,
         }
     ]
     persisted = PersistedTestCase.from_test_case(test_case, DelineationManager)
     assert persisted.query == {
-        "src_1_sub_1": "參考一",
-        "src_1_sub_2": "參考二",
-        "src_2_sub_1": "甲",
-        "src_2_sub_2": "",
+        "ref_sub_1": "參考一",
+        "ref_sub_2": "參考二",
+        "target_sub_1": "甲",
+        "target_sub_2": "",
     }
     assert persisted.answer == {
-        "src_2_sub_1_shifted": "",
-        "src_2_sub_2_shifted": "甲",
+        "target_sub_1_shifted": "",
+        "target_sub_2_shifted": "甲",
     }
 
     loaded = load_test_cases_from_json(

@@ -19,6 +19,7 @@ from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import (
     get_reference_for_guide_blocks,
     process_transcription,
+    process_transcription_guided_review,
 )
 from test.helpers import test_data_root
 
@@ -34,13 +35,16 @@ yue_hans_path = output_path / "yue-Hans"
 yue_hant_transcribe_path = output_path / "yue-Hant_transcribe"
 zho_hant_guide_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
 
-transcription_stop_at_idx: int | None = 70
+transcription_stop_at_idx: int | None = None
 yue_hant_transcribe_srt_path = yue_hant_transcribe_path / "transcribe.srt"
 if transcription_stop_at_idx is not None:
     yue_hant_transcribe_srt_path = (
         yue_hant_transcribe_path
         / f"transcribe_first_{transcription_stop_at_idx}_blocks.srt"
     )
+yue_hant_guided_review_srt_path = yue_hant_transcribe_srt_path.with_name(
+    f"{yue_hant_transcribe_srt_path.stem}_guided_review.srt"
+)
 
 actions = {
     # "eng_ocr",
@@ -50,7 +54,8 @@ actions = {
     # "yue-Hant",
     # "zho-Hans_eng",
     # "yue-Hans_eng",
-    "yue-Hant_transcribe",
+    # "yue-Hant_transcribe",
+    "yue-Hant_guided_review",
     "yue-Hant_diff",
 }
 
@@ -107,14 +112,27 @@ if "yue-Hant_transcribe" in actions:
         stop_at_idx=transcription_stop_at_idx,
         transcription_kw={
             "delineation_test_cases": get_kob_yue_hant_delineation_test_cases(),
-            "demucs_mode": DemucsMode.ON,
+            "demucs_mode": DemucsMode.AUTO,
             "punctuation_test_cases": [],
             "vad_mode": VADMode.AUTO,
         },
         overwrite_srt=False,
     )
+if "yue-Hant_guided_review" in actions:
+    process_transcription_guided_review(
+        yue_hant_transcribe_srt_path,
+        zho_hant_guide_path,
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
+        name="KOB yue-Hant transcription guided review",
+        guided_review_path=yue_hant_guided_review_srt_path,
+        stop_at_idx=transcription_stop_at_idx,
+        reviewer_kw={"test_cases": []},
+        overwrite_srt=False,
+    )
 if "yue-Hant_diff" in actions:
-    yue_hant_transcribe = Series.load(yue_hant_transcribe_srt_path)
+    yue_hant_transcribe = Series.load(yue_hant_guided_review_srt_path)
     zho_hant_guide = Series.load(zho_hant_guide_path)
     yue_hant_reference = Series.load(
         yue_hant_path / "clean_review_flatten_timewarp.srt"
@@ -136,7 +154,7 @@ if "yue-Hant_diff" in actions:
     diff = SeriesDiff(
         yue_hant_transcribe,
         yue_hant_reference,
-        one_lbl="TRANSCRIBE",
+        one_lbl="GUIDED REVIEW",
         two_lbl="REFERENCE",
     )
     print(

@@ -33,24 +33,24 @@ YueZhoDelineationPromptYueHant = DelineationPrompt(
         或者將 yuewen_2 開頭嘅字符移到 yuewen_1 末尾。
         請喺 yuewen_1_yidong 同 yuewen_2_yidong 返回調整後嘅粵文字幕。
         如果唔需要調整，請 yuewen_1_yidong 同 yuewen_2_yidong 都返回空字串。"""),
-    src_1_sub_1="zhongwen_1",
-    src_1_sub_1_desc="已知字幕1嘅中文",
-    src_1_sub_2="zhongwen_2",
-    src_1_sub_2_desc="已知字幕2嘅中文",
-    src_2_sub_1="yuewen_1",
-    src_2_sub_1_desc="初步字幕1嘅粵文",
-    src_2_sub_2="yuewen_2",
-    src_2_sub_2_desc="初步字幕2嘅粵文",
-    src_2_sub_1_sub_2_missing_err="查詢要有 yuewen_1、yuewen_2，或者兩個都有。",
-    src_2_sub_1_shifted="yuewen_1_yidong",
-    src_2_sub_1_shifted_desc="調整後字幕1嘅粵文",
-    src_2_sub_2_shifted="yuewen_2_yidong",
-    src_2_sub_2_shifted_desc="調整後字幕2嘅粵文",
-    src_2_sub_1_sub_2_unchanged_err=(
+    ref_sub_1="zhongwen_1",
+    ref_sub_1_desc="已知字幕1嘅中文",
+    ref_sub_2="zhongwen_2",
+    ref_sub_2_desc="已知字幕2嘅中文",
+    target_sub_1="yuewen_1",
+    target_sub_1_desc="初步字幕1嘅粵文",
+    target_sub_2="yuewen_2",
+    target_sub_2_desc="初步字幕2嘅粵文",
+    target_subs_missing_err="查詢要有 yuewen_1、yuewen_2，或者兩個都有。",
+    target_sub_1_shifted="yuewen_1_yidong",
+    target_sub_1_shifted_desc="調整後字幕1嘅粵文",
+    target_sub_2_shifted="yuewen_2_yidong",
+    target_sub_2_shifted_desc="調整後字幕2嘅粵文",
+    target_subs_unchanged_err=(
         "回答嘅 yuewen_1_yidong 同 yuewen_2_yidong 同查詢嘅 yuewen_1、yuewen_2 "
         "一樣；如果唔需要調整，yuewen_1_yidong 同 yuewen_2_yidong 要返空字串。"
     ),
-    src_2_chars_changed_err_tpl=(
+    target_chars_changed_err_tpl=(
         "回答裏拼埋嘅 yuewen_1_yidong 同 yuewen_2_yidong 同查詢拼埋嘅 "
         "yuewen_1 同 yuewen_2 唔一致：\n"
         "期望: {expected}\n"
@@ -78,16 +78,16 @@ YueZhoPunctuationPromptYueHant = PunctuationPrompt(
         唔好從中文字幕拷貝漢字。
         只可以調整粵文嘅標點同空格以配合中文字幕。
         除咗標點同空格之外唔好改任何粵文內容。"""),
-    src_1="yuewen_to_punctuate",
-    src_1_desc="要整理同加標點嘅粵文字幕行",
-    src_2="zhongwen",
-    src_2_desc="對應嘅中文字幕",
-    src_1_missing_err="查詢必須包含要整理同加標點嘅粵文字幕行。",
-    src_2_missing_err="查詢必須包含對應嘅中文字幕。",
-    output="yuewen_punctuated",
-    output_desc="整理同加標點後嘅粵文字幕",
-    output_missing_err="答案必須包含整理同加標點後嘅粵文字幕。",
-    src_1_chars_changed_err_tpl=(
+    ref_sub="zhongwen",
+    ref_sub_desc="對應嘅中文字幕",
+    target_subs="yuewen_to_punctuate",
+    target_subs_desc="要整理同加標點嘅粵文字幕行",
+    ref_sub_missing_err="查詢必須包含對應嘅中文字幕。",
+    target_subs_missing_err="查詢必須包含要整理同加標點嘅粵文字幕行。",
+    target_sub_punctuated="yuewen_punctuated",
+    target_sub_punctuated_desc="整理同加標點後嘅粵文字幕",
+    target_sub_punctuated_missing_err="答案必須包含整理同加標點後嘅粵文字幕。",
+    target_chars_changed_err_tpl=(
         "回答嘅 yuewen_punctuated 移除標點同空格後，同查詢入面拼埋嘅 "
         "yuewen_to_punctuate 唔一致：\n"
         "期望: {expected}\n"

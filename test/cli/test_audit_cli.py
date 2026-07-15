@@ -11,6 +11,7 @@ from pytest import CaptureFixture, mark, raises
 
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
+from scinoephile.cli.audit.audit_guided_review_cli import AuditGuidedReviewCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
@@ -113,10 +114,82 @@ def test_audit_cli_subcommands():
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
         "delineation": AuditDelineationCli,
+        "guided-review": AuditGuidedReviewCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
     }
+
+
+def test_audit_guided_review_cli_stdout_and_outfile(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test guided-review audit output to stdout and a file.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    target_path = tmp_path / "target.srt"
+    guide_path = tmp_path / "guide.srt"
+    _write_srt(target_path, ("原文",))
+    _write_srt(guide_path, ("參考",))
+    json_path = tmp_path / "guided_review.json"
+    json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "targets": [{"index": 1, "text": "原文"}],
+                        "guides": [{"index": 1, "text": "參考"}],
+                    },
+                    "answer": {
+                        "revisions": [
+                            {
+                                "index": 1,
+                                "text": "修訂",
+                                "note": "correction",
+                            }
+                        ]
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    arguments = f"--target {target_path} --guide {guide_path} --json {json_path}"
+
+    run_cli_with_args(
+        AuditGuidedReviewCli,
+        f"{arguments} --first-index 1 --last-index 1 --filter changes",
+    )
+    stdout = capsys.readouterr().out
+    assert stdout.startswith("# Guided Subtitle Review Audit\n")
+    assert "- row filter: changes" in stdout
+    assert "- target subtitle range: 1 through 1" in stdout
+    assert "- subtitles: 1" in stdout
+    assert "| 1 | 參考 | 原文<br>修訂 |  |" in stdout
+
+    outfile_path = tmp_path / "audit.md"
+    run_cli_with_args(
+        AuditGuidedReviewCli,
+        f"{arguments} --outfile {outfile_path}",
+    )
+    assert capsys.readouterr().out == ""
+    assert outfile_path.read_text(encoding="utf-8").startswith(
+        "# Guided Subtitle Review Audit\n"
+    )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditGuidedReviewCli,
+            f"{arguments} --first-index 2 --last-index 1",
+        )
+    assert "--first-index must be less than or equal to --last-index" in (
+        capsys.readouterr().err
+    )
 
 
 def test_audit_delineation_cli_stdout_and_outfile(
@@ -137,14 +210,14 @@ def test_audit_delineation_cli_stdout_and_outfile(
             [
                 {
                     "query": {
-                        "src_1_sub_1": "參考一",
-                        "src_1_sub_2": "參考二",
-                        "src_2_sub_1": "甲乙",
-                        "src_2_sub_2": "丙",
+                        "ref_sub_1": "參考一",
+                        "ref_sub_2": "參考二",
+                        "target_sub_1": "甲乙",
+                        "target_sub_2": "丙",
                     },
                     "answer": {
-                        "src_2_sub_1_shifted": "甲",
-                        "src_2_sub_2_shifted": "乙丙",
+                        "target_sub_1_shifted": "甲",
+                        "target_sub_2_shifted": "乙丙",
                     },
                 }
             ],

@@ -1,0 +1,197 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Tests for guided subtitle review audit reports."""
+
+from __future__ import annotations
+
+from pytest import raises
+
+from scinoephile.analysis.guided_review_audit import (
+    GuidedReviewAuditFilter,
+    audit_guided_review,
+)
+from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.llms.guided_review import GuidedReviewTestCase
+
+
+def test_audit_guided_review_formats_and_sorts_subtitles():
+    """Test sparse revisions and notes are rendered in subtitle order."""
+    target, guide = _get_series_pair()
+    first_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [
+                    {"index": 1, "text": "甲|乙"},
+                    {"index": 2, "text": "丙"},
+                ],
+                "guides": [{"index": 1, "text": "參考一"}],
+            },
+            "answer": {
+                "revisions": [{"index": 2, "text": "修訂丙", "note": "correction"}]
+            },
+        }
+    )
+    second_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "丁"}],
+                "guides": [{"index": 1, "text": "參考二"}],
+            },
+            "answer": {"revisions": []},
+            "verified": True,
+        }
+    )
+
+    report = audit_guided_review(target, guide, (second_case, first_case))
+
+    assert "- subtitles: 3" in report
+    assert "- revised subtitles: 1" in report
+    assert "- unchanged subtitles: 2" in report
+    assert "unanswered subtitles" not in report
+    assert "- verified subtitles: 1" in report
+    assert "- unverified subtitles: 2" in report
+    assert "| Subtitle | Guide | Target / revision | Notes |" in report
+    first_row = "| 1 | 參考一 | 甲\\|乙 |  |"
+    second_row = "| 2 | 參考一 | 丙<br>修訂丙 |  |"
+    third_row = "| 3 | 參考二 | 丁 |  |"
+    assert report.index(first_row) < report.index(second_row) < report.index(third_row)
+
+
+def test_audit_guided_review_filters_rows_and_target_range():
+    """Test status filters and exact inclusive target ranges."""
+    target, guide = _get_series_pair()
+    test_cases = (
+        GuidedReviewTestCase.model_validate(
+            {
+                "query": {
+                    "targets": [
+                        {"index": 1, "text": "甲|乙"},
+                        {"index": 2, "text": "丙"},
+                    ],
+                    "guides": [{"index": 1, "text": "參考一"}],
+                },
+                "answer": {
+                    "revisions": [{"index": 2, "text": "修訂丙", "note": "correction"}]
+                },
+            }
+        ),
+        GuidedReviewTestCase.model_validate(
+            {
+                "query": {
+                    "targets": [{"index": 1, "text": "丁"}],
+                    "guides": [{"index": 1, "text": "參考二"}],
+                },
+                "answer": {"revisions": []},
+                "verified": True,
+            }
+        ),
+    )
+
+    changed_report = audit_guided_review(
+        target,
+        guide,
+        test_cases,
+        row_filter=GuidedReviewAuditFilter.changes,
+    )
+    unverified_report = audit_guided_review(
+        target,
+        guide,
+        test_cases,
+        row_filter=GuidedReviewAuditFilter.unverified,
+    )
+    ranged_report = audit_guided_review(
+        target,
+        guide,
+        test_cases,
+        first_index=3,
+        last_index=3,
+    )
+    second_report = audit_guided_review(
+        target,
+        guide,
+        test_cases,
+        first_index=2,
+        last_index=2,
+    )
+
+    assert "- row filter: changes" in changed_report
+    assert "- table rows: 1" in changed_report
+    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |" in changed_report
+    assert "- row filter: unverified" in unverified_report
+    assert "- table rows: 2" in unverified_report
+    assert "| 1 | 參考一 | 甲\\|乙 |  |" in unverified_report
+    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |" in unverified_report
+    assert "- subtitles: 1" in ranged_report
+    assert "- target subtitle range: 3 through 3" in ranged_report
+    assert "- table rows: 1" in ranged_report
+    assert "| 3 | 參考二 | 丁 |  |" in ranged_report
+    assert "- subtitles: 1" in second_report
+    assert "- target subtitle range: 2 through 2" in second_report
+    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |" in second_report
+
+
+def test_audit_guided_review_rejects_unmatched_case():
+    """Test a logged case absent from the input blocks cannot be indexed."""
+    target = Series(events=[Subtitle(start=0, end=1000, text="原文")])
+    guide = Series(events=[Subtitle(start=0, end=1000, text="參考")])
+    test_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "不同"}],
+                "guides": [{"index": 1, "text": "參考"}],
+            }
+        }
+    )
+
+    with raises(ScinoephileError, match="test case 1 was not found"):
+        audit_guided_review(target, guide, (test_case,))
+
+
+def test_audit_guided_review_rejects_ambiguous_case():
+    """Test repeated target and guide blocks cannot receive misleading indexes."""
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="原文"),
+            Subtitle(start=6000, end=7000, text="原文"),
+        ]
+    )
+    guide = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="參考"),
+            Subtitle(start=6000, end=7000, text="參考"),
+        ]
+    )
+    test_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "原文"}],
+                "guides": [{"index": 1, "text": "參考"}],
+            }
+        }
+    )
+
+    with raises(ScinoephileError, match="test case 1 is ambiguous.*1, 2"):
+        audit_guided_review(target, guide, (test_case,))
+
+
+def _get_series_pair() -> tuple[Series, Series]:
+    """Construct target and guide series containing two aligned blocks.
+
+    Returns:
+        target and guide subtitle series
+    """
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="甲|乙"),
+            Subtitle(start=1100, end=2000, text="丙"),
+            Subtitle(start=6000, end=7000, text="丁"),
+        ]
+    )
+    guide = Series(
+        events=[
+            Subtitle(start=0, end=2000, text="參考一"),
+            Subtitle(start=6000, end=7000, text="參考二"),
+        ]
+    )
+    return target, guide
