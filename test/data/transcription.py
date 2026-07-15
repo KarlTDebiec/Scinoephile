@@ -15,6 +15,7 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS
+from scinoephile.workflows.helpers import resolve_language
 from scinoephile.workflows.review import review_series_guided
 from scinoephile.workflows.transcription import transcribe_series_guided
 
@@ -61,9 +62,9 @@ def process_transcription(
     title_root_path: Path,
     guide_path: Path,
     *,
-    language: Language,
-    guide_language: Language,
     reference_path: Path,
+    language: Language | None = None,
+    guide_language: Language | None = None,
     name: str | None = None,
     output_dir_path: Path | None = None,
     transcribe_path: Path | None = None,
@@ -71,7 +72,7 @@ def process_transcription(
     media_path: Path | None = None,
     stream_index: int | None = None,
     stop_at_idx: int | None = None,
-    overwrite_srt: bool = False,
+    overwrite: bool = False,
     transcription_kw: dict[str, Any] | None = None,
 ) -> Series:
     """Generate an initial transcription and report its CER.
@@ -79,12 +80,13 @@ def process_transcription(
     Arguments:
         title_root_path: title root directory
         guide_path: guide subtitle path used for audio staging and alignment
-        language: transcription language
-        guide_language: guide subtitle language
         reference_path: expected transcription used only to compute CER
+        language: explicit transcription language, or None to detect it from the
+          evaluation reference
+        guide_language: explicit guide subtitle language, or None to detect it
         name: label included in the CER log
         output_dir_path: directory where pipeline outputs are written; defaults to
-          `title_root_path/output/{language.tag}_transcribe`
+          `title_root_path/output/{language.code}_transcribe`
         transcribe_path: transcription output path; defaults to
           `output_dir_path/transcribe.srt`
         audio_source_path: optional existing wav file to copy into the output
@@ -92,7 +94,7 @@ def process_transcription(
         stream_index: media stream index used when generating staged audio, or None
           to use the first audio stream
         stop_at_idx: exclusive block index at which to stop processing
-        overwrite_srt: whether to overwrite staged and transcribed subtitles
+        overwrite: whether to overwrite staged and transcribed subtitles
         transcription_kw: additional keyword arguments for
           `transcribe_series_guided`
     Returns:
@@ -100,26 +102,28 @@ def process_transcription(
     Raises:
         ScinoephileError: if staged audio is missing and cannot be generated
     """
+    reference = Series.load(reference_path)
+    guide = Series.load(guide_path)
+    language = resolve_language(reference, language)
+    guide_language = resolve_language(guide, guide_language)
+
     if name is None:
-        name = f"{language.tag} transcription"
+        name = f"{language.code} transcription"
     if output_dir_path is None:
-        output_dir_path = title_root_path / "output" / f"{language.tag}_transcribe"
+        output_dir_path = title_root_path / "output" / f"{language.code}_transcribe"
     output_dir_path.mkdir(parents=True, exist_ok=True)
     if transcribe_path is None:
         transcribe_path = output_dir_path / "transcribe.srt"
-
-    reference = Series.load(reference_path)
-    guide = Series.load(guide_path)
 
     # Stage guide subtitles and audio under the transcription output
     audio_dir_path = output_dir_path / "audio"
     audio_dir_path.mkdir(parents=True, exist_ok=True)
     staged_audio_path = audio_dir_path / "audio.wav"
     if audio_source_path is not None and audio_source_path != staged_audio_path:
-        if overwrite_srt or not staged_audio_path.exists():
+        if overwrite or not staged_audio_path.exists():
             copy2(audio_source_path, staged_audio_path)
     audio_srt_path = audio_dir_path / "audio.srt"
-    if overwrite_srt or not audio_srt_path.exists():
+    if overwrite or not audio_srt_path.exists():
         guide.save(audio_srt_path)
 
     if not staged_audio_path.exists():
@@ -137,7 +141,7 @@ def process_transcription(
     audio = AudioSeries.load(audio_dir_path)
 
     # Transcribe, delineate, and punctuate
-    if transcribe_path.exists() and not overwrite_srt:
+    if transcribe_path.exists() and not overwrite:
         transcribe = Series.load(transcribe_path)
     else:
         transcription_kw = dict(transcription_kw or {})
@@ -178,7 +182,7 @@ def process_transcription_guided_review(
     name: str | None = None,
     guided_review_path: Path | None = None,
     stop_at_idx: int | None = None,
-    overwrite_srt: bool = False,
+    overwrite: bool = False,
     reviewer_kw: dict[str, Any] | None = None,
 ) -> Series:
     """Review a completed transcription in guide-aligned blocks.
@@ -196,13 +200,13 @@ def process_transcription_guided_review(
         guided_review_path: guided-review output path; defaults to the transcription
           filename with `_guided_review` appended to its stem
         stop_at_idx: exclusive review block index at which to stop processing
-        overwrite_srt: whether to overwrite an existing guided-review output
+        overwrite: whether to overwrite an existing guided-review output
         reviewer_kw: additional keyword arguments for `review_series_guided`
     Returns:
         guided block-reviewed transcription
     """
     if name is None:
-        name = f"{language.tag} transcription guided review"
+        name = f"{language.code} transcription guided review"
     if guided_review_path is None:
         guided_review_path = transcribe_path.with_name(
             f"{transcribe_path.stem}_guided_review{transcribe_path.suffix}"
@@ -210,12 +214,12 @@ def process_transcription_guided_review(
 
     reference = Series.load(reference_path)
     guide = Series.load(guide_path)
-    if guided_review_path.exists() and not overwrite_srt:
+    if guided_review_path.exists() and not overwrite:
         guided_review = Series.load(guided_review_path)
     else:
         transcribe = Series.load(transcribe_path)
         reviewer_kw = dict(reviewer_kw or {})
-        language_pair_name = f"{language.tag[:3]}_{guide_language.tag[:3]}"
+        language_pair_name = f"{language.language}_{guide_language.language}"
         reviewer_kw.setdefault(
             "test_case_path",
             transcribe_path.parent

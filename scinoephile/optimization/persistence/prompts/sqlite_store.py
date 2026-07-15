@@ -122,7 +122,7 @@ class PromptSqliteStore(OptimizationSqliteStore):
                     alias=alias,
                     prompt_id=prompt.prompt_id,
                     operation=prompt.operation,
-                    language=prompt.language.tag,
+                    language=prompt.language.code,
                     attributes_json=serialize_json(dict(prompt.attributes)),
                 )
                 connection.execute(

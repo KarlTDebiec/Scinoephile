@@ -11,8 +11,6 @@ from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.transcription.processor import DemucsMode, VADMode
-from test.data.kob import get_kob_yue_hant_delineation_test_cases
 from test.data.ocr import process_ocr
 from test.data.srt import process_srt
 from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
@@ -103,20 +101,12 @@ if "yue-Hant_transcribe" in actions:
     process_transcription(
         title_root,
         zho_hant_guide_path,
-        language=Language.yue_hant,
-        guide_language=Language.zho_hant,
         reference_path=yue_hant_path / "clean_review_flatten_timewarp.srt",
         output_dir_path=yue_hant_transcribe_path,
         transcribe_path=yue_hant_transcribe_srt_path,
         name="KOB yue-Hant transcription",
         stop_at_idx=transcription_stop_at_idx,
-        transcription_kw={
-            "delineation_test_cases": get_kob_yue_hant_delineation_test_cases(),
-            "demucs_mode": DemucsMode.AUTO,
-            "punctuation_test_cases": [],
-            "vad_mode": VADMode.AUTO,
-        },
-        overwrite_srt=True,
+        overwrite=True,
     )
 if "yue-Hant_guided_review" in actions:
     process_transcription_guided_review(
@@ -129,7 +119,7 @@ if "yue-Hant_guided_review" in actions:
         guided_review_path=yue_hant_guided_review_srt_path,
         stop_at_idx=transcription_stop_at_idx,
         reviewer_kw={"test_cases": []},
-        overwrite_srt=False,
+        overwrite=False,
     )
 if "yue-Hant_diff" in actions:
     yue_hant_transcribe = Series.load(yue_hant_guided_review_srt_path)

@@ -15,6 +15,7 @@ from scinoephile.lang.transcription.guided import (
     DEFAULT_SPECS,
     get_guided_transcriber,
 )
+from scinoephile.lang.transcription.processor import DemucsMode, VADMode
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
@@ -43,6 +44,18 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
         is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)].language_spec
     )
+    assert any(
+        path.parts[0] == "kob"
+        for path in DEFAULT_SPECS[
+            (Language.yue_hant, Language.zho_hant)
+        ].delineation_json_paths
+    )
+    assert any(
+        path.parts[0] == "kob"
+        for path in DEFAULT_SPECS[
+            (Language.yue_hant, Language.zho_hant)
+        ].punctuation_json_paths
+    )
     mutable_specs = cast(dict, DEFAULT_SPECS)
     with raises(TypeError):
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[
@@ -63,6 +76,8 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
 
     assert transcriber.language is Language.yue_hant
     assert transcriber.reference_language is Language.zho_hans
+    assert transcriber.demucs_mode is DemucsMode.AUTO
+    assert transcriber.vad_mode is VADMode.AUTO
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
     assert transcriber.aligner.delineation_queryer.prompt is (

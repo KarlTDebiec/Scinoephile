@@ -55,7 +55,7 @@ class Prompt:
         payload_json = json.dumps(
             {
                 "fields": prompt_fields,
-                "language": self.language.tag,
+                "language": self.language.code,
                 "type": type(self).__name__,
             },
             ensure_ascii=False,
@@ -63,7 +63,7 @@ class Prompt:
             sort_keys=True,
         )
         digest = hashlib.sha256(payload_json.encode()).hexdigest()[:12]
-        language_name = self.language.tag.replace("-", "_")
+        language_name = self.language.code.replace("-", "_")
         return f"{type(self).__name__}_{language_name}_{digest}"
 
     def transformed(self, language: Language, transform: Callable[[str], str]) -> Self:

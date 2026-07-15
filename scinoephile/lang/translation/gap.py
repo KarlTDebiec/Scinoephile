@@ -139,7 +139,7 @@ def get_gap_translator(
     if key not in DEFAULT_PROMPTS:
         raise ScinoephileError(
             "Gap translation does not support language pair "
-            f"{source_language.tag} -> {target_language.tag}"
+            f"{source_language.code} -> {target_language.code}"
         )
 
     if prompt is None:

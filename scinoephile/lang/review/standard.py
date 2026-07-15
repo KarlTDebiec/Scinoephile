@@ -105,7 +105,7 @@ def get_reviewer(
         ScinoephileError: if review does not support the language
     """
     if language not in DEFAULT_PROMPTS:
-        raise ScinoephileError(f"Review does not support language {language.tag}")
+        raise ScinoephileError(f"Review does not support language {language.code}")
 
     if prompt is None:
         prompt = DEFAULT_PROMPTS[language]

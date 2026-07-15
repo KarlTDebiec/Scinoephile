@@ -42,6 +42,9 @@ __all__ = [
 
 _YUE_ZHO_DELINEATION_JSON_PATHS = (
     Path(
+        "kob/output/yue-Hant_transcribe/lang/yue_zho/transcription/delineation/mps.json"
+    ),
+    Path(
         "mlamd/output/yue-Hans_transcribe/lang/yue_zho/transcription/"
         "delineation/cuda.json"
     ),
@@ -53,6 +56,9 @@ _YUE_ZHO_DELINEATION_JSON_PATHS = (
 """Default written Cantonese transcription delineation JSON paths."""
 
 _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
+    Path(
+        "kob/output/yue-Hant_transcribe/lang/yue_zho/transcription/punctuation/mps.json"
+    ),
     Path(
         "mlamd/output/yue-Hans_transcribe/lang/yue_zho/transcription/"
         "punctuation/cuda.json"
@@ -155,7 +161,7 @@ def get_guided_transcriber(
     reference_language: Language,
     *,
     model_name: str | None = None,
-    demucs_mode: DemucsMode = DemucsMode.OFF,
+    demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
@@ -189,7 +195,7 @@ def get_guided_transcriber(
     if key not in DEFAULT_SPECS:
         raise ScinoephileError(
             "Guided transcription does not support language pair "
-            f"{language.tag} <- {reference_language.tag}"
+            f"{language.code} <- {reference_language.code}"
         )
     spec = DEFAULT_SPECS[key]
     language_spec = spec.language_spec

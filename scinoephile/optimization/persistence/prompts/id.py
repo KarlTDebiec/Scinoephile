@@ -30,7 +30,7 @@ def get_prompt_id(
     payload_json = json.dumps(
         {
             "attributes": dict(attributes),
-            "language": language.tag,
+            "language": language.code,
             "operation": operation,
         },
         ensure_ascii=False,

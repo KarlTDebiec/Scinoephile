@@ -113,7 +113,7 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
     tessdata_dir_path = tmp_path / "tessdata"
     observed_cache_dir_paths = []
     observed_cache_namespaces = []
-    RecordingOcrRecognizer.reset(Language.eng.tag)
+    RecordingOcrRecognizer.reset(Language.eng.code)
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.tesseract.get_runtime_cache_dir_path",
