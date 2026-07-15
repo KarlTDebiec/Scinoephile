@@ -99,6 +99,17 @@ using its timing-aligned guide subtitle or subtitles as evidence.
   the guide.
 - Read model-provided JSON notes as context, not proof. Replace them in the
   report with your own interpretation of the evidence and decision.
+- When a proposed or missed change substitutes one target-language expression
+  for another, append the original and replacement readings to the note. Use
+  tone-marked Yale for `yue-*` targets and tone-marked Hanyu Pinyin for `zho-*`
+  targets. Romanize the smallest meaningful substituted spans, not the full
+  subtitle, and include every independent substitution. Use the format
+  `Yale: 原文 (reading) → 新文 (reading)` or
+  `Hanyu Pinyin: 原文 (reading) → 新文 (reading)`. Do not add romanization for
+  pure insertions, deletions, punctuation, or whitespace changes. Use the
+  repository's language romanizers and verify context-sensitive readings; if
+  a reading cannot be established, state that it is uncertain rather than
+  guessing.
 - Because guided review follows punctuation and cleaning, reject punctuation-only
   or whitespace-only revisions. When a valid text correction also changes
   punctuation or whitespace unnecessarily, retain the correction while

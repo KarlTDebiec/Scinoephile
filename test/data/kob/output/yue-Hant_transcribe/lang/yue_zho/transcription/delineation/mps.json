@@ -11852,6 +11852,178 @@
   },
   {
     "query": {
+      "ref_sub_1": "我還是比較喜歡珍珠",
+      "ref_sub_2": "趙大人，我回房間等你",
+      "target_sub_1": "我都係鍾意珍珠多啲",
+      "target_sub_2": "趙大人呀我返房等你喇喂"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "趙大人，我回房間等你",
+      "ref_sub_2": "這顆珠值十萬兩嗎？",
+      "target_sub_1": "趙大人呀我返房等你喇喂",
+      "target_sub_2": "呢粒珠淨唔淨十萬兩呀"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這顆珠值十萬兩嗎？",
+      "ref_sub_2": "十萬兩你還嫌少嗎，姑娘？",
+      "target_sub_1": "呢粒珠淨唔淨十萬兩呀",
+      "target_sub_2": "十萬兩銀通姑娘你都重嚴少"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "十萬兩你還嫌少嗎，姑娘？",
+      "ref_sub_2": "我也喜歡銀兩，只是不喜歡你",
+      "target_sub_1": "十萬兩銀通姑娘你都重嚴少",
+      "target_sub_2": "我一樣鍾意銀兩不過唔鍾意你啫嘛"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "果然是美人",
+      "ref_sub_2": "趙大人，那今晚⋯",
+      "target_sub_1": "果然美人",
+      "target_sub_2": "趙大人,那…"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "趙大人，那今晚⋯",
+      "ref_sub_2": "銀票十萬兩",
+      "target_sub_1": "趙大人,那…",
+      "target_sub_2": "銀票十萬兩"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "銀票十萬兩",
+      "ref_sub_2": "如霜姑娘今晚要陪我家少爺",
+      "target_sub_1": "銀票十萬兩",
+      "target_sub_2": "如霜姑娘今晚要陪我們少爺擺房"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "如霜姑娘今晚要陪我家少爺",
+      "ref_sub_2": "沒空招呼你",
+      "target_sub_1": "如霜姑娘今晚要陪我們少爺擺房",
+      "target_sub_2": "不有空,招呼你"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "沒空招呼你",
+      "ref_sub_2": "各位⋯真不好意思",
+      "target_sub_1": "不有空,招呼你",
+      "target_sub_2": "這麼多位真不好意思,"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "各位⋯真不好意思",
+      "ref_sub_2": "有甚麼意見嗎？",
+      "target_sub_1": "這麼多位真不好意思,",
+      "target_sub_2": "沒什麼意見吧"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "有甚麼意見嗎？",
+      "ref_sub_2": "讓我來⋯讓我說句公道話",
+      "target_sub_1": "沒什麼意見吧",
+      "target_sub_2": "讓我來…讓我講講你們公道的話"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "讓我來⋯讓我說句公道話",
+      "ref_sub_2": "只要你們誰能付超過十萬兩銀票",
+      "target_sub_1": "讓我來…讓我講講你們公道的話",
+      "target_sub_2": "只要你們誰出得多過十萬兩銀票"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "只要你們誰能付超過十萬兩銀票",
+      "ref_sub_2": "如霜姑娘就陪誰",
+      "target_sub_1": "只要你們誰出得多過十萬兩銀票",
+      "target_sub_2": "那如霜姑娘就陪誰"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "如霜姑娘就陪誰",
+      "ref_sub_2": "千萬不要傷和氣，對不對？",
+      "target_sub_1": "那如霜姑娘就陪誰",
+      "target_sub_2": "千萬不要傷了和氣聽聽…"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "千萬不要傷和氣，對不對？",
+      "ref_sub_2": "這位朋友真捨得花錢",
+      "target_sub_1": "千萬不要傷了和氣聽聽…",
+      "target_sub_2": "這位朋友也很肯花錢"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "這位朋友真捨得花錢",
+      "ref_sub_2": "銀票實在太普通",
+      "target_sub_1": "這位朋友也很肯花錢",
+      "target_sub_2": "銀票實在太普通了"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "銀票實在太普通",
+      "ref_sub_2": "我有一顆朝廷大內的定風珠，無價寶",
+      "target_sub_1": "銀票實在太普通了",
+      "target_sub_2": "我有粒朝廷大內的定封珠,無價的"
+    },
+    "answer": {},
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
       "ref_sub_1": "辛苦了！少爺",
       "ref_sub_2": "少爺！擦個汗吧",
       "target_sub_1": "辛苦啦少爺",
@@ -13120,178 +13292,6 @@
       "ref_sub_2": "小女子如霜，拜見趙大人",
       "target_sub_1": "但如霜姑娘到啦",
       "target_sub_2": "小女子如霜,拜見趙大人"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "果然是美人",
-      "ref_sub_2": "趙大人，那今晚⋯",
-      "target_sub_1": "果然美人",
-      "target_sub_2": "趙大人,那…"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "趙大人，那今晚⋯",
-      "ref_sub_2": "銀票十萬兩",
-      "target_sub_1": "趙大人,那…",
-      "target_sub_2": "銀票十萬兩"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "銀票十萬兩",
-      "ref_sub_2": "如霜姑娘今晚要陪我家少爺",
-      "target_sub_1": "銀票十萬兩",
-      "target_sub_2": "如霜姑娘今晚要陪我們少爺擺房"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "如霜姑娘今晚要陪我家少爺",
-      "ref_sub_2": "沒空招呼你",
-      "target_sub_1": "如霜姑娘今晚要陪我們少爺擺房",
-      "target_sub_2": "不有空,招呼你"
-    },
-    "answer": {},
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "沒空招呼你",
-      "ref_sub_2": "各位⋯真不好意思",
-      "target_sub_1": "不有空,招呼你",
-      "target_sub_2": "這麼多位真不好意思,"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "各位⋯真不好意思",
-      "ref_sub_2": "有甚麼意見嗎？",
-      "target_sub_1": "這麼多位真不好意思,",
-      "target_sub_2": "沒什麼意見吧"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "有甚麼意見嗎？",
-      "ref_sub_2": "讓我來⋯讓我說句公道話",
-      "target_sub_1": "沒什麼意見吧",
-      "target_sub_2": "讓我來…讓我講講你們公道的話"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "讓我來⋯讓我說句公道話",
-      "ref_sub_2": "只要你們誰能付超過十萬兩銀票",
-      "target_sub_1": "讓我來…讓我講講你們公道的話",
-      "target_sub_2": "只要你們誰出得多過十萬兩銀票"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "只要你們誰能付超過十萬兩銀票",
-      "ref_sub_2": "如霜姑娘就陪誰",
-      "target_sub_1": "只要你們誰出得多過十萬兩銀票",
-      "target_sub_2": "那如霜姑娘就陪誰"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "如霜姑娘就陪誰",
-      "ref_sub_2": "千萬不要傷和氣，對不對？",
-      "target_sub_1": "那如霜姑娘就陪誰",
-      "target_sub_2": "千萬不要傷了和氣聽聽…"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "千萬不要傷和氣，對不對？",
-      "ref_sub_2": "這位朋友真捨得花錢",
-      "target_sub_1": "千萬不要傷了和氣聽聽…",
-      "target_sub_2": "這位朋友也很肯花錢"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "這位朋友真捨得花錢",
-      "ref_sub_2": "銀票實在太普通",
-      "target_sub_1": "這位朋友也很肯花錢",
-      "target_sub_2": "銀票實在太普通了"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "銀票實在太普通",
-      "ref_sub_2": "我有一顆朝廷大內的定風珠，無價寶",
-      "target_sub_1": "銀票實在太普通了",
-      "target_sub_2": "我有粒朝廷大內的定封珠,無價的"
-    },
-    "answer": {},
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "我還是比較喜歡珍珠",
-      "ref_sub_2": "趙大人，我回房間等你",
-      "target_sub_1": "我都係鍾意珍珠多啲",
-      "target_sub_2": "趙大人呀我返房等你喇喂"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "趙大人，我回房間等你",
-      "ref_sub_2": "這顆珠值十萬兩嗎？",
-      "target_sub_1": "趙大人呀我返房等你喇喂",
-      "target_sub_2": "呢粒珠淨唔淨十萬兩呀"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "這顆珠值十萬兩嗎？",
-      "ref_sub_2": "十萬兩你還嫌少嗎，姑娘？",
-      "target_sub_1": "呢粒珠淨唔淨十萬兩呀",
-      "target_sub_2": "十萬兩銀通姑娘你都重嚴少"
-    },
-    "answer": {},
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub_1": "十萬兩你還嫌少嗎，姑娘？",
-      "ref_sub_2": "我也喜歡銀兩，只是不喜歡你",
-      "target_sub_1": "十萬兩銀通姑娘你都重嚴少",
-      "target_sub_2": "我一樣鍾意銀兩不過唔鍾意你啫嘛"
     },
     "answer": {},
     "verified": true

@@ -11564,6 +11564,157 @@
   },
   {
     "query": {
+      "ref_sub": "趙大人，我回房間等你",
+      "target_subs": [
+        "趙大人呀",
+        "我返房等你喇",
+        "喂"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "趙大人呀，我返房等你喇，喂！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "這顆珠值十萬兩嗎？",
+      "target_subs": [
+        "呢粒珠淨唔淨十萬兩呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "呢粒珠淨唔淨十萬兩呀？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "十萬兩你還嫌少嗎，姑娘？",
+      "target_subs": [
+        "十萬兩銀通姑娘你都重嚴少"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "十萬兩銀通，姑娘，你都重嚴少？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我也喜歡銀兩，只是不喜歡你",
+      "target_subs": [
+        "我一樣鍾意銀兩",
+        "不過唔鍾意你啫嘛"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我一樣鍾意銀兩，不過唔鍾意你啫嘛。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "趙大人，那今晚⋯",
+      "target_subs": [
+        "趙大人,",
+        "那…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "趙大人，那…"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "沒空招呼你",
+      "target_subs": [
+        "不有空,",
+        "招呼你"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "不有空，招呼你"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "各位⋯真不好意思",
+      "target_subs": [
+        "這麼多位",
+        "真不好意思,"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "這麼多位⋯真不好意思"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "有甚麼意見嗎？",
+      "target_subs": [
+        "沒什麼意見吧"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "沒什麼意見吧？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "讓我來⋯讓我說句公道話",
+      "target_subs": [
+        "讓我來…讓我講講你們公道的話"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "讓我來……讓我講講你們公道的話。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "千萬不要傷和氣，對不對？",
+      "target_subs": [
+        "千萬不要傷了和氣",
+        "聽聽…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "千萬不要傷了和氣，聽聽…"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我有一顆朝廷大內的定風珠，無價寶",
+      "target_subs": [
+        "我有粒朝廷大內的定封珠,",
+        "無價的"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我有粒朝廷大內的定封珠，無價的。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
       "ref_sub": "少爺！準備好了",
       "target_subs": [
         "少爺",
@@ -12696,157 +12847,6 @@
       "target_sub_punctuated": "小女子如霜，拜見趙大人"
     },
     "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "趙大人，那今晚⋯",
-      "target_subs": [
-        "趙大人,",
-        "那…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "趙大人，那…"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "沒空招呼你",
-      "target_subs": [
-        "不有空,",
-        "招呼你"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "不有空，招呼你"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "各位⋯真不好意思",
-      "target_subs": [
-        "這麼多位",
-        "真不好意思,"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "這麼多位⋯真不好意思"
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "有甚麼意見嗎？",
-      "target_subs": [
-        "沒什麼意見吧"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "沒什麼意見吧？"
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "讓我來⋯讓我說句公道話",
-      "target_subs": [
-        "讓我來…讓我講講你們公道的話"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "讓我來……讓我講講你們公道的話。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "千萬不要傷和氣，對不對？",
-      "target_subs": [
-        "千萬不要傷了和氣",
-        "聽聽…"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "千萬不要傷了和氣，聽聽…"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "我有一顆朝廷大內的定風珠，無價寶",
-      "target_subs": [
-        "我有粒朝廷大內的定封珠,",
-        "無價的"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我有粒朝廷大內的定封珠，無價的。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "趙大人，我回房間等你",
-      "target_subs": [
-        "趙大人呀",
-        "我返房等你喇",
-        "喂"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "趙大人呀，我返房等你喇，喂！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "這顆珠值十萬兩嗎？",
-      "target_subs": [
-        "呢粒珠淨唔淨十萬兩呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "呢粒珠淨唔淨十萬兩呀？"
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "十萬兩你還嫌少嗎，姑娘？",
-      "target_subs": [
-        "十萬兩銀通姑娘你都重嚴少"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "十萬兩銀通，姑娘，你都重嚴少？"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "我也喜歡銀兩，只是不喜歡你",
-      "target_subs": [
-        "我一樣鍾意銀兩",
-        "不過唔鍾意你啫嘛"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我一樣鍾意銀兩，不過唔鍾意你啫嘛。"
-    },
-    "difficulty": 2,
     "verified": true
   }
 ]
