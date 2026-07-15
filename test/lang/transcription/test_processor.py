@@ -4,10 +4,11 @@
 
 from __future__ import annotations
 
+from logging import INFO
 from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
-from pytest import raises
+from pytest import LogCaptureFixture, raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.audio.transcription import TranscribedSegment
@@ -122,9 +123,14 @@ def test_process_block_applies_configured_segment_splitter():
     assert [subtitle.text for subtitle in transcription] == ["one", "two"]
 
 
-def test_process_uses_exclusive_stop_index():
-    """Test stop_at_idx excludes the block at that index."""
+def test_process_uses_exclusive_stop_index(caplog: LogCaptureFixture):
+    """Test stop_at_idx excludes that block while logs use one-based numbers.
+
+    Arguments:
+        caplog: captured log records
+    """
     processor, _ = _get_processor()
+    caplog.set_level(INFO, logger="scinoephile.lang.transcription.processor")
     audio_series = AudioSeries(
         audio=AudioSegment.silent(duration=6000),
         events=[
@@ -149,6 +155,8 @@ def test_process_uses_exclusive_stop_index():
     assert process_block.call_count == 1
     assert len(output) == 1
     assert output[0].text == "one"
+    assert "BLOCK 1:" in caplog.text
+    assert "BLOCK 0:" not in caplog.text
 
 
 def test_process_rejects_mismatched_block_counts():
