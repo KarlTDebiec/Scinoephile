@@ -124,10 +124,17 @@
 ## Command Line Interface
 * In CLI modules, group arguments using the repository's standard
   `get_arg_groups_by_name(...)` helper when one is available.
-  * Standard group names are:
-    * `input arguments`
-    * `operation arguments`
-    * `output arguments`
+  * Populated groups appear in this order:
+    1. `positional arguments`
+    2. `input arguments`
+    3. `operation arguments`
+    4. `llm arguments`
+    5. `web arguments`
+    6. `output arguments`
+    7. `additional arguments`
+    8. `additional help`
+  * Omit groups that do not apply without changing the relative order of the
+    remaining groups.
   * Rename the default optional group to `additional arguments` via
     `optional_arguments_name="additional arguments"`.
 * Define CLI implementation methods with explicit keyword-only `_main`
