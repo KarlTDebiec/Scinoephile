@@ -69,17 +69,17 @@ def process_ocr(
 
     # Review series
     reviewed_path = output_dir_path / "fuse_clean_validate_review.srt"
-    reviewed = _review(validated, language, reviewed_path, overwrite, reviewer_kw)
+    reviewed = _review(validated, reviewed_path, language, overwrite, reviewer_kw)
 
     # Flatten series
     flattened_path = output_dir_path / "fuse_clean_validate_review_flatten.srt"
-    flattened = _flatten(reviewed, language, flattened_path, overwrite)
+    flattened = _flatten(reviewed, flattened_path, language, overwrite)
 
     if language.script == "Hans":
         romanized_path = (
             output_dir_path / "fuse_clean_validate_review_flatten_romanize.srt"
         )
-        _romanize(flattened, language, romanized_path, overwrite)
+        _romanize(flattened, romanized_path, language, overwrite)
     elif language.script == "Hant":
         simplified_path = (
             output_dir_path / "fuse_clean_validate_review_flatten_simplify.srt"
@@ -98,8 +98,8 @@ def process_ocr(
         )
         simplified_reviewed = _review(
             simplified,
-            language,
             reviewed_path,
+            language,
             overwrite,
             simplify_reviewer_kw,
         )
@@ -107,23 +107,23 @@ def process_ocr(
             output_dir_path
             / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
         )
-        _romanize(simplified_reviewed, language, romanized_path, overwrite)
+        _romanize(simplified_reviewed, romanized_path, language, overwrite)
 
     return flattened
 
 
 def _flatten(
     series: Series,
-    language: Language,
     output_path: Path,
+    language: Language,
     overwrite: bool = False,
 ) -> Series:
     """Load or create flattened OCR subtitles.
 
     Arguments:
         series: series to flatten
-        language: OCR language
         output_path: flattened subtitle output path
+        language: OCR language
         overwrite: whether to overwrite existing outputs
     Returns:
         flattened series
@@ -208,8 +208,8 @@ def _ocr(
 
 def _review(
     series: Series,
-    language: Language,
     output_path: Path,
+    language: Language,
     overwrite: bool = False,
     reviewer_kw: dict[str, Any] | None = None,
 ) -> Series:
@@ -217,8 +217,8 @@ def _review(
 
     Arguments:
         series: series to review
-        language: OCR language
         output_path: reviewed subtitle output path
+        language: OCR language
         overwrite: whether to overwrite existing outputs
         reviewer_kw: keyword arguments for OCR reviewer
     Returns:
@@ -244,16 +244,16 @@ def _review(
 
 def _romanize(
     series: Series,
-    language: Language,
     output_path: Path,
+    language: Language,
     overwrite: bool = False,
 ) -> Series:
     """Load or create romanized OCR subtitles.
 
     Arguments:
         series: series to romanize
-        language: OCR language
         output_path: romanized subtitle output path
+        language: OCR language
         overwrite: whether to overwrite existing outputs
     Returns:
         romanized series
