@@ -71,7 +71,7 @@ if "eng" in actions:
     process_srt(
         title_root,
         Language.eng,
-        eng_ocr_path / "fuse_clean_validate_review.srt",
+        reference_path=eng_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
         overwrite=True,
     )
@@ -79,7 +79,7 @@ if "yue-Hans" in actions:
     process_srt(
         title_root,
         Language.yue_hans,
-        zho_hant_ocr_path / "fuse_clean_validate_review.srt",
+        reference_path=zho_hant_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
         two_end_idx=1461,
         overwrite=True,
@@ -88,7 +88,7 @@ if "yue-Hant" in actions:
     process_srt(
         title_root,
         Language.yue_hant,
-        zho_hant_ocr_path / "fuse_clean_validate_review.srt",
+        reference_path=zho_hant_ocr_path / "fuse_clean_validate_review.srt",
         one_end_idx=1421,
         two_end_idx=1461,
         overwrite=True,
