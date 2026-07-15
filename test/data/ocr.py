@@ -10,8 +10,6 @@ from typing import Any
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.yue.review import ReviewPromptYueHans
-from scinoephile.lang.zho.review import ReviewPromptZhoHans
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.workflows.flatten import flatten
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
@@ -28,7 +26,7 @@ def process_ocr(
     language: Language,
     sup_path: Path | None = None,
     *,
-    fuser_kw: Any | None = None,
+    fuser_kw: dict[str, Any] | None = None,
     reviewer_kw: dict[str, Any] | None = None,
     overwrite: bool = False,
     interactive: bool = False,
@@ -81,25 +79,28 @@ def process_ocr(
         )
         _romanize(flattened, romanized_path, language, overwrite)
     elif language.script == "Hant":
+        if language is Language.yue_hant:
+            simplified_language = Language.yue_hans
+        else:
+            simplified_language = Language.zho_hans
         simplified_path = (
             output_dir_path / "fuse_clean_validate_review_flatten_simplify.srt"
         )
         simplified = _simplify(flattened, simplified_path, overwrite)
-        reviewed_path = (
+        simplified_reviewed_path = (
             output_dir_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
         )
         simplify_reviewer_kw = dict(reviewer_kw or {})
-        if language is Language.yue_hant:
-            simplify_reviewer_kw["prompt"] = ReviewPromptYueHans
-        else:
-            simplify_reviewer_kw["prompt"] = ReviewPromptZhoHans
+        simplify_reviewer_kw.pop("prompt", None)
+        simplify_reviewer_kw.pop("reviewer", None)
+        simplify_reviewer_kw.pop("test_cases", None)
         simplify_reviewer_kw["test_case_path"] = (
             output_dir_path / "lang" / language.language / "simplify_review.json"
         )
         simplified_reviewed = _review(
             simplified,
-            reviewed_path,
-            language,
+            simplified_reviewed_path,
+            simplified_language,
             overwrite,
             simplify_reviewer_kw,
         )
@@ -107,7 +108,7 @@ def process_ocr(
             output_dir_path
             / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
         )
-        _romanize(simplified_reviewed, romanized_path, language, overwrite)
+        _romanize(simplified_reviewed, romanized_path, simplified_language, overwrite)
 
     return flattened
 
@@ -144,7 +145,7 @@ def _ocr(
     language: Language,
     *,
     sup_path: Path | None,
-    fuser_kw: Any | None,
+    fuser_kw: dict[str, Any] | None,
     interactive: bool,
     host: str,
     port: int,
@@ -179,19 +180,19 @@ def _ocr(
         output_dir_path / "lang" / language.language / "ocr_fusion.json",
     )
     fuser_kw.setdefault("auto_verify", True)
-    workflow_kw: dict[str, Any] = {
-        "infile_path": infile_path,
-        "output_dir_path": output_dir_path,
-        "clean": True,
-        "dev": True,
-        "interactive": interactive,
-        "host": host,
-        "port": port,
-        "overwrite": overwrite,
-        "fuser_kw": fuser_kw,
-    }
     # Run workflow
-    OcrProcessingWorkflow(language=language, **workflow_kw)()
+    OcrProcessingWorkflow(
+        infile_path,
+        output_dir_path,
+        language=language,
+        clean=True,
+        dev=True,
+        interactive=interactive,
+        host=host,
+        port=port,
+        overwrite=overwrite,
+        fuser_kw=fuser_kw,
+    )()
 
     # Load final result and copy validated text back into image cache
     validated = Series.load(output_dir_path / "fuse_clean_validate.srt")
@@ -213,7 +214,7 @@ def _review(
     overwrite: bool = False,
     reviewer_kw: dict[str, Any] | None = None,
 ) -> Series:
-    """Load or create guided-reviewed OCR subtitles.
+    """Load or create reviewed OCR subtitles.
 
     Arguments:
         series: series to review
@@ -287,6 +288,6 @@ def _simplify(
         return Series.load(output_path)
 
     # Run and save
-    simplify = get_zho_converted(series, OpenCCConfig.t2s)
-    simplify.save(output_path, exist_ok=True)
-    return simplify
+    simplified = get_zho_converted(series, OpenCCConfig.t2s)
+    simplified.save(output_path, exist_ok=True)
+    return simplified
