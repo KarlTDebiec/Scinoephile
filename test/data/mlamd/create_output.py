@@ -17,7 +17,7 @@ from scinoephile.lang.review.pairwise import get_pairwise_reviewer
 from scinoephile.lang.transcription.guided import get_guided_transcriber
 from scinoephile.lang.transcription.processor import VADMode
 from scinoephile.lang.translation.gap import get_gap_translator
-from scinoephile.workflows.review import review_series_guided, review_series_pairwise
+from scinoephile.workflows.review import review_guided, review_pairwise
 from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
 from test.data.mlamd import (
@@ -107,7 +107,7 @@ if "yue-Hans_transcribe" in actions:
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_pairwise_reviewed = review_series_pairwise(
+    yue_hans_pairwise_reviewed = review_pairwise(
         yue_hans,
         zho_hans,
         reviewer=pairwise_reviewer,
@@ -151,7 +151,7 @@ if "yue-Hans_transcribe" in actions:
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_review_translate_guided_review = review_series_guided(
+    yue_hans_review_translate_guided_review = review_guided(
         yue_hans_review_translate,
         zho_hans,
         reviewer=reviewer,

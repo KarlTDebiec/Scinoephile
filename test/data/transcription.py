@@ -16,7 +16,7 @@ from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import DEFAULT_SPECS
 from scinoephile.workflows.helpers import resolve_language
-from scinoephile.workflows.review import review_series_guided
+from scinoephile.workflows.review import review_guided
 from scinoephile.workflows.transcription import transcribe_series_guided
 
 __all__ = [
@@ -201,7 +201,7 @@ def process_transcription_guided_review(
           filename with `_guided_review` appended to its stem
         stop_at_idx: exclusive review block index at which to stop processing
         overwrite: whether to overwrite an existing guided-review output
-        reviewer_kw: additional keyword arguments for `review_series_guided`
+        reviewer_kw: additional keyword arguments for `review_guided`
     Returns:
         guided block-reviewed transcription
     """
@@ -228,7 +228,7 @@ def process_transcription_guided_review(
             / "guided_review"
             / f"{get_torch_device()}.json",
         )
-        guided_review = review_series_guided(
+        guided_review = review_guided(
             transcribe,
             guide,
             language=language,

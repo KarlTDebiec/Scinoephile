@@ -7,7 +7,7 @@ from __future__ import annotations
 from pytest import FixtureRequest, param, raises
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.workflows.romanization import romanize_series
+from scinoephile.workflows.romanize import romanize
 from test.helpers import assert_series_equal, parametrize
 from test.helpers.series_files import get_text_series
 
@@ -149,7 +149,7 @@ def test_romanize_series(
     expected_fixture: str,
     language: Language,
 ):
-    """Test romanize_series against expected romanized outputs.
+    """Test romanize against expected romanized outputs.
 
     Arguments:
         request: pytest request for fixture lookup
@@ -157,7 +157,7 @@ def test_romanize_series(
         expected_fixture: fixture name for expected output series
         language: language whose romanization system to use
     """
-    output = romanize_series(
+    output = romanize(
         request.getfixturevalue(series_fixture),
         language=language,
         append=True,
@@ -166,10 +166,10 @@ def test_romanize_series(
 
 
 def test_romanize_series_replaces_text():
-    """Test romanize_series replaces source text when append is false."""
+    """Test romanize replaces source text when append is false."""
     source = get_text_series("你好")
 
-    output = romanize_series(
+    output = romanize(
         source,
         language=Language.zho_hans,
         append=False,
@@ -180,9 +180,9 @@ def test_romanize_series_replaces_text():
 
 
 def test_romanize_series_rejects_unsupported_language():
-    """Test romanize_series rejects unsupported languages."""
+    """Test romanize rejects unsupported languages."""
     with raises(
         ScinoephileError,
         match="Romanization does not support language eng",
     ):
-        romanize_series(get_text_series("Hello"), language=Language.eng)
+        romanize(get_text_series("Hello"), language=Language.eng)

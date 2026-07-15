@@ -7,7 +7,7 @@ from __future__ import annotations
 from pytest import FixtureRequest, param
 
 from scinoephile.core import Language
-from scinoephile.workflows.cleaning import clean_series
+from scinoephile.workflows.clean import clean_series
 from test.helpers import assert_series_equal, parametrize
 
 

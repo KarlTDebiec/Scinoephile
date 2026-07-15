@@ -22,13 +22,13 @@ from scinoephile.llms.review import ReviewProcessor, ReviewPrompt
 from .helpers import resolve_language
 
 __all__ = [
-    "review_series",
-    "review_series_guided",
-    "review_series_pairwise",
+    "review",
+    "review_guided",
+    "review_pairwise",
 ]
 
 
-def review_series(
+def review(
     series: Series,
     *,
     language: Language | None = None,
@@ -65,10 +65,11 @@ def review_series(
             provider,
             **kwargs,
         )
+
     return reviewer.process(series, stop_at_idx=stop_at_idx)
 
 
-def review_series_guided(
+def review_guided(
     target: Series,
     guide: Series,
     *,
@@ -101,6 +102,7 @@ def review_series_guided(
     """
     resolved_language = resolve_language(target, language)
     resolved_guide_language = resolve_language(guide, guide_language)
+
     if reviewer is None:
         reviewer = get_guided_reviewer(
             resolved_language,
@@ -110,10 +112,11 @@ def review_series_guided(
             provider=provider,
             **kwargs,
         )
+
     return reviewer.process(target, guide, stop_at_idx=stop_at_idx)
 
 
-def review_series_pairwise(
+def review_pairwise(
     target: Series,
     reference: Series,
     *,
@@ -146,6 +149,7 @@ def review_series_pairwise(
     """
     resolved_language = resolve_language(target, language)
     resolved_reference_language = resolve_language(reference, reference_language)
+
     if reviewer is None:
         reviewer = get_pairwise_reviewer(
             resolved_language,
@@ -155,4 +159,5 @@ def review_series_pairwise(
             provider=provider,
             **kwargs,
         )
+
     return reviewer.process(target, reference, stop_at_idx=stop_at_idx)

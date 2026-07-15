@@ -14,10 +14,10 @@ from scinoephile.lang.yue.romanization import get_yue_text_romanized
 
 from .helpers import resolve_language
 
-__all__ = ["romanize_series"]
+__all__ = ["romanize"]
 
 
-def romanize_series(
+def romanize(
     series: Series,
     *,
     language: Language | None = None,

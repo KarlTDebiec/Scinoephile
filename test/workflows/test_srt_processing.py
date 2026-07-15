@@ -121,11 +121,11 @@ class _PatchedSrtPipeline:
 
         for name in [
             "clean_series",
-            "flatten_series",
+            "flatten",
             "get_series_timewarped",
             "get_zho_converted",
-            "romanize_series",
-            "review_series",
+            "romanize",
+            "review",
         ]:
             monkeypatch.setattr(f"{SRT_PROCESSING_MODULE}.{name}", getattr(self, name))
 
@@ -273,10 +273,10 @@ def test_yue_srt_workflow_reuses_existing_outputs_without_overwrite(
 
     for name in [
         "clean_series",
-        "review_series",
+        "review",
         "get_series_timewarped",
-        "flatten_series",
-        "romanize_series",
+        "flatten",
+        "romanize",
     ]:
         monkeypatch.setattr(f"{SRT_PROCESSING_MODULE}.{name}", _raise_unexpected_call)
 

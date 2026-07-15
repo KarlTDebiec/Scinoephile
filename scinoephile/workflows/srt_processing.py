@@ -17,10 +17,7 @@ from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.llms.review import ReviewPrompt
 
-from .cleaning import clean_series
-from .flattening import flatten_series
-from .review import review_series
-from .romanization import romanize_series
+from .clean import clean_series
 
 __all__ = [
     "SrtProcessingResult",
@@ -199,7 +196,7 @@ class SrtProcessingWorkflow:
             logger.info(f"Cleaned reviewed flattened SRT output exists: {flatten_path}")
             flatten = Series.load(flatten_path)
         else:
-            flatten = flatten_series(series, language=self.language)
+            flatten = flatten(series, language=self.language)
             flatten.save(flatten_path, format_="srt")
         self.output_paths["clean_review_flatten"] = flatten_path
         return flatten
@@ -245,7 +242,7 @@ class SrtProcessingWorkflow:
                         prompt = ReviewPromptYueHans
                 test_case_language_dir_name = "yue"
 
-            review = review_series(
+            review = review(
                 series,
                 language=review_language,
                 prompt=prompt,
@@ -283,7 +280,7 @@ class SrtProcessingWorkflow:
             logger.info(f"{log_label} exists: {romanize_path}")
             romanize = Series.load(romanize_path)
         else:
-            romanize = romanize_series(
+            romanize = romanize(
                 series,
                 language=self.language,
                 append=True,
