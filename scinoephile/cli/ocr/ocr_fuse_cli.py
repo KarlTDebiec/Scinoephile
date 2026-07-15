@@ -35,7 +35,7 @@ from scinoephile.lang.zho.script.conversion import (
     get_zho_converted,
 )
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.workflows.cleaning import clean_series
+from scinoephile.workflows.clean import clean_series
 from scinoephile.workflows.ocr_fusion import fuse_ocr_series
 
 __all__ = ["OcrFuseCli"]

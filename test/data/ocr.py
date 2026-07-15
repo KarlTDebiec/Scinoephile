@@ -13,10 +13,10 @@ from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.workflows.flattening import flatten_series
+from scinoephile.workflows.flatten import flatten_series
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
 from scinoephile.workflows.review import review_series
-from scinoephile.workflows.romanization import romanize_series
+from scinoephile.workflows.romanize import romanize_series
 
 __all__ = [
     "process_ocr",

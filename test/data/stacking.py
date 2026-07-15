@@ -9,8 +9,8 @@ from pathlib import Path
 from scinoephile.core import Language
 from scinoephile.core.stacking import get_stacked_series
 from scinoephile.core.subtitles import Series
-from scinoephile.workflows.cleaning import clean_series
-from scinoephile.workflows.flattening import flatten_series
+from scinoephile.workflows.clean import clean_series
+from scinoephile.workflows.flatten import flatten_series
 
 __all__ = [
     "process_yue_hans_eng",

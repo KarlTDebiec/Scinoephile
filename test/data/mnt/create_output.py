@@ -12,8 +12,8 @@ from scinoephile.core.stacking import get_stacked_series
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.translation.guided import get_guided_translator
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.workflows.cleaning import clean_series
-from scinoephile.workflows.flattening import flatten_series
+from scinoephile.workflows.clean import clean_series
+from scinoephile.workflows.flatten import flatten_series
 from scinoephile.workflows.translation import translate_series_guided
 from test.data.ocr import process_ocr
 from test.data.prompts import EngZhoYueGuidedTranslationPrompt
