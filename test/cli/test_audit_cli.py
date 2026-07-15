@@ -12,6 +12,7 @@ from pytest import CaptureFixture, mark, raises
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_guided_review_cli import AuditGuidedReviewCli
+from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
@@ -115,6 +116,7 @@ def test_audit_cli_subcommands():
     assert AuditCli.subcommands() == {
         "delineation": AuditDelineationCli,
         "guided-review": AuditGuidedReviewCli,
+        "punctuation": AuditPunctuationCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
@@ -250,6 +252,70 @@ def test_audit_delineation_cli_stdout_and_outfile(
     with raises(SystemExit):
         run_cli_with_args(
             AuditDelineationCli,
+            f"{arguments} --first-index 2 --last-index 1",
+        )
+    assert "--first-index must be less than or equal to --last-index" in (
+        capsys.readouterr().err
+    )
+
+
+def test_audit_punctuation_cli_stdout_and_outfile(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test punctuation audit output to stdout and a file.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    reference_path = tmp_path / "reference.srt"
+    target_path = tmp_path / "target.srt"
+    _write_srt(reference_path, ("參考",))
+    _write_srt(target_path, ("甲，乙",))
+    json_path = tmp_path / "punctuation.json"
+    json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "ref_sub": "參考",
+                        "target_subs": ["甲", "乙"],
+                    },
+                    "answer": {"target_sub_punctuated": "甲，乙"},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    arguments = (
+        f"--reference {reference_path} --target {target_path} --json {json_path}"
+    )
+
+    run_cli_with_args(
+        AuditPunctuationCli,
+        f"{arguments} --first-index 1 --last-index 1 --filter changes",
+    )
+    stdout = capsys.readouterr().out
+    assert stdout.startswith("# Transcription Punctuation Audit\n")
+    assert "- row filter: changes" in stdout
+    assert "- subtitle range: 1-indexed numbers 1 through 1" in stdout
+    assert "| 1 | 參考 | 甲<br>乙 | 甲，乙 |" in stdout
+
+    outfile_path = tmp_path / "audit.md"
+    run_cli_with_args(
+        AuditPunctuationCli,
+        f"{arguments} --outfile {outfile_path}",
+    )
+    assert capsys.readouterr().out == ""
+    assert outfile_path.read_text(encoding="utf-8").startswith(
+        "# Transcription Punctuation Audit\n"
+    )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditPunctuationCli,
             f"{arguments} --first-index 2 --last-index 1",
         )
     assert "--first-index must be less than or equal to --last-index" in (
