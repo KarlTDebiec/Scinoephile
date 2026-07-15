@@ -10,13 +10,14 @@ from typing import Any
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
-from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
-from scinoephile.workflows.flatten import flatten_series
 from scinoephile.workflows.ocr_processing import OcrProcessingWorkflow
-from scinoephile.workflows.review import review_series
-from scinoephile.workflows.romanize import romanize_series
+
+from .helpers import (
+    load_or_flatten_series,
+    load_or_review_series,
+    load_or_romanize_series,
+    load_or_simplify_series,
+)
 
 __all__ = [
     "process_ocr",
@@ -28,12 +29,9 @@ def process_ocr(
     language: Language,
     sup_path: Path | None = None,
     *,
-    fuser_kw: Any | None = None,
-    reviewer_kw: Any | None = None,
+    fuser_kw: dict[str, Any] | None = None,
+    reviewer_kw: dict[str, Any] | None = None,
     overwrite: bool = False,
-    overwrite_srt: bool = False,
-    overwrite_img: bool = False,
-    force_validation: bool = False,
     interactive: bool = False,
     host: str = "127.0.0.1",
     port: int = 5000,
@@ -47,9 +45,6 @@ def process_ocr(
         fuser_kw: keyword arguments for OCR fuser
         reviewer_kw: keyword arguments for OCR reviewer
         overwrite: whether to overwrite existing outputs
-        overwrite_srt: legacy alias for overwriting subtitle outputs
-        overwrite_img: legacy alias for overwriting image outputs
-        force_validation: legacy alias for overwriting validation output
         interactive: whether to launch the OCR validation web UI
         host: OCR validation web UI host
         port: OCR validation web UI port
@@ -59,7 +54,6 @@ def process_ocr(
     # Validate and configure
     input_dir_path = title_root_path / "input" / f"{language.code}_ocr"
     output_dir_path = title_root_path / "output" / f"{language.code}_ocr"
-    overwrite = overwrite or overwrite_srt or overwrite_img or force_validation
 
     # Load, OCR, and validate series
     validated = _ocr(
@@ -75,74 +69,67 @@ def process_ocr(
     )
 
     # Review series
-    review_path = output_dir_path / "fuse_clean_validate_review.srt"
-    review = _review(review_path, language, validated, overwrite, reviewer_kw)
+    reviewed_path = output_dir_path / "fuse_clean_validate_review.srt"
+    reviewed = load_or_review_series(
+        validated,
+        reviewed_path,
+        language,
+        overwrite,
+        reviewer_kw,
+    )
 
     # Flatten series
-    flatten_path = output_dir_path / "fuse_clean_validate_review_flatten.srt"
-    flatten = _flatten(flatten_path, language, review, overwrite)
+    flattened_path = output_dir_path / "fuse_clean_validate_review_flatten.srt"
+    flattened = load_or_flatten_series(
+        reviewed,
+        flattened_path,
+        language,
+        overwrite,
+    )
 
     if language.script == "Hans":
-        romanize_path = (
+        romanized_path = (
             output_dir_path / "fuse_clean_validate_review_flatten_romanize.srt"
         )
-        _romanize(romanize_path, language, flatten, overwrite)
+        load_or_romanize_series(flattened, romanized_path, language, overwrite)
     elif language.script == "Hant":
-        simplify_path = (
+        if language is Language.yue_hant:
+            simplified_language = Language.yue_hans
+        else:
+            simplified_language = Language.zho_hans
+        simplified_path = (
             output_dir_path / "fuse_clean_validate_review_flatten_simplify.srt"
         )
-        simplify = _simplify(simplify_path, flatten, overwrite)
-        review_path = (
+        simplified = load_or_simplify_series(flattened, simplified_path, overwrite)
+        simplified_reviewed_path = (
             output_dir_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
         )
         simplify_reviewer_kw = dict(reviewer_kw or {})
-        if language is Language.yue_hant:
-            simplify_reviewer_kw["prompt"] = ReviewPromptYueHans
-        else:
-            simplify_reviewer_kw["prompt"] = ReviewPromptZhoHans
+        simplify_reviewer_kw.pop("prompt", None)
+        simplify_reviewer_kw.pop("reviewer", None)
+        simplify_reviewer_kw.pop("test_cases", None)
         simplify_reviewer_kw["test_case_path"] = (
             output_dir_path / "lang" / language.language / "simplify_review.json"
         )
-        simplify_review = _review(
-            review_path,
-            language,
-            simplify,
+        simplified_reviewed = load_or_review_series(
+            simplified,
+            simplified_reviewed_path,
+            simplified_language,
             overwrite,
             simplify_reviewer_kw,
         )
-        romanize_path = (
+        romanized_path = (
             output_dir_path
             / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
         )
-        _romanize(romanize_path, language, simplify_review, overwrite)
+        load_or_romanize_series(
+            simplified_reviewed,
+            romanized_path,
+            simplified_language,
+            overwrite,
+        )
 
-    return flatten
-
-
-def _flatten(
-    path: Path,
-    language: Language,
-    series: Series,
-    overwrite: bool,
-) -> Series:
-    """Load or create flattened OCR subtitles.
-
-    Arguments:
-        path: flattened subtitle output path
-        language: OCR language
-        series: reviewed OCR series
-        overwrite: whether to overwrite existing outputs
-    Returns:
-        flattened series
-    """
-    # Load file if it exists
-    if path.exists() and not overwrite:
-        return Series.load(path)
-
-    # Run and save
-    flatten = flatten_series(series, language=language)
-    flatten.save(path, exist_ok=True)
-    return flatten
+    return flattened
 
 
 def _ocr(
@@ -151,7 +138,7 @@ def _ocr(
     language: Language,
     *,
     sup_path: Path | None,
-    fuser_kw: Any | None,
+    fuser_kw: dict[str, Any] | None,
     interactive: bool,
     host: str,
     port: int,
@@ -186,19 +173,19 @@ def _ocr(
         output_dir_path / "lang" / language.language / "ocr_fusion.json",
     )
     fuser_kw.setdefault("auto_verify", True)
-    workflow_kw: dict[str, Any] = {
-        "infile_path": infile_path,
-        "output_dir_path": output_dir_path,
-        "clean": True,
-        "dev": True,
-        "interactive": interactive,
-        "host": host,
-        "port": port,
-        "overwrite": overwrite,
-        "fuser_kw": fuser_kw,
-    }
     # Run workflow
-    OcrProcessingWorkflow(language=language, **workflow_kw)()
+    OcrProcessingWorkflow(
+        infile_path,
+        output_dir_path,
+        language=language,
+        clean=True,
+        dev=True,
+        interactive=interactive,
+        host=host,
+        port=port,
+        overwrite=overwrite,
+        fuser_kw=fuser_kw,
+    )()
 
     # Load final result and copy validated text back into image cache
     validated = Series.load(output_dir_path / "fuse_clean_validate.srt")
@@ -211,93 +198,3 @@ def _ocr(
             image_series.copy_text_from(validated)
             image_series.save_html_index(image_dir_path, encoding="utf-8")
     return validated
-
-
-def _review(
-    path: Path,
-    language: Language,
-    series: Series,
-    overwrite: bool,
-    reviewer_kw: Any | None,
-) -> Series:
-    """Load or create guided-reviewed OCR subtitles.
-
-    Arguments:
-        path: reviewed subtitle output path
-        language: OCR language
-        series: series to review
-        overwrite: whether to overwrite existing outputs
-        reviewer_kw: keyword arguments for OCR reviewer
-    Returns:
-        reviewed series
-    """
-    # Load file if it exists
-    if path.exists() and not overwrite:
-        return Series.load(path)
-
-    # Prepare kwargs
-    reviewer_kw = dict(reviewer_kw or {})
-    reviewer_kw.setdefault(
-        "test_case_path",
-        path.parent / "lang" / language.language / "review.json",
-    )
-    reviewer_kw.setdefault("auto_verify", True)
-
-    # Run and save
-    if language is Language.yue_hant:
-        reviewer_kw.setdefault("prompt", ReviewPromptYueHant)
-    elif language is Language.zho_hant:
-        reviewer_kw.setdefault("prompt", ReviewPromptZhoHant)
-    review = review_series(series, language=language, **reviewer_kw)
-    review.save(path)
-    return review
-
-
-def _romanize(
-    path: Path,
-    language: Language,
-    series: Series,
-    overwrite: bool,
-) -> Series:
-    """Load or create romanized OCR subtitles.
-
-    Arguments:
-        path: romanized subtitle output path
-        language: OCR language
-        series: series to romanize
-        overwrite: whether to overwrite existing outputs
-    Returns:
-        romanized series
-    """
-    # Load file if it exists
-    if path.exists() and not overwrite:
-        return Series.load(path)
-
-    # Run and save
-    romanized = romanize_series(series, language=language, append=True)
-    romanized.save(path, exist_ok=True)
-    return romanized
-
-
-def _simplify(
-    path: Path,
-    series: Series,
-    overwrite: bool,
-) -> Series:
-    """Load or create simplified Chinese-script OCR subtitles.
-
-    Arguments:
-        path: simplified subtitle output path
-        series: series to simplify
-        overwrite: whether to overwrite existing outputs
-    Returns:
-        simplified series
-    """
-    # Load file if it exists
-    if path.exists() and not overwrite:
-        return Series.load(path)
-
-    # Run and save
-    simplify = get_zho_converted(series, OpenCCConfig.t2s)
-    simplify.save(path, exist_ok=True)
-    return simplify
