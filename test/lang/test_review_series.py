@@ -16,7 +16,7 @@ from scinoephile.lang.review.standard import get_reviewer
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms.review import ReviewPrompt
-from scinoephile.workflows.review import review
+from scinoephile.workflows.review import review_series
 from test.data.acopopb import (
     get_acopopb_eng_review_test_cases,
     get_acopopb_yue_hans_review_test_cases,
@@ -412,7 +412,7 @@ def test_review_series(
     language: Language,
     prompt: ReviewPrompt,
 ):
-    """Test review against expected outputs.
+    """Test series review against expected outputs.
 
     Arguments:
         request: pytest request for fixture lookup
@@ -430,7 +430,7 @@ def test_review_series(
         provider=provider,
     )
     expected = request.getfixturevalue(expected_fixture)
-    output = review(
+    output = review_series(
         request.getfixturevalue(series_fixture),
         language=language,
         reviewer=reviewer,

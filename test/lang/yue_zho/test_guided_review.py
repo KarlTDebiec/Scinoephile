@@ -12,7 +12,7 @@ from pytest import FixtureRequest, param
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.review.guided import get_guided_reviewer
-from scinoephile.workflows.review import review_guided
+from scinoephile.workflows.review import review_series_guided
 from test.data.mlamd import get_mlamd_yue_vs_zho_guided_review_test_cases
 from test.helpers import assert_series_equal, parametrize
 
@@ -67,6 +67,6 @@ def test_review_series_guided_yue_zho(
     reviewer = get_guided_reviewer(
         Language.yue_hans, Language.zho_hans, test_cases=test_cases, provider=provider
     )
-    output = review_guided(yuewen, zhongwen, reviewer=reviewer)
+    output = review_series_guided(yuewen, zhongwen, reviewer=reviewer)
     assert_series_equal(output, expected)
     provider.chat_completion.assert_not_called()

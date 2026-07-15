@@ -22,9 +22,9 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.review import (
-    review,
-    review_guided,
-    review_pairwise,
+    review_series,
+    review_series_guided,
+    review_series_pairwise,
 )
 
 from .helpers.io import read_series, write_series
@@ -196,7 +196,7 @@ class ProofreadCli(ScinoephileCliBase):
         try:
             if pairwise_guide_infile_path is not None:
                 reference = read_series(parser, pairwise_guide_infile_path)
-                output = review_pairwise(
+                output = review_series_pairwise(
                     series,
                     reference,
                     language=language,
@@ -206,7 +206,7 @@ class ProofreadCli(ScinoephileCliBase):
                 )
             elif guide_infile_path is not None:
                 guide = read_series(parser, guide_infile_path)
-                output = review_guided(
+                output = review_series_guided(
                     series,
                     guide,
                     language=language,
@@ -215,7 +215,7 @@ class ProofreadCli(ScinoephileCliBase):
                     additional_context=additional_context,
                 )
             else:
-                output = review(
+                output = review_series(
                     series,
                     language=language,
                     provider=provider,

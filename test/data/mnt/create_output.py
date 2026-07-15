@@ -13,7 +13,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.translation.guided import get_guided_translator
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.workflows.clean import clean_series
-from scinoephile.workflows.flatten import flatten
+from scinoephile.workflows.flatten import flatten_series
 from scinoephile.workflows.translation import translate_series_guided
 from test.data.ocr import process_ocr
 from test.data.prompts import EngZhoYueGuidedTranslationPrompt
@@ -93,12 +93,12 @@ if "yue_eng" in actions:
 if "yue_zho-Hans_eng" in actions:
     yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")
     yue_zho_hant = clean_series(yue_zho_hant, language=Language.yue_hant)
-    yue_zho_hant = flatten(yue_zho_hant, language=Language.yue_hant)
+    yue_zho_hant = flatten_series(yue_zho_hant, language=Language.yue_hant)
     yue_zho_hans = get_zho_converted(yue_zho_hant, OpenCCConfig.t2s)
 
     yue_eng = Series.load(output_path / "yue_eng/eng.srt")
     yue_eng = clean_series(yue_eng, language=Language.eng)
-    yue_eng = flatten(yue_eng, language=Language.eng)
+    yue_eng = flatten_series(yue_eng, language=Language.eng)
 
     yue_zho_hans_eng = get_stacked_series(yue_zho_hans, yue_eng)
     yue_zho_hans_eng.save(output_path / "yue_eng/zho-Hans_eng.srt")

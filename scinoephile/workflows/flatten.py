@@ -15,13 +15,13 @@ from scinoephile.lang.zho.flattening import get_zho_text_flattened
 
 from .helpers import resolve_language
 
-__all__ = ["flatten"]
+__all__ = ["flatten_series"]
 
 
 logger = getLogger(__name__)
 
 
-def flatten(
+def flatten_series(
     series: Series,
     *,
     language: Language | None = None,

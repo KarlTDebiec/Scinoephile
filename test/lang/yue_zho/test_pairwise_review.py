@@ -12,7 +12,7 @@ from pytest import FixtureRequest, param
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.review.pairwise import get_pairwise_reviewer
-from scinoephile.workflows.review import review_pairwise
+from scinoephile.workflows.review import review_series_pairwise
 from test.data.mlamd import get_mlamd_yue_vs_zho_pairwise_review_test_cases
 from test.helpers import assert_series_equal, parametrize
 
@@ -63,6 +63,6 @@ def test_review_series_pairwise_yue_zho(
     pairwise_reviewer = get_pairwise_reviewer(
         Language.yue_hans, Language.zho_hans, test_cases=test_cases, provider=provider
     )
-    output = review_pairwise(yuewen, zhongwen, reviewer=pairwise_reviewer)
+    output = review_series_pairwise(yuewen, zhongwen, reviewer=pairwise_reviewer)
     assert_series_equal(output, expected)
     provider.chat_completion.assert_not_called()

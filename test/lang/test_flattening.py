@@ -7,7 +7,7 @@ from __future__ import annotations
 from pytest import FixtureRequest, fail, param, raises
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.workflows.flatten import flatten
+from scinoephile.workflows.flatten import flatten_series
 from test.helpers import assert_series_equal, parametrize
 from test.helpers.series_files import get_text_series
 
@@ -206,7 +206,7 @@ def test_flatten_series(
         expected_fixture: fixture name for expected output series
     """
     series = request.getfixturevalue(series_fixture)
-    output = flatten(series, language=language)
+    output = flatten_series(series, language=language)
 
     assert len(series) == len(output)
 
@@ -226,7 +226,7 @@ def test_flatten_series_excludes_indexes():
     """Test series flattening skips excluded indexes without modifying its input."""
     source = get_text_series("first\nline", "second\nline")
 
-    output = flatten(source, language=Language.eng, exclusions=[1])
+    output = flatten_series(source, language=Language.eng, exclusions=[1])
 
     assert [event.text for event in output] == ["first\nline", "second line"]
     assert [event.text for event in source] == ["first\nline", "second\nline"]
@@ -238,4 +238,4 @@ def test_flatten_series_rejects_nonpositive_exclusions():
         ScinoephileError,
         match="Exclusion indexes must be positive",
     ):
-        flatten(get_text_series("text"), language=Language.eng, exclusions=[0])
+        flatten_series(get_text_series("text"), language=Language.eng, exclusions=[0])
