@@ -216,7 +216,7 @@ class OcrFuseCli(ScinoephileCliBase):
         if isinstance(convert, OpenCCConfig):
             resolved_convert = convert
         elif convert:
-            if language.script == "simplified":
+            if language.script == "Hans":
                 resolved_convert = OpenCCConfig.s2t
             else:
                 resolved_convert = OpenCCConfig.t2s
