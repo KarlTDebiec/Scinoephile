@@ -216,9 +216,9 @@ def test_series_cer_string_includes_percentages():
         ),
         param(
             "kob_yue_hant_clean_review_flatten_timewarp",
-            "kob_yue_hant_transcribe_guided_review",
-            "kob_yue_hant_transcribe_guided_review_expected_cer",
-            id="kob-yue-transcribe-guided-review",
+            "kob_yue_hant_transcribe_clean_review",
+            "kob_yue_hant_transcribe_clean_review_expected_cer",
+            id="kob-yue-transcribe-clean-review",
         ),
     ],
 )

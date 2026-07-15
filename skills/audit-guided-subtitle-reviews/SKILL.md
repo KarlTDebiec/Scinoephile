@@ -5,9 +5,10 @@ description: Audit Scinoephile guided subtitle review JSON against the exact tar
 
 # Audit Guided Subtitle Reviews
 
-Run commands from the repository root. Audit the guided-review stage as a
-separate operation applied to an existing target subtitle track. Do not treat it
-as part of transcription generation, delineation, or punctuation.
+Run commands from the repository root. Audit the guided-review stage applied to
+the cleaned transcription. The dataset workflow chains this stage after
+transcription and cleaning, but its decisions remain separate from transcription
+generation, delineation, punctuation, and gap translation.
 
 ## Mandatory final output
 
@@ -47,7 +48,7 @@ output, an official subtitle track, or a similarly named guide.
 
 Transcription-dataset artifacts commonly look like:
 
-- target: `<language>_transcribe/transcribe.srt`
+- target: `<language>_transcribe/transcribe_clean.srt`
 - guide: `<guide-language>_ocr/fuse_clean_validate_review_flatten.srt`
 - JSON: `<language>_transcribe/lang/<language-pair>/guided_review/<device>.json`
 
@@ -105,8 +106,8 @@ using its timing-aligned guide subtitle or subtitles as evidence.
   the guide.
 - Read model-provided JSON notes as context, not proof. Replace them in the
   report with your own interpretation of the evidence and decision.
-- Because guided review follows punctuation, reject punctuation-only or
-  whitespace-only revisions. When a valid text correction also changes
+- Because guided review follows punctuation and cleaning, reject punctuation-only
+  or whitespace-only revisions. When a valid text correction also changes
   punctuation or whitespace unnecessarily, retain the correction while
   restoring the input punctuation and whitespace.
 - If target and guide text do not provide enough evidence, mark the decision
@@ -140,7 +141,7 @@ the generated SRT:
   includes only part of a query, do not mark that case verified yet.
 - Do not mark unanswered or unaudited cases verified.
 
-After corrections, regenerate the guided-review SRT through the dataset
-workflow and rerun the audit over the corrected range. Confirm the JSON remains
-canonical and the report contains the expected decisions before presenting the
-complete interpreted report.
+After corrections, regenerate `transcribe_clean_review.srt` and downstream
+outputs through the dataset workflow, then rerun the audit over the corrected
+range. Confirm the JSON remains canonical and the report contains the expected
+decisions before presenting the complete interpreted report.

@@ -10,14 +10,14 @@ from typing import Any
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series
-from scinoephile.core.timing import get_series_timewarped
-from scinoephile.workflows.clean import clean_series
 
 from .helpers import (
+    load_or_clean_series,
     load_or_flatten_series,
     load_or_review_series,
     load_or_romanize_series,
     load_or_simplify_series,
+    load_or_timewarp_series,
 )
 
 __all__ = [
@@ -88,7 +88,7 @@ def process_srt(
 
     # Clean, review, flatten, and timewarp
     cleaned_path = output_dir_path / "clean.srt"
-    cleaned = _clean(source, cleaned_path, language, overwrite)
+    cleaned = load_or_clean_series(source, cleaned_path, language, overwrite)
 
     reviewed_path = output_dir_path / "clean_review.srt"
     reviewed = load_or_review_series(
@@ -108,7 +108,7 @@ def process_srt(
     )
 
     timewarped_path = output_dir_path / "clean_review_flatten_timewarp.srt"
-    timewarped = _timewarp(
+    timewarped = load_or_timewarp_series(
         flattened,
         reference,
         timewarped_path,
@@ -156,68 +156,4 @@ def process_srt(
             overwrite,
         )
 
-    return timewarped
-
-
-def _clean(
-    series: Series,
-    output_path: Path,
-    language: Language,
-    overwrite: bool = False,
-) -> Series:
-    """Load or create cleaned SRT subtitles.
-
-    Arguments:
-        series: series to clean
-        output_path: cleaned subtitle output path
-        language: subtitle language
-        overwrite: whether to overwrite existing outputs
-    Returns:
-        cleaned series
-    """
-    if output_path.exists() and not overwrite:
-        return Series.load(output_path)
-
-    cleaned = clean_series(series, language=language)
-    cleaned.save(output_path, exist_ok=True)
-    return cleaned
-
-
-def _timewarp(
-    series: Series,
-    reference: Series,
-    output_path: Path,
-    *,
-    one_start_idx: int | None = None,
-    one_end_idx: int | None = None,
-    two_start_idx: int | None = None,
-    two_end_idx: int | None = None,
-    overwrite: bool = False,
-) -> Series:
-    """Load or create timewarped SRT subtitles.
-
-    Arguments:
-        series: source series to timewarp
-        reference: anchor series whose timing should be followed
-        output_path: timewarped subtitle output path
-        one_start_idx: 1-based start index in the anchor series
-        one_end_idx: 1-based end index in the anchor series
-        two_start_idx: 1-based start index in the source series
-        two_end_idx: 1-based end index in the source series
-        overwrite: whether to overwrite existing outputs
-    Returns:
-        timewarped series
-    """
-    if output_path.exists() and not overwrite:
-        return Series.load(output_path)
-
-    timewarped = get_series_timewarped(
-        reference,
-        series,
-        one_start_idx=one_start_idx,
-        one_end_idx=one_end_idx,
-        two_start_idx=two_start_idx,
-        two_end_idx=two_end_idx,
-    )
-    timewarped.save(output_path, exist_ok=True)
     return timewarped

@@ -4,59 +4,6 @@
       "targets": [
         {
           "index": 1,
-          "text": "少爺！準備好喇"
-        }
-      ],
-      "guides": [
-        {
-          "index": 1,
-          "text": "少爺！準備好了"
-        }
-      ]
-    },
-    "answer": {
-      "revisions": []
-    }
-  },
-  {
-    "query": {
-      "targets": [
-        {
-          "index": 1,
-          "text": "辛苦啦！少爺"
-        },
-        {
-          "index": 2,
-          "text": "會寒啦，少爺！"
-        }
-      ],
-      "guides": [
-        {
-          "index": 1,
-          "text": "辛苦了！少爺"
-        },
-        {
-          "index": 2,
-          "text": "少爺！擦個汗吧"
-        }
-      ]
-    },
-    "answer": {
-      "revisions": [
-        {
-          "index": 2,
-          "text": "抹吓汗啦，少爺！",
-          "note": "「會寒啦」唔係有意義嘅粵語講法，亦同中文字幕所指嘅動作唔符；按語境修正為叫少爺抹汗。"
-        }
-      ]
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "targets": [
-        {
-          "index": 1,
           "text": "師爺，少爺寫乜嘢呀？"
         },
         {
@@ -590,53 +537,6 @@
           "index": 44,
           "text": "他日老爺擺大壽，要威過佢",
           "note": "Restores the intended comparison: the old master’s future birthday celebration should outdo his."
-        }
-      ]
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "targets": [
-        {
-          "index": 1,
-          "text": "王爺，你覺得廣東嘅大戲點？"
-        },
-        {
-          "index": 2,
-          "text": "地方戲曲，當然畀唔上驚喜"
-        },
-        {
-          "index": 3,
-          "text": "不過都算係一番變色"
-        }
-      ],
-      "guides": [
-        {
-          "index": 1,
-          "text": "皇爺，你覺得廣東大戲怎樣？"
-        },
-        {
-          "index": 2,
-          "text": "地方戲曲，當然不及京戲"
-        },
-        {
-          "index": 3,
-          "text": "但也算是一種見識"
-        }
-      ]
-    },
-    "answer": {
-      "revisions": [
-        {
-          "index": 2,
-          "text": "地方戲曲，當然畀唔上京戲",
-          "note": "“驚喜” is a transcription error; the intended term is “京戲,” matching the reference subtitle about regional opera not being as good as Peking opera."
-        },
-        {
-          "index": 3,
-          "text": "不過都算係一番見識",
-          "note": "“變色” is an incorrect transcription; it should be “見識,” meaning an experience or something worth seeing."
         }
       ]
     },
@@ -1783,53 +1683,6 @@
       "targets": [
         {
           "index": 1,
-          "text": "先"
-        },
-        {
-          "index": 2,
-          "text": "學準"
-        },
-        {
-          "index": 3,
-          "text": "撲掣"
-        }
-      ],
-      "guides": [
-        {
-          "index": 1,
-          "text": "先放好"
-        },
-        {
-          "index": 2,
-          "text": "鶴咀"
-        },
-        {
-          "index": 3,
-          "text": "虎爪"
-        }
-      ]
-    },
-    "answer": {
-      "revisions": [
-        {
-          "index": 2,
-          "text": "鶴咀",
-          "note": "“學準” appears to be a mishearing of “鶴咀,” referring to the crane-beak hand shape."
-        },
-        {
-          "index": 3,
-          "text": "虎爪",
-          "note": "“撲掣” conflicts with the corresponding term “虎爪” and appears to be a transcription error."
-        }
-      ]
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "targets": [
-        {
-          "index": 1,
           "text": "螳螂點救老虎砌呀？何況我加埋隻殼。"
         },
         {
@@ -1936,53 +1789,6 @@
           "index": 4,
           "text": "唔怪你咁差",
           "note": "“咁嘢” is inconsistent with the reference meaning; the intended phrase is “咁差,” meaning comparatively poor."
-        }
-      ]
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "targets": [
-        {
-          "index": 1,
-          "text": "身形幾快呀"
-        },
-        {
-          "index": 2,
-          "text": "睇嚟你似樣啲嘛"
-        },
-        {
-          "index": 3,
-          "text": "後生仔，物至天高地厚"
-        }
-      ],
-      "guides": [
-        {
-          "index": 1,
-          "text": "動作蠻快"
-        },
-        {
-          "index": 2,
-          "text": "看來你比較像樣"
-        },
-        {
-          "index": 3,
-          "text": "年青人，不知天高地厚"
-        }
-      ]
-    },
-    "answer": {
-      "revisions": [
-        {
-          "index": 1,
-          "text": "身手幾快呀",
-          "note": "“身形” means body shape, but the context refers to being quick in movement. The intended Cantonese expression is “身手幾快”."
-        },
-        {
-          "index": 3,
-          "text": "後生仔，唔知天高地厚",
-          "note": "“物至” is an incorrect transcription. The established expression is “唔知天高地厚”, meaning not knowing one's own limits."
         }
       ]
     },
@@ -2613,25 +2419,6 @@
       ]
     },
     "difficulty": 1
-  },
-  {
-    "query": {
-      "targets": [
-        {
-          "index": 1,
-          "text": "高手嚟㗎"
-        }
-      ],
-      "guides": [
-        {
-          "index": 1,
-          "text": "真是高手"
-        }
-      ]
-    },
-    "answer": {
-      "revisions": []
-    }
   },
   {
     "query": {
@@ -16925,5 +16712,2563 @@
       ]
     },
     "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "少爺！準備好喇"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "少爺！準備好了"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    }
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "辛苦啦！少爺"
+        },
+        {
+          "index": 2,
+          "text": "會寒啦，少爺！"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "辛苦了！少爺"
+        },
+        {
+          "index": 2,
+          "text": "少爺！擦個汗吧"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "抹吓汗啦，少爺！",
+          "note": "「會寒啦」唔係有意義嘅粵語講法，亦同中文字幕所指嘅動作唔符；按語境修正為叫少爺抹汗。"
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "師爺，少爺寫乜嘢呀？"
+        },
+        {
+          "index": 2,
+          "text": "名呀"
+        },
+        {
+          "index": 3,
+          "text": "嘩，好靚呀！原來少爺識寫自己個名喎"
+        },
+        {
+          "index": 4,
+          "text": "係呀，要"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "師爺，少爺寫的是甚麼？"
+        },
+        {
+          "index": 2,
+          "text": "名字"
+        },
+        {
+          "index": 3,
+          "text": "好棒！原來少爺會寫自己的名字"
+        },
+        {
+          "index": 4,
+          "text": "對呀"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 4,
+          "text": "係呀",
+          "note": "The subtitle appears to contain an extra character at the end. It should correspond to the affirmative reply 「對呀」."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "好字"
+        },
+        {
+          "index": 2,
+          "text": "走開"
+        },
+        {
+          "index": 3,
+          "text": "好字呀！龍飛鳳舞，蘇擦蝦耳鏟"
+        },
+        {
+          "index": 4,
+          "text": "調轉咗呀，老爺"
+        },
+        {
+          "index": 5,
+          "text": "鏟耳蝦擦蘇"
+        },
+        {
+          "index": 6,
+          "text": "叻仔，但事無驕，知咩？"
+        },
+        {
+          "index": 7,
+          "text": "爹爹，我哋蘇擦蝦耳家"
+        },
+        {
+          "index": 8,
+          "text": "自太祖皇帝到家陣"
+        },
+        {
+          "index": 9,
+          "text": "幾代都冇我曉寫字嘅"
+        },
+        {
+          "index": 10,
+          "text": "而家唔係啦，我個仔你佢孫阿燦呢"
+        },
+        {
+          "index": 11,
+          "text": "佢曉寫自己個名呀"
+        },
+        {
+          "index": 12,
+          "text": "爹，呢一步非同小可"
+        },
+        {
+          "index": 13,
+          "text": "今日曉寫字"
+        },
+        {
+          "index": 14,
+          "text": "趴朝就必成大學士"
+        },
+        {
+          "index": 15,
+          "text": "今日曉寫名"
+        },
+        {
+          "index": 16,
+          "text": "趴日生仔就必有病"
+        },
+        {
+          "index": 17,
+          "text": "少爺，你真係要好啲學寫字"
+        },
+        {
+          "index": 18,
+          "text": "我傻，擦呀擦，我睇表起佢好"
+        },
+        {
+          "index": 19,
+          "text": "表佢"
+        },
+        {
+          "index": 20,
+          "text": "師爺，你攞佢有咁多眼掛咁多眼"
+        },
+        {
+          "index": 21,
+          "text": "咁唔係呀，師爺"
+        },
+        {
+          "index": 22,
+          "text": "你揹住佢參夫阿國，和友鄰皆威下先"
+        },
+        {
+          "index": 23,
+          "text": "行啦"
+        },
+        {
+          "index": 24,
+          "text": "擦呀擦，嚟嚟，坐⋯"
+        },
+        {
+          "index": 25,
+          "text": "見你咁生性，我都好安慰"
+        },
+        {
+          "index": 26,
+          "text": "你聽我講，爹呢書名係二世祖"
+        },
+        {
+          "index": 27,
+          "text": "庫身家都洗到七七八八㗎喇"
+        },
+        {
+          "index": 28,
+          "text": "好話唔好聽，但係爹兩個嘢硬呢"
+        },
+        {
+          "index": 29,
+          "text": "你真係全部都靠自己喇？"
+        },
+        {
+          "index": 30,
+          "text": "我不留都靠自己㗎喇"
+        },
+        {
+          "index": 31,
+          "text": "成十萬兩一張，省得洗呀"
+        },
+        {
+          "index": 32,
+          "text": "茂利，攞我頂西洋帽過嚟"
+        },
+        {
+          "index": 33,
+          "text": "去邊呀，燦？"
+        },
+        {
+          "index": 34,
+          "text": "今日我擺大壽"
+        },
+        {
+          "index": 35,
+          "text": "你跪跟呀？"
+        },
+        {
+          "index": 36,
+          "text": "廿五歲大壽嘛，早啲到呀"
+        },
+        {
+          "index": 37,
+          "text": "擺大壽你都梳靚啲個頭啦"
+        },
+        {
+          "index": 38,
+          "text": "成世都好似乞兒仔呀"
+        },
+        {
+          "index": 39,
+          "text": "你咁，乞兒會咁有錢？我都想做"
+        },
+        {
+          "index": 40,
+          "text": "個瘦頭硬事嘅真係⋯"
+        },
+        {
+          "index": 41,
+          "text": "過嚟⋯"
+        },
+        {
+          "index": 42,
+          "text": "做咩呀，老爺？"
+        },
+        {
+          "index": 43,
+          "text": "個衰仔擺大壽，打張簽都嫁細個人嘅"
+        },
+        {
+          "index": 44,
+          "text": "但係老爺擺大壽呢，要嫁細個佢，你老⋯"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "好字"
+        },
+        {
+          "index": 2,
+          "text": "走開"
+        },
+        {
+          "index": 3,
+          "text": "好字！龍飛鳳舞，蘇察哈爾燦"
+        },
+        {
+          "index": 4,
+          "text": "你唸反了，老爺"
+        },
+        {
+          "index": 5,
+          "text": "燦爾哈察蘇"
+        },
+        {
+          "index": 6,
+          "text": "好小子，但是別驕傲，知道嗎？"
+        },
+        {
+          "index": 7,
+          "text": "爹，我們蘇察哈爾家"
+        },
+        {
+          "index": 8,
+          "text": "自太祖皇帝到現在"
+        },
+        {
+          "index": 9,
+          "text": "都沒有幾個會寫字的"
+        },
+        {
+          "index": 10,
+          "text": "現在可不同，我的兒子你的孫兒阿燦"
+        },
+        {
+          "index": 11,
+          "text": "他會寫自己的名字"
+        },
+        {
+          "index": 12,
+          "text": "爹，這可是非同少可"
+        },
+        {
+          "index": 13,
+          "text": "今天會寫字"
+        },
+        {
+          "index": 14,
+          "text": "他朝必成大學士"
+        },
+        {
+          "index": 15,
+          "text": "今天會寫名"
+        },
+        {
+          "index": 16,
+          "text": "他日一定會生子"
+        },
+        {
+          "index": 17,
+          "text": "少爺，你真是要好好地學習寫字"
+        },
+        {
+          "index": 18,
+          "text": "阿燦，先把它裱起來"
+        },
+        {
+          "index": 19,
+          "text": "裱起它"
+        },
+        {
+          "index": 20,
+          "text": "師爺，把它掛在最當眼的地方"
+        },
+        {
+          "index": 21,
+          "text": "這樣吧，師爺"
+        },
+        {
+          "index": 22,
+          "text": "你先揹著它簪花掛紅，遊行威風一下"
+        },
+        {
+          "index": 23,
+          "text": "走吧"
+        },
+        {
+          "index": 24,
+          "text": "阿燦，來⋯坐⋯"
+        },
+        {
+          "index": 25,
+          "text": "你這麼爭氣，我也很安慰"
+        },
+        {
+          "index": 26,
+          "text": "你聽我說，爹是有名的敗家兒"
+        },
+        {
+          "index": 27,
+          "text": "家裡的財產也敗得差不多"
+        },
+        {
+          "index": 28,
+          "text": "說難聽一點，日後我兩腳一伸"
+        },
+        {
+          "index": 29,
+          "text": "你個王八蛋，怎麼到這裡來討飯？"
+        },
+        {
+          "index": 30,
+          "text": "向來我都是靠自己"
+        },
+        {
+          "index": 31,
+          "text": "十萬兩一張，省一點花啊"
+        },
+        {
+          "index": 32,
+          "text": "茂利，把我的西洋帽拿來"
+        },
+        {
+          "index": 33,
+          "text": "你去哪，阿燦？"
+        },
+        {
+          "index": 34,
+          "text": "今晚我做大壽"
+        },
+        {
+          "index": 35,
+          "text": "你貴庚？"
+        },
+        {
+          "index": 36,
+          "text": "廿五歲大壽，早點到"
+        },
+        {
+          "index": 37,
+          "text": "做大壽你也得先把頭髮梳整齊"
+        },
+        {
+          "index": 38,
+          "text": "老是一個乞丐的模樣"
+        },
+        {
+          "index": 39,
+          "text": "乞丐會那麼有錢？我也想當"
+        },
+        {
+          "index": 40,
+          "text": "那壽頭真是⋯"
+        },
+        {
+          "index": 41,
+          "text": "過來，過來"
+        },
+        {
+          "index": 42,
+          "text": "老爺，甚麼事？"
+        },
+        {
+          "index": 43,
+          "text": "那臭小子的壽帖真威風"
+        },
+        {
+          "index": 44,
+          "text": "他日老爺做大壽，要比他威風"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "好字呀！龍飛鳳舞，蘇察哈爾燦",
+          "note": "The character's name is mistranscribed; it should be 「蘇察哈爾燦」."
+        },
+        {
+          "index": 5,
+          "text": "燦爾哈察蘇",
+          "note": "The repeated name is mistranscribed; it should be 「燦爾哈察蘇」."
+        },
+        {
+          "index": 6,
+          "text": "叻仔，但係唔好驕傲，知咩？",
+          "note": "「事無驕」 is a mishearing; the intended meaning is not to be proud."
+        },
+        {
+          "index": 9,
+          "text": "幾代都冇幾個識寫字嘅",
+          "note": "「幾代都冇我曉」 is mistranscribed; the sentence should say that only a few people could write."
+        },
+        {
+          "index": 10,
+          "text": "而家唔係啦，我個仔，你個孫阿燦呢",
+          "note": "「你佢孫」 is a transcription error; it should be 「你個孫」."
+        },
+        {
+          "index": 14,
+          "text": "他朝就必成大學士",
+          "note": "「趴朝」 is a mishearing of 「他朝」."
+        },
+        {
+          "index": 16,
+          "text": "他日生仔就必有病",
+          "note": "「趴日」 is a mishearing of 「他日」."
+        },
+        {
+          "index": 18,
+          "text": "阿燦，先裱起佢好",
+          "note": "The name 「阿燦」 and the verb 「裱起」 are mistranscribed."
+        },
+        {
+          "index": 19,
+          "text": "裱起佢",
+          "note": "「表佢」 should be 「裱起佢」, meaning to mount or frame it."
+        },
+        {
+          "index": 20,
+          "text": "師爺，將佢掛喺最當眼嘅地方",
+          "note": "This line is heavily mistranscribed; it should say to hang it in the most conspicuous place."
+        },
+        {
+          "index": 22,
+          "text": "你揹住佢簪花掛紅，遊行威風一下先",
+          "note": "The words describing carrying the item with ceremonial decorations and parading are mistranscribed."
+        },
+        {
+          "index": 24,
+          "text": "阿燦，嚟嚟，坐⋯",
+          "note": "「擦呀擦」 is a mishearing of the character's name 「阿燦」."
+        },
+        {
+          "index": 26,
+          "text": "你聽我講，爹係有名嘅敗家仔",
+          "note": "「書名」 is a transcription error; the line refers to being a well-known wastrel."
+        },
+        {
+          "index": 27,
+          "text": "屋企身家都洗到七七八八㗎喇",
+          "note": "「庫身家」 is mistranscribed; the intended phrase is about the family fortune being almost exhausted."
+        },
+        {
+          "index": 28,
+          "text": "好話唔好聽，但係第時爹兩腳一伸呢",
+          "note": "The latter part is heavily mistranscribed; 「兩腳一伸」 means dying."
+        },
+        {
+          "index": 29,
+          "text": "你個王八蛋，點解嚟呢度討飯呀？",
+          "note": "This line is heavily mistranscribed; it is an insult followed by asking why he came here to beg."
+        },
+        {
+          "index": 30,
+          "text": "向來我都係靠自己㗎喇",
+          "note": "「我不留」 is a mishearing; the intended phrase is 「向來我都係」."
+        },
+        {
+          "index": 31,
+          "text": "成十萬兩一張，省啲使呀",
+          "note": "「洗」 should be 「使」 in the expression meaning to spend money."
+        },
+        {
+          "index": 35,
+          "text": "你貴庚呀？",
+          "note": "「你跪跟」 is a mishearing of 「你貴庚」."
+        },
+        {
+          "index": 40,
+          "text": "嗰壽頭真係⋯",
+          "note": "「個瘦頭硬事嘅」 is mistranscribed; it should refer to 「嗰壽頭」."
+        },
+        {
+          "index": 43,
+          "text": "個衰仔張壽帖都幾威風㗎",
+          "note": "The description of the birthday invitation is heavily mistranscribed."
+        },
+        {
+          "index": 44,
+          "text": "但係第日老爺擺大壽呢，要威過佢，你老⋯",
+          "note": "「要嫁細個佢」 is a mishearing of 「要威過佢」."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "王爺，你覺得廣東嘅大戲點？"
+        },
+        {
+          "index": 2,
+          "text": "地方戲曲，當然畀唔上驚喜"
+        },
+        {
+          "index": 3,
+          "text": "不過都算係一番變色"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "皇爺，你覺得廣東大戲怎樣？"
+        },
+        {
+          "index": 2,
+          "text": "地方戲曲，當然不及京戲"
+        },
+        {
+          "index": 3,
+          "text": "但也算是一種見識"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "地方戲曲，當然畀唔上京戲",
+          "note": "“驚喜” is a transcription error; the intended term is “京戲,” matching the reference subtitle about regional opera not being as good as Peking opera."
+        },
+        {
+          "index": 3,
+          "text": "不過都算係一番見識",
+          "note": "“變色” is an incorrect transcription; it should be “見識,” meaning an experience or something worth seeing."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "打賞⋯"
+        },
+        {
+          "index": 2,
+          "text": "恭喜蘇翁生辰快樂"
+        },
+        {
+          "index": 3,
+          "text": "我家善人、貧病老陽，死人塌樓"
+        },
+        {
+          "index": 4,
+          "text": "妻離子散，我這麼可惡，"
+        },
+        {
+          "index": 5,
+          "text": "師兄，我點人錢　　打錯了，死乞丐！"
+        },
+        {
+          "index": 6,
+          "text": "打你個混蛋，又不嫁黑色黑道來這裡？"
+        },
+        {
+          "index": 7,
+          "text": "我打⋯"
+        },
+        {
+          "index": 8,
+          "text": "打賞　　是，少爺"
+        },
+        {
+          "index": 9,
+          "text": "怎麼搞的？有錢就走"
+        },
+        {
+          "index": 10,
+          "text": "乞丐都是人，"
+        },
+        {
+          "index": 11,
+          "text": "誰有錢都是來這裡"
+        },
+        {
+          "index": 12,
+          "text": "你這個月在這裡"
+        },
+        {
+          "index": 13,
+          "text": "吃飯看你少爺直落叫雞，我包"
+        },
+        {
+          "index": 14,
+          "text": "包？"
+        },
+        {
+          "index": 15,
+          "text": "催？"
+        },
+        {
+          "index": 16,
+          "text": "不催⋯"
+        },
+        {
+          "index": 17,
+          "text": "催我來⋯　　催我來"
+        },
+        {
+          "index": 18,
+          "text": "喂⋯"
+        },
+        {
+          "index": 19,
+          "text": "怎麼樣？龜婆？"
+        },
+        {
+          "index": 20,
+          "text": "很壞，你沒名叫龜婆"
+        },
+        {
+          "index": 21,
+          "text": "大家坦白點不好嗎？"
+        },
+        {
+          "index": 22,
+          "text": "你要坦白？"
+        },
+        {
+          "index": 23,
+          "text": "你耳頂沒有，像麻大孝那樣"
+        },
+        {
+          "index": 24,
+          "text": "死老爸？"
+        },
+        {
+          "index": 25,
+          "text": "這麼說話才開心，大家"
+        },
+        {
+          "index": 26,
+          "text": "今次趙先生幫本官蘇平長毛賊"
+        },
+        {
+          "index": 27,
+          "text": "皇上一定重重有上"
+        },
+        {
+          "index": 28,
+          "text": "今次有六王爺，在皇上面前"
+        },
+        {
+          "index": 29,
+          "text": "多說幾句好話"
+        },
+        {
+          "index": 30,
+          "text": "大喜做完了，請用毛巾"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "打賞⋯打賞"
+        },
+        {
+          "index": 2,
+          "text": "恭喜蘇翁生辰快樂"
+        },
+        {
+          "index": 3,
+          "text": "我家破人亡、貧病老弱"
+        },
+        {
+          "index": 4,
+          "text": "無親無故、妻離子散"
+        },
+        {
+          "index": 5,
+          "text": "打賞個救命錢　　怎麼搞的，死乞丐！"
+        },
+        {
+          "index": 6,
+          "text": "你個王八蛋，怎麼到這裏來討飯？"
+        },
+        {
+          "index": 7,
+          "text": "我打⋯"
+        },
+        {
+          "index": 8,
+          "text": "打賞　　是，少爺"
+        },
+        {
+          "index": 9,
+          "text": "這樣也有打賞？"
+        },
+        {
+          "index": 10,
+          "text": "乞丐也是人"
+        },
+        {
+          "index": 11,
+          "text": "只要有錢的都可以來"
+        },
+        {
+          "index": 12,
+          "text": "你這個月來這裡"
+        },
+        {
+          "index": 13,
+          "text": "吃飯看戲宵夜嫖妓，我包"
+        },
+        {
+          "index": 14,
+          "text": "你包？"
+        },
+        {
+          "index": 15,
+          "text": "不可以嗎？"
+        },
+        {
+          "index": 16,
+          "text": "可以，可以"
+        },
+        {
+          "index": 17,
+          "text": "大爺進我間房吧⋯　　請你跟我來"
+        },
+        {
+          "index": 18,
+          "text": "蘇⋯翁"
+        },
+        {
+          "index": 19,
+          "text": "是⋯"
+        },
+        {
+          "index": 20,
+          "text": "你好嗎，鴇母？"
+        },
+        {
+          "index": 21,
+          "text": "你真壞，有名字你不叫，叫我鴇母"
+        },
+        {
+          "index": 22,
+          "text": "大家坦白一點不好嗎？"
+        },
+        {
+          "index": 23,
+          "text": "要坦白嗎"
+        },
+        {
+          "index": 24,
+          "text": "你的帽子像披麻帶孝似的"
+        },
+        {
+          "index": 25,
+          "text": "你老爸死了嗎？"
+        },
+        {
+          "index": 26,
+          "text": "這樣說大家才開心嘛"
+        },
+        {
+          "index": 27,
+          "text": "趙先生這趟幫本官掃平長毛賊"
+        },
+        {
+          "index": 28,
+          "text": "皇上一定重重有賞"
+        },
+        {
+          "index": 29,
+          "text": "那就有勞皇爺在皇上面前"
+        },
+        {
+          "index": 30,
+          "text": "多說幾句好說話"
+        },
+        {
+          "index": 31,
+          "text": "大戲做完了，請用毛巾"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "打賞⋯打賞",
+          "note": "The subtitle is missing the repeated call for a tip shown in the reference dialogue."
+        },
+        {
+          "index": 3,
+          "text": "我家破人亡、貧病老弱",
+          "note": "The original transcription contains several obvious misheard words; it should describe being ruined, poor, sick, old, and weak."
+        },
+        {
+          "index": 4,
+          "text": "無親無故、妻離子散",
+          "note": "The opening phrase was mistranscribed; it should be “without family or relatives,” followed by “妻離子散.”"
+        },
+        {
+          "index": 5,
+          "text": "打賞個救命錢　　點搞㗎，死乞丐！",
+          "note": "Corrects the garbled transcription to the intended request for a life-saving tip and the insult that follows."
+        },
+        {
+          "index": 6,
+          "text": "你個王八蛋，點解到呢度嚟討飯？",
+          "note": "Corrects multiple misheard words in the insult and question about coming here to beg."
+        },
+        {
+          "index": 9,
+          "text": "咁樣都有打賞？",
+          "note": "The line should ask whether this situation also qualifies for a tip."
+        },
+        {
+          "index": 10,
+          "text": "乞丐都係人",
+          "note": "Corrects the wording to the intended statement that beggars are also people."
+        },
+        {
+          "index": 11,
+          "text": "只要有錢都可以嚟",
+          "note": "Corrects the garbled wording to mean that anyone with money may come here."
+        },
+        {
+          "index": 12,
+          "text": "你呢個月嚟呢度",
+          "note": "The verb was mistranscribed; the line says “come here,” not “be here.”"
+        },
+        {
+          "index": 13,
+          "text": "食飯睇戲宵夜嫖妓，我包",
+          "note": "Corrects the list of activities, including watching a show, having a late-night meal, and visiting prostitutes."
+        },
+        {
+          "index": 15,
+          "text": "唔可以咩？",
+          "note": "Corrects the garbled single-word question to “Can’t I?”"
+        },
+        {
+          "index": 16,
+          "text": "可以，可以⋯",
+          "note": "The response should be “可以，可以,” not the mistranscribed phrase about urging someone."
+        },
+        {
+          "index": 17,
+          "text": "大爺，入我間房啦⋯　　請你跟我嚟",
+          "note": "Corrects the invitation to enter the speaker’s room and the accompanying request to follow."
+        },
+        {
+          "index": 18,
+          "text": "蘇⋯翁",
+          "note": "The speaker is addressing Su Weng; “喂” is an incorrect transcription."
+        },
+        {
+          "index": 19,
+          "text": "你好嗎？鴇母？",
+          "note": "Corrects the greeting and the term of address from the garbled version."
+        },
+        {
+          "index": 20,
+          "text": "你真衰，有名你唔叫，叫我鴇母",
+          "note": "Corrects the response, including the proper term “鴇母” and the intended complaint about being called by that name."
+        },
+        {
+          "index": 23,
+          "text": "你頂帽似披麻戴孝咁",
+          "note": "Corrects the garbled reference to a hat resembling mourning attire."
+        },
+        {
+          "index": 24,
+          "text": "你老爸死咗？",
+          "note": "Corrects the misheard question about the listener’s father."
+        },
+        {
+          "index": 25,
+          "text": "咁講大家先開心嘛",
+          "note": "Corrects the word order and phrasing to the intended remark that speaking this way makes everyone happy."
+        },
+        {
+          "index": 26,
+          "text": "今次趙先生幫本官掃平長毛賊",
+          "note": "Corrects “蘇平” to the intended verb “掃平,” meaning to wipe out the Long-Haired rebels."
+        },
+        {
+          "index": 27,
+          "text": "皇上一定重重有賞",
+          "note": "The final word is “賞,” not “上.”"
+        },
+        {
+          "index": 28,
+          "text": "咁就有勞皇爺喺皇上面前",
+          "note": "Corrects the garbled phrase to the request for the prince to put in a good word before the emperor."
+        },
+        {
+          "index": 29,
+          "text": "多講幾句好說話",
+          "note": "Corrects the wording to “say a few good words.”"
+        },
+        {
+          "index": 30,
+          "text": "大戲做完喇，請用毛巾",
+          "note": "Corrects “大喜” to “大戲,” meaning the performance is over."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "蘇翁來了⋯"
+        },
+        {
+          "index": 2,
+          "text": "蘇翁，恭喜發財"
+        },
+        {
+          "index": 3,
+          "text": "這邊⋯"
+        },
+        {
+          "index": 4,
+          "text": "蘇翁，今天你好日子，開心死你了"
+        },
+        {
+          "index": 5,
+          "text": "我們有幾位新姑娘，包你滿意"
+        },
+        {
+          "index": 6,
+          "text": "金魚還是木魚？"
+        },
+        {
+          "index": 7,
+          "text": "少爺，什麼金魚還是木魚？"
+        },
+        {
+          "index": 8,
+          "text": "傻子，金魚只用來看"
+        },
+        {
+          "index": 9,
+          "text": "木魚可以搏"
+        },
+        {
+          "index": 10,
+          "text": "當然要木魚"
+        },
+        {
+          "index": 11,
+          "text": "幾個木魚還不過來招呼客人⋯"
+        },
+        {
+          "index": 12,
+          "text": "蘇翁，今天你是自大"
+        },
+        {
+          "index": 13,
+          "text": "你想要什麼女人，你開聲就行了"
+        },
+        {
+          "index": 14,
+          "text": "無所謂，女人個個都一樣"
+        },
+        {
+          "index": 15,
+          "text": "有什麼特別"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "蘇翁來了⋯"
+        },
+        {
+          "index": 2,
+          "text": "蘇翁，恭喜發財"
+        },
+        {
+          "index": 3,
+          "text": "這邊⋯這邊"
+        },
+        {
+          "index": 4,
+          "text": "蘇翁，今天是你的好日子，很高興吧"
+        },
+        {
+          "index": 5,
+          "text": "我們有幾位新來的姑娘，保證你滿意"
+        },
+        {
+          "index": 6,
+          "text": "金魚還是木魚？"
+        },
+        {
+          "index": 7,
+          "text": "少爺，甚麼金魚、木魚？"
+        },
+        {
+          "index": 8,
+          "text": "傻瓜，金魚只可以看"
+        },
+        {
+          "index": 9,
+          "text": "木魚則可以碰嘛"
+        },
+        {
+          "index": 10,
+          "text": "那當然要木魚"
+        },
+        {
+          "index": 11,
+          "text": "你們還不過來待候客人⋯"
+        },
+        {
+          "index": 12,
+          "text": "蘇翁，今天是你的大日子"
+        },
+        {
+          "index": 13,
+          "text": "你想要怎樣的女人，你說就成"
+        },
+        {
+          "index": 14,
+          "text": "隨便，女人都是一樣的"
+        },
+        {
+          "index": 15,
+          "text": "沒甚麼特別"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "這邊⋯這邊",
+          "note": "The Cantonese subtitle is missing the repeated call «這邊», which is present in the corresponding line."
+        },
+        {
+          "index": 4,
+          "text": "蘇翁，今日係你嘅好日子，開心死你喇",
+          "note": "«今天你好日子» is missing the copula and possessive structure. Revised to the natural Cantonese expression meaning “today is your good day.”"
+        },
+        {
+          "index": 9,
+          "text": "木魚可以摸",
+          "note": "«搏» is an incorrect character in this context; the intended verb is «摸», contrasting with the previous line’s «看»."
+        },
+        {
+          "index": 12,
+          "text": "蘇翁，今天你是最大",
+          "note": "«自大» is a mis-transcription of «最大» in this context, meaning that Su Weng is the most important person today."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "修勇，什麼事？"
+        },
+        {
+          "index": 2,
+          "text": "我被人挑了"
+        },
+        {
+          "index": 3,
+          "text": "什麼？"
+        },
+        {
+          "index": 4,
+          "text": "誰這麼大膽挑你？讓我掌他的嘴"
+        },
+        {
+          "index": 5,
+          "text": "不是用嘴，"
+        },
+        {
+          "index": 6,
+          "text": "是用眼"
+        },
+        {
+          "index": 7,
+          "text": "有惑還帶有殺氣，這隻眼神我沒見過"
+        },
+        {
+          "index": 8,
+          "text": "究竟是何方神聖？"
+        },
+        {
+          "index": 9,
+          "text": "這位如霜姑娘你客串的"
+        },
+        {
+          "index": 10,
+          "text": "不知道趙大人有沒有興趣和他拜訪呢？"
+        },
+        {
+          "index": 11,
+          "text": "你應該先問問王爺吧"
+        },
+        {
+          "index": 12,
+          "text": "怎麼樣，王爺？"
+        },
+        {
+          "index": 13,
+          "text": "大格自己人，又何必客氣呢？"
+        },
+        {
+          "index": 14,
+          "text": "趙先生，請隨便"
+        },
+        {
+          "index": 15,
+          "text": "那我就卻之不恭，"
+        },
+        {
+          "index": 16,
+          "text": "拜訪"
+        },
+        {
+          "index": 17,
+          "text": "如霜呀，快點下來見下趙大人啦"
+        },
+        {
+          "index": 18,
+          "text": "是她，你姐姐。"
+        },
+        {
+          "index": 19,
+          "text": "曬爹嗰個就係她"
+        },
+        {
+          "index": 20,
+          "text": "我知道，鎮定啲"
+        },
+        {
+          "index": 21,
+          "text": "行，但"
+        },
+        {
+          "index": 22,
+          "text": "如霜姑娘到啦"
+        },
+        {
+          "index": 23,
+          "text": "小女子如霜，拜見趙大人"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "蘇翁，甚麼事？"
+        },
+        {
+          "index": 2,
+          "text": "我給人挑了一下"
+        },
+        {
+          "index": 3,
+          "text": "甚麼？"
+        },
+        {
+          "index": 4,
+          "text": "誰膽敢挑你？讓我打她的咀"
+        },
+        {
+          "index": 5,
+          "text": "不是用咀"
+        },
+        {
+          "index": 6,
+          "text": "是用眼睛"
+        },
+        {
+          "index": 7,
+          "text": "誘惑中帶有煞氣，這種眼神我沒見過"
+        },
+        {
+          "index": 8,
+          "text": "究竟是何方神聖？"
+        },
+        {
+          "index": 9,
+          "text": "這位如霜姑娘是客串"
+        },
+        {
+          "index": 10,
+          "text": "趙大人有沒有興趣和她擺房？"
+        },
+        {
+          "index": 11,
+          "text": "你應該先問皇爺才對"
+        },
+        {
+          "index": 12,
+          "text": "怎麼樣，皇爺？"
+        },
+        {
+          "index": 13,
+          "text": "大家自己人，何必客氣呢？"
+        },
+        {
+          "index": 14,
+          "text": "趙先生，請隨便"
+        },
+        {
+          "index": 15,
+          "text": "那我就卻之不恭了"
+        },
+        {
+          "index": 16,
+          "text": "擺房"
+        },
+        {
+          "index": 17,
+          "text": "如霜，快點下來見趙大人"
+        },
+        {
+          "index": 18,
+          "text": "姐姐，就是他"
+        },
+        {
+          "index": 19,
+          "text": "殺阿爹的人就是他"
+        },
+        {
+          "index": 20,
+          "text": "我知道，鎮定點"
+        },
+        {
+          "index": 21,
+          "text": "走吧"
+        },
+        {
+          "index": 22,
+          "text": "失陪　　趙大人"
+        },
+        {
+          "index": 23,
+          "text": "如霜姑娘到"
+        },
+        {
+          "index": 24,
+          "text": "小女子如霜，拜見趙大人"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "蘇翁，什麼事？",
+          "note": "The name is mistranscribed; it should match 「蘇翁」 in the Chinese subtitle."
+        },
+        {
+          "index": 7,
+          "text": "有誘惑還帶有殺氣，這隻眼神我沒見過",
+          "note": "「有惑」 is a transcription error for 「誘惑」."
+        },
+        {
+          "index": 9,
+          "text": "這位如霜姑娘係客串嘅",
+          "note": "「你客串的」 is a mistranscription; the intended meaning is that the lady is making a guest appearance."
+        },
+        {
+          "index": 10,
+          "text": "不知道趙大人有沒有興趣同佢擺房呢？",
+          "note": "「拜訪」 is incorrect here; it should be 「擺房」, matching the repeated wording in subtitle 16. The pronoun is also rendered as Cantonese 「佢」."
+        },
+        {
+          "index": 11,
+          "text": "你應該先問問皇爺吧",
+          "note": "The title is inconsistent with the reference subtitle; 「皇爺」 should be used instead of 「王爺」."
+        },
+        {
+          "index": 12,
+          "text": "怎麼樣，皇爺？",
+          "note": "The title should be 「皇爺」 to remain consistent with subtitle 11 and the Chinese subtitle."
+        },
+        {
+          "index": 13,
+          "text": "大家自己人，又何必客氣呢？",
+          "note": "「大格」 is a transcription error for 「大家」."
+        },
+        {
+          "index": 18,
+          "text": "姐姐，係佢",
+          "note": "The line is mistranscribed and should identify the sister and the person in question as 「姐姐，係佢」."
+        },
+        {
+          "index": 19,
+          "text": "殺阿爹嗰個就係佢",
+          "note": "「曬爹」 is a transcription error for 「殺阿爹」, and the person reference should be Cantonese 「佢」."
+        },
+        {
+          "index": 21,
+          "text": "行啦",
+          "note": "「但」 is a mistranscription; the intended line is 「行啦」, corresponding to 「走吧」."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "果然美人"
+        },
+        {
+          "index": 2,
+          "text": "趙大人，那⋯"
+        },
+        {
+          "index": 3,
+          "text": "銀票十萬兩"
+        },
+        {
+          "index": 4,
+          "text": "如霜姑娘今晚要陪我們少爺擺房"
+        },
+        {
+          "index": 5,
+          "text": "不有空，招呼你"
+        },
+        {
+          "index": 6,
+          "text": "這麼多位⋯真不好意思"
+        },
+        {
+          "index": 7,
+          "text": "沒什麼意見吧？"
+        },
+        {
+          "index": 8,
+          "text": "讓我來⋯讓我講講你們公道的話"
+        },
+        {
+          "index": 9,
+          "text": "只要你們誰出得多過十萬兩銀票"
+        },
+        {
+          "index": 10,
+          "text": "那如霜姑娘就陪誰"
+        },
+        {
+          "index": 11,
+          "text": "千萬不要傷了和氣，聽聽⋯？"
+        },
+        {
+          "index": 12,
+          "text": "這位朋友也很肯花錢"
+        },
+        {
+          "index": 13,
+          "text": "銀票實在太普通了"
+        },
+        {
+          "index": 14,
+          "text": "我有粒朝廷大內的定封珠，無價的"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "果然是美人"
+        },
+        {
+          "index": 2,
+          "text": "趙大人，那今晚⋯"
+        },
+        {
+          "index": 3,
+          "text": "銀票十萬兩"
+        },
+        {
+          "index": 4,
+          "text": "如霜姑娘今晚要陪我家少爺"
+        },
+        {
+          "index": 5,
+          "text": "沒空招呼你"
+        },
+        {
+          "index": 6,
+          "text": "各位⋯真不好意思"
+        },
+        {
+          "index": 7,
+          "text": "有甚麼意見嗎？"
+        },
+        {
+          "index": 8,
+          "text": "讓我來⋯讓我說句公道話"
+        },
+        {
+          "index": 9,
+          "text": "只要你們誰能付超過十萬兩銀票"
+        },
+        {
+          "index": 10,
+          "text": "如霜姑娘就陪誰"
+        },
+        {
+          "index": 11,
+          "text": "千萬不要傷和氣，對不對？"
+        },
+        {
+          "index": 12,
+          "text": "這位朋友真捨得花錢"
+        },
+        {
+          "index": 13,
+          "text": "銀票實在太普通"
+        },
+        {
+          "index": 14,
+          "text": "我有一顆朝廷大內的定風珠，無價寶"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "趙大人，今晚⋯",
+          "note": "“那” appears to be a mistranscription of “今晚,” matching the intended meaning and the Chinese subtitle."
+        },
+        {
+          "index": 5,
+          "text": "冇空，招呼你",
+          "note": "“不有空” is clearly a transcription error; it should be “冇空,” meaning there is no time to attend to someone."
+        },
+        {
+          "index": 8,
+          "text": "讓我來⋯讓我講句公道話",
+          "note": "The phrase “你們公道的話” is a mistranscription of the idiomatic expression “句公道話.”"
+        },
+        {
+          "index": 14,
+          "text": "我有粒朝廷大內的定風珠，無價的",
+          "note": "“定封珠” is a likely homophone error; the object is “定風珠.”"
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "我都係鍾意珍珠多啲"
+        },
+        {
+          "index": 2,
+          "text": "趙大人呀，我返房等你喇，喂"
+        },
+        {
+          "index": 3,
+          "text": "呢粒珠淨唔淨十萬兩呀？"
+        },
+        {
+          "index": 4,
+          "text": "十萬兩銀通，姑娘你都重嚴少？"
+        },
+        {
+          "index": 5,
+          "text": "我一樣鍾意銀兩，不過唔鍾意你啫嘛"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "我還是比較喜歡珍珠"
+        },
+        {
+          "index": 2,
+          "text": "趙大人，我回房間等你"
+        },
+        {
+          "index": 3,
+          "text": "這顆珠值十萬兩嗎？"
+        },
+        {
+          "index": 4,
+          "text": "十萬兩你還嫌少嗎，姑娘？"
+        },
+        {
+          "index": 5,
+          "text": "我也喜歡銀兩，只是不喜歡你"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 3,
+          "text": "呢粒珠值唔值十萬兩呀？",
+          "note": "“淨唔淨” is a transcription error; the intended phrase is “值唔值,” meaning whether the pearl is worth ten thousand taels."
+        },
+        {
+          "index": 4,
+          "text": "十萬兩銀，姑娘你都仲嫌少？",
+          "note": "“銀通” and “重嚴少” are transcription errors. The intended wording is “十萬兩銀，姑娘你都仲嫌少？”"
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "夠坦白，我真係喜歡佢非常"
+        },
+        {
+          "index": 2,
+          "text": "騷擁呀⋯"
+        },
+        {
+          "index": 3,
+          "text": "冇相干"
+        },
+        {
+          "index": 4,
+          "text": "一定係我今日頂帽唔多襯嘅髮型"
+        },
+        {
+          "index": 5,
+          "text": "如雙姑娘睇我唔上眼，係我抵死咋"
+        },
+        {
+          "index": 6,
+          "text": "你明白咁就好啦"
+        },
+        {
+          "index": 7,
+          "text": "你放心呀，我哋做好多好靚好省嘅姑娘㗎"
+        },
+        {
+          "index": 8,
+          "text": "龜婆，咁今晚我就靠晒你喇"
+        },
+        {
+          "index": 9,
+          "text": "放肆！係"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "夠坦白，我真的非常喜歡"
+        },
+        {
+          "index": 2,
+          "text": "蘇翁⋯"
+        },
+        {
+          "index": 3,
+          "text": "沒相干"
+        },
+        {
+          "index": 4,
+          "text": "一定是我今天的帽子和髮型不配"
+        },
+        {
+          "index": 5,
+          "text": "如霜姑娘看不上我，是我該死"
+        },
+        {
+          "index": 6,
+          "text": "你明白就好了"
+        },
+        {
+          "index": 7,
+          "text": "放心，我還有很多很漂亮的姑娘"
+        },
+        {
+          "index": 8,
+          "text": "鴇母，那今晚就倚仗你了"
+        },
+        {
+          "index": 9,
+          "text": "這與我無關"
+        },
+        {
+          "index": 10,
+          "text": "大膽！放肆"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "蘇翁呀⋯",
+          "note": "“騷擁” appears to be a misrecognition of the name/title “蘇翁,” matching the Chinese subtitle."
+        },
+        {
+          "index": 5,
+          "text": "如霜姑娘睇我唔上眼，係我抵死咋",
+          "note": "“如雙” is a transcription error; the character’s name is “如霜,” consistent with the Chinese subtitle."
+        },
+        {
+          "index": 7,
+          "text": "你放心呀，我哋有好多好靚好省嘅姑娘㗎",
+          "note": "“做好多” is a likely transcription error for “有好多,” meaning “have many,” which matches the Chinese subtitle."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "螳螂拳？幾似樣啊"
+        },
+        {
+          "index": 2,
+          "text": "周鶴，哦哦哦"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "螳螂拳？像模像樣的"
+        },
+        {
+          "index": 2,
+          "text": "奏樂"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "奏樂，哦哦哦",
+          "note": "“周鶴”與中文字幕嘅「奏樂」明顯唔一致，應為聽錯字；修正為「奏樂」。"
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "先"
+        },
+        {
+          "index": 2,
+          "text": "學準"
+        },
+        {
+          "index": 3,
+          "text": "撲掣"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "先放好"
+        },
+        {
+          "index": 2,
+          "text": "鶴咀"
+        },
+        {
+          "index": 3,
+          "text": "虎爪"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "鶴咀",
+          "note": "“學準” appears to be a mishearing of “鶴咀,” referring to the crane-beak hand shape."
+        },
+        {
+          "index": 3,
+          "text": "虎爪",
+          "note": "“撲掣” conflicts with the corresponding term “虎爪” and appears to be a transcription error."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "螳螂點救老虎砌呀？何況我加埋隻殼"
+        },
+        {
+          "index": 2,
+          "text": "虎殼相形我都識"
+        },
+        {
+          "index": 3,
+          "text": "噉你就試下我隻螳螂吖"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "螳螂怎跟老虎鬥？何況我還有一隻鶴"
+        },
+        {
+          "index": 2,
+          "text": "虎鶴雙形我也會"
+        },
+        {
+          "index": 3,
+          "text": "那你試試看我的螳螂"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "螳螂點夠老虎砌呀？何況我加埋隻鶴",
+          "note": "「救」應為「夠」，而「殼」應為「鶴」，以符合原意及後句嘅「虎鶴雙形」。"
+        },
+        {
+          "index": 2,
+          "text": "虎鶴雙形我都識",
+          "note": "「虎殼相形」係明顯誤寫，應為武術招式「虎鶴雙形」。"
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "我螳螂拳再破你虎殼雙形嘛"
+        },
+        {
+          "index": 2,
+          "text": "嘩，原來唔係虎殼雙形"
+        },
+        {
+          "index": 3,
+          "text": "係恐獎開屏"
+        },
+        {
+          "index": 4,
+          "text": "唔怪你咁嘢"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "好⋯好"
+        },
+        {
+          "index": 2,
+          "text": "我的螳螂拳再破你的虎鶴雙形"
+        },
+        {
+          "index": 3,
+          "text": "原來不是虎鶴雙形"
+        },
+        {
+          "index": 4,
+          "text": "是孔雀開屏"
+        },
+        {
+          "index": 5,
+          "text": "難怪比較差"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "我螳螂拳再破你虎鶴雙形嘛",
+          "note": "The martial-arts style is commonly written as 「虎鶴雙形」, not 「虎殼雙形」."
+        },
+        {
+          "index": 2,
+          "text": "嘩，原來唔係虎鶴雙形",
+          "note": "The martial-arts style name should be 「虎鶴雙形」."
+        },
+        {
+          "index": 3,
+          "text": "係孔雀開屏",
+          "note": "「恐獎開屏」 is a transcription error; the phrase is 「孔雀開屏」."
+        },
+        {
+          "index": 4,
+          "text": "唔怪得你咁差",
+          "note": "「唔怪你咁嘢」 is inconsistent with the reference meaning and appears to contain transcription errors; it should be 「唔怪得你咁差」."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "身形幾快呀"
+        },
+        {
+          "index": 2,
+          "text": "睇嚟你似樣啲嘛"
+        },
+        {
+          "index": 3,
+          "text": "後生仔，物至天高地厚"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "動作蠻快"
+        },
+        {
+          "index": 2,
+          "text": "看來你比較像樣"
+        },
+        {
+          "index": 3,
+          "text": "年青人，不知天高地厚"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "身手幾快呀",
+          "note": "“身形” means body shape, but the context refers to being quick in movement. The intended Cantonese expression is “身手幾快”."
+        },
+        {
+          "index": 3,
+          "text": "後生仔，唔知天高地厚",
+          "note": "“物至” is an incorrect transcription. The established expression is “唔知天高地厚”, meaning not knowing one's own limits."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "黃州將軍呀"
+        },
+        {
+          "index": 2,
+          "text": "邊個獸頭欺我仔，我蛋邊個"
+        },
+        {
+          "index": 3,
+          "text": "老爺"
+        },
+        {
+          "index": 4,
+          "text": "唔使驚呀，誰欺你？"
+        },
+        {
+          "index": 5,
+          "text": "係我欺緊人啫"
+        },
+        {
+          "index": 6,
+          "text": "死你欺？"
+        },
+        {
+          "index": 7,
+          "text": "佢又幾銀性㗎？佢夠唔夠資格呀"
+        },
+        {
+          "index": 8,
+          "text": "老爺！係佢哋呀"
+        },
+        {
+          "index": 9,
+          "text": "邊個？"
+        },
+        {
+          "index": 10,
+          "text": "睇下你咪知啦"
+        },
+        {
+          "index": 11,
+          "text": "鐵帽子王？"
+        },
+        {
+          "index": 12,
+          "text": "送我禮"
+        },
+        {
+          "index": 13,
+          "text": "阿燦"
+        },
+        {
+          "index": 14,
+          "text": "人家送咗咁厚禮，唔好再欺佢啦"
+        },
+        {
+          "index": 15,
+          "text": "拿去打相畀啲佢啲貓來　　老爺"
+        },
+        {
+          "index": 16,
+          "text": "個頁牌上面寫住「鐵帽子王爭格林森」呀，嗨"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "廣州將軍到"
+        },
+        {
+          "index": 2,
+          "text": "走開⋯"
+        },
+        {
+          "index": 3,
+          "text": "誰敢欺負我的兒子，我就射誰"
+        },
+        {
+          "index": 4,
+          "text": "老爺"
+        },
+        {
+          "index": 5,
+          "text": "不用害怕，阿燦，誰欺負你？"
+        },
+        {
+          "index": 6,
+          "text": "是我欺負別人"
+        },
+        {
+          "index": 7,
+          "text": "甚麼？你欺負別人？"
+        },
+        {
+          "index": 8,
+          "text": "他有多少家財？他夠不夠資格"
+        },
+        {
+          "index": 9,
+          "text": "老爺！是他們"
+        },
+        {
+          "index": 10,
+          "text": "誰？"
+        },
+        {
+          "index": 11,
+          "text": "你看看就知道"
+        },
+        {
+          "index": 12,
+          "text": "鐵帽子王？"
+        },
+        {
+          "index": 13,
+          "text": "送賀禮"
+        },
+        {
+          "index": 14,
+          "text": "阿燦"
+        },
+        {
+          "index": 15,
+          "text": "人家送那麼厚的禮就不要再欺負他"
+        },
+        {
+          "index": 16,
+          "text": "來⋯拿去打賞給這裡的姑娘　　老爺"
+        },
+        {
+          "index": 17,
+          "text": "令牌上寫著「鐵帽子王僧格林參」"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "廣州將軍到",
+          "note": "“黃州” conflicts with the Chinese subtitle’s “廣州,” and “到” is the appropriate transcription for the arrival announcement."
+        },
+        {
+          "index": 2,
+          "text": "走開，邊個畜生欺我仔，我斬邊個",
+          "note": "This line combines the preceding “走開” with the threat in the Chinese subtitles. “獸頭” and “蛋” are clear transcription errors; the intended wording is “畜生” and “斬.”"
+        },
+        {
+          "index": 4,
+          "text": "唔使驚呀，邊個欺你？",
+          "note": "“誰” is not the Cantonese transcription here; it should be the Cantonese interrogative “邊個.”"
+        },
+        {
+          "index": 6,
+          "text": "乜？你欺人？",
+          "note": "“死你欺” is evidently mistranscribed. The intended question is asking whether he is bullying someone."
+        },
+        {
+          "index": 7,
+          "text": "佢有幾銀紙㗎？佢夠唔夠資格呀",
+          "note": "“銀性” is a transcription error; the phrase refers to how much money or family wealth he has, rendered as “幾銀紙.”"
+        },
+        {
+          "index": 12,
+          "text": "送賀禮",
+          "note": "The line means “send a gift of congratulations”; “賀禮” is missing from the transcription."
+        },
+        {
+          "index": 15,
+          "text": "攞去打賞畀呢度啲姑娘來，老爺",
+          "note": "“打相” and “貓” are clear transcription errors. The line refers to giving a reward to the girls here."
+        },
+        {
+          "index": 16,
+          "text": "個令牌上面寫住「鐵帽子王僧格林沁」呀，嗨",
+          "note": "“頁牌” should be “令牌,” and the historical name is “僧格林沁,” not “爭格林森.”"
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "王爺的令牌你都敢搶？"
+        },
+        {
+          "index": 2,
+          "text": "搶他"
+        },
+        {
+          "index": 3,
+          "text": "等等⋯！根據大清律例"
+        },
+        {
+          "index": 4,
+          "text": "身為朝廷命官，不得嫖妓"
+        },
+        {
+          "index": 5,
+          "text": "你身在怡紅院"
+        },
+        {
+          "index": 6,
+          "text": "知犯犯法，該當何罪？"
+        },
+        {
+          "index": 7,
+          "text": "那你呢？"
+        },
+        {
+          "index": 8,
+          "text": "是不是說我？　　是"
+        },
+        {
+          "index": 9,
+          "text": "是不是？我就是來⋯"
+        },
+        {
+          "index": 10,
+          "text": "來抓你"
+        },
+        {
+          "index": 11,
+          "text": "可以啊！　　抓他啊"
+        },
+        {
+          "index": 12,
+          "text": "我身為廣州將軍"
+        },
+        {
+          "index": 13,
+          "text": "當然要來抓你這種害群之馬"
+        },
+        {
+          "index": 14,
+          "text": "還有⋯還有"
+        },
+        {
+          "index": 15,
+          "text": "什麼？說啊"
+        },
+        {
+          "index": 16,
+          "text": "今天是現清太祖皇后葉克拿拉氏的忌辰"
+        },
+        {
+          "index": 17,
+          "text": "身為軍官最佳等"
+        },
+        {
+          "index": 18,
+          "text": "可以問斬"
+        },
+        {
+          "index": 19,
+          "text": "他⋯你斬他"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "你膽敢搶皇爺的令牌？"
+        },
+        {
+          "index": 2,
+          "text": "把他鎖起來"
+        },
+        {
+          "index": 3,
+          "text": "等一等！根據大清律例"
+        },
+        {
+          "index": 4,
+          "text": "身為朝廷命官，不得嫖妓"
+        },
+        {
+          "index": 5,
+          "text": "你現在身在怡紅院"
+        },
+        {
+          "index": 6,
+          "text": "知法犯法，該當何罪？"
+        },
+        {
+          "index": 7,
+          "text": "那麼你呢？"
+        },
+        {
+          "index": 8,
+          "text": "你說我？　　是"
+        },
+        {
+          "index": 9,
+          "text": "對呀，我是來⋯"
+        },
+        {
+          "index": 10,
+          "text": "來拉⋯　　拉你"
+        },
+        {
+          "index": 11,
+          "text": "他！　　拉他"
+        },
+        {
+          "index": 12,
+          "text": "我身為廣州將軍"
+        },
+        {
+          "index": 13,
+          "text": "當然要來拉你這害羣之馬"
+        },
+        {
+          "index": 14,
+          "text": "還有⋯還有"
+        },
+        {
+          "index": 15,
+          "text": "還有甚麼？說吧"
+        },
+        {
+          "index": 16,
+          "text": "今天是清太祖皇后葉赫拿拉氏的忌辰"
+        },
+        {
+          "index": 17,
+          "text": "身為京官罪加一等"
+        },
+        {
+          "index": 18,
+          "text": "可以問斬"
+        },
+        {
+          "index": 19,
+          "text": "斬他⋯斬他"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "綁他",
+          "note": "“搶他” does not match the arrest command in context and is likely a transcription error for “綁他”."
+        },
+        {
+          "index": 6,
+          "text": "知法犯法，該當何罪？",
+          "note": "“知犯犯法” is a typo; the established expression is “知法犯法”."
+        },
+        {
+          "index": 16,
+          "text": "今天是清太祖皇后葉赫拿拉氏的忌辰",
+          "note": "“現清太祖” contains an erroneous extra character, and the empress’s name should be “葉赫拿拉氏”."
+        },
+        {
+          "index": 17,
+          "text": "身為京官罪加一等",
+          "note": "“最佳等” is a transcription error. The phrase should be “罪加一等”, and “京官” matches the reference and context."
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "根據大清律"
+        },
+        {
+          "index": 2,
+          "text": "任何人不分辨，一樣要問斬"
+        },
+        {
+          "index": 3,
+          "text": "那你豈不是⋯"
+        },
+        {
+          "index": 4,
+          "text": "還想不想看？"
+        },
+        {
+          "index": 5,
+          "text": "多多都有，笨蛋"
+        },
+        {
+          "index": 6,
+          "text": "別多說了"
+        },
+        {
+          "index": 7,
+          "text": "當然了，"
+        },
+        {
+          "index": 8,
+          "text": "蘇張芬，帶你去你這麼開心的地方吧"
+        },
+        {
+          "index": 9,
+          "text": "我今晚沒玩過"
+        },
+        {
+          "index": 10,
+          "text": "王爺，"
+        },
+        {
+          "index": 11,
+          "text": "想不到在這裡，被無賴打擾你的雅興"
+        },
+        {
+          "index": 12,
+          "text": "小人安排不就"
+        },
+        {
+          "index": 13,
+          "text": "不關你的事，"
+        },
+        {
+          "index": 14,
+          "text": "我們走"
+        },
+        {
+          "index": 15,
+          "text": "王爺⋯王爺，這個玩不起，見不收了"
+        },
+        {
+          "index": 16,
+          "text": "不收了？"
+        },
+        {
+          "index": 17,
+          "text": "大事化少，小事化無"
+        },
+        {
+          "index": 18,
+          "text": "少爺，你的帽子"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "根據大清律例"
+        },
+        {
+          "index": 2,
+          "text": "任何人不束辮子也要問斬"
+        },
+        {
+          "index": 3,
+          "text": "那你是要⋯"
+        },
+        {
+          "index": 4,
+          "text": "還想不想看？"
+        },
+        {
+          "index": 5,
+          "text": "再多也有，傻瓜"
+        },
+        {
+          "index": 6,
+          "text": "不用再說，斬他"
+        },
+        {
+          "index": 7,
+          "text": "好了好了，玩完了"
+        },
+        {
+          "index": 8,
+          "text": "蘇將軍，大家玩得那麼開心就算了吧"
+        },
+        {
+          "index": 9,
+          "text": "我今晚還沒玩過"
+        },
+        {
+          "index": 10,
+          "text": "皇爺"
+        },
+        {
+          "index": 11,
+          "text": "沒想到在這裡會讓他們打擾你的雅興"
+        },
+        {
+          "index": 12,
+          "text": "小人安排不週"
+        },
+        {
+          "index": 13,
+          "text": "這與你無關"
+        },
+        {
+          "index": 14,
+          "text": "我們走"
+        },
+        {
+          "index": 15,
+          "text": "老爺！這個不能惹，見好就收"
+        },
+        {
+          "index": 16,
+          "text": "收吧"
+        },
+        {
+          "index": 17,
+          "text": "大事化小，小事化無"
+        },
+        {
+          "index": 18,
+          "text": "少爺，你的帽子"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 1,
+          "text": "根據大清律例",
+          "note": "“大清律” is missing “例,” corresponding to “大清律例.”"
+        },
+        {
+          "index": 2,
+          "text": "任何人不束辮子，一樣要問斬",
+          "note": "“不分辨” is a transcription error; the intended phrase is about not wearing a braid."
+        },
+        {
+          "index": 5,
+          "text": "再多都有，笨蛋",
+          "note": "“多多都有” is a mistaken transcription of “再多都有.”"
+        },
+        {
+          "index": 6,
+          "text": "唔好再講喇，斬佢",
+          "note": "The line omits the command to execute him, which is present in the reference and required by the dialogue."
+        },
+        {
+          "index": 7,
+          "text": "好喇，好喇，玩完喇",
+          "note": "“當然了” does not match the intended line “好了好了，玩完了.”"
+        },
+        {
+          "index": 8,
+          "text": "蘇將軍，帶你去大家玩得咁開心嘅地方吧",
+          "note": "“蘇張芬” is a misrecognition of the title “蘇將軍.”"
+        },
+        {
+          "index": 9,
+          "text": "我今晚仲未玩過",
+          "note": "The phrase should include “還沒,” meaning he has not played yet tonight."
+        },
+        {
+          "index": 12,
+          "text": "小人安排不周",
+          "note": "“安排不就” is a transcription error; the established expression is “安排不周.”"
+        },
+        {
+          "index": 15,
+          "text": "王爺⋯王爺，呢個玩不起，見好就收喇",
+          "note": "“見不收了” is a transcription error; the intended expression is “見好就收.”"
+        },
+        {
+          "index": 17,
+          "text": "大事化小，小事化無",
+          "note": "The idiom is “大事化小,” not “大事化少.”"
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
+          "text": "高手嚟㗎"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "真是高手"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": []
+    }
   }
 ]
