@@ -41,6 +41,8 @@ class WhisperTranscriber:
         cache_dir_path: Path | None = None,
         use_demucs: bool = False,
         use_vad: bool = True,
+        temperature: float | Sequence[float] = 0.0,
+        condition_on_previous_text: bool = True,
     ):
         """Initialize.
 
@@ -50,12 +52,17 @@ class WhisperTranscriber:
             cache_dir_path: directory in which to cache
             use_demucs: whether Demucs preprocessing was applied
             use_vad: whether to enable Whisper VAD
+            temperature: decoding temperature or fallback schedule
+            condition_on_previous_text: whether to condition each decoding window on
+                the preceding window
         """
         self.model_name = model_name
         self._model: Any | None = None
         self.language = language
         self.use_demucs = use_demucs
         self.use_vad = use_vad
+        self.temperature = temperature
+        self.condition_on_previous_text = condition_on_previous_text
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
@@ -150,6 +157,8 @@ class WhisperTranscriber:
                 str(temp_audio_path),
                 language=self.language,
                 vad=self.use_vad,
+                temperature=self.temperature,
+                condition_on_previous_text=self.condition_on_previous_text,
             )
         segments = [TranscribedSegment(**s) for s in result["segments"]]
         segments = self._normalize_transcription_segments(
@@ -356,5 +365,17 @@ class WhisperTranscriber:
             f"demucs-{'on' if self.use_demucs else 'off'}_"
             f"vad-{'on' if self.use_vad else 'off'}"
         )
+        if self.temperature != 0.0 or not self.condition_on_previous_text:
+            if isinstance(self.temperature, Sequence):
+                temperature_key = ",".join(
+                    f"{temperature:g}" for temperature in self.temperature
+                )
+            else:
+                temperature_key = f"{self.temperature:g}"
+            cache_key += (
+                f"_temperature-{temperature_key}_"
+                "condition-on-previous-text-"
+                f"{'on' if self.condition_on_previous_text else 'off'}"
+            )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
