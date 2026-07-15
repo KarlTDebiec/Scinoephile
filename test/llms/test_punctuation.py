@@ -19,6 +19,7 @@ from scinoephile.core.llms.utils import (
 )
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoPunctuationPromptYueHans,
+    YueZhoPunctuationPromptYueHant,
 )
 from scinoephile.llms.punctuation import (
     PunctuationManager,
@@ -102,6 +103,41 @@ def test_queryer_corresponds_using_prompt_aliases():
     }
 
 
+def test_queryer_localizes_test_case_validation_retry():
+    """Test punctuation retries use the prompt's Yue-Hant validation text."""
+    prompt = YueZhoPunctuationPromptYueHant
+    test_case_cls = PunctuationManager.get_test_case_cls(prompt)
+    subtitles = ["係", "洋文嚟嘅", "蝦即係有鬥心噉解"]
+    test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "subtitles": subtitles,
+                "guide": "是洋文！即是有鬥心",
+            }
+        }
+    )
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.side_effect = [
+        '{"yuewen_punctuated": "係洋文嚟嘅！蝦即係有鬥心"}',
+        '{"yuewen_punctuated": "係，洋文嚟嘅！蝦即係有鬥心噉解"}',
+    ]
+    queryer = Queryer(test_case_cls, provider=provider, max_attempts=2)
+
+    queryer(test_case)
+
+    messages = provider.chat_completion.call_args_list[1].args[0]
+    assert messages[-1]["content"] == "\n".join(
+        (
+            prompt.test_case_invalid_pre,
+            prompt.src_1_chars_changed_err(
+                "".join(subtitles),
+                "係洋文嚟嘅蝦即係有鬥心",
+            ),
+            prompt.test_case_invalid_post,
+        )
+    )
+
+
 def test_query_and_answer_require_nonempty_fields():
     """Punctuation queries and answers should reject empty required fields."""
     query_cls = PunctuationManager.get_query_cls(_LOCALIZED_PROMPT)
@@ -147,7 +183,7 @@ def test_validation_and_minimum_difficulty_are_static():
     assert matching_punctuation.difficulty == 1
     assert different_punctuation.difficulty == 2
     assert direct.difficulty == 2
-    with raises(ValidationError, match="does not match"):
+    with raises(ValidationError, match="唔一致"):
         test_case_cls.model_validate(
             {
                 "query": {"subtitles": ["你好"], "guide": "你好"},

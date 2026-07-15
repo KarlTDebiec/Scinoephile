@@ -15,6 +15,7 @@ from scinoephile.lang.transcription.guided import (
     DEFAULT_SPECS,
     get_guided_transcriber,
 )
+from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHant,
@@ -81,3 +82,13 @@ def test_get_guided_transcriber_rejects_unsupported_language_pair():
     """Test factory rejects language pairs absent from the registry."""
     with raises(ScinoephileError, match="eng <- zho-Hans"):
         get_guided_transcriber(Language.eng, Language.zho_hans)
+
+
+def test_transcription_prompts_use_yue_hant_correspondence_fields():
+    """Test Yue-Hant transcription prompts use Yue-Hant shared text."""
+    for prompt in (
+        YueZhoDelineationPromptYueHant,
+        YueZhoPunctuationPromptYueHant,
+    ):
+        for field_name, expected in YUE_HANT_PROMPT_FIELDS.items():
+            assert getattr(prompt, field_name) == expected
