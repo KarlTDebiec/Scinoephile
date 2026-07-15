@@ -11,7 +11,11 @@ from pathlib import Path
 from typing import Any, Final, cast
 from unittest.mock import Mock
 
+from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, Manager, Prompt, Queryer
+from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
+from scinoephile.llms.pairwise_review import PairwiseReviewManager, PairwiseReviewPrompt
+from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from scinoephile.workflows.prompt_catalog import PROMPT_SPECS
 
 _LEGACY_TEST_CASE_PROMPT_FIELDS: Final = {
@@ -99,6 +103,33 @@ def test_registered_query_and_answer_schemas_change_only_model_identifiers():
                 ensure_ascii=False,
                 separators=(",", ":"),
             )
+
+
+def test_registered_review_prompts_specify_note_language():
+    """Review prompts should request notes in the reviewed subtitle language."""
+    note_language_markers = {
+        Language.eng: "English",
+        Language.yue_hans: "粤文",
+        Language.yue_hant: "粵文",
+        Language.zho_hans: "中文",
+        Language.zho_hant: "中文",
+    }
+    review_manager_classes = {
+        GuidedReviewManager,
+        PairwiseReviewManager,
+        ReviewManager,
+    }
+
+    for alias, prompt_spec in PROMPT_SPECS.items():
+        if prompt_spec.manager_cls not in review_manager_classes:
+            continue
+        review_prompt = cast(
+            "GuidedReviewPrompt | PairwiseReviewPrompt | ReviewPrompt",
+            prompt_spec.prompt,
+        )
+        note_language = note_language_markers[review_prompt.language]
+        assert note_language in review_prompt.base_system_prompt, alias
+        assert note_language in review_prompt.note_desc, alias
 
 
 def _get_legacy_prompt(prompt: Prompt) -> Prompt:
