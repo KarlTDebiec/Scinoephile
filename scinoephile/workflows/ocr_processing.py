@@ -26,7 +26,7 @@ from scinoephile.media.subtitles.cache import (
 )
 from scinoephile.media.subtitles.selection import get_media_subtitle_stream
 
-from .cleaning import clean_series
+from .clean import clean_series
 from .ocr_fusion import fuse_ocr_series
 from .ocr_validation import validate_ocr
 

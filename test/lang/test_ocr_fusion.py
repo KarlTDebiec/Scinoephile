@@ -12,7 +12,7 @@ from pytest import FixtureRequest, param
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.ocr_fusion import get_ocr_fuser
-from scinoephile.workflows.cleaning import clean_series
+from scinoephile.workflows.clean import clean_series
 from scinoephile.workflows.ocr_fusion import fuse_ocr_series
 from test.data.acopopb import (
     get_acopopb_eng_ocr_fusion_test_cases,

@@ -25,10 +25,10 @@ from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_converted,
 )
-from scinoephile.workflows.cleaning import clean_series
-from scinoephile.workflows.flattening import flatten_series
+from scinoephile.workflows.clean import clean_series
+from scinoephile.workflows.flatten import flatten_series
 from scinoephile.workflows.helpers import resolve_language
-from scinoephile.workflows.romanization import romanize_series
+from scinoephile.workflows.romanize import romanize_series
 
 from .helpers.conversion import (
     CONVERSION_LOCALIZATIONS,

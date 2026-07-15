@@ -17,10 +17,10 @@ from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.llms.review import ReviewPrompt
 
-from .cleaning import clean_series
-from .flattening import flatten_series
+from .clean import clean_series
+from .flatten import flatten_series
 from .review import review_series
-from .romanization import romanize_series
+from .romanize import romanize_series
 
 __all__ = [
     "SrtProcessingResult",

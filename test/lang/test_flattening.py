@@ -7,7 +7,7 @@ from __future__ import annotations
 from pytest import FixtureRequest, fail, param, raises
 
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.workflows.flattening import flatten_series
+from scinoephile.workflows.flatten import flatten_series
 from test.helpers import assert_series_equal, parametrize
 from test.helpers.series_files import get_text_series
 
