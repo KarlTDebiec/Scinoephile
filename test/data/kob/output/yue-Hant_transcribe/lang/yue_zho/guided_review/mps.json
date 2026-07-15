@@ -20712,6 +20712,191 @@
       "targets": [
         {
           "index": 1,
+          "text": "王爺的令牌，你都敢搶？"
+        },
+        {
+          "index": 2,
+          "text": "搶他"
+        },
+        {
+          "index": 3,
+          "text": "等等！根據大清律例"
+        },
+        {
+          "index": 4,
+          "text": "身為朝廷命官，不得嫖妓"
+        },
+        {
+          "index": 5,
+          "text": "你身在怡紅院"
+        },
+        {
+          "index": 6,
+          "text": "知犯犯法，該當何罪？"
+        },
+        {
+          "index": 7,
+          "text": "那你呢？"
+        },
+        {
+          "index": 8,
+          "text": "是不是說我？ 是"
+        },
+        {
+          "index": 9,
+          "text": "是不是？我就是來⋯"
+        },
+        {
+          "index": 10,
+          "text": "來抓⋯　　你"
+        },
+        {
+          "index": 11,
+          "text": "可以啊！抓他啊"
+        },
+        {
+          "index": 12,
+          "text": "我身為廣州將軍"
+        },
+        {
+          "index": 13,
+          "text": "當然要來抓你這種害群之馬"
+        },
+        {
+          "index": 14,
+          "text": "還有⋯"
+        },
+        {
+          "index": 15,
+          "text": "還有什麼？說啊"
+        },
+        {
+          "index": 16,
+          "text": "今天是現清太祖皇后，葉克拿拉氏的忌辰。"
+        },
+        {
+          "index": 17,
+          "text": "身為軍官最佳等"
+        },
+        {
+          "index": 18,
+          "text": "可以問斬他"
+        },
+        {
+          "index": 19,
+          "text": "你斬他⋯"
+        }
+      ],
+      "guides": [
+        {
+          "index": 1,
+          "text": "你膽敢搶皇爺的令牌？"
+        },
+        {
+          "index": 2,
+          "text": "把他鎖起來"
+        },
+        {
+          "index": 3,
+          "text": "等一等！根據大清律例"
+        },
+        {
+          "index": 4,
+          "text": "身為朝廷命官，不得嫖妓"
+        },
+        {
+          "index": 5,
+          "text": "你現在身在怡紅院"
+        },
+        {
+          "index": 6,
+          "text": "知法犯法，該當何罪？"
+        },
+        {
+          "index": 7,
+          "text": "那麼你呢？"
+        },
+        {
+          "index": 8,
+          "text": "你說我？　　是"
+        },
+        {
+          "index": 9,
+          "text": "對呀，我是來⋯"
+        },
+        {
+          "index": 10,
+          "text": "來拉⋯　　拉你"
+        },
+        {
+          "index": 11,
+          "text": "他！　　拉他"
+        },
+        {
+          "index": 12,
+          "text": "我身為廣州將軍"
+        },
+        {
+          "index": 13,
+          "text": "當然要來拉你這害羣之馬"
+        },
+        {
+          "index": 14,
+          "text": "還有⋯還有"
+        },
+        {
+          "index": 15,
+          "text": "還有甚麼？說吧"
+        },
+        {
+          "index": 16,
+          "text": "今天是清太祖皇后葉赫拿拉氏的忌辰"
+        },
+        {
+          "index": 17,
+          "text": "身為京官罪加一等"
+        },
+        {
+          "index": 18,
+          "text": "可以問斬"
+        },
+        {
+          "index": 19,
+          "text": "斬他⋯斬他"
+        }
+      ]
+    },
+    "answer": {
+      "revisions": [
+        {
+          "index": 2,
+          "text": "鎖起他",
+          "note": "「搶他」與中文字幕及語境不符，應為命令將他鎖起來。"
+        },
+        {
+          "index": 6,
+          "text": "知法犯法，該當何罪？",
+          "note": "「知犯犯法」是明顯錯寫，應改為「知法犯法」。"
+        },
+        {
+          "index": 16,
+          "text": "今天是清太祖皇后，葉赫那拉氏的忌辰。",
+          "note": "「葉克拿拉」是人名誤寫，清太祖皇后姓氏應為「葉赫那拉」；同時刪去與參考字幕及語境不符的「現」。"
+        },
+        {
+          "index": 17,
+          "text": "身為軍官罪加一等",
+          "note": "「最佳等」是明顯聽寫錯誤，應為「罪加一等」。"
+        }
+      ]
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "targets": [
+        {
+          "index": 1,
           "text": "少爺！準備好喇"
         }
       ],
@@ -20753,8 +20938,8 @@
       "revisions": [
         {
           "index": 2,
-          "text": "抹吓汗啦，少爺！",
-          "note": "「會寒啦」唔係有意義嘅粵語講法，亦同中文字幕所指嘅動作唔符；按語境修正為叫少爺抹汗。"
+          "text": "抹汗啦，少爺！",
+          "note": "「會寒」應為聽錯字；按中文字幕語意，應該係叫少爺抹汗。"
         }
       ]
     },
@@ -20804,7 +20989,7 @@
         {
           "index": 4,
           "text": "係呀。",
-          "note": "The final 「要」 does not correspond to the meaning of the Chinese subtitle 「對呀」 and appears to be an erroneous transcription."
+          "note": "中文字幕只對應「對呀」，句尾「要」應該係多咗或者聽錯字。"
         }
       ]
     },
@@ -21174,117 +21359,147 @@
         {
           "index": 3,
           "text": "好字呀！龍飛鳳舞，蘇察哈爾燦",
-          "note": "The character's name is consistently rendered as 「蘇察哈爾燦」 elsewhere; the original contains several transcription errors."
+          "note": "人名「蘇察哈爾燦」有多個字聽錯，應修正返正確寫法。"
         },
         {
           "index": 5,
           "text": "燦爾哈察蘇",
-          "note": "Corrects the misheard name in the reversed-name line."
+          "note": "人名倒轉講時，原字幕多個字寫錯，應為「燦爾哈察蘇」。"
         },
         {
           "index": 6,
-          "text": "叻仔，但勿驕，知咩？",
-          "note": "「事無驕」 is a transcription error; the intended phrase is 「勿驕」."
+          "text": "叻仔，但係唔好驕傲，知唔知？",
+          "note": "「事無驕」係明顯聽錯，應為「但係唔好驕傲，知唔知」。"
         },
         {
           "index": 7,
           "text": "爹爹，我哋蘇察哈爾家",
-          "note": "Corrects the family name 「蘇察哈爾」."
+          "note": "「蘇擦蝦耳家」係人名寫錯，應為「蘇察哈爾家」。"
         },
         {
           "index": 9,
-          "text": "幾代都冇幾個曉寫字嘅",
-          "note": "Adds the omitted 「幾個」, matching the meaning that only a few people could write."
+          "text": "幾代都冇幾個識寫字嘅",
+          "note": "「我曉」應為「幾個識」，意思係冇幾多人識寫字。"
         },
         {
           "index": 10,
-          "text": "而家唔係啦，我個仔，你個孫，阿燦呢。",
-          "note": "Corrects the misheard phrase 「你佢孫」 to 「你個孫」."
+          "text": "而家唔同喇，我個仔，你個孫，阿燦呢。",
+          "note": "原字幕將「你個孫」誤寫成「你佢孫」，而且「唔同喇」較符合原句意思。"
+        },
+        {
+          "index": 11,
+          "text": "佢識寫自己個名呀",
+          "note": "「曉寫」係明顯轉寫錯誤，應為「識寫」。"
+        },
+        {
+          "index": 13,
+          "text": "今日識寫字",
+          "note": "「曉寫字」應為「識寫字」。"
         },
         {
           "index": 14,
           "text": "他朝就必成大學士",
-          "note": "「趴朝」 is a mishearing of 「他朝」."
+          "note": "「趴朝」係聽錯，應為「他朝」。"
+        },
+        {
+          "index": 15,
+          "text": "今日識寫名",
+          "note": "「曉寫名」應為「識寫名」。"
         },
         {
           "index": 16,
-          "text": "他日生仔就必有仔",
-          "note": "「趴日」 is a mishearing of 「他日」, and 「有病」 should be 「有仔」 in this context."
+          "text": "他日生仔就必有病",
+          "note": "「趴日」係聽錯，應為「他日」。"
+        },
+        {
+          "index": 17,
+          "text": "少爺，你真係要好好地學寫字",
+          "note": "原字幕「好啲學寫字」漏咗「好好地」嘅內容，應為「好好地學寫字」。"
         },
         {
           "index": 18,
-          "text": "阿燦呀燦，我睇裱起佢好。",
-          "note": "Corrects the character's name and the verb 「裱起」."
+          "text": "阿燦，裱呀裱，我睇吓佢好唔好。",
+          "note": "原句多處聽錯；「我傻」應為稱呼「阿燦」，「表起」應為「裱起」，後半句係叫人睇吓裱好唔好。"
         },
         {
           "index": 19,
           "text": "裱起佢",
-          "note": "「表」 should be 「裱」, and the phrase requires 「起」."
+          "note": "「表佢」應為「裱起佢」。"
         },
         {
           "index": 20,
-          "text": "師爺，你攞佢掛喺最當眼嘅地方。",
-          "note": "The original is garbled; this restores the instruction to hang it in the most conspicuous place."
+          "text": "師爺，將佢掛喺最當眼嘅地方。",
+          "note": "原字幕內容明顯聽錯，應為叫師爺將幅字掛喺最當眼嘅地方。"
+        },
+        {
+          "index": 21,
+          "text": "咁樣啦，師爺",
+          "note": "「咁，唔係呀」唔符合原句，應為「咁樣啦，師爺」。"
         },
         {
           "index": 22,
-          "text": "你揹住佢簪花掛紅，遊行威風吓先。",
-          "note": "The original is severely mistranscribed; 「簪花掛紅，遊行威風吓先」 matches the intended action."
+          "text": "你揹住佢簪花掛紅，遊行威風一下先。",
+          "note": "原字幕多處聽錯，應為揹住幅字、簪花掛紅再遊行威風一下。"
         },
         {
           "index": 24,
-          "text": "阿燦呀燦，嚟嚟⋯坐⋯",
-          "note": "Corrects the misheard name 「擦呀擦」 to 「阿燦呀燦」."
+          "text": "阿燦，嚟嚟⋯坐⋯",
+          "note": "「擦呀擦」係稱呼「阿燦」嘅聽錯。"
         },
         {
           "index": 26,
-          "text": "你聽我講，爹係有名嘅二世祖。",
-          "note": "Corrects the garbled phrase to the established expression 「有名嘅二世祖」."
+          "text": "你聽我講，爹係出名嘅二世祖。",
+          "note": "「書名係二世祖」應為「係出名嘅二世祖」。"
         },
         {
           "index": 27,
-          "text": "屋企身家都洗到七七八八㗎喇",
-          "note": "「庫身家」 is a transcription error; the intended phrase refers to the household's assets."
+          "text": "屋企啲身家都洗到七七八八㗎喇",
+          "note": "「庫身家」係聽錯，應為「屋企啲身家」。"
         },
         {
           "index": 28,
           "text": "好話唔好聽，但係第日我兩腳一伸呢。",
-          "note": "Corrects the garbled phrase to 「第日我兩腳一伸」."
+          "note": "「爹兩個嘢硬」係明顯聽錯，應為「第日我兩腳一伸」。"
         },
         {
           "index": 29,
-          "text": "你個王八蛋，點解走嚟呢度討飯？",
-          "note": "This line is mistranscribed; it should be the insult and question about coming here to beg."
+          "text": "你個王八蛋，點解到呢度嚟討飯？",
+          "note": "原字幕同參考內容意思完全唔符，應為責罵對方點解嚟到呢度討飯。"
         },
         {
           "index": 30,
           "text": "向來我都靠自己㗎喇",
-          "note": "「我不留」 is a mishearing of 「向來」."
+          "note": "「我不留」係聽錯，應為「向來我都」。"
         },
         {
-          "index": 31,
-          "text": "成十萬兩一張，慳啲使呀。",
-          "note": "「省得洗」 is a transcription error; the intended phrase is 「慳啲使」."
+          "index": 34,
+          "text": "今晚我擺大壽",
+          "note": "「今日」應為「今晚」，因為係講今晚擺大壽。"
         },
         {
           "index": 35,
           "text": "你貴庚呀？",
-          "note": "「跪跟」 is a homophonic transcription error for 「貴庚」."
+          "note": "「跪跟」係明顯聽錯，應為問年齡嘅「貴庚」。"
         },
         {
           "index": 40,
-          "text": "嗰壽頭真係⋯",
-          "note": "The phrase 「瘦頭硬事」 is garbled; it should be 「嗰壽頭真係」."
+          "text": "個壽頭真係⋯",
+          "note": "「瘦頭硬事」係明顯聽錯，應為「壽頭真係」。"
+        },
+        {
+          "index": 41,
+          "text": "過嚟，過嚟⋯",
+          "note": "參考內容同語境都顯示係叫對方過嚟兩次，原字幕漏咗一次。"
         },
         {
           "index": 43,
-          "text": "個衰仔張壽帖都咁威風嘅。",
-          "note": "The original is garbled; 「壽帖」 and 「咁威風嘅」 match the intended meaning."
+          "text": "個衰仔張壽帖真係威風。",
+          "note": "原字幕多處聽錯，應為講嗰個衰仔嘅壽帖好威風。"
         },
         {
           "index": 44,
-          "text": "但係老爺擺大壽呢，要威過佢，你老⋯",
-          "note": "Corrects the garbled ending to 「要威過佢」."
+          "text": "但係老爺第日擺大壽呢，要威過佢，你老⋯",
+          "note": "「嫁細個佢」係明顯聽錯，應為「威過佢」，即係將來擺大壽要比佢更威風。"
         }
       ]
     },
@@ -21326,12 +21541,12 @@
         {
           "index": 2,
           "text": "地方戲曲，當然畀唔上京戲",
-          "note": "“驚喜” is a transcription error; the intended term is “京戲,” matching the reference subtitle about regional opera not being as good as Peking opera."
+          "note": "「驚喜」應為「京戲」，指地方戲曲相對於京戲有所不及，原字幕屬於聽錯字。"
         },
         {
           "index": 3,
           "text": "不過都算係一番見識",
-          "note": "“變色” is an incorrect transcription; it should be “見識,” meaning an experience or something worth seeing."
+          "note": "「變色」同語意不符，應為「見識」，即係算係一番見識。"
         }
       ]
     },
@@ -21593,137 +21808,137 @@
         {
           "index": 1,
           "text": "打賞⋯打賞",
-          "note": "The repeated call for a tip is missing from the Cantonese subtitle."
+          "note": "補返重複講嘅「打賞」，同中文字幕內容一致。"
         },
         {
           "index": 3,
           "text": "我家破人亡、貧病老弱",
-          "note": "The transcription contains several incorrect words; it should describe the family being ruined and the sick and elderly."
+          "note": "「善人、老陽、死人塌樓」係明顯聽錯字，應為「家破人亡、貧病老弱」。"
         },
         {
           "index": 4,
           "text": "無親無故、妻離子散",
-          "note": "The line should say “no relatives, wife and children scattered,” not the unrelated wording currently shown."
+          "note": "原字幕內容同中文字幕唔符，應為「無親無故、妻離子散」。"
         },
         {
           "index": 5,
           "text": "打賞個救命錢，點搞㗎，死乞丐！",
-          "note": "“師兄，我點人錢打錯了” is a mistranscription. The dialogue is about giving a life-saving tip, followed by “what is going on, you beggar?”"
+          "note": "「點人錢打錯了」係明顯轉寫錯誤，應為「打賞個救命錢，點搞㗎，死乞丐」。"
         },
         {
           "index": 6,
-          "text": "你個王八蛋，點解到嚟討飯？",
-          "note": "The current wording is a clear mistranscription. The speaker insults the man and asks why he came here to beg."
+          "text": "你個王八蛋，點解到呢度嚟討飯？",
+          "note": "原字幕多處聽錯，應為責罵對方點解嚟呢度討飯。"
         },
         {
           "index": 9,
           "text": "咁樣都有打賞？",
-          "note": "The line should ask whether this also counts as a tip, rather than asking whether someone with money is leaving."
+          "note": "原字幕意思同中文字幕唔符，應為「咁樣都有打賞」。"
         },
         {
           "index": 10,
           "text": "乞丐都係人",
-          "note": "The subject is “beggars are people,” and the Cantonese wording should reflect the spoken line."
+          "note": "將書面語「都是人」修正為實際講法「都係人」。"
         },
         {
           "index": 11,
           "text": "只要有錢嘅都可以嚟",
-          "note": "The line means that anyone with money can come here; the current wording is incomplete and inaccurate."
+          "note": "原字幕「誰有錢都是來這裡」係明顯轉寫錯誤，應為「只要有錢嘅都可以嚟」。"
         },
         {
           "index": 12,
           "text": "你呢個月嚟呢度",
-          "note": "The phrase should mean “come here this month,” not “be here this month.”"
+          "note": "原字幕漏咗「嚟」字，句子應為「你呢個月嚟呢度」。"
         },
         {
           "index": 13,
           "text": "食飯睇戲宵夜嫖妓，我包",
-          "note": "The current subtitle contains incorrect words. The list is eating, watching opera, late-night food, and visiting prostitutes, all paid for by the speaker."
+          "note": "「看你少爺直落叫雞」係明顯聽錯，應為「食飯睇戲宵夜嫖妓」。"
         },
         {
           "index": 14,
           "text": "你包？",
-          "note": "The speaker is asking “You’ll pay?”; the current line omits the subject."
+          "note": "補返問句主語「你」，應為「你包？」。"
         },
         {
           "index": 15,
-          "text": "唔可以咩？",
-          "note": "The line is “Is that not allowed?” rather than “Hurry?”"
+          "text": "唔可以嗎？",
+          "note": "「催」係明顯聽錯，應為「唔可以嗎？」。"
         },
         {
           "index": 16,
           "text": "可以，可以",
-          "note": "The response is “Can, can,” not “I won’t hurry.”"
+          "note": "原字幕「不催」係明顯聽錯，應為「可以，可以」。"
         },
         {
           "index": 17,
-          "text": "大爺入我間房吧⋯請你跟我嚟",
-          "note": "The current wording is a clear mistranscription. The speaker invites the patron into her room and asks him to follow her."
+          "text": "大爺入我間房吧⋯請你跟我來",
+          "note": "原字幕內容同中文字幕唔符，應為叫大爺入房，並請佢跟自己嚟。"
         },
         {
           "index": 18,
           "text": "蘇⋯翁",
-          "note": "The address is “Su-weng,” not a generic “Hey.”"
+          "note": "「喂」係明顯聽錯，應為稱呼「蘇翁」。"
         },
         {
           "index": 19,
-          "text": "係⋯",
-          "note": "This line should be the brief reply “Yes…”; the reference to the brothel madam belongs to the following exchange."
+          "text": "是⋯",
+          "note": "原字幕漏咗對應嘅「是⋯」。"
         },
         {
           "index": 20,
           "text": "你好嗎，鴇母？",
-          "note": "The current wording mishears the address and omits the greeting to the brothel madam."
+          "note": "「龜婆」係明顯稱呼聽錯，應為「鴇母」，前面亦應為「你好嗎」。"
         },
         {
           "index": 21,
           "text": "你真壞，有名字你不叫，叫我鴇母",
-          "note": "The speaker says the other person is bad for using “brothel madam” instead of calling her by name."
+          "note": "原字幕「很壞，你沒名叫龜婆」多處聽錯，應為「你真壞，有名字你不叫，叫我鴇母」。"
         },
         {
           "index": 22,
-          "text": "大家坦白啲，唔好咩？",
-          "note": "The current line is missing the intended “a little” and the negative question ending."
+          "text": "大家坦白一點不好嗎？",
+          "note": "補返「一點」及句末語氣，內容應為「大家坦白一點不好嗎？」。"
         },
         {
           "index": 23,
-          "text": "要坦白嗎？",
-          "note": "The line asks “Do you want to be frank?” rather than simply stating that the listener wants frankness."
+          "text": "要坦白嗎",
+          "note": "原字幕「你要坦白」應為「要坦白嗎」。"
         },
         {
           "index": 24,
-          "text": "你頂帽好似披麻戴孝咁",
-          "note": "The transcription of “your hat looks like mourning dress” is incorrect."
+          "text": "你的帽子像披麻帶孝似的",
+          "note": "原字幕內容係明顯聽錯，應為講對方頂上頂帽似披麻戴孝。"
         },
         {
           "index": 25,
-          "text": "你老爸死咗嗎？",
-          "note": "The current wording is a mistranscription of the question about whether the listener’s father has died."
+          "text": "你老爸死了嗎？",
+          "note": "「死老爸」應為完整問句「你老爸死了嗎？」。"
         },
         {
           "index": 26,
-          "text": "咁樣講大家先開心嘛",
-          "note": "The line means that speaking this way makes everyone happy, not the current incomplete wording."
+          "text": "這樣說大家才開心嘛",
+          "note": "「這麼說話才開心，大家」係語序及用字聽錯，應為「這樣說大家才開心嘛」。"
         },
         {
           "index": 27,
-          "text": "今次趙先生幫本官掃平長毛賊",
-          "note": "“蘇平” is a mistranscription of “掃平,” meaning to wipe out the Long-Haired rebels."
+          "text": "趙先生這趟幫本官掃平長毛賊",
+          "note": "「本官蘇平長毛賊」係明顯聽錯，應為「本官掃平長毛賊」。"
         },
         {
           "index": 28,
           "text": "皇上一定重重有賞",
-          "note": "The final word should be “賞” in the expression “重重有賞.”"
+          "note": "「重重有上」係明顯聽錯，應為「重重有賞」。"
         },
         {
           "index": 29,
-          "text": "咁就有勞六王爺喺皇上面前",
-          "note": "The line refers to the Sixth Prince helping in front of the Emperor; the current wording is inaccurate."
+          "text": "那就有勞皇爺在皇上面前",
+          "note": "補正原字幕漏掉嘅「那就有勞」及「皇爺」。"
         },
         {
           "index": 30,
-          "text": "多講幾句好說話",
-          "note": "The current line is missing the correct wording “多講幾句好說話.”"
+          "text": "多說幾句好說話",
+          "note": "原字幕「好說話」前面多咗錯誤內容，應為「多說幾句好說話」。"
         }
       ]
     },
@@ -21860,18 +22075,18 @@
       "revisions": [
         {
           "index": 4,
-          "text": "蘇翁，今天是你好日子，開心死你了。",
-          "note": "The phrase \"你好日子\" is missing the copula, which is needed to match the intended meaning of \"今天是你的好日子\"."
+          "text": "蘇翁，今天係你嘅好日子，開心死你了。",
+          "note": "「你好日子」漏咗表示所屬關係嘅字眼，應為「你嘅好日子」。"
         },
         {
           "index": 9,
           "text": "木魚可以摸",
-          "note": "\"搏\" is inconsistent with the context and appears to be a mis-transcription of \"摸\" (to touch)."
+          "note": "「搏」同上下文意思唔符，亦同中文字幕嘅「碰」唔一致，應為「摸」。"
         },
         {
           "index": 12,
-          "text": "蘇翁，今天你是大日子。",
-          "note": "\"自大\" is an incorrect transcription in this context; the intended phrase is \"大日子\" (big day)."
+          "text": "蘇翁，今天係你嘅大日子。",
+          "note": "「自大」明顯係誤寫，按上下文應為「你嘅大日子」。"
         }
       ]
     },
@@ -22077,57 +22292,67 @@
         {
           "index": 1,
           "text": "蘇翁，什麼事？",
-          "note": "The name/title is mistranscribed; it should match the Chinese subtitle as 「蘇翁」."
+          "note": "中文字幕顯示人物係「蘇翁」，唔係「修勇」，應修正人物稱呼。"
+        },
+        {
+          "index": 2,
+          "text": "我俾人挑咗一下",
+          "note": "「挑了一下」轉寫成粵語應包括「一下」，原句漏咗呢個意思。"
         },
         {
           "index": 4,
-          "text": "誰這麼大膽挑你？讓我掌她的嘴。",
-          "note": "The person being challenged is female in the reference dialogue, so the pronoun should be 「她」."
+          "text": "誰這麼大膽挑你？讓我掌佢個嘴。",
+          "note": "中文字幕係「打她的咀」，粵文應寫成「掌佢個嘴」；「佢」亦避免誤寫成男性嘅「他」。"
         },
         {
           "index": 7,
-          "text": "有誘惑仲帶有殺氣，呢種眼神我沒見過。",
-          "note": "「有惑」 is an incomplete transcription of 「誘惑」; 「呢種眼神」 also correctly reflects the reference meaning."
+          "text": "有誘惑還帶有殺氣，呢種眼神我沒見過。",
+          "note": "「有惑」係漏咗「誘」字；「這隻眼神」亦應為「呢種眼神」，同中文字幕嘅「這種眼神」一致。"
         },
         {
           "index": 9,
-          "text": "這位如霜姑娘係客串的",
-          "note": "「你客串的」 is a mistranscription; the intended meaning is that Miss Rushuang is making a guest appearance."
+          "text": "這位如霜姑娘係客串嘅",
+          "note": "原句漏咗判斷詞「係」，應為「呢位如霜姑娘係客串嘅」。"
         },
         {
           "index": 10,
-          "text": "不知道趙大人有冇興趣同佢擺房呢？",
-          "note": "「拜訪」 is a mistranscription of 「擺房」, and the pronoun should be gender-neutral 「佢」 here."
+          "text": "不知道趙大人有沒有興趣和佢擺房呢？",
+          "note": "中文字幕係「和她擺房」，粵文「拜訪」係聽錯字，應改為「擺房」；人物代詞用粵語「佢」。"
         },
         {
           "index": 11,
           "text": "你應該先問問皇爺吧",
-          "note": "The title is inconsistent with the reference dialogue; it should be 「皇爺」 rather than 「王爺」."
+          "note": "中文字幕稱呼係「皇爺」，唔係「王爺」，要統一人物稱呼。"
         },
         {
           "index": 12,
-          "text": "點樣，皇爺？",
-          "note": "The title should remain consistent with the previous line and the Chinese subtitle as 「皇爺」."
+          "text": "怎麼樣，皇爺？",
+          "note": "同上一句一致，人物稱呼應為「皇爺」。"
         },
         {
           "index": 13,
           "text": "大家自己人，又何必客氣呢？",
-          "note": "「大格」 is a clear transcription error for 「大家」."
+          "note": "「大格」係明顯聽錯字，應為「大家」。"
         },
         {
           "index": 16,
           "text": "擺房",
-          "note": "「拜訪」 is a mistranscription of 「擺房」."
+          "note": "中文字幕顯示此處講緊「擺房」，原句嘅「拜訪」係聽錯字。"
         },
         {
           "index": 18,
-          "text": "姐姐，就係佢",
-          "note": "The dialogue order and pronouns are mistranscribed; the intended line is 「姐姐，就係佢」."
+          "text": "姐姐，就係佢。",
+          "note": "語序同中文字幕唔符，應為姐姐指出殺父親嘅人，即「姐姐，就係佢」。"
         },
         {
           "index": 19,
           "text": "殺阿爹嗰個就係佢",
-          "note": "「曬爹」 should be 「殺阿爹」, and the person referred to should be 「佢」."
+          "note": "「曬爹」係明顯聽錯字，應為「殺阿爹」；末尾代詞應寫粵語「佢」。"
+        },
+        {
+          "index": 22,
+          "text": "失陪，趙大人，如霜姑娘到啦。",
+          "note": "原句「但如霜姑娘到啦」同上下文及中文字幕唔符，應補回「失陪，趙大人」並交代如霜姑娘到。"
         }
       ]
     },
@@ -22256,48 +22481,38 @@
       "revisions": [
         {
           "index": 1,
-          "text": "果然是美人",
-          "note": "The phrase is missing the copula corresponding to “是” in the reference subtitle."
+          "text": "果然係美人",
+          "note": "「果然美人」漏咗表示判斷嘅「係」，應為「果然係美人」。"
         },
         {
           "index": 2,
-          "text": "趙大人，那今晚⋯",
-          "note": "“今晚” is missing after “那”."
+          "text": "趙大人，咁今晚⋯",
+          "note": "呢句漏咗「今晚」，同中文字幕內容唔一致。"
         },
         {
           "index": 4,
           "text": "如霜姑娘今晚要陪我哋少爺",
-          "note": "“擺房” is a mistranscription; the intended meaning is that Rusuang will accompany the young master tonight."
+          "note": "「擺房」同語境及中文字幕唔符，應為陪同少爺。"
         },
         {
           "index": 5,
-          "text": "冇空招呼你",
-          "note": "“不有空” is incorrect; it should be “冇空”."
-        },
-        {
-          "index": 7,
-          "text": "有咩意見呀？",
-          "note": "The sentence is missing the question asking whether there are any objections."
+          "text": "冇空，招呼你",
+          "note": "「不有空」明顯係轉寫錯誤，應為「冇空」。"
         },
         {
           "index": 8,
-          "text": "讓我嚟⋯，讓我講句公道話。",
-          "note": "The latter part is mistranscribed. The intended phrase is “say a fair word”."
+          "text": "讓我來⋯⋯，讓我講句公道話。",
+          "note": "原句「讓我講講你們公道的話」語意唔通，應為「講句公道話」。"
         },
         {
           "index": 11,
-          "text": "千萬唔好傷和氣，對唔對？",
-          "note": "“聽聽” is inconsistent with the intended closing question “對不對？”."
-        },
-        {
-          "index": 12,
-          "text": "呢位朋友真係捨得使錢",
-          "note": "The wording is mistranscribed; the intended meaning is that this friend is genuinely willing to spend money."
+          "text": "千萬不要傷和氣，對唔對？",
+          "note": "句尾「聽聽」同語境唔符，應為反問語「對唔對」。"
         },
         {
           "index": 14,
-          "text": "我有粒朝廷大內嘅定風珠，無價寶。",
-          "note": "“定封珠” is a mistranscription of “定風珠”, and the final “寶” is missing."
+          "text": "我有粒朝廷大內的定風珠，無價的。",
+          "note": "「定封珠」應為「定風珠」，係物件名稱嘅聽寫錯誤。"
         }
       ]
     },
@@ -22355,12 +22570,12 @@
         {
           "index": 3,
           "text": "呢粒珠值唔值十萬兩呀？",
-          "note": "“淨唔淨”應為“值唔值”，表示詢問這顆珠是否值十萬兩。"
+          "note": "「淨唔淨」應為「值唔值」，意思係詢問粒珠值唔值十萬兩。"
         },
         {
           "index": 4,
-          "text": "十萬兩銀兩，姑娘，你仲嫌少？",
-          "note": "“銀通”應為“銀兩”；“重嚴少”是明顯轉寫錯誤，應為“仲嫌少”。"
+          "text": "十萬兩銀，姑娘，你都仲嫌少？",
+          "note": "「銀通」係明顯轉寫錯誤，應為「銀」；「重嚴少」應改為「仲嫌少」。"
         }
       ]
     },
@@ -22453,23 +22668,18 @@
       "revisions": [
         {
           "index": 2,
-          "text": "蘇翁呀⋯",
-          "note": "“騷擁” is a clear transcription error; it should be the name “蘇翁,” matching the Chinese subtitle."
+          "text": "蘇翁⋯",
+          "note": "「騷擁」係人名「蘇翁」嘅錯寫，按中文字幕修正。"
         },
         {
           "index": 5,
           "text": "如霜姑娘睇我唔上眼，係我抵死咋",
-          "note": "The character “雙” conflicts with the name “如霜姑娘” in the Chinese subtitle and is a likely miswriting."
-        },
-        {
-          "index": 7,
-          "text": "你放心呀，我哋有好多好靚好醒嘅姑娘㗎。",
-          "note": "“做好多” is a clear wording/transcription error in context; “有好多” matches the intended meaning. “好省” is also corrected to the likely intended “好醒.”"
+          "note": "人名應為「如霜」，唔係「如雙」，修正錯字。"
         },
         {
           "index": 9,
-          "text": "大膽！放肆！",
-          "note": "This line is incomplete and conflicts with the corresponding Chinese subtitles. The complete Cantonese rendering is “大膽！放肆！”"
+          "text": "放肆！",
+          "note": "句末「係」喺呢度明顯係多餘或誤寫，按語意刪除。"
         }
       ]
     },
@@ -22502,8 +22712,8 @@
       "revisions": [
         {
           "index": 2,
-          "text": "奏樂，哦哦哦。",
-          "note": "「周鶴」與中文字幕的「奏樂」不符，應為聽寫錯字；修正為「奏樂」。"
+          "text": "奏樂",
+          "note": "「周鶴」應該係聽錯字，按中文字幕應改為「奏樂」。"
         }
       ]
     },
@@ -22544,13 +22754,8 @@
       "revisions": [
         {
           "index": 2,
-          "text": "鶴咀",
-          "note": "“學準” appears to be a mishearing of “鶴咀,” referring to the crane-beak hand shape."
-        },
-        {
-          "index": 3,
-          "text": "虎爪",
-          "note": "“撲掣” conflicts with the corresponding term “虎爪” and appears to be a transcription error."
+          "text": "擺準",
+          "note": "「學準」唔符合呢度嘅語意，配合中文字幕「先放好」，應為「擺準」。"
         }
       ]
     },
@@ -22591,13 +22796,13 @@
       "revisions": [
         {
           "index": 1,
-          "text": "螳螂點鬥老虎呀？何況我加埋隻鶴。",
-          "note": "The characters 「救」 and 「砌」 are transcription errors. The intended phrase is 「點鬥老虎呀」, and 「殼」 should be 「鶴」 to match the Chinese subtitle and the martial-arts term."
+          "text": "螳螂點夠老虎砌呀？何況我加埋隻鶴。",
+          "note": "「救」係聽錯字，應為「夠」；另外「殼」應為「鶴」，同中文字幕嘅「鶴」一致。"
         },
         {
           "index": 2,
           "text": "虎鶴雙形我都識",
-          "note": "「虎殼相形」 is a mis-transcription of the martial-arts form 「虎鶴雙形」; 「殼」 should be 「鶴」 and 「相」 should be 「雙」."
+          "note": "「殼」應為「鶴」，「相形」應為武術招式「雙形」，同中文字幕及前句嘅內容一致。"
         }
       ]
     },
@@ -22651,22 +22856,22 @@
         {
           "index": 1,
           "text": "我螳螂拳再破你虎鶴雙形嘛",
-          "note": "“虎殼雙形” is a transcription error; the martial art term is “虎鶴雙形,” consistent with the reference subtitles and the following line."
+          "note": "「虎殼雙形」應為武術招式「虎鶴雙形」，同第2句及中文字幕一致。"
         },
         {
           "index": 2,
           "text": "嘩，原來唔係虎鶴雙形。",
-          "note": "“虎殼雙形” should be corrected to the martial art term “虎鶴雙形.”"
+          "note": "「虎殼雙形」應為「虎鶴雙形」，同中文字幕一致。"
         },
         {
           "index": 3,
           "text": "係孔雀開屏",
-          "note": "“恐獎開屏” is a mis-transcription of “孔雀開屏.”"
+          "note": "「恐獎開屏」係明顯聽寫錯誤，應為「孔雀開屏」。"
         },
         {
           "index": 4,
           "text": "唔怪你咁差",
-          "note": "“咁嘢” is inconsistent with the reference meaning; the intended phrase is “咁差,” meaning comparatively poor."
+          "note": "「咁嘢」與中文字幕「比較差」不符，應為「咁差」。"
         }
       ]
     },
@@ -22708,12 +22913,12 @@
         {
           "index": 1,
           "text": "身手幾快呀",
-          "note": "“身形” is a transcription error; the idiomatic phrase matching “動作蠻快” is “身手幾快”."
+          "note": "「身形」應為「身手」，指動作反應快，亦較符合中文字幕意思。"
         },
         {
           "index": 3,
           "text": "後生仔，唔知天高地厚。",
-          "note": "“物至” is incorrect; the established Cantonese expression is “唔知天高地厚”, meaning someone does not know their own limitations."
+          "note": "「物至」係明顯轉寫錯誤，應為「唔知」，即「唔知天高地厚」。"
         }
       ]
     },
@@ -22863,37 +23068,42 @@
         {
           "index": 1,
           "text": "廣州將軍到",
-          "note": "The location name is mistranscribed as 「黃州」; the dialogue refers to the Guangzhou General, and the line corresponds to 「廣州將軍到」."
+          "note": "「黃州」應為「廣州」，而「呀」按字幕內容應為「到」。"
         },
         {
           "index": 2,
-          "text": "邊個畜生欺我仔，我斬邊個",
-          "note": "This line is garbled. It should convey 「Whoever bullies my son, I will kill/shoot him」; 「獸頭」 and 「蛋」 are clear transcription errors."
+          "text": "走開，邊個敢欺我仔，我打邊個",
+          "note": "原句有多處明顯聽寫錯誤；按中文意思應為有人敢欺負我個仔，我就打邊個，並補回前面嘅「走開」。"
+        },
+        {
+          "index": 4,
+          "text": "唔使驚呀，邊個欺你？",
+          "note": "「誰」係書面普通話用字，按粵語語音應為「邊個」。"
         },
         {
           "index": 6,
-          "text": "乜嘢？欺佢？",
-          "note": "「死你」 is a mishearing of 「乜嘢」, meaning 「what?」 in this context."
+          "text": "乜？你欺佢？",
+          "note": "「死你」明顯係聽寫錯誤，按語意應為「乜？你欺佢？」。"
         },
         {
           "index": 7,
-          "text": "有幾銀紙㗎？佢夠唔夠資格呀？",
-          "note": "「銀性」 is a transcription error for 「銀紙」, referring to money or wealth."
+          "text": "有幾銀成㗎？佢夠唔夠資格呀？",
+          "note": "「又幾銀性」有明顯錯字，應為「有幾銀成」。"
         },
         {
           "index": 12,
           "text": "送賀禮",
-          "note": "The reference dialogue says 「送賀禮」; 「送我禮」 is an inaccurate transcription."
+          "note": "按中文字幕「送賀禮」，原句漏咗「賀」字。"
         },
         {
           "index": 15,
-          "text": "攞去打賞畀呢啲姑娘啦，老爺",
-          "note": "This line is heavily garbled. 「打相」 should be 「打賞」, and the latter part refers to giving it to the girls here."
+          "text": "拿去打賞畀啲姑娘啦，老爺",
+          "note": "原句「啲佢啲貓來」明顯係聽寫錯誤；按中文意思應為「畀啲姑娘啦」。"
         },
         {
           "index": 16,
-          "text": "個令牌上面寫住：「鐵帽子王僧格林沁呀，嗨。」",
-          "note": "「頁牌」 should be 「令牌」, and the historical name is 「僧格林沁」, not 「爭格林森」."
+          "text": "個令牌上面寫住：「鐵帽子王僧格林沁。」",
+          "note": "「頁牌」應為「令牌」；「爭格林森呀，嗨」係人名聽寫錯誤，應為「僧格林沁」。"
         }
       ]
     },
@@ -22956,11 +23166,11 @@
         },
         {
           "index": 14,
-          "text": "還有⋯"
+          "text": "還有⋯還有"
         },
         {
           "index": 15,
-          "text": "還有什麼？說啊"
+          "text": "什麼？說啊"
         },
         {
           "index": 16,
@@ -23061,24 +23271,39 @@
     "answer": {
       "revisions": [
         {
-          "index": 2,
-          "text": "鎖起他",
-          "note": "「搶他」與中文字幕及語境不符，應為命令將他鎖起來。"
-        },
-        {
           "index": 6,
           "text": "知法犯法，該當何罪？",
-          "note": "「知犯犯法」是明顯錯寫，應改為「知法犯法」。"
+          "note": "「知犯犯法」係明顯錯字，應為「知法犯法」。"
+        },
+        {
+          "index": 8,
+          "text": "你話我？　是",
+          "note": "「是不是說我」唔符合呢句對白嘅粵語轉寫，應改為「你話我」。"
+        },
+        {
+          "index": 9,
+          "text": "係呀，我就係嚟⋯",
+          "note": "「是不是」及「我就是來」屬明顯唔準確嘅粵語轉寫，應為「係呀，我就係嚟」。"
+        },
+        {
+          "index": 10,
+          "text": "嚟拉⋯　　拉你",
+          "note": "呢度係講拘捕，應用「拉」而唔係「抓」，並補回重複嘅「拉你」。"
+        },
+        {
+          "index": 11,
+          "text": "佢呀！　　拉佢呀",
+          "note": "「可以啊」應為「佢呀」，而拘捕應寫作「拉佢呀」。"
         },
         {
           "index": 16,
           "text": "今天是清太祖皇后，葉赫那拉氏的忌辰。",
-          "note": "「葉克拿拉」是人名誤寫，清太祖皇后姓氏應為「葉赫那拉」；同時刪去與參考字幕及語境不符的「現」。"
+          "note": "「現清太祖」係明顯錯字，應為「清太祖」；皇后姓氏應為「葉赫那拉氏」。"
         },
         {
           "index": 17,
           "text": "身為軍官罪加一等",
-          "note": "「最佳等」是明顯聽寫錯誤，應為「罪加一等」。"
+          "note": "「最佳等」係明顯聽寫錯誤，應為「罪加一等」。"
         }
       ]
     },
@@ -23240,67 +23465,67 @@
         {
           "index": 1,
           "text": "根據大清律例",
-          "note": "“大清律” is missing “例”; the corresponding Chinese subtitle is “大清律例”."
+          "note": "「大清律」漏咗「例」字，應該係「大清律例」。"
         },
         {
           "index": 2,
           "text": "任何人不束辮子，一樣要問斬",
-          "note": "“不分辨” is a transcription error for “不束辮子”, meaning not wearing a queue braid."
+          "note": "「不分辨」係聽錯，應為「不束辮子」，即係唔綁辮子都要問斬。"
         },
         {
           "index": 5,
-          "text": "再多都有，笨蛋",
-          "note": "“多多都有” is a mishearing; it should be “再多都有”, matching the meaning of “再多也有”."
+          "text": "再多也有，笨蛋",
+          "note": "「多多都有」同參考字幕意思唔符，應為「再多也有」。"
         },
         {
           "index": 6,
-          "text": "別多說了，斬他",
-          "note": "The line omits the command to execute him; it should correspond to “不用再說，斬他”."
+          "text": "不用再說，斬他",
+          "note": "原字幕漏咗「斬他」，而且「別多說了」應改為「不用再說」。"
         },
         {
           "index": 7,
           "text": "好了好了，玩完了",
-          "note": "“當然了” does not match the intended line “好了好了，玩完了”; this is a clear transcription error."
+          "note": "「當然了」同語境及參考字幕唔符，應為「好了好了，玩完了」。"
         },
         {
           "index": 8,
-          "text": "蘇將軍，大家玩得咁開心就算喇",
-          "note": "“蘇張芬” is a misrecognition of the form of address “蘇將軍”; the rest of the line is also garbled and should express that everyone is enjoying themselves, so let it go."
+          "text": "蘇將軍，大家玩得那麼開心就算了吧",
+          "note": "人名／稱呼「蘇張芬」係聽錯，應為「蘇將軍」；後半句亦應係大家玩得開心，算了吧。"
         },
         {
           "index": 9,
-          "text": "我今晚仲未玩過",
-          "note": "The subtitle should include “還沒／仲未”, as the speaker says he has not played yet tonight."
+          "text": "我今晚還沒玩過",
+          "note": "漏咗「還」字，應為「今晚還沒玩過」。"
         },
         {
           "index": 10,
-          "text": "皇爺，",
-          "note": "“王爺” is inconsistent with the corresponding address “皇爺” in this exchange."
+          "text": "皇爺",
+          "note": "稱呼應為「皇爺」，唔係「王爺」。"
         },
         {
           "index": 11,
-          "text": "諗唔到喺呢度會畀佢哋打擾你嘅雅興",
-          "note": "“無賴” is a mishearing of “佢哋”; the line means that they disturbed the addressee’s enjoyment."
+          "text": "想不到在這裡會讓他們打擾你的雅興",
+          "note": "「無賴」係誤聽，應為「他們」；句意係讓他們打擾皇爺雅興。"
         },
         {
           "index": 12,
           "text": "小人安排不周",
-          "note": "“不就” is a character error; the idiom is “安排不周”."
+          "note": "「不就」係誤寫，應為「不周」，即係安排唔周全。"
         },
         {
           "index": 15,
-          "text": "老爺⋯老爺，呢個唔可以惹，見好就收",
-          "note": "The latter half is garbled. It should say that this person cannot be provoked and that they should quit while ahead."
+          "text": "老爺⋯老爺，這個不能惹，見好就收",
+          "note": "「玩不起，見不收了」係明顯誤聽，應為「這個不能惹，見好就收」。稱呼亦應為「老爺」。"
         },
         {
           "index": 16,
-          "text": "收喇",
-          "note": "The line is a suggestion to stop, not a question; “收吧” should be rendered as “收喇”."
+          "text": "收吧",
+          "note": "「不收了」同參考字幕唔符，應為「收吧」。"
         },
         {
           "index": 17,
           "text": "大事化小，小事化無",
-          "note": "“少” is the wrong character in the fixed expression; it should be “小”."
+          "note": "成語應為「大事化小」，原字幕將「小」誤寫成「少」。"
         }
       ]
     },
@@ -23447,24 +23672,24 @@
     "answer": {
       "revisions": [
         {
-          "index": 1,
-          "text": "莫大叔呀，啲酒菜已經落咗斷腸散喇。",
-          "note": "“落到” is a clear transcription error; the intended Cantonese expression is “落咗” (added/put in)."
-        },
-        {
           "index": 2,
-          "text": "好！趙無極暗算我哋幫主",
-          "note": "The name “照冒極” is a mis-transcription of the character’s name “趙無極.”"
+          "text": "好！趙無極，佢暗算我哋幫主",
+          "note": "「冒極」係人名「趙無極」嘅誤寫。"
         },
         {
           "index": 9,
-          "text": "佢嘅先天罡氣好厲害",
-          "note": "“剛氣” is the wrong character; the martial-arts term is “罡氣.”"
+          "text": "佢哋嘅先天罡氣好厲害",
+          "note": "「剛氣」應為武學名稱「罡氣」；另外原文講緊佢哋，應改為「佢哋嘅」。"
+        },
+        {
+          "index": 10,
+          "text": "你哋一陣見佢冇上當，千萬唔好出手",
+          "note": "按語意應該係「冇上當」，唔係「未上當」。"
         },
         {
           "index": 13,
-          "text": "長老，有人嚟。",
-          "note": "“係呀” does not match the reference meaning “有人來”; it should be “有人嚟” (someone is coming)."
+          "text": "長老，有人嚟",
+          "note": "原字幕「係呀」同參考中文字幕嘅「有人來」意思明顯唔符，應為「有人嚟」。"
         }
       ]
     },
@@ -23601,68 +23826,63 @@
       "revisions": [
         {
           "index": 1,
-          "text": "如霜姑娘，我哋又見面喇",
-          "note": "The character’s name should be 如霜, matching the Chinese subtitle."
+          "text": "如霜姑娘，我們又見面了",
+          "note": "「余霜」應為人物名「如霜」。"
         },
         {
           "index": 2,
-          "text": "點解會係你？趙大爺呢？",
-          "note": "“天余” is an erroneous transcription; the intended meaning is “Why is it you? Where is Uncle Zhao?”"
+          "text": "怎麼會是你？趙大爺呢？",
+          "note": "「天余」係明顯誤聽，應刪除。"
         },
         {
           "index": 3,
-          "text": "趙大爺嘅定風珠",
-          "note": "“瘋豬” is a mishearing of 定風珠, referring to Zhao’s magic pearl."
+          "text": "趙大爺的定風珠",
+          "note": "「哥哥趙大爺一定瘋豬」係明顯誤聽，應為「趙大爺的定風珠」。"
         },
         {
           "index": 4,
-          "text": "畀蘇翁一打，就變成珍珠粉",
-          "note": "The line should say that Su Weng struck it and it turned into pearl powder."
-        },
-        {
-          "index": 5,
-          "text": "我沖水飲咗",
-          "note": "“還” is incorrect here; the intended line is that the speaker drank it after mixing it with water."
+          "text": "給蘇翁一打就變成珍珠粉末",
+          "note": "「蘇勇」應為「蘇翁」，「被珍珠滿」應為「變成珍珠粉末」。"
         },
         {
           "index": 6,
-          "text": "你唔好睇蘇翁嘅頭髮似掃把咁",
-          "note": "Several words are mistranscribed: 蘇媽 should be 蘇翁, and 像素靶 should be 似掃把."
+          "text": "你不要看蘇翁的頭髮像掃帚一樣",
+          "note": "「蘇媽」應為「蘇翁」，「像素靶」應為「像掃帚」。"
         },
         {
           "index": 7,
-          "text": "其實佢為人好有情趣",
-          "note": "“實在她” is an erroneous transcription; the line refers to Su Weng’s character and says he is interesting."
+          "text": "其實他為人很有情趣",
+          "note": "「實在她」應為「其實他」，並補回「為人」，同中文字幕意思一致。"
         },
         {
           "index": 9,
-          "text": "但是乜嘢？嗰十萬兩我已經攞咗",
-          "note": "The line should be “But what?”, followed by the statement that the ten thousand taels have already been taken."
+          "text": "但是甚麼，那十萬兩我已經帶進袋裡。",
+          "note": "「沒但是」係明顯誤聽，應為「但是甚麼」。"
         },
         {
           "index": 10,
-          "text": "我唔會還畀佢",
-          "note": "The intended meaning is that the speaker will not return the money, rather than that getting it back will be difficult."
+          "text": "我不會還給他的",
+          "note": "呢句同中文字幕意思相反，應為唔會將十萬兩還畀對方。"
         },
         {
           "index": 11,
-          "text": "講到蘇翁嘅為人⋯",
-          "note": "“蘇勇這份人” is a mistranscription of 蘇翁嘅為人."
+          "text": "說到蘇翁的為人⋯",
+          "note": "「蘇勇這份人」係誤聽，應為「蘇翁的為人」。"
         },
         {
           "index": 12,
-          "text": "廢話少講，鴇母",
-          "note": "“閨婆” is incorrect; the person being addressed is the 鴇母, and the line says to stop the unnecessary talk."
+          "text": "廢話可以少說了，鴇母。",
+          "note": "「閨婆」應為青樓老鴇嘅稱呼「鴇母」。"
         },
         {
           "index": 14,
-          "text": "係嘅⋯係嘅",
-          "note": "The source line repeats 是的, which is missing from the Cantonese transcription."
+          "text": "是的⋯是的",
+          "note": "中文字幕有兩次「是的」，粵文漏咗一次。"
         },
         {
           "index": 15,
           "text": "七姑娘⋯　　將就一下⋯",
-          "note": "The addressee is 七姑娘, not 蘇姑娘, and 將就一下 is the correct phrase."
+          "note": "人物稱呼「蘇姑娘」應為「七姑娘」，「掌握一下吧」應為「將就一下」。"
         }
       ]
     },
@@ -23792,7 +24012,7 @@
         {
           "index": 7,
           "text": "閒話休提",
-          "note": "The transcription appears to have misheard or mistyped the phrase corresponding to 「閒話休提」 as 「難話優題」."
+          "note": "「難話優題」明顯係聽錯字，根據中文字幕及語境應為「閒話休提」。"
         }
       ]
     },
@@ -23930,12 +24150,12 @@
         {
           "index": 6,
           "text": "如霜，從來冇人噉對我㗎",
-          "note": "The character's name conflicts with the Chinese subtitle, which identifies her as 如霜 rather than 余雙."
+          "note": "人物名同中文字幕嘅「如霜」唔一致，應修正為「如霜」。"
         },
         {
           "index": 10,
           "text": "你有冇搞錯呀？",
-          "note": "“有乜搞錯” is a transcription error here; the intended Cantonese phrase matching “你沒有弄錯吧？” is “有冇搞錯”."
+          "note": "「有乜搞錯」同中文字幕嘅意思唔符，應為表示質疑對方有冇搞錯嘅「有冇搞錯」。"
         }
       ]
     },
@@ -24055,19 +24275,29 @@
     "answer": {
       "revisions": [
         {
+          "index": 3,
+          "text": "我就對住你把寶劍發誓",
+          "note": "「當住」應為「對住」，同中文字幕嘅「對著」相符，亦係較準確嘅轉寫。"
+        },
+        {
           "index": 4,
           "text": "我係真心要娶如霜姑娘為妻",
-          "note": "The character's name conflicts with the corresponding Chinese subtitle: 「余霜」 should be 「如霜」."
+          "note": "人物姓名前後唔一致；中文字幕係「如霜姑娘」，應將「余霜」改為「如霜」。"
         },
         {
           "index": 6,
           "text": "姐姐，我真係替你興奮⋯",
-          "note": "「等你興奮」 is a mistranscription of 「替你興奮」, meaning to feel excited on your behalf."
+          "note": "「等你興奮」同中文字幕「替你興奮」意思唔同，應改為「替你興奮」。"
+        },
+        {
+          "index": 7,
+          "text": "唏！",
+          "note": "中文字幕係「唏！」，粵文「喂！」屬於唔同嘅呼喊，應按原句改為「唏！」。"
         },
         {
           "index": 11,
           "text": "一人之下，萬人之上",
-          "note": "「億人之下」 is a clear character error; the idiom is 「一人之下，萬人之上」."
+          "note": "「億人之下」係明顯錯字，應為「一人之下」。"
         }
       ]
     },
@@ -24149,12 +24379,12 @@
         {
           "index": 4,
           "text": "咦，既然係噉，我諗我哋要先定婚期。",
-          "note": "「定分期」與中文字幕的「定婚期」不符，應為「定婚期」。"
+          "note": "「定分期」明顯係轉寫錯誤，按語境應為「定婚期」。"
         },
         {
           "index": 8,
           "text": "不見不散",
-          "note": "「百見不散」是明顯誤寫，固定說法應為「不見不散」。"
+          "note": "「百見不散」係錯寫，正確講法應為「不見不散」。"
         }
       ]
     },
@@ -24199,7 +24429,7 @@
         {
           "index": 1,
           "text": "丐幫辦事，無關人等立即離開。",
-          "note": "The opening phrase appears to be a transcription error: it should be 「丐幫辦事」, matching the reference subtitle, rather than 「外方唔犯事」."
+          "note": "「外方唔犯事」應為「丐幫辦事」，同中文字幕內容一致；「無關人等」無需修改。"
         }
       ]
     },
@@ -24249,12 +24479,12 @@
         {
           "index": 1,
           "text": "大人，半炷香嘅時間啱啱好。",
-          "note": "「搬煮香」係明顯轉寫錯誤，應為「半炷香」，意思係一炷香嘅一半時間。"
+          "note": "「搬煮香」係聽錯字，應該係「半炷香」。"
         },
         {
           "index": 4,
           "text": "起轎！",
-          "note": "「起橋」係明顯轉寫錯誤；配合中文字幕「起轎」，應改為「起轎」。"
+          "note": "「起橋」係聽錯字，呢度應該係「起轎」。"
         }
       ]
     },
@@ -24288,12 +24518,12 @@
         {
           "index": 1,
           "text": "弊！我哋來遲咗",
-          "note": "“閉” is a transcription error for the Cantonese exclamation “弊”."
+          "note": "「閉」應為表示糟糕嘅感嘆詞「弊」。"
         },
         {
           "index": 2,
-          "text": "一日都係嗰個契弟礙事！",
-          "note": "The original text contains garbled wording. Based on the reference subtitle, it should indicate that the same person is causing trouble; “契弟礙事” is the corresponding Cantonese expression."
+          "text": "一日都係嗰個衰仔礙事！",
+          "note": "原句「騎下仔女事」明顯係聽寫錯字，按語意及讀音應為「衰仔礙事」。"
         }
       ]
     },
@@ -24355,15 +24585,8 @@
       ]
     },
     "answer": {
-      "revisions": [
-        {
-          "index": 5,
-          "text": "算啦！佢咪唔係有心阻我哋嘅",
-          "note": "The Cantonese subtitle says he intentionally blocked them, which contradicts the Chinese reference meaning that he did not do so intentionally. Add 「唔係」 to correct the meaning."
-        }
-      ]
-    },
-    "difficulty": 1
+      "revisions": []
+    }
   },
   {
     "query": {
@@ -24449,27 +24672,27 @@
         {
           "index": 1,
           "text": "你唔係鍾意佢，係嘛？",
-          "note": "「阻佢」應為「鍾意佢」，與中文字幕及句意一致。"
+          "note": "「阻佢」應該係聽錯字，按中文字幕及語意應為「鍾意佢」。"
         },
         {
           "index": 3,
           "text": "趙無極一日未死",
-          "note": "「一係未死」應為「一日未死」，表示只要趙無極尚未死亡。"
+          "note": "「一係未死」明顯漏咗「日」字，應為「一日未死」。"
         },
         {
           "index": 7,
           "text": "莫大叔話唔識降龍十八掌都打佢唔贏嘅",
-          "note": "「學能十八掌」應為「降龍十八掌」，係武功名稱嘅聽寫錯誤。"
+          "note": "「學能十八掌」應為武功名稱「降龍十八掌」，屬於聽錯字。"
         },
         {
           "index": 8,
           "text": "噉，我唔使嫁？",
-          "note": "「唔使假」應為「唔使嫁」，對應『豈不是嫁不出』嘅意思。"
+          "note": "「假」應為「嫁」，配合語意係問自己係咪嫁唔出。"
         },
         {
           "index": 9,
-          "text": "行啦！發情你",
-          "note": "「發口」應為「發情」，與中文字幕及語境一致。"
+          "text": "行啦！發姣呢你",
+          "note": "「發口」應為粵語講法「發姣」，同中文字幕嘅「發情」相符。"
         }
       ]
     },
@@ -24575,32 +24798,32 @@
         {
           "index": 1,
           "text": "何方妖孽？夠膽出嚟嚇本少爺？",
-          "note": "Corrected the miswritten term 「擁孽」 to 「妖孽」 and changed 「欺騙」 to 「嚇」 to match the intended meaning and the Chinese reference."
+          "note": "「擁孽」係錯字，應為「妖孽」；另外按中文字幕語意，「欺騙」應為「嚇」。"
         },
         {
           "index": 2,
           "text": "蘇翁，我係鴇母呀⋯",
-          "note": "Corrected the name 「素勇」 to 「蘇翁」 and the mis-transcription 「閨婆」 to 「鴇母」."
+          "note": "人物稱呼應為「蘇翁」，唔係「素勇」；「閨婆」亦係錯寫，應為青樓老鴇嘅「鴇母」。"
         },
         {
           "index": 3,
           "text": "你係鴇母？",
-          "note": "Corrected 「閨婆」 to the proper term 「鴇母」."
+          "note": "「閨婆」係錯寫，應為「鴇母」。"
         },
         {
           "index": 6,
           "text": "咁未瞓醒吖嘛。",
-          "note": "Replaced 「未起身」 with 「未瞓醒」 to accurately convey that she has not woken up yet."
+          "note": "按語意應為「未瞓醒」，「未起身」同中文字幕嘅意思唔一致。"
         },
         {
           "index": 8,
-          "text": "以後冇化妝，唔好四圍行呀，知未？",
-          "note": "Corrected the apparent transcription errors 「未化妝」 to 「冇化妝」, 「事為限」 to 「四圍行」, and 「知咪」 to 「知未」."
+          "text": "以後未化妝，唔好四圍行呀，知未？",
+          "note": "「事為限」係明顯轉寫錯誤，按語意應為「四圍行」；句末「知未」亦較符合原意。"
         },
         {
           "index": 10,
           "text": "你唔好等如霜姑娘喇，佢走咗喇⋯",
-          "note": "Corrected the character name 「余霜」 to 「如霜」 for consistency with the reference subtitle."
+          "note": "姑娘個名應為「如霜」，前面嘅「余霜」係人名轉寫錯誤。"
         }
       ]
     },
@@ -25150,182 +25373,187 @@
         {
           "index": 4,
           "text": "男兒為國家⋯",
-          "note": "The transcription misheard 「男兒為國家」."
+          "note": "「南宜」係聽錯字，應為「男兒」。"
         },
         {
           "index": 5,
           "text": "⋯辮子點樣戴⋯",
-          "note": "Corrects the garbled transcription to 「辮子點樣戴」."
+          "note": "「條邊，冇掟掛」明顯係「辮子點樣戴」嘅聽錯字。"
         },
         {
           "index": 6,
           "text": "揮呀！揮呀！",
-          "note": "The line should be 「揮呀！揮呀！」."
+          "note": "「聖殼」係聽錯字，應為「揮呀」。"
         },
         {
           "index": 7,
           "text": "我拉長佢又彈佢⋯",
-          "note": "Corrects the misheard pronouns and verbs in 「我拉長佢又彈佢」."
+          "note": "原字幕多處字詞明顯聽錯，應為「我拉長佢又彈佢」。"
         },
         {
           "index": 9,
           "text": "阿燦",
-          "note": "Corrects the character name from 「阿蟲」 to 「阿燦」."
-        },
-        {
-          "index": 10,
-          "text": "阿爹等你講呢句說話，等咗廿五年",
-          "note": "Corrects 「等你廿五年」 to the spoken form 「等咗廿五年」."
+          "note": "人物稱呼「阿蟲」應為「阿燦」。"
         },
         {
           "index": 11,
           "text": "為咗蘇察哈爾家，你應該咁做。",
-          "note": "Corrects the misheard family name to 「蘇察哈爾家」."
+          "note": "「鬚賊蝦耳間」係人名「蘇察哈爾家」嘅錯寫。"
         },
         {
           "index": 12,
-          "text": "唔好誤會，我咁做並唔係為咗任何人",
-          "note": "Corrects the garbled line corresponding to 「別誤會，我咁做並唔係為咗任何人」."
+          "text": "別誤會，我咁做並唔係為誰",
+          "note": "「唔好嘞」係聽錯字，應為「別誤會」；後半句亦應為「唔係為誰」。"
         },
         {
-          "index": 13,
-          "text": "只係為咗個女人啫",
-          "note": "Corrects 「女仔」 to the intended 「女人」."
+          "index": 15,
+          "text": "為女死，為女亡，為女上京考狀元。",
+          "note": "「考狀」漏咗「元」，應為「考狀元」。"
         },
         {
           "index": 17,
           "text": "怡紅院金牌清倌人如霜姑娘",
-          "note": "Corrects the misheard venue and profession in the character introduction."
+          "note": "「而紅院」應為「怡紅院」，「清官人」應為「清倌人」。"
         },
         {
           "index": 18,
           "text": "妓女？",
-          "note": "Corrects 「隻雞」 to 「妓女」."
-        },
-        {
-          "index": 19,
-          "text": "有乜嘢唔妥？",
-          "note": "Corrects the misheard question to 「有乜嘢唔妥？」."
+          "note": "「隻雞」係將「妓女」聽錯。"
         },
         {
           "index": 21,
           "text": "阿爹欽佩你",
-          "note": "The line should be 「阿爹欽佩你」; the current wording is a transcription error."
+          "note": "「阿爹一唔陪你」應為「阿爹欽佩你」。"
         },
         {
           "index": 23,
           "text": "二、三、四、五、六",
-          "note": "Corrects the counting sequence by restoring 「四、五」."
+          "note": "數數字漏咗「四、五」。"
         },
         {
           "index": 24,
           "text": "嚟喇，老爺",
-          "note": "Corrects the garbled response to 「嚟喇，老爺」."
+          "note": "「係咪」同對應內容唔符，應為「嚟喇，老爺」。"
         },
         {
           "index": 25,
-          "text": "少爺上京赴考，我哋搬屋",
-          "note": "Corrects the line about moving house for the young master's examination trip."
+          "text": "少爺上京赴考，我哋搬家。",
+          "note": "「訪南家搬」係聽錯字，應為「赴考，我哋搬家」。"
         },
         {
           "index": 26,
-          "text": "你哋唔好追啦",
-          "note": "Corrects the line to 「你哋唔好追啦」."
+          "text": "你哋唔好追啦。",
+          "note": "呢句多咗「阿爹」，而且應為「你哋唔好追啦」。"
         },
         {
           "index": 27,
-          "text": "啲雞唔帶喇，京城多的是",
-          "note": "Restores the omitted meaning that the chickens are not being taken and that there are many in the capital."
+          "text": "呢啲雞唔帶喇，京城多的是",
+          "note": "「啲雞都會」漏咗主要內容，應為「呢啲雞唔帶喇，京城多的是」。"
         },
         {
           "index": 28,
           "text": "你呢個笨蛋，小心啲",
-          "note": "Corrects the garbled insult and warning to 「你呢個笨蛋，小心啲」."
+          "note": "「唔好聲呀」係聽錯字，應為「你呢個笨蛋，小心啲」。"
         },
         {
           "index": 29,
-          "text": "整花咗我啲嘢，我唔會放過你",
-          "note": "Corrects the line about damaging the speaker's belongings."
+          "text": "你整花我啲嘢，我唔會放過你",
+          "note": "「你揮返我啲嘢，我打到佢屁股開返」係多處聽錯，應為「你整花我啲嘢，我唔會放過你」。"
         },
         {
           "index": 35,
-          "text": "留件衫畀我着呀",
-          "note": "Corrects the clothing request to 「留件衫畀我着呀」."
+          "text": "留件衫畀我着呀，小心呀",
+          "note": "原字幕漏咗「畀我着呀」，應為留衫畀對方穿。"
+        },
+        {
+          "index": 38,
+          "text": "呸！大過我咩？",
+          "note": "「大得我咩」應為「大過我咩」。"
         },
         {
           "index": 39,
-          "text": "睇小我呀？",
-          "note": "Corrects the misheard question to 「睇小我呀？」."
+          "text": "家下睇小我係咪？",
+          "note": "「小木」係錯字，應為「小我」。"
         },
         {
           "index": 40,
           "text": "總有一日大過你",
-          "note": "Corrects the line to 「總有一日大過你」."
+          "note": "「錢小姐大過你嘅」同內容不符，應為「總有一日大過你」。"
         },
         {
           "index": 41,
-          "text": "有冇人肯除件衫畀我着下",
-          "note": "The line should ask who is willing to take off a shirt for the speaker to wear."
+          "text": "有邊個肯除件衫落嚟畀我着下？",
+          "note": "原字幕內容明顯聽錯，應為問有冇人除衫畀佢着。"
         },
         {
           "index": 42,
           "text": "冇眼睇",
-          "note": "Corrects the garbled line to 「冇眼睇」."
+          "note": "「帶啲鎚鑿鑿敷嘅事」係將「冇眼睇」聽錯。"
         },
         {
           "index": 43,
-          "text": "你哋企喺度做乜嘢？仲唔搬走佢。",
-          "note": "Corrects the instruction to move the object away."
+          "text": "你哋企喺度做乜嘢？仲唔搬佢走。",
+          "note": "原句應為叫人唔好企住，快啲搬走。"
         },
         {
           "index": 44,
-          "text": "屋咁大，幾時先搬得妥啦？",
-          "note": "Corrects the garbled question about when the large house can be fully moved."
+          "text": "間屋咁大，幾時先搬得妥啦？",
+          "note": "「大家摸下」係聽錯字，應為「間屋咁大」。"
         },
         {
           "index": 48,
-          "text": "小心推",
-          "note": "Corrects 「好聲推呀」 to 「小心推」."
+          "text": "小心推呀",
+          "note": "「好聲推呀」應為提醒大家「小心推」。"
         },
         {
           "index": 50,
-          "text": "老爺，棵樹都要搬？",
-          "note": "Corrects the line about moving the tree."
+          "text": "老爺，樹都要搬？",
+          "note": "原句漏咗「要」字，應為問樹係咪都要搬。"
+        },
+        {
+          "index": 51,
+          "text": "當然啦",
+          "note": "「梗係啦」對應原意係「當然」。"
         },
         {
           "index": 53,
           "text": "推到嗰邊⋯推到嗰邊",
-          "note": "Corrects the garbled direction to 「推到嗰邊」."
+          "note": "「家陣去推佢⋯過去推佢」應為「推到嗰邊」。"
         },
         {
           "index": 54,
-          "text": "小心啲⋯小心我啲荔枝",
-          "note": "Corrects the repeated warning about the lychees."
+          "text": "小心啲⋯小心我啲荔枝呀",
+          "note": "「好聲呀」係聽錯字，應為「小心啲」。"
         },
         {
           "index": 55,
-          "text": "小心我啲荔枝，笨蛋",
-          "note": "Corrects 「瘦頭」 to 「笨蛋」."
+          "text": "小心我啲荔枝呀，笨蛋、笨蛋、笨蛋",
+          "note": "「瘦頭」係將「笨蛋」聽錯。"
         },
         {
           "index": 56,
-          "text": "趙無極呢趟協助微臣",
-          "note": "Corrects 「今次協助尾臣」 to 「呢趟協助微臣」."
+          "text": "趙無極今趟協助微臣",
+          "note": "「協助尾臣」中「尾臣」係錯字，應為「微臣」；「今次」應為「今趟」。"
         },
         {
           "index": 57,
-          "text": "喺廣西剿平長毛餘孽，立功不少。",
-          "note": "Corrects 「餘葉」 to 「餘孽」 and restores the intended wording."
+          "text": "到廣西剿平長毛餘孽，立功不少。",
+          "note": "「餘葉」係錯字，應為「餘孽」。"
         },
         {
           "index": 58,
           "text": "微臣特意帶佢嚟見皇上",
-          "note": "Corrects 「尾臣」 to the courtly first-person term 「微臣」."
+          "note": "「尾臣」係錯字，應為「微臣」。"
         },
         {
           "index": 59,
           "text": "好！朕而家賜你為都察院副左都御史。",
-          "note": "Corrects the garbled official title to 「都察院副左都御史」."
+          "note": "官職名稱「刀賊院副佐都如是」明顯係聽錯，應為「都察院副左都御史」。"
+        },
+        {
+          "index": 60,
+          "text": "希望你日後好好為大清效力",
+          "note": "「盡力」應為官話用語「效力」。"
         }
       ]
     },
@@ -25359,12 +25587,7 @@
         {
           "index": 1,
           "text": "大驚小怪！去呀",
-          "note": "“眼睛小敗” is an incorrect transcription; the intended Cantonese phrase is “大驚小怪,” matching the Chinese reference."
-        },
-        {
-          "index": 2,
-          "text": "係",
-          "note": "“去” is a mishearing of the affirmative response “係,” corresponding to “是” in the Chinese subtitle."
+          "note": "「眼睛小敗」唔係合理詞語，按中文字幕同上下文應為「大驚小怪」。"
         }
       ]
     },
@@ -25414,12 +25637,17 @@
         {
           "index": 1,
           "text": "微臣大膽，令皇上受驚",
-          "note": "「未神」is a transcription error; the correct term is 「微臣」, meaning the humble court official speaking to the emperor."
+          "note": "「未神」應為稱呼大臣時使用嘅「微臣」。"
         },
         {
           "index": 2,
           "text": "如果呢個女仔係真嘅就好喇",
-          "note": "「可惡」means “hateful” and conflicts with the Chinese reference, which means “that would be good.” It should be 「就好喇」."
+          "note": "「可惡」同語境及中文字幕嘅「就好了」唔符，應為「就好喇」。"
+        },
+        {
+          "index": 3,
+          "text": "嚟⋯入去呀",
+          "note": "第一個「入去」應為「嚟」，同中文字幕嘅「來⋯進去」及語意一致。"
         }
       ]
     },
@@ -25780,62 +26008,62 @@
         {
           "index": 2,
           "text": "你好叻啊，我鍾意啊",
-          "note": "“靚” means pretty, but the context and Chinese subtitle indicate “叻” (capable/great)."
+          "note": "「你好靚啊」同中文字幕嘅「你很棒」唔一致，應為「你好叻啊」。"
         },
         {
           "index": 3,
           "text": "埋啲",
-          "note": "“快啲” means hurry up, whereas the intended meaning is to move closer: “埋啲”."
+          "note": "「快啲」同語意唔符，應為叫對方靠近啲嘅「埋啲」。"
         },
         {
           "index": 5,
-          "text": "啊，你好衰㗎，咁咪話你囉",
-          "note": "The ending “咗” is incorrect here; the Cantonese expression is “咁咪話你囉”."
+          "text": "啊，你好衰噶，咁咪話人哋咗",
+          "note": "「咁咪話你咗」當中應為「人哋」，意思先同中文字幕嘅「這樣說人家」一致。"
         },
         {
           "index": 11,
           "text": "阿爹仲諗整蠱嚟添，好嘢好嘢好嘢",
-          "note": "“整菇” is a transcription error; the word meaning to play a trick or prank is “整蠱”."
+          "note": "「整菇」係聽寫錯字，應為「整蠱」，即係作弄人。"
         },
         {
           "index": 12,
           "text": "好嘞好嘞，少爺聽朝考試",
-          "note": "“聽知” is incorrect; the intended phrase for tomorrow morning is “聽朝”."
+          "note": "「聽知」係誤寫，按語境應為「聽朝」，即係明早。"
         },
         {
           "index": 17,
-          "text": "預備咩未？贏硬嘅喇，乜你唔知咩？",
-          "note": "“贏講” is a transcription error; the intended phrase is “贏硬嘅喇”, meaning definitely going to win."
+          "text": "預備咩未？贏硬㗎喇，乜你唔知咩？",
+          "note": "「贏講嘅話」明顯係聽寫錯誤，應為「贏硬㗎喇」，意思係已經贏定。"
+        },
+        {
+          "index": 23,
+          "text": "鄭世伯，招呼唔周",
+          "note": "「招呼唔到」應為慣用講法「招呼唔周」，同中文字幕嘅「招呼不周」一致。"
         },
         {
           "index": 24,
-          "text": "你睇",
-          "note": "The repeated characters do not correspond to the meaning “你看”; this should be transcribed as “你睇”."
+          "text": "你睇吓",
+          "note": "呢句字幕出現連續無意義嘅「嗸」字；按語境應為「你睇吓」。"
         },
         {
           "index": 26,
           "text": "睇佢造化啦，喂。",
-          "note": "“做法” means method, but the intended expression is “造化”, referring to his fate or prospects."
+          "note": "「做法」係誤寫，應為「造化」，即係睇佢自己嘅運氣同命數。"
         },
         {
           "index": 33,
-          "text": "就只係靠佢自己啦",
-          "note": "“只依殺” is an incorrect transcription; the intended meaning is that it depends entirely on him."
+          "text": "就只依賴佢自己啦",
+          "note": "「只依殺」係聽寫錯誤，應為「只依賴」，意思係全靠佢自己。"
         },
         {
           "index": 35,
           "text": "我仔十八般武藝，樣樣皆精，喂！",
-          "note": "“見見皆精” is a transcription error; the expression is “樣樣皆精”, meaning skilled in every discipline."
+          "note": "「見見皆精」係誤寫，應為「樣樣皆精」，同十八般武藝樣樣精通嘅意思一致。"
         },
         {
           "index": 36,
           "text": "嗰二百萬兩，係咪可以酌量減啲啊？哎。",
-          "note": "“著量” should be “酌量”, meaning to reduce it by consideration or discretion; “佢” should also be “嗰” for “that two million taels”."
-        },
-        {
-          "index": 37,
-          "text": "人情還人情，數目要分明",
-          "note": "The intended idiom is “人情還人情，數目要分明”, matching the meaning that personal favors and the amount owed must be kept separate."
+          "note": "「著量」應為「酌量」；另外「佢」按語境應為指代嗰二百萬兩嘅「嗰」。"
         }
       ]
     },
@@ -25868,13 +26096,13 @@
       "revisions": [
         {
           "index": 1,
-          "text": "一於佈個雁行陣，馬隊前駐中鋒營。",
-          "note": "Corrected apparent transcription errors: 「步」to「佈」, 「硬行」to「雁行」, 「纏住」to「前駐」, and 「中風」to「中鋒」, consistent with the Chinese reference."
+          "text": "一於擺個雁行陣，馬隊前駐中鋒營。",
+          "note": "「步個硬行陣」應為「擺個雁行陣」；「中風營」應為「中鋒營」，並按中文字幕修正為「前駐中鋒營」。"
         },
         {
           "index": 2,
           "text": "弓隊側翼，槍隊殿後",
-          "note": "Corrected 「攻隊」to「弓隊」 and 「墊後」to「殿後」, matching the intended military terms."
+          "note": "「攻隊」應為「弓隊」；「墊後」應為軍事用語「殿後」。"
         }
       ]
     },
@@ -25900,7 +26128,7 @@
         {
           "index": 1,
           "text": "武狀元初賽，考生進場",
-          "note": "The original Cantonese transcription appears to be a severe misrecognition. Based on the Chinese reference, it should indicate the martial arts examination preliminary round and the candidates entering the venue."
+          "note": "「補作員搓菜」同「跑身進場」應該係聽錯字，按內容修正為「武狀元初賽，考生進場」。"
         }
       ]
     },
@@ -25953,12 +26181,7 @@
         {
           "index": 1,
           "text": "留力啫",
-          "note": "The character 「劉」 is a miswriting of 「留」 in the phrase meaning “just holding back.”"
-        },
-        {
-          "index": 2,
-          "text": "冇恥呀？冇恥你老母。",
-          "note": "「冇錢」 and 「指你好冇」 are transcription errors; the line should convey 「無恥？無恥你娘」 as 「冇恥呀？冇恥你老母。」"
+          "note": "「劉力」應為表示「留低力氣」嘅「留力」，唔係人名「劉力」。"
         }
       ]
     },
@@ -26383,127 +26606,137 @@
         {
           "index": 1,
           "text": "武狀元決賽現在開始",
-          "note": "Corrected the title from 「武藏元」 to 「武狀元」."
+          "note": "「武藏元」應為「武狀元」，同中文字幕及片段主題一致。"
+        },
+        {
+          "index": 2,
+          "text": "今日嘅武狀元之爭",
+          "note": "「武藏元」應為「武狀元」。"
         },
         {
           "index": 4,
           "text": "⋯對廣東嘅蘇察哈爾燦",
-          "note": "Corrected the contestant's name to 「蘇察哈爾燦」."
+          "note": "人名「蘇刷哈爾燦」應為「蘇察哈爾燦」。"
         },
         {
           "index": 6,
           "text": "蘇察哈爾燦一賠十，博達爾多一賠一",
-          "note": "Corrected the contestant names to their consistent forms."
+          "note": "人名「蘇刷哈爾燦」應為「蘇察哈爾燦」。"
         },
         {
           "index": 9,
           "text": "嘩，咁睇唔好蘇燦啊！",
-          "note": "Corrected the shortened name 「蘇刷」 to 「蘇燦」."
+          "note": "呢句提到嘅人名應簡稱為「蘇燦」，唔係「蘇刷」。"
         },
         {
           "index": 10,
-          "text": "冇辦法，蘇燦呢，舉重項目呢就棄權嘅。",
-          "note": "Corrected the opening phrase and the contestant's name to match the dialogue and reference subtitle."
+          "text": "咁係啊嘛，蘇燦呢，舉重項目呢就棄權嘅。",
+          "note": "人名應為「蘇燦」，唔係「蘇刷」。"
         },
         {
           "index": 13,
           "text": "家陣考狀元嘅，你估做苦力啊？",
-          "note": "「孤零」 is a transcription error for 「苦力」."
+          "note": "「孤零」係「苦力」嘅誤寫。"
         },
         {
           "index": 14,
-          "text": "舉重咁叻又有乜用啊！",
-          "note": "Corrected the garbled phrase describing the limited usefulness of weightlifting."
+          "text": "舉重咁叻，托咩啫！",
+          "note": "「嘚賊」應為「托咩」，而「靚」應為形容身手出色嘅「叻」。"
         },
         {
           "index": 15,
-          "text": "話又唔係咁講？",
-          "note": "Corrected the garbled wording corresponding to 「話不是這樣說」."
+          "text": "咁又唔係咁講？",
+          "note": "原句「咁過」明顯係誤聽，按語意應為「咁講」。"
         },
         {
           "index": 16,
-          "text": "呢位同僚有見地",
-          "note": "Corrected 「同年」 to the intended form 「同僚」 and 「有見地」."
+          "text": "呢位同年有見地",
+          "note": "「啲同年」應為「呢位同年」，意思係稱讚對方有見識。"
         },
         {
           "index": 17,
-          "text": "我鑽研咗呢場賽事好耐",
-          "note": "Corrected 「住完咗」 to 「鑽研咗」."
+          "text": "我鑽研呢場賽事好耐",
+          "note": "「住完咗」係「鑽研」嘅誤寫。"
+        },
+        {
+          "index": 18,
+          "text": "覺得個賠率有啲古怪",
+          "note": "呢度應該係「個賠率」，唔係「佢賠率」。"
         },
         {
           "index": 19,
-          "text": "係咩？佢博達爾多外形俊朗，渾身有力。",
-          "note": "Corrected several misheard words in the description of 博達爾多."
+          "text": "係咩？呢個博達爾多外形俊朗，渾身有力。",
+          "note": "「晉朗」應為「俊朗」，「運身上力」應為「渾身有力」。"
         },
         {
           "index": 20,
-          "text": "但係未出賽行圈，頸部就已經有白汗",
-          "note": "Corrected the garbled wording about white sweat on the neck before entering the competition ring."
+          "text": "但係未出賽行圈，頸部已經有白汗",
+          "note": "句中「嘅頸」係誤寫，應為「頸部已經有白汗」。"
         },
         {
           "index": 22,
           "text": "係咩？",
-          "note": "Corrected 「係睇」 to the intended question 「係咩」."
+          "note": "「係睇」應為表示疑問嘅「係咩」。"
         },
         {
           "index": 23,
           "text": "但係呢個蘇察哈爾燦係唔同",
-          "note": "Corrected the contestant's name."
+          "note": "「蘇刷蝦耳撐」係人名「蘇察哈爾燦」嘅誤寫。"
         },
         {
           "index": 25,
           "text": "雖然沿途低低頭",
-          "note": "Corrected the garbled description of him lowering his head along the way."
+          "note": "「圓圖頭嘚嘚」應為「沿途低低頭」。"
         },
         {
           "index": 26,
-          "text": "但係老實講，入到決賽都係好難㗎",
-          "note": "Corrected the garbled sentence about reaching the final being difficult."
+          "text": "但係老實講，入到決賽都係好難嘅吓",
+          "note": "原句多處明顯誤寫；按語意應為「老實講，入到決賽都係好難嘅吓」。"
         },
         {
-          "index": 32,
-          "text": "八十萬兩咁少？買夠二百萬兩噉。",
-          "note": "Corrected 「賣夠」 to 「買夠」 in the betting line."
+          "index": 27,
+          "text": "吓？乜嘢啊？",
+          "note": "「蝦」應為疑問語氣「吓」，後半句亦應為「乜嘢啊」。"
+        },
+        {
+          "index": 28,
+          "text": "係洋文嚟嘅！heart即係有鬥心噉解",
+          "note": "呢度嘅英文術語應寫作「heart」，意思係有鬥心。"
         },
         {
           "index": 35,
           "text": "畀你講吓講吓",
-          "note": "Corrected the garbled phrase corresponding to 「給你說說」."
+          "note": "「嘎巴嘎巴」係「講吓講吓」嘅誤寫。"
         },
         {
           "index": 36,
           "text": "我覺得蘇燦好似贏緊噉嘅，嗨。",
-          "note": "Corrected the contestant's name."
+          "note": "人名應為「蘇燦」，唔係「蘇刷」。"
         },
         {
           "index": 38,
-          "text": "我第二次瞓身",
-          "note": "Corrected 「瞓兩次身」 to 「第二次瞓身」, meaning a second all-in bet."
+          "text": "我瞓第二次身",
+          "note": "「兩次身」應為「第二次身」，表示第二次全押。"
         },
         {
           "index": 44,
-          "text": "衰喇！我少分析咗一樣添。",
-          "note": "Corrected the garbled sentence about failing to account for one factor."
+          "text": "衰喇！我少分析咗呢一樣添。",
+          "note": "「閉，睇流一樣」係明顯誤寫，應為「我少分析咗呢一樣」。"
         },
         {
           "index": 45,
           "text": "少分析咗乜嘢啊？",
-          "note": "Corrected the garbled question to 「少分析咗乜嘢啊」."
-        },
-        {
-          "index": 46,
-          "text": "血統啊，我都知道。",
-          "note": "Removed the erroneous trailing words and retained the intended reference to bloodline."
+          "note": "「睇流做咩啊」應為「少分析咗乜嘢啊」。"
         },
         {
           "index": 47,
-          "text": "係，主考到。",
-          "note": "Completed the phrase corresponding to 「主考到」."
+          "text": "主考到",
+          "note": "「主考」後面漏咗「到」，應為「主考到」。"
         },
         {
           "index": 48,
           "text": "咪唔係老鄭主考咩？",
-          "note": "Corrected 「老井」 to the character's name 「老鄭」 and completed the sentence."
+          "note": "「老井」應為人物姓名「老鄭」。"
         }
       ]
     },
@@ -26561,17 +26794,17 @@
         {
           "index": 2,
           "text": "僧格林沁？",
-          "note": "The name is mistranscribed; it should match the Chinese subtitle as 「僧格林沁」."
+          "note": "「增價淋衫」係將人名「僧格林沁」聽錯及寫錯。"
         },
         {
           "index": 3,
-          "text": "啊，有乜問題要問？",
-          "note": "「要嘗」 is an obvious transcription error; the intended Cantonese phrase is 「要問」."
+          "text": "啊，有乜問題？",
+          "note": "「要嘗」應為「問題」，同中文字幕及語意一致。"
         },
         {
           "index": 4,
           "text": "佢係博達爾多嘅阿叔嚟㗎嘛，係啊。",
-          "note": "「阿蘇」 is a mistranscription of the kinship term 「阿叔」."
+          "note": "「阿蘇」應為稱呼「阿叔」，即博達爾多嘅叔叔。"
         }
       ]
     },
@@ -26631,18 +26864,18 @@
       "revisions": [
         {
           "index": 1,
-          "text": "嘩！靶都射穿埋，最少都加到兩分呀。",
-          "note": "Corrected apparent transcription errors: 「把」to「靶」, 「射住埋」to「射穿埋」, and 「揀到」to「加到」, matching the meaning of the Chinese subtitle."
+          "text": "嘩！靶都射穿埋，最少都攞到兩分呀。",
+          "note": "「把」應為「靶」；「射住埋」及「揀到」應為較準確嘅「射穿埋」同「攞到」，同中文字幕意思一致。"
         },
         {
           "index": 2,
-          "text": "照道理係嘅！照道理係嘅",
-          "note": "Corrected 「照介係嘅」 to the apparent phrase 「照道理係嘅」."
+          "text": "照計係嘅！照計係嘅",
+          "note": "「照介係嘅」應為固定講法「照計係嘅」。"
         },
         {
           "index": 3,
           "text": "蘇燦靶上冇箭！博達爾多勝",
-          "note": "Corrected the misheard names and wording: 「鬚襯」to「蘇燦」, 「把上」to「靶上」, and 「畢多勝」to「博達爾多勝」."
+          "note": "人名「鬚襯」應為「蘇燦」；「把上」應為「靶上」，而「畢多勝」應為完整人名「博達爾多勝」。"
         }
       ]
     },
@@ -26668,7 +26901,7 @@
         {
           "index": 1,
           "text": "老祖！而家做乜嘢而家？",
-          "note": "“馬” is an apparent transcription error; in context, the intended Cantonese word is “乜嘢” (what)."
+          "note": "「做馬」按語境應為「做乜嘢」，修正明顯聽寫錯字。"
         }
       ]
     },
@@ -26701,8 +26934,8 @@
       "revisions": [
         {
           "index": 2,
-          "text": "哼，趙先生，趙先生。",
-          "note": "The name is mistranscribed as 「教師先生」; the corresponding Chinese subtitle identifies the person as 「趙先生」."
+          "text": "趙先生",
+          "note": "中文字幕顯示係「趙先生」，而粵文寫成「教師先生」應為聽寫錯誤，改返人物稱呼。"
         }
       ]
     },
@@ -26736,7 +26969,7 @@
         {
           "index": 1,
           "text": "你攞住呢套袖箭！必要時有用",
-          "note": "「奏折」與中文字幕的「袖箭」不符，應為聽寫錯誤；修正為「袖箭」。"
+          "note": "「奏折」係皇帝批閱嘅文書，應該係聽錯字；根據中文字幕，呢度應為武器「袖箭」。"
         }
       ]
     },
@@ -26770,7 +27003,7 @@
         {
           "index": 1,
           "text": "兵器都做埋手腳？",
-          "note": "“冰氣” is a miswriting of “兵器,” matching the Chinese reference and the intended meaning."
+          "note": "「冰氣」應為「兵器」，同中文字幕嘅「兵器」一致。"
         }
       ]
     },
@@ -26812,12 +27045,17 @@
         {
           "index": 1,
           "text": "吓？追返局，追返局啊，喂。",
-          "note": "“吹返谷” conflicts with the Chinese reference and is a likely mis-transcription of “追返局”."
+          "note": "「吹返谷」同中文字幕「追回一局」唔相符，應為「追返局」。"
         },
         {
           "index": 2,
-          "text": "張飛撕咗未㗎",
-          "note": "The subtitle appears to mis-transcribe the question corresponding to “你的票撕了沒有”; the natural Cantonese rendering is “張飛撕咗未㗎”."
+          "text": "張飛撕咗未㗎？",
+          "note": "「張飛明咩噶」應為問有冇撕張飛，即「張飛撕咗未㗎」。"
+        },
+        {
+          "index": 3,
+          "text": "冇呀，冇呀。",
+          "note": "中文字幕係「沒有」，原文「黑咩咩」明顯係聽寫錯誤，應為「冇呀冇呀」。"
         }
       ]
     },
@@ -26843,7 +27081,7 @@
         {
           "index": 1,
           "text": "有冇搞錯？",
-          "note": "The Cantonese subtitle contains clear transcription errors; it should read “有冇搞錯？”, matching the spoken meaning indicated by the Chinese subtitle."
+          "note": "原字幕出現日文假名及錯字，應按語意及中文字幕修正為粵語常用講法「有冇搞錯」。"
         }
       ]
     },
@@ -26865,15 +27103,8 @@
       ]
     },
     "answer": {
-      "revisions": [
-        {
-          "index": 1,
-          "text": "仲未服輸呀？再嚟！",
-          "note": "“復書” is a typo; the correct Cantonese expression for “admit defeat” is “服輸.”"
-        }
-      ]
-    },
-    "difficulty": 1
+      "revisions": []
+    }
   },
   {
     "query": {
@@ -26903,12 +27134,12 @@
         {
           "index": 1,
           "text": "由頭再打過，你單手單腳",
-          "note": "Corrected the apparent transcription errors: 「又頭」to「由頭」and「打個羊」to「打過」."
+          "note": "「又頭」應為「由頭」，「打個羊」應為「打過」，意思係重新開始再打過。"
         },
         {
           "index": 2,
           "text": "費事話我欺負你呀，哈哈哈哈",
-          "note": "Corrected 「廢時」to the standard Cantonese form「費事」and「欺下你」to「欺負你」."
+          "note": "「廢時」應為較準確嘅寫法「費事」；「欺下你」明顯係聽寫錯誤，應為「欺負你」。"
         }
       ]
     },
@@ -27005,28 +27236,28 @@
       "revisions": [
         {
           "index": 1,
-          "text": "噉嘅垃圾招，你都想贏？",
-          "note": "The phrase 「嗱咋招」 is a clear transcription error; 「垃圾招」 matches the meaning of using a dirty tactic."
+          "text": "噉嘅下三濫招，你都想贏？",
+          "note": "「嗱咋招」應為「下三濫招」，即係卑鄙、唔光彩嘅招數。"
         },
         {
           "index": 4,
           "text": "飲茶！飲茶！",
-          "note": "「嗰度嘅」 does not match the repeated taunt meaning “喝茶”; the Cantonese transcription should be 「飲茶」."
+          "note": "「嗰度嘅」明顯係轉寫錯誤，按語境應為叫對方飲茶嘅「飲茶！飲茶！」。"
         },
         {
           "index": 6,
           "text": "嗰度就梗用個pat嘅啦，仲有第二次咩？係咪？",
-          "note": "「pack」 is a mishearing of 「pat」, referring to using one's buttocks."
+          "note": "「pack」應為粵語俗稱臀部嘅「pat」。"
         },
         {
           "index": 9,
           "text": "吖嘛，例上冇話唔准用暗器。",
-          "note": "「黎尚武嗰名」 is a clear transcription error. The intended line is that the rules do not prohibit using hidden weapons."
+          "note": "「黎尚武嗰名」係明顯聽錯字，應為「例上冇話」，而「鴨氣」應為暗器。"
         },
         {
           "index": 10,
           "text": "你先跌落地，呢個回合判博達爾多勝，吓？",
-          "note": "The name 「莫達以多」 is incorrectly transcribed; it should be 「博達爾多」, consistent with the corresponding Chinese subtitle."
+          "note": "人物名「莫達以多」同中文字幕嘅「博達爾多」唔一致，應統一為「博達爾多」。"
         }
       ]
     },
@@ -27131,18 +27362,18 @@
       "revisions": [
         {
           "index": 1,
-          "text": "你個短命嘅老鄭啊，竟敢呃我！",
-          "note": "The original Cantonese subtitle is severely garbled. The wording is corrected to match the meaning and name in the Chinese reference."
-        },
-        {
-          "index": 7,
-          "text": "我邊有二百萬輸啊？",
-          "note": "The subject 「我」 is missing from the Cantonese subtitle, and the final 「嗱」 does not match the intended question."
+          "text": "你個短命老賊啊，竟敢呃我",
+          "note": "原字幕有多處明顯聽錯字，按中文字幕及語意修正為「短命老賊」同「竟敢呃我」。"
         },
         {
           "index": 10,
-          "text": "博達爾多三局兩勝，係今科武狀元。",
-          "note": "The name and the phrase 「今科武狀元」 were mistranscribed as 「博大已多」 and 「金科冇狀元」."
+          "text": "博達爾多，三局兩勝，係今科武狀元。",
+          "note": "人名「博達爾多」被錯寫成「博大已多」；「今科武狀元」亦被錯寫成「金科冇狀元」。"
+        },
+        {
+          "index": 11,
+          "text": "係我贏！我抗議！",
+          "note": "「係我係我」漏咗關鍵嘅「贏」字，按語意修正為「係我贏」。"
         }
       ]
     },
@@ -27224,17 +27455,17 @@
         {
           "index": 2,
           "text": "支鏢有毒呀",
-          "note": "“指標” is a transcription/character error for “支鏢,” meaning “the dart.”"
+          "note": "「指標」係聽錯字；按中文字幕語境應該係指有毒嘅鏢，改為「支鏢」。"
         },
         {
           "index": 4,
           "text": "支鏢有毒都係佢自己嘅啫",
-          "note": "“指標” is a transcription/character error for “支鏢,” meaning “the dart.”"
+          "note": "「指標」係聽錯字；按中文字幕語境應該係指有毒嘅鏢，改為「支鏢」。"
         },
         {
           "index": 6,
-          "text": "咁呢次我咪發？",
-          "note": "“個法” is clearly incorrect here; based on the Chinese subtitle and Cantonese expression, it should be “咪發,” meaning “wouldn’t that mean I’ve struck it rich?”"
+          "text": "咁呢次我咪發咗？",
+          "note": "「我個法」明顯係轉寫錯誤；按語境應為「我咪發咗」，即係話今次發財喇。"
         }
       ]
     },
@@ -27276,17 +27507,17 @@
         {
           "index": 1,
           "text": "光宗耀祖啦，光宗耀祖⋯",
-          "note": "The transcription appears to have misheard 「光宗耀祖」 as 「講中要早」."
+          "note": "「講中要早」應為「光宗耀祖」，同中文字幕意思一致，屬於明顯聽錯字。"
         },
         {
           "index": 2,
           "text": "有眼光",
-          "note": "「有眼哥」 is a transcription error; the intended phrase is 「有眼光」."
+          "note": "「有眼哥」應為「有眼光」，係固定講法，屬於明顯轉寫錯誤。"
         },
         {
           "index": 3,
           "text": "精武大人，皇上話要親自欽點",
-          "note": "「音點」 is a miswriting of 「欽點」, meaning to personally select or appoint someone."
+          "note": "「音點」應為「欽點」，即皇上親自揀選。"
         }
       ]
     },
