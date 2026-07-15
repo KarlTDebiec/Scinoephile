@@ -132,7 +132,7 @@ class AuditReviewCli(AuditWorkflowCliBase):
         }
         if len(detected_languages) > 1:
             languages = ", ".join(
-                sorted(language.tag for language in detected_languages)
+                sorted(language.code for language in detected_languages)
             )
             parser.error(f"Subtitle inputs have conflicting languages: {languages}")
         if not detected_languages:

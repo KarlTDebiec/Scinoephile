@@ -12,7 +12,9 @@ from scinoephile.core.language import is_chinese_language_tag, normalize_languag
 
 def test_language_enum_exposes_english_metadata():
     """Test English language enum metadata."""
-    assert Language.eng.tag == "eng"
+    assert Language.eng.code == "eng"
+    assert Language.eng.language == "eng"
+    assert not hasattr(Language.eng, "tag")
     assert Language.eng.script is None
     assert not Language.eng.is_chinese
     assert str(Language.eng) == "eng"
@@ -20,28 +22,32 @@ def test_language_enum_exposes_english_metadata():
 
 def test_language_enum_exposes_simplified_chinese_metadata():
     """Test simplified Chinese language enum metadata."""
-    assert Language.zho_hans.tag == "zho-Hans"
+    assert Language.zho_hans.code == "zho-Hans"
+    assert Language.zho_hans.language == "zho"
     assert Language.zho_hans.script == "simplified"
     assert Language.zho_hans.is_chinese
 
 
 def test_language_enum_exposes_simplified_cantonese_metadata():
     """Test simplified Cantonese language enum metadata."""
-    assert Language.yue_hans.tag == "yue-Hans"
+    assert Language.yue_hans.code == "yue-Hans"
+    assert Language.yue_hans.language == "yue"
     assert Language.yue_hans.script == "simplified"
     assert Language.yue_hans.is_chinese
 
 
 def test_language_enum_exposes_traditional_chinese_metadata():
     """Test traditional Chinese language enum metadata."""
-    assert Language.zho_hant.tag == "zho-Hant"
+    assert Language.zho_hant.code == "zho-Hant"
+    assert Language.zho_hant.language == "zho"
     assert Language.zho_hant.script == "traditional"
     assert Language.zho_hant.is_chinese
 
 
 def test_language_enum_exposes_traditional_cantonese_metadata():
     """Test traditional Cantonese language enum metadata."""
-    assert Language.yue_hant.tag == "yue-Hant"
+    assert Language.yue_hant.code == "yue-Hant"
+    assert Language.yue_hant.language == "yue"
     assert Language.yue_hant.script == "traditional"
     assert Language.yue_hant.is_chinese
 

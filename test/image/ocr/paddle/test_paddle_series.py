@@ -108,7 +108,7 @@ def test_ocr_image_series_with_paddle_uses_runtime_cache(
         tmp_path: temporary path fixture
     """
     cache_dir_path = tmp_path / "cache"
-    RecordingOcrRecognizer.reset(Language.zho_hans.tag)
+    RecordingOcrRecognizer.reset(Language.zho_hans.code)
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.paddle.get_runtime_cache_dir_path",

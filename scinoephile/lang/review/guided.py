@@ -111,7 +111,7 @@ def get_guided_reviewer(
     if key not in DEFAULT_PROMPTS:
         raise ScinoephileError(
             "Guided review does not support language pair "
-            f"{language.tag} <- {guide_language.tag}"
+            f"{language.code} <- {guide_language.code}"
         )
     if prompt is None:
         prompt = DEFAULT_PROMPTS[key]

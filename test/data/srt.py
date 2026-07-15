@@ -39,8 +39,8 @@ def process_srt(
         title_root_path: title root directory
         language: source text SRT language
         reference_path: anchor subtitle path for timewarping
-        infile_path: source SRT path; defaults to `input/{language.tag}.srt`
-        output_dir_path: output directory; defaults to `output/{language.tag}`
+        infile_path: source SRT path; defaults to `input/{language.code}.srt`
+        output_dir_path: output directory; defaults to `output/{language.code}`
         one_start_idx: 1-based start index in the anchor series
         one_end_idx: 1-based end index in the anchor series
         two_start_idx: 1-based start index in the source series
@@ -53,9 +53,9 @@ def process_srt(
         processed series
     """
     if infile_path is None:
-        infile_path = title_root_path / "input" / f"{language.tag}.srt"
+        infile_path = title_root_path / "input" / f"{language.code}.srt"
     if output_dir_path is None:
-        output_dir_path = title_root_path / "output" / language.tag
+        output_dir_path = title_root_path / "output" / language.code
 
     result = SrtProcessingWorkflow(
         infile_path,

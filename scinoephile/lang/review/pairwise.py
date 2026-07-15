@@ -120,7 +120,7 @@ def get_pairwise_reviewer(
     if key not in DEFAULT_PROMPTS:
         raise ScinoephileError(
             "Pairwise review does not support language pair "
-            f"{language.tag} <- {reference_language.tag}"
+            f"{language.code} <- {reference_language.code}"
         )
     if prompt is None:
         prompt = DEFAULT_PROMPTS[key]

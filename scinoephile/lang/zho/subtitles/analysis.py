@@ -172,7 +172,7 @@ def _get_image_subtitle_sample_analysis(
         traditional_count=reference_analysis.traditional_count,
         shared_count=reference_analysis.shared_count,
         sample_indexes=tuple(sample_indexes),
-        ocr_languages=tuple(language.tag for language in _ZHO_SUBTITLE_OCR_LANGUAGES),
+        ocr_languages=tuple(language.code for language in _ZHO_SUBTITLE_OCR_LANGUAGES),
         failure_reason=failure_reason,
     )
 
@@ -206,7 +206,7 @@ def _get_subtitle_analysis_cache_path(
         "codec_name": stream.codec_name,
         "sample_size": sample_size,
         "ocr_languages": tuple(
-            language.tag for language in _ZHO_SUBTITLE_OCR_LANGUAGES
+            language.code for language in _ZHO_SUBTITLE_OCR_LANGUAGES
         ),
     }
     encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
