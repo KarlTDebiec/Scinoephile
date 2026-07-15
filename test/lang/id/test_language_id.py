@@ -275,7 +275,6 @@ from test.helpers import parametrize
             is_numbered_jyutping=False,
             is_simplified=False,
             is_traditional=True,
-            language=Language.yue_hant,
         ),
         LanguageId(
             text="好呀，應該",
@@ -285,7 +284,24 @@ from test.helpers import parametrize
             is_numbered_jyutping=False,
             is_simplified=False,
             is_traditional=True,
-            language=Language.yue_hant,
+        ),
+        LanguageId(
+            text="快来呀",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=True,
+            is_traditional=False,
+        ),
+        LanguageId(
+            text="吃饭啦",
+            is_accented_pinyin=False,
+            is_numbered_pinyin=False,
+            is_accented_yale=False,
+            is_numbered_jyutping=False,
+            is_simplified=True,
+            is_traditional=False,
         ),
         LanguageId(
             text="得㗎喇，應該",
