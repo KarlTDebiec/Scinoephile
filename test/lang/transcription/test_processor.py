@@ -18,6 +18,7 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.aligner import TranscriptionAligner
 from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.lang.transcription.processor import (
+    DemucsMode,
     GuidedTranscriptionProcessor,
     VADMode,
 )
@@ -25,11 +26,13 @@ from scinoephile.lang.transcription.processor import (
 
 def _get_processor(
     *,
+    demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.OFF,
 ) -> tuple[GuidedTranscriptionProcessor, Mock]:
     """Get a processor with a passthrough alignment mock.
 
     Arguments:
+        demucs_mode: Demucs preprocessing mode
         vad_mode: Whisper VAD mode
     Returns:
         processor and alignment mock
@@ -43,6 +46,7 @@ def _get_processor(
             model_name="test/model",
             whisper_language="en",
             aligner=aligner,
+            demucs_mode=demucs_mode,
             vad_mode=vad_mode,
         ),
         aligner,
@@ -344,6 +348,43 @@ def test_all_unusable_candidates_fail_before_alignment():
 
     with raises(ScinoephileError, match="no usable transcription"):
         processor._transcribe_block_audio(AudioSegment.silent(duration=1000))
+
+
+def test_auto_demucs_retries_unseparated_audio_after_unusable_result():
+    """Test automatic Demucs retries the original audio before recovery decoding."""
+    processor, _ = _get_processor(
+        demucs_mode=DemucsMode.AUTO,
+        vad_mode=VADMode.OFF,
+    )
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    processor.no_vad_transcriber = Mock(return_value=repetitive_segments)
+    processor.no_vad_transcriber.get_cached_transcription.return_value = None
+    processor.unseparated_no_vad_transcriber = Mock(return_value=usable_segments)
+    processor.unseparated_no_vad_transcriber.get_cached_transcription.return_value = (
+        None
+    )
+    processor.recovery_transcriber = Mock()
+    processor.recovery_transcriber.get_cached_transcription.return_value = None
+    original_audio = AudioSegment.silent(duration=1000)
+    separated_audio = AudioSegment.silent(duration=900)
+    processor.demucs_separator = Mock(return_value=separated_audio)
+
+    output = processor._transcribe_block_audio(original_audio)
+
+    assert output == usable_segments
+    processor.demucs_separator.assert_called_once_with(original_audio)
+    processor.no_vad_transcriber.assert_called_once_with(
+        separated_audio,
+        cache_audio=original_audio,
+        use_cache=False,
+    )
+    processor.unseparated_no_vad_transcriber.assert_called_once_with(
+        original_audio,
+        cache_audio=original_audio,
+        use_cache=False,
+    )
+    processor.recovery_transcriber.assert_not_called()
 
 
 def test_process_block_preserves_raw_segments_and_uses_buffered_offset():

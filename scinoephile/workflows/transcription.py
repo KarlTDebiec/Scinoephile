@@ -31,7 +31,7 @@ def transcribe_series_guided(
     language: Language,
     reference_language: Language | None = None,
     model_name: str | None = None,
-    demucs_mode: DemucsMode = DemucsMode.OFF,
+    demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,

@@ -11,7 +11,11 @@ from pydub import AudioSegment
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import Language
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.transcription.processor import GuidedTranscriptionProcessor
+from scinoephile.lang.transcription.processor import (
+    DemucsMode,
+    GuidedTranscriptionProcessor,
+    VADMode,
+)
 from scinoephile.workflows.transcription import transcribe_series_guided
 
 
@@ -40,6 +44,8 @@ def test_transcribe_series_guided_constructs_processor_for_language_pair():
         Language.yue_hant,
         Language.zho_hans,
     )
+    assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
+    assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.AUTO
     transcriber.process.assert_called_once_with(
         audio_series,
         reference_series,

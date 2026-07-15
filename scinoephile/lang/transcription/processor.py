@@ -67,6 +67,8 @@ _TAIL_RECOVERY_MAX_SECONDS_PER_CHARACTER = 1.5
 class DemucsMode(StrEnum):
     """Demucs preprocessing modes for transcription."""
 
+    AUTO = "auto"
+    """Run Demucs first and retry the original audio when needed."""
     ON = "on"
     """Run Demucs preprocessing."""
     OFF = "off"
@@ -121,20 +123,40 @@ class GuidedTranscriptionProcessor:
         self.segment_splitter = segment_splitter
 
         self.demucs_separator = None
-        if demucs_mode == DemucsMode.ON:
+        if demucs_mode in (DemucsMode.AUTO, DemucsMode.ON):
             self.demucs_separator = DemucsSeparator(
                 cache_dir_path=get_runtime_cache_dir_path("demucs")
             )
+        primary_uses_demucs = demucs_mode in (DemucsMode.AUTO, DemucsMode.ON)
         self.vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.ON):
             self.vad_transcriber = self._get_whisper_transcriber(
-                use_demucs=demucs_mode == DemucsMode.ON,
+                use_demucs=primary_uses_demucs,
                 use_vad=True,
             )
         self.no_vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.OFF):
             self.no_vad_transcriber = self._get_whisper_transcriber(
-                use_demucs=demucs_mode == DemucsMode.ON,
+                use_demucs=primary_uses_demucs,
+                use_vad=False,
+            )
+
+        self.unseparated_vad_transcriber = None
+        if demucs_mode == DemucsMode.AUTO and vad_mode in (
+            VADMode.AUTO,
+            VADMode.ON,
+        ):
+            self.unseparated_vad_transcriber = self._get_whisper_transcriber(
+                use_demucs=False,
+                use_vad=True,
+            )
+        self.unseparated_no_vad_transcriber = None
+        if demucs_mode == DemucsMode.AUTO and vad_mode in (
+            VADMode.AUTO,
+            VADMode.OFF,
+        ):
+            self.unseparated_no_vad_transcriber = self._get_whisper_transcriber(
+                use_demucs=False,
                 use_vad=False,
             )
 
@@ -256,7 +278,10 @@ class GuidedTranscriptionProcessor:
         Returns:
             cached transcription, if present
         """
-        transcribers = [*self._get_standard_transcribers(), self.recovery_transcriber]
+        transcribers = list(self._get_standard_transcribers())
+        if self.demucs_mode == DemucsMode.AUTO:
+            transcribers.extend(self._get_standard_transcribers(unseparated=True))
+        transcribers.append(self.recovery_transcriber)
         for transcriber in transcribers:
             cached_segments = transcriber.get_cached_transcription(cache_audio)
             if cached_segments is not None and self._segments_are_usable(
@@ -266,17 +291,30 @@ class GuidedTranscriptionProcessor:
                 return cached_segments
         return None
 
-    def _get_standard_transcribers(self) -> tuple[WhisperTranscriber, ...]:
+    def _get_standard_transcribers(
+        self,
+        *,
+        unseparated: bool = False,
+    ) -> tuple[WhisperTranscriber, ...]:
         """Get standard transcribers in configured retry order.
 
+        Arguments:
+            unseparated: whether to return original-audio fallback transcribers
         Returns:
             configured standard transcribers
         """
+        if unseparated:
+            vad_transcriber = self.unseparated_vad_transcriber
+            no_vad_transcriber = self.unseparated_no_vad_transcriber
+        else:
+            vad_transcriber = self.vad_transcriber
+            no_vad_transcriber = self.no_vad_transcriber
+
         transcribers = []
-        if self.vad_transcriber is not None:
-            transcribers.append(self.vad_transcriber)
-        if self.no_vad_transcriber is not None:
-            transcribers.append(self.no_vad_transcriber)
+        if vad_transcriber is not None:
+            transcribers.append(vad_transcriber)
+        if no_vad_transcriber is not None:
+            transcribers.append(no_vad_transcriber)
         return tuple(transcribers)
 
     def _get_whisper_transcriber(
@@ -331,28 +369,47 @@ class GuidedTranscriptionProcessor:
             audio_duration=audio_duration,
         )
         if segments is None:
-            if self.demucs_mode == DemucsMode.ON:
+            primary_audio = audio
+            if self.demucs_mode in (DemucsMode.AUTO, DemucsMode.ON):
                 assert self.demucs_separator is not None
                 logger.info("Applying Demucs vocal separation before transcription")
-                audio = self.demucs_separator(audio)
+                primary_audio = self.demucs_separator(audio)
 
             for transcriber in self._get_standard_transcribers():
                 segments = self._transcribe_with_candidate(
                     transcriber,
-                    audio,
+                    primary_audio,
                     cache_audio=cache_audio,
                     audio_duration=audio_duration,
                 )
                 if segments is not None:
                     break
 
+            if segments is None and self.demucs_mode == DemucsMode.AUTO:
+                logger.info(
+                    "Retrying block transcription with original audio after unusable "
+                    "Demucs result"
+                )
+                for transcriber in self._get_standard_transcribers(unseparated=True):
+                    segments = self._transcribe_with_candidate(
+                        transcriber,
+                        audio,
+                        cache_audio=cache_audio,
+                        audio_duration=audio_duration,
+                    )
+                    if segments is not None:
+                        break
+
             if segments is None:
                 logger.info(
                     "Retrying block transcription with defensive Whisper decoding"
                 )
+                recovery_audio = audio
+                if self.demucs_mode == DemucsMode.ON:
+                    recovery_audio = primary_audio
                 segments = self._transcribe_with_candidate(
                     self.recovery_transcriber,
-                    audio,
+                    recovery_audio,
                     cache_audio=cache_audio,
                     audio_duration=audio_duration,
                 )

@@ -155,7 +155,7 @@ def get_guided_transcriber(
     reference_language: Language,
     *,
     model_name: str | None = None,
-    demucs_mode: DemucsMode = DemucsMode.OFF,
+    demucs_mode: DemucsMode = DemucsMode.AUTO,
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
