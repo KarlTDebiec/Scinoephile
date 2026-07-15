@@ -38,6 +38,15 @@ TranscribedSegmentSplitter = Callable[
 
 logger = getLogger(__name__)
 
+_AUDIO_END_TOLERANCE_SECONDS = 1.0
+"""Maximum accepted Whisper timestamp extension beyond the source audio."""
+
+_MAX_COMPRESSION_RATIO = 2.4
+"""Maximum Whisper compression ratio accepted for guided alignment."""
+
+_RECOVERY_TEMPERATURES = (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
+"""Whisper temperature schedule used after standard decoding fails."""
+
 
 class DemucsMode(StrEnum):
     """Demucs preprocessing modes for transcription."""
@@ -102,10 +111,24 @@ class GuidedTranscriptionProcessor:
             )
         self.vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.ON):
-            self.vad_transcriber = self._get_whisper_transcriber(use_vad=True)
+            self.vad_transcriber = self._get_whisper_transcriber(
+                use_demucs=demucs_mode == DemucsMode.ON,
+                use_vad=True,
+            )
         self.no_vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.OFF):
-            self.no_vad_transcriber = self._get_whisper_transcriber(use_vad=False)
+            self.no_vad_transcriber = self._get_whisper_transcriber(
+                use_demucs=demucs_mode == DemucsMode.ON,
+                use_vad=False,
+            )
+
+        recovery_uses_vad = vad_mode == VADMode.ON
+        self.recovery_transcriber = self._get_whisper_transcriber(
+            use_demucs=demucs_mode == DemucsMode.ON,
+            use_vad=recovery_uses_vad,
+            temperature=_RECOVERY_TEMPERATURES,
+            condition_on_previous_text=False,
+        )
 
     def process(
         self,
@@ -192,41 +215,58 @@ class GuidedTranscriptionProcessor:
         return alignment.transcription
 
     def _get_cached_block_transcription(
-        self, cache_audio: AudioSegment
+        self,
+        cache_audio: AudioSegment,
+        *,
+        audio_duration: float,
     ) -> list[TranscribedSegment] | None:
         """Get cached block transcription before expensive preprocessing.
 
         Arguments:
             cache_audio: original block audio used for cache-key generation
+            audio_duration: original block audio duration in seconds
         Returns:
             cached transcription, if present
         """
-        if self.vad_mode == VADMode.ON:
-            assert self.vad_transcriber is not None
-            return self.vad_transcriber.get_cached_transcription(cache_audio)
-        if self.vad_mode == VADMode.OFF:
-            assert self.no_vad_transcriber is not None
-            return self.no_vad_transcriber.get_cached_transcription(cache_audio)
-
-        assert self.vad_transcriber is not None
-        cached_segments = self.vad_transcriber.get_cached_transcription(cache_audio)
-        if cached_segments is not None and self._segments_are_usable(cached_segments):
-            return cached_segments
-        if self.no_vad_transcriber is not None:
-            cached_segments = self.no_vad_transcriber.get_cached_transcription(
-                cache_audio
-            )
+        transcribers = [*self._get_standard_transcribers(), self.recovery_transcriber]
+        for transcriber in transcribers:
+            cached_segments = transcriber.get_cached_transcription(cache_audio)
             if cached_segments is not None and self._segments_are_usable(
-                cached_segments
+                cached_segments,
+                audio_duration=audio_duration,
             ):
                 return cached_segments
         return None
 
-    def _get_whisper_transcriber(self, use_vad: bool) -> WhisperTranscriber:
+    def _get_standard_transcribers(self) -> tuple[WhisperTranscriber, ...]:
+        """Get standard transcribers in configured retry order.
+
+        Returns:
+            configured standard transcribers
+        """
+        transcribers = []
+        if self.vad_transcriber is not None:
+            transcribers.append(self.vad_transcriber)
+        if self.no_vad_transcriber is not None:
+            transcribers.append(self.no_vad_transcriber)
+        return tuple(transcribers)
+
+    def _get_whisper_transcriber(
+        self,
+        *,
+        use_demucs: bool,
+        use_vad: bool,
+        temperature: float | tuple[float, ...] = 0.0,
+        condition_on_previous_text: bool = True,
+    ) -> WhisperTranscriber:
         """Build a Whisper transcriber for the requested VAD setting.
 
         Arguments:
+            use_demucs: whether Demucs preprocessing is applied
             use_vad: whether Whisper VAD is enabled
+            temperature: decoding temperature or fallback schedule
+            condition_on_previous_text: whether to condition each decoding window on
+                the preceding window
         Returns:
             configured Whisper transcriber
         """
@@ -234,8 +274,10 @@ class GuidedTranscriptionProcessor:
             model_name=self.model_name,
             language=self.whisper_language,
             cache_dir_path=get_runtime_cache_dir_path("whisper"),
-            use_demucs=self.demucs_mode == DemucsMode.ON,
+            use_demucs=use_demucs,
             use_vad=use_vad,
+            temperature=temperature,
+            condition_on_previous_text=condition_on_previous_text,
         )
 
     def _transcribe_block_audio(self, audio: AudioSegment) -> list[TranscribedSegment]:
@@ -245,54 +287,124 @@ class GuidedTranscriptionProcessor:
             audio: block audio to transcribe
         Returns:
             transcribed segments
+        Raises:
+            ScinoephileError: if all configured Whisper attempts are unusable
         """
         cache_audio = audio
-        cached_segments = self._get_cached_block_transcription(cache_audio)
-        if cached_segments is not None:
-            return cached_segments
+        audio_duration = len(cache_audio) / 1000
+        segments = self._get_cached_block_transcription(
+            cache_audio,
+            audio_duration=audio_duration,
+        )
+        if segments is not None:
+            return segments
 
         if self.demucs_mode == DemucsMode.ON:
             assert self.demucs_separator is not None
             logger.info("Applying Demucs vocal separation before transcription")
             audio = self.demucs_separator(audio)
 
-        if self.vad_mode == VADMode.ON:
-            assert self.vad_transcriber is not None
-            return self.vad_transcriber(audio, cache_audio=cache_audio)
-        if self.vad_mode == VADMode.OFF:
-            assert self.no_vad_transcriber is not None
-            return self.no_vad_transcriber(audio, cache_audio=cache_audio)
+        for transcriber in self._get_standard_transcribers():
+            segments = self._transcribe_with_candidate(
+                transcriber,
+                audio,
+                cache_audio=cache_audio,
+                audio_duration=audio_duration,
+            )
+            if segments is not None:
+                return segments
 
-        assert self.vad_transcriber is not None
+        logger.info("Retrying block transcription with defensive Whisper decoding")
+        segments = self._transcribe_with_candidate(
+            self.recovery_transcriber,
+            audio,
+            cache_audio=cache_audio,
+            audio_duration=audio_duration,
+        )
+        if segments is None:
+            raise ScinoephileError(
+                "Whisper produced no usable transcription after all configured "
+                "recovery attempts."
+            )
+        return segments
+
+    def _transcribe_with_candidate(
+        self,
+        transcriber: WhisperTranscriber,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment,
+        audio_duration: float,
+    ) -> list[TranscribedSegment] | None:
+        """Run and validate one Whisper transcription candidate.
+
+        Arguments:
+            transcriber: configured Whisper transcriber
+            audio: audio to transcribe
+            cache_audio: original audio used for cache-key generation
+            audio_duration: original block audio duration in seconds
+        Returns:
+            usable transcribed segments, if produced
+        """
         try:
-            segments = self.vad_transcriber(audio, cache_audio=cache_audio)
+            segments = transcriber(audio, cache_audio=cache_audio)
         except AssertionError as exc:
             logger.warning(
-                f"Retrying block transcription without VAD after Whisper assertion: "
-                f"{exc}"
+                f"Whisper transcription candidate failed with an assertion: {exc}"
             )
-            assert self.no_vad_transcriber is not None
-            return self.no_vad_transcriber(audio, cache_audio=cache_audio)
-        if self._segments_are_usable(segments):
+            return None
+        if self._segments_are_usable(
+            segments,
+            audio_duration=audio_duration,
+        ):
             return segments
-
-        logger.info(
-            "Retrying block transcription without VAD after unusable VAD result"
-        )
-        assert self.no_vad_transcriber is not None
-        return self.no_vad_transcriber(audio, cache_audio=cache_audio)
+        return None
 
     @staticmethod
-    def _segments_are_usable(segments: list[TranscribedSegment]) -> bool:
+    def _segments_are_usable(
+        segments: list[TranscribedSegment],
+        *,
+        audio_duration: float | None = None,
+    ) -> bool:
         """Determine whether transcribed segments are usable for alignment.
 
         Arguments:
             segments: transcribed segments to inspect
+            audio_duration: original block audio duration in seconds
         Returns:
-            whether the segments contain nonempty text with word timings
+            whether the segments contain plausible nonempty text with word timings
         """
-        if not any(segment.text.strip() for segment in segments):
+        has_text = False
+        for segment in segments:
+            if not segment.text.strip():
+                continue
+            has_text = True
+            if not segment.words:
+                logger.warning(
+                    f"Rejecting Whisper segment {segment.id} without word timings"
+                )
+                return False
+            if (
+                segment.compression_ratio is not None
+                and segment.compression_ratio > _MAX_COMPRESSION_RATIO
+            ):
+                logger.warning(
+                    f"Rejecting repetitive Whisper segment {segment.id} with "
+                    f"compression ratio {segment.compression_ratio:.2f} "
+                    f"(maximum {_MAX_COMPRESSION_RATIO:.2f})"
+                )
+                return False
+            if (
+                audio_duration is not None
+                and segment.end > audio_duration + _AUDIO_END_TOLERANCE_SECONDS
+            ):
+                logger.warning(
+                    f"Rejecting Whisper segment {segment.id} ending at "
+                    f"{segment.end:.2f}s beyond {audio_duration:.2f}s source audio"
+                )
+                return False
+
+        if not has_text:
+            logger.warning("Rejecting empty Whisper transcription")
             return False
-        return not any(
-            segment.text.strip() and not segment.words for segment in segments
-        )
+        return True

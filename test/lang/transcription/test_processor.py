@@ -11,7 +11,7 @@ from pydub import AudioSegment
 from pytest import LogCaptureFixture, raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
-from scinoephile.audio.transcription import TranscribedSegment
+from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.aligner import TranscriptionAligner
@@ -22,9 +22,14 @@ from scinoephile.lang.transcription.processor import (
 )
 
 
-def _get_processor() -> tuple[GuidedTranscriptionProcessor, Mock]:
+def _get_processor(
+    *,
+    vad_mode: VADMode = VADMode.OFF,
+) -> tuple[GuidedTranscriptionProcessor, Mock]:
     """Get a processor with a passthrough alignment mock.
 
+    Arguments:
+        vad_mode: Whisper VAD mode
     Returns:
         processor and alignment mock
     """
@@ -37,7 +42,7 @@ def _get_processor() -> tuple[GuidedTranscriptionProcessor, Mock]:
             model_name="test/model",
             whisper_language="en",
             aligner=aligner,
-            vad_mode=VADMode.OFF,
+            vad_mode=vad_mode,
         ),
         aligner,
     )
@@ -49,6 +54,8 @@ def _get_segment(
     start: float = 0.1,
     end: float = 0.2,
     text: str = "hello",
+    compression_ratio: float | None = None,
+    with_words: bool = False,
 ) -> TranscribedSegment:
     """Get a minimal transcribed segment.
 
@@ -57,16 +64,135 @@ def _get_segment(
         start: segment start in seconds
         end: segment end in seconds
         text: segment text
+        compression_ratio: gzip compression ratio reported by Whisper
+        with_words: whether to include word-level timings
     Returns:
         transcribed segment
     """
+    words = None
+    if with_words:
+        words = [TranscribedWord(text=text, start=start, end=end, confidence=1.0)]
     return TranscribedSegment(
         id=segment_id,
         seek=0,
         start=start,
         end=end,
         text=text,
+        compression_ratio=compression_ratio,
+        words=words,
     )
+
+
+def test_segments_are_usable_rejects_repetitive_whisper_output():
+    """Test highly compressible Whisper loops are unusable for alignment."""
+    segments = [
+        _get_segment(
+            compression_ratio=16.24,
+            with_words=True,
+        )
+    ]
+
+    assert not GuidedTranscriptionProcessor._segments_are_usable(segments)
+
+
+def test_segments_are_usable_rejects_timestamp_beyond_audio():
+    """Test Whisper timestamps extending beyond source audio are unusable."""
+    segments = [
+        _get_segment(
+            end=12.0,
+            compression_ratio=1.0,
+            with_words=True,
+        )
+    ]
+
+    assert not GuidedTranscriptionProcessor._segments_are_usable(
+        segments,
+        audio_duration=10.0,
+    )
+
+
+def test_segments_are_usable_accepts_partial_guided_tail():
+    """Test guide coverage does not determine transcription validity."""
+    segments = [
+        _get_segment(
+            end=4.0,
+            compression_ratio=1.0,
+            with_words=True,
+        )
+    ]
+
+    assert GuidedTranscriptionProcessor._segments_are_usable(
+        segments,
+        audio_duration=10.0,
+    )
+
+
+def test_auto_vad_uses_cached_non_vad_result_after_repetitive_vad_result():
+    """Test automatic VAD skips a repetitive cached result."""
+    processor, _ = _get_processor(vad_mode=VADMode.AUTO)
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    processor.vad_transcriber = Mock()
+    processor.vad_transcriber.get_cached_transcription.return_value = (
+        repetitive_segments
+    )
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = usable_segments
+
+    output = processor._transcribe_block_audio(AudioSegment.silent(duration=1000))
+
+    assert output == usable_segments
+    processor.vad_transcriber.assert_not_called()
+    processor.no_vad_transcriber.assert_not_called()
+
+
+def test_auto_vad_retries_without_vad_after_repetitive_new_result():
+    """Test automatic VAD retries without VAD after a repetitive new result."""
+    processor, _ = _get_processor(vad_mode=VADMode.AUTO)
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    processor.vad_transcriber = Mock(return_value=repetitive_segments)
+    processor.vad_transcriber.get_cached_transcription.return_value = None
+    processor.no_vad_transcriber = Mock(return_value=usable_segments)
+    processor.no_vad_transcriber.get_cached_transcription.return_value = None
+    audio = AudioSegment.silent(duration=1000)
+
+    output = processor._transcribe_block_audio(audio)
+
+    assert output == usable_segments
+    processor.vad_transcriber.assert_called_once_with(audio, cache_audio=audio)
+    processor.no_vad_transcriber.assert_called_once_with(audio, cache_audio=audio)
+
+
+def test_unusable_no_vad_result_uses_defensive_recovery():
+    """Test unusable non-VAD output is validated before defensive recovery."""
+    processor, _ = _get_processor(vad_mode=VADMode.OFF)
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    processor.no_vad_transcriber = Mock(return_value=repetitive_segments)
+    processor.no_vad_transcriber.get_cached_transcription.return_value = None
+    processor.recovery_transcriber = Mock(return_value=usable_segments)
+    processor.recovery_transcriber.get_cached_transcription.return_value = None
+    audio = AudioSegment.silent(duration=1000)
+
+    output = processor._transcribe_block_audio(audio)
+
+    assert output == usable_segments
+    processor.no_vad_transcriber.assert_called_once_with(audio, cache_audio=audio)
+    processor.recovery_transcriber.assert_called_once_with(audio, cache_audio=audio)
+
+
+def test_all_unusable_candidates_fail_before_alignment():
+    """Test unusable recovery output raises a transcription-domain error."""
+    processor, _ = _get_processor(vad_mode=VADMode.OFF)
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    processor.no_vad_transcriber = Mock(return_value=repetitive_segments)
+    processor.no_vad_transcriber.get_cached_transcription.return_value = None
+    processor.recovery_transcriber = Mock(return_value=repetitive_segments)
+    processor.recovery_transcriber.get_cached_transcription.return_value = None
+
+    with raises(ScinoephileError, match="no usable transcription"):
+        processor._transcribe_block_audio(AudioSegment.silent(duration=1000))
 
 
 def test_process_block_preserves_raw_segments_and_uses_buffered_offset():
