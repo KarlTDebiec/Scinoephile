@@ -14,11 +14,11 @@ from scinoephile.core.language import Language
 
 __all__ = [
     "Prompt",
-    "PromptLocalizationFields",
+    "SharedPromptLocalizationFields",
 ]
 
 
-class PromptLocalizationFields(TypedDict):
+class SharedPromptLocalizationFields(TypedDict):
     """Shared localization fields accepted by all prompt types."""
 
     few_shot_intro: str

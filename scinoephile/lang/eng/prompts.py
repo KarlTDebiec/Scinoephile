@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from typing import Final
 
-from scinoephile.core.llms import PromptLocalizationFields
+from scinoephile.core.llms import SharedPromptLocalizationFields
 
 __all__ = ["ENG_PROMPT_FIELDS"]
 
 
-ENG_PROMPT_FIELDS: Final[PromptLocalizationFields] = {
+ENG_PROMPT_FIELDS: Final[SharedPromptLocalizationFields] = {
     "few_shot_intro": "Here are some examples of queries and expected answers:",
     "few_shot_query_intro": "Example query:",
     "few_shot_answer_intro": "Expected answer:",
