@@ -40,7 +40,7 @@ class DelineationQuery(Query):
     def validate_target_presence(self) -> Self:
         """Ensure at least one initial target subtitle is nonempty."""
         if not self.target_one and not self.target_two:
-            raise ValueError(self.prompt.src_2_sub_1_sub_2_missing_err)
+            raise ValueError(self.prompt.target_subs_missing_err)
         return self
 
 
@@ -92,13 +92,13 @@ class DelineationTestCase(TestCase):
             self.query.target_one == self.answer.output_one
             and self.query.target_two == self.answer.output_two
         ):
-            raise ValueError(self.prompt.src_2_sub_1_sub_2_unchanged_err)
+            raise ValueError(self.prompt.target_subs_unchanged_err)
 
         if self.answer.output_one or self.answer.output_two:
             expected = self.query.target_one + self.query.target_two
             received = self.answer.output_one + self.answer.output_two
             if expected != received:
                 raise ValueError(
-                    self.prompt.src_2_chars_changed_err(expected, received)
+                    self.prompt.target_chars_changed_err(expected, received)
                 )
         return self

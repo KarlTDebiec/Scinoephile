@@ -16,74 +16,74 @@ class DelineationPrompt(Prompt):
     """Text for LLM correspondence for delineation."""
 
     # Query fields
-    src_1_sub_1: str = "src_1_sub_1"
-    """Name of source one subtitle one field in query."""
+    ref_sub_1: str = "ref_sub_1"
+    """Name of reference subtitle one field in query."""
 
-    src_1_sub_1_desc: str = "Source one subtitle one text"
-    """Description of source one subtitle one field in query."""
+    ref_sub_1_desc: str = "Reference subtitle one text"
+    """Description of reference subtitle one field in query."""
 
-    src_1_sub_2: str = "src_1_sub_2"
-    """Name of source one subtitle two field in query."""
+    ref_sub_2: str = "ref_sub_2"
+    """Name of reference subtitle two field in query."""
 
-    src_1_sub_2_desc: str = "Source one subtitle two text"
-    """Description of source one subtitle two field in query."""
+    ref_sub_2_desc: str = "Reference subtitle two text"
+    """Description of reference subtitle two field in query."""
 
-    src_2_sub_1: str = "src_2_sub_1"
-    """Name of source two subtitle one field in query."""
+    target_sub_1: str = "target_sub_1"
+    """Name of target subtitle one field in query."""
 
-    src_2_sub_1_desc: str = "Source two subtitle one text"
-    """Description of source two subtitle one field in query."""
+    target_sub_1_desc: str = "Target subtitle one text"
+    """Description of target subtitle one field in query."""
 
-    src_2_sub_2: str = "src_2_sub_2"
-    """Name of source two subtitle two field in query."""
+    target_sub_2: str = "target_sub_2"
+    """Name of target subtitle two field in query."""
 
-    src_2_sub_2_desc: str = "Source two subtitle two text"
-    """Description of source two subtitle two field in query."""
+    target_sub_2_desc: str = "Target subtitle two text"
+    """Description of target subtitle two field in query."""
 
     # Query validation errors
-    src_2_sub_1_sub_2_missing_err: str = (
-        "Query must have src_2_sub_1, src_2_sub_2, or both."
+    target_subs_missing_err: str = (
+        "Query must have target_sub_1, target_sub_2, or both."
     )
-    """Error when src_2_sub_1 and src_2_sub_2 fields are missing."""
+    """Error when target subtitle fields are missing."""
 
     # Answer fields
-    src_2_sub_1_shifted: str = "src_2_sub_1_shifted"
-    """Name of shifted source two subtitle one field in answer."""
+    target_sub_1_shifted: str = "target_sub_1_shifted"
+    """Name of shifted target subtitle one field in answer."""
 
-    src_2_sub_1_shifted_desc: str = "Shifted source two subtitle one"
-    """Description of shifted source two subtitle one field in answer."""
+    target_sub_1_shifted_desc: str = "Shifted target subtitle one"
+    """Description of shifted target subtitle one field in answer."""
 
-    src_2_sub_2_shifted: str = "src_2_sub_2_shifted"
-    """Name of shifted source two subtitle two field in answer."""
+    target_sub_2_shifted: str = "target_sub_2_shifted"
+    """Name of shifted target subtitle two field in answer."""
 
-    src_2_sub_2_shifted_desc: str = "Shifted source two subtitle two"
-    """Description of shifted source two subtitle two field in answer."""
+    target_sub_2_shifted_desc: str = "Shifted target subtitle two"
+    """Description of shifted target subtitle two field in answer."""
 
     # Test case validation errors
-    src_2_sub_1_sub_2_unchanged_err: str = (
-        "Answer's src_2_sub_1_shifted and src_2_sub_2_shifted are equal to query's "
-        "src_2_sub_1 and src_2_sub_2; if no shift is needed, src_2_sub_1_shifted and "
-        "src_2_sub_2_shifted must be empty strings."
+    target_subs_unchanged_err: str = (
+        "Answer's target_sub_1_shifted and target_sub_2_shifted are equal to query's "
+        "target_sub_1 and target_sub_2; if no shift is needed, target_sub_1_shifted "
+        "and target_sub_2_shifted must be empty strings."
     )
-    """Error when src_2_sub_1 and src_2_sub_2 are unchanged."""
+    """Error when target subtitles are unchanged."""
 
-    src_2_chars_changed_err_tpl: str = (
-        "Answer's concatenated src_2_sub_1_shifted and src_2_sub_2_shifted does not "
-        "match query's concatenated src_2_sub_1 and src_2_sub_2:\n"
+    target_chars_changed_err_tpl: str = (
+        "Answer's concatenated target_sub_1_shifted and target_sub_2_shifted does "
+        "not match query's concatenated target_sub_1 and target_sub_2:\n"
         "Expected: {expected}\n"
         "Received: {received}"
     )
-    """Error template when shifted source two characters do not match original."""
+    """Error template when shifted target characters do not match original."""
 
-    def src_2_chars_changed_err(self, expected: str, received: str) -> str:
-        """Error when shifted source two characters do not match original.
+    def target_chars_changed_err(self, expected: str, received: str) -> str:
+        """Error when shifted target characters do not match original.
 
         Arguments:
-            expected: expected concatenated source two characters
-            received: received concatenated source two characters
+            expected: expected concatenated target characters
+            received: received concatenated shifted target characters
         Returns:
             formatted error message
         """
-        return self.src_2_chars_changed_err_tpl.format(
+        return self.target_chars_changed_err_tpl.format(
             expected=expected, received=received
         )
