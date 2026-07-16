@@ -15,12 +15,19 @@ __all__ = ["resolve_language"]
 logger = getLogger(__name__)
 
 
-def resolve_language(series: Series, explicit_language: Language | None) -> Language:
+def resolve_language(
+    series: Series,
+    explicit_language: Language | None,
+    *,
+    informational_detected_language: Language | None = None,
+) -> Language:
     """Resolve a detected or explicit language for a subtitle series.
 
     Arguments:
         series: subtitle series to classify
         explicit_language: explicit language argument, if provided
+        informational_detected_language: detected mismatch language to log at info
+            rather than warning, or None to warn for every mismatch
     Returns:
         resolved language
     Raises:
@@ -29,11 +36,15 @@ def resolve_language(series: Series, explicit_language: Language | None) -> Lang
     detected_language = get_series_language(series)
     if explicit_language is not None:
         if detected_language is not None and detected_language is not explicit_language:
-            logger.warning(
+            message = (
                 f"Explicit language {explicit_language.code} does not "
                 f"match detected language {detected_language.code}; "
                 f"using {explicit_language.code}"
             )
+            if detected_language is informational_detected_language:
+                logger.info(message)
+            else:
+                logger.warning(message)
         return explicit_language
     if detected_language is None:
         raise ScinoephileError("Unable to determine language")

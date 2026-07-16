@@ -20,6 +20,7 @@ def clean_series(
     series: Series,
     *,
     language: Language | None = None,
+    informational_detected_language: Language | None = None,
     remove_empty: bool = True,
 ) -> Series:
     """Clean a subtitle series.
@@ -27,13 +28,19 @@ def clean_series(
     Arguments:
         series: subtitle series to clean
         language: explicit language, or None to detect it
+        informational_detected_language: detected mismatch language to log at info
+            rather than warning, or None to warn for every mismatch
         remove_empty: whether to remove subtitles with empty text
     Returns:
         cleaned subtitle series
     Raises:
         ScinoephileError: if a language cannot be resolved
     """
-    resolved_language = resolve_language(series, language)
+    resolved_language = resolve_language(
+        series,
+        language,
+        informational_detected_language=informational_detected_language,
+    )
     if resolved_language is Language.eng:
         clean_text = get_eng_text_cleaned
     else:
