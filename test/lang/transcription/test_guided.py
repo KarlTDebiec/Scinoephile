@@ -44,6 +44,18 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
         DEFAULT_SPECS[(Language.yue_hans, Language.zho_hans)].language_spec
         is DEFAULT_SPECS[(Language.yue_hant, Language.zho_hans)].language_spec
     )
+    assert any(
+        path.parts[0] == "kob"
+        for path in DEFAULT_SPECS[
+            (Language.yue_hant, Language.zho_hant)
+        ].delineation_json_paths
+    )
+    assert any(
+        path.parts[0] == "kob"
+        for path in DEFAULT_SPECS[
+            (Language.yue_hant, Language.zho_hant)
+        ].punctuation_json_paths
+    )
     mutable_specs = cast(dict, DEFAULT_SPECS)
     with raises(TypeError):
         mutable_specs[(Language.eng, Language.zho_hans)] = DEFAULT_SPECS[
