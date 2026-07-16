@@ -147,6 +147,7 @@ def audit_guided_review(
 
             cells = (
                 str(subtitle_index),
+                str(block.block_number),
                 _format_texts(guide_texts),
                 target_revision,
                 "",
@@ -196,8 +197,8 @@ def audit_guided_review(
             "",
             "## Audit Table",
             "",
-            "| Index | Guide | Target / revision | Notes | Verified |",
-            "|---:|---|---|---|:---:|",
+            "| Index | Block | Guide | Target / revision | Notes | Verified |",
+            "|---:|---:|---|---|---|:---:|",
             *(row.markdown for row in rows),
         )
     )

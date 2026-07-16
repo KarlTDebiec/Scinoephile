@@ -12,12 +12,13 @@ generation, delineation, punctuation, and gap translation.
 
 ## Required report file
 
-Always save the complete five-column Markdown report under `local/`. After
+Always save the complete six-column Markdown report under `local/`. After
 auditing every row, add each concise audit note directly to that file's `Notes`
 cell. Do not leave notes only in commentary, tool output, or the final response.
 
-- Keep the table at exactly these columns: `Index`, `Guide`,
+- Keep the table at exactly these columns: `Index`, `Block`, `Guide`,
   `Target / revision`, `Notes`, and `Verified`.
+- `Block` is the one-based guided-review block containing the target subtitle.
 - In `Target / revision`, show the input target first and stack the proposed
   revision beneath it. Show only the target when no revision was proposed.
 - Replace the model-provided JSON note with your own independent interpretation

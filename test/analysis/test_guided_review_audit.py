@@ -51,10 +51,10 @@ def test_audit_guided_review_formats_and_sorts_subtitles():
     assert "unanswered subtitles" not in report
     assert "- verified subtitles: 1" in report
     assert "- unverified subtitles: 2" in report
-    assert "| Index | Guide | Target / revision | Notes | Verified |" in report
-    first_row = "| 1 | 參考一 | 甲\\|乙 |  |  |"
-    second_row = "| 2 | 參考一 | 丙<br>修訂丙 |  |  |"
-    third_row = "| 3 | 參考二 | 丁 |  | ✓ |"
+    assert "| Index | Block | Guide | Target / revision | Notes | Verified |" in report
+    first_row = "| 1 | 1 | 參考一 | 甲\\|乙 |  |  |"
+    second_row = "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |"
+    third_row = "| 3 | 2 | 參考二 | 丁 |  | ✓ |"
     assert report.index(first_row) < report.index(second_row) < report.index(third_row)
 
 
@@ -117,18 +117,18 @@ def test_audit_guided_review_filters_rows_and_target_range():
 
     assert "- row filter: changes" in changed_report
     assert "- table rows: 1" in changed_report
-    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |  |" in changed_report
+    assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |" in changed_report
     assert "- row filter: unverified" in unverified_report
     assert "- table rows: 2" in unverified_report
-    assert "| 1 | 參考一 | 甲\\|乙 |  |  |" in unverified_report
-    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |  |" in unverified_report
+    assert "| 1 | 1 | 參考一 | 甲\\|乙 |  |  |" in unverified_report
+    assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |" in unverified_report
     assert "- subtitles: 1" in ranged_report
     assert "- target subtitle range: 3 through 3" in ranged_report
     assert "- table rows: 1" in ranged_report
-    assert "| 3 | 參考二 | 丁 |  | ✓ |" in ranged_report
+    assert "| 3 | 2 | 參考二 | 丁 |  | ✓ |" in ranged_report
     assert "- subtitles: 1" in second_report
     assert "- target subtitle range: 2 through 2" in second_report
-    assert "| 2 | 參考一 | 丙<br>修訂丙 |  |  |" in second_report
+    assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |" in second_report
 
 
 def test_audit_guided_review_uses_latest_case_per_subtitle():
@@ -162,7 +162,7 @@ def test_audit_guided_review_uses_latest_case_per_subtitle():
     assert "- verified subtitles: 1" in report
     assert "- table rows: 1" in report
     assert "舊修訂" not in report
-    assert "| 1 | 參考 | 原文 |  | ✓ |" in report
+    assert "| 1 | 1 | 參考 | 原文 |  | ✓ |" in report
 
 
 def test_audit_guided_review_matches_after_punctuation_changes():
@@ -181,7 +181,7 @@ def test_audit_guided_review_matches_after_punctuation_changes():
 
     report = audit_guided_review(target, guide, (test_case,))
 
-    assert "| 1 | 參考 | 原文。 |  |  |" in report
+    assert "| 1 | 1 | 參考 | 原文。 |  |  |" in report
 
 
 def test_audit_guided_review_allows_unaffected_range_before_changed_segmentation():
@@ -216,7 +216,7 @@ def test_audit_guided_review_allows_unaffected_range_before_changed_segmentation
     )
 
     assert "- table rows: 1" in report
-    assert "| 1 | 參考 | 甲 |  |  |" in report
+    assert "| 1 | 1 | 參考 | 甲 |  |  |" in report
 
 
 def test_audit_guided_review_rejects_selected_changed_segmentation():
