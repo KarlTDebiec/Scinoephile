@@ -346,6 +346,33 @@ class GuidedTranscriptionProcessor:
             condition_on_previous_text=condition_on_previous_text,
         )
 
+    def _get_primary_transcription_audio(
+        self,
+        audio: AudioSegment,
+    ) -> AudioSegment | None:
+        """Apply configured Demucs preprocessing.
+
+        Arguments:
+            audio: original block audio
+        Returns:
+            primary transcription audio, or None after automatic separation failure
+        """
+        if self.demucs_mode == DemucsMode.OFF:
+            return audio
+
+        assert self.demucs_separator is not None
+        logger.info("Applying Demucs vocal separation before transcription")
+        try:
+            return self.demucs_separator(audio)
+        except ScinoephileError as exc:
+            if self.demucs_mode == DemucsMode.ON:
+                raise
+            logger.warning(
+                f"Demucs separation failed in automatic mode; falling back "
+                f"to original audio: {exc}"
+            )
+            return None
+
     def _transcribe_block_audio(
         self,
         audio: AudioSegment,
@@ -369,27 +396,24 @@ class GuidedTranscriptionProcessor:
             audio_duration=audio_duration,
         )
         if segments is None:
-            primary_audio = audio
-            if self.demucs_mode in (DemucsMode.AUTO, DemucsMode.ON):
-                assert self.demucs_separator is not None
-                logger.info("Applying Demucs vocal separation before transcription")
-                primary_audio = self.demucs_separator(audio)
-
-            for transcriber in self._get_standard_transcribers():
-                segments = self._transcribe_with_candidate(
-                    transcriber,
-                    primary_audio,
-                    cache_audio=cache_audio,
-                    audio_duration=audio_duration,
-                )
-                if segments is not None:
-                    break
+            primary_audio = self._get_primary_transcription_audio(audio)
+            if primary_audio is not None:
+                for transcriber in self._get_standard_transcribers():
+                    segments = self._transcribe_with_candidate(
+                        transcriber,
+                        primary_audio,
+                        cache_audio=cache_audio,
+                        audio_duration=audio_duration,
+                    )
+                    if segments is not None:
+                        break
 
             if segments is None and self.demucs_mode == DemucsMode.AUTO:
-                logger.info(
-                    "Retrying block transcription with original audio after unusable "
-                    "Demucs result"
-                )
+                if primary_audio is not None:
+                    logger.info(
+                        "Retrying block transcription with original audio after "
+                        "unusable Demucs result"
+                    )
                 for transcriber in self._get_standard_transcribers(unseparated=True):
                     segments = self._transcribe_with_candidate(
                         transcriber,
@@ -406,6 +430,7 @@ class GuidedTranscriptionProcessor:
                 )
                 recovery_audio = audio
                 if self.demucs_mode == DemucsMode.ON:
+                    assert primary_audio is not None
                     recovery_audio = primary_audio
                 segments = self._transcribe_with_candidate(
                     self.recovery_transcriber,

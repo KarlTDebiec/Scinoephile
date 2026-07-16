@@ -387,6 +387,62 @@ def test_auto_demucs_retries_unseparated_audio_after_unusable_result():
     processor.recovery_transcriber.assert_not_called()
 
 
+def test_auto_demucs_uses_original_audio_after_separation_failure():
+    """Test automatic Demucs recovers when vocal separation fails."""
+    processor, _ = _get_processor(
+        demucs_mode=DemucsMode.AUTO,
+        vad_mode=VADMode.OFF,
+    )
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = None
+    processor.unseparated_no_vad_transcriber = Mock(return_value=usable_segments)
+    processor.unseparated_no_vad_transcriber.get_cached_transcription.return_value = (
+        None
+    )
+    processor.recovery_transcriber = Mock()
+    processor.recovery_transcriber.get_cached_transcription.return_value = None
+    original_audio = AudioSegment.silent(duration=1000)
+    processor.demucs_separator = Mock(
+        side_effect=ScinoephileError("Demucs separation failed.")
+    )
+
+    output = processor._transcribe_block_audio(original_audio)
+
+    assert output == usable_segments
+    processor.demucs_separator.assert_called_once_with(original_audio)
+    processor.no_vad_transcriber.assert_not_called()
+    processor.unseparated_no_vad_transcriber.assert_called_once_with(
+        original_audio,
+        cache_audio=original_audio,
+        use_cache=False,
+    )
+    processor.recovery_transcriber.assert_not_called()
+
+
+def test_forced_demucs_surfaces_separation_failure():
+    """Test forced Demucs does not hide vocal-separation failures."""
+    processor, _ = _get_processor(
+        demucs_mode=DemucsMode.ON,
+        vad_mode=VADMode.OFF,
+    )
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = None
+    processor.recovery_transcriber = Mock()
+    processor.recovery_transcriber.get_cached_transcription.return_value = None
+    original_audio = AudioSegment.silent(duration=1000)
+    processor.demucs_separator = Mock(
+        side_effect=ScinoephileError("Demucs separation failed.")
+    )
+
+    with raises(ScinoephileError, match="Demucs separation failed"):
+        processor._transcribe_block_audio(original_audio)
+
+    processor.demucs_separator.assert_called_once_with(original_audio)
+    processor.no_vad_transcriber.assert_not_called()
+    processor.recovery_transcriber.assert_not_called()
+
+
 def test_process_block_preserves_raw_segments_and_uses_buffered_offset():
     """Test generic processing preserves segments and anchors buffered audio."""
     processor, aligner = _get_processor()
