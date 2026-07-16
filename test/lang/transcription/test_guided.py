@@ -21,6 +21,7 @@ from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHant,
 )
+from scinoephile.llms.delineation import DelineationManager
 
 
 def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
@@ -79,6 +80,43 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.no_vad_transcriber.language == "yue"
     assert (tmp_path / "delineation").is_dir()
     assert (tmp_path / "punctuation").is_dir()
+
+
+def test_get_guided_transcriber_uses_verified_cases_without_few_shot(tmp_path):
+    """Test verified cases bypass the provider without entering the prompt."""
+    test_case_cls = DelineationManager.get_test_case_cls(YueZhoDelineationPromptYueHant)
+    verified_test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "reference_one": "參考一",
+                "reference_two": "參考二",
+                "target_one": "目標一",
+                "target_two": "目標二",
+            },
+            "answer": {},
+            "verified": True,
+        }
+    )
+    provider = Mock(spec=LLMProvider)
+    transcriber = get_guided_transcriber(
+        Language.yue_hant,
+        Language.zho_hant,
+        provider=provider,
+        test_case_dir_path=tmp_path,
+        delineation_test_cases=[verified_test_case],
+        punctuation_test_cases=[],
+    )
+    queryer = transcriber.aligner.delineation_queryer
+    pending_test_case = test_case_cls.model_validate(
+        {"query": verified_test_case.query.model_dump()}
+    )
+
+    result = queryer(pending_test_case)
+
+    assert result.answer == verified_test_case.answer
+    assert result.verified is True
+    assert queryer.few_shot_test_cases == {}
+    provider.chat_completion.assert_not_called()
 
 
 def test_get_guided_transcriber_rejects_unsupported_language_pair():
