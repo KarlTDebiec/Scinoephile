@@ -65,7 +65,7 @@ def test_transcribe_help_lists_generic_options():
     assert "--reference-language" in help_text
     assert "--script" not in normalized_help_text
     assert "--convert" not in normalized_help_text
-    assert "--demucs {on,off}" in help_text
+    assert "--demucs {auto,on,off}" in help_text
     assert "--vad {auto,on,off}" in help_text
     assert "--whisper-model MODEL_NAME" in help_text
     assert "uses language-pair default if omitted" in normalized_help_text
@@ -81,6 +81,24 @@ def test_transcribe_cli_defers_whisper_model_default_to_registry():
     )
 
     assert whisper_model_action.default is None
+
+
+def test_transcribe_cli_defaults_audio_preprocessing_to_auto():
+    """Test transcription CLI defaults Demucs and VAD to automatic modes."""
+    parser = TranscribeCli.argparser()
+    demucs_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--demucs" in action.option_strings
+    )
+    vad_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--vad" in action.option_strings
+    )
+
+    assert demucs_action.default is DemucsMode.AUTO
+    assert vad_action.default is VADMode.AUTO
 
 
 def test_transcribe_cli_writes_file(

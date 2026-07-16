@@ -59,8 +59,8 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "reference language tag (detected from infile if omitted)": (
             "参考语言标签（省略时从输入文件检测）"
         ),
-        "Demucs vocal-separation mode (options: on, off; default: off)": (
-            "Demucs 人声分离模式（选项：on、off；默认：off）"
+        "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
+            "Demucs 人声分离模式（选项：auto、on、off；默认：auto）"
         ),
         (
             "Whisper voice activity detection mode "
@@ -91,8 +91,8 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "reference language tag (detected from infile if omitted)": (
             "參考語言標籤（省略時從輸入檔偵測）"
         ),
-        "Demucs vocal-separation mode (options: on, off; default: off)": (
-            "Demucs 人聲分離模式（選項：on、off；預設：off）"
+        "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
+            "Demucs 人聲分離模式（選項：auto、on、off；預設：auto）"
         ),
         (
             "Whisper voice activity detection mode "
@@ -173,11 +173,13 @@ class TranscribeCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--demucs",
-            default=DemucsMode.OFF,
+            default=DemucsMode.AUTO,
             dest="demucs_mode",
-            metavar="{on,off}",
+            metavar="{auto,on,off}",
             type=enum_arg(DemucsMode),
-            help="Demucs vocal-separation mode (options: on, off; default: off)",
+            help=(
+                "Demucs vocal-separation mode (options: auto, on, off; default: auto)"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--vad",
