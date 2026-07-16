@@ -43,9 +43,9 @@ _ALTERNATIVE_REVIEW_PROMPT = ReviewPrompt(
 """Review prompt using alternative correspondence field names."""
 
 _LOCALIZED_PUNCTUATION_PROMPT = PunctuationPrompt(
-    src_1="source_one",
-    src_2="source_two",
-    output="result",
+    ref_sub="source_two",
+    target_subs="source_one",
+    target_sub_punctuated="result",
 )
 """Punctuation prompt using non-default correspondence field names."""
 

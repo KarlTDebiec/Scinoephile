@@ -419,10 +419,10 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
             [
                 {
                     "query": {
-                        "one": lines,
-                        "two": "reference",
+                        "ref_sub": "reference",
+                        "target_subs": lines,
                     },
-                    "answer": {"output": "".join(lines)},
+                    "answer": {"target_sub_punctuated": "".join(lines)},
                 }
             ]
         ),
@@ -442,7 +442,7 @@ def test_sync_round_trips_unbounded_lists(tmp_path: Path):
 
     list_lengths: list[int] = []
     for test_case in loaded:
-        value = test_case.query.get("one")
+        value = test_case.query.get("target_subs")
         if isinstance(value, list):
             list_lengths.append(len(value))
     assert max(list_lengths) >= 36
