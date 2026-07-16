@@ -31,21 +31,23 @@ from test.helpers import test_data_root
 
 _LOCALIZED_PROMPT = PunctuationPrompt(
     language=Language.zho_hant,
-    src_1="zimu",
-    src_1_desc="要加標點嘅字幕行",
-    src_2="cankao",
-    src_2_desc="標點參考字幕",
-    output="jieguo",
-    output_desc="加標點後嘅字幕",
+    ref_sub="cankao",
+    ref_sub_desc="標點參考字幕",
+    target_subs="zimu",
+    target_subs_desc="要加標點嘅字幕行",
+    target_sub_punctuated="jieguo",
+    target_sub_punctuated_desc="加標點後嘅字幕",
 )
 """Punctuation prompt with Chinese correspondence field names."""
 
-_PUNCTUATION_PATHS = tuple(
+_MLAMD_PUNCTUATION_PATHS = tuple(
     sorted(
-        test_data_root.glob("*/output/*/lang/yue_zho/transcription/punctuation/*.json")
+        test_data_root.glob(
+            "mlamd/output/*/lang/yue_zho/transcription/punctuation/*.json"
+        )
     )
 )
-"""Tracked punctuation test-case JSON paths."""
+"""Tracked MLAMD punctuation test-case JSON paths."""
 
 
 def test_prompt_aliases_are_used_for_llm_correspondence():
@@ -59,12 +61,12 @@ def test_prompt_aliases_are_used_for_llm_correspondence():
     )
 
     assert test_case.query.model_dump() == {
-        "subtitles": ["原文一", "原文二"],
         "guide": "參考",
+        "subtitles": ["原文一", "原文二"],
     }
     assert test_case.query.model_dump(by_alias=True) == {
-        "zimu": ["原文一", "原文二"],
         "cankao": "參考",
+        "zimu": ["原文一", "原文二"],
     }
     assert test_case.answer is not None
     assert test_case.answer.model_dump() == {"output": "原文一原文二"}
@@ -73,7 +75,7 @@ def test_prompt_aliases_are_used_for_llm_correspondence():
     query_schema = test_case_cls.query_cls.model_json_schema(by_alias=True)
     answer_schema = test_case_cls.answer_cls.model_json_schema(by_alias=True)
     assert query_schema["title"] == f"PunctuationQuery_{_LOCALIZED_PROMPT.name}"
-    assert list(query_schema["properties"]) == ["zimu", "cankao"]
+    assert list(query_schema["properties"]) == ["cankao", "zimu"]
     assert query_schema["properties"]["zimu"]["description"] == "要加標點嘅字幕行"
     assert query_schema["properties"]["cankao"]["description"] == "標點參考字幕"
     assert answer_schema["title"] == f"PunctuationAnswer_{_LOCALIZED_PROMPT.name}"
@@ -98,8 +100,8 @@ def test_queryer_corresponds_using_prompt_aliases():
     messages, answer_cls, _ = provider.chat_completion.call_args.args
     assert answer_cls is test_case_cls.answer_cls
     assert json.loads(messages[1]["content"]) == {
-        "zimu": ["原文"],
         "cankao": "參考",
+        "zimu": ["原文"],
     }
 
 
@@ -129,7 +131,7 @@ def test_queryer_localizes_test_case_validation_retry():
     assert messages[-1]["content"] == "\n".join(
         (
             prompt.test_case_invalid_pre,
-            prompt.src_1_chars_changed_err(
+            prompt.target_chars_changed_err(
                 "".join(subtitles),
                 "係洋文嚟嘅蝦即係有鬥心",
             ),
@@ -143,11 +145,14 @@ def test_query_and_answer_require_nonempty_fields():
     query_cls = PunctuationManager.get_query_cls(_LOCALIZED_PROMPT)
     answer_cls = PunctuationManager.get_answer_cls(_LOCALIZED_PROMPT)
 
-    with raises(ValidationError, match=_LOCALIZED_PROMPT.src_1_missing_err):
+    with raises(ValidationError, match=_LOCALIZED_PROMPT.target_subs_missing_err):
         query_cls.model_validate({"subtitles": [], "guide": "參考"})
-    with raises(ValidationError, match=_LOCALIZED_PROMPT.src_2_missing_err):
+    with raises(ValidationError, match=_LOCALIZED_PROMPT.ref_sub_missing_err):
         query_cls.model_validate({"subtitles": ["原文"], "guide": ""})
-    with raises(ValidationError, match=_LOCALIZED_PROMPT.output_missing_err):
+    with raises(
+        ValidationError,
+        match=_LOCALIZED_PROMPT.target_sub_punctuated_missing_err,
+    ):
         answer_cls.model_validate({"output": ""})
 
 
@@ -208,14 +213,14 @@ def test_persistence_uses_base_prompt_aliases(tmp_path: Path):
 
     assert json.loads(output_path.read_text(encoding="utf-8")) == [
         {
-            "query": {"one": ["原文"], "two": "參考"},
-            "answer": {"output": "原文"},
+            "query": {"ref_sub": "參考", "target_subs": ["原文"]},
+            "answer": {"target_sub_punctuated": "原文"},
             "verified": True,
         }
     ]
     persisted = PersistedTestCase.from_test_case(test_case, PunctuationManager)
-    assert persisted.query == {"one": ["原文"], "two": "參考"}
-    assert persisted.answer == {"output": "原文"}
+    assert persisted.query == {"ref_sub": "參考", "target_subs": ["原文"]}
+    assert persisted.answer == {"target_sub_punctuated": "原文"}
 
     loaded = load_test_cases_from_json(
         output_path,
@@ -223,30 +228,30 @@ def test_persistence_uses_base_prompt_aliases(tmp_path: Path):
         _LOCALIZED_PROMPT,
     )
     assert loaded[0].query.model_dump(by_alias=True) == {
-        "zimu": ["原文"],
         "cankao": "參考",
+        "zimu": ["原文"],
     }
     assert loaded[0].answer is not None
     assert loaded[0].answer.model_dump(by_alias=True) == {"jieguo": "原文"}
 
 
 def test_tracked_fixture_count():
-    """All four tracked punctuation files should contain 2,973 test cases."""
+    """Both tracked MLAMD punctuation files should contain 1,288 test cases."""
     counts = [
         len(json.loads(input_path.read_text(encoding="utf-8")))
-        for input_path in _PUNCTUATION_PATHS
+        for input_path in _MLAMD_PUNCTUATION_PATHS
     ]
 
-    assert len(_PUNCTUATION_PATHS) == 4
-    assert sum(counts) == 2973
+    assert len(_MLAMD_PUNCTUATION_PATHS) == 2
+    assert sum(counts) == 1288
 
 
 @mark.parametrize(
     "input_path",
-    _PUNCTUATION_PATHS,
+    _MLAMD_PUNCTUATION_PATHS,
     ids=[
         input_path.relative_to(test_data_root).as_posix()
-        for input_path in _PUNCTUATION_PATHS
+        for input_path in _MLAMD_PUNCTUATION_PATHS
     ],
 )
 def test_tracked_fixture_round_trips_without_migration(

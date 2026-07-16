@@ -78,16 +78,16 @@ YueZhoPunctuationPromptYueHant = PunctuationPrompt(
         唔好從中文字幕拷貝漢字。
         只可以調整粵文嘅標點同空格以配合中文字幕。
         除咗標點同空格之外唔好改任何粵文內容。"""),
-    src_1="yuewen_to_punctuate",
-    src_1_desc="要整理同加標點嘅粵文字幕行",
-    src_2="zhongwen",
-    src_2_desc="對應嘅中文字幕",
-    src_1_missing_err="查詢必須包含要整理同加標點嘅粵文字幕行。",
-    src_2_missing_err="查詢必須包含對應嘅中文字幕。",
-    output="yuewen_punctuated",
-    output_desc="整理同加標點後嘅粵文字幕",
-    output_missing_err="答案必須包含整理同加標點後嘅粵文字幕。",
-    src_1_chars_changed_err_tpl=(
+    ref_sub="zhongwen",
+    ref_sub_desc="對應嘅中文字幕",
+    target_subs="yuewen_to_punctuate",
+    target_subs_desc="要整理同加標點嘅粵文字幕行",
+    ref_sub_missing_err="查詢必須包含對應嘅中文字幕。",
+    target_subs_missing_err="查詢必須包含要整理同加標點嘅粵文字幕行。",
+    target_sub_punctuated="yuewen_punctuated",
+    target_sub_punctuated_desc="整理同加標點後嘅粵文字幕",
+    target_sub_punctuated_missing_err="答案必須包含整理同加標點後嘅粵文字幕。",
+    target_chars_changed_err_tpl=(
         "回答嘅 yuewen_punctuated 移除標點同空格後，同查詢入面拼埋嘅 "
         "yuewen_to_punctuate 唔一致：\n"
         "期望: {expected}\n"

@@ -16,55 +16,57 @@ class PunctuationPrompt(Prompt):
     """Text for LLM correspondence for punctuation."""
 
     # Query fields
-    src_1: str = "one"
-    """Name of source one field in query."""
+    ref_sub: str = "ref_sub"
+    """Name of reference subtitle field in query."""
 
-    src_1_desc: str = "Subtitle texts from source one"
-    """Description of source one field in query."""
+    ref_sub_desc: str = "Reference subtitle text"
+    """Description of reference subtitle field in query."""
 
-    src_2: str = "two"
-    """Name of source two field in query."""
+    target_subs: str = "target_subs"
+    """Name of target subtitles field in query."""
 
-    src_2_desc: str = "Subtitle text from source two"
-    """Description of source two field in query."""
+    target_subs_desc: str = "Target subtitle texts to combine and punctuate"
+    """Description of target subtitles field in query."""
 
     # Query validation errors
-    src_1_missing_err: str = "Subtitle texts from source one are required."
-    """Error when source one field is missing from query."""
+    ref_sub_missing_err: str = "Reference subtitle text is required."
+    """Error when reference subtitle field is missing from query."""
 
-    src_2_missing_err: str = "Subtitle text from source two is required."
-    """Error when source two field is missing from query."""
+    target_subs_missing_err: str = "Target subtitle texts are required."
+    """Error when target subtitles field is missing from query."""
 
     # Answer fields
-    output: str = "output"
-    """Name of output field in answer."""
+    target_sub_punctuated: str = "target_sub_punctuated"
+    """Name of punctuated target subtitle field in answer."""
 
-    output_desc: str = "Output subtitle text"
-    """Description of output field in answer."""
+    target_sub_punctuated_desc: str = "Combined and punctuated target subtitle text"
+    """Description of punctuated target subtitle field in answer."""
 
     # Answer validation errors
-    output_missing_err: str = "Output subtitle text is required."
-    """Error when output field is missing from answer."""
+    target_sub_punctuated_missing_err: str = (
+        "Combined and punctuated target subtitle text is required."
+    )
+    """Error when punctuated target subtitle field is missing from answer."""
 
     # Test case validation errors
-    src_1_chars_changed_err_tpl: str = (
-        "Answer output stripped of punctuation and whitespace does not match query "
-        "source one concatenated:\n"
+    target_chars_changed_err_tpl: str = (
+        "Answer's punctuated target subtitle stripped of punctuation and whitespace "
+        "does not match query's target subtitles concatenated:\n"
         "Expected: {expected}\n"
         "Received: {received}"
     )
-    """Error when output characters do not match source one."""
+    """Error when punctuated target characters do not match target subtitles."""
 
-    def src_1_chars_changed_err(self, expected: str, received: str) -> str:
-        """Error when output characters do not match source one.
+    def target_chars_changed_err(self, expected: str, received: str) -> str:
+        """Error when punctuated target characters do not match target subtitles.
 
         Arguments:
-            expected: expected source one characters
-            received: received output characters
+            expected: expected target subtitle characters
+            received: received punctuated target subtitle characters
         Returns:
             error message
         """
-        return self.src_1_chars_changed_err_tpl.format(
+        return self.target_chars_changed_err_tpl.format(
             expected=expected,
             received=received,
         )

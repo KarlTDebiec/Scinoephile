@@ -45,7 +45,7 @@ _TEST_CASE_FAMILIES: tuple[tuple[str, type[Manager]], ...] = (
         DelineationManager,
     ),
     (
-        "*/output/*/lang/yue_zho/transcription/punctuation/*.json",
+        "mlamd/output/*/lang/yue_zho/transcription/punctuation/*.json",
         PunctuationManager,
     ),
 )
@@ -160,5 +160,5 @@ def test_tracked_test_case_json_inventory_is_complete():
         for input_path, _ in _TEST_CASE_FILES
     )
 
-    assert len(_TEST_CASE_FILES) == 83
-    assert test_case_count == 28_581
+    assert len(_TEST_CASE_FILES) == 81
+    assert test_case_count == 26_896

@@ -18,9 +18,9 @@ from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.llms.punctuation import PunctuationPrompt, PunctuationTestCase
 
 _LOCALIZED_PROMPT = PunctuationPrompt(
-    src_1="zimu",
-    src_2="cankao",
-    output="jieguo",
+    ref_sub="cankao",
+    target_subs="zimu",
+    target_sub_punctuated="jieguo",
 )
 """Punctuation prompt using non-default correspondence field names."""
 
@@ -64,12 +64,12 @@ def test_alignment_constructs_semantic_fields_with_configured_prompt():
     assert isinstance(test_case, PunctuationTestCase)
     assert test_case.prompt is _LOCALIZED_PROMPT
     assert test_case.query.model_dump() == {
-        "subtitles": ["你好"],
         "guide": "你好！",
+        "subtitles": ["你好"],
     }
     assert test_case.query.model_dump(by_alias=True) == {
-        "zimu": ["你好"],
         "cankao": "你好！",
+        "zimu": ["你好"],
     }
 
 
