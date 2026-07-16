@@ -451,24 +451,36 @@ class GuidedTranscriptionProcessor:
             tail_audio,
             headroom=_TAIL_RECOVERY_HEADROOM_DB,
         )
-        tail_segments = None
+        tail_audio_duration = len(normalized_tail_audio) / 1000
+        tail_segments = self.tail_recovery_transcriber.get_cached_transcription(
+            normalized_tail_audio
+        )
+        if tail_segments is not None and not self._segments_are_usable(
+            tail_segments,
+            audio_duration=tail_audio_duration,
+        ):
+            logger.info("Retrying focused tail transcription after unusable cache")
+            tail_segments = None
+
         recovery_failed_with_assertion = False
-        try:
-            candidate_tail_segments = self.tail_recovery_transcriber(
-                normalized_tail_audio
-            )
-        except AssertionError as exc:
-            recovery_failed_with_assertion = True
-            logger.warning(
-                f"Keeping valid base Whisper transcription after focused tail "
-                f"recovery failed with an assertion: {exc}"
-            )
-        else:
-            if self._segments_are_usable(
-                candidate_tail_segments,
-                audio_duration=len(normalized_tail_audio) / 1000,
-            ):
-                tail_segments = candidate_tail_segments
+        if tail_segments is None:
+            try:
+                candidate_tail_segments = self.tail_recovery_transcriber(
+                    normalized_tail_audio,
+                    use_cache=False,
+                )
+            except AssertionError as exc:
+                recovery_failed_with_assertion = True
+                logger.warning(
+                    f"Keeping valid base Whisper transcription after focused tail "
+                    f"recovery failed with an assertion: {exc}"
+                )
+            else:
+                if self._segments_are_usable(
+                    candidate_tail_segments,
+                    audio_duration=tail_audio_duration,
+                ):
+                    tail_segments = candidate_tail_segments
         if tail_segments is None:
             if not recovery_failed_with_assertion:
                 logger.info(
