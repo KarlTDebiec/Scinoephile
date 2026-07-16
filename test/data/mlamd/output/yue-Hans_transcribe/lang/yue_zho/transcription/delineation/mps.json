@@ -37,6 +37,7 @@
       "target_sub_2": "都系唔好"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -67,6 +68,7 @@
       "target_sub_2": "都系出返去阿街路街飞过火车桥右转入太平道"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -87,6 +89,7 @@
       "target_sub_2": "飞下飞下"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -217,6 +220,7 @@
       "target_sub_2": "又或者系好靓仔好靓仔"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -451,6 +455,7 @@
       "target_sub_2_shifted": "个脚刮囊粗咗咁多呀"
     },
     "difficulty": 1,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -461,6 +466,7 @@
       "target_sub_2": "鬼咩"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -475,6 +481,7 @@
       "target_sub_2_shifted": "同我仔揾幼稚园吖嘛"
     },
     "difficulty": 1,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -527,6 +534,7 @@
       "target_sub_2": "春田花花幼稚园呢"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -559,6 +567,7 @@
       "target_sub_2_shifted": "春田花花幼稚园呀"
     },
     "difficulty": 1,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -629,6 +638,7 @@
       "target_sub_2_shifted": "春田花花真系好多西人㗎"
     },
     "difficulty": 1,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -638,6 +648,7 @@
       "target_sub_2": "呢个扮紧白兔猪样嘅小朋友"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -772,6 +783,7 @@
       "target_sub_2": "嗰个位同学"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -834,6 +846,7 @@
       "target_sub_2": "交"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1064,6 +1077,7 @@
       "target_sub_2": "好我哋而家继续点名"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -1369,6 +1383,7 @@
       "target_sub_2": "识埋小学上到中学"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2270,6 +2285,7 @@
       "target_sub_2_shifted": "佢死咗"
     },
     "difficulty": 1,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -2892,6 +2908,7 @@
       "target_sub_2": "唔使同佢打多支针添呢"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3016,6 +3033,7 @@
       "target_sub_2_shifted": "买二代夫"
     },
     "difficulty": 1,
+    "few_shot": true,
     "verified": true
   },
   {
@@ -3254,6 +3272,7 @@
       "target_sub_2": "你话我病好咗之日就同我去马尔代夫㗎你讲过㗎"
     },
     "answer": {},
+    "few_shot": true,
     "verified": true
   },
   {

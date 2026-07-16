@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
-from logging import getLogger
+from collections.abc import Iterator
+from contextlib import contextmanager
+from logging import WARNING, Filter, LogRecord, getLogger
 from pathlib import Path
 from shutil import copy2
 from typing import Any
@@ -28,6 +30,32 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+
+class _RelogLanguageMismatchFilter(Filter):
+    """Relog one expected language-mismatch warning at info level."""
+
+    def __init__(self, expected_message: str):
+        """Initialize.
+
+        Arguments:
+            expected_message: warning message to suppress and relog
+        """
+        super().__init__()
+        self.expected_message = expected_message
+
+    def filter(self, record: LogRecord) -> bool:
+        """Relog the expected warning and allow all other records.
+
+        Arguments:
+            record: log record to inspect
+        Returns:
+            whether the original record should continue to handlers
+        """
+        if record.levelno != WARNING or record.getMessage() != self.expected_message:
+            return True
+        logger.info(record.getMessage())
+        return False
 
 
 def get_reference_for_guide_blocks(
@@ -147,7 +175,13 @@ def process_transcription(
 
     # Clean transcription
     clean_path = output_dir_path / "transcribe_clean.srt"
-    cleaned = load_or_clean_series(transcribe, clean_path, language, overwrite)
+    with _relog_cantonese_transcription_mismatch(language):
+        cleaned = load_or_clean_series(
+            transcribe,
+            clean_path,
+            language,
+            overwrite,
+        )
     logger.info(
         f"{language.code} transcription CER after cleaning:\n"
         f"{SeriesCER(evaluation_reference, cleaned)}"
@@ -339,6 +373,40 @@ def _load_or_translate_series_gaps(
     )
     translated.save(output_path)
     return translated
+
+
+@contextmanager
+def _relog_cantonese_transcription_mismatch(
+    language: Language,
+) -> Iterator[None]:
+    """Relog expected same-script Cantonese-to-Mandarin detection at info.
+
+    Arguments:
+        language: expected transcription language
+    Returns:
+        context in which the expected mismatch is intercepted
+    """
+    detected_language = None
+    if language is Language.yue_hans:
+        detected_language = Language.zho_hans
+    elif language is Language.yue_hant:
+        detected_language = Language.zho_hant
+    if detected_language is None:
+        yield
+        return
+
+    expected_message = (
+        f"Explicit language {language.code} does not "
+        f"match detected language {detected_language.code}; "
+        f"using {language.code}"
+    )
+    mismatch_filter = _RelogLanguageMismatchFilter(expected_message)
+    language_logger = getLogger("scinoephile.workflows.helpers")
+    language_logger.addFilter(mismatch_filter)
+    try:
+        yield
+    finally:
+        language_logger.removeFilter(mismatch_filter)
 
 
 def _stage_audio_series(

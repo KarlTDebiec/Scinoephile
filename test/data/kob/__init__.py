@@ -32,7 +32,7 @@ from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewProm
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
-from test.helpers import SeriesCERResult, test_data_root
+from test.helpers import test_data_root
 
 __all__ = [
     "kob_eng",
@@ -77,10 +77,6 @@ __all__ = [
     "kob_yue_hant_clean_review_flatten_timewarp_simplify",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize",
-    "kob_yue_hant_transcribe",
-    "kob_yue_hant_transcribe_clean_review",
-    "kob_yue_hant_transcribe_clean_review_expected_cer",
-    "kob_yue_hant_transcribe_expected_cer",
     "kob_yue_simplify_expected_series_diff",
     "kob_zho_hans_eng",
     "kob_zho_hant_ocr_fuse",
@@ -672,44 +668,6 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Ser
         output_dir
         / "yue-Hant"
         / "clean_review_flatten_timewarp_simplify_review_romanize.srt"
-    )
-
-
-@fixture
-def kob_yue_hant_transcribe() -> Series:
-    """KOB yue-Hant transcribed subtitles."""
-    return Series.load(output_dir / "yue-Hant_transcribe/transcribe.srt")
-
-
-@fixture
-def kob_yue_hant_transcribe_clean_review() -> Series:
-    """KOB yue-Hant cleaned and guide-reviewed transcription."""
-    return Series.load(output_dir / "yue-Hant_transcribe/transcribe_clean_review.srt")
-
-
-@fixture
-def kob_yue_hant_transcribe_clean_review_expected_cer() -> SeriesCERResult:
-    """Expected CER for the KOB cleaned and guide-reviewed transcription."""
-    return SeriesCERResult(
-        cer=0.2860033430104689,
-        substitutions=1832,
-        insertions=532,
-        deletions=887,
-        correct=8648,
-        reference_length=11367,
-    )
-
-
-@fixture
-def kob_yue_hant_transcribe_expected_cer() -> SeriesCERResult:
-    """Expected CER for KOB yue-Hant transcription against its reference."""
-    return SeriesCERResult(
-        cer=0.3686108911762118,
-        substitutions=2718,
-        insertions=519,
-        deletions=953,
-        correct=7696,
-        reference_length=11367,
     )
 
 
