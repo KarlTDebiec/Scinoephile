@@ -18,7 +18,7 @@ from .llm_provider import ChatCompletionKwargs, LLMProvider
 from .manager import Manager, PromptModelField
 from .openai_provider_base import OpenAIProviderBase
 from .processor import Processor, ProcessorKwargs
-from .prompt import Prompt
+from .prompt import Prompt, SharedPromptLocalizationFields
 from .query import Query
 from .queryer import Queryer
 from .test_case import TestCase
@@ -39,6 +39,7 @@ __all__ = [
     "PromptModelField",
     "Query",
     "Queryer",
+    "SharedPromptLocalizationFields",
     "TestCase",
     "TestCaseSubtitle",
     "Tool",
