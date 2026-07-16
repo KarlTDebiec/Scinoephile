@@ -4,10 +4,11 @@
 
 from __future__ import annotations
 
+from logging import INFO, WARNING, getLogger
 from pathlib import Path
 from unittest.mock import Mock
 
-from pytest import MonkeyPatch, mark, param
+from pytest import LogCaptureFixture, MonkeyPatch, mark, param
 
 import test.data.transcription as transcription_data
 from scinoephile.core import Language
@@ -41,38 +42,57 @@ def test_get_reference_for_guide_blocks_limits_reference_prefix():
 
 
 @mark.parametrize(
-    ("language", "guide_language", "informational_detected_language"),
+    ("language", "guide_language", "detected_language", "expected_log_level"),
     [
         param(
             Language.yue_hans,
             Language.zho_hans,
             Language.zho_hans,
+            INFO,
             id="yue-hans-from-zho-hans",
         ),
         param(
             Language.yue_hant,
             Language.zho_hant,
             Language.zho_hant,
+            INFO,
             id="yue-hant-from-zho-hant",
         ),
-        param(Language.eng, Language.zho_hant, None, id="non-cantonese"),
+        param(
+            Language.yue_hant,
+            Language.zho_hant,
+            Language.zho_hans,
+            WARNING,
+            id="different-script",
+        ),
+        param(
+            Language.eng,
+            Language.zho_hant,
+            Language.zho_hant,
+            WARNING,
+            id="non-cantonese",
+        ),
     ],
 )
-def test_process_transcription_orders_stages_and_limits_logging_exception(
+def test_process_transcription_orders_stages_and_relogs_expected_mismatch(
     tmp_path: Path,
+    caplog: LogCaptureFixture,
     monkeypatch: MonkeyPatch,
     language: Language,
     guide_language: Language,
-    informational_detected_language: Language | None,
+    detected_language: Language,
+    expected_log_level: int,
 ):
-    """Run stages in order and opt in only same-script Yue-to-Zho detection.
+    """Run stages in order and relog only same-script Yue-to-Zho detection.
 
     Arguments:
         tmp_path: temporary pipeline directory
+        caplog: captured log records
         monkeypatch: pytest monkeypatch fixture
         language: transcription language
         guide_language: guide subtitle language
-        informational_detected_language: expected informational mismatch opt-in
+        detected_language: language reported for the fresh transcription
+        expected_log_level: expected mismatch log level
     """
     reference = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
     guide = Series(events=[Subtitle(start=0, end=1_000, text="他在這裡")])
@@ -89,8 +109,18 @@ def test_process_transcription_orders_stages_and_limits_logging_exception(
             stage_order.append("transcribe") or reference
         )
     )
+    mismatch_message = (
+        f"Explicit language {language.code} does not "
+        f"match detected language {detected_language.code}; "
+        f"using {language.code}"
+    )
+    language_logger = getLogger("scinoephile.workflows.helpers")
     clean = Mock(
-        side_effect=lambda *args, **kwargs: stage_order.append("clean") or reference
+        side_effect=lambda *args, **kwargs: (
+            stage_order.append("clean")
+            or language_logger.warning(mismatch_message)
+            or reference
+        )
     )
     review = Mock(
         side_effect=lambda *args, **kwargs: stage_order.append("review") or reference
@@ -121,17 +151,19 @@ def test_process_transcription_orders_stages_and_limits_logging_exception(
         translate,
     )
 
-    output = transcription_data.process_transcription(
-        tmp_path,
-        guide_path,
-        reference_path=reference_path,
-        language=language,
-        guide_language=guide_language,
-    )
+    with caplog.at_level(INFO):
+        output = transcription_data.process_transcription(
+            tmp_path,
+            guide_path,
+            reference_path=reference_path,
+            language=language,
+            guide_language=guide_language,
+        )
 
     assert output is reference
     assert stage_order == ["audio", "transcribe", "clean", "review", "translate"]
-    assert (
-        clean.call_args.kwargs["informational_detected_language"]
-        is informational_detected_language
-    )
+    mismatch_records = [
+        record for record in caplog.records if record.getMessage() == mismatch_message
+    ]
+    assert len(mismatch_records) == 1
+    assert mismatch_records[0].levelno == expected_log_level

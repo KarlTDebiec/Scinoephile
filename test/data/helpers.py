@@ -31,8 +31,6 @@ def load_or_clean_series(
     output_path: Path,
     language: Language,
     overwrite: bool = False,
-    *,
-    informational_detected_language: Language | None = None,
 ) -> Series:
     """Load or create a cleaned subtitle series.
 
@@ -41,19 +39,13 @@ def load_or_clean_series(
         output_path: cleaned subtitle output path
         language: subtitle language
         overwrite: whether to overwrite an existing output
-        informational_detected_language: detected mismatch language to log at info
-            rather than warning, or None to warn for every mismatch
     Returns:
         cleaned series
     """
     if output_path.exists() and not overwrite:
         return Series.load(output_path)
 
-    cleaned = clean_series(
-        series,
-        language=language,
-        informational_detected_language=informational_detected_language,
-    )
+    cleaned = clean_series(series, language=language)
     cleaned.save(output_path)
     return cleaned
 
