@@ -25,7 +25,6 @@
       "target_sub_punctuated": "经过好彩走家再左转返出花园街乐园牛园望对上⋯"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -122,7 +121,6 @@
       "target_sub_punctuated": "都系唔好：左边云晶对上⋯"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -138,7 +136,6 @@
       "target_sub_punctuated": "转下，转下，转下噉⋯"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -232,7 +229,6 @@
       "target_sub_punctuated": "好似周润发，同埋梁朝伟咁靓仔！"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -260,7 +256,6 @@
       "target_sub_punctuated": "嗱嗱嗱喺胶兜未落地之前起过另外一个愿望："
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -275,7 +270,6 @@
       "target_sub_punctuated": "就算唔系咁聪明同咁靓仔，只要复星高照"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -316,7 +310,6 @@
       "target_sub_punctuated": "最后，胶兜「滴嘟」一声咁落地"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -346,7 +339,6 @@
       "target_sub_punctuated": "麦太心谂，今次冇死喇！"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -401,7 +393,6 @@
       "target_sub_punctuated": "都系唔好，胶胶声，咁难听！"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -588,7 +579,6 @@
       "target_sub_punctuated": "系呀！深水埗地铁站口行过去唔使十分钟呀！"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -790,7 +780,6 @@
       "target_sub_punctuated": "小朋友，你哋今个月交咗学费咩呀？"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -804,7 +793,6 @@
       "target_sub_punctuated": "交！"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -820,7 +808,6 @@
       "target_sub_punctuated": "哎，好在！噉大家可以返去上堂喇"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -875,7 +862,6 @@
       "target_sub_punctuated": "不过就有少少失魂嘅班主有Miss Chan"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1001,7 +987,6 @@
       "target_sub_punctuated": "Miss Chan，你点咗我两次喇！"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1058,7 +1043,6 @@
       "target_sub_punctuated": "好，仲有边个未点？"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1140,7 +1124,6 @@
       "target_sub_punctuated": "点解橙叫「Orange」呢？"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1169,7 +1152,6 @@
       "target_sub_punctuated": "「噢」呢个我明白，但系「橙」呢？"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1185,7 +1167,6 @@
       "target_sub_punctuated": "仲有呢个啊「芭－拉－娜」啊香蕉啊"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1199,7 +1180,6 @@
       "target_sub_punctuated": "点解雨姐会叫做「暗－芭－拉－娜」呢？"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1215,7 +1195,6 @@
       "target_sub_punctuated": "嗱，我「暗」啦，噉我「暗」嗰条香蕉"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1244,7 +1223,6 @@
       "target_sub_punctuated": "我谂，到我读完幼稚园"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1324,7 +1302,6 @@
       "target_sub_punctuated": "喺幼稚园楼下，校长兼营嘅间茶餐厅"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1339,7 +1316,6 @@
       "target_sub_punctuated": "唔该，鱼蛋粗啊　　冇粗面噃"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1355,7 +1331,6 @@
       "target_sub_punctuated": "噉啊⋯要碗鱼蛋好啊　　冇鱼蛋噃"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1386,7 +1361,6 @@
       "target_sub_punctuated": "噉啊咁要鱼蛋油面啊　　冇鱼蛋噃"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1469,7 +1443,6 @@
       "target_sub_punctuated": "噢，冇嗰啲配搭啊？"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1484,7 +1457,6 @@
       "target_sub_punctuated": "噉唔该，净鱼蛋啊　　冇鱼蛋噃"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1499,7 +1471,6 @@
       "target_sub_punctuated": "净粗面呢？　　冇粗面噃"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1635,7 +1606,6 @@
       "target_sub_punctuated": "但系唱嚟唱去都系「阿伦厨」咁「Ballana」噉⋯"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1680,7 +1650,6 @@
       "target_sub_punctuated": "世上一切⋯"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1713,7 +1682,6 @@
       "target_sub_punctuated": "1, 2, 3, 4, 5, 6, 7⋯"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1793,7 +1761,6 @@
       "target_sub_punctuated": "除咗做保险，地产经纪同埋trading之外⋯"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1820,7 +1787,6 @@
       "target_sub_punctuated": "www．mcticege．com"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1873,7 +1839,6 @@
     "answer": {
       "target_sub_punctuated": "简单又别致嘅小菜自包鸡"
     },
-    "few_shot": true,
     "verified": true
   },
   {
@@ -1915,7 +1880,6 @@
     "answer": {
       "target_sub_punctuated": "然后将鸡包纸一反反转"
     },
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2194,7 +2158,6 @@
       "target_sub_punctuated": "从前，有个小朋友讲大话；有一日⋯"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2234,7 +2197,6 @@
       "target_sub_punctuated": "佢长大，发咗！"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2249,7 +2211,6 @@
       "target_sub_punctuated": "从前，有个小朋友唔孝顺，有一日⋯"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2359,7 +2320,6 @@
       "target_sub_punctuated": "但系如果有啲嘢，真系真系唔得呢？"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2413,7 +2373,6 @@
       "target_sub_punctuated": "竟然奇迹一样一个都未中过！"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2658,7 +2617,6 @@
       "target_sub_punctuated": "我最喜爱嘅地方呢，就系日本喇"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2673,7 +2631,6 @@
       "target_sub_punctuated": "嗰度好迪士尼呢同埋HelloTT呢"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2702,7 +2659,6 @@
       "target_sub_punctuated": "嗰度有好多水晶活动㗎，仲有一次食添㖞"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2786,7 +2742,6 @@
       "target_sub_punctuated": "不过讲到我最想去嘅地方呢，嗰度细嚟啰"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2815,7 +2770,6 @@
     "answer": {
       "target_sub_punctuated": "独来鱼印度洋嘅世外桃源"
     },
-    "few_shot": true,
     "verified": true
   },
   {
@@ -2965,7 +2919,6 @@
     "answer": {
       "target_sub_punctuated": "妈妈我唔想食药水呀"
     },
-    "few_shot": true,
     "verified": true
   },
   {
@@ -3120,7 +3073,6 @@
       "target_sub_punctuated": "嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -3177,7 +3129,6 @@
       "target_sub_punctuated": "妈妈，呢次唔同㗎，本来咁大樽嘅"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -3368,7 +3319,6 @@
       "target_sub_punctuated": "妈妈我唔系讲喇㗎，又系你话嘅⋯"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -3383,7 +3333,6 @@
       "target_sub_punctuated": "你话我病好咗之日就同我去马尔代夫㗎！你讲过㗎！"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -3426,7 +3375,6 @@
       "target_sub_punctuated": "得啦得啦，唔好喊啦"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -3468,7 +3416,6 @@
       "target_sub_punctuated": "你发咗㗎喇，你发咗㗎喇⋯"
     },
     "difficulty": 2,
-    "few_shot": true,
     "verified": true
   },
   {
@@ -3482,7 +3429,6 @@
       "target_sub_punctuated": "系喇系喇系喇，发咗喇"
     },
     "difficulty": 1,
-    "few_shot": true,
     "verified": true
   },
   {
