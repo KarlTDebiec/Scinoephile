@@ -149,7 +149,7 @@ def test_romanize_series(
     expected_fixture: str,
     language: Language,
 ):
-    """Test series romanization against expected outputs.
+    """Test romanize_series against expected romanized outputs.
 
     Arguments:
         request: pytest request for fixture lookup
@@ -166,7 +166,7 @@ def test_romanize_series(
 
 
 def test_romanize_series_replaces_text():
-    """Test series romanization replaces source text when append is false."""
+    """Test romanize_series replaces source text when append is false."""
     source = get_text_series("你好")
 
     output = romanize_series(
@@ -180,7 +180,7 @@ def test_romanize_series_replaces_text():
 
 
 def test_romanize_series_rejects_unsupported_language():
-    """Test series romanization rejects unsupported languages."""
+    """Test romanize_series rejects unsupported languages."""
     with raises(
         ScinoephileError,
         match="Romanization does not support language eng",

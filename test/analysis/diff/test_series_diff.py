@@ -146,6 +146,22 @@ def test_series_diff_empty_for_identical_series():
     assert str(diff) == "[]"
 
 
+def test_series_diff_get_messages_and_event_indices_include_equal():
+    """Test structured messages include equals and map lines to events."""
+    one = get_text_series("same", "first\\Nsecond")
+    two = get_text_series("same", "first\\Nedited")
+    diff = SeriesDiff(one, two)
+
+    messages = diff.get_messages(include_equal=True)
+
+    assert [message.kind for message in messages] == [
+        LineDiffKind.EQUAL,
+        LineDiffKind.EQUAL,
+        LineDiffKind.EDIT,
+    ]
+    assert diff.get_event_indices(messages[-1]) == ((1,), (1,))
+
+
 def test_series_diff_get_stacked_str_appends_blank_third_line_for_insert():
     """Test third-series output is blank for second-side-only inserts."""
     one = get_text_series()

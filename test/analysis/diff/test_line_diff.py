@@ -7,6 +7,21 @@ from __future__ import annotations
 from scinoephile.analysis.diff import LineDiff, LineDiffKind
 
 
+def test_line_diff_get_aligned_texts_without_display_markup():
+    """Test raw aligned text includes width-aware placeholders."""
+    message = LineDiff(
+        kind=LineDiffKind.EDIT,
+        one_lbl="one",
+        two_lbl="two",
+        one_idxs=(0,),
+        two_idxs=(0,),
+        one_texts=("廣東話",),
+        two_texts=("廣東　話",),
+    )
+
+    assert message.get_aligned_texts() == ("廣東　話", "廣東　話")
+
+
 def test_line_diff_get_stacked_str_no_color_full_width_placeholder():
     """Test full-width placeholder selection with color=False."""
     msg = LineDiff(

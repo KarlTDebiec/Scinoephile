@@ -108,6 +108,7 @@ class SeriesDiff:
         self._stacked_messages: list[LineDiff] = []
         self._one = one
         self._one_line_event_idxs: tuple[int, ...] = ()
+        self._two_line_event_idxs: tuple[int, ...] = ()
         self._diff(one, two)
 
     def __iter__(self) -> Iterator[LineDiff]:
@@ -132,6 +133,39 @@ class SeriesDiff:
         )
         return f"[\n{formatted_messages}\n]"
 
+    def get_event_indices(
+        self,
+        message: LineDiff,
+    ) -> tuple[tuple[int, ...], tuple[int, ...]]:
+        """Get subtitle event indices represented by a line diff message.
+
+        Arguments:
+            message: line diff message
+        Returns:
+            first- and second-side zero-based subtitle event indices
+        """
+        one_event_idxs = self._get_message_event_indices(
+            message.one_idxs,
+            self._one_line_event_idxs,
+        )
+        two_event_idxs = self._get_message_event_indices(
+            message.two_idxs,
+            self._two_line_event_idxs,
+        )
+        return one_event_idxs, two_event_idxs
+
+    def get_messages(self, *, include_equal: bool = False) -> tuple[LineDiff, ...]:
+        """Get aligned line diff messages.
+
+        Arguments:
+            include_equal: whether to include unchanged aligned subtitles
+        Returns:
+            line diff messages in display order
+        """
+        if include_equal:
+            return tuple(self._stacked_messages)
+        return tuple(self.messages)
+
     def get_stacked_str(
         self,
         *,
@@ -150,7 +184,7 @@ class SeriesDiff:
         Raises:
             ScinoephileError: if one and three are not one-to-one matched
         """
-        messages = self._stacked_messages if include_equal else self.messages
+        messages = self.get_messages(include_equal=include_equal)
         if three is None:
             return "\n".join(
                 message.get_stacked_str(color=color) for message in messages
@@ -355,6 +389,11 @@ class SeriesDiff:
         self._one_line_event_idxs = tuple(
             record.event_idx
             for event_line_records in one_line_records
+            for record in event_line_records
+        )
+        self._two_line_event_idxs = tuple(
+            record.event_idx
+            for event_line_records in two_line_records
             for record in event_line_records
         )
         block_pairs = self._get_block_event_index_pairs_by_pause(one, two)
@@ -1425,6 +1464,27 @@ class SeriesDiff:
                 texts.append("")
 
         return tuple(texts)
+
+    @staticmethod
+    def _get_message_event_indices(
+        line_idxs: tuple[int, ...] | None,
+        line_event_idxs: tuple[int, ...],
+    ) -> tuple[int, ...]:
+        """Map line indices to unique subtitle event indices in order.
+
+        Arguments:
+            line_idxs: zero-based flattened line indices
+            line_event_idxs: event index corresponding to each flattened line
+        Returns:
+            unique zero-based subtitle event indices
+        """
+        event_idxs = []
+        for line_idx in line_idxs or ():
+            event_idx = line_event_idxs[line_idx]
+            if event_idxs and event_idxs[-1] == event_idx:
+                continue
+            event_idxs.append(event_idx)
+        return tuple(event_idxs)
 
     @staticmethod
     def _join_normlines(

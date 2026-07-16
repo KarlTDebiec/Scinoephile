@@ -29,19 +29,11 @@ def resolve_language(series: Series, explicit_language: Language | None) -> Lang
     detected_language = get_series_language(series)
     if explicit_language is not None:
         if detected_language is not None and detected_language is not explicit_language:
-            message = (
+            logger.warning(
                 f"Explicit language {explicit_language.code} does not "
                 f"match detected language {detected_language.code}; "
                 f"using {explicit_language.code}"
             )
-            if (
-                explicit_language.is_chinese
-                and detected_language.is_chinese
-                and explicit_language.script == detected_language.script
-            ):
-                logger.info(message)
-            else:
-                logger.warning(message)
         return explicit_language
     if detected_language is None:
         raise ScinoephileError("Unable to determine language")

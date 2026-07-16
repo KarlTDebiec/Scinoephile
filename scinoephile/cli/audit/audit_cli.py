@@ -10,6 +10,7 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
+from .audit_aligned_diff_cli import AuditAlignedDiffCli
 from .audit_delineation_cli import AuditDelineationCli
 from .audit_guided_review_cli import AuditGuidedReviewCli
 from .audit_punctuation_cli import AuditPunctuationCli
@@ -61,6 +62,7 @@ class AuditCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
+            AuditAlignedDiffCli.name(): AuditAlignedDiffCli,
             AuditDelineationCli.name(): AuditDelineationCli,
             AuditGuidedReviewCli.name(): AuditGuidedReviewCli,
             AuditPunctuationCli.name(): AuditPunctuationCli,

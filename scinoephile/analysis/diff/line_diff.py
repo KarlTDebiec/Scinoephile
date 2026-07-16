@@ -83,6 +83,26 @@ class LineDiff:
             f"{one_text_repr} -> {two_text_repr}"
         )
 
+    def get_aligned_texts(self) -> tuple[str, str]:
+        """Get the two character-aligned text rows without display markup.
+
+        Returns:
+            first- and second-side aligned text
+        """
+        one_texts = self.one_texts or ()
+        two_texts = self.two_texts or ()
+        if self.kind == LineDiffKind.DELETE:
+            return self._join_texts(one_texts), ""
+        if self.kind == LineDiffKind.INSERT:
+            return "", self._join_texts(two_texts)
+        if self.kind == LineDiffKind.EQUAL:
+            return self._join_texts(one_texts), self._join_texts(two_texts)
+        return self._get_edit_aligned_texts(
+            one_texts=one_texts,
+            two_texts=two_texts,
+            color=False,
+        )
+
     def get_stacked_str(
         self, *, color: bool = True, three_texts: tuple[str, ...] | None = None
     ) -> str:
@@ -234,30 +254,23 @@ class LineDiff:
         return f"{header}\n{one_text}\n{two_text}\n{three_text}\n"
 
     @staticmethod
-    def _get_edit_stacked_str(
+    def _get_edit_aligned_texts(
         *,
-        one_range: str,
-        two_range: str,
         one_texts: tuple[str, ...],
         two_texts: tuple[str, ...],
         color: bool,
-        three_texts: tuple[str, ...] | None,
-    ) -> str:
-        """Format an edit-like diff as stacked output.
+    ) -> tuple[str, str]:
+        """Character-align text for an edit-like diff.
 
         Arguments:
-            one_range: formatted index range for the first side
-            two_range: formatted index range for the second side
             one_texts: first-side text lines
             two_texts: second-side text lines
             color: whether to emit ANSI color escapes
-            three_texts: optional unaligned third-side text lines
         Returns:
-            formatted edit diff chunk
+            first- and second-side aligned text
         """
         one_text = LineDiff._join_texts(one_texts)
         two_text = LineDiff._join_texts(two_texts)
-        header = f"{one_range} {two_range}".rstrip()
         alignment = LineAlignment(one_text, two_text).alignment_pairs
 
         one_out: list[str] = []
@@ -299,10 +312,41 @@ class LineDiff:
                 two_text = colorize(two_text, AnsiColor.BLUE)
             two_out.append(two_text)
 
+        return "".join(one_out), "".join(two_out)
+
+    @staticmethod
+    def _get_edit_stacked_str(
+        *,
+        one_range: str,
+        two_range: str,
+        one_texts: tuple[str, ...],
+        two_texts: tuple[str, ...],
+        color: bool,
+        three_texts: tuple[str, ...] | None,
+    ) -> str:
+        """Format an edit-like diff as stacked output.
+
+        Arguments:
+            one_range: formatted index range for the first side
+            two_range: formatted index range for the second side
+            one_texts: first-side text lines
+            two_texts: second-side text lines
+            color: whether to emit ANSI color escapes
+            three_texts: optional unaligned third-side text lines
+        Returns:
+            formatted edit diff chunk
+        """
+        header = f"{one_range} {two_range}".rstrip()
+        one_text, two_text = LineDiff._get_edit_aligned_texts(
+            one_texts=one_texts,
+            two_texts=two_texts,
+            color=color,
+        )
+
         if three_texts is None:
-            return f"{header}\n{''.join(one_out)}\n{''.join(two_out)}\n"
+            return f"{header}\n{one_text}\n{two_text}\n"
         three_text = LineDiff._join_texts(three_texts)
-        return f"{header}\n{''.join(one_out)}\n{''.join(two_out)}\n{three_text}\n"
+        return f"{header}\n{one_text}\n{two_text}\n{three_text}\n"
 
     @staticmethod
     def _get_insert_stacked_str(

@@ -10,6 +10,7 @@ from pathlib import Path
 from pytest import CaptureFixture, mark, raises
 
 from scinoephile.cli.audit import AuditCli
+from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
 from scinoephile.cli.audit.audit_guided_review_cli import AuditGuidedReviewCli
 from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
@@ -114,6 +115,7 @@ def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
+        "aligned-diff": AuditAlignedDiffCli,
         "delineation": AuditDelineationCli,
         "guided-review": AuditGuidedReviewCli,
         "punctuation": AuditPunctuationCli,
@@ -121,6 +123,57 @@ def test_audit_cli_subcommands():
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
     }
+
+
+def test_audit_aligned_diff_cli_stdout_outfile_and_validation(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test aligned-diff audit output and range validation.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    transcription_path = tmp_path / "transcription.srt"
+    reference_path = tmp_path / "reference.srt"
+    guide_path = tmp_path / "guide.srt"
+    _write_srt(transcription_path, ("甲錯", "相同"))
+    _write_srt(reference_path, ("甲正", "相同"))
+    _write_srt(guide_path, ("指南一", "指南二"))
+    arguments = (
+        f"--transcription {transcription_path} "
+        f"--reference {reference_path} --guide {guide_path}"
+    )
+
+    run_cli_with_args(
+        AuditAlignedDiffCli,
+        f"{arguments} --first-index 1 --last-index 1",
+    )
+    stdout = capsys.readouterr().out
+    assert stdout.startswith("# Aligned Subtitle Diff Audit\n")
+    assert "- transcription subtitle range: 1 through 1" in stdout
+    assert "- row filter: changes" in stdout
+    assert "<pre>T │ 甲錯<br>R │ 甲正<br>G │ 指南一</pre>" in stdout
+
+    outfile_path = tmp_path / "audit.md"
+    run_cli_with_args(
+        AuditAlignedDiffCli,
+        f"{arguments} --filter all --outfile {outfile_path}",
+    )
+    assert capsys.readouterr().out == ""
+    report = outfile_path.read_text(encoding="utf-8")
+    assert "- row filter: all" in report
+    assert "- table rows: 2" in report
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditAlignedDiffCli,
+            f"{arguments} --first-index 2 --last-index 1",
+        )
+    assert "--first-index must be less than or equal to --last-index" in (
+        capsys.readouterr().err
+    )
 
 
 def test_audit_guided_review_cli_stdout_and_outfile(

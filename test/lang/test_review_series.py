@@ -412,7 +412,7 @@ def test_review_series(
     language: Language,
     prompt: ReviewPrompt,
 ):
-    """Test series review against expected outputs.
+    """Test review against expected outputs.
 
     Arguments:
         request: pytest request for fixture lookup
