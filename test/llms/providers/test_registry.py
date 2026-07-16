@@ -60,7 +60,7 @@ def test_get_provider_preserves_default_model_with_none_override():
     provider = get_provider("openai", model=None)
 
     assert isinstance(provider, OpenAIProvider)
-    assert provider.model == "gpt-5.4-mini"
+    assert provider.model == "gpt-5.6-luna"
 
 
 def test_get_provider_constructs_deepseek_provider_with_kwargs():
