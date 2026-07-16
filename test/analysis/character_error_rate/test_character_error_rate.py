@@ -229,16 +229,16 @@ def test_series_cer_string_uses_na_for_empty_reference():
     ),
     [
         param(
-            "kob_yue_hans_clean_review_flatten_timewarp",
-            "kob_yue_hans_transcribe",
-            "kob_yue_hans_transcribe_expected_cer",
+            "kob_yue_hant_transcribe_reference",
+            "kob_yue_hant_transcribe",
+            "kob_yue_hant_transcribe_expected_cer",
             id="kob-yue-transcribe",
         ),
         param(
-            "kob_yue_hans_clean_review_flatten_timewarp",
-            "kob_yue_hans_transcribe_review_translate_guided_review",
-            "kob_yue_hans_transcribe_review_translate_guided_review_expected_cer",
-            id="kob-yue-review",
+            "kob_yue_hant_transcribe_reference",
+            "kob_yue_hant_transcribe_clean_review",
+            "kob_yue_hant_transcribe_clean_review_expected_cer",
+            id="kob-yue-transcribe-clean-review",
         ),
     ],
 )

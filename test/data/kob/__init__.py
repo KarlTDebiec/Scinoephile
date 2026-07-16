@@ -20,32 +20,19 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.eng.review import ReviewPromptEng
 from scinoephile.lang.yue.review import ReviewPromptYueHans, ReviewPromptYueHant
-from scinoephile.lang.yue_zho.review import (
-    YueZhoGuidedReviewPromptYueHans,
-    YueZhoPairwiseReviewPromptYueHans,
-)
+from scinoephile.lang.yue_zho.review import YueZhoGuidedReviewPromptYueHant
 from scinoephile.lang.yue_zho.transcription import (
-    YueZhoDelineationPromptYueHans,
-    YueZhoPunctuationPromptYueHans,
-)
-from scinoephile.lang.yue_zho.translation import (
-    YueZhoGapTranslationPromptYueHans,
+    YueZhoDelineationPromptYueHant,
+    YueZhoPunctuationPromptYueHant,
 )
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.lang.zho.review import ReviewPromptZhoHans, ReviewPromptZhoHant
 from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
-from scinoephile.llms.gap_translation import (
-    GapTranslationManager,
-    GapTranslationPrompt,
-)
 from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
-from scinoephile.llms.pairwise_review import (
-    PairwiseReviewManager,
-    PairwiseReviewPrompt,
-)
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
+from test.data.transcription import get_reference_for_guide_blocks
 from test.helpers import SeriesCERResult, test_data_root
 
 __all__ = [
@@ -54,14 +41,12 @@ __all__ = [
     "kob_yue_hant",
     "get_kob_eng_ocr_fusion_test_cases",
     "get_kob_eng_review_test_cases",
-    "get_kob_yue_delineation_test_cases",
-    "get_kob_yue_from_zho_gap_translation_test_cases",
     "get_kob_yue_hans_review_test_cases",
+    "get_kob_yue_hant_delineation_test_cases",
+    "get_kob_yue_hant_guided_review_test_cases",
+    "get_kob_yue_hant_punctuation_test_cases",
     "get_kob_yue_hant_review_test_cases",
     "get_kob_yue_hant_simplify_review_test_cases",
-    "get_kob_yue_punctuation_test_cases",
-    "get_kob_yue_vs_zho_guided_review_test_cases",
-    "get_kob_yue_vs_zho_pairwise_review_test_cases",
     "get_kob_zho_hant_ocr_fusion_test_cases",
     "get_kob_zho_hant_review_test_cases",
     "get_kob_zho_hant_simplify_review_test_cases",
@@ -85,13 +70,7 @@ __all__ = [
     "kob_yue_hans_clean_review_flatten_timewarp",
     "kob_yue_hans_clean_review_flatten_timewarp_romanize",
     "kob_yue_hans_eng",
-    "kob_yue_hans_audio",
-    "kob_yue_hans_transcribe",
-    "kob_yue_hans_transcribe_expected_cer",
-    "kob_yue_hans_transcribe_review",
-    "kob_yue_hans_transcribe_review_translate",
-    "kob_yue_hans_transcribe_review_translate_guided_review",
-    "kob_yue_hans_transcribe_review_translate_guided_review_expected_cer",
+    "kob_yue_hant_audio",
     "kob_yue_hant_clean",
     "kob_yue_hant_clean_review",
     "kob_yue_hant_clean_review_flatten",
@@ -99,6 +78,11 @@ __all__ = [
     "kob_yue_hant_clean_review_flatten_timewarp_simplify",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize",
+    "kob_yue_hant_transcribe",
+    "kob_yue_hant_transcribe_clean_review",
+    "kob_yue_hant_transcribe_clean_review_expected_cer",
+    "kob_yue_hant_transcribe_expected_cer",
+    "kob_yue_hant_transcribe_reference",
     "kob_yue_simplify_expected_series_diff",
     "kob_zho_hans_eng",
     "kob_zho_hant_ocr_fuse",
@@ -184,11 +168,11 @@ def get_kob_eng_review_test_cases(
 
 
 @cache
-def get_kob_yue_delineation_test_cases(
-    prompt: DelineationPrompt = YueZhoDelineationPromptYueHans,
+def get_kob_yue_hant_delineation_test_cases(
+    prompt: DelineationPrompt = YueZhoDelineationPromptYueHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB yue-Hans delineation test cases.
+    """Get KOB yue-Hant delineation test cases.
 
     Arguments:
         prompt: text for LLM correspondence
@@ -198,7 +182,7 @@ def get_kob_yue_delineation_test_cases(
     """
     path = (
         output_dir
-        / "yue-Hans_transcribe"
+        / "yue-Hant_transcribe"
         / "lang"
         / "yue_zho"
         / "transcription"
@@ -209,11 +193,11 @@ def get_kob_yue_delineation_test_cases(
 
 
 @cache
-def get_kob_yue_from_zho_gap_translation_test_cases(
-    prompt: GapTranslationPrompt = YueZhoGapTranslationPromptYueHans,
+def get_kob_yue_hant_guided_review_test_cases(
+    prompt: GuidedReviewPrompt = YueZhoGuidedReviewPromptYueHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB yue-Hans from zho-Hans gap translation test cases.
+    """Get KOB yue-Hant guided-review test cases.
 
     Arguments:
         prompt: text for LLM correspondence
@@ -223,15 +207,13 @@ def get_kob_yue_from_zho_gap_translation_test_cases(
     """
     path = (
         output_dir
-        / "yue-Hans_transcribe"
+        / "yue-Hant_transcribe"
         / "lang"
         / "yue_zho"
-        / "gap_translation"
+        / "guided_review"
         / f"{get_torch_device()}.json"
     )
-    return load_test_cases_from_json(
-        path, GapTranslationManager, prompt=prompt, **kwargs
-    )
+    return load_test_cases_from_json(path, GuidedReviewManager, prompt=prompt, **kwargs)
 
 
 @cache
@@ -295,11 +277,11 @@ def get_kob_yue_hant_simplify_review_test_cases(
 
 
 @cache
-def get_kob_yue_punctuation_test_cases(
-    prompt: PunctuationPrompt = YueZhoPunctuationPromptYueHans,
+def get_kob_yue_hant_punctuation_test_cases(
+    prompt: PunctuationPrompt = YueZhoPunctuationPromptYueHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
-    """Get KOB yue-Hans punctuation test cases.
+    """Get KOB yue-Hant punctuation test cases.
 
     Arguments:
         prompt: text for LLM correspondence
@@ -309,7 +291,7 @@ def get_kob_yue_punctuation_test_cases(
     """
     path = (
         output_dir
-        / "yue-Hans_transcribe"
+        / "yue-Hant_transcribe"
         / "lang"
         / "yue_zho"
         / "transcription"
@@ -317,56 +299,6 @@ def get_kob_yue_punctuation_test_cases(
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(path, PunctuationManager, prompt=prompt, **kwargs)
-
-
-@cache
-def get_kob_yue_vs_zho_guided_review_test_cases(
-    prompt: GuidedReviewPrompt = YueZhoGuidedReviewPromptYueHans,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB yue-Hans vs zho-Hans guided review test cases.
-
-    Arguments:
-        prompt: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hans_transcribe"
-        / "lang"
-        / "yue_zho"
-        / "guided_review"
-        / f"{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(path, GuidedReviewManager, prompt=prompt, **kwargs)
-
-
-@cache
-def get_kob_yue_vs_zho_pairwise_review_test_cases(
-    prompt: PairwiseReviewPrompt = YueZhoPairwiseReviewPromptYueHans,
-    **kwargs: Unpack[_KobTestCaseKwargs],
-) -> list[TestCase]:
-    """Get KOB yue-Hans vs zho-Hans pairwise review test cases.
-
-    Arguments:
-        prompt: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hans_transcribe"
-        / "lang"
-        / "yue_zho"
-        / "pairwise_review"
-        / f"{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(
-        path, PairwiseReviewManager, prompt=prompt, **kwargs
-    )
 
 
 @cache
@@ -652,12 +584,6 @@ def kob_eng_clean_review_flatten_timewarp() -> Series:
 
 
 @fixture
-def kob_yue_hans_audio() -> AudioSeries:
-    """KOB yue-Hans audio subtitles."""
-    return AudioSeries.load(output_dir / "yue-Hans_transcribe/audio")
-
-
-@fixture
 def kob_yue_hans_clean() -> Series:
     """KOB yue-Hans cleaned SRT subtitles."""
     return Series.load(output_dir / "yue-Hans/clean.srt")
@@ -696,61 +622,9 @@ def kob_yue_hans_eng() -> Series:
 
 
 @fixture
-def kob_yue_hans_transcribe() -> Series:
-    """KOB yue-Hans transcribed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe/transcribe.srt")
-
-
-@fixture
-def kob_yue_hans_transcribe_expected_cer() -> SeriesCERResult:
-    """Expected CER for KOB transcribed subtitles against flattened reference."""
-    return SeriesCERResult(
-        cer=0.555115685757016,
-        substitutions=4757,
-        insertions=667,
-        deletions=886,
-        correct=5724,
-        reference_length=11367,
-    )
-
-
-@fixture
-def kob_yue_hans_transcribe_review() -> Series:
-    """KOB yue-Hans transcribed and pairwise reviewed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe/transcribe_review.srt")
-
-
-@fixture
-def kob_yue_hans_transcribe_review_translate() -> Series:
-    """KOB yue-Hans transcribed/pairwise-reviewed/translated subtitles."""
-    return Series.load(
-        output_dir / "yue-Hans_transcribe/transcribe_review_translate.srt"
-    )
-
-
-@fixture
-def kob_yue_hans_transcribe_review_translate_guided_review() -> Series:
-    """KOB yue-Hans transcribed/pairwise-reviewed/translated/guided-reviewed subtitles."""
-    return Series.load(
-        output_dir
-        / "yue-Hans_transcribe"
-        / "transcribe_review_translate_guided_review.srt"
-    )
-
-
-@fixture
-def kob_yue_hans_transcribe_review_translate_guided_review_expected_cer() -> (
-    SeriesCERResult
-):
-    """Expected CER for KOB reviewed subtitles against flattened reference."""
-    return SeriesCERResult(
-        cer=0.4458520277997713,
-        substitutions=3637,
-        insertions=634,
-        deletions=797,
-        correct=6933,
-        reference_length=11367,
-    )
+def kob_yue_hant_audio() -> AudioSeries:
+    """KOB yue-Hant transcription audio guided by zho-Hant subtitles."""
+    return AudioSeries.load(output_dir / "yue-Hant_transcribe/audio")
 
 
 @fixture
@@ -800,6 +674,57 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Ser
         output_dir
         / "yue-Hant"
         / "clean_review_flatten_timewarp_simplify_review_romanize.srt"
+    )
+
+
+@fixture
+def kob_yue_hant_transcribe() -> Series:
+    """KOB yue-Hant transcribed subtitles."""
+    return Series.load(output_dir / "yue-Hant_transcribe/transcribe.srt")
+
+
+@fixture
+def kob_yue_hant_transcribe_clean_review() -> Series:
+    """KOB yue-Hant cleaned and guide-reviewed transcription."""
+    return Series.load(output_dir / "yue-Hant_transcribe/transcribe_clean_review.srt")
+
+
+@fixture
+def kob_yue_hant_transcribe_clean_review_expected_cer() -> SeriesCERResult:
+    """Expected CER for the KOB cleaned and guide-reviewed transcription."""
+    return SeriesCERResult(
+        cer=0.33033932135728544,
+        substitutions=198,
+        insertions=46,
+        deletions=87,
+        correct=717,
+        reference_length=1002,
+    )
+
+
+@fixture
+def kob_yue_hant_transcribe_expected_cer() -> SeriesCERResult:
+    """Expected CER for KOB yue-Hant transcription against its reference."""
+    return SeriesCERResult(
+        cer=0.39520958083832336,
+        substitutions=274,
+        insertions=34,
+        deletions=88,
+        correct=640,
+        reference_length=1002,
+    )
+
+
+@fixture
+def kob_yue_hant_transcribe_reference(
+    kob_yue_hant_clean_review_flatten_timewarp: Series,
+    kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Series,
+) -> Series:
+    """KOB yue-Hant reference limited to the eight processed guide blocks."""
+    return get_reference_for_guide_blocks(
+        kob_yue_hant_clean_review_flatten_timewarp,
+        kob_zho_hant_ocr_fuse_clean_validate_review_flatten,
+        8,
     )
 
 

@@ -13,7 +13,6 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.lang.review.pairwise import get_pairwise_reviewer
 from scinoephile.workflows.review import review_series_pairwise
-from test.data.kob import get_kob_yue_vs_zho_pairwise_review_test_cases
 from test.data.mlamd import get_mlamd_yue_vs_zho_pairwise_review_test_cases
 from test.helpers import assert_series_equal, parametrize
 
@@ -27,14 +26,6 @@ from test.helpers import assert_series_equal, parametrize
         "device_patch_target",
     ),
     [
-        param(
-            "kob_yue_hans_transcribe",
-            "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
-            "kob_yue_hans_transcribe_review",
-            get_kob_yue_vs_zho_pairwise_review_test_cases,
-            "test.data.kob.get_torch_device",
-            id="kob",
-        ),
         param(
             "mlamd_yue_hans_transcribe",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",

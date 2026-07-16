@@ -40,14 +40,12 @@ _LOCALIZED_PROMPT = PunctuationPrompt(
 )
 """Punctuation prompt with Chinese correspondence field names."""
 
-_MLAMD_PUNCTUATION_PATHS = tuple(
+_PUNCTUATION_PATHS = tuple(
     sorted(
-        test_data_root.glob(
-            "mlamd/output/*/lang/yue_zho/transcription/punctuation/*.json"
-        )
+        test_data_root.glob("*/output/*/lang/yue_zho/transcription/punctuation/*.json")
     )
 )
-"""Tracked MLAMD punctuation test-case JSON paths."""
+"""Tracked punctuation test-case JSON paths."""
 
 
 def test_prompt_aliases_are_used_for_llm_correspondence():
@@ -236,22 +234,22 @@ def test_persistence_uses_base_prompt_aliases(tmp_path: Path):
 
 
 def test_tracked_fixture_count():
-    """Both tracked MLAMD punctuation files should contain 1,288 test cases."""
+    """All three tracked punctuation files should contain 2,251 test cases."""
     counts = [
         len(json.loads(input_path.read_text(encoding="utf-8")))
-        for input_path in _MLAMD_PUNCTUATION_PATHS
+        for input_path in _PUNCTUATION_PATHS
     ]
 
-    assert len(_MLAMD_PUNCTUATION_PATHS) == 2
-    assert sum(counts) == 1288
+    assert len(_PUNCTUATION_PATHS) == 3
+    assert sum(counts) == 2251
 
 
 @mark.parametrize(
     "input_path",
-    _MLAMD_PUNCTUATION_PATHS,
+    _PUNCTUATION_PATHS,
     ids=[
         input_path.relative_to(test_data_root).as_posix()
-        for input_path in _MLAMD_PUNCTUATION_PATHS
+        for input_path in _PUNCTUATION_PATHS
     ],
 )
 def test_tracked_fixture_round_trips_without_migration(

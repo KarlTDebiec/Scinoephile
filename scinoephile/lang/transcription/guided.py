@@ -42,6 +42,9 @@ __all__ = [
 
 _YUE_ZHO_DELINEATION_JSON_PATHS = (
     Path(
+        "kob/output/yue-Hant_transcribe/lang/yue_zho/transcription/delineation/mps.json"
+    ),
+    Path(
         "mlamd/output/yue-Hans_transcribe/lang/yue_zho/transcription/"
         "delineation/cuda.json"
     ),
@@ -53,6 +56,9 @@ _YUE_ZHO_DELINEATION_JSON_PATHS = (
 """Default written Cantonese transcription delineation JSON paths."""
 
 _YUE_ZHO_PUNCTUATION_JSON_PATHS = (
+    Path(
+        "kob/output/yue-Hant_transcribe/lang/yue_zho/transcription/punctuation/mps.json"
+    ),
     Path(
         "mlamd/output/yue-Hans_transcribe/lang/yue_zho/transcription/"
         "punctuation/cuda.json"

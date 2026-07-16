@@ -50,14 +50,12 @@ _LOCALIZED_PROMPT = DelineationPrompt(
 )
 """Delineation prompt with localized correspondence field names."""
 
-_MLAMD_DELINEATION_PATHS = tuple(
+_DELINEATION_PATHS = tuple(
     sorted(
-        test_data_root.glob(
-            "mlamd/output/*/lang/yue_zho/transcription/delineation/*.json"
-        )
+        test_data_root.glob("*/output/*/lang/yue_zho/transcription/delineation/*.json")
     )
 )
-"""Tracked MLAMD delineation test-case JSON paths."""
+"""Tracked delineation test-case JSON paths."""
 
 
 def test_prompt_aliases_are_used_for_llm_correspondence():
@@ -332,22 +330,22 @@ def test_persistence_uses_base_prompt_aliases_and_omits_defaults(tmp_path: Path)
 
 
 def test_tracked_fixture_count():
-    """Both tracked MLAMD delineation files should contain 1,752 test cases."""
+    """All three tracked delineation files should contain 3,109 test cases."""
     counts = [
         len(json.loads(input_path.read_text(encoding="utf-8")))
-        for input_path in _MLAMD_DELINEATION_PATHS
+        for input_path in _DELINEATION_PATHS
     ]
 
-    assert len(_MLAMD_DELINEATION_PATHS) == 2
-    assert sum(counts) == 1752
+    assert len(_DELINEATION_PATHS) == 3
+    assert sum(counts) == 3109
 
 
 @mark.parametrize(
     "input_path",
-    _MLAMD_DELINEATION_PATHS,
+    _DELINEATION_PATHS,
     ids=[
         input_path.relative_to(test_data_root).as_posix()
-        for input_path in _MLAMD_DELINEATION_PATHS
+        for input_path in _DELINEATION_PATHS
     ],
 )
 def test_tracked_fixture_round_trips_without_migration(
