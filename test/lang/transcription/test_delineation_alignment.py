@@ -16,12 +16,12 @@ from scinoephile.lang.transcription.alignment import TranscriptionAlignment
 from scinoephile.llms.delineation import DelineationPrompt, DelineationTestCase
 
 _LOCALIZED_PROMPT = DelineationPrompt(
-    src_1_sub_1="cankao_yi",
-    src_1_sub_2="cankao_er",
-    src_2_sub_1="mubiao_yi",
-    src_2_sub_2="mubiao_er",
-    src_2_sub_1_shifted="shuchu_yi",
-    src_2_sub_2_shifted="shuchu_er",
+    ref_sub_1="cankao_yi",
+    ref_sub_2="cankao_er",
+    target_sub_1="mubiao_yi",
+    target_sub_2="mubiao_er",
+    target_sub_1_shifted="shuchu_yi",
+    target_sub_2_shifted="shuchu_er",
 )
 """Delineation prompt using non-default correspondence field names."""
 
