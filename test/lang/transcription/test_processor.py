@@ -74,6 +74,9 @@ def _get_segment(
     Returns:
         transcribed segment
     """
+    words = None
+    if with_words:
+        words = [TranscribedWord(text=text, start=start, end=end, confidence=1.0)]
     return TranscribedSegment(
         id=segment_id,
         seek=0,
@@ -81,11 +84,7 @@ def _get_segment(
         end=end,
         text=text,
         compression_ratio=compression_ratio,
-        words=(
-            [TranscribedWord(text=text, start=start, end=end, confidence=1.0)]
-            if with_words
-            else None
-        ),
+        words=words,
     )
 
 
@@ -152,6 +151,7 @@ def test_missing_guided_tail_runs_focused_recovery():
         initial_segments
     )
     processor.tail_recovery_transcriber = Mock(return_value=recovered_segments)
+    processor.tail_recovery_transcriber.get_cached_transcription.return_value = None
     audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
 
     output = processor._transcribe_block_audio(audio, expected_last_start=8.0)
@@ -161,8 +161,51 @@ def test_missing_guided_tail_runs_focused_recovery():
     assert output[1].start == 5.2
     assert output[1].end == 5.8
     normalized_tail_audio = processor.tail_recovery_transcriber.call_args.args[0]
+    processor.tail_recovery_transcriber.assert_called_once_with(
+        normalized_tail_audio,
+        use_cache=False,
+    )
     assert len(normalized_tail_audio) == 5000
     assert normalized_tail_audio.max_dBFS == approx(-1.0, abs=0.01)
+
+
+def test_missing_guided_tail_bypasses_unusable_cached_recovery():
+    """Test an unusable focused-tail cache does not prevent fresh recovery."""
+    processor, _ = _get_processor(vad_mode=VADMode.OFF)
+    initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    recovered_segments = [
+        _get_segment(
+            start=0.2,
+            end=0.8,
+            text="tail",
+            compression_ratio=1.0,
+            with_words=True,
+        )
+    ]
+    recovered_segments[0].no_speech_prob = 0.1
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = (
+        initial_segments
+    )
+    processor.tail_recovery_transcriber = Mock(return_value=recovered_segments)
+    processor.tail_recovery_transcriber.get_cached_transcription.return_value = (
+        repetitive_segments
+    )
+    audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
+
+    output = processor._transcribe_block_audio(audio, expected_last_start=8.0)
+
+    assert output[:1] == initial_segments
+    assert output[1].text == "tail"
+    normalized_tail_audio = processor.tail_recovery_transcriber.call_args.args[0]
+    processor.tail_recovery_transcriber.get_cached_transcription.assert_called_once_with(
+        normalized_tail_audio
+    )
+    processor.tail_recovery_transcriber.assert_called_once_with(
+        normalized_tail_audio,
+        use_cache=False,
+    )
 
 
 def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
@@ -192,6 +235,7 @@ def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
     processor.tail_recovery_transcriber = Mock(
         return_value=[stretched_segment, no_speech_segment]
     )
+    processor.tail_recovery_transcriber.get_cached_transcription.return_value = None
     audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
 
     output = processor._transcribe_block_audio(audio, expected_last_start=8.0)
@@ -218,6 +262,29 @@ def test_auto_vad_uses_cached_non_vad_result_after_repetitive_vad_result():
     processor.no_vad_transcriber.assert_not_called()
 
 
+def test_rejected_cached_result_is_bypassed_for_fresh_retry():
+    """Test a rejected cache entry does not prevent a fresh Whisper attempt."""
+    processor, _ = _get_processor(vad_mode=VADMode.OFF)
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    processor.no_vad_transcriber = Mock(return_value=usable_segments)
+    processor.no_vad_transcriber.get_cached_transcription.return_value = (
+        repetitive_segments
+    )
+    processor.recovery_transcriber = Mock()
+    processor.recovery_transcriber.get_cached_transcription.return_value = None
+    audio = AudioSegment.silent(duration=1000)
+
+    output = processor._transcribe_block_audio(audio)
+
+    assert output == usable_segments
+    processor.no_vad_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
+
+
 def test_auto_vad_retries_without_vad_after_repetitive_new_result():
     """Test automatic VAD retries without VAD after a repetitive new result."""
     processor, _ = _get_processor(vad_mode=VADMode.AUTO)
@@ -232,8 +299,16 @@ def test_auto_vad_retries_without_vad_after_repetitive_new_result():
     output = processor._transcribe_block_audio(audio)
 
     assert output == usable_segments
-    processor.vad_transcriber.assert_called_once_with(audio, cache_audio=audio)
-    processor.no_vad_transcriber.assert_called_once_with(audio, cache_audio=audio)
+    processor.vad_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
+    processor.no_vad_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
 
 
 def test_unusable_no_vad_result_uses_defensive_recovery():
@@ -250,8 +325,16 @@ def test_unusable_no_vad_result_uses_defensive_recovery():
     output = processor._transcribe_block_audio(audio)
 
     assert output == usable_segments
-    processor.no_vad_transcriber.assert_called_once_with(audio, cache_audio=audio)
-    processor.recovery_transcriber.assert_called_once_with(audio, cache_audio=audio)
+    processor.no_vad_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
+    processor.recovery_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
 
 
 def test_all_unusable_candidates_fail_before_alignment():
@@ -294,11 +377,69 @@ def test_auto_demucs_retries_unseparated_audio_after_unusable_result():
     processor.no_vad_transcriber.assert_called_once_with(
         separated_audio,
         cache_audio=original_audio,
+        use_cache=False,
     )
     processor.unseparated_no_vad_transcriber.assert_called_once_with(
         original_audio,
         cache_audio=original_audio,
+        use_cache=False,
     )
+    processor.recovery_transcriber.assert_not_called()
+
+
+def test_auto_demucs_uses_original_audio_after_separation_failure():
+    """Test automatic Demucs recovers when vocal separation fails."""
+    processor, _ = _get_processor(
+        demucs_mode=DemucsMode.AUTO,
+        vad_mode=VADMode.OFF,
+    )
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = None
+    processor.unseparated_no_vad_transcriber = Mock(return_value=usable_segments)
+    processor.unseparated_no_vad_transcriber.get_cached_transcription.return_value = (
+        None
+    )
+    processor.recovery_transcriber = Mock()
+    processor.recovery_transcriber.get_cached_transcription.return_value = None
+    original_audio = AudioSegment.silent(duration=1000)
+    processor.demucs_separator = Mock(
+        side_effect=ScinoephileError("Demucs separation failed.")
+    )
+
+    output = processor._transcribe_block_audio(original_audio)
+
+    assert output == usable_segments
+    processor.demucs_separator.assert_called_once_with(original_audio)
+    processor.no_vad_transcriber.assert_not_called()
+    processor.unseparated_no_vad_transcriber.assert_called_once_with(
+        original_audio,
+        cache_audio=original_audio,
+        use_cache=False,
+    )
+    processor.recovery_transcriber.assert_not_called()
+
+
+def test_forced_demucs_surfaces_separation_failure():
+    """Test forced Demucs does not hide vocal-separation failures."""
+    processor, _ = _get_processor(
+        demucs_mode=DemucsMode.ON,
+        vad_mode=VADMode.OFF,
+    )
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = None
+    processor.recovery_transcriber = Mock()
+    processor.recovery_transcriber.get_cached_transcription.return_value = None
+    original_audio = AudioSegment.silent(duration=1000)
+    processor.demucs_separator = Mock(
+        side_effect=ScinoephileError("Demucs separation failed.")
+    )
+
+    with raises(ScinoephileError, match="Demucs separation failed"):
+        processor._transcribe_block_audio(original_audio)
+
+    processor.demucs_separator.assert_called_once_with(original_audio)
+    processor.no_vad_transcriber.assert_not_called()
     processor.recovery_transcriber.assert_not_called()
 
 

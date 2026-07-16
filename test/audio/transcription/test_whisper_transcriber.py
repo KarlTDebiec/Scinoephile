@@ -133,6 +133,26 @@ def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch)
     assert whisper.transcribe.call_args.kwargs["condition_on_previous_text"] is False
 
 
+def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):
+    """Test an explicit uncached transcription does not reload rejected output."""
+    whisper = Mock()
+    whisper.transcribe.return_value = {"segments": []}
+    transcriber = WhisperTranscriber(model_name="custom/model")
+    transcriber._model = Mock()
+    monkeypatch.setattr(transcriber, "_get_whisper_module", Mock(return_value=whisper))
+    get_cached_transcription = Mock()
+    monkeypatch.setattr(
+        transcriber,
+        "get_cached_transcription",
+        get_cached_transcription,
+    )
+    audio = AudioSegment.silent(duration=1000)
+
+    assert transcriber(audio, use_cache=False) == []
+    get_cached_transcription.assert_not_called()
+    whisper.transcribe.assert_called_once()
+
+
 @parametrize(
     ("model_name", "expected"),
     [

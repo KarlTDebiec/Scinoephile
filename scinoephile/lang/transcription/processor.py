@@ -346,6 +346,33 @@ class GuidedTranscriptionProcessor:
             condition_on_previous_text=condition_on_previous_text,
         )
 
+    def _get_primary_transcription_audio(
+        self,
+        audio: AudioSegment,
+    ) -> AudioSegment | None:
+        """Apply configured Demucs preprocessing.
+
+        Arguments:
+            audio: original block audio
+        Returns:
+            primary transcription audio, or None after automatic separation failure
+        """
+        if self.demucs_mode == DemucsMode.OFF:
+            return audio
+
+        assert self.demucs_separator is not None
+        logger.info("Applying Demucs vocal separation before transcription")
+        try:
+            return self.demucs_separator(audio)
+        except ScinoephileError as exc:
+            if self.demucs_mode == DemucsMode.ON:
+                raise
+            logger.warning(
+                f"Demucs separation failed in automatic mode; falling back "
+                f"to original audio: {exc}"
+            )
+            return None
+
     def _transcribe_block_audio(
         self,
         audio: AudioSegment,
@@ -364,33 +391,29 @@ class GuidedTranscriptionProcessor:
         """
         cache_audio = audio
         audio_duration = len(cache_audio) / 1000
-        cached_segments = self._get_cached_block_transcription(
+        segments = self._get_cached_block_transcription(
             cache_audio,
             audio_duration=audio_duration,
         )
-        segments = cached_segments
         if segments is None:
-            primary_audio = audio
-            if self.demucs_mode in (DemucsMode.AUTO, DemucsMode.ON):
-                assert self.demucs_separator is not None
-                logger.info("Applying Demucs vocal separation before transcription")
-                primary_audio = self.demucs_separator(audio)
-
-            for transcriber in self._get_standard_transcribers():
-                segments = self._transcribe_with_candidate(
-                    transcriber,
-                    primary_audio,
-                    cache_audio=cache_audio,
-                    audio_duration=audio_duration,
-                )
-                if segments is not None:
-                    break
+            primary_audio = self._get_primary_transcription_audio(audio)
+            if primary_audio is not None:
+                for transcriber in self._get_standard_transcribers():
+                    segments = self._transcribe_with_candidate(
+                        transcriber,
+                        primary_audio,
+                        cache_audio=cache_audio,
+                        audio_duration=audio_duration,
+                    )
+                    if segments is not None:
+                        break
 
             if segments is None and self.demucs_mode == DemucsMode.AUTO:
-                logger.info(
-                    "Retrying block transcription with original audio after unusable "
-                    "Demucs result"
-                )
+                if primary_audio is not None:
+                    logger.info(
+                        "Retrying block transcription with original audio after "
+                        "unusable Demucs result"
+                    )
                 for transcriber in self._get_standard_transcribers(unseparated=True):
                     segments = self._transcribe_with_candidate(
                         transcriber,
@@ -407,6 +430,7 @@ class GuidedTranscriptionProcessor:
                 )
                 recovery_audio = audio
                 if self.demucs_mode == DemucsMode.ON:
+                    assert primary_audio is not None
                     recovery_audio = primary_audio
                 segments = self._transcribe_with_candidate(
                     self.recovery_transcriber,
@@ -414,7 +438,6 @@ class GuidedTranscriptionProcessor:
                     cache_audio=cache_audio,
                     audio_duration=audio_duration,
                 )
-
         if segments is None:
             raise ScinoephileError(
                 "Whisper produced no usable transcription after all configured "
@@ -422,7 +445,7 @@ class GuidedTranscriptionProcessor:
             )
         return self._transcribe_with_focused_tail_recovery(
             segments,
-            audio,
+            cache_audio,
             expected_last_start=expected_last_start,
         )
 
@@ -445,7 +468,12 @@ class GuidedTranscriptionProcessor:
             usable transcribed segments, if produced
         """
         try:
-            segments = transcriber(audio, cache_audio=cache_audio)
+            # Cached candidates were validated before preprocessing
+            segments = transcriber(
+                audio,
+                cache_audio=cache_audio,
+                use_cache=False,
+            )
         except AssertionError as exc:
             logger.warning(
                 f"Whisper transcription candidate failed with an assertion: {exc}"
@@ -505,24 +533,36 @@ class GuidedTranscriptionProcessor:
             tail_audio,
             headroom=_TAIL_RECOVERY_HEADROOM_DB,
         )
-        tail_segments = None
+        tail_audio_duration = len(normalized_tail_audio) / 1000
+        tail_segments = self.tail_recovery_transcriber.get_cached_transcription(
+            normalized_tail_audio
+        )
+        if tail_segments is not None and not self._segments_are_usable(
+            tail_segments,
+            audio_duration=tail_audio_duration,
+        ):
+            logger.info("Retrying focused tail transcription after unusable cache")
+            tail_segments = None
+
         recovery_failed_with_assertion = False
-        try:
-            candidate_tail_segments = self.tail_recovery_transcriber(
-                normalized_tail_audio
-            )
-        except AssertionError as exc:
-            recovery_failed_with_assertion = True
-            logger.warning(
-                f"Keeping valid base Whisper transcription after focused tail "
-                f"recovery failed with an assertion: {exc}"
-            )
-        else:
-            if self._segments_are_usable(
-                candidate_tail_segments,
-                audio_duration=len(normalized_tail_audio) / 1000,
-            ):
-                tail_segments = candidate_tail_segments
+        if tail_segments is None:
+            try:
+                candidate_tail_segments = self.tail_recovery_transcriber(
+                    normalized_tail_audio,
+                    use_cache=False,
+                )
+            except AssertionError as exc:
+                recovery_failed_with_assertion = True
+                logger.warning(
+                    f"Keeping valid base Whisper transcription after focused tail "
+                    f"recovery failed with an assertion: {exc}"
+                )
+            else:
+                if self._segments_are_usable(
+                    candidate_tail_segments,
+                    audio_duration=tail_audio_duration,
+                ):
+                    tail_segments = candidate_tail_segments
         if tail_segments is None:
             if not recovery_failed_with_assertion:
                 logger.info(

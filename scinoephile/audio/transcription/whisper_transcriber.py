@@ -68,17 +68,26 @@ class WhisperTranscriber:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
     def __call__(
-        self, audio: AudioSegment, *, cache_audio: AudioSegment | None = None
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment | None = None,
+        use_cache: bool = True,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
         Arguments:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
+            use_cache: whether to return a cached transcription when available
         Returns:
             transcription, split into segments
         """
-        return self.transcribe(audio, cache_audio=cache_audio)
+        return self.transcribe(
+            audio,
+            cache_audio=cache_audio,
+            use_cache=use_cache,
+        )
 
     @property
     def model(self) -> Any:
@@ -133,18 +142,26 @@ class WhisperTranscriber:
         return segments
 
     def transcribe(
-        self, audio: AudioSegment, *, cache_audio: AudioSegment | None = None
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment | None = None,
+        use_cache: bool = True,
     ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
         Arguments:
             audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
+            use_cache: whether to return a cached transcription when available
         Returns:
             transcription, split into segments
         """
         cache_audio = cache_audio or audio
-        if (segments := self.get_cached_transcription(cache_audio)) is not None:
+        if (
+            use_cache
+            and (segments := self.get_cached_transcription(cache_audio)) is not None
+        ):
             return segments
 
         # Transcribe using Whisper
