@@ -8,7 +8,8 @@ from logging import INFO
 from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
-from pytest import LogCaptureFixture, raises
+from pydub.generators import Sine
+from pytest import LogCaptureFixture, approx, raises
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
 from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
@@ -125,6 +126,117 @@ def test_segments_are_usable_accepts_partial_guided_tail():
         segments,
         audio_duration=10.0,
     )
+
+
+def test_missing_guided_tail_runs_focused_recovery():
+    """Test a missing guided tail triggers normalized focused recovery."""
+    processor, _ = _get_processor(vad_mode=VADMode.OFF)
+    initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
+    recovered_segments = [
+        _get_segment(
+            start=0.2,
+            end=0.8,
+            text="tail",
+            compression_ratio=1.0,
+            with_words=True,
+        )
+    ]
+    recovered_segments[0].no_speech_prob = 0.1
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = (
+        initial_segments
+    )
+    processor.tail_recovery_transcriber = Mock(return_value=recovered_segments)
+    processor.tail_recovery_transcriber.get_cached_transcription.return_value = None
+    audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
+
+    output = processor._transcribe_block_audio(audio, expected_last_start=8.0)
+
+    assert output[:1] == initial_segments
+    assert output[1].text == "tail"
+    assert output[1].start == 5.2
+    assert output[1].end == 5.8
+    normalized_tail_audio = processor.tail_recovery_transcriber.call_args.args[0]
+    processor.tail_recovery_transcriber.assert_called_once_with(
+        normalized_tail_audio,
+        use_cache=False,
+    )
+    assert len(normalized_tail_audio) == 5000
+    assert normalized_tail_audio.max_dBFS == approx(-1.0, abs=0.01)
+
+
+def test_missing_guided_tail_bypasses_unusable_cached_recovery():
+    """Test an unusable focused-tail cache does not prevent fresh recovery."""
+    processor, _ = _get_processor(vad_mode=VADMode.OFF)
+    initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    recovered_segments = [
+        _get_segment(
+            start=0.2,
+            end=0.8,
+            text="tail",
+            compression_ratio=1.0,
+            with_words=True,
+        )
+    ]
+    recovered_segments[0].no_speech_prob = 0.1
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = (
+        initial_segments
+    )
+    processor.tail_recovery_transcriber = Mock(return_value=recovered_segments)
+    processor.tail_recovery_transcriber.get_cached_transcription.return_value = (
+        repetitive_segments
+    )
+    audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
+
+    output = processor._transcribe_block_audio(audio, expected_last_start=8.0)
+
+    assert output[:1] == initial_segments
+    assert output[1].text == "tail"
+    normalized_tail_audio = processor.tail_recovery_transcriber.call_args.args[0]
+    processor.tail_recovery_transcriber.get_cached_transcription.assert_called_once_with(
+        normalized_tail_audio
+    )
+    processor.tail_recovery_transcriber.assert_called_once_with(
+        normalized_tail_audio,
+        use_cache=False,
+    )
+
+
+def test_missing_guided_tail_keeps_valid_base_without_credible_recovery():
+    """Test implausible tail recovery does not invalidate a valid base transcript."""
+    processor, _ = _get_processor(vad_mode=VADMode.OFF)
+    initial_segments = [_get_segment(end=4.0, compression_ratio=1.0, with_words=True)]
+    stretched_segment = _get_segment(
+        end=5.0,
+        text="x",
+        compression_ratio=1.0,
+        with_words=True,
+    )
+    stretched_segment.no_speech_prob = 0.1
+    no_speech_segment = _get_segment(
+        segment_id=1,
+        start=5.1,
+        end=5.2,
+        text="tail",
+        compression_ratio=1.0,
+        with_words=True,
+    )
+    no_speech_segment.no_speech_prob = 0.9
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = (
+        initial_segments
+    )
+    processor.tail_recovery_transcriber = Mock(
+        return_value=[stretched_segment, no_speech_segment]
+    )
+    processor.tail_recovery_transcriber.get_cached_transcription.return_value = None
+    audio = Sine(440).to_audio_segment(duration=10000).apply_gain(-20.0)
+
+    output = processor._transcribe_block_audio(audio, expected_last_start=8.0)
+
+    assert output == initial_segments
 
 
 def test_auto_vad_uses_cached_non_vad_result_after_repetitive_vad_result():
@@ -249,13 +361,17 @@ def test_process_block_preserves_raw_segments_and_uses_buffered_offset():
         processor,
         "_transcribe_block_audio",
         return_value=[segment],
-    ):
+    ) as transcribe_block_audio:
         output = processor.process_block(audio_block, reference_block)
 
     assert len(output) == 1
     assert output[0].text == "hello"
     assert output[0].start == 350
     assert output[0].end == 450
+    transcribe_block_audio.assert_called_once_with(
+        audio_block.audio,
+        expected_last_start=0.75,
+    )
     aligner.update_all_test_cases.assert_called_once_with()
 
 
