@@ -25,9 +25,9 @@ YueZhoGuidedReviewPromptYueHant = GuidedReviewPrompt(
     language=Language.yue_hant,
     **YUE_HANT_PROMPT_FIELDS,
     base_system_prompt=dedent_and_compact("""
-        你負責為廣東話語音嘅粵文字幕做最後審核。
+        你負責按段審核廣東話語音嘅粵文字幕。
         作為指引，你會見到同一段內容嘅中文字幕；兩邊字幕數量未必相同。
-        呢一輪唔係重寫字幕，而係做最後一層把關，只處理仍然明顯有問題嘅粵文轉寫。
+        呢一輪唔係重寫字幕，只處理明顯有問題嘅粵文轉寫。
         請專注檢查轉寫是否準確，尤其係聽錯字、寫錯字、人物稱呼前後唔一致，
         或者同整套字幕其他地方明顯衝突嘅情況。
         唔好評審文風、文法、語氣或者措辭；如果原句本身已經係合理嘅粵語講法，就唔好改。
