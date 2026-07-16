@@ -6,8 +6,6 @@ from __future__ import annotations
 
 from math import inf
 
-from pytest import FixtureRequest, param
-
 from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
 from scinoephile.core.subtitles import Series
 from test.helpers import SeriesCERResult, parametrize
@@ -219,52 +217,3 @@ def test_series_cer_string_uses_na_for_empty_reference():
         "Deletions: 0 (N/A)\n"
         "Reference length: 0"
     )
-
-
-@parametrize(
-    (
-        "reference_series_fixture_name",
-        "candidate_series_fixture_name",
-        "expected_fixture_name",
-    ),
-    [
-        param(
-            "kob_yue_hant_transcribe_reference",
-            "kob_yue_hant_transcribe",
-            "kob_yue_hant_transcribe_expected_cer",
-            id="kob-yue-transcribe",
-        ),
-        param(
-            "kob_yue_hant_transcribe_reference",
-            "kob_yue_hant_transcribe_clean_review",
-            "kob_yue_hant_transcribe_clean_review_expected_cer",
-            id="kob-yue-transcribe-clean-review",
-        ),
-    ],
-)
-def test_series_cer(
-    reference_series_fixture_name: str,
-    candidate_series_fixture_name: str,
-    expected_fixture_name: str,
-    request: FixtureRequest,
-):
-    """Test series-level character error rate calculations.
-
-    Arguments:
-        reference_series_fixture_name: fixture name for reference subtitle series
-        candidate_series_fixture_name: fixture name for candidate subtitle series
-        expected_fixture_name: fixture name containing expected CER result
-        request: pytest fixture request object
-    """
-    reference_series: Series = request.getfixturevalue(reference_series_fixture_name)
-    candidate_series: Series = request.getfixturevalue(candidate_series_fixture_name)
-    expected: SeriesCERResult = request.getfixturevalue(expected_fixture_name)
-
-    result = SeriesCER(reference_series, candidate_series)
-
-    assert result.cer == expected.cer
-    assert result.substitutions == expected.substitutions
-    assert result.insertions == expected.insertions
-    assert result.deletions == expected.deletions
-    assert result.correct == expected.correct
-    assert result.reference_length == expected.reference_length

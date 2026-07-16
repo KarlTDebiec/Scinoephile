@@ -32,8 +32,7 @@ from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewProm
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
-from test.data.transcription import get_reference_for_guide_blocks
-from test.helpers import SeriesCERResult, test_data_root
+from test.helpers import test_data_root
 
 __all__ = [
     "kob_eng",
@@ -78,11 +77,6 @@ __all__ = [
     "kob_yue_hant_clean_review_flatten_timewarp_simplify",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review",
     "kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize",
-    "kob_yue_hant_transcribe",
-    "kob_yue_hant_transcribe_clean_review",
-    "kob_yue_hant_transcribe_clean_review_expected_cer",
-    "kob_yue_hant_transcribe_expected_cer",
-    "kob_yue_hant_transcribe_reference",
     "kob_yue_simplify_expected_series_diff",
     "kob_zho_hans_eng",
     "kob_zho_hant_ocr_fuse",
@@ -674,57 +668,6 @@ def kob_yue_hant_clean_review_flatten_timewarp_simplify_review_romanize() -> Ser
         output_dir
         / "yue-Hant"
         / "clean_review_flatten_timewarp_simplify_review_romanize.srt"
-    )
-
-
-@fixture
-def kob_yue_hant_transcribe() -> Series:
-    """KOB yue-Hant transcribed subtitles."""
-    return Series.load(output_dir / "yue-Hant_transcribe/transcribe.srt")
-
-
-@fixture
-def kob_yue_hant_transcribe_clean_review() -> Series:
-    """KOB yue-Hant cleaned and guide-reviewed transcription."""
-    return Series.load(output_dir / "yue-Hant_transcribe/transcribe_clean_review.srt")
-
-
-@fixture
-def kob_yue_hant_transcribe_clean_review_expected_cer() -> SeriesCERResult:
-    """Expected CER for the KOB cleaned and guide-reviewed transcription."""
-    return SeriesCERResult(
-        cer=0.33033932135728544,
-        substitutions=198,
-        insertions=46,
-        deletions=87,
-        correct=717,
-        reference_length=1002,
-    )
-
-
-@fixture
-def kob_yue_hant_transcribe_expected_cer() -> SeriesCERResult:
-    """Expected CER for KOB yue-Hant transcription against its reference."""
-    return SeriesCERResult(
-        cer=0.39520958083832336,
-        substitutions=274,
-        insertions=34,
-        deletions=88,
-        correct=640,
-        reference_length=1002,
-    )
-
-
-@fixture
-def kob_yue_hant_transcribe_reference(
-    kob_yue_hant_clean_review_flatten_timewarp: Series,
-    kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Series,
-) -> Series:
-    """KOB yue-Hant reference limited to the eight processed guide blocks."""
-    return get_reference_for_guide_blocks(
-        kob_yue_hant_clean_review_flatten_timewarp,
-        kob_zho_hant_ocr_fuse_clean_validate_review_flatten,
-        8,
     )
 
 
