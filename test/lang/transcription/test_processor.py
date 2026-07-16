@@ -146,6 +146,29 @@ def test_auto_vad_uses_cached_non_vad_result_after_repetitive_vad_result():
     processor.no_vad_transcriber.assert_not_called()
 
 
+def test_rejected_cached_result_is_bypassed_for_fresh_retry():
+    """Test a rejected cache entry does not prevent a fresh Whisper attempt."""
+    processor, _ = _get_processor(vad_mode=VADMode.OFF)
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    processor.no_vad_transcriber = Mock(return_value=usable_segments)
+    processor.no_vad_transcriber.get_cached_transcription.return_value = (
+        repetitive_segments
+    )
+    processor.recovery_transcriber = Mock()
+    processor.recovery_transcriber.get_cached_transcription.return_value = None
+    audio = AudioSegment.silent(duration=1000)
+
+    output = processor._transcribe_block_audio(audio)
+
+    assert output == usable_segments
+    processor.no_vad_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
+
+
 def test_auto_vad_retries_without_vad_after_repetitive_new_result():
     """Test automatic VAD retries without VAD after a repetitive new result."""
     processor, _ = _get_processor(vad_mode=VADMode.AUTO)
@@ -160,8 +183,16 @@ def test_auto_vad_retries_without_vad_after_repetitive_new_result():
     output = processor._transcribe_block_audio(audio)
 
     assert output == usable_segments
-    processor.vad_transcriber.assert_called_once_with(audio, cache_audio=audio)
-    processor.no_vad_transcriber.assert_called_once_with(audio, cache_audio=audio)
+    processor.vad_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
+    processor.no_vad_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
 
 
 def test_unusable_no_vad_result_uses_defensive_recovery():
@@ -178,8 +209,16 @@ def test_unusable_no_vad_result_uses_defensive_recovery():
     output = processor._transcribe_block_audio(audio)
 
     assert output == usable_segments
-    processor.no_vad_transcriber.assert_called_once_with(audio, cache_audio=audio)
-    processor.recovery_transcriber.assert_called_once_with(audio, cache_audio=audio)
+    processor.no_vad_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
+    processor.recovery_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
 
 
 def test_all_unusable_candidates_fail_before_alignment():

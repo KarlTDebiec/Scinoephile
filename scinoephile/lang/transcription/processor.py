@@ -347,7 +347,12 @@ class GuidedTranscriptionProcessor:
             usable transcribed segments, if produced
         """
         try:
-            segments = transcriber(audio, cache_audio=cache_audio)
+            # Cached candidates were validated before preprocessing
+            segments = transcriber(
+                audio,
+                cache_audio=cache_audio,
+                use_cache=False,
+            )
         except AssertionError as exc:
             logger.warning(
                 f"Whisper transcription candidate failed with an assertion: {exc}"
