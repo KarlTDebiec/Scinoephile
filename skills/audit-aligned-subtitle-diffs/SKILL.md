@@ -78,6 +78,12 @@ contributes to CER. The official reference may be wrong, less idiomatic, or a
 different acceptable rendering. The optional guide supplies semantic context;
 it is not target-language surface-text authority.
 
+Treat optional Cantonese sentence-final particles and interjections as
+acceptable variation when they do not change the line's meaning. This includes
+their addition, omission, and ordinary spelling variation, such as `呀`, `啦`,
+`喇`, `喎`, and an opening `嘩`. Do not mark these as uncertain or erroneous
+without separate evidence of a material lexical or semantic difference.
+
 Begin each note with one of these classifications:
 
 - `Transcription error;` when the transcription should be corrected.
