@@ -306,6 +306,91 @@ def test_series_diff_keeps_uncovered_insert_separate():
     assert messages[0].two_texts == ("Damn!",)
 
 
+def test_series_diff_represents_line_before_one_sided_span():
+    """Test every line is represented after splitting one-to-many changes."""
+    one = get_text_series(
+        "師爺，少爺寫乜嘢呀？",
+        "名呀",
+        "嘩，好叻呀！原來少爺識寫自己個名喎！",
+        "係呀。",
+    )
+    two = get_text_series(
+        "師爺，少爺寫乜嘢呀？",
+        "名呀！",
+        "好叻呀！原來少爺識寫自己個名喎",
+        "係呀！",
+        "妖！",
+    )
+
+    diff = SeriesDiff(one, two)
+    messages = diff.get_messages(include_equal=True)
+
+    assert diff.get_event_indices(messages[1]) == ((1,), (1,))
+    assert messages[1].one_texts == ("名呀",)
+    assert messages[1].two_texts == ("名呀！",)
+    assert sorted(idx for message in messages for idx in message.one_idxs or ()) == [
+        0,
+        1,
+        2,
+        3,
+    ]
+    assert sorted(idx for message in messages for idx in message.two_idxs or ()) == [
+        0,
+        1,
+        2,
+        3,
+        4,
+    ]
+
+
+@parametrize(
+    ("one_texts", "two_texts", "expected_message_indices"),
+    [
+        (
+            ("c", "world", "c"),
+            ("c",),
+            [
+                (LineDiffKind.EQUAL, (0,), (0,)),
+                (LineDiffKind.DELETE, (1,), None),
+                (LineDiffKind.DELETE, (2,), None),
+            ],
+        ),
+        (
+            ("baz", "beta"),
+            ("baz", "alpha!", "bar", "beta!"),
+            [
+                (LineDiffKind.EQUAL, (0,), (0,)),
+                (LineDiffKind.INSERT, None, (1,)),
+                (LineDiffKind.INSERT, None, (2,)),
+                (LineDiffKind.EDIT, (1,), (3,)),
+            ],
+        ),
+    ],
+)
+def test_series_diff_discards_out_of_order_span_indices(
+    one_texts: tuple[str, ...],
+    two_texts: tuple[str, ...],
+    expected_message_indices: list[
+        tuple[LineDiffKind, tuple[int, ...] | None, tuple[int, ...] | None]
+    ],
+):
+    """Test stale indices do not duplicate implicit matches.
+
+    Arguments:
+        one_texts: first subtitle series texts
+        two_texts: second subtitle series texts
+        expected_message_indices: expected diff message kinds and line indices
+    """
+    messages = SeriesDiff(
+        get_text_series(*one_texts),
+        get_text_series(*two_texts),
+    ).get_messages(include_equal=True)
+
+    assert [
+        (message.kind, message.one_idxs, message.two_idxs) for message in messages
+    ] == expected_message_indices
+
+
 def test_series_diff_reports_aligned_edit():
     """Test a one-line edit from alignment-derived diffing."""
     diff = SeriesDiff(

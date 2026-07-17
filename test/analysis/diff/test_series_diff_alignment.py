@@ -240,7 +240,7 @@ def test_series_diff_does_not_pair_dissimilar_bracketed_span():
         diff._get_series_event_line_records(two),
     )
 
-    paired = diff._pair_bracketed_one_sided_spans(
+    paired = diff._pair_one_sided_spans_with_implicit_lines(
         [((0,), (0,)), ((), (1,)), ((2,), (2,))],
         one_side,
         two_side,
