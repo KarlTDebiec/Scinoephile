@@ -146,20 +146,52 @@ def test_series_diff_empty_for_identical_series():
     assert str(diff) == "[]"
 
 
-def test_series_diff_get_messages_and_event_indices_include_equal():
-    """Test structured messages include equals and map lines to events."""
+def test_series_diff_get_event_indices():
+    """Test line indices map to unique event indices on both sides."""
+    cases = [
+        (
+            SeriesDiff(
+                get_text_series("first second"),
+                get_text_series("first\\Nsecond"),
+            ),
+            ((0,), (0,)),
+        ),
+        (
+            SeriesDiff(
+                get_text_series("same"),
+                get_text_series("same", "insert"),
+            ),
+            ((), (1,)),
+        ),
+        (
+            SeriesDiff(
+                get_text_series("same", "delete"),
+                get_text_series("same"),
+            ),
+            ((1,), ()),
+        ),
+    ]
+
+    for diff, expected in cases:
+        (message,) = diff.get_messages()
+        assert diff.get_event_indices(message) == expected
+
+
+def test_series_diff_get_messages_can_include_equal():
+    """Test structured messages optionally include equal lines."""
     one = get_text_series("same", "first\\Nsecond")
     two = get_text_series("same", "first\\Nedited")
     diff = SeriesDiff(one, two)
 
-    messages = diff.get_messages(include_equal=True)
+    changed_messages = diff.get_messages()
+    all_messages = diff.get_messages(include_equal=True)
 
-    assert [message.kind for message in messages] == [
+    assert [message.kind for message in changed_messages] == [LineDiffKind.EDIT]
+    assert [message.kind for message in all_messages] == [
         LineDiffKind.EQUAL,
         LineDiffKind.EQUAL,
         LineDiffKind.EDIT,
     ]
-    assert diff.get_event_indices(messages[-1]) == ((1,), (1,))
 
 
 def test_series_diff_get_stacked_str_appends_blank_third_line_for_insert():
@@ -274,7 +306,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
     assert messages[0].two_texts == ("Damn!",)
 
 
-def test_series_diff_repairs_line_skipped_before_one_sided_span():
+def test_series_diff_represents_line_before_one_sided_span():
     """Test every line is represented after splitting one-to-many changes."""
     one = get_text_series(
         "師爺，少爺寫乜嘢呀？",
@@ -309,6 +341,54 @@ def test_series_diff_repairs_line_skipped_before_one_sided_span():
         3,
         4,
     ]
+
+
+@parametrize(
+    ("one_texts", "two_texts", "expected_message_indices"),
+    [
+        (
+            ("c", "world", "c"),
+            ("c",),
+            [
+                (LineDiffKind.EQUAL, (0,), (0,)),
+                (LineDiffKind.DELETE, (1,), None),
+                (LineDiffKind.DELETE, (2,), None),
+            ],
+        ),
+        (
+            ("baz", "beta"),
+            ("baz", "alpha!", "bar", "beta!"),
+            [
+                (LineDiffKind.EQUAL, (0,), (0,)),
+                (LineDiffKind.INSERT, None, (1,)),
+                (LineDiffKind.INSERT, None, (2,)),
+                (LineDiffKind.EDIT, (1,), (3,)),
+            ],
+        ),
+    ],
+)
+def test_series_diff_discards_out_of_order_span_indices(
+    one_texts: tuple[str, ...],
+    two_texts: tuple[str, ...],
+    expected_message_indices: list[
+        tuple[LineDiffKind, tuple[int, ...] | None, tuple[int, ...] | None]
+    ],
+):
+    """Test stale indices do not duplicate implicit matches.
+
+    Arguments:
+        one_texts: first subtitle series texts
+        two_texts: second subtitle series texts
+        expected_message_indices: expected diff message kinds and line indices
+    """
+    messages = SeriesDiff(
+        get_text_series(*one_texts),
+        get_text_series(*two_texts),
+    ).get_messages(include_equal=True)
+
+    assert [
+        (message.kind, message.one_idxs, message.two_idxs) for message in messages
+    ] == expected_message_indices
 
 
 def test_series_diff_reports_aligned_edit():

@@ -226,6 +226,21 @@ class SeriesDiff:
             self._add_delete_messages(one_side, one_local_idxs)
             return
 
+        if len(one_local_idxs) == len(two_local_idxs):
+            line_pairs = tuple(zip(one_local_idxs, two_local_idxs, strict=True))
+            if all(
+                one_side.lines[one_idx] == two_side.lines[two_idx]
+                for one_idx, two_idx in line_pairs
+            ):
+                for one_idx, two_idx in line_pairs:
+                    self._add_equal_message(
+                        one_side=one_side,
+                        two_side=two_side,
+                        one_local_idxs=(one_idx,),
+                        two_local_idxs=(two_idx,),
+                    )
+                return
+
         kind = self._get_changed_span_kind(
             one_side,
             two_side,
@@ -509,7 +524,6 @@ class SeriesDiff:
             one_side,
             two_side,
         )
-        spans = self._repair_uncovered_line_spans(spans, one_side, two_side)
         self._add_block_messages(one_side, two_side, spans)
 
     def _add_block_messages(
@@ -527,7 +541,16 @@ class SeriesDiff:
         """
         one_line_pos = 0
         two_line_pos = 0
-        for one_local_idxs, two_local_idxs in spans:
+        for raw_one_local_idxs, raw_two_local_idxs in spans:
+            # Drop spans already represented by preceding implicit matches
+            one_local_idxs = tuple(
+                idx for idx in raw_one_local_idxs if idx >= one_line_pos
+            )
+            two_local_idxs = tuple(
+                idx for idx in raw_two_local_idxs if idx >= two_line_pos
+            )
+            if not one_local_idxs and not two_local_idxs:
+                continue
             one_line_stop = one_local_idxs[0] if one_local_idxs else one_line_pos
             two_line_stop = two_local_idxs[0] if two_local_idxs else two_line_pos
             if one_local_idxs:
@@ -573,13 +596,21 @@ class SeriesDiff:
                 one_line_pos = one_local_idxs[-1] + 1
             if two_local_idxs:
                 two_line_pos = two_local_idxs[-1] + 1
-        self._add_equal_messages_until(
+        one_line_pos, two_line_pos = self._add_equal_messages_until(
             one_side=one_side,
             two_side=two_side,
             one_line_pos=one_line_pos,
             two_line_pos=two_line_pos,
             one_line_stop=len(one_side.lines),
             two_line_stop=len(two_side.lines),
+        )
+        self._add_delete_messages(
+            one_side,
+            tuple(range(one_line_pos, len(one_side.lines))),
+        )
+        self._add_insert_messages(
+            two_side,
+            tuple(range(two_line_pos, len(two_side.lines))),
         )
 
     def _diff_block_by_lines(
@@ -983,56 +1014,6 @@ class SeriesDiff:
         return best_ratio
 
     @staticmethod
-    def _get_uncovered_line_indices(
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
-        one_line_count: int,
-        two_line_count: int,
-    ) -> tuple[tuple[int, ...], tuple[int, ...]]:
-        """Find lines that implicit equal-gap handling would not represent.
-
-        Arguments:
-            spans: changed spans in display order
-            one_line_count: number of first-side lines in the block
-            two_line_count: number of second-side lines in the block
-        Returns:
-            uncovered first- and second-side local line indices
-        """
-        one_covered: set[int] = set()
-        two_covered: set[int] = set()
-        one_line_pos = 0
-        two_line_pos = 0
-        for one_idxs, two_idxs in spans:
-            one_line_stop = one_idxs[0] if one_idxs else one_line_pos
-            two_line_stop = two_idxs[0] if two_idxs else two_line_pos
-            if one_idxs and not two_idxs:
-                two_line_stop = two_line_pos + (one_line_stop - one_line_pos)
-            elif two_idxs and not one_idxs:
-                one_line_stop = one_line_pos + (two_line_stop - two_line_pos)
-
-            while one_line_pos < one_line_stop and two_line_pos < two_line_stop:
-                one_covered.add(one_line_pos)
-                two_covered.add(two_line_pos)
-                one_line_pos += 1
-                two_line_pos += 1
-
-            one_covered.update(one_idxs)
-            two_covered.update(two_idxs)
-            if one_idxs:
-                one_line_pos = one_idxs[-1] + 1
-            if two_idxs:
-                two_line_pos = two_idxs[-1] + 1
-
-        while one_line_pos < one_line_count and two_line_pos < two_line_count:
-            one_covered.add(one_line_pos)
-            two_covered.add(two_line_pos)
-            one_line_pos += 1
-            two_line_pos += 1
-
-        one_uncovered = tuple(sorted(set(range(one_line_count)) - one_covered))
-        two_uncovered = tuple(sorted(set(range(two_line_count)) - two_covered))
-        return one_uncovered, two_uncovered
-
-    @staticmethod
     def _get_implicit_line_similarity(one_text: str, two_text: str) -> float:
         """Score full-line or contained-line similarity for implicit pairing.
 
@@ -1055,50 +1036,6 @@ class SeriesDiff:
         else:
             substring_ratio = 1.0 if two_compact in one_compact else 0.0
         return max(full_ratio, substring_ratio)
-
-    def _repair_uncovered_line_spans(
-        self,
-        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
-        one_side: _SeriesDiffBlockSide,
-        two_side: _SeriesDiffBlockSide,
-    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
-        """Add explicit spans for lines implicit-gap handling would skip.
-
-        Arguments:
-            spans: changed spans
-            one_side: first side of the current block
-            two_side: second side of the current block
-        Returns:
-            changed spans that represent every line in the block
-        """
-        repaired = list(spans)
-        one_uncovered, two_uncovered = self._get_uncovered_line_indices(
-            repaired,
-            len(one_side.lines),
-            len(two_side.lines),
-        )
-
-        for one_idx in one_uncovered:
-            insert_at = len(repaired)
-            for span_idx, (one_idxs, _) in enumerate(repaired):
-                if one_idxs and one_idxs[0] > one_idx:
-                    insert_at = span_idx
-                    break
-            repaired.insert(insert_at, ((one_idx,), ()))
-
-        for two_idx in two_uncovered:
-            insert_at = len(repaired)
-            for span_idx, (_, two_idxs) in enumerate(repaired):
-                if two_idxs and two_idxs[0] > two_idx:
-                    insert_at = span_idx
-                    break
-            repaired.insert(insert_at, ((), (two_idx,)))
-
-        return self._merge_adjacent_one_sided_spans(
-            repaired,
-            one_side,
-            two_side,
-        )
 
     def _split_uncovered_multiline_spans(
         self,
@@ -1599,15 +1536,10 @@ class SeriesDiff:
         Returns:
             third-side subtitle texts in first-side event order
         """
-        if not message.one_idxs:
-            return ()
-
-        event_idxs = []
-        for line_idx in message.one_idxs:
-            event_idx = self._one_line_event_idxs[line_idx]
-            if event_idxs and event_idxs[-1] == event_idx:
-                continue
-            event_idxs.append(event_idx)
+        event_idxs = self._get_message_event_indices(
+            message.one_idxs,
+            self._one_line_event_idxs,
+        )
 
         texts = []
         for event_idx in event_idxs:
@@ -1894,7 +1826,7 @@ class SeriesDiff:
         """Validate that complete output represents every input line exactly once.
 
         Raises:
-            ScinoephileError: if a line is missing or duplicated
+            RuntimeError: if a line is missing or duplicated
         """
         if any(
             message.kind is LineDiffKind.EQUAL
@@ -1902,7 +1834,7 @@ class SeriesDiff:
             != tuple(self._normalize_line(text) for text in message.two_texts or ())
             for message in self._stacked_messages
         ):
-            raise ScinoephileError("Series diff marked unequal subtitle lines as equal")
+            raise RuntimeError("Series diff marked unequal subtitle lines as equal")
 
         one_idxs = sorted(
             idx for message in self._stacked_messages for idx in message.one_idxs or ()
@@ -1911,11 +1843,11 @@ class SeriesDiff:
             idx for message in self._stacked_messages for idx in message.two_idxs or ()
         )
         if one_idxs != list(range(len(self._one_line_event_idxs))):
-            raise ScinoephileError(
+            raise RuntimeError(
                 "Series diff failed to represent every first-side subtitle line"
             )
         if two_idxs != list(range(len(self._two_line_event_idxs))):
-            raise ScinoephileError(
+            raise RuntimeError(
                 "Series diff failed to represent every second-side subtitle line"
             )
 

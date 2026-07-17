@@ -22,6 +22,37 @@ def test_line_diff_get_aligned_texts_without_display_markup():
     assert message.get_aligned_texts() == ("廣東　話", "廣東　話")
 
 
+def test_line_diff_get_aligned_texts_for_non_edit_kinds():
+    """Test equal, insert, and delete text alignment."""
+    cases = [
+        (
+            LineDiff(
+                kind=LineDiffKind.EQUAL,
+                one_texts=("same", "lines"),
+                two_texts=("same", "lines"),
+            ),
+            ("same lines", "same lines"),
+        ),
+        (
+            LineDiff(
+                kind=LineDiffKind.INSERT,
+                two_texts=("new", "line"),
+            ),
+            ("", "new line"),
+        ),
+        (
+            LineDiff(
+                kind=LineDiffKind.DELETE,
+                one_texts=("廣東", "話"),
+            ),
+            ("廣東　話", ""),
+        ),
+    ]
+
+    for message, expected in cases:
+        assert message.get_aligned_texts() == expected
+
+
 def test_line_diff_get_stacked_str_no_color_full_width_placeholder():
     """Test full-width placeholder selection with color=False."""
     msg = LineDiff(
