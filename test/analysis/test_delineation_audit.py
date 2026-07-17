@@ -164,6 +164,45 @@ def test_audit_delineation_rejects_unmatched_reference_pair():
         audit_delineation(_get_series("參考一", "參考二"), (test_case,))
 
 
+def test_audit_delineation_resolves_repeated_reference_pair_from_context():
+    """Test neighboring cases resolve a repeated reference pair."""
+    reference = _get_series("之前", "重複一", "重複二", "之後", "重複一", "重複二")
+    test_cases = (
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="之前",
+                reference_two="重複一",
+                target_one="甲",
+                target_two="乙",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="重複一",
+                reference_two="重複二",
+                target_one="乙",
+                target_two="丙",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="重複二",
+                reference_two="之後",
+                target_one="丙",
+                target_two="丁",
+            ),
+            answer=DelineationAnswer(),
+        ),
+    )
+
+    report = audit_delineation(reference, test_cases)
+
+    assert "| 2<br>3 | 重複一<br>重複二 | 乙<br>丙 |" in report
+    assert "| 5<br>6 | 重複一<br>重複二 | 乙<br>丙 |" not in report
+
+
 def test_audit_delineation_rejects_ambiguous_reference_pair():
     """Test a repeated reference pair cannot be assigned misleading indexes."""
     test_case = DelineationTestCase(

@@ -250,16 +250,34 @@ def _get_case_indexes(
             direct_index = candidates[0]
         elif candidates:
             input_chars = remove_punc_and_whitespace("".join(test_case.query.subtitles))
-            target_matches = [
-                index
-                for index in candidates
-                if remove_punc_and_whitespace(
+            target_chars_by_index = {
+                index: remove_punc_and_whitespace(
                     target_text_by_reference_index.get(index, "")
                 )
-                == input_chars
+                for index in candidates
+            }
+            target_matches = [
+                index
+                for index, target_chars in target_chars_by_index.items()
+                if target_chars == input_chars
             ]
             if len(target_matches) == 1:
                 direct_index = target_matches[0]
+            else:
+                contained_target_lengths = {
+                    index: len(target_chars)
+                    for index, target_chars in target_chars_by_index.items()
+                    if target_chars and target_chars in input_chars
+                }
+                if contained_target_lengths:
+                    maximum_length = max(contained_target_lengths.values())
+                    longest_matches = [
+                        index
+                        for index, length in contained_target_lengths.items()
+                        if length == maximum_length
+                    ]
+                    if len(longest_matches) == 1:
+                        direct_index = longest_matches[0]
         direct_indexes.append(direct_index)
     return candidate_indexes_by_case, direct_indexes
 

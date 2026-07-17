@@ -93,36 +93,19 @@ def audit_guided_review(
     blocks_by_key = _get_blocks_by_key(target, guide)
     rows_by_subtitle_index: dict[int, _GuidedReviewRow] = {}
 
-    for test_case_index, test_case in enumerate(test_cases, 1):
-        try:
-            block = _get_test_case_block(
-                test_case,
-                blocks_by_key,
-                test_case_index=test_case_index,
-            )
-        except ScinoephileError:
-            if _is_test_case_outside_range(
-                test_case,
-                target,
-                guide,
-                first_index=first_index,
-                last_index=last_index,
-            ):
-                continue
-            raise
+    for test_case_index, test_case, block in _get_active_test_case_blocks(
+        target,
+        guide,
+        test_cases,
+        blocks_by_key,
+        first_index=first_index,
+        last_index=last_index,
+    ):
         answer = test_case.answer
         revisions_by_index = (
             {revision.index: revision for revision in answer.revisions}
             if answer is not None
             else {}
-        )
-
-        _validate_selected_targets(
-            test_case,
-            block,
-            first_index=first_index,
-            last_index=last_index,
-            test_case_index=test_case_index,
         )
 
         for local_index, (subtitle_index, query_target, guide_texts) in enumerate(
@@ -302,52 +285,128 @@ def _get_blocks_by_key(
     return blocks_by_key
 
 
-def _get_test_case_block(
-    test_case: GuidedReviewTestCase,
+def _get_active_test_case_blocks(
+    target: Series,
+    guide: Series,
+    test_cases: Sequence[GuidedReviewTestCase],
     blocks_by_key: dict[
-        tuple[tuple[str, ...], tuple[str, ...]],
-        list[_GuidedReviewBlock],
+        tuple[tuple[str, ...], tuple[str, ...]], list[_GuidedReviewBlock]
     ],
     *,
-    test_case_index: int,
-) -> _GuidedReviewBlock:
-    """Match one logged test case to its unique subtitle block.
+    first_index: int | None,
+    last_index: int | None,
+) -> list[tuple[int, GuidedReviewTestCase, _GuidedReviewBlock]]:
+    """Get current cases while ignoring superseded historical cases.
+
+    Persisted guided-review cases are retained after their target block's
+    segmentation changes. A current case with the same guide block supersedes
+    one of those historical cases. If no current case exists, preserve the
+    audit's strict failure rather than assigning stale local revision indexes.
 
     Arguments:
-        test_case: guided-review test case to match
-        blocks_by_key: available blocks keyed by logged target and guide text
-        test_case_index: one-based test case position used in error messages
+        target: current target subtitle series
+        guide: current guide subtitle series
+        test_cases: logged guided-review test cases
+        blocks_by_key: current guided-review blocks keyed by text
+        first_index: first included target subtitle number
+        last_index: last included target subtitle number
     Returns:
-        uniquely matched subtitle block
+        active test cases paired with their current subtitle blocks
     Raises:
-        ScinoephileError: if the test case has no unique matching block
+        ScinoephileError: if a selected stale case has no current replacement
+            or cannot be matched uniquely
     """
-    key = (
-        _normalize_texts(tuple(target.text for target in test_case.query.targets)),
-        tuple(guide.text for guide in test_case.query.guides),
+    blocks_by_guides: dict[tuple[str, ...], list[_GuidedReviewBlock]] = defaultdict(
+        list
     )
-    matches = blocks_by_key.get(key, [])
-    if not matches:
-        matches = [
-            block
-            for keyed_blocks in blocks_by_key.values()
-            for block in keyed_blocks
-            if block.guide_texts == key[1]
-        ]
-        if not matches:
+    for blocks in blocks_by_key.values():
+        for block in blocks:
+            blocks_by_guides[block.guide_texts].append(block)
+
+    active_cases: list[tuple[int, GuidedReviewTestCase, _GuidedReviewBlock]] = []
+    stale_cases: list[tuple[int, GuidedReviewTestCase, list[_GuidedReviewBlock]]] = []
+    for test_case_index, test_case in enumerate(test_cases, 1):
+        key = (
+            _normalize_texts(tuple(target.text for target in test_case.query.targets)),
+            tuple(guide.text for guide in test_case.query.guides),
+        )
+        matches = blocks_by_key.get(key, [])
+        if len(matches) == 1:
+            active_cases.append((test_case_index, test_case, matches[0]))
+            continue
+        if len(matches) > 1:
+            block_numbers = ", ".join(str(match.block_number) for match in matches)
+            raise ScinoephileError(
+                "Unable to audit guided review: "
+                f"test case {test_case_index} is ambiguous; it matches blocks "
+                f"{block_numbers}"
+            )
+
+        guide_matches = blocks_by_guides.get(key[1], [])
+        if guide_matches:
+            stale_cases.append((test_case_index, test_case, guide_matches))
+        elif not _is_test_case_outside_range(
+            test_case,
+            target,
+            guide,
+            first_index=first_index,
+            last_index=last_index,
+        ):
             raise ScinoephileError(
                 "Unable to audit guided review: "
                 f"test case {test_case_index} was not found in the target and guide "
                 "subtitle blocks"
             )
-    if len(matches) > 1:
-        block_numbers = ", ".join(str(match.block_number) for match in matches)
-        raise ScinoephileError(
-            "Unable to audit guided review: "
-            f"test case {test_case_index} is ambiguous; it matches blocks "
-            f"{block_numbers}"
+
+    active_block_numbers = {block.block_number for _, _, block in active_cases}
+    for test_case_index, test_case, matches in stale_cases:
+        selected_matches = [
+            block
+            for block in matches
+            if _block_intersects_range(block, first_index, last_index)
+        ]
+        if not selected_matches or all(
+            block.block_number in active_block_numbers for block in selected_matches
+        ):
+            continue
+        if len(selected_matches) > 1:
+            block_numbers = ", ".join(
+                str(match.block_number) for match in selected_matches
+            )
+            raise ScinoephileError(
+                "Unable to audit guided review: "
+                f"test case {test_case_index} is ambiguous; it matches blocks "
+                f"{block_numbers}"
+            )
+        _validate_selected_targets(
+            test_case,
+            selected_matches[0],
+            first_index=first_index,
+            last_index=last_index,
+            test_case_index=test_case_index,
         )
-    return matches[0]
+        active_cases.append((test_case_index, test_case, selected_matches[0]))
+
+    return active_cases
+
+
+def _block_intersects_range(
+    block: _GuidedReviewBlock,
+    first_index: int | None,
+    last_index: int | None,
+) -> bool:
+    """Check whether a guided-review block intersects an audit range.
+
+    Arguments:
+        block: guided-review block to check
+        first_index: first included target subtitle number
+        last_index: last included target subtitle number
+    Returns:
+        whether any target subtitle in the block is selected
+    """
+    return (first_index is None or block.target_indexes[-1] >= first_index) and (
+        last_index is None or block.target_indexes[0] <= last_index
+    )
 
 
 def _validate_selected_targets(

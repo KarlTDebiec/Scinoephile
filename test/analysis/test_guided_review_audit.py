@@ -165,6 +165,49 @@ def test_audit_guided_review_uses_latest_case_per_subtitle():
     assert "| 1 | 1 | 參考 | 原文 |  | ✓ |" in report
 
 
+def test_audit_guided_review_ignores_superseded_segmentation_case():
+    """Test a current case supersedes a stale case with old segmentation."""
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="甲"),
+            Subtitle(start=1100, end=2000, text="乙丙"),
+        ]
+    )
+    guide = Series(events=[Subtitle(start=0, end=2000, text="參考")])
+    stale_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [
+                    {"index": 1, "text": "甲"},
+                    {"index": 2, "text": "乙"},
+                    {"index": 3, "text": "丙"},
+                ],
+                "guides": [{"index": 1, "text": "參考"}],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+    current_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [
+                    {"index": 1, "text": "甲"},
+                    {"index": 2, "text": "乙丙"},
+                ],
+                "guides": [{"index": 1, "text": "參考"}],
+            },
+            "answer": {
+                "revisions": [{"index": 2, "text": "修訂乙丙", "note": "correction"}]
+            },
+        }
+    )
+
+    report = audit_guided_review(target, guide, (stale_case, current_case))
+
+    assert "| 1 | 1 | 參考 | 甲 |  |  |" in report
+    assert "| 2 | 1 | 參考 | 乙丙<br>修訂乙丙 |  |  |" in report
+
+
 def test_audit_guided_review_matches_after_punctuation_changes():
     """Test source punctuation changes do not obscure the reviewed input."""
     target = Series(events=[Subtitle(start=0, end=1000, text="原文！")])

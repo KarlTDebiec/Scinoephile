@@ -120,6 +120,20 @@ def test_audit_punctuation_resolves_repeated_reference_from_target():
     assert "| 3 | 重複 | 乙 | 乙！ |" in report
 
 
+def test_audit_punctuation_resolves_repeated_reference_from_longest_target():
+    """Test the longest contained target text resolves a repeated reference."""
+    reference = _get_series("開始", "開始")
+    target = _get_series("開始啊", "開始")
+    test_case = PunctuationTestCase(
+        query=PunctuationQuery(guide="開始", subtitles=["啊", "開始啊"]),
+        answer=PunctuationAnswer(output="啊，開始啊。"),
+    )
+
+    report = audit_punctuation(reference, target, (test_case,))
+
+    assert "| 1 | 開始 | 啊<br>開始啊 | 啊，開始啊。 |" in report
+
+
 def test_audit_punctuation_resolves_repeated_reference_from_context():
     """Test neighboring cases disambiguate repeated reference text."""
     reference = _get_series("之前", "重複", "之後", "重複")

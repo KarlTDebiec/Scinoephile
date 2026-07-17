@@ -54,23 +54,28 @@ def audit_delineation(
         pair = (reference[index].text, reference[index + 1].text)
         pair_indexes[pair].append(index)
 
+    candidate_indexes_by_case, direct_indexes = _get_case_indexes(
+        pair_indexes,
+        test_cases,
+        first_index=first_index,
+        last_index=last_index,
+    )
+
     rows: list[tuple[int, str]] = []
     shifts = 0
     no_shifts = 0
     unanswered = 0
     logged_cases = 0
     for test_case_index, test_case in enumerate(test_cases, 1):
-        query = test_case.query
-        pair = (query.reference_one, query.reference_two)
-        matches = pair_indexes.get(pair, [])
-        index = _get_pair_index(
-            matches,
-            test_case_index=test_case_index,
-            first_index=first_index,
-            last_index=last_index,
-        )
-        if index is None:
+        candidate_indexes = candidate_indexes_by_case[test_case_index - 1]
+        if not candidate_indexes:
             continue
+        index = _get_case_index(
+            candidate_indexes,
+            direct_indexes,
+            test_case_index=test_case_index,
+        )
+        query = test_case.query
         first_subtitle_index = index + 1
         second_subtitle_index = index + 2
         logged_cases += 1
@@ -182,45 +187,153 @@ def _format_subtitle_range(
     return f"- subtitle range: 1-indexed numbers {first_index} through {last_index}"
 
 
-def _get_pair_index(
-    matches: Sequence[int],
+def _get_case_index(
+    candidate_indexes: Sequence[int],
+    direct_indexes: Sequence[int | None],
     *,
     test_case_index: int,
-    first_index: int | None,
-    last_index: int | None,
-) -> int | None:
-    """Get a unique reference-pair index within the requested range.
+) -> int:
+    """Resolve one delineation case's reference-pair index.
 
     Arguments:
-        matches: zero-indexed reference-pair matches
-        test_case_index: one-indexed test case number for error messages
-        first_index: first included 1-indexed subtitle number
-        last_index: last included 1-indexed subtitle number
+        candidate_indexes: possible zero-indexed reference-pair positions
+        direct_indexes: directly resolved indexes for every logged case
+        test_case_index: one-indexed test case position
     Returns:
-        unique zero-indexed pair index, or None if all matches are outside the range
+        uniquely resolved zero-indexed reference-pair position
     Raises:
-        ScinoephileError: if the pair is absent or ambiguous within the range
+        ScinoephileError: if a case remains ambiguous
     """
-    if not matches:
-        raise ScinoephileError(
-            "Unable to audit transcription delineation: "
-            f"test case {test_case_index} reference pair was not found in "
-            "reference subtitles"
-        )
+    direct_index = direct_indexes[test_case_index - 1]
+    if direct_index is not None:
+        return direct_index
 
-    matches_in_range = [
-        index
-        for index in matches
-        if (first_index is None or index + 1 >= first_index)
-        and (last_index is None or index + 2 <= last_index)
-    ]
-    if not matches_in_range:
+    contextual_index = _get_contextual_index(
+        candidate_indexes,
+        direct_indexes,
+        test_case_index - 1,
+    )
+    if contextual_index is not None:
+        return contextual_index
+
+    indexes = ", ".join(str(index + 1) for index in candidate_indexes)
+    raise ScinoephileError(
+        "Unable to audit transcription delineation: "
+        f"test case {test_case_index} reference pair is ambiguous; "
+        f"it begins at subtitle indexes {indexes}"
+    )
+
+
+def _get_case_indexes(
+    pair_indexes: dict[tuple[str, str], list[int]],
+    test_cases: Sequence[DelineationTestCase],
+    *,
+    first_index: int | None,
+    last_index: int | None,
+) -> tuple[list[list[int]], list[int | None]]:
+    """Get candidate and directly resolved indexes for logged cases.
+
+    Arguments:
+        pair_indexes: reference-pair positions keyed by subtitle text
+        test_cases: logged delineation test cases
+        first_index: first 1-indexed reference subtitle number to include
+        last_index: last 1-indexed reference subtitle number to include
+    Returns:
+        candidate and directly resolved indexes for every logged case
+    Raises:
+        ScinoephileError: if a logged reference pair is absent
+    """
+    candidate_indexes_by_case: list[list[int]] = []
+    direct_indexes: list[int | None] = []
+    for test_case_index, test_case in enumerate(test_cases, 1):
+        query = test_case.query
+        pair = (query.reference_one, query.reference_two)
+        matches = pair_indexes.get(pair, [])
+        if not matches:
+            raise ScinoephileError(
+                "Unable to audit transcription delineation: "
+                f"test case {test_case_index} reference pair was not found in "
+                "reference subtitles"
+            )
+
+        candidate_indexes = [
+            index
+            for index in matches
+            if (first_index is None or index + 1 >= first_index)
+            and (last_index is None or index + 2 <= last_index)
+        ]
+        candidate_indexes_by_case.append(candidate_indexes)
+        direct_index = None
+        if len(candidate_indexes) == 1:
+            direct_index = candidate_indexes[0]
+        direct_indexes.append(direct_index)
+    return candidate_indexes_by_case, direct_indexes
+
+
+def _get_contextual_index(
+    candidate_indexes: Sequence[int],
+    direct_indexes: Sequence[int | None],
+    test_case_index: int,
+) -> int | None:
+    """Resolve a repeated reference pair from neighboring logged cases.
+
+    Arguments:
+        candidate_indexes: possible zero-indexed reference-pair positions
+        direct_indexes: directly resolved indexes for every logged case
+        test_case_index: zero-indexed test case position
+    Returns:
+        uniquely resolved reference-pair position, or None if ambiguity remains
+    """
+    previous_index = next(
+        (
+            index
+            for index in reversed(direct_indexes[:test_case_index])
+            if index is not None
+        ),
+        None,
+    )
+    next_index = next(
+        (index for index in direct_indexes[test_case_index + 1 :] if index is not None),
+        None,
+    )
+    if previous_index is None and next_index is None:
         return None
-    if len(matches_in_range) > 1:
-        starts = ", ".join(str(index + 1) for index in matches_in_range)
-        raise ScinoephileError(
-            "Unable to audit transcription delineation: "
-            f"test case {test_case_index} reference pair is ambiguous; "
-            f"it begins at subtitle indexes {starts}"
-        )
-    return matches_in_range[0]
+
+    narrowed_candidates = list(candidate_indexes)
+    if (
+        previous_index is not None
+        and next_index is not None
+        and previous_index <= next_index
+    ):
+        narrowed_candidates = [
+            candidate
+            for candidate in candidate_indexes
+            if previous_index <= candidate <= next_index
+        ]
+        if len(narrowed_candidates) == 1:
+            return narrowed_candidates[0]
+        if not narrowed_candidates:
+            return None
+
+    scores: dict[int, int] = {}
+    for candidate in narrowed_candidates:
+        distances = []
+        if previous_index is not None:
+            distances.append(abs(candidate - previous_index))
+        if next_index is not None:
+            distances.append(abs(candidate - next_index))
+        if previous_index is not None and next_index is not None:
+            if previous_index <= next_index:
+                scores[candidate] = sum(distances)
+            else:
+                scores[candidate] = min(distances)
+        else:
+            scores[candidate] = distances[0]
+
+    minimum_score = min(scores.values())
+    best_candidates = [
+        candidate for candidate, score in scores.items() if score == minimum_score
+    ]
+    if len(best_candidates) == 1:
+        return best_candidates[0]
+    return None
