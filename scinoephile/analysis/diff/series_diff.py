@@ -304,17 +304,37 @@ class SeriesDiff:
         Returns:
             updated first- and second-side local line positions
         """
-        while one_line_pos < one_line_stop and two_line_pos < two_line_stop:
-            self._add_equal_message(
-                one_side=one_side,
-                two_side=two_side,
-                one_local_idxs=(one_line_pos,),
-                two_local_idxs=(two_line_pos,),
+        one_local_idxs = tuple(range(one_line_pos, one_line_stop))
+        two_local_idxs = tuple(range(two_line_pos, two_line_stop))
+        matcher = difflib.SequenceMatcher(
+            None,
+            tuple(one_side.normlines[idx] for idx in one_local_idxs),
+            tuple(two_side.normlines[idx] for idx in two_local_idxs),
+            autojunk=False,
+        )
+        for tag, one_start, one_end, two_start, two_end in matcher.get_opcodes():
+            matched_one_local_idxs = one_local_idxs[one_start:one_end]
+            matched_two_local_idxs = two_local_idxs[two_start:two_end]
+            if tag == "equal":
+                for one_local_idx, two_local_idx in zip(
+                    matched_one_local_idxs,
+                    matched_two_local_idxs,
+                    strict=True,
+                ):
+                    self._add_equal_message(
+                        one_side=one_side,
+                        two_side=two_side,
+                        one_local_idxs=(one_local_idx,),
+                        two_local_idxs=(two_local_idx,),
+                    )
+                continue
+            self._add_changed_span(
+                one_side,
+                two_side,
+                matched_one_local_idxs,
+                matched_two_local_idxs,
             )
-            one_line_pos += 1
-            two_line_pos += 1
-
-        return one_line_pos, two_line_pos
+        return one_line_stop, two_line_stop
 
     def _add_delete_messages(
         self,

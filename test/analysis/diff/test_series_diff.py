@@ -343,6 +343,50 @@ def test_series_diff_represents_line_before_one_sided_span():
     ]
 
 
+def test_series_diff_represents_line_before_shifted_changed_span():
+    """Test lines before a shifted changed span are not dropped."""
+    messages = SeriesDiff(
+        get_text_series("a", "b"),
+        get_text_series("a", "ab"),
+    ).get_messages(include_equal=True)
+
+    assert [
+        (message.kind, message.one_idxs, message.two_idxs) for message in messages
+    ] == [
+        (LineDiffKind.INSERT, None, (0,)),
+        (LineDiffKind.MERGE_EDIT, (0, 1), (1,)),
+    ]
+
+
+def test_series_diff_represents_deleted_repeated_line_before_equal_lines():
+    """Test repeated lines do not offset subsequent equal-line matches."""
+    messages = SeriesDiff(
+        get_text_series(
+            "pre",
+            "打賞⋯打賞",
+            "打賞⋯打賞",
+            "恭喜蘇翁生辰快樂",
+            "post",
+        ),
+        get_text_series(
+            "pre",
+            "打賞⋯打賞",
+            "恭喜蘇翁生辰快樂",
+            "post",
+        ),
+    ).get_messages(include_equal=True)
+
+    assert [
+        (message.kind, message.one_idxs, message.two_idxs) for message in messages
+    ] == [
+        (LineDiffKind.EQUAL, (0,), (0,)),
+        (LineDiffKind.EQUAL, (1,), (1,)),
+        (LineDiffKind.DELETE, (2,), None),
+        (LineDiffKind.EQUAL, (3,), (2,)),
+        (LineDiffKind.EQUAL, (4,), (3,)),
+    ]
+
+
 @parametrize(
     ("one_texts", "two_texts", "expected_message_indices"),
     [
