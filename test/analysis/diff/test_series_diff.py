@@ -146,6 +146,54 @@ def test_series_diff_empty_for_identical_series():
     assert str(diff) == "[]"
 
 
+def test_series_diff_get_event_indices():
+    """Test line indices map to unique event indices on both sides."""
+    cases = [
+        (
+            SeriesDiff(
+                get_text_series("first second"),
+                get_text_series("first\\Nsecond"),
+            ),
+            ((0,), (0,)),
+        ),
+        (
+            SeriesDiff(
+                get_text_series("same"),
+                get_text_series("same", "insert"),
+            ),
+            ((), (1,)),
+        ),
+        (
+            SeriesDiff(
+                get_text_series("same", "delete"),
+                get_text_series("same"),
+            ),
+            ((1,), ()),
+        ),
+    ]
+
+    for diff, expected in cases:
+        (message,) = diff.get_messages()
+        assert diff.get_event_indices(message) == expected
+
+
+def test_series_diff_get_messages_can_include_equal():
+    """Test structured messages optionally include equal lines."""
+    one = get_text_series("same", "first\\Nsecond")
+    two = get_text_series("same", "first\\Nedited")
+    diff = SeriesDiff(one, two)
+
+    changed_messages = diff.get_messages()
+    all_messages = diff.get_messages(include_equal=True)
+
+    assert [message.kind for message in changed_messages] == [LineDiffKind.EDIT]
+    assert [message.kind for message in all_messages] == [
+        LineDiffKind.EQUAL,
+        LineDiffKind.EQUAL,
+        LineDiffKind.EDIT,
+    ]
+
+
 def test_series_diff_get_stacked_str_appends_blank_third_line_for_insert():
     """Test third-series output is blank for second-side-only inserts."""
     one = get_text_series()
