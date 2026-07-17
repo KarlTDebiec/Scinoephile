@@ -4,7 +4,7 @@
       "subtitles": [
         {
           "index": 1,
-          "text": "少爷！准备好啦"
+          "text": "少爷！准备好喇"
         }
       ]
     },
@@ -59,6 +59,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -883,6 +884,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1262,7 +1264,7 @@
         },
         {
           "index": 9,
-          "text": "冇但系呀！那十万两我袋咗落袋嘅喇"
+          "text": "冇但系呀！嗰十万两我袋咗落袋嘅喇"
         },
         {
           "index": 10,
@@ -1282,7 +1284,7 @@
         },
         {
           "index": 14,
-          "text": "冇但系呀！嗰十万两我袋咗落袋嘅喇"
+          "text": "系嘅！系嘅！"
         },
         {
           "index": 15,
@@ -1363,6 +1365,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1666,7 +1669,7 @@
         },
         {
           "index": 4,
-          "text": "我点都唔会谂呢啲嘢嘅啦"
+          "text": "我点都唔会谂呢啲嘢嘅喇"
         },
         {
           "index": 5,
@@ -1753,8 +1756,8 @@
         }
       ]
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2636,6 +2639,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4170,6 +4174,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4772,6 +4777,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4794,6 +4800,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4808,6 +4815,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5072,8 +5080,8 @@
         }
       ]
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5219,8 +5227,8 @@
         }
       ]
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5252,8 +5260,8 @@
         }
       ]
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5475,8 +5483,8 @@
         }
       ]
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -6180,6 +6188,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6952,6 +6961,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7300,6 +7310,7 @@
     "answer": {
       "revisions": []
     },
+    "difficulty": 1,
     "verified": true
   },
   {
