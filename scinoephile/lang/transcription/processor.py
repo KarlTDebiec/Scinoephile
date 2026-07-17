@@ -537,12 +537,18 @@ class GuidedTranscriptionProcessor:
         tail_segments = self.tail_recovery_transcriber.get_cached_transcription(
             normalized_tail_audio
         )
-        if tail_segments is not None and not self._segments_are_usable(
-            tail_segments,
-            audio_duration=tail_audio_duration,
-        ):
-            logger.info("Retrying focused tail transcription after unusable cache")
-            tail_segments = None
+        unusable_cached_tail = (
+            tail_segments is not None
+            and not self._segments_are_usable(
+                tail_segments,
+                audio_duration=tail_audio_duration,
+            )
+        )
+        if unusable_cached_tail:
+            logger.info(
+                f"Keeping valid base Whisper transcription ending at "
+                f"{last_word_end:.2f}s after unusable cached focused tail recovery"
+            )
 
         recovery_failed_with_assertion = False
         if tail_segments is None:
@@ -563,8 +569,8 @@ class GuidedTranscriptionProcessor:
                     audio_duration=tail_audio_duration,
                 ):
                     tail_segments = candidate_tail_segments
-        if tail_segments is None:
-            if not recovery_failed_with_assertion:
+        if tail_segments is None or unusable_cached_tail:
+            if not recovery_failed_with_assertion and not unusable_cached_tail:
                 logger.info(
                     f"Keeping valid base Whisper transcription ending at "
                     f"{last_word_end:.2f}s after unusable focused tail recovery"
