@@ -306,7 +306,7 @@ def test_series_diff_keeps_uncovered_insert_separate():
     assert messages[0].two_texts == ("Damn!",)
 
 
-def test_series_diff_repairs_line_skipped_before_one_sided_span():
+def test_series_diff_represents_line_before_one_sided_span():
     """Test every line is represented after splitting one-to-many changes."""
     one = get_text_series(
         "師爺，少爺寫乜嘢呀？",
@@ -341,6 +341,54 @@ def test_series_diff_repairs_line_skipped_before_one_sided_span():
         3,
         4,
     ]
+
+
+@parametrize(
+    ("one_texts", "two_texts", "expected_message_indices"),
+    [
+        (
+            ("c", "world", "c"),
+            ("c",),
+            [
+                (LineDiffKind.EQUAL, (0,), (0,)),
+                (LineDiffKind.DELETE, (1,), None),
+                (LineDiffKind.DELETE, (2,), None),
+            ],
+        ),
+        (
+            ("baz", "beta"),
+            ("baz", "alpha!", "bar", "beta!"),
+            [
+                (LineDiffKind.EQUAL, (0,), (0,)),
+                (LineDiffKind.INSERT, None, (1,)),
+                (LineDiffKind.INSERT, None, (2,)),
+                (LineDiffKind.EDIT, (1,), (3,)),
+            ],
+        ),
+    ],
+)
+def test_series_diff_discards_out_of_order_span_indices(
+    one_texts: tuple[str, ...],
+    two_texts: tuple[str, ...],
+    expected_message_indices: list[
+        tuple[LineDiffKind, tuple[int, ...] | None, tuple[int, ...] | None]
+    ],
+):
+    """Test stale indices do not duplicate implicit matches.
+
+    Arguments:
+        one_texts: first subtitle series texts
+        two_texts: second subtitle series texts
+        expected_message_indices: expected diff message kinds and line indices
+    """
+    messages = SeriesDiff(
+        get_text_series(*one_texts),
+        get_text_series(*two_texts),
+    ).get_messages(include_equal=True)
+
+    assert [
+        (message.kind, message.one_idxs, message.two_idxs) for message in messages
+    ] == expected_message_indices
 
 
 def test_series_diff_reports_aligned_edit():
