@@ -9,15 +9,8 @@
       ]
     },
     "answer": {
-      "revisions": [
-        {
-          "index": 1,
-          "text": "少爷！准备好啦",
-          "note": "将“喇”修正为“啦”，符合口语字幕常见用字。"
-        }
-      ]
+      "revisions": []
     },
-    "difficulty": 1,
     "verified": true
   },
   {
@@ -1492,6 +1485,11 @@
           "note": "将“俾”修正为“畀”。"
         },
         {
+          "index": 9,
+          "text": "冇但系呀！嗰十万两我袋咗落袋嘅喇",
+          "note": "将“那”修正为“嗰”。"
+        },
+        {
           "index": 10,
           "text": "想摆返出嚟就好难喇",
           "note": "将“番”修正为“返”。"
@@ -1505,11 +1503,6 @@
           "index": 13,
           "text": "你出返去先",
           "note": "将“番”修正为“返”。"
-        },
-        {
-          "index": 14,
-          "text": "冇但系呀！嗰十万两我袋咗落袋嘅喇",
-          "note": "将“那”修正为“嗰”。"
         }
       ]
     },
@@ -1661,6 +1654,7 @@
         }
       ]
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1978,8 +1972,8 @@
       "revisions": [
         {
           "index": 4,
-          "text": "我点都唔会谂呢啲嘢嘅啦",
-          "note": "将“这”修正为“呢”。"
+          "text": "我点都唔会谂呢啲嘢嘅喇",
+          "note": "将“这些”修正为“呢啲”。"
         }
       ]
     },
@@ -5769,6 +5763,7 @@
         }
       ]
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6935,6 +6930,7 @@
         }
       ]
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7835,6 +7831,7 @@
         }
       ]
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8123,6 +8120,7 @@
         }
       ]
     },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8332,6 +8330,7 @@
         }
       ]
     },
+    "difficulty": 1,
     "verified": true
   },
   {
