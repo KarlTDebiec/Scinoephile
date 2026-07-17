@@ -337,7 +337,7 @@ class WhisperTranscriber:
     def _get_huggingface_repo_validation() -> tuple[type[Exception], Any]:
         """Import HuggingFace repo validation helpers on demand."""
         try:
-            from huggingface_hub.utils import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+            from huggingface_hub.utils import (  # noqa: E501, PLC0415
                 HFValidationError,
                 validate_repo_id,
             )
@@ -349,7 +349,7 @@ class WhisperTranscriber:
     def _get_snapshot_download() -> Any:
         """Import HuggingFace snapshot downloader on demand."""
         try:
-            from huggingface_hub import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+            from huggingface_hub import (  # noqa: PLC0415
                 snapshot_download,
             )
         except ImportError as exc:
@@ -360,7 +360,7 @@ class WhisperTranscriber:
     def _get_whisper_module() -> Any:
         """Import whisper-timestamped on demand."""
         try:
-            import whisper_timestamped as whisper  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+            import whisper_timestamped as whisper  # noqa: E501, PLC0415
         except ImportError as exc:
             raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
         return whisper
