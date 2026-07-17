@@ -306,6 +306,43 @@ def test_series_diff_keeps_uncovered_insert_separate():
     assert messages[0].two_texts == ("Damn!",)
 
 
+def test_series_diff_repairs_line_skipped_before_one_sided_span():
+    """Test every line is represented after splitting one-to-many changes."""
+    one = get_text_series(
+        "師爺，少爺寫乜嘢呀？",
+        "名呀",
+        "嘩，好叻呀！原來少爺識寫自己個名喎！",
+        "係呀。",
+    )
+    two = get_text_series(
+        "師爺，少爺寫乜嘢呀？",
+        "名呀！",
+        "好叻呀！原來少爺識寫自己個名喎",
+        "係呀！",
+        "妖！",
+    )
+
+    diff = SeriesDiff(one, two)
+    messages = diff.get_messages(include_equal=True)
+
+    assert diff.get_event_indices(messages[1]) == ((1,), (1,))
+    assert messages[1].one_texts == ("名呀",)
+    assert messages[1].two_texts == ("名呀！",)
+    assert sorted(idx for message in messages for idx in message.one_idxs or ()) == [
+        0,
+        1,
+        2,
+        3,
+    ]
+    assert sorted(idx for message in messages for idx in message.two_idxs or ()) == [
+        0,
+        1,
+        2,
+        3,
+        4,
+    ]
+
+
 def test_series_diff_reports_aligned_edit():
     """Test a one-line edit from alignment-derived diffing."""
     diff = SeriesDiff(
