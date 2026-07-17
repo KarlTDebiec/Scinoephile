@@ -17,10 +17,7 @@ from scinoephile.lang.review.pairwise import get_pairwise_reviewer
 from scinoephile.lang.transcription.guided import get_guided_transcriber
 from scinoephile.lang.transcription.processor import VADMode
 from scinoephile.lang.translation.gap import get_gap_translator
-from scinoephile.workflows.review import (
-    review_series_guided,
-    review_series_pairwise,
-)
+from scinoephile.workflows.review import review_series_guided, review_series_pairwise
 from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
 from test.data.mlamd import (
