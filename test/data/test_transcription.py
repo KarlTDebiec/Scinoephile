@@ -158,10 +158,20 @@ def test_process_transcription_orders_stages_and_relogs_expected_mismatch(
             reference_path=reference_path,
             language=language,
             guide_language=guide_language,
+            additional_context="Movie-specific context",
         )
 
     assert output is reference
     assert stage_order == ["audio", "transcribe", "clean", "review", "translate"]
+    assert transcribe.call_args.kwargs["transcription_kw"] == {
+        "additional_context": "Movie-specific context"
+    }
+    assert review.call_args.kwargs["reviewer_kw"] == {
+        "additional_context": "Movie-specific context"
+    }
+    assert translate.call_args.kwargs["translator_kw"] == {
+        "additional_context": "Movie-specific context"
+    }
     mismatch_records = [
         record for record in caplog.records if record.getMessage() == mismatch_message
     ]

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Movie Context"
+  short_description: "Research prompt-ready movie terminology"
+  default_prompt: "Use $write-movie-context to research and draft additional LLM context for this movie dataset."
