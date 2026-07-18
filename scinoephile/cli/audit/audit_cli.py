@@ -12,12 +12,12 @@ from scinoephile.core.cli import ScinoephileCliBase
 
 from .audit_aligned_diff_cli import AuditAlignedDiffCli
 from .audit_delineation_cli import AuditDelineationCli
-from .audit_gap_translation_cli import AuditGapTranslationCli
-from .audit_guided_review_cli import AuditGuidedReviewCli
+from .audit_ocr_fusion_cli import AuditOcrFusionCli
 from .audit_punctuation_cli import AuditPunctuationCli
 from .audit_review_cli import AuditReviewCli
 from .audit_review_dual_cli import AuditReviewDualCli
 from .audit_review_trad_cli import AuditReviewTradCli
+from .audit_translation_cli import AuditTranslationCli
 
 __all__ = ["AuditCli"]
 
@@ -65,12 +65,12 @@ class AuditCli(ScinoephileCliBase):
         return {
             AuditAlignedDiffCli.name(): AuditAlignedDiffCli,
             AuditDelineationCli.name(): AuditDelineationCli,
-            AuditGapTranslationCli.name(): AuditGapTranslationCli,
-            AuditGuidedReviewCli.name(): AuditGuidedReviewCli,
+            AuditOcrFusionCli.name(): AuditOcrFusionCli,
             AuditPunctuationCli.name(): AuditPunctuationCli,
             AuditReviewCli.name(): AuditReviewCli,
             AuditReviewDualCli.name(): AuditReviewDualCli,
             AuditReviewTradCli.name(): AuditReviewTradCli,
+            AuditTranslationCli.name(): AuditTranslationCli,
         }
 
     @classmethod

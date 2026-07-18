@@ -1,4 +1,0 @@
-interface:
-  display_name: "Audit Gap Translations"
-  short_description: "Audit generated translations for subtitle gaps"
-  default_prompt: "Use $audit-gap-translations to audit gap-translation JSON against its gapped target and guide subtitles."

@@ -14,12 +14,12 @@ from pytest import CaptureFixture, mark, raises
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
-from scinoephile.cli.audit.audit_gap_translation_cli import AuditGapTranslationCli
-from scinoephile.cli.audit.audit_guided_review_cli import AuditGuidedReviewCli
+from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
 from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
+from scinoephile.cli.audit.audit_translation_cli import AuditTranslationCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.cli import ScinoephileCliBase
@@ -121,12 +121,12 @@ def test_audit_cli_subcommands():
     assert AuditCli.subcommands() == {
         "aligned-diff": AuditAlignedDiffCli,
         "delineation": AuditDelineationCli,
-        "gap-translation": AuditGapTranslationCli,
-        "guided-review": AuditGuidedReviewCli,
+        "ocr-fusion": AuditOcrFusionCli,
         "punctuation": AuditPunctuationCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
+        "translation": AuditTranslationCli,
     }
 
 
@@ -164,7 +164,10 @@ def test_audit_cli_help_follows_shared_style():
                 if action.dest.endswith("json_path"):
                     assert isinstance(action.help, str)
                     assert "test-case JSON file" in action.help
-                    assert action.help.startswith("optional ") is not action.required
+                    if action.help.startswith("optional "):
+                        assert not action.required
+                    elif "required in" not in action.help:
+                        assert action.required
 
             operation_group = next(
                 group
@@ -211,7 +214,7 @@ def test_audit_cli_help_follows_shared_style():
         ScinoephileCliBase.locale_name = original_locale_name
 
 
-def test_audit_gap_translation_cli_stdout_outfile_and_validation(
+def test_audit_translation_cli_gapped_mode_stdout_outfile_and_validation(
     tmp_path: Path,
     capsys: CaptureFixture,
 ):
@@ -247,8 +250,8 @@ def test_audit_gap_translation_cli_stdout_outfile_and_validation(
     arguments = f"--target {target_path} --guide {guide_path} --json {json_path}"
 
     run_cli_with_args(
-        AuditGapTranslationCli,
-        f"{arguments} --difficulty 1 --first-index 2 --last-index 2",
+        AuditTranslationCli,
+        (f"--mode gapped {arguments} --difficulty 1 --first-index 2 --last-index 2"),
     )
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Gap Translation Audit\n")
@@ -258,8 +261,11 @@ def test_audit_gap_translation_cli_stdout_outfile_and_validation(
 
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(
-        AuditGapTranslationCli,
-        (f"{arguments} --filter unverified --difficulty 1 --outfile {outfile_path}"),
+        AuditTranslationCli,
+        (
+            f"--mode gapped {arguments} --filter unverified --difficulty 1 "
+            f"--outfile {outfile_path}"
+        ),
     )
     assert capsys.readouterr().out == ""
     report = outfile_path.read_text(encoding="utf-8")
@@ -269,12 +275,143 @@ def test_audit_gap_translation_cli_stdout_outfile_and_validation(
 
     with raises(SystemExit):
         run_cli_with_args(
-            AuditGapTranslationCli,
-            f"{arguments} --first-index 2 --last-index 1",
+            AuditTranslationCli,
+            f"--mode gapped {arguments} --first-index 2 --last-index 1",
         )
     assert "--first-index must be less than or equal to --last-index" in (
         capsys.readouterr().err
     )
+
+
+def test_audit_translation_cli_standard_and_guided_modes(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test standard and guided workflows share one translation command.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    source_path = tmp_path / "source.srt"
+    guide_path = tmp_path / "guide.srt"
+    standard_json_path = tmp_path / "translation.json"
+    guided_json_path = tmp_path / "guided_translation.json"
+    _write_srt(source_path, ("原文",))
+    _write_srt(guide_path, ("參考",))
+    standard_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "原文"}]},
+                    "answer": {"outputs": [{"index": 1, "text": "Translation"}]},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    guided_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "subtitles": [{"index": 1, "text": "原文"}],
+                        "guides": [{"index": 1, "text": "參考"}],
+                    },
+                    "answer": {"outputs": [{"index": 1, "text": "Guided translation"}]},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    run_cli_with_args(
+        AuditTranslationCli,
+        f"--source {source_path} --json {standard_json_path}",
+    )
+    standard_report = capsys.readouterr().out
+    assert standard_report.startswith("# Standard Translation Audit\n")
+    assert "| S 1<br>Q 1 | C 1<br>B 1 | 0 | 原文 | — | Translation |" in (
+        standard_report
+    )
+
+    run_cli_with_args(
+        AuditTranslationCli,
+        (
+            f"--mode guided --source {source_path} --guide {guide_path} "
+            f"--json {guided_json_path}"
+        ),
+    )
+    guided_report = capsys.readouterr().out
+    assert guided_report.startswith("# Guided Translation Audit\n")
+    assert "| 原文 | G 1: 參考 | Guided translation |" in guided_report
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditTranslationCli,
+            f"--mode guided --source {source_path} --json {guided_json_path}",
+        )
+    assert "--guide is required in guided mode" in capsys.readouterr().err
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditTranslationCli,
+            (
+                f"--mode standard --source {source_path} --target {source_path} "
+                f"--json {standard_json_path}"
+            ),
+        )
+    assert "--target is not supported in standard mode" in capsys.readouterr().err
+
+
+def test_audit_ocr_fusion_cli_optional_validated_truth(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test OCR-fusion audit includes optional validated truth discrepancies.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    source_one_path = tmp_path / "one.srt"
+    source_two_path = tmp_path / "two.srt"
+    fused_path = tmp_path / "fused.srt"
+    validated_path = tmp_path / "validated.srt"
+    json_path = tmp_path / "ocr_fusion.json"
+    _write_srt(source_one_path, ("甲錯",))
+    _write_srt(source_two_path, ("甲正",))
+    _write_srt(fused_path, ("甲正",))
+    _write_srt(validated_path, ("甲真",))
+    json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"one": "甲錯", "two": "甲正"},
+                    "answer": {"output": "甲正", "note": "Used source two."},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    arguments = (
+        f"--source-one {source_one_path} --source-two {source_two_path} "
+        f"--fused {fused_path} --validated {validated_path} --json {json_path}"
+    )
+
+    run_cli_with_args(
+        AuditOcrFusionCli,
+        f"{arguments} --filter discrepancies",
+    )
+
+    report = capsys.readouterr().out
+    assert report.startswith("# OCR Fusion Audit\n")
+    assert "- validated track: included" in report
+    assert "- validated discrepancies: 1" in report
+    assert "| 1 | 1 | 1 | 甲錯 | 甲正 | 甲正 | 甲真 | Used source two. |" in report
 
 
 def test_audit_aligned_diff_cli_stdout_outfile_and_validation(
@@ -330,7 +467,7 @@ def test_audit_aligned_diff_cli_stdout_outfile_and_validation(
     )
 
 
-def test_audit_guided_review_cli_stdout_and_outfile(
+def test_audit_review_cli_guided_mode_stdout_and_outfile(
     tmp_path: Path,
     capsys: CaptureFixture,
 ):
@@ -371,8 +508,8 @@ def test_audit_guided_review_cli_stdout_and_outfile(
     arguments = f"--target {target_path} --guide {guide_path} --json {json_path}"
 
     run_cli_with_args(
-        AuditGuidedReviewCli,
-        f"{arguments} --first-index 1 --last-index 1 --filter changes",
+        AuditReviewCli,
+        (f"--mode guided {arguments} --first-index 1 --last-index 1 --filter changes"),
     )
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Guided Subtitle Review Audit\n")
@@ -383,8 +520,8 @@ def test_audit_guided_review_cli_stdout_and_outfile(
 
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(
-        AuditGuidedReviewCli,
-        f"{arguments} --outfile {outfile_path}",
+        AuditReviewCli,
+        f"--mode guided {arguments} --outfile {outfile_path}",
     )
     assert capsys.readouterr().out == ""
     assert outfile_path.read_text(encoding="utf-8").startswith(
@@ -393,12 +530,19 @@ def test_audit_guided_review_cli_stdout_and_outfile(
 
     with raises(SystemExit):
         run_cli_with_args(
-            AuditGuidedReviewCli,
-            f"{arguments} --first-index 2 --last-index 1",
+            AuditReviewCli,
+            f"--mode guided {arguments} --first-index 2 --last-index 1",
         )
     assert "--first-index must be less than or equal to --last-index" in (
         capsys.readouterr().err
     )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewCli,
+            f"--mode guided {arguments} --reviewed {target_path}",
+        )
+    assert "--reviewed is only supported in regular mode" in capsys.readouterr().err
 
 
 def test_audit_delineation_cli_stdout_and_outfile(

@@ -34,6 +34,19 @@ def _escape_table_cell(value: str) -> str:
     return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
 
 
+def _format_difficulty_filter(difficulties: Sequence[int]) -> str:
+    """Format an exact difficulty filter for a report summary.
+
+    Arguments:
+        difficulties: selected exact difficulty levels
+    Returns:
+        formatted difficulty-filter summary
+    """
+    if not difficulties:
+        return "- difficulty filter: all"
+    return f"- difficulty filter: {', '.join(str(value) for value in difficulties)}"
+
+
 def _format_index_range(
     first_index: int | None,
     last_index: int | None,

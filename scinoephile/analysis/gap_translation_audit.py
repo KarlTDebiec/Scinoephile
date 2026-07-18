@@ -17,6 +17,7 @@ from scinoephile.llms.gap_translation import GapTranslationTestCase
 
 from .audit_utils import (
     _escape_table_cell,
+    _format_difficulty_filter,
     _format_index_range,
     _validate_index_range,
 )
@@ -191,11 +192,7 @@ def audit_gap_translation(
         f"- unverified gaps: {len(all_rows) - verified_gaps}",
         f"- row filter: {row_filter.value}",
     ]
-    if difficulty_filter:
-        difficulty_summary = ", ".join(str(value) for value in difficulty_filter)
-        lines.append(f"- difficulty filter: {difficulty_summary}")
-    else:
-        lines.append("- difficulty filter: all")
+    lines.append(_format_difficulty_filter(difficulty_filter))
     range_summary = _format_index_range(
         first_index,
         last_index,

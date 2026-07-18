@@ -5,7 +5,7 @@
 Package hierarchy (modules may import from any above):
 * audit_utils / line_alignment
 * delineation_audit / gap_translation_audit / guided_review_audit
-/ punctuation_audit / review_audit
+/ ocr_fusion_audit / punctuation_audit / review_audit / translation_audit
 * diff
 * aligned_diff_audit / character_error_rate
 """

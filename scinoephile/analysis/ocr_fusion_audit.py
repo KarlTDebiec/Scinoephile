@@ -1,0 +1,339 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Audit OCR-fusion decisions and format the results as Markdown."""
+
+from __future__ import annotations
+
+from collections.abc import Sequence
+from dataclasses import dataclass
+from enum import StrEnum
+
+from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.subtitles import Series
+from scinoephile.core.synchronization import are_series_one_to_one
+from scinoephile.llms.ocr_fusion import OcrFusionTestCase
+
+from .audit_utils import (
+    _escape_table_cell,
+    _format_difficulty_filter,
+    _format_index_range,
+    _validate_index_range,
+)
+
+__all__ = [
+    "OcrFusionAuditFilter",
+    "audit_ocr_fusion",
+]
+
+
+@dataclass(frozen=True, kw_only=True)
+class _OcrFusionRow:
+    """One OCR-fusion subtitle displayed in the audit report."""
+
+    changed: bool
+    """Whether the two OCR sources differ."""
+    discrepancy: bool
+    """Whether fused and validated text differ."""
+    markdown: str
+    """Formatted Markdown table row."""
+    requires_llm: bool
+    """Whether the row required an OCR-fusion LLM decision."""
+    verified: bool
+    """Whether the associated LLM case is verified."""
+
+
+@dataclass(frozen=True, kw_only=True)
+class _OcrFusionDecision:
+    """Resolved decision metadata for one fused subtitle."""
+
+    case_index: int | None
+    """One-based JSON case position, if the LLM was used."""
+    difficulty: int
+    """Difficulty of the associated LLM case."""
+    rationale: str
+    """Logged or automatic rationale for the fused output."""
+    requires_llm: bool
+    """Whether the source pair required an LLM decision."""
+    verified: bool
+    """Whether the associated LLM case is verified."""
+
+
+class OcrFusionAuditFilter(StrEnum):
+    """Row filters supported by an OCR-fusion audit."""
+
+    all = "all"
+    """Include every fused subtitle."""
+
+    changes = "changes"
+    """Include only subtitles whose OCR sources differ."""
+
+    discrepancies = "discrepancies"
+    """Include only subtitles that differ from the validated track."""
+
+    unverified = "unverified"
+    """Include only LLM decisions not marked as verified."""
+
+
+def audit_ocr_fusion(
+    source_one: Series,
+    source_two: Series,
+    fused: Series,
+    test_cases: Sequence[OcrFusionTestCase],
+    *,
+    validated: Series | None = None,
+    difficulties: Sequence[int] = (),
+    row_filter: OcrFusionAuditFilter = OcrFusionAuditFilter.changes,
+    first_index: int | None = None,
+    last_index: int | None = None,
+) -> str:
+    """Audit OCR-fusion output against its sources and optional validated truth.
+
+    Arguments:
+        source_one: first OCR subtitle series provided for fusion
+        source_two: second OCR subtitle series provided for fusion
+        fused: OCR-fusion output subtitle series
+        test_cases: logged OCR-fusion test cases
+        validated: optional validated subtitle series used as ground truth
+        difficulties: exact case difficulty levels to include, or all if empty
+        row_filter: row status filter
+        first_index: first 1-indexed fused subtitle number to include
+        last_index: last 1-indexed fused subtitle number to include
+    Returns:
+        Markdown audit report
+    Raises:
+        ScinoephileError: if ranges, series alignment, or logged decisions are invalid
+    """
+    _validate_index_range(first_index, last_index)
+    if any(difficulty < 0 for difficulty in difficulties):
+        raise ScinoephileError("Difficulty must be at least 0")
+    if row_filter is OcrFusionAuditFilter.discrepancies and validated is None:
+        raise ScinoephileError(
+            "OCR-fusion discrepancy filtering requires a validated subtitle track"
+        )
+
+    _validate_alignment(source_one, source_two, "Source two")
+    _validate_alignment(source_one, fused, "Fused")
+    if validated is not None:
+        _validate_alignment(source_one, validated, "Validated")
+
+    difficulty_filter = tuple(sorted(set(difficulties)))
+    cases_by_key: dict[tuple[str, str], tuple[int, OcrFusionTestCase]] = {}
+    for case_index, test_case in enumerate(test_cases, 1):
+        key = (test_case.query.source_one, test_case.query.source_two)
+        cases_by_key[key] = (case_index, test_case)
+
+    all_rows: list[_OcrFusionRow] = []
+    first_position = 1 if first_index is None else first_index
+    last_position = len(fused) if last_index is None else min(last_index, len(fused))
+    for index in range(first_position, last_position + 1):
+        position = index - 1
+        source_one_text = source_one.events[position].text_with_newline
+        source_two_text = source_two.events[position].text_with_newline
+        fused_text = fused.events[position].text_with_newline
+        validated_text = None
+        if validated is not None:
+            validated_text = validated.events[position].text_with_newline
+
+        decision = _get_decision(
+            index,
+            source_one_text,
+            source_two_text,
+            fused_text,
+            cases_by_key,
+        )
+        if difficulty_filter and decision.difficulty not in difficulty_filter:
+            continue
+        discrepancy = validated_text is not None and fused_text != validated_text
+        cells = (
+            str(index),
+            str(decision.case_index) if decision.case_index is not None else "—",
+            str(decision.difficulty) if decision.requires_llm else "—",
+            source_one_text or "—",
+            source_two_text or "—",
+            fused_text or "—",
+            validated_text if validated_text else "—",
+            decision.rationale,
+            "",
+            "✓" if decision.requires_llm and decision.verified else "",
+        )
+        markdown_cells = " | ".join(_escape_table_cell(cell) for cell in cells)
+        all_rows.append(
+            _OcrFusionRow(
+                changed=source_one_text != source_two_text,
+                discrepancy=discrepancy,
+                markdown=f"| {markdown_cells} |",
+                requires_llm=decision.requires_llm,
+                verified=decision.verified,
+            )
+        )
+
+    rows = _filter_rows(all_rows, row_filter)
+    llm_rows = [row for row in all_rows if row.requires_llm]
+    lines = [
+        "# OCR Fusion Audit",
+        "",
+        "## Summary",
+        "",
+        f"- subtitles: {len(all_rows)}",
+        f"- source disagreements: {sum(row.changed for row in all_rows)}",
+        f"- LLM decisions: {len(llm_rows)}",
+        f"- verified LLM decisions: {sum(row.verified for row in llm_rows)}",
+        f"- unverified LLM decisions: {sum(not row.verified for row in llm_rows)}",
+        f"- validated track: {'included' if validated is not None else 'omitted'}",
+        f"- validated discrepancies: {sum(row.discrepancy for row in all_rows)}",
+        f"- row filter: {row_filter.value}",
+    ]
+    lines.append(_format_difficulty_filter(difficulty_filter))
+    range_summary = _format_index_range(
+        first_index,
+        last_index,
+        track_name="fused",
+    )
+    if range_summary is not None:
+        lines.append(range_summary)
+    lines.extend(
+        (
+            f"- table rows: {len(rows)}",
+            "",
+            "## Audit Table",
+            "",
+            (
+                "| Index | Case | Difficulty | Source one | Source two | Fused | "
+                "Validated | Rationale | Notes | Verified |"
+            ),
+            "|---:|---:|---:|---|---|---|---|---|---|:---:|",
+            *(row.markdown for row in rows),
+        )
+    )
+    return "\n".join(lines) + "\n"
+
+
+def _filter_rows(
+    rows: Sequence[_OcrFusionRow],
+    row_filter: OcrFusionAuditFilter,
+) -> list[_OcrFusionRow]:
+    """Filter OCR-fusion rows by their status.
+
+    Arguments:
+        rows: eligible rows
+        row_filter: active row filter
+    Returns:
+        filtered rows
+    """
+    if row_filter is OcrFusionAuditFilter.all:
+        return list(rows)
+    if row_filter is OcrFusionAuditFilter.changes:
+        return [row for row in rows if row.changed]
+    if row_filter is OcrFusionAuditFilter.discrepancies:
+        return [row for row in rows if row.discrepancy]
+    return [row for row in rows if row.requires_llm and not row.verified]
+
+
+def _get_automatic_output(source_one_text: str, source_two_text: str) -> str:
+    """Get the deterministic fusion output for a pair not sent to the LLM.
+
+    Arguments:
+        source_one_text: first source text
+        source_two_text: second source text
+    Returns:
+        automatic fused text
+    """
+    if source_one_text:
+        return source_one_text
+    return source_two_text
+
+
+def _get_automatic_rationale(source_one_text: str, source_two_text: str) -> str:
+    """Describe the deterministic fusion decision for a source pair.
+
+    Arguments:
+        source_one_text: first source text
+        source_two_text: second source text
+    Returns:
+        automatic decision description
+    """
+    if not source_one_text and not source_two_text:
+        return "Both sources empty"
+    if source_one_text == source_two_text:
+        return "Sources identical"
+    if source_one_text:
+        return "Source two empty"
+    return "Source one empty"
+
+
+def _get_decision(
+    index: int,
+    source_one_text: str,
+    source_two_text: str,
+    fused_text: str,
+    cases_by_key: dict[tuple[str, str], tuple[int, OcrFusionTestCase]],
+) -> _OcrFusionDecision:
+    """Resolve and validate one automatic or LLM fusion decision.
+
+    Arguments:
+        index: one-based fused subtitle index
+        source_one_text: first source text
+        source_two_text: second source text
+        fused_text: fused output text
+        cases_by_key: latest logged case keyed by source text pair
+    Returns:
+        resolved decision metadata
+    Raises:
+        ScinoephileError: if the fused output lacks or conflicts with its decision
+    """
+    requires_llm = bool(
+        source_one_text and source_two_text and source_one_text != source_two_text
+    )
+    if not requires_llm:
+        expected_output = _get_automatic_output(source_one_text, source_two_text)
+        if expected_output != fused_text:
+            raise ScinoephileError(
+                "Unable to audit OCR fusion: fused subtitle "
+                f"{index} does not match the automatic fusion result"
+            )
+        return _OcrFusionDecision(
+            case_index=None,
+            difficulty=0,
+            rationale=_get_automatic_rationale(source_one_text, source_two_text),
+            requires_llm=False,
+            verified=True,
+        )
+
+    case_data = cases_by_key.get((source_one_text, source_two_text))
+    if case_data is None:
+        raise ScinoephileError(
+            f"Unable to audit OCR fusion: no logged test case matches subtitle {index}"
+        )
+    case_index, test_case = case_data
+    answer = test_case.answer
+    rationale = "(unanswered)"
+    if answer is not None:
+        rationale = answer.note
+        if answer.output != fused_text:
+            raise ScinoephileError(
+                "Unable to audit OCR fusion: fused subtitle "
+                f"{index} does not match test case {case_index} output"
+            )
+    return _OcrFusionDecision(
+        case_index=case_index,
+        difficulty=test_case.difficulty,
+        rationale=rationale,
+        requires_llm=True,
+        verified=test_case.verified,
+    )
+
+
+def _validate_alignment(reference: Series, candidate: Series, label: str):
+    """Validate exact one-to-one timing alignment against a reference series.
+
+    Arguments:
+        reference: reference subtitle series
+        candidate: candidate subtitle series
+        label: candidate label used in errors
+    Raises:
+        ScinoephileError: if the candidate is not exactly one-to-one aligned
+    """
+    if not are_series_one_to_one(reference, candidate):
+        raise ScinoephileError(
+            f"{label} subtitle series must be one-to-one timing-aligned with source one"
+        )

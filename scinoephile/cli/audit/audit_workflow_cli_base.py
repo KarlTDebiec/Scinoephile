@@ -125,6 +125,21 @@ class AuditCliBase(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @staticmethod
+    def get_character_variants(characters: Sequence[str]) -> tuple[str, ...]:
+        """Get requested characters and their simplified/traditional variants.
+
+        Arguments:
+            characters: requested character strings
+        Returns:
+            sorted individual character variants
+        """
+        chars = "".join(characters)
+        variants = set(chars)
+        variants.update(get_zho_converter(OpenCCConfig.s2t).convert(chars))
+        variants.update(get_zho_converter(OpenCCConfig.t2s).convert(chars))
+        return tuple(sorted(variants))
+
+    @staticmethod
     def load_test_cases(
         parser: ArgumentParser,
         json_path: Path,
@@ -244,21 +259,6 @@ class AuditWorkflowCliBase(AuditCliBase):
                 "automatically (default: no character filter)"
             ),
         )
-
-    @staticmethod
-    def get_character_variants(characters: Sequence[str]) -> tuple[str, ...]:
-        """Get requested characters and their simplified/traditional variants.
-
-        Arguments:
-            characters: requested character strings
-        Returns:
-            sorted individual character variants
-        """
-        chars = "".join(characters)
-        variants = set(chars)
-        variants.update(get_zho_converter(OpenCCConfig.s2t).convert(chars))
-        variants.update(get_zho_converter(OpenCCConfig.t2s).convert(chars))
-        return tuple(sorted(variants))
 
     @staticmethod
     def load_review_cases(

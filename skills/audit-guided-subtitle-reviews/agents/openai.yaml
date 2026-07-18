@@ -1,4 +1,0 @@
-interface:
-  display_name: "Audit Guided Subtitle Reviews"
-  short_description: "Audit guide-backed subtitle revisions"
-  default_prompt: "Use $audit-guided-subtitle-reviews to audit the logged guided-review decisions for this dataset."
