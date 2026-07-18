@@ -8,7 +8,15 @@ import json
 from pathlib import Path
 from typing import TypedDict
 
-from scinoephile.analysis.review_audit import ReviewAuditFilter, audit_reviews
+import pytest
+
+from scinoephile.analysis.review_audit import (
+    ReviewAuditFilter,
+    ReviewAuditPair,
+    audit_review_workflow,
+    audit_reviews,
+)
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series, Subtitle
@@ -144,6 +152,42 @@ def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
     report = audit_reviews(**inputs, row_filter=ReviewAuditFilter.all)
 
     assert "- table rows: 4" in report
+
+
+@pytest.mark.parametrize(
+    ("first_index", "last_index", "message"),
+    (
+        (0, None, "First index must be at least 1"),
+        (None, 0, "Last index must be at least 1"),
+        (2, 1, "First index must be less than or equal to last index"),
+    ),
+)
+def test_audit_review_workflow_rejects_invalid_range(
+    first_index: int | None,
+    last_index: int | None,
+    message: str,
+):
+    """Test direct workflow calls reject invalid one-based index ranges.
+
+    Arguments:
+        first_index: first requested subtitle index
+        last_index: last requested subtitle index
+        message: expected validation error
+    """
+    series = _get_series(("甲", "乙"))
+
+    with pytest.raises(ScinoephileError, match=message):
+        audit_review_workflow(
+            reviews=(
+                ReviewAuditPair(
+                    label="Test",
+                    original=series,
+                    reviewed=series,
+                ),
+            ),
+            first_index=first_index,
+            last_index=last_index,
+        )
 
 
 def _get_audit_inputs(tmp_path: Path) -> _AuditInputs:

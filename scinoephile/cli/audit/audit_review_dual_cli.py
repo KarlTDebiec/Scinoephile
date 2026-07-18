@@ -38,41 +38,21 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "simplified-script review input SRT file": "简体字校对输入 SRT 文件",
         "simplified-script reviewed SRT file": "简体字校对后 SRT 文件",
-        "optional JSON corresponding to the traditional review": (
-            "与繁体字校对对应的可选 JSON"
+        "optional test-case JSON file for the traditional review": (
+            "繁体字校对的可选测试用例 JSON 文件"
         ),
-        "optional JSON corresponding to the traditional simplification review": (
-            "与繁体字简化校对对应的可选 JSON"
+        "optional test-case JSON file for the traditional simplification review": (
+            "繁体字简化校对的可选测试用例 JSON 文件"
         ),
-        "optional JSON corresponding to the simplified review": (
-            "与简体字校对对应的可选 JSON"
-        ),
-        "first 1-indexed subtitle number to include, inclusive": (
-            "要包含的第一个字幕编号（从 1 开始，包含该编号）"
-        ),
-        "last 1-indexed subtitle number to include, inclusive": (
-            "要包含的最后一个字幕编号（从 1 开始，包含该编号）"
+        "optional test-case JSON file for the simplified review": (
+            "简体字校对的可选测试用例 JSON 文件"
         ),
         (
-            "rows to include: all; changes for any review edit or final "
-            "discrepancy; discrepancies for final discrepancies only "
-            "(default: changes)"
+            "rows to include: all, changes, or discrepancies; changes includes "
+            "review edits and final discrepancies (default: changes)"
         ): (
-            "要包含的行：all 表示全部；changes 表示任何校对更改或最终差异；"
-            "discrepancies 仅表示最终差异（默认：changes）"
-        ),
-        (
-            "further limit rows to those containing any listed character in any "
-            "input; values may be separated or combined, and simplified and "
-            "traditional variants are included automatically (Yue examples: 些 番 "
-            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
-        ): (
-            "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入，"
-            "并自动包含简繁体变体（粤语示例：些 番 是 着 喇啦啰 这那；中文"
-            "示例：著 着 甚 什）"
-        ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 输出文件路径（默认：标准输出）"
+            "要包含的行：all、changes 或 discrepancies；changes 包含校对更改"
+            "和最终差异（默认：changes）"
         ),
     },
     "zh-hant": {
@@ -92,41 +72,21 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "simplified-script review input SRT file": "簡體字校對輸入 SRT 檔",
         "simplified-script reviewed SRT file": "簡體字校對後 SRT 檔",
-        "optional JSON corresponding to the traditional review": (
-            "與繁體字校對對應的選用 JSON"
+        "optional test-case JSON file for the traditional review": (
+            "繁體字校對的選用測試案例 JSON 檔"
         ),
-        "optional JSON corresponding to the traditional simplification review": (
-            "與繁體字簡化校對對應的選用 JSON"
+        "optional test-case JSON file for the traditional simplification review": (
+            "繁體字簡化校對的選用測試案例 JSON 檔"
         ),
-        "optional JSON corresponding to the simplified review": (
-            "與簡體字校對對應的選用 JSON"
-        ),
-        "first 1-indexed subtitle number to include, inclusive": (
-            "要包含的第一個字幕編號（從 1 開始，包含該編號）"
-        ),
-        "last 1-indexed subtitle number to include, inclusive": (
-            "要包含的最後一個字幕編號（從 1 開始，包含該編號）"
+        "optional test-case JSON file for the simplified review": (
+            "簡體字校對的選用測試案例 JSON 檔"
         ),
         (
-            "rows to include: all; changes for any review edit or final "
-            "discrepancy; discrepancies for final discrepancies only "
-            "(default: changes)"
+            "rows to include: all, changes, or discrepancies; changes includes "
+            "review edits and final discrepancies (default: changes)"
         ): (
-            "要包含的列：all 表示全部；changes 表示任何校對變更或最終差異；"
-            "discrepancies 僅表示最終差異（預設：changes）"
-        ),
-        (
-            "further limit rows to those containing any listed character in any "
-            "input; values may be separated or combined, and simplified and "
-            "traditional variants are included automatically (Yue examples: 些 番 "
-            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
-        ): (
-            "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入，"
-            "並自動包含簡繁體變體（粵語範例：些 番 是 着 喇啦啰 这那；中文"
-            "範例：著 着 甚 什）"
-        ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 輸出檔路徑（預設：標準輸出）"
+            "要包含的列：all、changes 或 discrepancies；changes 包含校對變更"
+            "與最終差異（預設：changes）"
         ),
     },
 }
@@ -139,8 +99,8 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
     localizations = AUDIT_REVIEW_DUAL_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
     row_filter_help = (
-        "rows to include: all; changes for any review edit or final discrepancy; "
-        "discrepancies for final discrepancies only (default: changes)"
+        "rows to include: all, changes, or discrepancies; changes includes review "
+        "edits and final discrepancies (default: changes)"
     )
     """Help text for the workflow's supported row filters."""
     row_filters = tuple(ReviewAuditFilter)
@@ -207,20 +167,20 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
             "--simplified-json",
             dest="simplified_json_path",
             type=input_file_arg(),
-            help="optional JSON corresponding to the simplified review",
+            help="optional test-case JSON file for the simplified review",
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-json",
             dest="traditional_json_path",
             type=input_file_arg(),
-            help="optional JSON corresponding to the traditional review",
+            help="optional test-case JSON file for the traditional review",
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-simplified-json",
             dest="traditional_simplified_json_path",
             type=input_file_arg(),
             help=(
-                "optional JSON corresponding to the traditional simplification review"
+                "optional test-case JSON file for the traditional simplification review"
             ),
         )
 

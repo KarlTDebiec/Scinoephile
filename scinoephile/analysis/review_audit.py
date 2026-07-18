@@ -13,6 +13,8 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
+from .audit_utils import _validate_index_range
+
 __all__ = [
     "ReviewAuditComparison",
     "ReviewAuditFilter",
@@ -166,6 +168,8 @@ def audit_review_workflow(
         ScinoephileError: if inputs are absent, differ in length, or do not match
             review test cases
     """
+    _validate_index_range(first_index, last_index)
+
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
 

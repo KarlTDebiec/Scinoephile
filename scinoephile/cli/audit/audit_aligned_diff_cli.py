@@ -17,11 +17,10 @@ from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,
-    int_arg,
-    output_file_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.exceptions import ScinoephileError
+
+from .audit_workflow_cli_base import AuditCliBase
 
 __all__ = ["AuditAlignedDiffCli"]
 
@@ -38,20 +37,17 @@ AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional guide subtitle SRT file aligned with the transcription": (
             "与转写字幕对齐的可选导引字幕 SRT 文件"
         ),
-        "first transcription subtitle number to include, inclusive": (
-            "要包含的第一个转写字幕编号（包含该编号）"
+        "first 1-indexed transcription subtitle number to include, inclusive": (
+            "要包含的第一个转写字幕编号（从 1 开始，包含该编号）"
         ),
-        "last transcription subtitle number to include, inclusive": (
-            "要包含的最后一个转写字幕编号（包含该编号）"
+        "last 1-indexed transcription subtitle number to include, inclusive": (
+            "要包含的最后一个转写字幕编号（从 1 开始，包含该编号）"
         ),
         "rows to include: all or changes (default: changes)": (
             "要包含的行：all 表示全部，changes 表示差异（默认：changes）"
         ),
         "similarity threshold used to pair replacements (default: 0.6)": (
             "用于配对替换项的相似度阈值（默认：0.6）"
-        ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 输出文件路径（默认：标准输出）"
         ),
     },
     "zh-hant": {
@@ -66,11 +62,11 @@ AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional guide subtitle SRT file aligned with the transcription": (
             "與轉寫字幕對齊的可選導引字幕 SRT 檔"
         ),
-        "first transcription subtitle number to include, inclusive": (
-            "要包含的第一個轉寫字幕編號（包含該編號）"
+        "first 1-indexed transcription subtitle number to include, inclusive": (
+            "要包含的第一個轉寫字幕編號（從 1 開始，包含該編號）"
         ),
-        "last transcription subtitle number to include, inclusive": (
-            "要包含的最後一個轉寫字幕編號（包含該編號）"
+        "last 1-indexed transcription subtitle number to include, inclusive": (
+            "要包含的最後一個轉寫字幕編號（從 1 開始，包含該編號）"
         ),
         "rows to include: all or changes (default: changes)": (
             "要包含的列：all 表示全部，changes 表示差異（預設：changes）"
@@ -78,17 +74,22 @@ AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "similarity threshold used to pair replacements (default: 0.6)": (
             "用於配對替換項的相似度閾值（預設：0.6）"
         ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 輸出檔路徑（預設：標準輸出）"
-        ),
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditAlignedDiffCli(ScinoephileCliBase):
+class AuditAlignedDiffCli(AuditCliBase):
     """Audit character-aligned subtitle differences."""
 
+    first_index_help = (
+        "first 1-indexed transcription subtitle number to include, inclusive"
+    )
+    """Help text describing the first selected transcription index."""
+    last_index_help = (
+        "last 1-indexed transcription subtitle number to include, inclusive"
+    )
+    """Help text describing the last selected transcription index."""
     localizations = AUDIT_ALIGNED_DIFF_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
@@ -134,16 +135,6 @@ class AuditAlignedDiffCli(ScinoephileCliBase):
             help="optional guide subtitle SRT file aligned with the transcription",
         )
         arg_groups["operation arguments"].add_argument(
-            "--first-index",
-            type=int_arg(min_value=1),
-            help="first transcription subtitle number to include, inclusive",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--last-index",
-            type=int_arg(min_value=1),
-            help="last transcription subtitle number to include, inclusive",
-        )
-        arg_groups["operation arguments"].add_argument(
             "--filter",
             choices=tuple(AlignedDiffAuditFilter),
             default=AlignedDiffAuditFilter.changes,
@@ -158,14 +149,6 @@ class AuditAlignedDiffCli(ScinoephileCliBase):
             type=float_arg(min_value=0.0, max_value=1.0),
             help="similarity threshold used to pair replacements (default: 0.6)",
         )
-        arg_groups["output arguments"].add_argument(
-            "-o",
-            "--outfile",
-            dest="outfile_path",
-            type=output_file_arg(),
-            help="Markdown outfile path (default: stdout)",
-        )
-        parser.set_defaults(_parser=parser)
 
     @classmethod
     def name(cls) -> str:
@@ -189,12 +172,7 @@ class AuditAlignedDiffCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        if (
-            first_index is not None
-            and last_index is not None
-            and first_index > last_index
-        ):
-            parser.error("--first-index must be less than or equal to --last-index")
+        cls.validate_range(parser, first_index, last_index)
 
         original = None
         if original_path is not None:
@@ -218,13 +196,7 @@ class AuditAlignedDiffCli(ScinoephileCliBase):
         except ScinoephileError as exc:
             parser.error(str(exc))
 
-        if outfile_path is None:
-            print(report, end="")
-            return
-        try:
-            outfile_path.write_text(report, encoding="utf-8")
-        except OSError as exc:
-            parser.error(str(exc))
+        cls.write_report(parser, report, outfile_path)
 
 
 if __name__ == "__main__":

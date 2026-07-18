@@ -77,6 +77,7 @@ def test_audit_punctuation_filters_rows_and_subtitle_range():
         PunctuationTestCase(
             query=PunctuationQuery(guide="參考二", subtitles=["丙"]),
             answer=PunctuationAnswer(output="丙"),
+            verified=True,
         ),
     )
 
@@ -85,6 +86,12 @@ def test_audit_punctuation_filters_rows_and_subtitle_range():
         target,
         test_cases,
         row_filter=PunctuationAuditFilter.changes,
+    )
+    unverified_report = audit_punctuation(
+        reference,
+        target,
+        test_cases,
+        row_filter=PunctuationAuditFilter.unverified,
     )
     ranged_report = audit_punctuation(
         reference,
@@ -100,10 +107,25 @@ def test_audit_punctuation_filters_rows_and_subtitle_range():
     assert "| 1 |" in changed_report
     assert "| 2 |" not in changed_report
     assert "- logged cases: 1" in ranged_report
-    assert "- subtitle range: 1-indexed numbers 2 through 3" in ranged_report
+    assert "- reference subtitle range: 2 through 3" in ranged_report
     assert "- table rows: 1" in ranged_report
     assert "| 1 |" not in ranged_report
     assert "| 2 |" in ranged_report
+    assert "- row filter: unverified" in unverified_report
+    assert "- table rows: 1" in unverified_report
+    assert "| 1 |" in unverified_report
+    assert "| 2 |" not in unverified_report
+
+
+def test_audit_punctuation_rejects_invalid_range():
+    """Test direct callers receive a domain error for an invalid range."""
+    with raises(ScinoephileError, match="First index must be at least 1"):
+        audit_punctuation(
+            _get_series("參考"),
+            _get_series("甲"),
+            (),
+            first_index=0,
+        )
 
 
 def test_audit_punctuation_resolves_repeated_reference_from_target():
@@ -253,6 +275,38 @@ def test_audit_punctuation_ignores_superseded_reference_revision():
     assert "舊參考" not in report
     assert "| 1 | 更正參考 | 甲<br>乙 | 甲，乙 |" in report
     assert "- logged cases: 0" in excluded_report
+
+
+def test_audit_punctuation_does_not_transitively_ignore_unmatched_reference():
+    """Test one stale key cannot connect an unrelated unmatched reference."""
+    test_cases = (
+        PunctuationTestCase(
+            query=PunctuationQuery(guide="目前參考", subtitles=["共用"]),
+            answer=PunctuationAnswer(output="共用"),
+        ),
+        PunctuationTestCase(
+            query=PunctuationQuery(guide="過渡參考", subtitles=["共用"]),
+            answer=PunctuationAnswer(output="共用"),
+        ),
+        PunctuationTestCase(
+            query=PunctuationQuery(guide="過渡參考", subtitles=["其他"]),
+            answer=PunctuationAnswer(output="其他"),
+        ),
+        PunctuationTestCase(
+            query=PunctuationQuery(guide="無關參考", subtitles=["其他"]),
+            answer=PunctuationAnswer(output="其他"),
+        ),
+    )
+
+    with raises(
+        ScinoephileError,
+        match="test case 4 reference subtitle was not found",
+    ):
+        audit_punctuation(
+            _get_series("目前參考"),
+            _get_series("共用"),
+            test_cases,
+        )
 
 
 def test_audit_punctuation_rejects_ambiguous_reference():

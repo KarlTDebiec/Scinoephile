@@ -17,13 +17,11 @@ from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
     input_file_arg,
-    int_arg,
-    output_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationTestCase
+
+from .audit_workflow_cli_base import AuditCliBase
 
 __all__ = ["AuditPunctuationCli"]
 
@@ -35,17 +33,15 @@ AUDIT_PUNCTUATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "punctuated target subtitle SRT file": "已加标点的目标字幕 SRT 文件",
         "punctuation test-case JSON file": "字幕标点测试用例 JSON 文件",
-        "first 1-indexed subtitle number to include, inclusive": (
+        "first 1-indexed reference subtitle number to include, inclusive": (
             "要包含的第一个字幕编号（从 1 开始，包含该编号）"
         ),
-        "last 1-indexed subtitle number to include, inclusive": (
+        "last 1-indexed reference subtitle number to include, inclusive": (
             "要包含的最后一个字幕编号（从 1 开始，包含该编号）"
         ),
-        "rows to include: all or changes (default: all)": (
-            "要包含的行：all 表示全部，changes 表示标点调整（默认：all）"
-        ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 输出文件路径（默认：标准输出）"
+        "rows to include: all, changes, or unverified (default: all)": (
+            "要包含的行：all 表示全部，changes 表示标点调整，unverified "
+            "表示未验证（默认：all）"
         ),
     },
     "zh-hant": {
@@ -55,26 +51,28 @@ AUDIT_PUNCTUATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "punctuated target subtitle SRT file": "已加標點的目標字幕 SRT 檔",
         "punctuation test-case JSON file": "字幕標點測試案例 JSON 檔",
-        "first 1-indexed subtitle number to include, inclusive": (
+        "first 1-indexed reference subtitle number to include, inclusive": (
             "要包含的第一個字幕編號（從 1 開始，包含該編號）"
         ),
-        "last 1-indexed subtitle number to include, inclusive": (
+        "last 1-indexed reference subtitle number to include, inclusive": (
             "要包含的最後一個字幕編號（從 1 開始，包含該編號）"
         ),
-        "rows to include: all or changes (default: all)": (
-            "要包含的列：all 表示全部，changes 表示標點調整（預設：all）"
-        ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 輸出檔路徑（預設：標準輸出）"
+        "rows to include: all, changes, or unverified (default: all)": (
+            "要包含的列：all 表示全部，changes 表示標點調整，unverified "
+            "表示未驗證（預設：all）"
         ),
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditPunctuationCli(ScinoephileCliBase):
+class AuditPunctuationCli(AuditCliBase):
     """Audit transcription punctuation decisions."""
 
+    first_index_help = "first 1-indexed reference subtitle number to include, inclusive"
+    """Help text describing the first selected reference index."""
+    last_index_help = "last 1-indexed reference subtitle number to include, inclusive"
+    """Help text describing the last selected reference index."""
     localizations = AUDIT_PUNCTUATION_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
@@ -115,32 +113,14 @@ class AuditPunctuationCli(ScinoephileCliBase):
             help="punctuation test-case JSON file",
         )
         arg_groups["operation arguments"].add_argument(
-            "--first-index",
-            type=int_arg(min_value=1),
-            help="first 1-indexed subtitle number to include, inclusive",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--last-index",
-            type=int_arg(min_value=1),
-            help="last 1-indexed subtitle number to include, inclusive",
-        )
-        arg_groups["operation arguments"].add_argument(
             "--filter",
             choices=tuple(PunctuationAuditFilter),
             default=PunctuationAuditFilter.all,
             dest="row_filter",
-            metavar="{all,changes}",
+            metavar="{all,changes,unverified}",
             type=enum_arg(PunctuationAuditFilter),
-            help="rows to include: all or changes (default: all)",
+            help="rows to include: all, changes, or unverified (default: all)",
         )
-        arg_groups["output arguments"].add_argument(
-            "-o",
-            "--outfile",
-            dest="outfile_path",
-            type=output_file_arg(),
-            help="Markdown outfile path (default: stdout)",
-        )
-        parser.set_defaults(_parser=parser)
 
     @classmethod
     def name(cls) -> str:
@@ -162,22 +142,15 @@ class AuditPunctuationCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        if (
-            first_index is not None
-            and last_index is not None
-            and first_index > last_index
-        ):
-            parser.error("--first-index must be less than or equal to --last-index")
+        cls.validate_range(parser, first_index, last_index)
         reference = read_series(parser, reference_path)
         target = read_series(parser, target_path)
-        try:
-            loaded_test_cases = load_test_cases_from_json(
-                json_path,
-                PunctuationManager,
-                PunctuationManager.base_prompt,
-            )
-        except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
-            parser.error(f"Unable to load punctuation JSON: {exc}")
+        loaded_test_cases = cls.load_test_cases(
+            parser,
+            json_path,
+            PunctuationManager,
+            workflow_name="punctuation",
+        )
 
         test_cases = [
             cast(PunctuationTestCase, test_case) for test_case in loaded_test_cases
@@ -195,13 +168,7 @@ class AuditPunctuationCli(ScinoephileCliBase):
         except ScinoephileError as exc:
             parser.error(str(exc))
 
-        if outfile_path is None:
-            print(report, end="")
-            return
-        try:
-            outfile_path.write_text(report, encoding="utf-8")
-        except OSError as exc:
-            parser.error(str(exc))
+        cls.write_report(parser, report, outfile_path)
 
 
 if __name__ == "__main__":

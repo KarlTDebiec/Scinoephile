@@ -48,7 +48,7 @@ def test_audit_guided_review_formats_and_sorts_subtitles():
     assert "- subtitles: 3" in report
     assert "- revised subtitles: 1" in report
     assert "- unchanged subtitles: 2" in report
-    assert "unanswered subtitles" not in report
+    assert "- unanswered subtitles: 0" in report
     assert "- verified subtitles: 1" in report
     assert "- unverified subtitles: 2" in report
     assert "| Index | Block | Guide | Target / revision | Notes | Verified |" in report
@@ -56,6 +56,35 @@ def test_audit_guided_review_formats_and_sorts_subtitles():
     second_row = "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |"
     third_row = "| 3 | 2 | 參考二 | 丁 |  | ✓ |"
     assert report.index(first_row) < report.index(second_row) < report.index(third_row)
+
+
+def test_audit_guided_review_formats_unanswered_case():
+    """Test an absent answer is distinct from an explicit no-revision answer."""
+    target = Series(events=[Subtitle(start=0, end=1000, text="原文")])
+    guide = Series(events=[Subtitle(start=0, end=1000, text="參考")])
+    test_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "原文"}],
+                "guides": [{"index": 1, "text": "參考"}],
+            }
+        }
+    )
+
+    report = audit_guided_review(target, guide, (test_case,))
+
+    assert "- revised subtitles: 0" in report
+    assert "- unchanged subtitles: 0" in report
+    assert "- unanswered subtitles: 1" in report
+    assert "| 1 | 1 | 參考 | 原文<br>(unanswered) |  |  |" in report
+
+
+def test_audit_guided_review_rejects_invalid_range():
+    """Test direct callers receive a domain error for an invalid range."""
+    target, guide = _get_series_pair()
+
+    with raises(ScinoephileError, match="First index must be at least 1"):
+        audit_guided_review(target, guide, (), first_index=0)
 
 
 def test_audit_guided_review_filters_rows_and_target_range():
@@ -362,6 +391,32 @@ def test_audit_guided_review_ignores_unmatched_case_outside_range():
     )
 
     assert "- subtitles: 0" in report
+    assert "- table rows: 0" in report
+
+
+def test_audit_guided_review_allows_range_beyond_target():
+    """Test an empty oversized range does not index beyond the target series."""
+    target = Series(events=[Subtitle(start=0, end=1000, text="目前")])
+    guide = Series(events=[Subtitle(start=0, end=1000, text="目前參考")])
+    stale_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "舊文"}],
+                "guides": [{"index": 1, "text": "舊參考"}],
+            }
+        }
+    )
+
+    report = audit_guided_review(
+        target,
+        guide,
+        (stale_case,),
+        first_index=2,
+        last_index=2,
+    )
+
+    assert "- subtitles: 0" in report
+    assert "- target subtitle range: 2 through 2" in report
     assert "- table rows: 0" in report
 
 

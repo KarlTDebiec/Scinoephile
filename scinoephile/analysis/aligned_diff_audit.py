@@ -11,6 +11,7 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import is_full_width_char
 
+from .audit_utils import _format_index_range, _validate_index_range
 from .diff import LineDiff, LineDiffKind, SeriesDiff
 
 __all__ = [
@@ -56,7 +57,7 @@ def audit_aligned_diff(
     Raises:
         ScinoephileError: if the range or guide alignment is invalid
     """
-    _validate_range(first_index, last_index)
+    _validate_index_range(first_index, last_index)
     aligned_guide = _align_guide(transcription, guide)
 
     diff = SeriesDiff(
@@ -110,7 +111,11 @@ def audit_aligned_diff(
         f"- equal rows: {equal_rows}",
         f"- row filter: {row_filter.value}",
     ]
-    range_summary = _format_transcription_range(first_index, last_index)
+    range_summary = _format_index_range(
+        first_index,
+        last_index,
+        track_name="transcription",
+    )
     if range_summary is not None:
         lines.append(range_summary)
     lines.extend(
@@ -314,27 +319,6 @@ def _format_track_text(track: Series, event_idxs: tuple[int, ...]) -> str:
     return _join_track_texts(texts)
 
 
-def _format_transcription_range(
-    first_index: int | None,
-    last_index: int | None,
-) -> str | None:
-    """Format an optional transcription range for the report summary.
-
-    Arguments:
-        first_index: first included 1-indexed transcription subtitle number
-        last_index: last included 1-indexed transcription subtitle number
-    Returns:
-        formatted range summary, or None if the range is unbounded
-    """
-    if first_index is None and last_index is None:
-        return None
-    if first_index is None:
-        return f"- transcription subtitle range: through {last_index}"
-    if last_index is None:
-        return f"- transcription subtitle range: {first_index} onward"
-    return f"- transcription subtitle range: {first_index} through {last_index}"
-
-
 def _get_selected_transcription_indices(
     transcription: Series,
     first_index: int | None,
@@ -439,20 +423,3 @@ def _message_is_in_range(
         reference[idx].start < window_end and reference[idx].end > window_start
         for idx in reference_idxs
     )
-
-
-def _validate_range(first_index: int | None, last_index: int | None):
-    """Validate optional 1-indexed range boundaries.
-
-    Arguments:
-        first_index: first included subtitle number
-        last_index: last included subtitle number
-    Raises:
-        ScinoephileError: if either boundary is invalid
-    """
-    if first_index is not None and first_index < 1:
-        raise ScinoephileError("First index must be at least 1")
-    if last_index is not None and last_index < 1:
-        raise ScinoephileError("Last index must be at least 1")
-    if first_index is not None and last_index is not None and first_index > last_index:
-        raise ScinoephileError("First index must be less than or equal to last index")

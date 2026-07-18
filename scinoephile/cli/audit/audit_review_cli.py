@@ -29,7 +29,9 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "subtitle SRT file before review": "校对前的字幕 SRT 文件",
         "subtitle SRT file after review": "校对后的字幕 SRT 文件",
-        "optional JSON corresponding to this review": "与此次校对对应的可选 JSON",
+        "optional test-case JSON file for this review": (
+            "此次校对的可选测试用例 JSON 文件"
+        ),
     },
     "zh-hant": {
         "audit one subtitle review with automatic language and script detection": (
@@ -37,7 +39,9 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "subtitle SRT file before review": "校對前的字幕 SRT 檔",
         "subtitle SRT file after review": "校對後的字幕 SRT 檔",
-        "optional JSON corresponding to this review": "與此次校對對應的選用 JSON",
+        "optional test-case JSON file for this review": (
+            "此次校對的選用測試案例 JSON 檔"
+        ),
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -89,7 +93,7 @@ class AuditReviewCli(AuditWorkflowCliBase):
             "--json",
             dest="json_path",
             type=input_file_arg(),
-            help="optional JSON corresponding to this review",
+            help="optional test-case JSON file for this review",
         )
 
     @classmethod

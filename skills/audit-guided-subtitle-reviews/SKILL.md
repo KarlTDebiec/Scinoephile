@@ -20,7 +20,8 @@ cell. Do not leave notes only in commentary, tool output, or the final response.
   `Target / revision`, `Notes`, and `Verified`.
 - `Block` is the one-based guided-review block containing the target subtitle.
 - In `Target / revision`, show the input target first and stack the proposed
-  revision beneath it. Show only the target when no revision was proposed.
+  revision beneath it. Show only the target when an answered case proposed no
+  revision, and stack `(unanswered)` beneath it when the case has no answer.
 - Replace the model-provided JSON note with your own independent interpretation
   in `Notes`; never copy or lightly paraphrase the model's explanation.
 - Write `OK` only for a proposed revision that is clearly appropriate. For an
@@ -80,6 +81,10 @@ Use `--filter all` for a complete audit, including no-revision answers that may
 have missed errors. Use `--filter changes` only for a focused review of proposed
 revisions. Use `--filter unverified` when continuing verification of a partly
 audited file. The default is `all`.
+
+The summary distinguishes revised, unchanged, and unanswered subtitles. An
+unanswered case is incomplete; do not interpret it as an explicit no-revision
+decision.
 
 `--first-index` and `--last-index` are inclusive, one-based indexes in the
 target SRT. The report includes exactly the target subtitles in the requested

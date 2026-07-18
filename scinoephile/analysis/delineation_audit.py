@@ -8,9 +8,18 @@ from collections import defaultdict
 from collections.abc import Sequence
 from enum import StrEnum
 
-from scinoephile.core import ScinoephileError
+from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.delineation import DelineationTestCase
+
+from .audit_utils import (
+    _AuditResult,
+    _escape_table_cell,
+    _format_index_range,
+    _get_contextual_index,
+    _get_superseded_keys,
+    _validate_index_range,
+)
 
 __all__ = [
     "DelineationAuditFilter",
@@ -26,6 +35,9 @@ class DelineationAuditFilter(StrEnum):
 
     changes = "changes"
     """Include only decisions that shifted the target boundary."""
+
+    unverified = "unverified"
+    """Include only decisions not marked as verified."""
 
 
 def audit_delineation(
@@ -49,6 +61,8 @@ def audit_delineation(
     Raises:
         ScinoephileError: if a logged reference pair cannot be matched uniquely
     """
+    _validate_index_range(first_index, last_index)
+
     pair_indexes: dict[tuple[str, str], list[int]] = defaultdict(list)
     for index in range(len(reference) - 1):
         pair = (reference[index].text, reference[index + 1].text)
@@ -85,17 +99,20 @@ def audit_delineation(
         if answer is None:
             output = "(unanswered)"
             unanswered += 1
-            boundary_shifted = False
+            result = _AuditResult.unanswered
         elif answer.output_one or answer.output_two:
             output = _format_pair(answer.output_one, answer.output_two)
             shifts += 1
-            boundary_shifted = True
+            result = _AuditResult.changed
         else:
             output = ""
             no_shifts += 1
-            boundary_shifted = False
+            result = _AuditResult.unchanged
 
-        if row_filter is DelineationAuditFilter.changes and not boundary_shifted:
+        if (
+            row_filter is DelineationAuditFilter.changes
+            and result is not _AuditResult.changed
+        ) or (row_filter is DelineationAuditFilter.unverified and test_case.verified):
             continue
 
         cells = (
@@ -109,7 +126,7 @@ def audit_delineation(
         rows.append(
             (
                 first_subtitle_index,
-                f"| {' | '.join(_escape_cell(cell) for cell in cells)} |",
+                f"| {' | '.join(_escape_table_cell(cell) for cell in cells)} |",
             )
         )
 
@@ -126,7 +143,11 @@ def audit_delineation(
         f"- unanswered cases: {unanswered}",
         f"- row filter: {row_filter.value}",
     ]
-    range_summary = _format_subtitle_range(first_index, last_index)
+    range_summary = _format_index_range(
+        first_index,
+        last_index,
+        track_name="reference",
+    )
     if range_summary is not None:
         lines.append(range_summary)
     lines.extend(
@@ -143,17 +164,6 @@ def audit_delineation(
     return "\n".join(lines) + "\n"
 
 
-def _escape_cell(value: str) -> str:
-    """Escape one Markdown table cell.
-
-    Arguments:
-        value: cell text
-    Returns:
-        escaped cell text
-    """
-    return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
-
-
 def _format_pair(one: str, two: str) -> str:
     """Stack a pair of subtitle texts for one table cell.
 
@@ -164,27 +174,6 @@ def _format_pair(one: str, two: str) -> str:
         subtitle texts separated by a newline
     """
     return f"{one or '—'}\n{two or '—'}"
-
-
-def _format_subtitle_range(
-    first_index: int | None,
-    last_index: int | None,
-) -> str | None:
-    """Format an optional subtitle range for the report summary.
-
-    Arguments:
-        first_index: first included 1-indexed subtitle number
-        last_index: last included 1-indexed subtitle number
-    Returns:
-        formatted range summary, or None if the range is unbounded
-    """
-    if first_index is None and last_index is None:
-        return None
-    if first_index is None:
-        return f"- subtitle range: 1-indexed numbers through {last_index}"
-    if last_index is None:
-        return f"- subtitle range: 1-indexed numbers from {first_index}"
-    return f"- subtitle range: 1-indexed numbers {first_index} through {last_index}"
 
 
 def _get_case_index(
@@ -243,7 +232,19 @@ def _get_case_indexes(
     Raises:
         ScinoephileError: if a logged reference pair is absent
     """
-    superseded_pairs = _get_superseded_reference_pairs(pair_indexes, test_cases)
+    target_pairs_by_reference_pair: dict[
+        tuple[str, str],
+        set[tuple[str, str]],
+    ] = defaultdict(set)
+    for test_case in test_cases:
+        query = test_case.query
+        reference_pair = (query.reference_one, query.reference_two)
+        target_pair = (query.target_one, query.target_two)
+        target_pairs_by_reference_pair[reference_pair].add(target_pair)
+    superseded_pairs = _get_superseded_keys(
+        pair_indexes,
+        target_pairs_by_reference_pair,
+    )
     candidate_indexes_by_case: list[list[int]] = []
     direct_indexes: list[int | None] = []
     for test_case_index, test_case in enumerate(test_cases, 1):
@@ -273,116 +274,3 @@ def _get_case_indexes(
             direct_index = candidate_indexes[0]
         direct_indexes.append(direct_index)
     return candidate_indexes_by_case, direct_indexes
-
-
-def _get_superseded_reference_pairs(
-    pair_indexes: dict[tuple[str, str], list[int]],
-    test_cases: Sequence[DelineationTestCase],
-) -> set[tuple[str, str]]:
-    """Get historical reference pairs replaced by current logged cases.
-
-    Test-case persistence retains queries that are no longer encountered. Link
-    reference pairs through their target inputs so a current query identifies
-    earlier cases superseded by guide-text revisions.
-
-    Arguments:
-        pair_indexes: current reference-pair positions keyed by subtitle text
-        test_cases: logged delineation test cases
-    Returns:
-        historical reference pairs superseded by current logged cases
-    """
-    target_pairs_by_reference_pair: dict[
-        tuple[str, str],
-        set[tuple[str, str]],
-    ] = defaultdict(set)
-    current_target_pairs: set[tuple[str, str]] = set()
-    for test_case in test_cases:
-        query = test_case.query
-        reference_pair = (query.reference_one, query.reference_two)
-        target_pair = (query.target_one, query.target_two)
-        target_pairs_by_reference_pair[reference_pair].add(target_pair)
-        if reference_pair in pair_indexes:
-            current_target_pairs.add(target_pair)
-
-    superseded_pairs: set[tuple[str, str]] = set()
-    changed = True
-    while changed:
-        changed = False
-        for reference_pair, target_pairs in target_pairs_by_reference_pair.items():
-            if reference_pair in pair_indexes or reference_pair in superseded_pairs:
-                continue
-            if target_pairs.isdisjoint(current_target_pairs):
-                continue
-            superseded_pairs.add(reference_pair)
-            current_target_pairs.update(target_pairs)
-            changed = True
-    return superseded_pairs
-
-
-def _get_contextual_index(
-    candidate_indexes: Sequence[int],
-    direct_indexes: Sequence[int | None],
-    test_case_index: int,
-) -> int | None:
-    """Resolve a repeated reference pair from neighboring logged cases.
-
-    Arguments:
-        candidate_indexes: possible zero-indexed reference-pair positions
-        direct_indexes: directly resolved indexes for every logged case
-        test_case_index: zero-indexed test case position
-    Returns:
-        uniquely resolved reference-pair position, or None if ambiguity remains
-    """
-    previous_index = next(
-        (
-            index
-            for index in reversed(direct_indexes[:test_case_index])
-            if index is not None
-        ),
-        None,
-    )
-    next_index = next(
-        (index for index in direct_indexes[test_case_index + 1 :] if index is not None),
-        None,
-    )
-    if previous_index is None and next_index is None:
-        return None
-
-    narrowed_candidates = list(candidate_indexes)
-    if (
-        previous_index is not None
-        and next_index is not None
-        and previous_index <= next_index
-    ):
-        narrowed_candidates = [
-            candidate
-            for candidate in candidate_indexes
-            if previous_index <= candidate <= next_index
-        ]
-        if len(narrowed_candidates) == 1:
-            return narrowed_candidates[0]
-        if not narrowed_candidates:
-            return None
-
-    scores: dict[int, int] = {}
-    for candidate in narrowed_candidates:
-        distances = []
-        if previous_index is not None:
-            distances.append(abs(candidate - previous_index))
-        if next_index is not None:
-            distances.append(abs(candidate - next_index))
-        if previous_index is not None and next_index is not None:
-            if previous_index <= next_index:
-                scores[candidate] = sum(distances)
-            else:
-                scores[candidate] = min(distances)
-        else:
-            scores[candidate] = distances[0]
-
-    minimum_score = min(scores.values())
-    best_candidates = [
-        candidate for candidate, score in scores.items() if score == minimum_score
-    ]
-    if len(best_candidates) == 1:
-        return best_candidates[0]
-    return None

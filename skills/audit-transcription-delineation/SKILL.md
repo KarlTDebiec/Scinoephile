@@ -75,8 +75,10 @@ printing subtitles.
 The index bounds are inclusive and retain only pairs wholly contained in the
 requested range. Omit either bound for an open-ended range. The default
 `--filter all` includes shifts, no-shift answers, and unanswered cases; use
-`--filter changes` to show only decisions that moved the target boundary. A
+`--filter changes` to show only decisions that moved the target boundary, or
+`--filter unverified` when continuing verification of a partly audited file. A
 complete audit must use `all`, because `changes` cannot reveal missed shifts.
+The report summary labels these bounds as the reference subtitle range.
 
 Each table cell stacks the first and second subtitle with `<br>`. A blank line
 is displayed as `—`. Sort rows by their matched subtitle indexes. Preserve the
@@ -126,3 +128,21 @@ ownership. Leave the cell blank when the row needs no note. Validate that the
 edited file retains every generated row and the exact six-column shape. Do not
 claim the audit is complete until every row has been reviewed, all notes have
 been written to the saved report, and its link is ready for the final response.
+
+## Correct and verify cases
+
+When the user requests corrections, update the delineation JSON answer rather
+than a generated SRT:
+
+- Correct the boundary output before marking the case verified.
+- Mark a case `verified: true` only after auditing the entire boundary case and
+  correcting its answer where necessary.
+- Leave unanswered, unaudited, or partially audited cases unverified. Do not
+  treat an empty no-shift answer as unanswered; only a missing answer is
+  unanswered.
+
+After corrections, regenerate the transcription output and downstream
+artifacts through the dataset workflow. Rerun the audit over the corrected
+range, confirm the JSON remains canonical, and confirm corrected cases no
+longer appear with `--filter unverified` before linking the complete interpreted
+report.

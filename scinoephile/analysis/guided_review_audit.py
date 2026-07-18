@@ -16,6 +16,13 @@ from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.guided_review import GuidedReviewTestCase
 
+from .audit_utils import (
+    _AuditResult,
+    _escape_table_cell,
+    _format_index_range,
+    _validate_index_range,
+)
+
 __all__ = [
     "GuidedReviewAuditFilter",
     "audit_guided_review",
@@ -48,8 +55,8 @@ class _GuidedReviewRow:
     """One-based position of the source test case in the JSON."""
     markdown: str
     """Formatted Markdown table row."""
-    revised: bool
-    """Whether the answer revised this subtitle."""
+    result: _AuditResult
+    """Result of the logged answer for this subtitle."""
     verified: bool
     """Whether the source test case is verified."""
 
@@ -90,6 +97,8 @@ def audit_guided_review(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely to source data
     """
+    _validate_index_range(first_index, last_index)
+
     blocks_by_key = _get_blocks_by_key(target, guide)
     rows_by_subtitle_index: dict[int, _GuidedReviewRow] = {}
 
@@ -125,8 +134,14 @@ def audit_guided_review(
             revision = revisions_by_index.get(local_index)
 
             target_revision = query_target.text
-            if revision is not None:
+            if answer is None:
+                target_revision = f"{query_target.text}\n(unanswered)"
+                result = _AuditResult.unanswered
+            elif revision is not None:
                 target_revision = f"{query_target.text}\n{revision.text}"
+                result = _AuditResult.changed
+            else:
+                result = _AuditResult.unchanged
 
             cells = (
                 str(subtitle_index),
@@ -139,8 +154,10 @@ def audit_guided_review(
             rows_by_subtitle_index[subtitle_index] = _GuidedReviewRow(
                 subtitle_index=subtitle_index,
                 test_case_index=test_case_index,
-                markdown=f"| {' | '.join(_escape_cell(cell) for cell in cells)} |",
-                revised=revision is not None,
+                markdown=(
+                    f"| {' | '.join(_escape_table_cell(cell) for cell in cells)} |"
+                ),
+                result=result,
                 verified=test_case.verified,
             )
 
@@ -148,16 +165,22 @@ def audit_guided_review(
         rows_by_subtitle_index.values(),
         key=lambda row: (row.subtitle_index, row.test_case_index),
     )
-    revised_subtitles = sum(row.revised for row in all_rows)
+    revised_subtitles = sum(row.result is _AuditResult.changed for row in all_rows)
+    unanswered_subtitles = sum(
+        row.result is _AuditResult.unanswered for row in all_rows
+    )
     verified_subtitles = sum(row.verified for row in all_rows)
     rows = [
         row
         for row in all_rows
-        if not (row_filter is GuidedReviewAuditFilter.changes and not row.revised)
+        if not (
+            row_filter is GuidedReviewAuditFilter.changes
+            and row.result is not _AuditResult.changed
+        )
         and not (row_filter is GuidedReviewAuditFilter.unverified and row.verified)
     ]
     subtitles = len(all_rows)
-    unchanged_subtitles = subtitles - revised_subtitles
+    unchanged_subtitles = subtitles - revised_subtitles - unanswered_subtitles
     unverified_subtitles = subtitles - verified_subtitles
     lines = [
         "# Guided Subtitle Review Audit",
@@ -167,11 +190,16 @@ def audit_guided_review(
         f"- subtitles: {subtitles}",
         f"- revised subtitles: {revised_subtitles}",
         f"- unchanged subtitles: {unchanged_subtitles}",
+        f"- unanswered subtitles: {unanswered_subtitles}",
         f"- verified subtitles: {verified_subtitles}",
         f"- unverified subtitles: {unverified_subtitles}",
         f"- row filter: {row_filter.value}",
     ]
-    range_summary = _format_subtitle_range(first_index, last_index)
+    range_summary = _format_index_range(
+        first_index,
+        last_index,
+        track_name="target",
+    )
     if range_summary is not None:
         lines.append(range_summary)
     lines.extend(
@@ -188,17 +216,6 @@ def audit_guided_review(
     return "\n".join(lines) + "\n"
 
 
-def _escape_cell(value: str) -> str:
-    """Escape one Markdown table cell.
-
-    Arguments:
-        value: cell text
-    Returns:
-        escaped cell text
-    """
-    return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
-
-
 def _format_texts(texts: Sequence[str]) -> str:
     """Format zero or more subtitle texts for one table cell.
 
@@ -210,27 +227,6 @@ def _format_texts(texts: Sequence[str]) -> str:
     if not texts:
         return "—"
     return "\n".join(texts)
-
-
-def _format_subtitle_range(
-    first_index: int | None,
-    last_index: int | None,
-) -> str | None:
-    """Format an optional target subtitle range for the report summary.
-
-    Arguments:
-        first_index: first included 1-indexed target subtitle number
-        last_index: last included 1-indexed target subtitle number
-    Returns:
-        formatted range summary, or None if the range is unbounded
-    """
-    if first_index is None and last_index is None:
-        return None
-    if first_index is None:
-        return f"- target subtitle range: through {last_index}"
-    if last_index is None:
-        return f"- target subtitle range: from {first_index}"
-    return f"- target subtitle range: {first_index} through {last_index}"
 
 
 def _get_blocks_by_key(
@@ -515,10 +511,21 @@ def _is_test_case_outside_range(
     if first_index is None and last_index is None:
         return False
 
-    selected_start = target[first_index - 1].start if first_index is not None else 0
-    selected_end = (
-        target[last_index - 1].end if last_index is not None else target[-1].end
-    )
+    first_target_index = 0
+    if first_index is not None:
+        first_target_index = first_index - 1
+    last_target_index = len(target) - 1
+    if last_index is not None:
+        last_target_index = min(last_index, len(target)) - 1
+    if (
+        not target
+        or first_target_index >= len(target)
+        or last_target_index < first_target_index
+    ):
+        return True
+
+    selected_start = target[first_target_index].start
+    selected_end = target[last_target_index].end
     query_guides = tuple(item.text for item in test_case.query.guides)
     guide_texts = tuple(subtitle.text_with_newline.strip() for subtitle in guide)
     starts = [

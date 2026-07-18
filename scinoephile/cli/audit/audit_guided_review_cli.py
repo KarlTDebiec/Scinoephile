@@ -17,27 +17,25 @@ from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
     input_file_arg,
-    int_arg,
-    output_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.llms.guided_review import (
     GuidedReviewManager,
     GuidedReviewTestCase,
 )
+
+from .audit_workflow_cli_base import AuditCliBase
 
 __all__ = ["AuditGuidedReviewCli"]
 
 AUDIT_GUIDED_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "audit guide-backed subtitle block revisions": "审核参考字幕指导的分块字幕修订",
-        "target subtitle SRT file provided for guided review": (
-            "提供给参考字幕指导审核的目标字幕 SRT 文件"
+        "target subtitle SRT file used for guided review": (
+            "用于参考字幕指导审核的目标字幕 SRT 文件"
         ),
-        "guide subtitle SRT file provided for guided review": (
-            "提供给指导审核的参考字幕 SRT 文件"
+        "guide subtitle SRT file used for guided review": (
+            "用于指导审核的参考字幕 SRT 文件"
         ),
         "guided-review test-case JSON file": "指导审核测试用例 JSON 文件",
         "first 1-indexed target subtitle number to include, inclusive": (
@@ -50,40 +48,38 @@ AUDIT_GUIDED_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "要包含的行：all 表示全部，changes 表示修订，unverified 表示未验证"
             "（默认：all）"
         ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 输出文件路径（默认：标准输出）"
-        ),
     },
     "zh-hant": {
         "audit guide-backed subtitle block revisions": "稽核參考字幕指導的分塊字幕修訂",
-        "target subtitle SRT file provided for guided review": (
-            "提供畀參考字幕指導稽核嘅目標字幕 SRT 檔"
+        "target subtitle SRT file used for guided review": (
+            "用於參考字幕指導稽核的目標字幕 SRT 檔"
         ),
-        "guide subtitle SRT file provided for guided review": (
-            "提供畀指導稽核嘅參考字幕 SRT 檔"
+        "guide subtitle SRT file used for guided review": (
+            "用於指導稽核的參考字幕 SRT 檔"
         ),
         "guided-review test-case JSON file": "指導稽核測試案例 JSON 檔",
         "first 1-indexed target subtitle number to include, inclusive": (
-            "要包含嘅第一個目標字幕編號（由 1 開始，包含該編號）"
+            "要包含的第一個目標字幕編號（從 1 開始，包含該編號）"
         ),
         "last 1-indexed target subtitle number to include, inclusive": (
-            "要包含嘅最後一個目標字幕編號（由 1 開始，包含該編號）"
+            "要包含的最後一個目標字幕編號（從 1 開始，包含該編號）"
         ),
         "rows to include: all, changes, or unverified (default: all)": (
-            "要包含嘅列：all 表示全部，changes 表示修訂，unverified 表示未驗證"
+            "要包含的列：all 表示全部，changes 表示修訂，unverified 表示未驗證"
             "（預設：all）"
-        ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 輸出檔路徑（預設：標準輸出）"
         ),
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditGuidedReviewCli(ScinoephileCliBase):
+class AuditGuidedReviewCli(AuditCliBase):
     """Audit guide-backed subtitle block revisions."""
 
+    first_index_help = "first 1-indexed target subtitle number to include, inclusive"
+    """Help text describing the first selected target index."""
+    last_index_help = "last 1-indexed target subtitle number to include, inclusive"
+    """Help text describing the last selected target index."""
     localizations = AUDIT_GUIDED_REVIEW_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
@@ -107,14 +103,14 @@ class AuditGuidedReviewCli(ScinoephileCliBase):
             dest="target_path",
             required=True,
             type=input_file_arg(),
-            help="target subtitle SRT file provided for guided review",
+            help="target subtitle SRT file used for guided review",
         )
         arg_groups["input arguments"].add_argument(
             "--guide",
             dest="guide_path",
             required=True,
             type=input_file_arg(),
-            help="guide subtitle SRT file provided for guided review",
+            help="guide subtitle SRT file used for guided review",
         )
         arg_groups["input arguments"].add_argument(
             "--json",
@@ -122,16 +118,6 @@ class AuditGuidedReviewCli(ScinoephileCliBase):
             required=True,
             type=input_file_arg(),
             help="guided-review test-case JSON file",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--first-index",
-            type=int_arg(min_value=1),
-            help="first 1-indexed target subtitle number to include, inclusive",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--last-index",
-            type=int_arg(min_value=1),
-            help="last 1-indexed target subtitle number to include, inclusive",
         )
         arg_groups["operation arguments"].add_argument(
             "--filter",
@@ -142,14 +128,6 @@ class AuditGuidedReviewCli(ScinoephileCliBase):
             type=enum_arg(GuidedReviewAuditFilter),
             help="rows to include: all, changes, or unverified (default: all)",
         )
-        arg_groups["output arguments"].add_argument(
-            "-o",
-            "--outfile",
-            dest="outfile_path",
-            type=output_file_arg(),
-            help="Markdown outfile path (default: stdout)",
-        )
-        parser.set_defaults(_parser=parser)
 
     @classmethod
     def name(cls) -> str:
@@ -171,23 +149,16 @@ class AuditGuidedReviewCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        if (
-            first_index is not None
-            and last_index is not None
-            and first_index > last_index
-        ):
-            parser.error("--first-index must be less than or equal to --last-index")
+        cls.validate_range(parser, first_index, last_index)
 
         target = read_series(parser, target_path)
         guide = read_series(parser, guide_path)
-        try:
-            loaded_test_cases = load_test_cases_from_json(
-                json_path,
-                GuidedReviewManager,
-                GuidedReviewManager.base_prompt,
-            )
-        except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
-            parser.error(f"Unable to load guided-review JSON: {exc}")
+        loaded_test_cases = cls.load_test_cases(
+            parser,
+            json_path,
+            GuidedReviewManager,
+            workflow_name="guided-review",
+        )
         test_cases = [
             cast(GuidedReviewTestCase, test_case) for test_case in loaded_test_cases
         ]
@@ -204,13 +175,7 @@ class AuditGuidedReviewCli(ScinoephileCliBase):
         except ScinoephileError as exc:
             parser.error(str(exc))
 
-        if outfile_path is None:
-            print(report, end="")
-            return
-        try:
-            outfile_path.write_text(report, encoding="utf-8")
-        except OSError as exc:
-            parser.error(str(exc))
+        cls.write_report(parser, report, outfile_path)
 
 
 if __name__ == "__main__":

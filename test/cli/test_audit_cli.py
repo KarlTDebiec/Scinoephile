@@ -5,13 +5,16 @@
 from __future__ import annotations
 
 import json
+from argparse import SUPPRESS
 from pathlib import Path
+from typing import cast
 
 from pytest import CaptureFixture, mark, raises
 
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
 from scinoephile.cli.audit.audit_delineation_cli import AuditDelineationCli
+from scinoephile.cli.audit.audit_gap_translation_cli import AuditGapTranslationCli
 from scinoephile.cli.audit.audit_guided_review_cli import AuditGuidedReviewCli
 from scinoephile.cli.audit.audit_punctuation_cli import AuditPunctuationCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
@@ -19,6 +22,7 @@ from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
+from scinoephile.core.cli import ScinoephileCliBase
 
 
 def test_audit_review_dual_cli_stdout_outfile_and_validation(
@@ -117,12 +121,160 @@ def test_audit_cli_subcommands():
     assert AuditCli.subcommands() == {
         "aligned-diff": AuditAlignedDiffCli,
         "delineation": AuditDelineationCli,
+        "gap-translation": AuditGapTranslationCli,
         "guided-review": AuditGuidedReviewCli,
         "punctuation": AuditPunctuationCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
     }
+
+
+def test_audit_cli_help_follows_shared_style():
+    """Test audit help uses consistent wording, defaults, and localization."""
+    original_locale_name = ScinoephileCliBase.locale_name
+    try:
+        ScinoephileCliBase.locale_name = "en"
+        for command_name, cli_class in AuditCli.subcommands().items():
+            localized_cli_class = cast(type[ScinoephileCliBase], cli_class)
+            parser = localized_cli_class.argparser()
+            description = parser.description
+            assert isinstance(description, str)
+            assert description.startswith("Audit ")
+            assert description.endswith(".")
+
+            actions = {action.dest: action for action in parser._actions}  # noqa: SLF001
+            for boundary in ("first", "last"):
+                help_text = actions[f"{boundary}_index"].help
+                assert isinstance(help_text, str)
+                assert help_text.startswith(f"{boundary} 1-indexed ")
+                assert help_text.endswith(" subtitle number to include, inclusive")
+
+            assert actions["outfile_path"].help == (
+                "Markdown outfile path (default: stdout)"
+            )
+            row_filter_action = actions["row_filter"]
+            assert isinstance(row_filter_action.help, str)
+            assert row_filter_action.help.startswith("rows to include: ")
+            assert f"(default: {row_filter_action.default.value})" in (
+                row_filter_action.help
+            )
+
+            for action in parser._actions:  # noqa: SLF001
+                if action.dest.endswith("json_path"):
+                    assert isinstance(action.help, str)
+                    assert "test-case JSON file" in action.help
+                    assert action.help.startswith("optional ") is not action.required
+
+            operation_group = next(
+                group
+                for group in parser._action_groups  # noqa: SLF001
+                if group.title == "operation arguments"
+            )
+            for action in operation_group._group_actions:  # noqa: SLF001
+                if action.dest in {"first_index", "last_index"}:
+                    continue
+                assert isinstance(action.help, str)
+                assert action.help[:1].islower()
+                assert not action.help.endswith(".")
+                assert "(default:" in action.help
+
+            source_texts = [
+                description,
+                *(
+                    action.help
+                    for action in parser._actions  # noqa: SLF001
+                    if isinstance(action.help, str) and action.help != SUPPRESS
+                ),
+            ]
+            for locale_name in ("zh-hans", "zh-hant"):
+                ScinoephileCliBase.locale_name = locale_name
+                translated_texts = [
+                    localized_cli_class.translate_text(source_text)
+                    for source_text in source_texts
+                ]
+                missing = [
+                    source_text
+                    for source_text, translated_text in zip(
+                        source_texts,
+                        translated_texts,
+                        strict=True,
+                    )
+                    if translated_text == source_text
+                ]
+                assert not missing, f"{command_name} {locale_name}: {missing}"
+                if locale_name == "zh-hant":
+                    cantonese_particles = set("嘅畀冇嚟")
+                    assert cantonese_particles.isdisjoint("".join(translated_texts))
+                ScinoephileCliBase.locale_name = "en"
+    finally:
+        ScinoephileCliBase.locale_name = original_locale_name
+
+
+def test_audit_gap_translation_cli_stdout_outfile_and_validation(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test gap-translation audit output and range validation.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    target_path = tmp_path / "target.srt"
+    guide_path = tmp_path / "guide.srt"
+    json_path = tmp_path / "gap_translation.json"
+    _write_srt(target_path, ("現有",))
+    _write_srt(guide_path, ("參考一", "參考二"))
+    json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "targets": [{"index": 1, "text": "現有"}],
+                        "guides": [
+                            {"index": 1, "text": "參考一"},
+                            {"index": 2, "text": "參考二"},
+                        ],
+                    },
+                    "answer": {"outputs": [{"index": 2, "text": "翻譯"}]},
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    arguments = f"--target {target_path} --guide {guide_path} --json {json_path}"
+
+    run_cli_with_args(
+        AuditGapTranslationCli,
+        f"{arguments} --difficulty 1 --first-index 2 --last-index 2",
+    )
+    stdout = capsys.readouterr().out
+    assert stdout.startswith("# Gap Translation Audit\n")
+    assert "- difficulty filter: 1" in stdout
+    assert "- guide subtitle range: 2 through 2" in stdout
+    assert "| G 2<br>Q 2 | C 1<br>B 1 | 1 | 參考二 | G 1: 現有 | 翻譯 |" in stdout
+
+    outfile_path = tmp_path / "audit.md"
+    run_cli_with_args(
+        AuditGapTranslationCli,
+        (f"{arguments} --filter unverified --difficulty 1 --outfile {outfile_path}"),
+    )
+    assert capsys.readouterr().out == ""
+    report = outfile_path.read_text(encoding="utf-8")
+    assert "- row filter: unverified" in report
+    assert "- difficulty filter: 1" in report
+    assert "- table rows: 1" in report
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditGapTranslationCli,
+            f"{arguments} --first-index 2 --last-index 1",
+        )
+    assert "--first-index must be less than or equal to --last-index" in (
+        capsys.readouterr().err
+    )
 
 
 def test_audit_aligned_diff_cli_stdout_outfile_and_validation(
@@ -291,18 +443,18 @@ def test_audit_delineation_cli_stdout_and_outfile(
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Transcription Delineation Audit\n")
     assert "- row filter: changes" in stdout
-    assert "- subtitle range: 1-indexed numbers 1 through 2" in stdout
+    assert "- reference subtitle range: 1 through 2" in stdout
     assert "| 1<br>2 | 參考一<br>參考二 | 甲乙<br>丙 | 甲<br>乙丙 |" in stdout
 
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(
         AuditDelineationCli,
-        f"{arguments} --outfile {outfile_path}",
+        f"{arguments} --filter unverified --outfile {outfile_path}",
     )
     assert capsys.readouterr().out == ""
-    assert outfile_path.read_text(encoding="utf-8").startswith(
-        "# Transcription Delineation Audit\n"
-    )
+    report = outfile_path.read_text(encoding="utf-8")
+    assert report.startswith("# Transcription Delineation Audit\n")
+    assert "- row filter: unverified" in report
 
     with raises(SystemExit):
         run_cli_with_args(
@@ -355,18 +507,18 @@ def test_audit_punctuation_cli_stdout_and_outfile(
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Transcription Punctuation Audit\n")
     assert "- row filter: changes" in stdout
-    assert "- subtitle range: 1-indexed numbers 1 through 1" in stdout
+    assert "- reference subtitle range: 1 through 1" in stdout
     assert "| 1 | 參考 | 甲<br>乙 | 甲，乙 |" in stdout
 
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(
         AuditPunctuationCli,
-        f"{arguments} --outfile {outfile_path}",
+        f"{arguments} --filter unverified --outfile {outfile_path}",
     )
     assert capsys.readouterr().out == ""
-    assert outfile_path.read_text(encoding="utf-8").startswith(
-        "# Transcription Punctuation Audit\n"
-    )
+    report = outfile_path.read_text(encoding="utf-8")
+    assert report.startswith("# Transcription Punctuation Audit\n")
+    assert "- row filter: unverified" in report
 
     with raises(SystemExit):
         run_cli_with_args(

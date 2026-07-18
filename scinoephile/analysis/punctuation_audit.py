@@ -13,6 +13,15 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.punctuation import PunctuationTestCase
 
+from .audit_utils import (
+    _AuditResult,
+    _escape_table_cell,
+    _format_index_range,
+    _get_contextual_index,
+    _get_superseded_keys,
+    _validate_index_range,
+)
+
 __all__ = [
     "PunctuationAuditFilter",
     "audit_punctuation",
@@ -28,13 +37,8 @@ class PunctuationAuditFilter(StrEnum):
     changes = "changes"
     """Include only decisions that changed punctuation or whitespace."""
 
-
-class _PunctuationResult(StrEnum):
-    """Result types used to summarize punctuation audit rows."""
-
-    changed = "changed"
-    unchanged = "unchanged"
-    unanswered = "unanswered"
+    unverified = "unverified"
+    """Include only decisions not marked as verified."""
 
 
 def audit_punctuation(
@@ -62,6 +66,8 @@ def audit_punctuation(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely
     """
+    _validate_index_range(first_index, last_index)
+
     reference_indexes_by_text: dict[str, list[int]] = defaultdict(list)
     for index, subtitle in enumerate(reference):
         reference_indexes_by_text[subtitle.text].append(index)
@@ -103,17 +109,17 @@ def audit_punctuation(
 
         logged_cases += 1
         row, result = _format_case_row(test_case, index)
-        if result is _PunctuationResult.unanswered:
+        if result is _AuditResult.unanswered:
             unanswered += 1
-        elif result is _PunctuationResult.unchanged:
+        elif result is _AuditResult.unchanged:
             unchanged += 1
         else:
             changes += 1
 
         if (
             row_filter is PunctuationAuditFilter.changes
-            and result is not _PunctuationResult.changed
-        ):
+            and result is not _AuditResult.changed
+        ) or (row_filter is PunctuationAuditFilter.unverified and test_case.verified):
             continue
         rows.append((index, test_case_index, row))
 
@@ -129,7 +135,11 @@ def audit_punctuation(
         f"- unanswered cases: {unanswered}",
         f"- row filter: {row_filter.value}",
     ]
-    range_summary = _format_subtitle_range(first_index, last_index)
+    range_summary = _format_index_range(
+        first_index,
+        last_index,
+        track_name="reference",
+    )
     if range_summary is not None:
         lines.append(range_summary)
     lines.extend(
@@ -149,7 +159,7 @@ def audit_punctuation(
 def _format_case_row(
     test_case: PunctuationTestCase,
     index: int,
-) -> tuple[str, _PunctuationResult]:
+) -> tuple[str, _AuditResult]:
     """Format one punctuation case as a Markdown table row.
 
     Arguments:
@@ -162,13 +172,13 @@ def _format_case_row(
     answer = test_case.answer
     if answer is None:
         output = "(unanswered)"
-        result = _PunctuationResult.unanswered
+        result = _AuditResult.unanswered
     elif answer.output == input_text:
         output = ""
-        result = _PunctuationResult.unchanged
+        result = _AuditResult.unchanged
     else:
         output = answer.output
-        result = _PunctuationResult.changed
+        result = _AuditResult.changed
 
     cells = (
         str(index + 1),
@@ -178,7 +188,7 @@ def _format_case_row(
         "",
         "✓" if test_case.verified else "",
     )
-    row = f"| {' | '.join(_escape_cell(cell) for cell in cells)} |"
+    row = f"| {' | '.join(_escape_table_cell(cell) for cell in cells)} |"
     return row, result
 
 
@@ -233,9 +243,12 @@ def _get_case_indexes(
     Raises:
         ScinoephileError: if a case's reference subtitle is absent
     """
-    superseded_guides = _get_superseded_guides(
+    inputs_by_guide: dict[str, set[tuple[str, ...]]] = defaultdict(set)
+    for test_case in test_cases:
+        inputs_by_guide[test_case.query.guide].add(tuple(test_case.query.subtitles))
+    superseded_guides = _get_superseded_keys(
         reference_indexes_by_text,
-        test_cases,
+        inputs_by_guide,
     )
     candidate_indexes_by_case: list[list[int]] = []
     direct_indexes: list[int | None] = []
@@ -288,147 +301,6 @@ def _get_case_indexes(
                         direct_index = longest_matches[0]
         direct_indexes.append(direct_index)
     return candidate_indexes_by_case, direct_indexes
-
-
-def _get_superseded_guides(
-    reference_indexes_by_text: dict[str, list[int]],
-    test_cases: Sequence[PunctuationTestCase],
-) -> set[str]:
-    """Get historical guide texts replaced by current logged cases.
-
-    Test-case persistence retains queries that are no longer encountered. Link
-    guide texts through their target inputs so a current query identifies
-    earlier cases superseded by guide-text revisions.
-
-    Arguments:
-        reference_indexes_by_text: current reference positions keyed by text
-        test_cases: logged punctuation test cases
-    Returns:
-        historical guide texts superseded by current logged cases
-    """
-    inputs_by_guide: dict[str, set[tuple[str, ...]]] = defaultdict(set)
-    current_inputs: set[tuple[str, ...]] = set()
-    for test_case in test_cases:
-        guide = test_case.query.guide
-        inputs = tuple(test_case.query.subtitles)
-        inputs_by_guide[guide].add(inputs)
-        if guide in reference_indexes_by_text:
-            current_inputs.add(inputs)
-
-    superseded_guides: set[str] = set()
-    changed = True
-    while changed:
-        changed = False
-        for guide, inputs in inputs_by_guide.items():
-            if guide in reference_indexes_by_text or guide in superseded_guides:
-                continue
-            if inputs.isdisjoint(current_inputs):
-                continue
-            superseded_guides.add(guide)
-            current_inputs.update(inputs)
-            changed = True
-    return superseded_guides
-
-
-def _escape_cell(value: str) -> str:
-    """Escape one Markdown table cell.
-
-    Arguments:
-        value: cell text
-    Returns:
-        escaped cell text
-    """
-    return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
-
-
-def _format_subtitle_range(
-    first_index: int | None,
-    last_index: int | None,
-) -> str | None:
-    """Format an optional subtitle range for the report summary.
-
-    Arguments:
-        first_index: first included 1-indexed subtitle number
-        last_index: last included 1-indexed subtitle number
-    Returns:
-        formatted range summary, or None if the range is unbounded
-    """
-    if first_index is None and last_index is None:
-        return None
-    if first_index is None:
-        return f"- subtitle range: 1-indexed numbers through {last_index}"
-    if last_index is None:
-        return f"- subtitle range: 1-indexed numbers from {first_index}"
-    return f"- subtitle range: 1-indexed numbers {first_index} through {last_index}"
-
-
-def _get_contextual_index(
-    candidates: Sequence[int],
-    direct_indexes: Sequence[int | None],
-    test_case_index: int,
-) -> int | None:
-    """Resolve repeated reference text from neighboring logged cases.
-
-    Arguments:
-        candidates: possible zero-indexed reference subtitle positions
-        direct_indexes: indexes resolved directly for all logged cases
-        test_case_index: zero-indexed position of the case being resolved
-    Returns:
-        uniquely resolved reference index, or None if ambiguity remains
-    """
-    previous_index = next(
-        (
-            index
-            for index in reversed(direct_indexes[:test_case_index])
-            if index is not None
-        ),
-        None,
-    )
-    next_index = next(
-        (index for index in direct_indexes[test_case_index + 1 :] if index is not None),
-        None,
-    )
-    if previous_index is None and next_index is None:
-        return None
-
-    narrowed_candidates = list(candidates)
-    if (
-        previous_index is not None
-        and next_index is not None
-        and previous_index <= next_index
-    ):
-        narrowed_candidates = [
-            candidate
-            for candidate in candidates
-            if previous_index <= candidate <= next_index
-        ]
-        if len(narrowed_candidates) == 1:
-            return narrowed_candidates[0]
-        if not narrowed_candidates:
-            return None
-
-    scores: dict[int, int] = {}
-    for candidate in narrowed_candidates:
-        distances = []
-        if previous_index is not None:
-            distances.append(abs(candidate - previous_index))
-        if next_index is not None:
-            distances.append(abs(candidate - next_index))
-        if previous_index is not None and next_index is not None:
-            if previous_index <= next_index:
-                scores[candidate] = sum(distances)
-            else:
-                scores[candidate] = min(distances)
-        else:
-            scores[candidate] = distances[0]
-
-    minimum_score = min(scores.values())
-    best_candidates = [
-        candidate for candidate, score in scores.items() if score == minimum_score
-    ]
-    if len(best_candidates) == 1:
-        return best_candidates[0]
-    return None
 
 
 def _get_target_text_by_reference_index(

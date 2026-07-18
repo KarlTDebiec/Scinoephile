@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Shared command-line support for subtitle review audit workflows."""
+"""Shared command-line support for subtitle audits."""
 
 from __future__ import annotations
 
@@ -17,12 +17,15 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import Manager, TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converter
 from scinoephile.llms.review import ReviewManager
 
-__all__ = ["AuditWorkflowCliBase"]
+__all__ = [
+    "AuditCliBase",
+    "AuditWorkflowCliBase",
+]
 
 AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
@@ -36,12 +39,12 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "要包含的行：all 表示全部，changes 表示校对更改（默认：changes）"
         ),
         (
-            "further limit rows to those containing any listed character in any "
-            "input; values may be separated or combined, and simplified and "
-            "traditional variants are included automatically"
+            "characters to match in any input; values may be separated or combined, "
+            "and simplified and traditional variants are included automatically "
+            "(default: no character filter)"
         ): (
-            "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入，"
-            "并自动包含简繁体变体"
+            "要在任一输入中匹配的字符；字符可分开或合并输入，并自动包含简繁体"
+            "变体（默认：无字符筛选）"
         ),
         "Markdown outfile path (default: stdout)": (
             "Markdown 输出文件路径（默认：标准输出）"
@@ -58,12 +61,12 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "要包含的列：all 表示全部，changes 表示校對變更（預設：changes）"
         ),
         (
-            "further limit rows to those containing any listed character in any "
-            "input; values may be separated or combined, and simplified and "
-            "traditional variants are included automatically"
+            "characters to match in any input; values may be separated or combined, "
+            "and simplified and traditional variants are included automatically "
+            "(default: no character filter)"
         ): (
-            "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入，"
-            "並自動包含簡繁體變體"
+            "要在任一輸入中搜尋的字元；字元可分開或合併輸入，並自動包含簡繁體"
+            "變體（預設：無字元篩選）"
         ),
         "Markdown outfile path (default: stdout)": (
             "Markdown 輸出檔路徑（預設：標準輸出）"
@@ -73,24 +76,23 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized shared help text keyed by locale and English source text."""
 
 
-class AuditWorkflowCliBase(ScinoephileCliBase):
-    """Shared command-line support for subtitle review audit workflows."""
+class AuditCliBase(ScinoephileCliBase):
+    """Shared command-line support for subtitle audits."""
 
+    first_index_help: ClassVar[str] = (
+        "first 1-indexed subtitle number to include, inclusive"
+    )
+    """Help text describing the first selected subtitle index."""
+    last_index_help: ClassVar[str] = (
+        "last 1-indexed subtitle number to include, inclusive"
+    )
+    """Help text describing the last selected subtitle index."""
     localizations = AUDIT_WORKFLOW_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
-    row_filter_help: ClassVar[str] = (
-        "rows to include: all or changes (default: changes)"
-    )
-    """Help text for the workflow's supported row filters."""
-    row_filters: ClassVar[tuple[ReviewAuditFilter, ...]] = (
-        ReviewAuditFilter.all,
-        ReviewAuditFilter.changes,
-    )
-    """Row filters supported by the workflow."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
-        """Add shared operation and output arguments to a parser.
+        """Add shared range and output arguments to a parser.
 
         Arguments:
             parser: nascent argument parser
@@ -106,33 +108,12 @@ class AuditWorkflowCliBase(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--first-index",
             type=int_arg(min_value=1),
-            help="first 1-indexed subtitle number to include, inclusive",
+            help=cls.first_index_help,
         )
         arg_groups["operation arguments"].add_argument(
             "--last-index",
             type=int_arg(min_value=1),
-            help="last 1-indexed subtitle number to include, inclusive",
-        )
-        row_filter_values = ",".join(row_filter.value for row_filter in cls.row_filters)
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            choices=cls.row_filters,
-            default=ReviewAuditFilter.changes,
-            dest="row_filter",
-            metavar=f"{{{row_filter_values}}}",
-            type=enum_arg(ReviewAuditFilter),
-            help=cls.row_filter_help,
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--characters",
-            default=(),
-            metavar="CHARACTER",
-            nargs="+",
-            help=(
-                "further limit rows to those containing any listed character in any "
-                "input; values may be separated or combined, and simplified and "
-                "traditional variants are included automatically"
-            ),
+            help=cls.last_index_help,
         )
         arg_groups["output arguments"].add_argument(
             "-o",
@@ -144,43 +125,31 @@ class AuditWorkflowCliBase(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @staticmethod
-    def get_character_variants(characters: Sequence[str]) -> tuple[str, ...]:
-        """Get requested characters and their simplified/traditional variants.
-
-        Arguments:
-            characters: requested character strings
-        Returns:
-            sorted individual character variants
-        """
-        chars = "".join(characters)
-        variants = set(chars)
-        variants.update(get_zho_converter(OpenCCConfig.s2t).convert(chars))
-        variants.update(get_zho_converter(OpenCCConfig.t2s).convert(chars))
-        return tuple(sorted(variants))
-
-    @staticmethod
-    def load_review_cases(
+    def load_test_cases(
         parser: ArgumentParser,
-        json_path: Path | None,
-    ) -> Sequence[TestCase]:
-        """Load optional review test cases from JSON.
+        json_path: Path,
+        manager_cls: type[Manager],
+        *,
+        workflow_name: str,
+    ) -> list[TestCase]:
+        """Load test cases from workflow JSON.
 
         Arguments:
             parser: parser used to report user-facing errors
-            json_path: optional review JSON path
+            json_path: test-case JSON path
+            manager_cls: manager defining the test-case model
+            workflow_name: workflow name used in errors
         Returns:
-            loaded review test cases
+            loaded test cases
         """
-        if json_path is None:
-            return ()
         try:
             return load_test_cases_from_json(
                 json_path,
-                ReviewManager,
-                ReviewManager.base_prompt,
+                manager_cls,
+                manager_cls.base_prompt,
             )
         except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
-            parser.error(f"Unable to load review JSON: {exc}")
+            parser.error(f"Unable to load {workflow_name} JSON: {exc}")
 
     @staticmethod
     def validate_range(
@@ -222,3 +191,93 @@ class AuditWorkflowCliBase(ScinoephileCliBase):
             outfile_path.write_text(report, encoding="utf-8")
         except OSError as exc:
             parser.error(str(exc))
+
+
+class AuditWorkflowCliBase(AuditCliBase):
+    """Shared command-line support for subtitle review audit workflows."""
+
+    localizations = AUDIT_WORKFLOW_LOCALIZATIONS
+    """Localized help text keyed by locale and English source text."""
+    row_filter_help: ClassVar[str] = (
+        "rows to include: all or changes (default: changes)"
+    )
+    """Help text for the workflow's supported row filters."""
+    row_filters: ClassVar[tuple[ReviewAuditFilter, ...]] = (
+        ReviewAuditFilter.all,
+        ReviewAuditFilter.changes,
+    )
+    """Row filters supported by the workflow."""
+
+    @classmethod
+    def add_arguments_to_argparser(cls, parser: ArgumentParser):
+        """Add shared operation and output arguments to a parser.
+
+        Arguments:
+            parser: nascent argument parser
+        """
+        super().add_arguments_to_argparser(parser)
+        arg_groups = get_arg_groups_by_name(
+            parser,
+            "input arguments",
+            "operation arguments",
+            "output arguments",
+            optional_arguments_name="additional arguments",
+        )
+        row_filter_values = ",".join(row_filter.value for row_filter in cls.row_filters)
+        arg_groups["operation arguments"].add_argument(
+            "--filter",
+            choices=cls.row_filters,
+            default=ReviewAuditFilter.changes,
+            dest="row_filter",
+            metavar=f"{{{row_filter_values}}}",
+            type=enum_arg(ReviewAuditFilter),
+            help=cls.row_filter_help,
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--characters",
+            default=(),
+            metavar="CHARACTER",
+            nargs="+",
+            help=(
+                "characters to match in any input; values may be separated or "
+                "combined, and simplified and traditional variants are included "
+                "automatically (default: no character filter)"
+            ),
+        )
+
+    @staticmethod
+    def get_character_variants(characters: Sequence[str]) -> tuple[str, ...]:
+        """Get requested characters and their simplified/traditional variants.
+
+        Arguments:
+            characters: requested character strings
+        Returns:
+            sorted individual character variants
+        """
+        chars = "".join(characters)
+        variants = set(chars)
+        variants.update(get_zho_converter(OpenCCConfig.s2t).convert(chars))
+        variants.update(get_zho_converter(OpenCCConfig.t2s).convert(chars))
+        return tuple(sorted(variants))
+
+    @staticmethod
+    def load_review_cases(
+        parser: ArgumentParser,
+        json_path: Path | None,
+    ) -> Sequence[TestCase]:
+        """Load optional review test cases from JSON.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            json_path: optional review JSON path
+        Returns:
+            loaded review test cases
+        """
+        if json_path is None:
+            return ()
+        return AuditCliBase.load_test_cases(
+            parser,
+            json_path,
+            ReviewManager,
+            workflow_name="review",
+        )

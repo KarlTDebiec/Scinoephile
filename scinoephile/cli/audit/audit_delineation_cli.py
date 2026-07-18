@@ -17,13 +17,11 @@ from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
     input_file_arg,
-    int_arg,
-    output_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.llms.delineation import DelineationManager, DelineationTestCase
+
+from .audit_workflow_cli_base import AuditCliBase
 
 __all__ = ["AuditDelineationCli"]
 
@@ -34,17 +32,15 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用于指导转写的参考字幕 SRT 文件"
         ),
         "delineation test-case JSON file": "字幕边界测试用例 JSON 文件",
-        "first 1-indexed subtitle number to include, inclusive": (
+        "first 1-indexed reference subtitle number to include, inclusive": (
             "要包含的第一个字幕编号（从 1 开始，包含该编号）"
         ),
-        "last 1-indexed subtitle number to include, inclusive": (
+        "last 1-indexed reference subtitle number to include, inclusive": (
             "要包含的最后一个字幕编号（从 1 开始，包含该编号）"
         ),
-        "rows to include: all or changes (default: all)": (
-            "要包含的行：all 表示全部，changes 表示边界调整（默认：all）"
-        ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 输出文件路径（默认：标准输出）"
+        "rows to include: all, changes, or unverified (default: all)": (
+            "要包含的行：all 表示全部，changes 表示边界调整，unverified "
+            "表示未验证（默认：all）"
         ),
     },
     "zh-hant": {
@@ -53,26 +49,28 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用於指導轉寫的參考字幕 SRT 檔"
         ),
         "delineation test-case JSON file": "字幕邊界測試案例 JSON 檔",
-        "first 1-indexed subtitle number to include, inclusive": (
+        "first 1-indexed reference subtitle number to include, inclusive": (
             "要包含的第一個字幕編號（從 1 開始，包含該編號）"
         ),
-        "last 1-indexed subtitle number to include, inclusive": (
+        "last 1-indexed reference subtitle number to include, inclusive": (
             "要包含的最後一個字幕編號（從 1 開始，包含該編號）"
         ),
-        "rows to include: all or changes (default: all)": (
-            "要包含的列：all 表示全部，changes 表示邊界調整（預設：all）"
-        ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 輸出檔路徑（預設：標準輸出）"
+        "rows to include: all, changes, or unverified (default: all)": (
+            "要包含的列：all 表示全部，changes 表示邊界調整，unverified "
+            "表示未驗證（預設：all）"
         ),
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditDelineationCli(ScinoephileCliBase):
+class AuditDelineationCli(AuditCliBase):
     """Audit transcription delineation decisions."""
 
+    first_index_help = "first 1-indexed reference subtitle number to include, inclusive"
+    """Help text describing the first selected reference index."""
+    last_index_help = "last 1-indexed reference subtitle number to include, inclusive"
+    """Help text describing the last selected reference index."""
     localizations = AUDIT_DELINEATION_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
@@ -106,32 +104,14 @@ class AuditDelineationCli(ScinoephileCliBase):
             help="delineation test-case JSON file",
         )
         arg_groups["operation arguments"].add_argument(
-            "--first-index",
-            type=int_arg(min_value=1),
-            help="first 1-indexed subtitle number to include, inclusive",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--last-index",
-            type=int_arg(min_value=1),
-            help="last 1-indexed subtitle number to include, inclusive",
-        )
-        arg_groups["operation arguments"].add_argument(
             "--filter",
             choices=tuple(DelineationAuditFilter),
             default=DelineationAuditFilter.all,
             dest="row_filter",
-            metavar="{all,changes}",
+            metavar="{all,changes,unverified}",
             type=enum_arg(DelineationAuditFilter),
-            help="rows to include: all or changes (default: all)",
+            help="rows to include: all, changes, or unverified (default: all)",
         )
-        arg_groups["output arguments"].add_argument(
-            "-o",
-            "--outfile",
-            dest="outfile_path",
-            type=output_file_arg(),
-            help="Markdown outfile path (default: stdout)",
-        )
-        parser.set_defaults(_parser=parser)
 
     @classmethod
     def name(cls) -> str:
@@ -152,21 +132,14 @@ class AuditDelineationCli(ScinoephileCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        if (
-            first_index is not None
-            and last_index is not None
-            and first_index > last_index
-        ):
-            parser.error("--first-index must be less than or equal to --last-index")
+        cls.validate_range(parser, first_index, last_index)
         reference = read_series(parser, reference_path)
-        try:
-            loaded_test_cases = load_test_cases_from_json(
-                json_path,
-                DelineationManager,
-                DelineationManager.base_prompt,
-            )
-        except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
-            parser.error(f"Unable to load delineation JSON: {exc}")
+        loaded_test_cases = cls.load_test_cases(
+            parser,
+            json_path,
+            DelineationManager,
+            workflow_name="delineation",
+        )
 
         test_cases = [
             cast(DelineationTestCase, test_case) for test_case in loaded_test_cases
@@ -183,13 +156,7 @@ class AuditDelineationCli(ScinoephileCliBase):
         except ScinoephileError as exc:
             parser.error(str(exc))
 
-        if outfile_path is None:
-            print(report, end="")
-            return
-        try:
-            outfile_path.write_text(report, encoding="utf-8")
-        except OSError as exc:
-            parser.error(str(exc))
+        cls.write_report(parser, report, outfile_path)
 
 
 if __name__ == "__main__":

@@ -34,11 +34,11 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified traditional-script SRT file after review": (
             "校对后由繁体字转换的简体字 SRT 文件"
         ),
-        "optional JSON corresponding to the traditional review": (
-            "与繁体字校对对应的可选 JSON"
+        "optional test-case JSON file for the traditional review": (
+            "繁体字校对的可选测试用例 JSON 文件"
         ),
-        "optional JSON corresponding to the traditional simplification review": (
-            "与繁体字简化校对对应的可选 JSON"
+        "optional test-case JSON file for the traditional simplification review": (
+            "繁体字简化校对的可选测试用例 JSON 文件"
         ),
     },
     "zh-hant": {
@@ -53,11 +53,11 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified traditional-script SRT file after review": (
             "校對後由繁體字轉換的簡體字 SRT 檔"
         ),
-        "optional JSON corresponding to the traditional review": (
-            "與繁體字校對對應的選用 JSON"
+        "optional test-case JSON file for the traditional review": (
+            "繁體字校對的選用測試案例 JSON 檔"
         ),
-        "optional JSON corresponding to the traditional simplification review": (
-            "與繁體字簡化校對對應的選用 JSON"
+        "optional test-case JSON file for the traditional simplification review": (
+            "繁體字簡化校對的選用測試案例 JSON 檔"
         ),
     },
 }
@@ -115,14 +115,14 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
             "--traditional-json",
             dest="traditional_json_path",
             type=input_file_arg(),
-            help="optional JSON corresponding to the traditional review",
+            help="optional test-case JSON file for the traditional review",
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-simplified-json",
             dest="traditional_simplified_json_path",
             type=input_file_arg(),
             help=(
-                "optional JSON corresponding to the traditional simplification review"
+                "optional test-case JSON file for the traditional simplification review"
             ),
         )
 

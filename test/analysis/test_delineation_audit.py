@@ -123,6 +123,7 @@ def test_audit_delineation_filters_rows_and_subtitle_range():
                 target_one="丁",
             ),
             answer=DelineationAnswer(),
+            verified=True,
         ),
     )
 
@@ -130,6 +131,11 @@ def test_audit_delineation_filters_rows_and_subtitle_range():
         reference,
         test_cases,
         row_filter=DelineationAuditFilter.changes,
+    )
+    unverified_report = audit_delineation(
+        reference,
+        test_cases,
+        row_filter=DelineationAuditFilter.unverified,
     )
     ranged_report = audit_delineation(
         reference,
@@ -144,10 +150,20 @@ def test_audit_delineation_filters_rows_and_subtitle_range():
     assert "| 1<br>2 |" in changed_report
     assert "| 2<br>3 |" not in changed_report
     assert "- logged cases: 1" in ranged_report
-    assert "- subtitle range: 1-indexed numbers 1 through 2" in ranged_report
+    assert "- reference subtitle range: 1 through 2" in ranged_report
     assert "- table rows: 1" in ranged_report
     assert "| 1<br>2 |" in ranged_report
     assert "| 2<br>3 |" not in ranged_report
+    assert "- row filter: unverified" in unverified_report
+    assert "- table rows: 1" in unverified_report
+    assert "| 1<br>2 |" in unverified_report
+    assert "| 2<br>3 |" not in unverified_report
+
+
+def test_audit_delineation_rejects_invalid_range():
+    """Test direct callers receive a domain error for an invalid range."""
+    with raises(ScinoephileError, match="First index must be at least 1"):
+        audit_delineation(_get_series("參考一", "參考二"), (), first_index=0)
 
 
 def test_audit_delineation_rejects_unmatched_reference_pair():

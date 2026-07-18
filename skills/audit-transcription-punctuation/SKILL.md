@@ -55,7 +55,9 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit punctuation \
 ```
 
 Use `--filter changes` only when the user explicitly wants cases whose answers
-changed punctuation or whitespace. The report has exactly these columns:
+changed punctuation or whitespace. Use `--filter unverified` when continuing
+verification of a partly audited file. The report summary labels the requested
+bounds as the reference subtitle range. The report has exactly these columns:
 
 | Index | Reference | Input | Output | Notes | Verified |
 |---:|---|---|---|---|:---:|
@@ -88,6 +90,23 @@ one of these exact prefixes:
 
 Leave Notes blank for acceptable answers. Replace generated/source notes with
 your own interpretation rather than copying them mechanically.
+
+## Correct and verify cases
+
+When the user requests corrections, update the punctuation JSON answer rather
+than the generated target SRT:
+
+- Correct the punctuation or whitespace output before marking the case
+  verified.
+- Mark a case `verified: true` only after auditing the entire punctuation case
+  and correcting its answer where necessary.
+- Leave unanswered, unaudited, or partially audited cases unverified.
+
+After corrections, regenerate the punctuated target SRT and downstream
+artifacts through the dataset workflow. Rerun the audit over the corrected
+range, confirm the JSON remains canonical, and confirm corrected cases no
+longer appear with `--filter unverified` before linking the complete interpreted
+report.
 
 ## Validate and deliver
 
