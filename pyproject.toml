@@ -73,7 +73,7 @@ dev = [
     "pytest-github-actions-annotate-failures>=0.4.2",
     "pytest-xdist>=3.8.0",
     "ruff>=0.15.20",
-    "ty>=0.0.58",
+    "ty>=0.0.61",
 ]
 
 [tool.pytest.ini_options]

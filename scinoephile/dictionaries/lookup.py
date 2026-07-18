@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Literal, cast
+from typing import Literal
 
 from scinoephile.core.dictionaries import DictionaryDefinition, DictionaryEntry
 
@@ -120,9 +120,8 @@ def _normalize_dictionary_names(
             return list(AVAILABLE_DICTIONARY_NAMES)
         if normalized_name not in AVAILABLE_DICTIONARY_NAMES:
             raise ValueError(f"Unsupported dictionary {dictionary_name!r}")
-        typed_name = cast(DictionaryName, normalized_name)
-        if typed_name not in normalized_names:
-            normalized_names.append(typed_name)
+        if normalized_name not in normalized_names:
+            normalized_names.append(normalized_name)
 
     if normalized_names:
         return normalized_names
