@@ -1392,6 +1392,26 @@
   },
   {
     "query": {
+      "ref_sub_1": "他會寫自己的名字",
+      "ref_sub_2": "爹，這可是非同少可",
+      "target_sub_1": "佢曉寫自己個名呀",
+      "target_sub_2": "爹呢一步非同小可"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub_1": "爹，這可是非同少可",
+      "ref_sub_2": "今天會寫字",
+      "target_sub_1": "爹呢一步非同小可",
+      "target_sub_2": "今日曉寫字"
+    },
+    "answer": {},
+    "verified": true
+  },
+  {
+    "query": {
       "ref_sub_1": "辛苦了！少爺",
       "ref_sub_2": "少爺！擦個汗吧",
       "target_sub_1": "辛苦啦少爺",
@@ -1533,22 +1553,20 @@
   {
     "query": {
       "ref_sub_1": "他會寫自己的名字",
-      "ref_sub_2": "爹，這可是非同少可",
+      "ref_sub_2": "爹，這可是非同小可",
       "target_sub_1": "佢曉寫自己個名呀",
       "target_sub_2": "爹呢一步非同小可"
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
-      "ref_sub_1": "爹，這可是非同少可",
+      "ref_sub_1": "爹，這可是非同小可",
       "ref_sub_2": "今天會寫字",
       "target_sub_1": "爹呢一步非同小可",
       "target_sub_2": "今日曉寫字"
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {

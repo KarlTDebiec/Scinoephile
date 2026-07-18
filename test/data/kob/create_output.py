@@ -72,7 +72,7 @@ actions = {
     # "yue-Hant",
     # "zho-Hans_eng",
     # "yue-Hans_eng",
-    "yue-Hant_transcribe",
+    # "yue-Hant_transcribe",
     "yue-Hant_diff",
 }
 
@@ -127,17 +127,29 @@ if "yue-Hant_transcribe" in actions:
         overwrite=True,
     )
 if "yue-Hant_diff" in actions:
-    yue_hant_transcribe = Series.load(
-        yue_hant_transcribe_path / "transcribe_clean_review_translate.srt"
-    )
     zho_hant_guide = Series.load(zho_hant_guide_path)
+    yue_hant_original = get_reference_for_guide_blocks(
+        Series.load(yue_hant_transcribe_path / "transcribe_clean.srt"),
+        zho_hant_guide,
+        stop_at_idx=7,
+    )
+    yue_hant_transcribe = get_reference_for_guide_blocks(
+        Series.load(yue_hant_transcribe_path / "transcribe_clean_review_translate.srt"),
+        zho_hant_guide,
+        stop_at_idx=7,
+    )
     yue_hant_reference = Series.load(
         yue_hant_path / "clean_review_flatten_timewarp.srt"
     )
     yue_hant_reference = get_reference_for_guide_blocks(
         yue_hant_reference,
         zho_hant_guide,
-        200,
+        stop_at_idx=7,
+    )
+    zho_hant_guide = get_reference_for_guide_blocks(
+        zho_hant_guide,
+        zho_hant_guide,
+        stop_at_idx=7,
     )
     zho_hant_guide_by_timing = {
         (subtitle.start, subtitle.end): subtitle for subtitle in zho_hant_guide
@@ -156,6 +168,7 @@ if "yue-Hant_diff" in actions:
     )
     print(
         diff.get_stacked_str(
+            original=yue_hant_original,
             three=aligned_zho_hant_guide,
             include_equal=True,
         )

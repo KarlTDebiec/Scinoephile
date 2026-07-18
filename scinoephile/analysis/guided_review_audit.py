@@ -299,9 +299,10 @@ def _get_active_test_case_blocks(
     """Get current cases while ignoring superseded historical cases.
 
     Persisted guided-review cases are retained after their target block's
-    segmentation changes. A current case with the same guide block supersedes
-    one of those historical cases. If no current case exists, preserve the
-    audit's strict failure rather than assigning stale local revision indexes.
+    segmentation or guide text changes. A current case with the same guide or
+    target block supersedes one of those historical cases. If no current case
+    exists, preserve the audit's strict failure rather than assigning stale
+    local revision indexes.
 
     Arguments:
         target: current target subtitle series
@@ -319,12 +320,16 @@ def _get_active_test_case_blocks(
     blocks_by_guides: dict[tuple[str, ...], list[_GuidedReviewBlock]] = defaultdict(
         list
     )
+    blocks_by_targets: dict[tuple[str, ...], list[_GuidedReviewBlock]] = defaultdict(
+        list
+    )
     for blocks in blocks_by_key.values():
         for block in blocks:
             blocks_by_guides[block.guide_texts].append(block)
+            blocks_by_targets[_normalize_texts(block.target_texts)].append(block)
 
     active_cases: list[tuple[int, GuidedReviewTestCase, _GuidedReviewBlock]] = []
-    stale_cases: list[tuple[int, GuidedReviewTestCase, list[_GuidedReviewBlock]]] = []
+    unmatched_cases: list[tuple[int, GuidedReviewTestCase]] = []
     for test_case_index, test_case in enumerate(test_cases, 1):
         key = (
             _normalize_texts(tuple(target.text for target in test_case.query.targets)),
@@ -341,10 +346,23 @@ def _get_active_test_case_blocks(
                 f"test case {test_case_index} is ambiguous; it matches blocks "
                 f"{block_numbers}"
             )
+        unmatched_cases.append((test_case_index, test_case))
 
+    active_block_numbers = {block.block_number for _, _, block in active_cases}
+    stale_cases: list[tuple[int, GuidedReviewTestCase, list[_GuidedReviewBlock]]] = []
+    for test_case_index, test_case in unmatched_cases:
+        key = (
+            _normalize_texts(tuple(target.text for target in test_case.query.targets)),
+            tuple(guide.text for guide in test_case.query.guides),
+        )
         guide_matches = blocks_by_guides.get(key[1], [])
         if guide_matches:
             stale_cases.append((test_case_index, test_case, guide_matches))
+        elif any(
+            block.block_number in active_block_numbers
+            for block in blocks_by_targets.get(key[0], [])
+        ):
+            continue
         elif not _is_test_case_outside_range(
             test_case,
             target,
@@ -358,7 +376,6 @@ def _get_active_test_case_blocks(
                 "subtitle blocks"
             )
 
-    active_block_numbers = {block.block_number for _, _, block in active_cases}
     for test_case_index, test_case, matches in stale_cases:
         selected_matches = [
             block

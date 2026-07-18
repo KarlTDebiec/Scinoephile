@@ -28,6 +28,9 @@ __all__ = ["AuditAlignedDiffCli"]
 AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "audit character-aligned subtitle differences": "审核字符对齐的字幕差异",
+        "optional original subtitle SRT file aligned with the transcription": (
+            "与转写字幕对齐的可选原始字幕 SRT 文件"
+        ),
         "transcribed subtitle SRT file under audit": "待审核的转写字幕 SRT 文件",
         "reference subtitle SRT file used for comparison": (
             "用于比较的参考字幕 SRT 文件"
@@ -53,6 +56,9 @@ AUDIT_ALIGNED_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
     "zh-hant": {
         "audit character-aligned subtitle differences": "稽核字元對齊的字幕差異",
+        "optional original subtitle SRT file aligned with the transcription": (
+            "與轉寫字幕對齊的可選原始字幕 SRT 檔"
+        ),
         "transcribed subtitle SRT file under audit": "待稽核的轉寫字幕 SRT 檔",
         "reference subtitle SRT file used for comparison": (
             "用於比較的參考字幕 SRT 檔"
@@ -100,6 +106,12 @@ class AuditAlignedDiffCli(ScinoephileCliBase):
             "operation arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
+        )
+        arg_groups["input arguments"].add_argument(
+            "--original",
+            dest="original_path",
+            type=input_file_arg(),
+            help="optional original subtitle SRT file aligned with the transcription",
         )
         arg_groups["input arguments"].add_argument(
             "--transcription",
@@ -165,6 +177,7 @@ class AuditAlignedDiffCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
+        original_path: Path | None,
         transcription_path: Path,
         reference_path: Path,
         guide_path: Path | None,
@@ -183,6 +196,9 @@ class AuditAlignedDiffCli(ScinoephileCliBase):
         ):
             parser.error("--first-index must be less than or equal to --last-index")
 
+        original = None
+        if original_path is not None:
+            original = read_series(parser, original_path)
         transcription = read_series(parser, transcription_path)
         reference = read_series(parser, reference_path)
         guide = None
@@ -193,6 +209,7 @@ class AuditAlignedDiffCli(ScinoephileCliBase):
                 transcription,
                 reference,
                 guide,
+                original=original,
                 row_filter=row_filter,
                 first_index=first_index,
                 last_index=last_index,

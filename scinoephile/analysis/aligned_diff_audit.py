@@ -34,6 +34,7 @@ def audit_aligned_diff(
     reference: Series,
     guide: Series | None = None,
     *,
+    original: Series | None = None,
     row_filter: AlignedDiffAuditFilter = AlignedDiffAuditFilter.changes,
     first_index: int | None = None,
     last_index: int | None = None,
@@ -45,6 +46,7 @@ def audit_aligned_diff(
         transcription: transcribed subtitle series under audit
         reference: subtitle series used as a comparison point
         guide: optional guide series one-to-one aligned with the transcription
+        original: optional original series displayed by timing overlap
         row_filter: aligned row filter
         first_index: first 1-indexed transcription subtitle number to include
         last_index: last 1-indexed transcription subtitle number to include
@@ -101,6 +103,7 @@ def audit_aligned_diff(
         "",
         f"- transcription subtitles: {len(transcription)}",
         f"- reference subtitles: {len(reference)}",
+        f"- original: {'included' if original is not None else 'omitted'}",
         f"- guide: {'included' if aligned_guide is not None else 'omitted'}",
         f"- aligned rows in selected range: {differing_rows + equal_rows}",
         f"- differing rows: {differing_rows}",
@@ -126,6 +129,8 @@ def audit_aligned_diff(
                 message,
                 transcription_idxs,
                 reference_idxs,
+                transcription,
+                original,
                 aligned_guide,
             )
         )
@@ -213,46 +218,41 @@ def _format_event_indices(prefix: str, event_idxs: tuple[int, ...]) -> str:
     return f"{prefix} {', '.join(formatted_ranges)}"
 
 
-def _format_guide_text(guide: Series, event_idxs: tuple[int, ...]) -> str:
-    """Join guide text corresponding to transcription event indices.
+def _format_original_text(
+    original: Series,
+    transcription: Series,
+    event_idxs: tuple[int, ...],
+) -> str:
+    """Join original text that overlaps the transcription events' time range.
 
     Arguments:
-        guide: guide series aligned with the transcription
+        original: original subtitle series
+        transcription: transcription series
         event_idxs: zero-based transcription event indices
     Returns:
-        joined guide text
+        joined original text
     """
-    texts = []
-    for event_idx in event_idxs:
-        texts.extend(
-            line.strip()
-            for line in guide.events[event_idx].text_with_newline.splitlines()
-            if line.strip()
-        )
-    if not texts:
+    if not event_idxs:
         return ""
 
-    chunks = [texts[0]]
-    for text in texts[1:]:
-        previous_char = chunks[-1][-1] if chunks[-1] else None
-        next_char = text[0] if text else None
-        if (
-            previous_char is not None
-            and is_full_width_char(previous_char)
-            or next_char is not None
-            and is_full_width_char(next_char)
-        ):
-            chunks.append("\u3000")
-        else:
-            chunks.append(" ")
-        chunks.append(text)
-    return "".join(chunks)
+    start = min(transcription[event_idx].start for event_idx in event_idxs)
+    end = max(transcription[event_idx].end for event_idx in event_idxs)
+    texts = [
+        line.strip()
+        for subtitle in original
+        if subtitle.start < end and subtitle.end > start
+        for line in subtitle.text_with_newline.splitlines()
+        if line.strip()
+    ]
+    return _join_track_texts(texts)
 
 
 def _format_row(
     message: LineDiff,
     transcription_idxs: tuple[int, ...],
     reference_idxs: tuple[int, ...],
+    transcription: Series,
+    original: Series | None,
     guide: Series | None,
 ) -> str:
     """Format one Markdown audit table row.
@@ -261,6 +261,8 @@ def _format_row(
         message: aligned line diff message
         transcription_idxs: transcription event indices represented by the message
         reference_idxs: reference event indices represented by the message
+        transcription: transcription series
+        original: optional original series
         guide: optional guide series
     Returns:
         Markdown table row
@@ -272,15 +274,44 @@ def _format_row(
         )
     )
     transcription_text, reference_text = message.get_aligned_texts()
-    aligned_lines = [
-        f"T │ {_escape_preformatted(transcription_text)}",
-        f"R │ {_escape_preformatted(reference_text)}",
-    ]
+    aligned_lines = []
+    if original is not None:
+        original_text = _format_original_text(
+            original,
+            transcription,
+            transcription_idxs,
+        )
+        aligned_lines.append(f"O │ {_escape_preformatted(original_text)}")
+    aligned_lines.extend(
+        (
+            f"T │ {_escape_preformatted(transcription_text)}",
+            f"R │ {_escape_preformatted(reference_text)}",
+        )
+    )
     if guide is not None:
-        guide_text = _format_guide_text(guide, transcription_idxs)
+        guide_text = _format_track_text(guide, transcription_idxs)
         aligned_lines.append(f"G │ {_escape_preformatted(guide_text)}")
     alignment_cell = f"<pre>{'<br>'.join(aligned_lines)}</pre>"
     return f"| {index_cell} | {alignment_cell} |  |"
+
+
+def _format_track_text(track: Series, event_idxs: tuple[int, ...]) -> str:
+    """Join ancillary track text corresponding to transcription event indices.
+
+    Arguments:
+        track: ancillary series aligned with the transcription
+        event_idxs: zero-based transcription event indices
+    Returns:
+        joined track text
+    """
+    texts = []
+    for event_idx in event_idxs:
+        texts.extend(
+            line.strip()
+            for line in track.events[event_idx].text_with_newline.splitlines()
+            if line.strip()
+        )
+    return _join_track_texts(texts)
 
 
 def _format_transcription_range(
@@ -345,6 +376,34 @@ def _get_time_window(
         min(transcription[event_idx].start for event_idx in event_idxs),
         max(transcription[event_idx].end for event_idx in event_idxs),
     )
+
+
+def _join_track_texts(texts: list[str]) -> str:
+    """Join one track's text lines with display-width-aware spaces.
+
+    Arguments:
+        texts: nonempty text lines in time order
+    Returns:
+        joined track text
+    """
+    if not texts:
+        return ""
+
+    chunks = [texts[0]]
+    for text in texts[1:]:
+        previous_char = chunks[-1][-1] if chunks[-1] else None
+        next_char = text[0] if text else None
+        if (
+            previous_char is not None
+            and is_full_width_char(previous_char)
+            or next_char is not None
+            and is_full_width_char(next_char)
+        ):
+            chunks.append("\u3000")
+        else:
+            chunks.append(" ")
+        chunks.append(text)
+    return "".join(chunks)
 
 
 def _message_is_in_range(

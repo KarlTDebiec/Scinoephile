@@ -100,12 +100,17 @@ class LineDiff:
         return self._get_edit_aligned_texts(color=False)
 
     def get_stacked_str(
-        self, *, color: bool = True, three_texts: tuple[str, ...] | None = None
+        self,
+        *,
+        color: bool = True,
+        original_texts: tuple[str, ...] | None = None,
+        three_texts: tuple[str, ...] | None = None,
     ) -> str:
         """Format the diff as a stacked, character-aligned display.
 
         Arguments:
             color: whether to emit ANSI color escapes
+            original_texts: optional unaligned original text lines to prepend
             three_texts: optional unaligned third-side text lines
         Returns:
             formatted, multi-line diff chunk
@@ -114,7 +119,7 @@ class LineDiff:
         two_range = self._format_idxs_or_empty(self.two_idxs)
 
         if self.kind == LineDiffKind.EQUAL:
-            return self._get_equal_stacked_str(
+            stacked = self._get_equal_stacked_str(
                 one_range=one_range,
                 two_range=two_range,
                 one_texts=self.one_texts or (),
@@ -123,28 +128,36 @@ class LineDiff:
                 three_texts=three_texts,
             )
 
-        if self.kind == LineDiffKind.DELETE:
-            return self._get_delete_stacked_str(
+        elif self.kind == LineDiffKind.DELETE:
+            stacked = self._get_delete_stacked_str(
                 one_range=one_range,
                 one_texts=self.one_texts or (),
                 color=color,
                 three_texts=three_texts,
             )
 
-        if self.kind == LineDiffKind.INSERT:
-            return self._get_insert_stacked_str(
+        elif self.kind == LineDiffKind.INSERT:
+            stacked = self._get_insert_stacked_str(
                 insert_idxs=self.two_idxs or (),
                 insert_texts=self.two_texts or (),
                 color=color,
                 three_texts=three_texts,
             )
 
-        header = f"{one_range} {two_range}".rstrip()
-        one_text, two_text = self._get_edit_aligned_texts(color=color)
-        if three_texts is None:
-            return f"{header}\n{one_text}\n{two_text}\n"
-        three_text = self._join_texts(three_texts)
-        return f"{header}\n{one_text}\n{two_text}\n{three_text}\n"
+        else:
+            header = f"{one_range} {two_range}".rstrip()
+            one_text, two_text = self._get_edit_aligned_texts(color=color)
+            if three_texts is None:
+                stacked = f"{header}\n{one_text}\n{two_text}\n"
+            else:
+                three_text = self._join_texts(three_texts)
+                stacked = f"{header}\n{one_text}\n{two_text}\n{three_text}\n"
+
+        if original_texts is None:
+            return stacked
+        header, _, body = stacked.partition("\n")
+        original_text = self._join_texts(original_texts)
+        return f"{header}\n{original_text}\n{body}"
 
     def _get_edit_aligned_texts(self, *, color: bool) -> tuple[str, str]:
         """Character-align text for an edit-like diff.

@@ -135,14 +135,16 @@ def test_audit_aligned_diff_cli_stdout_outfile_and_validation(
         tmp_path: temporary path
         capsys: pytest stdout/stderr capture fixture
     """
+    original_path = tmp_path / "original.srt"
     transcription_path = tmp_path / "transcription.srt"
     reference_path = tmp_path / "reference.srt"
     guide_path = tmp_path / "guide.srt"
+    _write_srt(original_path, ("甲原", "相同"))
     _write_srt(transcription_path, ("甲錯", "相同"))
     _write_srt(reference_path, ("甲正", "相同"))
     _write_srt(guide_path, ("指南一", "指南二"))
     arguments = (
-        f"--transcription {transcription_path} "
+        f"--original {original_path} --transcription {transcription_path} "
         f"--reference {reference_path} --guide {guide_path}"
     )
 
@@ -154,7 +156,7 @@ def test_audit_aligned_diff_cli_stdout_outfile_and_validation(
     assert stdout.startswith("# Aligned Subtitle Diff Audit\n")
     assert "- transcription subtitle range: 1 through 1" in stdout
     assert "- row filter: changes" in stdout
-    assert "<pre>T │ 甲錯<br>R │ 甲正<br>G │ 指南一</pre>" in stdout
+    assert "<pre>O │ 甲原<br>T │ 甲錯<br>R │ 甲正<br>G │ 指南一</pre>" in stdout
 
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(

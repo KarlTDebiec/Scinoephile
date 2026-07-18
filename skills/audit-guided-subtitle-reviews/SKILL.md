@@ -23,8 +23,9 @@ cell. Do not leave notes only in commentary, tool output, or the final response.
   revision beneath it. Show only the target when no revision was proposed.
 - Replace the model-provided JSON note with your own independent interpretation
   in `Notes`; never copy or lightly paraphrase the model's explanation.
-- Write an independent note for every proposed revision. For an unchanged
-  target, leave `Notes` blank when the no-revision decision is appropriate.
+- Write `OK` only for a proposed revision that is clearly appropriate. For an
+  unchanged target, leave `Notes` blank only when the no-revision decision is
+  clearly appropriate.
 - Preserve the generated `Verified` cell: `✓` means the JSON test case is
   verified, and an empty cell means it is not verified.
 - Keep observations beside their rows rather than adding a findings section.
@@ -98,6 +99,9 @@ using its timing-aligned guide subtitle or subtitles as evidence.
   particles, syntax, omissions, repetitions, and segmentation.
 - Do not replace idiomatic Cantonese with Mandarin-like wording merely to match
   the guide.
+- Treat `OK` as a positive conclusion, not a default. Require clear support
+  from the target error and guide context; when they leave competing readings
+  plausible, use `Uncertain;` rather than accepting a revision.
 - Read model-provided JSON notes as context, not proof. Replace them in the
   report with your own interpretation of the evidence and decision.
 - When a proposed or missed change substitutes one target-language expression
@@ -118,20 +122,20 @@ using its timing-aligned guide subtitle or subtitles as evidence.
 - If target and guide text do not provide enough evidence, mark the decision
   uncertain rather than guessing from an unavailable audio track.
 
-Use concise English audit notes beginning with one of these labels:
+Use concise English audit notes. Write exactly `OK` for an appropriate proposed
+revision. When a decision has a problem, begin the note with one of these
+labels and give only the material detail:
 
-- `Appropriate revision;` when a proposed revision corrects a clear target
-  error without unrelated rewriting.
 - `Incorrect revision;` when a proposed change is wrong, unsupported, assigned
   to the wrong target, or contains unrelated rewriting.
 - `Missed revision;` when a no-revision answer or partial answer leaves a clear
   error that the guide resolves.
 - `Uncertain;` when the available block does not establish the correct reading.
 
-Every proposed revision receives a note, including appropriate revisions.
-Leave `Notes` blank only when an unchanged target was appropriately left alone.
-Read the saved report from beginning to end, write all notes into its table,
-and confirm that every generated row has been independently audited.
+Every proposed revision receives either `OK` or a problem note. Leave `Notes`
+blank only when an unchanged target was appropriately left alone. Read the
+saved report from beginning to end, write all notes into its table, and confirm
+that every generated row has been independently audited.
 
 ## Correct and verify cases
 

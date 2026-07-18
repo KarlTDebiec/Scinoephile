@@ -2753,6 +2753,20 @@
   },
   {
     "query": {
+      "ref_sub": "爹，這可是非同少可",
+      "target_subs": [
+        "爹",
+        "呢一步非同小可"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "爹，呢一步非同小可"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
       "ref_sub": "少爺！準備好了",
       "target_subs": [
         "少爺",
@@ -2910,17 +2924,16 @@
   },
   {
     "query": {
-      "ref_sub": "爹，這可是非同少可",
+      "ref_sub": "爹，這可是非同小可",
       "target_subs": [
         "爹",
         "呢一步非同小可"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "爹，呢一步非同小可"
+      "target_sub_punctuated": "爹，呢一步非同小可。"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 2
   },
   {
     "query": {

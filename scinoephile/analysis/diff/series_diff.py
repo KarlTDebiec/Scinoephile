@@ -170,6 +170,7 @@ class SeriesDiff:
         self,
         *,
         color: bool = True,
+        original: Series | None = None,
         three: Series | None = None,
         include_equal: bool = False,
     ) -> str:
@@ -177,20 +178,23 @@ class SeriesDiff:
 
         Arguments:
             color: whether to emit ANSI color escapes
+            original: optional original subtitle series to prepend above first-side
+                matches by timing overlap
             three: optional third subtitle series to append below first-side matches
             include_equal: whether to include unchanged aligned subtitles
         Returns:
             formatted multi-line diff string
         Raises:
-            ScinoephileError: if one and three are not one-to-one matched
+            ScinoephileError: if the third subtitle series is not one-to-one matched
+                with the first subtitle series
         """
         messages = self.get_messages(include_equal=include_equal)
-        if three is None:
+        if original is None and three is None:
             return "\n".join(
                 message.get_stacked_str(color=color) for message in messages
             )
 
-        if not are_series_one_to_one(self._one, three):
+        if three is not None and not are_series_one_to_one(self._one, three):
             raise ScinoephileError(
                 "Third subtitle series must be one-to-one matched with the first "
                 "subtitle series"
@@ -199,7 +203,16 @@ class SeriesDiff:
         return "\n".join(
             message.get_stacked_str(
                 color=color,
-                three_texts=self._get_third_texts(message, three),
+                original_texts=(
+                    self._get_original_texts(message, original)
+                    if original is not None
+                    else None
+                ),
+                three_texts=(
+                    self._get_matched_texts(message, three)
+                    if three is not None
+                    else None
+                ),
             )
             for message in messages
         )
@@ -586,32 +599,12 @@ class SeriesDiff:
                 one_line_stop=one_line_stop,
                 two_line_stop=two_line_stop,
             )
-            if len(one_local_idxs) == len(two_local_idxs) and all(
-                one_side.lines[one_idx] == two_side.lines[two_idx]
-                for one_idx, two_idx in zip(
-                    one_local_idxs,
-                    two_local_idxs,
-                    strict=True,
-                )
-            ):
-                for one_idx, two_idx in zip(
-                    one_local_idxs,
-                    two_local_idxs,
-                    strict=True,
-                ):
-                    self._add_equal_message(
-                        one_side=one_side,
-                        two_side=two_side,
-                        one_local_idxs=(one_idx,),
-                        two_local_idxs=(two_idx,),
-                    )
-            else:
-                self._add_changed_span(
-                    one_side,
-                    two_side,
-                    one_local_idxs,
-                    two_local_idxs,
-                )
+            self._add_changed_span(
+                one_side,
+                two_side,
+                one_local_idxs,
+                two_local_idxs,
+            )
             if one_local_idxs:
                 one_line_pos = one_local_idxs[-1] + 1
             if two_local_idxs:
@@ -1547,24 +1540,67 @@ class SeriesDiff:
             event_records.append(tuple(records))
         return event_records
 
-    def _get_third_texts(self, message: LineDiff, three: Series) -> tuple[str, ...]:
-        """Get third-side texts corresponding to a diff message's first-side events.
+    def _get_matched_texts(self, message: LineDiff, series: Series) -> tuple[str, ...]:
+        """Get matched texts corresponding to a diff message's first-side events.
 
         Arguments:
-            message: diff message for which to get third-side text
-            three: one-to-one third subtitle series
+            message: diff message for which to get matched text
+            series: one-to-one subtitle series
         Returns:
-            third-side subtitle texts in first-side event order
+            matched subtitle texts in first-side event order
         """
         event_idxs = self._get_message_event_indices(
             message.one_idxs,
             self._one_line_event_idxs,
         )
+        return self._get_series_event_texts(series, event_idxs)
 
+    def _get_original_texts(
+        self,
+        message: LineDiff,
+        original: Series,
+    ) -> tuple[str, ...]:
+        """Get original texts overlapping a diff message's first-side events.
+
+        Arguments:
+            message: diff message for which to get original text
+            original: original subtitle series
+        Returns:
+            original subtitle texts in time order
+        """
+        event_idxs = self._get_message_event_indices(
+            message.one_idxs,
+            self._one_line_event_idxs,
+        )
+        if not event_idxs:
+            return ()
+
+        start = min(self._one.events[event_idx].start for event_idx in event_idxs)
+        end = max(self._one.events[event_idx].end for event_idx in event_idxs)
+        original_event_idxs = tuple(
+            event_idx
+            for event_idx, subtitle in enumerate(original.events)
+            if subtitle.start < end and subtitle.end > start
+        )
+        return self._get_series_event_texts(original, original_event_idxs)
+
+    @staticmethod
+    def _get_series_event_texts(
+        series: Series,
+        event_idxs: tuple[int, ...],
+    ) -> tuple[str, ...]:
+        """Get nonempty text lines from subtitle events.
+
+        Arguments:
+            series: subtitle series to extract text from
+            event_idxs: zero-based subtitle event indices
+        Returns:
+            subtitle text lines in event order
+        """
         texts = []
         for event_idx in event_idxs:
             event_texts = []
-            for line in three.events[event_idx].text_with_newline.splitlines():
+            for line in series.events[event_idx].text_with_newline.splitlines():
                 stripped = line.strip()
                 if stripped:
                     event_texts.append(stripped)

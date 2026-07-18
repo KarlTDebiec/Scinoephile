@@ -14,8 +14,9 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 
 
-def test_audit_aligned_diff_defaults_to_changes_with_optional_guide():
-    """Test changed aligned rows and their timing-matched guide text."""
+def test_audit_aligned_diff_defaults_to_changes_with_optional_tracks():
+    """Test changed aligned rows and their timing-matched ancillary text."""
+    original = _get_series((0, 500, "甲原"), (1000, 1500, "相同"))
     transcription = _get_series((0, 500, "甲錯"), (1000, 1500, "相同"))
     reference = _get_series((0, 500, "甲正"), (1000, 1500, "相同"))
     guide = _get_series(
@@ -24,16 +25,20 @@ def test_audit_aligned_diff_defaults_to_changes_with_optional_guide():
         (1000, 1500, "指南二"),
     )
 
-    report = audit_aligned_diff(transcription, reference, guide)
+    report = audit_aligned_diff(transcription, reference, guide, original=original)
 
     assert report.startswith("# Aligned Subtitle Diff Audit\n")
+    assert "- original: included" in report
     assert "- guide: included" in report
     assert "- differing rows: 1" in report
     assert "- equal rows: 1" in report
     assert "- row filter: changes" in report
     assert "- table rows: 1" in report
     assert "| Indexes | Alignment | Notes |" in report
-    assert "| T 1<br>R 1 | <pre>T │ 甲錯<br>R │ 甲正<br>G │ 指南一</pre> |  |" in report
+    assert (
+        "| T 1<br>R 1 | <pre>O │ 甲原<br>T │ 甲錯<br>R │ 甲正<br>G │ 指南一</pre> |  |"
+        in report
+    )
     assert "指南二" not in report
 
 
@@ -80,11 +85,11 @@ def test_audit_aligned_diff_range_includes_reference_only_insertions():
     assert "T 1" not in report
 
 
-def test_audit_aligned_diff_rejects_invalid_range_and_guide_alignment():
+def test_audit_aligned_diff_rejects_invalid_range_and_track_alignment():
     """Test invalid ranges and guide timings raise user-facing errors."""
     transcription = _get_series((0, 500, "甲"))
     reference = _get_series((0, 500, "乙"))
-    guide = _get_series((1, 500, "指南"))
+    guide = _get_series((501, 1000, "指南"))
 
     with raises(ScinoephileError, match="less than or equal"):
         audit_aligned_diff(
@@ -95,6 +100,12 @@ def test_audit_aligned_diff_rejects_invalid_range_and_guide_alignment():
         )
     with raises(ScinoephileError, match="no exact timing match"):
         audit_aligned_diff(transcription, reference, guide)
+    original_report = audit_aligned_diff(
+        transcription,
+        reference,
+        original=guide,
+    )
+    assert "<pre>O │ <br>T │ 甲<br>R │ 乙</pre>" in original_report
 
 
 def _get_series(*events: tuple[int, int, str]) -> Series:

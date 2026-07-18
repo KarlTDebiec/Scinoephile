@@ -8,7 +8,7 @@ from pytest import FixtureRequest, param, raises
 
 from scinoephile.analysis.diff import LineDiffKind, SeriesDiff
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import parametrize
 from test.helpers.series_files import get_text_series
 
@@ -219,6 +219,43 @@ def test_series_diff_get_stacked_str_appends_third_series():
         "alpha beta",
         "source alpha beta",
     ]
+
+
+def test_series_diff_get_stacked_str_prepends_original_series():
+    """Test an original series is displayed above first-side text."""
+    original = get_text_series("original alpha beta")
+    one = get_text_series("alpha beta")
+    two = get_text_series("alpha", "beta")
+    three = get_text_series("guide alpha beta")
+
+    rendered = SeriesDiff(one, two).get_stacked_str(
+        color=False,
+        original=original,
+        three=three,
+    )
+
+    assert rendered.splitlines() == [
+        "1 1-2",
+        "original alpha beta",
+        "alpha beta",
+        "alpha beta",
+        "guide alpha beta",
+    ]
+
+
+def test_series_diff_get_stacked_str_uses_overlapping_original_series():
+    """Test an original series need only overlap first-side timings."""
+    original = Series(events=[Subtitle(start=0, end=1000, text="original")])
+    one = Series(events=[Subtitle(start=250, end=750, text="target")])
+    two = Series(events=[Subtitle(start=250, end=750, text="target")])
+
+    rendered = SeriesDiff(one, two).get_stacked_str(
+        color=False,
+        original=original,
+        include_equal=True,
+    )
+
+    assert rendered.splitlines() == ["1 1", "original", "target", "target"]
 
 
 def test_series_diff_get_stacked_str_can_include_equal_lines():
