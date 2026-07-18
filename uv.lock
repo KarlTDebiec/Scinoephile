@@ -1086,15 +1086,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/35/8e/d36f8880bcf18ec02
 
 [[package]]
 name = "opencc"
-version = "1.4.0"
+version = "1.4.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a5/4b/2db9bed94110626a0fc4bf245fdcf97869a11a5c2e9bbd5c815fc11da84d/opencc-1.4.0.tar.gz", hash = "sha256:55657ef86e0b2972bb5c0ff4ef4a9aa9c520e112cf63b3fc81665822f02b2b69", size = 11585910, upload-time = "2026-07-01T21:13:47.944Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/de/4a/9fdb46f75751712f5c2ea76fdffe3d08f2b833301263644e1267ef82c1cd/opencc-1.4.1.tar.gz", hash = "sha256:a2c58215626ac5131c5db277766678d552fc296e9e0299ef183cb67c1a7f30e7", size = 11592892, upload-time = "2026-07-12T14:59:55.166Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b6/9d/a83e1af711943767298dc7d8c32ca90fb109ceb5bbb283dc1eb1ca52c037/opencc-1.4.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:02579132b1d0ffc01047de3b6165a15bef98af7302db1fd53b0bfbc6a995caaa", size = 2069808, upload-time = "2026-07-01T21:18:26.802Z" },
-    { url = "https://files.pythonhosted.org/packages/ad/bc/085dad040c91f3a7d755a8c5346a7ff50bce68fa33f13a3bbca280419d6d/opencc-1.4.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:a2446c536788c08010152e8cd510c2302047b8efdd992c54f8dc93a01f7ac64d", size = 1976167, upload-time = "2026-07-01T21:14:09.979Z" },
-    { url = "https://files.pythonhosted.org/packages/b3/0e/d8057b12d4f08e7e452baab1c0b66e8357bbcabf69a016af968570a72930/opencc-1.4.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:cb15932cd7bd6246d327298c550cadaa82fc7d1a1d0c5b08d26c1f31cab311e1", size = 2315107, upload-time = "2026-07-01T21:14:09.356Z" },
-    { url = "https://files.pythonhosted.org/packages/fe/03/91209fc1dc5882676c1f65eaa7b043457305f4ec2891295408d2dccfc887/opencc-1.4.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:6fe81f972060524c62ae020485dcc2f8777248baedf96163454291eb8d00455c", size = 2353225, upload-time = "2026-07-01T21:13:44.854Z" },
-    { url = "https://files.pythonhosted.org/packages/29/64/b9e673b1d88aa2cc9d0df17f4b69cc2604ea201d7185be3e36f1ae929beb/opencc-1.4.0-cp313-cp313-win_amd64.whl", hash = "sha256:69a8f384b42aedaae35ca22cb202763cb2b8347b4ee0060344e839f6c801e004", size = 2735668, upload-time = "2026-07-01T21:17:51.387Z" },
+    { url = "https://files.pythonhosted.org/packages/fe/7a/27525cb0a5a402e7dc45b0852c14cb46dde614ff5955e6869d3b64b31684/opencc-1.4.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:e3b51cff5ad497376d3f04ab7902363fe9dced44646de4db2995403a25e3b017", size = 2096613, upload-time = "2026-07-12T15:04:00.333Z" },
+    { url = "https://files.pythonhosted.org/packages/96/15/0b42694b9ac218335f0dcf4a5b9757d18356fe27d19ec5e4c1872538d2ce/opencc-1.4.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:b7af1032690c00d56cf4858a62c08e6f683a8fbb14a4300bb692516fa45d4ed4", size = 2000591, upload-time = "2026-07-12T14:57:49.666Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/2f/4e981646fc6dea7438f2612608f4a6a9780c6b1c580f0d4a127c24c270a1/opencc-1.4.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:0afecd22b3963bc1ac96069a5e8c1ba3f4800708360b5a67ab8b302a0271fdc6", size = 2343323, upload-time = "2026-07-12T14:59:44.241Z" },
+    { url = "https://files.pythonhosted.org/packages/26/f0/2f34d136eaf456e4b31d5662a2d23da1e9362cab6a74825d3dbb397b5e72/opencc-1.4.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:4f7fe2e9a7abd48543e332783dcc6ad2ffc9b93d98fffdd5cf9a91512ef894eb", size = 2380744, upload-time = "2026-07-12T14:59:52.08Z" },
+    { url = "https://files.pythonhosted.org/packages/5d/98/2941f2d1be297155fcb60ccb781e3525fb3d6e5ea092f2515dc7cc2a8494/opencc-1.4.1-cp313-cp313-win_amd64.whl", hash = "sha256:f2bc683dbb0b175357a6558d2802d9a2fe158c078d0564714cf43aeb9bd42249", size = 2795565, upload-time = "2026-07-12T15:02:59.902Z" },
 ]
 
 [[package]]
@@ -1862,7 +1862,7 @@ requires-dist = [
     { name = "nvidia-cudnn-cu12", marker = "platform_machine == 'AMD64' and sys_platform == 'win32' and extra == 'ocr-cuda'", specifier = ">=9.0.0.312" },
     { name = "onnxruntime", marker = "extra == 'transcription'", specifier = ">=1.27.0" },
     { name = "openai", specifier = ">=2.46.0" },
-    { name = "opencc", specifier = ">=1.4.0" },
+    { name = "opencc", specifier = ">=1.4.1" },
     { name = "paddleocr", marker = "extra == 'ocr'", specifier = ">=3.1.0" },
     { name = "paddleocr", marker = "extra == 'ocr-cuda'", specifier = ">=3.1.0" },
     { name = "paddlepaddle", marker = "(platform_machine == 'arm64' and sys_platform == 'darwin' and extra == 'ocr') or (platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'ocr') or (platform_machine == 'AMD64' and sys_platform == 'win32' and extra == 'ocr')", specifier = ">=3.3.1" },
