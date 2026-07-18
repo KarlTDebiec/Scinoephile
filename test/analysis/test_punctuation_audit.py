@@ -226,6 +226,35 @@ def test_audit_punctuation_rejects_unmatched_reference():
         )
 
 
+def test_audit_punctuation_ignores_superseded_reference_revision():
+    """Test a retained case using corrected reference text is ignored."""
+    reference = _get_series("更正參考")
+    target = _get_series("甲，乙")
+    historical_case = PunctuationTestCase(
+        query=PunctuationQuery(guide="舊參考", subtitles=["甲", "乙"]),
+        answer=PunctuationAnswer(output="甲，乙"),
+    )
+    current_case = PunctuationTestCase(
+        query=PunctuationQuery(guide="更正參考", subtitles=["甲", "乙"]),
+        answer=PunctuationAnswer(output="甲，乙"),
+    )
+    test_cases = (historical_case, current_case)
+
+    report = audit_punctuation(reference, target, test_cases)
+    excluded_report = audit_punctuation(
+        reference,
+        target,
+        test_cases,
+        first_index=2,
+        last_index=2,
+    )
+
+    assert "- logged cases: 1" in report
+    assert "舊參考" not in report
+    assert "| 1 | 更正參考 | 甲<br>乙 | 甲，乙 |" in report
+    assert "- logged cases: 0" in excluded_report
+
+
 def test_audit_punctuation_rejects_ambiguous_reference():
     """Test repeated references without distinguishing context are rejected."""
     test_case = PunctuationTestCase(

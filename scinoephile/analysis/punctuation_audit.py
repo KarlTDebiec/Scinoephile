@@ -233,11 +233,19 @@ def _get_case_indexes(
     Raises:
         ScinoephileError: if a case's reference subtitle is absent
     """
+    superseded_guides = _get_superseded_guides(
+        reference_indexes_by_text,
+        test_cases,
+    )
     candidate_indexes_by_case: list[list[int]] = []
     direct_indexes: list[int | None] = []
     for test_case_index, test_case in enumerate(test_cases, 1):
         matches = reference_indexes_by_text.get(test_case.query.guide, [])
         if not matches:
+            if test_case.query.guide in superseded_guides:
+                candidate_indexes_by_case.append([])
+                direct_indexes.append(None)
+                continue
             raise ScinoephileError(
                 "Unable to audit transcription punctuation: "
                 f"test case {test_case_index} reference subtitle was not found"
@@ -280,6 +288,46 @@ def _get_case_indexes(
                         direct_index = longest_matches[0]
         direct_indexes.append(direct_index)
     return candidate_indexes_by_case, direct_indexes
+
+
+def _get_superseded_guides(
+    reference_indexes_by_text: dict[str, list[int]],
+    test_cases: Sequence[PunctuationTestCase],
+) -> set[str]:
+    """Get historical guide texts replaced by current logged cases.
+
+    Test-case persistence retains queries that are no longer encountered. Link
+    guide texts through their target inputs so a current query identifies
+    earlier cases superseded by guide-text revisions.
+
+    Arguments:
+        reference_indexes_by_text: current reference positions keyed by text
+        test_cases: logged punctuation test cases
+    Returns:
+        historical guide texts superseded by current logged cases
+    """
+    inputs_by_guide: dict[str, set[tuple[str, ...]]] = defaultdict(set)
+    current_inputs: set[tuple[str, ...]] = set()
+    for test_case in test_cases:
+        guide = test_case.query.guide
+        inputs = tuple(test_case.query.subtitles)
+        inputs_by_guide[guide].add(inputs)
+        if guide in reference_indexes_by_text:
+            current_inputs.add(inputs)
+
+    superseded_guides: set[str] = set()
+    changed = True
+    while changed:
+        changed = False
+        for guide, inputs in inputs_by_guide.items():
+            if guide in reference_indexes_by_text or guide in superseded_guides:
+                continue
+            if inputs.isdisjoint(current_inputs):
+                continue
+            superseded_guides.add(guide)
+            current_inputs.update(inputs)
+            changed = True
+    return superseded_guides
 
 
 def _escape_cell(value: str) -> str:

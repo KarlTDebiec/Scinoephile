@@ -243,6 +243,7 @@ def _get_case_indexes(
     Raises:
         ScinoephileError: if a logged reference pair is absent
     """
+    superseded_pairs = _get_superseded_reference_pairs(pair_indexes, test_cases)
     candidate_indexes_by_case: list[list[int]] = []
     direct_indexes: list[int | None] = []
     for test_case_index, test_case in enumerate(test_cases, 1):
@@ -250,6 +251,10 @@ def _get_case_indexes(
         pair = (query.reference_one, query.reference_two)
         matches = pair_indexes.get(pair, [])
         if not matches:
+            if pair in superseded_pairs:
+                candidate_indexes_by_case.append([])
+                direct_indexes.append(None)
+                continue
             raise ScinoephileError(
                 "Unable to audit transcription delineation: "
                 f"test case {test_case_index} reference pair was not found in "
@@ -268,6 +273,50 @@ def _get_case_indexes(
             direct_index = candidate_indexes[0]
         direct_indexes.append(direct_index)
     return candidate_indexes_by_case, direct_indexes
+
+
+def _get_superseded_reference_pairs(
+    pair_indexes: dict[tuple[str, str], list[int]],
+    test_cases: Sequence[DelineationTestCase],
+) -> set[tuple[str, str]]:
+    """Get historical reference pairs replaced by current logged cases.
+
+    Test-case persistence retains queries that are no longer encountered. Link
+    reference pairs through their target inputs so a current query identifies
+    earlier cases superseded by guide-text revisions.
+
+    Arguments:
+        pair_indexes: current reference-pair positions keyed by subtitle text
+        test_cases: logged delineation test cases
+    Returns:
+        historical reference pairs superseded by current logged cases
+    """
+    target_pairs_by_reference_pair: dict[
+        tuple[str, str],
+        set[tuple[str, str]],
+    ] = defaultdict(set)
+    current_target_pairs: set[tuple[str, str]] = set()
+    for test_case in test_cases:
+        query = test_case.query
+        reference_pair = (query.reference_one, query.reference_two)
+        target_pair = (query.target_one, query.target_two)
+        target_pairs_by_reference_pair[reference_pair].add(target_pair)
+        if reference_pair in pair_indexes:
+            current_target_pairs.add(target_pair)
+
+    superseded_pairs: set[tuple[str, str]] = set()
+    changed = True
+    while changed:
+        changed = False
+        for reference_pair, target_pairs in target_pairs_by_reference_pair.items():
+            if reference_pair in pair_indexes or reference_pair in superseded_pairs:
+                continue
+            if target_pairs.isdisjoint(current_target_pairs):
+                continue
+            superseded_pairs.add(reference_pair)
+            current_target_pairs.update(target_pairs)
+            changed = True
+    return superseded_pairs
 
 
 def _get_contextual_index(

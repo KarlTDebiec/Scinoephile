@@ -164,6 +164,52 @@ def test_audit_delineation_rejects_unmatched_reference_pair():
         audit_delineation(_get_series("參考一", "參考二"), (test_case,))
 
 
+def test_audit_delineation_ignores_superseded_reference_revision():
+    """Test retained cases using corrected reference text are ignored."""
+    reference = _get_series("參考一", "更正參考二", "參考三")
+    historical_case = DelineationTestCase(
+        query=DelineationQuery(
+            reference_one="參考一",
+            reference_two="舊參考二",
+            target_one="舊甲",
+            target_two="舊乙",
+        ),
+        answer=DelineationAnswer(),
+    )
+    later_historical_case = DelineationTestCase(
+        query=DelineationQuery(
+            reference_one="參考一",
+            reference_two="舊參考二",
+            target_one="甲",
+            target_two="乙",
+        ),
+        answer=DelineationAnswer(),
+    )
+    current_case = DelineationTestCase(
+        query=DelineationQuery(
+            reference_one="參考一",
+            reference_two="更正參考二",
+            target_one="甲",
+            target_two="乙",
+        ),
+        answer=DelineationAnswer(),
+    )
+    test_cases = (historical_case, later_historical_case, current_case)
+
+    report = audit_delineation(reference, test_cases)
+    excluded_report = audit_delineation(
+        reference,
+        test_cases,
+        first_index=3,
+        last_index=3,
+    )
+
+    assert "- logged cases: 1" in report
+    assert "舊參考二" not in report
+    assert "| 1<br>2 | 參考一<br>更正參考二 | 甲<br>乙 |" in report
+    assert "- logged cases: 0" in excluded_report
+
+
 def test_audit_delineation_resolves_repeated_reference_pair_from_context():
     """Test neighboring cases resolve a repeated reference pair."""
     reference = _get_series("之前", "重複一", "重複二", "之後", "重複一", "重複二")
