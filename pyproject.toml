@@ -44,7 +44,7 @@ ocr-cuda = [
     "paddlepaddle-gpu==3.2.2; platform_machine == 'AMD64' and sys_platform == 'win32'",
 ]
 transcription = [
-    "demucs-infer>=4.1.2",
+    "demucs-infer>=4.2.2",
     "huggingface-hub>=1.23.0",
     "onnxruntime>=1.27.0",
     "torch>=2.10.0",
