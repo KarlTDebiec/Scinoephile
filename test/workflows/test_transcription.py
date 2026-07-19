@@ -36,6 +36,7 @@ def test_transcribe_series_guided_constructs_processor_for_language_pair():
             reference_series,
             language=Language.yue_hant,
             reference_language=Language.zho_hans,
+            start_at_idx=1,
             stop_at_idx=2,
         )
 
@@ -50,4 +51,5 @@ def test_transcribe_series_guided_constructs_processor_for_language_pair():
         audio_series,
         reference_series,
         stop_at_idx=2,
+        start_at_idx=1,
     )

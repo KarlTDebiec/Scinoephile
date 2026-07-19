@@ -30,27 +30,43 @@ class TranslationProcessor(Processor):
     manager_cls = TranslationManager
     """Manager class used to construct test case models."""
 
-    def process(self, series: Series, stop_at_idx: int | None = None) -> Series:
+    def process(
+        self,
+        series: Series,
+        stop_at_idx: int | None = None,
+        *,
+        start_at_idx: int = 0,
+    ) -> Series:
         """Process translation LLM queries.
 
         Arguments:
             series: subtitles
             stop_at_idx: exclusive block index at which to stop processing
+            start_at_idx: inclusive block index at which to start processing
         Returns:
             processed subtitles
         """
         # Process subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
+        if start_at_idx < 0:
+            raise ValueError("start_at_idx must be greater than or equal to 0")
         if stop_at_idx is None:
             stop_at_idx = len(series.blocks)
         elif stop_at_idx < 0:
             raise ValueError("stop_at_idx must be greater than or equal to 0")
+        elif start_at_idx > stop_at_idx:
+            raise ValueError("start_at_idx must be less than or equal to stop_at_idx")
 
         # Track indices for logging
         current_idx = 0
         for block_idx, block in enumerate(series.blocks):
             if block_idx >= stop_at_idx:
                 break
+            start_idx = current_idx
+            end_idx = current_idx + len(block)
+            current_idx = end_idx
+            if block_idx < start_at_idx:
+                continue
 
             # Query LLM
             test_case_cls = self.test_case_cls
@@ -80,9 +96,6 @@ class TranslationProcessor(Processor):
                 output_subtitle.text = replace_control_characters(output_text)
                 output_series.append(output_subtitle)
 
-            start_idx = current_idx
-            end_idx = current_idx + len(block)
-            current_idx = end_idx
             logger.info(
                 f"Block {block_idx} ({start_idx} - {end_idx}):\n"
                 f"{block.to_simple_string()}"

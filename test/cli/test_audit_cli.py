@@ -149,6 +149,11 @@ def test_audit_cli_help_follows_shared_style():
                 assert isinstance(help_text, str)
                 assert help_text.startswith(f"{boundary} 1-indexed ")
                 assert help_text.endswith(" subtitle number to include, inclusive")
+                block_help_text = actions[f"{boundary}_block"].help
+                assert isinstance(block_help_text, str)
+                assert block_help_text == (
+                    f"{boundary} 1-indexed workflow block number to include, inclusive"
+                )
 
             assert actions["outfile_path"].help == (
                 "Markdown outfile path (default: stdout)"
@@ -175,7 +180,12 @@ def test_audit_cli_help_follows_shared_style():
                 if group.title == "operation arguments"
             )
             for action in operation_group._group_actions:  # noqa: SLF001
-                if action.dest in {"first_index", "last_index"}:
+                if action.dest in {
+                    "first_block",
+                    "first_index",
+                    "last_block",
+                    "last_index",
+                }:
                     continue
                 assert isinstance(action.help, str)
                 assert action.help[:1].islower()
@@ -251,12 +261,16 @@ def test_audit_translation_cli_gapped_mode_stdout_outfile_and_validation(
 
     run_cli_with_args(
         AuditTranslationCli,
-        (f"--mode gapped {arguments} --difficulty 1 --first-index 2 --last-index 2"),
+        (
+            f"--mode gapped {arguments} --difficulty 1 --first-index 2 "
+            "--last-index 2 --first-block 1 --last-block 1"
+        ),
     )
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Gap Translation Audit\n")
     assert "- difficulty filter: 1" in stdout
     assert "- guide subtitle range: 2 through 2" in stdout
+    assert "- block range: 1 through 1" in stdout
     assert "| G 2<br>Q 2 | C 1<br>B 1 | 1 | 參考二 | G 1: 現有 | 翻譯 |" in stdout
 
     outfile_path = tmp_path / "audit.md"
@@ -279,6 +293,15 @@ def test_audit_translation_cli_gapped_mode_stdout_outfile_and_validation(
             f"--mode gapped {arguments} --first-index 2 --last-index 1",
         )
     assert "--first-index must be less than or equal to --last-index" in (
+        capsys.readouterr().err
+    )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditTranslationCli,
+            f"--mode gapped {arguments} --first-block 2 --last-block 1",
+        )
+    assert "--first-block must be less than or equal to --last-block" in (
         capsys.readouterr().err
     )
 

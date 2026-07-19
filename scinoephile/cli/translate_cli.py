@@ -32,7 +32,9 @@ from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
+    add_llm_block_range_args,
     add_llm_provider_args,
+    get_llm_block_range_indexes,
     read_llm_additional_context,
 )
 
@@ -159,6 +161,7 @@ class TranslateCli(ScinoephileCliBase):
                 "is detected)"
             ),
         )
+        add_llm_block_range_args(arg_groups["operation arguments"])
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
@@ -188,6 +191,8 @@ class TranslateCli(ScinoephileCliBase):
         guide_infile_path: Path | str | None,
         source_language: Language | None,
         target_language: Language | None,
+        first_block: int | None,
+        last_block: int | None,
         llm_args: LlmArguments,
         outfile_path: Path | None,
         overwrite: bool,
@@ -195,6 +200,11 @@ class TranslateCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
+        start_at_idx, stop_at_idx = get_llm_block_range_indexes(
+            parser,
+            first_block,
+            last_block,
+        )
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
 
@@ -207,6 +217,8 @@ class TranslateCli(ScinoephileCliBase):
             "additional_context": read_llm_additional_context(
                 parser, llm_args.additional_context_file_path
             ),
+            "start_at_idx": start_at_idx,
+            "stop_at_idx": stop_at_idx,
         }
 
         # Perform operation

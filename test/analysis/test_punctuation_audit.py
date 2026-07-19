@@ -117,6 +117,44 @@ def test_audit_punctuation_filters_rows_and_subtitle_range():
     assert "| 2 |" not in unverified_report
 
 
+def test_audit_punctuation_filters_reference_blocks():
+    """Test block bounds select punctuation cases from matching guide blocks."""
+    reference = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="一"),
+            Subtitle(start=6000, end=7000, text="二"),
+        ]
+    )
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="甲"),
+            Subtitle(start=6000, end=7000, text="乙"),
+        ]
+    )
+    test_cases = (
+        PunctuationTestCase(
+            query=PunctuationQuery(guide="一", subtitles=["甲"]),
+            answer=PunctuationAnswer(output="甲"),
+        ),
+        PunctuationTestCase(
+            query=PunctuationQuery(guide="二", subtitles=["乙"]),
+            answer=PunctuationAnswer(output="乙"),
+        ),
+    )
+
+    report = audit_punctuation(
+        reference,
+        target,
+        test_cases,
+        first_block=2,
+        last_block=2,
+    )
+
+    assert "- block range: 2 through 2" in report
+    assert "| 1 | 一 |" not in report
+    assert "| 2 | 二 |" in report
+
+
 def test_audit_punctuation_rejects_invalid_range():
     """Test direct callers receive a domain error for an invalid range."""
     with raises(ScinoephileError, match="First index must be at least 1"):
@@ -125,6 +163,13 @@ def test_audit_punctuation_rejects_invalid_range():
             _get_series("甲"),
             (),
             first_index=0,
+        )
+    with raises(ScinoephileError, match="First block must be at least 1"):
+        audit_punctuation(
+            _get_series("參考"),
+            _get_series("甲"),
+            (),
+            first_block=0,
         )
 
 

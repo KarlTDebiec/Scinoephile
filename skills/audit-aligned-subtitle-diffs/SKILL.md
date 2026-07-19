@@ -59,6 +59,11 @@ subtitle indexes.
 Reference-only insertions that overlap the selected transcription time window
 are also included. Omit either bound for an open-ended range.
 
+Use `--first-block` and `--last-block` for an inclusive, one-based range of
+transcription blocks. Block bounds may be used instead of subtitle bounds or
+combined with them; when combined, both selections apply. Omit either block
+bound for an open-ended block range.
+
 The default `--filter changes` is appropriate for a difference audit. Use
 `--filter all` only when unchanged aligned rows are needed for context. Adjust
 `--similarity-cutoff` only when the default `0.6` pairs replacement blocks

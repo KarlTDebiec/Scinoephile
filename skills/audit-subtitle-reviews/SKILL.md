@@ -131,6 +131,12 @@ supports final-discrepancy filtering. Use inclusive
 traditional, and dual review, with script variants added automatically; use it
 only for a requested or suspected conversion issue.
 
+Use `--first-block` and `--last-block` for an inclusive, one-based workflow
+block range. In guided mode these are paired target/guide blocks; in regular,
+traditional, and dual modes they are blocks from the first review input. Block
+and subtitle bounds may be combined, and their intersection determines the
+eligible rows. Omit either block bound for an open-ended range.
+
 ## Audit regular and multi-path reviews
 
 Read the relevant language policy before judging rows:

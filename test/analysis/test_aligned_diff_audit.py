@@ -85,6 +85,33 @@ def test_audit_aligned_diff_range_includes_reference_only_insertions():
     assert "T 1" not in report
 
 
+def test_audit_aligned_diff_block_range_composes_with_subtitle_range():
+    """Test block and subtitle ranges intersect on transcription events."""
+    transcription = _get_series(
+        (0, 500, "第一"),
+        (1000, 1500, "第二"),
+        (6000, 6500, "第三錯"),
+    )
+    reference = _get_series(
+        (0, 500, "第一"),
+        (1000, 1500, "第二"),
+        (6000, 6500, "第三正"),
+    )
+
+    report = audit_aligned_diff(
+        transcription,
+        reference,
+        first_index=2,
+        first_block=2,
+        last_block=2,
+    )
+
+    assert "- transcription subtitle range: from 2" in report
+    assert "- block range: 2 through 2" in report
+    assert "| T 3<br>R 3 |" in report
+    assert "| T 1<br>R 1 |" not in report
+
+
 def test_audit_aligned_diff_rejects_invalid_range_and_track_alignment():
     """Test invalid ranges and guide timings raise user-facing errors."""
     transcription = _get_series((0, 500, "甲"))
@@ -98,6 +125,8 @@ def test_audit_aligned_diff_rejects_invalid_range_and_track_alignment():
             first_index=2,
             last_index=1,
         )
+    with raises(ScinoephileError, match="First block must be at least 1"):
+        audit_aligned_diff(transcription, reference, first_block=0)
     with raises(ScinoephileError, match="no exact timing match"):
         audit_aligned_diff(transcription, reference, guide)
     original_report = audit_aligned_diff(

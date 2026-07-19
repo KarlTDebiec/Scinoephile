@@ -166,6 +166,8 @@ class AuditAlignedDiffCli(AuditCliBase):
         guide_path: Path | None,
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
         row_filter: AlignedDiffAuditFilter,
         similarity_cutoff: float,
         outfile_path: Path | None,
@@ -173,6 +175,7 @@ class AuditAlignedDiffCli(AuditCliBase):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
+        cls.validate_block_range(parser, first_block, last_block)
 
         original = None
         if original_path is not None:
@@ -191,6 +194,8 @@ class AuditAlignedDiffCli(AuditCliBase):
                 row_filter=row_filter,
                 first_index=first_index,
                 last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
                 similarity_cutoff=similarity_cutoff,
             )
         except ScinoephileError as exc:

@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from scinoephile.common.argument_parsing import input_file_arg
+from scinoephile.common.argument_parsing import input_file_arg, int_arg
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
@@ -32,7 +32,9 @@ from .argument_bundle_field_action import ArgumentBundleFieldAction
 __all__ = [
     "LLM_LOCALIZATIONS",
     "LlmArguments",
+    "add_llm_block_range_args",
     "add_llm_provider_args",
+    "get_llm_block_range_indexes",
     "llm_provider_name_arg",
     "read_llm_additional_context",
 ]
@@ -43,6 +45,12 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Available LLM providers:": "可用 LLM 提供商：",
         "file from which to read additional context for LLM prompts": (
             "用于读取 LLM 提示词附加上下文的文件"
+        ),
+        "first 1-indexed workflow block to process, inclusive": (
+            "要处理的第一个工作流区块（从 1 开始，包含该区块）"
+        ),
+        "last 1-indexed workflow block to process, inclusive": (
+            "要处理的最后一个工作流区块（从 1 开始，包含该区块）"
         ),
         "llm arguments": "LLM 参数",
         "LLM model identifier override": "LLM 模型标识符覆盖值",
@@ -59,6 +67,12 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Available LLM providers:": "可用 LLM 提供商：",
         "file from which to read additional context for LLM prompts": (
             "用於讀取 LLM 提示詞附加上下文的檔案"
+        ),
+        "first 1-indexed workflow block to process, inclusive": (
+            "要處理的第一個工作流程區塊（從 1 開始，包含該區塊）"
+        ),
+        "last 1-indexed workflow block to process, inclusive": (
+            "要處理的最後一個工作流程區塊（從 1 開始，包含該區塊）"
         ),
         "llm arguments": "LLM 參數",
         "LLM model identifier override": "LLM 模型識別碼覆寫值",
@@ -84,6 +98,24 @@ class LlmArguments:
     """Optional LLM model name override."""
     additional_context_file_path: Path | None = None
     """Optional path to additional LLM prompt context."""
+
+
+def add_llm_block_range_args(operation_arg_group: _ArgumentGroup):
+    """Add optional inclusive workflow block boundaries.
+
+    Arguments:
+        operation_arg_group: argument group to which block boundaries are added
+    """
+    operation_arg_group.add_argument(
+        "--first-block",
+        type=int_arg(min_value=1),
+        help="first 1-indexed workflow block to process, inclusive",
+    )
+    operation_arg_group.add_argument(
+        "--last-block",
+        type=int_arg(min_value=1),
+        help="last 1-indexed workflow block to process, inclusive",
+    )
 
 
 def add_llm_provider_args(
@@ -133,6 +165,28 @@ def add_llm_provider_args(
         default=SUPPRESS,
         help="list available LLM providers and exit",
     )
+
+
+def get_llm_block_range_indexes(
+    parser: ArgumentParser,
+    first_block: int | None,
+    last_block: int | None,
+) -> tuple[int, int | None]:
+    """Convert optional one-based block boundaries to processor indexes.
+
+    Arguments:
+        parser: active parser used to report invalid boundaries
+        first_block: first included one-based workflow block
+        last_block: last included one-based workflow block
+    Returns:
+        inclusive zero-based start and exclusive zero-based stop indexes
+    """
+    if first_block is not None and last_block is not None and first_block > last_block:
+        parser.error("--first-block must be less than or equal to --last-block")
+    start_at_idx = 0
+    if first_block is not None:
+        start_at_idx = first_block - 1
+    return start_at_idx, last_block
 
 
 def llm_provider_name_arg(value: str) -> str:

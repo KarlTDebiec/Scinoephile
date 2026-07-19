@@ -17,8 +17,12 @@ from scinoephile.llms.gap_translation import GapTranslationTestCase
 
 from .audit_utils import (
     _escape_table_cell,
+    _format_block_range,
     _format_difficulty_filter,
     _format_index_range,
+    _get_paired_event_block_numbers,
+    _is_block_in_range,
+    _validate_block_range,
     _validate_index_range,
 )
 
@@ -84,6 +88,8 @@ def audit_gap_translation(
     row_filter: GapTranslationAuditFilter = GapTranslationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
 ) -> str:
     """Audit translations generated for gaps in a target subtitle series.
 
@@ -95,24 +101,31 @@ def audit_gap_translation(
         row_filter: row verification filter
         first_index: first 1-indexed guide subtitle number to include
         last_index: last 1-indexed guide subtitle number to include
+        first_block: first 1-indexed paired block number to include
+        last_block: last 1-indexed paired block number to include
     Returns:
         Markdown audit report
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely to source data
     """
     _validate_index_range(first_index, last_index)
+    _validate_block_range(first_block, last_block)
     if any(difficulty < 0 for difficulty in difficulties):
         raise ScinoephileError("Difficulty must be at least 0")
     difficulty_filter = tuple(sorted(set(difficulties)))
 
     blocks = _get_blocks(target, guide)
+    _, guide_block_numbers = _get_paired_event_block_numbers(target, guide)
     active_cases = _get_active_test_case_blocks(
         guide,
+        guide_block_numbers,
         test_cases,
         blocks,
         difficulties=difficulty_filter,
         first_index=first_index,
         last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
     )
     all_rows: list[_GapTranslationRow] = []
     for test_case_index, test_case, block in active_cases:
@@ -200,6 +213,9 @@ def audit_gap_translation(
     )
     if range_summary is not None:
         lines.append(range_summary)
+    block_range_summary = _format_block_range(first_block, last_block)
+    if block_range_summary is not None:
+        lines.append(block_range_summary)
     lines.extend(
         (
             f"- table rows: {len(rows)}",
@@ -221,6 +237,8 @@ def _block_intersects_range(
     block: _GapTranslationBlock,
     first_index: int | None,
     last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
 ) -> bool:
     """Check whether a block has a target gap within an audit range.
 
@@ -228,10 +246,16 @@ def _block_intersects_range(
         block: gap-translation block to check
         first_index: first included guide subtitle number
         last_index: last included guide subtitle number
+        first_block: first included paired block number
+        last_block: last included paired block number
     Returns:
         whether any target gap in the block is selected
     """
-    return any(
+    return _is_block_in_range(
+        block.block_number,
+        first_block,
+        last_block,
+    ) and any(
         target_text is None
         and (first_index is None or guide_index >= first_index)
         and (last_index is None or guide_index <= last_index)
@@ -270,22 +294,28 @@ def _format_target_context(block: _GapTranslationBlock, position: int) -> str:
 
 def _get_active_test_case_blocks(
     guide: Series,
+    guide_block_numbers: Sequence[int],
     test_cases: Sequence[GapTranslationTestCase],
     blocks: Sequence[_GapTranslationBlock],
     *,
     difficulties: Sequence[int],
     first_index: int | None,
     last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
 ) -> list[tuple[int, GapTranslationTestCase, _GapTranslationBlock]]:
     """Match current cases to blocks while ignoring superseded history.
 
     Arguments:
         guide: complete guide subtitle series
+        guide_block_numbers: paired block number for every guide subtitle
         test_cases: logged gap-translation test cases
         blocks: current target and guide blocks containing gaps
         difficulties: exact case difficulty levels to include, or all if empty
         first_index: first included guide subtitle number
         last_index: last included guide subtitle number
+        first_block: first included paired block number
+        last_block: last included paired block number
     Returns:
         current test cases paired with their unique blocks
     Raises:
@@ -320,14 +350,23 @@ def _get_active_test_case_blocks(
         selected_matches = [
             block
             for block in matches
-            if _block_intersects_range(block, first_index, last_index)
+            if _block_intersects_range(
+                block,
+                first_index,
+                last_index,
+                first_block,
+                last_block,
+            )
         ]
         if not selected_matches:
             if matches or _is_test_case_outside_range(
                 test_case,
                 guide,
+                guide_block_numbers,
                 first_index=first_index,
                 last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
             ):
                 continue
             unmatched_cases.append((test_case_index, test_case))
@@ -359,7 +398,13 @@ def _get_active_test_case_blocks(
         selected_matches = [
             block
             for block in matches
-            if _block_intersects_range(block, first_index, last_index)
+            if _block_intersects_range(
+                block,
+                first_index,
+                last_index,
+                first_block,
+                last_block,
+            )
         ]
         if not selected_matches:
             if matches:
@@ -448,21 +493,30 @@ def _get_blocks(target: Series, guide: Series) -> list[_GapTranslationBlock]:
 def _is_test_case_outside_range(
     test_case: GapTranslationTestCase,
     guide: Series,
+    guide_block_numbers: Sequence[int],
     *,
     first_index: int | None,
     last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
 ) -> bool:
     """Check whether an unmatched case is provably outside a bounded range.
 
     Arguments:
         test_case: unmatched gap-translation test case
         guide: complete current guide subtitle series
+        guide_block_numbers: paired block number for every guide subtitle
         first_index: first included guide subtitle number
         last_index: last included guide subtitle number
+        first_block: first included paired block number
+        last_block: last included paired block number
     Returns:
         whether every matching guide span places all gaps outside the range
     """
-    if first_index is None and last_index is None:
+    if all(
+        boundary is None
+        for boundary in (first_index, last_index, first_block, last_block)
+    ):
         return False
 
     query_guides = tuple(subtitle.text for subtitle in test_case.query.guides)
@@ -479,8 +533,15 @@ def _is_test_case_outside_range(
         return False
     return all(
         all(
-            (first_index is not None and start + gap_index < first_index)
-            or (last_index is not None and start + gap_index > last_index)
+            (
+                (first_index is not None and start + gap_index < first_index)
+                or (last_index is not None and start + gap_index > last_index)
+                or not _is_block_in_range(
+                    guide_block_numbers[start + gap_index - 1],
+                    first_block,
+                    last_block,
+                )
+            )
             for gap_index in gap_indexes
         )
         for start in matching_starts

@@ -16,8 +16,11 @@ from scinoephile.llms.translation import TranslationTestCase
 
 from .audit_utils import (
     _escape_table_cell,
+    _format_block_range,
     _format_difficulty_filter,
     _format_index_range,
+    _is_block_in_range,
+    _validate_block_range,
     _validate_index_range,
 )
 
@@ -79,6 +82,8 @@ def audit_guided_translation(
     row_filter: TranslationAuditFilter = TranslationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
 ) -> str:
     """Audit guided translations against their source and guide blocks.
 
@@ -90,6 +95,8 @@ def audit_guided_translation(
         row_filter: row verification filter
         first_index: first 1-indexed source subtitle number to include
         last_index: last 1-indexed source subtitle number to include
+        first_block: first 1-indexed paired block number to include
+        last_block: last 1-indexed paired block number to include
     Returns:
         Markdown audit report
     Raises:
@@ -104,6 +111,8 @@ def audit_guided_translation(
         row_filter=row_filter,
         first_index=first_index,
         last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
     )
 
 
@@ -115,6 +124,8 @@ def audit_translation(
     row_filter: TranslationAuditFilter = TranslationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
 ) -> str:
     """Audit standard translations against their source blocks.
 
@@ -125,6 +136,8 @@ def audit_translation(
         row_filter: row verification filter
         first_index: first 1-indexed source subtitle number to include
         last_index: last 1-indexed source subtitle number to include
+        first_block: first 1-indexed source block number to include
+        last_block: last 1-indexed source block number to include
     Returns:
         Markdown audit report
     Raises:
@@ -139,6 +152,8 @@ def audit_translation(
         row_filter=row_filter,
         first_index=first_index,
         last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
     )
 
 
@@ -151,6 +166,8 @@ def _audit_translation_blocks(
     row_filter: TranslationAuditFilter,
     first_index: int | None,
     last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
 ) -> str:
     """Audit matched standard or guided translation blocks.
 
@@ -162,12 +179,15 @@ def _audit_translation_blocks(
         row_filter: row verification filter
         first_index: first included source subtitle number
         last_index: last included source subtitle number
+        first_block: first included block number
+        last_block: last included block number
     Returns:
         Markdown audit report
     Raises:
         ScinoephileError: if a selected block lacks a logged test case
     """
     _validate_index_range(first_index, last_index)
+    _validate_block_range(first_block, last_block)
     if any(difficulty < 0 for difficulty in difficulties):
         raise ScinoephileError("Difficulty must be at least 0")
     difficulty_filter = tuple(sorted(set(difficulties)))
@@ -180,7 +200,12 @@ def _audit_translation_blocks(
     selected_case_indexes: set[int] = set()
     answered_subtitles = 0
     unanswered_subtitles = 0
-    for block in blocks:
+    selected_blocks = (
+        block
+        for block in blocks
+        if _is_block_in_range(block.block_number, first_block, last_block)
+    )
+    for block in selected_blocks:
         selected_positions = [
             position
             for position, source_index in enumerate(block.source_indexes)
@@ -261,6 +286,9 @@ def _audit_translation_blocks(
     )
     if range_summary is not None:
         lines.append(range_summary)
+    block_range_summary = _format_block_range(first_block, last_block)
+    if block_range_summary is not None:
+        lines.append(block_range_summary)
     lines.extend(
         (
             f"- table rows: {len(rows)}",

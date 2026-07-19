@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Sequence
+from collections.abc import Collection, Sequence
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
@@ -15,9 +15,12 @@ from scinoephile.llms.delineation import DelineationTestCase
 from .audit_utils import (
     _AuditResult,
     _escape_table_cell,
+    _format_block_range,
     _format_index_range,
     _get_contextual_index,
+    _get_selected_event_indexes,
     _get_superseded_keys,
+    _validate_block_range,
     _validate_index_range,
 )
 
@@ -47,6 +50,8 @@ def audit_delineation(
     row_filter: DelineationAuditFilter = DelineationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
 ) -> str:
     """Audit logged transcription boundary decisions against their reference.
 
@@ -56,23 +61,32 @@ def audit_delineation(
         row_filter: row status filter
         first_index: first 1-indexed reference subtitle number to include
         last_index: last 1-indexed reference subtitle number to include
+        first_block: first 1-indexed reference block number to include
+        last_block: last 1-indexed reference block number to include
     Returns:
         Markdown audit report
     Raises:
         ScinoephileError: if a logged reference pair cannot be matched uniquely
     """
     _validate_index_range(first_index, last_index)
+    _validate_block_range(first_block, last_block)
 
     pair_indexes: dict[tuple[str, str], list[int]] = defaultdict(list)
     for index in range(len(reference) - 1):
         pair = (reference[index].text, reference[index + 1].text)
         pair_indexes[pair].append(index)
 
+    selected_reference_indexes = _get_selected_event_indexes(
+        reference,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
+    )
     candidate_indexes_by_case, direct_indexes = _get_case_indexes(
         pair_indexes,
         test_cases,
-        first_index=first_index,
-        last_index=last_index,
+        selected_reference_indexes=selected_reference_indexes,
     )
 
     rows: list[tuple[int, str]] = []
@@ -150,6 +164,9 @@ def audit_delineation(
     )
     if range_summary is not None:
         lines.append(range_summary)
+    block_range_summary = _format_block_range(first_block, last_block)
+    if block_range_summary is not None:
+        lines.append(block_range_summary)
     lines.extend(
         (
             f"- table rows: {len(rows)}",
@@ -217,16 +234,14 @@ def _get_case_indexes(
     pair_indexes: dict[tuple[str, str], list[int]],
     test_cases: Sequence[DelineationTestCase],
     *,
-    first_index: int | None,
-    last_index: int | None,
+    selected_reference_indexes: Collection[int],
 ) -> tuple[list[list[int]], list[int | None]]:
     """Get candidate and directly resolved indexes for logged cases.
 
     Arguments:
         pair_indexes: reference-pair positions keyed by subtitle text
         test_cases: logged delineation test cases
-        first_index: first 1-indexed reference subtitle number to include
-        last_index: last 1-indexed reference subtitle number to include
+        selected_reference_indexes: selected zero-based reference subtitle indexes
     Returns:
         candidate and directly resolved indexes for every logged case
     Raises:
@@ -265,8 +280,8 @@ def _get_case_indexes(
         candidate_indexes = [
             index
             for index in matches
-            if (first_index is None or index + 1 >= first_index)
-            and (last_index is None or index + 2 <= last_index)
+            if index in selected_reference_indexes
+            and index + 1 in selected_reference_indexes
         ]
         candidate_indexes_by_case.append(candidate_indexes)
         direct_index = None

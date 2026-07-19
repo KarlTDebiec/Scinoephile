@@ -103,6 +103,10 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
 
 Use inclusive `--first-index` and `--last-index`. They refer to global source
 indexes in standard and guided mode, and global guide indexes in gapped mode.
+Use `--first-block` and `--last-block` for inclusive, one-based workflow block
+ranges: source blocks in standard mode and paired blocks in guided or gapped
+mode. Block and subtitle bounds may be combined; their intersection determines
+the displayed rows. Omit either bound for an open-ended range.
 Use `--filter unverified` to resume verification; the default is `all`. Omit
 `--difficulty` for all levels or pass exact values such as
 `--difficulty 1 2`. Difficulty and verification filters compose.

@@ -223,6 +223,8 @@ class AuditReviewCli(AuditCliBase):
         row_filter: GuidedReviewAuditFilter,
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
     ) -> str:
         """Load and audit one guided-review workflow."""
         target = read_series(parser, target_path)
@@ -241,6 +243,8 @@ class AuditReviewCli(AuditCliBase):
             row_filter=row_filter,
             first_index=first_index,
             last_index=last_index,
+            first_block=first_block,
+            last_block=last_block,
         )
 
     @classmethod
@@ -255,6 +259,8 @@ class AuditReviewCli(AuditCliBase):
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
     ) -> str:
         """Load and audit one regular-review workflow."""
         original = read_series(parser, original_path)
@@ -294,6 +300,8 @@ class AuditReviewCli(AuditCliBase):
             characters=cls.get_character_variants(characters),
             first_index=first_index,
             last_index=last_index,
+            first_block=first_block,
+            last_block=last_block,
         )
 
     @classmethod
@@ -310,11 +318,14 @@ class AuditReviewCli(AuditCliBase):
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
         outfile_path: Path | None,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
+        cls.validate_block_range(parser, first_block, last_block)
         cls._validate_mode_inputs(
             parser,
             mode,
@@ -336,6 +347,8 @@ class AuditReviewCli(AuditCliBase):
                     row_filter=GuidedReviewAuditFilter(row_filter.value),
                     first_index=first_index,
                     last_index=last_index,
+                    first_block=first_block,
+                    last_block=last_block,
                 )
             else:
                 assert reviewed_path is not None
@@ -348,6 +361,8 @@ class AuditReviewCli(AuditCliBase):
                     characters=characters,
                     first_index=first_index,
                     last_index=last_index,
+                    first_block=first_block,
+                    last_block=last_block,
                 )
         except ScinoephileError as exc:
             parser.error(str(exc))

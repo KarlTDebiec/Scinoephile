@@ -143,6 +143,13 @@ def test_audit_guided_review_filters_rows_and_target_range():
         first_index=2,
         last_index=2,
     )
+    block_report = audit_guided_review(
+        target,
+        guide,
+        test_cases,
+        first_block=2,
+        last_block=2,
+    )
 
     assert "- row filter: changes" in changed_report
     assert "- table rows: 1" in changed_report
@@ -158,6 +165,10 @@ def test_audit_guided_review_filters_rows_and_target_range():
     assert "- subtitles: 1" in second_report
     assert "- target subtitle range: 2 through 2" in second_report
     assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |" in second_report
+    assert "- block range: 2 through 2" in block_report
+    assert "| 1 | 1 |" not in block_report
+    assert "| 2 | 1 |" not in block_report
+    assert "| 3 | 2 | 參考二 | 丁 |  | ✓ |" in block_report
 
 
 def test_audit_guided_review_uses_latest_case_per_subtitle():
@@ -464,6 +475,15 @@ def test_audit_guided_review_rejects_ambiguous_case():
 
     with raises(ScinoephileError, match="test case 1 is ambiguous.*1, 2"):
         audit_guided_review(target, guide, (test_case,))
+
+    report = audit_guided_review(
+        target,
+        guide,
+        (test_case,),
+        first_block=2,
+        last_block=2,
+    )
+    assert "| 2 | 2 | 參考 | 原文<br>(unanswered) |" in report
 
 
 def _get_series_pair() -> tuple[Series, Series]:

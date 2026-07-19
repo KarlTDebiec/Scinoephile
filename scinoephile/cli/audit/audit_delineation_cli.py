@@ -128,11 +128,14 @@ class AuditDelineationCli(AuditCliBase):
         row_filter: DelineationAuditFilter,
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
         outfile_path: Path | None,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
+        cls.validate_block_range(parser, first_block, last_block)
         reference = read_series(parser, reference_path)
         loaded_test_cases = cls.load_test_cases(
             parser,
@@ -152,6 +155,8 @@ class AuditDelineationCli(AuditCliBase):
                 row_filter=row_filter,
                 first_index=first_index,
                 last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

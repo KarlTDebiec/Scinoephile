@@ -35,7 +35,9 @@ from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
+    add_llm_block_range_args,
     add_llm_provider_args,
+    get_llm_block_range_indexes,
     read_llm_additional_context,
 )
 
@@ -171,6 +173,7 @@ class TranscribeCli(ScinoephileCliBase):
             type=enum_arg(Language),
             help="reference language tag (detected from infile if omitted)",
         )
+        add_llm_block_range_args(arg_groups["operation arguments"])
         arg_groups["operation arguments"].add_argument(
             "--demucs",
             default=DemucsMode.AUTO,
@@ -229,6 +232,8 @@ class TranscribeCli(ScinoephileCliBase):
         stream_index: int | None,
         language: Language,
         reference_language: Language | None,
+        first_block: int | None,
+        last_block: int | None,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
         model_name: str | None,
@@ -239,6 +244,11 @@ class TranscribeCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
+        start_at_idx, stop_at_idx = get_llm_block_range_indexes(
+            parser,
+            first_block,
+            last_block,
+        )
         if media_infile_path == "-" and reference_infile_path == "-":
             parser.error("MEDIA_INFILE and --reference-infile may not both be '-'")
         if overwrite and outfile_path is None:
@@ -288,6 +298,8 @@ class TranscribeCli(ScinoephileCliBase):
                     parser,
                     llm_args.additional_context_file_path,
                 ),
+                start_at_idx=start_at_idx,
+                stop_at_idx=stop_at_idx,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

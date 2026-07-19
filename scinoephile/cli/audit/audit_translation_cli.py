@@ -202,6 +202,8 @@ class AuditTranslationCli(AuditCliBase):
         row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
     ) -> str:
         """Load and audit one gapped-translation workflow."""
         target = read_series(parser, target_path)
@@ -221,6 +223,8 @@ class AuditTranslationCli(AuditCliBase):
             row_filter=GapTranslationAuditFilter(row_filter.value),
             first_index=first_index,
             last_index=last_index,
+            first_block=first_block,
+            last_block=last_block,
         )
 
     @classmethod
@@ -235,6 +239,8 @@ class AuditTranslationCli(AuditCliBase):
         row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
     ) -> str:
         """Load and audit one guided-translation workflow."""
         source = read_series(parser, source_path)
@@ -254,6 +260,8 @@ class AuditTranslationCli(AuditCliBase):
             row_filter=row_filter,
             first_index=first_index,
             last_index=last_index,
+            first_block=first_block,
+            last_block=last_block,
         )
 
     @classmethod
@@ -267,6 +275,8 @@ class AuditTranslationCli(AuditCliBase):
         row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
     ) -> str:
         """Load and audit one standard-translation workflow."""
         source = read_series(parser, source_path)
@@ -284,6 +294,8 @@ class AuditTranslationCli(AuditCliBase):
             row_filter=row_filter,
             first_index=first_index,
             last_index=last_index,
+            first_block=first_block,
+            last_block=last_block,
         )
 
     @classmethod
@@ -300,11 +312,14 @@ class AuditTranslationCli(AuditCliBase):
         row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
         outfile_path: Path | None,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
+        cls.validate_block_range(parser, first_block, last_block)
         cls._validate_mode_inputs(
             parser,
             mode,
@@ -324,6 +339,8 @@ class AuditTranslationCli(AuditCliBase):
                     row_filter=row_filter,
                     first_index=first_index,
                     last_index=last_index,
+                    first_block=first_block,
+                    last_block=last_block,
                 )
             elif mode is _TranslationAuditMode.gapped:
                 assert target_path is not None and guide_path is not None
@@ -336,6 +353,8 @@ class AuditTranslationCli(AuditCliBase):
                     row_filter=row_filter,
                     first_index=first_index,
                     last_index=last_index,
+                    first_block=first_block,
+                    last_block=last_block,
                 )
             else:
                 assert source_path is not None and guide_path is not None
@@ -348,6 +367,8 @@ class AuditTranslationCli(AuditCliBase):
                     row_filter=row_filter,
                     first_index=first_index,
                     last_index=last_index,
+                    first_block=first_block,
+                    last_block=last_block,
                 )
         except ScinoephileError as exc:
             parser.error(str(exc))

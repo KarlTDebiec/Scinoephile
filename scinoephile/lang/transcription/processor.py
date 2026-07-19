@@ -178,6 +178,8 @@ class GuidedTranscriptionProcessor:
         audio_series: AudioSeries,
         reference_series: Series,
         stop_at_idx: int | None = None,
+        *,
+        start_at_idx: int = 0,
     ) -> AudioSeries:
         """Transcribe all audio blocks and align them with reference subtitles.
 
@@ -185,11 +187,12 @@ class GuidedTranscriptionProcessor:
             audio_series: audio divided into subtitle-timed blocks
             reference_series: reference subtitles corresponding to audio blocks
             stop_at_idx: exclusive block index at which to stop processing
+            start_at_idx: inclusive block index at which to start processing
         Returns:
             transcribed and aligned audio subtitle series
         Raises:
             ScinoephileError: if audio and reference block counts differ
-            ValueError: if stop_at_idx is negative
+            ValueError: if the processing range is invalid
         """
         audio_blocks = audio_series.blocks
         reference_blocks = reference_series.blocks
@@ -198,10 +201,14 @@ class GuidedTranscriptionProcessor:
                 f"Audio has {len(audio_blocks)} blocks but reference subtitles have "
                 f"{len(reference_blocks)} blocks."
             )
+        if start_at_idx < 0:
+            raise ValueError("start_at_idx must be greater than or equal to 0")
         if stop_at_idx is None:
             stop_at_idx = len(audio_blocks)
         elif stop_at_idx < 0:
             raise ValueError("stop_at_idx must be greater than or equal to 0")
+        elif start_at_idx > stop_at_idx:
+            raise ValueError("start_at_idx must be less than or equal to stop_at_idx")
 
         output_events = []
         for block_idx, (audio_block, reference_block) in enumerate(
@@ -209,6 +216,8 @@ class GuidedTranscriptionProcessor:
         ):
             if block_idx >= stop_at_idx:
                 break
+            if block_idx < start_at_idx:
+                continue
             output_block = self.process_block(audio_block, reference_block)
             logger.info(
                 f"BLOCK {block_idx + 1}:\n"

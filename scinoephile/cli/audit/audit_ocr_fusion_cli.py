@@ -173,11 +173,14 @@ class AuditOcrFusionCli(AuditCliBase):
         row_filter: OcrFusionAuditFilter,
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
         outfile_path: Path | None,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
+        cls.validate_block_range(parser, first_block, last_block)
         source_one = read_series(parser, source_one_path)
         source_two = read_series(parser, source_two_path)
         fused = read_series(parser, fused_path)
@@ -205,6 +208,8 @@ class AuditOcrFusionCli(AuditCliBase):
                 row_filter=row_filter,
                 first_index=first_index,
                 last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

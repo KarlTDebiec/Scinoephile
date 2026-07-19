@@ -63,6 +63,8 @@ def test_transcribe_help_lists_generic_options():
     assert "--reference-infile REFERENCE_INFILE_PATH" in help_text
     assert "--language" in help_text
     assert "--reference-language" in help_text
+    assert "--first-block FIRST_BLOCK" in help_text
+    assert "--last-block LAST_BLOCK" in help_text
     assert "--script" not in normalized_help_text
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text
@@ -185,6 +187,8 @@ def test_transcribe_cli_passes_generic_configuration(
         vad_mode: VADMode,
         provider: object,
         additional_context: str | None,
+        start_at_idx: int,
+        stop_at_idx: int | None,
     ) -> Series:
         """Validate transcription options passed by the CLI."""
         assert input_audio_series is audio_series
@@ -196,6 +200,8 @@ def test_transcribe_cli_passes_generic_configuration(
         assert vad_mode is VADMode.OFF
         assert provider is not None
         assert additional_context is None
+        assert start_at_idx == 1
+        assert stop_at_idx == 3
         return expected_series
 
     with patch(
@@ -211,7 +217,8 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"{_MEDIA_INFILE_PATH} "
                 f"--reference-infile {_REFERENCE_INFILE_PATH} "
                 "--language yue-Hant --reference-language zho-Hans "
-                "--whisper-model custom/whisper --demucs on --vad off",
+                "--whisper-model custom/whisper --demucs on --vad off "
+                "--first-block 2 --last-block 3",
             )
 
 
@@ -227,6 +234,8 @@ def test_transcribe_cli_passes_generic_configuration(
         f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
         "--language yue-Hans --overwrite",
         f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        "--language yue-Hans --first-block 3 --last-block 2",
+        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
         "--language yue-Hans --script traditional",
     ),
     ids=(
@@ -235,6 +244,7 @@ def test_transcribe_cli_passes_generic_configuration(
         "missing media infile",
         "two stdin infiles",
         "overwrite without outfile",
+        "reversed block range",
         "language-specific option",
     ),
 )

@@ -211,12 +211,15 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
         outfile_path: Path | None,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
+        cls.validate_block_range(parser, first_block, last_block)
         characters = cls.get_character_variants(characters)
 
         # Read inputs
@@ -268,6 +271,8 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
                 characters=characters,
                 first_index=first_index,
                 last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

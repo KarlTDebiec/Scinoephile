@@ -175,6 +175,34 @@ def test_processor_maps_indexed_outputs_to_subtitle_timing():
     }
 
 
+def test_processor_honors_start_index():
+    """An inclusive start index should skip earlier guided-translation blocks."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = json.dumps(
+        {"shuchu": [{"xuhao": 1, "wenben": "譯文二"}]},
+        ensure_ascii=False,
+    )
+    processor = GuidedTranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor.queryer.cache_dir_path = None
+    source = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="原文一"),
+            Subtitle(start=5000, end=6000, text="原文二"),
+        ]
+    )
+    guide = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="參考一"),
+            Subtitle(start=5000, end=6000, text="參考二"),
+        ]
+    )
+
+    output = processor.process(source, guide, start_at_idx=1)
+
+    assert [subtitle.text for subtitle in output] == ["譯文二"]
+    provider.chat_completion.assert_called_once()
+
+
 def test_persistence_uses_base_prompt_field_names(tmp_path: Path):
     """Persistence should use canonical names and reload localized aliases."""
     test_case_cls = GuidedTranslationManager.get_test_case_cls(_LOCALIZED_PROMPT)

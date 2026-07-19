@@ -160,10 +160,53 @@ def test_audit_delineation_filters_rows_and_subtitle_range():
     assert "| 2<br>3 |" not in unverified_report
 
 
+def test_audit_delineation_filters_reference_blocks():
+    """Test block bounds select only boundaries within matching guide blocks."""
+    reference = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="一"),
+            Subtitle(start=1000, end=2000, text="二"),
+            Subtitle(start=6000, end=7000, text="三"),
+            Subtitle(start=7000, end=8000, text="四"),
+        ]
+    )
+    test_cases = (
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="一",
+                reference_two="二",
+                target_one="甲",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="三",
+                reference_two="四",
+                target_one="乙",
+            ),
+            answer=DelineationAnswer(),
+        ),
+    )
+
+    report = audit_delineation(
+        reference,
+        test_cases,
+        first_block=2,
+        last_block=2,
+    )
+
+    assert "- block range: 2 through 2" in report
+    assert "| 1<br>2 |" not in report
+    assert "| 3<br>4 |" in report
+
+
 def test_audit_delineation_rejects_invalid_range():
     """Test direct callers receive a domain error for an invalid range."""
     with raises(ScinoephileError, match="First index must be at least 1"):
         audit_delineation(_get_series("參考一", "參考二"), (), first_index=0)
+    with raises(ScinoephileError, match="First block must be at least 1"):
+        audit_delineation(_get_series("參考一", "參考二"), (), first_block=0)
 
 
 def test_audit_delineation_rejects_unmatched_reference_pair():

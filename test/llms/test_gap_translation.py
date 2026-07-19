@@ -438,6 +438,26 @@ def test_processor_honors_zero_stop_index():
     provider.chat_completion.assert_not_called()
 
 
+def test_processor_honors_start_index():
+    """An inclusive start index should skip earlier gap-translation blocks."""
+    provider = Mock(spec=LLMProvider)
+    processor = GapTranslationProcessor(
+        GapTranslationManager.base_prompt,
+        provider=provider,
+    )
+    source = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="existing one"),
+            Subtitle(start=5000, end=6000, text="existing two"),
+        ]
+    )
+
+    output = processor.process(source, source, start_at_idx=1)
+
+    assert [subtitle.text for subtitle in output] == ["existing two"]
+    provider.chat_completion.assert_not_called()
+
+
 def test_processor_rejects_negative_stop_index():
     """A negative stop index should be rejected."""
     processor = GapTranslationProcessor(

@@ -9,7 +9,6 @@ from functools import partial
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.llms.guided_review import GuidedReviewPrompt
-from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
 from scinoephile.llms.review import ReviewPrompt
 
 from .prompts import ZHO_HANT_PROMPT_FIELDS
@@ -18,8 +17,6 @@ from .script.conversion import OpenCCConfig, get_zho_text_converted
 __all__ = [
     "GuidedReviewPromptZhoHans",
     "GuidedReviewPromptZhoHant",
-    "PairwiseReviewPromptZhoHans",
-    "PairwiseReviewPromptZhoHant",
     "ReviewPromptZhoHans",
     "ReviewPromptZhoHant",
 ]
@@ -65,31 +62,6 @@ GuidedReviewPromptZhoHans = GuidedReviewPromptZhoHant.transformed(
     partial(get_zho_text_converted, config=OpenCCConfig.t2s),
 )
 """LLM correspondence text for guided review of simplified Chinese."""
-
-PairwiseReviewPromptZhoHant = PairwiseReviewPrompt(
-    language=Language.zho_hant,
-    **ZHO_HANT_PROMPT_FIELDS,
-    base_system_prompt=dedent_and_compact("""
-        將一條中文字幕與一條對應的參考字幕逐條比較校對；參考字幕可以使用另一種語言。
-        僅修正參考字幕足以證實的明顯聽寫、用字或名稱錯誤。
-        不要翻譯參考字幕，也不要改寫原本正確的中文來配合參考字幕的措辭。
-        如需修改，返回完整修訂後中文字幕與簡短中文備註；如無需修改，兩者均返回空字符串。
-        只有當中文字幕完全沒有對應內容且應刪除時，才返回 "�"。"""),
-    target="zhongwen",
-    target_desc="要校對的中文字幕",
-    reference="cankao",
-    reference_desc="對應的參考字幕",
-    output="xiugai",
-    note="beizhu",
-    note_desc="修改說明（中文）；如無需修改則返回空字符串",
-)
-"""LLM correspondence text for pairwise review of traditional Chinese."""
-
-PairwiseReviewPromptZhoHans = PairwiseReviewPromptZhoHant.transformed(
-    Language.zho_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.t2s),
-)
-"""LLM correspondence text for pairwise review of simplified Chinese."""
 
 ReviewPromptZhoHant = ReviewPrompt(
     language=Language.zho_hant,

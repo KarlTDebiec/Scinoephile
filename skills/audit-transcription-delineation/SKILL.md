@@ -80,6 +80,11 @@ requested range. Omit either bound for an open-ended range. The default
 complete audit must use `all`, because `changes` cannot reveal missed shifts.
 The report summary labels these bounds as the reference subtitle range.
 
+Use `--first-block` and `--last-block` for an inclusive, one-based range of
+reference blocks. A boundary is included only when both reference subtitles
+belong to selected blocks. Block and subtitle bounds may be combined, in which
+case both selections apply. Omit either block bound for an open-ended range.
+
 Each table cell stacks the first and second subtitle with `<br>`. A blank line
 is displayed as `—`. Sort rows by their matched subtitle indexes. Preserve the
 original log order among repeated cases for the same boundary because they may

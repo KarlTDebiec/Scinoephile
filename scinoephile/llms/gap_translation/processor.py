@@ -39,6 +39,8 @@ class GapTranslationProcessor(Processor):
         source_one: Series,
         source_two: Series,
         stop_at_idx: int | None = None,
+        *,
+        start_at_idx: int = 0,
     ) -> Series:
         """Fill gaps in the primary series using the secondary series as reference.
 
@@ -46,18 +48,25 @@ class GapTranslationProcessor(Processor):
             source_one: primary subtitles (may contain gaps)
             source_two: secondary subtitles providing reference
             stop_at_idx: exclusive block index at which to stop processing
+            start_at_idx: inclusive block index at which to start processing
         Returns:
             primary subtitles with gaps filled
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
+        if start_at_idx < 0:
+            raise ValueError("start_at_idx must be greater than or equal to 0")
         if stop_at_idx is None:
             stop_at_idx = len(block_pairs)
         elif stop_at_idx < 0:
             raise ValueError("stop_at_idx must be greater than or equal to 0")
+        elif start_at_idx > stop_at_idx:
+            raise ValueError("start_at_idx must be less than or equal to stop_at_idx")
         for blk_idx, (one_blk, two_blk) in enumerate(block_pairs):
             if blk_idx >= stop_at_idx:
                 break
+            if blk_idx < start_at_idx:
+                continue
 
             # Determine missing target positions
             size = len(two_blk)

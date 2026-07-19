@@ -255,6 +255,40 @@ def test_processor_honors_zero_stop_index():
     provider.chat_completion.assert_not_called()
 
 
+def test_processor_allows_start_beyond_last_block():
+    """An open-ended range beyond the input should produce empty output."""
+    provider = Mock(spec=LLMProvider)
+    processor = TranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
+    series = Series(events=[Subtitle(start=0, end=1000, text="原文")])
+
+    output = processor.process(series, start_at_idx=2)
+
+    assert len(output) == 0
+    provider.chat_completion.assert_not_called()
+
+
+def test_processor_honors_start_index():
+    """An inclusive start index should skip earlier translation blocks."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = json.dumps(
+        {"fanyi": [{"xuhao": 1, "wenben": "譯文二"}]},
+        ensure_ascii=False,
+    )
+    processor = TranslationProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor.queryer.cache_dir_path = None
+    series = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="原文一"),
+            Subtitle(start=5000, end=6000, text="原文二"),
+        ]
+    )
+
+    output = processor.process(series, start_at_idx=1)
+
+    assert [subtitle.text for subtitle in output] == ["譯文二"]
+    provider.chat_completion.assert_called_once()
+
+
 def test_processor_rejects_negative_stop_index():
     """A negative stop index should be rejected."""
     processor = TranslationProcessor(
@@ -264,3 +298,14 @@ def test_processor_rejects_negative_stop_index():
 
     with raises(ValueError, match="greater than or equal to 0"):
         processor.process(Series(), stop_at_idx=-1)
+
+
+def test_processor_rejects_reversed_range():
+    """An explicit start index after the stop index should be rejected."""
+    processor = TranslationProcessor(
+        _LOCALIZED_PROMPT,
+        provider=Mock(spec=LLMProvider),
+    )
+
+    with raises(ValueError, match="less than or equal to stop_at_idx"):
+        processor.process(Series(), start_at_idx=2, stop_at_idx=1)

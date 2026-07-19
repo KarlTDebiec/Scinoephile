@@ -90,6 +90,13 @@ def test_audit_gap_translation_formats_empty_and_unanswered_gaps():
         first_index=4,
         last_index=4,
     )
+    block_report = audit_gap_translation(
+        target,
+        guide,
+        test_cases,
+        first_block=2,
+        last_block=2,
+    )
 
     assert "- empty translations: 1" in report
     assert "- unanswered gaps: 1" in report
@@ -105,6 +112,9 @@ def test_audit_gap_translation_formats_empty_and_unanswered_gaps():
     assert "- guide subtitle range: 4 through 4" in ranged_report
     assert "- logged cases: 1" in ranged_report
     assert "| G 4<br>Q 2 |" in ranged_report
+    assert "- block range: 2 through 2" in block_report
+    assert "| G 2<br>Q 2 |" not in block_report
+    assert "| G 4<br>Q 2 |" in block_report
 
 
 def test_audit_gap_translation_filters_case_difficulty():
@@ -205,14 +215,25 @@ def test_audit_gap_translation_rejects_ambiguous_block():
         (test_case,),
         difficulties=(2,),
     )
+    block_report = audit_gap_translation(
+        target,
+        guide,
+        (test_case,),
+        first_block=2,
+        last_block=2,
+    )
     assert "- logged cases: 0" in report
     assert "- table rows: 0" in report
+    assert "| G 4<br>Q 2 | C 1<br>B 2 |" in block_report
 
 
 def test_audit_gap_translation_rejects_invalid_range():
     """Test direct callers receive a domain error for an invalid range."""
     with raises(ScinoephileError, match="First index must be at least 1"):
         audit_gap_translation(Series(), Series(), (), first_index=0)
+
+    with raises(ScinoephileError, match="First block must be at least 1"):
+        audit_gap_translation(Series(), Series(), (), first_block=0)
 
     with raises(ScinoephileError, match="Difficulty must be at least 0"):
         audit_gap_translation(Series(), Series(), (), difficulties=(-1,))

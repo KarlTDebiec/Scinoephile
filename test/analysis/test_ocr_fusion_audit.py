@@ -88,6 +88,42 @@ def test_audit_ocr_fusion_filters_unverified_and_automatic_rows():
     assert "| 3 | 1 |" in unverified_report
 
 
+def test_audit_ocr_fusion_filters_fused_blocks():
+    """Test block bounds select fused rows separated by long pauses."""
+    source_one = Series(
+        events=[
+            Subtitle(start=0, end=500, text="相同一"),
+            Subtitle(start=6000, end=6500, text="相同二"),
+        ]
+    )
+    source_two = Series(
+        events=[
+            Subtitle(start=0, end=500, text="相同一"),
+            Subtitle(start=6000, end=6500, text="相同二"),
+        ]
+    )
+    fused = Series(
+        events=[
+            Subtitle(start=0, end=500, text="相同一"),
+            Subtitle(start=6000, end=6500, text="相同二"),
+        ]
+    )
+
+    report = audit_ocr_fusion(
+        source_one,
+        source_two,
+        fused,
+        (),
+        row_filter=OcrFusionAuditFilter.all,
+        first_block=2,
+        last_block=2,
+    )
+
+    assert "- block range: 2 through 2" in report
+    assert "| 1 | — |" not in report
+    assert "| 2 | — |" in report
+
+
 def test_audit_ocr_fusion_rejects_invalid_inputs():
     """Test invalid ranges, alignment, and missing truth raise domain errors."""
     one = _get_series("甲")
@@ -101,6 +137,8 @@ def test_audit_ocr_fusion_rejects_invalid_inputs():
 
     with raises(ScinoephileError, match="First index must be at least 1"):
         audit_ocr_fusion(one, two, one, (test_case,), first_index=0)
+    with raises(ScinoephileError, match="First block must be at least 1"):
+        audit_ocr_fusion(one, two, one, (test_case,), first_block=0)
     with raises(ScinoephileError, match="requires a validated"):
         audit_ocr_fusion(
             one,

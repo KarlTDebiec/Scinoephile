@@ -8,6 +8,8 @@ from collections.abc import Collection, Hashable, Mapping, Sequence
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.pairs import get_block_pairs_by_pause
+from scinoephile.core.subtitles import Series
 
 
 class _AuditResult(StrEnum):
@@ -32,6 +34,27 @@ def _escape_table_cell(value: str) -> str:
         escaped cell text
     """
     return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
+
+
+def _format_block_range(
+    first_block: int | None,
+    last_block: int | None,
+) -> str | None:
+    """Format an optional block range for a report summary.
+
+    Arguments:
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+    Returns:
+        formatted block-range summary, or None if the range is unbounded
+    """
+    if first_block is None and last_block is None:
+        return None
+    if first_block is None:
+        return f"- block range: through {last_block}"
+    if last_block is None:
+        return f"- block range: from {first_block}"
+    return f"- block range: {first_block} through {last_block}"
 
 
 def _format_difficulty_filter(difficulties: Sequence[int]) -> str:
@@ -140,6 +163,72 @@ def _get_contextual_index(
     return None
 
 
+def _get_paired_event_block_numbers(
+    one: Series,
+    two: Series,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """Get paired workflow block numbers for two subtitle series.
+
+    Arguments:
+        one: first subtitle series
+        two: second subtitle series
+    Returns:
+        one-based paired block number for every event in each series
+    """
+    one_block_numbers: list[int] = []
+    two_block_numbers: list[int] = []
+    for block_number, (one_block, two_block) in enumerate(
+        get_block_pairs_by_pause(one, two),
+        1,
+    ):
+        one_block_numbers.extend([block_number] * len(one_block))
+        two_block_numbers.extend([block_number] * len(two_block))
+    return tuple(one_block_numbers), tuple(two_block_numbers)
+
+
+def _get_selected_event_indexes(
+    series: Series,
+    *,
+    first_index: int | None,
+    last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
+) -> frozenset[int]:
+    """Get event indexes selected by optional subtitle and block ranges.
+
+    Arguments:
+        series: subtitle series whose event and block indexes are selected
+        first_index: first included one-based subtitle index
+        last_index: last included one-based subtitle index
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+    Returns:
+        selected zero-based event indexes
+    """
+    start = 0
+    if first_index is not None:
+        start = first_index - 1
+    stop = len(series)
+    if last_index is not None:
+        stop = min(last_index, stop)
+    selected_indexes = set(range(start, stop))
+
+    if first_block is None and last_block is None:
+        return frozenset(selected_indexes)
+
+    selected_block_indexes = {
+        event_index
+        for block_number, (block_start, block_stop) in enumerate(
+            Series.get_block_indexes_by_pause(series),
+            1,
+        )
+        if (first_block is None or block_number >= first_block)
+        and (last_block is None or block_number <= last_block)
+        for event_index in range(block_start, block_stop)
+    }
+    return frozenset(selected_indexes & selected_block_indexes)
+
+
 def _get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
     current_keys: Collection[KeyT],
     values_by_key: Mapping[KeyT, Collection[ValueT]],
@@ -164,6 +253,42 @@ def _get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
         for key, values in values_by_key.items()
         if key not in current_keys and not current_values.isdisjoint(values)
     }
+
+
+def _is_block_in_range(
+    block_number: int,
+    first_block: int | None,
+    last_block: int | None,
+) -> bool:
+    """Check whether a one-based block number is selected.
+
+    Arguments:
+        block_number: one-based block number
+        first_block: first included block number
+        last_block: last included block number
+    Returns:
+        whether the block is selected
+    """
+    return (first_block is None or block_number >= first_block) and (
+        last_block is None or block_number <= last_block
+    )
+
+
+def _validate_block_range(first_block: int | None, last_block: int | None):
+    """Validate optional one-based block boundaries.
+
+    Arguments:
+        first_block: first included block number
+        last_block: last included block number
+    Raises:
+        ScinoephileError: if either boundary is invalid
+    """
+    if first_block is not None and first_block < 1:
+        raise ScinoephileError("First block must be at least 1")
+    if last_block is not None and last_block < 1:
+        raise ScinoephileError("Last block must be at least 1")
+    if first_block is not None and last_block is not None and first_block > last_block:
+        raise ScinoephileError("First block must be less than or equal to last block")
 
 
 def _validate_index_range(first_index: int | None, last_index: int | None):

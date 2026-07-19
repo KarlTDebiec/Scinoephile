@@ -15,8 +15,11 @@ from scinoephile.llms.ocr_fusion import OcrFusionTestCase
 
 from .audit_utils import (
     _escape_table_cell,
+    _format_block_range,
     _format_difficulty_filter,
     _format_index_range,
+    _get_selected_event_indexes,
+    _validate_block_range,
     _validate_index_range,
 )
 
@@ -85,6 +88,8 @@ def audit_ocr_fusion(
     row_filter: OcrFusionAuditFilter = OcrFusionAuditFilter.changes,
     first_index: int | None = None,
     last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
 ) -> str:
     """Audit OCR-fusion output against its sources and optional validated truth.
 
@@ -98,12 +103,15 @@ def audit_ocr_fusion(
         row_filter: row status filter
         first_index: first 1-indexed fused subtitle number to include
         last_index: last 1-indexed fused subtitle number to include
+        first_block: first 1-indexed fused block number to include
+        last_block: last 1-indexed fused block number to include
     Returns:
         Markdown audit report
     Raises:
         ScinoephileError: if ranges, series alignment, or logged decisions are invalid
     """
     _validate_index_range(first_index, last_index)
+    _validate_block_range(first_block, last_block)
     if any(difficulty < 0 for difficulty in difficulties):
         raise ScinoephileError("Difficulty must be at least 0")
     if row_filter is OcrFusionAuditFilter.discrepancies and validated is None:
@@ -123,10 +131,15 @@ def audit_ocr_fusion(
         cases_by_key[key] = (case_index, test_case)
 
     all_rows: list[_OcrFusionRow] = []
-    first_position = 1 if first_index is None else first_index
-    last_position = len(fused) if last_index is None else min(last_index, len(fused))
-    for index in range(first_position, last_position + 1):
-        position = index - 1
+    selected_positions = _get_selected_event_indexes(
+        fused,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
+    )
+    for position in sorted(selected_positions):
+        index = position + 1
         source_one_text = source_one.events[position].text_with_newline
         source_two_text = source_two.events[position].text_with_newline
         fused_text = fused.events[position].text_with_newline
@@ -191,6 +204,9 @@ def audit_ocr_fusion(
     )
     if range_summary is not None:
         lines.append(range_summary)
+    block_range_summary = _format_block_range(first_block, last_block)
+    if block_range_summary is not None:
+        lines.append(block_range_summary)
     lines.extend(
         (
             f"- table rows: {len(rows)}",

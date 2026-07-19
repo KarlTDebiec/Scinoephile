@@ -49,6 +49,12 @@ def test_audit_translation_formats_standard_blocks_and_unanswered_case():
         test_cases,
         row_filter=TranslationAuditFilter.unverified,
     )
+    block_report = audit_translation(
+        source,
+        test_cases,
+        first_block=2,
+        last_block=2,
+    )
 
     assert report.startswith("# Standard Translation Audit\n")
     assert "- logged cases: 2" in report
@@ -58,6 +64,9 @@ def test_audit_translation_formats_standard_blocks_and_unanswered_case():
     assert "| S 3<br>Q 1 | C 2<br>B 2 | 0 | 丙 | — | (unanswered) |" in report
     assert "- table rows: 1" in unverified_report
     assert "| S 3<br>Q 1 |" in unverified_report
+    assert "- block range: 2 through 2" in block_report
+    assert "| S 1<br>Q 1 |" not in block_report
+    assert "| S 3<br>Q 1 |" in block_report
 
 
 def test_audit_guided_translation_formats_guide_and_filters_range_difficulty():

@@ -40,6 +40,7 @@ def translate_series(
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     translator: TranslationProcessor | None = None,
+    start_at_idx: int = 0,
     stop_at_idx: int | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
@@ -53,6 +54,7 @@ def translate_series(
         test_cases: test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
+        start_at_idx: inclusive block index at which to start processing
         stop_at_idx: exclusive block index at which to stop processing
         **kwargs: additional keyword arguments for TranslationProcessor
     Returns:
@@ -71,7 +73,11 @@ def translate_series(
             provider,
             **kwargs,
         )
-    return translator.process(source, stop_at_idx=stop_at_idx)
+    return translator.process(
+        source,
+        stop_at_idx=stop_at_idx,
+        start_at_idx=start_at_idx,
+    )
 
 
 def translate_series_gaps(
@@ -84,6 +90,7 @@ def translate_series_gaps(
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     translator: GapTranslationProcessor | None = None,
+    start_at_idx: int = 0,
     stop_at_idx: int | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
@@ -98,6 +105,7 @@ def translate_series_gaps(
         test_cases: test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
+        start_at_idx: inclusive block index at which to start processing
         stop_at_idx: exclusive block index at which to stop processing
         **kwargs: additional keyword arguments for GapTranslationProcessor
     Returns:
@@ -117,7 +125,12 @@ def translate_series_gaps(
             provider,
             **kwargs,
         )
-    return translator.process(target, source, stop_at_idx=stop_at_idx)
+    return translator.process(
+        target,
+        source,
+        stop_at_idx=stop_at_idx,
+        start_at_idx=start_at_idx,
+    )
 
 
 def translate_series_guided(
@@ -130,6 +143,7 @@ def translate_series_guided(
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     translator: GuidedTranslationProcessor | None = None,
+    start_at_idx: int = 0,
     stop_at_idx: int | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
@@ -144,6 +158,7 @@ def translate_series_guided(
         test_cases: test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
+        start_at_idx: inclusive block index at which to start processing
         stop_at_idx: exclusive block index at which to stop processing
         **kwargs: additional keyword arguments for GuidedTranslationProcessor
     Returns:
@@ -163,4 +178,9 @@ def translate_series_guided(
             provider,
             **kwargs,
         )
-    return translator.process(source, guide, stop_at_idx=stop_at_idx)
+    return translator.process(
+        source,
+        guide,
+        stop_at_idx=stop_at_idx,
+        start_at_idx=start_at_idx,
+    )

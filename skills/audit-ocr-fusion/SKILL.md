@@ -79,6 +79,11 @@ Omit `--difficulty` for all levels or pass exact levels such as
 `--difficulty 1 2`. Automatic decisions have no displayed difficulty and are
 selected only by difficulty 0.
 
+Use `--first-block` and `--last-block` for an inclusive, one-based range of
+fused-track blocks. Block and subtitle bounds may be combined; their
+intersection determines the eligible rows. Omit either block bound for an
+open-ended block range.
+
 The CLI verifies that deterministic fused rows match the processor rules and
 that answered LLM outputs match `fuse.srt`. It uses the latest logged case for a
 repeated source pair and rejects missing current decisions.

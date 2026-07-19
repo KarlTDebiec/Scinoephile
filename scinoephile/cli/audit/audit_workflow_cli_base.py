@@ -35,6 +35,12 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "last 1-indexed subtitle number to include, inclusive": (
             "要包含的最后一个字幕编号（从 1 开始，包含该编号）"
         ),
+        "first 1-indexed workflow block number to include, inclusive": (
+            "要包含的第一个工作流区块编号（从 1 开始，包含该编号）"
+        ),
+        "last 1-indexed workflow block number to include, inclusive": (
+            "要包含的最后一个工作流区块编号（从 1 开始，包含该编号）"
+        ),
         "rows to include: all or changes (default: changes)": (
             "要包含的行：all 表示全部，changes 表示校对更改（默认：changes）"
         ),
@@ -56,6 +62,12 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "last 1-indexed subtitle number to include, inclusive": (
             "要包含的最後一個字幕編號（從 1 開始，包含該編號）"
+        ),
+        "first 1-indexed workflow block number to include, inclusive": (
+            "要包含的第一個工作流程區塊編號（從 1 開始，包含該編號）"
+        ),
+        "last 1-indexed workflow block number to include, inclusive": (
+            "要包含的最後一個工作流程區塊編號（從 1 開始，包含該編號）"
         ),
         "rows to include: all or changes (default: changes)": (
             "要包含的列：all 表示全部，changes 表示校對變更（預設：changes）"
@@ -115,6 +127,16 @@ class AuditCliBase(ScinoephileCliBase):
             type=int_arg(min_value=1),
             help=cls.last_index_help,
         )
+        arg_groups["operation arguments"].add_argument(
+            "--first-block",
+            type=int_arg(min_value=1),
+            help="first 1-indexed workflow block number to include, inclusive",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--last-block",
+            type=int_arg(min_value=1),
+            help="last 1-indexed workflow block number to include, inclusive",
+        )
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
@@ -165,6 +187,26 @@ class AuditCliBase(ScinoephileCliBase):
             )
         except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
             parser.error(f"Unable to load {workflow_name} JSON: {exc}")
+
+    @staticmethod
+    def validate_block_range(
+        parser: ArgumentParser,
+        first_block: int | None,
+        last_block: int | None,
+    ):
+        """Validate an optional inclusive block range.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            first_block: first included one-based block number
+            last_block: last included one-based block number
+        """
+        if (
+            first_block is not None
+            and last_block is not None
+            and first_block > last_block
+        ):
+            parser.error("--first-block must be less than or equal to --last-block")
 
     @staticmethod
     def validate_range(

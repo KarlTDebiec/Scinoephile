@@ -11,7 +11,13 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import is_full_width_char
 
-from .audit_utils import _format_index_range, _validate_index_range
+from .audit_utils import (
+    _format_block_range,
+    _format_index_range,
+    _get_selected_event_indexes,
+    _validate_block_range,
+    _validate_index_range,
+)
 from .diff import LineDiff, LineDiffKind, SeriesDiff
 
 __all__ = [
@@ -39,6 +45,8 @@ def audit_aligned_diff(
     row_filter: AlignedDiffAuditFilter = AlignedDiffAuditFilter.changes,
     first_index: int | None = None,
     last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
     similarity_cutoff: float = 0.6,
 ) -> str:
     """Audit a transcription against a reference and optional guide.
@@ -51,6 +59,8 @@ def audit_aligned_diff(
         row_filter: aligned row filter
         first_index: first 1-indexed transcription subtitle number to include
         last_index: last 1-indexed transcription subtitle number to include
+        first_block: first 1-indexed transcription block number to include
+        last_block: last 1-indexed transcription block number to include
         similarity_cutoff: similarity cutoff for pairing replacement blocks
     Returns:
         Markdown audit report
@@ -58,6 +68,7 @@ def audit_aligned_diff(
         ScinoephileError: if the range or guide alignment is invalid
     """
     _validate_index_range(first_index, last_index)
+    _validate_block_range(first_block, last_block)
     aligned_guide = _align_guide(transcription, guide)
 
     diff = SeriesDiff(
@@ -67,10 +78,12 @@ def audit_aligned_diff(
         two_lbl="reference",
         similarity_cutoff=similarity_cutoff,
     )
-    selected_transcription_idxs = _get_selected_transcription_indices(
+    selected_transcription_idxs = _get_selected_event_indexes(
         transcription,
-        first_index,
-        last_index,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
     )
     time_window = _get_time_window(transcription, selected_transcription_idxs)
 
@@ -83,7 +96,10 @@ def audit_aligned_diff(
             reference,
             selected_transcription_idxs,
             time_window,
-            range_applied=first_index is not None or last_index is not None,
+            range_applied=any(
+                boundary is not None
+                for boundary in (first_index, last_index, first_block, last_block)
+            ),
         ):
             continue
         selected_messages.append((message, transcription_idxs, reference_idxs))
@@ -118,6 +134,9 @@ def audit_aligned_diff(
     )
     if range_summary is not None:
         lines.append(range_summary)
+    block_range_summary = _format_block_range(first_block, last_block)
+    if block_range_summary is not None:
+        lines.append(block_range_summary)
     lines.extend(
         (
             f"- table rows: {len(selected_messages)}",
@@ -317,29 +336,6 @@ def _format_track_text(track: Series, event_idxs: tuple[int, ...]) -> str:
             if line.strip()
         )
     return _join_track_texts(texts)
-
-
-def _get_selected_transcription_indices(
-    transcription: Series,
-    first_index: int | None,
-    last_index: int | None,
-) -> frozenset[int]:
-    """Get selected zero-based transcription event indices.
-
-    Arguments:
-        transcription: transcription series
-        first_index: first included 1-indexed subtitle number
-        last_index: last included 1-indexed subtitle number
-    Returns:
-        selected zero-based event indices
-    """
-    start = 0
-    if first_index is not None:
-        start = first_index - 1
-    stop = len(transcription)
-    if last_index is not None:
-        stop = min(last_index, stop)
-    return frozenset(range(start, stop))
 
 
 def _get_time_window(

@@ -154,6 +154,36 @@ def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
     assert "- table rows: 4" in report
 
 
+def test_audit_review_workflow_filters_blocks():
+    """Test block bounds select rows from the first review input's blocks."""
+    original = Series(
+        events=[
+            Subtitle(start=0, end=500, text="一"),
+            Subtitle(start=1000, end=1500, text="二"),
+            Subtitle(start=6000, end=6500, text="三"),
+        ]
+    )
+    reviewed = Series(
+        events=[
+            Subtitle(start=0, end=500, text="一"),
+            Subtitle(start=1000, end=1500, text="二改"),
+            Subtitle(start=6000, end=6500, text="三改"),
+        ]
+    )
+
+    report = audit_review_workflow(
+        reviews=(ReviewAuditPair(label="Test", original=original, reviewed=reviewed),),
+        row_filter=ReviewAuditFilter.all,
+        first_block=2,
+        last_block=2,
+    )
+
+    assert "- block range: 2 through 2" in report
+    assert "| 1 |" not in report
+    assert "| 2 |" not in report
+    assert "| 3 | 三<br>三改 |" in report
+
+
 @pytest.mark.parametrize(
     ("first_index", "last_index", "message"),
     (

@@ -59,6 +59,10 @@ changed punctuation or whitespace. Use `--filter unverified` when continuing
 verification of a partly audited file. The report summary labels the requested
 bounds as the reference subtitle range. The report has exactly these columns:
 
+Use `--first-block` and `--last-block` for an inclusive, one-based range of
+reference blocks. Block and subtitle bounds may be combined; their intersection
+determines the eligible cases. Omit either block bound for an open-ended range.
+
 | Index | Reference | Input | Output | Notes | Verified |
 |---:|---|---|---|---|:---:|
 

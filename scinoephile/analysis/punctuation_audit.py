@@ -16,9 +16,12 @@ from scinoephile.llms.punctuation import PunctuationTestCase
 from .audit_utils import (
     _AuditResult,
     _escape_table_cell,
+    _format_block_range,
     _format_index_range,
     _get_contextual_index,
+    _get_selected_event_indexes,
     _get_superseded_keys,
+    _validate_block_range,
     _validate_index_range,
 )
 
@@ -49,6 +52,8 @@ def audit_punctuation(
     row_filter: PunctuationAuditFilter = PunctuationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
 ) -> str:
     """Audit logged punctuation decisions against their reference subtitles.
 
@@ -61,12 +66,15 @@ def audit_punctuation(
         row_filter: row status filter
         first_index: first 1-indexed reference subtitle number to include
         last_index: last 1-indexed reference subtitle number to include
+        first_block: first 1-indexed reference block number to include
+        last_block: last 1-indexed reference block number to include
     Returns:
         Markdown audit report
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely
     """
     _validate_index_range(first_index, last_index)
+    _validate_block_range(first_block, last_block)
 
     reference_indexes_by_text: dict[str, list[int]] = defaultdict(list)
     for index, subtitle in enumerate(reference):
@@ -81,6 +89,13 @@ def audit_punctuation(
         target_text_by_reference_index,
         test_cases,
     )
+    selected_reference_indexes = _get_selected_event_indexes(
+        reference,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
+    )
 
     rows: list[tuple[int, int, str]] = []
     changes = 0
@@ -91,20 +106,14 @@ def audit_punctuation(
         candidates = candidate_indexes_by_case[test_case_index - 1]
         if not candidates:
             continue
-        if not any(
-            (first_index is None or candidate + 1 >= first_index)
-            and (last_index is None or candidate + 1 <= last_index)
-            for candidate in candidates
-        ):
+        if selected_reference_indexes.isdisjoint(candidates):
             continue
         index = _get_case_index(
             candidates,
             direct_indexes,
             test_case_index=test_case_index,
         )
-        if (first_index is not None and index + 1 < first_index) or (
-            last_index is not None and index + 1 > last_index
-        ):
+        if index not in selected_reference_indexes:
             continue
 
         logged_cases += 1
@@ -142,6 +151,9 @@ def audit_punctuation(
     )
     if range_summary is not None:
         lines.append(range_summary)
+    block_range_summary = _format_block_range(first_block, last_block)
+    if block_range_summary is not None:
+        lines.append(block_range_summary)
     lines.extend(
         (
             f"- table rows: {len(rows)}",
