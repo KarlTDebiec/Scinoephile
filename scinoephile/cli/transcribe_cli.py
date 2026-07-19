@@ -31,13 +31,17 @@ from scinoephile.lang.transcription.processor import (
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.transcription import transcribe_series_guided
 
+from .helpers.blocks import (
+    BLOCK_LOCALIZATIONS,
+    add_block_range_args,
+    get_block_range_indexes,
+)
 from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
-    add_llm_block_range_args,
     add_llm_provider_args,
-    get_llm_block_range_indexes,
+    add_llm_test_case_json_arg,
     read_llm_additional_context,
 )
 
@@ -60,6 +64,12 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "transcription language tag": "转写语言标签",
         "reference language tag (detected from infile if omitted)": (
             "参考语言标签（省略时从输入文件检测）"
+        ),
+        "delineation test-case JSON file to load and update": (
+            "要加载和更新的分段测试用例 JSON 文件"
+        ),
+        "punctuation test-case JSON file to load and update": (
+            "要加载和更新的标点测试用例 JSON 文件"
         ),
         "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
             "Demucs 人声分离模式（选项：auto、on、off；默认：auto）"
@@ -93,6 +103,12 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "reference language tag (detected from infile if omitted)": (
             "參考語言標籤（省略時從輸入檔偵測）"
         ),
+        "delineation test-case JSON file to load and update": (
+            "要載入和更新的分段測試案例 JSON 檔案"
+        ),
+        "punctuation test-case JSON file to load and update": (
+            "要載入和更新的標點測試案例 JSON 檔案"
+        ),
         "Demucs vocal-separation mode (options: auto, on, off; default: auto)": (
             "Demucs 人聲分離模式（選項：auto、on、off；預設：auto）"
         ),
@@ -114,6 +130,7 @@ class TranscribeCli(ScinoephileCliBase):
     """Transcribe audio using reference subtitles."""
 
     localizations = merge_localizations(
+        BLOCK_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         TRANSCRIBE_LOCALIZATIONS,
     )
@@ -173,7 +190,7 @@ class TranscribeCli(ScinoephileCliBase):
             type=enum_arg(Language),
             help="reference language tag (detected from infile if omitted)",
         )
-        add_llm_block_range_args(arg_groups["operation arguments"])
+        add_block_range_args(arg_groups["operation arguments"])
         arg_groups["operation arguments"].add_argument(
             "--demucs",
             default=DemucsMode.AUTO,
@@ -205,6 +222,18 @@ class TranscribeCli(ScinoephileCliBase):
         )
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
+        )
+        add_llm_test_case_json_arg(
+            arg_groups["llm arguments"],
+            "--delineation-json",
+            dest="delineation_json_path",
+            help_text="delineation test-case JSON file to load and update",
+        )
+        add_llm_test_case_json_arg(
+            arg_groups["llm arguments"],
+            "--punctuation-json",
+            dest="punctuation_json_path",
+            help_text="punctuation test-case JSON file to load and update",
         )
 
         # Output arguments
@@ -238,17 +267,14 @@ class TranscribeCli(ScinoephileCliBase):
         vad_mode: VADMode,
         model_name: str | None,
         llm_args: LlmArguments,
+        delineation_json_path: Path | None,
+        punctuation_json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        start_at_idx, stop_at_idx = get_llm_block_range_indexes(
-            parser,
-            first_block,
-            last_block,
-        )
         if media_infile_path == "-" and reference_infile_path == "-":
             parser.error("MEDIA_INFILE and --reference-infile may not both be '-'")
         if overwrite and outfile_path is None:
@@ -256,6 +282,12 @@ class TranscribeCli(ScinoephileCliBase):
 
         # Read inputs
         reference = read_series(parser, reference_infile_path, allow_stdin=True)
+        start_at_idx, stop_at_idx = get_block_range_indexes(
+            parser,
+            first_block,
+            last_block,
+            len(reference.blocks),
+        )
         try:
             if reference_infile_path == "-":
                 with get_temp_file_path(suffix=".srt") as temp_reference_path:
@@ -298,6 +330,8 @@ class TranscribeCli(ScinoephileCliBase):
                     parser,
                     llm_args.additional_context_file_path,
                 ),
+                delineation_json_path=delineation_json_path,
+                punctuation_json_path=punctuation_json_path,
                 start_at_idx=start_at_idx,
                 stop_at_idx=stop_at_idx,
             )

@@ -7,6 +7,7 @@ from __future__ import annotations
 from logging import getLogger
 from typing import cast
 
+from scinoephile.common.validation import val_index_range
 from scinoephile.core.llms import Processor
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
@@ -43,28 +44,18 @@ class GuidedTranslationProcessor(Processor):
         Arguments:
             source_one: source subtitles that determine output timing and count
             source_two: guide subtitles providing target-language reference text
-            stop_at_idx: stop processing at this block index
-            start_at_idx: inclusive block index at which to start processing
+            stop_at_idx: exclusive zero-based block index at which to stop processing
+            start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
-            translated subtitles using source-one timing
+            translated subtitles using source timing
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
-        if start_at_idx < 0:
-            raise ValueError("start_at_idx must be greater than or equal to 0")
-        if stop_at_idx is None:
-            stop_at_idx = len(block_pairs)
-        elif stop_at_idx < 0:
-            raise ValueError("stop_at_idx must be greater than or equal to 0")
-        elif start_at_idx > stop_at_idx:
-            raise ValueError("start_at_idx must be less than or equal to stop_at_idx")
-        for blk_idx, (one_blk, two_blk) in enumerate(block_pairs):
-            if blk_idx >= stop_at_idx:
-                break
-            if blk_idx < start_at_idx:
-                continue
-            if not one_blk:
-                output_series_to_concatenate[blk_idx] = Series()
+        block_range = val_index_range(len(block_pairs), start_at_idx, stop_at_idx)
+        for block_idx in block_range:
+            source_block, guide_block = block_pairs[block_idx]
+            if not source_block:
+                output_series_to_concatenate[block_idx] = Series()
                 continue
 
             test_case_cls = self.test_case_cls
@@ -76,14 +67,14 @@ class GuidedTranslationProcessor(Processor):
                             "index": idx,
                             "text": subtitle.text_with_newline.strip(),
                         }
-                        for idx, subtitle in enumerate(one_blk.events, 1)
+                        for idx, subtitle in enumerate(source_block.events, 1)
                     ],
                     "guides": [
                         {
                             "index": idx,
                             "text": guide.text_with_newline.strip(),
                         }
-                        for idx, guide in enumerate(two_blk.events, 1)
+                        for idx, guide in enumerate(guide_block.events, 1)
                     ],
                 }
             )
@@ -95,14 +86,18 @@ class GuidedTranslationProcessor(Processor):
                 output.index: output.text for output in answer.outputs
             }
             output_series = Series()
-            for sub_idx, sub in enumerate(one_blk.events, 1):
-                output = output_text_by_index[sub_idx]
+            for subtitle_idx, subtitle in enumerate(source_block.events, 1):
+                output_text = output_text_by_index[subtitle_idx]
                 output_series.append(
-                    Subtitle(start=sub.start, end=sub.end, text=output)
+                    Subtitle(
+                        start=subtitle.start,
+                        end=subtitle.end,
+                        text=output_text,
+                    )
                 )
 
-            logger.info(f"Block {blk_idx}:\n{output_series.to_simple_string()}")
-            output_series_to_concatenate[blk_idx] = output_series
+            logger.info(f"Block {block_idx + 1}:\n{output_series.to_simple_string()}")
+            output_series_to_concatenate[block_idx] = output_series
 
         self.save_test_cases()
 

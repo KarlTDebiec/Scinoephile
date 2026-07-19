@@ -19,6 +19,7 @@ from scinoephile.analysis.review_audit import (
     ReviewAuditPair,
     audit_review_workflow,
 )
+from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -325,7 +326,7 @@ class AuditReviewCli(AuditCliBase):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
-        cls.validate_block_range(parser, first_block, last_block)
+        validate_block_range(parser, first_block, last_block)
         cls._validate_mode_inputs(
             parser,
             mode,

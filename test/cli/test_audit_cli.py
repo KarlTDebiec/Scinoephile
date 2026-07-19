@@ -224,6 +224,98 @@ def test_audit_cli_help_follows_shared_style():
         ScinoephileCliBase.locale_name = original_locale_name
 
 
+def test_all_audit_block_workflows_reject_oversized_last_block(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+):
+    """Test every audit workflow validates blocks against its actual inputs.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    series_path = tmp_path / "series.srt"
+    _write_srt(
+        series_path,
+        (
+            "This is the first subtitle.",
+            "This is the second subtitle.",
+            "This is the third subtitle.",
+        ),
+    )
+    json_path = tmp_path / "cases.json"
+    json_path.write_text("[]\n", encoding="utf-8")
+    dual_arguments = (
+        f"--traditional {series_path} "
+        f"--traditional-reviewed {series_path} "
+        f"--traditional-simplified {series_path} "
+        f"--traditional-simplified-reviewed {series_path} "
+        f"--simplified {series_path} "
+        f"--simplified-reviewed {series_path}"
+    )
+    trad_arguments = (
+        f"--traditional {series_path} "
+        f"--traditional-reviewed {series_path} "
+        f"--traditional-simplified {series_path} "
+        f"--traditional-simplified-reviewed {series_path}"
+    )
+    workflows = (
+        (
+            AuditAlignedDiffCli,
+            f"--transcription {series_path} --reference {series_path}",
+        ),
+        (
+            AuditDelineationCli,
+            f"--reference {series_path} --json {json_path}",
+        ),
+        (
+            AuditOcrFusionCli,
+            f"--source-one {series_path} --source-two {series_path} "
+            f"--fused {series_path} --json {json_path}",
+        ),
+        (
+            AuditPunctuationCli,
+            f"--reference {series_path} --target {series_path} --json {json_path}",
+        ),
+        (
+            AuditReviewCli,
+            f"--original {series_path} --reviewed {series_path}",
+        ),
+        (
+            AuditReviewCli,
+            f"--mode guided --target {series_path} --guide {series_path} "
+            f"--json {json_path}",
+        ),
+        (AuditReviewDualCli, dual_arguments),
+        (AuditReviewTradCli, trad_arguments),
+        (
+            AuditTranslationCli,
+            f"--source {series_path} --json {json_path}",
+        ),
+        (
+            AuditTranslationCli,
+            f"--mode gapped --target {series_path} --guide {series_path} "
+            f"--json {json_path}",
+        ),
+        (
+            AuditTranslationCli,
+            f"--mode guided --source {series_path} --guide {series_path} "
+            f"--json {json_path}",
+        ),
+    )
+
+    for cli_class, arguments in workflows:
+        with raises(SystemExit) as excinfo:
+            run_cli_with_args(
+                cli_class,
+                f"{arguments} --last-block 2",
+            )
+        assert excinfo.value.code == 2
+        assert "Last block must not exceed available block count 1" in (
+            capsys.readouterr().err
+        )
+
+
 def test_audit_translation_cli_gapped_mode_stdout_outfile_and_validation(
     tmp_path: Path,
     capsys: CaptureFixture,

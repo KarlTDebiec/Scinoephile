@@ -523,8 +523,8 @@ def test_process_uses_exclusive_stop_index(caplog: LogCaptureFixture):
     assert process_block.call_count == 1
     assert len(output) == 1
     assert output[0].text == "one"
-    assert "BLOCK 1:" in caplog.text
-    assert "BLOCK 0:" not in caplog.text
+    assert "Block 1:" in caplog.text
+    assert "Block 0:" not in caplog.text
 
 
 def test_process_uses_inclusive_start_index(caplog: LogCaptureFixture):
@@ -563,8 +563,8 @@ def test_process_uses_inclusive_start_index(caplog: LogCaptureFixture):
     assert process_block.call_count == 1
     assert len(output) == 1
     assert output[0].text == "two"
-    assert "BLOCK 2:" in caplog.text
-    assert "BLOCK 1:" not in caplog.text
+    assert "Block 2:" in caplog.text
+    assert "Block 1:" not in caplog.text
 
 
 def test_process_rejects_mismatched_block_counts():

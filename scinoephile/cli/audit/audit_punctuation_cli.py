@@ -12,6 +12,7 @@ from scinoephile.analysis.punctuation_audit import (
     PunctuationAuditFilter,
     audit_punctuation,
 )
+from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -145,7 +146,7 @@ class AuditPunctuationCli(AuditCliBase):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
-        cls.validate_block_range(parser, first_block, last_block)
+        validate_block_range(parser, first_block, last_block)
         reference = read_series(parser, reference_path)
         target = read_series(parser, target_path)
         loaded_test_cases = cls.load_test_cases(

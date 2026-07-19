@@ -54,8 +54,8 @@ def translate_series(
         test_cases: test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
-        start_at_idx: inclusive block index at which to start processing
-        stop_at_idx: exclusive block index at which to stop processing
+        start_at_idx: inclusive zero-based block index at which to start processing
+        stop_at_idx: exclusive zero-based block index at which to stop processing
         **kwargs: additional keyword arguments for TranslationProcessor
     Returns:
         translated subtitle series
@@ -105,8 +105,8 @@ def translate_series_gaps(
         test_cases: test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
-        start_at_idx: inclusive block index at which to start processing
-        stop_at_idx: exclusive block index at which to stop processing
+        start_at_idx: inclusive zero-based block index at which to start processing
+        stop_at_idx: exclusive zero-based block index at which to stop processing
         **kwargs: additional keyword arguments for GapTranslationProcessor
     Returns:
         translated subtitle series
@@ -158,8 +158,8 @@ def translate_series_guided(
         test_cases: test cases
         provider: LLM provider to use
         translator: translator to use, or None to construct one
-        start_at_idx: inclusive block index at which to start processing
-        stop_at_idx: exclusive block index at which to stop processing
+        start_at_idx: inclusive zero-based block index at which to start processing
+        stop_at_idx: exclusive zero-based block index at which to stop processing
         **kwargs: additional keyword arguments for GuidedTranslationProcessor
     Returns:
         translated subtitle series

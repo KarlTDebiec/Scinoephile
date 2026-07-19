@@ -17,6 +17,7 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     WhisperTranscriber,
 )
+from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
@@ -186,8 +187,8 @@ class GuidedTranscriptionProcessor:
         Arguments:
             audio_series: audio divided into subtitle-timed blocks
             reference_series: reference subtitles corresponding to audio blocks
-            stop_at_idx: exclusive block index at which to stop processing
-            start_at_idx: inclusive block index at which to start processing
+            stop_at_idx: exclusive zero-based block index at which to stop processing
+            start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
             transcribed and aligned audio subtitle series
         Raises:
@@ -201,26 +202,15 @@ class GuidedTranscriptionProcessor:
                 f"Audio has {len(audio_blocks)} blocks but reference subtitles have "
                 f"{len(reference_blocks)} blocks."
             )
-        if start_at_idx < 0:
-            raise ValueError("start_at_idx must be greater than or equal to 0")
-        if stop_at_idx is None:
-            stop_at_idx = len(audio_blocks)
-        elif stop_at_idx < 0:
-            raise ValueError("stop_at_idx must be greater than or equal to 0")
-        elif start_at_idx > stop_at_idx:
-            raise ValueError("start_at_idx must be less than or equal to stop_at_idx")
+        block_range = val_index_range(len(audio_blocks), start_at_idx, stop_at_idx)
 
         output_events = []
-        for block_idx, (audio_block, reference_block) in enumerate(
-            zip(audio_blocks, reference_blocks, strict=True)
-        ):
-            if block_idx >= stop_at_idx:
-                break
-            if block_idx < start_at_idx:
-                continue
+        for block_idx in block_range:
+            audio_block = audio_blocks[block_idx]
+            reference_block = reference_blocks[block_idx]
             output_block = self.process_block(audio_block, reference_block)
             logger.info(
-                f"BLOCK {block_idx + 1}:\n"
+                f"Block {block_idx + 1}:\n"
                 f"REFERENCE ({self.reference_language.code}):\n"
                 f"{reference_block.to_simple_string()}\n"
                 f"TRANSCRIPTION ({self.language.code}):\n"

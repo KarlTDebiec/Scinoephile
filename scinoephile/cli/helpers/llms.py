@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from scinoephile.common.argument_parsing import input_file_arg, int_arg
+from scinoephile.common.argument_parsing import input_file_arg, output_file_arg
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
@@ -32,9 +32,8 @@ from .argument_bundle_field_action import ArgumentBundleFieldAction
 __all__ = [
     "LLM_LOCALIZATIONS",
     "LlmArguments",
-    "add_llm_block_range_args",
     "add_llm_provider_args",
-    "get_llm_block_range_indexes",
+    "add_llm_test_case_json_arg",
     "llm_provider_name_arg",
     "read_llm_additional_context",
 ]
@@ -46,14 +45,9 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "file from which to read additional context for LLM prompts": (
             "用于读取 LLM 提示词附加上下文的文件"
         ),
-        "first 1-indexed workflow block to process, inclusive": (
-            "要处理的第一个工作流区块（从 1 开始，包含该区块）"
-        ),
-        "last 1-indexed workflow block to process, inclusive": (
-            "要处理的最后一个工作流区块（从 1 开始，包含该区块）"
-        ),
         "llm arguments": "LLM 参数",
         "LLM model identifier override": "LLM 模型标识符覆盖值",
+        "test-case JSON file to load and update": "要加载和更新的测试用例 JSON 文件",
         f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
         "--list-llm-providers to show providers, default models, and API-key "
         "environment variables.": (
@@ -68,14 +62,9 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "file from which to read additional context for LLM prompts": (
             "用於讀取 LLM 提示詞附加上下文的檔案"
         ),
-        "first 1-indexed workflow block to process, inclusive": (
-            "要處理的第一個工作流程區塊（從 1 開始，包含該區塊）"
-        ),
-        "last 1-indexed workflow block to process, inclusive": (
-            "要處理的最後一個工作流程區塊（從 1 開始，包含該區塊）"
-        ),
         "llm arguments": "LLM 參數",
         "LLM model identifier override": "LLM 模型識別碼覆寫值",
+        "test-case JSON file to load and update": "要載入和更新的測試案例 JSON 檔案",
         f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
         "--list-llm-providers to show providers, default models, and API-key "
         "environment variables.": (
@@ -98,24 +87,6 @@ class LlmArguments:
     """Optional LLM model name override."""
     additional_context_file_path: Path | None = None
     """Optional path to additional LLM prompt context."""
-
-
-def add_llm_block_range_args(operation_arg_group: _ArgumentGroup):
-    """Add optional inclusive workflow block boundaries.
-
-    Arguments:
-        operation_arg_group: argument group to which block boundaries are added
-    """
-    operation_arg_group.add_argument(
-        "--first-block",
-        type=int_arg(min_value=1),
-        help="first 1-indexed workflow block to process, inclusive",
-    )
-    operation_arg_group.add_argument(
-        "--last-block",
-        type=int_arg(min_value=1),
-        help="last 1-indexed workflow block to process, inclusive",
-    )
 
 
 def add_llm_provider_args(
@@ -167,26 +138,27 @@ def add_llm_provider_args(
     )
 
 
-def get_llm_block_range_indexes(
-    parser: ArgumentParser,
-    first_block: int | None,
-    last_block: int | None,
-) -> tuple[int, int | None]:
-    """Convert optional one-based block boundaries to processor indexes.
+def add_llm_test_case_json_arg(
+    llm_arg_group: _ArgumentGroup,
+    option_name: str = "--json",
+    *,
+    dest: str = "json_path",
+    help_text: str = "test-case JSON file to load and update",
+):
+    """Add a test-case JSON persistence argument.
 
     Arguments:
-        parser: active parser used to report invalid boundaries
-        first_block: first included one-based workflow block
-        last_block: last included one-based workflow block
-    Returns:
-        inclusive zero-based start and exclusive zero-based stop indexes
+        llm_arg_group: argument group to which the JSON argument is added
+        option_name: command-line option name
+        dest: parsed argument destination
+        help_text: argument help text
     """
-    if first_block is not None and last_block is not None and first_block > last_block:
-        parser.error("--first-block must be less than or equal to --last-block")
-    start_at_idx = 0
-    if first_block is not None:
-        start_at_idx = first_block - 1
-    return start_at_idx, last_block
+    llm_arg_group.add_argument(
+        option_name,
+        dest=dest,
+        type=output_file_arg(exist_ok=True),
+        help=help_text,
+    )
 
 
 def llm_provider_name_arg(value: str) -> str:

@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import cast
 from unittest.mock import Mock
 
@@ -11,6 +13,7 @@ from pytest import raises
 
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.llms import LLMProvider
+from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.lang.transcription.guided import (
     DEFAULT_SPECS,
     get_guided_transcriber,
@@ -94,8 +97,31 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert (tmp_path / "punctuation").is_dir()
 
 
-def test_get_guided_transcriber_uses_verified_cases_without_few_shot(tmp_path):
-    """Test verified cases bypass the provider without entering the prompt."""
+def test_get_guided_transcriber_uses_exact_json_paths(tmp_path: Path):
+    """Test exact delineation and punctuation JSON paths are updated."""
+    delineation_json_path = tmp_path / "custom" / "delineation.json"
+    punctuation_json_path = tmp_path / "other" / "punctuation.json"
+    transcriber = get_guided_transcriber(
+        Language.yue_hant,
+        Language.zho_hans,
+        provider=Mock(spec=LLMProvider),
+        delineation_json_path=delineation_json_path,
+        punctuation_json_path=punctuation_json_path,
+        delineation_test_cases=[],
+        punctuation_test_cases=[],
+    )
+
+    assert transcriber.aligner.delineation_json_path == delineation_json_path
+    assert transcriber.aligner.punctuation_json_path == punctuation_json_path
+
+    transcriber.aligner.update_all_test_cases()
+
+    assert json.loads(delineation_json_path.read_text(encoding="utf-8")) == []
+    assert json.loads(punctuation_json_path.read_text(encoding="utf-8")) == []
+
+
+def test_get_guided_transcriber_loads_verified_cases_from_exact_json(tmp_path):
+    """Test an exact JSON's verified cases bypass the provider and few-shot prompt."""
     test_case_cls = DelineationManager.get_test_case_cls(YueZhoDelineationPromptYueHant)
     verified_test_case = test_case_cls.model_validate(
         {
@@ -109,13 +135,19 @@ def test_get_guided_transcriber_uses_verified_cases_without_few_shot(tmp_path):
             "verified": True,
         }
     )
+    delineation_json_path = tmp_path / "delineation.json"
+    save_test_cases_to_json(
+        delineation_json_path,
+        [verified_test_case],
+        DelineationManager,
+    )
     provider = Mock(spec=LLMProvider)
     transcriber = get_guided_transcriber(
         Language.yue_hant,
         Language.zho_hant,
         provider=provider,
-        test_case_dir_path=tmp_path,
-        delineation_test_cases=[verified_test_case],
+        delineation_json_path=delineation_json_path,
+        punctuation_json_path=tmp_path / "punctuation.json",
         punctuation_test_cases=[],
     )
     queryer = transcriber.aligner.delineation_queryer
@@ -127,7 +159,8 @@ def test_get_guided_transcriber_uses_verified_cases_without_few_shot(tmp_path):
 
     assert result.answer == verified_test_case.answer
     assert result.verified is True
-    assert queryer.few_shot_test_cases == {}
+    assert result.few_shot is False
+    assert verified_test_case.query.key not in queryer.few_shot_test_cases
     provider.chat_completion.assert_not_called()
 
 

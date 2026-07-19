@@ -25,6 +25,7 @@ __all__ = [
     "val_child_path",
     "val_executable",
     "val_float",
+    "val_index_range",
     "val_input_dir_path",
     "val_input_file_or_dir_path",
     "val_input_path",
@@ -193,6 +194,38 @@ def val_float(
             f"not '{n_values}'"
         )
     return validated_values
+
+
+def val_index_range(
+    item_count: int,
+    start_at_idx: int = 0,
+    stop_at_idx: int | None = None,
+) -> range:
+    """Validate and construct a zero-based processing range.
+
+    Arguments:
+        item_count: number of available items
+        start_at_idx: inclusive zero-based index at which to start processing
+        stop_at_idx: exclusive zero-based index at which to stop processing
+    Returns:
+        validated processing range
+    Raises:
+        ValueError: if the item count or either boundary is invalid
+    """
+    if item_count < 0:
+        raise ValueError("item_count must be greater than or equal to 0")
+    if start_at_idx < 0:
+        raise ValueError("start_at_idx must be greater than or equal to 0")
+    if stop_at_idx is None:
+        stop_at_idx = item_count
+    else:
+        if stop_at_idx < 0:
+            raise ValueError("stop_at_idx must be greater than or equal to 0")
+        if start_at_idx > stop_at_idx:
+            raise ValueError("start_at_idx must be less than or equal to stop_at_idx")
+        if stop_at_idx > item_count:
+            raise ValueError("stop_at_idx must not exceed item_count")
+    return range(start_at_idx, stop_at_idx)
 
 
 @overload

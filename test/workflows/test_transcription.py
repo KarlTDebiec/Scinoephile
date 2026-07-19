@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
@@ -19,13 +20,17 @@ from scinoephile.lang.transcription.processor import (
 from scinoephile.workflows.transcription import transcribe_series_guided
 
 
-def test_transcribe_series_guided_constructs_processor_for_language_pair():
+def test_transcribe_series_guided_constructs_processor_for_language_pair(
+    tmp_path: Path,
+):
     """Test workflow resolves construction and delegates processing."""
     audio_series = Mock(spec=AudioSeries)
     reference_series = Series(events=[Subtitle(start=0, end=1000, text="你好")])
     expected = AudioSeries(audio=AudioSegment.silent(duration=1000))
     transcriber = Mock(spec=GuidedTranscriptionProcessor)
     transcriber.process.return_value = expected
+    delineation_json_path = tmp_path / "delineation.json"
+    punctuation_json_path = tmp_path / "punctuation.json"
 
     with patch(
         "scinoephile.workflows.transcription.get_guided_transcriber",
@@ -36,6 +41,8 @@ def test_transcribe_series_guided_constructs_processor_for_language_pair():
             reference_series,
             language=Language.yue_hant,
             reference_language=Language.zho_hans,
+            delineation_json_path=delineation_json_path,
+            punctuation_json_path=punctuation_json_path,
             start_at_idx=1,
             stop_at_idx=2,
         )
@@ -47,6 +54,14 @@ def test_transcribe_series_guided_constructs_processor_for_language_pair():
     )
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.AUTO
+    assert (
+        get_transcriber.call_args.kwargs["delineation_json_path"]
+        == delineation_json_path
+    )
+    assert (
+        get_transcriber.call_args.kwargs["punctuation_json_path"]
+        == punctuation_json_path
+    )
     transcriber.process.assert_called_once_with(
         audio_series,
         reference_series,

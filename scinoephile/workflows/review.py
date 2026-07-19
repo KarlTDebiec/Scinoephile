@@ -43,8 +43,8 @@ def review_series(
         test_cases: test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
-        start_at_idx: inclusive block index at which to start processing
-        stop_at_idx: exclusive block index at which to stop processing
+        start_at_idx: inclusive zero-based block index at which to start processing
+        stop_at_idx: exclusive zero-based block index at which to stop processing
         **kwargs: additional keyword arguments for ReviewProcessor
     Returns:
         reviewed subtitle series
@@ -93,8 +93,8 @@ def review_series_guided(
         test_cases: test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
-        start_at_idx: inclusive block index at which to start processing
-        stop_at_idx: exclusive block index at which to stop processing
+        start_at_idx: inclusive zero-based block index at which to start processing
+        stop_at_idx: exclusive zero-based block index at which to stop processing
         **kwargs: additional keyword arguments for GuidedReviewProcessor
     Returns:
         guided-reviewed subtitle series

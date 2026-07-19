@@ -9,6 +9,7 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from scinoephile.analysis.review_audit import ReviewAuditFilter, audit_reviews
+from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -219,7 +220,7 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
-        cls.validate_block_range(parser, first_block, last_block)
+        validate_block_range(parser, first_block, last_block)
         characters = cls.get_character_variants(characters)
 
         # Read inputs

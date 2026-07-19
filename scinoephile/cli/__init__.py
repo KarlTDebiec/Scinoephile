@@ -4,7 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * helpers
-* audit / dictionary / media / multi / ocr / process_cli / proofread_cli
+* audit / dictionary / media / multi / ocr / process_cli / review_cli
   / transcribe_cli / translate_cli / utility
 * scinoephile_cli
 """

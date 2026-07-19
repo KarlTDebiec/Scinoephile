@@ -11,6 +11,7 @@ from scinoephile.analysis.aligned_diff_audit import (
     AlignedDiffAuditFilter,
     audit_aligned_diff,
 )
+from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -175,7 +176,7 @@ class AuditAlignedDiffCli(AuditCliBase):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
-        cls.validate_block_range(parser, first_block, last_block)
+        validate_block_range(parser, first_block, last_block)
 
         original = None
         if original_path is not None:

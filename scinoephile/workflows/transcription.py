@@ -38,6 +38,8 @@ def transcribe_series_guided(
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
     test_case_dir_path: Path | None = None,
+    delineation_json_path: Path | None = None,
+    punctuation_json_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
     transcriber: GuidedTranscriptionProcessor | None = None,
@@ -59,11 +61,13 @@ def transcribe_series_guided(
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
         test_case_dir_path: directory where encountered test cases are written
+        delineation_json_path: delineation test-case JSON file to load and update
+        punctuation_json_path: punctuation test-case JSON file to load and update
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
         transcriber: guided transcription processor, or None to construct one
-        start_at_idx: inclusive block index at which to start processing
-        stop_at_idx: exclusive block index at which to stop processing
+        start_at_idx: inclusive zero-based block index at which to start processing
+        stop_at_idx: exclusive zero-based block index at which to stop processing
     Returns:
         transcribed and reference-aligned audio subtitle series
     Raises:
@@ -86,6 +90,8 @@ def transcribe_series_guided(
             delineation_prompt=delineation_prompt,
             punctuation_prompt=punctuation_prompt,
             test_case_dir_path=test_case_dir_path,
+            delineation_json_path=delineation_json_path,
+            punctuation_json_path=punctuation_json_path,
             delineation_test_cases=delineation_test_cases,
             punctuation_test_cases=punctuation_test_cases,
         )

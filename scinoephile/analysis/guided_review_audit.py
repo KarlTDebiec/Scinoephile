@@ -10,7 +10,6 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
@@ -22,6 +21,7 @@ from .audit_utils import (
     _format_block_range,
     _format_index_range,
     _get_paired_event_block_numbers,
+    _get_validated_block_pairs_by_pause,
     _is_block_in_range,
     _validate_block_range,
     _validate_index_range,
@@ -108,7 +108,13 @@ def audit_guided_review(
     _validate_index_range(first_index, last_index)
     _validate_block_range(first_block, last_block)
 
-    blocks_by_key = _get_blocks_by_key(target, guide)
+    block_pairs = _get_validated_block_pairs_by_pause(
+        target,
+        guide,
+        first_block,
+        last_block,
+    )
+    blocks_by_key = _get_blocks_by_key(block_pairs)
     rows_by_subtitle_index: dict[int, _GuidedReviewRow] = {}
 
     for test_case_index, test_case, block in _get_active_test_case_blocks(
@@ -116,6 +122,7 @@ def audit_guided_review(
         guide,
         test_cases,
         blocks_by_key,
+        block_pairs,
         first_index=first_index,
         last_index=last_index,
         first_block=first_block,
@@ -244,14 +251,12 @@ def _format_texts(texts: Sequence[str]) -> str:
 
 
 def _get_blocks_by_key(
-    target: Series,
-    guide: Series,
+    block_pairs: Sequence[tuple[Series, Series]],
 ) -> dict[tuple[tuple[str, ...], tuple[str, ...]], list[_GuidedReviewBlock]]:
     """Index eligible target and guide blocks by their logged text.
 
     Arguments:
-        target: target subtitle series provided for guided review
-        guide: guide subtitle series provided for guided review
+        block_pairs: paired target and guide workflow blocks
     Returns:
         guided-review blocks keyed by target and guide text
     """
@@ -260,10 +265,7 @@ def _get_blocks_by_key(
         list[_GuidedReviewBlock],
     ] = defaultdict(list)
     target_offset = 0
-    for block_number, (target_block, guide_block) in enumerate(
-        get_block_pairs_by_pause(target, guide),
-        1,
-    ):
+    for block_number, (target_block, guide_block) in enumerate(block_pairs, 1):
         target_indexes = tuple(
             range(target_offset + 1, target_offset + len(target_block) + 1)
         )
@@ -302,6 +304,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
     blocks_by_key: dict[
         tuple[tuple[str, ...], tuple[str, ...]], list[_GuidedReviewBlock]
     ],
+    block_pairs: Sequence[tuple[Series, Series]],
     *,
     first_index: int | None,
     last_index: int | None,
@@ -321,6 +324,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         guide: current guide subtitle series
         test_cases: logged guided-review test cases
         blocks_by_key: current guided-review blocks keyed by text
+        block_pairs: paired target and guide workflow blocks
         first_index: first included target subtitle number
         last_index: last included target subtitle number
         first_block: first included paired block number
@@ -378,7 +382,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         unmatched_cases.append((test_case_index, test_case))
 
     active_block_numbers = {block.block_number for _, _, block in active_cases}
-    _, guide_block_numbers = _get_paired_event_block_numbers(target, guide)
+    _, guide_block_numbers = _get_paired_event_block_numbers(block_pairs)
     stale_cases: list[tuple[int, GuidedReviewTestCase, list[_GuidedReviewBlock]]] = []
     for test_case_index, test_case in unmatched_cases:
         key = (

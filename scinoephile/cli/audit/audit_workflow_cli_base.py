@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import ClassVar
 
 from scinoephile.analysis.review_audit import ReviewAuditFilter
+from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
@@ -127,15 +128,10 @@ class AuditCliBase(ScinoephileCliBase):
             type=int_arg(min_value=1),
             help=cls.last_index_help,
         )
-        arg_groups["operation arguments"].add_argument(
-            "--first-block",
-            type=int_arg(min_value=1),
-            help="first 1-indexed workflow block number to include, inclusive",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--last-block",
-            type=int_arg(min_value=1),
-            help="last 1-indexed workflow block number to include, inclusive",
+        add_block_range_args(
+            arg_groups["operation arguments"],
+            first_help=("first 1-indexed workflow block number to include, inclusive"),
+            last_help="last 1-indexed workflow block number to include, inclusive",
         )
         arg_groups["output arguments"].add_argument(
             "-o",
@@ -187,26 +183,6 @@ class AuditCliBase(ScinoephileCliBase):
             )
         except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
             parser.error(f"Unable to load {workflow_name} JSON: {exc}")
-
-    @staticmethod
-    def validate_block_range(
-        parser: ArgumentParser,
-        first_block: int | None,
-        last_block: int | None,
-    ):
-        """Validate an optional inclusive block range.
-
-        Arguments:
-            parser: parser used to report user-facing errors
-            first_block: first included one-based block number
-            last_block: last included one-based block number
-        """
-        if (
-            first_block is not None
-            and last_block is not None
-            and first_block > last_block
-        ):
-            parser.error("--first-block must be less than or equal to --last-block")
 
     @staticmethod
     def validate_range(

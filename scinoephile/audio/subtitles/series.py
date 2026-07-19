@@ -12,7 +12,6 @@ from os import PathLike
 from pathlib import Path
 from typing import Any, Self, TypedDict, override
 
-import ffmpeg
 from pydub import AudioSegment
 from pydub.exceptions import PydubException
 
@@ -24,9 +23,8 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.media import AudioStream
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.media.probe import get_streams
+from scinoephile.media.audio import extract_audio
 
 from .subtitle import AudioSubtitle
 
@@ -246,27 +244,26 @@ class AudioSeries(Series):
             validated_subtitle_path = val_input_path(subtitle_path)
             text_series = Series.load(validated_subtitle_path, **kwargs)
 
-            stream = cls._get_audio_stream(validated_media_path, stream_index)
-            if stream.channels is None:
-                raise ScinoephileError(
-                    f"Audio stream {stream.index} in {validated_media_path} "
-                    "cannot be used for transcription."
-                )
-            channel_count = stream.channels
-
-            with get_temp_directory_path() as temp_dir_path:
-                full_audio_path = temp_dir_path / "full_audio.wav"
-                cls.extract_audio_track(
-                    validated_media_path,
-                    full_audio_path,
-                    stream.index,
-                    channel_count,
-                )
-                logger.info(f"Loading full audio from {full_audio_path}")
-                full_audio = AudioSegment.from_wav(full_audio_path)
+            if validated_media_path.suffix.lower() == ".wav":
+                if stream_index not in (None, 0):
+                    raise ScinoephileError(
+                        "A standalone WAV infile only supports stream index 0"
+                    )
+                logger.info(f"Loading full audio from {validated_media_path}")
+                full_audio = AudioSegment.from_wav(validated_media_path)
+            else:
+                with get_temp_directory_path() as temp_dir_path:
+                    full_audio_path = temp_dir_path / "full_audio.wav"
+                    extract_audio(
+                        validated_media_path,
+                        full_audio_path,
+                        stream_index=stream_index,
+                    )
+                    logger.info(f"Loading full audio from {full_audio_path}")
+                    full_audio = AudioSegment.from_wav(full_audio_path)
 
             return cls.build_series(text_series, full_audio, buffer)
-        except (ffmpeg.Error, OSError, PydubException, UnicodeError, ValueError) as exc:
+        except (OSError, PydubException, UnicodeError, ValueError) as exc:
             raise ScinoephileError(
                 f"Unable to load {cls.__name__} from media {media_path}: {exc}"
             ) from exc
@@ -329,54 +326,6 @@ class AudioSeries(Series):
 
         return series
 
-    @staticmethod
-    def extract_audio_track(
-        video_input_path: Path,
-        audio_output_path: Path,
-        audio_track: int,
-        channels: int,
-    ):
-        """Extract a mono audio track from a video file.
-
-        Arguments:
-            video_input_path: Path to input video file
-            audio_output_path: Path to output audio file
-            audio_track: media stream index of an audio stream
-            channels: Number of channels in audio track
-        """
-        try:
-            if channels >= 6:
-                logger.info(
-                    "Extracting center channel of audio stream "
-                    f"{audio_track} from {video_input_path} to {audio_output_path}"
-                )
-                ffmpeg.input(str(video_input_path)).output(
-                    str(audio_output_path),
-                    format="wav",
-                    ar=16000,
-                    **{
-                        "filter_complex": f"[0:{audio_track}]pan=mono|c0=c2[out]",
-                        "map": "[out]",
-                    },
-                ).run(quiet=False, overwrite_output=True)
-            else:
-                logger.info(
-                    f"Downmixing audio stream {audio_track} from {video_input_path} "
-                    f"to {audio_output_path}"
-                )
-                ffmpeg.input(str(video_input_path)).output(
-                    str(audio_output_path),
-                    format="wav",
-                    ar=16000,
-                    map=f"0:{audio_track}",
-                    ac=1,
-                ).run(quiet=False, overwrite_output=True)
-        except (ffmpeg.Error, OSError) as exc:
-            raise ScinoephileError(
-                f"Could not extract audio stream {audio_track} from "
-                f"{video_input_path} to {audio_output_path}"
-            ) from exc
-
     @override
     def _copy_with_events(self, events: Sequence[Subtitle]) -> Self:
         """Copy this audio series with a selected collection of events.
@@ -399,33 +348,6 @@ class AudioSeries(Series):
         copied = type(self)(audio=audio, events=audio_events)
         self._copy_metadata_to(copied)
         return copied
-
-    @staticmethod
-    def _get_audio_stream(media_path: Path, stream_index: int | None) -> AudioStream:
-        """Get the selected audio stream from a media file.
-
-        Arguments:
-            media_path: media input path
-            stream_index: audio stream index, or None to use the first audio stream
-        Returns:
-            selected audio stream
-        """
-        streams = get_streams(media_path)
-        if stream_index is None:
-            for stream in streams:
-                if isinstance(stream, AudioStream):
-                    return stream
-            raise ScinoephileError(f"No audio streams found in {media_path}")
-
-        for stream in streams:
-            if stream.index != stream_index:
-                continue
-            if not isinstance(stream, AudioStream):
-                raise ScinoephileError(
-                    f"Stream index {stream_index} is not an audio stream"
-                )
-            return stream
-        raise ScinoephileError(f"No stream index {stream_index} found in {media_path}")
 
     @override
     def _init_blocks(self):

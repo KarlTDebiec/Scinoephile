@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.guided_translation import GuidedTranslationTestCase
 from scinoephile.llms.translation import TranslationTestCase
@@ -19,6 +18,7 @@ from .audit_utils import (
     _format_block_range,
     _format_difficulty_filter,
     _format_index_range,
+    _get_validated_block_pairs_by_pause,
     _is_block_in_range,
     _validate_block_range,
     _validate_index_range,
@@ -102,7 +102,13 @@ def audit_guided_translation(
     Raises:
         ScinoephileError: if a range, difficulty, or logged case is invalid
     """
-    blocks = _get_guided_blocks(source, guide)
+    block_pairs = _get_validated_block_pairs_by_pause(
+        source,
+        guide,
+        first_block,
+        last_block,
+    )
+    blocks = _get_guided_blocks(block_pairs)
     return _audit_translation_blocks(
         blocks,
         test_cases,
@@ -144,6 +150,7 @@ def audit_translation(
         ScinoephileError: if a range, difficulty, or logged case is invalid
     """
     blocks = _get_standard_blocks(source)
+    _validate_block_range(first_block, last_block, len(blocks))
     return _audit_translation_blocks(
         blocks,
         test_cases,
@@ -334,21 +341,19 @@ def _get_case_key(test_case: _TranslationCase) -> _TranslationKey:
     return source_texts, guide_texts
 
 
-def _get_guided_blocks(source: Series, guide: Series) -> list[_TranslationBlock]:
+def _get_guided_blocks(
+    block_pairs: Sequence[tuple[Series, Series]],
+) -> list[_TranslationBlock]:
     """Build current guided-translation blocks with global source indexes.
 
     Arguments:
-        source: source-language subtitle series
-        guide: target-language guide subtitle series
+        block_pairs: paired source and guide workflow blocks
     Returns:
         current nonempty source blocks
     """
     blocks = []
     source_position = 0
-    for block_number, (source_block, guide_block) in enumerate(
-        get_block_pairs_by_pause(source, guide),
-        1,
-    ):
+    for block_number, (source_block, guide_block) in enumerate(block_pairs, 1):
         if not source_block:
             continue
         source_indexes = tuple(

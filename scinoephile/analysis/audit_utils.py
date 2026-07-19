@@ -164,23 +164,18 @@ def _get_contextual_index(
 
 
 def _get_paired_event_block_numbers(
-    one: Series,
-    two: Series,
+    block_pairs: Sequence[tuple[Series, Series]],
 ) -> tuple[tuple[int, ...], tuple[int, ...]]:
     """Get paired workflow block numbers for two subtitle series.
 
     Arguments:
-        one: first subtitle series
-        two: second subtitle series
+        block_pairs: paired subtitle workflow blocks
     Returns:
         one-based paired block number for every event in each series
     """
     one_block_numbers: list[int] = []
     two_block_numbers: list[int] = []
-    for block_number, (one_block, two_block) in enumerate(
-        get_block_pairs_by_pause(one, two),
-        1,
-    ):
+    for block_number, (one_block, two_block) in enumerate(block_pairs, 1):
         one_block_numbers.extend([block_number] * len(one_block))
         two_block_numbers.extend([block_number] * len(two_block))
     return tuple(one_block_numbers), tuple(two_block_numbers)
@@ -213,13 +208,16 @@ def _get_selected_event_indexes(
         stop = min(last_index, stop)
     selected_indexes = set(range(start, stop))
 
+    block_indexes = Series.get_block_indexes_by_pause(series)
+    _validate_block_range(first_block, last_block, len(block_indexes))
+
     if first_block is None and last_block is None:
         return frozenset(selected_indexes)
 
     selected_block_indexes = {
         event_index
         for block_number, (block_start, block_stop) in enumerate(
-            Series.get_block_indexes_by_pause(series),
+            block_indexes,
             1,
         )
         if (first_block is None or block_number >= first_block)
@@ -227,6 +225,29 @@ def _get_selected_event_indexes(
         for event_index in range(block_start, block_stop)
     }
     return frozenset(selected_indexes & selected_block_indexes)
+
+
+def _get_validated_block_pairs_by_pause(
+    one: Series,
+    two: Series,
+    first_block: int | None,
+    last_block: int | None,
+) -> list[tuple[Series, Series]]:
+    """Get paired workflow blocks and validate a range against their count.
+
+    Arguments:
+        one: first subtitle series
+        two: second subtitle series
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+    Returns:
+        paired workflow blocks
+    Raises:
+        ScinoephileError: if the requested range exceeds the available blocks
+    """
+    block_pairs = get_block_pairs_by_pause(one, two)
+    _validate_block_range(first_block, last_block, len(block_pairs))
+    return block_pairs
 
 
 def _get_superseded_keys[KeyT: Hashable, ValueT: Hashable](
@@ -274,12 +295,17 @@ def _is_block_in_range(
     )
 
 
-def _validate_block_range(first_block: int | None, last_block: int | None):
+def _validate_block_range(
+    first_block: int | None,
+    last_block: int | None,
+    block_count: int | None = None,
+):
     """Validate optional one-based block boundaries.
 
     Arguments:
         first_block: first included block number
         last_block: last included block number
+        block_count: number of available workflow blocks, if known
     Raises:
         ScinoephileError: if either boundary is invalid
     """
@@ -289,6 +315,16 @@ def _validate_block_range(first_block: int | None, last_block: int | None):
         raise ScinoephileError("Last block must be at least 1")
     if first_block is not None and last_block is not None and first_block > last_block:
         raise ScinoephileError("First block must be less than or equal to last block")
+    if block_count is None:
+        return
+    if first_block is not None and first_block > block_count:
+        raise ScinoephileError(
+            f"First block must not exceed available block count {block_count}"
+        )
+    if last_block is not None and last_block > block_count:
+        raise ScinoephileError(
+            f"Last block must not exceed available block count {block_count}"
+        )
 
 
 def _validate_index_range(first_index: int | None, last_index: int | None):

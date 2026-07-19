@@ -10,7 +10,6 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.gap_translation import GapTranslationTestCase
@@ -21,6 +20,7 @@ from .audit_utils import (
     _format_difficulty_filter,
     _format_index_range,
     _get_paired_event_block_numbers,
+    _get_validated_block_pairs_by_pause,
     _is_block_in_range,
     _validate_block_range,
     _validate_index_range,
@@ -114,8 +114,14 @@ def audit_gap_translation(
         raise ScinoephileError("Difficulty must be at least 0")
     difficulty_filter = tuple(sorted(set(difficulties)))
 
-    blocks = _get_blocks(target, guide)
-    _, guide_block_numbers = _get_paired_event_block_numbers(target, guide)
+    block_pairs = _get_validated_block_pairs_by_pause(
+        target,
+        guide,
+        first_block,
+        last_block,
+    )
+    blocks = _get_blocks(block_pairs)
+    _, guide_block_numbers = _get_paired_event_block_numbers(block_pairs)
     active_cases = _get_active_test_case_blocks(
         guide,
         guide_block_numbers,
@@ -441,21 +447,19 @@ def _get_active_test_case_blocks(
     return sorted(active_cases, key=lambda item: item[2].block_number)
 
 
-def _get_blocks(target: Series, guide: Series) -> list[_GapTranslationBlock]:
+def _get_blocks(
+    block_pairs: Sequence[tuple[Series, Series]],
+) -> list[_GapTranslationBlock]:
     """Reconstruct the target and guide blocks used for gap translation.
 
     Arguments:
-        target: gapped target subtitle series
-        guide: complete guide subtitle series
+        block_pairs: paired target and guide workflow blocks
     Returns:
         blocks containing one or more missing target positions
     """
     blocks: list[_GapTranslationBlock] = []
     guide_offset = 0
-    for block_number, (target_block, guide_block) in enumerate(
-        get_block_pairs_by_pause(target, guide),
-        1,
-    ):
+    for block_number, (target_block, guide_block) in enumerate(block_pairs, 1):
         guide_indexes = tuple(
             range(guide_offset + 1, guide_offset + len(guide_block) + 1)
         )

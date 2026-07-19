@@ -13,6 +13,7 @@ from scinoephile.analysis.ocr_fusion_audit import (
     OcrFusionAuditFilter,
     audit_ocr_fusion,
 )
+from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -180,7 +181,7 @@ class AuditOcrFusionCli(AuditCliBase):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         cls.validate_range(parser, first_index, last_index)
-        cls.validate_block_range(parser, first_block, last_block)
+        validate_block_range(parser, first_block, last_block)
         source_one = read_series(parser, source_one_path)
         source_two = read_series(parser, source_two_path)
         fused = read_series(parser, fused_path)

@@ -7,6 +7,7 @@ from __future__ import annotations
 from logging import getLogger
 from typing import cast
 
+from scinoephile.common.validation import val_index_range
 from scinoephile.core.llms import Processor
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, get_concatenated_series
@@ -44,27 +45,17 @@ class GuidedReviewProcessor(Processor):
         Arguments:
             target: subtitles to review and whose timing is preserved
             guide: subtitles providing reference text
-            stop_at_idx: exclusive block index at which to stop processing
-            start_at_idx: inclusive block index at which to start processing
+            stop_at_idx: exclusive zero-based block index at which to stop processing
+            start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
             guided-reviewed target subtitles
         """
         block_pairs = get_block_pairs_by_pause(target, guide)
         output_blocks: list[Series | None] = [None] * len(block_pairs)
-        if start_at_idx < 0:
-            raise ValueError("start_at_idx must be greater than or equal to 0")
-        if stop_at_idx is None:
-            stop_at_idx = len(block_pairs)
-        elif stop_at_idx < 0:
-            raise ValueError("stop_at_idx must be greater than or equal to 0")
-        elif start_at_idx > stop_at_idx:
-            raise ValueError("start_at_idx must be less than or equal to stop_at_idx")
+        block_range = val_index_range(len(block_pairs), start_at_idx, stop_at_idx)
 
-        for block_idx, (target_block, guide_block) in enumerate(block_pairs):
-            if block_idx >= stop_at_idx:
-                break
-            if block_idx < start_at_idx:
-                continue
+        for block_idx in block_range:
+            target_block, guide_block = block_pairs[block_idx]
             if not target_block:
                 output_blocks[block_idx] = Series()
                 continue
@@ -109,7 +100,7 @@ class GuidedReviewProcessor(Processor):
                 if output_text:
                     output_subtitle.text = replace_control_characters(output_text)
                 output_block.append(output_subtitle)
-            logger.info(f"Block {block_idx}:\n{output_block.to_simple_string()}")
+            logger.info(f"Block {block_idx + 1}:\n{output_block.to_simple_string()}")
             output_blocks[block_idx] = output_block
 
         self.save_test_cases()
