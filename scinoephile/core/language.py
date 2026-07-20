@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from typing import cast
-
 from scinoephile.common.described_enum import DescribedEnum
 
 from .text import ChineseScript
@@ -100,5 +98,5 @@ class Language(DescribedEnum):
         """Chinese script subtag from the complete code, if any."""
         script = self.code.partition("-")[2]
         if script in ("Hans", "Hant"):
-            return cast(ChineseScript, script)
+            return script
         return None

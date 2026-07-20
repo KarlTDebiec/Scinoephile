@@ -22,7 +22,7 @@ __all__ = ["GuidedReviewProcessor"]
 
 logger = getLogger(__name__)
 
-_DELETION_MARKER = "\ufffd"
+_DELETION_MARKER = "�"
 
 
 class GuidedReviewProcessor(Processor):
@@ -61,12 +61,6 @@ class GuidedReviewProcessor(Processor):
             if not target_block:
                 output_blocks[block_idx] = Series()
                 continue
-            if not guide_block:
-                output_block = Series()
-                for subtitle in target_block:
-                    output_block.append(type(subtitle)(**subtitle.as_dict()))
-                output_blocks[block_idx] = output_block
-                continue
 
             test_case_cls = self.test_case_cls
             query_cls = test_case_cls.query_cls
@@ -101,14 +95,13 @@ class GuidedReviewProcessor(Processor):
                 if output_text == _DELETION_MARKER:
                     continue
                 output_subtitle = type(subtitle)(**subtitle.as_dict())
-                if output_text is not None:
+                if output_text:
                     output_subtitle.text = replace_control_characters(output_text)
                 output_block.append(output_subtitle)
-            logger.info(f"Block {block_idx + 1}:\n{output_block.to_simple_string()}")
+            logger.info(f"Block {block_idx}:\n{output_block.to_simple_string()}")
             output_blocks[block_idx] = output_block
 
-        complete_range = block_range.start == 0 and block_range.stop == len(block_pairs)
-        self.save_test_cases(prune=self.prune_test_cases or complete_range)
+        self.save_test_cases()
 
         processed_blocks = [block for block in output_blocks if block is not None]
         if processed_blocks:

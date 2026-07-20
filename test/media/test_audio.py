@@ -62,7 +62,7 @@ def test_extract_audio_selects_stream_and_extracts_track(tmp_path: Path):
     stream = AudioStream(index=3, codec_type="audio", channels=6)
 
     with (
-        patch("scinoephile.media.audio._get_audio_stream", return_value=stream),
+        patch("scinoephile.media.audio.get_streams", return_value=[stream]),
         patch("scinoephile.media.audio._extract_audio_track") as extract_track,
     ):
         selected = extract_audio(
@@ -92,8 +92,8 @@ def test_extract_audio_track_filters_overall_stream_index(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.media.audio._get_audio_stream",
-            return_value=AudioStream(index=12, codec_type="audio", channels=6),
+            "scinoephile.media.audio.get_streams",
+            return_value=[AudioStream(index=12, codec_type="audio", channels=6)],
         ),
         patch(
             "scinoephile.media.audio.ffmpeg.input",
@@ -120,8 +120,8 @@ def test_extract_audio_track_maps_overall_stream_index(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.media.audio._get_audio_stream",
-            return_value=AudioStream(index=12, codec_type="audio", channels=2),
+            "scinoephile.media.audio.get_streams",
+            return_value=[AudioStream(index=12, codec_type="audio", channels=2)],
         ),
         patch(
             "scinoephile.media.audio.ffmpeg.input",
@@ -148,8 +148,8 @@ def test_extract_audio_track_wraps_ffmpeg_errors(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.media.audio._get_audio_stream",
-            return_value=AudioStream(index=12, codec_type="audio", channels=2),
+            "scinoephile.media.audio.get_streams",
+            return_value=[AudioStream(index=12, codec_type="audio", channels=2)],
         ),
         patch(
             "scinoephile.media.audio.ffmpeg.input",

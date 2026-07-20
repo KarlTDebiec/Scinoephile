@@ -15,10 +15,10 @@ dependencies = [
     "ffmpeg-python>=0.2.0",
     "hkscs-unicode-converter>=1.1.0",
     "jieba>=0.42.1",
-    "numba>=0.65.1",
+    "numba>=0.66.0",
     "numpy>=2.4.6",
-    "openai>=2.45.0",
-    "opencc>=1.4.0",
+    "openai>=2.46.0",
+    "opencc>=1.4.1",
     "pillow>=12.3.0",
     "pycantonese>=5.0.0",
     "pydantic>=2.13.4",
@@ -44,7 +44,7 @@ ocr-cuda = [
     "paddlepaddle-gpu==3.2.2; platform_machine == 'AMD64' and sys_platform == 'win32'",
 ]
 transcription = [
-    "demucs-infer>=4.1.2",
+    "demucs-infer>=4.2.2",
     "huggingface-hub>=1.23.0",
     "onnxruntime>=1.27.0",
     "torch>=2.10.0",
@@ -73,7 +73,7 @@ dev = [
     "pytest-github-actions-annotate-failures>=0.4.2",
     "pytest-xdist>=3.8.0",
     "ruff>=0.15.20",
-    "ty>=0.0.58",
+    "ty>=0.0.61",
 ]
 
 [tool.pytest.ini_options]

@@ -12,7 +12,6 @@ __all__ = [
     "BLOCK_LOCALIZATIONS",
     "add_block_range_args",
     "get_block_range_indexes",
-    "validate_block_range",
 ]
 
 BLOCK_LOCALIZATIONS: dict[str, dict[str, str]] = {
@@ -77,36 +76,18 @@ def get_block_range_indexes(
     Returns:
         inclusive zero-based start and exclusive zero-based stop indexes
     """
-    validate_block_range(parser, first_block, last_block, block_count)
+    if first_block is not None and last_block is not None and first_block > last_block:
+        parser.error("--first-block must be less than or equal to --last-block")
+    if block_count is not None:
+        if first_block is not None and first_block > block_count:
+            parser.error(
+                f"--first-block must not exceed available block count {block_count}"
+            )
+        if last_block is not None and last_block > block_count:
+            parser.error(
+                f"--last-block must not exceed available block count {block_count}"
+            )
     start_at_idx = 0
     if first_block is not None:
         start_at_idx = first_block - 1
     return start_at_idx, last_block
-
-
-def validate_block_range(
-    parser: ArgumentParser,
-    first_block: int | None,
-    last_block: int | None,
-    block_count: int | None = None,
-):
-    """Validate an optional inclusive one-based block range.
-
-    Arguments:
-        parser: active parser used to report invalid boundaries
-        first_block: first included one-based workflow block
-        last_block: last included one-based workflow block
-        block_count: number of available workflow blocks, if known
-    """
-    if first_block is not None and last_block is not None and first_block > last_block:
-        parser.error("--first-block must be less than or equal to --last-block")
-    if block_count is None:
-        return
-    if first_block is not None and first_block > block_count:
-        parser.error(
-            f"--first-block must not exceed available block count {block_count}"
-        )
-    if last_block is not None and last_block > block_count:
-        parser.error(
-            f"--last-block must not exceed available block count {block_count}"
-        )

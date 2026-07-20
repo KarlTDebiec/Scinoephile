@@ -91,13 +91,6 @@ S2T_EXCLUSIONS: set[str] = {
     "郁親",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
     "郁就",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
     "郁嘅",  # Cantonese 郁 "move"; avoid 鬱 "depressed"
-    "托一",  # "entrust someone"; fixture prefers 托 over 託
-    "托世",  # reincarnation term in fixtures; avoid 託世
-    "托杉",  # Cantonese "hold/lift"; avoid 託 "entrust"
-    "托夢",  # dream-message phrase in fixtures; avoid 託夢
-    "托皇上",  # "thanks to the emperor"; avoid 託 "entrust"
-    "托著",  # physical support; avoid 託 "entrust"
-    "托缽",  # alms-bowl phrase in fixtures; avoid 託缽
     "扑嘛",  # Cantonese 扑 "hit"; avoid 撲 "pounce"
     "嚟扑",  # Cantonese 扑 "hit"; avoid 撲 "pounce"
     "燒到扑",  # Cantonese result phrase; avoid 撲 "pounce"

@@ -454,7 +454,7 @@ def mlamd_yue_hans_transcribe_translate() -> Series:
 def mlamd_yue_hans_transcribe_translate_guided_review() -> Series:
     """MLAMD yue-Hans transcribed, gap-translated, and guided-reviewed subtitles."""
     return Series.load(
-        output_dir / "yue-Hans_transcribe" / "transcribe_translate_guided_review.srt"
+        output_dir / "yue-Hans_transcribe/transcribe_translate_guided_review.srt"
     )
 
 

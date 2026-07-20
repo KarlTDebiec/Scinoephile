@@ -55,9 +55,6 @@ class ReviewProcessor(Processor):
         current_idx = sum(len(block) for block in blocks[: block_range.start])
         for block_idx in block_range:
             block = blocks[block_idx]
-            start_idx = current_idx
-            end_idx = current_idx + len(block)
-            current_idx = end_idx
 
             # Query LLM
             test_case_cls = self.test_case_cls
@@ -81,16 +78,18 @@ class ReviewProcessor(Processor):
                 revision.index: revision.text for revision in answer.revisions
             }
             output_series = Series()
-            for subtitle_idx, subtitle in enumerate(block, 1):
-                output_text = revision_text_by_index.get(subtitle_idx)
+            for sub_idx, subtitle in enumerate(block, 1):
+                output_text = revision_text_by_index.get(sub_idx)
                 output_subtitle = type(subtitle)(**subtitle.as_dict())
                 if output_text:
                     output_subtitle.text = replace_control_characters(output_text)
                 output_series.append(output_subtitle)
 
+            start_idx = current_idx
+            end_idx = current_idx + len(block)
+            current_idx = end_idx
             logger.info(
-                f"Block {block_idx + 1} "
-                f"(subtitles {start_idx + 1} - {end_idx}):\n"
+                f"Block {block_idx} ({start_idx} - {end_idx}):\n"
                 f"{block.to_simple_string()}"
             )
             output_series_to_concatenate[block_idx] = output_series

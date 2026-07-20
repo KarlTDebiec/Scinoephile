@@ -107,6 +107,121 @@ def test_queryer_corresponds_using_prompt_aliases():
     }
 
 
+def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
+    """A run should preserve unencountered reusable cases by default."""
+    test_case_cls = GuidedReviewManager.get_test_case_cls(_LOCALIZED_PROMPT)
+    old_test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "舊原文"}],
+                "guides": [{"index": 1, "text": "參考"}],
+            },
+            "answer": {"revisions": []},
+            "few_shot": True,
+            "verified": True,
+        }
+    )
+    test_case_path = tmp_path / "guided_review.json"
+    save_test_cases_to_json(
+        test_case_path,
+        [old_test_case],
+        GuidedReviewManager,
+    )
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"xiugai": []}'
+    processor = GuidedReviewProcessor(
+        _LOCALIZED_PROMPT,
+        test_case_path=test_case_path,
+        provider=provider,
+    )
+    processor.queryer.cache_dir_path = None
+    target = Series(events=[Subtitle(start=0, end=100, text="新原文")])
+    guide = Series(events=[Subtitle(start=0, end=100, text="參考")])
+
+    processor.process(target, guide)
+
+    persisted = load_test_cases_from_json(
+        test_case_path,
+        GuidedReviewManager,
+        _LOCALIZED_PROMPT,
+    )
+    assert len(persisted) == 2
+    persisted_cases = cast("list[GuidedReviewTestCase]", persisted)
+    assert [item.query.targets[0].text for item in persisted_cases] == [
+        "舊原文",
+        "新原文",
+    ]
+
+
+def test_processor_honors_start_index():
+    """An inclusive start index should skip earlier guided-review blocks."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"xiugai": []}'
+    processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor.queryer.cache_dir_path = None
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="原文一"),
+            Subtitle(start=5000, end=6000, text="原文二"),
+        ]
+    )
+    guide = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="參考一"),
+            Subtitle(start=5000, end=6000, text="參考二"),
+        ]
+    )
+
+    output = processor.process(target, guide, start_at_idx=1)
+
+    assert [subtitle.text for subtitle in output] == ["原文二"]
+    provider.chat_completion.assert_called_once()
+
+
+def test_processor_deletes_target_with_replacement_character_revision():
+    """The replacement-character revision should remove its target subtitle."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = json.dumps(
+        {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
+        ensure_ascii=False,
+    )
+    processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor.queryer.cache_dir_path = None
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="多餘"),
+            Subtitle(start=1100, end=2000, text="保留"),
+        ]
+    )
+    guide = Series(events=[Subtitle(start=1100, end=2000, text="參考")])
+
+    output = processor.process(target, guide)
+
+    assert [subtitle.text for subtitle in output] == ["保留"]
+
+
+def test_processor_reviews_target_only_blocks_for_deletion():
+    """Target-only blocks should be reviewed with an empty guide list."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = json.dumps(
+        {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
+        ensure_ascii=False,
+    )
+    processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor.queryer.cache_dir_path = None
+    target = Series(events=[Subtitle(start=0, end=1000, text="多餘")])
+    guide = Series(events=[Subtitle(start=5000, end=6000, text="參考")])
+
+    output = processor.process(target, guide)
+
+    assert output == Series()
+    messages = provider.chat_completion.call_args.args[0]
+    assert json.loads(messages[1]["content"]) == {
+        "mubiao": [{"xuhao": 1, "wenben": "多餘"}],
+        "zhinan": [],
+    }
+
+
 def test_query_lists_require_items_and_consecutive_ordered_indexes():
     """Targets should be nonempty and both lists should use ordered indexes."""
     query_cls = GuidedReviewManager.get_query_cls(GuidedReviewManager.base_prompt)
@@ -332,92 +447,3 @@ def test_processor_uses_indexed_lists_and_applies_sparse_revisions():
         ],
         "zhinan": [{"xuhao": 1, "wenben": "參考"}],
     }
-
-
-def test_processor_deletes_target_with_replacement_character_revision():
-    """The replacement-character revision should remove its target subtitle."""
-    provider = Mock(spec=LLMProvider)
-    provider.chat_completion.return_value = json.dumps(
-        {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
-        ensure_ascii=False,
-    )
-    processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
-    target = Series(
-        events=[
-            Subtitle(start=0, end=1000, text="多餘"),
-            Subtitle(start=1100, end=2000, text="保留"),
-        ]
-    )
-    guide = Series(events=[Subtitle(start=1100, end=2000, text="參考")])
-
-    output = processor.process(target, guide)
-
-    assert [subtitle.text for subtitle in output] == ["保留"]
-
-
-def test_complete_processing_prunes_superseded_persisted_cases(tmp_path: Path):
-    """A complete run should remove cases for obsolete upstream target text."""
-    test_case_cls = GuidedReviewManager.get_test_case_cls(_LOCALIZED_PROMPT)
-    old_test_case = test_case_cls.model_validate(
-        {
-            "query": {
-                "targets": [{"index": 1, "text": "舊原文"}],
-                "guides": [{"index": 1, "text": "參考"}],
-            },
-            "answer": {"revisions": []},
-            "verified": True,
-        }
-    )
-    test_case_path = tmp_path / "guided_review.json"
-    save_test_cases_to_json(
-        test_case_path,
-        [old_test_case],
-        GuidedReviewManager,
-    )
-    provider = Mock(spec=LLMProvider)
-    provider.chat_completion.return_value = '{"xiugai": []}'
-    processor = GuidedReviewProcessor(
-        _LOCALIZED_PROMPT,
-        test_case_path=test_case_path,
-        provider=provider,
-    )
-    processor.queryer.cache_dir_path = None
-    target = Series(events=[Subtitle(start=0, end=100, text="新原文")])
-    guide = Series(events=[Subtitle(start=0, end=100, text="參考")])
-
-    processor.process(target, guide)
-
-    persisted = load_test_cases_from_json(
-        test_case_path,
-        GuidedReviewManager,
-        _LOCALIZED_PROMPT,
-    )
-    assert len(persisted) == 1
-    persisted_case = cast(GuidedReviewTestCase, persisted[0])
-    assert [item.text for item in persisted_case.query.targets] == ["新原文"]
-
-
-def test_processor_honors_start_index():
-    """An inclusive start index should skip earlier guided-review blocks."""
-    provider = Mock(spec=LLMProvider)
-    provider.chat_completion.return_value = '{"xiugai": []}'
-    processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
-    processor.queryer.cache_dir_path = None
-    target = Series(
-        events=[
-            Subtitle(start=0, end=1000, text="原文一"),
-            Subtitle(start=5000, end=6000, text="原文二"),
-        ]
-    )
-    guide = Series(
-        events=[
-            Subtitle(start=0, end=1000, text="參考一"),
-            Subtitle(start=5000, end=6000, text="參考二"),
-        ]
-    )
-
-    output = processor.process(target, guide, start_at_idx=1)
-
-    assert [subtitle.text for subtitle in output] == ["原文二"]
-    provider.chat_completion.assert_called_once()

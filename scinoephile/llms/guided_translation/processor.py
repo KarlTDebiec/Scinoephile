@@ -47,15 +47,15 @@ class GuidedTranslationProcessor(Processor):
             stop_at_idx: exclusive zero-based block index at which to stop processing
             start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
-            translated subtitles using source timing
+            translated subtitles using source-one timing
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
         block_range = val_index_range(len(block_pairs), start_at_idx, stop_at_idx)
-        for block_idx in block_range:
-            source_block, guide_block = block_pairs[block_idx]
-            if not source_block:
-                output_series_to_concatenate[block_idx] = Series()
+        for blk_idx in block_range:
+            one_blk, two_blk = block_pairs[blk_idx]
+            if not one_blk:
+                output_series_to_concatenate[blk_idx] = Series()
                 continue
 
             test_case_cls = self.test_case_cls
@@ -67,14 +67,14 @@ class GuidedTranslationProcessor(Processor):
                             "index": idx,
                             "text": subtitle.text_with_newline.strip(),
                         }
-                        for idx, subtitle in enumerate(source_block.events, 1)
+                        for idx, subtitle in enumerate(one_blk.events, 1)
                     ],
                     "guides": [
                         {
                             "index": idx,
                             "text": guide.text_with_newline.strip(),
                         }
-                        for idx, guide in enumerate(guide_block.events, 1)
+                        for idx, guide in enumerate(two_blk.events, 1)
                     ],
                 }
             )
@@ -86,18 +86,14 @@ class GuidedTranslationProcessor(Processor):
                 output.index: output.text for output in answer.outputs
             }
             output_series = Series()
-            for subtitle_idx, subtitle in enumerate(source_block.events, 1):
-                output_text = output_text_by_index[subtitle_idx]
+            for sub_idx, sub in enumerate(one_blk.events, 1):
+                output = output_text_by_index[sub_idx]
                 output_series.append(
-                    Subtitle(
-                        start=subtitle.start,
-                        end=subtitle.end,
-                        text=output_text,
-                    )
+                    Subtitle(start=sub.start, end=sub.end, text=output)
                 )
 
-            logger.info(f"Block {block_idx + 1}:\n{output_series.to_simple_string()}")
-            output_series_to_concatenate[block_idx] = output_series
+            logger.info(f"Block {blk_idx}:\n{output_series.to_simple_string()}")
+            output_series_to_concatenate[blk_idx] = output_series
 
         self.save_test_cases()
 
