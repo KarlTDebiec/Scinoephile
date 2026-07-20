@@ -227,6 +227,47 @@ def test_gap_translation_preserves_unbounded_text():
 
 
 @mark.parametrize(
+    ("outputs", "explicit_difficulty", "expected_difficulty"),
+    [
+        (None, 0, 0),
+        (((2, ""),), 0, 0),
+        (((2, "translated"),), 0, 1),
+        (((2, "translated"),), 3, 3),
+    ],
+)
+def test_minimum_difficulty_tracks_generated_text(
+    outputs: tuple[tuple[int, str], ...] | None,
+    explicit_difficulty: int,
+    expected_difficulty: int,
+):
+    """Nonempty generated text should require at least difficulty one.
+
+    Arguments:
+        outputs: optional output indexes and texts
+        explicit_difficulty: requested test-case difficulty
+        expected_difficulty: enforced minimum difficulty
+    """
+    data: dict[str, object] = {
+        "query": {
+            "targets": [{"index": 1, "text": "existing"}],
+            "guides": [
+                {"index": 1, "text": "guide one"},
+                {"index": 2, "text": "guide two"},
+            ],
+        },
+        "difficulty": explicit_difficulty,
+    }
+    if outputs is not None:
+        data["answer"] = {
+            "outputs": [{"index": index, "text": text} for index, text in outputs]
+        }
+
+    test_case = GapTranslationTestCase.model_validate(data)
+
+    assert test_case.difficulty == expected_difficulty
+
+
+@mark.parametrize(
     "test_case_cls",
     [
         GapTranslationTestCase,
@@ -300,6 +341,7 @@ def test_json_persistence_uses_base_prompt_fields(tmp_path: Path):
                 ],
             },
             "answer": {"outputs": [{"index": 2, "text": "翻譯"}]},
+            "difficulty": 1,
             "verified": True,
         }
     ]
