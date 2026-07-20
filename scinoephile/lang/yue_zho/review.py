@@ -11,13 +11,10 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.guided_review import GuidedReviewPrompt
-from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
 
 __all__ = [
     "YueZhoGuidedReviewPromptYueHans",
     "YueZhoGuidedReviewPromptYueHant",
-    "YueZhoPairwiseReviewPromptYueHans",
-    "YueZhoPairwiseReviewPromptYueHant",
 ]
 
 
@@ -34,6 +31,7 @@ YueZhoGuidedReviewPromptYueHant = GuidedReviewPrompt(
         中文字幕只係參考，唔需要同粵文逐字對應。
         只有當一條粵文字幕確實需要修改時，先將佢加入修改列表。
         每項修改必須包含字幕序號、修訂後嘅完整粵文字幕，同埋一段粵文備註説明改動。
+        如果要刪除同音訊及中文字幕都冇對應嘅多餘字幕，修訂文本只填「�」。
         如果全部粵文字幕都唔需要修改，請回傳空嘅修改列表。"""),
     targets="yuewen",
     targets_desc="按順序排列、需要審核嘅粵文字幕轉寫",
@@ -46,7 +44,7 @@ YueZhoGuidedReviewPromptYueHant = GuidedReviewPrompt(
     text="wenben",
     target_text_desc="需要審核嘅粵文字幕轉寫",
     guide_text_desc="中文字幕指引文本",
-    revision_text_desc="修改後嘅完整粵文字幕文本",
+    revision_text_desc="修改後嘅完整粵文字幕文本；如果要刪除字幕就只填「�」",
     note="beizhu",
     note_desc="關於粵文字幕修改嘅粵文備註",
     target_indices_err="查詢粵文字幕序號必須由 1 開始、連續並按順序排列。",
@@ -64,35 +62,3 @@ YueZhoGuidedReviewPromptYueHans = YueZhoGuidedReviewPromptYueHant.transformed(
     partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
 )
 """Prompt for guided review of simplified written Cantonese using Chinese."""
-
-YueZhoPairwiseReviewPromptYueHant = PairwiseReviewPrompt(
-    language=Language.yue_hant,
-    **YUE_HANT_PROMPT_FIELDS,
-    base_system_prompt=dedent_and_compact("""
-        你負責為廣東話語音嘅粵文字幕做校對。
-        作為參考，你會見到一條對應嘅中文字幕。
-        你嘅目標係糾正明顯嘅轉寫錯誤，主要係聽錯字、寫錯字，同其他一眼可見嘅轉寫問題。
-        唔好為了貼近中文字幕而改寫本來已經正確嘅粵文。
-        唔好調整語氣、語法、助詞、量詞或者措辭，除非嗰啲地方本身就係轉寫錯誤。
-        只有當你認為原句明顯有誤時，先作修改。
-        如果發現粵文同中文字幕完全對唔上，請回傳字符 "�"，並喺備註説明無對應。
-        如果需要修改，回傳完整嘅修訂後粵文，並用粵文一句話説明改動。
-        如果冇修改，修訂後粵文同備註都回傳空字串。"""),
-    target="yuewen",
-    target_desc="要校對嘅粵文字幕轉寫",
-    reference="zhongwen",
-    reference_desc="對應嘅中文字幕",
-    output="xiugai",
-    output_desc='修訂後嘅粵文字幕；如果冇修改請回傳 ""，如需刪掉請回傳 "�"',
-    note="beizhu",
-    note_desc="改動説明（粵文）；如果冇修改請回傳空字串",
-    note_missing_err="修訂後嘅粵文有改動，但答案冇提供改動説明。",
-    output_missing_err="修訂後嘅粵文冇改動，但答案提供咗改動説明。",
-)
-"""Prompt for pairwise review of traditional written Cantonese using Chinese."""
-
-YueZhoPairwiseReviewPromptYueHans = YueZhoPairwiseReviewPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
-)
-"""Prompt for pairwise review of simplified written Cantonese using Chinese."""

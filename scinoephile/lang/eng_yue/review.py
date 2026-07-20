@@ -4,16 +4,10 @@
 
 from __future__ import annotations
 
-from scinoephile.lang.eng.review import GuidedReviewPromptEng, PairwiseReviewPromptEng
+from scinoephile.lang.eng.review import GuidedReviewPromptEng
 
-__all__ = [
-    "EngYueGuidedReviewPrompt",
-    "EngYuePairwiseReviewPrompt",
-]
+__all__ = ["EngYueGuidedReviewPrompt"]
 
 
 EngYueGuidedReviewPrompt = GuidedReviewPromptEng
 """Prompt for guided review of English using written Cantonese."""
-
-EngYuePairwiseReviewPrompt = PairwiseReviewPromptEng
-"""Prompt for pairwise review of English using written Cantonese."""

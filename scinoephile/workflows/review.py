@@ -10,13 +10,8 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, ProcessorKwargs, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.review.guided import get_guided_reviewer
-from scinoephile.lang.review.pairwise import get_pairwise_reviewer
 from scinoephile.lang.review.standard import get_reviewer
 from scinoephile.llms.guided_review import GuidedReviewProcessor, GuidedReviewPrompt
-from scinoephile.llms.pairwise_review import (
-    PairwiseReviewProcessor,
-    PairwiseReviewPrompt,
-)
 from scinoephile.llms.review import ReviewProcessor, ReviewPrompt
 
 from .helpers import resolve_language
@@ -24,7 +19,6 @@ from .helpers import resolve_language
 __all__ = [
     "review_series",
     "review_series_guided",
-    "review_series_pairwise",
 ]
 
 
@@ -124,48 +118,3 @@ def review_series_guided(
         stop_at_idx=stop_at_idx,
         start_at_idx=start_at_idx,
     )
-
-
-def review_series_pairwise(
-    target: Series,
-    reference: Series,
-    *,
-    language: Language | None = None,
-    reference_language: Language | None = None,
-    prompt: PairwiseReviewPrompt | None = None,
-    test_cases: list[TestCase] | None = None,
-    provider: LLMProvider | None = None,
-    reviewer: PairwiseReviewProcessor | None = None,
-    stop_at_idx: int | None = None,
-    **kwargs: Unpack[ProcessorKwargs],
-) -> Series:
-    """Review a subtitle series against paired reference subtitles.
-
-    Arguments:
-        target: subtitle series to review
-        reference: subtitle series providing line-level reference text
-        language: explicit target language, or None to detect it
-        reference_language: explicit reference language, or None to detect it
-        prompt: text for LLM correspondence
-        test_cases: test cases
-        provider: provider to use for queries
-        reviewer: reviewer to use, or None to construct one
-        stop_at_idx: exclusive block index at which to stop processing
-        **kwargs: additional keyword arguments for PairwiseReviewProcessor
-    Returns:
-        pairwise-reviewed subtitle series
-    Raises:
-        ScinoephileError: if a language cannot be resolved or the pair is unsupported
-    """
-    resolved_language = resolve_language(target, language)
-    resolved_reference_language = resolve_language(reference, reference_language)
-    if reviewer is None:
-        reviewer = get_pairwise_reviewer(
-            resolved_language,
-            resolved_reference_language,
-            prompt,
-            test_cases,
-            provider=provider,
-            **kwargs,
-        )
-    return reviewer.process(target, reference, stop_at_idx=stop_at_idx)

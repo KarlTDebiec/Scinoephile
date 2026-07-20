@@ -178,6 +178,50 @@ def test_processor_honors_start_index():
     provider.chat_completion.assert_called_once()
 
 
+def test_processor_deletes_target_with_replacement_character_revision():
+    """The replacement-character revision should remove its target subtitle."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = json.dumps(
+        {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
+        ensure_ascii=False,
+    )
+    processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor.queryer.cache_dir_path = None
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="多餘"),
+            Subtitle(start=1100, end=2000, text="保留"),
+        ]
+    )
+    guide = Series(events=[Subtitle(start=1100, end=2000, text="參考")])
+
+    output = processor.process(target, guide)
+
+    assert [subtitle.text for subtitle in output] == ["保留"]
+
+
+def test_processor_reviews_target_only_blocks_for_deletion():
+    """Target-only blocks should be reviewed with an empty guide list."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = json.dumps(
+        {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
+        ensure_ascii=False,
+    )
+    processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor.queryer.cache_dir_path = None
+    target = Series(events=[Subtitle(start=0, end=1000, text="多餘")])
+    guide = Series(events=[Subtitle(start=5000, end=6000, text="參考")])
+
+    output = processor.process(target, guide)
+
+    assert output == Series()
+    messages = provider.chat_completion.call_args.args[0]
+    assert json.loads(messages[1]["content"]) == {
+        "mubiao": [{"xuhao": 1, "wenben": "多餘"}],
+        "zhinan": [],
+    }
+
+
 def test_query_lists_require_items_and_consecutive_ordered_indexes():
     """Targets should be nonempty and both lists should use ordered indexes."""
     query_cls = GuidedReviewManager.get_query_cls(GuidedReviewManager.base_prompt)
