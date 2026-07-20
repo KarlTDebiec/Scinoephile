@@ -61,12 +61,6 @@ class GuidedReviewProcessor(Processor):
             if not target_block:
                 output_blocks[block_idx] = Series()
                 continue
-            if not guide_block:
-                output_block = Series()
-                for subtitle in target_block:
-                    output_block.append(type(subtitle)(**subtitle.as_dict()))
-                output_blocks[block_idx] = output_block
-                continue
 
             test_case_cls = self.test_case_cls
             query_cls = test_case_cls.query_cls
