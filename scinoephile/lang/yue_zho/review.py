@@ -34,6 +34,7 @@ YueZhoGuidedReviewPromptYueHant = GuidedReviewPrompt(
         中文字幕只係參考，唔需要同粵文逐字對應。
         只有當一條粵文字幕確實需要修改時，先將佢加入修改列表。
         每項修改必須包含字幕序號、修訂後嘅完整粵文字幕，同埋一段粵文備註説明改動。
+        如果要刪除同音訊及中文字幕都冇對應嘅多餘字幕，修訂文本只填「�」。
         如果全部粵文字幕都唔需要修改，請回傳空嘅修改列表。"""),
     targets="yuewen",
     targets_desc="按順序排列、需要審核嘅粵文字幕轉寫",
@@ -46,7 +47,7 @@ YueZhoGuidedReviewPromptYueHant = GuidedReviewPrompt(
     text="wenben",
     target_text_desc="需要審核嘅粵文字幕轉寫",
     guide_text_desc="中文字幕指引文本",
-    revision_text_desc="修改後嘅完整粵文字幕文本",
+    revision_text_desc="修改後嘅完整粵文字幕文本；如果要刪除字幕就只填「�」",
     note="beizhu",
     note_desc="關於粵文字幕修改嘅粵文備註",
     target_indices_err="查詢粵文字幕序號必須由 1 開始、連續並按順序排列。",

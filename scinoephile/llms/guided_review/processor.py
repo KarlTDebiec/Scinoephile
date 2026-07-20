@@ -21,6 +21,8 @@ __all__ = ["GuidedReviewProcessor"]
 
 logger = getLogger(__name__)
 
+_DELETION_MARKER = "�"
+
 
 class GuidedReviewProcessor(Processor):
     """Processes guided review."""
@@ -95,8 +97,10 @@ class GuidedReviewProcessor(Processor):
             }
             output_block = Series()
             for idx, subtitle in enumerate(target_block, 1):
-                output_subtitle = type(subtitle)(**subtitle.as_dict())
                 output_text = revision_text_by_index.get(idx)
+                if output_text == _DELETION_MARKER:
+                    continue
+                output_subtitle = type(subtitle)(**subtitle.as_dict())
                 if output_text:
                     output_subtitle.text = replace_control_characters(output_text)
                 output_block.append(output_subtitle)
