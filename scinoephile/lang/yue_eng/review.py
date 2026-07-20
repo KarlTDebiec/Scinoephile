@@ -7,15 +7,11 @@ from __future__ import annotations
 from scinoephile.lang.yue.review import (
     GuidedReviewPromptYueHans,
     GuidedReviewPromptYueHant,
-    PairwiseReviewPromptYueHans,
-    PairwiseReviewPromptYueHant,
 )
 
 __all__ = [
     "YueEngGuidedReviewPromptYueHans",
     "YueEngGuidedReviewPromptYueHant",
-    "YueEngPairwiseReviewPromptYueHans",
-    "YueEngPairwiseReviewPromptYueHant",
 ]
 
 
@@ -24,9 +20,3 @@ YueEngGuidedReviewPromptYueHant = GuidedReviewPromptYueHant
 
 YueEngGuidedReviewPromptYueHans = GuidedReviewPromptYueHans
 """Prompt for guided review of simplified written Cantonese using English."""
-
-YueEngPairwiseReviewPromptYueHant = PairwiseReviewPromptYueHant
-"""Prompt for pairwise review of traditional written Cantonese using English."""
-
-YueEngPairwiseReviewPromptYueHans = PairwiseReviewPromptYueHans
-"""Prompt for pairwise review of simplified written Cantonese using English."""

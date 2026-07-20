@@ -14,7 +14,6 @@ from unittest.mock import Mock
 from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, Manager, Prompt, Queryer
 from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
-from scinoephile.llms.pairwise_review import PairwiseReviewManager, PairwiseReviewPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from scinoephile.workflows.prompt_catalog import PROMPT_SPECS
 
@@ -116,7 +115,6 @@ def test_registered_review_prompts_specify_note_language():
     }
     review_manager_classes = {
         GuidedReviewManager,
-        PairwiseReviewManager,
         ReviewManager,
     }
 
@@ -124,7 +122,7 @@ def test_registered_review_prompts_specify_note_language():
         if prompt_spec.manager_cls not in review_manager_classes:
             continue
         review_prompt = cast(
-            "GuidedReviewPrompt | PairwiseReviewPrompt | ReviewPrompt",
+            "GuidedReviewPrompt | ReviewPrompt",
             prompt_spec.prompt,
         )
         note_language = note_language_markers[review_prompt.language]
