@@ -7,7 +7,6 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import ffmpeg
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 from pytest import raises
@@ -15,105 +14,6 @@ from pytest import raises
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import ScinoephileError
-
-
-class FakeFfmpegInput:
-    """Fake ffmpeg input chain that records output arguments."""
-
-    def __init__(self, run_exception: Exception | None = None):
-        """Initialize."""
-        self.output_args: tuple[object, ...] | None = None
-        self.output_kwargs: dict[str, object] | None = None
-        self.run_kwargs: dict[str, object] | None = None
-        self.run_exception = run_exception
-        """Exception to raise when run."""
-
-    def output(self, *args: object, **kwargs: object) -> FakeFfmpegInput:
-        """Record ffmpeg output arguments.
-
-        Arguments:
-            *args: ffmpeg output positional arguments
-            **kwargs: ffmpeg output keyword arguments
-        Returns:
-            fake ffmpeg input chain
-        """
-        self.output_args = args
-        self.output_kwargs = kwargs
-        return self
-
-    def run(self, **kwargs: object):
-        """Record ffmpeg run arguments.
-
-        Arguments:
-            **kwargs: ffmpeg run keyword arguments
-        """
-        self.run_kwargs = kwargs
-        if self.run_exception is not None:
-            raise self.run_exception
-
-
-def test_audio_series_extract_audio_track_maps_overall_stream_index():
-    """Test audio extraction maps the absolute media stream index."""
-    fake_ffmpeg_input = FakeFfmpegInput()
-
-    with patch(
-        "scinoephile.audio.subtitles.series.ffmpeg.input",
-        return_value=fake_ffmpeg_input,
-    ):
-        AudioSeries.extract_audio_track(
-            Path("video.mkv"),
-            Path("audio.wav"),
-            12,
-            2,
-        )
-
-    assert fake_ffmpeg_input.output_kwargs is not None
-    assert fake_ffmpeg_input.output_kwargs["map"] == "0:12"
-
-
-def test_audio_series_extract_audio_track_filters_overall_stream_index():
-    """Test center-channel extraction filters the absolute media stream index."""
-    fake_ffmpeg_input = FakeFfmpegInput()
-
-    with patch(
-        "scinoephile.audio.subtitles.series.ffmpeg.input",
-        return_value=fake_ffmpeg_input,
-    ):
-        AudioSeries.extract_audio_track(
-            Path("video.mkv"),
-            Path("audio.wav"),
-            12,
-            6,
-        )
-
-    assert fake_ffmpeg_input.output_kwargs is not None
-    assert fake_ffmpeg_input.output_kwargs["filter_complex"] == (
-        "[0:12]pan=mono|c0=c2[out]"
-    )
-
-
-def test_audio_series_extract_audio_track_wraps_ffmpeg_errors():
-    """Test audio extraction errors are user-facing."""
-    fake_ffmpeg_input = FakeFfmpegInput(
-        ffmpeg.Error("ffmpeg", b"", b"failed"),
-    )
-
-    with patch(
-        "scinoephile.audio.subtitles.series.ffmpeg.input",
-        return_value=fake_ffmpeg_input,
-    ):
-        with raises(
-            ScinoephileError,
-            match="Could not extract audio stream 12 from video.mkv",
-        ) as excinfo:
-            AudioSeries.extract_audio_track(
-                Path("video.mkv"),
-                Path("audio.wav"),
-                12,
-                2,
-            )
-
-    assert isinstance(excinfo.value.__cause__, ffmpeg.Error)
 
 
 def test_audio_series_load_from_media_supports_stream_index():
@@ -135,7 +35,7 @@ def test_audio_series_load_from_media_supports_stream_index():
                 },
             ):
                 with patch(
-                    "scinoephile.audio.subtitles.series.AudioSeries.extract_audio_track",
+                    "scinoephile.audio.subtitles.series.extract_audio",
                     side_effect=_write_selected_audio,
                 ):
                     yuewen_series = AudioSeries.load_from_media(
@@ -170,7 +70,7 @@ def test_audio_series_load_from_media_defaults_to_first_audio_stream():
                 },
             ):
                 with patch(
-                    "scinoephile.audio.subtitles.series.AudioSeries.extract_audio_track",
+                    "scinoephile.audio.subtitles.series.extract_audio",
                     side_effect=_write_selected_audio,
                 ):
                     yuewen_series = AudioSeries.load_from_media(
@@ -215,9 +115,7 @@ def test_audio_series_load_from_media_wraps_decode_errors():
                     "streams": [{"index": 1, "codec_type": "audio", "channels": 2}]
                 },
             ):
-                with patch(
-                    "scinoephile.audio.subtitles.series.AudioSeries.extract_audio_track"
-                ):
+                with patch("scinoephile.audio.subtitles.series.extract_audio"):
                     with patch(
                         "scinoephile.audio.subtitles.series.AudioSegment.from_wav",
                         side_effect=CouldntDecodeError("invalid audio"),
@@ -256,6 +154,24 @@ def test_audio_series_load_from_media_rejects_invalid_stream_index():
                     )
 
 
+def test_audio_series_load_from_media_loads_wav_without_extraction():
+    """Test a standalone WAV is loaded directly without ffmpeg extraction."""
+    with get_temp_file_path(".srt") as subtitle_path:
+        subtitle_path.write_text(
+            "1\n00:00:00,000 --> 00:00:01,000\n你好\n", encoding="utf-8"
+        )
+        with get_temp_file_path(".wav") as media_path:
+            AudioSegment.silent(duration=2000).export(media_path, format="wav")
+            with patch("scinoephile.audio.subtitles.series.extract_audio") as extract:
+                series = AudioSeries.load_from_media(
+                    media_path=media_path,
+                    subtitle_path=subtitle_path,
+                )
+
+    extract.assert_not_called()
+    assert len(series.audio) == 2000
+
+
 def test_audio_series_load_from_media_rejects_non_audio_stream_index():
     """Test media loading rejects overall stream indexes that are not audio."""
     with get_temp_file_path(".srt") as subtitle_path:
@@ -284,21 +200,25 @@ def test_audio_series_load_from_media_rejects_non_audio_stream_index():
 
 
 def _write_selected_audio(
-    video_input_path: Path,
-    audio_output_path: Path,
-    audio_track: int,
-    channels: int,
+    infile_path: Path,
+    outfile_path: Path,
+    *,
+    stream_index: int | None = None,
+    overwrite: bool = False,
 ):
     """Write a WAV whose duration identifies the selected stream.
 
     Arguments:
-        video_input_path: input media path
-        audio_output_path: output WAV path
-        audio_track: selected audio stream index
-        channels: selected audio channel count
+        infile_path: input media path
+        outfile_path: output WAV path
+        stream_index: selected audio stream index
+        overwrite: whether an existing output may be replaced
     """
-    _ = video_input_path
-    AudioSegment.silent(duration=3000 + audio_track * 10 + channels).export(
-        audio_output_path,
+    _ = infile_path, overwrite
+    if stream_index is None:
+        stream_index = 1
+    channels = 6 if stream_index == 12 else 2
+    AudioSegment.silent(duration=3000 + stream_index * 10 + channels).export(
+        outfile_path,
         format="wav",
     )
