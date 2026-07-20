@@ -36,19 +36,16 @@ Emphasize different evidence and instructions by operation:
 | OCR fusion or review | Exact forms likely to resolve image-text ambiguity; omit speech-specific or translation-specific instructions. |
 
 Allow tightly coupled stages to share context only when they serve the same
-target language and purpose. For example, KOB's `yue-Hant` transcription,
-guided review, and gap translation can share Cantonese naming guidance. If a
-dataset also performs English translation, give that translation its own
-English-targeted context.
+target language and purpose. Give a workflow with a different target language
+or purpose its own targeted context.
 
-Use these repository examples as contrasts:
+Apply the operation-specific guidance consistently:
 
-- For KOB transcription, prefer `yue-Hant` spellings and document where the
-  `zho-Hant` guide differs from spoken Cantonese, such as `打狗棒` versus
-  `打狗棍`.
-- For MNT guided translation, map Chinese names and recurring terms to
-  established English Totoro terminology and describe the desired English
-  tone.
+- For transcription with a guide in another language or script, prefer the
+  transcription language's canonical spellings and identify meaningful guide
+  and spoken-form differences.
+- For guided translation, map source names and recurring terms to established
+  target-language forms and describe the required target-language tone.
 
 ## Inspect subtitle evidence
 
@@ -69,9 +66,9 @@ terms likely to help the requested LLM operation:
   output.
 
 Preserve the exact observed source forms. Check nearby dialogue before treating
-a common noun or kinship term as a proper-name alias. For example, map `姐姐` to
-a character only if its relevant uses consistently identify that character; if
-needed, qualify the mapping with its context.
+a common noun or kinship term as a proper-name alias. Map it to a character
+only if its relevant uses consistently identify that character; if needed,
+qualify the mapping with its context.
 
 Never edit files under `test/data/<dataset>/input/` while researching context.
 
@@ -98,7 +95,7 @@ the supporting web pages in the final response instead.
 
 ## Draft the context
 
-Follow this plain-text shape, modeled on `test/data/mnt/create_output.py`:
+Follow this plain-text shape:
 
 ```text
 Movie context:
