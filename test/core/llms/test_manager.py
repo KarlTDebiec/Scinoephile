@@ -15,7 +15,6 @@ from scinoephile.llms.guided_translation import (
     GuidedTranslationPrompt,
 )
 from scinoephile.llms.ocr_fusion import OcrFusionManager
-from scinoephile.llms.pairwise_review import PairwiseReviewManager
 from scinoephile.llms.punctuation import (
     PunctuationManager,
     PunctuationPrompt,
@@ -55,7 +54,6 @@ _MANAGER_CLASSES: list[type[Manager]] = [
     GuidedReviewManager,
     GuidedTranslationManager,
     OcrFusionManager,
-    PairwiseReviewManager,
     PunctuationManager,
     ReviewManager,
     TranslationManager,

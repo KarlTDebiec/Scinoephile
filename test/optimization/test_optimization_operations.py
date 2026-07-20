@@ -10,7 +10,6 @@ from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.guided_translation import GuidedTranslationManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
-from scinoephile.llms.pairwise_review import PairwiseReviewManager
 from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
@@ -25,7 +24,6 @@ def test_operations_are_keyed_by_stable_manager_identifiers():
         "guided-review": GuidedReviewManager,
         "guided-translation": GuidedTranslationManager,
         "ocr-fusion": OcrFusionManager,
-        "pairwise-review": PairwiseReviewManager,
         "punctuation": PunctuationManager,
         "review": ReviewManager,
         "translation": TranslationManager,

@@ -26,9 +26,9 @@ from test.helpers import assert_series_equal, parametrize
     ),
     [
         param(
-            "mlamd_yue_hans_transcribe_review",
+            "mlamd_yue_hans_transcribe_translation_input",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
-            "mlamd_yue_hans_transcribe_review_translate",
+            "mlamd_yue_hans_transcribe_translate",
             get_mlamd_yue_from_zho_gap_translation_test_cases,
             "test.data.mlamd.get_torch_device",
             id="mlamd",

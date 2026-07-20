@@ -7,14 +7,12 @@ from __future__ import annotations
 from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.llms.guided_review import GuidedReviewPrompt
-from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
 from scinoephile.llms.review import ReviewPrompt
 
 from .prompts import ENG_PROMPT_FIELDS
 
 __all__ = [
     "GuidedReviewPromptEng",
-    "PairwiseReviewPromptEng",
     "ReviewPromptEng",
 ]
 
@@ -50,26 +48,6 @@ GuidedReviewPromptEng = GuidedReviewPrompt(
     note_desc="English note explaining the target subtitle revision.",
 )
 """LLM correspondence text for guided review of English subtitles."""
-
-PairwiseReviewPromptEng = PairwiseReviewPrompt(
-    language=Language.eng,
-    **ENG_PROMPT_FIELDS,
-    base_system_prompt=dedent_and_compact("""
-        Review one English subtitle against one corresponding reference subtitle,
-        which may be in another language. Correct only clear transcription, spelling,
-        or name errors supported by the reference. Do not translate the reference or
-        rewrite correct English to mirror its wording. If a revision is necessary,
-        return the full revised English subtitle and a short English note. If no
-        revision is necessary, return empty strings. Return "�" only when the English
-        subtitle has no corresponding content and should be removed."""),
-    target="english",
-    target_desc="English subtitle to review",
-    reference="reference",
-    reference_desc="Corresponding reference subtitle",
-    output="revised_english",
-    note_desc="English note explaining the revision, or an empty string",
-)
-"""LLM correspondence text for pairwise review of English subtitles."""
 
 ReviewPromptEng = ReviewPrompt(
     language=Language.eng,

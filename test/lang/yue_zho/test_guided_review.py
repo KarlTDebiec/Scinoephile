@@ -28,9 +28,9 @@ from test.helpers import assert_series_equal, parametrize
     ),
     [
         param(
-            "mlamd_yue_hans_transcribe_review_translate",
+            "mlamd_yue_hans_transcribe_translate",
             "mlamd_zho_hans_fuse_clean_validate_review_flatten_merged_539",
-            "mlamd_yue_hans_transcribe_review_translate_guided_review",
+            "mlamd_yue_hans_transcribe_translate_guided_review",
             get_mlamd_yue_vs_zho_guided_review_test_cases,
             "test.data.mlamd.get_torch_device",
             "cuda",
