@@ -155,5 +155,5 @@ def test_tracked_test_case_json_inventory_is_complete():
         for input_path, _ in _TEST_CASE_FILES
     )
 
-    assert len(_TEST_CASE_FILES) == 78
-    assert test_case_count == 24_068
+    assert len(_TEST_CASE_FILES) == 82
+    assert test_case_count == 24_207

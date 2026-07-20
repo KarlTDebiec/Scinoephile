@@ -1,0 +1,4 @@
+interface:
+  display_name: "Run Transcription Workflow"
+  short_description: "Review guided transcriptions block by block"
+  default_prompt: "Use $run-transcription-workflow to process a guided transcription one block at a time."

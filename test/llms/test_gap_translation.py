@@ -488,8 +488,8 @@ def test_repository_json_fixtures_load():
         )
     ]
 
-    assert len(fixture_paths) == 3
-    assert len(test_cases) == 91
+    assert len(fixture_paths) == 4
+    assert len(test_cases) == 93
     assert all(
         cast(GapTranslationTestCase, test_case).query.guides for test_case in test_cases
     )
