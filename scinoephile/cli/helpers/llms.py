@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from scinoephile.common.argument_parsing import input_file_arg
+from scinoephile.common.argument_parsing import input_file_arg, output_file_arg
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
@@ -33,6 +33,7 @@ __all__ = [
     "LLM_LOCALIZATIONS",
     "LlmArguments",
     "add_llm_provider_args",
+    "add_llm_test_case_json_arg",
     "llm_provider_name_arg",
     "read_llm_additional_context",
 ]
@@ -46,6 +47,7 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "llm arguments": "LLM 参数",
         "LLM model identifier override": "LLM 模型标识符覆盖值",
+        "test-case JSON file to load and update": "要加载和更新的测试用例 JSON 文件",
         f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
         "--list-llm-providers to show providers, default models, and API-key "
         "environment variables.": (
@@ -62,6 +64,7 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "llm arguments": "LLM 參數",
         "LLM model identifier override": "LLM 模型識別碼覆寫值",
+        "test-case JSON file to load and update": "要載入和更新的測試案例 JSON 檔案",
         f"LLM provider to use (default: {DEFAULT_PROVIDER_NAME}). Use "
         "--list-llm-providers to show providers, default models, and API-key "
         "environment variables.": (
@@ -132,6 +135,29 @@ def add_llm_provider_args(
         action=_ListLLMProvidersAction,
         default=SUPPRESS,
         help="list available LLM providers and exit",
+    )
+
+
+def add_llm_test_case_json_arg(
+    llm_arg_group: _ArgumentGroup,
+    option_name: str = "--json",
+    *,
+    dest: str = "json_path",
+    help_text: str = "test-case JSON file to load and update",
+):
+    """Add a test-case JSON persistence argument.
+
+    Arguments:
+        llm_arg_group: argument group to which the JSON argument is added
+        option_name: command-line option name
+        dest: parsed argument destination
+        help_text: argument help text
+    """
+    llm_arg_group.add_argument(
+        option_name,
+        dest=dest,
+        type=output_file_arg(exist_ok=True),
+        help=help_text,
     )
 
 
