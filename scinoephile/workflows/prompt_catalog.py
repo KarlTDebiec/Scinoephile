@@ -8,7 +8,6 @@ from collections.abc import Mapping
 from types import MappingProxyType
 
 import scinoephile.lang.review.guided as guided_review
-import scinoephile.lang.review.pairwise as pairwise_review
 import scinoephile.lang.review.standard as review
 import scinoephile.lang.transcription.guided as guided_transcription
 import scinoephile.lang.translation.gap as gap_translation
@@ -22,7 +21,6 @@ from scinoephile.llms.gap_translation import GapTranslationManager
 from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.guided_translation import GuidedTranslationManager
 from scinoephile.llms.ocr_fusion import OcrFusionManager
-from scinoephile.llms.pairwise_review import PairwiseReviewManager
 from scinoephile.llms.punctuation import PunctuationManager
 from scinoephile.llms.review import ReviewManager
 from scinoephile.llms.translation import TranslationManager
@@ -43,11 +41,6 @@ def _build_prompt_specs() -> Mapping[str, PromptSpec]:
         _build_pair_prompt_specs(
             GuidedReviewManager,
             guided_review.DEFAULT_PROMPTS,
-            separator="vs",
-        ),
-        _build_pair_prompt_specs(
-            PairwiseReviewManager,
-            pairwise_review.DEFAULT_PROMPTS,
             separator="vs",
         ),
         _build_pair_prompt_specs(
