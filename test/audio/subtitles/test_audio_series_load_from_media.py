@@ -154,28 +154,44 @@ def test_audio_series_load_from_media_rejects_invalid_stream_index():
                     )
 
 
-def test_audio_series_load_from_media_normalizes_wav_through_extraction():
-    """Test a standalone WAV is normalized through audio extraction."""
+def test_audio_series_load_from_media_loads_wav_without_extraction():
+    """Test a standalone WAV is loaded directly without ffmpeg extraction."""
     with get_temp_file_path(".srt") as subtitle_path:
         subtitle_path.write_text(
             "1\n00:00:00,000 --> 00:00:01,000\n你好\n", encoding="utf-8"
         )
         with get_temp_file_path(".wav") as media_path:
             AudioSegment.silent(duration=2000).export(media_path, format="wav")
-            with patch(
-                "scinoephile.audio.subtitles.series.extract_audio",
-                side_effect=_write_selected_audio,
-            ) as extract:
+            with patch("scinoephile.audio.subtitles.series.extract_audio") as extract:
                 series = AudioSeries.load_from_media(
                     media_path=media_path,
                     subtitle_path=subtitle_path,
                 )
 
-    extract.assert_called_once()
-    assert extract.call_args.args[0].resolve() == media_path.resolve()
-    assert extract.call_args.args[1].name == "full_audio.wav"
-    assert extract.call_args.kwargs == {"stream_index": None}
-    assert len(series.audio) == 3012
+    extract.assert_not_called()
+    assert len(series.audio) == 2000
+
+
+def test_audio_series_load_from_media_rejects_nonzero_wav_stream_index():
+    """Test a standalone WAV supports only its single audio stream."""
+    with get_temp_file_path(".srt") as subtitle_path:
+        subtitle_path.write_text(
+            "1\n00:00:00,000 --> 00:00:01,000\n你好\n", encoding="utf-8"
+        )
+        with get_temp_file_path(".wav") as media_path:
+            AudioSegment.silent(duration=2000).export(media_path, format="wav")
+            with patch("scinoephile.audio.subtitles.series.extract_audio") as extract:
+                with raises(
+                    ScinoephileError,
+                    match="A standalone WAV infile only supports stream index 0",
+                ):
+                    AudioSeries.load_from_media(
+                        media_path=media_path,
+                        subtitle_path=subtitle_path,
+                        stream_index=1,
+                    )
+
+    extract.assert_not_called()
 
 
 def test_audio_series_load_from_media_rejects_non_audio_stream_index():

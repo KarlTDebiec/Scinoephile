@@ -244,15 +244,23 @@ class AudioSeries(Series):
             validated_subtitle_path = val_input_path(subtitle_path)
             text_series = Series.load(validated_subtitle_path, **kwargs)
 
-            with get_temp_directory_path() as temp_dir_path:
-                full_audio_path = temp_dir_path / "full_audio.wav"
-                extract_audio(
-                    validated_media_path,
-                    full_audio_path,
-                    stream_index=stream_index,
-                )
-                logger.info(f"Loading full audio from {full_audio_path}")
-                full_audio = AudioSegment.from_wav(full_audio_path)
+            if validated_media_path.suffix.lower() == ".wav":
+                if stream_index not in (None, 0):
+                    raise ScinoephileError(
+                        "A standalone WAV infile only supports stream index 0"
+                    )
+                logger.info(f"Loading full audio from {validated_media_path}")
+                full_audio = AudioSegment.from_wav(validated_media_path)
+            else:
+                with get_temp_directory_path() as temp_dir_path:
+                    full_audio_path = temp_dir_path / "full_audio.wav"
+                    extract_audio(
+                        validated_media_path,
+                        full_audio_path,
+                        stream_index=stream_index,
+                    )
+                    logger.info(f"Loading full audio from {full_audio_path}")
+                    full_audio = AudioSegment.from_wav(full_audio_path)
 
             return cls.build_series(text_series, full_audio, buffer)
         except (OSError, PydubException, UnicodeError, ValueError) as exc:
