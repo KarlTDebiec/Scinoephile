@@ -106,6 +106,28 @@ def test_queryer_corresponds_using_prompt_aliases():
     }
 
 
+def test_processor_deletes_target_with_replacement_character_revision():
+    """The replacement-character revision should remove its target subtitle."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = json.dumps(
+        {"xiugai": [{"xuhao": 1, "wenben": "�", "beizhu": "刪除多餘字幕"}]},
+        ensure_ascii=False,
+    )
+    processor = GuidedReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor.queryer.cache_dir_path = None
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="多餘"),
+            Subtitle(start=1100, end=2000, text="保留"),
+        ]
+    )
+    guide = Series(events=[Subtitle(start=1100, end=2000, text="參考")])
+
+    output = processor.process(target, guide)
+
+    assert [subtitle.text for subtitle in output] == ["保留"]
+
+
 def test_query_lists_require_items_and_consecutive_ordered_indexes():
     """Targets should be nonempty and both lists should use ordered indexes."""
     query_cls = GuidedReviewManager.get_query_cls(GuidedReviewManager.base_prompt)
