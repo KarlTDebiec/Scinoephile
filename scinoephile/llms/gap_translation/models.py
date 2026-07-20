@@ -94,6 +94,19 @@ class GapTranslationTestCase(TestCase):
     answer: GapTranslationAnswer | None = None
     """Translations for target gaps, if available."""
 
+    def get_min_difficulty(self) -> int:
+        """Get minimum difficulty based on whether target text is generated.
+
+        Returns:
+            minimum difficulty
+        """
+        min_difficulty = super().get_min_difficulty()
+        if self.answer is not None and any(
+            output.text for output in self.answer.outputs
+        ):
+            min_difficulty = max(min_difficulty, 1)
+        return min_difficulty
+
     @model_validator(mode="after")
     def validate_output_correspondence(self) -> Self:
         """Ensure outputs exactly fill the guide indexes absent from targets.
