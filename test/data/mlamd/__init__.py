@@ -20,10 +20,7 @@ from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.eng.review import ReviewPromptEng
-from scinoephile.lang.yue_zho.review import (
-    YueZhoGuidedReviewPromptYueHans,
-    YueZhoPairwiseReviewPromptYueHans,
-)
+from scinoephile.lang.yue_zho.review import YueZhoGuidedReviewPromptYueHans
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
     YueZhoPunctuationPromptYueHans,
@@ -43,10 +40,6 @@ from scinoephile.llms.gap_translation import (
 )
 from scinoephile.llms.guided_review import GuidedReviewManager, GuidedReviewPrompt
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionPrompt
-from scinoephile.llms.pairwise_review import (
-    PairwiseReviewManager,
-    PairwiseReviewPrompt,
-)
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 from scinoephile.llms.review import ReviewManager, ReviewPrompt
 from test.helpers import test_data_root
@@ -61,7 +54,6 @@ __all__ = [
     "get_mlamd_yue_from_zho_gap_translation_test_cases",
     "get_mlamd_yue_punctuation_test_cases",
     "get_mlamd_yue_vs_zho_guided_review_test_cases",
-    "get_mlamd_yue_vs_zho_pairwise_review_test_cases",
     "get_mlamd_zho_hans_ocr_fusion_test_cases",
     "get_mlamd_zho_hans_review_test_cases",
     "get_mlamd_zho_hant_ocr_fusion_test_cases",
@@ -82,9 +74,9 @@ __all__ = [
     "mlamd_yue_hans_audio_path",
     "mlamd_yue_hans_eng",
     "mlamd_yue_hans_transcribe",
-    "mlamd_yue_hans_transcribe_review",
-    "mlamd_yue_hans_transcribe_review_translate",
-    "mlamd_yue_hans_transcribe_review_translate_guided_review",
+    "mlamd_yue_hans_transcribe_translate",
+    "mlamd_yue_hans_transcribe_translate_guided_review",
+    "mlamd_yue_hans_transcribe_translation_input",
     "mlamd_zho_hans_eng",
     "mlamd_zho_hans_fuse",
     "mlamd_zho_hans_fuse_clean",
@@ -273,32 +265,6 @@ def get_mlamd_yue_vs_zho_guided_review_test_cases(
 
 
 @cache
-def get_mlamd_yue_vs_zho_pairwise_review_test_cases(
-    prompt: PairwiseReviewPrompt = YueZhoPairwiseReviewPromptYueHans,
-    **kwargs: Any,
-) -> list[TestCase]:
-    """Get MLAMD yue-Hans vs zho-Hans pairwise review test cases.
-
-    Arguments:
-        prompt: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        output_dir
-        / "yue-Hans_transcribe"
-        / "lang"
-        / "yue_zho"
-        / "pairwise_review"
-        / f"{get_torch_device()}.json"
-    )
-    return load_test_cases_from_json(
-        path, PairwiseReviewManager, prompt=prompt, **kwargs
-    )
-
-
-@cache
 def get_mlamd_zho_hans_ocr_fusion_test_cases(
     prompt: OcrFusionPrompt = OcrFusionPromptZhoHans,
     **kwargs: Any,
@@ -471,26 +437,24 @@ def mlamd_yue_hans_transcribe() -> Series:
 
 
 @fixture
-def mlamd_yue_hans_transcribe_review() -> Series:
-    """MLAMD yue-Hans transcribed and pairwise reviewed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe/transcribe_review.srt")
-
-
-@fixture
-def mlamd_yue_hans_transcribe_review_translate() -> Series:
-    """MLAMD yue-Hans transcribed, pairwise reviewed, and translated subtitles."""
+def mlamd_yue_hans_transcribe_translation_input() -> Series:
+    """MLAMD yue-Hans transcription curated as gap-translation input."""
     return Series.load(
-        output_dir / "yue-Hans_transcribe/transcribe_review_translate.srt"
+        output_dir / "yue-Hans_transcribe/transcribe_translation_input.srt"
     )
 
 
 @fixture
-def mlamd_yue_hans_transcribe_review_translate_guided_review() -> Series:
-    """MLAMD yue-Hans transcribed, pairwise reviewed, translated, and guided reviewed subtitles."""
+def mlamd_yue_hans_transcribe_translate() -> Series:
+    """MLAMD yue-Hans transcribed and gap-translated subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe/transcribe_translate.srt")
+
+
+@fixture
+def mlamd_yue_hans_transcribe_translate_guided_review() -> Series:
+    """MLAMD yue-Hans transcribed, gap-translated, and guided-reviewed subtitles."""
     return Series.load(
-        output_dir
-        / "yue-Hans_transcribe"
-        / "transcribe_review_translate_guided_review.srt"
+        output_dir / "yue-Hans_transcribe/transcribe_translate_guided_review.srt"
     )
 
 

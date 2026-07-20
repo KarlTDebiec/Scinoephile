@@ -190,7 +190,7 @@ def test_get_stacked_series_overlap_error_includes_event_context():
             id="kob-yue-hans-eng",
         ),
         param(
-            "mlamd_yue_hans_transcribe_review_translate_guided_review",
+            "mlamd_yue_hans_transcribe_translate_guided_review",
             "mlamd_eng_fuse_clean_validate_review_flatten",
             "mlamd_yue_hans_eng",
             id="mlamd-yue-hans-eng",

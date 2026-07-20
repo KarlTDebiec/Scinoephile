@@ -7,15 +7,11 @@ from __future__ import annotations
 from scinoephile.lang.zho.review import (
     GuidedReviewPromptZhoHans,
     GuidedReviewPromptZhoHant,
-    PairwiseReviewPromptZhoHans,
-    PairwiseReviewPromptZhoHant,
 )
 
 __all__ = [
     "ZhoEngGuidedReviewPromptZhoHans",
     "ZhoEngGuidedReviewPromptZhoHant",
-    "ZhoEngPairwiseReviewPromptZhoHans",
-    "ZhoEngPairwiseReviewPromptZhoHant",
 ]
 
 
@@ -24,9 +20,3 @@ ZhoEngGuidedReviewPromptZhoHant = GuidedReviewPromptZhoHant
 
 ZhoEngGuidedReviewPromptZhoHans = GuidedReviewPromptZhoHans
 """Prompt for guided review of simplified Chinese using English."""
-
-ZhoEngPairwiseReviewPromptZhoHant = PairwiseReviewPromptZhoHant
-"""Prompt for pairwise review of traditional Chinese using English."""
-
-ZhoEngPairwiseReviewPromptZhoHans = PairwiseReviewPromptZhoHans
-"""Prompt for pairwise review of simplified Chinese using English."""

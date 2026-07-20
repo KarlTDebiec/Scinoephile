@@ -10,7 +10,6 @@ from scinoephile.core import Language
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.llms.guided_review import GuidedReviewPrompt
-from scinoephile.llms.pairwise_review import PairwiseReviewPrompt
 from scinoephile.llms.review import ReviewPrompt
 
 from .prompts import YUE_HANT_PROMPT_FIELDS
@@ -18,8 +17,6 @@ from .prompts import YUE_HANT_PROMPT_FIELDS
 __all__ = [
     "GuidedReviewPromptYueHans",
     "GuidedReviewPromptYueHant",
-    "PairwiseReviewPromptYueHans",
-    "PairwiseReviewPromptYueHant",
     "ReviewPromptYueHans",
     "ReviewPromptYueHant",
 ]
@@ -66,31 +63,6 @@ GuidedReviewPromptYueHans = GuidedReviewPromptYueHant.transformed(
     partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
 )
 """LLM correspondence text for guided review of simplified Cantonese."""
-
-PairwiseReviewPromptYueHant = PairwiseReviewPrompt(
-    language=Language.yue_hant,
-    **YUE_HANT_PROMPT_FIELDS,
-    base_system_prompt=dedent_and_compact("""
-        將一條粵文字幕同一條對應嘅參考字幕作比較校對；參考字幕可以係另一種語言。
-        只修正參考字幕足以證實嘅明顯聽錯字、寫錯字或者名稱錯誤。
-        唔好翻譯參考字幕，亦唔好改寫本來正確嘅粵文去配合參考字幕嘅措辭。
-        如果需要修改，回傳完整修訂後粵文同粵文備註；如果唔需要修改，兩者都回傳空字串。
-        只有當粵文完全冇對應內容而且應該刪除時，先回傳 "�"。"""),
-    target="yuewen",
-    target_desc="要校對嘅粵文字幕",
-    reference="cankao",
-    reference_desc="對應嘅參考字幕",
-    output="xiugai",
-    note="beizhu",
-    note_desc="改動説明（粵文）；如果唔需要修改請回傳空字串",
-)
-"""LLM correspondence text for pairwise review of traditional Cantonese."""
-
-PairwiseReviewPromptYueHans = PairwiseReviewPromptYueHant.transformed(
-    Language.yue_hans,
-    partial(get_zho_text_converted, config=OpenCCConfig.hk2s),
-)
-"""LLM correspondence text for pairwise review of simplified Cantonese."""
 
 ReviewPromptYueHant = ReviewPrompt(
     language=Language.yue_hant,

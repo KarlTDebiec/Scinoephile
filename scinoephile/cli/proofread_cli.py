@@ -24,7 +24,6 @@ from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.review import (
     review_series,
     review_series_guided,
-    review_series_pairwise,
 )
 
 from .helpers.io import read_series, write_series
@@ -41,7 +40,6 @@ PROOFREAD_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "command-line interface for subtitle proofreading": "字幕校对命令行界面",
         'subtitle infile or "-" for stdin': '字幕输入文件，或使用 "-" 表示标准输入',
-        "pairwise guide subtitle infile": "用于逐对校对的引导字幕输入文件",
         "guide subtitle infile for guided review": "用于引导校对的字幕输入文件",
         "subtitle language tag (detected from infile if omitted)": (
             "字幕语言标签（省略时从输入文件检测）"
@@ -58,7 +56,6 @@ PROOFREAD_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hant": {
         "command-line interface for subtitle proofreading": "字幕校對命令列介面",
         'subtitle infile or "-" for stdin': '字幕輸入檔，或使用 "-" 代表標準輸入',
-        "pairwise guide subtitle infile": "用於逐對校對的引導字幕輸入檔",
         "guide subtitle infile for guided review": "用於引導校對的字幕輸入檔",
         "subtitle language tag (detected from infile if omitted)": (
             "字幕語言標籤（省略時從輸入檔偵測）"
@@ -108,14 +105,7 @@ class ProofreadCli(ScinoephileCliBase):
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile or "-" for stdin',
         )
-        guide_input_group = arg_groups["input arguments"].add_mutually_exclusive_group()
-        guide_input_group.add_argument(
-            "--pairwise-guide-infile",
-            dest="pairwise_guide_infile_path",
-            type=input_file_arg(),
-            help="pairwise guide subtitle infile",
-        )
-        guide_input_group.add_argument(
+        arg_groups["input arguments"].add_argument(
             "--guide-infile",
             dest="guide_infile_path",
             type=input_file_arg(),
@@ -162,7 +152,6 @@ class ProofreadCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_path: Path | str,
-        pairwise_guide_infile_path: Path | None,
         guide_infile_path: Path | None,
         language: Language | None,
         reference_language: Language | None,
@@ -175,15 +164,8 @@ class ProofreadCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
-        if (
-            reference_language is not None
-            and pairwise_guide_infile_path is None
-            and guide_infile_path is None
-        ):
-            parser.error(
-                "--reference-language requires --pairwise-guide-infile or "
-                "--guide-infile"
-            )
+        if reference_language is not None and guide_infile_path is None:
+            parser.error("--reference-language requires --guide-infile")
 
         # Read input
         series = read_series(parser, infile_path, allow_stdin=True)
@@ -194,17 +176,7 @@ class ProofreadCli(ScinoephileCliBase):
 
         # Perform operation
         try:
-            if pairwise_guide_infile_path is not None:
-                reference = read_series(parser, pairwise_guide_infile_path)
-                output = review_series_pairwise(
-                    series,
-                    reference,
-                    language=language,
-                    reference_language=reference_language,
-                    provider=provider,
-                    additional_context=additional_context,
-                )
-            elif guide_infile_path is not None:
+            if guide_infile_path is not None:
                 guide = read_series(parser, guide_infile_path)
                 output = review_series_guided(
                     series,
