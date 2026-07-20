@@ -1,4 +1,4 @@
 interface:
-  display_name: "Run Transcription Workflow"
-  short_description: "Review guided transcriptions in block batches"
-  default_prompt: "Use $run-transcription-workflow to process a guided transcription in verified five-block batches."
+  display_name: "Run Transcription Audits"
+  short_description: "Audit transcription delineation and punctuation"
+  default_prompt: "Use $run-transcription-workflow to transcribe a movie and verify delineation and punctuation in five-block batches."

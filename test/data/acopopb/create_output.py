@@ -90,5 +90,6 @@ if "yue-Hant_transcribe" in actions:
         guide_language=Language.zho_hant,
         output_dir_path=yue_hant_transcribe_path,
         additional_context=transcription_additional_context,
+        run_review_and_translation=False,
         overwrite=True,
     )

@@ -177,3 +177,65 @@ def test_process_transcription_orders_stages_and_relogs_expected_mismatch(
     ]
     assert len(mismatch_records) == 1
     assert mismatch_records[0].levelno == expected_log_level
+
+
+def test_process_transcription_can_stop_after_cleaning(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Skip guided review and gap translation when they are disabled.
+
+    Arguments:
+        tmp_path: temporary pipeline directory
+        monkeypatch: pytest monkeypatch fixture
+    """
+    reference = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
+    reference_path = tmp_path / "reference.srt"
+    guide_path = tmp_path / "guide.srt"
+    reference.save(reference_path)
+    reference.save(guide_path)
+    review = Mock()
+    translate = Mock()
+    monkeypatch.setattr(
+        transcription_data,
+        "resolve_language",
+        Mock(side_effect=lambda series, explicit_language: explicit_language),
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "_stage_audio_series",
+        Mock(return_value=reference),
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "_load_or_transcribe_series_guided",
+        Mock(return_value=reference),
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "load_or_clean_series",
+        Mock(return_value=reference),
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "_load_or_review_series_guided",
+        review,
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "_load_or_translate_series_gaps",
+        translate,
+    )
+
+    output = transcription_data.process_transcription(
+        tmp_path,
+        guide_path,
+        reference_path=reference_path,
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        run_review_and_translation=False,
+    )
+
+    assert output is reference
+    review.assert_not_called()
+    translate.assert_not_called()

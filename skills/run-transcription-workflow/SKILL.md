@@ -1,13 +1,15 @@
 ---
 name: run-transcription-workflow
-description: "Run and verify Scinoephile's reference-guided transcription pipeline in consecutive block batches using the command-line interface: audio extraction, transcription, delineation correction, punctuation correction, cleaning, guided review, and gapped translation when needed. Use when building or continuing a movie transcription from a provided media file and guide SRT, especially Cantonese transcription guided by Chinese subtitles. Requires an explicit existing media file; never discover media from machine-specific locations."
+description: "Run and verify Scinoephile reference-guided transcription in consecutive block batches using the command-line interface, limited to audio extraction, transcription, delineation audit, and punctuation audit. Use when building or continuing a movie transcription from a provided media file and guide SRT without performing guided review or translation. Requires an explicit existing media file; never discover media from machine-specific locations."
 ---
 
-# Run Transcription Workflow
+# Run Transcription Audits
 
-Run commands from the repository root. Build one cumulative, reviewed
-transcription prefix at a time using only the `scinoephile` CLI. Do not call
-`test/data/transcription.py`, dataset generation helpers, or workflow internals.
+Run commands from the repository root. Build and verify one cumulative
+transcription prefix at a time using only the `scinoephile` CLI. Stop after
+delineation and punctuation. Do not run guided review or any translation stage.
+Do not call `test/data/transcription.py`, dataset generation helpers, or workflow
+internals.
 
 ## Require inputs
 
@@ -20,63 +22,64 @@ Resolve these values before changing files:
 - `first_block` and `last_block`: inclusive one-based block batch to complete
 - `stream_index`: optional explicit audio stream index
 - `context`: optional prompt-ready movie context file
-- `transcription_reference`: optional exact reviewed target-language SRT used
-  only as audit evidence
-- `state_stem`: stable filename stem reused by all JSON logs, such as `mps`
-- optional LLM provider, LLM model, Whisper model, Demucs, or VAD overrides
+- `state_stem`: stable filename stem reused by both JSON logs, such as `mps`
+- optional Whisper model, Demucs, or VAD overrides
 
-Stop and request the missing media file if the caller did not provide one or it
-does not exist. Never search a home directory, mounted volume, media library, or
-other machine-specific location for it. The guide and output may be supplied
-directly or unambiguously resolved from a supplied dataset root. Never edit
-anything under `test/data/<dataset>/input/`.
+Stop and request the media file if the caller did not provide one or it does not
+exist. Never search a home directory, mounted volume, media library, or another
+machine-specific location for it. Resolve the guide and output directly from the
+caller or an unambiguous supplied dataset root. Never edit anything under
+`test/data/<dataset>/input/`.
 
 Use one stable set of paths throughout the run:
 
 ```text
 <output_dir>/audio/audio.wav
 <output_dir>/transcribe.srt
-<output_dir>/transcribe_clean.srt
-<output_dir>/transcribe_clean_review.srt
-<output_dir>/transcribe_clean_review_translate.srt
 <output_dir>/lang/<target_language>_<guide_language>/transcription/delineation/<state_stem>.json
 <output_dir>/lang/<target_language>_<guide_language>/transcription/punctuation/<state_stem>.json
-<output_dir>/lang/<target_language>_<guide_language>/guided_review/<state_stem>.json
-<output_dir>/lang/<target_language>_<guide_language>/gap_translation/<state_stem>.json
 ```
 
 Use language-family directory names for `<target_language>_<guide_language>`;
-for example, `yue_zho` for `yue-Hant` guided by `zho-Hant`. Reuse an existing
-state stem when continuing prior work. Create missing parent directories.
+for example, use `yue_zho` for `yue-Hant` guided by `zho-Hant`. Reuse an
+existing state stem when continuing prior work. Create missing parent
+directories.
 
 Before the first batch, reuse an existing prompt-ready transcription context if
 the caller or dataset provides one. Otherwise read
 `../write-movie-context/SKILL.md` completely and use it once to create
-`local/<dataset>_transcription_context.txt` for the target transcription
+`local/<dataset>_transcription_context.txt` in the target transcription
 language. Reuse that file for every later batch; do not repeat the research.
-Do not invent a context merely from the film title when stronger subtitle or
-canonical evidence is available.
+
+## Protect evaluation integrity
+
+Treat any target-language reference subtitle as evaluation-only data. Do not
+open, search, align, quote, or otherwise consult it while transcribing or while
+correcting delineation or punctuation JSON. Do not use CER to choose an answer.
+Keep the target-language reference unavailable until the selected transcription
+range is fully corrected and verified.
+
+Use only these stage inputs:
+
+- transcription: audio, guide, and optional movie context
+- delineation audit: fixed transcription fragments and the guide
+- punctuation audit: fixed transcription fragments and the guide
+
+Delineation and punctuation audits do not assess transcription accuracy. Never
+rewrite target words to resemble either the guide or an evaluation reference.
 
 ## Read the stage guidance
 
 Read each complete sibling skill immediately before auditing or correcting that
-stage. Load only the next stage's skill; do not load all later audit skills up
-front:
+stage. Load only the next stage's skill:
 
 - `../audit-transcription-delineation/SKILL.md`
 - `../audit-transcription-punctuation/SKILL.md`
-- `../audit-subtitle-reviews/SKILL.md`
-- `../audit-translations/SKILL.md`
 
-Follow their scope, report shape, correction, and verification rules. For
-Cantonese guided review, also read the Yue reference required by the subtitle
-review skill. This orchestration is a correction-and-verification request, not
-an audit-only request: fix incorrect JSON answers and mark a case verified only
-after inspecting the complete case. Never hand-edit generated SRT files.
-
-When an exact reviewed target-language subtitle track is available, use it as
-additional evidence during guided review and gap review. Do not pass it into
-generation commands, assume it overrides clearly different audio, or modify it.
+Follow their scope, report shape, correction, and verification rules. This
+orchestration is a correction-and-verification request: fix incorrect JSON
+answers and mark a case verified only after inspecting the complete case. Never
+hand-edit a generated SRT.
 
 ## Prepare audio once
 
@@ -108,34 +111,29 @@ five blocks. The final batch may contain fewer than five blocks, and a one-block
 batch is valid. Let `A` and `B` be the inclusive first and last blocks in the
 current batch.
 
-Begin a requested batch with step 1 below, even when earlier blocks and their
-JSON state already exist. Do not generate a preflight audit to test whether the
-new batch has been processed; an audit against the previous cumulative prefix
-will only create a misleading zero-row report.
+Begin a requested batch with transcription even when earlier blocks and JSON
+state already exist. Do not generate a preflight audit against the previous
+cumulative prefix.
 
 For batch `A-B`, every generation command must process the cumulative prefix
-once with `--last-block B`. Do not launch separate cumulative generation
-commands for `A`, `A + 1`, and so on, and do not pass `--first-block A` to
-transcription, review, cleaning, or translation. Each command rebuilds its
-complete derived SRT; do not concatenate block outputs. Use `--overwrite` only
-for these generated SRTs.
+once with `--last-block B`. Do not launch separate cumulative commands for `A`,
+`A + 1`, and so on, and do not pass `--first-block A` to transcription. The
+command rebuilds its complete derived SRT; do not concatenate block outputs.
+Use `--overwrite` only for the generated SRT.
 
 Preserve CLI defaults unless the caller explicitly supplied an override. Do not
-invent `--demucs`, `--vad`, Whisper model, LLM provider, or LLM model settings
-from the media format, stream description, device, or a performance guess.
+invent Demucs, VAD, or Whisper-model settings from the media format, stream
+description, device, or a performance guess.
 
 Every audit must isolate the new batch with `--first-block A` and
 `--last-block B`. Use a stable canonical report such as
 `local/<dataset>_<stage>_blocks_A_B.md` and pass `--overwrite` when refreshing it
-after a correction. Use separate pass-numbered reports only when the caller
-wants to retain intermediate evidence.
+after a correction.
 
-Run dependent commands serially. A command that yields a live process or
-session is still running: poll it until it exits, and require exit status 0
-before reading its output or starting the next stage. The existence, size, or
-modification time of an SRT or JSON file is not proof that its writer finished.
-Never generate an audit from a partial generation run. On a nonzero exit,
-diagnose or report the failure before continuing.
+Run dependent commands serially. Poll a live process until it exits, and require
+status 0 before reading its output or starting the next stage. The existence,
+size, or modification time of an SRT or JSON file is not proof that its writer
+finished. On a nonzero exit, diagnose or report the failure before continuing.
 
 ### 1. Transcribe
 
@@ -152,29 +150,20 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile transcribe \
   --overwrite
 ```
 
-Add the context and requested model/provider/audio-processing overrides to every
-applicable LLM command. Do not pass the original media to transcription after
-the stable WAV exists.
+Add `--llm-additional-content-file <context>` when context is present. Do not
+pass the original media after the stable WAV exists.
 
-If every Whisper candidate for a block is unusable, accept the empty
-transcription block and continue. Do not seed or alter Whisper cache files, copy
-guide text into transcription output, or hand-edit the generated SRT. Guided
-review will retain the gap, and gapped translation is the intended final-stage
-fallback.
-
-When `context` is present, add
-`--llm-additional-content-file <context>` to transcription, guided review, and
-gapped translation. Reuse the same context only when it is written for all
-three target-language operations; otherwise use the operation-specific files
-provided by the caller.
+If every Whisper candidate for a block is unusable, accept the empty block and
+continue. Do not seed or alter Whisper caches, copy guide text into the output,
+or hand-edit the generated SRT. Record the missing speech as an unresolved
+transcription gap outside the delineation and punctuation scopes.
 
 ### 2. Audit and correct delineation
 
-Generate a complete batch report using `--filter all`, inspect every row under
+Generate a complete batch report using `--filter all`. Inspect every row under
 the delineation skill, correct the delineation JSON, and rerun cumulative
-transcription. Repeat the report and correction loop until the selected batch
-has no delineation errors or unresolved cases and all fully audited cases are
-verified.
+transcription. Repeat until the selected batch has no delineation errors or
+unresolved cases and every fully audited case is verified.
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit delineation \
@@ -191,8 +180,8 @@ punctuation; a boundary correction may change punctuation queries.
 
 ### 3. Audit and correct punctuation
 
-Generate the punctuation report from the latest `transcribe.srt`, inspect every
-row under the punctuation skill, correct and verify the punctuation JSON, then
+Generate the punctuation report from the latest `transcribe.srt`. Inspect every
+row under the punctuation skill, correct and verify the punctuation JSON, and
 rerun cumulative transcription. Repeat until clean.
 
 ```shell
@@ -206,110 +195,26 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit punctuation \
   --overwrite
 ```
 
-### 4. Clean and guided-review
-
-Rebuild the cleaned cumulative transcription:
-
-```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile process \
-  --infile <output_dir>/transcribe.srt \
-  --language <target_language> \
-  --clean \
-  --outfile <output_dir>/transcribe_clean.srt \
-  --overwrite
-```
-
-Run cumulative guided review:
-
-```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile review \
-  <output_dir>/transcribe_clean.srt \
-  --guide-infile <guide> \
-  --language <target_language> \
-  --guide-language <guide_language> \
-  --last-block B \
-  --json <guided_review_json> \
-  --outfile <output_dir>/transcribe_clean_review.srt \
-  --overwrite
-```
-
-Audit batch `A-B` in guided mode with `--filter all`, including unchanged
-decisions. Correct and verify the guided-review JSON, rerun cumulative review,
-and repeat until clean.
-
-When a target subtitle is spurious and should be removed rather than rewritten,
-set its revision text to the single replacement character `�`. Guided review
-omits that event, allowing gapped translation to fill any corresponding guide
-position. Never use ellipses or another visible subtitle as a deletion
-placeholder.
-
-```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
-  --mode guided \
-  --original <output_dir>/transcribe_clean.srt \
-  --guide <guide> \
-  --json <guided_review_json> \
-  --first-block A --last-block B \
-  --filter all \
-  --outfile local/<dataset>_guided_review_blocks_A_B.md \
-  --overwrite
-```
-
-If an upstream correction changes transcription text, rebuild cleaning and all
-later stages before trusting their reports.
-
-### 5. Fill and audit gaps when present
-
-Run gapped translation after guided review. It is applicable when guide
-positions are absent from the reviewed target; if no gaps exist, the output may
-remain unchanged and the batch audit may contain no rows.
-
-```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile translate \
-  <guide> \
-  --gapped-infile <output_dir>/transcribe_clean_review.srt \
-  --source-language <guide_language> \
-  --target-language <target_language> \
-  --last-block B \
-  --json <gap_translation_json> \
-  --outfile <output_dir>/transcribe_clean_review_translate.srt \
-  --overwrite
-```
-
-Audit the original gapped target, never the gap-filled output. If rows exist,
-inspect all of them, correct and verify the JSON, rerun cumulative translation,
-and repeat until clean.
-
-```shell
-UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
-  --mode gapped \
-  --target <output_dir>/transcribe_clean_review.srt \
-  --guide <guide> \
-  --json <gap_translation_json> \
-  --first-block A --last-block B \
-  --filter all \
-  --outfile local/<dataset>_gap_translation_blocks_A_B.md \
-  --overwrite
-```
-
 ## Finish the batch
 
 Before reporting completion:
 
-1. Regenerate every downstream SRT affected by the final correction.
-2. Rerun each batch report to its canonical filename so it reflects the final
-   JSON and SRT state. Also generate a uniquely named `--filter unverified`
-   report for each stage and confirm it contains zero selected rows.
-3. Confirm no fully selected case remains unverified; do not falsely verify a
-   partial, unanswered, or uncertain case.
-4. Confirm the four cumulative SRTs end within the selected guide prefix and
-   contain all previously completed batches.
-5. Review `git diff` and `git status`; preserve unrelated work and never stage
+1. Rerun cumulative transcription after the final correction.
+2. Refresh both canonical batch reports from the final JSON and SRT state.
+3. Generate uniquely named `--filter unverified` reports for both stages and
+   confirm each contains zero selected rows.
+4. Confirm no fully selected case remains unverified; do not verify a partial,
+   unanswered, or uncertain case.
+5. Confirm `transcribe.srt` contains every previously completed batch and ends
+   within the selected guide prefix.
+6. Do not run `scinoephile review`, `scinoephile translate`, `audit review`, or
+   `audit translation` as part of this skill.
+7. Review `git diff` and `git status`; preserve unrelated work and never stage
    or commit unless requested.
-6. Link the final interpreted reports and summarize corrections, remaining
-   uncertainty, selected media stream, and whether gap translation was needed.
+8. Link the final interpreted delineation and punctuation reports and summarize
+   corrections, remaining uncertainty, and the selected media stream.
 
 Do not advance to the batch beginning at `B + 1` until batch `A-B` is fully
-regenerated and verified. Treat any oversized-block error as the end of the
-guide rather than silently clamping the range; retry only with the actual final
-block as `B`.
+regenerated and verified. Treat an oversized-block error as the end of the guide
+rather than silently clamping the range; retry only with the actual final block
+as `B`.
