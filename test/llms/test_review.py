@@ -249,6 +249,25 @@ def test_partial_processing_prunes_only_when_requested(tmp_path: Path):
     assert json.loads(test_case_path.read_text(encoding="utf-8")) == []
 
 
+def test_processor_honors_start_index():
+    """An inclusive start index should skip earlier review blocks."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"xiugai": []}'
+    processor = ReviewProcessor(_LOCALIZED_PROMPT, provider=provider)
+    processor.queryer.cache_dir_path = None
+    series = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="原文一"),
+            Subtitle(start=5000, end=6000, text="原文二"),
+        ]
+    )
+
+    output = processor.process(series, start_at_idx=1)
+
+    assert [subtitle.text for subtitle in output] == ["原文二"]
+    provider.chat_completion.assert_called_once()
+
+
 def test_query_requires_consecutive_ordered_indexes():
     """Query subtitle indexes should be consecutive, ordered, and one-based."""
     query_cls = ReviewManager.get_query_cls(ReviewManager.base_prompt)

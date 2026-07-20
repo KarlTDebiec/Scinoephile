@@ -36,6 +36,7 @@ def review_series(
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     reviewer: ReviewProcessor | None = None,
+    start_at_idx: int = 0,
     stop_at_idx: int | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
@@ -48,7 +49,8 @@ def review_series(
         test_cases: test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
-        stop_at_idx: exclusive block index at which to stop processing
+        start_at_idx: inclusive zero-based block index at which to start processing
+        stop_at_idx: exclusive zero-based block index at which to stop processing
         **kwargs: additional keyword arguments for ReviewProcessor
     Returns:
         reviewed subtitle series
@@ -65,7 +67,11 @@ def review_series(
             provider,
             **kwargs,
         )
-    return reviewer.process(series, stop_at_idx=stop_at_idx)
+    return reviewer.process(
+        series,
+        stop_at_idx=stop_at_idx,
+        start_at_idx=start_at_idx,
+    )
 
 
 def review_series_guided(
@@ -78,6 +84,7 @@ def review_series_guided(
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     reviewer: GuidedReviewProcessor | None = None,
+    start_at_idx: int = 0,
     stop_at_idx: int | None = None,
     **kwargs: Unpack[ProcessorKwargs],
 ) -> Series:
@@ -92,7 +99,8 @@ def review_series_guided(
         test_cases: test cases
         provider: provider to use for queries
         reviewer: reviewer to use, or None to construct one
-        stop_at_idx: exclusive block index at which to stop processing
+        start_at_idx: inclusive zero-based block index at which to start processing
+        stop_at_idx: exclusive zero-based block index at which to stop processing
         **kwargs: additional keyword arguments for GuidedReviewProcessor
     Returns:
         guided-reviewed subtitle series
@@ -110,7 +118,12 @@ def review_series_guided(
             provider=provider,
             **kwargs,
         )
-    return reviewer.process(target, guide, stop_at_idx=stop_at_idx)
+    return reviewer.process(
+        target,
+        guide,
+        stop_at_idx=stop_at_idx,
+        start_at_idx=start_at_idx,
+    )
 
 
 def review_series_pairwise(

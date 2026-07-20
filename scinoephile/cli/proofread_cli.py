@@ -20,6 +20,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.review import (
     review_series,
@@ -27,11 +28,17 @@ from scinoephile.workflows.review import (
     review_series_pairwise,
 )
 
+from .helpers.blocks import (
+    BLOCK_LOCALIZATIONS,
+    add_block_range_args,
+    get_block_range_indexes,
+)
 from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
     add_llm_provider_args,
+    add_llm_test_case_json_arg,
     read_llm_additional_context,
 )
 
@@ -78,6 +85,7 @@ class ProofreadCli(ScinoephileCliBase):
     """Proofread subtitles using an LLM."""
 
     localizations = merge_localizations(
+        BLOCK_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         PROOFREAD_LOCALIZATIONS,
     )
@@ -137,9 +145,11 @@ class ProofreadCli(ScinoephileCliBase):
                 "reference or guide language tag (detected from its infile if omitted)"
             ),
         )
+        add_block_range_args(arg_groups["operation arguments"])
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
+        add_llm_test_case_json_arg(arg_groups["llm arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -166,7 +176,10 @@ class ProofreadCli(ScinoephileCliBase):
         guide_infile_path: Path | None,
         language: Language | None,
         reference_language: Language | None,
+        first_block: int | None,
+        last_block: int | None,
         llm_args: LlmArguments,
+        json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -187,6 +200,18 @@ class ProofreadCli(ScinoephileCliBase):
 
         # Read input
         series = read_series(parser, infile_path, allow_stdin=True)
+        guide = None
+        if guide_infile_path is not None:
+            guide = read_series(parser, guide_infile_path)
+            block_count = len(get_block_pairs_by_pause(series, guide))
+        else:
+            block_count = len(series.blocks)
+        start_at_idx, stop_at_idx = get_block_range_indexes(
+            parser,
+            first_block,
+            last_block,
+            block_count,
+        )
         provider = get_provider(llm_args.provider_name, model=llm_args.model_name)
         additional_context = read_llm_additional_context(
             parser, llm_args.additional_context_file_path
@@ -204,8 +229,7 @@ class ProofreadCli(ScinoephileCliBase):
                     provider=provider,
                     additional_context=additional_context,
                 )
-            elif guide_infile_path is not None:
-                guide = read_series(parser, guide_infile_path)
+            elif guide is not None:
                 output = review_series_guided(
                     series,
                     guide,
@@ -213,6 +237,9 @@ class ProofreadCli(ScinoephileCliBase):
                     guide_language=reference_language,
                     provider=provider,
                     additional_context=additional_context,
+                    test_case_path=json_path,
+                    start_at_idx=start_at_idx,
+                    stop_at_idx=stop_at_idx,
                 )
             else:
                 output = review_series(
@@ -220,6 +247,9 @@ class ProofreadCli(ScinoephileCliBase):
                     language=language,
                     provider=provider,
                     additional_context=additional_context,
+                    test_case_path=json_path,
+                    start_at_idx=start_at_idx,
+                    stop_at_idx=stop_at_idx,
                 )
         except ScinoephileError as exc:
             parser.error(str(exc))

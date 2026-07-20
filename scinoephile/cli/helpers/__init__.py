@@ -3,6 +3,6 @@
 """Shared command-line interface helper modules.
 
 Package hierarchy (modules may import from any above):
-* argument_bundle_field_action / cache / conversion / io
+* argument_bundle_field_action / blocks / cache / conversion / io
 * llms / web
 """

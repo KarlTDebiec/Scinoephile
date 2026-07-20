@@ -7,6 +7,7 @@ from __future__ import annotations
 from logging import getLogger
 from typing import cast
 
+from scinoephile.common.validation import val_index_range
 from scinoephile.core.llms import Processor
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, get_concatenated_series
@@ -36,26 +37,25 @@ class GuidedReviewProcessor(Processor):
         target: Series,
         guide: Series,
         stop_at_idx: int | None = None,
+        *,
+        start_at_idx: int = 0,
     ) -> Series:
         """Review target blocks using guide blocks.
 
         Arguments:
             target: subtitles to review and whose timing is preserved
             guide: subtitles providing reference text
-            stop_at_idx: exclusive block index at which to stop processing
+            stop_at_idx: exclusive zero-based block index at which to stop processing
+            start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
             guided-reviewed target subtitles
         """
         block_pairs = get_block_pairs_by_pause(target, guide)
         output_blocks: list[Series | None] = [None] * len(block_pairs)
-        if stop_at_idx is None:
-            stop_at_idx = len(block_pairs)
-        elif stop_at_idx < 0:
-            raise ValueError("stop_at_idx must be greater than or equal to 0")
+        block_range = val_index_range(len(block_pairs), start_at_idx, stop_at_idx)
 
-        for block_idx, (target_block, guide_block) in enumerate(block_pairs):
-            if block_idx >= stop_at_idx:
-                break
+        for block_idx in block_range:
+            target_block, guide_block = block_pairs[block_idx]
             if not target_block:
                 output_blocks[block_idx] = Series()
                 continue
@@ -103,7 +103,8 @@ class GuidedReviewProcessor(Processor):
             logger.info(f"Block {block_idx}:\n{output_block.to_simple_string()}")
             output_blocks[block_idx] = output_block
 
-        self.save_test_cases()
+        complete_range = block_range.start == 0 and block_range.stop == len(block_pairs)
+        self.save_test_cases(prune=self.prune_test_cases or complete_range)
 
         processed_blocks = [block for block in output_blocks if block is not None]
         if processed_blocks:
