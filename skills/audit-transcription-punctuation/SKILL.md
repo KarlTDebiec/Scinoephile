@@ -51,7 +51,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit punctuation \
   --first-index <first> \
   --last-index <last> \
   --filter all \
-  --outfile local/<dataset>_punctuation_audit_<first>-<last>.md
+  --outfile local/<dataset>_punctuation_audit_<first>-<last>.md \
+  --overwrite
 ```
 
 Use `--filter changes` only when the user explicitly wants cases whose answers

@@ -97,6 +97,22 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     with raises(SystemExit):
         run_cli_with_args(
             AuditReviewDualCli,
+            f"{arguments} --outfile {outfile_path}",
+        )
+    assert "use --overwrite to replace it" in capsys.readouterr().err
+    run_cli_with_args(
+        AuditReviewDualCli,
+        f"{arguments} --outfile {outfile_path} --overwrite",
+    )
+    assert capsys.readouterr().out == ""
+
+    with raises(SystemExit):
+        run_cli_with_args(AuditReviewDualCli, f"{arguments} --overwrite")
+    assert "--overwrite may only be used with --outfile" in capsys.readouterr().err
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewDualCli,
             f"{arguments} --first-index 2 --last-index 1",
         )
     assert "--first-index must be less than or equal to --last-index" in (
@@ -158,6 +174,7 @@ def test_audit_cli_help_follows_shared_style():
             assert actions["outfile_path"].help == (
                 "Markdown outfile path (default: stdout)"
             )
+            assert actions["overwrite"].help == "overwrite outfile if it exists"
             row_filter_action = actions["row_filter"]
             assert isinstance(row_filter_action.help, str)
             assert row_filter_action.help.startswith("rows to include: ")

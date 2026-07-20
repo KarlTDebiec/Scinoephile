@@ -32,7 +32,8 @@ GuidedReviewPromptZhoHant = GuidedReviewPrompt(
         不要翻譯參考字幕，也不要為了貼近參考字幕而改寫原本正確的中文。
         不要潤色或改動語氣、文法與措辭。
         只有確實需要修改的中文字幕才加入修改列表。每項修改必須包含字幕序號、
-        完整修訂後文本與簡短中文備註。如果全部字幕都不需要修改，請返回空的修改列表。"""),
+        完整修訂後文本與簡短中文備註。如果要刪除多餘的目標字幕，修訂文本只填「�」。
+        如果全部字幕都不需要修改，請返回空的修改列表。"""),
     targets="zhongwen",
     targets_desc="按順序排列、需要審核的中文字幕",
     guides="cankao",
@@ -44,7 +45,7 @@ GuidedReviewPromptZhoHant = GuidedReviewPrompt(
     text="wenben",
     target_text_desc="需要審核的中文字幕文本",
     guide_text_desc="參考字幕文本",
-    revision_text_desc="修改後的完整中文字幕文本",
+    revision_text_desc="修改後的完整中文字幕文本；如果要刪除字幕就只填「�」",
     note="beizhu",
     note_desc="關於中文字幕修改的簡短中文備註",
     target_indices_err="查詢目標字幕序號必須從 1 開始、連續並按順序排列。",

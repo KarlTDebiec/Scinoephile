@@ -74,7 +74,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
   --source <source.srt> \
   --json <translation.json> \
   --filter all \
-  --outfile local/<dataset>_translation_audit.md
+  --outfile local/<dataset>_translation_audit.md \
+  --overwrite
 ```
 
 Gapped:
@@ -86,7 +87,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
   --guide <complete-guide.srt> \
   --json <gap_translation/device.json> \
   --filter all \
-  --outfile local/<dataset>_gap_translation_audit.md
+  --outfile local/<dataset>_gap_translation_audit.md \
+  --overwrite
 ```
 
 Guided:
@@ -98,7 +100,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
   --guide <target-language-guide.srt> \
   --json <guided_translation/device.json> \
   --filter all \
-  --outfile local/<dataset>_guided_translation_audit.md
+  --outfile local/<dataset>_guided_translation_audit.md \
+  --overwrite
 ```
 
 Use inclusive `--first-index` and `--last-index`. They refer to global source

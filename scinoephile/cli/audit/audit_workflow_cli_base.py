@@ -56,6 +56,7 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Markdown outfile path (default: stdout)": (
             "Markdown 输出文件路径（默认：标准输出）"
         ),
+        "overwrite outfile if it exists": "覆盖已存在的输出文件",
     },
     "zh-hant": {
         "first 1-indexed subtitle number to include, inclusive": (
@@ -84,6 +85,7 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Markdown outfile path (default: stdout)": (
             "Markdown 輸出檔路徑（預設：標準輸出）"
         ),
+        "overwrite outfile if it exists": "覆寫已存在的輸出檔",
     },
 }
 """Localized shared help text keyed by locale and English source text."""
@@ -137,8 +139,13 @@ class AuditCliBase(ScinoephileCliBase):
             "-o",
             "--outfile",
             dest="outfile_path",
-            type=output_file_arg(),
+            type=output_file_arg(exist_ok=True),
             help="Markdown outfile path (default: stdout)",
+        )
+        arg_groups["output arguments"].add_argument(
+            "--overwrite",
+            action="store_true",
+            help="overwrite outfile if it exists",
         )
         parser.set_defaults(_parser=parser)
 
@@ -209,6 +216,7 @@ class AuditCliBase(ScinoephileCliBase):
         parser: ArgumentParser,
         report: str,
         outfile_path: Path | None,
+        overwrite: bool,
     ):
         """Write a report to stdout or a file.
 
@@ -216,10 +224,15 @@ class AuditCliBase(ScinoephileCliBase):
             parser: parser used to report user-facing errors
             report: Markdown report
             outfile_path: optional output file path
+            overwrite: whether to overwrite an existing output file
         """
         if outfile_path is None:
+            if overwrite:
+                parser.error("--overwrite may only be used with --outfile")
             print(report, end="")
             return
+        if outfile_path.exists() and not overwrite:
+            parser.error(f"File exists: {outfile_path}; use --overwrite to replace it")
         try:
             outfile_path.write_text(report, encoding="utf-8")
         except OSError as exc:

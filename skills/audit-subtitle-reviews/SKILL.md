@@ -78,7 +78,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
   --reviewed <reviewed.srt> \
   --json <review.json> \
   --filter changes \
-  --outfile local/<dataset>_review_audit.md
+  --outfile local/<dataset>_review_audit.md \
+  --overwrite
 ```
 
 The JSON is optional in regular mode. Guided review:
@@ -90,7 +91,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
   --guide <guide.srt> \
   --json <guided-review.json> \
   --filter all \
-  --outfile local/<dataset>_guided_review_audit.md
+  --outfile local/<dataset>_guided_review_audit.md \
+  --overwrite
 ```
 
 Traditional-to-simplified review:
@@ -104,7 +106,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review-trad \
   --traditional-json <review.json> \
   --traditional-simplified-json <simplify-review.json> \
   --filter changes \
-  --outfile local/<dataset>_review_trad_audit.md
+  --outfile local/<dataset>_review_trad_audit.md \
+  --overwrite
 ```
 
 Parallel review:
@@ -121,7 +124,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review-dual \
   --traditional-json <traditional-review.json> \
   --traditional-simplified-json <simplify-review.json> \
   --filter changes \
-  --outfile local/<dataset>_review_dual_audit.md
+  --outfile local/<dataset>_review_dual_audit.md \
+  --overwrite
 ```
 
 Regular review supports `all` and `changes`; guided review supports `all`,

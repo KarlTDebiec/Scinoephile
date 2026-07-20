@@ -234,14 +234,14 @@ def test_persistence_uses_base_prompt_aliases(tmp_path: Path):
 
 
 def test_tracked_fixture_count():
-    """All four tracked punctuation files should contain 2,373 test cases."""
+    """All four tracked punctuation files should contain 3,091 test cases."""
     counts = [
         len(json.loads(input_path.read_text(encoding="utf-8")))
         for input_path in _PUNCTUATION_PATHS
     ]
 
     assert len(_PUNCTUATION_PATHS) == 4
-    assert sum(counts) == 2373
+    assert sum(counts) == 3_091
 
 
 @mark.parametrize(

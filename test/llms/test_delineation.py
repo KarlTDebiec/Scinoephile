@@ -330,14 +330,14 @@ def test_persistence_uses_base_prompt_aliases_and_omits_defaults(tmp_path: Path)
 
 
 def test_tracked_fixture_count():
-    """All four tracked delineation files should contain 3,250 test cases."""
+    """All four tracked delineation files should contain 4,286 test cases."""
     counts = [
         len(json.loads(input_path.read_text(encoding="utf-8")))
         for input_path in _DELINEATION_PATHS
     ]
 
     assert len(_DELINEATION_PATHS) == 4
-    assert sum(counts) == 3250
+    assert sum(counts) == 4_286
 
 
 @mark.parametrize(

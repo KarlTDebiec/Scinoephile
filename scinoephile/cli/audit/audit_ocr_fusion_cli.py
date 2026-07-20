@@ -177,6 +177,7 @@ class AuditOcrFusionCli(AuditCliBase):
         first_block: int | None,
         last_block: int | None,
         outfile_path: Path | None,
+        overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
@@ -214,7 +215,7 @@ class AuditOcrFusionCli(AuditCliBase):
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
-        cls.write_report(parser, report, outfile_path)
+        cls.write_report(parser, report, outfile_path, overwrite)
 
 
 if __name__ == "__main__":

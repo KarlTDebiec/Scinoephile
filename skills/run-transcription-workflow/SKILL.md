@@ -1,6 +1,6 @@
 ---
 name: run-transcription-workflow
-description: "Run and verify Scinoephile's reference-guided transcription pipeline block by block using the command-line interface: audio extraction, transcription, delineation correction, punctuation correction, cleaning, guided review, and gapped translation when needed. Use when building or continuing a movie transcription from a provided media file and guide SRT, especially Cantonese transcription guided by Chinese subtitles. Requires an explicit existing media file; never discover media from machine-specific locations."
+description: "Run and verify Scinoephile's reference-guided transcription pipeline in consecutive block batches using the command-line interface: audio extraction, transcription, delineation correction, punctuation correction, cleaning, guided review, and gapped translation when needed. Use when building or continuing a movie transcription from a provided media file and guide SRT, especially Cantonese transcription guided by Chinese subtitles. Requires an explicit existing media file; never discover media from machine-specific locations."
 ---
 
 # Run Transcription Workflow
@@ -17,7 +17,7 @@ Resolve these values before changing files:
 - `guide`: exact reviewed, flattened guide SRT
 - `output_dir`: transcription output directory
 - `target_language` and `guide_language`
-- `block`: one-based block to complete
+- `first_block` and `last_block`: inclusive one-based block batch to complete
 - `stream_index`: optional explicit audio stream index
 - `context`: optional prompt-ready movie context file
 - `transcription_reference`: optional exact reviewed target-language SRT used
@@ -49,11 +49,11 @@ Use language-family directory names for `<target_language>_<guide_language>`;
 for example, `yue_zho` for `yue-Hant` guided by `zho-Hant`. Reuse an existing
 state stem when continuing prior work. Create missing parent directories.
 
-Before block 1, reuse an existing prompt-ready transcription context if the
-caller or dataset provides one. Otherwise read
+Before the first batch, reuse an existing prompt-ready transcription context if
+the caller or dataset provides one. Otherwise read
 `../write-movie-context/SKILL.md` completely and use it once to create
 `local/<dataset>_transcription_context.txt` for the target transcription
-language. Reuse that file for every later block; do not repeat the research.
+language. Reuse that file for every later batch; do not repeat the research.
 Do not invent a context merely from the film title when stronger subtitle or
 canonical evidence is available.
 
@@ -98,31 +98,37 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile media extract-audio \
 ```
 
 Omit `--stream-index` when the media has one unambiguous audio stream. Reuse an
-existing WAV on later blocks; do not extract it again. Never overwrite it unless
-the supplied media or selected stream changed.
+existing WAV on later batches; do not extract it again. Never overwrite it
+unless the supplied media or selected stream changed.
 
-## Process one block
+## Process one batch
 
-Begin a requested block with step 1 below, even when earlier blocks and their
+Unless the caller requests another size, process consecutive batches of at most
+five blocks. The final batch may contain fewer than five blocks, and a one-block
+batch is valid. Let `A` and `B` be the inclusive first and last blocks in the
+current batch.
+
+Begin a requested batch with step 1 below, even when earlier blocks and their
 JSON state already exist. Do not generate a preflight audit to test whether the
-new block has been processed; an audit against the previous cumulative prefix
+new batch has been processed; an audit against the previous cumulative prefix
 will only create a misleading zero-row report.
 
-For block `N`, every generation command must process the cumulative prefix with
-`--last-block N`. Do not pass `--first-block N` to transcription, review,
-cleaning, or translation. Each command rebuilds its complete derived SRT; do
-not concatenate block outputs. Use `--overwrite` only for these generated SRTs.
+For batch `A-B`, every generation command must process the cumulative prefix
+once with `--last-block B`. Do not launch separate cumulative generation
+commands for `A`, `A + 1`, and so on, and do not pass `--first-block A` to
+transcription, review, cleaning, or translation. Each command rebuilds its
+complete derived SRT; do not concatenate block outputs. Use `--overwrite` only
+for these generated SRTs.
 
 Preserve CLI defaults unless the caller explicitly supplied an override. Do not
 invent `--demucs`, `--vad`, Whisper model, LLM provider, or LLM model settings
 from the media format, stream description, device, or a performance guess.
 
-Every audit must isolate the new block with both `--first-block N` and
-`--last-block N`. Audit CLIs do not overwrite reports. Use names such as
-`local/<dataset>_<stage>_block_N_pass_1.md` for intermediate correction passes,
-then write the final interpreted state once to the canonical
-`local/<dataset>_<stage>_block_N.md`. Do not delete and recreate the canonical
-report during the loop.
+Every audit must isolate the new batch with `--first-block A` and
+`--last-block B`. Use a stable canonical report such as
+`local/<dataset>_<stage>_blocks_A_B.md` and pass `--overwrite` when refreshing it
+after a correction. Use separate pass-numbered reports only when the caller
+wants to retain intermediate evidence.
 
 Run dependent commands serially. A command that yields a live process or
 session is still running: poll it until it exits, and require exit status 0
@@ -139,7 +145,7 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile transcribe \
   --reference-infile <guide> \
   --language <target_language> \
   --reference-language <guide_language> \
-  --last-block N \
+  --last-block B \
   --delineation-json <delineation_json> \
   --punctuation-json <punctuation_json> \
   --outfile <output_dir>/transcribe.srt \
@@ -150,6 +156,12 @@ Add the context and requested model/provider/audio-processing overrides to every
 applicable LLM command. Do not pass the original media to transcription after
 the stable WAV exists.
 
+If every Whisper candidate for a block is unusable, accept the empty
+transcription block and continue. Do not seed or alter Whisper cache files, copy
+guide text into transcription output, or hand-edit the generated SRT. Guided
+review will retain the gap, and gapped translation is the intended final-stage
+fallback.
+
 When `context` is present, add
 `--llm-additional-content-file <context>` to transcription, guided review, and
 gapped translation. Reuse the same context only when it is written for all
@@ -158,9 +170,9 @@ provided by the caller.
 
 ### 2. Audit and correct delineation
 
-Generate a complete block report using `--filter all`, inspect every row under
+Generate a complete batch report using `--filter all`, inspect every row under
 the delineation skill, correct the delineation JSON, and rerun cumulative
-transcription. Repeat the report and correction loop until the selected block
+transcription. Repeat the report and correction loop until the selected batch
 has no delineation errors or unresolved cases and all fully audited cases are
 verified.
 
@@ -168,9 +180,10 @@ verified.
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit delineation \
   --reference <guide> \
   --json <delineation_json> \
-  --first-block N --last-block N \
+  --first-block A --last-block B \
   --filter all \
-  --outfile local/<dataset>_delineation_block_N_pass_1.md
+  --outfile local/<dataset>_delineation_blocks_A_B.md \
+  --overwrite
 ```
 
 Always rerun transcription after a delineation edit before auditing
@@ -187,9 +200,10 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit punctuation \
   --reference <guide> \
   --target <output_dir>/transcribe.srt \
   --json <punctuation_json> \
-  --first-block N --last-block N \
+  --first-block A --last-block B \
   --filter all \
-  --outfile local/<dataset>_punctuation_block_N_pass_1.md
+  --outfile local/<dataset>_punctuation_blocks_A_B.md \
+  --overwrite
 ```
 
 ### 4. Clean and guided-review
@@ -213,15 +227,21 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile review \
   --guide-infile <guide> \
   --language <target_language> \
   --guide-language <guide_language> \
-  --last-block N \
+  --last-block B \
   --json <guided_review_json> \
   --outfile <output_dir>/transcribe_clean_review.srt \
   --overwrite
 ```
 
-Audit block `N` in guided mode with `--filter all`, including unchanged
+Audit batch `A-B` in guided mode with `--filter all`, including unchanged
 decisions. Correct and verify the guided-review JSON, rerun cumulative review,
 and repeat until clean.
+
+When a target subtitle is spurious and should be removed rather than rewritten,
+set its revision text to the single replacement character `�`. Guided review
+omits that event, allowing gapped translation to fill any corresponding guide
+position. Never use ellipses or another visible subtitle as a deletion
+placeholder.
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
@@ -229,9 +249,10 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
   --original <output_dir>/transcribe_clean.srt \
   --guide <guide> \
   --json <guided_review_json> \
-  --first-block N --last-block N \
+  --first-block A --last-block B \
   --filter all \
-  --outfile local/<dataset>_guided_review_block_N_pass_1.md
+  --outfile local/<dataset>_guided_review_blocks_A_B.md \
+  --overwrite
 ```
 
 If an upstream correction changes transcription text, rebuild cleaning and all
@@ -241,7 +262,7 @@ later stages before trusting their reports.
 
 Run gapped translation after guided review. It is applicable when guide
 positions are absent from the reviewed target; if no gaps exist, the output may
-remain unchanged and the block audit may contain no rows.
+remain unchanged and the batch audit may contain no rows.
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile translate \
@@ -249,7 +270,7 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile translate \
   --gapped-infile <output_dir>/transcribe_clean_review.srt \
   --source-language <guide_language> \
   --target-language <target_language> \
-  --last-block N \
+  --last-block B \
   --json <gap_translation_json> \
   --outfile <output_dir>/transcribe_clean_review_translate.srt \
   --overwrite
@@ -265,28 +286,30 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
   --target <output_dir>/transcribe_clean_review.srt \
   --guide <guide> \
   --json <gap_translation_json> \
-  --first-block N --last-block N \
+  --first-block A --last-block B \
   --filter all \
-  --outfile local/<dataset>_gap_translation_block_N_pass_1.md
+  --outfile local/<dataset>_gap_translation_blocks_A_B.md \
+  --overwrite
 ```
 
-## Finish the block
+## Finish the batch
 
 Before reporting completion:
 
 1. Regenerate every downstream SRT affected by the final correction.
-2. Rerun each block report to its canonical filename so it reflects the final
+2. Rerun each batch report to its canonical filename so it reflects the final
    JSON and SRT state. Also generate a uniquely named `--filter unverified`
    report for each stage and confirm it contains zero selected rows.
 3. Confirm no fully selected case remains unverified; do not falsely verify a
    partial, unanswered, or uncertain case.
 4. Confirm the four cumulative SRTs end within the selected guide prefix and
-   contain all previously completed blocks.
+   contain all previously completed batches.
 5. Review `git diff` and `git status`; preserve unrelated work and never stage
    or commit unless requested.
 6. Link the final interpreted reports and summarize corrections, remaining
    uncertainty, selected media stream, and whether gap translation was needed.
 
-Do not advance to block `N + 1` until block `N` is fully regenerated and
-verified. Treat any oversized-block error as the end of the guide rather than
-silently clamping the range.
+Do not advance to the batch beginning at `B + 1` until batch `A-B` is fully
+regenerated and verified. Treat any oversized-block error as the end of the
+guide rather than silently clamping the range; retry only with the actual final
+block as `B`.

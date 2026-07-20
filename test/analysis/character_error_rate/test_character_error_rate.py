@@ -217,3 +217,21 @@ def test_series_cer_string_uses_na_for_empty_reference():
         "Deletions: 0 (N/A)\n"
         "Reference length: 0"
     )
+
+
+def test_series_cer_handles_one_sided_span_after_shorter_side_is_exhausted():
+    """A trailing one-sided span should not overrun the shorter series."""
+    reference = get_text_series(
+        "係嗰度呀⋯⋯",
+        "係嗰邊呀，快點去⋯⋯",
+        "呢度仲有一隻",
+        "呢隻細隻啲",
+    )
+    candidate = get_text_series(
+        "係嗰邊呀，快點去⋯⋯",
+        "呢度仲有一隻",
+    )
+
+    result = SeriesCER(reference, candidate)
+
+    assert result.reference_length > 0

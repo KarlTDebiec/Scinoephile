@@ -29,8 +29,9 @@ GuidedReviewPromptEng = GuidedReviewPrompt(
         Do not improve style, grammar, tone, or phrasing unless the target is clearly
         erroneous. Include a revision only when a target subtitle requires a change.
         Each revision must include the target's index, its full revised text, and a
-        short English note. If no revisions are needed, return an empty revisions
-        list."""),
+        short English note. To delete a spurious target subtitle, use the single
+        replacement character "�" as its revised text. If no revisions are needed,
+        return an empty revisions list."""),
     targets="english",
     targets_desc="English target subtitles to review, in order.",
     guides="references",
@@ -41,7 +42,9 @@ GuidedReviewPromptEng = GuidedReviewPrompt(
     ),
     target_text_desc="English target subtitle text to review.",
     guide_text_desc="Reference subtitle text.",
-    revision_text_desc="Full revised English target subtitle text.",
+    revision_text_desc=(
+        'Full revised English target subtitle text, or "�" to delete the target.'
+    ),
     note_desc="English note explaining the target subtitle revision.",
 )
 """LLM correspondence text for guided review of English subtitles."""

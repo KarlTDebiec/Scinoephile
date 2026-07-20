@@ -63,7 +63,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit ocr-fusion \
   --first-index <first> \
   --last-index <last> \
   --filter changes \
-  --outfile local/<dataset>_ocr_fusion_audit_<first>-<last>.md
+  --outfile local/<dataset>_ocr_fusion_audit_<first>-<last>.md \
+  --overwrite
 ```
 
 Omit `--validated` when no aligned truth track exists. The inclusive range uses

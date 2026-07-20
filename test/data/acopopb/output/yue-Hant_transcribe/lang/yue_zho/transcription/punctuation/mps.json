@@ -165,6 +165,19 @@
   },
   {
     "query": {
+      "ref_sub": "刀下留人！",
+      "target_subs": [
+        "刀下留人！"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "刀下留人！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
       "ref_sub": "因為你是女人，我才不殺你",
       "target_subs": [
         "見你女人打咗你"
@@ -9116,7 +9129,8 @@
     "answer": {
       "target_sub_punctuated": "孫悟空，你當年罪惡滔天"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9128,7 +9142,8 @@
     "answer": {
       "target_sub_punctuated": "希望你今生會大徹底。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9140,7 +9155,8 @@
     "answer": {
       "target_sub_punctuated": "痛改前非？"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9153,7 +9169,8 @@
     "answer": {
       "target_sub_punctuated": "五百年前，你師父唐山藏為咗贖你"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9166,7 +9183,8 @@
     "answer": {
       "target_sub_punctuated": "只要你肯自願戴上金剛鴛，即係肯改過自身。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9178,7 +9196,8 @@
     "answer": {
       "target_sub_punctuated": "將歷史改變"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9191,7 +9210,8 @@
     "answer": {
       "target_sub_punctuated": "不過，從此人間一切與你無關，再……"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9204,7 +9224,8 @@
     "answer": {
       "target_sub_punctuated": "唔可以有半點情慾，半點流亂。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9217,7 +9238,8 @@
     "answer": {
       "target_sub_punctuated": "你未變成真正嘅孫悟空托世，只係因為你未遇上嗰個比三粒字你嘅人。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9230,7 +9252,8 @@
     "answer": {
       "target_sub_punctuated": "當你遇到佢之後，你嘅一生"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9243,7 +9266,8 @@
     "answer": {
       "target_sub_punctuated": "就會改變，同我講呀？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9256,7 +9280,8 @@
     "answer": {
       "target_sub_punctuated": "唔係同我講呀，認錯人啦！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9269,7 +9294,8 @@
     "answer": {
       "target_sub_punctuated": "痴馬近！"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9283,7 +9309,8 @@
     "answer": {
       "target_sub_punctuated": "先啦，哎，你有意你真係。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9297,7 +9324,8 @@
     "answer": {
       "target_sub_punctuated": "呀，冷靜，淡定。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9309,7 +9337,8 @@
     "answer": {
       "target_sub_punctuated": "冷靜啊！"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -9322,7 +9351,8 @@
     "answer": {
       "target_sub_punctuated": "捉住了……，生呀……，哎呀！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9335,7 +9365,8 @@
     "answer": {
       "target_sub_punctuated": "中時啦，中時啦，生啦，生啦！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -9347,6 +9378,995 @@
     "answer": {
       "target_sub_punctuated": "啦"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我覺得",
+      "target_subs": [
+        "似多我似我",
+        "我覺得"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "似多我，似我，我覺得。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你那麼想要唐僧",
+      "target_subs": [
+        "養大個仔",
+        "唔好好似我噉做山賊",
+        "你咁想要唐僧"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "養大個仔，唔好好似我噉做山賊。你咁想要唐僧？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你想怎麼樣？",
+      "target_subs": [
+        "今次都算冤家路窄啦"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "今次都算冤家路窄啦？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "孩子是你的？",
+      "target_subs": [
+        "你想點",
+        "個細路你㗎"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你想點，個細路你㗎？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "沒錯，是我跟至尊寶生的",
+      "target_subs": [
+        "係呀",
+        "係我同次尊寶生嘅"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "係呀，係我同次尊寶生嘅。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你說甚麼？",
+      "target_subs": [
+        "你講咩"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你講咩？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "奶媽，你告訴她吧！",
+      "target_subs": [
+        "媽媽"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "媽媽！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你知不知道你甚麼身份啊？",
+      "target_subs": [
+        "係你草"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "係你草？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "憑甚麼保護我？",
+      "target_subs": [
+        "內邊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "內邊？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "把我兒子抱走",
+      "target_subs": [
+        "我保護你",
+        "你咩身私",
+        "羅伯平",
+        "幾時輪到你咗"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我保護你，你咩身私？羅伯平，幾時輪到你咗？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "救命呀⋯",
+      "target_subs": [
+        "混同三到嚟喇",
+        "救命呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "混同三到嚟喇，救命呀⋯"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你這麼關心我，我願意為你精盡人亡",
+      "target_subs": [
+        "救命呀",
+        "救命呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "救命呀，救命呀！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "走",
+      "target_subs": [
+        "帶我仔",
+        "走"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "帶我仔走"
+    },
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我割你的肝！割你的胃！",
+      "target_subs": [
+        "關叔"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "關叔！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我割你的心臟！割你的肺！",
+      "target_subs": [
+        "大飯"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "大飯！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "〝元神出竅〞",
+      "target_subs": [
+        "你點講"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你點講？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "賤人！別再踩我的腸子啦",
+      "target_subs": [
+        "原神出現"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "原神出現！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "喜歡！我要踩",
+      "target_subs": [
+        "打你"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "打你！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "拜託你幫幫忙！",
+      "target_subs": [
+        "老婆"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "老婆！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "沒有空！",
+      "target_subs": [
+        "喺入面喇"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "喺入面喇！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "拜託啦！",
+      "target_subs": [
+        "唔該你幫幫手啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "唔該你幫幫手啊！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "出來啦！",
+      "target_subs": [
+        "唔得閒啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "唔得閒啊！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "是不是真的能時光倒流？",
+      "target_subs": [
+        "咋"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "咋？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "快走，走！",
+      "target_subs": [
+        "你走先啦,走"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你走先啦，走！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "走呀！",
+      "target_subs": [
+        "抽大我對陣"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "抽大我對陣！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我們的孩子！娘子！",
+      "target_subs": [
+        "我哋嘅仔"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我哋嘅仔！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "不要啊！",
+      "target_subs": [
+        "略知"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "略知！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "娘子⋯",
+      "target_subs": [
+        "梁志"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "梁志⋯"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "相公！",
+      "target_subs": [
+        "梁志"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "梁志！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "好！",
+      "target_subs": [
+        "都快啲出嚟呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "都快啲出嚟呀！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "等等⋯",
+      "target_subs": [
+        "我都未講完你點知呢"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "我都未講完，你點知呢？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我警告你別煩我！",
+      "target_subs": [
+        "咦"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "咦！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "為甚麼要我別煩你？還要警告我？",
+      "target_subs": [
+        "警告你咪煩我喇"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "警告你，咪煩我喇？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你真是囉嗦啊",
+      "target_subs": [
+        "喂喂喂",
+        "喂喂",
+        "做咩要佢叫我咪煩你"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "喂喂喂，喂喂，做咩要佢叫我咪煩你？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "是啊！我也覺得自己很囉嗦",
+      "target_subs": [
+        "仲要警告我啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "仲要警告我啊！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "為甚麼？",
+      "target_subs": [
+        "你好沉啊",
+        "仆街"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你好沉啊，仆街？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "出來啦！",
+      "target_subs": [
+        "係啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "係啊！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我的媽呀，累死我了",
+      "target_subs": [
+        "好累啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "好累啊"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我懶得跟你說！",
+      "target_subs": [
+        "啱啱",
+        "廢意思同你講"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "啱啱，廢意思同你講！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "為甚麼要打我呢？",
+      "target_subs": [
+        "廢事講咪唔好講囉",
+        "點解要打鑊啫"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "廢事講咪唔好講囉，點解要打鑊啫？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "娘子⋯",
+      "target_subs": [
+        "娘子"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "娘子⋯"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "般若波羅蜜⋯",
+      "target_subs": [
+        "娘子"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "娘子⋯"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "娘子呀，跟牛魔王出來看上帝",
+      "target_subs": [
+        "嗯"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "嗯！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你為甚麼要自殺？",
+      "target_subs": [
+        "為咩事你都自殺啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "為咩事你都自殺啊？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "好呀！你一聲不響丟下我",
+      "target_subs": [
+        "唔啱噉啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "唔啱噉啊！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "還跟師姐生了個兒子！",
+      "target_subs": [
+        "你畀個殺我嘅理由我先"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你畀個殺我嘅理由我先！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你完全誤會了　　找死？",
+      "target_subs": [
+        "好啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "好啊！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "不要啊，英雄！",
+      "target_subs": [
+        "你粒細唔出",
+        "扔低我唔理"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你粒細唔出，扔低我唔理！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我是跑回來跟你師姐拿解藥去救你",
+      "target_subs": [
+        "仲同我師姐生馬仔",
+        "咁你唔會"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "仲同我師姐生馬仔，咁你唔會？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "誰知道晚了一步",
+      "target_subs": [
+        "但唔好啊",
+        "英雄",
+        "其實我嗰日走咗"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "但唔好啊，英雄，其實我嗰日走咗。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "他們到哪兒去了？",
+      "target_subs": [
+        "你睇"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你睇？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你跑不掉的！",
+      "target_subs": [
+        "做咩",
+        "佢喺邊呢"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "做咩？佢喺邊呢？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "娘子⋯",
+      "target_subs": [
+        "啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "啊⋯"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "讓我來！",
+      "target_subs": [
+        "啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "啊！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "娘子⋯",
+      "target_subs": [
+        "靜靜寶"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "靜靜寶⋯"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "相公⋯",
+      "target_subs": [
+        "來生再見啦"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "來生再見啦⋯"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "再來！",
+      "target_subs": [
+        "成功"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "成功！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "般若波羅蜜⋯",
+      "target_subs": [
+        "返嚟"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "返嚟⋯"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "晶晶！",
+      "target_subs": [
+        "嘅"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "嘅！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "人呢？都到哪兒去了？",
+      "target_subs": [
+        "人",
+        "去晒邊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "人？去晒邊？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "神仙呀？",
+      "target_subs": [
+        "紛先啊"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "紛先啊？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "妖怪？",
+      "target_subs": [
+        "要掛"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "要掛？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "盤絲洞不要亂闖！",
+      "target_subs": [
+        "唔過"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "唔過！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "盤絲洞？",
+      "target_subs": [
+        "盤斯董"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "盤斯董？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你當我不識字呀？",
+      "target_subs": [
+        "冇亂藏"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "冇亂藏？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "水簾洞呀！",
+      "target_subs": [
+        "盤斯董"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "盤斯董！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "等一等！",
+      "target_subs": [
+        "聽我"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "聽我！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我？",
+      "target_subs": [
+        "喺呢個山頭所有嘢都係我"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "喺呢個山頭，所有嘢都係我？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "就像我的騾仔一樣先給你蓋個章吧！",
+      "target_subs": [
+        "包括你在內",
+        "我…"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "包括你在內，我…"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "如果有人欺負你，就報我的名字",
+      "target_subs": [
+        "吓",
+        "你已經係我人喇"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "吓，你已經係我人喇！"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "從今日起，我叫盤絲大仙",
+      "target_subs": [
+        "如果人家欺你呢",
+        "你就答我啦"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "如果人家欺你呢，你就答我啦。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "盤絲大仙？",
+      "target_subs": [
+        "從今日起",
+        "我叫盤絲帶先"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "從今日起，我叫盤絲帶先。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你沒有變成孫悟空托世",
+      "target_subs": [
+        "變成錢",
+        "你未變成尊吾空托世"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "變成錢，你未變成尊吾空托世。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "芝麻關門！",
+      "target_subs": [
+        "嘅"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "嘅！"
+    },
+    "difficulty": 1,
+    "verified": true
   }
 ]

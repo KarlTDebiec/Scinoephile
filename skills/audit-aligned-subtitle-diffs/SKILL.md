@@ -47,7 +47,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit aligned-diff \
   --first-index <first> \
   --last-index <last> \
   --filter changes \
-  --outfile local/<dataset>_aligned_diff_audit_<first>-<last>.md
+  --outfile local/<dataset>_aligned_diff_audit_<first>-<last>.md \
+  --overwrite
 ```
 
 Omit `--original` or `--guide` when that track is unavailable. Original text is

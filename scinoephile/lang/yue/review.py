@@ -32,7 +32,8 @@ GuidedReviewPromptYueHant = GuidedReviewPrompt(
         唔好翻譯參考字幕，亦唔好為咗貼近參考字幕而改寫本來正確嘅粵文。
         唔好潤色或者改動語氣、文法、助詞、量詞同措辭。
         只有確實需要修改嘅粵文字幕先加入修改列表。每項修改必須包含字幕序號、
-        完整修訂後文本同粵文備註。如果全部字幕都唔需要修改，請返回空嘅修改列表。"""),
+        完整修訂後文本同粵文備註。如果要刪除多餘嘅目標字幕，修訂文本只填「�」。
+        如果全部字幕都唔需要修改，請返回空嘅修改列表。"""),
     targets="yuewen",
     targets_desc="按順序排列、需要審核嘅粵文字幕",
     guides="cankao",
@@ -44,7 +45,7 @@ GuidedReviewPromptYueHant = GuidedReviewPrompt(
     text="wenben",
     target_text_desc="需要審核嘅粵文字幕文本",
     guide_text_desc="參考字幕文本",
-    revision_text_desc="修改後嘅完整粵文字幕文本",
+    revision_text_desc="修改後嘅完整粵文字幕文本；如果要刪除字幕就只填「�」",
     note="beizhu",
     note_desc="關於粵文字幕修改嘅粵文備註",
     target_indices_err="查詢目標字幕序號必須由 1 開始、連續並按順序排列。",

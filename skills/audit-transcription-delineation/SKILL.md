@@ -66,7 +66,8 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit delineation \
   --first-index <first> \
   --last-index <last> \
   --filter all \
-  --outfile local/<dataset>_delineation_audit_<first>-<last>.md
+  --outfile local/<dataset>_delineation_audit_<first>-<last>.md \
+  --overwrite
 ```
 
 On PowerShell, configure UTF-8 as directed by the repository `AGENTS.md` before

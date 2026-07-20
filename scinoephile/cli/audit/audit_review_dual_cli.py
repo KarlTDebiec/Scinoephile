@@ -215,6 +215,7 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
         first_block: int | None,
         last_block: int | None,
         outfile_path: Path | None,
+        overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
@@ -279,7 +280,7 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
             parser.error(str(exc))
 
         # Write output
-        cls.write_report(parser, report, outfile_path)
+        cls.write_report(parser, report, outfile_path, overwrite)
 
 
 if __name__ == "__main__":
