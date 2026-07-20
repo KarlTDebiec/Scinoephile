@@ -58,7 +58,28 @@ def extract_audio(
             "use --overwrite to replace it"
         )
 
-    stream = _get_audio_stream(validated_infile_path, stream_index)
+    stream: AudioStream | None = None
+    for candidate in get_streams(validated_infile_path):
+        if stream_index is None:
+            if isinstance(candidate, AudioStream):
+                stream = candidate
+                break
+            continue
+        if candidate.index != stream_index:
+            continue
+        if not isinstance(candidate, AudioStream):
+            raise ScinoephileError(
+                f"Stream index {stream_index} is not an audio stream"
+            )
+        stream = candidate
+        break
+
+    if stream is None:
+        if stream_index is None:
+            raise ScinoephileError(f"No audio streams found in {validated_infile_path}")
+        raise ScinoephileError(
+            f"No stream index {stream_index} found in {validated_infile_path}"
+        )
     if stream.channels is None:
         raise ScinoephileError(
             f"Audio stream {stream.index} in {validated_infile_path} has no "
@@ -121,32 +142,3 @@ def _extract_audio_track(
             f"Could not extract audio stream {stream_index} from {infile_path} "
             f"to {outfile_path}"
         ) from exc
-
-
-def _get_audio_stream(infile_path: Path, stream_index: int | None) -> AudioStream:
-    """Get a selected audio stream from a media file.
-
-    Arguments:
-        infile_path: media input file
-        stream_index: absolute media stream index, or None for the first audio stream
-    Returns:
-        selected audio stream
-    Raises:
-        ScinoephileError: if no matching audio stream exists
-    """
-    streams = get_streams(infile_path)
-    if stream_index is None:
-        for stream in streams:
-            if isinstance(stream, AudioStream):
-                return stream
-        raise ScinoephileError(f"No audio streams found in {infile_path}")
-
-    for stream in streams:
-        if stream.index != stream_index:
-            continue
-        if not isinstance(stream, AudioStream):
-            raise ScinoephileError(
-                f"Stream index {stream_index} is not an audio stream"
-            )
-        return stream
-    raise ScinoephileError(f"No stream index {stream_index} found in {infile_path}")
