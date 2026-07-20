@@ -458,8 +458,8 @@ def test_processor_honors_start_index():
     provider.chat_completion.assert_not_called()
 
 
-def test_complete_processing_prunes_superseded_persisted_cases(tmp_path: Path):
-    """A complete run should remove cases for obsolete upstream target text."""
+def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
+    """A run should preserve unencountered reusable cases by default."""
     prompt = GapTranslationManager.base_prompt
     test_case_cls = GapTranslationManager.get_test_case_cls(prompt)
     old_test_case = test_case_cls.model_validate(
@@ -472,6 +472,7 @@ def test_complete_processing_prunes_superseded_persisted_cases(tmp_path: Path):
                 ],
             },
             "answer": {"outputs": [{"index": 2, "text": "old translation"}]},
+            "few_shot": True,
             "verified": True,
         }
     )
@@ -506,9 +507,12 @@ def test_complete_processing_prunes_superseded_persisted_cases(tmp_path: Path):
         GapTranslationManager,
         prompt,
     )
-    assert len(persisted) == 1
-    persisted_case = cast(GapTranslationTestCase, persisted[0])
-    assert [item.text for item in persisted_case.query.targets] == ["new target"]
+    assert len(persisted) == 2
+    persisted_cases = cast("list[GapTranslationTestCase]", persisted)
+    assert [item.query.targets[0].text for item in persisted_cases] == [
+        "old target",
+        "new target",
+    ]
 
 
 def test_processor_rejects_negative_stop_index():

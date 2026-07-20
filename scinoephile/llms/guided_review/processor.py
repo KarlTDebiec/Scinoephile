@@ -103,8 +103,7 @@ class GuidedReviewProcessor(Processor):
             logger.info(f"Block {block_idx}:\n{output_block.to_simple_string()}")
             output_blocks[block_idx] = output_block
 
-        complete_range = block_range.start == 0 and block_range.stop == len(block_pairs)
-        self.save_test_cases(prune=self.prune_test_cases or complete_range)
+        self.save_test_cases()
 
         processed_blocks = [block for block in output_blocks if block is not None]
         if processed_blocks:

@@ -119,8 +119,7 @@ class GapTranslationProcessor(Processor):
             logger.info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")
             output_series_to_concatenate[blk_idx] = output_series
 
-        complete_range = block_range.start == 0 and block_range.stop == len(block_pairs)
-        self.save_test_cases(prune=self.prune_test_cases or complete_range)
+        self.save_test_cases()
 
         output_series_blocks = [
             series for series in output_series_to_concatenate if series is not None
