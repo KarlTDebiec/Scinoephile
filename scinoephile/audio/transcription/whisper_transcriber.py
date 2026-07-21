@@ -9,7 +9,7 @@ import json
 from collections.abc import Sequence
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
@@ -33,6 +33,9 @@ logger = getLogger(__name__)
 
 class WhisperTranscriber:
     """Transcribes audio using Whisper."""
+
+    _models: ClassVar[dict[tuple[str, str], Any]] = {}
+    """Loaded models shared by model name and device within the current process."""
 
     def __init__(
         self,
@@ -97,11 +100,15 @@ class WhisperTranscriber:
             loaded Whisper model
         """
         if self._model is None:
+            device = get_torch_device()
+            model_key = (self.model_name, device)
+            if model_key in self._models:
+                self._model = self._models[model_key]
+                return self._model
+
             whisper = self._get_whisper_module()
             try:
-                self._model = whisper.load_model(
-                    self.model_name, device=get_torch_device()
-                )
+                self._model = whisper.load_model(self.model_name, device=device)
             except FileNotFoundError:
                 if not self._model_name_is_huggingface_repo_id():
                     raise
@@ -111,9 +118,8 @@ class WhisperTranscriber:
                 )
                 snapshot_download = self._get_snapshot_download()
                 snapshot_download(repo_id=self.model_name)
-                self._model = whisper.load_model(
-                    self.model_name, device=get_torch_device()
-                )
+                self._model = whisper.load_model(self.model_name, device=device)
+            self._models[model_key] = self._model
         return self._model
 
     def get_cached_transcription(

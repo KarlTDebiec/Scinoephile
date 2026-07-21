@@ -133,6 +133,38 @@ def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch)
     assert whisper.transcribe.call_args.kwargs["condition_on_previous_text"] is False
 
 
+def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch):
+    """Reuse one loaded model across fallback transcription configurations."""
+    whisper = Mock()
+    loaded_model = Mock()
+    whisper.load_model.return_value = loaded_model
+    monkeypatch.setattr(
+        WhisperTranscriber,
+        "_get_whisper_module",
+        Mock(return_value=whisper),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber.get_torch_device",
+        Mock(return_value="cpu"),
+    )
+    WhisperTranscriber._models.clear()
+    vad_transcriber = WhisperTranscriber(
+        model_name="custom/model",
+        use_vad=True,
+    )
+    no_vad_transcriber = WhisperTranscriber(
+        model_name="custom/model",
+        use_vad=False,
+    )
+
+    try:
+        assert vad_transcriber.model is loaded_model
+        assert no_vad_transcriber.model is loaded_model
+        whisper.load_model.assert_called_once()
+    finally:
+        WhisperTranscriber._models.clear()
+
+
 def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):
     """Test an explicit uncached transcription does not reload rejected output."""
     whisper = Mock()
