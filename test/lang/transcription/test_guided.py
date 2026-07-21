@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import cast
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from pytest import raises
 
@@ -153,6 +153,64 @@ def test_get_guided_transcriber_prunes_stale_cases_from_exact_json_paths(
 
     assert json.loads(delineation_json_path.read_text(encoding="utf-8")) == []
     assert json.loads(punctuation_json_path.read_text(encoding="utf-8")) == []
+
+
+def test_get_guided_transcriber_preserves_cases_in_test_case_directory(
+    tmp_path: Path,
+):
+    """Test directory-backed JSON test cases are preserved between runs."""
+    transcriber = get_guided_transcriber(
+        Language.yue_hant,
+        Language.zho_hans,
+        provider=Mock(spec=LLMProvider),
+        test_case_dir_path=tmp_path,
+        delineation_test_cases=[],
+        punctuation_test_cases=[],
+    )
+    delineation_json_path = tmp_path / "delineation" / "test.json"
+    punctuation_json_path = tmp_path / "punctuation" / "test.json"
+    delineation_test_case_data = [
+        {
+            "query": {
+                "ref_sub_1": "參考一",
+                "ref_sub_2": "參考二",
+                "target_sub_1": "目標一",
+                "target_sub_2": "目標二",
+            },
+            "answer": {},
+        }
+    ]
+    punctuation_test_case_data = [
+        {
+            "query": {
+                "ref_sub": "參考",
+                "target_subs": ["目標"],
+            },
+            "answer": {"target_sub_punctuated": "目標。"},
+            "difficulty": 2,
+        }
+    ]
+    delineation_json_path.write_text(
+        json.dumps(delineation_test_case_data),
+        encoding="utf-8",
+    )
+    punctuation_json_path.write_text(
+        json.dumps(punctuation_test_case_data),
+        encoding="utf-8",
+    )
+
+    with patch(
+        "scinoephile.lang.transcription.aligner.get_torch_device",
+        return_value="test",
+    ):
+        transcriber.aligner.update_all_test_cases()
+
+    assert json.loads(delineation_json_path.read_text(encoding="utf-8")) == (
+        delineation_test_case_data
+    )
+    assert json.loads(punctuation_json_path.read_text(encoding="utf-8")) == (
+        punctuation_test_case_data
+    )
 
 
 def test_get_guided_transcriber_loads_verified_cases_from_exact_json(tmp_path: Path):

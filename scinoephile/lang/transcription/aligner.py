@@ -106,6 +106,8 @@ class TranscriptionAligner:
         """Update all test cases for the specified block."""
         delineation_json_path = self.delineation_json_path
         punctuation_json_path = self.punctuation_json_path
+        prune_delineation_json = delineation_json_path is not None
+        prune_punctuation_json = punctuation_json_path is not None
         if self.test_case_dir_path is not None and (
             delineation_json_path is None or punctuation_json_path is None
         ):
@@ -123,14 +125,14 @@ class TranscriptionAligner:
                 delineation_json_path,
                 list(self.delineation_queryer.encountered_test_cases.values()),
                 DelineationManager,
-                prune=True,
+                prune=prune_delineation_json,
             )
         if punctuation_json_path is not None:
             save_test_cases_to_json(
                 punctuation_json_path,
                 list(self.punctuation_queryer.encountered_test_cases.values()),
                 PunctuationManager,
-                prune=True,
+                prune=prune_punctuation_json,
             )
 
     def _delineate(self, alignment: TranscriptionAlignment) -> bool:

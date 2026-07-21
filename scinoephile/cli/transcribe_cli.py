@@ -70,6 +70,12 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型标识符覆盖值（省略时使用语言对默认值）",
+        "delineation test-case JSON file to load and update": (
+            "要加载和更新的断句测试用例 JSON 文件"
+        ),
+        "punctuation test-case JSON file to load and update": (
+            "要加载和更新的标点测试用例 JSON 文件"
+        ),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
         ),
@@ -102,6 +108,12 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型識別碼覆寫值（省略時使用語言對預設值）",
+        "delineation test-case JSON file to load and update": (
+            "要載入和更新的斷句測試案例 JSON 檔案"
+        ),
+        "punctuation test-case JSON file to load and update": (
+            "要載入和更新的標點測試案例 JSON 檔案"
+        ),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
         "transcribe audio using reference subtitles": "使用參考字幕轉寫音訊",
     },
