@@ -31,6 +31,11 @@ from scinoephile.lang.transcription.processor import (
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.transcription import transcribe_series_guided
 
+from .helpers.blocks import (
+    BLOCK_LOCALIZATIONS,
+    add_block_range_args,
+    get_block_range_indexes,
+)
 from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
@@ -112,6 +117,7 @@ class TranscribeCli(ScinoephileCliBase):
     """Transcribe audio using reference subtitles."""
 
     localizations = merge_localizations(
+        BLOCK_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         TRANSCRIBE_LOCALIZATIONS,
     )
@@ -171,6 +177,7 @@ class TranscribeCli(ScinoephileCliBase):
             type=enum_arg(Language),
             help="reference language tag (detected from infile if omitted)",
         )
+        add_block_range_args(arg_groups["operation arguments"])
         arg_groups["operation arguments"].add_argument(
             "--demucs",
             default=DemucsMode.AUTO,
@@ -229,6 +236,8 @@ class TranscribeCli(ScinoephileCliBase):
         stream_index: int | None,
         language: Language,
         reference_language: Language | None,
+        first_block: int | None,
+        last_block: int | None,
         demucs_mode: DemucsMode,
         vad_mode: VADMode,
         model_name: str | None,
@@ -246,6 +255,12 @@ class TranscribeCli(ScinoephileCliBase):
 
         # Read inputs
         reference = read_series(parser, reference_infile_path, allow_stdin=True)
+        start_at_idx, stop_at_idx = get_block_range_indexes(
+            parser,
+            first_block,
+            last_block,
+            len(reference.blocks),
+        )
         try:
             if reference_infile_path == "-":
                 with get_temp_file_path(suffix=".srt") as temp_reference_path:
@@ -288,6 +303,8 @@ class TranscribeCli(ScinoephileCliBase):
                     parser,
                     llm_args.additional_context_file_path,
                 ),
+                start_at_idx=start_at_idx,
+                stop_at_idx=stop_at_idx,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
