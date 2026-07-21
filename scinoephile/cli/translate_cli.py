@@ -21,7 +21,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.core.pairs import get_block_pairs_by_pause
+from scinoephile.core.pairs import get_block_pair_indexes_by_pause
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.translation import (
     translate_series,
@@ -217,10 +217,10 @@ class TranslateCli(ScinoephileCliBase):
         guide = None
         if gapped_infile_path is not None:
             target = read_series(parser, gapped_infile_path)
-            block_count = len(get_block_pairs_by_pause(source, target))
+            block_count = len(get_block_pair_indexes_by_pause(source, target))
         elif guide_infile_path is not None:
             guide = read_series(parser, guide_infile_path)
-            block_count = len(get_block_pairs_by_pause(source, guide))
+            block_count = len(get_block_pair_indexes_by_pause(source, guide))
         else:
             block_count = len(source.blocks)
         start_at_idx, stop_at_idx = get_block_range_indexes(
