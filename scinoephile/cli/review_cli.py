@@ -1,8 +1,8 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for subtitle proofreading.
+"""Command-line interface for subtitle review.
 
-Proofread subtitles using an LLM.
+Review subtitles using an LLM.
 """
 
 from __future__ import annotations
@@ -41,50 +41,50 @@ from .helpers.llms import (
     read_llm_additional_context,
 )
 
-__all__ = ["ProofreadCli"]
+__all__ = ["ReviewCli"]
 
-PROOFREAD_LOCALIZATIONS: dict[str, dict[str, str]] = {
+REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "command-line interface for subtitle proofreading": "字幕校对命令行界面",
+        "command-line interface for subtitle review": "字幕审校命令行界面",
         'subtitle infile or "-" for stdin': '字幕输入文件，或使用 "-" 表示标准输入',
         "guide subtitle infile for guided review": "用于引导校对的字幕输入文件",
         "subtitle language tag (detected from infile if omitted)": (
             "字幕语言标签（省略时从输入文件检测）"
         ),
-        "reference or guide language tag (detected from its infile if omitted)": (
-            "参考或引导字幕语言标签（省略时从相应输入文件检测）"
+        "guide language tag (detected from guide infile if omitted)": (
+            "引导字幕语言标签（省略时从引导输入文件检测）"
         ),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
         ),
-        "proofread subtitles using an LLM": "使用大语言模型校对字幕",
-        "Proofread subtitles using an LLM.": "使用大语言模型校对字幕。",
+        "review subtitles using an LLM": "使用大语言模型审校字幕",
+        "Review subtitles using an LLM.": "使用大语言模型审校字幕。",
     },
     "zh-hant": {
-        "command-line interface for subtitle proofreading": "字幕校對命令列介面",
+        "command-line interface for subtitle review": "字幕審校命令列介面",
         'subtitle infile or "-" for stdin': '字幕輸入檔，或使用 "-" 代表標準輸入',
         "guide subtitle infile for guided review": "用於引導校對的字幕輸入檔",
         "subtitle language tag (detected from infile if omitted)": (
             "字幕語言標籤（省略時從輸入檔偵測）"
         ),
-        "reference or guide language tag (detected from its infile if omitted)": (
-            "參考或引導字幕語言標籤（省略時從相應輸入檔偵測）"
+        "guide language tag (detected from guide infile if omitted)": (
+            "引導字幕語言標籤（省略時從引導輸入檔偵測）"
         ),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
-        "proofread subtitles using an LLM": "使用大型語言模型校對字幕",
-        "Proofread subtitles using an LLM.": "使用大型語言模型校對字幕。",
+        "review subtitles using an LLM": "使用大型語言模型審校字幕",
+        "Review subtitles using an LLM.": "使用大型語言模型審校字幕。",
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
-class ProofreadCli(ScinoephileCliBase):
-    """Proofread subtitles using an LLM."""
+class ReviewCli(ScinoephileCliBase):
+    """Review subtitles using an LLM."""
 
     localizations = merge_localizations(
         BLOCK_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
-        PROOFREAD_LOCALIZATIONS,
+        REVIEW_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -128,12 +128,10 @@ class ProofreadCli(ScinoephileCliBase):
             help="subtitle language tag (detected from infile if omitted)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--reference-language",
+            "--guide-language",
             metavar=enum_metavar(Language),
             type=enum_arg(Language),
-            help=(
-                "reference or guide language tag (detected from its infile if omitted)"
-            ),
+            help="guide language tag (detected from guide infile if omitted)",
         )
         add_block_range_args(arg_groups["operation arguments"])
         add_llm_provider_args(
@@ -164,7 +162,7 @@ class ProofreadCli(ScinoephileCliBase):
         infile_path: Path | str,
         guide_infile_path: Path | None,
         language: Language | None,
-        reference_language: Language | None,
+        guide_language: Language | None,
         first_block: int | None,
         last_block: int | None,
         llm_args: LlmArguments,
@@ -177,8 +175,8 @@ class ProofreadCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
-        if reference_language is not None and guide_infile_path is None:
-            parser.error("--reference-language requires --guide-infile")
+        if guide_language is not None and guide_infile_path is None:
+            parser.error("--guide-language requires --guide-infile")
 
         # Read input
         series = read_series(parser, infile_path, allow_stdin=True)
@@ -206,7 +204,7 @@ class ProofreadCli(ScinoephileCliBase):
                     series,
                     guide,
                     language=language,
-                    guide_language=reference_language,
+                    guide_language=guide_language,
                     provider=provider,
                     additional_context=additional_context,
                     test_case_path=json_path,
@@ -233,4 +231,4 @@ class ProofreadCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    ProofreadCli.main()
+    ReviewCli.main()
