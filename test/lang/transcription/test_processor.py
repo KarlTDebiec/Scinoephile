@@ -276,6 +276,32 @@ def test_rejected_cached_result_skips_repeated_decode():
     )
 
 
+def test_rejected_cached_recovery_is_decoded():
+    """Test a rejected cached recovery transcription is retried."""
+    processor, _ = _get_processor(vad_mode=VADMode.OFF)
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    processor.no_vad_transcriber = Mock()
+    processor.no_vad_transcriber.get_cached_transcription.return_value = (
+        repetitive_segments
+    )
+    processor.recovery_transcriber = Mock(return_value=usable_segments)
+    processor.recovery_transcriber.get_cached_transcription.return_value = (
+        repetitive_segments
+    )
+    audio = AudioSegment.silent(duration=1000)
+
+    output = processor._transcribe_block_audio(audio)
+
+    assert output == usable_segments
+    processor.no_vad_transcriber.assert_not_called()
+    processor.recovery_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
+
+
 def test_auto_vad_retries_without_vad_after_repetitive_new_result():
     """Test automatic VAD retries without VAD after a repetitive new result."""
     processor, _ = _get_processor(vad_mode=VADMode.AUTO)
