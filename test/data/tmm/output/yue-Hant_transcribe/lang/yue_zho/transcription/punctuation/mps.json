@@ -1,767 +1,6 @@
 [
   {
     "query": {
-      "ref_sub": "參見玉帝⋯",
-      "target_subs": [
-        "仲兄家",
-        "大發雷霆",
-        "所為何事"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "仲兄家，大發雷霆，所為何事？"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "都一樣嘛　降龍伏虎都一樣嘛",
-      "target_subs": [
-        "一樣啫",
-        "杭龍"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "一樣啫，杭龍。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "哎　是　玉帝",
-      "target_subs": [
-        "一樣咋嘛",
-        "玉帝"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "一樣咋嘛，玉帝？"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "到了下面　他還說她是枉死的",
-      "target_subs": [
-        "到下面",
-        "佢都仲要話人哋有枉死"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "到下面，佢都仲要話人哋有枉死。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "來瞭解一下凡人",
-      "target_subs": [
-        "何不借呢個機緣",
-        "嚟瞭解阿凡人"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "何不借呢個機緣，嚟瞭解阿凡人"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "一個做九世惡人",
-      "target_subs": [
-        "一個係狗勢惡人",
-        "寒龍"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "一個係狗勢惡人，寒龍。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "哎　你是不是存心整他　他扇子都沒有拿",
-      "target_subs": [
-        "你真係整蠱啫",
-        "佢連把扇都未攞嚟一隻眼嘅嘞"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你真係整蠱啫？佢連把扇都未攞嚟，一隻眼嘅嘞。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "降龍煮哮天神犬那天你也吃了",
-      "target_subs": [
-        "敲啲神怨",
-        "今日你有份食啊"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "敲啲神怨，今日你有份食啊。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "啊⋯你的肚子⋯",
-      "target_subs": [
-        "呢個肚",
-        "幾大把線添"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "呢個肚⋯幾大把線添⋯"
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "哎呀　糟糕　扇子忘了　快⋯",
-      "target_subs": [
-        "好鑊"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "好鑊！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "我沒有「摸摸」嘛",
-      "target_subs": [
-        "一定係識變泥化嘅"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "一定係識變泥化嘅。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "你一定會變戲法　快點教我",
-      "target_subs": [
-        "好教我囉"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "好，教我囉！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "扇扇⋯",
-      "target_subs": [
-        "仙仙",
-        "仙仙",
-        "仙仙",
-        "仙仙",
-        "唔"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "仙仙，仙仙，仙仙，仙仙，唔⋯"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "啊　哎　兩位大爺　請坐　請坐",
-      "target_subs": [
-        "嚟咩客官埋邊坐呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "嚟咩客官，埋邊坐呀？"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "哎　好⋯",
-      "target_subs": [
-        "嗱"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "嗱……"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "大種　喜歡吃什麼就點　啊",
-      "target_subs": [
-        "你家想食啲咩同人講呢"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你家想食啲咩，同人講呢。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "要聽話　啊",
-      "target_subs": [
-        "呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "呀"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "少雞貓子喊叫了　鬼不是這樣子",
-      "target_subs": [
-        "亂實咁嗌呀",
-        "鬼噉㗎咩"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "亂實咁嗌呀，鬼噉㗎咩？"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "神經病啊他　大白天來嚇人呢",
-      "target_subs": [
-        "你這樣打死他不行"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "你這樣打死他，不行！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "我弄成這個樣子是為了掩人耳目",
-      "target_subs": [
-        "我暈到咁汙嘢",
-        "都為咗引人義務",
-        "為咗"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我暈到咁汙嘢，都為咗引人義務，為咗。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "伏虎　你醒過來了",
-      "target_subs": [
-        "又醒返啦"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "又醒返啦？"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "哎　降龍啊　這件事情不關我的事啊",
-      "target_subs": [
-        "伏伏",
-        "係你喉嚨呀",
-        "呢單嘢唔關我事㗎喎"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "伏伏，係你喉嚨呀？呢單嘢唔關我事㗎喎。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "又好像宣傳部跟福利部",
-      "target_subs": [
-        "又好似宣傳部",
-        "係"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "又好似宣傳部，係"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "就這麼犧牲啊",
-      "target_subs": [
-        "知唔好",
-        "點樣大犧牲法呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "知唔好，點樣大犧牲法呀？"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "是啊　到哪兒去找",
-      "target_subs": [
-        "死咗都唔會傷個人"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "死咗都唔會傷個人。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "哎　這關乎全城人的安危",
-      "target_subs": [
-        "全城人嘅開危"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "全城人嘅開危。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "要聽話　啊",
-      "target_subs": [
-        "咁係想食雞屎忽"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "咁係想食雞屎忽？"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "嗯　敢在我怡香院撒野　嗯",
-      "target_subs": [
-        "睇我宜香院發爛炸",
-        "制"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "睇我宜香院發爛炸，制！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "燒啊⋯",
-      "target_subs": [
-        "契弟"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "契弟！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "「離」你⋯我「離」你",
-      "target_subs": [
-        "契弟",
-        "正契弟"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "契弟，正契弟！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "你⋯",
-      "target_subs": [
-        "師父"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "師父⋯"
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "師傅⋯要到半塊豆腐乳",
-      "target_subs": [
-        "師父",
-        "黑到半磚腐乳呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "師父⋯黑到半磚腐乳呀"
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "做做好事嘛　要留塊骨頭給我嘗嘗",
-      "target_subs": [
-        "留返個骨嚟算吖",
-        "過"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "留返個骨嚟算吖，過。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "不就根毛嗎　好了嘛　好了　拜託⋯",
-      "target_subs": [
-        "唔好玩呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "唔好玩呀！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "拜託拜託嘛⋯我知道你還沒有吞下去",
-      "target_subs": [
-        "我知你唔認真呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我知你唔認真呀。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "拜託",
-      "target_subs": [
-        "過",
-        "住呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "過住呀！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "拜託拜託嘛⋯我知道你還沒有吞下去",
-      "target_subs": [
-        "唔好玩呀",
-        "我知你"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "唔好玩呀，我知你"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "拿了⋯",
-      "target_subs": [
-        "得咁耐㗎"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "得咁耐㗎……"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "快點　你歡玩了　換我了啦",
-      "target_subs": [
-        "都冇啦"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "都冇啦！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "哇　真漂亮",
-      "target_subs": [
-        "肉"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "肉！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "小玉　既然毛蟲可以變蝴蝶",
-      "target_subs": [
-        "既然無蟲可以變蝴蝶"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "既然無蟲可以變蝴蝶"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "媽的　好累呀",
-      "target_subs": [
-        "係咪",
-        "啱未",
-        "唉",
-        "好累"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "係咪？啱未？唉，好累。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "哎呀　嗯　我怎麼又變回乞丐了",
-      "target_subs": [
-        "我變咁樣呀",
-        "哎呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我變咁樣呀？哎呀！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "你還什麼樣　你本來就是乞丐啊",
-      "target_subs": [
-        "咩啫",
-        "你係禧姨嚟㗎嘛"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "咩啫？你係禧姨嚟㗎嘛。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "明天有　明天你就知道厲害了",
-      "target_subs": [
-        "明日有"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "明日有。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "不要這樣好不好",
-      "target_subs": [
-        "喂",
-        "喂喂喂喂"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "喂，喂喂喂喂！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "拜託⋯先留下來　有話慢慢說嘛",
-      "target_subs": [
-        "唔係咁啊",
-        "喂喂喂",
-        "兄弟"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "唔係咁啊，喂喂喂，兄弟！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "拜託⋯先留下來　有話慢慢說嘛",
-      "target_subs": [
-        "喂",
-        "喂喂喂喂",
-        "唔係咁啊"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "喂，喂喂喂喂，唔係咁啊！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "你們不要這樣嘛",
-      "target_subs": [
-        "喂喂喂",
-        "兄弟"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "喂喂喂，兄弟！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "我⋯我好愛你",
-      "target_subs": [
-        "我",
-        "我好愛你"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "我⋯我好愛你"
-    },
-    "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "你發過誓的",
-      "target_subs": [
-        "發個誓㗎喎",
-        "你"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "發個誓㗎喎，你。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "你終於出現了吧　不過已經沒有用了",
-      "target_subs": [
-        "仲要你出現嚟咩",
-        "都冇用啦",
-        "已經"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "仲要你出現嚟咩？都冇用啦，已經。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "說　不然我劈死你",
-      "target_subs": [
-        "講呀",
-        "劈你一啲",
-        "唔好呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "講呀！劈你一啲，唔好呀！"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "好　我說",
-      "target_subs": [
-        "好",
-        "我講"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "好，我講。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "你的那條命早就沒了",
-      "target_subs": [
-        "走",
-        "你命一早已經冇咗"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "走！你命一早已經冇咗。"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
       "ref_sub": "眾卿家大發雷霆　所為何事",
       "target_subs": [
         "仲兄家",
@@ -1121,12 +360,11 @@
       "ref_sub": "你這麼講義氣　難道你也有份",
       "target_subs": [
         "你咁有義氣",
-        "可唔可以你都有份呢",
-        "喂"
+        "可唔可以你都有份呢"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你咁有義氣，可唔可以你都有份呢？喂！"
+      "target_sub_punctuated": "你咁有義氣，可唔可以你都有份呢？"
     },
     "difficulty": 2,
     "verified": true
@@ -1135,11 +373,12 @@
     "query": {
       "ref_sub": "哎⋯不關我的事啊",
       "target_subs": [
+        "喂",
         "邊關我事呢"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "邊關我事呢？"
+      "target_sub_punctuated": "喂，邊關我事呢？"
     },
     "difficulty": 2,
     "verified": true
@@ -1325,15 +564,27 @@
   },
   {
     "query": {
-      "ref_sub": "我照吃不誤　到哪一個了",
+      "ref_sub": "別以為換了一隻斑點我就不敢吃",
       "target_subs": [
-        "我招借呀",
-        "講到啲呀",
-        "都畀個"
+        "咪又係換咗班點呀",
+        "我招借呀"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我招借呀，講到啲呀，都畀個。"
+      "target_sub_punctuated": "咪又係換咗班點呀，我招借呀"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "我照吃不誤　到哪一個了",
+      "target_subs": [
+        "講到啲呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "講到啲呀？"
     },
     "difficulty": 2,
     "verified": true
@@ -1343,11 +594,12 @@
       "ref_sub": "到哪一個了　就你好了",
       "target_subs": [
         "都畀個",
+        "都畀個",
         "咪咪咗"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "都畀個咪咪咗。"
+      "target_sub_punctuated": "都畀個，都畀個，咪咪咗。"
     },
     "difficulty": 2,
     "verified": true
@@ -1414,11 +666,25 @@
       "target_subs": [
         "再搞落去呢",
         "就人同豬",
-        "蟑螂同牛噉你話"
+        "蟑螂同牛噉"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "再搞落去呢，就人同豬、蟑螂同牛噉，你話？"
+      "target_sub_punctuated": "再搞落去呢，就人同豬、蟑螂同牛噉。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "最慘的是螞蟻跟大象啊",
+      "target_subs": [
+        "你話",
+        "最慘就連牛同石頭呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你話，最慘就連牛同石頭呀。"
     },
     "difficulty": 2,
     "verified": true
@@ -1884,24 +1150,12 @@
     "query": {
       "ref_sub": "講啊⋯快說呀⋯",
       "target_subs": [
-        "都係咩呀"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "都係咩呀？"
-    },
-    "difficulty": 2,
-    "verified": true
-  },
-  {
-    "query": {
-      "ref_sub": "哎　是這個⋯",
-      "target_subs": [
+        "都係咩呀",
         "嗰啲"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嗰啲⋯"
+      "target_sub_punctuated": "都係咩呀？嗰啲⋯"
     },
     "difficulty": 2,
     "verified": true
@@ -2601,15 +1855,29 @@
   },
   {
     "query": {
+      "ref_sub": "但是現在這麼看起來的話",
+      "target_subs": [
+        "但你而家噉樣睇",
+        "你",
+        "噉"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "但你而家噉樣睇，你噉"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
       "ref_sub": "我們這位未出世的少爺一定是貴人呢",
       "target_subs": [
-        "你",
-        "噉我哋呢位未出世嘅少爺",
+        "我哋呢位未出世嘅少爺",
         "一定係貴人嚟㗎啦"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你噉，我哋呢位未出世嘅少爺，一定係貴人嚟㗎啦。"
+      "target_sub_punctuated": "我哋呢位未出世嘅少爺，一定係貴人嚟㗎啦。"
     },
     "difficulty": 2,
     "verified": true
@@ -3818,11 +3086,12 @@
       "ref_sub": "真的　快點",
       "target_subs": [
         "吓",
-        "咁快啲去"
+        "咁快啲去",
+        "阿媽"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "吓，咁快啲去！"
+      "target_sub_punctuated": "吓，咁快啲去，阿媽！"
     },
     "difficulty": 2,
     "verified": true
@@ -3831,12 +3100,13 @@
     "query": {
       "ref_sub": "還有大夫　我⋯",
       "target_subs": [
-        "阿媽",
-        "仲有阿大夫啊"
+        "仲有阿大夫啊",
+        "媽",
+        "媽"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "阿媽，仲有阿大夫啊……"
+      "target_sub_punctuated": "仲有阿大夫啊，媽媽……"
     },
     "difficulty": 2,
     "verified": true
@@ -3845,14 +3115,12 @@
     "query": {
       "ref_sub": "叫什麼叫　你他媽的叫春呢",
       "target_subs": [
-        "媽",
-        "媽",
         "咁呀你個小伙伴",
         "咁我哋走自住喎"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "媽，媽，咁呀你個小伙伴，咁我哋走自住喎！"
+      "target_sub_punctuated": "咁呀，你個小伙伴，咁我哋走自住喎。"
     },
     "difficulty": 2,
     "verified": true
@@ -4520,7 +3788,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁呀，夠老友咗？"
+      "target_sub_punctuated": "咁呀，夠老友咗。"
     },
     "difficulty": 2,
     "verified": true
@@ -4789,7 +4057,8 @@
     "answer": {
       "target_sub_punctuated": "哎……"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4801,7 +4070,8 @@
     "answer": {
       "target_sub_punctuated": "放下頭，都立地成佛。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4815,7 +4085,8 @@
     "answer": {
       "target_sub_punctuated": "唔好嬲，石發，聽我講。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4826,9 +4097,10 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "重新做人，乖豬"
+      "target_sub_punctuated": "重新做人，乖豬。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4840,7 +4112,8 @@
     "answer": {
       "target_sub_punctuated": "母號呢！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4853,7 +4126,8 @@
     "answer": {
       "target_sub_punctuated": "你唔好在下食啦，跟我返屋企啦。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4866,7 +4140,8 @@
     "answer": {
       "target_sub_punctuated": "好怪物啊⋯"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4879,31 +4154,22 @@
     "answer": {
       "target_sub_punctuated": "唔使，唔去下。"
     },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "哥哥⋯",
-      "target_subs": [
-        "哥哥"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "哥哥⋯"
-    },
-    "difficulty": 1
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
       "ref_sub": "啊　哥哥⋯",
       "target_subs": [
+        "哥哥",
         "唔唔唔呀"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "唔唔唔呀⋯"
+      "target_sub_punctuated": "哥哥，唔唔唔呀⋯"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4916,7 +4182,8 @@
     "answer": {
       "target_sub_punctuated": "唔唔唔呀，哥哥⋯"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4930,7 +4197,8 @@
     "answer": {
       "target_sub_punctuated": "唔唔唔，仔呀，你仲未搞成噉呀？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4943,7 +4211,8 @@
     "answer": {
       "target_sub_punctuated": "轉髮型啫，幾好呀？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4955,7 +4224,8 @@
     "answer": {
       "target_sub_punctuated": "間屋點樣會變成噉㗎？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4968,7 +4238,8 @@
     "answer": {
       "target_sub_punctuated": "修緣，你點會認得八天呢啲惡人呀？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4980,7 +4251,8 @@
     "answer": {
       "target_sub_punctuated": "細八八⋯"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4991,9 +4263,10 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你，修緣！我實以殺你全家！"
+      "target_sub_punctuated": "你修緣！我實以殺你全家！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5007,7 +4280,8 @@
     "answer": {
       "target_sub_punctuated": "老爺，老爺，佢哋殺晒我哋全國個畜生呀！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5019,7 +4293,8 @@
     "answer": {
       "target_sub_punctuated": "做一隻蟑螂，大咗肚嘅，真係殘忍呀！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5031,7 +4306,8 @@
     "answer": {
       "target_sub_punctuated": "好想你跟咗老爺奶奶去拜神咋！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5044,7 +4320,8 @@
     "answer": {
       "target_sub_punctuated": "咁快起到臥底呀嘛，老爺！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5058,7 +4335,8 @@
     "answer": {
       "target_sub_punctuated": "喀，喺唔出你手字，認得幾靈。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5071,7 +4349,8 @@
     "answer": {
       "target_sub_punctuated": "嘻，連日子都寫埋。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5083,7 +4362,8 @@
     "answer": {
       "target_sub_punctuated": "呢個人做嘢都算幾膠帶呀！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5096,7 +4376,8 @@
     "answer": {
       "target_sub_punctuated": "仔呀，屋企畀人搞成噉。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5110,7 +4391,8 @@
     "answer": {
       "target_sub_punctuated": "老爺、老爺、老爺⋯"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5123,7 +4405,8 @@
     "answer": {
       "target_sub_punctuated": "仇中正寢，福氣到極點啦！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5136,7 +4419,8 @@
     "answer": {
       "target_sub_punctuated": "睇睇先，下個頭都係做皇帝喎！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5150,7 +4434,8 @@
     "answer": {
       "target_sub_punctuated": "修緣，修緣，你癲咗呀？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5163,7 +4448,8 @@
     "answer": {
       "target_sub_punctuated": "中啦，而家我個身袋就叫做濟癲。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5175,7 +4461,8 @@
     "answer": {
       "target_sub_punctuated": "若然你冇做錯事"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5188,7 +4475,8 @@
     "answer": {
       "target_sub_punctuated": "夫人，夫人⋯"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5203,7 +4491,8 @@
     "answer": {
       "target_sub_punctuated": "老爺，老爺，畀佢寫香去爽下，快啲啦！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5216,7 +4505,8 @@
     "answer": {
       "target_sub_punctuated": "唔好辱，人哋好地地。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5229,7 +4519,8 @@
     "answer": {
       "target_sub_punctuated": "佢呢種叫煙陽蝴蝶命，死身都一對嘅。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5242,7 +4533,8 @@
     "answer": {
       "target_sub_punctuated": "少爺，咁我哋而家點呀？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5252,9 +4544,10 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁高興，梗係斬隻雞返嚟看好佢啦"
+      "target_sub_punctuated": "咁高興，梗係斬隻雞返嚟看好佢啦！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5265,9 +4558,10 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "再我哋，揾我咁做佬返嚟送佢哋一程"
+      "target_sub_punctuated": "再我哋，揾我咁做佬返嚟送佢哋一程！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5280,7 +4574,8 @@
     "answer": {
       "target_sub_punctuated": "行啦，行啦⋯快啲，快啲，快啲，快啲⋯"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5292,7 +4587,8 @@
     "answer": {
       "target_sub_punctuated": "你未走得！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5304,7 +4600,8 @@
     "answer": {
       "target_sub_punctuated": "瞓一陣就得"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5317,7 +4614,8 @@
     "answer": {
       "target_sub_punctuated": "蕭雪，蕭雪⋯"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5330,7 +4628,8 @@
     "answer": {
       "target_sub_punctuated": "鴨雞龜，鴨雞龜⋯"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5343,7 +4642,8 @@
     "answer": {
       "target_sub_punctuated": "你都唔令咬呢，真係應成。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5355,7 +4655,8 @@
     "answer": {
       "target_sub_punctuated": "一、二、三"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5369,7 +4670,8 @@
     "answer": {
       "target_sub_punctuated": "你唔好問你，唔好問你，唔好問你⋯"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5382,7 +4684,8 @@
     "answer": {
       "target_sub_punctuated": "冇啊，冇啊。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5392,9 +4695,10 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "鴨都識講嘢！"
+      "target_sub_punctuated": "鴨都識講嘢？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5404,9 +4708,10 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "佢老母，勾人隻鳥哥！"
+      "target_sub_punctuated": "佢老母勾人隻鳥哥！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5419,7 +4724,8 @@
     "answer": {
       "target_sub_punctuated": "幾時輪到理你？我同你講。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5432,7 +4738,8 @@
     "answer": {
       "target_sub_punctuated": "我哋出嚟做人，一定要有返啲自尊。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5442,9 +4749,10 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "邊個願意，就跟我行啊。"
+      "target_sub_punctuated": "邊個願意，就跟我行啊！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5458,7 +4766,8 @@
     "answer": {
       "target_sub_punctuated": "嘩，幾嘢偉大呀！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5471,7 +4780,8 @@
     "answer": {
       "target_sub_punctuated": "師傅，有咩可以牙奴嘅？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5484,7 +4794,8 @@
     "answer": {
       "target_sub_punctuated": "夜喇，你瞓陣先啦。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5497,7 +4808,8 @@
     "answer": {
       "target_sub_punctuated": "師傅，我同豬一樣？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5508,9 +4820,10 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "蝦蟲，你老豆揾你呀"
+      "target_sub_punctuated": "蝦蟲，你老豆揾你呀！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5523,7 +4836,8 @@
     "answer": {
       "target_sub_punctuated": "你阿媽揾你呀？我老豆死咗好耐喇。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -5678,12 +4992,11 @@
     "query": {
       "ref_sub": "啊　哎　兩位大爺　請坐　請坐",
       "target_subs": [
-        "嘩",
         "嚟咩客官埋邊坐呀"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嘩，嚟咩客官，埋邊坐呀？"
+      "target_sub_punctuated": "嚟咩，客官，埋邊坐呀？"
     },
     "difficulty": 2,
     "verified": true
@@ -5697,7 +5010,20 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你諗咩坐先吖，出門靚茶畀你飲。"
+      "target_sub_punctuated": "你諗咩？坐先吖，出門靚茶畀你飲。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "哎　好⋯",
+      "target_subs": [
+        "嗱"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "嗱……"
     },
     "difficulty": 2,
     "verified": true
@@ -5706,12 +5032,11 @@
     "query": {
       "ref_sub": "大種　喜歡吃什麼就點　啊",
       "target_subs": [
-        "嗱",
         "你家想食啲咩同人講呢"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嗱，你家想食啲咩，同人講呢。"
+      "target_sub_punctuated": "你家想食啲咩，同人講呢？"
     },
     "difficulty": 2,
     "verified": true
@@ -5815,6 +5140,19 @@
   },
   {
     "query": {
+      "ref_sub": "要聽話　啊",
+      "target_subs": [
+        "呀"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "呀"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
       "ref_sub": "你說　說　給我一碗魚翅漱漱口",
       "target_subs": [
         "畀碗屎我攞咗啦"
@@ -5828,6 +5166,19 @@
   },
   {
     "query": {
+      "ref_sub": "氣死我　你個臭小子",
+      "target_subs": [
+        "餘"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "餘"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
       "ref_sub": "大種　廢話我不想多說了",
       "target_subs": [
         "大眾",
@@ -5835,7 +5186,7 @@
       ]
     },
     "answer": {
-      "target_sub_punctuated": "大眾，廢話我唔想再多講。"
+      "target_sub_punctuated": "大眾，廢話，我唔想再多講。"
     },
     "difficulty": 2,
     "verified": true
@@ -5858,12 +5209,12 @@
     "query": {
       "ref_sub": "少雞貓子喊叫了　鬼不是這樣子",
       "target_subs": [
-        "鬼亂實咁嗌呀",
+        "亂實咁嗌呀",
         "鬼噉㗎咩"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "鬼亂實咁嗌呀，鬼噉㗎咩？"
+      "target_sub_punctuated": "亂實咁嗌呀，鬼噉㗎咩？"
     },
     "difficulty": 2,
     "verified": true
@@ -6722,13 +6073,25 @@
     "query": {
       "ref_sub": "啊　一天只能三次　算你走運了　幫你找一個人出來祭神呢",
       "target_subs": [
-        "一日三濟",
         "算你好彩",
         "即刻去搵個人來濟腎"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "一日三濟，算你好彩，即刻去搵個人來濟腎。"
+      "target_sub_punctuated": "算你好彩，即刻去搵個人來濟腎。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "是啊　到哪兒去找",
+      "target_subs": [
+        "死咗都唔會傷個人"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "死咗都唔會傷個人。"
     },
     "difficulty": 2,
     "verified": true
@@ -7007,11 +6370,12 @@
     "query": {
       "ref_sub": "嗯　敢在我怡香院撒野　嗯",
       "target_subs": [
-        "睇我宜香院發爛炸"
+        "睇我宜香院發爛炸",
+        "制"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "睇我宜香院發爛炸！"
+      "target_sub_punctuated": "睇我宜香院發爛炸，制！"
     },
     "difficulty": 2,
     "verified": true
@@ -7033,11 +6397,11 @@
     "query": {
       "ref_sub": "你們先等著　留只左腿給我",
       "target_subs": [
-        "咁你翻隻左腿畀我"
+        "翻隻左腿畀我"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "咁，你翻隻左腿畀我。"
+      "target_sub_punctuated": "翻隻左腿畀我"
     },
     "difficulty": 2,
     "verified": true
@@ -7224,15 +6588,27 @@
   },
   {
     "query": {
+      "ref_sub": "啊⋯不見了⋯好靈啊⋯是啊⋯",
+      "target_subs": [
+        "嗱"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "嗱……"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
       "ref_sub": "你們看他的臉　比神僊還要靈驗",
       "target_subs": [
-        "嗱",
         "你哋睇下佢塊面",
         "真係仲靚個神仙喇"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "嗱，你哋睇下佢塊面，真係仲靚個神仙喇！"
+      "target_sub_punctuated": "你哋睇下佢塊面，真係仲靚個神仙喇"
     },
     "difficulty": 2,
     "verified": true
@@ -9182,13 +8558,13 @@
   },
   {
     "query": {
-      "ref_sub": "大種　你不能死　要撐下去啊　大種",
+      "ref_sub": "你沒有法術了嗎　嗯",
       "target_subs": [
         "都冇啲法術"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "都冇啲法術。"
+      "target_sub_punctuated": "都冇啲法術？"
     },
     "difficulty": 2,
     "verified": true
@@ -11391,13 +10767,14 @@
     "query": {
       "ref_sub": "失敗⋯失敗呀⋯",
       "target_subs": [
+        "失敗呀",
         "失敗呀"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "失敗呀⋯"
+      "target_sub_punctuated": "失敗呀⋯失敗呀⋯"
     },
-    "difficulty": 2,
+    "difficulty": 1,
     "verified": true
   },
   {

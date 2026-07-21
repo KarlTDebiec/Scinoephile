@@ -239,3 +239,63 @@ def test_process_transcription_can_stop_after_cleaning(
     assert output is reference
     review.assert_not_called()
     translate.assert_not_called()
+
+
+def test_process_transcription_can_stop_before_cleaning(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+):
+    """Return the transcription without running later stages.
+
+    Arguments:
+        tmp_path: temporary pipeline directory
+        monkeypatch: pytest monkeypatch fixture
+    """
+    reference = Series(events=[Subtitle(start=0, end=1_000, text="佢喺度")])
+    reference_path = tmp_path / "reference.srt"
+    guide_path = tmp_path / "guide.srt"
+    reference.save(reference_path)
+    reference.save(guide_path)
+    clean = Mock()
+    review = Mock()
+    translate = Mock()
+    monkeypatch.setattr(
+        transcription_data,
+        "resolve_language",
+        Mock(side_effect=lambda series, explicit_language: explicit_language),
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "_stage_audio_series",
+        Mock(return_value=reference),
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "_load_or_transcribe_series_guided",
+        Mock(return_value=reference),
+    )
+    monkeypatch.setattr(transcription_data, "load_or_clean_series", clean)
+    monkeypatch.setattr(
+        transcription_data,
+        "_load_or_review_series_guided",
+        review,
+    )
+    monkeypatch.setattr(
+        transcription_data,
+        "_load_or_translate_series_gaps",
+        translate,
+    )
+
+    output = transcription_data.process_transcription(
+        tmp_path,
+        guide_path,
+        reference_path=reference_path,
+        language=Language.yue_hant,
+        guide_language=Language.zho_hant,
+        run_cleaning=False,
+    )
+
+    assert output is reference
+    clean.assert_not_called()
+    review.assert_not_called()
+    translate.assert_not_called()

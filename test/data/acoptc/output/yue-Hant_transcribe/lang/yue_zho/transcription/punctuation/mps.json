@@ -10248,7 +10248,8 @@
     "answer": {
       "target_sub_punctuated": "小心呀，唔該。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -10260,7 +10261,8 @@
     "answer": {
       "target_sub_punctuated": "懟到我衫嘢添！"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10272,7 +10274,8 @@
     "answer": {
       "target_sub_punctuated": "你估唔敢呀？你個人渣！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -10285,36 +10288,27 @@
     "answer": {
       "target_sub_punctuated": "師兄，預備出發了。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
       "ref_sub": "謝謝⋯",
       "target_subs": [
-        "都估我啦"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "都估我啦⋯"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "大師兄啊，你在看甚麼？",
-      "target_subs": [
+        "都估我啦",
         "噢",
         "好呀"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "噢，好呀"
+      "target_sub_punctuated": "都估我啦⋯ 噢，好呀"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
-      "ref_sub": "豆腐西施嘛",
+      "ref_sub": "大師兄啊，你在看甚麼？",
       "target_subs": [
         "大師爺",
         "你睇緊乜嘢啊"
@@ -10323,21 +10317,48 @@
     "answer": {
       "target_sub_punctuated": "大師爺，你睇緊乜嘢啊？"
     },
-    "difficulty": 2
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
-      "ref_sub": "是給她們相公上京考狀元的",
+      "ref_sub": "八戒，賣豆腐那兩個",
       "target_subs": [
-        "噢",
-        "豆腐西施囉",
-        "聽呢度啲人講嘢"
+        "賣豆腐嗰兩個"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "噢，豆腐西施囉，聽呢度啲人講嘢。"
+      "target_sub_punctuated": "賣豆腐嗰兩個"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "哪兩個？",
+      "target_subs": [
+        "嗰兩個"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "嗰兩個？"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "豆腐西施嘛",
+      "target_subs": [
+        "噢",
+        "豆腐西施囉"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "噢，豆腐西施囉！"
+    },
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -10350,7 +10371,8 @@
     "answer": {
       "target_sub_punctuated": "美良，美良！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -10362,7 +10384,8 @@
     "answer": {
       "target_sub_punctuated": "真係恭喜晒你啦！"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10376,95 +10399,67 @@
     "answer": {
       "target_sub_punctuated": "你相公，人開座狀元返嚟呀！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
       "ref_sub": "還不趕快去迎接他？",
       "target_subs": [
-        "仲唔去迎接"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "仲唔去迎接？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "ref_sub": "相公　　娘子",
-      "target_subs": [
+        "仲唔去迎接",
         "你相公"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "你相公"
+      "target_sub_punctuated": "仲唔去迎接你相公？"
     },
-    "difficulty": 2
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "ref_sub": "磨豆腐有甚麼了不起，我也會呀",
       "target_subs": [
-        "會",
-        "唔係好辛苦啫"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "會，唔係好辛苦啫。"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "走啦！",
-      "target_subs": [
+        "學會唔係好辛苦啫",
         "我都識啊"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "我都識啊！"
+      "target_sub_punctuated": "學會唔係好辛苦啫，我都識啊。"
     },
-    "difficulty": 1
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
-      "ref_sub": "悟空",
+      "ref_sub": "吹大了氣球玩球球",
       "target_subs": [
+        "吹大個",
         "波波",
-        "玩啦"
+        "玩啦",
+        "波波"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "波波，玩啦！"
+      "target_sub_punctuated": "吹大個波波，玩啦，波波！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
-      "ref_sub": "師父",
+      "ref_sub": "來這邊看熱鬧",
       "target_subs": [
-        "波波",
-        "喂喂"
-      ]
-    },
-    "answer": {
-      "target_sub_punctuated": "波波，喂喂！"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "ref_sub": "看看",
-      "target_subs": [
+        "喂喂",
         "佢哋又好似想郁手囉喎",
-        "快啲嚟呀去"
+        "快啲嚟呀"
       ]
     },
     "answer": {
-      "target_sub_punctuated": "佢哋又好似想郁手囉喎，快啲嚟呀，去！"
+      "target_sub_punctuated": "喂喂，佢哋又好似想郁手囉喎，快啲嚟呀！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -10476,7 +10471,8 @@
     "answer": {
       "target_sub_punctuated": "唔好！"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -10488,6 +10484,89 @@
     "answer": {
       "target_sub_punctuated": "早安。"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "看來我不應該來",
+      "target_subs": [
+        "要呀要",
+        "睇嚟我唔應該嚟"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "要呀要，睇嚟我唔應該嚟。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "留下點回憶行不行？",
+      "target_subs": [
+        "留低段回憶得唔得"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "留低段回憶，得唔得？"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "你讓我走吧！",
+      "target_subs": [
+        "你畀我走吧啦"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "你畀我走吧啦！"
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "好，我讓你走",
+      "target_subs": [
+        "好",
+        "我畀你走"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "好，我畀你走。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "不過臨走前你要親我一下",
+      "target_subs": [
+        "大林",
+        "隊前石",
+        "我一擔"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "大林隊前石我一擔。"
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "ref_sub": "幹甚麼？",
+      "target_subs": [
+        "做咩"
+      ]
+    },
+    "answer": {
+      "target_sub_punctuated": "做咩？"
+    },
+    "difficulty": 1,
+    "verified": true
   }
 ]

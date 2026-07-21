@@ -104,6 +104,7 @@ def process_transcription(
     transcription_kw: dict[str, Any] | None = None,
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
+    run_cleaning: bool = True,
     run_review_and_translation: bool = True,
     overwrite: bool = False,
 ) -> Series:
@@ -129,6 +130,7 @@ def process_transcription(
           `transcribe_series_guided`
         reviewer_kw: additional keyword arguments for `review_series_guided`
         translator_kw: additional keyword arguments for `translate_series_gaps`
+        run_cleaning: whether to clean the generated transcription
         run_review_and_translation: whether to run guided review and gap translation
           after cleaning
         overwrite: whether to overwrite existing stage outputs
@@ -186,6 +188,9 @@ def process_transcription(
         f"{language.code} transcription CER after transcription:\n"
         f"{SeriesCER(evaluation_reference, transcribe)}"
     )
+    if not run_cleaning:
+        logger.info(f"Saved transcription output under {output_dir_path}")
+        return transcribe
 
     # Clean transcription
     clean_path = output_dir_path / "transcribe_clean.srt"
