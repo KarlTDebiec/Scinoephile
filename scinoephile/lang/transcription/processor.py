@@ -386,8 +386,6 @@ class GuidedTranscriptionProcessor:
             expected_last_start: expected start of the final guided subtitle
         Returns:
             transcribed segments
-        Raises:
-            ScinoephileError: if all configured Whisper attempts are unusable
         """
         cache_audio = audio
         audio_duration = len(cache_audio) / 1000
@@ -439,10 +437,12 @@ class GuidedTranscriptionProcessor:
                     audio_duration=audio_duration,
                 )
         if segments is None:
-            raise ScinoephileError(
+            logger.warning(
                 "Whisper produced no usable transcription after all configured "
-                "recovery attempts."
+                "recovery attempts; leaving this block empty for downstream gap "
+                "translation"
             )
+            return []
         return self._transcribe_with_focused_tail_recovery(
             segments,
             cache_audio,
