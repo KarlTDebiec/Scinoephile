@@ -679,6 +679,27 @@ class GuidedTranscriptionProcessor:
                     f"Rejecting Whisper segment {segment.id} without word timings"
                 )
                 return False
+            duration_error = None
+            if int(segment.end * 1000) <= int(segment.start * 1000):
+                duration_error = (
+                    f"Rejecting Whisper segment {segment.id} with non-positive "
+                    f"millisecond duration ({segment.start:.3f}s to "
+                    f"{segment.end:.3f}s)"
+                )
+            else:
+                for word in segment.words:
+                    if not word.text.strip():
+                        continue
+                    if int(word.end * 1000) <= int(word.start * 1000):
+                        duration_error = (
+                            f"Rejecting Whisper segment {segment.id} with word "
+                            f"{word.text!r} having non-positive millisecond duration "
+                            f"({word.start:.3f}s to {word.end:.3f}s)"
+                        )
+                        break
+            if duration_error is not None:
+                logger.warning(duration_error)
+                return False
             if (
                 segment.compression_ratio is not None
                 and segment.compression_ratio > _MAX_COMPRESSION_RATIO
