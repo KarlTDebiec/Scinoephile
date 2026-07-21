@@ -10,6 +10,7 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
+from .media_extract_audio_cli import MediaExtractAudioCli
 from .media_extract_subs_cli import MediaExtractSubsCli
 from .media_offset_cli import MediaOffsetCli
 from .media_probe_cli import MediaProbeCli
@@ -22,6 +23,7 @@ MEDIA_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "extract matching subtitle streams from a video file": (
             "从视频文件提取匹配的字幕流"
         ),
+        "extract an audio stream from a media file": "从媒体文件提取音频流",
         "estimate visual offset between two media files": (
             "估计两个媒体文件之间的视觉偏移"
         ),
@@ -33,6 +35,7 @@ MEDIA_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "extract matching subtitle streams from a video file": (
             "從影片檔提取匹配的字幕流"
         ),
+        "extract an audio stream from a media file": "從媒體檔提取音訊流",
         "estimate visual offset between two media files": (
             "估計兩個媒體檔之間的視覺偏移"
         ),
@@ -75,6 +78,7 @@ class MediaCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
+            MediaExtractAudioCli.name(): MediaExtractAudioCli,
             MediaExtractSubsCli.name(): MediaExtractSubsCli,
             MediaOffsetCli.name(): MediaOffsetCli,
             MediaProbeCli.name(): MediaProbeCli,
