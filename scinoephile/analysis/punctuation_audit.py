@@ -206,7 +206,7 @@ def _format_case_row(
 
 def _get_case_index(
     candidates: Sequence[int],
-    direct_indexes: Sequence[int | None],
+    direct_indexes: list[int | None],
     *,
     test_case_index: int,
 ) -> int:
@@ -228,6 +228,8 @@ def _get_case_index(
             direct_indexes,
             test_case_index - 1,
         )
+        if index is not None:
+            direct_indexes[test_case_index - 1] = index
     if index is not None:
         return index
 

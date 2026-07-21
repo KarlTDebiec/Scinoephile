@@ -97,8 +97,10 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert (tmp_path / "punctuation").is_dir()
 
 
-def test_get_guided_transcriber_uses_exact_json_paths(tmp_path: Path):
-    """Test exact delineation and punctuation JSON paths are updated."""
+def test_get_guided_transcriber_prunes_stale_cases_from_exact_json_paths(
+    tmp_path: Path,
+):
+    """Test exact JSON paths retain only cases encountered by the current run."""
     delineation_json_path = tmp_path / "custom" / "delineation.json"
     punctuation_json_path = tmp_path / "other" / "punctuation.json"
     transcriber = get_guided_transcriber(
@@ -113,6 +115,39 @@ def test_get_guided_transcriber_uses_exact_json_paths(tmp_path: Path):
 
     assert transcriber.aligner.delineation_json_path == delineation_json_path
     assert transcriber.aligner.punctuation_json_path == punctuation_json_path
+
+    delineation_json_path.parent.mkdir(parents=True, exist_ok=True)
+    delineation_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "reference_one": "參考一",
+                        "reference_two": "參考二",
+                        "target_one": "目標一",
+                        "target_two": "目標二",
+                    },
+                    "answer": {},
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    punctuation_json_path.parent.mkdir(parents=True, exist_ok=True)
+    punctuation_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "ref_sub": "參考",
+                        "target_subs": ["目標"],
+                    },
+                    "answer": {"target_sub_punctuated": "目標。"},
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
 
     transcriber.aligner.update_all_test_cases()
 

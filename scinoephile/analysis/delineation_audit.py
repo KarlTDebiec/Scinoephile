@@ -195,7 +195,7 @@ def _format_pair(one: str, two: str) -> str:
 
 def _get_case_index(
     candidate_indexes: Sequence[int],
-    direct_indexes: Sequence[int | None],
+    direct_indexes: list[int | None],
     *,
     test_case_index: int,
 ) -> int:
@@ -220,6 +220,7 @@ def _get_case_index(
         test_case_index - 1,
     )
     if contextual_index is not None:
+        direct_indexes[test_case_index - 1] = contextual_index
         return contextual_index
 
     indexes = ", ".join(str(index + 1) for index in candidate_indexes)

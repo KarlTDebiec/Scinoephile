@@ -129,17 +129,17 @@ def _get_contextual_index(
         and next_index is not None
         and previous_index <= next_index
     ):
-        narrowed_candidates = [
+        candidates_between_anchors = [
             candidate
             for candidate in candidate_indexes
             if previous_index <= candidate <= next_index
         ]
-        if len(narrowed_candidates) == 1:
-            return narrowed_candidates[0]
-        if not narrowed_candidates:
-            return None
+        if len(candidates_between_anchors) == 1:
+            return candidates_between_anchors[0]
+        if candidates_between_anchors:
+            narrowed_candidates = candidates_between_anchors
 
-    scores: dict[int, int] = {}
+    scores: dict[int, tuple[int, int]] = {}
     for candidate in narrowed_candidates:
         distances = []
         if previous_index is not None:
@@ -147,12 +147,14 @@ def _get_contextual_index(
         if next_index is not None:
             distances.append(abs(candidate - next_index))
         if previous_index is not None and next_index is not None:
-            if previous_index <= next_index:
-                scores[candidate] = sum(distances)
-            else:
-                scores[candidate] = min(distances)
+            primary_score = sum(distances)
         else:
-            scores[candidate] = distances[0]
+            primary_score = distances[0]
+
+        previous_distance = 0
+        if previous_index is not None:
+            previous_distance = abs(candidate - previous_index)
+        scores[candidate] = (primary_score, previous_distance)
 
     minimum_score = min(scores.values())
     best_candidates = [

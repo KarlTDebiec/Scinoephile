@@ -308,6 +308,147 @@ def test_audit_delineation_resolves_repeated_reference_pair_from_context():
     assert "| 5<br>6 | 重複一<br>重複二 | 乙<br>丙 |" not in report
 
 
+def test_audit_delineation_progressively_resolves_repeated_sequence():
+    """Test contextual resolutions disambiguate later repeated pairs."""
+    reference = _get_series("之前", "乙", "甲", "乙", "甲", "乙", "之後")
+    test_cases = (
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="之前",
+                reference_two="乙",
+                target_one="前",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="甲",
+                reference_two="乙",
+                target_one="一",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="甲",
+                reference_two="乙",
+                target_one="二",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="乙",
+                reference_two="甲",
+                target_one="三",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="甲",
+                reference_two="乙",
+                target_one="四",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="乙",
+                reference_two="之後",
+                target_one="後",
+            ),
+            answer=DelineationAnswer(),
+        ),
+    )
+
+    report = audit_delineation(reference, test_cases)
+
+    assert report.count("| 3<br>4 | 甲<br>乙 |") == 2
+    assert "| 4<br>5 | 乙<br>甲 |" in report
+    assert "| 5<br>6 | 甲<br>乙 |" in report
+
+
+def test_audit_delineation_resolves_context_before_logged_restart():
+    """Test a later case is resolved before a logged traversal restart."""
+    reference = _get_series("之前", "甲", "乙", "甲", "乙", "之後")
+    test_cases = (
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="之前",
+                reference_two="甲",
+                target_one="前",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="甲",
+                reference_two="乙",
+                target_one="中",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="之前",
+                reference_two="甲",
+                target_one="重啟",
+            ),
+            answer=DelineationAnswer(),
+        ),
+    )
+
+    report = audit_delineation(reference, test_cases)
+
+    assert "| 2<br>3 | 甲<br>乙 | 中<br>— |" in report
+    assert "| 4<br>5 | 甲<br>乙 | 中<br>— |" not in report
+
+
+def test_audit_delineation_resolves_reverse_traversal_before_restart():
+    """Test adjacent reverse traversal is resolved before an earlier restart."""
+    reference = _get_series("之前", "乙", "甲", "乙", "甲", "乙", "之後")
+    test_cases = (
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="之前",
+                reference_two="乙",
+                target_one="前",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="甲",
+                reference_two="乙",
+                target_one="右",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="乙",
+                reference_two="甲",
+                target_one="左",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="之前",
+                reference_two="乙",
+                target_one="重啟",
+            ),
+            answer=DelineationAnswer(),
+        ),
+    )
+
+    report = audit_delineation(reference, test_cases)
+
+    assert "| 2<br>3 | 乙<br>甲 | 左<br>— |" in report
+    assert "| 4<br>5 | 乙<br>甲 | 左<br>— |" not in report
+
+
 def test_audit_delineation_rejects_ambiguous_reference_pair():
     """Test a repeated reference pair cannot be assigned misleading indexes."""
     test_case = DelineationTestCase(
