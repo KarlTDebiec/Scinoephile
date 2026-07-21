@@ -100,6 +100,22 @@ def test_segments_are_usable_rejects_repetitive_whisper_output():
     assert not GuidedTranscriptionProcessor._segments_are_usable(segments)
 
 
+def test_segments_are_usable_rejects_nonpositive_word_duration():
+    """Test text-bearing words must remain positive after ms conversion."""
+    segment = _get_segment(
+        start=4.02,
+        end=4.04,
+        text=" 啊",
+        compression_ratio=1.0,
+    )
+    segment.words = [
+        TranscribedWord(text=" ", start=4.02, end=4.04, confidence=1.0),
+        TranscribedWord(text="啊", start=4.04, end=4.04, confidence=1.0),
+    ]
+
+    assert not GuidedTranscriptionProcessor._segments_are_usable([segment])
+
+
 def test_segments_are_usable_rejects_timestamp_beyond_audio():
     """Test Whisper timestamps extending beyond source audio are unusable."""
     segments = [
