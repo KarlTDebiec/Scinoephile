@@ -8,6 +8,7 @@ import hashlib
 import json
 from collections.abc import Sequence
 from logging import getLogger
+from math import ceil
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
@@ -20,6 +21,15 @@ from .transcribed_segment import TranscribedSegment
 __all__ = ["WhisperTranscriber"]
 
 _LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
+_MAX_SAMPLE_LEN = 224
+"""Maximum token budget supported by the configured Whisper models."""
+
+_MAX_TOKENS_PER_SECOND = 16
+"""Generous decode budget per second of source audio."""
+
+_MIN_SAMPLE_LEN = 32
+"""Minimum token budget for very short source audio."""
+
 _TRANSCRIPTION_EXTRA_MESSAGE = (
     "Whisper transcription support requires optional transcription dependencies. "
     "Install scinoephile with the 'transcription' extra."
@@ -175,6 +185,11 @@ class WhisperTranscriber:
         whisper = self._get_whisper_module()
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
+            sample_len = self._get_sample_len(audio)
+            logger.info(
+                f"Limiting Whisper decoding to {sample_len} tokens for "
+                f"{len(audio) / 1000:.2f}s of audio"
+            )
             result = whisper.transcribe(
                 self.model,
                 str(temp_audio_path),
@@ -182,6 +197,7 @@ class WhisperTranscriber:
                 vad=self.use_vad,
                 temperature=self.temperature,
                 condition_on_previous_text=self.condition_on_previous_text,
+                sample_len=sample_len,
             )
         segments = [TranscribedSegment(**s) for s in result["segments"]]
         segments = self._normalize_transcription_segments(
@@ -199,6 +215,25 @@ class WhisperTranscriber:
                 logger.info(f"Saved transcription to cache: {cache_path}")
 
         return segments
+
+    @staticmethod
+    def _get_sample_len(audio: AudioSegment) -> int:
+        """Get a bounded token budget for one Whisper decode.
+
+        The timestamped Whisper implementation retains decoder attention maps for
+        word alignment. Repetitive decoding can otherwise run to the model-wide
+        token limit even for a very short clip, consuming excessive time and memory.
+
+        Arguments:
+            audio: audio to be transcribed
+        Returns:
+            maximum number of tokens Whisper may decode
+        """
+        duration_seconds = len(audio) / 1000
+        return min(
+            _MAX_SAMPLE_LEN,
+            max(_MIN_SAMPLE_LEN, ceil(duration_seconds * _MAX_TOKENS_PER_SECOND)),
+        )
 
     def _model_name_is_huggingface_repo_id(self) -> bool:
         """Determine whether model name looks like a HuggingFace repo ID.

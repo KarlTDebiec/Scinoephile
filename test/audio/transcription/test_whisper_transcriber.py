@@ -131,6 +131,32 @@ def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch)
     whisper.transcribe.assert_called_once()
     assert whisper.transcribe.call_args.kwargs["temperature"] == temperatures
     assert whisper.transcribe.call_args.kwargs["condition_on_previous_text"] is False
+    assert whisper.transcribe.call_args.kwargs["sample_len"] == 32
+
+
+@parametrize(
+    ("duration_ms", "expected"),
+    [
+        (100, 32),
+        (1000, 32),
+        (6530, 105),
+        (14000, 224),
+        (30000, 224),
+    ],
+)
+def test_get_sample_len_bounds_decode_by_audio_duration(
+    duration_ms: int,
+    expected: int,
+):
+    """Bound the decode token budget while leaving room for dense speech.
+
+    Arguments:
+        duration_ms: source audio duration in milliseconds
+        expected: expected Whisper token budget
+    """
+    audio = AudioSegment.silent(duration=duration_ms)
+
+    assert WhisperTranscriber._get_sample_len(audio) == expected
 
 
 def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch):
