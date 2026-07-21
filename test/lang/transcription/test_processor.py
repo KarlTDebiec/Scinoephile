@@ -527,6 +527,46 @@ def test_process_uses_exclusive_stop_index(caplog: LogCaptureFixture):
     assert "BLOCK 0:" not in caplog.text
 
 
+def test_process_uses_inclusive_start_index(caplog: LogCaptureFixture):
+    """Test start_at_idx excludes earlier blocks while preserving global numbering.
+
+    Arguments:
+        caplog: captured log records
+    """
+    processor, _ = _get_processor()
+    caplog.set_level(INFO, logger="scinoephile.lang.transcription.processor")
+    audio_series = AudioSeries(
+        audio=AudioSegment.silent(duration=6000),
+        events=[
+            AudioSubtitle(start=0, end=1000, text="one"),
+            AudioSubtitle(start=5000, end=6000, text="two"),
+        ],
+    )
+    reference_series = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="one"),
+            Subtitle(start=5000, end=6000, text="two"),
+        ]
+    )
+
+    with patch.object(
+        processor,
+        "process_block",
+        side_effect=lambda audio_block, reference_block: audio_block,
+    ) as process_block:
+        output = processor.process(
+            audio_series,
+            reference_series,
+            start_at_idx=1,
+        )
+
+    assert process_block.call_count == 1
+    assert len(output) == 1
+    assert output[0].text == "two"
+    assert "BLOCK 2:" in caplog.text
+    assert "BLOCK 1:" not in caplog.text
+
+
 def test_process_rejects_mismatched_block_counts():
     """Test guided transcription requires corresponding block structures."""
     processor, _ = _get_processor()

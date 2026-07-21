@@ -41,6 +41,7 @@ def transcribe_series_guided(
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
     transcriber: GuidedTranscriptionProcessor | None = None,
+    start_at_idx: int = 0,
     stop_at_idx: int | None = None,
 ) -> AudioSeries:
     """Transcribe audio using reference subtitles.
@@ -61,7 +62,8 @@ def transcribe_series_guided(
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
         transcriber: guided transcription processor, or None to construct one
-        stop_at_idx: exclusive block index at which to stop processing
+        start_at_idx: inclusive zero-based block index at which to start processing
+        stop_at_idx: exclusive zero-based block index at which to stop processing
     Returns:
         transcribed and reference-aligned audio subtitle series
     Raises:
@@ -91,4 +93,5 @@ def transcribe_series_guided(
         audio_series,
         reference_series,
         stop_at_idx=stop_at_idx,
+        start_at_idx=start_at_idx,
     )

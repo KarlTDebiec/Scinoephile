@@ -17,6 +17,7 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     WhisperTranscriber,
 )
+from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
@@ -178,18 +179,21 @@ class GuidedTranscriptionProcessor:
         audio_series: AudioSeries,
         reference_series: Series,
         stop_at_idx: int | None = None,
+        *,
+        start_at_idx: int = 0,
     ) -> AudioSeries:
         """Transcribe all audio blocks and align them with reference subtitles.
 
         Arguments:
             audio_series: audio divided into subtitle-timed blocks
             reference_series: reference subtitles corresponding to audio blocks
-            stop_at_idx: exclusive block index at which to stop processing
+            stop_at_idx: exclusive zero-based block index at which to stop processing
+            start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
             transcribed and aligned audio subtitle series
         Raises:
             ScinoephileError: if audio and reference block counts differ
-            ValueError: if stop_at_idx is negative
+            ValueError: if the processing range is invalid
         """
         audio_blocks = audio_series.blocks
         reference_blocks = reference_series.blocks
@@ -198,17 +202,12 @@ class GuidedTranscriptionProcessor:
                 f"Audio has {len(audio_blocks)} blocks but reference subtitles have "
                 f"{len(reference_blocks)} blocks."
             )
-        if stop_at_idx is None:
-            stop_at_idx = len(audio_blocks)
-        elif stop_at_idx < 0:
-            raise ValueError("stop_at_idx must be greater than or equal to 0")
+        block_range = val_index_range(len(audio_blocks), start_at_idx, stop_at_idx)
 
         output_events = []
-        for block_idx, (audio_block, reference_block) in enumerate(
-            zip(audio_blocks, reference_blocks, strict=True)
-        ):
-            if block_idx >= stop_at_idx:
-                break
+        for block_idx in block_range:
+            audio_block = audio_blocks[block_idx]
+            reference_block = reference_blocks[block_idx]
             output_block = self.process_block(audio_block, reference_block)
             logger.info(
                 f"BLOCK {block_idx + 1}:\n"
