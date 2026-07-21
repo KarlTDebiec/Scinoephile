@@ -36,6 +36,7 @@ from .helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
     add_llm_provider_args,
+    add_llm_test_case_json_arg,
     read_llm_additional_context,
 )
 
@@ -203,6 +204,18 @@ class TranscribeCli(ScinoephileCliBase):
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
+        add_llm_test_case_json_arg(
+            arg_groups["llm arguments"],
+            "--delineation-json",
+            dest="delineation_json_path",
+            help_text="delineation test-case JSON file to load and update",
+        )
+        add_llm_test_case_json_arg(
+            arg_groups["llm arguments"],
+            "--punctuation-json",
+            dest="punctuation_json_path",
+            help_text="punctuation test-case JSON file to load and update",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -233,6 +246,8 @@ class TranscribeCli(ScinoephileCliBase):
         vad_mode: VADMode,
         model_name: str | None,
         llm_args: LlmArguments,
+        delineation_json_path: Path | None,
+        punctuation_json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -288,6 +303,8 @@ class TranscribeCli(ScinoephileCliBase):
                     parser,
                     llm_args.additional_context_file_path,
                 ),
+                delineation_json_path=delineation_json_path,
+                punctuation_json_path=punctuation_json_path,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

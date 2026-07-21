@@ -17,7 +17,7 @@ from scinoephile.audio.subtitles import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
-from scinoephile.common.validation import val_input_dir_path
+from scinoephile.common.validation import val_input_dir_path, val_output_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Queryer
 from scinoephile.core.llms.utils import save_test_cases_to_json
@@ -49,6 +49,9 @@ class TranscriptionAligner:
         delineation_queryer: Queryer,
         punctuation_queryer: Queryer,
         test_case_dir_path: Path | None = None,
+        *,
+        delineation_json_path: Path | None = None,
+        punctuation_json_path: Path | None = None,
     ):
         """Initialize.
 
@@ -56,6 +59,8 @@ class TranscriptionAligner:
             delineation_queryer: queryer for delineation
             punctuation_queryer: queryer for punctuation
             test_case_dir_path: directory where encountered test cases are written
+            delineation_json_path: delineation test-case JSON file to update
+            punctuation_json_path: punctuation test-case JSON file to update
         """
         self.delineation_queryer = delineation_queryer
         """Shift transcription text between adjacent reference subtitles."""
@@ -64,6 +69,16 @@ class TranscriptionAligner:
         self.test_case_dir_path = None
         if test_case_dir_path is not None:
             self.test_case_dir_path = val_input_dir_path(test_case_dir_path)
+        self.delineation_json_path = (
+            val_output_path(delineation_json_path, exist_ok=True)
+            if delineation_json_path is not None
+            else None
+        )
+        self.punctuation_json_path = (
+            val_output_path(punctuation_json_path, exist_ok=True)
+            if punctuation_json_path is not None
+            else None
+        )
 
     def align(
         self,
@@ -89,25 +104,34 @@ class TranscriptionAligner:
 
     def update_all_test_cases(self):
         """Update all test cases for the specified block."""
-        if self.test_case_dir_path is None:
-            return
-
-        delineation_output_path = (
-            self.test_case_dir_path / "delineation" / f"{get_torch_device()}.json"
-        )
-        save_test_cases_to_json(
-            delineation_output_path,
-            list(self.delineation_queryer.encountered_test_cases.values()),
-            DelineationManager,
-        )
-        punctuation_output_path = (
-            self.test_case_dir_path / "punctuation" / f"{get_torch_device()}.json"
-        )
-        save_test_cases_to_json(
-            punctuation_output_path,
-            list(self.punctuation_queryer.encountered_test_cases.values()),
-            PunctuationManager,
-        )
+        delineation_json_path = self.delineation_json_path
+        punctuation_json_path = self.punctuation_json_path
+        if self.test_case_dir_path is not None and (
+            delineation_json_path is None or punctuation_json_path is None
+        ):
+            device = get_torch_device()
+            if delineation_json_path is None:
+                delineation_json_path = (
+                    self.test_case_dir_path / "delineation" / f"{device}.json"
+                )
+            if punctuation_json_path is None:
+                punctuation_json_path = (
+                    self.test_case_dir_path / "punctuation" / f"{device}.json"
+                )
+        if delineation_json_path is not None:
+            save_test_cases_to_json(
+                delineation_json_path,
+                list(self.delineation_queryer.encountered_test_cases.values()),
+                DelineationManager,
+                prune=True,
+            )
+        if punctuation_json_path is not None:
+            save_test_cases_to_json(
+                punctuation_json_path,
+                list(self.punctuation_queryer.encountered_test_cases.values()),
+                PunctuationManager,
+                prune=True,
+            )
 
     def _delineate(self, alignment: TranscriptionAlignment) -> bool:
         """Delineate transcribed text.

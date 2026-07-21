@@ -11,7 +11,8 @@ from types import MappingProxyType
 
 from scinoephile.audio.transcription import get_segment_split_on_whitespace
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider, Queryer, TestCase
+from scinoephile.core.llms import LLMProvider, Manager, Prompt, Queryer, TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
@@ -168,6 +169,8 @@ def get_guided_transcriber(
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
     test_case_dir_path: Path | None = None,
+    delineation_json_path: Path | None = None,
+    punctuation_json_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
 ) -> GuidedTranscriptionProcessor:
@@ -184,6 +187,8 @@ def get_guided_transcriber(
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
         test_case_dir_path: directory where encountered test cases are written
+        delineation_json_path: delineation test-case JSON file to load and update
+        punctuation_json_path: punctuation test-case JSON file to load and update
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
     Returns:
@@ -206,27 +211,28 @@ def get_guided_transcriber(
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
         punctuation_prompt = spec.punctuation_prompt
-    if test_case_dir_path is None:
+    if test_case_dir_path is None and (
+        delineation_json_path is None or punctuation_json_path is None
+    ):
         test_case_dir_path = get_runtime_cache_dir_path("test_cases")
         test_case_dir_path /= spec.test_case_dir_path
-    (test_case_dir_path / "delineation").mkdir(parents=True, exist_ok=True)
-    (test_case_dir_path / "punctuation").mkdir(parents=True, exist_ok=True)
+    if test_case_dir_path is not None:
+        (test_case_dir_path / "delineation").mkdir(parents=True, exist_ok=True)
+        (test_case_dir_path / "punctuation").mkdir(parents=True, exist_ok=True)
 
     if delineation_test_cases is None:
-        delineation_test_cases = list(
-            load_default_test_cases(
-                DelineationManager,
-                delineation_prompt,
-                spec.delineation_json_paths,
-            )
+        delineation_test_cases = _load_transcription_test_cases(
+            DelineationManager,
+            delineation_prompt,
+            spec.delineation_json_paths,
+            delineation_json_path,
         )
     if punctuation_test_cases is None:
-        punctuation_test_cases = list(
-            load_default_test_cases(
-                PunctuationManager,
-                punctuation_prompt,
-                spec.punctuation_json_paths,
-            )
+        punctuation_test_cases = _load_transcription_test_cases(
+            PunctuationManager,
+            punctuation_prompt,
+            spec.punctuation_json_paths,
+            punctuation_json_path,
         )
     if provider is None:
         provider = get_provider()
@@ -253,6 +259,8 @@ def get_guided_transcriber(
         delineation_queryer=delineation_queryer,
         punctuation_queryer=punctuation_queryer,
         test_case_dir_path=test_case_dir_path,
+        delineation_json_path=delineation_json_path,
+        punctuation_json_path=punctuation_json_path,
     )
     return GuidedTranscriptionProcessor(
         language=language,
@@ -264,3 +272,33 @@ def get_guided_transcriber(
         vad_mode=vad_mode,
         segment_splitter=language_spec.segment_splitter,
     )
+
+
+def _load_transcription_test_cases(
+    manager_cls: type[Manager],
+    prompt: Prompt,
+    default_json_paths: tuple[Path, ...],
+    json_path: Path | None,
+) -> list[TestCase]:
+    """Load bundled and workflow-local transcription test cases.
+
+    Workflow-local cases take precedence over bundled cases with the same query.
+
+    Arguments:
+        manager_cls: manager used to load test cases
+        prompt: prompt whose localized schema should be applied
+        default_json_paths: bundled test-case paths
+        json_path: optional workflow-local JSON path
+    Returns:
+        test cases unique by query
+    """
+    test_cases = list(load_default_test_cases(manager_cls, prompt, default_json_paths))
+    if json_path is not None and json_path.exists():
+        test_cases.extend(
+            load_test_cases_from_json(
+                json_path,
+                manager_cls,
+                prompt=prompt,
+            )
+        )
+    return list({test_case.query.key: test_case for test_case in test_cases}.values())

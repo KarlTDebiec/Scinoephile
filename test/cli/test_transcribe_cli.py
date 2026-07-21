@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 from pytest import fixture, mark, raises
@@ -63,6 +64,8 @@ def test_transcribe_help_lists_generic_options():
     assert "--reference-infile REFERENCE_INFILE_PATH" in help_text
     assert "--language" in help_text
     assert "--reference-language" in help_text
+    assert "--delineation-json DELINEATION_JSON_PATH" in help_text
+    assert "--punctuation-json PUNCTUATION_JSON_PATH" in help_text
     assert "--script" not in normalized_help_text
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text
@@ -166,12 +169,14 @@ def test_transcribe_cli_writes_stdout(
 def test_transcribe_cli_passes_generic_configuration(
     audio_series: Mock,
     expected_series: Series,
+    tmp_path: Path,
 ):
     """Test transcription CLI passes generic language and model configuration.
 
     Arguments:
         audio_series: mock audio subtitle series
         expected_series: expected transcribed subtitle series
+        tmp_path: temporary directory path
     """
 
     def transcribe(
@@ -185,6 +190,8 @@ def test_transcribe_cli_passes_generic_configuration(
         vad_mode: VADMode,
         provider: object,
         additional_context: str | None,
+        delineation_json_path: Path | None,
+        punctuation_json_path: Path | None,
     ) -> Series:
         """Validate transcription options passed by the CLI."""
         assert input_audio_series is audio_series
@@ -196,6 +203,8 @@ def test_transcribe_cli_passes_generic_configuration(
         assert vad_mode is VADMode.OFF
         assert provider is not None
         assert additional_context is None
+        assert delineation_json_path == tmp_path / "delineation.json"
+        assert punctuation_json_path == tmp_path / "punctuation.json"
         return expected_series
 
     with patch(
@@ -211,7 +220,9 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"{_MEDIA_INFILE_PATH} "
                 f"--reference-infile {_REFERENCE_INFILE_PATH} "
                 "--language yue-Hant --reference-language zho-Hans "
-                "--whisper-model custom/whisper --demucs on --vad off",
+                "--whisper-model custom/whisper --demucs on --vad off "
+                f"--delineation-json {tmp_path / 'delineation.json'} "
+                f"--punctuation-json {tmp_path / 'punctuation.json'}",
             )
 
 
