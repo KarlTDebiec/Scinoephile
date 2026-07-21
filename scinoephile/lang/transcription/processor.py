@@ -269,27 +269,31 @@ class GuidedTranscriptionProcessor:
         cache_audio: AudioSegment,
         *,
         audio_duration: float,
-    ) -> list[TranscribedSegment] | None:
+    ) -> tuple[list[TranscribedSegment] | None, set[WhisperTranscriber]]:
         """Get cached block transcription before expensive preprocessing.
 
         Arguments:
             cache_audio: original block audio used for cache-key generation
             audio_duration: original block audio duration in seconds
         Returns:
-            cached transcription, if present
+            cached transcription, if usable, and transcribers with unusable caches
         """
+        rejected_transcribers: set[WhisperTranscriber] = set()
         transcribers = list(self._get_standard_transcribers())
         if self.demucs_mode == DemucsMode.AUTO:
             transcribers.extend(self._get_standard_transcribers(unseparated=True))
         transcribers.append(self.recovery_transcriber)
         for transcriber in transcribers:
             cached_segments = transcriber.get_cached_transcription(cache_audio)
-            if cached_segments is not None and self._segments_are_usable(
+            if cached_segments is None:
+                continue
+            if self._segments_are_usable(
                 cached_segments,
                 audio_duration=audio_duration,
             ):
-                return cached_segments
-        return None
+                return cached_segments, rejected_transcribers
+            rejected_transcribers.add(transcriber)
+        return None, rejected_transcribers
 
     def _get_standard_transcribers(
         self,
@@ -391,14 +395,18 @@ class GuidedTranscriptionProcessor:
         """
         cache_audio = audio
         audio_duration = len(cache_audio) / 1000
-        segments = self._get_cached_block_transcription(
+        segments, rejected_transcribers = self._get_cached_block_transcription(
             cache_audio,
             audio_duration=audio_duration,
         )
         if segments is None:
             primary_audio = self._get_primary_transcription_audio(audio)
             if primary_audio is not None:
-                for transcriber in self._get_standard_transcribers():
+                for transcriber in (
+                    candidate
+                    for candidate in self._get_standard_transcribers()
+                    if candidate not in rejected_transcribers
+                ):
                     segments = self._transcribe_with_candidate(
                         transcriber,
                         primary_audio,
@@ -414,7 +422,11 @@ class GuidedTranscriptionProcessor:
                         "Retrying block transcription with original audio after "
                         "unusable Demucs result"
                     )
-                for transcriber in self._get_standard_transcribers(unseparated=True):
+                for transcriber in (
+                    candidate
+                    for candidate in self._get_standard_transcribers(unseparated=True)
+                    if candidate not in rejected_transcribers
+                ):
                     segments = self._transcribe_with_candidate(
                         transcriber,
                         audio,
@@ -424,7 +436,10 @@ class GuidedTranscriptionProcessor:
                     if segments is not None:
                         break
 
-            if segments is None:
+            if (
+                segments is None
+                and self.recovery_transcriber not in rejected_transcribers
+            ):
                 logger.info(
                     "Retrying block transcription with defensive Whisper decoding"
                 )
