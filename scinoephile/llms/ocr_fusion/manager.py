@@ -21,7 +21,7 @@ from .prompt import OcrFusionPrompt
 __all__ = ["OcrFusionManager"]
 
 
-class OcrFusionManager(Manager):
+class OcrFusionManager(Manager[OcrFusionTestCase]):
     """Factories for OCR fusion LLM classes."""
 
     operation: ClassVar[str] = "ocr-fusion"

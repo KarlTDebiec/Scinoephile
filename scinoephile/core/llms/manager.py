@@ -9,7 +9,7 @@ from collections.abc import Mapping
 from copy import copy
 from dataclasses import dataclass
 from functools import cache
-from typing import Any, ClassVar
+from typing import Any, ClassVar, cast
 
 from pydantic import create_model
 
@@ -37,7 +37,7 @@ class PromptModelField:
     """JSON schema description, or None to retain the semantic description."""
 
 
-class Manager(ABC):
+class Manager[TTestCase: TestCase](ABC):
     """ABC for LLM managers."""
 
     operation: ClassVar[str]
@@ -121,7 +121,7 @@ class Manager(ABC):
 
     @classmethod
     @cache
-    def get_test_case_cls(cls, prompt: Prompt) -> type[TestCase]:
+    def get_test_case_cls(cls, prompt: Prompt) -> type[TTestCase]:
         """Get concrete test case class with provided configuration.
 
         Arguments:
@@ -149,4 +149,4 @@ class Manager(ABC):
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
-        return model
+        return cast("type[TTestCase]", model)

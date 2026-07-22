@@ -23,7 +23,7 @@ from .prompt import GuidedReviewPrompt
 __all__ = ["GuidedReviewManager"]
 
 
-class GuidedReviewManager(Manager):
+class GuidedReviewManager(Manager[GuidedReviewTestCase]):
     """Factories for prompt-specific guided-review LLM classes."""
 
     operation: ClassVar[str] = "guided-review"

@@ -26,7 +26,7 @@ from .prompt import GuidedTranslationPrompt
 __all__ = ["GuidedTranslationManager"]
 
 
-class GuidedTranslationManager(Manager):
+class GuidedTranslationManager(Manager[GuidedTranslationTestCase]):
     """Factories for prompt-specific guided-translation LLM classes."""
 
     operation: ClassVar[str] = "guided-translation"
