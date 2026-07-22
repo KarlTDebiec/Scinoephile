@@ -39,8 +39,10 @@ def _get_transcriber(
     """
     aligner = Mock(spec=TranscriptionAligner)
     aligner.align.side_effect = TranscriptionAlignment
-    aligner.prune_delineation_test_cases = False
-    aligner.prune_punctuation_test_cases = False
+    aligner.delineation_processor = Mock()
+    aligner.delineation_processor.prune_test_cases = False
+    aligner.punctuation_processor = Mock()
+    aligner.punctuation_processor.prune_test_cases = False
     return (
         GuidedTranscriber(
             language=Language.eng,
@@ -610,7 +612,7 @@ def test_process_rejects_mismatched_block_counts():
 def test_process_rejects_partial_range_when_pruning_test_cases():
     """Test pruning requires processing every block."""
     transcriber, aligner = _get_transcriber()
-    aligner.prune_delineation_test_cases = True
+    aligner.delineation_processor.prune_test_cases = True
     audio_series = AudioSeries(
         audio=AudioSegment.silent(duration=6000),
         events=[

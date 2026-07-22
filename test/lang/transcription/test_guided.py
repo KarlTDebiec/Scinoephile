@@ -24,7 +24,8 @@ from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
     YueZhoPunctuationPromptYueHant,
 )
-from scinoephile.llms.delineation import DelineationManager
+from scinoephile.llms.delineation import DelineationManager, DelineationProcessor
+from scinoephile.llms.punctuation import PunctuationProcessor
 
 
 def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
@@ -92,10 +93,12 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.vad_mode is VADMode.AUTO
     assert transcriber.whisper_language == "yue"
     assert transcriber.segment_splitter is not None
-    assert transcriber.aligner.delineation_queryer.prompt is (
+    assert isinstance(transcriber.aligner.delineation_processor, DelineationProcessor)
+    assert isinstance(transcriber.aligner.punctuation_processor, PunctuationProcessor)
+    assert transcriber.aligner.delineation_processor.prompt is (
         YueZhoDelineationPromptYueHant
     )
-    assert transcriber.aligner.punctuation_queryer.prompt is (
+    assert transcriber.aligner.punctuation_processor.prompt is (
         YueZhoPunctuationPromptYueHant
     )
     assert transcriber.vad_transcriber is not None
@@ -103,14 +106,14 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.no_vad_transcriber is not None
     assert transcriber.no_vad_transcriber.language == "yue"
     test_case_dir_path = tmp_path / "lang/yue_zho/transcription"
-    assert transcriber.aligner.delineation_json_path == (
+    assert transcriber.aligner.delineation_processor.test_case_path == (
         test_case_dir_path / "delineation" / "test.json"
     )
-    assert transcriber.aligner.punctuation_json_path == (
+    assert transcriber.aligner.punctuation_processor.test_case_path == (
         test_case_dir_path / "punctuation" / "test.json"
     )
-    assert not transcriber.aligner.prune_delineation_test_cases
-    assert not transcriber.aligner.prune_punctuation_test_cases
+    assert not transcriber.aligner.delineation_processor.prune_test_cases
+    assert not transcriber.aligner.punctuation_processor.prune_test_cases
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(
@@ -130,8 +133,12 @@ def test_get_guided_transcriber_prunes_stale_cases_when_requested(
         punctuation_test_cases=[],
     )
 
-    assert transcriber.aligner.delineation_json_path == delineation_json_path
-    assert transcriber.aligner.punctuation_json_path == punctuation_json_path
+    assert transcriber.aligner.delineation_processor.test_case_path == (
+        delineation_json_path
+    )
+    assert transcriber.aligner.punctuation_processor.test_case_path == (
+        punctuation_json_path
+    )
 
     delineation_json_path.parent.mkdir(parents=True, exist_ok=True)
     delineation_json_path.write_text(
@@ -266,9 +273,9 @@ def test_get_guided_transcriber_loads_verified_cases_from_exact_json(tmp_path: P
         punctuation_json_path=tmp_path / "punctuation.json",
         punctuation_test_cases=[],
     )
-    queryer = transcriber.aligner.delineation_queryer
-    assert not transcriber.aligner.prune_delineation_test_cases
-    assert not transcriber.aligner.prune_punctuation_test_cases
+    queryer = transcriber.aligner.delineation_processor.queryer
+    assert not transcriber.aligner.delineation_processor.prune_test_cases
+    assert not transcriber.aligner.punctuation_processor.prune_test_cases
     pending_test_case = test_case_cls.model_validate(
         {"query": verified_test_case.query.model_dump()}
     )

@@ -204,8 +204,8 @@ class GuidedTranscriber:
             )
         block_range = val_index_range(len(audio_blocks), start_at_idx, stop_at_idx)
         if (
-            self.aligner.prune_delineation_test_cases
-            or self.aligner.prune_punctuation_test_cases
+            self.aligner.delineation_processor.prune_test_cases
+            or self.aligner.punctuation_processor.prune_test_cases
         ) and block_range != range(len(audio_blocks)):
             raise ValueError(
                 "Cannot prune test cases while processing only a subset of blocks."

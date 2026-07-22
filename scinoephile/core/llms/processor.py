@@ -105,20 +105,13 @@ class Processor(ABC):
         )
         """LLM queryer."""
 
-    def save_test_cases(self, *, prune: bool | None = None):
-        """Persist encountered test cases.
-
-        Arguments:
-            prune: whether to remove unencountered cases, or None to use the
-                processor's configured behavior
-        """
+    def save_test_cases(self):
+        """Persist encountered test cases."""
         if self.test_case_path is None or self.manager_cls is None:
             return
-        if prune is None:
-            prune = self.prune_test_cases
         save_test_cases_to_json(
             self.test_case_path,
             self.queryer.encountered_test_cases.values(),
             self.manager_cls,
-            prune=prune,
+            prune=self.prune_test_cases,
         )

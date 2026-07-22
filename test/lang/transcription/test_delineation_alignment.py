@@ -9,11 +9,15 @@ from unittest.mock import Mock, patch
 from pydub import AudioSegment
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
-from scinoephile.core.llms import Queryer
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription.aligner import TranscriptionAligner
 from scinoephile.lang.transcription.alignment import TranscriptionAlignment
-from scinoephile.llms.delineation import DelineationPrompt, DelineationTestCase
+from scinoephile.llms.delineation import (
+    DelineationProcessor,
+    DelineationPrompt,
+    DelineationTestCase,
+)
+from scinoephile.llms.punctuation import PunctuationProcessor
 
 _LOCALIZED_PROMPT = DelineationPrompt(
     ref_sub_1="cankao_yi",
@@ -72,8 +76,10 @@ def test_alignment_constructs_semantic_fields_with_configured_prompt():
 def test_aligner_uses_queryer_prompt_and_semantic_shift_output():
     """Aligner should propagate its prompt and consume semantic answer fields."""
     alignment = _get_alignment()
-    delineation_queryer = Mock(spec=Queryer)
+    delineation_queryer = Mock()
     delineation_queryer.prompt = _LOCALIZED_PROMPT
+    delineation_processor = Mock(spec=DelineationProcessor)
+    delineation_processor.queryer = delineation_queryer
 
     def add_answer(test_case: DelineationTestCase) -> DelineationTestCase:
         """Move the second target subtitle into the first sync group."""
@@ -86,8 +92,8 @@ def test_aligner_uses_queryer_prompt_and_semantic_shift_output():
 
     delineation_queryer.side_effect = add_answer
     aligner = TranscriptionAligner(
-        delineation_queryer=delineation_queryer,
-        punctuation_queryer=Mock(spec=Queryer),
+        delineation_processor=delineation_processor,
+        punctuation_processor=Mock(spec=PunctuationProcessor),
     )
 
     restart_required = aligner._delineate(alignment)
@@ -117,8 +123,10 @@ def test_aligner_restarts_to_propagate_text_across_multiple_boundaries():
     )
     alignment = TranscriptionAlignment(reference, transcription)
     alignment._sync_groups_override = [([0], [0]), ([1], [1]), ([2], [2])]
-    delineation_queryer = Mock(spec=Queryer)
+    delineation_queryer = Mock()
     delineation_queryer.prompt = _LOCALIZED_PROMPT
+    delineation_processor = Mock(spec=DelineationProcessor)
+    delineation_processor.queryer = delineation_queryer
 
     def shift_left(test_case: DelineationTestCase) -> DelineationTestCase:
         """Move text leftward until all targets reach the first group."""
@@ -136,8 +144,8 @@ def test_aligner_restarts_to_propagate_text_across_multiple_boundaries():
 
     delineation_queryer.side_effect = shift_left
     aligner = TranscriptionAligner(
-        delineation_queryer=delineation_queryer,
-        punctuation_queryer=Mock(spec=Queryer),
+        delineation_processor=delineation_processor,
+        punctuation_processor=Mock(spec=PunctuationProcessor),
     )
 
     while aligner._delineate(alignment):
@@ -149,8 +157,10 @@ def test_aligner_restarts_to_propagate_text_across_multiple_boundaries():
 def test_aligner_stops_when_delineation_states_repeat():
     """Aligner should stop when neighboring decisions form a cycle."""
     alignment = _get_alignment()
-    delineation_queryer = Mock(spec=Queryer)
+    delineation_queryer = Mock()
     delineation_queryer.prompt = _LOCALIZED_PROMPT
+    delineation_processor = Mock(spec=DelineationProcessor)
+    delineation_processor.queryer = delineation_queryer
 
     def oscillate(test_case: DelineationTestCase) -> DelineationTestCase:
         """Move the second target left, then move it back right."""
@@ -166,8 +176,8 @@ def test_aligner_stops_when_delineation_states_repeat():
 
     delineation_queryer.side_effect = oscillate
     aligner = TranscriptionAligner(
-        delineation_queryer=delineation_queryer,
-        punctuation_queryer=Mock(spec=Queryer),
+        delineation_processor=delineation_processor,
+        punctuation_processor=Mock(spec=PunctuationProcessor),
     )
 
     with patch.object(aligner, "_punctuate") as punctuate:
