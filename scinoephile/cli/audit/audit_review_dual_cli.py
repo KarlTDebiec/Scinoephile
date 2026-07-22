@@ -144,7 +144,11 @@ class AuditReviewDualCli(AuditReviewCliBase):
         "discrepancies for final discrepancies only (default: changes)"
     )
     """Help text for the workflow's supported row filters."""
-    row_filters = tuple(ReviewAuditFilter)
+    row_filters = (
+        ReviewAuditFilter.all,
+        ReviewAuditFilter.changes,
+        ReviewAuditFilter.discrepancies,
+    )
     """Row filters supported by the workflow."""
 
     @classmethod

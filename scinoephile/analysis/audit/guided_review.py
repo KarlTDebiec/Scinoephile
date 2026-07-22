@@ -7,7 +7,6 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Sequence
 from dataclasses import dataclass
-from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -15,6 +14,7 @@ from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.guided_review import GuidedReviewTestCase
 
+from .review import ReviewAuditFilter
 from .utils import (
     AuditResult,
     escape_table_cell,
@@ -27,10 +27,7 @@ from .utils import (
     validate_index_range,
 )
 
-__all__ = [
-    "GuidedReviewAuditFilter",
-    "audit_guided_review",
-]
+__all__ = ["audit_guided_review"]
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -65,25 +62,12 @@ class _GuidedReviewRow:
     """Whether the source test case is verified."""
 
 
-class GuidedReviewAuditFilter(StrEnum):
-    """Row filters supported by a guided-review audit."""
-
-    all = "all"
-    """Include every target subtitle from logged guided-review cases."""
-
-    changes = "changes"
-    """Include only target subtitles with revisions."""
-
-    unverified = "unverified"
-    """Include only target subtitles from cases not marked as verified."""
-
-
 def audit_guided_review(
     target: Series,
     guide: Series,
     test_cases: Sequence[GuidedReviewTestCase],
     *,
-    row_filter: GuidedReviewAuditFilter = GuidedReviewAuditFilter.all,
+    row_filter: ReviewAuditFilter = ReviewAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -107,6 +91,10 @@ def audit_guided_review(
     """
     validate_index_range(first_index, last_index)
     validate_block_range(first_block, last_block)
+    if row_filter is ReviewAuditFilter.discrepancies:
+        raise ScinoephileError(
+            "Discrepancies filter is not supported for guided review audits"
+        )
 
     block_pairs = get_validated_block_pairs_by_pause(
         target,
@@ -190,10 +178,10 @@ def audit_guided_review(
         row
         for row in all_rows
         if not (
-            row_filter is GuidedReviewAuditFilter.changes
+            row_filter is ReviewAuditFilter.changes
             and row.result is not AuditResult.changed
         )
-        and not (row_filter is GuidedReviewAuditFilter.unverified and row.verified)
+        and not (row_filter is ReviewAuditFilter.unverified and row.verified)
     ]
     subtitles = len(all_rows)
     unchanged_subtitles = subtitles - revised_subtitles - unanswered_subtitles

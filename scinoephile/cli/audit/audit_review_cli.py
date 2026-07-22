@@ -6,15 +6,12 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from collections.abc import Sequence
-from enum import StrEnum
 from pathlib import Path
 
-from scinoephile.analysis.audit.guided_review import (
-    GuidedReviewAuditFilter,
-    audit_guided_review,
-)
+from scinoephile.analysis.audit.guided_review import audit_guided_review
 from scinoephile.analysis.audit.review import (
     ReviewAuditFilter,
+    ReviewAuditMode,
     ReviewAuditPair,
     audit_review_workflow,
 )
@@ -107,26 +104,6 @@ _LANGUAGE_LABELS = {
 """Report labels keyed by automatically detected language."""
 
 
-class _ReviewAuditFilter(StrEnum):
-    """Row filters exposed by the unified review audit command."""
-
-    all = "all"
-    """Include every review row in either mode."""
-    changes = "changes"
-    """Include changed review rows in either mode."""
-    unverified = "unverified"
-    """Include unverified cases in guided mode."""
-
-
-class _ReviewAuditMode(StrEnum):
-    """Review workflows supported by the unified audit command."""
-
-    guided = "guided"
-    """Audit guide-backed sparse review decisions."""
-    regular = "regular"
-    """Audit differences between pre-review and reviewed subtitle tracks."""
-
-
 class AuditReviewCli(AuditCliBase):
     """Audit regular or guided subtitle reviews."""
 
@@ -175,18 +152,22 @@ class AuditReviewCli(AuditCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--mode",
-            choices=tuple(_ReviewAuditMode),
-            default=_ReviewAuditMode.regular,
-            type=enum_arg(_ReviewAuditMode),
+            choices=tuple(ReviewAuditMode),
+            default=ReviewAuditMode.regular,
+            type=enum_arg(ReviewAuditMode),
             help="review workflow to audit: regular or guided (default: regular)",
         )
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=tuple(_ReviewAuditFilter),
-            default=_ReviewAuditFilter.changes,
+            choices=(
+                ReviewAuditFilter.all,
+                ReviewAuditFilter.changes,
+                ReviewAuditFilter.unverified,
+            ),
+            default=ReviewAuditFilter.changes,
             dest="row_filter",
             metavar="{all,changes,unverified}",
-            type=enum_arg(_ReviewAuditFilter),
+            type=enum_arg(ReviewAuditFilter),
             help=(
                 "rows to include: all, changes, or unverified; "
                 "availability depends on mode (default: changes)"
@@ -217,7 +198,7 @@ class AuditReviewCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: GuidedReviewAuditFilter,
+        row_filter: ReviewAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -309,8 +290,8 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path | None,
         guide_path: Path | None,
         json_path: Path | None,
-        mode: _ReviewAuditMode,
-        row_filter: _ReviewAuditFilter,
+        mode: ReviewAuditMode,
+        row_filter: ReviewAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -333,14 +314,14 @@ class AuditReviewCli(AuditCliBase):
         )
 
         try:
-            if mode is _ReviewAuditMode.guided:
+            if mode is ReviewAuditMode.guided:
                 assert guide_path is not None and json_path is not None
                 report = cls._audit_guided(
                     parser,
                     original_path,
                     guide_path,
                     json_path,
-                    row_filter=GuidedReviewAuditFilter(row_filter.value),
+                    row_filter=row_filter,
                     first_index=first_index,
                     last_index=last_index,
                     first_block=first_block,
@@ -353,7 +334,7 @@ class AuditReviewCli(AuditCliBase):
                     original_path,
                     reviewed_path,
                     json_path,
-                    row_filter=ReviewAuditFilter(row_filter.value),
+                    row_filter=row_filter,
                     characters=characters,
                     first_index=first_index,
                     last_index=last_index,
@@ -367,16 +348,16 @@ class AuditReviewCli(AuditCliBase):
     @staticmethod
     def _validate_mode_inputs(
         parser: ArgumentParser,
-        mode: _ReviewAuditMode,
+        mode: ReviewAuditMode,
         *,
         reviewed_path: Path | None,
         guide_path: Path | None,
         json_path: Path | None,
-        row_filter: _ReviewAuditFilter,
+        row_filter: ReviewAuditFilter,
         characters: Sequence[str],
     ):
         """Validate mode-specific review inputs and filters."""
-        if mode is _ReviewAuditMode.guided:
+        if mode is ReviewAuditMode.guided:
             if guide_path is None:
                 parser.error("--guide is required in guided mode")
             if json_path is None:
@@ -391,7 +372,7 @@ class AuditReviewCli(AuditCliBase):
             parser.error("--reviewed is required in regular mode")
         if guide_path is not None:
             parser.error("--guide is only supported in guided mode")
-        if row_filter is _ReviewAuditFilter.unverified:
+        if row_filter is ReviewAuditFilter.unverified:
             parser.error("--filter unverified is only supported in guided mode")
 
 

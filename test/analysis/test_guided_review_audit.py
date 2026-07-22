@@ -6,10 +6,8 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.guided_review import (
-    GuidedReviewAuditFilter,
-    audit_guided_review,
-)
+from scinoephile.analysis.audit.guided_review import audit_guided_review
+from scinoephile.analysis.audit.review import ReviewAuditFilter
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.guided_review import GuidedReviewTestCase
@@ -80,11 +78,18 @@ def test_audit_guided_review_formats_unanswered_case():
 
 
 def test_audit_guided_review_rejects_invalid_range():
-    """Test direct callers receive a domain error for an invalid range."""
+    """Test direct callers receive domain errors for invalid options."""
     target, guide = _get_series_pair()
 
     with raises(ScinoephileError, match="First index must be at least 1"):
         audit_guided_review(target, guide, (), first_index=0)
+    with raises(ScinoephileError, match="Discrepancies filter is not supported"):
+        audit_guided_review(
+            target,
+            guide,
+            (),
+            row_filter=ReviewAuditFilter.discrepancies,
+        )
 
 
 def test_audit_guided_review_filters_rows_and_target_range():
@@ -121,13 +126,13 @@ def test_audit_guided_review_filters_rows_and_target_range():
         target,
         guide,
         test_cases,
-        row_filter=GuidedReviewAuditFilter.changes,
+        row_filter=ReviewAuditFilter.changes,
     )
     unverified_report = audit_guided_review(
         target,
         guide,
         test_cases,
-        row_filter=GuidedReviewAuditFilter.unverified,
+        row_filter=ReviewAuditFilter.unverified,
     )
     ranged_report = audit_guided_review(
         target,

@@ -127,6 +127,10 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
         capsys.readouterr().err
     )
 
+    with raises(SystemExit):
+        run_cli_with_args(AuditReviewDualCli, f"{arguments} --filter unverified")
+    assert "invalid choice" in capsys.readouterr().err
+
     reviewed_path.write_text(
         reviewed_path.read_text(encoding="utf-8")
         + "\n2\n00:00:02,000 --> 00:00:02,500\n又\n",

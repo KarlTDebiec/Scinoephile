@@ -23,6 +23,7 @@ from .utils import (
 __all__ = [
     "ReviewAuditComparison",
     "ReviewAuditFilter",
+    "ReviewAuditMode",
     "ReviewAuditPair",
     "audit_review_workflow",
     "audit_reviews",
@@ -62,7 +63,7 @@ class ReviewAuditComparison:
 
 
 class ReviewAuditFilter(StrEnum):
-    """Row filters supported by a review audit."""
+    """Row filters supported across review audit modes."""
 
     all = "all"
     """Include every subtitle row."""
@@ -72,6 +73,19 @@ class ReviewAuditFilter(StrEnum):
 
     discrepancies = "discrepancies"
     """Include only final discrepancies."""
+
+    unverified = "unverified"
+    """Include only subtitles from unverified logged cases when supported."""
+
+
+class ReviewAuditMode(StrEnum):
+    """Review workflows supported by the unified audit command."""
+
+    guided = "guided"
+    """Audit guide-backed sparse review decisions."""
+
+    regular = "regular"
+    """Audit differences between pre-review and reviewed subtitle tracks."""
 
 
 def audit_reviews(
@@ -185,6 +199,10 @@ def audit_review_workflow(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
+    if row_filter is ReviewAuditFilter.unverified:
+        raise ScinoephileError(
+            "Unverified filter is not supported for regular review audits"
+        )
 
     all_series = tuple(
         series for review in reviews for series in (review.original, review.reviewed)

@@ -62,6 +62,12 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     """
     inputs = _get_audit_inputs(tmp_path)
 
+    with raises(ScinoephileError, match="Unverified filter is not supported"):
+        audit_reviews(
+            **inputs,
+            row_filter=ReviewAuditFilter.unverified,
+        )
+
     report = audit_reviews(
         **inputs,
         row_filter=ReviewAuditFilter.changes,
