@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from pathlib import Path
 
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.common.argument_parsing import (
@@ -13,6 +14,8 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.llms import Manager, TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 
 __all__ = ["AuditCliBase"]
 
@@ -106,3 +109,57 @@ class AuditCliBase(ScinoephileCliBase):
             help="overwrite outfile if it exists",
         )
         parser.set_defaults(_parser=parser)
+
+    @staticmethod
+    def load_test_cases(
+        parser: ArgumentParser,
+        json_path: Path,
+        manager_cls: type[Manager],
+        *,
+        workflow_name: str,
+    ) -> list[TestCase]:
+        """Load test cases from workflow JSON.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            json_path: test-case JSON path
+            manager_cls: manager defining the test-case model
+            workflow_name: workflow name used in errors
+        Returns:
+            loaded test cases
+        """
+        try:
+            return load_test_cases_from_json(
+                json_path,
+                manager_cls,
+                manager_cls.base_prompt,
+            )
+        except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
+            parser.error(f"Unable to load {workflow_name} JSON: {exc}")
+
+    @staticmethod
+    def write_report(
+        parser: ArgumentParser,
+        report: str,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Write a report to stdout or a file.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            report: Markdown report
+            outfile_path: optional output file path
+            overwrite: whether to overwrite an existing output file
+        """
+        if outfile_path is None:
+            if overwrite:
+                parser.error("--overwrite may only be used with --outfile")
+            print(report, end="")
+            return
+        if outfile_path.exists() and not overwrite:
+            parser.error(f"File exists: {outfile_path}; use --overwrite to replace it")
+        try:
+            outfile_path.write_text(report, encoding="utf-8")
+        except OSError as exc:
+            parser.error(str(exc))

@@ -5,6 +5,8 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from collections.abc import Sequence
+from pathlib import Path
 from typing import ClassVar
 
 from scinoephile.analysis.audit.review import ReviewAuditFilter
@@ -12,6 +14,8 @@ from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
 )
+from scinoephile.core.llms import TestCase
+from scinoephile.llms.review import ReviewManager
 
 from .audit_cli_base import AuditCliBase
 
@@ -98,4 +102,26 @@ class AuditReviewCliBase(AuditCliBase):
                 "input; values may be separated or combined, and simplified and "
                 "traditional variants are included automatically"
             ),
+        )
+
+    @staticmethod
+    def load_review_test_cases(
+        parser: ArgumentParser,
+        json_path: Path | None,
+    ) -> Sequence[TestCase]:
+        """Load optional review test cases from JSON.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            json_path: optional review JSON path
+        Returns:
+            loaded review test cases
+        """
+        if json_path is None:
+            return ()
+        return AuditCliBase.load_test_cases(
+            parser,
+            json_path,
+            ReviewManager,
+            workflow_name="review",
         )

@@ -20,10 +20,6 @@ from scinoephile.lang.id import get_series_language
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
 from .audit_review_cli_base import AuditReviewCliBase
-from .utils import (
-    load_review_test_cases,
-    write_audit_report,
-)
 
 __all__ = ["AuditReviewCli"]
 
@@ -153,7 +149,7 @@ class AuditReviewCli(AuditReviewCliBase):
                         label=_LANGUAGE_LABELS[language],
                         original=original,
                         reviewed=reviewed,
-                        review_cases=load_review_test_cases(parser, json_path),
+                        review_cases=cls.load_review_test_cases(parser, json_path),
                     ),
                 ),
                 row_filter=row_filter,
@@ -167,7 +163,7 @@ class AuditReviewCli(AuditReviewCliBase):
             parser.error(str(exc))
 
         # Write output
-        write_audit_report(parser, report, outfile_path, overwrite)
+        cls.write_report(parser, report, outfile_path, overwrite)
 
 
 if __name__ == "__main__":

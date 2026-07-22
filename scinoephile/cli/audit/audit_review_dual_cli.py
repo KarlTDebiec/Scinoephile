@@ -18,10 +18,6 @@ from scinoephile.core import ScinoephileError
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
 from .audit_review_cli_base import AuditReviewCliBase
-from .utils import (
-    load_review_test_cases,
-    write_audit_report,
-)
 
 __all__ = ["AuditReviewDualCli"]
 
@@ -288,9 +284,9 @@ class AuditReviewDualCli(AuditReviewCliBase):
 
         # Load review JSON
         review_cases = {
-            "simplified": load_review_test_cases(parser, simplified_json_path),
-            "traditional": load_review_test_cases(parser, traditional_json_path),
-            "traditional_simplified": load_review_test_cases(
+            "simplified": cls.load_review_test_cases(parser, simplified_json_path),
+            "traditional": cls.load_review_test_cases(parser, traditional_json_path),
+            "traditional_simplified": cls.load_review_test_cases(
                 parser,
                 traditional_simplified_json_path,
             ),
@@ -321,7 +317,7 @@ class AuditReviewDualCli(AuditReviewCliBase):
             parser.error(str(exc))
 
         # Write output
-        write_audit_report(parser, report, outfile_path, overwrite)
+        cls.write_report(parser, report, outfile_path, overwrite)
 
 
 if __name__ == "__main__":
