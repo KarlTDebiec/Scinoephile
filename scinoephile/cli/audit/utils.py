@@ -15,7 +15,6 @@ from scinoephile.llms.review import ReviewManager
 __all__ = [
     "load_audit_test_cases",
     "load_review_test_cases",
-    "validate_subtitle_index_range",
     "write_audit_report",
 ]
 
@@ -67,22 +66,6 @@ def load_review_test_cases(
         ReviewManager,
         workflow_name="review",
     )
-
-
-def validate_subtitle_index_range(
-    parser: ArgumentParser,
-    first_index: int | None,
-    last_index: int | None,
-):
-    """Validate an optional inclusive subtitle range.
-
-    Arguments:
-        parser: parser used to report user-facing errors
-        first_index: first included one-based subtitle index
-        last_index: last included one-based subtitle index
-    """
-    if first_index is not None and last_index is not None and first_index > last_index:
-        parser.error("--first-index must be less than or equal to --last-index")
 
 
 def write_audit_report(

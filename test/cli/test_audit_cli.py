@@ -113,7 +113,7 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
             AuditReviewDualCli,
             f"{arguments} --first-index 2 --last-index 1",
         )
-    assert "--first-index must be less than or equal to --last-index" in (
+    assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
     )
 

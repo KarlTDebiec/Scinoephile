@@ -22,7 +22,6 @@ from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 from .audit_review_cli_base import AuditReviewCliBase
 from .utils import (
     load_review_test_cases,
-    validate_subtitle_index_range,
     write_audit_report,
 )
 
@@ -125,9 +124,7 @@ class AuditReviewCli(AuditReviewCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
-        # Validate arguments
         parser = _parser or cls.argparser()
-        validate_subtitle_index_range(parser, first_index, last_index)
 
         # Read inputs
         original = read_series(parser, original_path)
