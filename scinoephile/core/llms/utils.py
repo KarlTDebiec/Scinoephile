@@ -12,15 +12,53 @@ from typing import cast
 from pydantic import TypeAdapter
 
 from scinoephile.common.file import open_atomic_text_file
+from scinoephile.common.validation import val_output_path
 
 from .manager import Manager
 from .prompt import Prompt
 from .test_case import TestCase
 
 __all__ = [
+    "load_test_cases",
     "load_test_cases_from_json",
     "save_test_cases_to_json",
 ]
+
+
+def load_test_cases(
+    manager_cls: type[Manager],
+    prompt: Prompt,
+    *,
+    test_cases: Iterable[TestCase] | None = None,
+    test_case_path: Path | None = None,
+) -> tuple[list[TestCase], Path | None]:
+    """Load test cases from supplied cases and an optional JSON file.
+
+    Test cases loaded from the JSON file replace supplied cases with matching queries.
+
+    Arguments:
+        manager_cls: manager used to load JSON test cases
+        prompt: prompt whose localized schema should be applied
+        test_cases: optional test cases to load before the JSON file
+        test_case_path: optional JSON file containing additional test cases
+    Returns:
+        test cases unique by query and normalized optional JSON path
+    """
+    if test_case_path is not None:
+        test_case_path = val_output_path(test_case_path, exist_ok=True)
+    if test_cases is None:
+        test_cases = []
+    test_cases_by_query_key = {
+        test_case.query.key: test_case for test_case in test_cases
+    }
+    if test_case_path is not None and test_case_path.exists():
+        for test_case in load_test_cases_from_json(
+            test_case_path,
+            manager_cls,
+            prompt,
+        ):
+            test_cases_by_query_key[test_case.query.key] = test_case
+    return list(test_cases_by_query_key.values()), test_case_path
 
 
 def load_test_cases_from_json(

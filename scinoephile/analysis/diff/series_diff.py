@@ -304,6 +304,8 @@ class SeriesDiff:
         Returns:
             updated first- and second-side local line positions
         """
+        one_line_stop = max(one_line_pos, min(one_line_stop, len(one_side.lines)))
+        two_line_stop = max(two_line_pos, min(two_line_stop, len(two_side.lines)))
         one_local_idxs = tuple(range(one_line_pos, one_line_stop))
         two_local_idxs = tuple(range(two_line_pos, two_line_stop))
         matcher = difflib.SequenceMatcher(

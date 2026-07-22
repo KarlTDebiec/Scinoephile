@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from copy import deepcopy
 from logging import getLogger
-from pathlib import Path
 from typing import cast
 
 from pydantic import ValidationError
@@ -17,21 +16,22 @@ from scinoephile.audio.subtitles import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
-from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Queryer
-from scinoephile.core.llms.utils import save_test_cases_to_json
-from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import SyncGroup, get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.delineation import (
     DelineationAnswer,
-    DelineationManager,
+    DelineationProcessor,
     DelineationPrompt,
     DelineationQuery,
+    DelineationTestCase,
 )
-from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
+from scinoephile.llms.punctuation import (
+    PunctuationProcessor,
+    PunctuationPrompt,
+    PunctuationTestCase,
+)
 
 from .alignment import TranscriptionAlignment
 
@@ -46,24 +46,19 @@ class TranscriptionAligner:
 
     def __init__(
         self,
-        delineation_queryer: Queryer,
-        punctuation_queryer: Queryer,
-        test_case_dir_path: Path | None = None,
+        delineation_processor: DelineationProcessor,
+        punctuation_processor: PunctuationProcessor,
     ):
         """Initialize.
 
         Arguments:
-            delineation_queryer: queryer for delineation
-            punctuation_queryer: queryer for punctuation
-            test_case_dir_path: directory where encountered test cases are written
+            delineation_processor: processor for delineation LLM queries
+            punctuation_processor: processor for punctuation LLM queries
         """
-        self.delineation_queryer = delineation_queryer
+        self.delineation_processor = delineation_processor
         """Shift transcription text between adjacent reference subtitles."""
-        self.punctuation_queryer = punctuation_queryer
+        self.punctuation_processor = punctuation_processor
         """Punctuate transcription text using corresponding reference subtitles."""
-        self.test_case_dir_path = None
-        if test_case_dir_path is not None:
-            self.test_case_dir_path = val_input_dir_path(test_case_dir_path)
 
     def align(
         self,
@@ -80,34 +75,29 @@ class TranscriptionAligner:
         """
         alignment = TranscriptionAlignment(reference_subs, transcription_subs)
 
-        delineation_in_progress = True
-        while delineation_in_progress:
-            delineation_in_progress = self._delineate(alignment)
+        seen_delineation_states = set()
+        while True:
+            delineation_state = (
+                tuple(
+                    (tuple(reference_idxs), tuple(transcription_idxs))
+                    for reference_idxs, transcription_idxs in alignment.sync_groups
+                ),
+                tuple(subtitle.text for subtitle in alignment.transcription),
+            )
+            if delineation_state in seen_delineation_states:
+                logger.warning("Stopping delineation after a repeated alignment state")
+                break
+            seen_delineation_states.add(delineation_state)
+            if not self._delineate(alignment):
+                break
 
         self._punctuate(alignment)
         return alignment
 
     def update_all_test_cases(self):
-        """Update all test cases for the specified block."""
-        if self.test_case_dir_path is None:
-            return
-
-        delineation_output_path = (
-            self.test_case_dir_path / "delineation" / f"{get_torch_device()}.json"
-        )
-        save_test_cases_to_json(
-            delineation_output_path,
-            list(self.delineation_queryer.encountered_test_cases.values()),
-            DelineationManager,
-        )
-        punctuation_output_path = (
-            self.test_case_dir_path / "punctuation" / f"{get_torch_device()}.json"
-        )
-        save_test_cases_to_json(
-            punctuation_output_path,
-            list(self.punctuation_queryer.encountered_test_cases.values()),
-            PunctuationManager,
-        )
+        """Update all test cases encountered during the current run."""
+        self.delineation_processor.save_test_cases()
+        self.punctuation_processor.save_test_cases()
 
     def _delineate(self, alignment: TranscriptionAlignment) -> bool:
         """Delineate transcribed text.
@@ -117,7 +107,8 @@ class TranscriptionAligner:
         Returns:
             whether delineation must restart after splitting a subtitle
         """
-        delineation_prompt = cast(DelineationPrompt, self.delineation_queryer.prompt)
+        delineation_queryer = self.delineation_processor.queryer
+        delineation_prompt = cast(DelineationPrompt, delineation_queryer.prompt)
         for sync_group_one_idx in range(len(alignment.sync_groups) - 1):
             test_case = alignment.get_delineation_test_case(
                 sync_group_one_idx,
@@ -129,7 +120,10 @@ class TranscriptionAligner:
                     f"{sync_group_one_idx + 1} with no transcription"
                 )
                 continue
-            test_case = self.delineation_queryer(test_case)
+            test_case = cast(
+                DelineationTestCase,
+                delineation_queryer(test_case),
+            )
 
             query = test_case.query
             answer = test_case.answer
@@ -207,7 +201,7 @@ class TranscriptionAligner:
                 remaining_chars -= len(subtitle.text)
                 if remaining_chars == 0:
                     alignment._sync_groups_override = nascent_sync_groups
-                    return False
+                    return True
 
         if len(transcription_two) < len(shifted_two):
             text_to_shift = shifted_two[: len(shifted_two) - len(transcription_two)]
@@ -230,7 +224,7 @@ class TranscriptionAligner:
                 remaining_chars -= len(subtitle.text)
                 if remaining_chars == 0:
                     alignment._sync_groups_override = nascent_sync_groups
-                    return False
+                    return True
 
         raise ScinoephileError(
             f"Unexpected case:\nQuery:\n{query}\n with Answer:\n{answer}\n"
@@ -255,7 +249,8 @@ class TranscriptionAligner:
 
         nascent_transcription = AudioSeries(audio=alignment.transcription.audio)
         nascent_sync_groups: list[SyncGroup] = []
-        punctuation_prompt = cast(PunctuationPrompt, self.punctuation_queryer.prompt)
+        punctuation_queryer = self.punctuation_processor.queryer
+        punctuation_prompt = cast(PunctuationPrompt, punctuation_queryer.prompt)
         for sync_group_idx, sync_group in enumerate(alignment.sync_groups):
             reference_idx = sync_group[0][0]
             reference = alignment.reference[reference_idx]
@@ -288,7 +283,10 @@ class TranscriptionAligner:
                 nascent_sync_groups.append(([reference_idx], []))
                 continue
             try:
-                test_case = self.punctuation_queryer(test_case)
+                test_case = cast(
+                    PunctuationTestCase,
+                    punctuation_queryer(test_case),
+                )
             except ValidationError as exc:
                 logger.error(
                     f"Error punctuating sync group {sync_group_idx}; "
