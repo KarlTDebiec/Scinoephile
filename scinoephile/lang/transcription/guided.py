@@ -11,8 +11,9 @@ from types import MappingProxyType
 
 from scinoephile.audio.transcription import get_segment_split_on_whitespace
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider, Manager, Prompt, Queryer, TestCase
-from scinoephile.core.llms.utils import load_test_cases_from_json
+from scinoephile.core.llms import LLMProvider, Queryer, TestCase
+from scinoephile.core.llms.utils import load_test_cases
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
@@ -168,7 +169,6 @@ def get_guided_transcriber(
     additional_context: str | None = None,
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
-    test_case_dir_path: Path | None = None,
     delineation_json_path: Path | None = None,
     punctuation_json_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
@@ -186,7 +186,6 @@ def get_guided_transcriber(
         additional_context: additional context to include in LLM prompts
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
-        test_case_dir_path: directory where encountered test cases are written
         delineation_json_path: delineation test-case JSON file to load and update
         punctuation_json_path: punctuation test-case JSON file to load and update
         delineation_test_cases: preloaded delineation test cases
@@ -211,29 +210,49 @@ def get_guided_transcriber(
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
         punctuation_prompt = spec.punctuation_prompt
-    if test_case_dir_path is None and (
-        delineation_json_path is None or punctuation_json_path is None
-    ):
-        test_case_dir_path = get_runtime_cache_dir_path("test_cases")
-        test_case_dir_path /= spec.test_case_dir_path
-    if test_case_dir_path is not None:
-        (test_case_dir_path / "delineation").mkdir(parents=True, exist_ok=True)
-        (test_case_dir_path / "punctuation").mkdir(parents=True, exist_ok=True)
-
+    prune_delineation_test_cases = delineation_json_path is not None
+    prune_punctuation_test_cases = punctuation_json_path is not None
+    if delineation_json_path is None or punctuation_json_path is None:
+        runtime_test_case_dir_path = (
+            get_runtime_cache_dir_path("test_cases") / spec.test_case_dir_path
+        )
+        device = get_torch_device()
+        if delineation_json_path is None:
+            delineation_json_path = (
+                runtime_test_case_dir_path / "delineation" / f"{device}.json"
+            )
+        if punctuation_json_path is None:
+            punctuation_json_path = (
+                runtime_test_case_dir_path / "punctuation" / f"{device}.json"
+            )
     if delineation_test_cases is None:
-        delineation_test_cases = _load_transcription_test_cases(
-            DelineationManager,
-            delineation_prompt,
-            spec.delineation_json_paths,
-            delineation_json_path,
+        delineation_test_cases = list(
+            load_default_test_cases(
+                DelineationManager,
+                delineation_prompt,
+                spec.delineation_json_paths,
+            )
         )
+    delineation_test_cases = load_test_cases(
+        DelineationManager,
+        delineation_prompt,
+        test_cases=delineation_test_cases,
+        test_case_path=delineation_json_path,
+    )
     if punctuation_test_cases is None:
-        punctuation_test_cases = _load_transcription_test_cases(
-            PunctuationManager,
-            punctuation_prompt,
-            spec.punctuation_json_paths,
-            punctuation_json_path,
+        punctuation_test_cases = list(
+            load_default_test_cases(
+                PunctuationManager,
+                punctuation_prompt,
+                spec.punctuation_json_paths,
+            )
         )
+    punctuation_test_cases = load_test_cases(
+        PunctuationManager,
+        punctuation_prompt,
+        test_cases=punctuation_test_cases,
+        test_case_path=punctuation_json_path,
+    )
     if provider is None:
         provider = get_provider()
 
@@ -258,9 +277,10 @@ def get_guided_transcriber(
     aligner = TranscriptionAligner(
         delineation_queryer=delineation_queryer,
         punctuation_queryer=punctuation_queryer,
-        test_case_dir_path=test_case_dir_path,
         delineation_json_path=delineation_json_path,
         punctuation_json_path=punctuation_json_path,
+        prune_delineation_test_cases=prune_delineation_test_cases,
+        prune_punctuation_test_cases=prune_punctuation_test_cases,
     )
     return GuidedTranscriptionProcessor(
         language=language,
@@ -272,33 +292,3 @@ def get_guided_transcriber(
         vad_mode=vad_mode,
         segment_splitter=language_spec.segment_splitter,
     )
-
-
-def _load_transcription_test_cases(
-    manager_cls: type[Manager],
-    prompt: Prompt,
-    default_json_paths: tuple[Path, ...],
-    json_path: Path | None,
-) -> list[TestCase]:
-    """Load bundled and workflow-local transcription test cases.
-
-    Workflow-local cases take precedence over bundled cases with the same query.
-
-    Arguments:
-        manager_cls: manager used to load test cases
-        prompt: prompt whose localized schema should be applied
-        default_json_paths: bundled test-case paths
-        json_path: optional workflow-local JSON path
-    Returns:
-        test cases unique by query
-    """
-    test_cases = list(load_default_test_cases(manager_cls, prompt, default_json_paths))
-    if json_path is not None and json_path.exists():
-        test_cases.extend(
-            load_test_cases_from_json(
-                json_path,
-                manager_cls,
-                prompt=prompt,
-            )
-        )
-    return list({test_case.query.key: test_case for test_case in test_cases}.values())

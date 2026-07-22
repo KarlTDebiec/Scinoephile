@@ -68,14 +68,23 @@ def test_default_specs_are_read_only_and_cover_yue_zho_scripts():
 
 def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path):
     """Test factory configures language-specific prompts and Whisper language."""
-    transcriber = get_guided_transcriber(
-        Language.yue_hant,
-        Language.zho_hans,
-        provider=Mock(spec=LLMProvider),
-        test_case_dir_path=tmp_path,
-        delineation_test_cases=[],
-        punctuation_test_cases=[],
-    )
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            return_value=tmp_path,
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            provider=Mock(spec=LLMProvider),
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+        )
 
     assert transcriber.language is Language.yue_hant
     assert transcriber.reference_language is Language.zho_hans
@@ -93,8 +102,13 @@ def test_get_guided_transcriber_uses_registered_language_configuration(tmp_path)
     assert transcriber.vad_transcriber.language == "yue"
     assert transcriber.no_vad_transcriber is not None
     assert transcriber.no_vad_transcriber.language == "yue"
-    assert (tmp_path / "delineation").is_dir()
-    assert (tmp_path / "punctuation").is_dir()
+    test_case_dir_path = tmp_path / "lang/yue_zho/transcription"
+    assert transcriber.aligner.delineation_json_path == (
+        test_case_dir_path / "delineation" / "test.json"
+    )
+    assert transcriber.aligner.punctuation_json_path == (
+        test_case_dir_path / "punctuation" / "test.json"
+    )
 
 
 def test_get_guided_transcriber_prunes_stale_cases_from_exact_json_paths(
@@ -155,20 +169,30 @@ def test_get_guided_transcriber_prunes_stale_cases_from_exact_json_paths(
     assert json.loads(punctuation_json_path.read_text(encoding="utf-8")) == []
 
 
-def test_get_guided_transcriber_preserves_cases_in_test_case_directory(
+def test_get_guided_transcriber_preserves_cases_in_default_json_paths(
     tmp_path: Path,
 ):
-    """Test directory-backed JSON test cases are preserved between runs."""
-    transcriber = get_guided_transcriber(
-        Language.yue_hant,
-        Language.zho_hans,
-        provider=Mock(spec=LLMProvider),
-        test_case_dir_path=tmp_path,
-        delineation_test_cases=[],
-        punctuation_test_cases=[],
-    )
-    delineation_json_path = tmp_path / "delineation" / "test.json"
-    punctuation_json_path = tmp_path / "punctuation" / "test.json"
+    """Test default JSON test cases are preserved between runs."""
+    with (
+        patch(
+            "scinoephile.lang.transcription.guided.get_runtime_cache_dir_path",
+            return_value=tmp_path,
+        ),
+        patch(
+            "scinoephile.lang.transcription.guided.get_torch_device",
+            return_value="test",
+        ),
+    ):
+        transcriber = get_guided_transcriber(
+            Language.yue_hant,
+            Language.zho_hans,
+            provider=Mock(spec=LLMProvider),
+            delineation_test_cases=[],
+            punctuation_test_cases=[],
+        )
+    test_case_dir_path = tmp_path / "lang/yue_zho/transcription"
+    delineation_json_path = test_case_dir_path / "delineation" / "test.json"
+    punctuation_json_path = test_case_dir_path / "punctuation" / "test.json"
     delineation_test_case_data = [
         {
             "query": {
@@ -199,11 +223,7 @@ def test_get_guided_transcriber_preserves_cases_in_test_case_directory(
         encoding="utf-8",
     )
 
-    with patch(
-        "scinoephile.lang.transcription.aligner.get_torch_device",
-        return_value="test",
-    ):
-        transcriber.aligner.update_all_test_cases()
+    transcriber.aligner.update_all_test_cases()
 
     assert json.loads(delineation_json_path.read_text(encoding="utf-8")) == (
         delineation_test_case_data

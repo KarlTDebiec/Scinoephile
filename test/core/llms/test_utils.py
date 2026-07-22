@@ -14,6 +14,7 @@ from pytest import mark, raises
 
 from scinoephile.core import Language
 from scinoephile.core.llms.utils import (
+    load_test_cases,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
@@ -128,6 +129,27 @@ def test_json_uses_base_prompt_fields(tmp_path: Path):
     assert loaded[0].answer.model_dump(by_alias=True) == {
         "xiugai": [{"xuhao": 1, "wenben": "corrected", "beizhu": "typo"}]
     }
+
+
+def test_load_test_cases_prefers_json_cases(tmp_path: Path):
+    """Test JSON test cases replace supplied cases with matching queries."""
+    supplied_test_case = _get_test_case("original", "supplied correction")
+    json_test_case = _get_test_case("original", "JSON correction")
+    test_case_path = tmp_path / "test_cases.json"
+    save_test_cases_to_json(
+        test_case_path,
+        [json_test_case],
+        _AliasedBaseReviewManager,
+    )
+
+    test_cases = load_test_cases(
+        _AliasedBaseReviewManager,
+        _LOCALIZED_REVIEW_PROMPT,
+        test_cases=[supplied_test_case],
+        test_case_path=test_case_path,
+    )
+
+    assert test_cases == [json_test_case]
 
 
 @mark.parametrize(

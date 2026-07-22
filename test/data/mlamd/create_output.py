@@ -73,13 +73,16 @@ if "yue-Hans_transcribe" in actions:
 
     # Transcribe
     yue_hans = AudioSeries.load(audio_path)
+    test_case_dir_path = (
+        output_path / "yue-Hans_transcribe" / "lang/yue_zho/transcription"
+    )
+    device = get_torch_device()
     transcriber = get_guided_transcriber(
         Language.yue_hans,
         Language.zho_hans,
         vad_mode=VADMode.ON,
-        test_case_dir_path=(
-            output_path / "yue-Hans_transcribe" / "lang/yue_zho/transcription"
-        ),
+        delineation_json_path=test_case_dir_path / "delineation" / f"{device}.json",
+        punctuation_json_path=test_case_dir_path / "punctuation" / f"{device}.json",
         delineation_test_cases=get_mlamd_yue_delineation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
     )

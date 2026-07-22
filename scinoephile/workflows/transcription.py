@@ -37,7 +37,6 @@ def transcribe_series_guided(
     additional_context: str | None = None,
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
-    test_case_dir_path: Path | None = None,
     delineation_json_path: Path | None = None,
     punctuation_json_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
@@ -59,7 +58,6 @@ def transcribe_series_guided(
         additional_context: additional context to include in LLM prompts
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
-        test_case_dir_path: directory where encountered test cases are written
         delineation_json_path: delineation test-case JSON file to load and update
         punctuation_json_path: punctuation test-case JSON file to load and update
         delineation_test_cases: preloaded delineation test cases
@@ -87,7 +85,6 @@ def transcribe_series_guided(
             additional_context=additional_context,
             delineation_prompt=delineation_prompt,
             punctuation_prompt=punctuation_prompt,
-            test_case_dir_path=test_case_dir_path,
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,
             delineation_test_cases=delineation_test_cases,

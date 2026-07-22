@@ -18,9 +18,42 @@ from .prompt import Prompt
 from .test_case import TestCase
 
 __all__ = [
+    "load_test_cases",
     "load_test_cases_from_json",
     "save_test_cases_to_json",
 ]
+
+
+def load_test_cases(
+    manager_cls: type[Manager],
+    prompt: Prompt,
+    *,
+    test_cases: Iterable[TestCase] = (),
+    test_case_path: Path | None = None,
+) -> list[TestCase]:
+    """Load test cases from supplied cases and an optional JSON file.
+
+    Test cases loaded from the JSON file replace supplied cases with matching queries.
+
+    Arguments:
+        manager_cls: manager used to load JSON test cases
+        prompt: prompt whose localized schema should be applied
+        test_cases: test cases to load before the JSON file
+        test_case_path: optional JSON file containing additional test cases
+    Returns:
+        test cases unique by query
+    """
+    test_cases_by_query_key = {
+        test_case.query.key: test_case for test_case in test_cases
+    }
+    if test_case_path is not None and test_case_path.exists():
+        for test_case in load_test_cases_from_json(
+            test_case_path,
+            manager_cls,
+            prompt,
+        ):
+            test_cases_by_query_key[test_case.query.key] = test_case
+    return list(test_cases_by_query_key.values())
 
 
 def load_test_cases_from_json(
