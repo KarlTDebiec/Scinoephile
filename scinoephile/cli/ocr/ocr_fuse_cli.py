@@ -16,6 +16,7 @@ from scinoephile.cli.helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
     add_llm_provider_args,
+    add_llm_test_case_json_arg,
     read_llm_additional_context,
 )
 from scinoephile.common.argument_parsing import (
@@ -149,6 +150,7 @@ class OcrFuseCli(ScinoephileCliBase):
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
+        add_llm_test_case_json_arg(arg_groups["llm arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -186,6 +188,7 @@ class OcrFuseCli(ScinoephileCliBase):
         clean: bool,
         convert: OpenCCConfig | bool | None,
         llm_args: LlmArguments,
+        json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -257,6 +260,7 @@ class OcrFuseCli(ScinoephileCliBase):
                     parser,
                     llm_args.additional_context_file_path,
                 ),
+                test_case_path=json_path,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
