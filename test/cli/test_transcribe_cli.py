@@ -66,6 +66,8 @@ def test_transcribe_help_lists_generic_options():
     assert "--reference-language" in help_text
     assert "--delineation-json DELINEATION_JSON_PATH" in help_text
     assert "--punctuation-json PUNCTUATION_JSON_PATH" in help_text
+    assert "--first-block FIRST_BLOCK" in help_text
+    assert "--last-block LAST_BLOCK" in help_text
     assert "--script" not in normalized_help_text
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text
@@ -192,6 +194,8 @@ def test_transcribe_cli_passes_generic_configuration(
         additional_context: str | None,
         delineation_json_path: Path | None,
         punctuation_json_path: Path | None,
+        start_at_idx: int,
+        stop_at_idx: int | None,
     ) -> Series:
         """Validate transcription options passed by the CLI."""
         assert input_audio_series is audio_series
@@ -205,6 +209,8 @@ def test_transcribe_cli_passes_generic_configuration(
         assert additional_context is None
         assert delineation_json_path == tmp_path / "delineation.json"
         assert punctuation_json_path == tmp_path / "punctuation.json"
+        assert start_at_idx == 1
+        assert stop_at_idx == 3
         return expected_series
 
     with patch(
@@ -222,7 +228,8 @@ def test_transcribe_cli_passes_generic_configuration(
                 "--language yue-Hant --reference-language zho-Hans "
                 "--whisper-model custom/whisper --demucs on --vad off "
                 f"--delineation-json {tmp_path / 'delineation.json'} "
-                f"--punctuation-json {tmp_path / 'punctuation.json'}",
+                f"--punctuation-json {tmp_path / 'punctuation.json'} "
+                "--first-block 2 --last-block 3",
             )
 
 
@@ -238,6 +245,8 @@ def test_transcribe_cli_passes_generic_configuration(
         f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
         "--language yue-Hans --overwrite",
         f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
+        "--language yue-Hans --first-block 3 --last-block 2",
+        f"{_MEDIA_INFILE_PATH} --reference-infile {_REFERENCE_INFILE_PATH} "
         "--language yue-Hans --script traditional",
     ),
     ids=(
@@ -246,6 +255,7 @@ def test_transcribe_cli_passes_generic_configuration(
         "missing media infile",
         "two stdin infiles",
         "overwrite without outfile",
+        "reversed block range",
         "language-specific option",
     ),
 )
@@ -257,6 +267,24 @@ def test_transcribe_cli_rejects_invalid_arguments(args: str):
     """
     with raises(SystemExit, match="2"):
         run_cli_with_args(TranscribeCli, args)
+
+
+def test_transcribe_cli_rejects_oversized_last_block_before_loading_audio():
+    """Test an oversized last block fails before media audio is extracted."""
+    block_count = len(Series.load(_REFERENCE_INFILE_PATH).blocks)
+
+    with patch(
+        "scinoephile.cli.transcribe_cli.AudioSeries.load_from_media"
+    ) as load_from_media:
+        with raises(SystemExit, match="2"):
+            run_cli_with_args(
+                TranscribeCli,
+                f"{_MEDIA_INFILE_PATH} "
+                f"--reference-infile {_REFERENCE_INFILE_PATH} "
+                f"--language yue-Hans --last-block {block_count + 1}",
+            )
+
+    load_from_media.assert_not_called()
 
 
 def test_transcribe_cli_stream_errors_are_user_facing():

@@ -43,6 +43,7 @@ def test_transcribe_series_guided_constructs_processor_for_language_pair(
             reference_language=Language.zho_hans,
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,
+            start_at_idx=1,
             stop_at_idx=2,
         )
 
@@ -65,4 +66,5 @@ def test_transcribe_series_guided_constructs_processor_for_language_pair(
         audio_series,
         reference_series,
         stop_at_idx=2,
+        start_at_idx=1,
     )

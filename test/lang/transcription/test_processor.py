@@ -100,6 +100,22 @@ def test_segments_are_usable_rejects_repetitive_whisper_output():
     assert not GuidedTranscriptionProcessor._segments_are_usable(segments)
 
 
+def test_segments_are_usable_rejects_nonpositive_word_duration():
+    """Test text-bearing words must remain positive after ms conversion."""
+    segment = _get_segment(
+        start=4.02,
+        end=4.04,
+        text=" 啊",
+        compression_ratio=1.0,
+    )
+    segment.words = [
+        TranscribedWord(text=" ", start=4.02, end=4.04, confidence=1.0),
+        TranscribedWord(text="啊", start=4.04, end=4.04, confidence=1.0),
+    ]
+
+    assert not GuidedTranscriptionProcessor._segments_are_usable([segment])
+
+
 def test_segments_are_usable_rejects_timestamp_beyond_audio():
     """Test Whisper timestamps extending beyond source audio are unusable."""
     segments = [
@@ -327,8 +343,8 @@ def test_unusable_no_vad_result_uses_defensive_recovery():
     )
 
 
-def test_all_unusable_candidates_fail_before_alignment():
-    """Test unusable recovery output raises a transcription-domain error."""
+def test_all_unusable_candidates_leave_gap_for_translation():
+    """Test unusable recovery output leaves an empty transcription block."""
     processor, _ = _get_processor(vad_mode=VADMode.OFF)
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
     processor.no_vad_transcriber = Mock(return_value=repetitive_segments)
@@ -336,8 +352,9 @@ def test_all_unusable_candidates_fail_before_alignment():
     processor.recovery_transcriber = Mock(return_value=repetitive_segments)
     processor.recovery_transcriber.get_cached_transcription.return_value = None
 
-    with raises(ScinoephileError, match="no usable transcription"):
-        processor._transcribe_block_audio(AudioSegment.silent(duration=1000))
+    output = processor._transcribe_block_audio(AudioSegment.silent(duration=1000))
+
+    assert output == []
 
 
 def test_auto_demucs_retries_unseparated_audio_after_unusable_result():
@@ -525,6 +542,46 @@ def test_process_uses_exclusive_stop_index(caplog: LogCaptureFixture):
     assert output[0].text == "one"
     assert "BLOCK 1:" in caplog.text
     assert "BLOCK 0:" not in caplog.text
+
+
+def test_process_uses_inclusive_start_index(caplog: LogCaptureFixture):
+    """Test start_at_idx excludes earlier blocks while preserving global numbering.
+
+    Arguments:
+        caplog: captured log records
+    """
+    processor, _ = _get_processor()
+    caplog.set_level(INFO, logger="scinoephile.lang.transcription.processor")
+    audio_series = AudioSeries(
+        audio=AudioSegment.silent(duration=6000),
+        events=[
+            AudioSubtitle(start=0, end=1000, text="one"),
+            AudioSubtitle(start=5000, end=6000, text="two"),
+        ],
+    )
+    reference_series = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="one"),
+            Subtitle(start=5000, end=6000, text="two"),
+        ]
+    )
+
+    with patch.object(
+        processor,
+        "process_block",
+        side_effect=lambda audio_block, reference_block: audio_block,
+    ) as process_block:
+        output = processor.process(
+            audio_series,
+            reference_series,
+            start_at_idx=1,
+        )
+
+    assert process_block.call_count == 1
+    assert len(output) == 1
+    assert output[0].text == "two"
+    assert "BLOCK 2:" in caplog.text
+    assert "BLOCK 1:" not in caplog.text
 
 
 def test_process_rejects_mismatched_block_counts():

@@ -99,9 +99,21 @@ class TranscriptionAligner:
         """
         alignment = TranscriptionAlignment(reference_subs, transcription_subs)
 
-        delineation_in_progress = True
-        while delineation_in_progress:
-            delineation_in_progress = self._delineate(alignment)
+        seen_delineation_states = set()
+        while True:
+            delineation_state = (
+                tuple(
+                    (tuple(reference_idxs), tuple(transcription_idxs))
+                    for reference_idxs, transcription_idxs in alignment.sync_groups
+                ),
+                tuple(subtitle.text for subtitle in alignment.transcription),
+            )
+            if delineation_state in seen_delineation_states:
+                logger.warning("Stopping delineation after a repeated alignment state")
+                break
+            seen_delineation_states.add(delineation_state)
+            if not self._delineate(alignment):
+                break
 
         self._punctuate(alignment)
         return alignment
@@ -221,7 +233,7 @@ class TranscriptionAligner:
                 remaining_chars -= len(subtitle.text)
                 if remaining_chars == 0:
                     alignment._sync_groups_override = nascent_sync_groups
-                    return False
+                    return True
 
         if len(transcription_two) < len(shifted_two):
             text_to_shift = shifted_two[: len(shifted_two) - len(transcription_two)]
@@ -244,7 +256,7 @@ class TranscriptionAligner:
                 remaining_chars -= len(subtitle.text)
                 if remaining_chars == 0:
                     alignment._sync_groups_override = nascent_sync_groups
-                    return False
+                    return True
 
         raise ScinoephileError(
             f"Unexpected case:\nQuery:\n{query}\n with Answer:\n{answer}\n"
