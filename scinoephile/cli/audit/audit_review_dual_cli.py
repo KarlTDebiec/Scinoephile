@@ -15,8 +15,10 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
+from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
-from .audit_workflow_cli_base import AuditWorkflowCliBase
+from .audit_review_cli_base import AuditReviewCliBase, load_review_test_cases
+from .utils import validate_subtitle_index_range, write_audit_report
 
 __all__ = ["AuditReviewDualCli"]
 
@@ -133,7 +135,7 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditReviewDualCli(AuditWorkflowCliBase):
+class AuditReviewDualCli(AuditReviewCliBase):
     """Audit parallel simplified and traditional-to-simplified review paths."""
 
     localizations = AUDIT_REVIEW_DUAL_LOCALIZATIONS
@@ -259,8 +261,8 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        cls.validate_range(parser, first_index, last_index)
-        characters = cls.get_character_variants(characters)
+        validate_subtitle_index_range(parser, first_index, last_index)
+        characters = get_zho_character_variants(characters)
 
         # Read inputs
         simplified = read_series(parser, simplified_path)
@@ -285,9 +287,9 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
 
         # Load review JSON
         review_cases = {
-            "simplified": cls.load_review_cases(parser, simplified_json_path),
-            "traditional": cls.load_review_cases(parser, traditional_json_path),
-            "traditional_simplified": cls.load_review_cases(
+            "simplified": load_review_test_cases(parser, simplified_json_path),
+            "traditional": load_review_test_cases(parser, traditional_json_path),
+            "traditional_simplified": load_review_test_cases(
                 parser,
                 traditional_simplified_json_path,
             ),
@@ -318,7 +320,7 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
             parser.error(str(exc))
 
         # Write output
-        cls.write_report(parser, report, outfile_path, overwrite)
+        write_audit_report(parser, report, outfile_path, overwrite)
 
 
 if __name__ == "__main__":

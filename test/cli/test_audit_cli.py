@@ -12,9 +12,9 @@ from pytest import CaptureFixture, mark, raises
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
+from scinoephile.cli.audit.audit_review_cli_base import AuditReviewCliBase
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
-from scinoephile.cli.audit.audit_workflow_cli_base import AuditWorkflowCliBase
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
 
@@ -140,7 +140,7 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
 
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
-    assert issubclass(AuditWorkflowCliBase, AuditCliBase)
+    assert issubclass(AuditReviewCliBase, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
         "review": AuditReviewCli,

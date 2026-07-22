@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Shared command-line support for subtitle review audit workflows."""
+"""Shared command-line support for subtitle review audits."""
 
 from __future__ import annotations
 
@@ -15,21 +15,18 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
 )
 from scinoephile.core.llms import TestCase
-from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converter
 from scinoephile.llms.review import ReviewManager
 
 from .audit_cli_base import AuditCliBase
+from .utils import load_audit_test_cases
 
-__all__ = ["AuditWorkflowCliBase"]
+__all__ = [
+    "AuditReviewCliBase",
+    "load_review_test_cases",
+]
 
-AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
+AUDIT_REVIEW_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "first 1-indexed subtitle number to include, inclusive": (
-            "要包含的第一个字幕编号（从 1 开始，包含该编号）"
-        ),
-        "last 1-indexed subtitle number to include, inclusive": (
-            "要包含的最后一个字幕编号（从 1 开始，包含该编号）"
-        ),
         "rows to include: all or changes (default: changes)": (
             "要包含的行：all 表示全部，changes 表示校对更改（默认：changes）"
         ),
@@ -41,17 +38,8 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入，"
             "并自动包含简繁体变体"
         ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 输出文件路径（默认：标准输出）"
-        ),
     },
     "zh-hant": {
-        "first 1-indexed subtitle number to include, inclusive": (
-            "要包含的第一個字幕編號（從 1 開始，包含該編號）"
-        ),
-        "last 1-indexed subtitle number to include, inclusive": (
-            "要包含的最後一個字幕編號（從 1 開始，包含該編號）"
-        ),
         "rows to include: all or changes (default: changes)": (
             "要包含的列：all 表示全部，changes 表示校對變更（預設：changes）"
         ),
@@ -63,18 +51,15 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入，"
             "並自動包含簡繁體變體"
         ),
-        "Markdown outfile path (default: stdout)": (
-            "Markdown 輸出檔路徑（預設：標準輸出）"
-        ),
     },
 }
 """Localized shared help text keyed by locale and English source text."""
 
 
-class AuditWorkflowCliBase(AuditCliBase):
-    """Shared command-line support for subtitle review audit workflows."""
+class AuditReviewCliBase(AuditCliBase):
+    """Shared command-line support for subtitle review audits."""
 
-    localizations = AUDIT_WORKFLOW_LOCALIZATIONS
+    localizations = AUDIT_REVIEW_CLI_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
     row_filter_help: ClassVar[str] = (
         "rows to include: all or changes (default: changes)"
@@ -88,7 +73,7 @@ class AuditWorkflowCliBase(AuditCliBase):
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
-        """Add shared operation and output arguments to a parser.
+        """Add shared review-audit operation arguments to a parser.
 
         Arguments:
             parser: nascent argument parser
@@ -123,39 +108,24 @@ class AuditWorkflowCliBase(AuditCliBase):
             ),
         )
 
-    @staticmethod
-    def get_character_variants(characters: Sequence[str]) -> tuple[str, ...]:
-        """Get requested characters and their simplified/traditional variants.
 
-        Arguments:
-            characters: requested character strings
-        Returns:
-            sorted individual character variants
-        """
-        chars = "".join(characters)
-        variants = set(chars)
-        variants.update(get_zho_converter(OpenCCConfig.s2t).convert(chars))
-        variants.update(get_zho_converter(OpenCCConfig.t2s).convert(chars))
-        return tuple(sorted(variants))
+def load_review_test_cases(
+    parser: ArgumentParser,
+    json_path: Path | None,
+) -> Sequence[TestCase]:
+    """Load optional review test cases from JSON.
 
-    @staticmethod
-    def load_review_cases(
-        parser: ArgumentParser,
-        json_path: Path | None,
-    ) -> Sequence[TestCase]:
-        """Load optional review test cases from JSON.
-
-        Arguments:
-            parser: parser used to report user-facing errors
-            json_path: optional review JSON path
-        Returns:
-            loaded review test cases
-        """
-        if json_path is None:
-            return ()
-        return AuditCliBase.load_test_cases(
-            parser,
-            json_path,
-            ReviewManager,
-            workflow_name="review",
-        )
+    Arguments:
+        parser: parser used to report user-facing errors
+        json_path: optional review JSON path
+    Returns:
+        loaded review test cases
+    """
+    if json_path is None:
+        return ()
+    return load_audit_test_cases(
+        parser,
+        json_path,
+        ReviewManager,
+        workflow_name="review",
+    )

@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from copy import deepcopy
 from functools import cache
 
@@ -18,6 +19,7 @@ __all__ = [
     "SIMPLIFIED_CONFIGS",
     "T2S_EXCLUSIONS",
     "TRADITIONAL_CONFIGS",
+    "get_zho_character_variants",
     "get_zho_converted",
     "get_zho_converter",
     "get_zho_text_converted",
@@ -194,6 +196,21 @@ TRADITIONAL_CONFIGS = {
     OpenCCConfig.jp2t,
 }
 """OpenCC configurations that convert text toward traditional Chinese."""
+
+
+def get_zho_character_variants(texts: Iterable[str]) -> tuple[str, ...]:
+    """Get characters and their simplified/traditional variants.
+
+    Arguments:
+        texts: text strings containing characters to expand
+    Returns:
+        sorted individual characters and their script variants
+    """
+    text = "".join(texts)
+    variants = set(text)
+    variants.update(get_zho_converter(OpenCCConfig.s2t).convert(text))
+    variants.update(get_zho_converter(OpenCCConfig.t2s).convert(text))
+    return tuple(sorted(variants))
 
 
 def get_zho_converted(
