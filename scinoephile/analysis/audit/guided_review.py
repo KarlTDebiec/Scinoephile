@@ -16,13 +16,13 @@ from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.guided_review import GuidedReviewTestCase
 
 from .utils import (
-    _AuditResult,
-    _get_paired_event_block_numbers,
-    _get_validated_block_pairs_by_pause,
-    _is_block_in_range,
+    AuditResult,
     escape_table_cell,
     format_block_range,
     format_index_range,
+    get_paired_event_block_numbers,
+    get_validated_block_pairs_by_pause,
+    is_block_in_range,
     validate_block_range,
     validate_index_range,
 )
@@ -59,7 +59,7 @@ class _GuidedReviewRow:
     """One-based position of the source test case in the JSON."""
     markdown: str
     """Formatted Markdown table row."""
-    result: _AuditResult
+    result: AuditResult
     """Result of the logged answer for this subtitle."""
     verified: bool
     """Whether the source test case is verified."""
@@ -108,7 +108,7 @@ def audit_guided_review(
     validate_index_range(first_index, last_index)
     validate_block_range(first_block, last_block)
 
-    block_pairs = _get_validated_block_pairs_by_pause(
+    block_pairs = get_validated_block_pairs_by_pause(
         target,
         guide,
         first_block,
@@ -154,12 +154,12 @@ def audit_guided_review(
             target_revision = query_target.text
             if answer is None:
                 target_revision = f"{query_target.text}\n(unanswered)"
-                result = _AuditResult.unanswered
+                result = AuditResult.unanswered
             elif revision is not None:
                 target_revision = f"{query_target.text}\n{revision.text}"
-                result = _AuditResult.changed
+                result = AuditResult.changed
             else:
-                result = _AuditResult.unchanged
+                result = AuditResult.unchanged
 
             cells = (
                 str(subtitle_index),
@@ -183,17 +183,15 @@ def audit_guided_review(
         rows_by_subtitle_index.values(),
         key=lambda row: (row.subtitle_index, row.test_case_index),
     )
-    revised_subtitles = sum(row.result is _AuditResult.changed for row in all_rows)
-    unanswered_subtitles = sum(
-        row.result is _AuditResult.unanswered for row in all_rows
-    )
+    revised_subtitles = sum(row.result is AuditResult.changed for row in all_rows)
+    unanswered_subtitles = sum(row.result is AuditResult.unanswered for row in all_rows)
     verified_subtitles = sum(row.verified for row in all_rows)
     rows = [
         row
         for row in all_rows
         if not (
             row_filter is GuidedReviewAuditFilter.changes
-            and row.result is not _AuditResult.changed
+            and row.result is not AuditResult.changed
         )
         and not (row_filter is GuidedReviewAuditFilter.unverified and row.verified)
     ]
@@ -382,7 +380,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         unmatched_cases.append((test_case_index, test_case))
 
     active_block_numbers = {block.block_number for _, _, block in active_cases}
-    _, guide_block_numbers = _get_paired_event_block_numbers(block_pairs)
+    _, guide_block_numbers = get_paired_event_block_numbers(block_pairs)
     stale_cases: list[tuple[int, GuidedReviewTestCase, list[_GuidedReviewBlock]]] = []
     for test_case_index, test_case in unmatched_cases:
         key = (
@@ -469,7 +467,7 @@ def _block_intersects_range(
         whether any target subtitle in the block is selected
     """
     return (
-        _is_block_in_range(block.block_number, first_block, last_block)
+        is_block_in_range(block.block_number, first_block, last_block)
         and (first_index is None or block.target_indexes[-1] >= first_index)
         and (last_index is None or block.target_indexes[0] <= last_index)
     )
@@ -604,7 +602,7 @@ def _is_test_case_outside_range(
             guide[stop - 1].end < selected_start or guide[start].start > selected_end
         )
         outside_block_range = all(
-            not _is_block_in_range(block_number, first_block, last_block)
+            not is_block_in_range(block_number, first_block, last_block)
             for block_number in guide_block_numbers[start:stop]
         )
         outside_selected_ranges.append(outside_index_range or outside_block_range)
