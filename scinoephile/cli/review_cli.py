@@ -22,7 +22,10 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.pairs import get_block_pair_indexes_by_pause
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.workflows.review import review_series, review_series_guided
+from scinoephile.workflows.review import (
+    review_series,
+    review_series_guided,
+)
 
 from .helpers.blocks import (
     BLOCK_LOCALIZATIONS,
@@ -176,13 +179,13 @@ class ReviewCli(ScinoephileCliBase):
             parser.error("--guide-language requires --guide-infile")
 
         # Read input
-        target = read_series(parser, infile_path, allow_stdin=True)
+        series = read_series(parser, infile_path, allow_stdin=True)
         guide = None
         if guide_infile_path is not None:
             guide = read_series(parser, guide_infile_path)
-            block_count = len(get_block_pair_indexes_by_pause(target, guide))
+            block_count = len(get_block_pair_indexes_by_pause(series, guide))
         else:
-            block_count = len(target.blocks)
+            block_count = len(series.blocks)
         start_at_idx, stop_at_idx = get_block_range_indexes(
             parser,
             first_block,
@@ -198,7 +201,7 @@ class ReviewCli(ScinoephileCliBase):
         try:
             if guide is not None:
                 output = review_series_guided(
-                    target,
+                    series,
                     guide,
                     language=language,
                     guide_language=guide_language,
@@ -210,7 +213,7 @@ class ReviewCli(ScinoephileCliBase):
                 )
             else:
                 output = review_series(
-                    target,
+                    series,
                     language=language,
                     provider=provider,
                     additional_context=additional_context,

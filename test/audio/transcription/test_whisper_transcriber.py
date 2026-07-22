@@ -134,34 +134,6 @@ def test_transcribe_forwards_recovery_decoding_options(monkeypatch: MonkeyPatch)
     assert whisper.transcribe.call_args.kwargs["sample_len"] == 32
 
 
-def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch):
-    """Reuse one loaded model across fallback transcription configurations."""
-    whisper = Mock()
-    loaded_model = Mock()
-    whisper.load_model.return_value = loaded_model
-    monkeypatch.setattr(
-        WhisperTranscriber,
-        "_get_whisper_module",
-        Mock(return_value=whisper),
-    )
-    WhisperTranscriber._models.clear()
-    vad_transcriber = WhisperTranscriber(
-        model_name="custom/model",
-        use_vad=True,
-    )
-    no_vad_transcriber = WhisperTranscriber(
-        model_name="custom/model",
-        use_vad=False,
-    )
-
-    try:
-        assert vad_transcriber.model is loaded_model
-        assert no_vad_transcriber.model is loaded_model
-        whisper.load_model.assert_called_once()
-    finally:
-        WhisperTranscriber._models.clear()
-
-
 @parametrize(
     ("duration_ms", "expected"),
     [
@@ -185,6 +157,38 @@ def test_get_sample_len_bounds_decode_by_audio_duration(
     audio = AudioSegment.silent(duration=duration_ms)
 
     assert WhisperTranscriber._get_sample_len(audio) == expected
+
+
+def test_model_is_shared_across_decoding_configurations(monkeypatch: MonkeyPatch):
+    """Reuse one loaded model across fallback transcription configurations."""
+    whisper = Mock()
+    loaded_model = Mock()
+    whisper.load_model.return_value = loaded_model
+    monkeypatch.setattr(
+        WhisperTranscriber,
+        "_get_whisper_module",
+        Mock(return_value=whisper),
+    )
+    monkeypatch.setattr(
+        "scinoephile.audio.transcription.whisper_transcriber.get_torch_device",
+        Mock(return_value="cpu"),
+    )
+    WhisperTranscriber._models.clear()
+    vad_transcriber = WhisperTranscriber(
+        model_name="custom/model",
+        use_vad=True,
+    )
+    no_vad_transcriber = WhisperTranscriber(
+        model_name="custom/model",
+        use_vad=False,
+    )
+
+    try:
+        assert vad_transcriber.model is loaded_model
+        assert no_vad_transcriber.model is loaded_model
+        whisper.load_model.assert_called_once()
+    finally:
+        WhisperTranscriber._models.clear()
 
 
 def test_transcribe_bypasses_cache_when_requested(monkeypatch: MonkeyPatch):

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Reference-guided audio transcription processor."""
+"""Reference-guided audio transcriber."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ from .aligner import TranscriptionAligner
 
 __all__ = [
     "DemucsMode",
-    "GuidedTranscriptionProcessor",
+    "GuidedTranscriber",
     "TranscribedSegmentSplitter",
     "VADMode",
 ]
@@ -87,7 +87,7 @@ class VADMode(StrEnum):
     """Never use VAD."""
 
 
-class GuidedTranscriptionProcessor:
+class GuidedTranscriber:
     """Transcribe audio and align it with reference subtitles."""
 
     def __init__(
@@ -203,6 +203,13 @@ class GuidedTranscriptionProcessor:
                 f"{len(reference_blocks)} blocks."
             )
         block_range = val_index_range(len(audio_blocks), start_at_idx, stop_at_idx)
+        if (
+            self.aligner.delineation_processor.prune_test_cases
+            or self.aligner.punctuation_processor.prune_test_cases
+        ) and block_range != range(len(audio_blocks)):
+            raise ValueError(
+                "Cannot prune test cases while processing only a subset of blocks."
+            )
 
         output_events = []
         for block_idx in block_range:
@@ -210,7 +217,7 @@ class GuidedTranscriptionProcessor:
             reference_block = reference_blocks[block_idx]
             output_block = self.process_block(audio_block, reference_block)
             logger.info(
-                f"Block {block_idx + 1}:\n"
+                f"BLOCK {block_idx + 1}:\n"
                 f"REFERENCE ({self.reference_language.code}):\n"
                 f"{reference_block.to_simple_string()}\n"
                 f"TRANSCRIPTION ({self.language.code}):\n"
@@ -221,6 +228,7 @@ class GuidedTranscriptionProcessor:
         output_events.sort(key=lambda event: event.start)
         output = AudioSeries(audio=audio_series.audio, events=output_events)
         logger.info(f"Concatenated Series:\n{output.to_simple_string()}")
+        self.aligner.update_all_test_cases()
         return output
 
     def process_block(
@@ -260,7 +268,6 @@ class GuidedTranscriptionProcessor:
             offset=offset,
         )
         alignment = self.aligner.align(reference_block, transcription_block)
-        self.aligner.update_all_test_cases()
         return alignment.transcription
 
     def _get_cached_block_transcription(

@@ -18,7 +18,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.transcription.processor import DemucsMode, VADMode
+from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
 from test.helpers import assert_series_equal, test_data_root
 
 _MEDIA_INFILE_PATH = "/tmp/test_media.mp4"
@@ -64,10 +64,10 @@ def test_transcribe_help_lists_generic_options():
     assert "--reference-infile REFERENCE_INFILE_PATH" in help_text
     assert "--language" in help_text
     assert "--reference-language" in help_text
-    assert "--first-block FIRST_BLOCK" in help_text
-    assert "--last-block LAST_BLOCK" in help_text
     assert "--delineation-json DELINEATION_JSON_PATH" in help_text
     assert "--punctuation-json PUNCTUATION_JSON_PATH" in help_text
+    assert "--first-block FIRST_BLOCK" in help_text
+    assert "--last-block LAST_BLOCK" in help_text
     assert "--script" not in normalized_help_text
     assert "--convert" not in normalized_help_text
     assert "--demucs {auto,on,off}" in help_text

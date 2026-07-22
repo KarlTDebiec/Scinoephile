@@ -329,9 +329,15 @@ def _load_or_transcribe_series_guided(
     transcription_kw = dict(transcription_kw or {})
     spec = DEFAULT_SPECS.get((language, guide_language))
     if spec is not None:
+        test_case_dir_path = output_path.parent / spec.test_case_dir_path
+        device = get_torch_device()
         transcription_kw.setdefault(
-            "test_case_dir_path",
-            output_path.parent / spec.test_case_dir_path,
+            "delineation_json_path",
+            test_case_dir_path / "delineation" / f"{device}.json",
+        )
+        transcription_kw.setdefault(
+            "punctuation_json_path",
+            test_case_dir_path / "punctuation" / f"{device}.json",
         )
     audio_transcription = transcribe_series_guided(
         audio,
