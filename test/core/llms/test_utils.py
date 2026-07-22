@@ -142,7 +142,7 @@ def test_load_test_cases_prefers_json_cases(tmp_path: Path):
         _AliasedBaseReviewManager,
     )
 
-    test_cases = load_test_cases(
+    test_cases, normalized_test_case_path = load_test_cases(
         _AliasedBaseReviewManager,
         _LOCALIZED_REVIEW_PROMPT,
         test_cases=[supplied_test_case],
@@ -150,6 +150,22 @@ def test_load_test_cases_prefers_json_cases(tmp_path: Path):
     )
 
     assert test_cases == [json_test_case]
+    assert normalized_test_case_path == test_case_path.resolve()
+
+
+def test_load_test_cases_normalizes_optional_arguments(tmp_path: Path):
+    """Test optional cases and paths are normalized during loading."""
+    test_case_path = tmp_path / "new" / "test_cases.json"
+
+    test_cases, normalized_test_case_path = load_test_cases(
+        _AliasedBaseReviewManager,
+        _LOCALIZED_REVIEW_PROMPT,
+        test_case_path=test_case_path,
+    )
+
+    assert test_cases == []
+    assert normalized_test_case_path == test_case_path.resolve()
+    assert test_case_path.parent.is_dir()
 
 
 @mark.parametrize(

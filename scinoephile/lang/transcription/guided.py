@@ -233,7 +233,7 @@ def get_guided_transcriber(
                 spec.delineation_json_paths,
             )
         )
-    delineation_test_cases = load_test_cases(
+    delineation_test_cases, delineation_json_path = load_test_cases(
         DelineationManager,
         delineation_prompt,
         test_cases=delineation_test_cases,
@@ -247,7 +247,7 @@ def get_guided_transcriber(
                 spec.punctuation_json_paths,
             )
         )
-    punctuation_test_cases = load_test_cases(
+    punctuation_test_cases, punctuation_json_path = load_test_cases(
         PunctuationManager,
         punctuation_prompt,
         test_cases=punctuation_test_cases,

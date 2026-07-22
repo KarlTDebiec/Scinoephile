@@ -8,7 +8,6 @@ from abc import ABC
 from pathlib import Path
 from typing import TypedDict
 
-from scinoephile.common.validation import val_output_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .llm_provider import LLMProvider
@@ -84,11 +83,7 @@ class Processor(ABC):
             raise ValueError("manager_cls must be set on Processor subclasses.")
         self.test_case_cls = self.manager_cls.get_test_case_cls(self.prompt)
 
-        if test_case_path is not None:
-            test_case_path = val_output_path(test_case_path, exist_ok=True)
-        if test_cases is None:
-            test_cases = []
-        test_cases = load_test_cases(
+        test_cases, test_case_path = load_test_cases(
             self.manager_cls,
             self.prompt,
             test_cases=test_cases,
