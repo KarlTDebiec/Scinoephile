@@ -298,7 +298,8 @@ class GuidedTranscriber:
                 audio_duration=audio_duration,
             ):
                 return cached_segments, rejected_transcribers
-            rejected_transcribers.add(transcriber)
+            if transcriber is not self.recovery_transcriber:
+                rejected_transcribers.add(transcriber)
         return None, rejected_transcribers
 
     def _get_standard_transcribers(
