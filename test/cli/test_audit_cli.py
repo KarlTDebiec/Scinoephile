@@ -155,6 +155,22 @@ def test_audit_cli_subcommands():
     }
 
 
+def test_audit_review_cli_help_is_consistent():
+    """Test review audit help documents JSON inputs and option defaults."""
+    for cli_class in (AuditReviewCli, AuditReviewDualCli, AuditReviewTradCli):
+        actions = {
+            action.dest: action
+            for action in cli_class.argparser()._actions  # noqa: SLF001
+        }
+        character_help = actions["characters"].help
+        assert isinstance(character_help, str)
+        assert "(default: no character filter)" in character_help
+        for destination, action in actions.items():
+            if destination.endswith("json_path"):
+                assert isinstance(action.help, str)
+                assert "test-case JSON file" in action.help
+
+
 def test_audit_review_cli_guided_mode_stdout_and_outfile(
     tmp_path: Path,
     capsys: CaptureFixture,

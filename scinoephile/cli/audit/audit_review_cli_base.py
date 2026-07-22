@@ -29,10 +29,11 @@ AUDIT_REVIEW_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "further limit rows to those containing any listed character in any "
             "input; values may be separated or combined, and simplified and "
-            "traditional variants are included automatically"
+            "traditional variants are included automatically (default: no "
+            "character filter)"
         ): (
             "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入，"
-            "并自动包含简繁体变体"
+            "并自动包含简繁体变体（默认：无字符筛选）"
         ),
     },
     "zh-hant": {
@@ -42,10 +43,11 @@ AUDIT_REVIEW_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "further limit rows to those containing any listed character in any "
             "input; values may be separated or combined, and simplified and "
-            "traditional variants are included automatically"
+            "traditional variants are included automatically (default: no "
+            "character filter)"
         ): (
             "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入，"
-            "並自動包含簡繁體變體"
+            "並自動包含簡繁體變體（預設：無字元篩選）"
         ),
     },
 }
@@ -100,7 +102,8 @@ class AuditReviewCliBase(AuditCliBase):
             help=(
                 "further limit rows to those containing any listed character in any "
                 "input; values may be separated or combined, and simplified and "
-                "traditional variants are included automatically"
+                "traditional variants are included automatically (default: no "
+                "character filter)"
             ),
         )
 
