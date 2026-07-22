@@ -46,12 +46,8 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "test-case JSON file; required in guided mode": (
             "测试用例 JSON 文件；guided 模式下为必需"
         ),
-        (
-            "rows to include: all, changes, or unverified; "
-            "availability depends on mode (default: changes)"
-        ): (
-            "要包含的行：all、changes 或 unverified；可用选项"
-            "取决于模式（默认：changes）"
+        "rows to include: all, changes, or unverified (default: changes)": (
+            "要包含的行：all、changes 或 unverified（默认：changes）"
         ),
         (
             "characters to match in regular-review input; values may be separated "
@@ -75,12 +71,8 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "test-case JSON file; required in guided mode": (
             "測試案例 JSON 檔；guided 模式下為必需"
         ),
-        (
-            "rows to include: all, changes, or unverified; "
-            "availability depends on mode (default: changes)"
-        ): (
-            "要包含的列：all、changes 或 unverified；可用選項"
-            "取決於模式（預設：changes）"
+        "rows to include: all, changes, or unverified (default: changes)": (
+            "要包含的列：all、changes 或 unverified（預設：changes）"
         ),
         (
             "characters to match in regular-review input; values may be separated "
@@ -168,10 +160,7 @@ class AuditReviewCli(AuditCliBase):
             dest="row_filter",
             metavar="{all,changes,unverified}",
             type=enum_arg(ReviewAuditFilter),
-            help=(
-                "rows to include: all, changes, or unverified; "
-                "availability depends on mode (default: changes)"
-            ),
+            help="rows to include: all, changes, or unverified (default: changes)",
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",
@@ -309,7 +298,6 @@ class AuditReviewCli(AuditCliBase):
             reviewed_path=reviewed_path,
             guide_path=guide_path,
             json_path=json_path,
-            row_filter=row_filter,
             characters=characters,
         )
 
@@ -353,7 +341,6 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path | None,
         guide_path: Path | None,
         json_path: Path | None,
-        row_filter: ReviewAuditFilter,
         characters: Sequence[str],
     ):
         """Validate mode-specific review inputs and filters."""
@@ -372,8 +359,6 @@ class AuditReviewCli(AuditCliBase):
             parser.error("--reviewed is required in regular mode")
         if guide_path is not None:
             parser.error("--guide is only supported in guided mode")
-        if row_filter is ReviewAuditFilter.unverified:
-            parser.error("--filter unverified is only supported in guided mode")
 
 
 if __name__ == "__main__":

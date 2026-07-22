@@ -86,9 +86,11 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     )
     run_cli_with_args(
         AuditReviewDualCli,
-        f"{arguments} --traditional-json {review_json_path}",
+        (f"{arguments} --traditional-json {review_json_path} --filter unverified"),
     )
-    assert "Traditional review: 修正。" in capsys.readouterr().out
+    stdout = capsys.readouterr().out
+    assert "- row filter: unverified" in stdout
+    assert "Traditional review: 修正。" in stdout
 
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(AuditReviewDualCli, f"{arguments} --outfile {outfile_path}")
@@ -129,7 +131,9 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
 
     with raises(SystemExit):
         run_cli_with_args(AuditReviewDualCli, f"{arguments} --filter unverified")
-    assert "invalid choice" in capsys.readouterr().err
+    assert "--filter unverified requires one of --simplified-json" in (
+        capsys.readouterr().err
+    )
 
     reviewed_path.write_text(
         reviewed_path.read_text(encoding="utf-8")
@@ -291,6 +295,53 @@ def test_audit_review_cli_detects_language(tmp_path: Path, capsys: CaptureFixtur
     assert "| Subtitle | English | Notes |" in stdout
     assert "| 1 | This line needs work.<br>This line is improved. |" in stdout
 
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewCli,
+            (
+                f"--original {original_path} --reviewed {reviewed_path} "
+                "--filter unverified"
+            ),
+        )
+    assert "--filter unverified requires --json" in capsys.readouterr().err
+
+    json_path = tmp_path / "review.json"
+    json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "subtitles": [
+                            {"index": 1, "text": "This line needs work."},
+                            {"index": 2, "text": "This line is fine."},
+                            {"index": 3, "text": "Another English subtitle."},
+                        ]
+                    },
+                    "answer": {
+                        "revisions": [
+                            {
+                                "index": 1,
+                                "text": "This line is improved.",
+                                "note": "Improved.",
+                            }
+                        ]
+                    },
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    run_cli_with_args(
+        AuditReviewCli,
+        (
+            f"--original {original_path} --reviewed {reviewed_path} "
+            f"--json {json_path} --filter unverified"
+        ),
+    )
+    stdout = capsys.readouterr().out
+    assert "- row filter: unverified" in stdout
+    assert "- table rows: 3" in stdout
+
 
 def test_audit_review_trad_cli(tmp_path: Path, capsys: CaptureFixture):
     """Test a traditional-to-simplified two-review audit.
@@ -320,18 +371,22 @@ def test_audit_review_trad_cli(tmp_path: Path, capsys: CaptureFixture):
         encoding="utf-8",
     )
 
-    run_cli_with_args(
-        AuditReviewTradCli,
+    arguments = (
         f"--traditional {traditional_path} "
         f"--traditional-reviewed {traditional_reviewed_path} "
         f"--traditional-simplified {simplified_path} "
-        f"--traditional-simplified-reviewed {simplified_reviewed_path}",
+        f"--traditional-simplified-reviewed {simplified_reviewed_path}"
     )
+    run_cli_with_args(AuditReviewTradCli, arguments)
 
     stdout = capsys.readouterr().out
     assert "- traditional review edits: 1" in stdout
     assert "- traditional simplification review edits: 1" in stdout
     assert "| Subtitle | Traditional | Traditional simplification | Notes |" in stdout
+
+    with raises(SystemExit):
+        run_cli_with_args(AuditReviewTradCli, f"{arguments} --filter unverified")
+    assert "--filter unverified requires --traditional-json" in capsys.readouterr().err
 
 
 @mark.parametrize(

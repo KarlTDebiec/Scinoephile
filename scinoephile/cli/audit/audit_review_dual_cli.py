@@ -56,11 +56,13 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         (
             "rows to include: all; changes for any review edit or final "
-            "discrepancy; discrepancies for final discrepancies only "
+            "discrepancy; discrepancies for final discrepancies only; unverified "
+            "for subtitles in unverified logged cases "
             "(default: changes)"
         ): (
             "要包含的行：all 表示全部；changes 表示任何校对更改或最终差异；"
-            "discrepancies 仅表示最终差异（默认：changes）"
+            "discrepancies 仅表示最终差异；unverified 表示未验证日志案例中的"
+            "字幕（默认：changes）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -110,11 +112,13 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         (
             "rows to include: all; changes for any review edit or final "
-            "discrepancy; discrepancies for final discrepancies only "
+            "discrepancy; discrepancies for final discrepancies only; unverified "
+            "for subtitles in unverified logged cases "
             "(default: changes)"
         ): (
             "要包含的列：all 表示全部；changes 表示任何校對變更或最終差異；"
-            "discrepancies 僅表示最終差異（預設：changes）"
+            "discrepancies 僅表示最終差異；unverified 表示未驗證日誌案例中的"
+            "字幕（預設：changes）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -141,13 +145,15 @@ class AuditReviewDualCli(AuditReviewCliBase):
     """Localized help text keyed by locale and English source text."""
     row_filter_help = (
         "rows to include: all; changes for any review edit or final discrepancy; "
-        "discrepancies for final discrepancies only (default: changes)"
+        "discrepancies for final discrepancies only; unverified for subtitles in "
+        "unverified logged cases (default: changes)"
     )
     """Help text for the workflow's supported row filters."""
     row_filters = (
         ReviewAuditFilter.all,
         ReviewAuditFilter.changes,
         ReviewAuditFilter.discrepancies,
+        ReviewAuditFilter.unverified,
     )
     """Row filters supported by the workflow."""
 
@@ -263,6 +269,17 @@ class AuditReviewDualCli(AuditReviewCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
+        cls.validate_unverified_filter(
+            parser,
+            row_filter,
+            simplified_json_path
+            or traditional_json_path
+            or traditional_simplified_json_path,
+            json_requirement=(
+                "one of --simplified-json, --traditional-json, or "
+                "--traditional-simplified-json"
+            ),
+        )
         characters = get_zho_character_variants(characters)
 
         # Read inputs

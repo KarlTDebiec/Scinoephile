@@ -158,6 +158,12 @@ class AuditReviewTradCli(AuditReviewCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
+        cls.validate_unverified_filter(
+            parser,
+            row_filter,
+            traditional_json_path or traditional_simplified_json_path,
+            json_requirement=("--traditional-json or --traditional-simplified-json"),
+        )
 
         # Read inputs
         traditional = read_series(parser, traditional_path)

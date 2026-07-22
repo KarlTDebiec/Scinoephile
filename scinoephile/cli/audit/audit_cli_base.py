@@ -143,6 +143,8 @@ class AuditCliBase(ScinoephileCliBase):
         parser: ArgumentParser,
         row_filter: StrEnum,
         json_path: Path | None,
+        *,
+        json_requirement: str = "--json",
     ):
         """Validate that an unverified filter has test-case JSON.
 
@@ -150,9 +152,10 @@ class AuditCliBase(ScinoephileCliBase):
             parser: parser used to report the argument conflict
             row_filter: selected audit row filter
             json_path: optional test-case JSON path
+            json_requirement: user-facing description of the required JSON input
         """
         if row_filter.value == "unverified" and json_path is None:
-            parser.error("--filter unverified requires --json")
+            parser.error(f"--filter unverified requires {json_requirement}")
 
     @staticmethod
     def write_report(

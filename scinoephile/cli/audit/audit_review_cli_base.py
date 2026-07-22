@@ -23,8 +23,9 @@ __all__ = ["AuditReviewCliBase"]
 
 AUDIT_REVIEW_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "rows to include: all or changes (default: changes)": (
-            "要包含的行：all 表示全部，changes 表示校对更改（默认：changes）"
+        "rows to include: all, changes, or unverified (default: changes)": (
+            "要包含的行：all 表示全部，changes 表示校对更改，unverified 表示"
+            "未验证日志案例中的字幕（默认：changes）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -37,8 +38,9 @@ AUDIT_REVIEW_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
-        "rows to include: all or changes (default: changes)": (
-            "要包含的列：all 表示全部，changes 表示校對變更（預設：changes）"
+        "rows to include: all, changes, or unverified (default: changes)": (
+            "要包含的列：all 表示全部，changes 表示校對變更，unverified 表示"
+            "未驗證日誌案例中的字幕（預設：changes）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -60,12 +62,13 @@ class AuditReviewCliBase(AuditCliBase):
     localizations = AUDIT_REVIEW_CLI_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
     row_filter_help: ClassVar[str] = (
-        "rows to include: all or changes (default: changes)"
+        "rows to include: all, changes, or unverified (default: changes)"
     )
     """Help text for the workflow's supported row filters."""
     row_filters: ClassVar[tuple[ReviewAuditFilter, ...]] = (
         ReviewAuditFilter.all,
         ReviewAuditFilter.changes,
+        ReviewAuditFilter.unverified,
     )
     """Row filters supported by the workflow."""
 

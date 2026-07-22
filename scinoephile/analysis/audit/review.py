@@ -75,7 +75,7 @@ class ReviewAuditFilter(StrEnum):
     """Include only final discrepancies."""
 
     unverified = "unverified"
-    """Include only subtitles from unverified logged cases when supported."""
+    """Include only subtitles from unverified logged cases."""
 
 
 class ReviewAuditMode(StrEnum):
@@ -199,10 +199,6 @@ def audit_review_workflow(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
-    if row_filter is ReviewAuditFilter.unverified:
-        raise ScinoephileError(
-            "Unverified filter is not supported for regular review audits"
-        )
 
     all_series = tuple(
         series for review in reviews for series in (review.original, review.reviewed)
@@ -232,7 +228,7 @@ def audit_review_workflow(
         for comparison in comparisons
     )
 
-    # Match block-based notes against the complete inputs
+    # Match block-based log data against the complete inputs
     try:
         notes = tuple(
             _get_review_notes(review.review_cases, original, reviewed)
@@ -242,6 +238,21 @@ def audit_review_workflow(
                 strict=True,
             )
         )
+        unverified_indexes = frozenset()
+        if row_filter is ReviewAuditFilter.unverified:
+            unverified_indexes = frozenset(
+                index
+                for review, (original, reviewed) in zip(
+                    reviews,
+                    review_series,
+                    strict=True,
+                )
+                for index in _get_unverified_indexes(
+                    review.review_cases,
+                    original,
+                    reviewed,
+                )
+            )
     except ValueError as exc:
         raise ScinoephileError(f"Unable to audit subtitle reviews: {exc}") from exc
 
@@ -268,6 +279,7 @@ def audit_review_workflow(
         comparison_changes=comparison_changes,
         indexes=indexes,
         row_filter=row_filter,
+        unverified_indexes=unverified_indexes,
         characters=characters,
     )
     return _format_markdown(
@@ -443,6 +455,7 @@ def _get_filtered_indexes(
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
     row_filter: ReviewAuditFilter,
+    unverified_indexes: frozenset[int],
     characters: Sequence[str],
 ) -> list[int]:
     """Get subtitle indexes selected for the report.
@@ -453,6 +466,7 @@ def _get_filtered_indexes(
         comparison_changes: changed subtitle indexes for each comparison
         indexes: zero-based subtitle indexes eligible for inclusion
         row_filter: row status filter
+        unverified_indexes: subtitle indexes covered by unverified review cases
         characters: optional character filter
     Returns:
         selected subtitle indexes
@@ -465,10 +479,12 @@ def _get_filtered_indexes(
             for changed_indexes in (*review_changes, *comparison_changes)
             for index in changed_indexes
         }
-    else:
+    elif row_filter is ReviewAuditFilter.discrepancies:
         selected_indexes = {
             index for changed_indexes in comparison_changes for index in changed_indexes
         }
+    else:
+        selected_indexes = set(indexes) & unverified_indexes
 
     if characters:
         selected_indexes = {
@@ -481,6 +497,46 @@ def _get_filtered_indexes(
             )
         }
     return sorted(selected_indexes)
+
+
+def _get_review_case_data(
+    review_case: TestCase,
+) -> tuple[
+    tuple[str, ...],
+    tuple[str, ...],
+    dict[int, dict[str, int | str]],
+]:
+    """Get query, reviewed, and revision data from a review test case.
+
+    Arguments:
+        review_case: deserialized review test case
+    Returns:
+        query texts, expected reviewed texts, and revisions keyed by local index
+    """
+    answer = review_case.answer
+    query_subtitles = cast(
+        list[dict[str, int | str]],
+        review_case.query.model_dump()["subtitles"],
+    )
+    answer_revisions = (
+        cast(
+            list[dict[str, int | str]],
+            answer.model_dump()["revisions"],
+        )
+        if answer is not None
+        else []
+    )
+    query_texts = tuple(cast(str, subtitle["text"]) for subtitle in query_subtitles)
+    revision_by_index = {
+        cast(int, revision["index"]): revision for revision in answer_revisions
+    }
+    revised_texts = tuple(
+        cast(str, revision_by_index[local_index]["text"])
+        if local_index in revision_by_index
+        else query_text
+        for local_index, query_text in enumerate(query_texts, 1)
+    )
+    return query_texts, revised_texts, revision_by_index
 
 
 def _get_review_notes(
@@ -501,28 +557,11 @@ def _get_review_notes(
     """
     notes_by_index: dict[int, list[str]] = {}
     for case_index, review_case in enumerate(review_cases, 1):
-        answer = review_case.answer
-        if answer is None:
+        if review_case.answer is None:
             continue
-        query_subtitles = cast(
-            list[dict[str, int | str]],
-            review_case.query.model_dump()["subtitles"],
+        query_texts, revised_texts, revision_by_index = _get_review_case_data(
+            review_case
         )
-        answer_revisions = cast(
-            list[dict[str, int | str]],
-            answer.model_dump()["revisions"],
-        )
-        query_texts = tuple(cast(str, subtitle["text"]) for subtitle in query_subtitles)
-        revision_by_index = {
-            cast(int, revision["index"]): revision for revision in answer_revisions
-        }
-        revised_texts: list[str] = []
-        for local_index, query_text in enumerate(query_texts, 1):
-            revision = revision_by_index.get(local_index)
-            if revision is None:
-                revised_texts.append(query_text)
-            else:
-                revised_texts.append(cast(str, revision["text"]))
         note_fields = {
             local_index: cast(str, revision["note"]).strip()
             for local_index, revision in revision_by_index.items()
@@ -560,3 +599,39 @@ def _get_review_notes(
             )
 
     return {index: tuple(notes) for index, notes in notes_by_index.items()}
+
+
+def _get_unverified_indexes(
+    review_cases: Sequence[TestCase],
+    original: tuple[str, ...],
+    reviewed: tuple[str, ...],
+) -> set[int]:
+    """Get subtitle indexes covered by unverified review test cases.
+
+    Arguments:
+        review_cases: deserialized review test cases
+        original: original subtitle text
+        reviewed: reviewed subtitle text
+    Returns:
+        zero-based subtitle indexes covered by unverified cases
+    Raises:
+        ValueError: if an unverified case does not match the subtitles
+    """
+    unverified_indexes: set[int] = set()
+    for case_index, review_case in enumerate(review_cases, 1):
+        if review_case.verified:
+            continue
+        query_texts, revised_texts, _ = _get_review_case_data(review_case)
+        matched_starts = [
+            start
+            for start in range(len(original) - len(query_texts) + 1)
+            if original[start : start + len(query_texts)] == query_texts
+            and reviewed[start : start + len(revised_texts)] == revised_texts
+        ]
+        if not matched_starts:
+            raise ValueError(
+                f"Review test case {case_index} does not match its subtitle pair"
+            )
+        for start in matched_starts:
+            unverified_indexes.update(range(start, start + len(query_texts)))
+    return unverified_indexes
