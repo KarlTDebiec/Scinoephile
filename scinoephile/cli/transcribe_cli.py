@@ -24,10 +24,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.transcription.processor import (
-    DemucsMode,
-    VADMode,
-)
+from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.transcription import transcribe_series_guided
 
@@ -41,6 +38,7 @@ from .helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
     add_llm_provider_args,
+    add_llm_test_case_json_arg,
     read_llm_additional_context,
 )
 
@@ -74,6 +72,12 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型标识符覆盖值（省略时使用语言对默认值）",
+        "delineation test-case JSON file to load and update": (
+            "要加载和更新的断句测试用例 JSON 文件"
+        ),
+        "punctuation test-case JSON file to load and update": (
+            "要加载和更新的标点测试用例 JSON 文件"
+        ),
         "subtitle outfile path (default: stdout)": (
             "字幕输出文件路径（默认：标准输出）"
         ),
@@ -106,6 +110,12 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型識別碼覆寫值（省略時使用語言對預設值）",
+        "delineation test-case JSON file to load and update": (
+            "要載入和更新的斷句測試案例 JSON 檔案"
+        ),
+        "punctuation test-case JSON file to load and update": (
+            "要載入和更新的標點測試案例 JSON 檔案"
+        ),
         "subtitle outfile path (default: stdout)": ("字幕輸出檔路徑（預設：標準輸出）"),
         "transcribe audio using reference subtitles": "使用參考字幕轉寫音訊",
     },
@@ -210,6 +220,18 @@ class TranscribeCli(ScinoephileCliBase):
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
+        add_llm_test_case_json_arg(
+            arg_groups["llm arguments"],
+            "--delineation-json",
+            dest="delineation_json_path",
+            help_text="delineation test-case JSON file to load and update",
+        )
+        add_llm_test_case_json_arg(
+            arg_groups["llm arguments"],
+            "--punctuation-json",
+            dest="punctuation_json_path",
+            help_text="punctuation test-case JSON file to load and update",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -242,6 +264,8 @@ class TranscribeCli(ScinoephileCliBase):
         vad_mode: VADMode,
         model_name: str | None,
         llm_args: LlmArguments,
+        delineation_json_path: Path | None,
+        punctuation_json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -303,6 +327,8 @@ class TranscribeCli(ScinoephileCliBase):
                     parser,
                     llm_args.additional_context_file_path,
                 ),
+                delineation_json_path=delineation_json_path,
+                punctuation_json_path=punctuation_json_path,
                 start_at_idx=start_at_idx,
                 stop_at_idx=stop_at_idx,
             )

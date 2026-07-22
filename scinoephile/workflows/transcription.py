@@ -11,9 +11,9 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import get_guided_transcriber
-from scinoephile.lang.transcription.processor import (
+from scinoephile.lang.transcription.transcriber import (
     DemucsMode,
-    GuidedTranscriptionProcessor,
+    GuidedTranscriber,
     VADMode,
 )
 from scinoephile.llms.delineation import DelineationPrompt
@@ -35,12 +35,14 @@ def transcribe_series_guided(
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    prune_test_cases: bool = False,
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
-    test_case_dir_path: Path | None = None,
+    delineation_json_path: Path | None = None,
+    punctuation_json_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
-    transcriber: GuidedTranscriptionProcessor | None = None,
+    transcriber: GuidedTranscriber | None = None,
     start_at_idx: int = 0,
     stop_at_idx: int | None = None,
 ) -> AudioSeries:
@@ -56,12 +58,14 @@ def transcribe_series_guided(
         vad_mode: Whisper VAD mode
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
+        prune_test_cases: whether to remove test cases not encountered in this run
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
-        test_case_dir_path: directory where encountered test cases are written
+        delineation_json_path: delineation test-case JSON file to load and update
+        punctuation_json_path: punctuation test-case JSON file to load and update
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
-        transcriber: guided transcription processor, or None to construct one
+        transcriber: guided transcriber, or None to construct one
         start_at_idx: inclusive zero-based block index at which to start processing
         stop_at_idx: exclusive zero-based block index at which to stop processing
     Returns:
@@ -83,9 +87,11 @@ def transcribe_series_guided(
             vad_mode=vad_mode,
             provider=provider,
             additional_context=additional_context,
+            prune_test_cases=prune_test_cases,
             delineation_prompt=delineation_prompt,
             punctuation_prompt=punctuation_prompt,
-            test_case_dir_path=test_case_dir_path,
+            delineation_json_path=delineation_json_path,
+            punctuation_json_path=punctuation_json_path,
             delineation_test_cases=delineation_test_cases,
             punctuation_test_cases=punctuation_test_cases,
         )

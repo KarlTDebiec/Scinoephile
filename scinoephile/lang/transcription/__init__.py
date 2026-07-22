@@ -5,7 +5,7 @@
 Package hierarchy (modules may import from any above):
 * alignment
 * aligner
-* processor
+* transcriber
 * guided
 """
 
@@ -14,11 +14,11 @@ from __future__ import annotations
 from .aligner import TranscriptionAligner
 from .alignment import TranscriptionAlignment
 from .guided import GuidedTranscriptionSpec, TranscriptionLanguageSpec
-from .processor import DemucsMode, GuidedTranscriptionProcessor, VADMode
+from .transcriber import DemucsMode, GuidedTranscriber, VADMode
 
 __all__ = [
     "DemucsMode",
-    "GuidedTranscriptionProcessor",
+    "GuidedTranscriber",
     "GuidedTranscriptionSpec",
     "TranscriptionAligner",
     "TranscriptionAlignment",

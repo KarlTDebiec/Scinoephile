@@ -11,7 +11,8 @@ from types import MappingProxyType
 
 from scinoephile.audio.transcription import get_segment_split_on_whitespace
 from scinoephile.core import Language, ScinoephileError
-from scinoephile.core.llms import LLMProvider, Queryer, TestCase
+from scinoephile.core.llms import LLMProvider, TestCase
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHans,
@@ -20,14 +21,22 @@ from scinoephile.lang.yue_zho.transcription import (
     YueZhoPunctuationPromptYueHant,
 )
 from scinoephile.llms import load_default_test_cases
-from scinoephile.llms.delineation import DelineationManager, DelineationPrompt
+from scinoephile.llms.delineation import (
+    DelineationManager,
+    DelineationProcessor,
+    DelineationPrompt,
+)
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
+from scinoephile.llms.punctuation import (
+    PunctuationManager,
+    PunctuationProcessor,
+    PunctuationPrompt,
+)
 
 from .aligner import TranscriptionAligner
-from .processor import (
+from .transcriber import (
     DemucsMode,
-    GuidedTranscriptionProcessor,
+    GuidedTranscriber,
     TranscribedSegmentSplitter,
     VADMode,
 )
@@ -165,12 +174,14 @@ def get_guided_transcriber(
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    prune_test_cases: bool = False,
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
-    test_case_dir_path: Path | None = None,
+    delineation_json_path: Path | None = None,
+    punctuation_json_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
-) -> GuidedTranscriptionProcessor:
+) -> GuidedTranscriber:
     """Get a guided transcriber for a supported language pair.
 
     Arguments:
@@ -181,13 +192,15 @@ def get_guided_transcriber(
         vad_mode: Whisper VAD mode
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
+        prune_test_cases: whether to remove test cases not encountered in this run
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
-        test_case_dir_path: directory where encountered test cases are written
+        delineation_json_path: delineation test-case JSON file to load and update
+        punctuation_json_path: punctuation test-case JSON file to load and update
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
     Returns:
-        configured guided transcription processor
+        configured guided transcriber
     Raises:
         ScinoephileError: if guided transcription does not support the language pair
     """
@@ -206,12 +219,19 @@ def get_guided_transcriber(
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
         punctuation_prompt = spec.punctuation_prompt
-    if test_case_dir_path is None:
-        test_case_dir_path = get_runtime_cache_dir_path("test_cases")
-        test_case_dir_path /= spec.test_case_dir_path
-    (test_case_dir_path / "delineation").mkdir(parents=True, exist_ok=True)
-    (test_case_dir_path / "punctuation").mkdir(parents=True, exist_ok=True)
-
+    if delineation_json_path is None or punctuation_json_path is None:
+        runtime_test_case_dir_path = (
+            get_runtime_cache_dir_path("test_cases") / spec.test_case_dir_path
+        )
+        device = get_torch_device()
+        if delineation_json_path is None:
+            delineation_json_path = (
+                runtime_test_case_dir_path / "delineation" / f"{device}.json"
+            )
+        if punctuation_json_path is None:
+            punctuation_json_path = (
+                runtime_test_case_dir_path / "punctuation" / f"{device}.json"
+            )
     if delineation_test_cases is None:
         delineation_test_cases = list(
             load_default_test_cases(
@@ -220,6 +240,16 @@ def get_guided_transcriber(
                 spec.delineation_json_paths,
             )
         )
+    if provider is None:
+        provider = get_provider()
+    delineation_processor = DelineationProcessor(
+        delineation_prompt,
+        test_cases=delineation_test_cases,
+        test_case_path=delineation_json_path,
+        provider=provider,
+        additional_context=additional_context,
+        prune_test_cases=prune_test_cases,
+    )
     if punctuation_test_cases is None:
         punctuation_test_cases = list(
             load_default_test_cases(
@@ -228,33 +258,19 @@ def get_guided_transcriber(
                 spec.punctuation_json_paths,
             )
         )
-    if provider is None:
-        provider = get_provider()
-
-    delineation_queryer = Queryer(
-        DelineationManager.get_test_case_cls(delineation_prompt),
-        verified_test_cases=[
-            test_case for test_case in delineation_test_cases if test_case.verified
-        ],
+    punctuation_processor = PunctuationProcessor(
+        punctuation_prompt,
+        test_cases=punctuation_test_cases,
+        test_case_path=punctuation_json_path,
         provider=provider,
-        cache_dir_path=get_runtime_cache_dir_path("llm"),
         additional_context=additional_context,
-    )
-    punctuation_queryer = Queryer(
-        PunctuationManager.get_test_case_cls(punctuation_prompt),
-        verified_test_cases=[
-            test_case for test_case in punctuation_test_cases if test_case.verified
-        ],
-        provider=provider,
-        cache_dir_path=get_runtime_cache_dir_path("llm"),
-        additional_context=additional_context,
+        prune_test_cases=prune_test_cases,
     )
     aligner = TranscriptionAligner(
-        delineation_queryer=delineation_queryer,
-        punctuation_queryer=punctuation_queryer,
-        test_case_dir_path=test_case_dir_path,
+        delineation_processor=delineation_processor,
+        punctuation_processor=punctuation_processor,
     )
-    return GuidedTranscriptionProcessor(
+    return GuidedTranscriber(
         language=language,
         reference_language=reference_language,
         model_name=model_name,

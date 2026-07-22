@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 from pytest import fixture, mark, raises
@@ -17,7 +18,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.transcription.processor import DemucsMode, VADMode
+from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
 from test.helpers import assert_series_equal, test_data_root
 
 _MEDIA_INFILE_PATH = "/tmp/test_media.mp4"
@@ -63,6 +64,8 @@ def test_transcribe_help_lists_generic_options():
     assert "--reference-infile REFERENCE_INFILE_PATH" in help_text
     assert "--language" in help_text
     assert "--reference-language" in help_text
+    assert "--delineation-json DELINEATION_JSON_PATH" in help_text
+    assert "--punctuation-json PUNCTUATION_JSON_PATH" in help_text
     assert "--first-block FIRST_BLOCK" in help_text
     assert "--last-block LAST_BLOCK" in help_text
     assert "--script" not in normalized_help_text
@@ -168,12 +171,14 @@ def test_transcribe_cli_writes_stdout(
 def test_transcribe_cli_passes_generic_configuration(
     audio_series: Mock,
     expected_series: Series,
+    tmp_path: Path,
 ):
     """Test transcription CLI passes generic language and model configuration.
 
     Arguments:
         audio_series: mock audio subtitle series
         expected_series: expected transcribed subtitle series
+        tmp_path: temporary directory path
     """
 
     def transcribe(
@@ -187,6 +192,8 @@ def test_transcribe_cli_passes_generic_configuration(
         vad_mode: VADMode,
         provider: object,
         additional_context: str | None,
+        delineation_json_path: Path | None,
+        punctuation_json_path: Path | None,
         start_at_idx: int,
         stop_at_idx: int | None,
     ) -> Series:
@@ -200,6 +207,8 @@ def test_transcribe_cli_passes_generic_configuration(
         assert vad_mode is VADMode.OFF
         assert provider is not None
         assert additional_context is None
+        assert delineation_json_path == tmp_path / "delineation.json"
+        assert punctuation_json_path == tmp_path / "punctuation.json"
         assert start_at_idx == 1
         assert stop_at_idx == 3
         return expected_series
@@ -218,6 +227,8 @@ def test_transcribe_cli_passes_generic_configuration(
                 f"--reference-infile {_REFERENCE_INFILE_PATH} "
                 "--language yue-Hant --reference-language zho-Hans "
                 "--whisper-model custom/whisper --demucs on --vad off "
+                f"--delineation-json {tmp_path / 'delineation.json'} "
+                f"--punctuation-json {tmp_path / 'punctuation.json'} "
                 "--first-block 2 --last-block 3",
             )
 
