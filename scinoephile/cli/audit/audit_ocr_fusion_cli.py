@@ -7,7 +7,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
-from typing import cast
 
 from scinoephile.analysis.audit.ocr_fusion import (
     OcrFusionAuditFilter,
@@ -22,7 +21,7 @@ from scinoephile.common.argument_parsing import (
     int_arg,
 )
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionTestCase
+from scinoephile.llms.ocr_fusion import OcrFusionManager
 
 from .audit_cli_base import AuditCliBase
 
@@ -198,15 +197,12 @@ class AuditOcrFusionCli(AuditCliBase):
             validated = read_series(parser, validated_path)
 
         # Load OCR-fusion JSON
-        loaded_test_cases = cls.load_test_cases(
+        test_cases = cls.load_test_cases(
             parser,
             json_path,
             OcrFusionManager,
             workflow_name="OCR-fusion",
         )
-        test_cases = [
-            cast(OcrFusionTestCase, test_case) for test_case in loaded_test_cases
-        ]
 
         # Perform operation
         try:
