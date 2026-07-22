@@ -13,6 +13,8 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
+from .utils import format_block_range, get_selected_event_indexes
+
 __all__ = [
     "ReviewAuditComparison",
     "ReviewAuditFilter",
@@ -82,6 +84,8 @@ def audit_reviews(
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
 ) -> str:
     """Audit parallel simplified and traditional-to-simplified review paths.
 
@@ -101,6 +105,8 @@ def audit_reviews(
         characters: individual characters whose occurrence limits included rows
         first_index: first 1-indexed subtitle number to include, inclusive
         last_index: last 1-indexed subtitle number to include, inclusive
+        first_block: first 1-indexed workflow block number to include, inclusive
+        last_block: last 1-indexed workflow block number to include, inclusive
     Returns:
         Markdown audit report
     Raises:
@@ -139,6 +145,8 @@ def audit_reviews(
         characters=characters,
         first_index=first_index,
         last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
     )
 
 
@@ -150,6 +158,8 @@ def audit_review_workflow(
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
 ) -> str:
     """Audit a composition of review pairs and final comparisons.
 
@@ -160,6 +170,8 @@ def audit_review_workflow(
         characters: individual characters whose occurrence limits included rows
         first_index: first 1-indexed subtitle number to include, inclusive
         last_index: last 1-indexed subtitle number to include, inclusive
+        first_block: first 1-indexed workflow block number to include, inclusive
+        last_block: last 1-indexed workflow block number to include, inclusive
     Returns:
         Markdown audit report
     Raises:
@@ -210,14 +222,13 @@ def audit_review_workflow(
     except ValueError as exc:
         raise ScinoephileError(f"Unable to audit subtitle reviews: {exc}") from exc
 
-    # Select the requested zero-based subtitle indexes
-    start_index = 0
-    if first_index is not None:
-        start_index = first_index - 1
-    stop_index = len(all_series[0])
-    if last_index is not None:
-        stop_index = min(last_index, stop_index)
-    indexes = range(start_index, stop_index)
+    indexes = get_selected_event_indexes(
+        reviews[0].original,
+        first_index=first_index,
+        last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
+    )
 
     review_changes = tuple(
         _get_changed_indexes(original, reviewed, indexes)
@@ -249,6 +260,8 @@ def audit_review_workflow(
         characters=characters,
         first_index=first_index,
         last_index=last_index,
+        first_block=first_block,
+        last_block=last_block,
     )
 
 
@@ -277,6 +290,8 @@ def _format_markdown(
     characters: Sequence[str],
     first_index: int | None,
     last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
 ) -> str:
     """Format a review audit as Markdown.
 
@@ -293,6 +308,8 @@ def _format_markdown(
         characters: active character filter
         first_index: first included 1-indexed subtitle number
         last_index: last included 1-indexed subtitle number
+        first_block: first included 1-indexed workflow block number
+        last_block: last included 1-indexed workflow block number
     Returns:
         Markdown report
     """
@@ -354,6 +371,9 @@ def _format_markdown(
                 f"- subtitle range: 1-indexed numbers {first_index} through "
                 f"{last_index}"
             )
+    block_range = format_block_range(first_block, last_block)
+    if block_range is not None:
+        lines.append(block_range)
 
     column_labels = ["Subtitle"]
     column_labels.extend(review.label for review in reviews)

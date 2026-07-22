@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.review_audit import (
+from scinoephile.analysis.audit.review import (
     ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
@@ -150,7 +150,10 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
         outfile_path: Path | None,
+        overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
@@ -193,12 +196,14 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
                 characters=cls.get_character_variants(characters),
                 first_index=first_index,
                 last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write output
-        cls.write_report(parser, report, outfile_path)
+        cls.write_report(parser, report, outfile_path, overwrite)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of the subtitle review audit CLI."""
+"""Tests of the subtitle audit CLI."""
 
 from __future__ import annotations
 
@@ -10,9 +10,11 @@ from pathlib import Path
 from pytest import CaptureFixture, mark, raises
 
 from scinoephile.cli.audit import AuditCli
+from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
+from scinoephile.cli.audit.audit_workflow_cli_base import AuditWorkflowCliBase
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
 
@@ -55,6 +57,12 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     assert "- subtitle range: 1-indexed numbers 1 through 1" in stdout
     assert "- table rows: 1" in stdout
 
+    run_cli_with_args(
+        AuditReviewDualCli,
+        f"{arguments} --first-block 1 --last-block 1",
+    )
+    assert "- block range: 1 through 1" in capsys.readouterr().out
+
     run_cli_with_args(AuditReviewDualCli, f"{arguments} --characters 错这")
     stdout = capsys.readouterr().out
     assert "- character filter: 这, 這, 錯, 错" in stdout
@@ -87,11 +95,34 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     assert outfile_path.read_text(encoding="utf-8").startswith("# Review Audit\n")
 
     with raises(SystemExit):
+        run_cli_with_args(AuditReviewDualCli, f"{arguments} --outfile {outfile_path}")
+    assert "use --overwrite to replace it" in capsys.readouterr().err
+
+    run_cli_with_args(
+        AuditReviewDualCli,
+        f"{arguments} --outfile {outfile_path} --overwrite",
+    )
+    assert capsys.readouterr().out == ""
+
+    with raises(SystemExit):
+        run_cli_with_args(AuditReviewDualCli, f"{arguments} --overwrite")
+    assert "--overwrite may only be used with --outfile" in capsys.readouterr().err
+
+    with raises(SystemExit):
         run_cli_with_args(
             AuditReviewDualCli,
             f"{arguments} --first-index 2 --last-index 1",
         )
     assert "--first-index must be less than or equal to --last-index" in (
+        capsys.readouterr().err
+    )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewDualCli,
+            f"{arguments} --first-index 1 --first-block 1",
+        )
+    assert "Subtitle-index and block ranges are mutually exclusive" in (
         capsys.readouterr().err
     )
 
@@ -109,6 +140,7 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
 
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
+    assert issubclass(AuditWorkflowCliBase, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
         "review": AuditReviewCli,

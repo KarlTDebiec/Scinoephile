@@ -9,18 +9,16 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import ClassVar
 
-from scinoephile.analysis.review_audit import ReviewAuditFilter
+from scinoephile.analysis.audit.review import ReviewAuditFilter
 from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
-    int_arg,
-    output_file_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.llms import TestCase
-from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converter
 from scinoephile.llms.review import ReviewManager
+
+from .audit_cli_base import AuditCliBase
 
 __all__ = ["AuditWorkflowCliBase"]
 
@@ -73,7 +71,7 @@ AUDIT_WORKFLOW_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized shared help text keyed by locale and English source text."""
 
 
-class AuditWorkflowCliBase(ScinoephileCliBase):
+class AuditWorkflowCliBase(AuditCliBase):
     """Shared command-line support for subtitle review audit workflows."""
 
     localizations = AUDIT_WORKFLOW_LOCALIZATIONS
@@ -103,16 +101,6 @@ class AuditWorkflowCliBase(ScinoephileCliBase):
             "output arguments",
             optional_arguments_name="additional arguments",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--first-index",
-            type=int_arg(min_value=1),
-            help="first 1-indexed subtitle number to include, inclusive",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--last-index",
-            type=int_arg(min_value=1),
-            help="last 1-indexed subtitle number to include, inclusive",
-        )
         row_filter_values = ",".join(row_filter.value for row_filter in cls.row_filters)
         arg_groups["operation arguments"].add_argument(
             "--filter",
@@ -134,14 +122,6 @@ class AuditWorkflowCliBase(ScinoephileCliBase):
                 "traditional variants are included automatically"
             ),
         )
-        arg_groups["output arguments"].add_argument(
-            "-o",
-            "--outfile",
-            dest="outfile_path",
-            type=output_file_arg(),
-            help="Markdown outfile path (default: stdout)",
-        )
-        parser.set_defaults(_parser=parser)
 
     @staticmethod
     def get_character_variants(characters: Sequence[str]) -> tuple[str, ...]:
@@ -173,52 +153,9 @@ class AuditWorkflowCliBase(ScinoephileCliBase):
         """
         if json_path is None:
             return ()
-        try:
-            return load_test_cases_from_json(
-                json_path,
-                ReviewManager,
-                ReviewManager.base_prompt,
-            )
-        except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
-            parser.error(f"Unable to load review JSON: {exc}")
-
-    @staticmethod
-    def validate_range(
-        parser: ArgumentParser,
-        first_index: int | None,
-        last_index: int | None,
-    ):
-        """Validate an optional inclusive subtitle range.
-
-        Arguments:
-            parser: parser used to report user-facing errors
-            first_index: first included one-based subtitle index
-            last_index: last included one-based subtitle index
-        """
-        if (
-            first_index is not None
-            and last_index is not None
-            and first_index > last_index
-        ):
-            parser.error("--first-index must be less than or equal to --last-index")
-
-    @staticmethod
-    def write_report(
-        parser: ArgumentParser,
-        report: str,
-        outfile_path: Path | None,
-    ):
-        """Write a report to stdout or a file.
-
-        Arguments:
-            parser: parser used to report user-facing errors
-            report: Markdown report
-            outfile_path: optional output file path
-        """
-        if outfile_path is None:
-            print(report, end="")
-            return
-        try:
-            outfile_path.write_text(report, encoding="utf-8")
-        except OSError as exc:
-            parser.error(str(exc))
+        return AuditCliBase.load_test_cases(
+            parser,
+            json_path,
+            ReviewManager,
+            workflow_name="review",
+        )
