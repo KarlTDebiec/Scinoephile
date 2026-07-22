@@ -4,7 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * audit_cli_base
-* audit_review_cli_base
+* audit_ocr_fusion_cli / audit_review_cli_base
 * audit_review_cli / audit_review_dual_cli
 / audit_review_trad_cli
 * audit_cli

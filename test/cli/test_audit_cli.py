@@ -11,6 +11,7 @@ from pytest import CaptureFixture, mark, raises
 
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
+from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
 from scinoephile.cli.audit.audit_review_cli_base import AuditReviewCliBase
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
@@ -143,6 +144,7 @@ def test_audit_cli_subcommands():
     assert issubclass(AuditReviewCliBase, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
+        "ocr-fusion": AuditOcrFusionCli,
         "review": AuditReviewCli,
         "review-dual": AuditReviewDualCli,
         "review-trad": AuditReviewTradCli,
