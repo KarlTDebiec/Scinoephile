@@ -25,10 +25,6 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionTestCase
 
 from .audit_cli_base import AuditCliBase
-from .utils import (
-    load_audit_test_cases,
-    write_audit_report,
-)
 
 __all__ = ["AuditOcrFusionCli"]
 
@@ -192,7 +188,7 @@ class AuditOcrFusionCli(AuditCliBase):
         validated = None
         if validated_path is not None:
             validated = read_series(parser, validated_path)
-        loaded_test_cases = load_audit_test_cases(
+        loaded_test_cases = cls.load_test_cases(
             parser,
             json_path,
             OcrFusionManager,
@@ -218,7 +214,7 @@ class AuditOcrFusionCli(AuditCliBase):
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
-        write_audit_report(parser, report, outfile_path, overwrite)
+        cls.write_report(parser, report, outfile_path, overwrite)
 
 
 if __name__ == "__main__":
