@@ -167,6 +167,7 @@ def get_guided_transcriber(
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    prune_test_cases: bool = False,
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
     delineation_json_path: Path | None = None,
@@ -184,6 +185,7 @@ def get_guided_transcriber(
         vad_mode: Whisper VAD mode
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
+        prune_test_cases: whether to remove test cases not encountered in this run
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
         delineation_json_path: delineation test-case JSON file to load and update
@@ -210,8 +212,6 @@ def get_guided_transcriber(
         delineation_prompt = spec.delineation_prompt
     if punctuation_prompt is None:
         punctuation_prompt = spec.punctuation_prompt
-    prune_delineation_test_cases = delineation_json_path is not None
-    prune_punctuation_test_cases = punctuation_json_path is not None
     if delineation_json_path is None or punctuation_json_path is None:
         runtime_test_case_dir_path = (
             get_runtime_cache_dir_path("test_cases") / spec.test_case_dir_path
@@ -279,8 +279,8 @@ def get_guided_transcriber(
         punctuation_queryer=punctuation_queryer,
         delineation_json_path=delineation_json_path,
         punctuation_json_path=punctuation_json_path,
-        prune_delineation_test_cases=prune_delineation_test_cases,
-        prune_punctuation_test_cases=prune_punctuation_test_cases,
+        prune_delineation_test_cases=prune_test_cases,
+        prune_punctuation_test_cases=prune_test_cases,
     )
     return GuidedTranscriptionProcessor(
         language=language,

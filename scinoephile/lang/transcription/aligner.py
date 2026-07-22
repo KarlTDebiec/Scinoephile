@@ -119,7 +119,7 @@ class TranscriptionAligner:
         return alignment
 
     def update_all_test_cases(self):
-        """Update all test cases for the specified block."""
+        """Update all test cases encountered during the current run."""
         if self.delineation_json_path is not None:
             save_test_cases_to_json(
                 self.delineation_json_path,

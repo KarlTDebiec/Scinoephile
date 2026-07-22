@@ -39,6 +39,8 @@ def _get_processor(
     """
     aligner = Mock(spec=TranscriptionAligner)
     aligner.align.side_effect = TranscriptionAlignment
+    aligner.prune_delineation_test_cases = False
+    aligner.prune_punctuation_test_cases = False
     return (
         GuidedTranscriptionProcessor(
             language=Language.eng,
@@ -476,7 +478,7 @@ def test_process_block_preserves_raw_segments_and_uses_buffered_offset():
         audio_block.audio,
         expected_last_start=0.75,
     )
-    aligner.update_all_test_cases.assert_called_once_with()
+    aligner.update_all_test_cases.assert_not_called()
 
 
 def test_process_block_applies_configured_segment_splitter():
@@ -514,7 +516,7 @@ def test_process_uses_exclusive_stop_index(caplog: LogCaptureFixture):
     Arguments:
         caplog: captured log records
     """
-    processor, _ = _get_processor()
+    processor, aligner = _get_processor()
     caplog.set_level(INFO, logger="scinoephile.lang.transcription.processor")
     audio_series = AudioSeries(
         audio=AudioSegment.silent(duration=6000),
@@ -542,6 +544,7 @@ def test_process_uses_exclusive_stop_index(caplog: LogCaptureFixture):
     assert output[0].text == "one"
     assert "BLOCK 1:" in caplog.text
     assert "BLOCK 0:" not in caplog.text
+    aligner.update_all_test_cases.assert_called_once_with()
 
 
 def test_process_uses_inclusive_start_index(caplog: LogCaptureFixture):
@@ -600,6 +603,52 @@ def test_process_rejects_mismatched_block_counts():
 
     with raises(ScinoephileError, match="Audio has 1 blocks"):
         processor.process(audio_series, reference_series)
+
+
+def test_process_rejects_partial_range_when_pruning_test_cases():
+    """Test pruning requires processing every block."""
+    processor, aligner = _get_processor()
+    aligner.prune_delineation_test_cases = True
+    audio_series = AudioSeries(
+        audio=AudioSegment.silent(duration=6000),
+        events=[
+            AudioSubtitle(start=0, end=1000, text="one"),
+            AudioSubtitle(start=5000, end=6000, text="two"),
+        ],
+    )
+    reference_series = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="one"),
+            Subtitle(start=5000, end=6000, text="two"),
+        ]
+    )
+
+    with raises(ValueError, match="Cannot prune test cases"):
+        processor.process(audio_series, reference_series, stop_at_idx=1)
+
+    aligner.update_all_test_cases.assert_not_called()
+
+
+def test_process_does_not_save_test_cases_after_failure():
+    """Test test cases are not persisted when processing fails."""
+    processor, aligner = _get_processor()
+    audio_series = AudioSeries(
+        audio=AudioSegment.silent(duration=1000),
+        events=[AudioSubtitle(start=0, end=1000, text="one")],
+    )
+    reference_series = Series(events=[Subtitle(start=0, end=1000, text="one")])
+
+    with (
+        patch.object(
+            processor,
+            "process_block",
+            side_effect=ScinoephileError("transcription failed"),
+        ),
+        raises(ScinoephileError, match="transcription failed"),
+    ):
+        processor.process(audio_series, reference_series)
+
+    aligner.update_all_test_cases.assert_not_called()
 
 
 def test_process_rejects_negative_stop_index():

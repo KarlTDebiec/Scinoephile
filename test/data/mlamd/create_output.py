@@ -81,6 +81,7 @@ if "yue-Hans_transcribe" in actions:
         Language.yue_hans,
         Language.zho_hans,
         vad_mode=VADMode.ON,
+        prune_test_cases=True,
         delineation_json_path=test_case_dir_path / "delineation" / f"{device}.json",
         punctuation_json_path=test_case_dir_path / "punctuation" / f"{device}.json",
         delineation_test_cases=get_mlamd_yue_delineation_test_cases(),

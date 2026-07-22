@@ -41,6 +41,7 @@ def test_transcribe_series_guided_constructs_processor_for_language_pair(
             reference_series,
             language=Language.yue_hant,
             reference_language=Language.zho_hans,
+            prune_test_cases=True,
             delineation_json_path=delineation_json_path,
             punctuation_json_path=punctuation_json_path,
             start_at_idx=1,
@@ -54,6 +55,7 @@ def test_transcribe_series_guided_constructs_processor_for_language_pair(
     )
     assert get_transcriber.call_args.kwargs["demucs_mode"] is DemucsMode.AUTO
     assert get_transcriber.call_args.kwargs["vad_mode"] is VADMode.AUTO
+    assert get_transcriber.call_args.kwargs["prune_test_cases"] is True
     assert (
         get_transcriber.call_args.kwargs["delineation_json_path"]
         == delineation_json_path

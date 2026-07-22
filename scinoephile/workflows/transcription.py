@@ -35,6 +35,7 @@ def transcribe_series_guided(
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    prune_test_cases: bool = False,
     delineation_prompt: DelineationPrompt | None = None,
     punctuation_prompt: PunctuationPrompt | None = None,
     delineation_json_path: Path | None = None,
@@ -57,6 +58,7 @@ def transcribe_series_guided(
         vad_mode: Whisper VAD mode
         provider: provider to use for LLM queries
         additional_context: additional context to include in LLM prompts
+        prune_test_cases: whether to remove test cases not encountered in this run
         delineation_prompt: delineation prompt override
         punctuation_prompt: punctuation prompt override
         delineation_json_path: delineation test-case JSON file to load and update
@@ -85,6 +87,7 @@ def transcribe_series_guided(
             vad_mode=vad_mode,
             provider=provider,
             additional_context=additional_context,
+            prune_test_cases=prune_test_cases,
             delineation_prompt=delineation_prompt,
             punctuation_prompt=punctuation_prompt,
             delineation_json_path=delineation_json_path,

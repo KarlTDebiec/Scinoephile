@@ -203,6 +203,13 @@ class GuidedTranscriptionProcessor:
                 f"{len(reference_blocks)} blocks."
             )
         block_range = val_index_range(len(audio_blocks), start_at_idx, stop_at_idx)
+        if (
+            self.aligner.prune_delineation_test_cases
+            or self.aligner.prune_punctuation_test_cases
+        ) and block_range != range(len(audio_blocks)):
+            raise ValueError(
+                "Cannot prune test cases while processing only a subset of blocks."
+            )
 
         output_events = []
         for block_idx in block_range:
@@ -221,6 +228,7 @@ class GuidedTranscriptionProcessor:
         output_events.sort(key=lambda event: event.start)
         output = AudioSeries(audio=audio_series.audio, events=output_events)
         logger.info(f"Concatenated Series:\n{output.to_simple_string()}")
+        self.aligner.update_all_test_cases()
         return output
 
     def process_block(
@@ -260,7 +268,6 @@ class GuidedTranscriptionProcessor:
             offset=offset,
         )
         alignment = self.aligner.align(reference_block, transcription_block)
-        self.aligner.update_all_test_cases()
         return alignment.transcription
 
     def _get_cached_block_transcription(
