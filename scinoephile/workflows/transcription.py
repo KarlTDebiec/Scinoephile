@@ -11,9 +11,9 @@ from scinoephile.core import Language
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.transcription.guided import get_guided_transcriber
-from scinoephile.lang.transcription.processor import (
+from scinoephile.lang.transcription.transcriber import (
     DemucsMode,
-    GuidedTranscriptionProcessor,
+    GuidedTranscriber,
     VADMode,
 )
 from scinoephile.llms.delineation import DelineationPrompt
@@ -42,7 +42,7 @@ def transcribe_series_guided(
     punctuation_json_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
-    transcriber: GuidedTranscriptionProcessor | None = None,
+    transcriber: GuidedTranscriber | None = None,
     start_at_idx: int = 0,
     stop_at_idx: int | None = None,
 ) -> AudioSeries:
@@ -65,7 +65,7 @@ def transcribe_series_guided(
         punctuation_json_path: punctuation test-case JSON file to load and update
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
-        transcriber: guided transcription processor, or None to construct one
+        transcriber: guided transcriber, or None to construct one
         start_at_idx: inclusive zero-based block index at which to start processing
         stop_at_idx: exclusive zero-based block index at which to stop processing
     Returns:

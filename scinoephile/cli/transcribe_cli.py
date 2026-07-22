@@ -24,7 +24,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
-from scinoephile.lang.transcription.processor import (
+from scinoephile.lang.transcription.transcriber import (
     DemucsMode,
     VADMode,
 )

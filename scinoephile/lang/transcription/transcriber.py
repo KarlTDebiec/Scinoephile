@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Reference-guided audio transcription processor."""
+"""Reference-guided audio transcriber."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ from .aligner import TranscriptionAligner
 
 __all__ = [
     "DemucsMode",
-    "GuidedTranscriptionProcessor",
+    "GuidedTranscriber",
     "TranscribedSegmentSplitter",
     "VADMode",
 ]
@@ -87,7 +87,7 @@ class VADMode(StrEnum):
     """Never use VAD."""
 
 
-class GuidedTranscriptionProcessor:
+class GuidedTranscriber:
     """Transcribe audio and align it with reference subtitles."""
 
     def __init__(

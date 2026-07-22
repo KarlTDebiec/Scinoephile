@@ -27,9 +27,9 @@ from scinoephile.llms.providers.registry import get_provider
 from scinoephile.llms.punctuation import PunctuationManager, PunctuationPrompt
 
 from .aligner import TranscriptionAligner
-from .processor import (
+from .transcriber import (
     DemucsMode,
-    GuidedTranscriptionProcessor,
+    GuidedTranscriber,
     TranscribedSegmentSplitter,
     VADMode,
 )
@@ -174,7 +174,7 @@ def get_guided_transcriber(
     punctuation_json_path: Path | None = None,
     delineation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
-) -> GuidedTranscriptionProcessor:
+) -> GuidedTranscriber:
     """Get a guided transcriber for a supported language pair.
 
     Arguments:
@@ -193,7 +193,7 @@ def get_guided_transcriber(
         delineation_test_cases: preloaded delineation test cases
         punctuation_test_cases: preloaded punctuation test cases
     Returns:
-        configured guided transcription processor
+        configured guided transcriber
     Raises:
         ScinoephileError: if guided transcription does not support the language pair
     """
@@ -282,7 +282,7 @@ def get_guided_transcriber(
         prune_delineation_test_cases=prune_test_cases,
         prune_punctuation_test_cases=prune_test_cases,
     )
-    return GuidedTranscriptionProcessor(
+    return GuidedTranscriber(
         language=language,
         reference_language=reference_language,
         model_name=model_name,

@@ -18,7 +18,7 @@ from scinoephile.lang.transcription.guided import (
     DEFAULT_SPECS,
     get_guided_transcriber,
 )
-from scinoephile.lang.transcription.processor import DemucsMode, VADMode
+from scinoephile.lang.transcription.transcriber import DemucsMode, VADMode
 from scinoephile.lang.yue.prompts import YUE_HANT_PROMPT_FIELDS
 from scinoephile.lang.yue_zho.transcription import (
     YueZhoDelineationPromptYueHant,
