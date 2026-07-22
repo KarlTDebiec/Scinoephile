@@ -21,7 +21,6 @@ def test_audit_aligned_diff_defaults_to_changes_with_optional_tracks():
     reference = _get_series((0, 500, "甲正"), (1000, 1500, "相同"))
     guide = _get_series(
         (0, 500, "指南一"),
-        (700, 800, "額外指南"),
         (1000, 1500, "指南二"),
     )
 
@@ -85,8 +84,8 @@ def test_audit_aligned_diff_range_includes_reference_only_insertions():
     assert "T 1" not in report
 
 
-def test_audit_aligned_diff_block_range_composes_with_subtitle_range():
-    """Test block and subtitle ranges intersect on transcription events."""
+def test_audit_aligned_diff_rejects_combined_block_and_subtitle_ranges():
+    """Test block and subtitle range selection is mutually exclusive."""
     transcription = _get_series(
         (0, 500, "第一"),
         (1000, 1500, "第二"),
@@ -98,18 +97,14 @@ def test_audit_aligned_diff_block_range_composes_with_subtitle_range():
         (6000, 6500, "第三正"),
     )
 
-    report = audit_aligned_diff(
-        transcription,
-        reference,
-        first_index=2,
-        first_block=2,
-        last_block=2,
-    )
-
-    assert "- transcription subtitle range: from 2" in report
-    assert "- block range: 2 through 2" in report
-    assert "| T 3<br>R 3 |" in report
-    assert "| T 1<br>R 1 |" not in report
+    with raises(ScinoephileError, match="ranges are mutually exclusive"):
+        audit_aligned_diff(
+            transcription,
+            reference,
+            first_index=2,
+            first_block=2,
+            last_block=2,
+        )
 
 
 def test_audit_aligned_diff_rejects_invalid_range_and_track_alignment():
@@ -129,6 +124,12 @@ def test_audit_aligned_diff_rejects_invalid_range_and_track_alignment():
         audit_aligned_diff(transcription, reference, first_block=0)
     with raises(ScinoephileError, match="no exact timing match"):
         audit_aligned_diff(transcription, reference, guide)
+    guide_with_extra_subtitle = _get_series(
+        (0, 500, "指南"),
+        (501, 1000, "額外指南"),
+    )
+    with raises(ScinoephileError, match="at guide index 2"):
+        audit_aligned_diff(transcription, reference, guide_with_extra_subtitle)
     original_report = audit_aligned_diff(
         transcription,
         reference,
