@@ -19,8 +19,12 @@ from scinoephile.core import Language, ScinoephileError
 from scinoephile.lang.id import get_series_language
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
-from .audit_review_cli_base import AuditReviewCliBase, load_review_test_cases
-from .utils import validate_subtitle_index_range, write_audit_report
+from .audit_review_cli_base import AuditReviewCliBase
+from .utils import (
+    load_review_test_cases,
+    validate_subtitle_index_range,
+    write_audit_report,
+)
 
 __all__ = ["AuditReviewCli"]
 

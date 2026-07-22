@@ -5,13 +5,16 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from collections.abc import Sequence
 from pathlib import Path
 
 from scinoephile.core.llms import Manager, TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
+from scinoephile.llms.review import ReviewManager
 
 __all__ = [
     "load_audit_test_cases",
+    "load_review_test_cases",
     "validate_subtitle_index_range",
     "write_audit_report",
 ]
@@ -42,6 +45,28 @@ def load_audit_test_cases(
         )
     except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
         parser.error(f"Unable to load {workflow_name} JSON: {exc}")
+
+
+def load_review_test_cases(
+    parser: ArgumentParser,
+    json_path: Path | None,
+) -> Sequence[TestCase]:
+    """Load optional review test cases from JSON.
+
+    Arguments:
+        parser: parser used to report user-facing errors
+        json_path: optional review JSON path
+    Returns:
+        loaded review test cases
+    """
+    if json_path is None:
+        return ()
+    return load_audit_test_cases(
+        parser,
+        json_path,
+        ReviewManager,
+        workflow_name="review",
+    )
 
 
 def validate_subtitle_index_range(
