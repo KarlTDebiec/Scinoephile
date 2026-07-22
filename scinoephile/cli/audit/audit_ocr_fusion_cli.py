@@ -27,7 +27,6 @@ from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionTestCase
 from .audit_cli_base import AuditCliBase
 from .utils import (
     load_audit_test_cases,
-    validate_subtitle_index_range,
     write_audit_report,
 )
 
@@ -186,7 +185,6 @@ class AuditOcrFusionCli(AuditCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        validate_subtitle_index_range(parser, first_index, last_index)
         get_block_range_indexes(parser, first_block, last_block)
         source_one = read_series(parser, source_one_path)
         source_two = read_series(parser, source_two_path)
