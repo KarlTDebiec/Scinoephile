@@ -8,7 +8,6 @@ from abc import ABC
 from pathlib import Path
 from typing import TypedDict
 
-from scinoephile.common.validation import val_output_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .llm_provider import LLMProvider
@@ -17,7 +16,7 @@ from .prompt import Prompt
 from .queryer import Queryer
 from .test_case import TestCase
 from .tool_box import ToolBox
-from .utils import load_test_cases_from_json, save_test_cases_to_json
+from .utils import load_test_cases, save_test_cases_to_json
 
 __all__ = [
     "Processor",
@@ -84,19 +83,12 @@ class Processor(ABC):
             raise ValueError("manager_cls must be set on Processor subclasses.")
         self.test_case_cls = self.manager_cls.get_test_case_cls(self.prompt)
 
-        if test_cases is None:
-            test_cases = []
-
-        if test_case_path is not None:
-            test_case_path = val_output_path(test_case_path, exist_ok=True)
-            if test_case_path.exists():
-                test_cases.extend(
-                    load_test_cases_from_json(
-                        test_case_path,
-                        self.manager_cls,
-                        prompt=self.prompt,
-                    )
-                )
+        test_cases, test_case_path = load_test_cases(
+            self.manager_cls,
+            self.prompt,
+            test_cases=test_cases,
+            test_case_path=test_case_path,
+        )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
         self.prune_test_cases = prune_test_cases
@@ -114,7 +106,7 @@ class Processor(ABC):
         """LLM queryer."""
 
     def save_test_cases(self):
-        """Persist encountered test cases while retaining unencountered cases."""
+        """Persist encountered test cases."""
         if self.test_case_path is None or self.manager_cls is None:
             return
         save_test_cases_to_json(

@@ -227,6 +227,47 @@ def test_gap_translation_preserves_unbounded_text():
 
 
 @mark.parametrize(
+    ("outputs", "explicit_difficulty", "expected_difficulty"),
+    [
+        (None, 0, 0),
+        (((2, ""),), 0, 0),
+        (((2, "translated"),), 0, 1),
+        (((2, "translated"),), 3, 3),
+    ],
+)
+def test_minimum_difficulty_tracks_generated_text(
+    outputs: tuple[tuple[int, str], ...] | None,
+    explicit_difficulty: int,
+    expected_difficulty: int,
+):
+    """Nonempty generated text should require at least difficulty one.
+
+    Arguments:
+        outputs: optional output indexes and texts
+        explicit_difficulty: requested test-case difficulty
+        expected_difficulty: enforced minimum difficulty
+    """
+    data: dict[str, object] = {
+        "query": {
+            "targets": [{"index": 1, "text": "existing"}],
+            "guides": [
+                {"index": 1, "text": "guide one"},
+                {"index": 2, "text": "guide two"},
+            ],
+        },
+        "difficulty": explicit_difficulty,
+    }
+    if outputs is not None:
+        data["answer"] = {
+            "outputs": [{"index": index, "text": text} for index, text in outputs]
+        }
+
+    test_case = GapTranslationTestCase.model_validate(data)
+
+    assert test_case.difficulty == expected_difficulty
+
+
+@mark.parametrize(
     "test_case_cls",
     [
         GapTranslationTestCase,
@@ -300,6 +341,7 @@ def test_json_persistence_uses_base_prompt_fields(tmp_path: Path):
                 ],
             },
             "answer": {"outputs": [{"index": 2, "text": "翻譯"}]},
+            "difficulty": 1,
             "verified": True,
         }
     ]
@@ -394,6 +436,83 @@ def test_processor_honors_zero_stop_index():
 
     assert len(output) == 0
     provider.chat_completion.assert_not_called()
+
+
+def test_processor_honors_start_index():
+    """An inclusive start index should skip earlier gap-translation blocks."""
+    provider = Mock(spec=LLMProvider)
+    processor = GapTranslationProcessor(
+        GapTranslationManager.base_prompt,
+        provider=provider,
+    )
+    source = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="existing one"),
+            Subtitle(start=5000, end=6000, text="existing two"),
+        ]
+    )
+
+    output = processor.process(source, source, start_at_idx=1)
+
+    assert [subtitle.text for subtitle in output] == ["existing two"]
+    provider.chat_completion.assert_not_called()
+
+
+def test_processing_preserves_unencountered_few_shot_cases(tmp_path: Path):
+    """A run should preserve unencountered reusable cases by default."""
+    prompt = GapTranslationManager.base_prompt
+    test_case_cls = GapTranslationManager.get_test_case_cls(prompt)
+    old_test_case = test_case_cls.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "old target"}],
+                "guides": [
+                    {"index": 1, "text": "guide one"},
+                    {"index": 2, "text": "guide two"},
+                ],
+            },
+            "answer": {"outputs": [{"index": 2, "text": "old translation"}]},
+            "few_shot": True,
+            "verified": True,
+        }
+    )
+    test_case_path = tmp_path / "gap_translation.json"
+    save_test_cases_to_json(
+        test_case_path,
+        [old_test_case],
+        GapTranslationManager,
+    )
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = json.dumps(
+        {"outputs": [{"index": 2, "text": "new translation"}]}
+    )
+    processor = GapTranslationProcessor(
+        prompt,
+        test_case_path=test_case_path,
+        provider=provider,
+    )
+    processor.queryer.cache_dir_path = None
+    target = Series(events=[Subtitle(start=0, end=100, text="new target")])
+    guide = Series(
+        events=[
+            Subtitle(start=0, end=100, text="guide one"),
+            Subtitle(start=100, end=200, text="guide two"),
+        ]
+    )
+
+    processor.process(target, guide)
+
+    persisted = load_test_cases_from_json(
+        test_case_path,
+        GapTranslationManager,
+        prompt,
+    )
+    assert len(persisted) == 2
+    persisted_cases = cast("list[GapTranslationTestCase]", persisted)
+    assert [item.query.targets[0].text for item in persisted_cases] == [
+        "old target",
+        "new target",
+    ]
 
 
 def test_processor_rejects_negative_stop_index():

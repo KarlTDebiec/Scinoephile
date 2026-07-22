@@ -7,6 +7,7 @@ from __future__ import annotations
 from logging import getLogger
 from typing import cast
 
+from scinoephile.common.validation import val_index_range
 from scinoephile.core.llms import Processor
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
@@ -35,25 +36,24 @@ class GuidedTranslationProcessor(Processor):
         source_one: Series,
         source_two: Series,
         stop_at_idx: int | None = None,
+        *,
+        start_at_idx: int = 0,
     ) -> Series:
         """Translate source blocks using guide blocks.
 
         Arguments:
             source_one: source subtitles that determine output timing and count
             source_two: guide subtitles providing target-language reference text
-            stop_at_idx: stop processing at this block index
+            stop_at_idx: exclusive zero-based block index at which to stop processing
+            start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
             translated subtitles using source-one timing
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
-        if stop_at_idx is None:
-            stop_at_idx = len(block_pairs)
-        elif stop_at_idx < 0:
-            raise ValueError("stop_at_idx must be greater than or equal to 0")
-        for blk_idx, (one_blk, two_blk) in enumerate(block_pairs):
-            if blk_idx >= stop_at_idx:
-                break
+        block_range = val_index_range(len(block_pairs), start_at_idx, stop_at_idx)
+        for blk_idx in block_range:
+            one_blk, two_blk = block_pairs[blk_idx]
             if not one_blk:
                 output_series_to_concatenate[blk_idx] = Series()
                 continue

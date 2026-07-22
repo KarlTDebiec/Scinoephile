@@ -10,10 +10,69 @@ from .exceptions import ScinoephileError
 from .subtitles import Series
 
 __all__ = [
+    "get_block_pair_indexes_by_pause",
     "get_block_pairs_by_pause",
     "get_pair_with_zero_start",
     "get_pair_strings",
 ]
+
+
+def get_block_pair_indexes_by_pause(
+    one: Series,
+    two: Series,
+    pause_length: int = 3000,
+) -> list[tuple[tuple[int, int], tuple[int, int]]]:
+    """Get indexes of paired blocks split by pauses without text in either series.
+
+    Arguments:
+        one: first series
+        two: second series
+        pause_length: split whenever a pause of this length is encountered
+    Returns:
+        start and end indexes of each paired block in both series
+    """
+    block_indexes = []
+    one_idx = 0
+    two_idx = 0
+
+    while one_idx < len(one) or two_idx < len(two):
+        one_start_idx = one_idx
+        two_start_idx = two_idx
+
+        def get_cutoff() -> int:
+            """Get the latest event end plus the selected pause length."""
+            cutoff = 0
+            if one_idx > one_start_idx:
+                cutoff = max(cutoff, one[one_idx - 1].end)
+            if two_idx > two_start_idx:
+                cutoff = max(cutoff, two[two_idx - 1].end)
+            return cutoff + pause_length
+
+        # Start a new block with the earlier event
+        if one_idx < len(one) and two_idx < len(two):
+            if one[one_idx].start <= two[two_idx].start:
+                one_idx += 1
+            else:
+                two_idx += 1
+        elif one_idx < len(one):
+            one_idx += 1
+        else:
+            two_idx += 1
+
+        # Extend the block until both series reach a long enough pause
+        changed = True
+        while changed:
+            changed = False
+            while one_idx < len(one) and one[one_idx].start < get_cutoff():
+                one_idx += 1
+                changed = True
+            while two_idx < len(two) and two[two_idx].start < get_cutoff():
+                two_idx += 1
+                changed = True
+
+        block_indexes.append(((one_start_idx, one_idx), (two_start_idx, two_idx)))
+
+    return block_indexes
 
 
 def get_block_pairs_by_pause(
@@ -24,60 +83,22 @@ def get_block_pairs_by_pause(
     """Split a pair of series into blocks using pauses without text in either.
 
     Arguments:
-        one: First series
-        two: Second series
-        pause_length: Split whenever a pause of this length is encountered
+        one: first series
+        two: second series
+        pause_length: split whenever a pause of this length is encountered
     Returns:
-        Pairs of series split into blocks
+        pairs of series split into blocks
     """
     blocks = []
-    source_one = deepcopy(one.events)
-    source_two = deepcopy(two.events)
-
-    def get_nascent_block_cutoff() -> int:
-        """Get latest acceptable start for an event to be added to the nascent block."""
-        cutoff = 0
-        if nascent_block_one:
-            cutoff = max(cutoff, nascent_block_one[-1].end)
-        if nascent_block_two:
-            cutoff = max(cutoff, nascent_block_two[-1].end)
-        cutoff += pause_length
-
-        return cutoff
-
-    # Split into blocks
-    while source_one or source_two:
-        # Start a new block, with one event from the earlier of the two sources
-        nascent_block_one = []
-        nascent_block_two = []
-        if source_one and source_two:
-            if source_one[0].start <= source_two[0].start:
-                nascent_block_one.append(source_one.pop(0))
-            else:
-                nascent_block_two.append(source_two.pop(0))
-        elif source_one:
-            nascent_block_one.append(source_one.pop(0))
-        else:
-            nascent_block_two.append(source_two.pop(0))
-
-        # Extend block until a long enough pause is hit or sources are empty
-        changed = True
-        while changed:
-            changed = False
-            # Extend nascent_block_one until a pause is encountered in source_one
-            while source_one and source_one[0].start < get_nascent_block_cutoff():
-                nascent_block_one.append(source_one.pop(0))
-                changed = True
-            # Extend nascent_block_two until a pause is encountered in source_two
-            while source_two and source_two[0].start < get_nascent_block_cutoff():
-                nascent_block_two.append(source_two.pop(0))
-                changed = True
-
-        # Store block
+    for one_indexes, two_indexes in get_block_pair_indexes_by_pause(
+        one,
+        two,
+        pause_length,
+    ):
         block_one = one.__class__()
         block_two = two.__class__()
-        block_one.events = nascent_block_one
-        block_two.events = nascent_block_two
+        block_one.events = deepcopy(one.events[slice(*one_indexes)])
+        block_two.events = deepcopy(two.events[slice(*two_indexes)])
         blocks.append((block_one, block_two))
 
     return blocks
@@ -91,10 +112,10 @@ def get_pair_with_zero_start(one: Series, two: Series) -> tuple[Series, Series]:
     later will be shifted by the same amount.
 
     Arguments:
-        one: First series
-        two: Second series
+        one: first series
+        two: second series
     Returns:
-        Pair with their start times shifted to zero
+        pair with their start times shifted to zero
     """
     if one.events and two.events:
         start_time = min(one.events[0].start, two.events[0].start)
@@ -117,10 +138,10 @@ def get_pair_strings(one: Series, two: Series) -> tuple[str, str]:
     """Get string representations of two series.
 
     Arguments:
-        one: First series
-        two: Second series
+        one: first series
+        two: second series
     Returns:
-        Strings of each series
+        strings of each series
     """
     one, two = get_pair_with_zero_start(one, two)
     if one.events and two.events:

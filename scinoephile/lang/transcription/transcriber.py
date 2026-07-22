@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Reference-guided audio transcription processor."""
+"""Reference-guided audio transcriber."""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ from scinoephile.audio.transcription import (
     TranscribedSegment,
     WhisperTranscriber,
 )
+from scinoephile.common.validation import val_index_range
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
@@ -25,7 +26,7 @@ from .aligner import TranscriptionAligner
 
 __all__ = [
     "DemucsMode",
-    "GuidedTranscriptionProcessor",
+    "GuidedTranscriber",
     "TranscribedSegmentSplitter",
     "VADMode",
 ]
@@ -86,7 +87,7 @@ class VADMode(StrEnum):
     """Never use VAD."""
 
 
-class GuidedTranscriptionProcessor:
+class GuidedTranscriber:
     """Transcribe audio and align it with reference subtitles."""
 
     def __init__(
@@ -178,18 +179,21 @@ class GuidedTranscriptionProcessor:
         audio_series: AudioSeries,
         reference_series: Series,
         stop_at_idx: int | None = None,
+        *,
+        start_at_idx: int = 0,
     ) -> AudioSeries:
         """Transcribe all audio blocks and align them with reference subtitles.
 
         Arguments:
             audio_series: audio divided into subtitle-timed blocks
             reference_series: reference subtitles corresponding to audio blocks
-            stop_at_idx: exclusive block index at which to stop processing
+            stop_at_idx: exclusive zero-based block index at which to stop processing
+            start_at_idx: inclusive zero-based block index at which to start processing
         Returns:
             transcribed and aligned audio subtitle series
         Raises:
             ScinoephileError: if audio and reference block counts differ
-            ValueError: if stop_at_idx is negative
+            ValueError: if the processing range is invalid
         """
         audio_blocks = audio_series.blocks
         reference_blocks = reference_series.blocks
@@ -198,17 +202,19 @@ class GuidedTranscriptionProcessor:
                 f"Audio has {len(audio_blocks)} blocks but reference subtitles have "
                 f"{len(reference_blocks)} blocks."
             )
-        if stop_at_idx is None:
-            stop_at_idx = len(audio_blocks)
-        elif stop_at_idx < 0:
-            raise ValueError("stop_at_idx must be greater than or equal to 0")
+        block_range = val_index_range(len(audio_blocks), start_at_idx, stop_at_idx)
+        if (
+            self.aligner.delineation_processor.prune_test_cases
+            or self.aligner.punctuation_processor.prune_test_cases
+        ) and block_range != range(len(audio_blocks)):
+            raise ValueError(
+                "Cannot prune test cases while processing only a subset of blocks."
+            )
 
         output_events = []
-        for block_idx, (audio_block, reference_block) in enumerate(
-            zip(audio_blocks, reference_blocks, strict=True)
-        ):
-            if block_idx >= stop_at_idx:
-                break
+        for block_idx in block_range:
+            audio_block = audio_blocks[block_idx]
+            reference_block = reference_blocks[block_idx]
             output_block = self.process_block(audio_block, reference_block)
             logger.info(
                 f"BLOCK {block_idx + 1}:\n"
@@ -222,6 +228,7 @@ class GuidedTranscriptionProcessor:
         output_events.sort(key=lambda event: event.start)
         output = AudioSeries(audio=audio_series.audio, events=output_events)
         logger.info(f"Concatenated Series:\n{output.to_simple_string()}")
+        self.aligner.update_all_test_cases()
         return output
 
     def process_block(
@@ -261,7 +268,6 @@ class GuidedTranscriptionProcessor:
             offset=offset,
         )
         alignment = self.aligner.align(reference_block, transcription_block)
-        self.aligner.update_all_test_cases()
         return alignment.transcription
 
     def _get_cached_block_transcription(
@@ -269,27 +275,32 @@ class GuidedTranscriptionProcessor:
         cache_audio: AudioSegment,
         *,
         audio_duration: float,
-    ) -> list[TranscribedSegment] | None:
+    ) -> tuple[list[TranscribedSegment] | None, set[WhisperTranscriber]]:
         """Get cached block transcription before expensive preprocessing.
 
         Arguments:
             cache_audio: original block audio used for cache-key generation
             audio_duration: original block audio duration in seconds
         Returns:
-            cached transcription, if present
+            cached transcription, if usable, and transcribers with unusable caches
         """
+        rejected_transcribers: set[WhisperTranscriber] = set()
         transcribers = list(self._get_standard_transcribers())
         if self.demucs_mode == DemucsMode.AUTO:
             transcribers.extend(self._get_standard_transcribers(unseparated=True))
         transcribers.append(self.recovery_transcriber)
         for transcriber in transcribers:
             cached_segments = transcriber.get_cached_transcription(cache_audio)
-            if cached_segments is not None and self._segments_are_usable(
+            if cached_segments is None:
+                continue
+            if self._segments_are_usable(
                 cached_segments,
                 audio_duration=audio_duration,
             ):
-                return cached_segments
-        return None
+                return cached_segments, rejected_transcribers
+            if transcriber is not self.recovery_transcriber:
+                rejected_transcribers.add(transcriber)
+        return None, rejected_transcribers
 
     def _get_standard_transcribers(
         self,
@@ -386,19 +397,21 @@ class GuidedTranscriptionProcessor:
             expected_last_start: expected start of the final guided subtitle
         Returns:
             transcribed segments
-        Raises:
-            ScinoephileError: if all configured Whisper attempts are unusable
         """
         cache_audio = audio
         audio_duration = len(cache_audio) / 1000
-        segments = self._get_cached_block_transcription(
+        segments, rejected_transcribers = self._get_cached_block_transcription(
             cache_audio,
             audio_duration=audio_duration,
         )
         if segments is None:
             primary_audio = self._get_primary_transcription_audio(audio)
             if primary_audio is not None:
-                for transcriber in self._get_standard_transcribers():
+                for transcriber in (
+                    candidate
+                    for candidate in self._get_standard_transcribers()
+                    if candidate not in rejected_transcribers
+                ):
                     segments = self._transcribe_with_candidate(
                         transcriber,
                         primary_audio,
@@ -414,7 +427,11 @@ class GuidedTranscriptionProcessor:
                         "Retrying block transcription with original audio after "
                         "unusable Demucs result"
                     )
-                for transcriber in self._get_standard_transcribers(unseparated=True):
+                for transcriber in (
+                    candidate
+                    for candidate in self._get_standard_transcribers(unseparated=True)
+                    if candidate not in rejected_transcribers
+                ):
                     segments = self._transcribe_with_candidate(
                         transcriber,
                         audio,
@@ -424,7 +441,10 @@ class GuidedTranscriptionProcessor:
                     if segments is not None:
                         break
 
-            if segments is None:
+            if (
+                segments is None
+                and self.recovery_transcriber not in rejected_transcribers
+            ):
                 logger.info(
                     "Retrying block transcription with defensive Whisper decoding"
                 )
@@ -439,10 +459,12 @@ class GuidedTranscriptionProcessor:
                     audio_duration=audio_duration,
                 )
         if segments is None:
-            raise ScinoephileError(
+            logger.warning(
                 "Whisper produced no usable transcription after all configured "
-                "recovery attempts."
+                "recovery attempts; leaving this block empty for downstream gap "
+                "translation"
             )
+            return []
         return self._transcribe_with_focused_tail_recovery(
             segments,
             cache_audio,
@@ -678,6 +700,27 @@ class GuidedTranscriptionProcessor:
                 logger.warning(
                     f"Rejecting Whisper segment {segment.id} without word timings"
                 )
+                return False
+            duration_error = None
+            if int(segment.end * 1000) <= int(segment.start * 1000):
+                duration_error = (
+                    f"Rejecting Whisper segment {segment.id} with non-positive "
+                    f"millisecond duration ({segment.start:.3f}s to "
+                    f"{segment.end:.3f}s)"
+                )
+            else:
+                for word in segment.words:
+                    if not word.text.strip():
+                        continue
+                    if int(word.end * 1000) <= int(word.start * 1000):
+                        duration_error = (
+                            f"Rejecting Whisper segment {segment.id} with word "
+                            f"{word.text!r} having non-positive millisecond duration "
+                            f"({word.start:.3f}s to {word.end:.3f}s)"
+                        )
+                        break
+            if duration_error is not None:
+                logger.warning(duration_error)
                 return False
             if (
                 segment.compression_ratio is not None

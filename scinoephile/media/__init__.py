@@ -4,5 +4,6 @@
 
 Package hierarchy (modules may import from any above):
 * constants / offset / probe
+* audio
 * subtitles
 """

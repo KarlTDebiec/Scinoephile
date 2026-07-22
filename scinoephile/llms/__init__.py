@@ -4,7 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * delineation / gap_translation / guided_review / guided_translation / ocr_fusion
-  / pairwise_review / providers / punctuation / review / translation
+  / providers / punctuation / review / translation
 
 LLM shapes:
 
@@ -12,7 +12,6 @@ LLM shapes:
 | ------ | ----- | -- | ------------------ | ----------------- |
 | 1      | n     |    | review             | Review            |
 | 1      | n     |    | translation        | Translation       |
-| 2      | 1     | 1  | pairwise_review    | PairwiseReview    |
 | 2      | n     | m  | guided_review      | GuidedReview      |
 | 2      | 1     | 1  | ocr_fusion         | OcrFusion         |
 | 2      | n     | 1  | punctuation        | Punctuation       |

@@ -53,7 +53,9 @@ class GuidedReviewPrompt(Prompt):
     guide_text_desc: str = "Guide subtitle text."
     """Description of text field in guide items."""
 
-    revision_text_desc: str = "Full revised target subtitle text."
+    revision_text_desc: str = (
+        'Full revised target subtitle text, or "�" to delete the target.'
+    )
     """Description of text field in revision items."""
 
     note: str = "note"

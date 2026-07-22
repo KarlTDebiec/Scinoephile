@@ -10,12 +10,16 @@ from pydub import AudioSegment
 from pytest import MonkeyPatch
 
 from scinoephile.audio.subtitles import AudioSeries, AudioSubtitle
-from scinoephile.core.llms import Queryer
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.lang.transcription import aligner as aligner_module
 from scinoephile.lang.transcription.aligner import TranscriptionAligner
 from scinoephile.lang.transcription.alignment import TranscriptionAlignment
-from scinoephile.llms.punctuation import PunctuationPrompt, PunctuationTestCase
+from scinoephile.llms.delineation import DelineationProcessor
+from scinoephile.llms.punctuation import (
+    PunctuationProcessor,
+    PunctuationPrompt,
+    PunctuationTestCase,
+)
 
 _LOCALIZED_PROMPT = PunctuationPrompt(
     ref_sub="cankao",
@@ -76,8 +80,10 @@ def test_alignment_constructs_semantic_fields_with_configured_prompt():
 def test_aligner_uses_queryer_prompt_and_semantic_output(monkeypatch: MonkeyPatch):
     """Aligner should propagate its prompt and consume semantic answer output."""
     alignment = _get_alignment()
-    punctuation_queryer = Mock(spec=Queryer)
+    punctuation_queryer = Mock()
     punctuation_queryer.prompt = _LOCALIZED_PROMPT
+    punctuation_processor = Mock(spec=PunctuationProcessor)
+    punctuation_processor.queryer = punctuation_queryer
 
     def add_answer(
         test_case: PunctuationTestCase,
@@ -94,8 +100,8 @@ def test_aligner_uses_queryer_prompt_and_semantic_output(monkeypatch: MonkeyPatc
     punctuation_queryer.side_effect = add_answer
     monkeypatch.setattr(aligner_module, "get_sub_merged", _get_merged_subtitle)
     aligner = TranscriptionAligner(
-        delineation_queryer=Mock(spec=Queryer),
-        punctuation_queryer=punctuation_queryer,
+        delineation_processor=Mock(spec=DelineationProcessor),
+        punctuation_processor=punctuation_processor,
     )
 
     aligner._punctuate(alignment)
@@ -110,8 +116,10 @@ def test_aligner_falls_back_to_concatenation_after_invalid_answer(
 ):
     """A rejected answer should retain the existing concatenation fallback."""
     alignment = _get_alignment()
-    punctuation_queryer = Mock(spec=Queryer)
+    punctuation_queryer = Mock()
     punctuation_queryer.prompt = _LOCALIZED_PROMPT
+    punctuation_processor = Mock(spec=PunctuationProcessor)
+    punctuation_processor.queryer = punctuation_queryer
 
     def reject_answer(
         test_case: PunctuationTestCase,
@@ -128,8 +136,8 @@ def test_aligner_falls_back_to_concatenation_after_invalid_answer(
     punctuation_queryer.side_effect = reject_answer
     monkeypatch.setattr(aligner_module, "get_sub_merged", _get_merged_subtitle)
     aligner = TranscriptionAligner(
-        delineation_queryer=Mock(spec=Queryer),
-        punctuation_queryer=punctuation_queryer,
+        delineation_processor=Mock(spec=DelineationProcessor),
+        punctuation_processor=punctuation_processor,
     )
 
     aligner._punctuate(alignment)

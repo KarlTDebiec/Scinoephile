@@ -21,6 +21,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.core.pairs import get_block_pair_indexes_by_pause
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.translation import (
     translate_series,
@@ -28,11 +29,17 @@ from scinoephile.workflows.translation import (
     translate_series_guided,
 )
 
+from .helpers.blocks import (
+    BLOCK_LOCALIZATIONS,
+    add_block_range_args,
+    get_block_range_indexes,
+)
 from .helpers.io import read_series, write_series
 from .helpers.llms import (
     LLM_LOCALIZATIONS,
     LlmArguments,
     add_llm_provider_args,
+    add_llm_test_case_json_arg,
     read_llm_additional_context,
 )
 
@@ -97,6 +104,7 @@ class TranslateCli(ScinoephileCliBase):
     """Translate subtitles between supported languages."""
 
     localizations = merge_localizations(
+        BLOCK_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
         TRANSLATE_LOCALIZATIONS,
     )
@@ -159,9 +167,11 @@ class TranslateCli(ScinoephileCliBase):
                 "is detected)"
             ),
         )
+        add_block_range_args(arg_groups["operation arguments"])
         add_llm_provider_args(
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
+        add_llm_test_case_json_arg(arg_groups["llm arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -188,7 +198,10 @@ class TranslateCli(ScinoephileCliBase):
         guide_infile_path: Path | str | None,
         source_language: Language | None,
         target_language: Language | None,
+        first_block: int | None,
+        last_block: int | None,
         llm_args: LlmArguments,
+        json_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -200,6 +213,22 @@ class TranslateCli(ScinoephileCliBase):
 
         # Read inputs
         source = read_series(parser, infile_path, allow_stdin=True)
+        target = None
+        guide = None
+        if gapped_infile_path is not None:
+            target = read_series(parser, gapped_infile_path)
+            block_count = len(get_block_pair_indexes_by_pause(source, target))
+        elif guide_infile_path is not None:
+            guide = read_series(parser, guide_infile_path)
+            block_count = len(get_block_pair_indexes_by_pause(source, guide))
+        else:
+            block_count = len(source.blocks)
+        start_at_idx, stop_at_idx = get_block_range_indexes(
+            parser,
+            first_block,
+            last_block,
+            block_count,
+        )
         kwargs: dict[str, Any] = {
             "source_language": source_language,
             "target_language": target_language,
@@ -207,15 +236,16 @@ class TranslateCli(ScinoephileCliBase):
             "additional_context": read_llm_additional_context(
                 parser, llm_args.additional_context_file_path
             ),
+            "test_case_path": json_path,
+            "start_at_idx": start_at_idx,
+            "stop_at_idx": stop_at_idx,
         }
 
         # Perform operation
         try:
-            if gapped_infile_path is not None:
-                target = read_series(parser, gapped_infile_path)
+            if target is not None:
                 output = translate_series_gaps(source, target, **kwargs)
-            elif guide_infile_path is not None:
-                guide = read_series(parser, guide_infile_path)
+            elif guide is not None:
                 output = translate_series_guided(source, guide, **kwargs)
             else:
                 if target_language is None:

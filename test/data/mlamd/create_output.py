@@ -13,11 +13,10 @@ from scinoephile.core import Language
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.lang.review.guided import get_guided_reviewer
-from scinoephile.lang.review.pairwise import get_pairwise_reviewer
 from scinoephile.lang.transcription.guided import get_guided_transcriber
-from scinoephile.lang.transcription.processor import VADMode
+from scinoephile.lang.transcription.transcriber import VADMode
 from scinoephile.lang.translation.gap import get_gap_translator
-from scinoephile.workflows.review import review_series_guided, review_series_pairwise
+from scinoephile.workflows.review import review_series_guided
 from scinoephile.workflows.transcription import transcribe_series_guided
 from scinoephile.workflows.translation import translate_series_gaps
 from test.data.mlamd import (
@@ -74,13 +73,17 @@ if "yue-Hans_transcribe" in actions:
 
     # Transcribe
     yue_hans = AudioSeries.load(audio_path)
+    test_case_dir_path = (
+        output_path / "yue-Hans_transcribe" / "lang/yue_zho/transcription"
+    )
+    device = get_torch_device()
     transcriber = get_guided_transcriber(
         Language.yue_hans,
         Language.zho_hans,
         vad_mode=VADMode.ON,
-        test_case_dir_path=(
-            output_path / "yue-Hans_transcribe" / "lang/yue_zho/transcription"
-        ),
+        prune_test_cases=True,
+        delineation_json_path=test_case_dir_path / "delineation" / f"{device}.json",
+        punctuation_json_path=test_case_dir_path / "punctuation" / f"{device}.json",
         delineation_test_cases=get_mlamd_yue_delineation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
     )
@@ -94,28 +97,10 @@ if "yue-Hans_transcribe" in actions:
     outfile_path = output_path / "yue-Hans_transcribe" / "transcribe.srt"
     yue_hans.save(outfile_path)
 
-    # Pairwise review
-    yue_hans = Series.load(outfile_path)
-    pairwise_reviewer = get_pairwise_reviewer(
-        Language.yue_hans,
-        Language.zho_hans,
-        test_case_path=output_path
-        / "yue-Hans_transcribe"
-        / "lang"
-        / "yue_zho"
-        / "pairwise_review"
-        / f"{get_torch_device()}.json",
-        auto_verify=True,
-    )
-    yue_hans_pairwise_reviewed = review_series_pairwise(
-        yue_hans,
-        zho_hans,
-        reviewer=pairwise_reviewer,
-    )
-    outfile_path = output_path / "yue-Hans_transcribe" / "transcribe_review.srt"
-    yue_hans_pairwise_reviewed.save(outfile_path)
-
     # Translate
+    yue_hans_translation_input = Series.load(
+        output_path / "yue-Hans_transcribe" / "transcribe_translation_input.srt"
+    )
     translator = get_gap_translator(
         Language.zho_hans,
         Language.yue_hans,
@@ -127,17 +112,15 @@ if "yue-Hans_transcribe" in actions:
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_review_translate = translate_series_gaps(
+    yue_hans_translate = translate_series_gaps(
         zho_hans,
-        yue_hans_pairwise_reviewed,
+        yue_hans_translation_input,
         source_language=Language.zho_hans,
         target_language=Language.yue_hans,
         translator=translator,
     )
-    outfile_path = (
-        output_path / "yue-Hans_transcribe" / "transcribe_review_translate.srt"
-    )
-    yue_hans_review_translate.save(outfile_path)
+    outfile_path = output_path / "yue-Hans_transcribe" / "transcribe_translate.srt"
+    yue_hans_translate.save(outfile_path)
 
     # Guided review
     reviewer = get_guided_reviewer(
@@ -151,22 +134,18 @@ if "yue-Hans_transcribe" in actions:
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_review_translate_guided_review = review_series_guided(
-        yue_hans_review_translate,
+    yue_hans_translate_guided_review = review_series_guided(
+        yue_hans_translate,
         zho_hans,
         reviewer=reviewer,
     )
     outfile_path = (
-        output_path
-        / "yue-Hans_transcribe"
-        / "transcribe_review_translate_guided_review.srt"
+        output_path / "yue-Hans_transcribe" / "transcribe_translate_guided_review.srt"
     )
-    yue_hans_review_translate_guided_review.save(outfile_path)
+    yue_hans_translate_guided_review.save(outfile_path)
 if "yue-Hans_eng" in actions:
     yue_hans_path = (
-        output_path
-        / "yue-Hans_transcribe"
-        / "transcribe_review_translate_guided_review.srt"
+        output_path / "yue-Hans_transcribe" / "transcribe_translate_guided_review.srt"
     )
     eng_path = output_path / "eng_ocr" / "fuse_clean_validate_review_flatten.srt"
     process_yue_hans_eng(title_root, yue_hans_path, eng_path, overwrite=False)
