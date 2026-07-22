@@ -85,6 +85,18 @@ def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
     )
     assert capsys.readouterr().out == ""
 
+    run_cli_with_args(
+        AuditOcrFusionCli,
+        f"--source-one {source_one_path} --source-two {source_two_path} "
+        f"--fused {fused_path}",
+    )
+    report = capsys.readouterr().out
+    assert "- decision log: omitted" in report
+    assert (
+        "| Index | Case | Difficulty | Source one | Source two | Fused | Validated |"
+        in report
+    )
+
 
 def _write_srt(file_path: Path, text: str):
     """Write one subtitle to an SRT file.

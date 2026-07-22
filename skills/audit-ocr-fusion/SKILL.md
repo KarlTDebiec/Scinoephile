@@ -1,6 +1,6 @@
 ---
 name: audit-ocr-fusion
-description: Audit Scinoephile OCR-fusion output against the exact two OCR source SRTs and OCR-fusion JSON used to generate it, optionally comparing every fused subtitle with a one-to-one validated SRT as ground truth. Use when inspecting ocr_fusion.json decisions, source selection, fused OCR errors, validation discrepancies, difficulty or verification state, or corrected OCR-fusion cases.
+description: Audit Scinoephile OCR-fusion output against the exact two OCR source SRTs and optional OCR-fusion JSON used to generate it, optionally comparing every fused subtitle with a one-to-one validated SRT as ground truth. Use when inspecting ocr_fusion.json decisions, source selection, fused OCR errors, validation discrepancies, verification state, or corrected OCR-fusion cases.
 ---
 
 # Audit OCR Fusion
@@ -10,15 +10,17 @@ cleaning or review stages.
 
 ## Required report file
 
-Save the complete nine-column Markdown report under `local/`.
+Save the complete Markdown report under `local/`.
 
-- Keep exactly these columns: `Index`, `Case`, `Difficulty`, `Source one`,
-  `Source two`, `Fused`, `Validated`, `Notes`, and `Verified`.
-- `Case` and `Difficulty` are `—` for deterministic rows that did not call the
-  LLM. An empty `Verified` cell on such a row does not indicate an unverified
-  JSON case.
+- Keep these columns: `Index`, `Case`, `Difficulty`, `Source one`, `Source two`,
+  `Fused`, and `Validated`. When JSON is supplied, also include `Notes` and
+  `Verified`.
+- `Case` and `Difficulty` are `—` for deterministic rows and rows audited
+  without JSON. An empty `Verified` cell on a deterministic row does not
+  indicate an unverified JSON case.
 - Treat `Validated` as ground truth when supplied. It is `—` when omitted.
-- `Notes` contains the recorded LLM note or the automatic fusion explanation.
+- When JSON is supplied, `Notes` contains the recorded LLM note or the automatic
+  fusion explanation.
 - Validate the saved table after generating it and provide a clickable link.
   Do not paste the full table inline unless the user requests it.
 
@@ -39,7 +41,7 @@ Find the artifacts from the same OCR run:
 - source one: commonly `lens.srt`
 - source two: commonly `tesseract.srt` or `paddle.srt`
 - fused output: `fuse.srt`
-- JSON: `<ocr-output>/lang/<language-code>/ocr_fusion.json`
+- optional JSON: `<ocr-output>/lang/<language-code>/ocr_fusion.json`
 - optional truth: a one-to-one validated track derived from the fused OCR
   workflow, commonly a later `*_validate.srt`
 
@@ -65,26 +67,25 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit ocr-fusion \
   --overwrite
 ```
 
-Omit `--validated` when no aligned truth track exists. The inclusive range uses
-fused-track indexes. Filters are:
+Omit `--json` when no decision log is available. Omit `--validated` when no
+aligned truth track exists. The inclusive range uses fused-track indexes. Filters
+are:
 
 - `changes`: source disagreements, including deterministic one-source rows
 - `all`: every fused subtitle, including identical and empty sources
-- `unverified`: only unverified LLM cases
+- `unverified`: only unverified LLM cases; without JSON, all rows requiring an
+  LLM decision are unverified
 - `discrepancies`: only fused rows that differ from `--validated`; this filter
   requires the validated track and includes deterministic rows
-
-Omit `--difficulty` for all levels or pass exact levels such as
-`--difficulty 1 2`. Automatic decisions have no displayed difficulty and are
-selected only by difficulty 0.
 
 Use `--first-block` and `--last-block` for an inclusive, one-based range of
 fused-track blocks. Block and subtitle bounds are mutually exclusive. Omit
 either block bound for an open-ended block range.
 
-The CLI verifies that deterministic fused rows match the processor rules and
-that answered LLM outputs match `fuse.srt`. It uses the latest logged case for a
-repeated source pair and rejects missing current decisions.
+The CLI verifies that deterministic fused rows match the processor rules. When
+JSON is supplied, it also verifies that answered LLM outputs match `fuse.srt`,
+uses the latest logged case for a repeated source pair, and rejects missing
+current decisions.
 
 ## Audit every row
 
@@ -94,8 +95,9 @@ unless the validated track itself is demonstrably wrong.
 
 - Check characters, words, case, line breaks, punctuation, spacing, and obvious
   OCR confusions.
-- Check whether the note accurately describes the selected output, but do
-  not accept a decision merely because its explanation sounds plausible.
+- When JSON is supplied, check whether the note accurately describes the selected
+  output, but do not accept a decision merely because its explanation sounds
+  plausible.
 - For deterministic rows, verify that choosing the sole nonempty source or the
   identical source text remains correct against validated truth.
 - Do not assess later cleaning, translation, or subtitle-review decisions.

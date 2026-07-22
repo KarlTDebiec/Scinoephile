@@ -105,7 +105,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
         last_index=3,
     )
     assert "- final text discrepancies: 1" in report
-    assert "- subtitle range: 1-indexed numbers 2 through 3" in report
+    assert "- subtitle range: 2 through 3" in report
     assert "- table rows: 2" in report
     assert "| 1 |" not in report
     assert "| 2 |" in report

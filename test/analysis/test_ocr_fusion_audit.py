@@ -90,6 +90,29 @@ def test_audit_ocr_fusion_filters_unverified_and_automatic_rows():
     assert "| 3 | 1 |" in unverified_report
 
 
+def test_audit_ocr_fusion_omits_log_columns_without_test_cases():
+    """Test source and fused output can be audited without a decision log."""
+    source_one = _get_series("甲錯")
+    source_two = _get_series("甲正")
+    fused = _get_series("甲正")
+
+    report = audit_ocr_fusion(
+        source_one,
+        source_two,
+        fused,
+        row_filter=OcrFusionAuditFilter.all,
+    )
+
+    assert "- decision log: omitted" in report
+    assert (
+        "| Index | Case | Difficulty | Source one | Source two | Fused | Validated |"
+        in report
+    )
+    assert "| 1 | — | — | 甲錯 | 甲正 | 甲正 | — |" in report
+    assert "Notes" not in report
+    assert "Verified" not in report
+
+
 def test_audit_ocr_fusion_filters_fused_blocks():
     """Test block bounds select fused rows separated by long pauses."""
     source_one = Series(

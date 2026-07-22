@@ -13,7 +13,12 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
-from .utils import format_block_range, get_selected_event_indexes
+from .utils import (
+    escape_table_cell,
+    format_block_range,
+    format_index_range,
+    get_selected_event_indexes,
+)
 
 __all__ = [
     "ReviewAuditComparison",
@@ -265,17 +270,6 @@ def audit_review_workflow(
     )
 
 
-def _escape_cell(value: str) -> str:
-    """Escape one Markdown table cell.
-
-    Arguments:
-        value: cell text
-    Returns:
-        escaped cell text
-    """
-    return value.replace("\n", "<br>").replace("|", "\\|")
-
-
 def _format_markdown(
     *,
     reviews: Sequence[ReviewAuditPair],
@@ -338,7 +332,7 @@ def _format_markdown(
             )
         )
         cells.append("\n".join(note_lines))
-        row_lines.append(f"| {' | '.join(_escape_cell(cell) for cell in cells)} |")
+        row_lines.append(f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |")
 
     lines = [
         "# Review Audit",
@@ -361,16 +355,9 @@ def _format_markdown(
     lines.append(f"- row filter: {row_filter.value}")
     if characters:
         lines.append(f"- character filter: {', '.join(characters)}")
-    if first_index is not None or last_index is not None:
-        if first_index is None:
-            lines.append(f"- subtitle range: 1-indexed numbers through {last_index}")
-        elif last_index is None:
-            lines.append(f"- subtitle range: 1-indexed numbers from {first_index}")
-        else:
-            lines.append(
-                f"- subtitle range: 1-indexed numbers {first_index} through "
-                f"{last_index}"
-            )
+    index_range = format_index_range(first_index, last_index)
+    if index_range is not None:
+        lines.append(index_range)
     block_range = format_block_range(first_block, last_block)
     if block_range is not None:
         lines.append(block_range)

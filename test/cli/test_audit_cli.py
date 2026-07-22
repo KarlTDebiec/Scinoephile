@@ -55,7 +55,7 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     )
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Review Audit\n")
-    assert "- subtitle range: 1-indexed numbers 1 through 1" in stdout
+    assert "- subtitle range: 1 through 1" in stdout
     assert "- table rows: 1" in stdout
 
     run_cli_with_args(

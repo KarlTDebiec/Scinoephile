@@ -4,15 +4,12 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
-
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 
 __all__ = [
     "escape_table_cell",
     "format_block_range",
-    "format_difficulty_filter",
     "format_index_range",
     "get_selected_event_indexes",
     "validate_block_range",
@@ -52,41 +49,31 @@ def format_block_range(
     return f"- block range: {first_block} through {last_block}"
 
 
-def format_difficulty_filter(difficulties: Sequence[int]) -> str:
-    """Format an exact difficulty filter for a report summary.
-
-    Arguments:
-        difficulties: selected exact difficulty levels
-    Returns:
-        formatted difficulty-filter summary
-    """
-    if not difficulties:
-        return "- difficulty filter: all"
-    return f"- difficulty filter: {', '.join(str(value) for value in difficulties)}"
-
-
 def format_index_range(
     first_index: int | None,
     last_index: int | None,
     *,
-    track_name: str,
+    track_name: str | None = None,
 ) -> str | None:
     """Format an optional subtitle range for a report summary.
 
     Arguments:
         first_index: first included one-based subtitle index
         last_index: last included one-based subtitle index
-        track_name: name of the subtitle track whose indexes are selected
+        track_name: optional name of the subtitle track whose indexes are selected
     Returns:
         formatted range summary, or None if the range is unbounded
     """
     if first_index is None and last_index is None:
         return None
+    range_name = "subtitle"
+    if track_name is not None:
+        range_name = f"{track_name} subtitle"
     if first_index is None:
-        return f"- {track_name} subtitle range: through {last_index}"
+        return f"- {range_name} range: through {last_index}"
     if last_index is None:
-        return f"- {track_name} subtitle range: from {first_index}"
-    return f"- {track_name} subtitle range: {first_index} through {last_index}"
+        return f"- {range_name} range: from {first_index}"
+    return f"- {range_name} range: {first_index} through {last_index}"
 
 
 def get_selected_event_indexes(
