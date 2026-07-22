@@ -191,7 +191,7 @@ def _get_selected_event_indexes(
     first_block: int | None,
     last_block: int | None,
 ) -> frozenset[int]:
-    """Get event indexes selected by either subtitle or block range.
+    """Get event indexes selected by optional subtitle and block ranges.
 
     Arguments:
         series: subtitle series whose event and block indexes are selected
@@ -201,16 +201,7 @@ def _get_selected_event_indexes(
         last_block: last included one-based block number
     Returns:
         selected zero-based event indexes
-    Raises:
-        ScinoephileError: if subtitle and block ranges are both specified
     """
-    if (first_index is not None or last_index is not None) and (
-        first_block is not None or last_block is not None
-    ):
-        raise ScinoephileError(
-            "Subtitle and block ranges are mutually exclusive; specify only one"
-        )
-
     start = 0
     if first_index is not None:
         start = first_index - 1
