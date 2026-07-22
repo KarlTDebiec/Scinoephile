@@ -269,17 +269,18 @@ class AuditReviewDualCli(AuditReviewCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        cls.validate_unverified_filter(
-            parser,
-            row_filter,
-            simplified_json_path
-            or traditional_json_path
-            or traditional_simplified_json_path,
-            json_requirement=(
-                "one of --simplified-json, --traditional-json, or "
-                "--traditional-simplified-json"
-            ),
-        )
+        if row_filter is ReviewAuditFilter.unverified and all(
+            json_path is None
+            for json_path in (
+                simplified_json_path,
+                traditional_json_path,
+                traditional_simplified_json_path,
+            )
+        ):
+            parser.error(
+                "--filter unverified requires one of --simplified-json, "
+                "--traditional-json, or --traditional-simplified-json"
+            )
         characters = get_zho_character_variants(characters)
 
         # Read inputs
