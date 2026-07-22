@@ -8,7 +8,15 @@ import json
 from pathlib import Path
 from typing import TypedDict
 
-from scinoephile.analysis.review_audit import ReviewAuditFilter, audit_reviews
+from pytest import raises
+
+from scinoephile.analysis.audit.review import (
+    ReviewAuditFilter,
+    ReviewAuditPair,
+    audit_review_workflow,
+    audit_reviews,
+)
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series, Subtitle
@@ -144,6 +152,50 @@ def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
     report = audit_reviews(**inputs, row_filter=ReviewAuditFilter.all)
 
     assert "- table rows: 4" in report
+
+
+def test_audit_review_workflow_selects_blocks():
+    """Test review audits select one workflow block at a time."""
+    original = Series(
+        events=[
+            Subtitle(start=0, end=500, text="First"),
+            Subtitle(start=1_000, end=1_500, text="Second"),
+            Subtitle(start=5_000, end=5_500, text="Third"),
+        ]
+    )
+    reviewed = Series(
+        events=[
+            Subtitle(start=0, end=500, text="First"),
+            Subtitle(start=1_000, end=1_500, text="Second"),
+            Subtitle(start=5_000, end=5_500, text="Third revised"),
+        ]
+    )
+    reviews = (
+        ReviewAuditPair(
+            label="Test",
+            original=original,
+            reviewed=reviewed,
+        ),
+    )
+
+    report = audit_review_workflow(
+        reviews=reviews,
+        row_filter=ReviewAuditFilter.all,
+        first_block=2,
+        last_block=2,
+    )
+
+    assert "- block range: 2 through 2" in report
+    assert "| 1 |" not in report
+    assert "| 2 |" not in report
+    assert "| 3 | Third<br>Third revised |" in report
+
+    with raises(ScinoephileError, match="mutually exclusive"):
+        audit_review_workflow(
+            reviews=reviews,
+            first_index=1,
+            first_block=2,
+        )
 
 
 def _get_audit_inputs(tmp_path: Path) -> _AuditInputs:

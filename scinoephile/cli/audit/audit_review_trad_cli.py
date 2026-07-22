@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.review_audit import (
+from scinoephile.analysis.audit.review import (
     ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
@@ -16,8 +16,9 @@ from scinoephile.analysis.review_audit import (
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import ScinoephileError
+from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
-from .audit_workflow_cli_base import AuditWorkflowCliBase
+from .audit_review_cli_base import AuditReviewCliBase
 
 __all__ = ["AuditReviewTradCli"]
 
@@ -64,7 +65,7 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditReviewTradCli(AuditWorkflowCliBase):
+class AuditReviewTradCli(AuditReviewCliBase):
     """Audit traditional review followed by review of its simplified form."""
 
     localizations = AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS
@@ -150,12 +151,13 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
         outfile_path: Path | None,
+        overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
-        # Validate arguments
         parser = _parser or cls.argparser()
-        cls.validate_range(parser, first_index, last_index)
 
         # Read inputs
         traditional = read_series(parser, traditional_path)
@@ -174,7 +176,7 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
                         label="Traditional",
                         original=traditional,
                         reviewed=traditional_reviewed,
-                        review_cases=cls.load_review_cases(
+                        review_cases=cls.load_review_test_cases(
                             parser,
                             traditional_json_path,
                         ),
@@ -183,22 +185,24 @@ class AuditReviewTradCli(AuditWorkflowCliBase):
                         label="Traditional simplification",
                         original=traditional_simplified,
                         reviewed=traditional_simplified_reviewed,
-                        review_cases=cls.load_review_cases(
+                        review_cases=cls.load_review_test_cases(
                             parser,
                             traditional_simplified_json_path,
                         ),
                     ),
                 ),
                 row_filter=row_filter,
-                characters=cls.get_character_variants(characters),
+                characters=get_zho_character_variants(characters),
                 first_index=first_index,
                 last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write output
-        cls.write_report(parser, report, outfile_path)
+        cls.write_report(parser, report, outfile_path, overwrite)
 
 
 if __name__ == "__main__":

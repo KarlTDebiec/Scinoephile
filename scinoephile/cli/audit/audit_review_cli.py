@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.review_audit import (
+from scinoephile.analysis.audit.review import (
     ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
@@ -17,8 +17,9 @@ from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core import Language, ScinoephileError
 from scinoephile.lang.id import get_series_language
+from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
-from .audit_workflow_cli_base import AuditWorkflowCliBase
+from .audit_review_cli_base import AuditReviewCliBase
 
 __all__ = ["AuditReviewCli"]
 
@@ -52,7 +53,7 @@ _LANGUAGE_LABELS = {
 """Report labels keyed by automatically detected language."""
 
 
-class AuditReviewCli(AuditWorkflowCliBase):
+class AuditReviewCli(AuditReviewCliBase):
     """Audit one subtitle review with automatic language and script detection."""
 
     localizations = AUDIT_REVIEW_LOCALIZATIONS
@@ -113,12 +114,13 @@ class AuditReviewCli(AuditWorkflowCliBase):
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
+        first_block: int | None,
+        last_block: int | None,
         outfile_path: Path | None,
+        overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
-        # Validate arguments
         parser = _parser or cls.argparser()
-        cls.validate_range(parser, first_index, last_index)
 
         # Read inputs
         original = read_series(parser, original_path)
@@ -147,19 +149,21 @@ class AuditReviewCli(AuditWorkflowCliBase):
                         label=_LANGUAGE_LABELS[language],
                         original=original,
                         reviewed=reviewed,
-                        review_cases=cls.load_review_cases(parser, json_path),
+                        review_cases=cls.load_review_test_cases(parser, json_path),
                     ),
                 ),
                 row_filter=row_filter,
-                characters=cls.get_character_variants(characters),
+                characters=get_zho_character_variants(characters),
                 first_index=first_index,
                 last_index=last_index,
+                first_block=first_block,
+                last_block=last_block,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
 
         # Write output
-        cls.write_report(parser, report, outfile_path)
+        cls.write_report(parser, report, outfile_path, overwrite)
 
 
 if __name__ == "__main__":
