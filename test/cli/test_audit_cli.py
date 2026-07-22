@@ -151,6 +151,84 @@ def test_audit_cli_subcommands():
     }
 
 
+def test_audit_review_cli_guided_mode_stdout_and_outfile(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test guided-review audit output to stdout and a file.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    target_path = tmp_path / "target.srt"
+    guide_path = tmp_path / "guide.srt"
+    _write_srt(target_path, ("原文",))
+    _write_srt(guide_path, ("參考",))
+    json_path = tmp_path / "guided_review.json"
+    json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {
+                        "targets": [{"index": 1, "text": "原文"}],
+                        "guides": [{"index": 1, "text": "參考"}],
+                    },
+                    "answer": {
+                        "revisions": [
+                            {
+                                "index": 1,
+                                "text": "修訂",
+                                "note": "correction",
+                            }
+                        ]
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    arguments = f"--target {target_path} --guide {guide_path} --json {json_path}"
+
+    run_cli_with_args(
+        AuditReviewCli,
+        (f"--mode guided {arguments} --first-index 1 --last-index 1 --filter changes"),
+    )
+    stdout = capsys.readouterr().out
+    assert stdout.startswith("# Guided Subtitle Review Audit\n")
+    assert "- row filter: changes" in stdout
+    assert "- target subtitle range: 1 through 1" in stdout
+    assert "- subtitles: 1" in stdout
+    assert "| 1 | 1 | 參考 | 原文<br>修訂 |  |  |" in stdout
+
+    outfile_path = tmp_path / "audit.md"
+    run_cli_with_args(
+        AuditReviewCli,
+        f"--mode guided {arguments} --outfile {outfile_path}",
+    )
+    assert capsys.readouterr().out == ""
+    assert outfile_path.read_text(encoding="utf-8").startswith(
+        "# Guided Subtitle Review Audit\n"
+    )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewCli,
+            f"--mode guided {arguments} --first-index 2 --last-index 1",
+        )
+    assert "First index must be less than or equal to last index" in (
+        capsys.readouterr().err
+    )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewCli,
+            f"--mode guided {arguments} --reviewed {target_path}",
+        )
+    assert "--reviewed is only supported in regular mode" in capsys.readouterr().err
+
+
 def test_audit_review_cli_detects_language(tmp_path: Path, capsys: CaptureFixture):
     """Test a single review audit detects its language.
 
