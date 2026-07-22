@@ -21,7 +21,7 @@ from .prompt import DelineationPrompt
 __all__ = ["DelineationManager"]
 
 
-class DelineationManager(Manager):
+class DelineationManager(Manager[DelineationTestCase]):
     """Factories for prompt-specific delineation LLM classes."""
 
     operation: ClassVar[str] = "delineation"

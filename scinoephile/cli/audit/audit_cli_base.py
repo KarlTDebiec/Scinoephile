@@ -111,13 +111,13 @@ class AuditCliBase(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @staticmethod
-    def load_test_cases(
+    def load_test_cases[TTestCase: TestCase](
         parser: ArgumentParser,
         json_path: Path,
-        manager_cls: type[Manager],
+        manager_cls: type[Manager[TTestCase]],
         *,
         workflow_name: str,
-    ) -> list[TestCase]:
+    ) -> list[TTestCase]:
         """Load test cases from workflow JSON.
 
         Arguments:

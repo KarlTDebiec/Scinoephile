@@ -23,7 +23,7 @@ from .prompt import ReviewPrompt
 __all__ = ["ReviewManager"]
 
 
-class ReviewManager(Manager):
+class ReviewManager(Manager[ReviewTestCase]):
     """Factories for prompt-specific review LLM classes."""
 
     operation: ClassVar[str] = "review"
