@@ -321,6 +321,7 @@ class AuditReviewCli(AuditCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
+        cls.validate_unverified_filter(parser, row_filter, json_path)
         cls._validate_mode_inputs(
             parser,
             mode,

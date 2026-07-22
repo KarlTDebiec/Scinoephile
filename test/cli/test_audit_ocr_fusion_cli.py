@@ -85,10 +85,20 @@ def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
     )
     assert capsys.readouterr().out == ""
 
+    no_json_arguments = (
+        f"--source-one {source_one_path} --source-two {source_two_path} "
+        f"--fused {fused_path}"
+    )
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditOcrFusionCli,
+            f"{no_json_arguments} --filter unverified",
+        )
+    assert "--filter unverified requires --json" in capsys.readouterr().err
+
     run_cli_with_args(
         AuditOcrFusionCli,
-        f"--source-one {source_one_path} --source-two {source_two_path} "
-        f"--fused {fused_path}",
+        no_json_arguments,
     )
     report = capsys.readouterr().out
     assert "- decision log: omitted" in report

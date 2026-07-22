@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from enum import StrEnum
 from pathlib import Path
 
 from scinoephile.cli.helpers.blocks import add_block_range_args
@@ -136,6 +137,22 @@ class AuditCliBase(ScinoephileCliBase):
             )
         except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
             parser.error(f"Unable to load {workflow_name} JSON: {exc}")
+
+    @staticmethod
+    def validate_unverified_filter(
+        parser: ArgumentParser,
+        row_filter: StrEnum,
+        json_path: Path | None,
+    ):
+        """Validate that an unverified filter has test-case JSON.
+
+        Arguments:
+            parser: parser used to report the argument conflict
+            row_filter: selected audit row filter
+            json_path: optional test-case JSON path
+        """
+        if row_filter.value == "unverified" and json_path is None:
+            parser.error("--filter unverified requires --json")
 
     @staticmethod
     def write_report(

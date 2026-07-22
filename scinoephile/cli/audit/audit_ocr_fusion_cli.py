@@ -164,6 +164,7 @@ class AuditOcrFusionCli(AuditCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
+        cls.validate_unverified_filter(parser, row_filter, json_path)
 
         # Read inputs
         source_one = read_series(parser, source_one_path)

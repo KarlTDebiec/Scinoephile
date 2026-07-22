@@ -228,6 +228,16 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
         )
     assert "--reviewed is only supported in regular mode" in capsys.readouterr().err
 
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewCli,
+            (
+                f"--mode guided --target {target_path} --guide {guide_path} "
+                "--filter unverified"
+            ),
+        )
+    assert "--filter unverified requires --json" in capsys.readouterr().err
+
 
 def test_audit_review_cli_detects_language(tmp_path: Path, capsys: CaptureFixture):
     """Test a single review audit detects its language.
