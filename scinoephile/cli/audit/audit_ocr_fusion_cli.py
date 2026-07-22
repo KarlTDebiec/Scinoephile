@@ -196,7 +196,6 @@ class AuditOcrFusionCli(AuditCliBase):
         if validated_path is not None:
             validated = read_series(parser, validated_path)
 
-        # Load OCR-fusion JSON
         test_cases = cls.load_test_cases(
             parser,
             json_path,
