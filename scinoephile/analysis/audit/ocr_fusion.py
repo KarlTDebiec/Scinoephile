@@ -51,8 +51,8 @@ class _OcrFusionDecision:
     """One-based JSON case position, if the LLM was used."""
     difficulty: int
     """Difficulty of the associated LLM case."""
-    rationale: str
-    """Logged or automatic rationale for the fused output."""
+    note: str
+    """Logged or automatic note for the fused output."""
     requires_llm: bool
     """Whether the source pair required an LLM decision."""
     verified: bool
@@ -64,7 +64,7 @@ class _OcrFusionAnswer(Protocol):
 
     @property
     def note(self) -> str:
-        """Rationale recorded for the fusion decision."""
+        """Note recorded for the fusion decision."""
         ...
 
     @property
@@ -214,8 +214,7 @@ def audit_ocr_fusion(
             source_two_text or "—",
             fused_text or "—",
             validated_text if validated_text else "—",
-            decision.rationale,
-            "",
+            decision.note,
             "✓" if decision.requires_llm and decision.verified else "",
         )
         markdown_cells = " | ".join(escape_table_cell(cell) for cell in cells)
@@ -264,9 +263,9 @@ def audit_ocr_fusion(
             "",
             (
                 "| Index | Case | Difficulty | Source one | Source two | Fused | "
-                "Validated | Rationale | Notes | Verified |"
+                "Validated | Notes | Verified |"
             ),
-            "|---:|---:|---:|---|---|---|---|---|---|:---:|",
+            "|---:|---:|---:|---|---|---|---|---|:---:|",
             *(row.markdown for row in rows),
         )
     )
@@ -308,14 +307,14 @@ def _get_automatic_output(source_one_text: str, source_two_text: str) -> str:
     return source_two_text
 
 
-def _get_automatic_rationale(source_one_text: str, source_two_text: str) -> str:
+def _get_automatic_note(source_one_text: str, source_two_text: str) -> str:
     """Describe the deterministic fusion decision for a source pair.
 
     Arguments:
         source_one_text: first source text
         source_two_text: second source text
     Returns:
-        automatic decision description
+        automatic decision note
     """
     if not source_one_text and not source_two_text:
         return "Both sources empty"
@@ -359,7 +358,7 @@ def _get_decision(
         return _OcrFusionDecision(
             case_index=None,
             difficulty=0,
-            rationale=_get_automatic_rationale(source_one_text, source_two_text),
+            note=_get_automatic_note(source_one_text, source_two_text),
             requires_llm=False,
             verified=True,
         )
@@ -371,9 +370,9 @@ def _get_decision(
         )
     case_index, test_case = case_data
     answer = test_case.answer
-    rationale = "(unanswered)"
+    note = "(unanswered)"
     if answer is not None:
-        rationale = answer.note
+        note = answer.note
         if answer.output != fused_text:
             raise ScinoephileError(
                 "Unable to audit OCR fusion: fused subtitle "
@@ -382,7 +381,7 @@ def _get_decision(
     return _OcrFusionDecision(
         case_index=case_index,
         difficulty=test_case.difficulty,
-        rationale=rationale,
+        note=note,
         requires_llm=True,
         verified=test_case.verified,
     )

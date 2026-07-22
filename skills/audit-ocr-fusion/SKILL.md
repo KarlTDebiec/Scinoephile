@@ -10,19 +10,17 @@ cleaning or review stages.
 
 ## Required report file
 
-Save the complete ten-column Markdown report under `local/`. Audit every
-displayed row and write each finding into its `Notes` cell.
+Save the complete nine-column Markdown report under `local/`.
 
 - Keep exactly these columns: `Index`, `Case`, `Difficulty`, `Source one`,
-  `Source two`, `Fused`, `Validated`, `Rationale`, `Notes`, and `Verified`.
+  `Source two`, `Fused`, `Validated`, `Notes`, and `Verified`.
 - `Case` and `Difficulty` are `—` for deterministic rows that did not call the
   LLM. An empty `Verified` cell on such a row does not indicate an unverified
   JSON case.
 - Treat `Validated` as ground truth when supplied. It is `—` when omitted.
-- Preserve the generated rationale as context, but replace the blank `Notes`
-  cell with your own independent judgment.
-- Validate the saved table after editing and provide a clickable link. Do not
-  paste the full table inline unless the user requests it.
+- `Notes` contains the recorded LLM note or the automatic fusion explanation.
+- Validate the saved table after generating it and provide a clickable link.
+  Do not paste the full table inline unless the user requests it.
 
 ## Protect source data
 
@@ -81,9 +79,8 @@ Omit `--difficulty` for all levels or pass exact levels such as
 selected only by difficulty 0.
 
 Use `--first-block` and `--last-block` for an inclusive, one-based range of
-fused-track blocks. Block and subtitle bounds may be combined; their
-intersection determines the eligible rows. Omit either block bound for an
-open-ended block range.
+fused-track blocks. Block and subtitle bounds are mutually exclusive. Omit
+either block bound for an open-ended block range.
 
 The CLI verifies that deterministic fused rows match the processor rules and
 that answered LLM outputs match `fuse.srt`. It uses the latest logged case for a
@@ -97,18 +94,19 @@ unless the validated track itself is demonstrably wrong.
 
 - Check characters, words, case, line breaks, punctuation, spacing, and obvious
   OCR confusions.
-- Check whether the rationale accurately describes the selected output, but do
+- Check whether the note accurately describes the selected output, but do
   not accept a decision merely because its explanation sounds plausible.
 - For deterministic rows, verify that choosing the sole nonempty source or the
   identical source text remains correct against validated truth.
 - Do not assess later cleaning, translation, or subtitle-review decisions.
 
-Write exactly `OK` for a correct fusion. Otherwise begin the note with one of:
+When reporting a finding, use exactly `OK` for a correct fusion. Otherwise begin
+the finding with one of:
 
 - `Incorrect fusion;` for a clear wrong selection or synthesized error
 - `Validated discrepancy;` when fused text differs from reliable validated
   truth
-- `Incorrect rationale;` when output is acceptable but the explanation is not
+- `Incorrect note;` when output is acceptable but the explanation is not
 - `Uncertain;` when the sources and available truth do not establish the text
 
 ## Correct and verify cases
@@ -117,7 +115,7 @@ When corrections are requested:
 
 - Edit only the matching JSON answer's `output` and `note`; preserve its query.
 - Mark `verified: true` only after auditing the complete case and correcting
-  both output and rationale where necessary.
+  both output and note where necessary.
 - Never verify unanswered, unaudited, or partially audited cases.
 
 Regenerate the fused OCR track and every downstream artifact through the

@@ -51,8 +51,10 @@ def test_audit_ocr_fusion_formats_llm_decision_and_validated_discrepancy():
     assert "- validated discrepancies: 1" in report
     assert "- row filter: changes" in report
     assert (
-        "| 2 | 1 | 2 | 甲錯 | 甲正 | 甲正 | 甲真 | Used source two. |  | ✓ |" in report
+        "| Index | Case | Difficulty | Source one | Source two | Fused | "
+        "Validated | Notes | Verified |" in report
     )
+    assert "| 2 | 1 | 2 | 甲錯 | 甲正 | 甲正 | 甲真 | Used source two. | ✓ |" in report
     assert "- row filter: discrepancies" in discrepancy_report
     assert "- table rows: 1" in discrepancy_report
 
