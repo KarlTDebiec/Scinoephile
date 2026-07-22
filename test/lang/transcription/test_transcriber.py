@@ -274,23 +274,50 @@ def test_auto_vad_uses_cached_non_vad_result_after_repetitive_vad_result():
     transcriber.no_vad_transcriber.assert_not_called()
 
 
-def test_rejected_cached_result_is_bypassed_for_fresh_retry():
-    """Test a rejected cache entry does not prevent a fresh Whisper attempt."""
+def test_rejected_cached_result_skips_repeated_decode():
+    """Test a rejected cache entry is not decoded again on a later run."""
     transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
     repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
     usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
-    transcriber.no_vad_transcriber = Mock(return_value=usable_segments)
+    transcriber.no_vad_transcriber = Mock()
     transcriber.no_vad_transcriber.get_cached_transcription.return_value = (
         repetitive_segments
     )
-    transcriber.recovery_transcriber = Mock()
+    transcriber.recovery_transcriber = Mock(return_value=usable_segments)
     transcriber.recovery_transcriber.get_cached_transcription.return_value = None
     audio = AudioSegment.silent(duration=1000)
 
     output = transcriber._transcribe_block_audio(audio)
 
     assert output == usable_segments
-    transcriber.no_vad_transcriber.assert_called_once_with(
+    transcriber.no_vad_transcriber.assert_not_called()
+    transcriber.recovery_transcriber.assert_called_once_with(
+        audio,
+        cache_audio=audio,
+        use_cache=False,
+    )
+
+
+def test_rejected_cached_recovery_is_decoded():
+    """Test a rejected cached recovery transcription is retried."""
+    transcriber, _ = _get_transcriber(vad_mode=VADMode.OFF)
+    repetitive_segments = [_get_segment(compression_ratio=16.24, with_words=True)]
+    usable_segments = [_get_segment(compression_ratio=1.0, with_words=True)]
+    transcriber.no_vad_transcriber = Mock()
+    transcriber.no_vad_transcriber.get_cached_transcription.return_value = (
+        repetitive_segments
+    )
+    transcriber.recovery_transcriber = Mock(return_value=usable_segments)
+    transcriber.recovery_transcriber.get_cached_transcription.return_value = (
+        repetitive_segments
+    )
+    audio = AudioSegment.silent(duration=1000)
+
+    output = transcriber._transcribe_block_audio(audio)
+
+    assert output == usable_segments
+    transcriber.no_vad_transcriber.assert_not_called()
+    transcriber.recovery_transcriber.assert_called_once_with(
         audio,
         cache_audio=audio,
         use_cache=False,
