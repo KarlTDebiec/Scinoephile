@@ -48,10 +48,11 @@ def test_audit_ocr_fusion_formats_llm_decision_and_validated_discrepancy():
 
     assert report.startswith("# OCR Fusion Audit\n")
     assert "- source disagreements: 1" in report
+    assert "- LLM decisions: 1" in report
     assert "- validated discrepancies: 1" in report
     assert "- row filter: changes" in report
     assert (
-        "| Index | Case | Difficulty | Source one | Source two | Fused | "
+        "| Subtitle | Case | Difficulty | Source one | Source two | Fused | "
         "Validated | Notes | Verified |" in report
     )
     assert "| 2 | 1 | 2 | 甲錯 | 甲正 | 甲正 | 甲真 | Used source two. | ✓ |" in report
@@ -104,8 +105,9 @@ def test_audit_ocr_fusion_omits_log_columns_without_test_cases():
     )
 
     assert "- decision log: omitted" in report
+    assert "- LLM-required rows: 1" in report
     assert (
-        "| Index | Case | Difficulty | Source one | Source two | Fused | Validated |"
+        "| Subtitle | Case | Difficulty | Source one | Source two | Fused | Validated |"
         in report
     )
     assert "| 1 | — | — | 甲錯 | 甲正 | 甲正 | — |" in report

@@ -234,7 +234,6 @@ def audit_ocr_fusion(
         "",
         f"- subtitles: {len(all_rows)}",
         f"- source disagreements: {sum(row.changed for row in all_rows)}",
-        f"- LLM decisions: {len(llm_rows)}",
         f"- validated track: {'included' if validated is not None else 'omitted'}",
         f"- validated discrepancies: {sum(row.discrepancy for row in all_rows)}",
         f"- row filter: {row_filter.value}",
@@ -244,12 +243,18 @@ def audit_ocr_fusion(
         unverified_llm_rows = sum(not row.verified for row in llm_rows)
         lines.extend(
             (
+                f"- LLM decisions: {len(llm_rows)}",
                 f"- verified LLM decisions: {verified_llm_rows}",
                 f"- unverified LLM decisions: {unverified_llm_rows}",
             )
         )
     else:
-        lines.append("- decision log: omitted")
+        lines.extend(
+            (
+                f"- LLM-required rows: {len(llm_rows)}",
+                "- decision log: omitted",
+            )
+        )
     range_summary = format_index_range(
         first_index,
         last_index,
@@ -261,7 +266,7 @@ def audit_ocr_fusion(
     if block_range_summary is not None:
         lines.append(block_range_summary)
     column_labels = [
-        "Index",
+        "Subtitle",
         "Case",
         "Difficulty",
         "Source one",

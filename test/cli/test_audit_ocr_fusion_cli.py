@@ -93,7 +93,7 @@ def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
     report = capsys.readouterr().out
     assert "- decision log: omitted" in report
     assert (
-        "| Index | Case | Difficulty | Source one | Source two | Fused | Validated |"
+        "| Subtitle | Case | Difficulty | Source one | Source two | Fused | Validated |"
         in report
     )
 
