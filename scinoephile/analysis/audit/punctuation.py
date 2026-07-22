@@ -13,16 +13,16 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.punctuation import PunctuationTestCase
 
-from .audit_utils import (
+from .utils import (
     _AuditResult,
-    _escape_table_cell,
-    _format_block_range,
-    _format_index_range,
     _get_contextual_index,
-    _get_selected_event_indexes,
     _get_superseded_keys,
-    _validate_block_range,
-    _validate_index_range,
+    escape_table_cell,
+    format_block_range,
+    format_index_range,
+    get_selected_event_indexes,
+    validate_block_range,
+    validate_index_range,
 )
 
 __all__ = [
@@ -73,8 +73,8 @@ def audit_punctuation(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely
     """
-    _validate_index_range(first_index, last_index)
-    _validate_block_range(first_block, last_block)
+    validate_index_range(first_index, last_index)
+    validate_block_range(first_block, last_block)
 
     reference_indexes_by_text: dict[str, list[int]] = defaultdict(list)
     for index, subtitle in enumerate(reference):
@@ -89,7 +89,7 @@ def audit_punctuation(
         target_text_by_reference_index,
         test_cases,
     )
-    selected_reference_indexes = _get_selected_event_indexes(
+    selected_reference_indexes = get_selected_event_indexes(
         reference,
         first_index=first_index,
         last_index=last_index,
@@ -144,14 +144,14 @@ def audit_punctuation(
         f"- unanswered cases: {unanswered}",
         f"- row filter: {row_filter.value}",
     ]
-    range_summary = _format_index_range(
+    range_summary = format_index_range(
         first_index,
         last_index,
         track_name="reference",
     )
     if range_summary is not None:
         lines.append(range_summary)
-    block_range_summary = _format_block_range(first_block, last_block)
+    block_range_summary = format_block_range(first_block, last_block)
     if block_range_summary is not None:
         lines.append(block_range_summary)
     lines.extend(
@@ -200,7 +200,7 @@ def _format_case_row(
         "",
         "✓" if test_case.verified else "",
     )
-    row = f"| {' | '.join(_escape_table_cell(cell) for cell in cells)} |"
+    row = f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |"
     return row, result
 
 

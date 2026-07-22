@@ -7,18 +7,18 @@ from __future__ import annotations
 from enum import StrEnum
 from html import escape
 
+from scinoephile.analysis.diff import LineDiff, LineDiffKind, SeriesDiff
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import is_full_width_char
 
-from .audit_utils import (
-    _format_block_range,
-    _format_index_range,
-    _get_selected_event_indexes,
-    _validate_block_range,
-    _validate_index_range,
+from .utils import (
+    format_block_range,
+    format_index_range,
+    get_selected_event_indexes,
+    validate_block_range,
+    validate_index_range,
 )
-from .diff import LineDiff, LineDiffKind, SeriesDiff
 
 __all__ = [
     "AlignedDiffAuditFilter",
@@ -67,8 +67,8 @@ def audit_aligned_diff(
     Raises:
         ScinoephileError: if the range or guide alignment is invalid
     """
-    _validate_index_range(first_index, last_index)
-    _validate_block_range(first_block, last_block)
+    validate_index_range(first_index, last_index)
+    validate_block_range(first_block, last_block)
     aligned_guide = _align_guide(transcription, guide)
 
     diff = SeriesDiff(
@@ -78,7 +78,7 @@ def audit_aligned_diff(
         two_lbl="reference",
         similarity_cutoff=similarity_cutoff,
     )
-    selected_transcription_idxs = _get_selected_event_indexes(
+    selected_transcription_idxs = get_selected_event_indexes(
         transcription,
         first_index=first_index,
         last_index=last_index,
@@ -127,14 +127,14 @@ def audit_aligned_diff(
         f"- equal rows: {equal_rows}",
         f"- row filter: {row_filter.value}",
     ]
-    range_summary = _format_index_range(
+    range_summary = format_index_range(
         first_index,
         last_index,
         track_name="transcription",
     )
     if range_summary is not None:
         lines.append(range_summary)
-    block_range_summary = _format_block_range(first_block, last_block)
+    block_range_summary = format_block_range(first_block, last_block)
     if block_range_summary is not None:
         lines.append(block_range_summary)
     lines.extend(

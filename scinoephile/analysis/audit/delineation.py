@@ -12,16 +12,16 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.delineation import DelineationTestCase
 
-from .audit_utils import (
+from .utils import (
     _AuditResult,
-    _escape_table_cell,
-    _format_block_range,
-    _format_index_range,
     _get_contextual_index,
-    _get_selected_event_indexes,
     _get_superseded_keys,
-    _validate_block_range,
-    _validate_index_range,
+    escape_table_cell,
+    format_block_range,
+    format_index_range,
+    get_selected_event_indexes,
+    validate_block_range,
+    validate_index_range,
 )
 
 __all__ = [
@@ -68,15 +68,15 @@ def audit_delineation(
     Raises:
         ScinoephileError: if a logged reference pair cannot be matched uniquely
     """
-    _validate_index_range(first_index, last_index)
-    _validate_block_range(first_block, last_block)
+    validate_index_range(first_index, last_index)
+    validate_block_range(first_block, last_block)
 
     pair_indexes: dict[tuple[str, str], list[int]] = defaultdict(list)
     for index in range(len(reference) - 1):
         pair = (reference[index].text, reference[index + 1].text)
         pair_indexes[pair].append(index)
 
-    selected_reference_indexes = _get_selected_event_indexes(
+    selected_reference_indexes = get_selected_event_indexes(
         reference,
         first_index=first_index,
         last_index=last_index,
@@ -140,7 +140,7 @@ def audit_delineation(
         rows.append(
             (
                 first_subtitle_index,
-                f"| {' | '.join(_escape_table_cell(cell) for cell in cells)} |",
+                f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |",
             )
         )
 
@@ -157,14 +157,14 @@ def audit_delineation(
         f"- unanswered cases: {unanswered}",
         f"- row filter: {row_filter.value}",
     ]
-    range_summary = _format_index_range(
+    range_summary = format_index_range(
         first_index,
         last_index,
         track_name="reference",
     )
     if range_summary is not None:
         lines.append(range_summary)
-    block_range_summary = _format_block_range(first_block, last_block)
+    block_range_summary = format_block_range(first_block, last_block)
     if block_range_summary is not None:
         lines.append(block_range_summary)
     lines.extend(

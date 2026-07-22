@@ -6,13 +6,11 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import cast
 
-from scinoephile.analysis.delineation_audit import (
+from scinoephile.analysis.audit.delineation import (
     DelineationAuditFilter,
     audit_delineation,
 )
-from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -20,9 +18,9 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.delineation import DelineationManager, DelineationTestCase
+from scinoephile.llms.delineation import DelineationManager
 
-from .audit_workflow_cli_base import AuditCliBase
+from .audit_cli_base import AuditCliBase
 
 __all__ = ["AuditDelineationCli"]
 
@@ -136,19 +134,13 @@ class AuditDelineationCli(AuditCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        cls.validate_range(parser, first_index, last_index)
-        validate_block_range(parser, first_block, last_block)
         reference = read_series(parser, reference_path)
-        loaded_test_cases = cls.load_test_cases(
+        test_cases = cls.load_test_cases(
             parser,
             json_path,
             DelineationManager,
             workflow_name="delineation",
         )
-
-        test_cases = [
-            cast(DelineationTestCase, test_case) for test_case in loaded_test_cases
-        ]
 
         try:
             report = audit_delineation(

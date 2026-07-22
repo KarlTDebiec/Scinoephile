@@ -60,7 +60,7 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
     )
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Review Audit\n")
-    assert "- subtitle range: 1-indexed numbers 1 through 1" in stdout
+    assert "- subtitle range: 1 through 1" in stdout
     assert "- table rows: 1" in stdout
 
     run_cli_with_args(AuditReviewDualCli, f"{arguments} --characters 错这")
@@ -115,7 +115,7 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
             AuditReviewDualCli,
             f"{arguments} --first-index 2 --last-index 1",
         )
-    assert "--first-index must be less than or equal to --last-index" in (
+    assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
     )
 
@@ -401,7 +401,7 @@ def test_audit_translation_cli_gapped_mode_stdout_outfile_and_validation(
             AuditTranslationCli,
             f"--mode gapped {arguments} --first-index 2 --last-index 1",
         )
-    assert "--first-index must be less than or equal to --last-index" in (
+    assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
     )
 
@@ -410,7 +410,7 @@ def test_audit_translation_cli_gapped_mode_stdout_outfile_and_validation(
             AuditTranslationCli,
             f"--mode gapped {arguments} --first-block 2 --last-block 1",
         )
-    assert "--first-block must be less than or equal to --last-block" in (
+    assert "First block must be less than or equal to last block" in (
         capsys.readouterr().err
     )
 
@@ -594,7 +594,7 @@ def test_audit_aligned_diff_cli_stdout_outfile_and_validation(
             AuditAlignedDiffCli,
             f"{arguments} --first-index 2 --last-index 1",
         )
-    assert "--first-index must be less than or equal to --last-index" in (
+    assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
     )
 
@@ -665,7 +665,7 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
             AuditReviewCli,
             f"--mode guided {arguments} --first-index 2 --last-index 1",
         )
-    assert "--first-index must be less than or equal to --last-index" in (
+    assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
     )
 
@@ -737,7 +737,7 @@ def test_audit_delineation_cli_stdout_and_outfile(
             AuditDelineationCli,
             f"{arguments} --first-index 2 --last-index 1",
         )
-    assert "--first-index must be less than or equal to --last-index" in (
+    assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
     )
 
@@ -801,7 +801,7 @@ def test_audit_punctuation_cli_stdout_and_outfile(
             AuditPunctuationCli,
             f"{arguments} --first-index 2 --last-index 1",
         )
-    assert "--first-index must be less than or equal to --last-index" in (
+    assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
     )
 

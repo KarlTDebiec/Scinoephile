@@ -27,7 +27,7 @@ from .prompt import TranslationPrompt
 __all__ = ["TranslationManager"]
 
 
-class TranslationManager(Manager):
+class TranslationManager(Manager[TranslationTestCase]):
     """Factories for prompt-specific translation LLM classes."""
 
     operation: ClassVar[str] = "translation"

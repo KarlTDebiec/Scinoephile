@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.punctuation_audit import (
+from scinoephile.analysis.audit.punctuation import (
     PunctuationAuditFilter,
     audit_punctuation,
 )

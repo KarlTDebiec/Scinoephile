@@ -8,18 +8,16 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from enum import StrEnum
 from pathlib import Path
-from typing import cast
 
-from scinoephile.analysis.gap_translation_audit import (
+from scinoephile.analysis.audit.gap_translation import (
     GapTranslationAuditFilter,
     audit_gap_translation,
 )
-from scinoephile.analysis.translation_audit import (
+from scinoephile.analysis.audit.translation import (
     TranslationAuditFilter,
     audit_guided_translation,
     audit_translation,
 )
-from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -28,17 +26,11 @@ from scinoephile.common.argument_parsing import (
     int_arg,
 )
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.llms.gap_translation import (
-    GapTranslationManager,
-    GapTranslationTestCase,
-)
-from scinoephile.llms.guided_translation import (
-    GuidedTranslationManager,
-    GuidedTranslationTestCase,
-)
-from scinoephile.llms.translation import TranslationManager, TranslationTestCase
+from scinoephile.llms.gap_translation import GapTranslationManager
+from scinoephile.llms.guided_translation import GuidedTranslationManager
+from scinoephile.llms.translation import TranslationManager
 
-from .audit_workflow_cli_base import AuditCliBase
+from .audit_cli_base import AuditCliBase
 
 __all__ = ["AuditTranslationCli"]
 
@@ -209,13 +201,12 @@ class AuditTranslationCli(AuditCliBase):
         """Load and audit one gapped-translation workflow."""
         target = read_series(parser, target_path)
         guide = read_series(parser, guide_path)
-        loaded_cases = cls.load_test_cases(
+        test_cases = cls.load_test_cases(
             parser,
             json_path,
             GapTranslationManager,
             workflow_name="gapped translation",
         )
-        test_cases = [cast(GapTranslationTestCase, case) for case in loaded_cases]
         return audit_gap_translation(
             target,
             guide,
@@ -246,13 +237,12 @@ class AuditTranslationCli(AuditCliBase):
         """Load and audit one guided-translation workflow."""
         source = read_series(parser, source_path)
         guide = read_series(parser, guide_path)
-        loaded_cases = cls.load_test_cases(
+        test_cases = cls.load_test_cases(
             parser,
             json_path,
             GuidedTranslationManager,
             workflow_name="guided translation",
         )
-        test_cases = [cast(GuidedTranslationTestCase, case) for case in loaded_cases]
         return audit_guided_translation(
             source,
             guide,
@@ -281,13 +271,12 @@ class AuditTranslationCli(AuditCliBase):
     ) -> str:
         """Load and audit one standard-translation workflow."""
         source = read_series(parser, source_path)
-        loaded_cases = cls.load_test_cases(
+        test_cases = cls.load_test_cases(
             parser,
             json_path,
             TranslationManager,
             workflow_name="standard translation",
         )
-        test_cases = [cast(TranslationTestCase, case) for case in loaded_cases]
         return audit_translation(
             source,
             test_cases,
@@ -320,8 +309,6 @@ class AuditTranslationCli(AuditCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        cls.validate_range(parser, first_index, last_index)
-        validate_block_range(parser, first_block, last_block)
         cls._validate_mode_inputs(
             parser,
             mode,

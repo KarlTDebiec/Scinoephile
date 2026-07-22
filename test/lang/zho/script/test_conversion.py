@@ -10,6 +10,7 @@ from scinoephile.lang.zho.script.conversion import (
     S2T_EXCLUSIONS,
     T2S_EXCLUSIONS,
     OpenCCConfig,
+    get_zho_character_variants,
     get_zho_converted,
     get_zho_converter,
     get_zho_text_converted,
@@ -180,3 +181,8 @@ def test_get_zho_converter(text: str, config: OpenCCConfig, expected: str):
         expected: Expected converted text
     """
     assert get_zho_converter(config).convert(text) == expected
+
+
+def test_get_zho_character_variants():
+    """Test character variants include both standard Chinese scripts."""
+    assert get_zho_character_variants(("错这",)) == ("这", "這", "錯", "错")

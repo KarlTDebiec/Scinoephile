@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.gap_translation_audit import (
+from scinoephile.analysis.audit.gap_translation import (
     GapTranslationAuditFilter,
     audit_gap_translation,
 )

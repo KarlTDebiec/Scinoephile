@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.ocr_fusion_audit import (
+from scinoephile.analysis.audit.ocr_fusion import (
     OcrFusionAuditFilter,
     audit_ocr_fusion,
 )
@@ -48,11 +48,14 @@ def test_audit_ocr_fusion_formats_llm_decision_and_validated_discrepancy():
 
     assert report.startswith("# OCR Fusion Audit\n")
     assert "- source disagreements: 1" in report
+    assert "- LLM decisions: 1" in report
     assert "- validated discrepancies: 1" in report
     assert "- row filter: changes" in report
     assert (
-        "| 2 | 1 | 2 | 甲錯 | 甲正 | 甲正 | 甲真 | Used source two. |  | ✓ |" in report
+        "| Subtitle | Case | Difficulty | Source one | Source two | Fused | "
+        "Validated | Notes | Verified |" in report
     )
+    assert "| 2 | 1 | 2 | 甲錯 | 甲正 | 甲正 | 甲真 | Used source two. | ✓ |" in report
     assert "- row filter: discrepancies" in discrepancy_report
     assert "- table rows: 1" in discrepancy_report
 
@@ -86,6 +89,30 @@ def test_audit_ocr_fusion_filters_unverified_and_automatic_rows():
     assert "| 3 | 1 | 1 | 甲 | 乙 | 甲 | — | (unanswered) |" in report
     assert "- table rows: 1" in unverified_report
     assert "| 3 | 1 |" in unverified_report
+
+
+def test_audit_ocr_fusion_omits_log_columns_without_test_cases():
+    """Test source and fused output can be audited without a decision log."""
+    source_one = _get_series("甲錯")
+    source_two = _get_series("甲正")
+    fused = _get_series("甲正")
+
+    report = audit_ocr_fusion(
+        source_one,
+        source_two,
+        fused,
+        row_filter=OcrFusionAuditFilter.all,
+    )
+
+    assert "- decision log: omitted" in report
+    assert "- LLM-required rows: 1" in report
+    assert (
+        "| Subtitle | Case | Difficulty | Source one | Source two | Fused | Validated |"
+        in report
+    )
+    assert "| 1 | — | — | 甲錯 | 甲正 | 甲正 | — |" in report
+    assert "Notes" not in report
+    assert "Verified" not in report
 
 
 def test_audit_ocr_fusion_filters_fused_blocks():
@@ -139,6 +166,15 @@ def test_audit_ocr_fusion_rejects_invalid_inputs():
         audit_ocr_fusion(one, two, one, (test_case,), first_index=0)
     with raises(ScinoephileError, match="First block must be at least 1"):
         audit_ocr_fusion(one, two, one, (test_case,), first_block=0)
+    with raises(ScinoephileError, match="mutually exclusive"):
+        audit_ocr_fusion(
+            one,
+            two,
+            one,
+            (test_case,),
+            first_index=1,
+            first_block=1,
+        )
     with raises(ScinoephileError, match="requires a validated"):
         audit_ocr_fusion(
             one,

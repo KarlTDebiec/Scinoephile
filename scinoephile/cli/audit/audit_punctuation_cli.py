@@ -6,13 +6,11 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import cast
 
-from scinoephile.analysis.punctuation_audit import (
+from scinoephile.analysis.audit.punctuation import (
     PunctuationAuditFilter,
     audit_punctuation,
 )
-from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -20,9 +18,9 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.punctuation import PunctuationManager, PunctuationTestCase
+from scinoephile.llms.punctuation import PunctuationManager
 
-from .audit_workflow_cli_base import AuditCliBase
+from .audit_cli_base import AuditCliBase
 
 __all__ = ["AuditPunctuationCli"]
 
@@ -146,20 +144,14 @@ class AuditPunctuationCli(AuditCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        cls.validate_range(parser, first_index, last_index)
-        validate_block_range(parser, first_block, last_block)
         reference = read_series(parser, reference_path)
         target = read_series(parser, target_path)
-        loaded_test_cases = cls.load_test_cases(
+        test_cases = cls.load_test_cases(
             parser,
             json_path,
             PunctuationManager,
             workflow_name="punctuation",
         )
-
-        test_cases = [
-            cast(PunctuationTestCase, test_case) for test_case in loaded_test_cases
-        ]
 
         try:
             report = audit_punctuation(

@@ -21,7 +21,7 @@ from .prompt import PunctuationPrompt
 __all__ = ["PunctuationManager"]
 
 
-class PunctuationManager(Manager):
+class PunctuationManager(Manager[PunctuationTestCase]):
     """Factories for punctuation LLM classes."""
 
     operation: ClassVar[str] = "punctuation"

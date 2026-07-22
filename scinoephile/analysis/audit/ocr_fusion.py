@@ -7,20 +7,17 @@ from __future__ import annotations
 from collections.abc import Sequence
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import Protocol
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import are_series_one_to_one
-from scinoephile.llms.ocr_fusion import OcrFusionTestCase
 
-from .audit_utils import (
-    _escape_table_cell,
-    _format_block_range,
-    _format_difficulty_filter,
-    _format_index_range,
-    _get_selected_event_indexes,
-    _validate_block_range,
-    _validate_index_range,
+from .utils import (
+    escape_table_cell,
+    format_block_range,
+    format_index_range,
+    get_selected_event_indexes,
 )
 
 __all__ = [
@@ -53,12 +50,64 @@ class _OcrFusionDecision:
     """One-based JSON case position, if the LLM was used."""
     difficulty: int
     """Difficulty of the associated LLM case."""
-    rationale: str
-    """Logged or automatic rationale for the fused output."""
+    note: str
+    """Logged or automatic note for the fused output."""
     requires_llm: bool
     """Whether the source pair required an LLM decision."""
     verified: bool
     """Whether the associated LLM case is verified."""
+
+
+class _OcrFusionAnswer(Protocol):
+    """OCR-fusion answer fields required for audit reporting."""
+
+    @property
+    def note(self) -> str:
+        """Note recorded for the fusion decision."""
+        ...
+
+    @property
+    def output(self) -> str:
+        """Selected fused subtitle text."""
+        ...
+
+
+class _OcrFusionQuery(Protocol):
+    """OCR-fusion query fields required for audit reporting."""
+
+    @property
+    def source_one(self) -> str:
+        """Text from the first OCR source."""
+        ...
+
+    @property
+    def source_two(self) -> str:
+        """Text from the second OCR source."""
+        ...
+
+
+class _OcrFusionTestCase(Protocol):
+    """OCR-fusion test-case fields required for audit reporting."""
+
+    @property
+    def answer(self) -> _OcrFusionAnswer | None:
+        """Optional decision answer."""
+        ...
+
+    @property
+    def difficulty(self) -> int:
+        """Decision difficulty."""
+        ...
+
+    @property
+    def query(self) -> _OcrFusionQuery:
+        """OCR source texts."""
+        ...
+
+    @property
+    def verified(self) -> bool:
+        """Whether the decision has been reviewed."""
+        ...
 
 
 class OcrFusionAuditFilter(StrEnum):
@@ -81,10 +130,9 @@ def audit_ocr_fusion(
     source_one: Series,
     source_two: Series,
     fused: Series,
-    test_cases: Sequence[OcrFusionTestCase],
+    test_cases: Sequence[_OcrFusionTestCase] | None = None,
     *,
     validated: Series | None = None,
-    difficulties: Sequence[int] = (),
     row_filter: OcrFusionAuditFilter = OcrFusionAuditFilter.changes,
     first_index: int | None = None,
     last_index: int | None = None,
@@ -97,9 +145,8 @@ def audit_ocr_fusion(
         source_one: first OCR subtitle series provided for fusion
         source_two: second OCR subtitle series provided for fusion
         fused: OCR-fusion output subtitle series
-        test_cases: logged OCR-fusion test cases
+        test_cases: optional logged OCR-fusion test cases
         validated: optional validated subtitle series used as ground truth
-        difficulties: exact case difficulty levels to include, or all if empty
         row_filter: row status filter
         first_index: first 1-indexed fused subtitle number to include
         last_index: last 1-indexed fused subtitle number to include
@@ -110,34 +157,31 @@ def audit_ocr_fusion(
     Raises:
         ScinoephileError: if ranges, series alignment, or logged decisions are invalid
     """
-    _validate_index_range(first_index, last_index)
-    _validate_block_range(first_block, last_block)
-    if any(difficulty < 0 for difficulty in difficulties):
-        raise ScinoephileError("Difficulty must be at least 0")
     if row_filter is OcrFusionAuditFilter.discrepancies and validated is None:
         raise ScinoephileError(
             "OCR-fusion discrepancy filtering requires a validated subtitle track"
         )
 
-    _validate_alignment(source_one, source_two, "Source two")
-    _validate_alignment(source_one, fused, "Fused")
-    if validated is not None:
-        _validate_alignment(source_one, validated, "Validated")
-
-    difficulty_filter = tuple(sorted(set(difficulties)))
-    cases_by_key: dict[tuple[str, str], tuple[int, OcrFusionTestCase]] = {}
-    for case_index, test_case in enumerate(test_cases, 1):
-        key = (test_case.query.source_one, test_case.query.source_two)
-        cases_by_key[key] = (case_index, test_case)
-
-    all_rows: list[_OcrFusionRow] = []
-    selected_positions = _get_selected_event_indexes(
+    selected_positions = get_selected_event_indexes(
         fused,
         first_index=first_index,
         last_index=last_index,
         first_block=first_block,
         last_block=last_block,
     )
+
+    _validate_alignment(source_one, source_two, "Source two")
+    _validate_alignment(source_one, fused, "Fused")
+    if validated is not None:
+        _validate_alignment(source_one, validated, "Validated")
+
+    has_decision_log = test_cases is not None
+    cases_by_key: dict[tuple[str, str], tuple[int, _OcrFusionTestCase]] = {}
+    for case_index, test_case in enumerate(test_cases or (), 1):
+        key = (test_case.query.source_one, test_case.query.source_two)
+        cases_by_key[key] = (case_index, test_case)
+
+    all_rows: list[_OcrFusionRow] = []
     for position in sorted(selected_positions):
         index = position + 1
         source_one_text = source_one.events[position].text_with_newline
@@ -153,23 +197,24 @@ def audit_ocr_fusion(
             source_two_text,
             fused_text,
             cases_by_key,
+            has_decision_log=has_decision_log,
         )
-        if difficulty_filter and decision.difficulty not in difficulty_filter:
-            continue
         discrepancy = validated_text is not None and fused_text != validated_text
         cells = (
             str(index),
             str(decision.case_index) if decision.case_index is not None else "—",
-            str(decision.difficulty) if decision.requires_llm else "—",
+            str(decision.difficulty) if decision.case_index is not None else "—",
             source_one_text or "—",
             source_two_text or "—",
             fused_text or "—",
             validated_text if validated_text else "—",
-            decision.rationale,
-            "",
-            "✓" if decision.requires_llm and decision.verified else "",
         )
-        markdown_cells = " | ".join(_escape_table_cell(cell) for cell in cells)
+        if has_decision_log:
+            cells += (
+                decision.note,
+                "✓" if decision.requires_llm and decision.verified else "",
+            )
+        markdown_cells = " | ".join(escape_table_cell(cell) for cell in cells)
         all_rows.append(
             _OcrFusionRow(
                 changed=source_one_text != source_two_text,
@@ -189,35 +234,58 @@ def audit_ocr_fusion(
         "",
         f"- subtitles: {len(all_rows)}",
         f"- source disagreements: {sum(row.changed for row in all_rows)}",
-        f"- LLM decisions: {len(llm_rows)}",
-        f"- verified LLM decisions: {sum(row.verified for row in llm_rows)}",
-        f"- unverified LLM decisions: {sum(not row.verified for row in llm_rows)}",
         f"- validated track: {'included' if validated is not None else 'omitted'}",
         f"- validated discrepancies: {sum(row.discrepancy for row in all_rows)}",
         f"- row filter: {row_filter.value}",
     ]
-    lines.append(_format_difficulty_filter(difficulty_filter))
-    range_summary = _format_index_range(
+    if has_decision_log:
+        verified_llm_rows = sum(row.verified for row in llm_rows)
+        unverified_llm_rows = sum(not row.verified for row in llm_rows)
+        lines.extend(
+            (
+                f"- LLM decisions: {len(llm_rows)}",
+                f"- verified LLM decisions: {verified_llm_rows}",
+                f"- unverified LLM decisions: {unverified_llm_rows}",
+            )
+        )
+    else:
+        lines.extend(
+            (
+                f"- LLM-required rows: {len(llm_rows)}",
+                "- decision log: omitted",
+            )
+        )
+    range_summary = format_index_range(
         first_index,
         last_index,
         track_name="fused",
     )
     if range_summary is not None:
         lines.append(range_summary)
-    block_range_summary = _format_block_range(first_block, last_block)
+    block_range_summary = format_block_range(first_block, last_block)
     if block_range_summary is not None:
         lines.append(block_range_summary)
+    column_labels = [
+        "Subtitle",
+        "Case",
+        "Difficulty",
+        "Source one",
+        "Source two",
+        "Fused",
+        "Validated",
+    ]
+    column_separators = ["---:", "---:", "---:", "---", "---", "---", "---"]
+    if has_decision_log:
+        column_labels.extend(("Notes", "Verified"))
+        column_separators.extend(("---", ":---:"))
     lines.extend(
         (
             f"- table rows: {len(rows)}",
             "",
             "## Audit Table",
             "",
-            (
-                "| Index | Case | Difficulty | Source one | Source two | Fused | "
-                "Validated | Rationale | Notes | Verified |"
-            ),
-            "|---:|---:|---:|---|---|---|---|---|---|:---:|",
+            f"| {' | '.join(column_labels)} |",
+            f"|{'|'.join(column_separators)}|",
             *(row.markdown for row in rows),
         )
     )
@@ -259,14 +327,14 @@ def _get_automatic_output(source_one_text: str, source_two_text: str) -> str:
     return source_two_text
 
 
-def _get_automatic_rationale(source_one_text: str, source_two_text: str) -> str:
+def _get_automatic_note(source_one_text: str, source_two_text: str) -> str:
     """Describe the deterministic fusion decision for a source pair.
 
     Arguments:
         source_one_text: first source text
         source_two_text: second source text
     Returns:
-        automatic decision description
+        automatic decision note
     """
     if not source_one_text and not source_two_text:
         return "Both sources empty"
@@ -282,7 +350,9 @@ def _get_decision(
     source_one_text: str,
     source_two_text: str,
     fused_text: str,
-    cases_by_key: dict[tuple[str, str], tuple[int, OcrFusionTestCase]],
+    cases_by_key: dict[tuple[str, str], tuple[int, _OcrFusionTestCase]],
+    *,
+    has_decision_log: bool,
 ) -> _OcrFusionDecision:
     """Resolve and validate one automatic or LLM fusion decision.
 
@@ -292,6 +362,7 @@ def _get_decision(
         source_two_text: second source text
         fused_text: fused output text
         cases_by_key: latest logged case keyed by source text pair
+        has_decision_log: whether a decision log was supplied
     Returns:
         resolved decision metadata
     Raises:
@@ -310,21 +381,29 @@ def _get_decision(
         return _OcrFusionDecision(
             case_index=None,
             difficulty=0,
-            rationale=_get_automatic_rationale(source_one_text, source_two_text),
+            note=_get_automatic_note(source_one_text, source_two_text),
             requires_llm=False,
             verified=True,
         )
 
     case_data = cases_by_key.get((source_one_text, source_two_text))
     if case_data is None:
+        if not has_decision_log:
+            return _OcrFusionDecision(
+                case_index=None,
+                difficulty=0,
+                note="",
+                requires_llm=True,
+                verified=False,
+            )
         raise ScinoephileError(
             f"Unable to audit OCR fusion: no logged test case matches subtitle {index}"
         )
     case_index, test_case = case_data
     answer = test_case.answer
-    rationale = "(unanswered)"
+    note = "(unanswered)"
     if answer is not None:
-        rationale = answer.note
+        note = answer.note
         if answer.output != fused_text:
             raise ScinoephileError(
                 "Unable to audit OCR fusion: fused subtitle "
@@ -333,7 +412,7 @@ def _get_decision(
     return _OcrFusionDecision(
         case_index=case_index,
         difficulty=test_case.difficulty,
-        rationale=rationale,
+        note=note,
         requires_llm=True,
         verified=test_case.verified,
     )

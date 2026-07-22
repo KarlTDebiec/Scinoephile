@@ -15,16 +15,16 @@ from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.guided_review import GuidedReviewTestCase
 
-from .audit_utils import (
+from .utils import (
     _AuditResult,
-    _escape_table_cell,
-    _format_block_range,
-    _format_index_range,
     _get_paired_event_block_numbers,
     _get_validated_block_pairs_by_pause,
     _is_block_in_range,
-    _validate_block_range,
-    _validate_index_range,
+    escape_table_cell,
+    format_block_range,
+    format_index_range,
+    validate_block_range,
+    validate_index_range,
 )
 
 __all__ = [
@@ -105,8 +105,8 @@ def audit_guided_review(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely to source data
     """
-    _validate_index_range(first_index, last_index)
-    _validate_block_range(first_block, last_block)
+    validate_index_range(first_index, last_index)
+    validate_block_range(first_block, last_block)
 
     block_pairs = _get_validated_block_pairs_by_pause(
         target,
@@ -173,7 +173,7 @@ def audit_guided_review(
                 subtitle_index=subtitle_index,
                 test_case_index=test_case_index,
                 markdown=(
-                    f"| {' | '.join(_escape_table_cell(cell) for cell in cells)} |"
+                    f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |"
                 ),
                 result=result,
                 verified=test_case.verified,
@@ -213,14 +213,14 @@ def audit_guided_review(
         f"- unverified subtitles: {unverified_subtitles}",
         f"- row filter: {row_filter.value}",
     ]
-    range_summary = _format_index_range(
+    range_summary = format_index_range(
         first_index,
         last_index,
         track_name="target",
     )
     if range_summary is not None:
         lines.append(range_summary)
-    block_range_summary = _format_block_range(first_block, last_block)
+    block_range_summary = format_block_range(first_block, last_block)
     if block_range_summary is not None:
         lines.append(block_range_summary)
     lines.extend(

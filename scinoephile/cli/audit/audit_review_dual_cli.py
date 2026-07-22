@@ -8,16 +8,16 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.review_audit import ReviewAuditFilter, audit_reviews
-from scinoephile.cli.helpers.blocks import validate_block_range
+from scinoephile.analysis.audit.review import ReviewAuditFilter, audit_reviews
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
+from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
-from .audit_workflow_cli_base import AuditWorkflowCliBase
+from .audit_review_cli_base import AuditReviewCliBase
 
 __all__ = ["AuditReviewDualCli"]
 
@@ -48,12 +48,32 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional test-case JSON file for the simplified review": (
             "简体字校对的可选测试用例 JSON 文件"
         ),
+        "first 1-indexed subtitle number to include, inclusive": (
+            "要包含的第一个字幕编号（从 1 开始，包含该编号）"
+        ),
+        "last 1-indexed subtitle number to include, inclusive": (
+            "要包含的最后一个字幕编号（从 1 开始，包含该编号）"
+        ),
         (
-            "rows to include: all, changes, or discrepancies; changes includes "
-            "review edits and final discrepancies (default: changes)"
+            "rows to include: all; changes for any review edit or final "
+            "discrepancy; discrepancies for final discrepancies only "
+            "(default: changes)"
         ): (
-            "要包含的行：all、changes 或 discrepancies；changes 包含校对更改"
-            "和最终差异（默认：changes）"
+            "要包含的行：all 表示全部；changes 表示任何校对更改或最终差异；"
+            "discrepancies 仅表示最终差异（默认：changes）"
+        ),
+        (
+            "further limit rows to those containing any listed character in any "
+            "input; values may be separated or combined, and simplified and "
+            "traditional variants are included automatically (Yue examples: 些 番 "
+            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
+        ): (
+            "进一步仅包含任一输入中含有所列字符的行；字符可分开或合并输入，"
+            "并自动包含简繁体变体（粤语示例：些 番 是 着 喇啦啰 这那；中文"
+            "示例：著 着 甚 什）"
+        ),
+        "Markdown outfile path (default: stdout)": (
+            "Markdown 输出文件路径（默认：标准输出）"
         ),
     },
     "zh-hant": {
@@ -82,26 +102,46 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional test-case JSON file for the simplified review": (
             "簡體字校對的選用測試案例 JSON 檔"
         ),
+        "first 1-indexed subtitle number to include, inclusive": (
+            "要包含的第一個字幕編號（從 1 開始，包含該編號）"
+        ),
+        "last 1-indexed subtitle number to include, inclusive": (
+            "要包含的最後一個字幕編號（從 1 開始，包含該編號）"
+        ),
         (
-            "rows to include: all, changes, or discrepancies; changes includes "
-            "review edits and final discrepancies (default: changes)"
+            "rows to include: all; changes for any review edit or final "
+            "discrepancy; discrepancies for final discrepancies only "
+            "(default: changes)"
         ): (
-            "要包含的列：all、changes 或 discrepancies；changes 包含校對變更"
-            "與最終差異（預設：changes）"
+            "要包含的列：all 表示全部；changes 表示任何校對變更或最終差異；"
+            "discrepancies 僅表示最終差異（預設：changes）"
+        ),
+        (
+            "further limit rows to those containing any listed character in any "
+            "input; values may be separated or combined, and simplified and "
+            "traditional variants are included automatically (Yue examples: 些 番 "
+            "是 着 喇啦啰 这那; Zho examples: 著 着 甚 什)"
+        ): (
+            "進一步僅包含任一輸入中含有所列字元的列；字元可分開或合併輸入，"
+            "並自動包含簡繁體變體（粵語範例：些 番 是 着 喇啦啰 这那；中文"
+            "範例：著 着 甚 什）"
+        ),
+        "Markdown outfile path (default: stdout)": (
+            "Markdown 輸出檔路徑（預設：標準輸出）"
         ),
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditReviewDualCli(AuditWorkflowCliBase):
+class AuditReviewDualCli(AuditReviewCliBase):
     """Audit parallel simplified and traditional-to-simplified review paths."""
 
     localizations = AUDIT_REVIEW_DUAL_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
     row_filter_help = (
-        "rows to include: all, changes, or discrepancies; changes includes review "
-        "edits and final discrepancies (default: changes)"
+        "rows to include: all; changes for any review edit or final discrepancy; "
+        "discrepancies for final discrepancies only (default: changes)"
     )
     """Help text for the workflow's supported row filters."""
     row_filters = tuple(ReviewAuditFilter)
@@ -218,11 +258,8 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
-        # Validate arguments
         parser = _parser or cls.argparser()
-        cls.validate_range(parser, first_index, last_index)
-        validate_block_range(parser, first_block, last_block)
-        characters = cls.get_character_variants(characters)
+        characters = get_zho_character_variants(characters)
 
         # Read inputs
         simplified = read_series(parser, simplified_path)
@@ -247,9 +284,9 @@ class AuditReviewDualCli(AuditWorkflowCliBase):
 
         # Load review JSON
         review_cases = {
-            "simplified": cls.load_review_cases(parser, simplified_json_path),
-            "traditional": cls.load_review_cases(parser, traditional_json_path),
-            "traditional_simplified": cls.load_review_cases(
+            "simplified": cls.load_review_test_cases(parser, simplified_json_path),
+            "traditional": cls.load_review_test_cases(parser, traditional_json_path),
+            "traditional_simplified": cls.load_review_test_cases(
                 parser,
                 traditional_simplified_json_path,
             ),

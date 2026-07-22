@@ -26,7 +26,7 @@ from .prompt import GapTranslationPrompt
 __all__ = ["GapTranslationManager"]
 
 
-class GapTranslationManager(Manager):
+class GapTranslationManager(Manager[GapTranslationTestCase]):
     """Factories for prompt-specific gap-translation LLM classes."""
 
     operation: ClassVar[str] = "gap-translation"

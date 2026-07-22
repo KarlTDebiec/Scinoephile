@@ -13,11 +13,11 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
-from .audit_utils import (
-    _format_block_range,
-    _get_selected_event_indexes,
-    _validate_block_range,
-    _validate_index_range,
+from .utils import (
+    escape_table_cell,
+    format_block_range,
+    format_index_range,
+    get_selected_event_indexes,
 )
 
 __all__ = [
@@ -110,8 +110,8 @@ def audit_reviews(
         characters: individual characters whose occurrence limits included rows
         first_index: first 1-indexed subtitle number to include, inclusive
         last_index: last 1-indexed subtitle number to include, inclusive
-        first_block: first 1-indexed block number to include, inclusive
-        last_block: last 1-indexed block number to include, inclusive
+        first_block: first 1-indexed workflow block number to include, inclusive
+        last_block: last 1-indexed workflow block number to include, inclusive
     Returns:
         Markdown audit report
     Raises:
@@ -175,17 +175,14 @@ def audit_review_workflow(
         characters: individual characters whose occurrence limits included rows
         first_index: first 1-indexed subtitle number to include, inclusive
         last_index: last 1-indexed subtitle number to include, inclusive
-        first_block: first 1-indexed block number to include, inclusive
-        last_block: last 1-indexed block number to include, inclusive
+        first_block: first 1-indexed workflow block number to include, inclusive
+        last_block: last 1-indexed workflow block number to include, inclusive
     Returns:
         Markdown audit report
     Raises:
         ScinoephileError: if inputs are absent, differ in length, or do not match
             review test cases
     """
-    _validate_index_range(first_index, last_index)
-    _validate_block_range(first_block, last_block)
-
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
 
@@ -230,8 +227,7 @@ def audit_review_workflow(
     except ValueError as exc:
         raise ScinoephileError(f"Unable to audit subtitle reviews: {exc}") from exc
 
-    # Select the requested zero-based subtitle indexes
-    indexes = _get_selected_event_indexes(
+    indexes = get_selected_event_indexes(
         reviews[0].original,
         first_index=first_index,
         last_index=last_index,
@@ -274,17 +270,6 @@ def audit_review_workflow(
     )
 
 
-def _escape_cell(value: str) -> str:
-    """Escape one Markdown table cell.
-
-    Arguments:
-        value: cell text
-    Returns:
-        escaped cell text
-    """
-    return value.replace("\n", "<br>").replace("|", "\\|")
-
-
 def _format_markdown(
     *,
     reviews: Sequence[ReviewAuditPair],
@@ -317,8 +302,8 @@ def _format_markdown(
         characters: active character filter
         first_index: first included 1-indexed subtitle number
         last_index: last included 1-indexed subtitle number
-        first_block: first included 1-indexed block number
-        last_block: last included 1-indexed block number
+        first_block: first included 1-indexed workflow block number
+        last_block: last included 1-indexed workflow block number
     Returns:
         Markdown report
     """
@@ -347,7 +332,7 @@ def _format_markdown(
             )
         )
         cells.append("\n".join(note_lines))
-        row_lines.append(f"| {' | '.join(_escape_cell(cell) for cell in cells)} |")
+        row_lines.append(f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |")
 
     lines = [
         "# Review Audit",
@@ -370,19 +355,12 @@ def _format_markdown(
     lines.append(f"- row filter: {row_filter.value}")
     if characters:
         lines.append(f"- character filter: {', '.join(characters)}")
-    if first_index is not None or last_index is not None:
-        if first_index is None:
-            lines.append(f"- subtitle range: 1-indexed numbers through {last_index}")
-        elif last_index is None:
-            lines.append(f"- subtitle range: 1-indexed numbers from {first_index}")
-        else:
-            lines.append(
-                f"- subtitle range: 1-indexed numbers {first_index} through "
-                f"{last_index}"
-            )
-    block_range_summary = _format_block_range(first_block, last_block)
-    if block_range_summary is not None:
-        lines.append(block_range_summary)
+    index_range = format_index_range(first_index, last_index)
+    if index_range is not None:
+        lines.append(index_range)
+    block_range = format_block_range(first_block, last_block)
+    if block_range is not None:
+        lines.append(block_range)
 
     column_labels = ["Subtitle"]
     column_labels.extend(review.label for review in reviews)

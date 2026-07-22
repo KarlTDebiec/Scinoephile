@@ -13,15 +13,15 @@ from scinoephile.core.subtitles import Series
 from scinoephile.llms.guided_translation import GuidedTranslationTestCase
 from scinoephile.llms.translation import TranslationTestCase
 
-from .audit_utils import (
-    _escape_table_cell,
-    _format_block_range,
-    _format_difficulty_filter,
-    _format_index_range,
+from .utils import (
     _get_validated_block_pairs_by_pause,
     _is_block_in_range,
-    _validate_block_range,
-    _validate_index_range,
+    escape_table_cell,
+    format_block_range,
+    format_difficulty_filter,
+    format_index_range,
+    validate_block_range,
+    validate_index_range,
 )
 
 __all__ = [
@@ -150,7 +150,7 @@ def audit_translation(
         ScinoephileError: if a range, difficulty, or logged case is invalid
     """
     blocks = _get_standard_blocks(source)
-    _validate_block_range(first_block, last_block, len(blocks))
+    validate_block_range(first_block, last_block, len(blocks))
     return _audit_translation_blocks(
         blocks,
         test_cases,
@@ -193,8 +193,8 @@ def _audit_translation_blocks(
     Raises:
         ScinoephileError: if a selected block lacks a logged test case
     """
-    _validate_index_range(first_index, last_index)
-    _validate_block_range(first_block, last_block)
+    validate_index_range(first_index, last_index)
+    validate_block_range(first_block, last_block)
     if any(difficulty < 0 for difficulty in difficulties):
         raise ScinoephileError("Difficulty must be at least 0")
     difficulty_filter = tuple(sorted(set(difficulties)))
@@ -260,7 +260,7 @@ def _audit_translation_blocks(
             all_rows.append(
                 _TranslationRow(
                     markdown=(
-                        f"| {' | '.join(_escape_table_cell(cell) for cell in cells)} |"
+                        f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |"
                     ),
                     verified=test_case.verified,
                 )
@@ -285,15 +285,15 @@ def _audit_translation_blocks(
         f"- unverified subtitles: {len(all_rows) - verified_subtitles}",
         f"- row filter: {row_filter.value}",
     ]
-    lines.append(_format_difficulty_filter(difficulty_filter))
-    range_summary = _format_index_range(
+    lines.append(format_difficulty_filter(difficulty_filter))
+    range_summary = format_index_range(
         first_index,
         last_index,
         track_name="source",
     )
     if range_summary is not None:
         lines.append(range_summary)
-    block_range_summary = _format_block_range(first_block, last_block)
+    block_range_summary = format_block_range(first_block, last_block)
     if block_range_summary is not None:
         lines.append(block_range_summary)
     lines.extend(

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.aligned_diff_audit import (
+from scinoephile.analysis.audit.aligned_diff import (
     AlignedDiffAuditFilter,
     audit_aligned_diff,
 )
@@ -85,8 +85,8 @@ def test_audit_aligned_diff_range_includes_reference_only_insertions():
     assert "T 1" not in report
 
 
-def test_audit_aligned_diff_block_range_composes_with_subtitle_range():
-    """Test block and subtitle ranges intersect on transcription events."""
+def test_audit_aligned_diff_rejects_mixed_subtitle_and_block_ranges():
+    """Test subtitle-index and block ranges are mutually exclusive."""
     transcription = _get_series(
         (0, 500, "第一"),
         (1000, 1500, "第二"),
@@ -98,18 +98,14 @@ def test_audit_aligned_diff_block_range_composes_with_subtitle_range():
         (6000, 6500, "第三正"),
     )
 
-    report = audit_aligned_diff(
-        transcription,
-        reference,
-        first_index=2,
-        first_block=2,
-        last_block=2,
-    )
-
-    assert "- transcription subtitle range: from 2" in report
-    assert "- block range: 2 through 2" in report
-    assert "| T 3<br>R 3 |" in report
-    assert "| T 1<br>R 1 |" not in report
+    with raises(ScinoephileError, match="mutually exclusive"):
+        audit_aligned_diff(
+            transcription,
+            reference,
+            first_index=2,
+            first_block=2,
+            last_block=2,
+        )
 
 
 def test_audit_aligned_diff_rejects_invalid_range_and_track_alignment():

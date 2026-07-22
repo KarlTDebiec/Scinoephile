@@ -8,9 +8,9 @@ import json
 from pathlib import Path
 from typing import TypedDict
 
-import pytest
+from pytest import raises
 
-from scinoephile.analysis.review_audit import (
+from scinoephile.analysis.audit.review import (
     ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
@@ -105,7 +105,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
         last_index=3,
     )
     assert "- final text discrepancies: 1" in report
-    assert "- subtitle range: 1-indexed numbers 2 through 3" in report
+    assert "- subtitle range: 2 through 3" in report
     assert "- table rows: 2" in report
     assert "| 1 |" not in report
     assert "| 2 |" in report
@@ -154,25 +154,32 @@ def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
     assert "- table rows: 4" in report
 
 
-def test_audit_review_workflow_filters_blocks():
-    """Test block bounds select rows from the first review input's blocks."""
+def test_audit_review_workflow_selects_blocks():
+    """Test review audits select one workflow block at a time."""
     original = Series(
         events=[
-            Subtitle(start=0, end=500, text="一"),
-            Subtitle(start=1000, end=1500, text="二"),
-            Subtitle(start=6000, end=6500, text="三"),
+            Subtitle(start=0, end=500, text="First"),
+            Subtitle(start=1_000, end=1_500, text="Second"),
+            Subtitle(start=5_000, end=5_500, text="Third"),
         ]
     )
     reviewed = Series(
         events=[
-            Subtitle(start=0, end=500, text="一"),
-            Subtitle(start=1000, end=1500, text="二改"),
-            Subtitle(start=6000, end=6500, text="三改"),
+            Subtitle(start=0, end=500, text="First"),
+            Subtitle(start=1_000, end=1_500, text="Second"),
+            Subtitle(start=5_000, end=5_500, text="Third revised"),
         ]
+    )
+    reviews = (
+        ReviewAuditPair(
+            label="Test",
+            original=original,
+            reviewed=reviewed,
+        ),
     )
 
     report = audit_review_workflow(
-        reviews=(ReviewAuditPair(label="Test", original=original, reviewed=reviewed),),
+        reviews=reviews,
         row_filter=ReviewAuditFilter.all,
         first_block=2,
         last_block=2,
@@ -181,42 +188,13 @@ def test_audit_review_workflow_filters_blocks():
     assert "- block range: 2 through 2" in report
     assert "| 1 |" not in report
     assert "| 2 |" not in report
-    assert "| 3 | 三<br>三改 |" in report
+    assert "| 3 | Third<br>Third revised |" in report
 
-
-@pytest.mark.parametrize(
-    ("first_index", "last_index", "message"),
-    (
-        (0, None, "First index must be at least 1"),
-        (None, 0, "Last index must be at least 1"),
-        (2, 1, "First index must be less than or equal to last index"),
-    ),
-)
-def test_audit_review_workflow_rejects_invalid_range(
-    first_index: int | None,
-    last_index: int | None,
-    message: str,
-):
-    """Test direct workflow calls reject invalid one-based index ranges.
-
-    Arguments:
-        first_index: first requested subtitle index
-        last_index: last requested subtitle index
-        message: expected validation error
-    """
-    series = _get_series(("甲", "乙"))
-
-    with pytest.raises(ScinoephileError, match=message):
+    with raises(ScinoephileError, match="mutually exclusive"):
         audit_review_workflow(
-            reviews=(
-                ReviewAuditPair(
-                    label="Test",
-                    original=series,
-                    reviewed=series,
-                ),
-            ),
-            first_index=first_index,
-            last_index=last_index,
+            reviews=reviews,
+            first_index=1,
+            first_block=2,
         )
 
 

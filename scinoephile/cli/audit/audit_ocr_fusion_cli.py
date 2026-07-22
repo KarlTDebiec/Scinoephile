@@ -5,26 +5,22 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from collections.abc import Sequence
 from pathlib import Path
-from typing import cast
 
-from scinoephile.analysis.ocr_fusion_audit import (
+from scinoephile.analysis.audit.ocr_fusion import (
     OcrFusionAuditFilter,
     audit_ocr_fusion,
 )
-from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
     input_file_arg,
-    int_arg,
 )
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.llms.ocr_fusion import OcrFusionManager, OcrFusionTestCase
+from scinoephile.llms.ocr_fusion import OcrFusionManager
 
-from .audit_workflow_cli_base import AuditCliBase
+from .audit_cli_base import AuditCliBase
 
 __all__ = ["AuditOcrFusionCli"]
 
@@ -40,16 +36,13 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional validated subtitle SRT file used as ground truth": (
             "用作真值的可选已验证字幕 SRT 文件"
         ),
-        "OCR-fusion test-case JSON file": "OCR 融合测试用例 JSON 文件",
+        "optional OCR-fusion test-case JSON file": "可选的 OCR 融合测试用例 JSON 文件",
         (
             "rows to include: all, changes, discrepancies, or unverified "
             "(default: changes)"
         ): (
             "要包含的行：all 表示全部，changes 表示来源差异，discrepancies "
             "表示与已验证轨道不同，unverified 表示未验证（默认：changes）"
-        ),
-        "exact case difficulty levels to include (default: all)": (
-            "要包含的指定测试用例难度级别（默认：all）"
         ),
     },
     "zh-hant": {
@@ -63,16 +56,13 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional validated subtitle SRT file used as ground truth": (
             "用作真值的選用已驗證字幕 SRT 檔"
         ),
-        "OCR-fusion test-case JSON file": "OCR 融合測試案例 JSON 檔",
+        "optional OCR-fusion test-case JSON file": "選用的 OCR 融合測試案例 JSON 檔",
         (
             "rows to include: all, changes, discrepancies, or unverified "
             "(default: changes)"
         ): (
             "要包含的列：all 表示全部，changes 表示來源差異，discrepancies "
             "表示與已驗證軌道不同，unverified 表示未驗證（預設：changes）"
-        ),
-        "exact case difficulty levels to include (default: all)": (
-            "要包含的指定測試案例難度級別（預設：all）"
         ),
     },
 }
@@ -99,6 +89,8 @@ class AuditOcrFusionCli(AuditCliBase):
             "operation arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--source-one",
             dest="source_one_path",
@@ -129,10 +121,11 @@ class AuditOcrFusionCli(AuditCliBase):
         arg_groups["input arguments"].add_argument(
             "--json",
             dest="json_path",
-            required=True,
             type=input_file_arg(),
-            help="OCR-fusion test-case JSON file",
+            help="optional OCR-fusion test-case JSON file",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
             choices=tuple(OcrFusionAuditFilter),
@@ -144,15 +137,6 @@ class AuditOcrFusionCli(AuditCliBase):
                 "rows to include: all, changes, discrepancies, or unverified "
                 "(default: changes)"
             ),
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--difficulty",
-            default=(),
-            dest="difficulties",
-            metavar="LEVEL",
-            nargs="+",
-            type=int_arg(min_value=0),
-            help="exact case difficulty levels to include (default: all)",
         )
 
     @classmethod
@@ -169,8 +153,7 @@ class AuditOcrFusionCli(AuditCliBase):
         source_two_path: Path,
         fused_path: Path,
         validated_path: Path | None,
-        json_path: Path,
-        difficulties: Sequence[int],
+        json_path: Path | None,
         row_filter: OcrFusionAuditFilter,
         first_index: int | None,
         last_index: int | None,
@@ -181,24 +164,25 @@ class AuditOcrFusionCli(AuditCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        cls.validate_range(parser, first_index, last_index)
-        validate_block_range(parser, first_block, last_block)
+
+        # Read inputs
         source_one = read_series(parser, source_one_path)
         source_two = read_series(parser, source_two_path)
         fused = read_series(parser, fused_path)
         validated = None
         if validated_path is not None:
             validated = read_series(parser, validated_path)
-        loaded_test_cases = cls.load_test_cases(
-            parser,
-            json_path,
-            OcrFusionManager,
-            workflow_name="OCR-fusion",
-        )
-        test_cases = [
-            cast(OcrFusionTestCase, test_case) for test_case in loaded_test_cases
-        ]
 
+        test_cases = None
+        if json_path is not None:
+            test_cases = cls.load_test_cases(
+                parser,
+                json_path,
+                OcrFusionManager,
+                workflow_name="OCR-fusion",
+            )
+
+        # Perform operation
         try:
             report = audit_ocr_fusion(
                 source_one,
@@ -206,7 +190,6 @@ class AuditOcrFusionCli(AuditCliBase):
                 fused,
                 test_cases,
                 validated=validated,
-                difficulties=difficulties,
                 row_filter=row_filter,
                 first_index=first_index,
                 last_index=last_index,
@@ -215,6 +198,8 @@ class AuditOcrFusionCli(AuditCliBase):
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
+
+        # Write output
         cls.write_report(parser, report, outfile_path, overwrite)
 
 

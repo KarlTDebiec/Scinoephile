@@ -8,18 +8,16 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from enum import StrEnum
 from pathlib import Path
-from typing import cast
 
-from scinoephile.analysis.guided_review_audit import (
+from scinoephile.analysis.audit.guided_review import (
     GuidedReviewAuditFilter,
     audit_guided_review,
 )
-from scinoephile.analysis.review_audit import (
+from scinoephile.analysis.audit.review import (
     ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
 )
-from scinoephile.cli.helpers.blocks import validate_block_range
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -29,13 +27,11 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import Language
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.id import get_series_language
-from scinoephile.llms.guided_review import (
-    GuidedReviewManager,
-    GuidedReviewTestCase,
-)
+from scinoephile.lang.zho.script.conversion import get_zho_character_variants
+from scinoephile.llms.guided_review import GuidedReviewManager
 from scinoephile.llms.review import ReviewManager
 
-from .audit_workflow_cli_base import AuditCliBase
+from .audit_cli_base import AuditCliBase
 
 __all__ = ["AuditReviewCli"]
 
@@ -230,13 +226,12 @@ class AuditReviewCli(AuditCliBase):
         """Load and audit one guided-review workflow."""
         target = read_series(parser, target_path)
         guide = read_series(parser, guide_path)
-        loaded_cases = cls.load_test_cases(
+        test_cases = cls.load_test_cases(
             parser,
             json_path,
             GuidedReviewManager,
             workflow_name="guided review",
         )
-        test_cases = [cast(GuidedReviewTestCase, case) for case in loaded_cases]
         return audit_guided_review(
             target,
             guide,
@@ -298,7 +293,7 @@ class AuditReviewCli(AuditCliBase):
                 ),
             ),
             row_filter=row_filter,
-            characters=cls.get_character_variants(characters),
+            characters=get_zho_character_variants(characters),
             first_index=first_index,
             last_index=last_index,
             first_block=first_block,
@@ -326,8 +321,6 @@ class AuditReviewCli(AuditCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        cls.validate_range(parser, first_index, last_index)
-        validate_block_range(parser, first_block, last_block)
         cls._validate_mode_inputs(
             parser,
             mode,

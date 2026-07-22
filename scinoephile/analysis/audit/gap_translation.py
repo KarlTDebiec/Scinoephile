@@ -14,16 +14,16 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.gap_translation import GapTranslationTestCase
 
-from .audit_utils import (
-    _escape_table_cell,
-    _format_block_range,
-    _format_difficulty_filter,
-    _format_index_range,
+from .utils import (
     _get_paired_event_block_numbers,
     _get_validated_block_pairs_by_pause,
     _is_block_in_range,
-    _validate_block_range,
-    _validate_index_range,
+    escape_table_cell,
+    format_block_range,
+    format_difficulty_filter,
+    format_index_range,
+    validate_block_range,
+    validate_index_range,
 )
 
 __all__ = [
@@ -108,8 +108,8 @@ def audit_gap_translation(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely to source data
     """
-    _validate_index_range(first_index, last_index)
-    _validate_block_range(first_block, last_block)
+    validate_index_range(first_index, last_index)
+    validate_block_range(first_block, last_block)
     if any(difficulty < 0 for difficulty in difficulties):
         raise ScinoephileError("Difficulty must be at least 0")
     difficulty_filter = tuple(sorted(set(difficulties)))
@@ -180,7 +180,7 @@ def audit_gap_translation(
                     empty=empty,
                     global_index=global_index,
                     markdown=(
-                        f"| {' | '.join(_escape_table_cell(cell) for cell in cells)} |"
+                        f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |"
                     ),
                     test_case_index=test_case_index,
                     verified=test_case.verified,
@@ -211,15 +211,15 @@ def audit_gap_translation(
         f"- unverified gaps: {len(all_rows) - verified_gaps}",
         f"- row filter: {row_filter.value}",
     ]
-    lines.append(_format_difficulty_filter(difficulty_filter))
-    range_summary = _format_index_range(
+    lines.append(format_difficulty_filter(difficulty_filter))
+    range_summary = format_index_range(
         first_index,
         last_index,
         track_name="guide",
     )
     if range_summary is not None:
         lines.append(range_summary)
-    block_range_summary = _format_block_range(first_block, last_block)
+    block_range_summary = format_block_range(first_block, last_block)
     if block_range_summary is not None:
         lines.append(block_range_summary)
     lines.extend(

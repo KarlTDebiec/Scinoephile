@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.guided_review_audit import (
+from scinoephile.analysis.audit.guided_review import (
     GuidedReviewAuditFilter,
     audit_guided_review,
 )

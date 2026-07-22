@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.delineation_audit import (
+from scinoephile.analysis.audit.delineation import (
     DelineationAuditFilter,
     audit_delineation,
 )

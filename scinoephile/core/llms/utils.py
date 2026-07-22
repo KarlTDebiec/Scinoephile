@@ -25,13 +25,13 @@ __all__ = [
 ]
 
 
-def load_test_cases(
-    manager_cls: type[Manager],
+def load_test_cases[TTestCase: TestCase](
+    manager_cls: type[Manager[TTestCase]],
     prompt: Prompt,
     *,
-    test_cases: Iterable[TestCase] | None = None,
+    test_cases: Iterable[TTestCase] | None = None,
     test_case_path: Path | None = None,
-) -> tuple[list[TestCase], Path | None]:
+) -> tuple[list[TTestCase], Path | None]:
     """Load test cases from supplied cases and an optional JSON file.
 
     Test cases loaded from the JSON file replace supplied cases with matching queries.
@@ -61,11 +61,11 @@ def load_test_cases(
     return list(test_cases_by_query_key.values()), test_case_path
 
 
-def load_test_cases_from_json(
+def load_test_cases_from_json[TTestCase: TestCase](
     input_path: Path,
-    manager_cls: type[Manager],
+    manager_cls: type[Manager[TTestCase]],
     prompt: Prompt,
-) -> list[TestCase]:
+) -> list[TTestCase]:
     """Load test cases from JSON file.
 
     Arguments:
@@ -84,9 +84,7 @@ def load_test_cases_from_json(
         raw_test_cases: object = json.load(input_file)
 
     # Validate using the base-prompt schema
-    base_test_case_list_type = (
-        list[base_test_case_cls]  # ty: ignore[invalid-type-form]
-    )
+    base_test_case_list_type = list[base_test_case_cls]
     base_test_case_adapter = TypeAdapter(base_test_case_list_type)
     validated_base_test_cases = base_test_case_adapter.validate_python(
         raw_test_cases,
@@ -96,10 +94,10 @@ def load_test_cases_from_json(
         extra="forbid",
         context={"alias_only": True},
     )
-    base_test_cases = cast("list[TestCase]", validated_base_test_cases)
+    base_test_cases = cast("list[TTestCase]", validated_base_test_cases)
 
     # Convert to the requested prompt schema
-    test_cases: list[TestCase] = []
+    test_cases: list[TTestCase] = []
     for base_test_case in base_test_cases:
         test_case_data = base_test_case.model_dump(mode="json")
         test_case = test_case_cls.model_validate(test_case_data)
@@ -108,10 +106,10 @@ def load_test_cases_from_json(
     return test_cases
 
 
-def save_test_cases_to_json(
+def save_test_cases_to_json[TTestCase: TestCase](
     output_path: Path,
-    test_cases: Iterable[TestCase],
-    manager_cls: type[Manager],
+    test_cases: Iterable[TTestCase],
+    manager_cls: type[Manager[TTestCase]],
     *,
     prune: bool = False,
 ):
