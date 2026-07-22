@@ -181,13 +181,19 @@ class AuditOcrFusionCli(AuditCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
+
+        # Validate arguments
         get_block_range_indexes(parser, first_block, last_block)
+
+        # Read inputs
         source_one = read_series(parser, source_one_path)
         source_two = read_series(parser, source_two_path)
         fused = read_series(parser, fused_path)
         validated = None
         if validated_path is not None:
             validated = read_series(parser, validated_path)
+
+        # Load OCR-fusion JSON
         loaded_test_cases = cls.load_test_cases(
             parser,
             json_path,
@@ -198,6 +204,7 @@ class AuditOcrFusionCli(AuditCliBase):
             cast(OcrFusionTestCase, test_case) for test_case in loaded_test_cases
         ]
 
+        # Perform operation
         try:
             report = audit_ocr_fusion(
                 source_one,
@@ -214,6 +221,8 @@ class AuditOcrFusionCli(AuditCliBase):
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
+
+        # Write output
         cls.write_report(parser, report, outfile_path, overwrite)
 
 
