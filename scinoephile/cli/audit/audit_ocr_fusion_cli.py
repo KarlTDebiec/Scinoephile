@@ -99,6 +99,8 @@ class AuditOcrFusionCli(AuditCliBase):
             "operation arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--source-one",
             dest="source_one_path",
@@ -133,6 +135,8 @@ class AuditOcrFusionCli(AuditCliBase):
             type=input_file_arg(),
             help="OCR-fusion test-case JSON file",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
             choices=tuple(OcrFusionAuditFilter),
