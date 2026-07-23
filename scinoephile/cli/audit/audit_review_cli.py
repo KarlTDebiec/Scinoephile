@@ -109,6 +109,8 @@ class AuditReviewCli(AuditCliBase):
             "operation arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--original",
             dest="original_path",
@@ -137,6 +139,8 @@ class AuditReviewCli(AuditCliBase):
             type=input_file_arg(),
             help="test-case JSON file; required with --guide",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
             choices=(
@@ -277,6 +281,7 @@ class AuditReviewCli(AuditCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         if row_filter is ReviewAuditFilter.unverified and json_path is None:
             parser.error("--filter unverified requires --json")
@@ -286,6 +291,7 @@ class AuditReviewCli(AuditCliBase):
             if characters:
                 parser.error("--characters may only be used with --reviewed")
 
+        # Perform operation
         try:
             if guide_path is not None:
                 assert json_path is not None
@@ -316,6 +322,8 @@ class AuditReviewCli(AuditCliBase):
                 )
         except ScinoephileError as exc:
             parser.error(str(exc))
+
+        # Write output
         cls.write_report(parser, report, outfile_path, overwrite)
 
 
