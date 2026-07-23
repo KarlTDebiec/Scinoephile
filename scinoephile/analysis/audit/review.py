@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import Protocol, cast
+from typing import cast
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
@@ -53,15 +53,6 @@ class TraditionalReviewAuditFilter(StrEnum):
 
     unverified = "unverified"
     """Include only rows from cases not marked as verified."""
-
-
-class _ReviewAuditFilter(Protocol):
-    """Filter accepted by the shared review audit engine."""
-
-    @property
-    def value(self) -> str:
-        """Serialized filter value."""
-        ...
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -112,7 +103,7 @@ def audit_review(
     *,
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
-    row_filter: _ReviewAuditFilter = ReviewAuditFilter.changes,
+    row_filter: StrEnum = ReviewAuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -254,7 +245,7 @@ def _format_report(
     covered_indexes: frozenset[int],
     has_review_cases: bool,
     indexes: Sequence[int],
-    row_filter: _ReviewAuditFilter,
+    row_filter: StrEnum,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
     first_index: int | None,
@@ -396,7 +387,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    row_filter: _ReviewAuditFilter,
+    row_filter: StrEnum,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
 ) -> list[int]:

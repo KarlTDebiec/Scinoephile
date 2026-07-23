@@ -61,6 +61,7 @@ def test_audit_aligned_diff_all_includes_equal_multiline_event():
 
 def test_audit_aligned_diff_range_includes_reference_only_insertions():
     """Test reference insertions overlapping the transcription range are included."""
+    original = _get_series((1200, 1300, "漏譯原文"))
     transcription = _get_series(
         (0, 500, "相同一"),
         (1000, 2000, "相同二"),
@@ -74,6 +75,7 @@ def test_audit_aligned_diff_range_includes_reference_only_insertions():
     report = audit_aligned_diff(
         transcription,
         reference,
+        original=original,
         row_filter=AlignedDiffAuditFilter.all,
         first_index=2,
         last_index=2,
@@ -81,8 +83,11 @@ def test_audit_aligned_diff_range_includes_reference_only_insertions():
 
     assert "- transcription subtitle range: 2 through 2" in report
     assert "- table rows: 2" in report
-    assert "| T —<br>R 2 | <pre>T │ <br>R │ 新增</pre> |  |" in report
-    assert "| T 2<br>R 3 | <pre>T │ 相同二<br>R │ 相同二</pre> |  |" in report
+    assert "| T —<br>R 2 | <pre>O │ 漏譯原文<br>T │ <br>R │ 新增</pre> |  |" in report
+    assert (
+        "| T 2<br>R 3 | <pre>O │ 漏譯原文<br>T │ 相同二<br>R │ 相同二</pre> |  |"
+        in report
+    )
     assert "T 1" not in report
 
 

@@ -142,6 +142,7 @@ def audit_aligned_diff(
                 transcription_idxs,
                 reference_idxs,
                 transcription,
+                reference,
                 original,
                 aligned_guide,
             )
@@ -245,23 +246,23 @@ def _format_event_indices(prefix: str, event_idxs: tuple[int, ...]) -> str:
 
 def _format_original_text(
     original: Series,
-    transcription: Series,
+    timing_track: Series,
     event_idxs: tuple[int, ...],
 ) -> str:
-    """Join original text that overlaps the transcription events' time range.
+    """Join original text that overlaps the indexed events' time range.
 
     Arguments:
         original: original subtitle series
-        transcription: transcription series
-        event_idxs: zero-based transcription event indices
+        timing_track: subtitle series providing the indexed event timings
+        event_idxs: zero-based event indices
     Returns:
         joined original text
     """
     if not event_idxs:
         return ""
 
-    start = min(transcription[event_idx].start for event_idx in event_idxs)
-    end = max(transcription[event_idx].end for event_idx in event_idxs)
+    start = min(timing_track[event_idx].start for event_idx in event_idxs)
+    end = max(timing_track[event_idx].end for event_idx in event_idxs)
     texts = [
         line.strip()
         for subtitle in original
@@ -277,6 +278,7 @@ def _format_row(
     transcription_idxs: tuple[int, ...],
     reference_idxs: tuple[int, ...],
     transcription: Series,
+    reference: Series,
     original: Series | None,
     guide: Series | None,
 ) -> tuple[str, str, str]:
@@ -287,6 +289,7 @@ def _format_row(
         transcription_idxs: transcription event indices represented by the message
         reference_idxs: reference event indices represented by the message
         transcription: transcription series
+        reference: reference series
         original: optional original series
         guide: optional guide series
     Returns:
@@ -301,10 +304,15 @@ def _format_row(
     transcription_text, reference_text = message.get_aligned_texts()
     aligned_lines = []
     if original is not None:
+        original_timing_track = transcription
+        original_event_idxs = transcription_idxs
+        if not original_event_idxs:
+            original_timing_track = reference
+            original_event_idxs = reference_idxs
         original_text = _format_original_text(
             original,
-            transcription,
-            transcription_idxs,
+            original_timing_track,
+            original_event_idxs,
         )
         aligned_lines.append(f"O │ {_escape_preformatted(original_text)}")
     aligned_lines.extend(
