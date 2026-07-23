@@ -239,8 +239,15 @@
       ]
     },
     "answer": {
-      "revisions": []
+      "revisions": [
+        {
+          "index": 12,
+          "text": "爹，這可是非同小可",
+          "note": "將成語「非同少可」修正為「非同小可」。"
+        }
+      ]
     },
+    "difficulty": 1,
     "few_shot": true,
     "verified": true
   },
