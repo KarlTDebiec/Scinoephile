@@ -188,6 +188,8 @@ def test_audit_review_cli_help_is_consistent():
             action.dest: action
             for action in cli_class.argparser()._actions  # noqa: SLF001
         }
+        if cli_class is AuditReviewCli:
+            assert "mode" not in actions
         character_help = actions["characters"].help
         assert isinstance(character_help, str)
         assert "(default: no character filter)" in character_help
@@ -239,7 +241,7 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
 
     run_cli_with_args(
         AuditReviewCli,
-        (f"--mode guided {arguments} --first-index 1 --last-index 1 --filter changes"),
+        f"{arguments} --first-index 1 --last-index 1 --filter changes",
     )
     stdout = capsys.readouterr().out
     assert stdout.startswith("# Guided Subtitle Review Audit\n")
@@ -251,7 +253,7 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     outfile_path = tmp_path / "audit.md"
     run_cli_with_args(
         AuditReviewCli,
-        f"--mode guided {arguments} --outfile {outfile_path}",
+        f"{arguments} --outfile {outfile_path}",
     )
     assert capsys.readouterr().out == ""
     assert outfile_path.read_text(encoding="utf-8").startswith(
@@ -261,7 +263,7 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     with raises(SystemExit):
         run_cli_with_args(
             AuditReviewCli,
-            f"--mode guided {arguments} --first-index 2 --last-index 1",
+            f"{arguments} --first-index 2 --last-index 1",
         )
     assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
@@ -270,17 +272,14 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     with raises(SystemExit):
         run_cli_with_args(
             AuditReviewCli,
-            f"--mode guided {arguments} --reviewed {target_path}",
+            f"{arguments} --reviewed {target_path}",
         )
-    assert "--reviewed is only supported in regular mode" in capsys.readouterr().err
+    assert "not allowed with argument --guide" in capsys.readouterr().err
 
     with raises(SystemExit):
         run_cli_with_args(
             AuditReviewCli,
-            (
-                f"--mode guided --target {target_path} --guide {guide_path} "
-                "--filter unverified"
-            ),
+            (f"--target {target_path} --guide {guide_path} --filter unverified"),
         )
     assert "--filter unverified requires --json" in capsys.readouterr().err
 

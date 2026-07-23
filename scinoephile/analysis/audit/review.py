@@ -23,7 +23,6 @@ from .utils import (
 __all__ = [
     "ReviewAuditComparison",
     "ReviewAuditFilter",
-    "ReviewAuditMode",
     "ReviewAuditPair",
     "audit_review_workflow",
     "audit_reviews",
@@ -76,16 +75,6 @@ class ReviewAuditFilter(StrEnum):
 
     unverified = "unverified"
     """Include only subtitles from unverified logged cases."""
-
-
-class ReviewAuditMode(StrEnum):
-    """Review workflows supported by the unified audit command."""
-
-    guided = "guided"
-    """Audit guide-backed sparse review decisions."""
-
-    regular = "regular"
-    """Audit differences between pre-review and reviewed subtitle tracks."""
 
 
 def audit_reviews(

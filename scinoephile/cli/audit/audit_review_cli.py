@@ -11,7 +11,6 @@ from pathlib import Path
 from scinoephile.analysis.audit.guided_review import audit_guided_review
 from scinoephile.analysis.audit.review import (
     ReviewAuditFilter,
-    ReviewAuditMode,
     ReviewAuditPair,
     audit_review_workflow,
 )
@@ -35,16 +34,13 @@ __all__ = ["AuditReviewCli"]
 AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "audit regular or guided subtitle reviews": "审核常规或引导式字幕校对",
-        "review workflow to audit: regular or guided (default: regular)": (
-            "要审核的校对工作流：regular 或 guided（默认：regular）"
-        ),
         "target subtitle SRT file before review": "校对前的目标字幕 SRT 文件",
         "subtitle SRT file after regular review": "常规校对后的字幕 SRT 文件",
         "guide subtitle SRT file used for guided review": (
             "用于引导式校对的参考字幕 SRT 文件"
         ),
-        "test-case JSON file; required in guided mode": (
-            "测试用例 JSON 文件；guided 模式下为必需"
+        "test-case JSON file; required with --guide": (
+            "测试用例 JSON 文件；与 --guide 一同使用时为必需"
         ),
         "rows to include: all, changes, or unverified (default: changes)": (
             "要包含的行：all、changes 或 unverified（默认：changes）"
@@ -60,16 +56,13 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
     "zh-hant": {
         "audit regular or guided subtitle reviews": "稽核常規或引導式字幕校對",
-        "review workflow to audit: regular or guided (default: regular)": (
-            "要稽核的校對工作流程：regular 或 guided（預設：regular）"
-        ),
         "target subtitle SRT file before review": "校對前的目標字幕 SRT 檔",
         "subtitle SRT file after regular review": "常規校對後的字幕 SRT 檔",
         "guide subtitle SRT file used for guided review": (
             "用於引導式校對的參考字幕 SRT 檔"
         ),
-        "test-case JSON file; required in guided mode": (
-            "測試案例 JSON 檔；guided 模式下為必需"
+        "test-case JSON file; required with --guide": (
+            "測試案例 JSON 檔；與 --guide 一同使用時為必需"
         ),
         "rows to include: all, changes, or unverified (default: changes)": (
             "要包含的列：all、changes 或 unverified（預設：changes）"
@@ -124,13 +117,16 @@ class AuditReviewCli(AuditCliBase):
             type=input_file_arg(),
             help="target subtitle SRT file before review",
         )
-        arg_groups["input arguments"].add_argument(
+        workflow_inputs = arg_groups["input arguments"].add_mutually_exclusive_group(
+            required=True
+        )
+        workflow_inputs.add_argument(
             "--reviewed",
             dest="reviewed_path",
             type=input_file_arg(),
             help="subtitle SRT file after regular review",
         )
-        arg_groups["input arguments"].add_argument(
+        workflow_inputs.add_argument(
             "--guide",
             dest="guide_path",
             type=input_file_arg(),
@@ -140,14 +136,7 @@ class AuditReviewCli(AuditCliBase):
             "--json",
             dest="json_path",
             type=input_file_arg(),
-            help="test-case JSON file; required in guided mode",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--mode",
-            choices=tuple(ReviewAuditMode),
-            default=ReviewAuditMode.regular,
-            type=enum_arg(ReviewAuditMode),
-            help="review workflow to audit: regular or guided (default: regular)",
+            help="test-case JSON file; required with --guide",
         )
         arg_groups["operation arguments"].add_argument(
             "--filter",
@@ -279,7 +268,6 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path | None,
         guide_path: Path | None,
         json_path: Path | None,
-        mode: ReviewAuditMode,
         row_filter: ReviewAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
@@ -293,18 +281,15 @@ class AuditReviewCli(AuditCliBase):
         parser = _parser or cls.argparser()
         if row_filter is ReviewAuditFilter.unverified and json_path is None:
             parser.error("--filter unverified requires --json")
-        cls._validate_mode_inputs(
-            parser,
-            mode,
-            reviewed_path=reviewed_path,
-            guide_path=guide_path,
-            json_path=json_path,
-            characters=characters,
-        )
+        if guide_path is not None:
+            if json_path is None:
+                parser.error("--json is required with --guide")
+            if characters:
+                parser.error("--characters may only be used with --reviewed")
 
         try:
-            if mode is ReviewAuditMode.guided:
-                assert guide_path is not None and json_path is not None
+            if guide_path is not None:
+                assert json_path is not None
                 report = cls._audit_guided(
                     parser,
                     original_path,
@@ -333,33 +318,6 @@ class AuditReviewCli(AuditCliBase):
         except ScinoephileError as exc:
             parser.error(str(exc))
         cls.write_report(parser, report, outfile_path, overwrite)
-
-    @staticmethod
-    def _validate_mode_inputs(
-        parser: ArgumentParser,
-        mode: ReviewAuditMode,
-        *,
-        reviewed_path: Path | None,
-        guide_path: Path | None,
-        json_path: Path | None,
-        characters: Sequence[str],
-    ):
-        """Validate mode-specific review inputs and filters."""
-        if mode is ReviewAuditMode.guided:
-            if guide_path is None:
-                parser.error("--guide is required in guided mode")
-            if json_path is None:
-                parser.error("--json is required in guided mode")
-            if reviewed_path is not None:
-                parser.error("--reviewed is only supported in regular mode")
-            if characters:
-                parser.error("--characters is only supported in regular mode")
-            return
-
-        if reviewed_path is None:
-            parser.error("--reviewed is required in regular mode")
-        if guide_path is not None:
-            parser.error("--guide is only supported in guided mode")
 
 
 if __name__ == "__main__":
