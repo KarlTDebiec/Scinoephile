@@ -128,11 +128,6 @@ if "yue-Hant_transcribe" in actions:
     )
 if "yue-Hant_diff" in actions:
     zho_hant_guide = Series.load(zho_hant_guide_path)
-    yue_hant_original = get_reference_for_guide_blocks(
-        Series.load(yue_hant_transcribe_path / "transcribe_clean.srt"),
-        zho_hant_guide,
-        stop_at_idx=7,
-    )
     yue_hant_transcribe = get_reference_for_guide_blocks(
         Series.load(yue_hant_transcribe_path / "transcribe_clean_review_translate.srt"),
         zho_hant_guide,
@@ -168,7 +163,6 @@ if "yue-Hant_diff" in actions:
     )
     print(
         diff.get_stacked_str(
-            original=yue_hant_original,
             three=aligned_zho_hant_guide,
             include_equal=True,
         )
