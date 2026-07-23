@@ -15,10 +15,7 @@ from scinoephile.analysis.audit.delineation import DelineationAuditFilter
 from scinoephile.analysis.audit.dual_review import DualReviewAuditFilter
 from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
 from scinoephile.analysis.audit.punctuation import PunctuationAuditFilter
-from scinoephile.analysis.audit.review import (
-    ReviewAuditFilter,
-    TraditionalReviewAuditFilter,
-)
+from scinoephile.analysis.audit.review import ReviewAuditFilter
 from scinoephile.analysis.audit.translation import TranslationAuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_aligned_diff_cli import AuditAlignedDiffCli
@@ -57,8 +54,8 @@ def test_audit_cli_subcommands():
     }
 
 
-def test_audit_cli_filter_enums_are_specific():
-    """Test every audit CLI parses its own domain-specific filter enum."""
+def test_audit_cli_filter_enums():
+    """Test every audit CLI parses its expected filter enum."""
     filter_types = {
         AuditAlignedDiffCli: AlignedDiffAuditFilter,
         AuditDelineationCli: DelineationAuditFilter,
@@ -66,11 +63,10 @@ def test_audit_cli_filter_enums_are_specific():
         AuditPunctuationCli: PunctuationAuditFilter,
         AuditReviewCli: ReviewAuditFilter,
         AuditReviewDualCli: DualReviewAuditFilter,
-        AuditReviewTradCli: TraditionalReviewAuditFilter,
+        AuditReviewTradCli: ReviewAuditFilter,
         AuditTranslationCli: TranslationAuditFilter,
     }
 
-    assert len(set(filter_types.values())) == len(filter_types)
     for cli_class, filter_type in filter_types.items():
         actions = {
             action.dest: action
@@ -306,7 +302,7 @@ def test_audit_review_cli_help_is_consistent():
     filter_types = {
         AuditReviewCli: ReviewAuditFilter,
         AuditReviewDualCli: DualReviewAuditFilter,
-        AuditReviewTradCli: TraditionalReviewAuditFilter,
+        AuditReviewTradCli: ReviewAuditFilter,
     }
     for cli_class in (AuditReviewCli, AuditReviewDualCli, AuditReviewTradCli):
         actions = {

@@ -24,26 +24,12 @@ __all__ = [
     "ReviewAuditComparison",
     "ReviewAuditFilter",
     "ReviewAuditPair",
-    "TraditionalReviewAuditFilter",
     "audit_review",
 ]
 
 
 class ReviewAuditFilter(StrEnum):
     """Row filters supported by a subtitle review audit."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    changes = "changes"
-    """Include only rows with review edits."""
-
-    unverified = "unverified"
-    """Include only rows from cases not marked as verified."""
-
-
-class TraditionalReviewAuditFilter(StrEnum):
-    """Row filters supported by a traditional-script review audit."""
 
     all = "all"
     """Include every eligible row."""

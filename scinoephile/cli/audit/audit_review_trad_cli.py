@@ -9,8 +9,8 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from scinoephile.analysis.audit.review import (
+    ReviewAuditFilter,
     ReviewAuditPair,
-    TraditionalReviewAuditFilter,
     audit_review,
 )
 from scinoephile.cli.helpers.io import read_series
@@ -181,8 +181,8 @@ class AuditReviewTradCli(AuditCliBase):
         # Operation arguments
         cls.add_row_filter_argument(
             parser,
-            TraditionalReviewAuditFilter,
-            TraditionalReviewAuditFilter.changes,
+            ReviewAuditFilter,
+            ReviewAuditFilter.changes,
             description=(
                 "all includes every subtitle; changes includes review edits; "
                 "unverified includes subtitles in cases not marked verified"
@@ -221,7 +221,7 @@ class AuditReviewTradCli(AuditCliBase):
         traditional_simplified_reviewed_path: Path,
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
-        row_filter: TraditionalReviewAuditFilter,
+        row_filter: ReviewAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -253,7 +253,7 @@ class AuditReviewTradCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is TraditionalReviewAuditFilter.unverified and (
+        if row_filter is ReviewAuditFilter.unverified and (
             traditional_json_path is None or traditional_simplified_json_path is None
         ):
             parser.error(
