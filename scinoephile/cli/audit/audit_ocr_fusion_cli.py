@@ -135,7 +135,6 @@ class AuditOcrFusionCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=tuple(OcrFusionAuditFilter),
             default=OcrFusionAuditFilter.changes,
             dest="row_filter",
             metavar=enum_metavar(OcrFusionAuditFilter),

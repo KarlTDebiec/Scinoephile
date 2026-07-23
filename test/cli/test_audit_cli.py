@@ -200,7 +200,7 @@ def test_audit_review_cli_help_is_consistent():
         if cli_class is AuditReviewDualCli:
             filter_type = ComparativeReviewAuditFilter
         filter_action = actions["row_filter"]
-        assert filter_action.choices == tuple(filter_type)
+        assert filter_action.choices is None
         assert filter_action.metavar == enum_metavar(filter_type)
         assert isinstance(filter_action.help, str)
         assert enum_options_list_str(filter_type) in filter_action.help

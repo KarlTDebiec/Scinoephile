@@ -145,7 +145,6 @@ class AuditReviewCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=tuple(ReviewAuditFilter),
             default=ReviewAuditFilter.changes,
             dest="row_filter",
             metavar=enum_metavar(ReviewAuditFilter),

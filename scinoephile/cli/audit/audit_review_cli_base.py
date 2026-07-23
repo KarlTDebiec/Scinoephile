@@ -93,7 +93,6 @@ class AuditReviewCliBase(AuditCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=tuple(cls.row_filter_type),
             default=cls.row_filter_type.changes,
             dest="row_filter",
             metavar=enum_metavar(cls.row_filter_type),

@@ -16,14 +16,14 @@ from scinoephile.common.testing import run_cli_with_args
 
 
 def test_audit_ocr_fusion_cli_filter_help_is_consistent():
-    """Test filter choices, metavar, and help derive from the filter enum."""
+    """Test filter validation, metavar, and help derive from the filter enum."""
     action = next(
         action
         for action in AuditOcrFusionCli.argparser()._actions  # noqa: SLF001
         if action.dest == "row_filter"
     )
 
-    assert action.choices == tuple(OcrFusionAuditFilter)
+    assert action.choices is None
     assert action.metavar == enum_metavar(OcrFusionAuditFilter)
     assert isinstance(action.help, str)
     assert enum_options_list_str(OcrFusionAuditFilter) in action.help
