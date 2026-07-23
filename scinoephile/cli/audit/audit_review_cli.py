@@ -28,7 +28,8 @@ from scinoephile.lang.id import get_series_language
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 from scinoephile.llms.guided_review import GuidedReviewManager
 
-from .audit_review_cli_base import AuditReviewCliBase
+from .audit_cli_base import AuditCliBase
+from .utils import load_review_test_cases
 
 __all__ = ["AuditReviewCli"]
 
@@ -90,7 +91,7 @@ _LANGUAGE_LABELS = {
 """Report labels keyed by automatically detected language."""
 
 
-class AuditReviewCli(AuditReviewCliBase):
+class AuditReviewCli(AuditCliBase):
     """Audit regular or guided subtitle reviews."""
 
     localizations = AUDIT_REVIEW_LOCALIZATIONS
@@ -259,7 +260,7 @@ class AuditReviewCli(AuditReviewCliBase):
         # Read inputs
         original = read_series(parser, original_path)
         reviewed = read_series(parser, reviewed_path)
-        review_cases = cls.load_review_test_cases(parser, json_path)
+        review_cases = load_review_test_cases(parser, json_path)
 
         # Detect language
         detected_languages = {

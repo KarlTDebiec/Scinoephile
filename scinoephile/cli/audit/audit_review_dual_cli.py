@@ -23,7 +23,8 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
-from .audit_review_cli_base import AuditReviewCliBase
+from .audit_cli_base import AuditCliBase
+from .utils import load_review_test_cases
 
 __all__ = ["AuditReviewDualCli"]
 
@@ -156,7 +157,7 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditReviewDualCli(AuditReviewCliBase):
+class AuditReviewDualCli(AuditCliBase):
     """Audit parallel simplified and traditional-to-simplified review paths."""
 
     localizations = AUDIT_REVIEW_DUAL_LOCALIZATIONS
@@ -369,13 +370,9 @@ class AuditReviewDualCli(AuditReviewCliBase):
         )
         if len(set(map(len, input_series))) != 1:
             parser.error("Subtitle inputs must contain the same number of subtitles")
-        simplified_review_cases = cls.load_review_test_cases(
-            parser, simplified_json_path
-        )
-        traditional_review_cases = cls.load_review_test_cases(
-            parser, traditional_json_path
-        )
-        traditional_simplified_review_cases = cls.load_review_test_cases(
+        simplified_review_cases = load_review_test_cases(parser, simplified_json_path)
+        traditional_review_cases = load_review_test_cases(parser, traditional_json_path)
+        traditional_simplified_review_cases = load_review_test_cases(
             parser, traditional_simplified_json_path
         )
 

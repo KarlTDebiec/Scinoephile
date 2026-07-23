@@ -17,7 +17,6 @@ from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
 from scinoephile.cli.audit.audit_review_cli import AuditReviewCli
-from scinoephile.cli.audit.audit_review_cli_base import AuditReviewCliBase
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
@@ -176,8 +175,9 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
 
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
-    assert issubclass(AuditReviewCliBase, AuditCliBase)
-    assert issubclass(AuditReviewCli, AuditReviewCliBase)
+    assert issubclass(AuditReviewCli, AuditCliBase)
+    assert issubclass(AuditReviewDualCli, AuditCliBase)
+    assert issubclass(AuditReviewTradCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
         "ocr-fusion": AuditOcrFusionCli,

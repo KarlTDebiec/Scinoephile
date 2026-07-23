@@ -24,7 +24,8 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 
-from .audit_review_cli_base import AuditReviewCliBase
+from .audit_cli_base import AuditCliBase
+from .utils import load_review_test_cases
 
 __all__ = ["AuditReviewTradCli"]
 
@@ -103,7 +104,7 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized help text keyed by locale and English source text."""
 
 
-class AuditReviewTradCli(AuditReviewCliBase):
+class AuditReviewTradCli(AuditCliBase):
     """Audit traditional review followed by review of its simplified form."""
 
     localizations = AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS
@@ -265,10 +266,8 @@ class AuditReviewTradCli(AuditReviewCliBase):
             parser,
             traditional_simplified_reviewed_path,
         )
-        traditional_review_cases = cls.load_review_test_cases(
-            parser, traditional_json_path
-        )
-        traditional_simplified_review_cases = cls.load_review_test_cases(
+        traditional_review_cases = load_review_test_cases(parser, traditional_json_path)
+        traditional_simplified_review_cases = load_review_test_cases(
             parser, traditional_simplified_json_path
         )
 
