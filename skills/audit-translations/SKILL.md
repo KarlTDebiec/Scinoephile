@@ -22,7 +22,7 @@ inputs.
 ## Required report file
 
 Save the complete Markdown report under `local/`, audit every row, and write
-each finding into its `Notes` cell.
+each judgment into its `Notes` cell.
 
 Standard and guided reports have exactly: `Indexes`, `Case / block`,
 `Difficulty`, `Source`, `Guide`, `Translation`, `Notes`, `Verified`. Gapped

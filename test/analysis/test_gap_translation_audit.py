@@ -7,7 +7,7 @@ from __future__ import annotations
 from pytest import raises
 
 from scinoephile.analysis.audit.gap_translation import audit_gap_translation
-from scinoephile.analysis.audit.utils import VerificationAuditFilter
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.gap_translation import (
@@ -78,7 +78,7 @@ def test_audit_gap_translation_formats_empty_and_unanswered_gaps():
         target,
         guide,
         test_cases,
-        row_filter=VerificationAuditFilter.unverified,
+        row_filter=AuditFilter.unverified,
     )
     ranged_report = audit_gap_translation(
         target,

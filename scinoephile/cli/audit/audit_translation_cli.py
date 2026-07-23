@@ -10,12 +10,9 @@ from pathlib import Path
 from scinoephile.analysis.audit.gap_translation import audit_gap_translation
 from scinoephile.analysis.audit.guided_translation import audit_guided_translation
 from scinoephile.analysis.audit.translation import audit_translation
-from scinoephile.analysis.audit.utils import VerificationAuditFilter
+from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
-    enum_arg,
-    enum_metavar,
-    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -45,8 +42,12 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "translation test-case JSON file for the selected workflow": (
             "所选工作流的翻译测试用例 JSON 文件"
         ),
-        "rows to include: all or unverified (default: %(default)s)": (
-            "要包含的行：all 表示全部，unverified 表示未验证（默认：%(default)s）"
+        (
+            "rows to include: all or unverified; all includes every translation; "
+            "unverified includes cases not marked verified (default: %(default)s)"
+        ): (
+            "要包含的行：all 表示每个翻译，unverified 表示未标记为已验证的案例"
+            "（默认：%(default)s）"
         ),
     },
     "zh-hant": {
@@ -65,8 +66,12 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "translation test-case JSON file for the selected workflow": (
             "所選工作流程的翻譯測試案例 JSON 檔"
         ),
-        "rows to include: all or unverified (default: %(default)s)": (
-            "要包含的列：all 表示全部，unverified 表示未驗證（預設：%(default)s）"
+        (
+            "rows to include: all or unverified; all includes every translation; "
+            "unverified includes cases not marked verified (default: %(default)s)"
+        ): (
+            "要包含的列：all 表示每個翻譯，unverified 表示未標記為已驗證的案例"
+            "（預設：%(default)s）"
         ),
     },
 }
@@ -125,15 +130,13 @@ class AuditTranslationCli(AuditCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            default=VerificationAuditFilter.all,
-            dest="row_filter",
-            metavar=enum_metavar(VerificationAuditFilter),
-            type=enum_arg(VerificationAuditFilter),
-            help=(
-                f"rows to include: {enum_options_list_str(VerificationAuditFilter)} "
-                "(default: %(default)s)"
+        cls.add_row_filter_argument(
+            parser,
+            AuditFilter,
+            AuditFilter.all,
+            description=(
+                "all includes every translation; unverified includes cases not "
+                "marked verified"
             ),
         )
 
@@ -154,7 +157,7 @@ class AuditTranslationCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: VerificationAuditFilter,
+        row_filter: AuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -205,7 +208,7 @@ class AuditTranslationCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: VerificationAuditFilter,
+        row_filter: AuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -255,7 +258,7 @@ class AuditTranslationCli(AuditCliBase):
         source_path: Path,
         json_path: Path,
         *,
-        row_filter: VerificationAuditFilter,
+        row_filter: AuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -304,7 +307,7 @@ class AuditTranslationCli(AuditCliBase):
         target_path: Path | None,
         guide_path: Path | None,
         json_path: Path,
-        row_filter: VerificationAuditFilter,
+        row_filter: AuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,

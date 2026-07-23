@@ -14,8 +14,8 @@ from scinoephile.core.subtitles import Series
 
 from .utils import (
     AuditColumn,
-    AuditFilter,
-    ComparisonAuditFilter,
+    ChangeAuditFilter,
+    ExtendedAuditFilter,
     format_audit_report,
     format_verification_marker,
     get_selected_event_indexes,
@@ -77,7 +77,7 @@ def audit_review_workflow(
     *,
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
-    row_filter: AuditFilter | ComparisonAuditFilter = AuditFilter.changes,
+    row_filter: ChangeAuditFilter | ExtendedAuditFilter = ChangeAuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -103,7 +103,7 @@ def audit_review_workflow(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
-    if row_filter is ComparisonAuditFilter.discrepancies and not comparisons:
+    if row_filter is ExtendedAuditFilter.discrepancies and not comparisons:
         raise ScinoephileError(
             "Unable to audit subtitle reviews: discrepancy filtering requires at "
             "least one comparison"
@@ -218,7 +218,7 @@ def audit_reviews(
     traditional_review_cases: Sequence[TestCase] = (),
     traditional_simplified_review_cases: Sequence[TestCase] = (),
     simplified_review_cases: Sequence[TestCase] = (),
-    row_filter: ComparisonAuditFilter = ComparisonAuditFilter.changes,
+    row_filter: ExtendedAuditFilter = ExtendedAuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -300,7 +300,7 @@ def _format_report(
     covered_indexes: frozenset[int],
     has_review_cases: bool,
     indexes: Sequence[int],
-    row_filter: AuditFilter | ComparisonAuditFilter,
+    row_filter: ChangeAuditFilter | ExtendedAuditFilter,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
     first_index: int | None,
@@ -442,7 +442,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    row_filter: AuditFilter | ComparisonAuditFilter,
+    row_filter: ChangeAuditFilter | ExtendedAuditFilter,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
 ) -> list[int]:
@@ -459,15 +459,15 @@ def _get_filtered_indexes(
     Returns:
         selected subtitle indexes
     """
-    if row_filter.value == AuditFilter.all.value:
+    if row_filter.value == ChangeAuditFilter.all.value:
         selected_indexes = set(indexes)
-    elif row_filter.value == AuditFilter.changes.value:
+    elif row_filter.value == ChangeAuditFilter.changes.value:
         selected_indexes = {
             index
             for changed_indexes in (*review_changes, *comparison_changes)
             for index in changed_indexes
         }
-    elif row_filter is ComparisonAuditFilter.discrepancies:
+    elif row_filter is ExtendedAuditFilter.discrepancies:
         selected_indexes = {
             index for changed_indexes in comparison_changes for index in changed_indexes
         }

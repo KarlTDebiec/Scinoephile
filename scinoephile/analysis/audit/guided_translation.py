@@ -15,7 +15,7 @@ from .translation import (
     TranslationAuditCase,
     audit_translation_blocks,
 )
-from .utils import VerificationAuditFilter, validate_audit_range
+from .utils import AuditFilter, validate_audit_range
 
 __all__ = ["audit_guided_translation"]
 
@@ -25,7 +25,7 @@ def audit_guided_translation(
     guide: Series,
     test_cases: Sequence[GuidedTranslationTestCase],
     *,
-    row_filter: VerificationAuditFilter = VerificationAuditFilter.all,
+    row_filter: AuditFilter = AuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,

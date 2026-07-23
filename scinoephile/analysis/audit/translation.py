@@ -12,7 +12,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.llms.translation import TranslationTestCase
 
 from .utils import (
-    VerificationAuditFilter,
+    AuditFilter,
     format_audit_report,
     format_verification_marker,
     validate_audit_range,
@@ -83,7 +83,7 @@ def audit_translation(
     source: Series,
     test_cases: Sequence[TranslationTestCase],
     *,
-    row_filter: VerificationAuditFilter = VerificationAuditFilter.all,
+    row_filter: AuditFilter = AuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -133,7 +133,7 @@ def audit_translation_blocks(
     cases: Sequence[TranslationAuditCase],
     *,
     title: str,
-    row_filter: VerificationAuditFilter,
+    row_filter: AuditFilter,
     first_index: int | None,
     last_index: int | None,
     first_block: int | None,
@@ -217,7 +217,7 @@ def audit_translation_blocks(
     rows = [
         row
         for row in all_rows
-        if not (row_filter is VerificationAuditFilter.unverified and row.verified)
+        if not (row_filter is AuditFilter.unverified and row.verified)
     ]
     verified_subtitles = sum(row.verified for row in all_rows)
     return format_audit_report(

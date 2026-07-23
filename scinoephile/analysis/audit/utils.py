@@ -15,8 +15,8 @@ __all__ = [
     "AuditColumn",
     "AuditFilter",
     "AuditResult",
-    "ComparisonAuditFilter",
-    "VerificationAuditFilter",
+    "ChangeAuditFilter",
+    "ExtendedAuditFilter",
     "format_audit_report",
     "format_verification_marker",
     "get_contextual_index",
@@ -32,16 +32,13 @@ type AuditColumn = tuple[str, Literal["left", "right", "center"]]
 
 
 class AuditFilter(StrEnum):
-    """Row filters shared by audit reports without final comparisons."""
+    """Row filters for audits whose only row state is verification."""
 
     all = "all"
     """Include every eligible row."""
 
-    changes = "changes"
-    """Include only changed rows."""
-
     unverified = "unverified"
-    """Include only rows from unverified logged cases."""
+    """Include only rows from cases not marked as verified."""
 
 
 class AuditResult(StrEnum):
@@ -57,8 +54,21 @@ class AuditResult(StrEnum):
     """The logged case has no answer."""
 
 
-class ComparisonAuditFilter(StrEnum):
-    """Row filters shared by audits with final comparisons."""
+class ChangeAuditFilter(StrEnum):
+    """Row filters shared by audit reports that identify changed rows."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include only changed rows."""
+
+    unverified = "unverified"
+    """Include only rows from unverified logged cases."""
+
+
+class ExtendedAuditFilter(StrEnum):
+    """Row filters for audits that also identify final discrepancies."""
 
     all = "all"
     """Include every eligible row."""
@@ -71,16 +81,6 @@ class ComparisonAuditFilter(StrEnum):
 
     unverified = "unverified"
     """Include only rows from unverified logged cases."""
-
-
-class VerificationAuditFilter(StrEnum):
-    """Row filters for audits whose only row state is verification."""
-
-    all = "all"
-    """Include every eligible row."""
-
-    unverified = "unverified"
-    """Include only rows from cases not marked as verified."""
 
 
 def format_audit_report(

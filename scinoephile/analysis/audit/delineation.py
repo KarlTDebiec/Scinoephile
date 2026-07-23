@@ -12,8 +12,8 @@ from scinoephile.core.subtitles import Series
 from scinoephile.llms.delineation import DelineationTestCase
 
 from .utils import (
-    AuditFilter,
     AuditResult,
+    ChangeAuditFilter,
     format_audit_report,
     format_verification_marker,
     get_selected_event_indexes,
@@ -28,7 +28,7 @@ def audit_delineation(
     reference: Series,
     test_cases: Sequence[DelineationTestCase],
     *,
-    row_filter: AuditFilter = AuditFilter.all,
+    row_filter: ChangeAuditFilter = ChangeAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -102,8 +102,9 @@ def audit_delineation(
             result = AuditResult.unchanged
 
         if (
-            row_filter is AuditFilter.changes and result is not AuditResult.changed
-        ) or (row_filter is AuditFilter.unverified and test_case.verified):
+            row_filter is ChangeAuditFilter.changes
+            and result is not AuditResult.changed
+        ) or (row_filter is ChangeAuditFilter.unverified and test_case.verified):
             continue
 
         verified_marker = format_verification_marker(test_case.verified)

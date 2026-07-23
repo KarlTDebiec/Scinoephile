@@ -6,8 +6,8 @@ description: Audit Scinoephile transcription punctuation logs by matching JSON g
 # Audit Transcription Punctuation
 
 Audit the punctuation and whitespace added to fixed transcription text. Produce a
-Markdown report, inspect every requested row, and record concise findings in its
-Notes column.
+Markdown report, inspect every requested row, and record a concise judgment in
+each `Notes` cell.
 
 ## Scope
 
@@ -87,16 +87,16 @@ Consider:
 - whether punctuation splits a grammatical phrase or implies the wrong
   relationship between clauses
 
-Enter a note only when there is an actionable issue or genuine ambiguity. Use
-one of these exact prefixes:
+Write exactly `OK` for an acceptable answer. Otherwise use one of these exact
+prefixes:
 
 - `Punctuation error;` for a clear punctuation or whitespace error
 - `Uncertain;` when the audio or broader context is needed to judge the choice
 
 Punctuation JSON has no note field, so generated Notes cells begin blank. If a
 future schema populates one, read it as context and replace the entire cell with
-your own concise finding rather than appending to or treating it as proof.
-Leave Notes blank for acceptable answers.
+your own concise judgment rather than appending to or treating it as proof.
+Never mark an unanswered row `OK`.
 
 ## Correct and verify cases
 

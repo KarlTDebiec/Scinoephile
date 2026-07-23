@@ -8,12 +8,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.analysis.audit.delineation import audit_delineation
-from scinoephile.analysis.audit.utils import AuditFilter
+from scinoephile.analysis.audit.utils import ChangeAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
-    enum_arg,
-    enum_metavar,
-    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -31,9 +28,13 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用于指导转写的参考字幕 SRT 文件"
         ),
         "delineation test-case JSON file": "字幕边界测试用例 JSON 文件",
-        "rows to include: all, changes, or unverified (default: %(default)s)": (
-            "要包含的行：all 表示全部，changes 表示边界调整，unverified "
-            "表示未验证（默认：%(default)s）"
+        (
+            "rows to include: all, changes, or unverified; all includes every "
+            "decision; changes includes boundary shifts; unverified includes cases "
+            "not marked verified (default: %(default)s)"
+        ): (
+            "要包含的行：all 表示每个决策，changes 表示边界调整，unverified "
+            "表示未标记为已验证的案例（默认：%(default)s）"
         ),
     },
     "zh-hant": {
@@ -42,9 +43,13 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用於指導轉寫的參考字幕 SRT 檔"
         ),
         "delineation test-case JSON file": "字幕邊界測試案例 JSON 檔",
-        "rows to include: all, changes, or unverified (default: %(default)s)": (
-            "要包含的列：all 表示全部，changes 表示邊界調整，unverified "
-            "表示未驗證（預設：%(default)s）"
+        (
+            "rows to include: all, changes, or unverified; all includes every "
+            "decision; changes includes boundary shifts; unverified includes cases "
+            "not marked verified (default: %(default)s)"
+        ): (
+            "要包含的列：all 表示每個決策，changes 表示邊界調整，unverified "
+            "表示未標記為已驗證的案例（預設：%(default)s）"
         ),
     },
 }
@@ -90,15 +95,13 @@ class AuditDelineationCli(AuditCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            default=AuditFilter.all,
-            dest="row_filter",
-            metavar=enum_metavar(AuditFilter),
-            type=enum_arg(AuditFilter),
-            help=(
-                f"rows to include: {enum_options_list_str(AuditFilter)} "
-                "(default: %(default)s)"
+        cls.add_row_filter_argument(
+            parser,
+            ChangeAuditFilter,
+            ChangeAuditFilter.all,
+            description=(
+                "all includes every decision; changes includes boundary shifts; "
+                "unverified includes cases not marked verified"
             ),
         )
 
@@ -118,7 +121,7 @@ class AuditDelineationCli(AuditCliBase):
         _parser: ArgumentParser | None = None,
         reference_path: Path,
         json_path: Path,
-        row_filter: AuditFilter,
+        row_filter: ChangeAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,

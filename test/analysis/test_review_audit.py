@@ -15,7 +15,7 @@ from scinoephile.analysis.audit.review import (
     audit_review_workflow,
     audit_reviews,
 )
-from scinoephile.analysis.audit.utils import AuditFilter, ComparisonAuditFilter
+from scinoephile.analysis.audit.utils import ChangeAuditFilter, ExtendedAuditFilter
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
@@ -83,7 +83,7 @@ def test_audit_review_workflow_filters_unverified_cases():
                 review_cases=(unverified_case, verified_case),
             ),
         ),
-        row_filter=AuditFilter.unverified,
+        row_filter=ChangeAuditFilter.unverified,
     )
 
     assert "- row filter: unverified" in report
@@ -101,7 +101,7 @@ def test_audit_review_workflow_filters_unverified_cases():
                 review_cases=(unverified_case, verified_case),
             ),
         ),
-        row_filter=AuditFilter.all,
+        row_filter=ChangeAuditFilter.all,
     )
     assert "| 1 | First<br>First revised | Test review: Revised. |  |" in all_report
     assert "| 2 | Second |  | ✓ |" in all_report
@@ -147,7 +147,7 @@ def test_audit_review_workflow_ignores_retained_historical_cases():
                 review_cases=(historical_case, current_case),
             ),
         ),
-        row_filter=AuditFilter.all,
+        row_filter=ChangeAuditFilter.all,
     )
 
     assert "Historical note." not in report
@@ -184,7 +184,7 @@ def test_audit_review_workflow_selects_blocks():
 
     report = audit_review_workflow(
         reviews=reviews,
-        row_filter=AuditFilter.all,
+        row_filter=ChangeAuditFilter.all,
         first_block=2,
         last_block=2,
     )
@@ -204,7 +204,7 @@ def test_audit_review_workflow_selects_blocks():
     with raises(ScinoephileError, match="requires at least one comparison"):
         audit_review_workflow(
             reviews=reviews,
-            row_filter=ComparisonAuditFilter.discrepancies,
+            row_filter=ExtendedAuditFilter.discrepancies,
         )
 
 
@@ -240,10 +240,10 @@ def test_audit_review_workflow_uses_latest_duplicate_case():
         ),
     )
 
-    report = audit_review_workflow(reviews=reviews, row_filter=AuditFilter.all)
+    report = audit_review_workflow(reviews=reviews, row_filter=ChangeAuditFilter.all)
     unverified_report = audit_review_workflow(
         reviews=reviews,
-        row_filter=AuditFilter.unverified,
+        row_filter=ChangeAuditFilter.unverified,
     )
 
     assert "Historical note." not in report
@@ -262,7 +262,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ComparisonAuditFilter.changes,
+        row_filter=ExtendedAuditFilter.changes,
     )
 
     assert "- simplified review edits: 1" in report
@@ -284,7 +284,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ComparisonAuditFilter.discrepancies,
+        row_filter=ExtendedAuditFilter.discrepancies,
     )
     assert "- table rows: 2" in report
     assert "| 2 |" in report
@@ -293,7 +293,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ComparisonAuditFilter.all,
+        row_filter=ExtendedAuditFilter.all,
         characters=("著", "丙"),
     )
     assert "- character filter: 著, 丙" in report
@@ -303,7 +303,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ComparisonAuditFilter.all,
+        row_filter=ExtendedAuditFilter.all,
         first_index=2,
         last_index=3,
     )
@@ -326,7 +326,7 @@ def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
     inputs["traditional_reviewed"].events[1].start = 62_000
     inputs["traditional_reviewed"].events[1].end = 62_500
 
-    report = audit_reviews(**inputs, row_filter=ComparisonAuditFilter.all)
+    report = audit_reviews(**inputs, row_filter=ExtendedAuditFilter.all)
 
     assert "- table rows: 4" in report
 

@@ -8,12 +8,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.analysis.audit.ocr_fusion import audit_ocr_fusion
-from scinoephile.analysis.audit.utils import ComparisonAuditFilter
+from scinoephile.analysis.audit.utils import ExtendedAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
-    enum_arg,
-    enum_metavar,
-    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -42,11 +39,15 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "verification state"
         ): ("提供备注和验证状态的可选 OCR 融合测试用例 JSON 文件"),
         (
-            "rows to include: all, changes, discrepancies, or unverified "
+            "rows to include: all, changes, discrepancies, or unverified; all "
+            "includes every fused subtitle; changes includes source "
+            "disagreements; discrepancies includes differences from the validated "
+            "track; unverified includes LLM decisions not marked verified "
             "(default: %(default)s)"
         ): (
-            "要包含的行：all 表示全部，changes 表示来源差异，discrepancies "
-            "表示与已验证轨道不同，unverified 表示未验证（默认：%(default)s）"
+            "要包含的行：all 表示每个融合字幕，changes 表示来源差异，"
+            "discrepancies 表示与已验证轨道不同，unverified 表示未标记为"
+            "已验证的 LLM 决策（默认：%(default)s）"
         ),
     },
     "zh-hant": {
@@ -66,11 +67,15 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "verification state"
         ): ("提供備註和驗證狀態的選用 OCR 融合測試案例 JSON 檔"),
         (
-            "rows to include: all, changes, discrepancies, or unverified "
+            "rows to include: all, changes, discrepancies, or unverified; all "
+            "includes every fused subtitle; changes includes source "
+            "disagreements; discrepancies includes differences from the validated "
+            "track; unverified includes LLM decisions not marked verified "
             "(default: %(default)s)"
         ): (
-            "要包含的列：all 表示全部，changes 表示來源差異，discrepancies "
-            "表示與已驗證軌道不同，unverified 表示未驗證（預設：%(default)s）"
+            "要包含的列：all 表示每個融合字幕，changes 表示來源差異，"
+            "discrepancies 表示與已驗證軌道不同，unverified 表示未標記為"
+            "已驗證的 LLM 決策（預設：%(default)s）"
         ),
     },
 }
@@ -140,15 +145,15 @@ class AuditOcrFusionCli(AuditCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            default=ComparisonAuditFilter.changes,
-            dest="row_filter",
-            metavar=enum_metavar(ComparisonAuditFilter),
-            type=enum_arg(ComparisonAuditFilter),
-            help=(
-                f"rows to include: {enum_options_list_str(ComparisonAuditFilter)} "
-                "(default: %(default)s)"
+        cls.add_row_filter_argument(
+            parser,
+            ExtendedAuditFilter,
+            ExtendedAuditFilter.changes,
+            description=(
+                "all includes every fused subtitle; changes includes source "
+                "disagreements; discrepancies includes differences from the "
+                "validated track; unverified includes LLM decisions not marked "
+                "verified"
             ),
         )
 
@@ -171,7 +176,7 @@ class AuditOcrFusionCli(AuditCliBase):
         fused_path: Path,
         validated_path: Path | None,
         json_path: Path | None,
-        row_filter: ComparisonAuditFilter,
+        row_filter: ExtendedAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -198,7 +203,7 @@ class AuditOcrFusionCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is ComparisonAuditFilter.discrepancies and validated_path is None:
+        if row_filter is ExtendedAuditFilter.discrepancies and validated_path is None:
             parser.error("--filter discrepancies requires --validated")
 
         # Read inputs

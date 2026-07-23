@@ -14,7 +14,7 @@ from scinoephile.llms.ocr_fusion import OcrFusionTestCase
 
 from .utils import (
     AuditColumn,
-    ComparisonAuditFilter,
+    ExtendedAuditFilter,
     format_audit_report,
     format_verification_marker,
     get_selected_event_indexes,
@@ -62,7 +62,7 @@ def audit_ocr_fusion(
     test_cases: Sequence[OcrFusionTestCase] | None = None,
     *,
     validated: Series | None = None,
-    row_filter: ComparisonAuditFilter = ComparisonAuditFilter.changes,
+    row_filter: ExtendedAuditFilter = ExtendedAuditFilter.changes,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -86,7 +86,7 @@ def audit_ocr_fusion(
     Raises:
         ScinoephileError: if ranges, series alignment, or logged decisions are invalid
     """
-    if row_filter is ComparisonAuditFilter.discrepancies and validated is None:
+    if row_filter is ExtendedAuditFilter.discrepancies and validated is None:
         raise ScinoephileError(
             "OCR-fusion discrepancy filtering requires a validated subtitle track"
         )
@@ -181,7 +181,7 @@ def audit_ocr_fusion(
 
 def _filter_rows(
     rows: Sequence[_OcrFusionRow],
-    row_filter: ComparisonAuditFilter,
+    row_filter: ExtendedAuditFilter,
 ) -> list[_OcrFusionRow]:
     """Filter OCR-fusion rows by their status.
 
@@ -191,11 +191,11 @@ def _filter_rows(
     Returns:
         filtered rows
     """
-    if row_filter is ComparisonAuditFilter.all:
+    if row_filter is ExtendedAuditFilter.all:
         return list(rows)
-    if row_filter is ComparisonAuditFilter.changes:
+    if row_filter is ExtendedAuditFilter.changes:
         return [row for row in rows if row.changed]
-    if row_filter is ComparisonAuditFilter.discrepancies:
+    if row_filter is ExtendedAuditFilter.discrepancies:
         return [row for row in rows if row.discrepancy]
     return [row for row in rows if row.requires_llm and not row.verified]
 

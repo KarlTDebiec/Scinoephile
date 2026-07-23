@@ -8,7 +8,8 @@ from pytest import raises
 
 from scinoephile.analysis.audit.utils import (
     AuditFilter,
-    ComparisonAuditFilter,
+    ChangeAuditFilter,
+    ExtendedAuditFilter,
     format_audit_report,
     format_verification_marker,
     resolve_contextual_index,
@@ -16,22 +17,30 @@ from scinoephile.analysis.audit.utils import (
 from scinoephile.core.exceptions import ScinoephileError
 
 
-def test_audit_filter_has_common_options():
-    """Test the shared audit filter exposes the common row options."""
+def test_audit_filter_has_verification_options():
+    """Test the base audit filter exposes verification row options."""
     assert tuple(AuditFilter) == (
         AuditFilter.all,
-        AuditFilter.changes,
         AuditFilter.unverified,
     )
 
 
-def test_comparison_audit_filter_has_comparison_options():
-    """Test comparison audits share one filter contract."""
-    assert tuple(ComparisonAuditFilter) == (
-        ComparisonAuditFilter.all,
-        ComparisonAuditFilter.changes,
-        ComparisonAuditFilter.discrepancies,
-        ComparisonAuditFilter.unverified,
+def test_change_audit_filter_has_change_options():
+    """Test change audits share one filter contract."""
+    assert tuple(ChangeAuditFilter) == (
+        ChangeAuditFilter.all,
+        ChangeAuditFilter.changes,
+        ChangeAuditFilter.unverified,
+    )
+
+
+def test_extended_audit_filter_has_extended_options():
+    """Test extended audits share one filter contract."""
+    assert tuple(ExtendedAuditFilter) == (
+        ExtendedAuditFilter.all,
+        ExtendedAuditFilter.changes,
+        ExtendedAuditFilter.discrepancies,
+        ExtendedAuditFilter.unverified,
     )
 
 

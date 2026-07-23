@@ -12,8 +12,8 @@ from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.audit.utils import (
     AuditFilter,
-    ComparisonAuditFilter,
-    VerificationAuditFilter,
+    ChangeAuditFilter,
+    ExtendedAuditFilter,
 )
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
@@ -281,14 +281,17 @@ def test_audit_review_cli_help_is_consistent():
         if cli_class is AuditReviewCli:
             assert "mode" not in actions
             assert actions["original_path"].option_strings == ["--original"]
-        filter_type = AuditFilter
+        filter_type = ChangeAuditFilter
         if cli_class is AuditReviewDualCli:
-            filter_type = ComparisonAuditFilter
+            filter_type = ExtendedAuditFilter
         filter_action = actions["row_filter"]
         assert filter_action.choices is None
         assert filter_action.metavar == enum_metavar(filter_type)
         assert isinstance(filter_action.help, str)
         assert enum_options_list_str(filter_type) in filter_action.help
+        assert "all includes every subtitle" in filter_action.help
+        assert "changes includes" in filter_action.help
+        assert "unverified includes" in filter_action.help
         character_help = actions["characters"].help
         assert isinstance(character_help, str)
         assert "(default: no character filter)" in character_help
@@ -622,10 +625,12 @@ def test_audit_translation_cli_infers_workflow_from_inputs(
     assert "mode" not in actions
     filter_action = actions["row_filter"]
     assert filter_action.choices is None
-    assert filter_action.default is VerificationAuditFilter.all
-    assert filter_action.metavar == enum_metavar(VerificationAuditFilter)
+    assert filter_action.default is AuditFilter.all
+    assert filter_action.metavar == enum_metavar(AuditFilter)
     assert isinstance(filter_action.help, str)
-    assert enum_options_list_str(VerificationAuditFilter) in filter_action.help
+    assert enum_options_list_str(AuditFilter) in filter_action.help
+    assert "all includes every translation" in filter_action.help
+    assert "unverified includes" in filter_action.help
 
 
 def test_transcription_audit_cli_help_describes_subtitle_indexes():
@@ -643,9 +648,12 @@ def test_transcription_audit_cli_help_describes_subtitle_indexes():
         )
         filter_action = actions["row_filter"]
         assert filter_action.choices is None
-        assert filter_action.metavar == enum_metavar(AuditFilter)
+        assert filter_action.metavar == enum_metavar(ChangeAuditFilter)
         assert isinstance(filter_action.help, str)
-        assert enum_options_list_str(AuditFilter) in filter_action.help
+        assert enum_options_list_str(ChangeAuditFilter) in filter_action.help
+        assert "all includes every decision" in filter_action.help
+        assert "changes includes" in filter_action.help
+        assert "unverified includes" in filter_action.help
 
 
 def _write_srt(file_path: Path, texts: tuple[str, ...]):
