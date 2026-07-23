@@ -74,7 +74,7 @@ def transcribe_series_guided(
         reference_language: explicit reference language, or None to detect it
         model_name: Whisper model override
         demucs_mode: Demucs preprocessing mode
-        vad_mode: Whisper VAD mode
+        vad_mode: voice activity detection mode
         mimo_fallback: whether to try MiMo after all Whisper attempts fail
         mimo_model_name: MiMo ASR model name or local path
         mimo_tokenizer_name: MiMo audio tokenizer name or local path

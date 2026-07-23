@@ -208,7 +208,7 @@ def get_guided_transcriber(
         reference_language: reference subtitle language
         model_name: Whisper model override
         demucs_mode: Demucs preprocessing mode
-        vad_mode: Whisper VAD mode
+        vad_mode: voice activity detection mode
         mimo_fallback: whether to try MiMo after all Whisper attempts fail
         mimo_model_name: MiMo ASR model name or local path
         mimo_tokenizer_name: MiMo audio tokenizer name or local path
@@ -318,6 +318,8 @@ def get_guided_transcriber(
             aligner_model_name=mimo_aligner_model_name,
             aligner_worker_command=mimo_aligner_worker_command,
             worker_command=mimo_worker_command,
+            use_vad=vad_mode is not VADMode.OFF,
+            fallback_without_vad=vad_mode is VADMode.AUTO,
         )
     return GuidedTranscriber(
         language=language,

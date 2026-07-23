@@ -128,6 +128,12 @@ def test_init_rejects_non_positive_max_tokens():
         MimoTranscriber(max_tokens=0)
 
 
+def test_init_rejects_vad_fallback_when_vad_is_disabled():
+    """Test MiMo transcriber rejects a contradictory VAD configuration."""
+    with pytest.raises(ValueError, match="when VAD is disabled"):
+        MimoTranscriber(fallback_without_vad=True)
+
+
 def test_get_cached_transcription_reads_mimo_payload(tmp_path: Path):
     """Test MiMo cache reads segment payloads from metadata-bearing files."""
     transcriber = MimoTranscriber(
@@ -353,6 +359,91 @@ def test_transcribe_chunks_audio_and_offsets_segments(
     assert segments[1].words[0].end == pytest.approx(3.7)
 
 
+def test_transcribe_vad_restores_original_timestamps(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test MiMo VAD removes silence and restores original word timings."""
+    audio = AudioSegment.silent(duration=6000)
+    transcriber = MimoTranscriber(
+        model_name=MIMO_MODEL_NAME,
+        mimo_runtime=MimoRuntime.MLX,
+        use_vad=True,
+    )
+    monkeypatch.setattr(
+        transcriber,
+        "_get_vad_speech_intervals",
+        Mock(return_value=[(1000, 2000), (4000, 5500)]),
+    )
+    patched_transcribe = Mock(
+        return_value=[
+            _get_timed_segment("one", start=0.1, end=0.9),
+            _get_timed_segment("two", start=1.2, end=2.2),
+        ]
+    )
+    monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
+
+    segments = transcriber.transcribe(audio)
+
+    speech_audio = patched_transcribe.call_args.args[0]
+    assert len(speech_audio) == 2500
+    assert [segment.text for segment in segments] == ["one", "two"]
+    assert [segment.id for segment in segments] == [0, 1]
+    assert [segment.start for segment in segments] == pytest.approx([1.1, 4.2])
+    assert [segment.end for segment in segments] == pytest.approx([1.9, 5.2])
+    assert segments[1].words is not None
+    assert segments[1].words[0].start == pytest.approx(4.2)
+    assert segments[1].words[0].end == pytest.approx(5.2)
+
+
+def test_transcribe_vad_rejects_audio_without_detected_speech(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test MiMo VAD does not invoke MiMo when no speech is detected."""
+    transcriber = MimoTranscriber(
+        model_name=MIMO_MODEL_NAME,
+        mimo_runtime=MimoRuntime.MLX,
+        use_vad=True,
+    )
+    monkeypatch.setattr(
+        transcriber,
+        "_get_vad_speech_intervals",
+        Mock(return_value=[]),
+    )
+    patched_transcribe = Mock()
+    monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
+
+    with pytest.raises(MimoTranscriptEmptyError, match="VAD found no speech"):
+        transcriber.transcribe(AudioSegment.silent(duration=1000))
+
+    patched_transcribe.assert_not_called()
+
+
+def test_transcribe_vad_auto_retries_unfiltered_audio(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test automatic MiMo VAD retries unfiltered audio after VAD failure."""
+    expected_segments = [_get_timed_segment("fallback")]
+    transcriber = MimoTranscriber(
+        model_name=MIMO_MODEL_NAME,
+        mimo_runtime=MimoRuntime.MLX,
+        use_vad=True,
+        fallback_without_vad=True,
+    )
+    monkeypatch.setattr(
+        transcriber,
+        "_get_vad_speech_intervals",
+        Mock(return_value=[]),
+    )
+    patched_transcribe = Mock(return_value=expected_segments)
+    monkeypatch.setattr(transcriber, "_transcribe_unfiltered_audio", patched_transcribe)
+    audio = AudioSegment.silent(duration=1000)
+
+    segments = transcriber.transcribe(audio)
+
+    assert segments == expected_segments
+    patched_transcribe.assert_called_once_with(audio)
+
+
 def test_transcribe_aligns_mimo_text_and_writes_cache(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -500,6 +591,7 @@ def _get_mimo_transcriber(
     transcriber.chunk_overlap_seconds = 1.0
     transcriber.use_demucs = False
     transcriber.use_vad = False
+    transcriber.fallback_without_vad = False
     transcriber.fallback_backend = None
     return transcriber
 

@@ -80,7 +80,7 @@ class DemucsMode(StrEnum):
 
 
 class VADMode(StrEnum):
-    """Whisper voice activity detection modes for transcription."""
+    """Voice activity detection modes for transcription."""
 
     AUTO = "auto"
     """Use VAD automatically when needed."""
@@ -115,7 +115,7 @@ class GuidedTranscriber:
             whisper_language: language code passed to Whisper
             aligner: transcription aligner
             demucs_mode: Demucs preprocessing mode
-            vad_mode: Whisper VAD mode
+            vad_mode: voice activity detection mode
             fallback_transcriber: optional backend used after all Whisper attempts fail
             segment_splitter: optional strategy for splitting Whisper segments
         """

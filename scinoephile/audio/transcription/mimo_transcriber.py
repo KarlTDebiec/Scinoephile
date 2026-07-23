@@ -15,6 +15,8 @@ from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+import numpy as np
+
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
 
@@ -28,6 +30,7 @@ from .mimo_runtime import (
 )
 from .mimo_worker import transcribe_with_mimo
 from .transcribed_segment import TranscribedSegment
+from .transcribed_word import TranscribedWord
 
 __all__ = [
     "MIMO_MLX_MODEL_NAME",
@@ -48,6 +51,18 @@ logger = getLogger(__name__)
 
 _LOW_INFORMATION_CHARACTERS = frozenset("啊呀吖哦噢嗯嘶")
 """Standalone vocalizations rejected as unusable fallback transcripts."""
+
+_VAD_CACHE_VERSION = "silero-v1"
+"""Cache identity for the current MiMo VAD implementation."""
+
+_VAD_MIN_SILENCE_DURATION_SECONDS = 1.0
+"""Minimum silence separating MiMo speech intervals."""
+
+_VAD_PADDING_SECONDS = 0.5
+"""Context retained around each MiMo speech interval."""
+
+_VAD_SAMPLE_RATE = 16000
+"""Sample rate expected by the Silero VAD model."""
 
 
 class MimoTranscriptionError(RuntimeError):
@@ -88,6 +103,7 @@ class MimoTranscriber:
         worker_timeout_seconds: float | None = None,
         use_demucs: bool = False,
         use_vad: bool = False,
+        fallback_without_vad: bool = False,
         audio_tag: str = "",
         fallback_backend: BaseTranscriber | None = None,
     ):
@@ -110,7 +126,8 @@ class MimoTranscriber:
             worker_command: optional subprocess command that runs MiMo
             worker_timeout_seconds: optional worker timeout in seconds
             use_demucs: whether Demucs preprocessing was applied
-            use_vad: whether VAD preprocessing is part of the cache policy
+            use_vad: whether to remove non-speech audio using Silero VAD
+            fallback_without_vad: whether to retry unfiltered audio after VAD failure
             audio_tag: optional MiMo audio tag such as <chinese> or <english>
             fallback_backend: optional backend to call when MiMo or alignment fails
         """
@@ -142,6 +159,9 @@ class MimoTranscriber:
         self.worker_timeout_seconds = worker_timeout_seconds
         self.use_demucs = use_demucs
         self.use_vad = use_vad
+        self.fallback_without_vad = fallback_without_vad
+        if self.fallback_without_vad and not self.use_vad:
+            raise ValueError("MiMo cannot fall back from VAD when VAD is disabled.")
         self.audio_tag = audio_tag
         self.fallback_backend = fallback_backend
         self.cache_dir_path = None
@@ -238,6 +258,7 @@ class MimoTranscriber:
         audio_sha256 = hashlib.sha256(audio.raw_data).hexdigest()
         effective_runtime = self._get_effective_mimo_runtime()
         effective_model_name = self._get_effective_model_name()
+        vad_key = _VAD_CACHE_VERSION if self.use_vad else "off"
         cache_key = (
             f"{audio_sha256}_backend-mimo_"
             f"runtime-{effective_runtime}_"
@@ -251,7 +272,9 @@ class MimoTranscriber:
             f"aligner-model-{self.aligner_model_name or 'default'}_"
             f"aligner-worker-{self.aligner_worker_command or 'in-process'}_"
             f"demucs-{'on' if self.use_demucs else 'off'}_"
-            f"vad-{'on' if self.use_vad else 'off'}_"
+            f"vad-{vad_key}_"
+            f"fallback-without-vad-"
+            f"{'on' if self.fallback_without_vad else 'off'}_"
             f"fallback-{'on' if self.fallback_backend is not None else 'off'}"
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
@@ -281,6 +304,8 @@ class MimoTranscriber:
             "aligner_language": self.aligner_language,
             "aligner_model_name": self.aligner_model_name,
             "aligner_worker_command": self.aligner_worker_command,
+            "use_vad": self.use_vad,
+            "fallback_without_vad": self.fallback_without_vad,
             "segments": [segment.model_dump() for segment in segments],
         }
 
@@ -343,6 +368,62 @@ class MimoTranscriber:
         if self.max_tokens is not None:
             request["max_tokens"] = self.max_tokens
         return request
+
+    @staticmethod
+    def _get_vad_speech_intervals(audio: AudioSegment) -> list[tuple[int, int]]:
+        """Get padded speech intervals using Whisper's Silero VAD implementation.
+
+        Arguments:
+            audio: source audio
+        Returns:
+            speech start and end offsets in milliseconds
+        Raises:
+            MimoTranscriptionError: if Silero VAD is unavailable or fails
+        """
+        try:
+            import torch  # noqa: PLC0415
+            from whisper_timestamped.transcribe import (  # noqa: E501, PLC0415
+                get_vad_segments,
+            )
+        except ImportError as exc:
+            raise MimoTranscriptionError(
+                "MiMo VAD requires the optional transcription dependencies."
+            ) from exc
+
+        normalized_audio = (
+            audio.set_channels(1).set_frame_rate(_VAD_SAMPLE_RATE).set_sample_width(2)
+        )
+        samples = (
+            np.array(
+                normalized_audio.get_array_of_samples(),
+                dtype=np.float32,
+            )
+            / np.iinfo(np.int16).max
+        )
+        audio_tensor = torch.from_numpy(samples)
+        try:
+            raw_intervals = get_vad_segments(
+                audio_tensor,
+                sample_rate=_VAD_SAMPLE_RATE,
+                output_sample=False,
+                min_silence_duration=_VAD_MIN_SILENCE_DURATION_SECONDS,
+                dilatation=_VAD_PADDING_SECONDS,
+                method="silero",
+            )
+        except (AssertionError, OSError, RuntimeError, ValueError) as exc:
+            raise MimoTranscriptionError(f"Unable to run MiMo VAD: {exc}") from exc
+
+        intervals = []
+        for raw_interval in raw_intervals:
+            start = raw_interval.get("start")
+            end = raw_interval.get("end")
+            if not isinstance(start, int | float) or not isinstance(end, int | float):
+                raise MimoTranscriptionError("MiMo VAD returned malformed timestamps.")
+            start_ms = max(0, round(float(start) * 1000))
+            end_ms = min(len(audio), round(float(end) * 1000))
+            if end_ms > start_ms:
+                intervals.append((start_ms, end_ms))
+        return intervals
 
     def _get_worker_env(self) -> Mapping[str, str]:
         """Get environment variables for worker subprocesses.
@@ -526,11 +607,166 @@ class MimoTranscriber:
             MimoTranscriptionError: if MiMo returns unusable text
             TranscriptionAlignmentError: if forced alignment fails
         """
+        if self.use_vad:
+            try:
+                return self._transcribe_vad_audio(audio)
+            except (MimoTranscriptionError, TranscriptionAlignmentError) as exc:
+                if not self.fallback_without_vad:
+                    raise
+                logger.info(
+                    f"Retrying MiMo without VAD after the VAD attempt failed: {exc}"
+                )
+        return self._transcribe_unfiltered_audio(audio)
+
+    def _transcribe_unfiltered_audio(
+        self,
+        audio: AudioSegment,
+    ) -> list[TranscribedSegment]:
+        """Transcribe audio without applying VAD.
+
+        Arguments:
+            audio: audio to transcribe
+        Returns:
+            timestamped transcription segments
+        """
         if self.chunk_duration_seconds is None:
             return self._transcribe_audio_window(audio)
         if len(audio) <= int(round(self.chunk_duration_seconds * 1000)):
             return self._transcribe_audio_window(audio)
         return self._transcribe_chunked_audio(audio)
+
+    def _transcribe_vad_audio(
+        self,
+        audio: AudioSegment,
+    ) -> list[TranscribedSegment]:
+        """Transcribe detected speech and restore original-audio timestamps.
+
+        Arguments:
+            audio: original audio containing speech and non-speech regions
+        Returns:
+            timestamped transcription segments on the original audio timeline
+        Raises:
+            MimoTranscriptEmptyError: if VAD finds no speech
+        """
+        speech_intervals = self._get_vad_speech_intervals(audio)
+        if not speech_intervals:
+            raise MimoTranscriptEmptyError("MiMo VAD found no speech.")
+
+        logger.info(
+            f"MiMo VAD retained {len(speech_intervals)} speech interval(s) "
+            f"from {len(audio) / 1000:.2f}s of audio"
+        )
+        speech_audio = audio[0:0]
+        for start_ms, end_ms in speech_intervals:
+            speech_audio += audio[start_ms:end_ms]
+
+        speech_segments = self._transcribe_unfiltered_audio(speech_audio)
+        return self._restore_vad_timestamps(speech_segments, speech_intervals)
+
+    @staticmethod
+    def _restore_vad_timestamps(
+        segments: Sequence[TranscribedSegment],
+        speech_intervals: Sequence[tuple[int, int]],
+    ) -> list[TranscribedSegment]:
+        """Map speech-only word timings back to the original audio timeline.
+
+        Arguments:
+            segments: transcription timed against concatenated speech audio
+            speech_intervals: original-audio speech intervals in milliseconds
+        Returns:
+            segments split and timed against the original audio
+        Raises:
+            TranscriptionAlignmentError: if aligned output lacks word timings
+        """
+        compressed_intervals = []
+        compressed_start_ms = 0
+        for original_start_ms, original_end_ms in speech_intervals:
+            duration_ms = original_end_ms - original_start_ms
+            compressed_end_ms = compressed_start_ms + duration_ms
+            compressed_intervals.append(
+                (
+                    compressed_start_ms,
+                    compressed_end_ms,
+                    original_start_ms,
+                    original_end_ms,
+                )
+            )
+            compressed_start_ms = compressed_end_ms
+
+        output_segments: list[TranscribedSegment] = []
+        current_interval_idx = -1
+        current_words: list[TranscribedWord] = []
+
+        def append_current_segment():
+            """Append accumulated words as one original-timeline segment."""
+            nonlocal current_words
+            if not current_words:
+                return
+            output_segments.append(
+                TranscribedSegment(
+                    id=len(output_segments),
+                    seek=0,
+                    start=current_words[0].start,
+                    end=current_words[-1].end,
+                    text="".join(word.text for word in current_words),
+                    words=current_words,
+                )
+            )
+            current_words = []
+
+        for segment in segments:
+            if not segment.words:
+                raise TranscriptionAlignmentError(
+                    "MiMo VAD cannot restore a segment without word timings."
+                )
+            for word in segment.words:
+                word_start_ms = round(word.start * 1000)
+                word_end_ms = round(word.end * 1000)
+                word_midpoint_ms = (word_start_ms + word_end_ms) / 2
+                interval_idx = len(compressed_intervals) - 1
+                for candidate_idx, compressed_interval in enumerate(
+                    compressed_intervals
+                ):
+                    if word_midpoint_ms <= compressed_interval[1]:
+                        interval_idx = candidate_idx
+                        break
+
+                if interval_idx != current_interval_idx:
+                    append_current_segment()
+                    current_interval_idx = interval_idx
+
+                (
+                    interval_compressed_start_ms,
+                    interval_compressed_end_ms,
+                    interval_original_start_ms,
+                    interval_original_end_ms,
+                ) = compressed_intervals[interval_idx]
+                mapped_start_ms = interval_original_start_ms + max(
+                    0,
+                    min(
+                        word_start_ms - interval_compressed_start_ms,
+                        interval_compressed_end_ms - interval_compressed_start_ms,
+                    ),
+                )
+                mapped_end_ms = interval_original_start_ms + max(
+                    0,
+                    min(
+                        word_end_ms - interval_compressed_start_ms,
+                        interval_compressed_end_ms - interval_compressed_start_ms,
+                    ),
+                )
+                mapped_end_ms = min(mapped_end_ms, interval_original_end_ms)
+                current_words.append(
+                    word.model_copy(
+                        update={
+                            "start": mapped_start_ms / 1000,
+                            "end": mapped_end_ms / 1000,
+                        }
+                    )
+                )
+
+        append_current_segment()
+        return output_segments
 
     @staticmethod
     def _get_offset_core_segments(

@@ -74,9 +74,8 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "Demucs 人声分离模式（选项：auto、on、off；默认：auto）"
         ),
         (
-            "Whisper voice activity detection mode "
-            "(options: on, off, auto; default: auto)"
-        ): "Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）",
+            "voice activity detection mode (options: on, off, auto; default: auto)"
+        ): "语音活动检测模式（选项：on、off、auto；默认：auto）",
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型标识符覆盖值（省略时使用语言对默认值）",
@@ -155,9 +154,8 @@ TRANSCRIBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "Demucs 人聲分離模式（選項：auto、on、off；預設：auto）"
         ),
         (
-            "Whisper voice activity detection mode "
-            "(options: on, off, auto; default: auto)"
-        ): "Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）",
+            "voice activity detection mode (options: on, off, auto; default: auto)"
+        ): "語音活動偵測模式（選項：on、off、auto；預設：auto）",
         (
             "Whisper model identifier override (uses language-pair default if omitted)"
         ): "Whisper 模型識別碼覆寫值（省略時使用語言對預設值）",
@@ -299,8 +297,7 @@ class TranscribeCli(ScinoephileCliBase):
             metavar="{auto,on,off}",
             type=enum_arg(VADMode),
             help=(
-                "Whisper voice activity detection mode "
-                "(options: on, off, auto; default: auto)"
+                "voice activity detection mode (options: on, off, auto; default: auto)"
             ),
         )
         arg_groups["operation arguments"].add_argument(

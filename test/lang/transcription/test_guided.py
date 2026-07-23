@@ -165,6 +165,8 @@ def test_get_guided_transcriber_configures_mimo_fallback(tmp_path: Path):
     assert fallback.aligner_model_name == "custom/aligner"
     assert fallback.aligner_worker_command == ("python", "aligner_worker.py")
     assert fallback.cache_dir_path == tmp_path
+    assert fallback.use_vad
+    assert fallback.fallback_without_vad
 
 
 def test_get_guided_transcriber_prunes_stale_cases_when_requested(
