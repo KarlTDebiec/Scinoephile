@@ -8,6 +8,7 @@ from collections.abc import Collection, Hashable, Mapping, MutableSequence, Sequ
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 
 __all__ = [
@@ -16,6 +17,7 @@ __all__ = [
     "escape_table_cell",
     "format_audit_report",
     "format_block_range",
+    "format_difficulty_filter",
     "format_index_range",
     "get_contextual_index",
     "get_selected_event_indexes",
@@ -149,6 +151,19 @@ def format_block_range(
     if last_block is None:
         return f"- block range: from {first_block}"
     return f"- block range: {first_block} through {last_block}"
+
+
+def format_difficulty_filter(difficulties: Sequence[int]) -> str:
+    """Format an exact difficulty filter for a report summary.
+
+    Arguments:
+        difficulties: selected exact difficulty levels
+    Returns:
+        formatted difficulty-filter summary
+    """
+    if not difficulties:
+        return "- difficulty filter: all"
+    return f"- difficulty filter: {', '.join(str(value) for value in difficulties)}"
 
 
 def format_index_range(
@@ -451,3 +466,63 @@ def validate_index_range(first_index: int | None, last_index: int | None):
         raise ScinoephileError("Last index must be at least 1")
     if first_index is not None and last_index is not None and first_index > last_index:
         raise ScinoephileError("First index must be less than or equal to last index")
+
+
+def _get_paired_event_block_numbers(
+    block_pairs: Sequence[tuple[Series, Series]],
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """Get paired workflow block numbers for two subtitle series.
+
+    Arguments:
+        block_pairs: paired subtitle workflow blocks
+    Returns:
+        one-based paired block number for every event in each series
+    """
+    one_block_numbers: list[int] = []
+    two_block_numbers: list[int] = []
+    for block_number, (one_block, two_block) in enumerate(block_pairs, 1):
+        one_block_numbers.extend([block_number] * len(one_block))
+        two_block_numbers.extend([block_number] * len(two_block))
+    return tuple(one_block_numbers), tuple(two_block_numbers)
+
+
+def _get_validated_block_pairs_by_pause(
+    one: Series,
+    two: Series,
+    first_block: int | None,
+    last_block: int | None,
+) -> list[tuple[Series, Series]]:
+    """Get paired workflow blocks and validate a range against their count.
+
+    Arguments:
+        one: first subtitle series
+        two: second subtitle series
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+    Returns:
+        paired workflow blocks
+    Raises:
+        ScinoephileError: if the requested range exceeds the available blocks
+    """
+    block_pairs = get_block_pairs_by_pause(one, two)
+    validate_block_range(first_block, last_block, len(block_pairs))
+    return block_pairs
+
+
+def _is_block_in_range(
+    block_number: int,
+    first_block: int | None,
+    last_block: int | None,
+) -> bool:
+    """Check whether a one-based block number is selected.
+
+    Arguments:
+        block_number: one-based block number
+        first_block: first included block number
+        last_block: last included block number
+    Returns:
+        whether the block is selected
+    """
+    return (first_block is None or block_number >= first_block) and (
+        last_block is None or block_number <= last_block
+    )
