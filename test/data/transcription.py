@@ -100,12 +100,15 @@ def process_transcription(
     media_path: Path | None = None,
     stream_index: int | None = None,
     stop_at_idx: int | None = None,
+    additional_context: str | None = None,
     transcription_kw: dict[str, Any] | None = None,
     reviewer_kw: dict[str, Any] | None = None,
     translator_kw: dict[str, Any] | None = None,
+    run_cleaning: bool = True,
+    run_review_and_translation: bool = True,
     overwrite: bool = False,
 ) -> Series:
-    """Generate, clean, review, and gap-translate a guided transcription.
+    """Generate and clean a guided transcription, with optional postprocessing.
 
     Arguments:
         title_root_path: title root directory
@@ -121,13 +124,18 @@ def process_transcription(
         stream_index: media stream index used when generating staged audio, or None
           to use the first audio stream
         stop_at_idx: exclusive block index at which to stop LLM processing
+        additional_context: additional context shared by transcription, review, and
+          gap-translation LLM prompts
         transcription_kw: additional keyword arguments for
           `transcribe_series_guided`
         reviewer_kw: additional keyword arguments for `review_series_guided`
         translator_kw: additional keyword arguments for `translate_series_gaps`
+        run_cleaning: whether to clean the generated transcription
+        run_review_and_translation: whether to run guided review and gap translation
+          after cleaning
         overwrite: whether to overwrite existing stage outputs
     Returns:
-        cleaned, reviewed, and gap-translated transcription
+        last generated transcription stage
     Raises:
         ScinoephileError: if staged audio is missing and cannot be generated
     """
@@ -135,6 +143,14 @@ def process_transcription(
     guide = Series.load(guide_path)
     language = resolve_language(reference, language)
     guide_language = resolve_language(guide, guide_language)
+
+    transcription_kw = dict(transcription_kw or {})
+    reviewer_kw = dict(reviewer_kw or {})
+    translator_kw = dict(translator_kw or {})
+    if additional_context is not None:
+        transcription_kw.setdefault("additional_context", additional_context)
+        reviewer_kw.setdefault("additional_context", additional_context)
+        translator_kw.setdefault("additional_context", additional_context)
 
     if output_dir_path is None:
         output_dir_path = title_root_path / "output" / f"{language.code}_transcribe"
@@ -172,6 +188,9 @@ def process_transcription(
         f"{language.code} transcription CER after transcription:\n"
         f"{SeriesCER(evaluation_reference, transcribe)}"
     )
+    if not run_cleaning:
+        logger.info(f"Saved transcription output under {output_dir_path}")
+        return transcribe
 
     # Clean transcription
     clean_path = output_dir_path / "transcribe_clean.srt"
@@ -186,6 +205,10 @@ def process_transcription(
         f"{language.code} transcription CER after cleaning:\n"
         f"{SeriesCER(evaluation_reference, cleaned)}"
     )
+
+    if not run_review_and_translation:
+        logger.info(f"Saved transcription output under {output_dir_path}")
+        return cleaned
 
     # Review cleaned transcription using guide subtitles
     review_path = output_dir_path / "transcribe_clean_review.srt"
