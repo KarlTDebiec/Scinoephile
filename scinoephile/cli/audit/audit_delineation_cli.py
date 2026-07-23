@@ -88,6 +88,8 @@ class AuditDelineationCli(AuditCliBase):
             "output arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--reference",
             dest="reference_path",
@@ -102,6 +104,8 @@ class AuditDelineationCli(AuditCliBase):
             type=input_file_arg(),
             help="delineation test-case JSON file",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
             choices=tuple(DelineationAuditFilter),
@@ -133,6 +137,7 @@ class AuditDelineationCli(AuditCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Read inputs
         parser = _parser or cls.argparser()
         reference = read_series(parser, reference_path)
         test_cases = cls.load_test_cases(
@@ -142,6 +147,7 @@ class AuditDelineationCli(AuditCliBase):
             workflow_name="delineation",
         )
 
+        # Perform operation
         try:
             report = audit_delineation(
                 reference,
@@ -155,6 +161,7 @@ class AuditDelineationCli(AuditCliBase):
         except ScinoephileError as exc:
             parser.error(str(exc))
 
+        # Write output
         cls.write_report(parser, report, outfile_path, overwrite)
 
 
