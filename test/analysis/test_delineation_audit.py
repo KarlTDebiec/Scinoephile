@@ -6,8 +6,10 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.delineation import audit_delineation
-from scinoephile.analysis.audit.utils import ChangeAuditFilter
+from scinoephile.analysis.audit.delineation import (
+    DelineationAuditFilter,
+    audit_delineation,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.delineation import (
@@ -128,12 +130,12 @@ def test_audit_delineation_filters_rows_and_subtitle_range():
     changed_report = audit_delineation(
         reference,
         test_cases,
-        row_filter=ChangeAuditFilter.changes,
+        row_filter=DelineationAuditFilter.changes,
     )
     unverified_report = audit_delineation(
         reference,
         test_cases,
-        row_filter=ChangeAuditFilter.unverified,
+        row_filter=DelineationAuditFilter.unverified,
     )
     ranged_report = audit_delineation(
         reference,

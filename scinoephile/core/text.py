@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections.abc import Sequence
 from enum import Enum
 from functools import cache
 from textwrap import dedent
@@ -34,6 +35,7 @@ __all__ = [
     "dedent_and_compact",
     "get_char_type",
     "is_full_width_char",
+    "join_text_lines",
     "normalize_fullwidth_alphanumerics",
     "normalize_ocr_confusables",
     "normalize_text",
@@ -320,6 +322,35 @@ def is_full_width_char(char: str) -> bool:
     if char in FULL_PUNC_CHARS:
         return True
     return get_char_type(char) == "full"
+
+
+def join_text_lines(texts: Sequence[str]) -> str:
+    """Join text lines with display-width-aware spaces.
+
+    Arguments:
+        texts: text lines to join
+    Returns:
+        joined text
+    """
+    if not texts:
+        return ""
+
+    chunks = [texts[0]]
+    for text in texts[1:]:
+        previous_char = None
+        if chunks[-1]:
+            previous_char = chunks[-1][-1]
+        next_char = None
+        if text:
+            next_char = text[0]
+
+        joiner = " "
+        if previous_char is not None and is_full_width_char(previous_char):
+            joiner = "\u3000"
+        elif next_char is not None and is_full_width_char(next_char):
+            joiner = "\u3000"
+        chunks.extend((joiner, text))
+    return "".join(chunks)
 
 
 def normalize_fullwidth_alphanumerics(text: str) -> str:

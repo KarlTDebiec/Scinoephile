@@ -8,8 +8,10 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.audit.dual_review import audit_dual_review
-from scinoephile.analysis.audit.utils import ExtendedAuditFilter
+from scinoephile.analysis.audit.dual_review import (
+    DualReviewAuditFilter,
+    audit_dual_review,
+)
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -247,8 +249,8 @@ class AuditReviewDualCli(AuditCliBase):
         # Operation arguments
         cls.add_row_filter_argument(
             parser,
-            ExtendedAuditFilter,
-            ExtendedAuditFilter.changes,
+            DualReviewAuditFilter,
+            DualReviewAuditFilter.changes,
             description=(
                 "all includes every subtitle; changes includes any review edit or "
                 "final discrepancy; discrepancies includes final discrepancies only; "
@@ -292,7 +294,7 @@ class AuditReviewDualCli(AuditCliBase):
         simplified_json_path: Path | None,
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
-        row_filter: ExtendedAuditFilter,
+        row_filter: DualReviewAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -327,7 +329,7 @@ class AuditReviewDualCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is ExtendedAuditFilter.unverified and any(
+        if row_filter is DualReviewAuditFilter.unverified and any(
             json_path is None
             for json_path in (
                 simplified_json_path,

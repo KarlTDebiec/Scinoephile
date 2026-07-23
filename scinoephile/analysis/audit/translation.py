@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
+from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.translation import TranslationTestCase
 
 from .utils import (
-    AuditFilter,
     format_audit_report,
     format_verification_marker,
     validate_audit_range,
@@ -21,6 +21,7 @@ from .utils import (
 __all__ = [
     "TranslationAuditBlock",
     "TranslationAuditCase",
+    "TranslationAuditFilter",
     "audit_translation",
     "audit_translation_blocks",
     "resolve_translation_audit_output",
@@ -28,6 +29,16 @@ __all__ = [
 
 type _TranslationAuditKey = tuple[tuple[str, ...], tuple[str, ...]]
 """Source and guide text identifying one translation workflow block."""
+
+
+class TranslationAuditFilter(StrEnum):
+    """Row filters supported by translation audits."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    unverified = "unverified"
+    """Include only rows from cases not marked as verified."""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -83,7 +94,7 @@ def audit_translation(
     source: Series,
     test_cases: Sequence[TranslationTestCase],
     *,
-    row_filter: AuditFilter = AuditFilter.all,
+    row_filter: TranslationAuditFilter = TranslationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -133,7 +144,7 @@ def audit_translation_blocks(
     cases: Sequence[TranslationAuditCase],
     *,
     title: str,
-    row_filter: AuditFilter,
+    row_filter: TranslationAuditFilter,
     first_index: int | None,
     last_index: int | None,
     first_block: int | None,
@@ -217,7 +228,7 @@ def audit_translation_blocks(
     rows = [
         row
         for row in all_rows
-        if not (row_filter is AuditFilter.unverified and row.verified)
+        if not (row_filter is TranslationAuditFilter.unverified and row.verified)
     ]
     verified_subtitles = sum(row.verified for row in all_rows)
     return format_audit_report(

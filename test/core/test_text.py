@@ -10,6 +10,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.text import (
     RE_LATIN_WORD,
     get_char_type,
+    join_text_lines,
     normalize_text,
     replace_control_characters,
 )
@@ -44,6 +45,21 @@ def test_get_char_type_handles_japanese_wide_characters(char: str) -> None:
 def test_get_char_type_handles_half_width_characters(char: str) -> None:
     """Printable non-wide characters are classified as half-width characters."""
     assert get_char_type(char) == "half"
+
+
+@parametrize(
+    ("texts", "expected"),
+    [
+        ((), ""),
+        (("one", "two"), "one two"),
+        (("甲", "乙"), "甲　乙"),
+        (("one", "乙"), "one　乙"),
+        (("甲", "two"), "甲　two"),
+    ],
+)
+def test_join_text_lines(texts: tuple[str, ...], expected: str) -> None:
+    """Text lines are joined according to adjacent characters' display width."""
+    assert join_text_lines(texts) == expected
 
 
 @parametrize(

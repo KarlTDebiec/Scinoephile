@@ -14,9 +14,8 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.gap_translation import GapTranslationTestCase
 
-from .translation import resolve_translation_audit_output
+from .translation import TranslationAuditFilter, resolve_translation_audit_output
 from .utils import (
-    AuditFilter,
     format_audit_report,
     format_verification_marker,
     validate_audit_range,
@@ -65,7 +64,7 @@ def audit_gap_translation(
     guide: Series,
     test_cases: Sequence[GapTranslationTestCase],
     *,
-    row_filter: AuditFilter = AuditFilter.all,
+    row_filter: TranslationAuditFilter = TranslationAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -176,7 +175,7 @@ def audit_gap_translation(
     rows = [
         row
         for row in all_rows
-        if not (row_filter is AuditFilter.unverified and row.verified)
+        if not (row_filter is TranslationAuditFilter.unverified and row.verified)
     ]
 
     # Format the report using the shared Markdown structure

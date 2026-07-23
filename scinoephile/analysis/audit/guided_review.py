@@ -15,9 +15,9 @@ from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.guided_review import GuidedReviewTestCase
 
+from .review import ReviewAuditFilter
 from .utils import (
     AuditResult,
-    ChangeAuditFilter,
     format_audit_report,
     format_verification_marker,
     is_block_in_range,
@@ -64,7 +64,7 @@ def audit_guided_review(
     guide: Series,
     test_cases: Sequence[GuidedReviewTestCase],
     *,
-    row_filter: ChangeAuditFilter = ChangeAuditFilter.changes,
+    row_filter: ReviewAuditFilter = ReviewAuditFilter.changes,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -174,10 +174,10 @@ def audit_guided_review(
         row
         for row in all_rows
         if not (
-            row_filter is ChangeAuditFilter.changes
+            row_filter is ReviewAuditFilter.changes
             and row.result is not AuditResult.changed
         )
-        and not (row_filter is ChangeAuditFilter.unverified and row.verified)
+        and not (row_filter is ReviewAuditFilter.unverified and row.verified)
     ]
     subtitles = len(all_rows)
     unchanged_subtitles = subtitles - revised_subtitles - unanswered_subtitles

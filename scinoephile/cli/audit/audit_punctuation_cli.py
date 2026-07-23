@@ -7,8 +7,10 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.analysis.audit.punctuation import audit_punctuation
-from scinoephile.analysis.audit.utils import ChangeAuditFilter
+from scinoephile.analysis.audit.punctuation import (
+    PunctuationAuditFilter,
+    audit_punctuation,
+)
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -106,8 +108,8 @@ class AuditPunctuationCli(AuditCliBase):
         # Operation arguments
         cls.add_row_filter_argument(
             parser,
-            ChangeAuditFilter,
-            ChangeAuditFilter.all,
+            PunctuationAuditFilter,
+            PunctuationAuditFilter.all,
             description=(
                 "all includes every decision; changes includes punctuation or "
                 "whitespace revisions; unverified includes cases not marked verified"
@@ -131,7 +133,7 @@ class AuditPunctuationCli(AuditCliBase):
         reference_path: Path,
         target_path: Path,
         json_path: Path,
-        row_filter: ChangeAuditFilter,
+        row_filter: PunctuationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -154,8 +156,9 @@ class AuditPunctuationCli(AuditCliBase):
             outfile_path: optional Markdown output path
             overwrite: whether to overwrite an existing output file
         """
-        # Read inputs
         parser = _parser or cls.argparser()
+
+        # Read inputs
         reference = read_series(parser, reference_path)
         target = read_series(parser, target_path)
         test_cases = cls.load_test_cases(

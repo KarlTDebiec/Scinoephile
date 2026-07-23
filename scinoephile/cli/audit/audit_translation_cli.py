@@ -9,8 +9,10 @@ from pathlib import Path
 
 from scinoephile.analysis.audit.gap_translation import audit_gap_translation
 from scinoephile.analysis.audit.guided_translation import audit_guided_translation
-from scinoephile.analysis.audit.translation import audit_translation
-from scinoephile.analysis.audit.utils import AuditFilter
+from scinoephile.analysis.audit.translation import (
+    TranslationAuditFilter,
+    audit_translation,
+)
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -132,8 +134,8 @@ class AuditTranslationCli(AuditCliBase):
         # Operation arguments
         cls.add_row_filter_argument(
             parser,
-            AuditFilter,
-            AuditFilter.all,
+            TranslationAuditFilter,
+            TranslationAuditFilter.all,
             description=(
                 "all includes every translation; unverified includes cases not "
                 "marked verified"
@@ -157,7 +159,7 @@ class AuditTranslationCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: AuditFilter,
+        row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -208,7 +210,7 @@ class AuditTranslationCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: AuditFilter,
+        row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -258,7 +260,7 @@ class AuditTranslationCli(AuditCliBase):
         source_path: Path,
         json_path: Path,
         *,
-        row_filter: AuditFilter,
+        row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -307,7 +309,7 @@ class AuditTranslationCli(AuditCliBase):
         target_path: Path | None,
         guide_path: Path | None,
         json_path: Path,
-        row_filter: AuditFilter,
+        row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
