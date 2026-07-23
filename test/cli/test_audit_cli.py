@@ -6,10 +6,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from unittest.mock import patch
 
 from pytest import CaptureFixture, mark, raises
 
 from scinoephile.analysis.audit.review import ComparativeReviewAuditFilter
+from scinoephile.analysis.audit.translation import TranslationAuditFilter
 from scinoephile.analysis.audit.utils import AuditFilter
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
@@ -192,6 +194,80 @@ def test_audit_cli_subcommands():
         "review-trad": AuditReviewTradCli,
         "translation": AuditTranslationCli,
     }
+
+
+def test_audit_translation_cli_infers_workflow_from_inputs(
+    tmp_path: Path,
+    capsys: CaptureFixture,
+):
+    """Test translation audit workflow inference and input validation.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    # Set up input paths
+    source_path = tmp_path / "source.srt"
+    target_path = tmp_path / "target.srt"
+    guide_path = tmp_path / "guide.srt"
+    json_path = tmp_path / "translation.json"
+    for input_path in (source_path, target_path, guide_path, json_path):
+        input_path.touch()
+
+    # Infer standard translation from a source alone
+    with patch.object(
+        AuditTranslationCli,
+        "_audit_standard",
+        return_value="standard\n",
+    ) as audit_standard:
+        run_cli_with_args(
+            AuditTranslationCli,
+            f"--source {source_path} --json {json_path}",
+        )
+    audit_standard.assert_called_once()
+    assert capsys.readouterr().out == "standard\n"
+
+    # Infer guided translation from a source and guide
+    with patch.object(
+        AuditTranslationCli,
+        "_audit_guided",
+        return_value="guided\n",
+    ) as audit_guided:
+        run_cli_with_args(
+            AuditTranslationCli,
+            f"--source {source_path} --guide {guide_path} --json {json_path}",
+        )
+    audit_guided.assert_called_once()
+    assert capsys.readouterr().out == "guided\n"
+
+    # Infer gapped translation from a target and guide
+    with patch.object(
+        AuditTranslationCli,
+        "_audit_gapped",
+        return_value="gapped\n",
+    ) as audit_gapped:
+        run_cli_with_args(
+            AuditTranslationCli,
+            f"--target {target_path} --guide {guide_path} --json {json_path}",
+        )
+    audit_gapped.assert_called_once()
+    assert capsys.readouterr().out == "gapped\n"
+
+    # Reject an incomplete gapped-translation input set
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditTranslationCli,
+            f"--target {target_path} --json {json_path}",
+        )
+    assert "--guide is required with --target" in capsys.readouterr().err
+
+    # Keep the redundant mode option out of the parser
+    actions = {
+        action.dest: action
+        for action in AuditTranslationCli.argparser()._actions  # noqa: SLF001
+    }
+    assert "mode" not in actions
+    assert actions["row_filter"].default is TranslationAuditFilter.all
 
 
 def test_transcription_audit_cli_help_describes_subtitle_indexes():

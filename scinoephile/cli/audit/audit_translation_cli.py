@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from enum import StrEnum
 from pathlib import Path
 
 from scinoephile.analysis.audit.gap_translation import (
@@ -37,10 +36,6 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "audit standard, gapped, or guided subtitle translations": (
             "审核标准、缺口或引导式字幕翻译"
         ),
-        (
-            "translation workflow to audit: standard, gapped, or guided "
-            "(default: standard)"
-        ): ("要审核的翻译工作流：standard、gapped 或 guided（默认：standard）"),
         "source subtitle SRT file used for standard or guided translation": (
             "用于标准或引导式翻译的源字幕 SRT 文件"
         ),
@@ -61,10 +56,6 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "audit standard, gapped, or guided subtitle translations": (
             "稽核標準、缺口或引導式字幕翻譯"
         ),
-        (
-            "translation workflow to audit: standard, gapped, or guided "
-            "(default: standard)"
-        ): ("要稽核的翻譯工作流程：standard、gapped 或 guided（預設：standard）"),
         "source subtitle SRT file used for standard or guided translation": (
             "用於標準或引導式翻譯的來源字幕 SRT 檔"
         ),
@@ -83,17 +74,6 @@ AUDIT_TRANSLATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
 }
 """Localized help text keyed by locale and English source text."""
-
-
-class _TranslationAuditMode(StrEnum):
-    """Translation workflows supported by the unified audit command."""
-
-    gapped = "gapped"
-    """Audit translations generated for gaps in an existing target track."""
-    guided = "guided"
-    """Audit translations generated with target-language guide subtitles."""
-    standard = "standard"
-    """Audit standard source-to-target translations."""
 
 
 class AuditTranslationCli(AuditCliBase):
@@ -118,13 +98,16 @@ class AuditTranslationCli(AuditCliBase):
         )
 
         # Input arguments
-        arg_groups["input arguments"].add_argument(
+        workflow_inputs = arg_groups["input arguments"].add_mutually_exclusive_group(
+            required=True
+        )
+        workflow_inputs.add_argument(
             "--source",
             dest="source_path",
             type=input_file_arg(),
             help="source subtitle SRT file used for standard or guided translation",
         )
-        arg_groups["input arguments"].add_argument(
+        workflow_inputs.add_argument(
             "--target",
             dest="target_path",
             type=input_file_arg(),
@@ -145,16 +128,6 @@ class AuditTranslationCli(AuditCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--mode",
-            choices=tuple(_TranslationAuditMode),
-            default=_TranslationAuditMode.standard,
-            type=enum_arg(_TranslationAuditMode),
-            help=(
-                "translation workflow to audit: standard, gapped, or guided "
-                "(default: standard)"
-            ),
-        )
         arg_groups["operation arguments"].add_argument(
             "--filter",
             choices=tuple(TranslationAuditFilter),
@@ -332,7 +305,6 @@ class AuditTranslationCli(AuditCliBase):
         target_path: Path | None,
         guide_path: Path | None,
         json_path: Path,
-        mode: _TranslationAuditMode,
         row_filter: TranslationAuditFilter,
         first_index: int | None,
         last_index: int | None,
@@ -349,7 +321,6 @@ class AuditTranslationCli(AuditCliBase):
             target_path: optional gapped target subtitle SRT path
             guide_path: optional guide subtitle SRT path
             json_path: translation test-case JSON path
-            mode: translation workflow to audit
             row_filter: rows to include in the report
             first_index: first workflow subtitle number to include
             last_index: last workflow subtitle number to include
@@ -360,30 +331,17 @@ class AuditTranslationCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        cls._validate_mode_inputs(
-            parser,
-            mode,
-            source_path=source_path,
-            target_path=target_path,
-            guide_path=guide_path,
-        )
+        if source_path is None and target_path is None:
+            parser.error("one of --source or --target is required")
+        if source_path is not None and target_path is not None:
+            parser.error("--source and --target are mutually exclusive")
+        if target_path is not None and guide_path is None:
+            parser.error("--guide is required with --target")
 
         # Perform operation
         try:
-            if mode is _TranslationAuditMode.standard:
-                assert source_path is not None
-                report = cls._audit_standard(
-                    parser,
-                    source_path,
-                    json_path,
-                    row_filter=row_filter,
-                    first_index=first_index,
-                    last_index=last_index,
-                    first_block=first_block,
-                    last_block=last_block,
-                )
-            elif mode is _TranslationAuditMode.gapped:
-                assert target_path is not None and guide_path is not None
+            if target_path is not None:
+                assert guide_path is not None
                 report = cls._audit_gapped(
                     parser,
                     target_path,
@@ -395,12 +353,24 @@ class AuditTranslationCli(AuditCliBase):
                     first_block=first_block,
                     last_block=last_block,
                 )
-            else:
-                assert source_path is not None and guide_path is not None
+            elif guide_path is not None:
+                assert source_path is not None
                 report = cls._audit_guided(
                     parser,
                     source_path,
                     guide_path,
+                    json_path,
+                    row_filter=row_filter,
+                    first_index=first_index,
+                    last_index=last_index,
+                    first_block=first_block,
+                    last_block=last_block,
+                )
+            else:
+                assert source_path is not None
+                report = cls._audit_standard(
+                    parser,
+                    source_path,
                     json_path,
                     row_filter=row_filter,
                     first_index=first_index,
@@ -413,53 +383,6 @@ class AuditTranslationCli(AuditCliBase):
 
         # Write output
         cls.write_report(parser, report, outfile_path, overwrite)
-
-    @staticmethod
-    def _validate_mode_inputs(
-        parser: ArgumentParser,
-        mode: _TranslationAuditMode,
-        *,
-        source_path: Path | None,
-        target_path: Path | None,
-        guide_path: Path | None,
-    ):
-        """Validate mode-specific translation input paths.
-
-        Arguments:
-            parser: parser used to report user-facing errors
-            mode: translation workflow to audit
-            source_path: optional source subtitle SRT path
-            target_path: optional gapped target subtitle SRT path
-            guide_path: optional guide subtitle SRT path
-        """
-        # Validate required inputs
-        required = {
-            _TranslationAuditMode.standard: ((source_path, "--source"),),
-            _TranslationAuditMode.gapped: (
-                (target_path, "--target"),
-                (guide_path, "--guide"),
-            ),
-            _TranslationAuditMode.guided: (
-                (source_path, "--source"),
-                (guide_path, "--guide"),
-            ),
-        }
-        for path, option in required[mode]:
-            if path is None:
-                parser.error(f"{option} is required in {mode.value} mode")
-
-        # Validate unsupported inputs
-        unsupported = {
-            _TranslationAuditMode.standard: (
-                (target_path, "--target"),
-                (guide_path, "--guide"),
-            ),
-            _TranslationAuditMode.gapped: ((source_path, "--source"),),
-            _TranslationAuditMode.guided: ((target_path, "--target"),),
-        }
-        for path, option in unsupported[mode]:
-            if path is not None:
-                parser.error(f"{option} is not supported in {mode.value} mode")
 
 
 if __name__ == "__main__":
