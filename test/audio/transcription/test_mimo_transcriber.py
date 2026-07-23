@@ -459,7 +459,7 @@ def _get_mimo_transcriber(
     cache_dir_path: Path = Path("/tmp/mimo"),
     model_name: str = MIMO_MODEL_NAME,
     tokenizer_name: str = "XiaomiMiMo/MiMo-Audio-Tokenizer",
-    mimo_runtime: MimoRuntime = MimoRuntime.AUTO,
+    mimo_runtime: MimoRuntime = MimoRuntime.MLX,
     aligner_backend: str = "whisperx",
     aligner_language: str = "zh",
     aligner_model_name: str | None = None,
