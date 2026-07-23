@@ -24,7 +24,7 @@ from .utils import (
 __all__ = [
     "ReviewAuditComparison",
     "ReviewAuditPair",
-    "audit_review_workflow",
+    "audit_review",
     "audit_reviews",
 ]
 
@@ -73,7 +73,7 @@ class _ReviewAuditMetadata:
     """Covered subtitle indexes belonging to unverified cases."""
 
 
-def audit_review_workflow(
+def audit_review(
     *,
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
@@ -250,7 +250,7 @@ def audit_reviews(
     Raises:
         ScinoephileError: if review test cases do not match the subtitle series
     """
-    return audit_review_workflow(
+    return audit_review(
         reviews=(
             ReviewAuditPair(
                 label="Simplified",

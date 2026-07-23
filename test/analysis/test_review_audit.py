@@ -12,7 +12,7 @@ from pytest import raises
 
 from scinoephile.analysis.audit.review import (
     ReviewAuditPair,
-    audit_review_workflow,
+    audit_review,
     audit_reviews,
 )
 from scinoephile.analysis.audit.utils import ChangeAuditFilter, ExtendedAuditFilter
@@ -54,7 +54,7 @@ class _AuditInputs(TypedDict):
     """Simplified review test cases."""
 
 
-def test_audit_review_workflow_filters_unverified_cases():
+def test_audit_review_filters_unverified_cases():
     """Test regular review audits select subtitles in unverified logged cases."""
     original = _get_series(("First", "Second", "Third"))
     reviewed = _get_series(("First revised", "Second", "Third"))
@@ -74,7 +74,7 @@ def test_audit_review_workflow_filters_unverified_cases():
         }
     )
 
-    report = audit_review_workflow(
+    report = audit_review(
         reviews=(
             ReviewAuditPair(
                 label="Test",
@@ -92,7 +92,7 @@ def test_audit_review_workflow_filters_unverified_cases():
     assert "| 2 |" not in report
     assert "| 3 |" not in report
 
-    all_report = audit_review_workflow(
+    all_report = audit_review(
         reviews=(
             ReviewAuditPair(
                 label="Test",
@@ -108,7 +108,7 @@ def test_audit_review_workflow_filters_unverified_cases():
     assert "| 3 | Third |  | — |" in all_report
 
 
-def test_audit_review_workflow_ignores_retained_historical_cases():
+def test_audit_review_ignores_retained_historical_cases():
     """Test source revisions do not make retained review history fatal."""
     original = _get_series(("Current input",))
     reviewed = _get_series(("Current output",))
@@ -138,7 +138,7 @@ def test_audit_review_workflow_ignores_retained_historical_cases():
         }
     )
 
-    report = audit_review_workflow(
+    report = audit_review(
         reviews=(
             ReviewAuditPair(
                 label="Test",
@@ -158,7 +158,7 @@ def test_audit_review_workflow_ignores_retained_historical_cases():
     )
 
 
-def test_audit_review_workflow_selects_blocks():
+def test_audit_review_selects_blocks():
     """Test review audits select one workflow block at a time."""
     original = Series(
         events=[
@@ -182,7 +182,7 @@ def test_audit_review_workflow_selects_blocks():
         ),
     )
 
-    report = audit_review_workflow(
+    report = audit_review(
         reviews=reviews,
         row_filter=ChangeAuditFilter.all,
         first_block=2,
@@ -195,20 +195,20 @@ def test_audit_review_workflow_selects_blocks():
     assert "| 3 | Third<br>Third revised |" in report
 
     with raises(ScinoephileError, match="mutually exclusive"):
-        audit_review_workflow(
+        audit_review(
             reviews=reviews,
             first_index=1,
             first_block=2,
         )
 
     with raises(ScinoephileError, match="requires at least one comparison"):
-        audit_review_workflow(
+        audit_review(
             reviews=reviews,
             row_filter=ExtendedAuditFilter.discrepancies,
         )
 
 
-def test_audit_review_workflow_uses_latest_duplicate_case():
+def test_audit_review_uses_latest_duplicate_case():
     """Test the latest duplicate review case controls notes and verification."""
     original = _get_series(("Input",))
     reviewed = _get_series(("Output",))
@@ -240,8 +240,8 @@ def test_audit_review_workflow_uses_latest_duplicate_case():
         ),
     )
 
-    report = audit_review_workflow(reviews=reviews, row_filter=ChangeAuditFilter.all)
-    unverified_report = audit_review_workflow(
+    report = audit_review(reviews=reviews, row_filter=ChangeAuditFilter.all)
+    unverified_report = audit_review(
         reviews=reviews,
         row_filter=ChangeAuditFilter.unverified,
     )

@@ -10,7 +10,7 @@ from pathlib import Path
 
 from scinoephile.analysis.audit.review import (
     ReviewAuditPair,
-    audit_review_workflow,
+    audit_review,
 )
 from scinoephile.analysis.audit.utils import ChangeAuditFilter
 from scinoephile.cli.helpers.io import read_series
@@ -276,7 +276,7 @@ class AuditReviewTradCli(AuditCliBase):
 
         # Perform operation
         try:
-            report = audit_review_workflow(
+            report = audit_review(
                 reviews=(
                     ReviewAuditPair(
                         label="Traditional",

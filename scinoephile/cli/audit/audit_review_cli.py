@@ -11,7 +11,7 @@ from pathlib import Path
 from scinoephile.analysis.audit.guided_review import audit_guided_review
 from scinoephile.analysis.audit.review import (
     ReviewAuditPair,
-    audit_review_workflow,
+    audit_review,
 )
 from scinoephile.analysis.audit.utils import ChangeAuditFilter
 from scinoephile.cli.helpers.io import read_series
@@ -283,7 +283,7 @@ class AuditReviewCli(AuditCliBase):
         language = detected_languages.pop()
 
         # Perform operation
-        return audit_review_workflow(
+        return audit_review(
             reviews=(
                 ReviewAuditPair(
                     label=_LANGUAGE_LABELS[language],
