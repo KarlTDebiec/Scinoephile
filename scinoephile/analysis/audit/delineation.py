@@ -12,15 +12,13 @@ from scinoephile.core.subtitles import Series
 from scinoephile.llms.delineation import DelineationTestCase
 
 from .utils import (
-    AuditFilter,
     AuditResult,
-    escape_table_cell,
+    ChangeAuditFilter,
     format_audit_report,
+    format_verification_marker,
     get_selected_event_indexes,
     get_superseded_keys,
     resolve_contextual_index,
-    validate_block_range,
-    validate_index_range,
 )
 
 __all__ = ["audit_delineation"]
@@ -30,7 +28,7 @@ def audit_delineation(
     reference: Series,
     test_cases: Sequence[DelineationTestCase],
     *,
-    row_filter: AuditFilter = AuditFilter.all,
+    row_filter: ChangeAuditFilter = ChangeAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -51,9 +49,6 @@ def audit_delineation(
     Raises:
         ScinoephileError: if a logged reference pair cannot be matched uniquely
     """
-    validate_index_range(first_index, last_index)
-    validate_block_range(first_block, last_block)
-
     pair_indexes: dict[tuple[str, str], list[int]] = defaultdict(list)
     for index in range(len(reference) - 1):
         pair = (reference[index].text, reference[index + 1].text)
@@ -71,7 +66,7 @@ def audit_delineation(
         test_cases,
     )
 
-    rows: list[tuple[int, str]] = []
+    rows: list[tuple[int, tuple[str, ...]]] = []
     shifts = 0
     no_shifts = 0
     unanswered = 0
@@ -107,45 +102,41 @@ def audit_delineation(
             result = AuditResult.unchanged
 
         if (
-            row_filter is AuditFilter.changes and result is not AuditResult.changed
-        ) or (row_filter is AuditFilter.unverified and test_case.verified):
+            row_filter is ChangeAuditFilter.changes
+            and result is not AuditResult.changed
+        ) or (row_filter is ChangeAuditFilter.unverified and test_case.verified):
             continue
 
+        verified_marker = format_verification_marker(test_case.verified)
         cells = (
             f"{first_subtitle_index}\n{second_subtitle_index}",
             _format_pair(query.reference_one, query.reference_two),
             _format_pair(*input_target),
             output,
             "",
-            "✓" if test_case.verified else "",
+            verified_marker,
         )
-        rows.append(
-            (
-                first_subtitle_index,
-                f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |",
-            )
-        )
+        rows.append((first_subtitle_index, cells))
 
     rows.sort(key=lambda item: item[0])
 
     return format_audit_report(
         title="Transcription Delineation Audit",
-        summary_lines=(
-            f"- logged cases: {logged_cases}",
-            f"- boundary shifts: {shifts}",
-            f"- no-shift answers: {no_shifts}",
-            f"- unanswered cases: {unanswered}",
-            f"- row filter: {row_filter.value}",
+        summary_items=(
+            f"logged cases: {logged_cases}",
+            f"boundary shifts: {shifts}",
+            f"no-shift answers: {no_shifts}",
+            f"unanswered cases: {unanswered}",
+            f"row filter: {row_filter.value}",
         ),
-        column_labels=(
-            "Indexes",
-            "Reference",
-            "Input",
-            "Output",
-            "Notes",
-            "Verified",
+        columns=(
+            ("Indexes", "right"),
+            ("Reference", "left"),
+            ("Input", "left"),
+            ("Output", "left"),
+            ("Notes", "left"),
+            ("Verified", "center"),
         ),
-        column_separators=("---:", "---", "---", "---", "---", ":---:"),
         rows=[row for _, row in rows],
         first_index=first_index,
         last_index=last_index,

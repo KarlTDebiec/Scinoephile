@@ -11,10 +11,12 @@ review before selecting a workflow; language alone does not determine it.
 ## Required report file
 
 Save the complete Markdown report under `local/`, audit every displayed row,
-and write each independent finding in its `Notes` cell.
+and write each independent judgment in its `Notes` cell.
 
 - Preserve the exact columns emitted by the selected command.
-- Treat JSON notes as context, not proof. Replace them with your own judgment.
+- The generated `Notes` cell contains any applicable JSON revision note. Read it
+  as context, then replace the entire cell with your own independent judgment;
+  do not append to or merely endorse the recorded note.
 - When emitted, preserve `Verified`: `✓` means the complete JSON case was
   verified.
 - Validate the edited table and provide a clickable link. Do not paste the full
@@ -77,7 +79,7 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review \
   --original <original.srt> \
   --reviewed <reviewed.srt> \
   --json <review.json> \
-  --filter changes \
+  --filter all \
   --outfile local/<dataset>_review_audit.md \
   --overwrite
 ```
@@ -105,7 +107,7 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review-trad \
   --traditional-simplified-reviewed <simplified-traditional-reviewed.srt> \
   --traditional-json <review.json> \
   --traditional-simplified-json <simplify-review.json> \
-  --filter changes \
+  --filter all \
   --outfile local/<dataset>_review_trad_audit.md \
   --overwrite
 ```
@@ -123,17 +125,19 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit review-dual \
   --simplified-json <simplified-review.json> \
   --traditional-json <traditional-review.json> \
   --traditional-simplified-json <simplify-review.json> \
-  --filter changes \
+  --filter all \
   --outfile local/<dataset>_review_dual_audit.md \
   --overwrite
 ```
 
 Regular, guided, and traditional review support `all`, `changes`, and
 `unverified`; dual review additionally supports `discrepancies`. All default to
-`changes`. The `unverified` filter requires the corresponding JSON for every
-review path. Use inclusive `--first-index` and `--last-index`. `--characters`
-is available for regular, traditional, and dual review, with script variants
-added automatically; use it only for a requested or suspected conversion issue.
+`changes`, but a complete audit must explicitly use `all` so unchanged subtitles
+can be checked for missed corrections. Use `changes` only for an applied-edit
+audit. The `unverified` filter requires the corresponding JSON for every review
+path. Use inclusive `--first-index` and `--last-index`. `--characters` is
+available for regular, traditional, and dual review, with script variants added
+automatically; use it only for a requested or suspected conversion issue.
 
 Use `--first-block` and `--last-block` for an inclusive, one-based workflow
 block range. In guided review these are paired target/guide blocks; in regular,
@@ -151,9 +155,10 @@ Read the relevant language policy before judging rows:
   rules.
 
 Check incorrect edits, missed corrections, script leakage, lexical and OCR
-errors, grammar, punctuation, and whitespace. Begin accepted edits with `OK;`,
-rejected edits with `Incorrect;`, and unresolved cases with `Check;`. Keep notes
-terse and use arrow notation for simple substitutions.
+errors, grammar, punctuation, and whitespace. Write exactly `OK` for every
+acceptable edited or unchanged row. Begin rejected rows with `Incorrect;` and
+unresolved rows with `Check;`. Keep notes terse and use arrow notation for simple
+substitutions.
 
 Review stages must preserve source punctuation and whitespace exactly. When a
 text correction also changes either, keep the text correction but restore the
@@ -165,16 +170,18 @@ simplification review for conversion-specific cleanup.
 
 Guided reports contain `Index`, `Block`, `Guide`, `Target / revision`, `Notes`,
 and `Verified`. The target appears above the proposed revision; `(unanswered)`
-means the JSON case has no answer.
+means the JSON case has no answer. For a proposed revision, the generated
+`Notes` cell contains that revision's JSON note; replace it during the audit as
+described above.
 
 - Audit proposed revisions and no-revision decisions. An unchanged target is a
   decision, not an automatic pass.
 - Use the guide as semantic evidence, not text to copy. Accept legitimate
   differences in vocabulary, syntax, particles, omissions, and segmentation.
 - Reject punctuation-only or whitespace-only revisions at this stage.
-- Write exactly `OK` for an appropriate proposed revision. Leave a correct
-  no-revision row blank. Otherwise use `Incorrect revision;`,
-  `Missed revision;`, or `Uncertain;`.
+- Write exactly `OK` for an appropriate proposed revision or no-revision
+  decision. Otherwise use `Incorrect revision;`, `Missed revision;`, or
+  `Uncertain;`. Never mark an unanswered row `OK`.
 - For substitutions, add the smallest relevant tone-marked Yale reading for
   `yue-*` or Hanyu Pinyin reading for `zho-*`; do not guess uncertain readings.
 

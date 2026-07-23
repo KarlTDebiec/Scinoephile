@@ -6,41 +6,40 @@ from __future__ import annotations
 
 from collections.abc import Collection, Hashable, Mapping, MutableSequence, Sequence
 from enum import StrEnum
+from typing import Literal
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 
 __all__ = [
+    "AuditColumn",
     "AuditFilter",
     "AuditResult",
-    "escape_table_cell",
+    "ChangeAuditFilter",
+    "ExtendedAuditFilter",
     "format_audit_report",
-    "format_block_range",
-    "format_difficulty_filter",
-    "format_index_range",
+    "format_verification_marker",
     "get_contextual_index",
     "get_selected_event_indexes",
     "get_superseded_keys",
     "is_block_in_range",
     "resolve_contextual_index",
     "validate_audit_range",
-    "validate_block_range",
-    "validate_index_range",
 ]
+
+type AuditColumn = tuple[str, Literal["left", "right", "center"]]
+"""Semantic label and alignment for one audit report column."""
 
 
 class AuditFilter(StrEnum):
-    """Row filters shared by audit reports without final comparisons."""
+    """Row filters for audits whose only row state is verification."""
 
     all = "all"
     """Include every eligible row."""
 
-    changes = "changes"
-    """Include only changed rows."""
-
     unverified = "unverified"
-    """Include only rows from unverified logged cases."""
+    """Include only rows from cases not marked as verified."""
 
 
 class AuditResult(StrEnum):
@@ -56,24 +55,41 @@ class AuditResult(StrEnum):
     """The logged case has no answer."""
 
 
-def escape_table_cell(value: str) -> str:
-    """Escape one Markdown table cell.
+class ChangeAuditFilter(StrEnum):
+    """Row filters shared by audit reports that identify changed rows."""
 
-    Arguments:
-        value: cell text
-    Returns:
-        escaped cell text
-    """
-    return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include only changed rows."""
+
+    unverified = "unverified"
+    """Include only rows from unverified logged cases."""
+
+
+class ExtendedAuditFilter(StrEnum):
+    """Row filters for audits that also identify final discrepancies."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include rows that the audit classifies as changed."""
+
+    discrepancies = "discrepancies"
+    """Include only final discrepancies."""
+
+    unverified = "unverified"
+    """Include only rows from unverified logged cases."""
 
 
 def format_audit_report(
     *,
     title: str,
-    summary_lines: Sequence[str],
-    column_labels: Sequence[str],
-    column_separators: Sequence[str],
-    rows: Sequence[str],
+    summary_items: Sequence[str],
+    columns: Sequence[AuditColumn],
+    rows: Sequence[Sequence[str]],
     first_index: int | None = None,
     last_index: int | None = None,
     index_track_name: str | None = None,
@@ -84,10 +100,9 @@ def format_audit_report(
 
     Arguments:
         title: report title without the Markdown heading marker
-        summary_lines: report-specific Markdown summary list items
-        column_labels: audit table column labels
-        column_separators: Markdown alignment separators for the columns
-        rows: formatted Markdown table rows
+        summary_items: report-specific summary text without Markdown list markers
+        columns: audit table labels and alignments
+        rows: raw audit table cell values
         first_index: first included one-based subtitle index
         last_index: last included one-based subtitle index
         index_track_name: optional name of the indexed subtitle track
@@ -96,101 +111,81 @@ def format_audit_report(
     Returns:
         formatted Markdown audit report
     Raises:
-        ValueError: if the table labels and separators have different lengths
+        ScinoephileError: if subtitle-index and block ranges are both provided
+        ValueError: if a column alignment or table row is invalid
     """
-    if len(column_labels) != len(column_separators):
-        raise ValueError("Table labels and separators must have the same length")
+    # Validate ranges at the shared output boundary
+    validate_audit_range(first_index, last_index, first_block, last_block)
 
+    # Format and validate the table schema
+    separators_by_alignment = {
+        "left": "---",
+        "right": "---:",
+        "center": ":---:",
+    }
+    column_labels = []
+    column_separators = []
+    for label, alignment in columns:
+        separator = separators_by_alignment.get(alignment)
+        if separator is None:
+            raise ValueError(f"Unsupported table column alignment: {alignment}")
+        column_labels.append(_escape_table_cell(label))
+        column_separators.append(separator)
+
+    # Escape raw cell values and verify every row matches the schema
+    table_rows = []
+    for row_number, row in enumerate(rows, 1):
+        if len(row) != len(columns):
+            raise ValueError(
+                f"Table row {row_number} has {len(row)} cells; expected {len(columns)}"
+            )
+        table_rows.append(f"| {' | '.join(_escape_table_cell(cell) for cell in row)} |")
+
+    # Format the report heading and summary
     lines = [
         f"# {title}",
         "",
         "## Summary",
         "",
-        *summary_lines,
+        *(f"- {item}" for item in summary_items),
     ]
-    index_range = format_index_range(
+    index_range = _format_index_range(
         first_index,
         last_index,
         track_name=index_track_name,
     )
     if index_range is not None:
-        lines.append(index_range)
-    block_range = format_block_range(first_block, last_block)
+        lines.append(f"- {index_range}")
+    block_range = _format_block_range(first_block, last_block)
     if block_range is not None:
-        lines.append(block_range)
+        lines.append(f"- {block_range}")
     lines.extend(
         (
-            f"- table rows: {len(rows)}",
+            f"- table rows: {len(table_rows)}",
             "",
             "## Audit Table",
             "",
             f"| {' | '.join(column_labels)} |",
             f"|{'|'.join(column_separators)}|",
-            *rows,
+            *table_rows,
         )
     )
     return "\n".join(lines) + "\n"
 
 
-def format_block_range(
-    first_block: int | None,
-    last_block: int | None,
-) -> str | None:
-    """Format an optional block range for a report summary.
+def format_verification_marker(verified: bool | None) -> str:
+    """Format semantic verification state for an audit table.
 
     Arguments:
-        first_block: first included one-based block number
-        last_block: last included one-based block number
+        verified: verification state, or None when verification is unavailable
     Returns:
-        formatted block-range summary, or None if the range is unbounded
+        check mark, blank text, or em dash
     """
-    if first_block is None and last_block is None:
-        return None
-    if first_block is None:
-        return f"- block range: through {last_block}"
-    if last_block is None:
-        return f"- block range: from {first_block}"
-    return f"- block range: {first_block} through {last_block}"
-
-
-def format_difficulty_filter(difficulties: Sequence[int]) -> str:
-    """Format an exact difficulty filter for a report summary.
-
-    Arguments:
-        difficulties: selected exact difficulty levels
-    Returns:
-        formatted difficulty-filter summary
-    """
-    if not difficulties:
-        return "- difficulty filter: all"
-    return f"- difficulty filter: {', '.join(str(value) for value in difficulties)}"
-
-
-def format_index_range(
-    first_index: int | None,
-    last_index: int | None,
-    *,
-    track_name: str | None = None,
-) -> str | None:
-    """Format an optional subtitle range for a report summary.
-
-    Arguments:
-        first_index: first included one-based subtitle index
-        last_index: last included one-based subtitle index
-        track_name: optional name of the subtitle track whose indexes are selected
-    Returns:
-        formatted range summary, or None if the range is unbounded
-    """
-    if first_index is None and last_index is None:
-        return None
-    range_name = "subtitle"
-    if track_name is not None:
-        range_name = f"{track_name} subtitle"
-    if first_index is None:
-        return f"- {range_name} range: through {last_index}"
-    if last_index is None:
-        return f"- {range_name} range: from {first_index}"
-    return f"- {range_name} range: {first_index} through {last_index}"
+    if verified is None:
+        return "—"
+    if verified:
+        return "✓"
+    return ""
 
 
 def get_contextual_index(
@@ -286,15 +281,18 @@ def get_selected_event_indexes(
         ScinoephileError: if selection ranges are invalid or mixed
     """
     has_block_range = first_block is not None or last_block is not None
-    block_indexes = (
-        Series.get_block_indexes_by_pause(series) if has_block_range else None
-    )
+    block_indexes = None
+    if has_block_range:
+        block_indexes = Series.get_block_indexes_by_pause(series)
+    block_count = None
+    if block_indexes is not None:
+        block_count = len(block_indexes)
     validate_audit_range(
         first_index,
         last_index,
         first_block,
         last_block,
-        block_count=len(block_indexes) if block_indexes is not None else None,
+        block_count=block_count,
     )
 
     if not has_block_range:
@@ -415,11 +413,70 @@ def validate_audit_range(
     has_block_range = first_block is not None or last_block is not None
     if has_index_range and has_block_range:
         raise ScinoephileError("Subtitle-index and block ranges are mutually exclusive")
-    validate_index_range(first_index, last_index)
-    validate_block_range(first_block, last_block, block_count)
+    _validate_index_range(first_index, last_index)
+    _validate_block_range(first_block, last_block, block_count)
 
 
-def validate_block_range(
+def _escape_table_cell(value: str) -> str:
+    """Escape one Markdown table cell.
+
+    Arguments:
+        value: cell text
+    Returns:
+        escaped cell text
+    """
+    return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
+
+
+def _format_block_range(
+    first_block: int | None,
+    last_block: int | None,
+) -> str | None:
+    """Format an optional block range for a report summary.
+
+    Arguments:
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+    Returns:
+        formatted block-range summary, or None if the range is unbounded
+    """
+    if first_block is None and last_block is None:
+        return None
+    if first_block is None:
+        return f"block range: through {last_block}"
+    if last_block is None:
+        return f"block range: from {first_block}"
+    return f"block range: {first_block} through {last_block}"
+
+
+def _format_index_range(
+    first_index: int | None,
+    last_index: int | None,
+    *,
+    track_name: str | None = None,
+) -> str | None:
+    """Format an optional subtitle range for a report summary.
+
+    Arguments:
+        first_index: first included one-based subtitle index
+        last_index: last included one-based subtitle index
+        track_name: optional name of the subtitle track whose indexes are selected
+    Returns:
+        formatted range summary, or None if the range is unbounded
+    """
+    if first_index is None and last_index is None:
+        return None
+    range_name = "subtitle"
+    if track_name is not None:
+        range_name = f"{track_name} subtitle"
+    if first_index is None:
+        return f"{range_name} range: through {last_index}"
+    if last_index is None:
+        return f"{range_name} range: from {first_index}"
+    return f"{range_name} range: {first_index} through {last_index}"
+
+
+def _validate_block_range(
     first_block: int | None,
     last_block: int | None,
     block_count: int | None = None,
@@ -451,7 +508,7 @@ def validate_block_range(
         )
 
 
-def validate_index_range(first_index: int | None, last_index: int | None):
+def _validate_index_range(first_index: int | None, last_index: int | None):
     """Validate optional one-based index boundaries.
 
     Arguments:

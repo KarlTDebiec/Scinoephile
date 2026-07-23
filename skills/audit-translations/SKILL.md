@@ -1,6 +1,6 @@
 ---
 name: audit-translations
-description: Audit Scinoephile standard, gapped, or guided translation JSON against the exact source, target-context, and guide SRT files used to generate it. Use when inspecting translation, gap_translation, or guided_translation JSON; judging translated, empty, unnecessary, or unanswered outputs; filtering by difficulty or verification state; or correcting and verifying translation cases.
+description: Audit Scinoephile standard, gapped, or guided translation JSON against the exact source, target-context, and guide SRT files used to generate it. Use when inspecting translation, gap_translation, or guided_translation JSON; judging translated, empty, unnecessary, or unanswered outputs; filtering by verification state; or correcting and verifying translation cases.
 ---
 
 # Audit Translations
@@ -8,20 +8,21 @@ description: Audit Scinoephile standard, gapped, or guided translation JSON agai
 Run commands from the repository root. Select the workflow from the JSON and
 the inputs that produced it; do not infer it from language alone.
 
-## Select the mode
+## Select the inputs
 
-| Workflow | Required SRT inputs | Mode |
-|---|---|---|
-| Standard translation | source track | `standard` |
-| Translation of missing target positions | gapped target and complete guide | `gapped` |
-| Translation using target-language guide context | source and guide | `guided` |
+| Workflow | Required SRT inputs |
+|---|---|
+| Standard translation | source track |
+| Translation of missing target positions | gapped target and complete guide |
+| Translation using target-language guide context | source and guide |
 
-Use one `scinoephile audit translation` command for all three modes.
+The `scinoephile audit translation` command infers the workflow from the SRT
+inputs.
 
 ## Required report file
 
 Save the complete Markdown report under `local/`, audit every row, and write
-each finding into its `Notes` cell.
+each judgment into its `Notes` cell.
 
 Standard and guided reports have exactly: `Indexes`, `Case / block`,
 `Difficulty`, `Source`, `Guide`, `Translation`, `Notes`, `Verified`. Gapped
@@ -34,6 +35,10 @@ reports have exactly: `Indexes`, `Case / block`, `Difficulty`, `Guide`,
   JSON index. Always use `Q` when editing an answer.
 - `C` is the one-based JSON case position and `B` the reconstructed block.
 - `✓` means the entire JSON case is verified, not merely one displayed row.
+- Translation JSON has no note field, so generated `Notes` cells begin blank.
+  If a future schema populates one, read it as context and replace the entire
+  cell with your own independent judgment; never append to or merely endorse
+  generated note content.
 - Keep findings beside rows, validate the edited report, and provide its link.
   Do not paste the table inline unless the user requests it.
 
@@ -70,7 +75,6 @@ Standard:
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
-  --mode standard \
   --source <source.srt> \
   --json <translation.json> \
   --filter all \
@@ -82,7 +86,6 @@ Gapped:
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
-  --mode gapped \
   --target <gapped-target.srt> \
   --guide <complete-guide.srt> \
   --json <gap_translation/device.json> \
@@ -95,7 +98,6 @@ Guided:
 
 ```shell
 UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
-  --mode guided \
   --source <source.srt> \
   --guide <target-language-guide.srt> \
   --json <guided_translation/device.json> \
@@ -105,17 +107,17 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit translation \
 ```
 
 Use inclusive `--first-index` and `--last-index`. They refer to global source
-indexes in standard and guided mode, and global guide indexes in gapped mode.
+indexes in standard and guided workflows, and global guide indexes in the gapped
+workflow.
 Use `--first-block` and `--last-block` for inclusive, one-based workflow block
-ranges: source blocks in standard mode and paired blocks in guided or gapped
-mode. Block and subtitle bounds may be combined; their intersection determines
-the displayed rows. Omit either bound for an open-ended range.
-Use `--filter unverified` to resume verification; the default is `all`. Omit
-`--difficulty` for all levels or pass exact values such as
-`--difficulty 1 2`. Difficulty and verification filters compose.
+ranges: source blocks in the standard workflow and paired blocks in guided or
+gapped workflows. Subtitle-index and block ranges are mutually exclusive. Omit
+either bound for an open-ended range.
+Use `--filter unverified` to resume verification; the default is `all`.
 
-`(unanswered)` means the case has no answer. In gapped mode, `(empty)` is an
-answered output that intentionally emits no target subtitle.
+`(unanswered)` means the case has no answer. `(empty)` means an answered output
+emitted empty text; in the gapped workflow this may intentionally mean that no
+target subtitle is needed.
 
 ## Audit every translation
 
@@ -126,11 +128,11 @@ the intended target language and script.
   names, numbers, register, terminology, continuity, and meaning-changing
   punctuation.
 - Preserve natural target-language grammar rather than copying source syntax.
-- In guided mode, use the guide as target-language context and semantic
+- In the guided workflow, use the guide as target-language context and semantic
   evidence, not as text that must be copied.
-- In gapped mode, treat existing target subtitles as context, not as text to
-  rewrite. Accept an empty output only when the guide position genuinely needs
-  no target subtitle.
+- In the gapped workflow, treat existing target subtitles as context, not as
+  text to rewrite. Accept an empty output only when the guide position genuinely
+  needs no target subtitle.
 - Treat every unanswered case as incomplete.
 
 Write exactly `OK` for a clearly appropriate translation. Otherwise begin with:

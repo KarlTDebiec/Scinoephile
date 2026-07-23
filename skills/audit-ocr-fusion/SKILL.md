@@ -12,15 +12,18 @@ cleaning or review stages.
 
 Save the complete Markdown report under `local/`.
 
-- Keep these columns: `Index`, `Case`, `Difficulty`, `Source one`, `Source two`,
-  `Fused`, and `Validated`. When JSON is supplied, also include `Notes` and
+- Keep these columns: `Subtitle`, `Case`, `Difficulty`, `Source one`, `Source
+  two`, `Fused`, `Validated`, and `Notes`. When JSON is supplied, also include
   `Verified`.
 - `Case` and `Difficulty` are `—` for deterministic rows and rows audited
-  without JSON. An empty `Verified` cell on a deterministic row does not
-  indicate an unverified JSON case.
+  without JSON. When JSON is supplied, `Verified` is `—` for deterministic
+  rows, `✓` for verified JSON cases, and empty for unverified JSON cases.
 - Treat `Validated` as ground truth when supplied. It is `—` when omitted.
-- When JSON is supplied, `Notes` contains the recorded LLM note or the automatic
-  fusion explanation.
+- Generated `Notes` contains the recorded LLM note when JSON is supplied, an
+  automatic fusion explanation for deterministic rows, or an empty cell when
+  no context is available. Read it as context, then replace the entire cell
+  with your own independent judgment; do not append to or merely endorse the
+  generated content.
 - Validate the saved table after generating it and provide a clickable link.
   Do not paste the full table inline unless the user requests it.
 
@@ -62,21 +65,21 @@ UV_CACHE_DIR=/tmp/uv-cache uv run scinoephile audit ocr-fusion \
   --validated <validated.srt> \
   --first-index <first> \
   --last-index <last> \
-  --filter changes \
+  --filter all \
   --outfile local/<dataset>_ocr_fusion_audit_<first>-<last>.md \
   --overwrite
 ```
 
 Omit `--json` when no decision log is available. Omit `--validated` when no
-aligned truth track exists. The inclusive range uses fused-track indexes. Filters
-are:
+aligned truth track exists. The inclusive range uses fused-track indexes. Use
+`all` for a complete audit. Filters are:
 
-- `changes`: source disagreements, including deterministic one-source rows
 - `all`: every fused subtitle, including identical and empty sources
-- `unverified`: only unverified LLM cases; without JSON, all rows requiring an
-  LLM decision are unverified
+- `changes`: source disagreements, including deterministic one-source rows
 - `discrepancies`: only fused rows that differ from `--validated`; this filter
   requires the validated track and includes deterministic rows
+- `unverified`: only unverified LLM cases; without JSON, all rows requiring an
+  LLM decision are unverified
 
 Use `--first-block` and `--last-block` for an inclusive, one-based range of
 fused-track blocks. Block and subtitle bounds are mutually exclusive. Omit
@@ -102,8 +105,8 @@ unless the validated track itself is demonstrably wrong.
   identical source text remains correct against validated truth.
 - Do not assess later cleaning, translation, or subtitle-review decisions.
 
-When reporting a finding, use exactly `OK` for a correct fusion. Otherwise begin
-the finding with one of:
+For every displayed row, replace the generated `Notes` cell with exactly `OK`
+for a correct fusion. Otherwise begin the finding with one of:
 
 - `Incorrect fusion;` for a clear wrong selection or synthesized error
 - `Validated discrepancy;` when fused text differs from reliable validated

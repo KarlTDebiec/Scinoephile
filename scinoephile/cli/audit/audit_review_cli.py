@@ -11,14 +11,11 @@ from pathlib import Path
 from scinoephile.analysis.audit.guided_review import audit_guided_review
 from scinoephile.analysis.audit.review import (
     ReviewAuditPair,
-    audit_review_workflow,
+    audit_review,
 )
-from scinoephile.analysis.audit.utils import AuditFilter
+from scinoephile.analysis.audit.utils import ChangeAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
-    enum_arg,
-    enum_metavar,
-    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -44,8 +41,13 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "test-case JSON file; required with --guide or --filter unverified": (
             "测试用例 JSON 文件；与 --guide 或 --filter unverified 一同使用时为必需"
         ),
-        "rows to include: all, changes, or unverified (default: %(default)s)": (
-            "要包含的行：all、changes 或 unverified（默认：%(default)s）"
+        (
+            "rows to include: all, changes, or unverified; all includes every "
+            "subtitle; changes includes review edits; unverified includes subtitles "
+            "in cases not marked verified (default: %(default)s)"
+        ): (
+            "要包含的行：all 表示每个字幕，changes 表示校对更改，unverified "
+            "表示未标记为已验证的案例中的字幕（默认：%(default)s）"
         ),
         (
             "characters to match in regular-review input; values may be separated "
@@ -66,8 +68,13 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "test-case JSON file; required with --guide or --filter unverified": (
             "測試案例 JSON 檔；與 --guide 或 --filter unverified 一同使用時為必需"
         ),
-        "rows to include: all, changes, or unverified (default: %(default)s)": (
-            "要包含的列：all、changes 或 unverified（預設：%(default)s）"
+        (
+            "rows to include: all, changes, or unverified; all includes every "
+            "subtitle; changes includes review edits; unverified includes subtitles "
+            "in cases not marked verified (default: %(default)s)"
+        ): (
+            "要包含的列：all 表示每個字幕，changes 表示校對變更，unverified "
+            "表示未標記為已驗證的案例中的字幕（預設：%(default)s）"
         ),
         (
             "characters to match in regular-review input; values may be separated "
@@ -143,15 +150,13 @@ class AuditReviewCli(AuditCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            default=AuditFilter.changes,
-            dest="row_filter",
-            metavar=enum_metavar(AuditFilter),
-            type=enum_arg(AuditFilter),
-            help=(
-                f"rows to include: {enum_options_list_str(AuditFilter)} "
-                "(default: %(default)s)"
+        cls.add_row_filter_argument(
+            parser,
+            ChangeAuditFilter,
+            ChangeAuditFilter.changes,
+            description=(
+                "all includes every subtitle; changes includes review edits; "
+                "unverified includes subtitles in cases not marked verified"
             ),
         )
         arg_groups["operation arguments"].add_argument(
@@ -183,7 +188,7 @@ class AuditReviewCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: AuditFilter,
+        row_filter: ChangeAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -234,7 +239,7 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path,
         json_path: Path | None,
         *,
-        row_filter: AuditFilter,
+        row_filter: ChangeAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -278,7 +283,7 @@ class AuditReviewCli(AuditCliBase):
         language = detected_languages.pop()
 
         # Perform operation
-        return audit_review_workflow(
+        return audit_review(
             reviews=(
                 ReviewAuditPair(
                     label=_LANGUAGE_LABELS[language],
@@ -304,7 +309,7 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path | None,
         guide_path: Path | None,
         json_path: Path | None,
-        row_filter: AuditFilter,
+        row_filter: ChangeAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -332,7 +337,7 @@ class AuditReviewCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is AuditFilter.unverified and json_path is None:
+        if row_filter is ChangeAuditFilter.unverified and json_path is None:
             parser.error("--filter unverified requires --json")
         if guide_path is not None:
             if json_path is None:

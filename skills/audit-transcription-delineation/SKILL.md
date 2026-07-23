@@ -14,12 +14,16 @@ wording, or character choice; those are reviewed later in a separate workflow.
 ## Required report file
 
 Always save the complete six-column Markdown report under `local/`. After
-auditing every row, add each concise audit note directly to that file's `Notes`
-cell. Do not leave notes only in commentary, tool output, or the final response.
+auditing every row, add each concise audit judgment directly to that file's
+`Notes` cell. Do not leave notes only in commentary, tool output, or the final
+response.
 
 - Keep the table at exactly these columns: `Indexes`, `Reference`, `Input`,
   `Output`, `Notes`, and `Verified`.
-- Leave `Notes` blank when a row needs no note.
+- Delineation JSON has no note field, so generated `Notes` cells begin blank.
+  If a future schema populates one, read it as context and replace the entire
+  cell with your own independent judgment; never append to or merely endorse
+  generated note content.
 - Preserve the generated `Verified` cell: `✓` means the JSON test case is
   verified, and an empty cell means it is not verified.
 - Do not add a separate findings section; keep each observation beside the row
@@ -104,7 +108,7 @@ subtitles.
 Judge only alignment. Ignore misspellings, mistranscriptions, Mandarinisms,
 punctuation, omissions, repetitions, and other defects in the target text except
 as fixed evidence for deciding which side of the boundary owns each phrase. Do
-not mention these defects in Notes. Leave Notes blank when the shift or no-shift
+not mention these defects in Notes. Write exactly `OK` when the shift or no-shift
 answer is appropriate.
 
 Use semantic and discourse alignment rather than literal word matching:
@@ -127,13 +131,13 @@ Classify alignment notes precisely:
 - **Uncertain:** the appropriateness of the boundary cannot be determined from
   the provided target text, guide pair, and available context.
 
-After reviewing every row, fill the saved report's `Notes` cells wherever you
-have an alignment observation. Begin each note with `Delineation error;` or
+After reviewing every row, replace every saved report `Notes` cell with `OK` or
+an alignment finding. Begin each finding with `Delineation error;` or
 `Uncertain;`, followed by a concise explanation focused only on boundary
-ownership. Leave the cell blank when the row needs no note. Validate that the
-edited file retains every generated row and the exact six-column shape. Do not
-claim the audit is complete until every row has been reviewed, all notes have
-been written to the saved report, and its link is ready for the final response.
+ownership. Never mark an unanswered row `OK`. Validate that the edited file
+retains every generated row and the exact six-column shape. Do not claim the
+audit is complete until every row has been reviewed, all notes have been written
+to the saved report, and its link is ready for the final response.
 
 ## Correct and verify cases
 

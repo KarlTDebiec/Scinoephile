@@ -8,15 +8,10 @@ from argparse import ArgumentParser
 from collections.abc import Sequence
 from pathlib import Path
 
-from scinoephile.analysis.audit.review import (
-    ComparativeReviewAuditFilter,
-    audit_reviews,
-)
+from scinoephile.analysis.audit.dual_review import audit_dual_review
+from scinoephile.analysis.audit.utils import ExtendedAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
-    enum_arg,
-    enum_metavar,
-    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -68,14 +63,14 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         (
             "rows to include: all, changes, discrepancies, or unverified; "
-            "changes includes any review edit or final discrepancy; discrepancies "
-            "includes final discrepancies only; unverified includes subtitles in "
-            "unverified logged cases "
-            "(default: %(default)s)"
+            "all includes every subtitle; changes includes any review edit or final "
+            "discrepancy; discrepancies includes final discrepancies only; "
+            "unverified includes subtitles in cases not marked verified (default: "
+            "%(default)s)"
         ): (
-            "要包含的行：all、changes、discrepancies 或 unverified；changes 表示"
-            "任何校对更改或最终差异；discrepancies 仅表示最终差异；unverified "
-            "表示未验证日志案例中的字幕（默认：%(default)s）"
+            "要包含的行：all 表示每个字幕，changes 表示任何校对更改或最终差异，"
+            "discrepancies 仅表示最终差异，unverified 表示未标记为已验证的案例"
+            "中的字幕（默认：%(default)s）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -129,14 +124,14 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         (
             "rows to include: all, changes, discrepancies, or unverified; "
-            "changes includes any review edit or final discrepancy; discrepancies "
-            "includes final discrepancies only; unverified includes subtitles in "
-            "unverified logged cases "
-            "(default: %(default)s)"
+            "all includes every subtitle; changes includes any review edit or final "
+            "discrepancy; discrepancies includes final discrepancies only; "
+            "unverified includes subtitles in cases not marked verified (default: "
+            "%(default)s)"
         ): (
-            "要包含的列：all、changes、discrepancies 或 unverified；changes 表示"
-            "任何校對變更或最終差異；discrepancies 僅表示最終差異；unverified "
-            "表示未驗證日誌案例中的字幕（預設：%(default)s）"
+            "要包含的列：all 表示每個字幕，changes 表示任何校對變更或最終差異，"
+            "discrepancies 僅表示最終差異，unverified 表示未標記為已驗證的案例"
+            "中的字幕（預設：%(default)s）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -250,18 +245,14 @@ class AuditReviewDualCli(AuditCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            default=ComparativeReviewAuditFilter.changes,
-            dest="row_filter",
-            metavar=enum_metavar(ComparativeReviewAuditFilter),
-            type=enum_arg(ComparativeReviewAuditFilter),
-            help=(
-                "rows to include: "
-                f"{enum_options_list_str(ComparativeReviewAuditFilter)}; changes "
-                "includes any review edit or final discrepancy; discrepancies "
-                "includes final discrepancies only; unverified includes subtitles "
-                "in unverified logged cases (default: %(default)s)"
+        cls.add_row_filter_argument(
+            parser,
+            ExtendedAuditFilter,
+            ExtendedAuditFilter.changes,
+            description=(
+                "all includes every subtitle; changes includes any review edit or "
+                "final discrepancy; discrepancies includes final discrepancies only; "
+                "unverified includes subtitles in cases not marked verified"
             ),
         )
         arg_groups["operation arguments"].add_argument(
@@ -301,7 +292,7 @@ class AuditReviewDualCli(AuditCliBase):
         simplified_json_path: Path | None,
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
-        row_filter: ComparativeReviewAuditFilter,
+        row_filter: ExtendedAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -336,7 +327,7 @@ class AuditReviewDualCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is ComparativeReviewAuditFilter.unverified and any(
+        if row_filter is ExtendedAuditFilter.unverified and any(
             json_path is None
             for json_path in (
                 simplified_json_path,
@@ -378,7 +369,7 @@ class AuditReviewDualCli(AuditCliBase):
 
         # Perform operation
         try:
-            report = audit_reviews(
+            report = audit_dual_review(
                 simplified=simplified,
                 simplified_reviewed=simplified_reviewed,
                 traditional=traditional,

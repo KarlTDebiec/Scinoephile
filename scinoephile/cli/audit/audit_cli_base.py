@@ -5,10 +5,14 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from enum import Enum
 from pathlib import Path
 
 from scinoephile.cli.helpers.blocks import add_block_range_args
 from scinoephile.common.argument_parsing import (
+    enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
     int_arg,
     output_file_arg,
@@ -109,6 +113,44 @@ class AuditCliBase(ScinoephileCliBase):
             help="overwrite outfile if it exists",
         )
         parser.set_defaults(_parser=parser)
+
+    @staticmethod
+    def add_row_filter_argument[TFilter: Enum](
+        parser: ArgumentParser,
+        filter_type: type[TFilter],
+        default: TFilter,
+        *,
+        description: str,
+    ):
+        """Add a consistently formatted row-filter argument.
+
+        Arguments:
+            parser: parser to which the argument is added
+            filter_type: enum defining accepted filter values
+            default: default filter value
+            description: semantic description of each accepted filter
+        """
+        # Locate the shared operation group created by the audit base parser
+        arg_groups = get_arg_groups_by_name(
+            parser,
+            "input arguments",
+            "operation arguments",
+            "output arguments",
+            optional_arguments_name="additional arguments",
+        )
+
+        # Parse the filter directly to its enum while keeping help text uniform
+        arg_groups["operation arguments"].add_argument(
+            "--filter",
+            default=default,
+            dest="row_filter",
+            metavar=enum_metavar(filter_type),
+            type=enum_arg(filter_type),
+            help=(
+                f"rows to include: {enum_options_list_str(filter_type)}; "
+                f"{description} (default: %(default)s)"
+            ),
+        )
 
     @staticmethod
     def load_test_cases[TTestCase: TestCase](
