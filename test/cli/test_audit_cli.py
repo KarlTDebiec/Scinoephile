@@ -405,9 +405,64 @@ def test_audit_review_trad_cli(tmp_path: Path, capsys: CaptureFixture):
     assert "- traditional simplification review edits: 1" in stdout
     assert "| Subtitle | Traditional | Traditional simplification | Notes |" in stdout
 
+    traditional_json_path = tmp_path / "traditional.json"
+    traditional_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "傳錯"}]},
+                    "answer": {
+                        "revisions": [
+                            {"index": 1, "text": "傳正", "note": "繁體修正。"}
+                        ]
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    traditional_simplified_json_path = tmp_path / "traditional_simplified.json"
+    traditional_simplified_json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "query": {"subtitles": [{"index": 1, "text": "传错"}]},
+                    "answer": {
+                        "revisions": [
+                            {"index": 1, "text": "传正", "note": "简体修正。"}
+                        ]
+                    },
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    json_arguments = (
+        f"--traditional-json {traditional_json_path} "
+        f"--traditional-simplified-json {traditional_simplified_json_path}"
+    )
+    run_cli_with_args(
+        AuditReviewTradCli,
+        f"{arguments} {json_arguments} --filter unverified",
+    )
+    stdout = capsys.readouterr().out
+    assert "- row filter: unverified" in stdout
+    assert "- table rows: 1" in stdout
+
     with raises(SystemExit):
-        run_cli_with_args(AuditReviewTradCli, f"{arguments} --filter unverified")
-    assert "--filter unverified requires --traditional-json" in capsys.readouterr().err
+        run_cli_with_args(
+            AuditReviewTradCli,
+            (
+                f"{arguments} --traditional-json {traditional_json_path} "
+                "--filter unverified"
+            ),
+        )
+    assert (
+        "--filter unverified requires --traditional-json and "
+        "--traditional-simplified-json"
+    ) in capsys.readouterr().err
 
 
 @mark.parametrize(

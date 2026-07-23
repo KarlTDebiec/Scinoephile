@@ -33,9 +33,10 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "first OCR source subtitle SRT file": "第一个 OCR 来源字幕 SRT 文件",
         "second OCR source subtitle SRT file": "第二个 OCR 来源字幕 SRT 文件",
         "fused OCR subtitle SRT file": "OCR 融合字幕 SRT 文件",
-        "optional validated subtitle SRT file used as ground truth": (
-            "用作真值的可选已验证字幕 SRT 文件"
-        ),
+        (
+            "optional validated subtitle SRT file used as ground truth; required "
+            "with --filter discrepancies"
+        ): ("用作真值的可选已验证字幕 SRT 文件；使用 --filter discrepancies 时为必需"),
         "optional OCR-fusion test-case JSON file": "可选的 OCR 融合测试用例 JSON 文件",
         (
             "rows to include: all, changes, discrepancies, or unverified "
@@ -53,9 +54,10 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "first OCR source subtitle SRT file": "第一個 OCR 來源字幕 SRT 檔",
         "second OCR source subtitle SRT file": "第二個 OCR 來源字幕 SRT 檔",
         "fused OCR subtitle SRT file": "OCR 融合字幕 SRT 檔",
-        "optional validated subtitle SRT file used as ground truth": (
-            "用作真值的選用已驗證字幕 SRT 檔"
-        ),
+        (
+            "optional validated subtitle SRT file used as ground truth; required "
+            "with --filter discrepancies"
+        ): ("用作真值的選用已驗證字幕 SRT 檔；使用 --filter discrepancies 時為必需"),
         "optional OCR-fusion test-case JSON file": "選用的 OCR 融合測試案例 JSON 檔",
         (
             "rows to include: all, changes, discrepancies, or unverified "
@@ -116,7 +118,10 @@ class AuditOcrFusionCli(AuditCliBase):
             "--validated",
             dest="validated_path",
             type=input_file_arg(),
-            help="optional validated subtitle SRT file used as ground truth",
+            help=(
+                "optional validated subtitle SRT file used as ground truth; required "
+                "with --filter discrepancies"
+            ),
         )
         arg_groups["input arguments"].add_argument(
             "--json",
@@ -166,6 +171,8 @@ class AuditOcrFusionCli(AuditCliBase):
         parser = _parser or cls.argparser()
         if row_filter is OcrFusionAuditFilter.unverified and json_path is None:
             parser.error("--filter unverified requires --json")
+        if row_filter is OcrFusionAuditFilter.discrepancies and validated_path is None:
+            parser.error("--filter discrepancies requires --validated")
 
         # Read inputs
         source_one = read_series(parser, source_one_path)

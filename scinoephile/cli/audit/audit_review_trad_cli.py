@@ -35,11 +35,15 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified traditional-script SRT file after review": (
             "校对后由繁体字转换的简体字 SRT 文件"
         ),
-        "optional test-case JSON file for the traditional review": (
-            "繁体字校对的可选测试用例 JSON 文件"
-        ),
-        "optional test-case JSON file for the traditional simplification review": (
-            "繁体字简化校对的可选测试用例 JSON 文件"
+        (
+            "optional test-case JSON file for the traditional review; required "
+            "with --filter unverified"
+        ): ("繁体字校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"),
+        (
+            "optional test-case JSON file for the traditional simplification "
+            "review; required with --filter unverified"
+        ): (
+            "繁体字简化校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"
         ),
     },
     "zh-hant": {
@@ -54,12 +58,14 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "simplified traditional-script SRT file after review": (
             "校對後由繁體字轉換的簡體字 SRT 檔"
         ),
-        "optional test-case JSON file for the traditional review": (
-            "繁體字校對的選用測試案例 JSON 檔"
-        ),
-        "optional test-case JSON file for the traditional simplification review": (
-            "繁體字簡化校對的選用測試案例 JSON 檔"
-        ),
+        (
+            "optional test-case JSON file for the traditional review; required "
+            "with --filter unverified"
+        ): ("繁體字校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+        (
+            "optional test-case JSON file for the traditional simplification "
+            "review; required with --filter unverified"
+        ): ("繁體字簡化校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -116,14 +122,18 @@ class AuditReviewTradCli(AuditReviewCliBase):
             "--traditional-json",
             dest="traditional_json_path",
             type=input_file_arg(),
-            help="optional test-case JSON file for the traditional review",
+            help=(
+                "optional test-case JSON file for the traditional review; required "
+                "with --filter unverified"
+            ),
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-simplified-json",
             dest="traditional_simplified_json_path",
             type=input_file_arg(),
             help=(
-                "optional test-case JSON file for the traditional simplification review"
+                "optional test-case JSON file for the traditional simplification "
+                "review; required with --filter unverified"
             ),
         )
 
@@ -158,13 +168,11 @@ class AuditReviewTradCli(AuditReviewCliBase):
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
-        if (
-            row_filter is ReviewAuditFilter.unverified
-            and traditional_json_path is None
-            and traditional_simplified_json_path is None
+        if row_filter is ReviewAuditFilter.unverified and (
+            traditional_json_path is None or traditional_simplified_json_path is None
         ):
             parser.error(
-                "--filter unverified requires --traditional-json or "
+                "--filter unverified requires --traditional-json and "
                 "--traditional-simplified-json"
             )
 
