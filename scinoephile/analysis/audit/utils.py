@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Collection, Hashable, Mapping, Sequence
+from collections.abc import Collection, Hashable, Mapping, MutableSequence, Sequence
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
@@ -12,8 +12,10 @@ from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 
 __all__ = [
+    "AuditFilter",
     "AuditResult",
     "escape_table_cell",
+    "format_audit_report",
     "format_block_range",
     "format_difficulty_filter",
     "format_index_range",
@@ -21,10 +23,24 @@ __all__ = [
     "get_selected_event_indexes",
     "get_superseded_keys",
     "is_block_in_range",
+    "resolve_contextual_index",
     "validate_audit_range",
     "validate_block_range",
     "validate_index_range",
 ]
+
+
+class AuditFilter(StrEnum):
+    """Row filters shared by audit reports without final comparisons."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include only changed rows."""
+
+    unverified = "unverified"
+    """Include only rows from unverified logged cases."""
 
 
 class AuditResult(StrEnum):
@@ -49,6 +65,71 @@ def escape_table_cell(value: str) -> str:
         escaped cell text
     """
     return value.replace("\\N", "\n").replace("\n", "<br>").replace("|", "\\|")
+
+
+def format_audit_report(
+    *,
+    title: str,
+    summary_lines: Sequence[str],
+    column_labels: Sequence[str],
+    column_separators: Sequence[str],
+    rows: Sequence[str],
+    first_index: int | None = None,
+    last_index: int | None = None,
+    index_track_name: str | None = None,
+    first_block: int | None = None,
+    last_block: int | None = None,
+) -> str:
+    """Format the shared structure of a Markdown audit report.
+
+    Arguments:
+        title: report title without the Markdown heading marker
+        summary_lines: report-specific Markdown summary list items
+        column_labels: audit table column labels
+        column_separators: Markdown alignment separators for the columns
+        rows: formatted Markdown table rows
+        first_index: first included one-based subtitle index
+        last_index: last included one-based subtitle index
+        index_track_name: optional name of the indexed subtitle track
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+    Returns:
+        formatted Markdown audit report
+    Raises:
+        ValueError: if the table labels and separators have different lengths
+    """
+    if len(column_labels) != len(column_separators):
+        raise ValueError("Table labels and separators must have the same length")
+
+    lines = [
+        f"# {title}",
+        "",
+        "## Summary",
+        "",
+        *summary_lines,
+    ]
+    index_range = format_index_range(
+        first_index,
+        last_index,
+        track_name=index_track_name,
+    )
+    if index_range is not None:
+        lines.append(index_range)
+    block_range = format_block_range(first_block, last_block)
+    if block_range is not None:
+        lines.append(block_range)
+    lines.extend(
+        (
+            f"- table rows: {len(rows)}",
+            "",
+            "## Audit Table",
+            "",
+            f"| {' | '.join(column_labels)} |",
+            f"|{'|'.join(column_separators)}|",
+            *rows,
+        )
+    )
+    return "\n".join(lines) + "\n"
 
 
 def format_block_range(
@@ -281,6 +362,34 @@ def is_block_in_range(
     return (first_block is None or block_number >= first_block) and (
         last_block is None or block_number <= last_block
     )
+
+
+def resolve_contextual_index(
+    candidate_indexes: Sequence[int],
+    resolved_indexes: MutableSequence[int | None],
+    test_case_index: int,
+) -> int | None:
+    """Resolve and memoize one logged case's source index.
+
+    Arguments:
+        candidate_indexes: possible zero-indexed source positions
+        resolved_indexes: resolved indexes for every logged case
+        test_case_index: zero-indexed test case position
+    Returns:
+        resolved source position, or None if ambiguity remains
+    """
+    index = resolved_indexes[test_case_index]
+    if index is not None:
+        return index
+
+    index = get_contextual_index(
+        candidate_indexes,
+        resolved_indexes,
+        test_case_index,
+    )
+    if index is not None:
+        resolved_indexes[test_case_index] = index
+    return index
 
 
 def validate_audit_range(

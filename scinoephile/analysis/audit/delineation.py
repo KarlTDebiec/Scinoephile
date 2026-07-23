@@ -6,20 +6,19 @@ from __future__ import annotations
 
 from collections import defaultdict
 from collections.abc import Collection, Sequence
-from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.delineation import DelineationTestCase
 
 from .utils import (
+    AuditFilter,
     AuditResult,
     escape_table_cell,
-    format_block_range,
-    format_index_range,
-    get_contextual_index,
+    format_audit_report,
     get_selected_event_indexes,
     get_superseded_keys,
+    resolve_contextual_index,
     validate_block_range,
     validate_index_range,
 )
@@ -30,17 +29,8 @@ __all__ = [
 ]
 
 
-class DelineationAuditFilter(StrEnum):
-    """Row filters supported by a transcription delineation audit."""
-
-    all = "all"
-    """Include every logged boundary decision."""
-
-    changes = "changes"
-    """Include only decisions that shifted the target boundary."""
-
-    unverified = "unverified"
-    """Include only decisions not marked as verified."""
+DelineationAuditFilter = AuditFilter
+"""Row filters supported by a transcription delineation audit."""
 
 
 def audit_delineation(
@@ -146,39 +136,31 @@ def audit_delineation(
 
     rows.sort(key=lambda item: item[0])
 
-    lines = [
-        "# Transcription Delineation Audit",
-        "",
-        "## Summary",
-        "",
-        f"- logged cases: {logged_cases}",
-        f"- boundary shifts: {shifts}",
-        f"- no-shift answers: {no_shifts}",
-        f"- unanswered cases: {unanswered}",
-        f"- row filter: {row_filter.value}",
-    ]
-    range_summary = format_index_range(
-        first_index,
-        last_index,
-        track_name="reference",
+    return format_audit_report(
+        title="Transcription Delineation Audit",
+        summary_lines=(
+            f"- logged cases: {logged_cases}",
+            f"- boundary shifts: {shifts}",
+            f"- no-shift answers: {no_shifts}",
+            f"- unanswered cases: {unanswered}",
+            f"- row filter: {row_filter.value}",
+        ),
+        column_labels=(
+            "Indexes",
+            "Reference",
+            "Input",
+            "Output",
+            "Notes",
+            "Verified",
+        ),
+        column_separators=("---:", "---", "---", "---", "---", ":---:"),
+        rows=[row for _, row in rows],
+        first_index=first_index,
+        last_index=last_index,
+        index_track_name="reference",
+        first_block=first_block,
+        last_block=last_block,
     )
-    if range_summary is not None:
-        lines.append(range_summary)
-    block_range_summary = format_block_range(first_block, last_block)
-    if block_range_summary is not None:
-        lines.append(block_range_summary)
-    lines.extend(
-        (
-            f"- table rows: {len(rows)}",
-            "",
-            "## Audit Table",
-            "",
-            "| Indexes | Reference | Input | Output | Notes | Verified |",
-            "|---:|---|---|---|---|:---:|",
-            *(row for _, row in rows),
-        )
-    )
-    return "\n".join(lines) + "\n"
 
 
 def _format_pair(one: str, two: str) -> str:
@@ -210,18 +192,13 @@ def _get_case_index(
     Raises:
         ScinoephileError: if a case remains ambiguous
     """
-    direct_index = direct_indexes[test_case_index - 1]
-    if direct_index is not None:
-        return direct_index
-
-    contextual_index = get_contextual_index(
+    index = resolve_contextual_index(
         candidate_indexes,
         direct_indexes,
         test_case_index - 1,
     )
-    if contextual_index is not None:
-        direct_indexes[test_case_index - 1] = contextual_index
-        return contextual_index
+    if index is not None:
+        return index
 
     indexes = ", ".join(str(index + 1) for index in candidate_indexes)
     raise ScinoephileError(

@@ -15,8 +15,7 @@ from scinoephile.core.synchronization import are_series_one_to_one
 
 from .utils import (
     escape_table_cell,
-    format_block_range,
-    format_index_range,
+    format_audit_report,
     get_selected_event_indexes,
 )
 
@@ -227,11 +226,7 @@ def audit_ocr_fusion(
 
     rows = _filter_rows(all_rows, row_filter)
     llm_rows = [row for row in all_rows if row.requires_llm]
-    lines = [
-        "# OCR Fusion Audit",
-        "",
-        "## Summary",
-        "",
+    summary_lines = [
         f"- subtitles: {len(all_rows)}",
         f"- source disagreements: {sum(row.changed for row in all_rows)}",
         f"- validated track: {'included' if validated is not None else 'omitted'}",
@@ -241,7 +236,7 @@ def audit_ocr_fusion(
     if has_decision_log:
         verified_llm_rows = sum(row.verified for row in llm_rows)
         unverified_llm_rows = sum(not row.verified for row in llm_rows)
-        lines.extend(
+        summary_lines.extend(
             (
                 f"- LLM decisions: {len(llm_rows)}",
                 f"- verified LLM decisions: {verified_llm_rows}",
@@ -249,22 +244,12 @@ def audit_ocr_fusion(
             )
         )
     else:
-        lines.extend(
+        summary_lines.extend(
             (
                 f"- LLM-required rows: {len(llm_rows)}",
                 "- decision log: omitted",
             )
         )
-    range_summary = format_index_range(
-        first_index,
-        last_index,
-        track_name="fused",
-    )
-    if range_summary is not None:
-        lines.append(range_summary)
-    block_range_summary = format_block_range(first_block, last_block)
-    if block_range_summary is not None:
-        lines.append(block_range_summary)
     column_labels = [
         "Subtitle",
         "Case",
@@ -278,18 +263,18 @@ def audit_ocr_fusion(
     if has_decision_log:
         column_labels.extend(("Notes", "Verified"))
         column_separators.extend(("---", ":---:"))
-    lines.extend(
-        (
-            f"- table rows: {len(rows)}",
-            "",
-            "## Audit Table",
-            "",
-            f"| {' | '.join(column_labels)} |",
-            f"|{'|'.join(column_separators)}|",
-            *(row.markdown for row in rows),
-        )
+    return format_audit_report(
+        title="OCR Fusion Audit",
+        summary_lines=summary_lines,
+        column_labels=column_labels,
+        column_separators=column_separators,
+        rows=[row.markdown for row in rows],
+        first_index=first_index,
+        last_index=last_index,
+        index_track_name="fused",
+        first_block=first_block,
+        last_block=last_block,
     )
-    return "\n".join(lines) + "\n"
 
 
 def _filter_rows(
