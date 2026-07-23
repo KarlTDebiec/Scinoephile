@@ -177,12 +177,13 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
 
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
+    assert issubclass(AuditDelineationCli, AuditCliBase)
+    assert issubclass(AuditPunctuationCli, AuditCliBase)
     assert issubclass(AuditReviewCli, AuditCliBase)
     assert issubclass(AuditReviewDualCli, AuditCliBase)
     assert issubclass(AuditReviewTradCli, AuditCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
-        "aligned-diff": AuditAlignedDiffCli,
         "delineation": AuditDelineationCli,
         "ocr-fusion": AuditOcrFusionCli,
         "punctuation": AuditPunctuationCli,
