@@ -63,6 +63,10 @@ AUDIT_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class AuditCliBase(ScinoephileCliBase):
     """Shared command-line support for subtitle audits."""
 
+    first_index_help = "first 1-indexed subtitle number to include, inclusive"
+    """Help text describing the first selected subtitle index."""
+    last_index_help = "last 1-indexed subtitle number to include, inclusive"
+    """Help text describing the last selected subtitle index."""
     localizations = AUDIT_CLI_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
@@ -84,12 +88,12 @@ class AuditCliBase(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--first-index",
             type=int_arg(min_value=1),
-            help="first 1-indexed subtitle number to include, inclusive",
+            help=cls.first_index_help,
         )
         arg_groups["operation arguments"].add_argument(
             "--last-index",
             type=int_arg(min_value=1),
-            help="last 1-indexed subtitle number to include, inclusive",
+            help=cls.last_index_help,
         )
         add_block_range_args(
             arg_groups["operation arguments"],
