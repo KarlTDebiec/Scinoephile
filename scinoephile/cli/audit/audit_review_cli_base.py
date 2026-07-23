@@ -9,9 +9,14 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import ClassVar
 
-from scinoephile.analysis.audit.review import ReviewAuditFilter
+from scinoephile.analysis.audit.review import (
+    ComparativeReviewAuditFilter,
+    ReviewAuditFilter,
+)
 from scinoephile.common.argument_parsing import (
     enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
 )
 from scinoephile.core.llms import TestCase
@@ -23,9 +28,9 @@ __all__ = ["AuditReviewCliBase"]
 
 AUDIT_REVIEW_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "rows to include: all, changes, or unverified (default: changes)": (
+        "rows to include: all, changes, or unverified (default: %(default)s)": (
             "要包含的行：all 表示全部，changes 表示校对更改，unverified 表示"
-            "未验证日志案例中的字幕（默认：changes）"
+            "未验证日志案例中的字幕（默认：%(default)s）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -38,9 +43,9 @@ AUDIT_REVIEW_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
     },
     "zh-hant": {
-        "rows to include: all, changes, or unverified (default: changes)": (
+        "rows to include: all, changes, or unverified (default: %(default)s)": (
             "要包含的列：all 表示全部，changes 表示校對變更，unverified 表示"
-            "未驗證日誌案例中的字幕（預設：changes）"
+            "未驗證日誌案例中的字幕（預設：%(default)s）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -62,15 +67,14 @@ class AuditReviewCliBase(AuditCliBase):
     localizations = AUDIT_REVIEW_CLI_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
     row_filter_help: ClassVar[str] = (
-        "rows to include: all, changes, or unverified (default: changes)"
+        f"rows to include: {enum_options_list_str(ReviewAuditFilter)} "
+        "(default: %(default)s)"
     )
     """Help text for the workflow's supported row filters."""
-    row_filters: ClassVar[tuple[ReviewAuditFilter, ...]] = (
-        ReviewAuditFilter.all,
-        ReviewAuditFilter.changes,
-        ReviewAuditFilter.unverified,
-    )
-    """Row filters supported by the workflow."""
+    row_filter_type: ClassVar[
+        type[ReviewAuditFilter] | type[ComparativeReviewAuditFilter]
+    ] = ReviewAuditFilter
+    """Enum defining the workflow's supported row filters."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -87,14 +91,13 @@ class AuditReviewCliBase(AuditCliBase):
             "output arguments",
             optional_arguments_name="additional arguments",
         )
-        row_filter_values = ",".join(row_filter.value for row_filter in cls.row_filters)
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=cls.row_filters,
-            default=ReviewAuditFilter.changes,
+            choices=tuple(cls.row_filter_type),
+            default=cls.row_filter_type.changes,
             dest="row_filter",
-            metavar=f"{{{row_filter_values}}}",
-            type=enum_arg(ReviewAuditFilter),
+            metavar=enum_metavar(cls.row_filter_type),
+            type=enum_arg(cls.row_filter_type),
             help=cls.row_filter_help,
         )
         arg_groups["operation arguments"].add_argument(

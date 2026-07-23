@@ -14,6 +14,8 @@ from scinoephile.analysis.audit.ocr_fusion import (
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -40,10 +42,10 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional OCR-fusion test-case JSON file": "可选的 OCR 融合测试用例 JSON 文件",
         (
             "rows to include: all, changes, discrepancies, or unverified "
-            "(default: changes)"
+            "(default: %(default)s)"
         ): (
             "要包含的行：all 表示全部，changes 表示来源差异，discrepancies "
-            "表示与已验证轨道不同，unverified 表示未验证（默认：changes）"
+            "表示与已验证轨道不同，unverified 表示未验证（默认：%(default)s）"
         ),
     },
     "zh-hant": {
@@ -61,10 +63,10 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "optional OCR-fusion test-case JSON file": "選用的 OCR 融合測試案例 JSON 檔",
         (
             "rows to include: all, changes, discrepancies, or unverified "
-            "(default: changes)"
+            "(default: %(default)s)"
         ): (
             "要包含的列：all 表示全部，changes 表示來源差異，discrepancies "
-            "表示與已驗證軌道不同，unverified 表示未驗證（預設：changes）"
+            "表示與已驗證軌道不同，unverified 表示未驗證（預設：%(default)s）"
         ),
     },
 }
@@ -136,11 +138,11 @@ class AuditOcrFusionCli(AuditCliBase):
             choices=tuple(OcrFusionAuditFilter),
             default=OcrFusionAuditFilter.changes,
             dest="row_filter",
-            metavar="{all,changes,discrepancies,unverified}",
+            metavar=enum_metavar(OcrFusionAuditFilter),
             type=enum_arg(OcrFusionAuditFilter),
             help=(
-                "rows to include: all, changes, discrepancies, or unverified "
-                "(default: changes)"
+                f"rows to include: {enum_options_list_str(OcrFusionAuditFilter)} "
+                "(default: %(default)s)"
             ),
         )
 

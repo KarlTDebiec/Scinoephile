@@ -110,13 +110,6 @@ def test_audit_guided_review_rejects_invalid_range():
 
     with raises(ScinoephileError, match="First index must be at least 1"):
         audit_guided_review(target, guide, (), first_index=0)
-    with raises(ScinoephileError, match="Discrepancies filter is not supported"):
-        audit_guided_review(
-            target,
-            guide,
-            (),
-            row_filter=ReviewAuditFilter.discrepancies,
-        )
 
 
 def test_audit_guided_review_filters_rows_and_target_range():

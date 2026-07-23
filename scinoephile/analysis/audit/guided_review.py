@@ -91,10 +91,6 @@ def audit_guided_review(
     """
     validate_index_range(first_index, last_index)
     validate_block_range(first_block, last_block)
-    if row_filter is ReviewAuditFilter.discrepancies:
-        raise ScinoephileError(
-            "Discrepancies filter is not supported for guided review audits"
-        )
 
     block_pairs = get_validated_block_pairs_by_pause(
         target,

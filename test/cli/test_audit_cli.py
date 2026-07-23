@@ -9,6 +9,10 @@ from pathlib import Path
 
 from pytest import CaptureFixture, mark, raises
 
+from scinoephile.analysis.audit.review import (
+    ComparativeReviewAuditFilter,
+    ReviewAuditFilter,
+)
 from scinoephile.cli.audit import AuditCli
 from scinoephile.cli.audit.audit_cli_base import AuditCliBase
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
@@ -17,6 +21,7 @@ from scinoephile.cli.audit.audit_review_cli_base import AuditReviewCliBase
 from scinoephile.cli.audit.audit_review_dual_cli import AuditReviewDualCli
 from scinoephile.cli.audit.audit_review_trad_cli import AuditReviewTradCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
 
 
@@ -191,6 +196,14 @@ def test_audit_review_cli_help_is_consistent():
         if cli_class is AuditReviewCli:
             assert "mode" not in actions
             assert actions["original_path"].option_strings == ["--original"]
+        filter_type = ReviewAuditFilter
+        if cli_class is AuditReviewDualCli:
+            filter_type = ComparativeReviewAuditFilter
+        filter_action = actions["row_filter"]
+        assert filter_action.choices == tuple(filter_type)
+        assert filter_action.metavar == enum_metavar(filter_type)
+        assert isinstance(filter_action.help, str)
+        assert enum_options_list_str(filter_type) in filter_action.help
         character_help = actions["characters"].help
         assert isinstance(character_help, str)
         assert "(default: no character filter)" in character_help

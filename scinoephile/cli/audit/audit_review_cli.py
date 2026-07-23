@@ -17,6 +17,8 @@ from scinoephile.analysis.audit.review import (
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     enum_arg,
+    enum_metavar,
+    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -42,8 +44,8 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "test-case JSON file; required with --guide": (
             "测试用例 JSON 文件；与 --guide 一同使用时为必需"
         ),
-        "rows to include: all, changes, or unverified (default: changes)": (
-            "要包含的行：all、changes 或 unverified（默认：changes）"
+        "rows to include: all, changes, or unverified (default: %(default)s)": (
+            "要包含的行：all、changes 或 unverified（默认：%(default)s）"
         ),
         (
             "characters to match in regular-review input; values may be separated "
@@ -64,8 +66,8 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "test-case JSON file; required with --guide": (
             "測試案例 JSON 檔；與 --guide 一同使用時為必需"
         ),
-        "rows to include: all, changes, or unverified (default: changes)": (
-            "要包含的列：all、changes 或 unverified（預設：changes）"
+        "rows to include: all, changes, or unverified (default: %(default)s)": (
+            "要包含的列：all、changes 或 unverified（預設：%(default)s）"
         ),
         (
             "characters to match in regular-review input; values may be separated "
@@ -143,16 +145,15 @@ class AuditReviewCli(AuditCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
-            choices=(
-                ReviewAuditFilter.all,
-                ReviewAuditFilter.changes,
-                ReviewAuditFilter.unverified,
-            ),
+            choices=tuple(ReviewAuditFilter),
             default=ReviewAuditFilter.changes,
             dest="row_filter",
-            metavar="{all,changes,unverified}",
+            metavar=enum_metavar(ReviewAuditFilter),
             type=enum_arg(ReviewAuditFilter),
-            help="rows to include: all, changes, or unverified (default: changes)",
+            help=(
+                f"rows to include: {enum_options_list_str(ReviewAuditFilter)} "
+                "(default: %(default)s)"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--characters",

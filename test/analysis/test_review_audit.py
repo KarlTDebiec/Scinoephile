@@ -11,6 +11,7 @@ from typing import TypedDict
 from pytest import raises
 
 from scinoephile.analysis.audit.review import (
+    ComparativeReviewAuditFilter,
     ReviewAuditFilter,
     ReviewAuditPair,
     audit_review_workflow,
@@ -64,7 +65,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ReviewAuditFilter.changes,
+        row_filter=ComparativeReviewAuditFilter.changes,
     )
 
     assert "- simplified review edits: 1" in report
@@ -81,7 +82,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ReviewAuditFilter.discrepancies,
+        row_filter=ComparativeReviewAuditFilter.discrepancies,
     )
     assert "- table rows: 2" in report
     assert "| 2 |" in report
@@ -90,7 +91,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ReviewAuditFilter.all,
+        row_filter=ComparativeReviewAuditFilter.all,
         characters=("著", "丙"),
     )
     assert "- character filter: 著, 丙" in report
@@ -100,7 +101,7 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
 
     report = audit_reviews(
         **inputs,
-        row_filter=ReviewAuditFilter.all,
+        row_filter=ComparativeReviewAuditFilter.all,
         first_index=2,
         last_index=3,
     )
@@ -188,7 +189,7 @@ def test_audit_reviews_ignores_timing_differences(tmp_path: Path):
     inputs["traditional_reviewed"].events[1].start = 62_000
     inputs["traditional_reviewed"].events[1].end = 62_500
 
-    report = audit_reviews(**inputs, row_filter=ReviewAuditFilter.all)
+    report = audit_reviews(**inputs, row_filter=ComparativeReviewAuditFilter.all)
 
     assert "- table rows: 4" in report
 

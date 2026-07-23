@@ -21,12 +21,42 @@ from .utils import (
 )
 
 __all__ = [
+    "ComparativeReviewAuditFilter",
     "ReviewAuditComparison",
     "ReviewAuditFilter",
     "ReviewAuditPair",
     "audit_review_workflow",
     "audit_reviews",
 ]
+
+
+class ComparativeReviewAuditFilter(StrEnum):
+    """Row filters supported by review audits with final comparisons."""
+
+    all = "all"
+    """Include every subtitle row."""
+
+    changes = "changes"
+    """Include review edits and final discrepancies."""
+
+    discrepancies = "discrepancies"
+    """Include only final discrepancies."""
+
+    unverified = "unverified"
+    """Include only subtitles from unverified logged cases."""
+
+
+class ReviewAuditFilter(StrEnum):
+    """Row filters supported by review audits without final comparisons."""
+
+    all = "all"
+    """Include every subtitle row."""
+
+    changes = "changes"
+    """Include changed subtitle rows."""
+
+    unverified = "unverified"
+    """Include only subtitles from unverified logged cases."""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -61,22 +91,6 @@ class ReviewAuditComparison:
     """Right-hand subtitle series."""
 
 
-class ReviewAuditFilter(StrEnum):
-    """Row filters supported across review audit modes."""
-
-    all = "all"
-    """Include every subtitle row."""
-
-    changes = "changes"
-    """Include review edits and final discrepancies."""
-
-    discrepancies = "discrepancies"
-    """Include only final discrepancies."""
-
-    unverified = "unverified"
-    """Include only subtitles from unverified logged cases."""
-
-
 def audit_reviews(
     *,
     traditional: Series,
@@ -88,7 +102,7 @@ def audit_reviews(
     traditional_review_cases: Sequence[TestCase] = (),
     traditional_simplified_review_cases: Sequence[TestCase] = (),
     simplified_review_cases: Sequence[TestCase] = (),
-    row_filter: ReviewAuditFilter = ReviewAuditFilter.changes,
+    row_filter: ComparativeReviewAuditFilter = ComparativeReviewAuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -162,7 +176,9 @@ def audit_review_workflow(
     *,
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
-    row_filter: ReviewAuditFilter = ReviewAuditFilter.changes,
+    row_filter: ReviewAuditFilter | ComparativeReviewAuditFilter = (
+        ReviewAuditFilter.changes
+    ),
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -228,7 +244,7 @@ def audit_review_workflow(
             )
         )
         unverified_indexes = frozenset()
-        if row_filter is ReviewAuditFilter.unverified:
+        if row_filter.value == ReviewAuditFilter.unverified.value:
             unverified_indexes = frozenset(
                 index
                 for review, (original, reviewed) in zip(
@@ -299,7 +315,7 @@ def _format_markdown(
     comparison_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     comparison_changes: Sequence[set[int]],
     indexes: Sequence[int],
-    row_filter: ReviewAuditFilter,
+    row_filter: ReviewAuditFilter | ComparativeReviewAuditFilter,
     characters: Sequence[str],
     first_index: int | None,
     last_index: int | None,
@@ -443,7 +459,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    row_filter: ReviewAuditFilter,
+    row_filter: ReviewAuditFilter | ComparativeReviewAuditFilter,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
 ) -> list[int]:
@@ -460,15 +476,15 @@ def _get_filtered_indexes(
     Returns:
         selected subtitle indexes
     """
-    if row_filter is ReviewAuditFilter.all:
+    if row_filter.value == ReviewAuditFilter.all.value:
         selected_indexes = set(indexes)
-    elif row_filter is ReviewAuditFilter.changes:
+    elif row_filter.value == ReviewAuditFilter.changes.value:
         selected_indexes = {
             index
             for changed_indexes in (*review_changes, *comparison_changes)
             for index in changed_indexes
         }
-    elif row_filter is ReviewAuditFilter.discrepancies:
+    elif row_filter is ComparativeReviewAuditFilter.discrepancies:
         selected_indexes = {
             index for changed_indexes in comparison_changes for index in changed_indexes
         }
