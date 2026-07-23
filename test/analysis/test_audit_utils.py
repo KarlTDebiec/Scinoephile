@@ -11,6 +11,7 @@ from scinoephile.analysis.audit.utils import (
     format_audit_report,
     resolve_contextual_index,
 )
+from scinoephile.core.exceptions import ScinoephileError
 
 
 def test_audit_filter_has_common_options():
@@ -26,14 +27,12 @@ def test_format_audit_report_formats_ranges_and_table():
     """Test shared report framing includes optional ranges and table rows."""
     report = format_audit_report(
         title="Example Audit",
-        summary_lines=("- cases: 1",),
-        column_labels=("Index", "Text"),
-        column_separators=("---:", "---"),
-        rows=("| 2 | example |",),
+        summary_items=("cases: 1",),
+        columns=(("Index", "right"), ("Text | value", "left")),
+        rows=(("2", "example|line\nnext"),),
         first_index=2,
         last_index=3,
         index_track_name="target",
-        first_block=4,
     )
 
     assert report == (
@@ -43,26 +42,55 @@ def test_format_audit_report_formats_ranges_and_table():
         "\n"
         "- cases: 1\n"
         "- target subtitle range: 2 through 3\n"
-        "- block range: from 4\n"
         "- table rows: 1\n"
         "\n"
         "## Audit Table\n"
         "\n"
-        "| Index | Text |\n"
+        "| Index | Text \\| value |\n"
         "|---:|---|\n"
-        "| 2 | example |\n"
+        "| 2 | example\\|line<br>next |\n"
     )
 
 
-def test_format_audit_report_rejects_mismatched_table_columns():
-    """Test table labels and separators must describe the same columns."""
-    with raises(ValueError, match="same length"):
+def test_format_audit_report_formats_block_range():
+    """Test shared report framing includes an optional block range."""
+    report = format_audit_report(
+        title="Example Audit",
+        summary_items=(),
+        columns=(("Index", "right"),),
+        rows=(),
+        first_block=4,
+    )
+
+    assert "- block range: from 4" in report
+
+
+def test_format_audit_report_rejects_invalid_semantic_data():
+    """Test report ranges, column alignments, and row widths are validated."""
+    with raises(ScinoephileError, match="ranges are mutually exclusive"):
         format_audit_report(
             title="Example Audit",
-            summary_lines=(),
-            column_labels=("Index", "Text"),
-            column_separators=("---:",),
+            summary_items=(),
+            columns=(("Index", "right"),),
             rows=(),
+            first_index=1,
+            first_block=1,
+        )
+
+    with raises(ValueError, match="Unsupported table column alignment"):
+        format_audit_report(
+            title="Example Audit",
+            summary_items=(),
+            columns=(("Index", "diagonal"),),  # ty: ignore[invalid-argument-type]
+            rows=(),
+        )
+
+    with raises(ValueError, match="Table row 1 has 1 cells; expected 2"):
+        format_audit_report(
+            title="Example Audit",
+            summary_items=(),
+            columns=(("Index", "right"), ("Text", "left")),
+            rows=(("1",),),
         )
 
 

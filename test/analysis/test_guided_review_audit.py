@@ -51,7 +51,7 @@ def test_audit_guided_review_formats_and_sorts_subtitles():
     assert "- unverified subtitles: 2" in report
     assert "| Index | Block | Guide | Target / revision | Notes | Verified |" in report
     first_row = "| 1 | 1 | 參考一 | 甲\\|乙 |  |  |"
-    second_row = "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |"
+    second_row = "| 2 | 1 | 參考一 | 丙<br>修訂丙 | correction |  |"
     third_row = "| 3 | 2 | 參考二 | 丁 |  | ✓ |"
     assert report.index(first_row) < report.index(second_row) < report.index(third_row)
 
@@ -102,6 +102,43 @@ def test_audit_guided_review_supports_target_only_block_in_range():
     assert "- subtitles: 1" in report
     assert "- target subtitle range: 1 through 1" in report
     assert "| 1 | 1 | — | 原文 |  |  |" in report
+
+
+def test_audit_guided_review_rejects_missing_current_case():
+    """Test every selected current target block requires a logged case."""
+    target = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="甲"),
+            Subtitle(start=6000, end=7000, text="乙"),
+        ]
+    )
+    guide = Series(
+        events=[
+            Subtitle(start=0, end=1000, text="參考甲"),
+            Subtitle(start=6000, end=7000, text="參考乙"),
+        ]
+    )
+    first_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "甲"}],
+                "guides": [{"index": 1, "text": "參考甲"}],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+
+    with raises(ScinoephileError, match="no matching logged test case: 2"):
+        audit_guided_review(target, guide, (first_case,))
+
+    first_block_report = audit_guided_review(
+        target,
+        guide,
+        (first_case,),
+        first_block=1,
+        last_block=1,
+    )
+    assert "| 1 | 1 | 參考甲 | 甲 |  |  |" in first_block_report
 
 
 def test_audit_guided_review_rejects_invalid_range():
@@ -205,18 +242,18 @@ def test_audit_guided_review_filters_rows_and_target_range():
 
     assert "- row filter: changes" in changed_report
     assert "- table rows: 1" in changed_report
-    assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |" in changed_report
+    assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 | correction |  |" in changed_report
     assert "- row filter: unverified" in unverified_report
     assert "- table rows: 2" in unverified_report
     assert "| 1 | 1 | 參考一 | 甲\\|乙 |  |  |" in unverified_report
-    assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |" in unverified_report
+    assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 | correction |  |" in unverified_report
     assert "- subtitles: 1" in ranged_report
     assert "- target subtitle range: 3 through 3" in ranged_report
     assert "- table rows: 1" in ranged_report
     assert "| 3 | 2 | 參考二 | 丁 |  | ✓ |" in ranged_report
     assert "- subtitles: 1" in second_report
     assert "- target subtitle range: 2 through 2" in second_report
-    assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 |  |  |" in second_report
+    assert "| 2 | 1 | 參考一 | 丙<br>修訂丙 | correction |  |" in second_report
     assert "- block range: 2 through 2" in block_report
     assert "| 1 | 1 |" not in block_report
     assert "| 2 | 1 |" not in block_report
@@ -297,7 +334,7 @@ def test_audit_guided_review_ignores_superseded_segmentation_case():
     report = audit_guided_review(target, guide, (stale_case, current_case))
 
     assert "| 1 | 1 | 參考 | 甲 |  |  |" in report
-    assert "| 2 | 1 | 參考 | 乙丙<br>修訂乙丙 |  |  |" in report
+    assert "| 2 | 1 | 參考 | 乙丙<br>修訂乙丙 | correction |  |" in report
 
 
 def test_audit_guided_review_ignores_superseded_guide_revision():
@@ -328,7 +365,7 @@ def test_audit_guided_review_ignores_superseded_guide_revision():
     report = audit_guided_review(target, guide, (stale_case, current_case))
 
     assert "舊修訂" not in report
-    assert "| 1 | 1 | 已更正參考 | 目標<br>新修訂 |  |  |" in report
+    assert "| 1 | 1 | 已更正參考 | 目標<br>新修訂 | current |  |" in report
 
 
 def test_audit_guided_review_matches_after_punctuation_changes():
@@ -435,7 +472,16 @@ def test_audit_guided_review_ignores_unmatched_case_outside_range():
             Subtitle(start=6500, end=7000, text="新增參考"),
         ]
     )
-    test_case = GuidedReviewTestCase.model_validate(
+    current_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "甲"}],
+                "guides": [{"index": 1, "text": "參考一"}],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+    stale_case = GuidedReviewTestCase.model_validate(
         {
             "query": {
                 "targets": [{"index": 1, "text": "乙"}],
@@ -448,13 +494,14 @@ def test_audit_guided_review_ignores_unmatched_case_outside_range():
     report = audit_guided_review(
         target,
         guide,
-        (test_case,),
+        (current_case, stale_case),
         first_index=1,
         last_index=1,
     )
 
-    assert "- subtitles: 0" in report
-    assert "- table rows: 0" in report
+    assert "- subtitles: 1" in report
+    assert "- table rows: 1" in report
+    assert "| 1 | 1 | 參考一 | 甲 |  |  |" in report
 
 
 def test_audit_guided_review_allows_range_beyond_target():

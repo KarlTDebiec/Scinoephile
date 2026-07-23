@@ -93,8 +93,10 @@ one of these exact prefixes:
 - `Punctuation error;` for a clear punctuation or whitespace error
 - `Uncertain;` when the audio or broader context is needed to judge the choice
 
-Leave Notes blank for acceptable answers. Replace generated/source notes with
-your own interpretation rather than copying them mechanically.
+Punctuation JSON has no note field, so generated Notes cells begin blank. If a
+future schema populates one, read it as context and replace the entire cell with
+your own concise finding rather than appending to or treating it as proof.
+Leave Notes blank for acceptable answers.
 
 ## Correct and verify cases
 

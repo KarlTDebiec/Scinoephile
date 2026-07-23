@@ -73,8 +73,13 @@ def test_audit_reviews_filters_and_includes_json_notes(tmp_path: Path):
     assert "- traditional simplification review edits: 1" in report
     assert "- final text discrepancies: 2" in report
     assert "- table rows: 3" in report
+    assert "| Notes | Verified |" in report
     assert "| 1 |" not in report
-    assert "| 2 | 简错<br>简正 | 傳錯<br>傳正 | 传正 | 简正<br>传正 |" in report
+    assert (
+        "| 2 | 简错<br>简正 | 傳錯<br>傳正 | 传正 | 简正<br>传正 | "
+        "Simplified review: 修正简体字。<br>Traditional review: 修正繁體字。 |  |"
+        in report
+    )
     assert "| 3 | 着正 | 著 | 着错<br>着正 | 着正 |" in report
     assert "Simplified review: 修正简体字。" in report
     assert "Traditional review: 修正繁體字。" in report
@@ -148,9 +153,24 @@ def test_audit_review_workflow_filters_unverified_cases():
 
     assert "- row filter: unverified" in report
     assert "- table rows: 1" in report
-    assert "| 1 | First<br>First revised | Test review: Revised. |" in report
+    assert "| 1 | First<br>First revised | Test review: Revised. |  |" in report
     assert "| 2 |" not in report
     assert "| 3 |" not in report
+
+    all_report = audit_review_workflow(
+        reviews=(
+            ReviewAuditPair(
+                label="Test",
+                original=original,
+                reviewed=reviewed,
+                review_cases=(unverified_case, verified_case),
+            ),
+        ),
+        row_filter=AuditFilter.all,
+    )
+    assert "| 1 | First<br>First revised | Test review: Revised. |  |" in all_report
+    assert "| 2 | Second |  | ✓ |" in all_report
+    assert "| 3 | Third |  | — |" in all_report
 
 
 def test_audit_reviews_reuses_deduplicated_json_note(tmp_path: Path):

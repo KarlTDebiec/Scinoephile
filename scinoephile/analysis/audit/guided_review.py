@@ -18,7 +18,6 @@ from scinoephile.core.text import remove_punc_and_whitespace
 from .utils import (
     AuditFilter,
     AuditResult,
-    escape_table_cell,
     format_audit_report,
     is_block_in_range,
     validate_audit_range,
@@ -51,8 +50,8 @@ class _GuidedReviewRow:
     """One-based target subtitle index."""
     test_case_index: int
     """One-based position of the source test case in the JSON."""
-    markdown: str
-    """Formatted Markdown table row."""
+    cells: tuple[str, ...]
+    """Semantic audit table cell values."""
     result: AuditResult
     """Result of the logged answer for this subtitle."""
     verified: bool
@@ -81,6 +80,15 @@ class _GuidedReviewRevision(_GuidedReviewSubtitle, Protocol):
 
         Returns:
             one-based query-local target index
+        """
+        ...
+
+    @property
+    def note(self) -> str:
+        """Explanation recorded for the revision.
+
+        Returns:
+            revision explanation
         """
         ...
 
@@ -201,11 +209,11 @@ def audit_guided_review(
         last_block=last_block,
     ):
         answer = test_case.answer
-        revisions_by_index = (
-            {revision.index: revision for revision in answer.revisions}
-            if answer is not None
-            else {}
-        )
+        revisions_by_index = {}
+        if answer is not None:
+            revisions_by_index = {
+                revision.index: revision for revision in answer.revisions
+            }
 
         for local_index, (subtitle_index, query_target, guide_texts) in enumerate(
             zip(
@@ -224,11 +232,13 @@ def audit_guided_review(
             revision = revisions_by_index.get(local_index)
 
             target_revision = query_target.text
+            note = ""
             if answer is None:
                 target_revision = f"{query_target.text}\n(unanswered)"
                 result = AuditResult.unanswered
             elif revision is not None:
                 target_revision = f"{query_target.text}\n{revision.text}"
+                note = revision.note
                 result = AuditResult.changed
             else:
                 result = AuditResult.unchanged
@@ -236,20 +246,21 @@ def audit_guided_review(
             guide_text = "\n".join(guide_texts)
             if not guide_texts:
                 guide_text = "—"
+            verified_marker = ""
+            if test_case.verified:
+                verified_marker = "✓"
             cells = (
                 str(subtitle_index),
                 str(block.block_number),
                 guide_text,
                 target_revision,
-                "",
-                "✓" if test_case.verified else "",
+                note,
+                verified_marker,
             )
             rows_by_subtitle_index[subtitle_index] = _GuidedReviewRow(
+                cells=cells,
                 subtitle_index=subtitle_index,
                 test_case_index=test_case_index,
-                markdown=(
-                    f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |"
-                ),
                 result=result,
                 verified=test_case.verified,
             )
@@ -274,25 +285,24 @@ def audit_guided_review(
     unverified_subtitles = subtitles - verified_subtitles
     return format_audit_report(
         title="Guided Subtitle Review Audit",
-        summary_lines=(
-            f"- subtitles: {subtitles}",
-            f"- revised subtitles: {revised_subtitles}",
-            f"- unchanged subtitles: {unchanged_subtitles}",
-            f"- unanswered subtitles: {unanswered_subtitles}",
-            f"- verified subtitles: {verified_subtitles}",
-            f"- unverified subtitles: {unverified_subtitles}",
-            f"- row filter: {row_filter.value}",
+        summary_items=(
+            f"subtitles: {subtitles}",
+            f"revised subtitles: {revised_subtitles}",
+            f"unchanged subtitles: {unchanged_subtitles}",
+            f"unanswered subtitles: {unanswered_subtitles}",
+            f"verified subtitles: {verified_subtitles}",
+            f"unverified subtitles: {unverified_subtitles}",
+            f"row filter: {row_filter.value}",
         ),
-        column_labels=(
-            "Index",
-            "Block",
-            "Guide",
-            "Target / revision",
-            "Notes",
-            "Verified",
+        columns=(
+            ("Index", "right"),
+            ("Block", "right"),
+            ("Guide", "left"),
+            ("Target / revision", "left"),
+            ("Notes", "left"),
+            ("Verified", "center"),
         ),
-        column_separators=("---:", "---:", "---", "---", "---", ":---:"),
-        rows=[row.markdown for row in rows],
+        rows=[row.cells for row in rows],
         first_index=first_index,
         last_index=last_index,
         index_track_name="target",
@@ -501,6 +511,28 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
             test_case_index=test_case_index,
         )
         active_cases.append((test_case_index, test_case, selected_matches[0]))
+
+    # Ensure every selected current target block has a corresponding logged case
+    selected_block_numbers = {
+        block.block_number
+        for blocks in blocks_by_key.values()
+        for block in blocks
+        if _block_intersects_range(
+            block,
+            first_index,
+            last_index,
+            first_block,
+            last_block,
+        )
+    }
+    active_block_numbers = {block.block_number for _, _, block in active_cases}
+    missing_block_numbers = sorted(selected_block_numbers - active_block_numbers)
+    if missing_block_numbers:
+        block_numbers = ", ".join(str(number) for number in missing_block_numbers)
+        raise ScinoephileError(
+            "Unable to audit guided review: selected target blocks have no matching "
+            f"logged test case: {block_numbers}"
+        )
 
     return active_cases
 

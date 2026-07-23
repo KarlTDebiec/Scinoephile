@@ -14,7 +14,6 @@ from scinoephile.llms.delineation import DelineationTestCase
 from .utils import (
     AuditFilter,
     AuditResult,
-    escape_table_cell,
     format_audit_report,
     get_selected_event_indexes,
     get_superseded_keys,
@@ -66,7 +65,7 @@ def audit_delineation(
         test_cases,
     )
 
-    rows: list[tuple[int, str]] = []
+    rows: list[tuple[int, tuple[str, ...]]] = []
     shifts = 0
     no_shifts = 0
     unanswered = 0
@@ -106,41 +105,38 @@ def audit_delineation(
         ) or (row_filter is AuditFilter.unverified and test_case.verified):
             continue
 
+        verified_marker = ""
+        if test_case.verified:
+            verified_marker = "✓"
         cells = (
             f"{first_subtitle_index}\n{second_subtitle_index}",
             _format_pair(query.reference_one, query.reference_two),
             _format_pair(*input_target),
             output,
             "",
-            "✓" if test_case.verified else "",
+            verified_marker,
         )
-        rows.append(
-            (
-                first_subtitle_index,
-                f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |",
-            )
-        )
+        rows.append((first_subtitle_index, cells))
 
     rows.sort(key=lambda item: item[0])
 
     return format_audit_report(
         title="Transcription Delineation Audit",
-        summary_lines=(
-            f"- logged cases: {logged_cases}",
-            f"- boundary shifts: {shifts}",
-            f"- no-shift answers: {no_shifts}",
-            f"- unanswered cases: {unanswered}",
-            f"- row filter: {row_filter.value}",
+        summary_items=(
+            f"logged cases: {logged_cases}",
+            f"boundary shifts: {shifts}",
+            f"no-shift answers: {no_shifts}",
+            f"unanswered cases: {unanswered}",
+            f"row filter: {row_filter.value}",
         ),
-        column_labels=(
-            "Indexes",
-            "Reference",
-            "Input",
-            "Output",
-            "Notes",
-            "Verified",
+        columns=(
+            ("Indexes", "right"),
+            ("Reference", "left"),
+            ("Input", "left"),
+            ("Output", "left"),
+            ("Notes", "left"),
+            ("Verified", "center"),
         ),
-        column_separators=("---:", "---", "---", "---", "---", ":---:"),
         rows=[row for _, row in rows],
         first_index=first_index,
         last_index=last_index,

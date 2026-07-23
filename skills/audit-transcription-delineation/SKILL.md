@@ -19,7 +19,10 @@ cell. Do not leave notes only in commentary, tool output, or the final response.
 
 - Keep the table at exactly these columns: `Indexes`, `Reference`, `Input`,
   `Output`, `Notes`, and `Verified`.
-- Leave `Notes` blank when a row needs no note.
+- Delineation JSON has no note field, so generated `Notes` cells begin blank.
+  If a future schema populates one, read it as context and replace the entire
+  cell with your own independent judgment; never append to or merely endorse
+  generated note content. Leave the cell blank when a row needs no finding.
 - Preserve the generated `Verified` cell: `✓` means the JSON test case is
   verified, and an empty cell means it is not verified.
 - Do not add a separate findings section; keep each observation beside the row

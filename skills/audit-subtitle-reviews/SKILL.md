@@ -14,7 +14,9 @@ Save the complete Markdown report under `local/`, audit every displayed row,
 and write each independent finding in its `Notes` cell.
 
 - Preserve the exact columns emitted by the selected command.
-- Treat JSON notes as context, not proof. Replace them with your own judgment.
+- The generated `Notes` cell contains any applicable JSON revision note. Read it
+  as context, then replace the entire cell with your own independent judgment;
+  do not append to or merely endorse the recorded note.
 - When emitted, preserve `Verified`: `✓` means the complete JSON case was
   verified.
 - Validate the edited table and provide a clickable link. Do not paste the full
@@ -164,7 +166,9 @@ simplification review for conversion-specific cleanup.
 
 Guided reports contain `Index`, `Block`, `Guide`, `Target / revision`, `Notes`,
 and `Verified`. The target appears above the proposed revision; `(unanswered)`
-means the JSON case has no answer.
+means the JSON case has no answer. For a proposed revision, the generated
+`Notes` cell contains that revision's JSON note; replace it during the audit as
+described above.
 
 - Audit proposed revisions and no-revision decisions. An unchanged target is a
   decision, not an automatic pass.

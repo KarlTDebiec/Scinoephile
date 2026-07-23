@@ -15,7 +15,6 @@ from scinoephile.llms.punctuation import PunctuationTestCase
 from .utils import (
     AuditFilter,
     AuditResult,
-    escape_table_cell,
     format_audit_report,
     get_selected_event_indexes,
     get_superseded_keys,
@@ -75,7 +74,7 @@ def audit_punctuation(
         last_block=last_block,
     )
 
-    rows: list[tuple[int, int, str]] = []
+    rows: list[tuple[int, int, tuple[str, ...]]] = []
     changes = 0
     unchanged = 0
     unanswered = 0
@@ -112,22 +111,21 @@ def audit_punctuation(
     rows.sort(key=lambda item: (item[0], item[1]))
     return format_audit_report(
         title="Transcription Punctuation Audit",
-        summary_lines=(
-            f"- logged cases: {logged_cases}",
-            f"- punctuation changes: {changes}",
-            f"- unchanged answers: {unchanged}",
-            f"- unanswered cases: {unanswered}",
-            f"- row filter: {row_filter.value}",
+        summary_items=(
+            f"logged cases: {logged_cases}",
+            f"punctuation changes: {changes}",
+            f"unchanged answers: {unchanged}",
+            f"unanswered cases: {unanswered}",
+            f"row filter: {row_filter.value}",
         ),
-        column_labels=(
-            "Index",
-            "Reference",
-            "Input",
-            "Output",
-            "Notes",
-            "Verified",
+        columns=(
+            ("Index", "right"),
+            ("Reference", "left"),
+            ("Input", "left"),
+            ("Output", "left"),
+            ("Notes", "left"),
+            ("Verified", "center"),
         ),
-        column_separators=("---:", "---", "---", "---", "---", ":---:"),
         rows=[row for _, _, row in rows],
         first_index=first_index,
         last_index=last_index,
@@ -140,14 +138,14 @@ def audit_punctuation(
 def _format_case_row(
     test_case: PunctuationTestCase,
     index: int,
-) -> tuple[str, AuditResult]:
-    """Format one punctuation case as a Markdown table row.
+) -> tuple[tuple[str, ...], AuditResult]:
+    """Format one punctuation case as semantic table data.
 
     Arguments:
         test_case: punctuation case to format
         index: zero-indexed reference subtitle position
     Returns:
-        Markdown row and its result type
+        semantic table cells and their result type
     """
     input_text = "".join(test_case.query.subtitles)
     answer = test_case.answer
@@ -161,16 +159,18 @@ def _format_case_row(
         output = answer.output
         result = AuditResult.changed
 
+    verified_marker = ""
+    if test_case.verified:
+        verified_marker = "✓"
     cells = (
         str(index + 1),
         test_case.query.guide,
         "\n".join(test_case.query.subtitles),
         output,
         "",
-        "✓" if test_case.verified else "",
+        verified_marker,
     )
-    row = f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |"
-    return row, result
+    return cells, result
 
 
 def _get_case_index(

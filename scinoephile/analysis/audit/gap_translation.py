@@ -16,7 +16,6 @@ from scinoephile.llms.gap_translation import GapTranslationTestCase
 
 from .utils import (
     VerificationAuditFilter,
-    escape_table_cell,
     format_audit_report,
     validate_audit_range,
 )
@@ -51,8 +50,8 @@ class _GapTranslationRow:
     """Whether the answer deliberately emitted empty text."""
     global_index: int
     """One-based global guide subtitle index."""
-    markdown: str
-    """Formatted Markdown table row."""
+    cells: tuple[str, ...]
+    """Semantic audit table cell values."""
     test_case_index: int
     """One-based position of the source test case in the JSON."""
     verified: bool
@@ -163,11 +162,9 @@ def audit_gap_translation(
             all_rows.append(
                 _GapTranslationRow(
                     answered=answered,
+                    cells=cells,
                     empty=empty,
                     global_index=global_index,
-                    markdown=(
-                        f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |"
-                    ),
                     test_case_index=test_case_index,
                     verified=test_case.verified,
                 )
@@ -188,28 +185,27 @@ def audit_gap_translation(
     # Format the report using the shared Markdown structure
     return format_audit_report(
         title="Gap Translation Audit",
-        summary_lines=(
-            f"- logged cases: {len({row.test_case_index for row in all_rows})}",
-            f"- gaps: {len(all_rows)}",
-            f"- translated gaps: {translated_gaps}",
-            f"- empty translations: {empty_translations}",
-            f"- unanswered gaps: {unanswered_gaps}",
-            f"- verified gaps: {verified_gaps}",
-            f"- unverified gaps: {len(all_rows) - verified_gaps}",
-            f"- row filter: {row_filter.value}",
+        summary_items=(
+            f"logged cases: {len({row.test_case_index for row in all_rows})}",
+            f"gaps: {len(all_rows)}",
+            f"translated gaps: {translated_gaps}",
+            f"empty translations: {empty_translations}",
+            f"unanswered gaps: {unanswered_gaps}",
+            f"verified gaps: {verified_gaps}",
+            f"unverified gaps: {len(all_rows) - verified_gaps}",
+            f"row filter: {row_filter.value}",
         ),
-        column_labels=(
-            "Indexes",
-            "Case / block",
-            "Difficulty",
-            "Guide",
-            "Target context",
-            "Translation",
-            "Notes",
-            "Verified",
+        columns=(
+            ("Indexes", "right"),
+            ("Case / block", "right"),
+            ("Difficulty", "right"),
+            ("Guide", "left"),
+            ("Target context", "left"),
+            ("Translation", "left"),
+            ("Notes", "left"),
+            ("Verified", "center"),
         ),
-        column_separators=("---:", "---:", "---:", "---", "---", "---", "---", ":---:"),
-        rows=[row.markdown for row in rows],
+        rows=[row.cells for row in rows],
         first_index=first_index,
         last_index=last_index,
         index_track_name="guide",

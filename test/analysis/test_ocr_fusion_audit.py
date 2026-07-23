@@ -84,9 +84,9 @@ def test_audit_ocr_fusion_filters_unverified_and_automatic_rows():
         row_filter=OcrFusionAuditFilter.unverified,
     )
 
-    assert "| 1 | — | — | 相同 | 相同 | 相同 | — | Sources identical |" in report
-    assert "| 2 | — | — | 只有一 | — | 只有一 | — | Source two empty |" in report
-    assert "| 3 | 1 | 1 | 甲 | 乙 | 甲 | — | (unanswered) |" in report
+    assert "| 1 | — | — | 相同 | 相同 | 相同 | — | Sources identical | — |" in report
+    assert "| 2 | — | — | 只有一 | — | 只有一 | — | Source two empty | — |" in report
+    assert "| 3 | 1 | 1 | 甲 | 乙 | 甲 | — | (unanswered) |  |" in report
     assert "- table rows: 1" in unverified_report
     assert "| 3 | 1 |" in unverified_report
 

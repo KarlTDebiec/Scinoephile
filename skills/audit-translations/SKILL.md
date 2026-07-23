@@ -35,6 +35,10 @@ reports have exactly: `Indexes`, `Case / block`, `Difficulty`, `Guide`,
   JSON index. Always use `Q` when editing an answer.
 - `C` is the one-based JSON case position and `B` the reconstructed block.
 - `✓` means the entire JSON case is verified, not merely one displayed row.
+- Translation JSON has no note field, so generated `Notes` cells begin blank.
+  If a future schema populates one, read it as context and replace the entire
+  cell with your own independent judgment; never append to or merely endorse
+  generated note content.
 - Keep findings beside rows, validate the edited report, and provide its link.
   Do not paste the table inline unless the user requests it.
 
@@ -111,8 +115,9 @@ gapped workflows. Subtitle-index and block ranges are mutually exclusive. Omit
 either bound for an open-ended range.
 Use `--filter unverified` to resume verification; the default is `all`.
 
-`(unanswered)` means the case has no answer. In the gapped workflow, `(empty)`
-is an answered output that intentionally emits no target subtitle.
+`(unanswered)` means the case has no answer. `(empty)` means an answered output
+emitted empty text; in the gapped workflow this may intentionally mean that no
+target subtitle is needed.
 
 ## Audit every translation
 

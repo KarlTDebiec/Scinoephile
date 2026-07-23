@@ -16,11 +16,13 @@ Save the complete Markdown report under `local/`.
   `Fused`, and `Validated`. When JSON is supplied, also include `Notes` and
   `Verified`.
 - `Case` and `Difficulty` are `—` for deterministic rows and rows audited
-  without JSON. An empty `Verified` cell on a deterministic row does not
-  indicate an unverified JSON case.
+  without JSON. When JSON is supplied, `Verified` is `—` for deterministic
+  rows, `✓` for verified JSON cases, and empty for unverified JSON cases.
 - Treat `Validated` as ground truth when supplied. It is `—` when omitted.
-- When JSON is supplied, `Notes` contains the recorded LLM note or the automatic
-  fusion explanation.
+- When JSON is supplied, generated `Notes` contains the recorded LLM note or
+  the automatic fusion explanation. Read it as context, then replace the entire
+  cell with your own independent judgment; do not append to or merely endorse
+  the generated content.
 - Validate the saved table after generating it and provide a clickable link.
   Do not paste the full table inline unless the user requests it.
 

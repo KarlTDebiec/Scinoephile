@@ -14,7 +14,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import are_series_one_to_one
 
 from .utils import (
-    escape_table_cell,
+    AuditColumn,
     format_audit_report,
     get_selected_event_indexes,
 )
@@ -33,8 +33,8 @@ class _OcrFusionRow:
     """Whether the two OCR sources differ."""
     discrepancy: bool
     """Whether fused and validated text differ."""
-    markdown: str
-    """Formatted Markdown table row."""
+    cells: tuple[str, ...]
+    """Semantic audit table cell values."""
     requires_llm: bool
     """Whether the row required an OCR-fusion LLM decision."""
     verified: bool
@@ -180,95 +180,66 @@ def audit_ocr_fusion(
         key = (test_case.query.source_one, test_case.query.source_two)
         cases_by_key[key] = (case_index, test_case)
 
-    all_rows: list[_OcrFusionRow] = []
-    for position in sorted(selected_positions):
-        index = position + 1
-        source_one_text = source_one.events[position].text_with_newline
-        source_two_text = source_two.events[position].text_with_newline
-        fused_text = fused.events[position].text_with_newline
-        validated_text = None
-        if validated is not None:
-            validated_text = validated.events[position].text_with_newline
-
-        decision = _get_decision(
-            index,
-            source_one_text,
-            source_two_text,
-            fused_text,
+    # Resolve the semantic data for every selected subtitle row
+    all_rows = [
+        _get_row(
+            position,
+            source_one,
+            source_two,
+            fused,
             cases_by_key,
             has_decision_log=has_decision_log,
+            validated=validated,
         )
-        discrepancy = validated_text is not None and fused_text != validated_text
-        cells = (
-            str(index),
-            str(decision.case_index) if decision.case_index is not None else "—",
-            str(decision.difficulty) if decision.case_index is not None else "—",
-            source_one_text or "—",
-            source_two_text or "—",
-            fused_text or "—",
-            validated_text if validated_text else "—",
-        )
-        if has_decision_log:
-            cells += (
-                decision.note,
-                "✓" if decision.requires_llm and decision.verified else "",
-            )
-        markdown_cells = " | ".join(escape_table_cell(cell) for cell in cells)
-        all_rows.append(
-            _OcrFusionRow(
-                changed=source_one_text != source_two_text,
-                discrepancy=discrepancy,
-                markdown=f"| {markdown_cells} |",
-                requires_llm=decision.requires_llm,
-                verified=decision.verified,
-            )
-        )
+        for position in sorted(selected_positions)
+    ]
 
+    # Filter rows and summarize the complete selected data
     rows = _filter_rows(all_rows, row_filter)
     llm_rows = [row for row in all_rows if row.requires_llm]
-    summary_lines = [
-        f"- subtitles: {len(all_rows)}",
-        f"- source disagreements: {sum(row.changed for row in all_rows)}",
-        f"- validated track: {'included' if validated is not None else 'omitted'}",
-        f"- validated discrepancies: {sum(row.discrepancy for row in all_rows)}",
-        f"- row filter: {row_filter.value}",
+    validated_track = "omitted"
+    if validated is not None:
+        validated_track = "included"
+    summary_items = [
+        f"subtitles: {len(all_rows)}",
+        f"source disagreements: {sum(row.changed for row in all_rows)}",
+        f"validated track: {validated_track}",
+        f"validated discrepancies: {sum(row.discrepancy for row in all_rows)}",
+        f"row filter: {row_filter.value}",
     ]
     if has_decision_log:
         verified_llm_rows = sum(row.verified for row in llm_rows)
         unverified_llm_rows = sum(not row.verified for row in llm_rows)
-        summary_lines.extend(
+        summary_items.extend(
             (
-                f"- LLM decisions: {len(llm_rows)}",
-                f"- verified LLM decisions: {verified_llm_rows}",
-                f"- unverified LLM decisions: {unverified_llm_rows}",
+                f"LLM decisions: {len(llm_rows)}",
+                f"verified LLM decisions: {verified_llm_rows}",
+                f"unverified LLM decisions: {unverified_llm_rows}",
             )
         )
     else:
-        summary_lines.extend(
+        summary_items.extend(
             (
-                f"- LLM-required rows: {len(llm_rows)}",
-                "- decision log: omitted",
+                f"LLM-required rows: {len(llm_rows)}",
+                "decision log: omitted",
             )
         )
-    column_labels = [
-        "Subtitle",
-        "Case",
-        "Difficulty",
-        "Source one",
-        "Source two",
-        "Fused",
-        "Validated",
+    columns: list[AuditColumn] = [
+        ("Subtitle", "right"),
+        ("Case", "right"),
+        ("Difficulty", "right"),
+        ("Source one", "left"),
+        ("Source two", "left"),
+        ("Fused", "left"),
+        ("Validated", "left"),
     ]
-    column_separators = ["---:", "---:", "---:", "---", "---", "---", "---"]
     if has_decision_log:
-        column_labels.extend(("Notes", "Verified"))
-        column_separators.extend(("---", ":---:"))
+        columns.extend((("Notes", "left"), ("Verified", "center")))
     return format_audit_report(
         title="OCR Fusion Audit",
-        summary_lines=summary_lines,
-        column_labels=column_labels,
-        column_separators=column_separators,
-        rows=[row.markdown for row in rows],
+        summary_items=summary_items,
+        columns=columns,
+        rows=[row.cells for row in rows],
         first_index=first_index,
         last_index=last_index,
         index_track_name="fused",
@@ -400,6 +371,82 @@ def _get_decision(
         note=note,
         requires_llm=True,
         verified=test_case.verified,
+    )
+
+
+def _get_row(
+    position: int,
+    source_one: Series,
+    source_two: Series,
+    fused: Series,
+    cases_by_key: dict[tuple[str, str], tuple[int, _OcrFusionTestCase]],
+    *,
+    has_decision_log: bool,
+    validated: Series | None,
+) -> _OcrFusionRow:
+    """Resolve one OCR-fusion subtitle into semantic report data.
+
+    Arguments:
+        position: zero-based fused subtitle position
+        source_one: first OCR subtitle series
+        source_two: second OCR subtitle series
+        fused: OCR-fusion output subtitle series
+        cases_by_key: latest logged case keyed by source text pair
+        has_decision_log: whether a decision log was supplied
+        validated: optional validated subtitle series
+    Returns:
+        semantic audit row
+    """
+    index = position + 1
+    source_one_text = source_one.events[position].text_with_newline
+    source_two_text = source_two.events[position].text_with_newline
+    fused_text = fused.events[position].text_with_newline
+    validated_text = None
+    if validated is not None:
+        validated_text = validated.events[position].text_with_newline
+
+    # Resolve the automatic or logged decision and its display metadata
+    decision = _get_decision(
+        index,
+        source_one_text,
+        source_two_text,
+        fused_text,
+        cases_by_key,
+        has_decision_log=has_decision_log,
+    )
+    case_index = "—"
+    difficulty = "—"
+    if decision.case_index is not None:
+        case_index = str(decision.case_index)
+        difficulty = str(decision.difficulty)
+    validated_display = "—"
+    if validated_text:
+        validated_display = validated_text
+
+    # Keep verification unavailable for deterministic rows
+    cells = (
+        str(index),
+        case_index,
+        difficulty,
+        source_one_text or "—",
+        source_two_text or "—",
+        fused_text or "—",
+        validated_display,
+    )
+    if has_decision_log:
+        verified_marker = "—"
+        if decision.requires_llm:
+            verified_marker = ""
+            if decision.verified:
+                verified_marker = "✓"
+        cells += (decision.note, verified_marker)
+
+    return _OcrFusionRow(
+        changed=source_one_text != source_two_text,
+        cells=cells,
+        discrepancy=validated_text is not None and fused_text != validated_text,
+        requires_llm=decision.requires_llm,
+        verified=decision.verified,
     )
 
 

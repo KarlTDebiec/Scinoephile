@@ -16,7 +16,6 @@ from scinoephile.llms.translation import TranslationTestCase
 
 from .utils import (
     VerificationAuditFilter,
-    escape_table_cell,
     format_audit_report,
     validate_audit_range,
 )
@@ -53,8 +52,8 @@ class _TranslationBlock:
 class _TranslationRow:
     """One translated subtitle displayed in an audit report."""
 
-    markdown: str
-    """Formatted Markdown table row."""
+    cells: tuple[str, ...]
+    """Semantic audit table cell values."""
     verified: bool
     """Whether the source test case is verified."""
 
@@ -248,9 +247,7 @@ def _audit_translation_blocks(
             )
             all_rows.append(
                 _TranslationRow(
-                    markdown=(
-                        f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |"
-                    ),
+                    cells=cells,
                     verified=test_case.verified,
                 )
             )
@@ -264,28 +261,27 @@ def _audit_translation_blocks(
     verified_subtitles = sum(row.verified for row in all_rows)
     return format_audit_report(
         title=title,
-        summary_lines=(
-            f"- logged cases: {len(selected_case_indexes)}",
-            f"- subtitles: {len(all_rows)}",
-            f"- translated subtitles: {translated_subtitles}",
-            f"- empty translations: {empty_translations}",
-            f"- unanswered subtitles: {unanswered_subtitles}",
-            f"- verified subtitles: {verified_subtitles}",
-            f"- unverified subtitles: {len(all_rows) - verified_subtitles}",
-            f"- row filter: {row_filter.value}",
+        summary_items=(
+            f"logged cases: {len(selected_case_indexes)}",
+            f"subtitles: {len(all_rows)}",
+            f"translated subtitles: {translated_subtitles}",
+            f"empty translations: {empty_translations}",
+            f"unanswered subtitles: {unanswered_subtitles}",
+            f"verified subtitles: {verified_subtitles}",
+            f"unverified subtitles: {len(all_rows) - verified_subtitles}",
+            f"row filter: {row_filter.value}",
         ),
-        column_labels=(
-            "Indexes",
-            "Case / block",
-            "Difficulty",
-            "Source",
-            "Guide",
-            "Translation",
-            "Notes",
-            "Verified",
+        columns=(
+            ("Indexes", "right"),
+            ("Case / block", "right"),
+            ("Difficulty", "right"),
+            ("Source", "left"),
+            ("Guide", "left"),
+            ("Translation", "left"),
+            ("Notes", "left"),
+            ("Verified", "center"),
         ),
-        column_separators=("---:", "---:", "---:", "---", "---", "---", "---", ":---:"),
-        rows=[row.markdown for row in rows],
+        rows=[row.cells for row in rows],
         first_index=first_index,
         last_index=last_index,
         index_track_name="source",

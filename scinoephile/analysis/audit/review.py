@@ -14,8 +14,8 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
 from .utils import (
+    AuditColumn,
     AuditFilter,
-    escape_table_cell,
     format_audit_report,
     get_selected_event_indexes,
 )
@@ -232,21 +232,25 @@ def audit_review_workflow(
                 strict=True,
             )
         )
-        unverified_indexes = frozenset()
-        if row_filter.value == AuditFilter.unverified.value:
-            unverified_indexes = frozenset(
-                index
-                for review, (original, reviewed) in zip(
-                    reviews,
-                    review_series,
-                    strict=True,
-                )
-                for index in _get_unverified_indexes(
-                    review.review_cases,
-                    original,
-                    reviewed,
-                )
+        verification_indexes = tuple(
+            _get_verification_indexes(
+                review.review_cases,
+                original,
+                reviewed,
             )
+            for review, (original, reviewed) in zip(
+                reviews,
+                review_series,
+                strict=True,
+            )
+        )
+        covered_indexes = frozenset(
+            index for covered, _ in verification_indexes for index in covered
+        )
+        unverified_indexes = frozenset(
+            index for _, unverified in verification_indexes for index in unverified
+        )
+        has_review_cases = any(review.review_cases for review in reviews)
     except ValueError as exc:
         raise ScinoephileError(f"Unable to audit subtitle reviews: {exc}") from exc
 
@@ -276,7 +280,7 @@ def audit_review_workflow(
         unverified_indexes=unverified_indexes,
         characters=characters,
     )
-    return _format_markdown(
+    return _format_report(
         reviews=reviews,
         review_series=review_series,
         review_changes=review_changes,
@@ -284,8 +288,11 @@ def audit_review_workflow(
         comparisons=comparisons,
         comparison_series=comparison_series,
         comparison_changes=comparison_changes,
+        covered_indexes=covered_indexes,
+        has_review_cases=has_review_cases,
         indexes=selected_indexes,
         row_filter=row_filter,
+        unverified_indexes=unverified_indexes,
         characters=characters,
         first_index=first_index,
         last_index=last_index,
@@ -294,7 +301,7 @@ def audit_review_workflow(
     )
 
 
-def _format_markdown(
+def _format_report(
     *,
     reviews: Sequence[ReviewAuditPair],
     review_series: Sequence[tuple[Sequence[str], Sequence[str]]],
@@ -303,15 +310,18 @@ def _format_markdown(
     comparisons: Sequence[ReviewAuditComparison],
     comparison_series: Sequence[tuple[Sequence[str], Sequence[str]]],
     comparison_changes: Sequence[set[int]],
+    covered_indexes: frozenset[int],
+    has_review_cases: bool,
     indexes: Sequence[int],
     row_filter: AuditFilter | ComparativeReviewAuditFilter,
+    unverified_indexes: frozenset[int],
     characters: Sequence[str],
     first_index: int | None,
     last_index: int | None,
     first_block: int | None,
     last_block: int | None,
 ) -> str:
-    """Format a review audit as Markdown.
+    """Build semantic review data and format it with the shared renderer.
 
     Arguments:
         reviews: ordered review-pair specifications
@@ -321,8 +331,11 @@ def _format_markdown(
         comparisons: ordered comparison specifications
         comparison_series: left- and right-hand subtitle text for each comparison
         comparison_changes: changed subtitle indexes for each comparison
+        covered_indexes: subtitle indexes covered by logged cases
+        has_review_cases: whether any review decision log was supplied
         indexes: zero-based subtitle indexes to include
         row_filter: active row filter
+        unverified_indexes: subtitle indexes covered by unverified cases
         characters: active character filter
         first_index: first included 1-indexed subtitle number
         last_index: last included 1-indexed subtitle number
@@ -331,7 +344,7 @@ def _format_markdown(
     Returns:
         Markdown report
     """
-    row_lines: list[str] = []
+    rows: list[list[str]] = []
     for index in indexes:
         note_lines = [
             f"{review.label} review: {note}"
@@ -356,34 +369,42 @@ def _format_markdown(
             )
         )
         cells.append("\n".join(note_lines))
-        row_lines.append(f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |")
+        if has_review_cases:
+            verified_marker = "—"
+            if index in covered_indexes:
+                verified_marker = "✓"
+                if index in unverified_indexes:
+                    verified_marker = ""
+            cells.append(verified_marker)
+        rows.append(cells)
 
-    summary_lines = [
-        f"- {review.label.lower()} review edits: {len(changed_indexes)}"
+    summary_items = [
+        f"{review.label.lower()} review edits: {len(changed_indexes)}"
         for review, changed_indexes in zip(reviews, review_changes, strict=True)
     ]
-    summary_lines.extend(
-        f"- {comparison.summary_label.lower()} discrepancies: {len(changed_indexes)}"
+    summary_items.extend(
+        f"{comparison.summary_label.lower()} discrepancies: {len(changed_indexes)}"
         for comparison, changed_indexes in zip(
             comparisons,
             comparison_changes,
             strict=True,
         )
     )
-    summary_lines.append(f"- row filter: {row_filter.value}")
+    summary_items.append(f"row filter: {row_filter.value}")
     if characters:
-        summary_lines.append(f"- character filter: {', '.join(characters)}")
+        summary_items.append(f"character filter: {', '.join(characters)}")
 
-    column_labels = ["Subtitle"]
-    column_labels.extend(review.label for review in reviews)
-    column_labels.extend(comparison.column_label for comparison in comparisons)
-    column_labels.append("Notes")
+    columns: list[AuditColumn] = [("Subtitle", "right")]
+    columns.extend((review.label, "left") for review in reviews)
+    columns.extend((comparison.column_label, "left") for comparison in comparisons)
+    columns.append(("Notes", "left"))
+    if has_review_cases:
+        columns.append(("Verified", "center"))
     return format_audit_report(
         title="Review Audit",
-        summary_lines=summary_lines,
-        column_labels=column_labels,
-        column_separators=["---:", *("---" for _ in column_labels[1:])],
-        rows=row_lines,
+        summary_items=summary_items,
+        columns=columns,
+        rows=rows,
         first_index=first_index,
         last_index=last_index,
         first_block=first_block,
@@ -499,24 +520,23 @@ def _get_review_case_data(
         list[dict[str, int | str]],
         review_case.query.model_dump()["subtitles"],
     )
-    answer_revisions = (
-        cast(
+    answer_revisions: list[dict[str, int | str]] = []
+    if answer is not None:
+        answer_revisions = cast(
             list[dict[str, int | str]],
             answer.model_dump()["revisions"],
         )
-        if answer is not None
-        else []
-    )
     query_texts = tuple(cast(str, subtitle["text"]) for subtitle in query_subtitles)
     revision_by_index = {
         cast(int, revision["index"]): revision for revision in answer_revisions
     }
-    revised_texts = tuple(
-        cast(str, revision_by_index[local_index]["text"])
-        if local_index in revision_by_index
-        else query_text
-        for local_index, query_text in enumerate(query_texts, 1)
-    )
+    revised_texts_list = []
+    for local_index, query_text in enumerate(query_texts, 1):
+        revised_text = query_text
+        if local_index in revision_by_index:
+            revised_text = cast(str, revision_by_index[local_index]["text"])
+        revised_texts_list.append(revised_text)
+    revised_texts = tuple(revised_texts_list)
     return query_texts, revised_texts, revision_by_index
 
 
@@ -582,26 +602,25 @@ def _get_review_notes(
     return {index: tuple(notes) for index, notes in notes_by_index.items()}
 
 
-def _get_unverified_indexes(
+def _get_verification_indexes(
     review_cases: Sequence[TestCase],
     original: tuple[str, ...],
     reviewed: tuple[str, ...],
-) -> set[int]:
-    """Get subtitle indexes covered by unverified review test cases.
+) -> tuple[set[int], set[int]]:
+    """Get subtitle indexes covered by logged and unverified review cases.
 
     Arguments:
         review_cases: deserialized review test cases
         original: original subtitle text
         reviewed: reviewed subtitle text
     Returns:
-        zero-based subtitle indexes covered by unverified cases
+        zero-based subtitle indexes covered by all and unverified cases
     Raises:
-        ValueError: if an unverified case does not match the subtitles
+        ValueError: if a logged case does not match the subtitles
     """
+    covered_indexes: set[int] = set()
     unverified_indexes: set[int] = set()
     for case_index, review_case in enumerate(review_cases, 1):
-        if review_case.verified:
-            continue
         query_texts, revised_texts, _ = _get_review_case_data(review_case)
         matched_starts = [
             start
@@ -614,5 +633,8 @@ def _get_unverified_indexes(
                 f"Review test case {case_index} does not match its subtitle pair"
             )
         for start in matched_starts:
-            unverified_indexes.update(range(start, start + len(query_texts)))
-    return unverified_indexes
+            matched_indexes = set(range(start, start + len(query_texts)))
+            covered_indexes.update(matched_indexes)
+            if not review_case.verified:
+                unverified_indexes.update(matched_indexes)
+    return covered_indexes, unverified_indexes
