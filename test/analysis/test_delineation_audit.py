@@ -207,6 +207,13 @@ def test_audit_delineation_rejects_invalid_range():
         audit_delineation(_get_series("參考一", "參考二"), (), first_index=0)
     with raises(ScinoephileError, match="First block must be at least 1"):
         audit_delineation(_get_series("參考一", "參考二"), (), first_block=0)
+    with raises(ScinoephileError, match="ranges are mutually exclusive"):
+        audit_delineation(
+            _get_series("參考一", "參考二"),
+            (),
+            first_index=1,
+            first_block=1,
+        )
 
 
 def test_audit_delineation_rejects_unmatched_reference_pair():
@@ -469,8 +476,8 @@ def test_audit_delineation_rejects_ambiguous_reference_pair():
         )
 
 
-def test_audit_delineation_scopes_ambiguity_to_subtitle_range():
-    """Test repeated pairs are resolved only within the requested range."""
+def test_audit_delineation_rejects_range_based_disambiguation():
+    """Test a range cannot force an ambiguous pair onto one occurrence."""
     reference = _get_series("參考一", "參考二", "參考一", "參考二")
     test_case = DelineationTestCase(
         query=DelineationQuery(
@@ -481,12 +488,13 @@ def test_audit_delineation_scopes_ambiguity_to_subtitle_range():
         answer=DelineationAnswer(),
     )
 
-    first_report = audit_delineation(
-        reference,
-        (test_case,),
-        first_index=1,
-        last_index=2,
-    )
+    with raises(ScinoephileError, match="reference pair is ambiguous.*1, 3"):
+        audit_delineation(
+            reference,
+            (test_case,),
+            first_index=1,
+            last_index=2,
+        )
     excluded_report = audit_delineation(
         reference,
         (test_case,),
@@ -494,9 +502,43 @@ def test_audit_delineation_scopes_ambiguity_to_subtitle_range():
         last_index=6,
     )
 
-    assert "| 1<br>2 |" in first_report
     assert "- logged cases: 0" in excluded_report
     assert "- table rows: 0" in excluded_report
+
+
+def test_audit_delineation_resolves_repeated_pair_before_range_filtering():
+    """Test a range cannot reassign a contextually resolved pair."""
+    reference = _get_series("重複一", "重複二", "之前", "重複一", "重複二", "之後")
+    test_cases = (
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="之前",
+                reference_two="重複一",
+                target_one="前",
+            ),
+            answer=DelineationAnswer(),
+        ),
+        DelineationTestCase(
+            query=DelineationQuery(
+                reference_one="重複一",
+                reference_two="重複二",
+                target_one="中",
+            ),
+            answer=DelineationAnswer(),
+        ),
+    )
+
+    report = audit_delineation(reference, test_cases)
+    ranged_report = audit_delineation(
+        reference,
+        test_cases,
+        first_index=1,
+        last_index=2,
+    )
+
+    assert "| 4<br>5 | 重複一<br>重複二 | 中<br>— |" in report
+    assert "- logged cases: 0" in ranged_report
+    assert "- table rows: 0" in ranged_report
 
 
 def _get_series(*texts: str) -> Series:

@@ -86,7 +86,6 @@ def audit_delineation(
     candidate_indexes_by_case, direct_indexes = _get_case_indexes(
         pair_indexes,
         test_cases,
-        selected_reference_indexes=selected_reference_indexes,
     )
 
     rows: list[tuple[int, str]] = []
@@ -95,14 +94,15 @@ def audit_delineation(
     unanswered = 0
     logged_cases = 0
     for test_case_index, test_case in enumerate(test_cases, 1):
-        candidate_indexes = candidate_indexes_by_case[test_case_index - 1]
-        if not candidate_indexes:
-            continue
-        index = _get_case_index(
-            candidate_indexes,
+        # Resolve against all occurrences before filtering to the requested range
+        index = _get_selected_case_index(
+            candidate_indexes_by_case[test_case_index - 1],
             direct_indexes,
+            selected_reference_indexes,
             test_case_index=test_case_index,
         )
+        if index is None:
+            continue
         query = test_case.query
         first_subtitle_index = index + 1
         second_subtitle_index = index + 2
@@ -234,15 +234,12 @@ def _get_case_index(
 def _get_case_indexes(
     pair_indexes: dict[tuple[str, str], list[int]],
     test_cases: Sequence[DelineationTestCase],
-    *,
-    selected_reference_indexes: Collection[int],
 ) -> tuple[list[list[int]], list[int | None]]:
     """Get candidate and directly resolved indexes for logged cases.
 
     Arguments:
         pair_indexes: reference-pair positions keyed by subtitle text
         test_cases: logged delineation test cases
-        selected_reference_indexes: selected zero-based reference subtitle indexes
     Returns:
         candidate and directly resolved indexes for every logged case
     Raises:
@@ -278,15 +275,46 @@ def _get_case_indexes(
                 "reference subtitles"
             )
 
-        candidate_indexes = [
-            index
-            for index in matches
-            if index in selected_reference_indexes
-            and index + 1 in selected_reference_indexes
-        ]
+        candidate_indexes = list(matches)
         candidate_indexes_by_case.append(candidate_indexes)
         direct_index = None
         if len(candidate_indexes) == 1:
             direct_index = candidate_indexes[0]
         direct_indexes.append(direct_index)
     return candidate_indexes_by_case, direct_indexes
+
+
+def _get_selected_case_index(
+    candidate_indexes: Sequence[int],
+    direct_indexes: list[int | None],
+    selected_reference_indexes: Collection[int],
+    *,
+    test_case_index: int,
+) -> int | None:
+    """Resolve one case globally and retain it only when selected.
+
+    Arguments:
+        candidate_indexes: possible zero-indexed reference-pair positions
+        direct_indexes: directly resolved indexes for every logged case
+        selected_reference_indexes: selected zero-based reference subtitle indexes
+        test_case_index: one-indexed test case position
+    Returns:
+        selected reference-pair position, or None if outside the requested range
+    """
+    selected_candidate_indexes = {
+        index
+        for index in candidate_indexes
+        if index in selected_reference_indexes
+        and index + 1 in selected_reference_indexes
+    }
+    if not selected_candidate_indexes:
+        return None
+
+    index = _get_case_index(
+        candidate_indexes,
+        direct_indexes,
+        test_case_index=test_case_index,
+    )
+    if index not in selected_candidate_indexes:
+        return None
+    return index

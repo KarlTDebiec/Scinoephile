@@ -171,6 +171,14 @@ def test_audit_punctuation_rejects_invalid_range():
             (),
             first_block=0,
         )
+    with raises(ScinoephileError, match="ranges are mutually exclusive"):
+        audit_punctuation(
+            _get_series("參考"),
+            _get_series("甲"),
+            (),
+            first_index=1,
+            first_block=1,
+        )
 
 
 def test_audit_punctuation_resolves_repeated_reference_from_target():

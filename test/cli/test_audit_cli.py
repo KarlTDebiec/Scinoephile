@@ -195,6 +195,19 @@ def test_audit_cli_subcommands():
     }
 
 
+def test_transcription_audit_cli_help_uses_reference_indexes():
+    """Test transcription audit range help identifies the reference track."""
+    for cli_class in (AuditDelineationCli, AuditPunctuationCli):
+        actions = {
+            action.dest: action
+            for action in cli_class.argparser()._actions  # noqa: SLF001
+        }
+        assert actions["first_index"].help == cli_class.first_index_help
+        assert actions["last_index"].help == cli_class.last_index_help
+        assert "reference subtitle" in cli_class.first_index_help
+        assert "reference subtitle" in cli_class.last_index_help
+
+
 def test_audit_review_cli_help_is_consistent():
     """Test review audit help documents JSON inputs and option defaults."""
     for cli_class in (AuditReviewCli, AuditReviewDualCli, AuditReviewTradCli):
