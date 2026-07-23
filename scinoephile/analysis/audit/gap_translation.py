@@ -14,6 +14,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.gap_translation import GapTranslationTestCase
 
+from .translation import resolve_translation_audit_output
 from .utils import (
     VerificationAuditFilter,
     format_audit_report,
@@ -118,7 +119,7 @@ def audit_gap_translation(
     # Format all selected gap rows before applying the row filter
     all_rows: list[_GapTranslationRow] = []
     for test_case_index, test_case, block in active_cases:
-        outputs_by_index = {}
+        outputs_by_index = None
         if test_case.answer is not None:
             outputs_by_index = {
                 output.index: output.text for output in test_case.answer.outputs
@@ -142,13 +143,10 @@ def audit_gap_translation(
             ):
                 continue
 
-            answered = test_case.answer is not None
-            output_text = outputs_by_index.get(local_index, "")
-            empty = answered and not output_text
-            if not answered:
-                output_text = "(unanswered)"
-            elif empty:
-                output_text = "(empty)"
+            output_text, answered, empty = resolve_translation_audit_output(
+                outputs_by_index,
+                local_index,
+            )
             cells = (
                 f"G {global_index}\nQ {local_index}",
                 f"C {test_case_index}\nB {block.block_number}",

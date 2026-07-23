@@ -4,6 +4,6 @@
 
 Package hierarchy (modules may import from any above):
 * utils
-* delineation / gap_translation / ocr_fusion / punctuation / review / translation
-* guided_review
+* delineation / ocr_fusion / punctuation / review / translation
+* gap_translation / guided_review / guided_translation
 """

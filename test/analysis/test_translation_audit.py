@@ -6,10 +6,8 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.translation import (
-    audit_guided_translation,
-    audit_translation,
-)
+from scinoephile.analysis.audit.guided_translation import audit_guided_translation
+from scinoephile.analysis.audit.translation import audit_translation
 from scinoephile.analysis.audit.utils import VerificationAuditFilter
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle

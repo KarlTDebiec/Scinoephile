@@ -8,10 +8,8 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.analysis.audit.gap_translation import audit_gap_translation
-from scinoephile.analysis.audit.translation import (
-    audit_guided_translation,
-    audit_translation,
-)
+from scinoephile.analysis.audit.guided_translation import audit_guided_translation
+from scinoephile.analysis.audit.translation import audit_translation
 from scinoephile.analysis.audit.utils import VerificationAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
