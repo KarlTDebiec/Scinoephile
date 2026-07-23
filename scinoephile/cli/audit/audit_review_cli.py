@@ -16,9 +16,6 @@ from scinoephile.analysis.audit.review import (
 )
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
-    enum_arg,
-    enum_metavar,
-    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -27,9 +24,8 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.id import get_series_language
 from scinoephile.lang.zho.script.conversion import get_zho_character_variants
 from scinoephile.llms.guided_review import GuidedReviewManager
-from scinoephile.llms.review import ReviewManager
 
-from .audit_cli_base import AuditCliBase
+from .audit_review_cli_base import AuditReviewCliBase
 
 __all__ = ["AuditReviewCli"]
 
@@ -41,8 +37,8 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "guide subtitle SRT file used for guided review": (
             "用于引导式校对的参考字幕 SRT 文件"
         ),
-        "test-case JSON file; required with --guide": (
-            "测试用例 JSON 文件；与 --guide 一同使用时为必需"
+        "test-case JSON file; required with --guide or --filter unverified": (
+            "测试用例 JSON 文件；与 --guide 或 --filter unverified 一同使用时为必需"
         ),
         "rows to include: all, changes, or unverified (default: %(default)s)": (
             "要包含的行：all、changes 或 unverified（默认：%(default)s）"
@@ -63,8 +59,8 @@ AUDIT_REVIEW_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "guide subtitle SRT file used for guided review": (
             "用於引導式校對的參考字幕 SRT 檔"
         ),
-        "test-case JSON file; required with --guide": (
-            "測試案例 JSON 檔；與 --guide 一同使用時為必需"
+        "test-case JSON file; required with --guide or --filter unverified": (
+            "測試案例 JSON 檔；與 --guide 或 --filter unverified 一同使用時為必需"
         ),
         "rows to include: all, changes, or unverified (default: %(default)s)": (
             "要包含的列：all、changes 或 unverified（預設：%(default)s）"
@@ -91,11 +87,17 @@ _LANGUAGE_LABELS = {
 """Report labels keyed by automatically detected language."""
 
 
-class AuditReviewCli(AuditCliBase):
+class AuditReviewCli(AuditReviewCliBase):
     """Audit regular or guided subtitle reviews."""
 
     localizations = AUDIT_REVIEW_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
+    characters_help = (
+        "characters to match in regular-review input; values may be separated "
+        "or combined, and simplified and traditional variants are included "
+        "automatically (default: no character filter)"
+    )
+    """Help text for the workflow's character filter."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -108,7 +110,6 @@ class AuditReviewCli(AuditCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
-            "operation arguments",
             optional_arguments_name="additional arguments",
         )
 
@@ -139,36 +140,16 @@ class AuditReviewCli(AuditCliBase):
             "--json",
             dest="json_path",
             type=input_file_arg(),
-            help="test-case JSON file; required with --guide",
-        )
-
-        # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            default=ReviewAuditFilter.changes,
-            dest="row_filter",
-            metavar=enum_metavar(ReviewAuditFilter),
-            type=enum_arg(ReviewAuditFilter),
-            help=(
-                f"rows to include: {enum_options_list_str(ReviewAuditFilter)} "
-                "(default: %(default)s)"
-            ),
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--characters",
-            default=(),
-            metavar="CHARACTER",
-            nargs="+",
-            help=(
-                "characters to match in regular-review input; values may be "
-                "separated or combined, and simplified and traditional variants "
-                "are included automatically (default: no character filter)"
-            ),
+            help=("test-case JSON file; required with --guide or --filter unverified"),
         )
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "review"
 
     @classmethod
@@ -185,15 +166,34 @@ class AuditReviewCli(AuditCliBase):
         first_block: int | None,
         last_block: int | None,
     ) -> str:
-        """Load and audit one guided-review workflow."""
+        """Load and audit one guided-review workflow.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            target_path: target subtitle SRT path
+            guide_path: guide subtitle SRT path
+            json_path: guided-review test-case JSON path
+            row_filter: rows to include in the report
+            first_index: first target subtitle number to include
+            last_index: last target subtitle number to include
+            first_block: first paired block number to include
+            last_block: last paired block number to include
+        Returns:
+            Markdown audit report
+        """
+        # Read inputs
         target = read_series(parser, target_path)
         guide = read_series(parser, guide_path)
+
+        # Load guided-review JSON
         test_cases = cls.load_test_cases(
             parser,
             json_path,
             GuidedReviewManager,
             workflow_name="guided review",
         )
+
+        # Perform operation
         return audit_guided_review(
             target,
             guide,
@@ -220,9 +220,27 @@ class AuditReviewCli(AuditCliBase):
         first_block: int | None,
         last_block: int | None,
     ) -> str:
-        """Load and audit one regular-review workflow."""
+        """Load and audit one regular-review workflow.
+
+        Arguments:
+            parser: parser used to report user-facing errors
+            original_path: original subtitle SRT path
+            reviewed_path: reviewed subtitle SRT path
+            json_path: optional regular-review test-case JSON path
+            row_filter: rows to include in the report
+            characters: characters used to further limit included rows
+            first_index: first subtitle number to include
+            last_index: last subtitle number to include
+            first_block: first workflow block number to include
+            last_block: last workflow block number to include
+        Returns:
+            Markdown audit report
+        """
+        # Read inputs
         original = read_series(parser, original_path)
         reviewed = read_series(parser, reviewed_path)
+
+        # Detect language
         detected_languages = {
             language
             for series in (original, reviewed)
@@ -237,14 +255,15 @@ class AuditReviewCli(AuditCliBase):
             parser.error("Unable to detect the language and script of subtitle inputs")
         language = detected_languages.pop()
 
+        # Load regular-review JSON
         review_cases = ()
         if json_path is not None:
-            review_cases = cls.load_test_cases(
+            review_cases = cls.load_review_test_cases(
                 parser,
                 json_path,
-                ReviewManager,
-                workflow_name="regular review",
             )
+
+        # Perform operation
         return audit_review_workflow(
             reviews=(
                 ReviewAuditPair(
@@ -280,7 +299,23 @@ class AuditReviewCli(AuditCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            _parser: parser used to report user-facing errors
+            original_path: original subtitle SRT path
+            reviewed_path: optional reviewed subtitle SRT path
+            guide_path: optional guide subtitle SRT path
+            json_path: optional review test-case JSON path
+            row_filter: rows to include in the report
+            characters: characters used to further limit included regular rows
+            first_index: first subtitle number to include
+            last_index: last subtitle number to include
+            first_block: first workflow block number to include
+            last_block: last workflow block number to include
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if row_filter is ReviewAuditFilter.unverified and json_path is None:

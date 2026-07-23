@@ -17,16 +17,19 @@ from scinoephile.common.testing import run_cli_with_args
 
 def test_audit_ocr_fusion_cli_filter_help_is_consistent():
     """Test filter validation, metavar, and help derive from the filter enum."""
-    action = next(
-        action
+    actions = {
+        action.dest: action
         for action in AuditOcrFusionCli.argparser()._actions  # noqa: SLF001
-        if action.dest == "row_filter"
-    )
+    }
+    action = actions["row_filter"]
 
     assert action.choices is None
     assert action.metavar == enum_metavar(OcrFusionAuditFilter)
     assert isinstance(action.help, str)
     assert enum_options_list_str(OcrFusionAuditFilter) in action.help
+    json_help = actions["json_path"].help
+    assert isinstance(json_help, str)
+    assert "--filter unverified" in json_help
 
 
 def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(

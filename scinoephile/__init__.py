@@ -5,8 +5,7 @@
 Package hierarchy (modules may import from any above):
 * common
 * core
-* image / llms
-* analysis
+* analysis / image / llms
 * media
 * audio
 * lang

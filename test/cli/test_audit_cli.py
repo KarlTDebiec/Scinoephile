@@ -177,6 +177,7 @@ def test_audit_review_dual_cli_stdout_outfile_and_validation(
 def test_audit_cli_subcommands():
     """Test the audit CLI and its workflow subcommands are registered."""
     assert issubclass(AuditReviewCliBase, AuditCliBase)
+    assert issubclass(AuditReviewCli, AuditReviewCliBase)
     assert ScinoephileCli.subcommands()["audit"] is AuditCli
     assert AuditCli.subcommands() == {
         "ocr-fusion": AuditOcrFusionCli,
@@ -211,6 +212,7 @@ def test_audit_review_cli_help_is_consistent():
             if destination.endswith("json_path"):
                 assert isinstance(action.help, str)
                 assert "test-case JSON file" in action.help
+                assert "--filter unverified" in action.help
 
 
 def test_audit_review_cli_guided_mode_stdout_and_outfile(
@@ -282,6 +284,13 @@ def test_audit_review_cli_guided_mode_stdout_and_outfile(
     assert "First index must be less than or equal to last index" in (
         capsys.readouterr().err
     )
+
+    with raises(SystemExit):
+        run_cli_with_args(
+            AuditReviewCli,
+            f"{arguments} --first-index 1 --first-block 1",
+        )
+    assert "mutually exclusive" in capsys.readouterr().err
 
     with raises(SystemExit):
         run_cli_with_args(

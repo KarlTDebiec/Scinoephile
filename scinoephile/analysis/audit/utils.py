@@ -4,38 +4,19 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
-from enum import StrEnum
-
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 
 __all__ = [
-    "AuditResult",
     "escape_table_cell",
     "format_block_range",
     "format_index_range",
-    "get_paired_event_block_numbers",
     "get_selected_event_indexes",
-    "get_validated_block_pairs_by_pause",
     "is_block_in_range",
+    "validate_audit_range",
     "validate_block_range",
     "validate_index_range",
 ]
-
-
-class AuditResult(StrEnum):
-    """Result types shared by decision-log audit rows."""
-
-    changed = "changed"
-    """The logged answer changed its input."""
-
-    unchanged = "unchanged"
-    """The logged answer explicitly retained its input."""
-
-    unanswered = "unanswered"
-    """The logged case has no answer."""
 
 
 def escape_table_cell(value: str) -> str:
@@ -97,24 +78,6 @@ def format_index_range(
     return f"- {range_name} range: {first_index} through {last_index}"
 
 
-def get_paired_event_block_numbers(
-    block_pairs: Sequence[tuple[Series, Series]],
-) -> tuple[tuple[int, ...], tuple[int, ...]]:
-    """Get paired workflow block numbers for two subtitle series.
-
-    Arguments:
-        block_pairs: paired subtitle workflow blocks
-    Returns:
-        one-based paired block number for every event in each series
-    """
-    one_block_numbers: list[int] = []
-    two_block_numbers: list[int] = []
-    for block_number, (one_block, two_block) in enumerate(block_pairs, 1):
-        one_block_numbers.extend([block_number] * len(one_block))
-        two_block_numbers.extend([block_number] * len(two_block))
-    return tuple(one_block_numbers), tuple(two_block_numbers)
-
-
 def get_selected_event_indexes(
     series: Series,
     *,
@@ -136,11 +99,17 @@ def get_selected_event_indexes(
     Raises:
         ScinoephileError: if selection ranges are invalid or mixed
     """
-    has_index_range = first_index is not None or last_index is not None
     has_block_range = first_block is not None or last_block is not None
-    if has_index_range and has_block_range:
-        raise ScinoephileError("Subtitle-index and block ranges are mutually exclusive")
-    validate_index_range(first_index, last_index)
+    block_indexes = (
+        Series.get_block_indexes_by_pause(series) if has_block_range else None
+    )
+    validate_audit_range(
+        first_index,
+        last_index,
+        first_block,
+        last_block,
+        block_count=len(block_indexes) if block_indexes is not None else None,
+    )
 
     if not has_block_range:
         start = 0
@@ -151,42 +120,17 @@ def get_selected_event_indexes(
             stop = min(last_index, stop)
         return frozenset(range(start, stop))
 
-    block_indexes = Series.get_block_indexes_by_pause(series)
-    validate_block_range(first_block, last_block, len(block_indexes))
+    assert block_indexes is not None
     selected_block_indexes = {
         event_index
         for block_number, (block_start, block_stop) in enumerate(
             block_indexes,
             1,
         )
-        if (first_block is None or block_number >= first_block)
-        and (last_block is None or block_number <= last_block)
+        if is_block_in_range(block_number, first_block, last_block)
         for event_index in range(block_start, block_stop)
     }
     return frozenset(selected_block_indexes)
-
-
-def get_validated_block_pairs_by_pause(
-    one: Series,
-    two: Series,
-    first_block: int | None,
-    last_block: int | None,
-) -> list[tuple[Series, Series]]:
-    """Get paired workflow blocks and validate a range against their count.
-
-    Arguments:
-        one: first subtitle series
-        two: second subtitle series
-        first_block: first included one-based block number
-        last_block: last included one-based block number
-    Returns:
-        paired workflow blocks
-    Raises:
-        ScinoephileError: if the requested range exceeds the available blocks
-    """
-    block_pairs = get_block_pairs_by_pause(one, two)
-    validate_block_range(first_block, last_block, len(block_pairs))
-    return block_pairs
 
 
 def is_block_in_range(
@@ -206,6 +150,33 @@ def is_block_in_range(
     return (first_block is None or block_number >= first_block) and (
         last_block is None or block_number <= last_block
     )
+
+
+def validate_audit_range(
+    first_index: int | None,
+    last_index: int | None,
+    first_block: int | None,
+    last_block: int | None,
+    *,
+    block_count: int | None = None,
+):
+    """Validate mutually exclusive subtitle-index and block ranges.
+
+    Arguments:
+        first_index: first included one-based subtitle index
+        last_index: last included one-based subtitle index
+        first_block: first included one-based block number
+        last_block: last included one-based block number
+        block_count: optional total number of available blocks
+    Raises:
+        ScinoephileError: if either range is invalid or both range types are used
+    """
+    has_index_range = first_index is not None or last_index is not None
+    has_block_range = first_block is not None or last_block is not None
+    if has_index_range and has_block_range:
+        raise ScinoephileError("Subtitle-index and block ranges are mutually exclusive")
+    validate_index_range(first_index, last_index)
+    validate_block_range(first_block, last_block, block_count)
 
 
 def validate_block_range(

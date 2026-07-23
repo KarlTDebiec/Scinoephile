@@ -39,7 +39,9 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "optional validated subtitle SRT file used as ground truth; required "
             "with --filter discrepancies"
         ): ("用作真值的可选已验证字幕 SRT 文件；使用 --filter discrepancies 时为必需"),
-        "optional OCR-fusion test-case JSON file": "可选的 OCR 融合测试用例 JSON 文件",
+        (
+            "optional OCR-fusion test-case JSON file; required with --filter unverified"
+        ): ("可选的 OCR 融合测试用例 JSON 文件；使用 --filter unverified 时为必需"),
         (
             "rows to include: all, changes, discrepancies, or unverified "
             "(default: %(default)s)"
@@ -60,7 +62,9 @@ AUDIT_OCR_FUSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "optional validated subtitle SRT file used as ground truth; required "
             "with --filter discrepancies"
         ): ("用作真值的選用已驗證字幕 SRT 檔；使用 --filter discrepancies 時為必需"),
-        "optional OCR-fusion test-case JSON file": "選用的 OCR 融合測試案例 JSON 檔",
+        (
+            "optional OCR-fusion test-case JSON file; required with --filter unverified"
+        ): ("選用的 OCR 融合測試案例 JSON 檔；使用 --filter unverified 時為必需"),
         (
             "rows to include: all, changes, discrepancies, or unverified "
             "(default: %(default)s)"
@@ -129,7 +133,10 @@ class AuditOcrFusionCli(AuditCliBase):
             "--json",
             dest="json_path",
             type=input_file_arg(),
-            help="optional OCR-fusion test-case JSON file",
+            help=(
+                "optional OCR-fusion test-case JSON file; required with --filter "
+                "unverified"
+            ),
         )
 
         # Operation arguments
@@ -147,7 +154,11 @@ class AuditOcrFusionCli(AuditCliBase):
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "ocr-fusion"
 
     @classmethod
@@ -168,7 +179,24 @@ class AuditOcrFusionCli(AuditCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            _parser: parser used to report user-facing errors
+            source_one_path: first OCR source subtitle SRT path
+            source_two_path: second OCR source subtitle SRT path
+            fused_path: fused OCR subtitle SRT path
+            validated_path: optional validated subtitle SRT path
+            json_path: optional OCR-fusion test-case JSON path
+            row_filter: rows to include in the report
+            first_index: first subtitle number to include
+            last_index: last subtitle number to include
+            first_block: first workflow block number to include
+            last_block: last workflow block number to include
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
+        # Validate arguments
         parser = _parser or cls.argparser()
         if row_filter is OcrFusionAuditFilter.unverified and json_path is None:
             parser.error("--filter unverified requires --json")
@@ -183,6 +211,7 @@ class AuditOcrFusionCli(AuditCliBase):
         if validated_path is not None:
             validated = read_series(parser, validated_path)
 
+        # Load OCR-fusion JSON
         test_cases = None
         if json_path is not None:
             test_cases = cls.load_test_cases(

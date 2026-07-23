@@ -237,6 +237,12 @@ def test_audit_review_workflow_selects_blocks():
             first_block=2,
         )
 
+    with raises(ScinoephileError, match="requires at least one comparison"):
+        audit_review_workflow(
+            reviews=reviews,
+            row_filter=ComparativeReviewAuditFilter.discrepancies,
+        )
+
 
 def _get_audit_inputs(tmp_path: Path) -> _AuditInputs:
     """Get a complete audit input set.

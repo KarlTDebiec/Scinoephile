@@ -90,6 +90,8 @@ class AuditReviewTradCli(AuditReviewCliBase):
             "input arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--traditional",
             dest="traditional_path",
@@ -166,7 +168,27 @@ class AuditReviewTradCli(AuditReviewCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            _parser: parser used to report user-facing errors
+            traditional_path: traditional-script review input SRT path
+            traditional_reviewed_path: traditional-script reviewed SRT path
+            traditional_simplified_path: simplified traditional-script SRT path
+            traditional_simplified_reviewed_path: reviewed simplified
+                traditional-script SRT path
+            traditional_json_path: optional traditional-review test-case JSON path
+            traditional_simplified_json_path: optional traditional-simplification
+                review test-case JSON path
+            row_filter: rows to include in the report
+            characters: characters used to further limit included rows
+            first_index: first subtitle number to include
+            last_index: last subtitle number to include
+            first_block: first workflow block number to include
+            last_block: last workflow block number to include
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
         # Validate arguments
         parser = _parser or cls.argparser()
         if row_filter is ReviewAuditFilter.unverified and (

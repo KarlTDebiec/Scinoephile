@@ -111,6 +111,33 @@ def test_audit_guided_review_rejects_invalid_range():
     with raises(ScinoephileError, match="First index must be at least 1"):
         audit_guided_review(target, guide, (), first_index=0)
 
+    with raises(ScinoephileError, match="mutually exclusive"):
+        audit_guided_review(target, guide, (), first_index=1, first_block=1)
+
+
+def test_audit_guided_review_rejects_stale_target_only_case():
+    """Test a stale target-only case reports a domain error within a range."""
+    target = Series(events=[Subtitle(start=0, end=1000, text="目前")])
+    guide = Series(events=[Subtitle(start=0, end=1000, text="目前參考")])
+    stale_case = GuidedReviewTestCase.model_validate(
+        {
+            "query": {
+                "targets": [{"index": 1, "text": "舊文"}],
+                "guides": [],
+            },
+            "answer": {"revisions": []},
+        }
+    )
+
+    with raises(ScinoephileError, match="test case 1 was not found"):
+        audit_guided_review(
+            target,
+            guide,
+            (stale_case,),
+            first_index=1,
+            last_index=1,
+        )
+
 
 def test_audit_guided_review_filters_rows_and_target_range():
     """Test status filters and exact inclusive target ranges."""

@@ -43,15 +43,20 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "simplified-script review input SRT file": "简体字校对输入 SRT 文件",
         "simplified-script reviewed SRT file": "简体字校对后 SRT 文件",
-        "optional test-case JSON file for the traditional review": (
-            "繁体字校对的可选测试用例 JSON 文件"
+        (
+            "optional test-case JSON file for the traditional review; required "
+            "with --filter unverified"
+        ): ("繁体字校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"),
+        (
+            "optional test-case JSON file for the traditional simplification "
+            "review; required with --filter unverified"
+        ): (
+            "繁体字简化校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"
         ),
-        "optional test-case JSON file for the traditional simplification review": (
-            "繁体字简化校对的可选测试用例 JSON 文件"
-        ),
-        "optional test-case JSON file for the simplified review": (
-            "简体字校对的可选测试用例 JSON 文件"
-        ),
+        (
+            "optional test-case JSON file for the simplified review; required "
+            "with --filter unverified"
+        ): ("简体字校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"),
         "first 1-indexed subtitle number to include, inclusive": (
             "要包含的第一个字幕编号（从 1 开始，包含该编号）"
         ),
@@ -100,15 +105,18 @@ AUDIT_REVIEW_DUAL_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "simplified-script review input SRT file": "簡體字校對輸入 SRT 檔",
         "simplified-script reviewed SRT file": "簡體字校對後 SRT 檔",
-        "optional test-case JSON file for the traditional review": (
-            "繁體字校對的選用測試案例 JSON 檔"
-        ),
-        "optional test-case JSON file for the traditional simplification review": (
-            "繁體字簡化校對的選用測試案例 JSON 檔"
-        ),
-        "optional test-case JSON file for the simplified review": (
-            "簡體字校對的選用測試案例 JSON 檔"
-        ),
+        (
+            "optional test-case JSON file for the traditional review; required "
+            "with --filter unverified"
+        ): ("繁體字校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+        (
+            "optional test-case JSON file for the traditional simplification "
+            "review; required with --filter unverified"
+        ): ("繁體字簡化校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
+        (
+            "optional test-case JSON file for the simplified review; required "
+            "with --filter unverified"
+        ): ("簡體字校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
         "first 1-indexed subtitle number to include, inclusive": (
             "要包含的第一個字幕編號（從 1 開始，包含該編號）"
         ),
@@ -221,20 +229,27 @@ class AuditReviewDualCli(AuditReviewCliBase):
             "--simplified-json",
             dest="simplified_json_path",
             type=input_file_arg(),
-            help="optional test-case JSON file for the simplified review",
+            help=(
+                "optional test-case JSON file for the simplified review; required "
+                "with --filter unverified"
+            ),
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-json",
             dest="traditional_json_path",
             type=input_file_arg(),
-            help="optional test-case JSON file for the traditional review",
+            help=(
+                "optional test-case JSON file for the traditional review; required "
+                "with --filter unverified"
+            ),
         )
         arg_groups["input arguments"].add_argument(
             "--traditional-simplified-json",
             dest="traditional_simplified_json_path",
             type=input_file_arg(),
             help=(
-                "optional test-case JSON file for the traditional simplification review"
+                "optional test-case JSON file for the traditional simplification "
+                "review; required with --filter unverified"
             ),
         )
 
@@ -270,7 +285,31 @@ class AuditReviewDualCli(AuditReviewCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            _parser: parser used to report user-facing errors
+            simplified_path: simplified-script review input SRT path
+            simplified_reviewed_path: simplified-script reviewed SRT path
+            traditional_path: traditional-script review input SRT path
+            traditional_reviewed_path: traditional-script reviewed SRT path
+            traditional_simplified_path: simplified traditional-script SRT path
+            traditional_simplified_reviewed_path: reviewed simplified
+                traditional-script SRT path
+            simplified_json_path: optional simplified-review test-case JSON path
+            traditional_json_path: optional traditional-review test-case JSON path
+            traditional_simplified_json_path: optional traditional-simplification
+                review test-case JSON path
+            row_filter: rows to include in the report
+            characters: characters used to further limit included rows
+            first_index: first subtitle number to include
+            last_index: last subtitle number to include
+            first_block: first workflow block number to include
+            last_block: last workflow block number to include
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
+        # Validate arguments
         parser = _parser or cls.argparser()
         if row_filter is ComparativeReviewAuditFilter.unverified and any(
             json_path is None

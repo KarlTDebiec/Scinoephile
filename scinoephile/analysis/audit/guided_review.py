@@ -7,27 +7,38 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Sequence
 from dataclasses import dataclass
+from enum import StrEnum
+from typing import Protocol
 
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
-from scinoephile.llms.guided_review import GuidedReviewTestCase
 
 from .review import ReviewAuditFilter
 from .utils import (
-    AuditResult,
     escape_table_cell,
     format_block_range,
     format_index_range,
-    get_paired_event_block_numbers,
-    get_validated_block_pairs_by_pause,
     is_block_in_range,
-    validate_block_range,
-    validate_index_range,
+    validate_audit_range,
 )
 
 __all__ = ["audit_guided_review"]
+
+
+class _AuditResult(StrEnum):
+    """Result of one logged guided-review answer."""
+
+    changed = "changed"
+    """The logged answer changed its input."""
+
+    unchanged = "unchanged"
+    """The logged answer explicitly retained its input."""
+
+    unanswered = "unanswered"
+    """The logged case has no answer."""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -56,16 +67,108 @@ class _GuidedReviewRow:
     """One-based position of the source test case in the JSON."""
     markdown: str
     """Formatted Markdown table row."""
-    result: AuditResult
+    result: _AuditResult
     """Result of the logged answer for this subtitle."""
     verified: bool
     """Whether the source test case is verified."""
 
 
+class _GuidedReviewSubtitle(Protocol):
+    """Subtitle fields required for guided-review audit reporting."""
+
+    @property
+    def text(self) -> str:
+        """Subtitle text.
+
+        Returns:
+            subtitle text
+        """
+        ...
+
+
+class _GuidedReviewRevision(_GuidedReviewSubtitle, Protocol):
+    """Revision fields required for guided-review audit reporting."""
+
+    @property
+    def index(self) -> int:
+        """One-based query-local target index.
+
+        Returns:
+            one-based query-local target index
+        """
+        ...
+
+
+class _GuidedReviewAnswer(Protocol):
+    """Answer fields required for guided-review audit reporting."""
+
+    @property
+    def revisions(self) -> Sequence[_GuidedReviewRevision]:
+        """Sparse target revisions.
+
+        Returns:
+            sparse target revisions
+        """
+        ...
+
+
+class _GuidedReviewQuery(Protocol):
+    """Query fields required for guided-review audit reporting."""
+
+    @property
+    def guides(self) -> Sequence[_GuidedReviewSubtitle]:
+        """Guide subtitles.
+
+        Returns:
+            guide subtitles
+        """
+        ...
+
+    @property
+    def targets(self) -> Sequence[_GuidedReviewSubtitle]:
+        """Target subtitles.
+
+        Returns:
+            target subtitles
+        """
+        ...
+
+
+class _GuidedReviewTestCase(Protocol):
+    """Test-case fields required for guided-review audit reporting."""
+
+    @property
+    def answer(self) -> _GuidedReviewAnswer | None:
+        """Optional guided-review answer.
+
+        Returns:
+            guided-review answer, if present
+        """
+        ...
+
+    @property
+    def query(self) -> _GuidedReviewQuery:
+        """Guided-review query.
+
+        Returns:
+            guided-review query
+        """
+        ...
+
+    @property
+    def verified(self) -> bool:
+        """Whether the test case has been verified.
+
+        Returns:
+            whether the test case has been verified
+        """
+        ...
+
+
 def audit_guided_review(
     target: Series,
     guide: Series,
-    test_cases: Sequence[GuidedReviewTestCase],
+    test_cases: Sequence[_GuidedReviewTestCase],
     *,
     row_filter: ReviewAuditFilter = ReviewAuditFilter.all,
     first_index: int | None = None,
@@ -89,14 +192,13 @@ def audit_guided_review(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely to source data
     """
-    validate_index_range(first_index, last_index)
-    validate_block_range(first_block, last_block)
-
-    block_pairs = get_validated_block_pairs_by_pause(
-        target,
-        guide,
+    block_pairs = get_block_pairs_by_pause(target, guide)
+    validate_audit_range(
+        first_index,
+        last_index,
         first_block,
         last_block,
+        block_count=len(block_pairs),
     )
     blocks_by_key = _get_blocks_by_key(block_pairs)
     rows_by_subtitle_index: dict[int, _GuidedReviewRow] = {}
@@ -138,17 +240,20 @@ def audit_guided_review(
             target_revision = query_target.text
             if answer is None:
                 target_revision = f"{query_target.text}\n(unanswered)"
-                result = AuditResult.unanswered
+                result = _AuditResult.unanswered
             elif revision is not None:
                 target_revision = f"{query_target.text}\n{revision.text}"
-                result = AuditResult.changed
+                result = _AuditResult.changed
             else:
-                result = AuditResult.unchanged
+                result = _AuditResult.unchanged
 
+            guide_text = "\n".join(guide_texts)
+            if not guide_texts:
+                guide_text = "—"
             cells = (
                 str(subtitle_index),
                 str(block.block_number),
-                _format_texts(guide_texts),
+                guide_text,
                 target_revision,
                 "",
                 "✓" if test_case.verified else "",
@@ -167,15 +272,17 @@ def audit_guided_review(
         rows_by_subtitle_index.values(),
         key=lambda row: (row.subtitle_index, row.test_case_index),
     )
-    revised_subtitles = sum(row.result is AuditResult.changed for row in all_rows)
-    unanswered_subtitles = sum(row.result is AuditResult.unanswered for row in all_rows)
+    revised_subtitles = sum(row.result is _AuditResult.changed for row in all_rows)
+    unanswered_subtitles = sum(
+        row.result is _AuditResult.unanswered for row in all_rows
+    )
     verified_subtitles = sum(row.verified for row in all_rows)
     rows = [
         row
         for row in all_rows
         if not (
             row_filter is ReviewAuditFilter.changes
-            and row.result is not AuditResult.changed
+            and row.result is not _AuditResult.changed
         )
         and not (row_filter is ReviewAuditFilter.unverified and row.verified)
     ]
@@ -217,19 +324,6 @@ def audit_guided_review(
         )
     )
     return "\n".join(lines) + "\n"
-
-
-def _format_texts(texts: Sequence[str]) -> str:
-    """Format zero or more subtitle texts for one table cell.
-
-    Arguments:
-        texts: subtitle texts to format
-    Returns:
-        subtitle texts separated by newlines, or an em dash if absent
-    """
-    if not texts:
-        return "—"
-    return "\n".join(texts)
 
 
 def _get_blocks_by_key(
@@ -282,7 +376,7 @@ def _get_blocks_by_key(
 def _get_active_test_case_blocks(  # noqa: PLR0912
     target: Series,
     guide: Series,
-    test_cases: Sequence[GuidedReviewTestCase],
+    test_cases: Sequence[_GuidedReviewTestCase],
     blocks_by_key: dict[
         tuple[tuple[str, ...], tuple[str, ...]], list[_GuidedReviewBlock]
     ],
@@ -292,7 +386,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
     last_index: int | None,
     first_block: int | None,
     last_block: int | None,
-) -> list[tuple[int, GuidedReviewTestCase, _GuidedReviewBlock]]:
+) -> list[tuple[int, _GuidedReviewTestCase, _GuidedReviewBlock]]:
     """Get current cases while ignoring superseded historical cases.
 
     Persisted guided-review cases are retained after their target block's
@@ -328,8 +422,8 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
             blocks_by_guides[block.guide_texts].append(block)
             blocks_by_targets[_normalize_texts(block.target_texts)].append(block)
 
-    active_cases: list[tuple[int, GuidedReviewTestCase, _GuidedReviewBlock]] = []
-    unmatched_cases: list[tuple[int, GuidedReviewTestCase]] = []
+    active_cases: list[tuple[int, _GuidedReviewTestCase, _GuidedReviewBlock]] = []
+    unmatched_cases: list[tuple[int, _GuidedReviewTestCase]] = []
     for test_case_index, test_case in enumerate(test_cases, 1):
         key = (
             _normalize_texts(tuple(target.text for target in test_case.query.targets)),
@@ -364,8 +458,12 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         unmatched_cases.append((test_case_index, test_case))
 
     active_block_numbers = {block.block_number for _, _, block in active_cases}
-    _, guide_block_numbers = get_paired_event_block_numbers(block_pairs)
-    stale_cases: list[tuple[int, GuidedReviewTestCase, list[_GuidedReviewBlock]]] = []
+    guide_block_numbers = tuple(
+        block_number
+        for block_number, (_, guide_block) in enumerate(block_pairs, 1)
+        for _ in guide_block
+    )
+    stale_cases: list[tuple[int, _GuidedReviewTestCase, list[_GuidedReviewBlock]]] = []
     for test_case_index, test_case in unmatched_cases:
         key = (
             _normalize_texts(tuple(target.text for target in test_case.query.targets)),
@@ -458,7 +556,7 @@ def _block_intersects_range(
 
 
 def _validate_selected_targets(
-    test_case: GuidedReviewTestCase,
+    test_case: _GuidedReviewTestCase,
     block: _GuidedReviewBlock,
     *,
     first_index: int | None,
@@ -521,7 +619,7 @@ def _normalize_texts(texts: tuple[str, ...]) -> tuple[str, ...]:
 
 
 def _is_test_case_outside_range(
-    test_case: GuidedReviewTestCase,
+    test_case: _GuidedReviewTestCase,
     target: Series,
     guide: Series,
     guide_block_numbers: Sequence[int],
@@ -571,6 +669,8 @@ def _is_test_case_outside_range(
     selected_start = target[first_target_index].start
     selected_end = target[last_target_index].end
     query_guides = tuple(item.text for item in test_case.query.guides)
+    if not query_guides:
+        return False
     guide_texts = tuple(subtitle.text_with_newline.strip() for subtitle in guide)
     starts = [
         index

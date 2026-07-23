@@ -204,6 +204,11 @@ def audit_review_workflow(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
+    if row_filter is ComparativeReviewAuditFilter.discrepancies and not comparisons:
+        raise ScinoephileError(
+            "Unable to audit subtitle reviews: discrepancy filtering requires at "
+            "least one comparison"
+        )
 
     all_series = tuple(
         series for review in reviews for series in (review.original, review.reviewed)

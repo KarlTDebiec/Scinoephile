@@ -66,6 +66,13 @@ class AuditReviewCliBase(AuditCliBase):
 
     localizations = AUDIT_REVIEW_CLI_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
+    characters_help: ClassVar[str] = (
+        "further limit rows to those containing any listed character in any "
+        "input; values may be separated or combined, and simplified and "
+        "traditional variants are included automatically (default: no "
+        "character filter)"
+    )
+    """Help text for the workflow's character filter."""
     row_filter_help: ClassVar[str] = (
         f"rows to include: {enum_options_list_str(ReviewAuditFilter)} "
         "(default: %(default)s)"
@@ -91,6 +98,8 @@ class AuditReviewCliBase(AuditCliBase):
             "output arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--filter",
             default=cls.row_filter_type.changes,
@@ -104,12 +113,7 @@ class AuditReviewCliBase(AuditCliBase):
             default=(),
             metavar="CHARACTER",
             nargs="+",
-            help=(
-                "further limit rows to those containing any listed character in any "
-                "input; values may be separated or combined, and simplified and "
-                "traditional variants are included automatically (default: no "
-                "character filter)"
-            ),
+            help=cls.characters_help,
         )
 
     @staticmethod
