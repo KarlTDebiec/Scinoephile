@@ -167,6 +167,7 @@ class AuditReviewTradCli(AuditReviewCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         if row_filter is ReviewAuditFilter.unverified and (
             traditional_json_path is None or traditional_simplified_json_path is None
