@@ -7,13 +7,13 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Protocol
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups
 from scinoephile.core.text import remove_punc_and_whitespace
+from scinoephile.llms.guided_review import GuidedReviewTestCase
 
 from .utils import (
     AuditFilter,
@@ -58,111 +58,10 @@ class _GuidedReviewRow:
     """Whether the source test case is verified."""
 
 
-class _GuidedReviewSubtitle(Protocol):
-    """Subtitle fields required for guided-review audit reporting."""
-
-    @property
-    def text(self) -> str:
-        """Subtitle text.
-
-        Returns:
-            subtitle text
-        """
-        ...
-
-
-class _GuidedReviewRevision(_GuidedReviewSubtitle, Protocol):
-    """Revision fields required for guided-review audit reporting."""
-
-    @property
-    def index(self) -> int:
-        """One-based query-local target index.
-
-        Returns:
-            one-based query-local target index
-        """
-        ...
-
-    @property
-    def note(self) -> str:
-        """Explanation recorded for the revision.
-
-        Returns:
-            revision explanation
-        """
-        ...
-
-
-class _GuidedReviewAnswer(Protocol):
-    """Answer fields required for guided-review audit reporting."""
-
-    @property
-    def revisions(self) -> Sequence[_GuidedReviewRevision]:
-        """Sparse target revisions.
-
-        Returns:
-            sparse target revisions
-        """
-        ...
-
-
-class _GuidedReviewQuery(Protocol):
-    """Query fields required for guided-review audit reporting."""
-
-    @property
-    def guides(self) -> Sequence[_GuidedReviewSubtitle]:
-        """Guide subtitles.
-
-        Returns:
-            guide subtitles
-        """
-        ...
-
-    @property
-    def targets(self) -> Sequence[_GuidedReviewSubtitle]:
-        """Target subtitles.
-
-        Returns:
-            target subtitles
-        """
-        ...
-
-
-class _GuidedReviewTestCase(Protocol):
-    """Test-case fields required for guided-review audit reporting."""
-
-    @property
-    def answer(self) -> _GuidedReviewAnswer | None:
-        """Optional guided-review answer.
-
-        Returns:
-            guided-review answer, if present
-        """
-        ...
-
-    @property
-    def query(self) -> _GuidedReviewQuery:
-        """Guided-review query.
-
-        Returns:
-            guided-review query
-        """
-        ...
-
-    @property
-    def verified(self) -> bool:
-        """Whether the test case has been verified.
-
-        Returns:
-            whether the test case has been verified
-        """
-        ...
-
-
 def audit_guided_review(
     target: Series,
     guide: Series,
-    test_cases: Sequence[_GuidedReviewTestCase],
+    test_cases: Sequence[GuidedReviewTestCase],
     *,
     row_filter: AuditFilter = AuditFilter.all,
     first_index: int | None = None,
@@ -361,7 +260,7 @@ def _get_blocks_by_key(
 def _get_active_test_case_blocks(  # noqa: PLR0912
     target: Series,
     guide: Series,
-    test_cases: Sequence[_GuidedReviewTestCase],
+    test_cases: Sequence[GuidedReviewTestCase],
     blocks_by_key: dict[
         tuple[tuple[str, ...], tuple[str, ...]], list[_GuidedReviewBlock]
     ],
@@ -371,7 +270,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
     last_index: int | None,
     first_block: int | None,
     last_block: int | None,
-) -> list[tuple[int, _GuidedReviewTestCase, _GuidedReviewBlock]]:
+) -> list[tuple[int, GuidedReviewTestCase, _GuidedReviewBlock]]:
     """Get current cases while ignoring superseded historical cases.
 
     Persisted guided-review cases are retained after their target block's
@@ -407,8 +306,8 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
             blocks_by_guides[block.guide_texts].append(block)
             blocks_by_targets[_normalize_texts(block.target_texts)].append(block)
 
-    active_cases: list[tuple[int, _GuidedReviewTestCase, _GuidedReviewBlock]] = []
-    unmatched_cases: list[tuple[int, _GuidedReviewTestCase]] = []
+    active_cases: list[tuple[int, GuidedReviewTestCase, _GuidedReviewBlock]] = []
+    unmatched_cases: list[tuple[int, GuidedReviewTestCase]] = []
     for test_case_index, test_case in enumerate(test_cases, 1):
         key = (
             _normalize_texts(tuple(target.text for target in test_case.query.targets)),
@@ -448,7 +347,7 @@ def _get_active_test_case_blocks(  # noqa: PLR0912
         for block_number, (_, guide_block) in enumerate(block_pairs, 1)
         for _ in guide_block
     )
-    stale_cases: list[tuple[int, _GuidedReviewTestCase, list[_GuidedReviewBlock]]] = []
+    stale_cases: list[tuple[int, GuidedReviewTestCase, list[_GuidedReviewBlock]]] = []
     for test_case_index, test_case in unmatched_cases:
         key = (
             _normalize_texts(tuple(target.text for target in test_case.query.targets)),
@@ -563,7 +462,7 @@ def _block_intersects_range(
 
 
 def _validate_selected_targets(
-    test_case: _GuidedReviewTestCase,
+    test_case: GuidedReviewTestCase,
     block: _GuidedReviewBlock,
     *,
     first_index: int | None,
@@ -626,7 +525,7 @@ def _normalize_texts(texts: tuple[str, ...]) -> tuple[str, ...]:
 
 
 def _is_test_case_outside_range(
-    test_case: _GuidedReviewTestCase,
+    test_case: GuidedReviewTestCase,
     target: Series,
     guide: Series,
     guide_block_numbers: Sequence[int],
