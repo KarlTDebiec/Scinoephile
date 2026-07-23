@@ -156,4 +156,4 @@ def test_tracked_test_case_json_inventory_is_complete():
     )
 
     assert len(_TEST_CASE_FILES) == 84
-    assert test_case_count == 32_340
+    assert test_case_count == 32_624
