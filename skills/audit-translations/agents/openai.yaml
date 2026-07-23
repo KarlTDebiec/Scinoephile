@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit Translations"
+  short_description: "Audit standard, gapped, and guided translations"
+  default_prompt: "Use $audit-translations to audit the appropriate translation workflow for this dataset."

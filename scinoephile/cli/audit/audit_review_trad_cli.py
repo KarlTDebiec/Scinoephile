@@ -10,14 +10,11 @@ from pathlib import Path
 
 from scinoephile.analysis.audit.review import (
     ReviewAuditPair,
-    audit_review_workflow,
+    audit_review,
 )
-from scinoephile.analysis.audit.utils import AuditFilter
+from scinoephile.analysis.audit.utils import ChangeAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
-    enum_arg,
-    enum_metavar,
-    enum_options_list_str,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -52,9 +49,13 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ): (
             "繁体字简化校对的可选测试用例 JSON 文件；使用 --filter unverified 时为必需"
         ),
-        "rows to include: all, changes, or unverified (default: %(default)s)": (
-            "要包含的行：all 表示全部，changes 表示校对更改，unverified 表示"
-            "未验证日志案例中的字幕（默认：%(default)s）"
+        (
+            "rows to include: all, changes, or unverified; all includes every "
+            "subtitle; changes includes review edits; unverified includes subtitles "
+            "in cases not marked verified (default: %(default)s)"
+        ): (
+            "要包含的行：all 表示每个字幕，changes 表示校对更改，unverified "
+            "表示未标记为已验证的案例中的字幕（默认：%(default)s）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -86,9 +87,13 @@ AUDIT_TRADITIONAL_SIMPLIFICATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "optional test-case JSON file for the traditional simplification "
             "review; required with --filter unverified"
         ): ("繁體字簡化校對的選用測試案例 JSON 檔；使用 --filter unverified 時為必需"),
-        "rows to include: all, changes, or unverified (default: %(default)s)": (
-            "要包含的列：all 表示全部，changes 表示校對變更，unverified 表示"
-            "未驗證日誌案例中的字幕（預設：%(default)s）"
+        (
+            "rows to include: all, changes, or unverified; all includes every "
+            "subtitle; changes includes review edits; unverified includes subtitles "
+            "in cases not marked verified (default: %(default)s)"
+        ): (
+            "要包含的列：all 表示每個字幕，changes 表示校對變更，unverified "
+            "表示未標記為已驗證的案例中的字幕（預設：%(default)s）"
         ),
         (
             "further limit rows to those containing any listed character in any "
@@ -174,15 +179,13 @@ class AuditReviewTradCli(AuditCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            default=AuditFilter.changes,
-            dest="row_filter",
-            metavar=enum_metavar(AuditFilter),
-            type=enum_arg(AuditFilter),
-            help=(
-                f"rows to include: {enum_options_list_str(AuditFilter)} "
-                "(default: %(default)s)"
+        cls.add_row_filter_argument(
+            parser,
+            ChangeAuditFilter,
+            ChangeAuditFilter.changes,
+            description=(
+                "all includes every subtitle; changes includes review edits; "
+                "unverified includes subtitles in cases not marked verified"
             ),
         )
         arg_groups["operation arguments"].add_argument(
@@ -218,7 +221,7 @@ class AuditReviewTradCli(AuditCliBase):
         traditional_simplified_reviewed_path: Path,
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
-        row_filter: AuditFilter,
+        row_filter: ChangeAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -250,7 +253,7 @@ class AuditReviewTradCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is AuditFilter.unverified and (
+        if row_filter is ChangeAuditFilter.unverified and (
             traditional_json_path is None or traditional_simplified_json_path is None
         ):
             parser.error(
@@ -273,7 +276,7 @@ class AuditReviewTradCli(AuditCliBase):
 
         # Perform operation
         try:
-            report = audit_review_workflow(
+            report = audit_review(
                 reviews=(
                     ReviewAuditPair(
                         label="Traditional",

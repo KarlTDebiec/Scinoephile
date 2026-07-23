@@ -13,15 +13,13 @@ from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.punctuation import PunctuationTestCase
 
 from .utils import (
-    AuditFilter,
     AuditResult,
-    escape_table_cell,
+    ChangeAuditFilter,
     format_audit_report,
+    format_verification_marker,
     get_selected_event_indexes,
     get_superseded_keys,
     resolve_contextual_index,
-    validate_block_range,
-    validate_index_range,
 )
 
 __all__ = ["audit_punctuation"]
@@ -32,7 +30,7 @@ def audit_punctuation(
     target: Series,
     test_cases: Sequence[PunctuationTestCase],
     *,
-    row_filter: AuditFilter = AuditFilter.all,
+    row_filter: ChangeAuditFilter = ChangeAuditFilter.all,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -56,9 +54,6 @@ def audit_punctuation(
     Raises:
         ScinoephileError: if a logged case cannot be matched uniquely
     """
-    validate_index_range(first_index, last_index)
-    validate_block_range(first_block, last_block)
-
     reference_indexes_by_text: dict[str, list[int]] = defaultdict(list)
     for index, subtitle in enumerate(reference):
         reference_indexes_by_text[subtitle.text].append(index)
@@ -80,7 +75,7 @@ def audit_punctuation(
         last_block=last_block,
     )
 
-    rows: list[tuple[int, int, str]] = []
+    rows: list[tuple[int, int, tuple[str, ...]]] = []
     changes = 0
     unchanged = 0
     unanswered = 0
@@ -109,30 +104,30 @@ def audit_punctuation(
             changes += 1
 
         if (
-            row_filter is AuditFilter.changes and result is not AuditResult.changed
-        ) or (row_filter is AuditFilter.unverified and test_case.verified):
+            row_filter is ChangeAuditFilter.changes
+            and result is not AuditResult.changed
+        ) or (row_filter is ChangeAuditFilter.unverified and test_case.verified):
             continue
         rows.append((index, test_case_index, row))
 
     rows.sort(key=lambda item: (item[0], item[1]))
     return format_audit_report(
         title="Transcription Punctuation Audit",
-        summary_lines=(
-            f"- logged cases: {logged_cases}",
-            f"- punctuation changes: {changes}",
-            f"- unchanged answers: {unchanged}",
-            f"- unanswered cases: {unanswered}",
-            f"- row filter: {row_filter.value}",
+        summary_items=(
+            f"logged cases: {logged_cases}",
+            f"punctuation changes: {changes}",
+            f"unchanged answers: {unchanged}",
+            f"unanswered cases: {unanswered}",
+            f"row filter: {row_filter.value}",
         ),
-        column_labels=(
-            "Index",
-            "Reference",
-            "Input",
-            "Output",
-            "Notes",
-            "Verified",
+        columns=(
+            ("Index", "right"),
+            ("Reference", "left"),
+            ("Input", "left"),
+            ("Output", "left"),
+            ("Notes", "left"),
+            ("Verified", "center"),
         ),
-        column_separators=("---:", "---", "---", "---", "---", ":---:"),
         rows=[row for _, _, row in rows],
         first_index=first_index,
         last_index=last_index,
@@ -145,14 +140,14 @@ def audit_punctuation(
 def _format_case_row(
     test_case: PunctuationTestCase,
     index: int,
-) -> tuple[str, AuditResult]:
-    """Format one punctuation case as a Markdown table row.
+) -> tuple[tuple[str, ...], AuditResult]:
+    """Format one punctuation case as semantic table data.
 
     Arguments:
         test_case: punctuation case to format
         index: zero-indexed reference subtitle position
     Returns:
-        Markdown row and its result type
+        semantic table cells and their result type
     """
     input_text = "".join(test_case.query.subtitles)
     answer = test_case.answer
@@ -166,16 +161,16 @@ def _format_case_row(
         output = answer.output
         result = AuditResult.changed
 
+    verified_marker = format_verification_marker(test_case.verified)
     cells = (
         str(index + 1),
         test_case.query.guide,
         "\n".join(test_case.query.subtitles),
         output,
         "",
-        "✓" if test_case.verified else "",
+        verified_marker,
     )
-    row = f"| {' | '.join(escape_table_cell(cell) for cell in cells)} |"
-    return row, result
+    return cells, result
 
 
 def _get_case_index(

@@ -8,10 +8,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.analysis.audit.delineation import audit_delineation
-from scinoephile.analysis.audit.utils import AuditFilter
+from scinoephile.analysis.audit.utils import ChangeAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
-    enum_arg,
     get_arg_groups_by_name,
     input_file_arg,
 )
@@ -29,9 +28,13 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用于指导转写的参考字幕 SRT 文件"
         ),
         "delineation test-case JSON file": "字幕边界测试用例 JSON 文件",
-        "rows to include: all, changes, or unverified (default: all)": (
-            "要包含的行：all 表示全部，changes 表示边界调整，unverified "
-            "表示未验证（默认：all）"
+        (
+            "rows to include: all, changes, or unverified; all includes every "
+            "decision; changes includes boundary shifts; unverified includes cases "
+            "not marked verified (default: %(default)s)"
+        ): (
+            "要包含的行：all 表示每个决策，changes 表示边界调整，unverified "
+            "表示未标记为已验证的案例（默认：%(default)s）"
         ),
     },
     "zh-hant": {
@@ -40,9 +43,13 @@ AUDIT_DELINEATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "用於指導轉寫的參考字幕 SRT 檔"
         ),
         "delineation test-case JSON file": "字幕邊界測試案例 JSON 檔",
-        "rows to include: all, changes, or unverified (default: all)": (
-            "要包含的列：all 表示全部，changes 表示邊界調整，unverified "
-            "表示未驗證（預設：all）"
+        (
+            "rows to include: all, changes, or unverified; all includes every "
+            "decision; changes includes boundary shifts; unverified includes cases "
+            "not marked verified (default: %(default)s)"
+        ): (
+            "要包含的列：all 表示每個決策，changes 表示邊界調整，unverified "
+            "表示未標記為已驗證的案例（預設：%(default)s）"
         ),
     },
 }
@@ -88,19 +95,23 @@ class AuditDelineationCli(AuditCliBase):
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--filter",
-            choices=tuple(AuditFilter),
-            default=AuditFilter.all,
-            dest="row_filter",
-            metavar="{all,changes,unverified}",
-            type=enum_arg(AuditFilter),
-            help="rows to include: all, changes, or unverified (default: all)",
+        cls.add_row_filter_argument(
+            parser,
+            ChangeAuditFilter,
+            ChangeAuditFilter.all,
+            description=(
+                "all includes every decision; changes includes boundary shifts; "
+                "unverified includes cases not marked verified"
+            ),
         )
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "delineation"
 
     @classmethod
@@ -110,7 +121,7 @@ class AuditDelineationCli(AuditCliBase):
         _parser: ArgumentParser | None = None,
         reference_path: Path,
         json_path: Path,
-        row_filter: AuditFilter,
+        row_filter: ChangeAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -118,7 +129,20 @@ class AuditDelineationCli(AuditCliBase):
         outfile_path: Path | None,
         overwrite: bool,
     ):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            _parser: parser used to report user-facing errors
+            reference_path: reference subtitle SRT path
+            json_path: delineation test-case JSON path
+            row_filter: rows to include in the report
+            first_index: first reference subtitle number to include
+            last_index: last reference subtitle number to include
+            first_block: first reference block number to include
+            last_block: last reference block number to include
+            outfile_path: optional Markdown output path
+            overwrite: whether to overwrite an existing output file
+        """
         # Read inputs
         parser = _parser or cls.argparser()
         reference = read_series(parser, reference_path)

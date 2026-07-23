@@ -9,7 +9,7 @@ from pathlib import Path
 
 from pytest import CaptureFixture, raises
 
-from scinoephile.analysis.audit.ocr_fusion import OcrFusionAuditFilter
+from scinoephile.analysis.audit.utils import ExtendedAuditFilter
 from scinoephile.cli.audit.audit_ocr_fusion_cli import AuditOcrFusionCli
 from scinoephile.common.argument_parsing import enum_metavar, enum_options_list_str
 from scinoephile.common.testing import run_cli_with_args
@@ -24,12 +24,14 @@ def test_audit_ocr_fusion_cli_filter_help_is_consistent():
     action = actions["row_filter"]
 
     assert action.choices is None
-    assert action.metavar == enum_metavar(OcrFusionAuditFilter)
+    assert action.metavar == enum_metavar(ExtendedAuditFilter)
     assert isinstance(action.help, str)
-    assert enum_options_list_str(OcrFusionAuditFilter) in action.help
+    assert enum_options_list_str(ExtendedAuditFilter) in action.help
+    assert "changes includes source disagreements" in action.help
+    assert "discrepancies includes differences from the validated track" in action.help
     json_help = actions["json_path"].help
     assert isinstance(json_help, str)
-    assert "--filter unverified" in json_help
+    assert "notes and verification state" in json_help
 
 
 def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
@@ -108,12 +110,14 @@ def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
         f"--source-one {source_one_path} --source-two {source_two_path} "
         f"--fused {fused_path}"
     )
-    with raises(SystemExit):
-        run_cli_with_args(
-            AuditOcrFusionCli,
-            f"{no_json_arguments} --filter unverified",
-        )
-    assert "--filter unverified requires --json" in capsys.readouterr().err
+    run_cli_with_args(
+        AuditOcrFusionCli,
+        f"{no_json_arguments} --filter unverified",
+    )
+    report = capsys.readouterr().out
+    assert "- row filter: unverified" in report
+    assert "- table rows: 1" in report
+    assert "| 1 | — | — | 甲錯 | 甲正 | 甲正 | — |  |" in report
 
     with raises(SystemExit):
         run_cli_with_args(
@@ -129,8 +133,8 @@ def test_audit_ocr_fusion_cli_writes_validated_discrepancy_report(
     report = capsys.readouterr().out
     assert "- decision log: omitted" in report
     assert (
-        "| Subtitle | Case | Difficulty | Source one | Source two | Fused | Validated |"
-        in report
+        "| Subtitle | Case | Difficulty | Source one | Source two | "
+        "Fused | Validated | Notes |" in report
     )
 
 
