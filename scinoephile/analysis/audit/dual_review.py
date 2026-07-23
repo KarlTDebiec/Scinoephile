@@ -9,8 +9,12 @@ from collections.abc import Sequence
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 
-from .review import ReviewAuditComparison, ReviewAuditPair, audit_review
-from .utils import ExtendedAuditFilter
+from .review import (
+    DualReviewAuditFilter,
+    ReviewAuditComparison,
+    ReviewAuditPair,
+    audit_review,
+)
 
 __all__ = ["audit_dual_review"]
 
@@ -26,7 +30,7 @@ def audit_dual_review(
     traditional_review_cases: Sequence[TestCase] = (),
     traditional_simplified_review_cases: Sequence[TestCase] = (),
     simplified_review_cases: Sequence[TestCase] = (),
-    row_filter: ExtendedAuditFilter = ExtendedAuditFilter.changes,
+    row_filter: DualReviewAuditFilter = DualReviewAuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,

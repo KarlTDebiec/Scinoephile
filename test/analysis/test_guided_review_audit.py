@@ -7,7 +7,7 @@ from __future__ import annotations
 from pytest import raises
 
 from scinoephile.analysis.audit.guided_review import audit_guided_review
-from scinoephile.analysis.audit.utils import ChangeAuditFilter
+from scinoephile.analysis.audit.review import ReviewAuditFilter
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.guided_review import GuidedReviewTestCase
@@ -30,7 +30,7 @@ def test_audit_guided_review_allows_range_beyond_target():
         target,
         guide,
         (stale_case,),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_index=2,
         last_index=2,
     )
@@ -67,7 +67,7 @@ def test_audit_guided_review_allows_unaffected_range_before_changed_segmentation
         target,
         guide,
         (test_case,),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_index=1,
         last_index=1,
     )
@@ -115,13 +115,13 @@ def test_audit_guided_review_filters_rows_and_target_range():
         target,
         guide,
         test_cases,
-        row_filter=ChangeAuditFilter.unverified,
+        row_filter=ReviewAuditFilter.unverified,
     )
     ranged_report = audit_guided_review(
         target,
         guide,
         test_cases,
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_index=3,
         last_index=3,
     )
@@ -129,7 +129,7 @@ def test_audit_guided_review_filters_rows_and_target_range():
         target,
         guide,
         test_cases,
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_index=2,
         last_index=2,
     )
@@ -137,7 +137,7 @@ def test_audit_guided_review_filters_rows_and_target_range():
         target,
         guide,
         test_cases,
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_block=2,
         last_block=2,
     )
@@ -194,7 +194,7 @@ def test_audit_guided_review_formats_and_sorts_subtitles():
         target,
         guide,
         (second_case, first_case),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
     )
 
     assert "- subtitles: 3" in report
@@ -227,7 +227,7 @@ def test_audit_guided_review_formats_unanswered_case():
         target,
         guide,
         (test_case,),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
     )
 
     assert "- revised subtitles: 0" in report
@@ -265,7 +265,7 @@ def test_audit_guided_review_ignores_superseded_guide_revision():
         target,
         guide,
         (stale_case, current_case),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
     )
 
     assert "舊修訂" not in report
@@ -313,7 +313,7 @@ def test_audit_guided_review_ignores_superseded_segmentation_case():
         target,
         guide,
         (stale_case, current_case),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
     )
 
     assert "| 1 | 1 | 參考 | 甲 |  |  |" in report
@@ -358,7 +358,7 @@ def test_audit_guided_review_ignores_unmatched_case_outside_range():
         target,
         guide,
         (current_case, stale_case),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_index=1,
         last_index=1,
     )
@@ -386,7 +386,7 @@ def test_audit_guided_review_matches_after_punctuation_changes():
         target,
         guide,
         (test_case,),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
     )
 
     assert "| 1 | 1 | 參考 | 原文。 |  |  |" in report
@@ -453,7 +453,7 @@ def test_audit_guided_review_rejects_missing_current_case():
         target,
         guide,
         (first_case,),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_block=1,
         last_block=1,
     )
@@ -546,14 +546,14 @@ def test_audit_guided_review_reuses_case_for_repeated_blocks():
         target,
         guide,
         (test_case,),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
     )
 
     report = audit_guided_review(
         target,
         guide,
         (test_case,),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_block=2,
         last_block=2,
     )
@@ -581,7 +581,7 @@ def test_audit_guided_review_supports_target_only_block_in_range():
         target,
         guide,
         (test_case,),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_index=1,
         last_index=1,
     )
@@ -618,7 +618,7 @@ def test_audit_guided_review_uses_latest_case_per_subtitle():
         target,
         guide,
         (revised_case, unchanged_case),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
     )
 
     assert "- subtitles: 1" in report

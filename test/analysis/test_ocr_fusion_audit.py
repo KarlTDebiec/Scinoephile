@@ -6,8 +6,10 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.ocr_fusion import audit_ocr_fusion
-from scinoephile.analysis.audit.utils import ExtendedAuditFilter
+from scinoephile.analysis.audit.ocr_fusion import (
+    OcrFusionAuditFilter,
+    audit_ocr_fusion,
+)
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.ocr_fusion import OcrFusionTestCase
@@ -39,7 +41,7 @@ def test_audit_ocr_fusion_filters_fused_blocks():
         source_two,
         fused,
         (),
-        row_filter=ExtendedAuditFilter.all,
+        row_filter=OcrFusionAuditFilter.all,
         first_block=2,
         last_block=2,
     )
@@ -63,14 +65,14 @@ def test_audit_ocr_fusion_filters_unverified_and_automatic_rows():
         source_two,
         fused,
         (test_case,),
-        row_filter=ExtendedAuditFilter.all,
+        row_filter=OcrFusionAuditFilter.all,
     )
     unverified_report = audit_ocr_fusion(
         source_one,
         source_two,
         fused,
         (test_case,),
-        row_filter=ExtendedAuditFilter.unverified,
+        row_filter=OcrFusionAuditFilter.unverified,
     )
 
     assert "| 1 | — | — | 相同 | 相同 | 相同 | — | Sources identical | — |" in report
@@ -108,7 +110,7 @@ def test_audit_ocr_fusion_formats_llm_decision_and_validated_discrepancy():
         fused,
         (test_case,),
         validated=validated,
-        row_filter=ExtendedAuditFilter.discrepancies,
+        row_filter=OcrFusionAuditFilter.discrepancies,
     )
 
     assert report.startswith("# OCR Fusion Audit\n")
@@ -135,7 +137,7 @@ def test_audit_ocr_fusion_keeps_notes_without_test_cases():
         source_one,
         source_two,
         fused,
-        row_filter=ExtendedAuditFilter.all,
+        row_filter=OcrFusionAuditFilter.all,
     )
 
     assert "- decision log: omitted" in report
@@ -178,7 +180,7 @@ def test_audit_ocr_fusion_rejects_invalid_inputs():
             two,
             one,
             (test_case,),
-            row_filter=ExtendedAuditFilter.discrepancies,
+            row_filter=OcrFusionAuditFilter.discrepancies,
         )
 
     misaligned = Series(events=[Subtitle(start=1000, end=1500, text="甲")])

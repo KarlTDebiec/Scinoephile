@@ -7,8 +7,10 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.analysis.audit.delineation import audit_delineation
-from scinoephile.analysis.audit.utils import ChangeAuditFilter
+from scinoephile.analysis.audit.delineation import (
+    DelineationAuditFilter,
+    audit_delineation,
+)
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -97,8 +99,8 @@ class AuditDelineationCli(AuditCliBase):
         # Operation arguments
         cls.add_row_filter_argument(
             parser,
-            ChangeAuditFilter,
-            ChangeAuditFilter.all,
+            DelineationAuditFilter,
+            DelineationAuditFilter.all,
             description=(
                 "all includes every decision; changes includes boundary shifts; "
                 "unverified includes cases not marked verified"
@@ -121,7 +123,7 @@ class AuditDelineationCli(AuditCliBase):
         _parser: ArgumentParser | None = None,
         reference_path: Path,
         json_path: Path,
-        row_filter: ChangeAuditFilter,
+        row_filter: DelineationAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,

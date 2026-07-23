@@ -10,10 +10,10 @@ from pathlib import Path
 
 from scinoephile.analysis.audit.guided_review import audit_guided_review
 from scinoephile.analysis.audit.review import (
+    ReviewAuditFilter,
     ReviewAuditPair,
     audit_review,
 )
-from scinoephile.analysis.audit.utils import ChangeAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -152,8 +152,8 @@ class AuditReviewCli(AuditCliBase):
         # Operation arguments
         cls.add_row_filter_argument(
             parser,
-            ChangeAuditFilter,
-            ChangeAuditFilter.changes,
+            ReviewAuditFilter,
+            ReviewAuditFilter.changes,
             description=(
                 "all includes every subtitle; changes includes review edits; "
                 "unverified includes subtitles in cases not marked verified"
@@ -188,7 +188,7 @@ class AuditReviewCli(AuditCliBase):
         guide_path: Path,
         json_path: Path,
         *,
-        row_filter: ChangeAuditFilter,
+        row_filter: ReviewAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -239,7 +239,7 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path,
         json_path: Path | None,
         *,
-        row_filter: ChangeAuditFilter,
+        row_filter: ReviewAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -309,7 +309,7 @@ class AuditReviewCli(AuditCliBase):
         reviewed_path: Path | None,
         guide_path: Path | None,
         json_path: Path | None,
-        row_filter: ChangeAuditFilter,
+        row_filter: ReviewAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -337,7 +337,7 @@ class AuditReviewCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is ChangeAuditFilter.unverified and json_path is None:
+        if row_filter is ReviewAuditFilter.unverified and json_path is None:
             parser.error("--filter unverified requires --json")
         if guide_path is not None:
             if json_path is None:

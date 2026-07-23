@@ -6,8 +6,12 @@ from __future__ import annotations
 
 from pytest import raises
 
-from scinoephile.analysis.audit.review import ReviewAuditPair, audit_review
-from scinoephile.analysis.audit.utils import ChangeAuditFilter, ExtendedAuditFilter
+from scinoephile.analysis.audit.review import (
+    DualReviewAuditFilter,
+    ReviewAuditFilter,
+    ReviewAuditPair,
+    audit_review,
+)
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.review import ReviewTestCase
@@ -42,7 +46,7 @@ def test_audit_review_filters_unverified_cases():
                 review_cases=(unverified_case, verified_case),
             ),
         ),
-        row_filter=ChangeAuditFilter.unverified,
+        row_filter=ReviewAuditFilter.unverified,
     )
 
     assert "- row filter: unverified" in report
@@ -60,7 +64,7 @@ def test_audit_review_filters_unverified_cases():
                 review_cases=(unverified_case, verified_case),
             ),
         ),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
     )
     assert "| 1 | First<br>First revised | Test review: Revised. |  |" in all_report
     assert "| 2 | Second |  | ✓ |" in all_report
@@ -106,7 +110,7 @@ def test_audit_review_ignores_retained_historical_cases():
                 review_cases=(historical_case, current_case),
             ),
         ),
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
     )
 
     assert "Historical note." not in report
@@ -143,7 +147,7 @@ def test_audit_review_selects_blocks():
 
     report = audit_review(
         reviews=reviews,
-        row_filter=ChangeAuditFilter.all,
+        row_filter=ReviewAuditFilter.all,
         first_block=2,
         last_block=2,
     )
@@ -163,7 +167,7 @@ def test_audit_review_selects_blocks():
     with raises(ScinoephileError, match="requires at least one comparison"):
         audit_review(
             reviews=reviews,
-            row_filter=ExtendedAuditFilter.discrepancies,
+            row_filter=DualReviewAuditFilter.discrepancies,
         )
 
 
@@ -199,10 +203,10 @@ def test_audit_review_uses_latest_duplicate_case():
         ),
     )
 
-    report = audit_review(reviews=reviews, row_filter=ChangeAuditFilter.all)
+    report = audit_review(reviews=reviews, row_filter=ReviewAuditFilter.all)
     unverified_report = audit_review(
         reviews=reviews,
-        row_filter=ChangeAuditFilter.unverified,
+        row_filter=ReviewAuditFilter.unverified,
     )
 
     assert "Historical note." not in report

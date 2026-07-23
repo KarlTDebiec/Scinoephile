@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
+from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -14,13 +15,31 @@ from scinoephile.llms.ocr_fusion import OcrFusionTestCase
 
 from .utils import (
     AuditColumn,
-    ExtendedAuditFilter,
     format_audit_report,
     format_verification_marker,
     get_selected_event_indexes,
 )
 
-__all__ = ["audit_ocr_fusion"]
+__all__ = [
+    "OcrFusionAuditFilter",
+    "audit_ocr_fusion",
+]
+
+
+class OcrFusionAuditFilter(StrEnum):
+    """Row filters supported by an OCR-fusion audit."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include rows whose OCR sources differ."""
+
+    discrepancies = "discrepancies"
+    """Include rows whose fused and validated text differ."""
+
+    unverified = "unverified"
+    """Include unverified rows that required an LLM decision."""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -62,7 +81,7 @@ def audit_ocr_fusion(
     test_cases: Sequence[OcrFusionTestCase] | None = None,
     *,
     validated: Series | None = None,
-    row_filter: ExtendedAuditFilter = ExtendedAuditFilter.changes,
+    row_filter: OcrFusionAuditFilter = OcrFusionAuditFilter.changes,
     first_index: int | None = None,
     last_index: int | None = None,
     first_block: int | None = None,
@@ -86,7 +105,7 @@ def audit_ocr_fusion(
     Raises:
         ScinoephileError: if ranges, series alignment, or logged decisions are invalid
     """
-    if row_filter is ExtendedAuditFilter.discrepancies and validated is None:
+    if row_filter is OcrFusionAuditFilter.discrepancies and validated is None:
         raise ScinoephileError(
             "OCR-fusion discrepancy filtering requires a validated subtitle track"
         )
@@ -181,7 +200,7 @@ def audit_ocr_fusion(
 
 def _filter_rows(
     rows: Sequence[_OcrFusionRow],
-    row_filter: ExtendedAuditFilter,
+    row_filter: OcrFusionAuditFilter,
 ) -> list[_OcrFusionRow]:
     """Filter OCR-fusion rows by their status.
 
@@ -191,11 +210,11 @@ def _filter_rows(
     Returns:
         filtered rows
     """
-    if row_filter is ExtendedAuditFilter.all:
+    if row_filter is OcrFusionAuditFilter.all:
         return list(rows)
-    if row_filter is ExtendedAuditFilter.changes:
+    if row_filter is OcrFusionAuditFilter.changes:
         return [row for row in rows if row.changed]
-    if row_filter is ExtendedAuditFilter.discrepancies:
+    if row_filter is OcrFusionAuditFilter.discrepancies:
         return [row for row in rows if row.discrepancy]
     return [row for row in rows if row.requires_llm and not row.verified]
 

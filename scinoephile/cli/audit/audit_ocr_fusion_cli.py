@@ -7,8 +7,10 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.analysis.audit.ocr_fusion import audit_ocr_fusion
-from scinoephile.analysis.audit.utils import ExtendedAuditFilter
+from scinoephile.analysis.audit.ocr_fusion import (
+    OcrFusionAuditFilter,
+    audit_ocr_fusion,
+)
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -147,8 +149,8 @@ class AuditOcrFusionCli(AuditCliBase):
         # Operation arguments
         cls.add_row_filter_argument(
             parser,
-            ExtendedAuditFilter,
-            ExtendedAuditFilter.changes,
+            OcrFusionAuditFilter,
+            OcrFusionAuditFilter.changes,
             description=(
                 "all includes every fused subtitle; changes includes source "
                 "disagreements; discrepancies includes differences from the "
@@ -176,7 +178,7 @@ class AuditOcrFusionCli(AuditCliBase):
         fused_path: Path,
         validated_path: Path | None,
         json_path: Path | None,
-        row_filter: ExtendedAuditFilter,
+        row_filter: OcrFusionAuditFilter,
         first_index: int | None,
         last_index: int | None,
         first_block: int | None,
@@ -203,7 +205,7 @@ class AuditOcrFusionCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is ExtendedAuditFilter.discrepancies and validated_path is None:
+        if row_filter is OcrFusionAuditFilter.discrepancies and validated_path is None:
             parser.error("--filter discrepancies requires --validated")
 
         # Read inputs

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
+from enum import StrEnum
 from typing import cast
 
 from scinoephile.core import ScinoephileError
@@ -14,18 +15,67 @@ from scinoephile.core.subtitles import Series
 
 from .utils import (
     AuditColumn,
-    ChangeAuditFilter,
-    ExtendedAuditFilter,
     format_audit_report,
     format_verification_marker,
     get_selected_event_indexes,
 )
 
 __all__ = [
+    "DualReviewAuditFilter",
     "ReviewAuditComparison",
+    "ReviewAuditFilter",
     "ReviewAuditPair",
+    "TraditionalReviewAuditFilter",
     "audit_review",
 ]
+
+
+class DualReviewAuditFilter(StrEnum):
+    """Row filters supported by a dual-review audit."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include rows with a review edit or final discrepancy."""
+
+    discrepancies = "discrepancies"
+    """Include only final discrepancies between review paths."""
+
+    unverified = "unverified"
+    """Include only rows from cases not marked as verified."""
+
+
+class ReviewAuditFilter(StrEnum):
+    """Row filters supported by a subtitle review audit."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include only rows with review edits."""
+
+    unverified = "unverified"
+    """Include only rows from cases not marked as verified."""
+
+
+class TraditionalReviewAuditFilter(StrEnum):
+    """Row filters supported by a traditional-script review audit."""
+
+    all = "all"
+    """Include every eligible row."""
+
+    changes = "changes"
+    """Include only rows with review edits."""
+
+    unverified = "unverified"
+    """Include only rows from cases not marked as verified."""
+
+
+type _ReviewAuditFilter = (
+    DualReviewAuditFilter | ReviewAuditFilter | TraditionalReviewAuditFilter
+)
+"""Filter type accepted by the shared review audit engine."""
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -76,7 +126,7 @@ def audit_review(
     *,
     reviews: Sequence[ReviewAuditPair],
     comparisons: Sequence[ReviewAuditComparison] = (),
-    row_filter: ChangeAuditFilter | ExtendedAuditFilter = ChangeAuditFilter.changes,
+    row_filter: _ReviewAuditFilter = ReviewAuditFilter.changes,
     characters: Sequence[str] = (),
     first_index: int | None = None,
     last_index: int | None = None,
@@ -102,7 +152,7 @@ def audit_review(
     """
     if not reviews:
         raise ScinoephileError("Unable to audit subtitle reviews: no reviews provided")
-    if row_filter is ExtendedAuditFilter.discrepancies and not comparisons:
+    if row_filter is DualReviewAuditFilter.discrepancies and not comparisons:
         raise ScinoephileError(
             "Unable to audit subtitle reviews: discrepancy filtering requires at "
             "least one comparison"
@@ -218,7 +268,7 @@ def _format_report(
     covered_indexes: frozenset[int],
     has_review_cases: bool,
     indexes: Sequence[int],
-    row_filter: ChangeAuditFilter | ExtendedAuditFilter,
+    row_filter: _ReviewAuditFilter,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
     first_index: int | None,
@@ -360,7 +410,7 @@ def _get_filtered_indexes(
     review_changes: Sequence[set[int]],
     comparison_changes: Sequence[set[int]],
     indexes: Iterable[int],
-    row_filter: ChangeAuditFilter | ExtendedAuditFilter,
+    row_filter: _ReviewAuditFilter,
     unverified_indexes: frozenset[int],
     characters: Sequence[str],
 ) -> list[int]:
@@ -377,15 +427,15 @@ def _get_filtered_indexes(
     Returns:
         selected subtitle indexes
     """
-    if row_filter.value == ChangeAuditFilter.all.value:
+    if row_filter.value == "all":
         selected_indexes = set(indexes)
-    elif row_filter.value == ChangeAuditFilter.changes.value:
+    elif row_filter.value == "changes":
         selected_indexes = {
             index
             for changed_indexes in (*review_changes, *comparison_changes)
             for index in changed_indexes
         }
-    elif row_filter is ExtendedAuditFilter.discrepancies:
+    elif row_filter.value == "discrepancies":
         selected_indexes = {
             index for changed_indexes in comparison_changes for index in changed_indexes
         }

@@ -10,9 +10,9 @@ from pathlib import Path
 
 from scinoephile.analysis.audit.review import (
     ReviewAuditPair,
+    TraditionalReviewAuditFilter,
     audit_review,
 )
-from scinoephile.analysis.audit.utils import ChangeAuditFilter
 from scinoephile.cli.helpers.io import read_series
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -181,8 +181,8 @@ class AuditReviewTradCli(AuditCliBase):
         # Operation arguments
         cls.add_row_filter_argument(
             parser,
-            ChangeAuditFilter,
-            ChangeAuditFilter.changes,
+            TraditionalReviewAuditFilter,
+            TraditionalReviewAuditFilter.changes,
             description=(
                 "all includes every subtitle; changes includes review edits; "
                 "unverified includes subtitles in cases not marked verified"
@@ -221,7 +221,7 @@ class AuditReviewTradCli(AuditCliBase):
         traditional_simplified_reviewed_path: Path,
         traditional_json_path: Path | None,
         traditional_simplified_json_path: Path | None,
-        row_filter: ChangeAuditFilter,
+        row_filter: TraditionalReviewAuditFilter,
         characters: Sequence[str],
         first_index: int | None,
         last_index: int | None,
@@ -253,7 +253,7 @@ class AuditReviewTradCli(AuditCliBase):
         """
         # Validate arguments
         parser = _parser or cls.argparser()
-        if row_filter is ChangeAuditFilter.unverified and (
+        if row_filter is TraditionalReviewAuditFilter.unverified and (
             traditional_json_path is None or traditional_simplified_json_path is None
         ):
             parser.error(
